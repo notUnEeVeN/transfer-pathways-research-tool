@@ -26,7 +26,9 @@ export default function DatasetSummaryPanel({ compact = false }) {
     <Stack gap='cozy'>
       <p className='text-caption text-ink-subtle'>
         Dataset <span className='font-mono text-ink-muted'>{dataset_version || '—'}</span>
-        {q.data?.scoped ? ' · your granted subset' : ' · full ported dataset'}
+        {q.data?.scoped
+          ? ' · the selected major subset'
+          : ' · all ported majors (no subset selected yet)'}
       </p>
       <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3'>
         {tiles.map((t) => (

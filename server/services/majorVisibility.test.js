@@ -35,17 +35,22 @@ describe('majorScope', () => {
     invalidateVisibilityCache();
   });
 
-  it('admins are unrestricted (null)', async () => {
-    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toBeNull();
+  it('a saved selection scopes EVERYONE — the admin included', async () => {
+    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toEqual([CS_AT_1]);
+    invalidateVisibilityCache();
+    expect(await majorScope(reqFor('partner-1', [CS_AT_1]))).toEqual([CS_AT_1]);
   });
 
-  it('partners get the configured pairs, ids normalized to numbers', async () => {
+  it('pairs are normalized (string ids become numbers)', async () => {
     const scope = await majorScope(reqFor('partner-1', [{ school_id: '1', major: 'Computer Science B.S.' }]));
     expect(scope).toEqual([CS_AT_1]);
   });
 
-  it('partners are denied-by-default when no config exists', async () => {
+  it('before any selection exists: admins unrestricted, partners denied', async () => {
+    expect(await majorScope(reqFor('admin-1', null))).toBeNull();
+    invalidateVisibilityCache();
     expect(await majorScope(reqFor('partner-1', null))).toEqual([]);
+    invalidateVisibilityCache();
     expect(await getVisiblePairs(fakeAuditDb(null))).toEqual([]);
   });
 });

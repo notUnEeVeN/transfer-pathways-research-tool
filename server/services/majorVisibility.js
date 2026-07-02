@@ -1,10 +1,11 @@
-// Partner-facing visibility, per (school, major) PAIR. The research cluster
-// holds every major the admin has PORTED; a single config doc decides which
-// specific school+major combinations PARTNERS can see — pair granularity
-// because the same major name ("Computer Science B.S.") exists at several
-// UCs and the admin may grant one campus's program but not another's.
-// Admins always see everything. Until the admin selects pairs, partners see
-// nothing — access is an explicit grant, not a default.
+// Console-wide visibility, per (school, major) PAIR. The research cluster
+// holds every major the admin has PORTED; a single config doc holds the
+// admin-selected school+major combinations that form the project's WORKING
+// DATASET — pair granularity because the same major name ("Computer Science
+// B.S.") exists at several UCs. The selection scopes EVERY console surface
+// for every account (admin included); the Admin tab is where the full ported
+// universe stays visible and the selection is edited. Partners additionally
+// get deny-by-default before any selection exists.
 //
 //   dataset_config (audit handle):
 //     { _id: 'partner_access', visible_pairs: [{ school_id: Number, major: String }] }
@@ -19,16 +20,22 @@ const CONFIG = 'dataset_config';
 const DOC_ID = 'partner_access';
 
 const TTL_MS = 15 * 1000;
-let cache = { at: 0, pairs: null };
+let cache = { at: 0, loaded: false, pairs: undefined }; // pairs: undefined = no config doc yet
 
 const normalizePair = (p) => ({ school_id: Number(p.school_id), major: String(p.major) });
 
-async function getVisiblePairs(auditDb) {
+// Raw config state: undefined when no selection has ever been saved,
+// else the saved pairs (possibly []).
+async function loadConfig(auditDb) {
   const now = Date.now();
-  if (cache.pairs !== null && now - cache.at < TTL_MS) return cache.pairs;
+  if (cache.loaded && now - cache.at < TTL_MS) return cache.pairs;
   const doc = await auditDb.collection(CONFIG).findOne({ _id: DOC_ID });
-  cache = { at: now, pairs: (doc?.visible_pairs || []).map(normalizePair) };
+  cache = { at: now, loaded: true, pairs: doc ? (doc.visible_pairs || []).map(normalizePair) : undefined };
   return cache.pairs;
+}
+
+async function getVisiblePairs(auditDb) {
+  return (await loadConfig(auditDb)) ?? [];
 }
 
 async function setVisiblePairs(auditDb, pairs, uid) {
@@ -46,18 +53,22 @@ async function setVisiblePairs(auditDb, pairs, uid) {
 }
 
 function invalidateVisibilityCache() {
-  cache = { at: 0, pairs: null };
+  cache = { at: 0, loaded: false, pairs: undefined };
 }
 
 /**
- * The visibility scope for a request: `null` for admins (no restriction),
- * else the partner-visible (school, major) pairs (possibly empty —
- * deny-by-default).
+ * The visibility scope for a request. The saved selection is the project's
+ * WORKING DATASET, so it scopes everyone — the admin included; the Admin tab
+ * is where the full ported universe remains visible and the selection is
+ * changed. Only before any selection has been saved do the roles diverge:
+ * admins are unrestricted (null) so a fresh deployment isn't empty, while
+ * partners are denied (deny-by-default).
  */
 async function majorScope(req) {
-  if (isAdmin(req.user?.uid)) return null;
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  return getVisiblePairs(auditDb);
+  const pairs = await loadConfig(auditDb);
+  if (pairs === undefined) return isAdmin(req.user?.uid) ? null : [];
+  return pairs;
 }
 
 // True when a (schoolId, major) combination is inside the scope. `null`
