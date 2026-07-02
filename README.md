@@ -13,10 +13,24 @@ production data or infrastructure.
 
 | Path | Purpose |
 | --- | --- |
-| `server/` | Trimmed Express API: read routes, audit stack, admin, curation, analysis, export |
-| `frontend/` | Web console: browse, audit workbench, curation workbench, canned analysis views |
-| `scripts/` | `port.py` (incremental major porting), verdict merge-back export |
-| `notebooks/` | Starter notebooks reproducing the papers' figures from the export API |
+| `server/` | Trimmed Express API: read routes, audit stack, admin, curation, analysis/export |
+| `frontend/` | Web console: audit workbench (Judge · Review · Stats) + admin (dataset, access) |
+| `scripts/` | `port.py` (incremental major porting), `merge_verdicts.py` (end-of-project) |
+| `notebooks/` | `paper_figures.ipynb` — reproduces the papers' figures from the analysis API |
+
+## API surface (all allowlist-gated)
+
+- Reference reads: `/community-colleges`, `/schools`, `/uc|csu-agreements-batch/:cc`,
+  `/courses/:cc`, `/university-courses/:uni`
+- Audit: `/audit/*` (same stack as the internal tool: verify, tiers, templates,
+  stats, matrix, groupings)
+- Curation: `/curation/categories`, `/curation/receiver-overrides`,
+  `/curation/prereqs`, `/curation/assoc-degrees`, `/curation/ref/:table`
+- Analysis (JSON or `?format=csv`, stamped with `dataset_version`):
+  `/analysis/coverage`, `/analysis/credit-loss`, `/analysis/choice-cost`
+  (`?schoolIds=` ordered), `/analysis/category-gaps`, `/analysis/complexity`,
+  `/analysis/time-to-degree`, `/analysis/raw/:collection`
+- Admin (ADMIN_UIDS only): `/admin/dataset`, `/admin/access` (+ `/access/me` for all)
 
 ## Key design points
 
@@ -46,6 +60,14 @@ cp .env.example .env   # fill in Mongo URIs, Firebase admin creds, ADMIN_UIDS
 npm run dev
 ```
 
+### Frontend
+
+```bash
+cd frontend && npm install
+cp .env.example .env   # VITE_API_URL, VITE_FIREBASE_*, VITE_GOOGLE_OAUTH_CLIENT_ID
+npm run dev            # http://localhost:5173
+```
+
 ### Porting data (admin, local machine)
 
 ```bash
@@ -56,4 +78,10 @@ python port.py init
 python port.py list "computer science"
 python port.py add "computer science"
 python port.py status
+```
+
+### End of project
+
+```bash
+python scripts/merge_verdicts.py --dry-run   # fold partner verdicts into the main audit store
 ```
