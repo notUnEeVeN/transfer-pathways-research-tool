@@ -6,6 +6,7 @@ const coursesController = require('../controllers/Courses');
 const universityCoursesController = require('../controllers/UniversityCourses');
 const authenticateToken = require('../middleware/auth');
 const requireAuditAccess = require('../middleware/requireAuditAccess');
+const requireAdmin = require('../middleware/requireAdmin');
 const { userLimiter } = require('../middleware/rateLimit');
 
 // Per-route JSON parsers (there is no global one).
@@ -64,5 +65,17 @@ router.post('/audit/groupings',        jsonBody, auditController.createGrouping)
 router.get('/audit/groupings/:id',     auditController.getGrouping);
 router.patch('/audit/groupings/:id',   jsonBody, auditController.renameGrouping);
 router.delete('/audit/groupings/:id',  auditController.deleteGrouping);
+
+// ───────── Admin (dataset visibility + partner access) ─────────
+// Admins come from ADMIN_UIDS (env); partners from access_grants (managed
+// here). Data porting itself runs locally via scripts/port.py — the hosted
+// server never holds source-cluster credentials.
+const adminController = require('../controllers/Admin');
+router.get('/access/me', ...guarded, adminController.getMe);
+router.use('/admin', authenticateToken, requireAdmin, userLimiter);
+router.get('/admin/dataset',            adminController.getDataset);
+router.get('/admin/access',             adminController.listAccess);
+router.post('/admin/access',            jsonBody, adminController.grantAccess);
+router.delete('/admin/access/:uid',     adminController.revokeAccess);
 
 module.exports = router;

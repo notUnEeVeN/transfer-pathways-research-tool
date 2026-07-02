@@ -1,13 +1,16 @@
-const { isAuditAllowed } = require('../services/auditAccess');
+const { isConsoleAllowed } = require('../services/access');
 
-// Gate for the audit/curation routes. Must run AFTER authenticateToken, which
-// populates req.user. Unlike the production tool, there is no local-Mongo
-// gate here: the research server's reference handle points at the dedicated
-// research Atlas cluster by design (a versioned subset, not the shared prod
-// cluster). Allowlisted UIDs only; bare status so it leaks nothing.
-const requireAuditAccess = (req, res, next) => {
-  if (!isAuditAllowed(req.user?.uid)) return res.sendStatus(403);
-  next();
+// Gate for every console route. Must run AFTER authenticateToken, which
+// populates req.user. Passes admins (ADMIN_UIDS env) and granted partners
+// (access_grants collection). Bare status so it leaks nothing.
+const requireAuditAccess = async (req, res, next) => {
+  try {
+    const auditDb = req.app.locals.auditDb || req.app.locals.db;
+    if (!(await isConsoleAllowed(req.user?.uid, auditDb))) return res.sendStatus(403);
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports = requireAuditAccess;
