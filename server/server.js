@@ -1,0 +1,96 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const compression = require('compression');
+const connectDB = require('./config/db');
+const { connectAuditDB } = require('./config/db');
+const apiRoutes = require('./routes/api');
+const { globalIpLimiter } = require('./middleware/rateLimit');
+const { errorHandler } = require('./middleware/errorHandler');
+const { ensureAuditIndexes } = require('./services/audit/indexes');
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Deployed origins come from env (comma-separated) so the repo carries no
+// hosting decisions; localhost is always allowed outside production.
+const allowedOrigins = String(process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+if (process.env.NODE_ENV !== 'production') {
+  allowedOrigins.push(
+    'http://localhost:5173',
+    'http://localhost:3000'
+  );
+}
+
+// Trust the first proxy (hosting platform's load balancer) so req.ip reflects
+// the real client IP for rate limiting.
+app.set('trust proxy', 1);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
+// gzip the responses — the agreements payloads are large, highly repetitive
+// JSON; gzip cuts them ~5-10x on the wire.
+app.use(compression());
+
+// No global body parser: JSON is parsed per-route (see routes/api.js) so each
+// endpoint gets the limit it actually needs and GET routes never parse a body.
+app.use(globalIpLimiter);
+
+app.get('/', (req, res) => {
+  res.send('PMT research API is running.');
+});
+
+connectDB()
+  .then(async (db) => {
+    app.locals.db = db;
+    // Audit working state (audit_results + audit_groupings) lives on auditDb,
+    // which is the same handle as `db` unless AUDIT_MONGO_URI selects a
+    // separate cluster. On the research deployment both usually point at the
+    // research cluster.
+    const auditDb = await connectAuditDB(db);
+    app.locals.auditDb = auditDb;
+    ensureAuditIndexes(auditDb).catch((e) => console.warn(`[audit] index setup failed: ${e.message}`));
+    // Platform liveness probe: a quick Mongo ping + process uptime. Returns 200
+    // when the DB answers, 503 otherwise, so the host's health check can tell a
+    // live server from one that's up but can't reach Mongo.
+    app.get('/health', async (req, res) => {
+      const started = Date.now();
+      const health = {
+        ok: true,
+        checkedAt: new Date().toISOString(),
+        uptimeSec: Math.round(process.uptime()),
+        mongo: { ok: false, dbName: db?.databaseName || process.env.DB_NAME || null, pingMs: null },
+      };
+      try {
+        await db.command({ ping: 1 });
+        health.mongo.ok = true;
+        health.mongo.pingMs = Date.now() - started;
+      } catch (err) {
+        health.ok = false;
+        health.mongo.error = err.message;
+      }
+      res.status(health.ok ? 200 : 503).json(health);
+    });
+    app.use('/', apiRoutes);
+    // Central error handler — must be registered after the routes so thrown
+    // handler errors (forwarded via asyncHandler) land here and get a generic
+    // client response instead of leaking internals.
+    app.use(errorHandler);
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error starting the server:', error);
+  });
