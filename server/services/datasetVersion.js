@@ -1,30 +1,31 @@
 /**
  * Dataset snapshot identity for the research cluster.
  *
- * The seed script (scripts/seed.py) writes a single doc to `dataset_meta`:
- *   { _id: 'current', dataset_version, seeded_at, majors, counts, source_db }
- * Every audit verdict (and, later, every analysis/export payload) is stamped
- * with `dataset_version` so results are attributable to a frozen snapshot and
- * verdicts can be merged back into the production audit store with full
- * provenance. Cached per-process; the version only changes on a re-seed,
- * which redeploys/restarts anyway.
+ * scripts/port.py maintains a single doc in `dataset_meta`:
+ *   { _id: 'current', dataset_version, updated_at, majors, counts }
+ * Every audit verdict and analysis/export payload is stamped with
+ * `dataset_version` so results are attributable to an exact dataset state.
+ * Cached with a short TTL — port.py bumps the version from outside the
+ * server's process, so a forever-cache would go stale.
  */
-let cached;
+const TTL_MS = 30 * 1000;
+let cached = { at: 0, value: undefined };
 
 async function currentDatasetVersion(db) {
-  if (cached !== undefined) return cached;
+  const now = Date.now();
+  if (cached.value !== undefined && now - cached.at < TTL_MS) return cached.value;
   try {
     const meta = await db.collection('dataset_meta').findOne({ _id: 'current' });
-    cached = meta?.dataset_version ?? null;
+    cached = { at: now, value: meta?.dataset_version ?? null };
   } catch {
-    cached = null;
+    cached = { at: now, value: null };
   }
-  return cached;
+  return cached.value;
 }
 
 // Test hook.
 function _resetDatasetVersionCache() {
-  cached = undefined;
+  cached = { at: 0, value: undefined };
 }
 
 module.exports = { currentDatasetVersion, _resetDatasetVersionCache };

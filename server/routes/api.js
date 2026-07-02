@@ -66,6 +66,35 @@ router.get('/audit/groupings/:id',     auditController.getGrouping);
 router.patch('/audit/groupings/:id',   jsonBody, auditController.renameGrouping);
 router.delete('/audit/groupings/:id',  auditController.deleteGrouping);
 
+// ───────── Curation (categories, overrides, prereqs, ADTs, ref tables) ─────────
+// Open to every console user — partners do curation work; writes are stamped
+// with the curator's uid.
+const curationController = require('../controllers/Curation');
+router.use('/curation', ...guarded);
+router.get('/curation/categories',              curationController.listCategories);
+router.put('/curation/categories/:parentId',    jsonBody, curationController.putCategory);
+router.get('/curation/receiver-overrides',      curationController.listOverrides);
+router.put('/curation/receiver-overrides/:hashId', jsonBody, curationController.putOverride);
+router.get('/curation/prereqs',                 curationController.listPrereqs);
+router.put('/curation/prereqs/:key',            jsonBody, curationController.putPrereqs);
+router.get('/curation/assoc-degrees',           curationController.listAssocDegrees);
+router.put('/curation/assoc-degrees',           jsonBody, curationController.putAssocDegree);
+router.delete('/curation/assoc-degrees/:id',    curationController.deleteAssocDegree);
+router.get('/curation/ref/:table',              curationController.getRefTable);
+router.put('/curation/ref/:table',              jsonBody, curationController.putRefRow);
+router.delete('/curation/ref/:table/:id',       curationController.deleteRefRow);
+
+// ───────── Analysis + export (papers' statistics; JSON or ?format=csv) ─────────
+const analysisController = require('../controllers/Analysis');
+router.use('/analysis', ...guarded);
+router.get('/analysis/coverage',        analysisController.coverage);
+router.get('/analysis/credit-loss',     analysisController.creditLoss);
+router.get('/analysis/choice-cost',     analysisController.choiceCost);
+router.get('/analysis/category-gaps',   analysisController.categoryGaps);
+router.get('/analysis/complexity',      analysisController.complexity);
+router.get('/analysis/time-to-degree',  analysisController.timeToDegree);
+router.get('/analysis/raw/:collection', analysisController.rawExport);
+
 // ───────── Admin (dataset visibility + partner access) ─────────
 // Admins come from ADMIN_UIDS (env); partners from access_grants (managed
 // here). Data porting itself runs locally via scripts/port.py — the hosted
