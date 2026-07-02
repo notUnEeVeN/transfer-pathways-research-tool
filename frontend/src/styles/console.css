@@ -1,0 +1,23 @@
+/* Research console styling. The shared globals provide Tailwind + the UUI base
+   layer; tokens.css layers the internal tool's six-treatment system on top. */
+@import '../shared/styles/globals.css';
+@import './tokens.css';
+@source '..';
+
+/* Collision fix (inherited from the internal desktop tool). The shared Untitled
+   UI theme builds `.bg-primary` / `.text-primary` from its
+   --background-color-primary (= white) and --text-color-primary (= near-black),
+   which win over the tool's six-treatment --color-primary (brand blue) because
+   Tailwind emits the shared @theme last. These two UNLAYERED rules beat
+   Tailwind's @layer utilities regardless of emission order:
+   - bg-primary uses :not(:hover) so the hover-darken (bg-primary-hover) survives.
+   - text-primary is unconditional — soft buttons keep blue text in every state. */
+.bg-primary:not(:hover) { background-color: var(--color-primary); }
+.text-primary { color: var(--color-primary); }
+
+/* RequirementsLedger is the shared Untitled UI component, where bg-primary =
+   white surface and text-primary = dark text. Re-assert the Untitled UI values
+   inside a .uui-scope wrapper placed around every ledger render. Declared AFTER
+   the overrides so the equal-specificity bg-primary rule wins by source order. */
+.uui-scope .bg-primary { background-color: var(--background-color-primary); }
+.uui-scope .text-primary { color: var(--text-color-primary); }

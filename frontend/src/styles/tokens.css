@@ -1,0 +1,684 @@
+
+/* Hanken Grotesk — self-hosted variable font (weights 400–600), served
+   same-origin with font-display: swap. Two faces so accented (latin-ext)
+   glyphs only download when used. */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('../assets/fonts/hanken-grotesk-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('../assets/fonts/hanken-grotesk-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PLAN MY TRANSFER — DESIGN TOKENS
+
+   The world: a California community-college student finding their way to a UC.
+   The feel: a counselor laid your whole transfer on one page — calm, simple,
+   forward-moving, the opposite of ASSIST.org.
+
+   Clean and light: the CHROME (sidebar + page header + app background) is a soft
+   cool-neutral grey `canvas`; the page content is a white `surface` panel
+   slapped over it (a rounded inside corner where they meet). Flat by default —
+   content cards are border-only (no drop shadow); only true floating overlays
+   (modals, popovers, menus, toasts) lift. Color is restrained — royal blue is
+   the brand, teal = done/eligible, rose = danger; that's it. Light is default;
+   dark swaps only the variables, so every utility keeps working. All fill/text
+   pairings clear WCAG-AA.
+
+   Type — six core treatments (text-display · text-heading · text-body ·
+   text-body-strong · text-caption · text-label), plus marketing (-lg) and
+   numeric (text-stat) variants. Never set raw font-size / font-weight.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Brand — vivid royal blue. White text (--color-on-primary) clears AA; the
+     soft tint and ring carry the brand presence. */
+  --color-primary: #3366ef;
+  --color-primary-hover: #2a55d8;
+  --color-primary-soft: rgba(51, 102, 239, 0.1);
+  --color-primary-ring: rgba(51, 102, 239, 0.38);
+  --color-on-primary: #ffffff;
+
+  /* Surfaces — a clean, light, cool-neutral ladder (no brown). The CHROME
+     (sidebar + page header + app background) uses `canvas`; the page content
+     sits over it on white `surface`; recessed wells use a soft light grey.
+     (WCAG-AA verified.) */
+  --color-canvas: #f6f7fa;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f3f4f7;
+  --color-surface-sunken: #eaecf0;
+  --color-surface-hover: #f4f5f8;
+
+  /* Borders — light cool-grey hairlines */
+  --color-border: #e5e7ec;
+  --color-border-strong: #d4d7de;
+
+  /* Ink — near-black, faintly cool (headings → body → secondary) */
+  --color-ink: #1b1c1f;
+  --color-ink-muted: #585a61;
+  --color-ink-subtle: #6d6f77;
+
+  /* Semantic — teal = success, rose = danger. Deep enough for white text on the
+     fill and AA as foreground; the brighter literal lives in the soft tint. */
+  --color-success: #0d7964;
+  --color-success-soft: rgba(34, 197, 170, 0.14);
+  --color-danger: #cb1d51;
+  --color-danger-soft: rgba(244, 63, 107, 0.12);
+  /* Conservative — amber/gold for the over-prepared verdict tier + caution/warn
+     states (health "warn", large-delta). An internal-tool semantic the audit +
+     pipeline depend on; the marketing rehaul intentionally omits amber. */
+  --color-conservative: #b3801f;
+  --color-conservative-soft: rgba(179, 128, 31, 0.15);
+
+  /* Elevation — soft, diffuse, faintly warm. Reserved for FLOATING overlays
+     (modals, popovers, menus, toasts) and a whisper on controls/buttons —
+     content cards stay flat. Names xs/sm/md/lg are referenced inline across
+     components — keep them. */
+  --shadow-xs: 0 1px 2px rgba(18, 22, 33, 0.05);
+  --shadow-sm: 0 1px 2px rgba(18, 22, 33, 0.06), 0 2px 4px rgba(18, 22, 33, 0.04);
+  --shadow-md: 0 2px 4px rgba(18, 22, 33, 0.05), 0 8px 20px -4px rgba(18, 22, 33, 0.1);
+  --shadow-lg: 0 4px 8px rgba(18, 22, 33, 0.06), 0 20px 44px -8px rgba(18, 22, 33, 0.16);
+
+  /* Type */
+  --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-sans);
+
+  /* Geometry — a warmer, more confident radius scale than a data tool's. Cards
+     read soft; controls stay crisp; pills stay fully round. */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 22px;
+  --radius-pill: 9999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Dark theme — a near-black neutral ladder + LIGHTER brand / semantic fills that
+   carry dark ink (--color-on-primary), so the same hues read as legible fills AND
+   foreground on the dark canvas. AA both ways. */
+html[data-theme='dark'] {
+  --color-canvas: #0c0d10;
+  --color-surface: #17181b;
+  --color-surface-muted: #121317;
+  --color-surface-sunken: #0e0f12;
+  --color-surface-hover: #1f2125;
+  --color-border: #292b31;
+  --color-border-strong: #3a3d44;
+  --color-ink: #f0f1f3;
+  --color-ink-muted: #a6a8af;
+  --color-ink-subtle: #7e818a;
+
+  --color-primary: #6f8cff;
+  --color-primary-hover: #88a0ff;
+  --color-on-primary: #06101f;
+  --color-primary-soft: rgba(111, 140, 255, 0.18);
+  --color-primary-ring: rgba(111, 140, 255, 0.45);
+
+  --color-success: #2ed3b7;
+  --color-success-soft: rgba(46, 211, 183, 0.2);
+  --color-danger: #ff6088;
+  --color-danger-soft: rgba(255, 96, 136, 0.2);
+  --color-conservative: #e0b34d;
+  --color-conservative-soft: rgba(224, 179, 77, 0.18);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light;
+    overscroll-behavior-y: none;
+    /* Always reserve the scrollbar gutter so right-pinned UI doesn't shift
+       between scrolling and non-scrolling pages. */
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-primary-soft);
+    color: var(--color-ink);
+  }
+
+  /* One focus treatment, app-wide: a crisp brand outline that hugs the element's
+     radius and — unlike a box-shadow ring — never gets suppressed by a
+     component's own shadow. Form fields opt out (they show border + ring via
+     .input-field-focus). */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    margin: 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin: 0;
+  }
+
+  /* Hero majors panel — unblurs into place once its bitmap has decoded (plain CSS
+     so framer-motion stays off the landing's first-paint path). Hero adds
+     .hero-panel-in after decode() resolves. */
+  .hero-panel {
+    opacity: 0;
+    filter: blur(16px);
+    transform: translateY(14px) scale(0.99);
+    transition:
+      opacity 0.9s var(--ease-out),
+      filter 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out);
+    will-change: opacity, filter, transform;
+  }
+  .hero-panel-in {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-panel,
+    .hero-panel-in {
+      opacity: 1;
+      filter: none;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 5px;
+    border: 2px solid var(--color-canvas);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-subtle);
+  }
+
+  /* Modal / overlay entrances. */
+  @keyframes overlayIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Toast entrance — slides down from just above its resting spot. */
+  @keyframes toastIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Soft rise-in for dashboard cards / first-paint stagger. */
+  @keyframes riseIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Slow conic drift for milestone / readiness ring sheen. */
+  @keyframes sheenDrift {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Banter loader — a 3×3 of squares that shuffle in a continuous 4s loop, one
+   keyframe track per square (consumed by BanterLoader via animate-[moveBox-N…]).
+   A "step" is one 26px cell (20px square + 6px gap). */
+@keyframes moveBox-1 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(0px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(26px, 0); }
+  45.4545454545% { transform: translate(26px, 26px); }
+  54.5454545455% { transform: translate(26px, 26px); }
+  63.6363636364% { transform: translate(26px, 26px); }
+  72.7272727273% { transform: translate(26px, 0px); }
+  81.8181818182% { transform: translate(0px, 0px); }
+  90.9090909091% { transform: translate(-26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-2 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(26px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(26px, 0); }
+  45.4545454545% { transform: translate(26px, 26px); }
+  54.5454545455% { transform: translate(26px, 26px); }
+  63.6363636364% { transform: translate(26px, 26px); }
+  72.7272727273% { transform: translate(26px, 26px); }
+  81.8181818182% { transform: translate(0px, 26px); }
+  90.9090909091% { transform: translate(0px, 26px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-3 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(-26px, 0); }
+  45.4545454545% { transform: translate(-26px, 0); }
+  54.5454545455% { transform: translate(-26px, 0); }
+  63.6363636364% { transform: translate(-26px, 0); }
+  72.7272727273% { transform: translate(-26px, 0); }
+  81.8181818182% { transform: translate(-26px, -26px); }
+  90.9090909091% { transform: translate(0px, -26px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-4 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(-26px, -26px); }
+  36.3636363636% { transform: translate(0px, -26px); }
+  45.4545454545% { transform: translate(0px, 0px); }
+  54.5454545455% { transform: translate(0px, -26px); }
+  63.6363636364% { transform: translate(0px, -26px); }
+  72.7272727273% { transform: translate(0px, -26px); }
+  81.8181818182% { transform: translate(-26px, -26px); }
+  90.9090909091% { transform: translate(-26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-5 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(0, 0); }
+  27.2727272727% { transform: translate(0, 0); }
+  36.3636363636% { transform: translate(26px, 0); }
+  45.4545454545% { transform: translate(26px, 0); }
+  54.5454545455% { transform: translate(26px, 0); }
+  63.6363636364% { transform: translate(26px, 0); }
+  72.7272727273% { transform: translate(26px, 0); }
+  81.8181818182% { transform: translate(26px, -26px); }
+  90.9090909091% { transform: translate(0px, -26px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-6 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(-26px, 0); }
+  36.3636363636% { transform: translate(0px, 0); }
+  45.4545454545% { transform: translate(0px, 0); }
+  54.5454545455% { transform: translate(0px, 0); }
+  63.6363636364% { transform: translate(0px, 0); }
+  72.7272727273% { transform: translate(0px, 26px); }
+  81.8181818182% { transform: translate(-26px, 26px); }
+  90.9090909091% { transform: translate(-26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-7 {
+  9.0909090909% { transform: translate(26px, 0); }
+  18.1818181818% { transform: translate(26px, 0); }
+  27.2727272727% { transform: translate(26px, 0); }
+  36.3636363636% { transform: translate(0px, 0); }
+  45.4545454545% { transform: translate(0px, -26px); }
+  54.5454545455% { transform: translate(26px, -26px); }
+  63.6363636364% { transform: translate(0px, -26px); }
+  72.7272727273% { transform: translate(0px, -26px); }
+  81.8181818182% { transform: translate(0px, 0px); }
+  90.9090909091% { transform: translate(26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-8 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(-26px, -26px); }
+  36.3636363636% { transform: translate(0px, -26px); }
+  45.4545454545% { transform: translate(0px, -26px); }
+  54.5454545455% { transform: translate(0px, -26px); }
+  63.6363636364% { transform: translate(0px, -26px); }
+  72.7272727273% { transform: translate(0px, -26px); }
+  81.8181818182% { transform: translate(26px, -26px); }
+  90.9090909091% { transform: translate(26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-9 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(-26px, 0); }
+  45.4545454545% { transform: translate(0px, 0); }
+  54.5454545455% { transform: translate(0px, 0); }
+  63.6363636364% { transform: translate(-26px, 0); }
+  72.7272727273% { transform: translate(-26px, 0); }
+  81.8181818182% { transform: translate(-52px, 0); }
+  90.9090909091% { transform: translate(-26px, 0); }
+  100% { transform: translate(0px, 0); }
+}
+/* Production target banner — dot pulse for the live/active prod indicator. */
+@keyframes pmt-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TYPE — the only text treatments. Color, weight, size, tracking baked in.
+   Confident but never heavy: display & stats step up to weight 500 with tight
+   tracking. Never set raw font-size / font-weight / text-[Npx] elsewhere.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Marketing + hero headline — the same calm style as text-heading-lg, a step
+   bigger. Used for the hero and every marketing section heading; the feature
+   copy stays on text-heading-lg, one step down. */
+@utility text-display-lg {
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+/* In-app page titles + dashboard greeting. */
+@utility text-display {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
+/* Mid-marketing headings + large blockquotes. */
+@utility text-heading-lg {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.014em;
+  color: var(--color-ink);
+}
+
+/* Section headings, modal titles, card titles. */
+@utility text-heading {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.008em;
+  color: var(--color-ink);
+}
+
+/* Larger body for marketing prose. */
+@utility text-body-lg {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--color-ink);
+}
+
+@utility text-body {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+@utility text-body-strong {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-ink);
+}
+
+@utility text-caption {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--color-ink-muted);
+}
+
+/* Interactive controls (buttons, tabs, chips). */
+@utility text-button {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+/* Tiny uppercase tracking — eyebrows, form labels, card overlines. */
+@utility text-label {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-subtle);
+}
+
+/* Inline pill / badge label — text-label size, no uppercase or tracking. */
+@utility text-tag {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+/* Numeric display — MetricCard / readiness / bento counters. Confident,
+   tabular, tightly tracked. */
+@utility text-stat {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.028em;
+  line-height: 1.05;
+  font-feature-settings: 'tnum', 'zero';
+  color: var(--color-ink);
+}
+
+@utility text-stat-lg {
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 500;
+  letter-spacing: -0.034em;
+  line-height: 1;
+  font-feature-settings: 'tnum', 'zero';
+  color: var(--color-ink);
+}
+
+/* Tabular numerals; family resolves to --font-mono (== --font-sans). */
+@utility font-mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero';
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SURFACES & lines — one depth strategy (border + soft layered shadow) at
+   graded intensity. Dense lists stay flat (surface-card); cards that should
+   carry presence lift (surface-raised); overlays float (surface-elevated).
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Flat, calm — the default for dense in-app lists & rows. Border only. */
+@utility surface-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* Content cards — flat, calm. Same depth strategy as surface-card (border
+   only, no drop shadow); the name signals "a card with presence" by tone/role
+   rather than elevation. */
+@utility surface-raised {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* Floating — modals, popovers, menus. The only surfaces that lift off the page;
+   callers add the lg shadow inline. */
+@utility surface-elevated {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Recessed well — segmented controls, inset tracks, empty drop zones. */
+@utility surface-sunken {
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CONSOLE TERMINAL — the one sanctioned dark surface. The Ops Console log pane
+   is a contained terminal treatment that stays dark in both themes (a terminal
+   is dark by convention). Values are the dark-theme token values (surface-sunken
+   #0e0f12, the dark semantic hues), hardcoded here so the component itself stays
+   token-class only — this is the single documented exception.
+   ───────────────────────────────────────────────────────────────────────── */
+@utility console-terminal {
+  background: #0e0f12; /* = dark surface-sunken */
+  color: #c9ccd2;      /* dim-white mono body */
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero';
+}
+@utility console-ts    { color: #6d6f77; }            /* timestamp — dim */
+@utility console-info  { color: #2ed3b7; }            /* = dark success */
+@utility console-warn  { color: #e0b34d; }            /* = dark conservative */
+@utility console-error { color: #ff6088; }            /* = dark danger */
+@utility console-tag   { color: #7e818a; }            /* = dark ink-subtle (stream prefix) */
+@utility console-dim   { color: #9aa0aa; }            /* muted glyphs / ellipsis */
+
+@utility hairline-b {
+  border-bottom: 1px solid var(--color-border);
+}
+@utility hairline-t {
+  border-top: 1px solid var(--color-border);
+}
+@utility hairline-r {
+  border-right: 1px solid var(--color-border);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FORM FIELDS — shared by Input, Select, Combobox, MonthPicker, Textarea.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@utility input-field {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  transition:
+    border-color 120ms var(--ease-out),
+    box-shadow 120ms var(--ease-out);
+}
+
+@utility input-field-focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-ring);
+  outline: none;
+}
+
+@utility field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-ink-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CHIP — tags, counts, status pills. One vocabulary, app-wide.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-ink-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SPACING — the rhythm system (full reference: .interface-design/system.md).
+   Base unit 4px. Half-steps (6/10px) are inline/control only, never stacked
+   rhythm. Stacked rhythm is owned by <Stack>; the page frame by <PageContainer>.
+
+     tight  gap-2 8px · cozy gap-3 12px · comfortable gap-4 16px · section gap-6 24px
+     inline gap-1.5 6px (icon↔label) · gap-2 8px (control clusters)
+     card padding p-5 20px (content) · px-4 py-2.5 (dense row)
+   ───────────────────────────────────────────────────────────────────────── */

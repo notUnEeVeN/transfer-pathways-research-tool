@@ -1,0 +1,456 @@
+@import 'tailwindcss';
+@import './theme.css';
+@import './typography.css';
+/* Untitled UI's default typeface (Inter), self-hosted via fontsource so it ships
+   same-origin and stays off the network critical path — no Google Fonts request,
+   prerender-safe. Registers the family "Inter Variable" (see --font-inter below). */
+@import '@fontsource-variable/inter';
+
+@plugin '@tailwindcss/typography';
+@plugin 'tailwindcss-react-aria-components';
+@plugin 'tailwindcss-animate';
+
+/* Untitled UI dark mode is driven by a `.dark-mode` parent; bridge it to PMT's
+   existing `data-theme="dark"` toggle so one switch drives both token systems. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant label (& [data-label]);
+@custom-variant focus-input-within (&:has(input:focus));
+
+@utility scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+    -webkit-appearance: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility transition-inherit-all {
+  transition-property: inherit;
+  transition-duration: inherit;
+  transition-timing-function: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PLAN MY TRANSFER — DESIGN TOKENS
+
+   The world: a California community-college student finding their way to a UC.
+   The feel: a counselor laid your whole transfer on one page — calm, simple,
+   forward-moving, the opposite of ASSIST.org.
+
+   Clean and light: the CHROME (sidebar + page header + app background) is a soft
+   cool-neutral grey `canvas`; the page content is a white `surface` panel
+   slapped over it (a rounded inside corner where they meet). Flat by default —
+   content cards are border-only (no drop shadow); only true floating overlays
+   (modals, popovers, menus, toasts) lift. Color is restrained — royal blue is
+   the brand, teal = done/eligible, rose = danger; that's it. Light is default;
+   dark swaps only the variables, so every utility keeps working. All fill/text
+   pairings clear WCAG-AA.
+
+   Type — Untitled UI scale (text-xs..text-display-2xl) with explicit
+   font-weight + a text-color token. See .interface-design/system.md.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Brand, surface, ink, border, and semantic colors now come entirely from
+     Untitled UI's theme.css (--color-brand-*, --color-text-*, --color-bg-*,
+     --color-border-*, Tailwind palettes). Only font, the legacy pill radius,
+     and motion easings live here. */
+  /* Elevation + geometry now come from Untitled UI's theme.css (--shadow-* and
+     --radius-*), so this block intentionally no longer defines them — UUI's
+     values win for every component. Legacy `--radius-pill` is kept below since
+     UUI has no equivalent (it uses `rounded-full` → --radius-full). */
+
+  /* Type — Untitled UI's default typeface (Inter), self-hosted as "Inter
+     Variable". --font-inter resolves UUI theme.css's `var(--font-inter, "Inter")`;
+     --font-sans keeps not-yet-migrated components on the same family. */
+  --font-inter: 'Inter Variable';
+  --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: var(--font-sans);
+
+  /* Geometry — radius scale comes from UUI theme.css; only the legacy pill (no
+     UUI equivalent) is retained for not-yet-migrated components. */
+  --radius-pill: 9999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light;
+    overscroll-behavior-y: none;
+    /* Always reserve the scrollbar gutter so right-pinned UI doesn't shift
+       between scrolling and non-scrolling pages. */
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-bg-brand-primary);
+    color: var(--color-text-primary);
+  }
+
+  /* One focus treatment, app-wide: a crisp brand outline that hugs the element's
+     radius and — unlike a box-shadow ring — never gets suppressed by a
+     component's own shadow. Form fields opt out (they show border + ring via
+     .input-field-focus). */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-border-secondary);
+    margin: 0;
+  }
+
+  /* Hero majors panel — unblurs into place once its bitmap has decoded (plain CSS
+     so framer-motion stays off the landing's first-paint path). Hero adds
+     .hero-panel-in after decode() resolves. */
+  .hero-panel {
+    opacity: 0;
+    filter: blur(16px);
+    transform: translateY(14px) scale(0.99);
+    transition:
+      opacity 0.9s var(--ease-out),
+      filter 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out);
+    will-change: opacity, filter, transform;
+  }
+  .hero-panel-in {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-panel,
+    .hero-panel-in {
+      opacity: 1;
+      filter: none;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-primary);
+    border-radius: 5px;
+    border: 2px solid var(--color-bg-secondary);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-quaternary);
+  }
+
+  /* Modal / overlay entrances. */
+  @keyframes overlayIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Toast entrance — slides down from just above its resting spot. */
+  @keyframes toastIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Banter loader — a 3×3 of squares that shuffle in a continuous 4s loop, one
+   keyframe track per square (consumed by BanterLoader via animate-[moveBox-N…]).
+   A "step" is one 26px cell (20px square + 6px gap). */
+@keyframes moveBox-1 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(0px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(26px, 0); }
+  45.4545454545% { transform: translate(26px, 26px); }
+  54.5454545455% { transform: translate(26px, 26px); }
+  63.6363636364% { transform: translate(26px, 26px); }
+  72.7272727273% { transform: translate(26px, 0px); }
+  81.8181818182% { transform: translate(0px, 0px); }
+  90.9090909091% { transform: translate(-26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-2 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(26px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(26px, 0); }
+  45.4545454545% { transform: translate(26px, 26px); }
+  54.5454545455% { transform: translate(26px, 26px); }
+  63.6363636364% { transform: translate(26px, 26px); }
+  72.7272727273% { transform: translate(26px, 26px); }
+  81.8181818182% { transform: translate(0px, 26px); }
+  90.9090909091% { transform: translate(0px, 26px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-3 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(-26px, 0); }
+  45.4545454545% { transform: translate(-26px, 0); }
+  54.5454545455% { transform: translate(-26px, 0); }
+  63.6363636364% { transform: translate(-26px, 0); }
+  72.7272727273% { transform: translate(-26px, 0); }
+  81.8181818182% { transform: translate(-26px, -26px); }
+  90.9090909091% { transform: translate(0px, -26px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-4 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(-26px, -26px); }
+  36.3636363636% { transform: translate(0px, -26px); }
+  45.4545454545% { transform: translate(0px, 0px); }
+  54.5454545455% { transform: translate(0px, -26px); }
+  63.6363636364% { transform: translate(0px, -26px); }
+  72.7272727273% { transform: translate(0px, -26px); }
+  81.8181818182% { transform: translate(-26px, -26px); }
+  90.9090909091% { transform: translate(-26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-5 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(0, 0); }
+  27.2727272727% { transform: translate(0, 0); }
+  36.3636363636% { transform: translate(26px, 0); }
+  45.4545454545% { transform: translate(26px, 0); }
+  54.5454545455% { transform: translate(26px, 0); }
+  63.6363636364% { transform: translate(26px, 0); }
+  72.7272727273% { transform: translate(26px, 0); }
+  81.8181818182% { transform: translate(26px, -26px); }
+  90.9090909091% { transform: translate(0px, -26px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-6 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(-26px, 0); }
+  36.3636363636% { transform: translate(0px, 0); }
+  45.4545454545% { transform: translate(0px, 0); }
+  54.5454545455% { transform: translate(0px, 0); }
+  63.6363636364% { transform: translate(0px, 0); }
+  72.7272727273% { transform: translate(0px, 26px); }
+  81.8181818182% { transform: translate(-26px, 26px); }
+  90.9090909091% { transform: translate(-26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-7 {
+  9.0909090909% { transform: translate(26px, 0); }
+  18.1818181818% { transform: translate(26px, 0); }
+  27.2727272727% { transform: translate(26px, 0); }
+  36.3636363636% { transform: translate(0px, 0); }
+  45.4545454545% { transform: translate(0px, -26px); }
+  54.5454545455% { transform: translate(26px, -26px); }
+  63.6363636364% { transform: translate(0px, -26px); }
+  72.7272727273% { transform: translate(0px, -26px); }
+  81.8181818182% { transform: translate(0px, 0px); }
+  90.9090909091% { transform: translate(26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-8 {
+  9.0909090909% { transform: translate(0, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(-26px, -26px); }
+  36.3636363636% { transform: translate(0px, -26px); }
+  45.4545454545% { transform: translate(0px, -26px); }
+  54.5454545455% { transform: translate(0px, -26px); }
+  63.6363636364% { transform: translate(0px, -26px); }
+  72.7272727273% { transform: translate(0px, -26px); }
+  81.8181818182% { transform: translate(26px, -26px); }
+  90.9090909091% { transform: translate(26px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes moveBox-9 {
+  9.0909090909% { transform: translate(-26px, 0); }
+  18.1818181818% { transform: translate(-26px, 0); }
+  27.2727272727% { transform: translate(0px, 0); }
+  36.3636363636% { transform: translate(-26px, 0); }
+  45.4545454545% { transform: translate(0px, 0); }
+  54.5454545455% { transform: translate(0px, 0); }
+  63.6363636364% { transform: translate(-26px, 0); }
+  72.7272727273% { transform: translate(-26px, 0); }
+  81.8181818182% { transform: translate(-52px, 0); }
+  90.9090909091% { transform: translate(-26px, 0); }
+  100% { transform: translate(0px, 0); }
+}
+/* Production target banner — dot pulse for the live/active prod indicator. */
+@keyframes pmt-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TYPE — the only text treatments. Color, weight, size, tracking baked in.
+   Confident but never heavy: display & stats step up to weight 500 with tight
+   tracking. Never set raw font-size / font-weight / text-[Npx] elsewhere.
+   ───────────────────────────────────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Tabular numerals; family resolves to --font-mono (== --font-sans). */
+@utility font-mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero';
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SURFACES & lines — one depth strategy (border + soft layered shadow) at
+   graded intensity. Dense lists stay flat (surface-card); cards that should
+   carry presence lift (surface-raised); overlays float (surface-elevated).
+   ───────────────────────────────────────────────────────────────────────── */
+
+
+
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CONSOLE TERMINAL — the one sanctioned dark surface. The Ops Console log pane
+   is a contained terminal treatment that stays dark in both themes (a terminal
+   is dark by convention). Values are the dark-theme token values (surface-sunken
+   #0e0f12, the dark semantic hues), hardcoded here so the component itself stays
+   token-class only — this is the single documented exception.
+   ───────────────────────────────────────────────────────────────────────── */
+@utility console-terminal {
+  background: #0e0f12; /* = dark surface-sunken */
+  color: #c9ccd2;      /* dim-white mono body */
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero';
+}
+@utility console-ts    { color: #6d6f77; }            /* timestamp — dim */
+@utility console-info  { color: #2ed3b7; }            /* = dark success */
+@utility console-warn  { color: #e0b34d; }            /* = dark conservative */
+@utility console-error { color: #ff6088; }            /* = dark danger */
+@utility console-tag   { color: #7e818a; }            /* = dark ink-subtle (stream prefix) */
+@utility console-dim   { color: #9aa0aa; }            /* muted glyphs / ellipsis */
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FORM FIELDS — shared by Input, Select, Combobox, Textarea.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@utility input-field {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  transition:
+    border-color 120ms var(--ease-out),
+    box-shadow 120ms var(--ease-out);
+}
+
+@utility input-field-focus {
+  border-color: var(--color-brand-600);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  outline: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CHIP — tags, counts, status pills. One vocabulary, app-wide.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid var(--color-border-secondary);
+  background: var(--color-bg-primary);
+  color: var(--color-text-tertiary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SPACING — the rhythm system (full reference: .interface-design/system.md).
+   Base unit 4px. Half-steps (6/10px) are inline/control only, never stacked
+   rhythm. Stacked rhythm is owned by <Stack>; the page frame by <PageContainer>.
+
+     tight  gap-2 8px · cozy gap-3 12px · comfortable gap-4 16px · section gap-6 24px
+     inline gap-1.5 6px (icon↔label) · gap-2 8px (control clusters)
+     card padding p-5 20px (content) · px-4 py-2.5 (dense row)
+   ───────────────────────────────────────────────────────────────────────── */
