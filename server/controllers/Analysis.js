@@ -40,7 +40,7 @@ async function parseParams(req) {
       .filter(Number.isFinite),
     // Partner visibility (null = admin, unrestricted). Applied inside every
     // pathways query, so partners' analyses cover exactly the granted subset.
-    visibleMajors: await majorScope(req),
+    visiblePairs: await majorScope(req),
   };
 }
 
@@ -64,7 +64,7 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
-    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|v:${scopeTag(params.visibleMajors)}`;
+    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|v:${scopeTag(params.visiblePairs)}`;
     const rows = await cached(key, () => computeFn(db, auditDb, params));
     const dataset_version = await currentDatasetVersion(db);
     if (req.query.format === 'csv') {

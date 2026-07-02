@@ -84,11 +84,13 @@ async function loadCcCourseUnits(db) {
 }
 
 // Combined major scope: the optional contains-search AND the partner
-// visibility allowlist (null = admin, unrestricted).
-function majorFilter(majorContains, visibleMajors = null) {
+// visibility pair-allowlist (null = admin, unrestricted). Visibility is per
+// (school, major) pair — see services/majorVisibility.js.
+const { pairClause } = require('../majorVisibility');
+function majorFilter(majorContains, visiblePairs = null, idField = 'uc_school_id') {
   const clauses = [];
   if (majorContains) clauses.push({ major: { $regex: escapeRegex(majorContains), $options: 'i' } });
-  if (visibleMajors != null) clauses.push({ major: { $in: visibleMajors } });
+  if (visiblePairs != null) clauses.push(pairClause(visiblePairs, idField));
   if (!clauses.length) return {};
   return clauses.length === 1 ? clauses[0] : { $and: clauses };
 }
@@ -104,12 +106,12 @@ function escapeRegex(s) {
  * how many required receivers exist, how many are articulated, and whether
  * the CC fully articulates the school's requirements ("full articulation").
  */
-async function coverageData(db, auditDb, { majorContains = '', visibleMajors = null } = {}) {
+async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const isExcluded = makeIsExcluded(curation);
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visibleMajors)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
       let total = 0;
       let articulated = 0;
@@ -144,14 +146,14 @@ async function coverageData(db, auditDb, { majorContains = '', visibleMajors = n
  *       campus calendar (quarter course = 2/3 semester course), the CA
  *       paper's semester-to-quarter loss axis. Needs ref_campus_calendars.
  */
-async function creditLossData(db, auditDb, { majorContains = '', visibleMajors = null } = {}) {
+async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const refs = await loadRefs(auditDb);
   const units = await loadCcCourseUnits(db);
   const isExcluded = makeIsExcluded(curation);
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visibleMajors)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
       const solved = agreementMinSet(doc, { isExcluded });
       const calendar = refs.calendarByUniversity.get(Number(doc[sys.idField])) || null;
@@ -188,13 +190,13 @@ async function creditLossData(db, auditDb, { majorContains = '', visibleMajors =
  * bars). For each CC and the given ORDERED list of schools, the incremental
  * CC courses each additional school demands beyond the union already taken.
  */
-async function choiceCostData(db, auditDb, { majorContains = '', visibleMajors = null, schoolIds = [] } = {}) {
+async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = null, schoolIds = [] } = {}) {
   const curation = await loadCuration(auditDb);
   const isExcluded = makeIsExcluded(curation);
   // agreements grouped per CC, in the requested school order
   const byCc = new Map();
   for (const sys of systemsFor()) {
-    const filter = { ...majorFilter(majorContains, visibleMajors) };
+    const filter = { ...majorFilter(majorContains, visiblePairs, sys.idField) };
     if (schoolIds.length) filter[sys.idField] = { $in: schoolIds.map(Number) };
     const docs = await db.collection(sys.coll).find(filter).toArray();
     for (const doc of docs) {
@@ -243,13 +245,13 @@ async function choiceCostData(db, auditDb, { majorContains = '', visibleMajors =
  * equivalent. Requires curation tags; untagged receivers land in category
  * null so the untagged share is visible rather than silently dropped.
  */
-async function categoryGapsData(db, auditDb, { majorContains = '', visibleMajors = null } = {}) {
+async function categoryGapsData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const isExcluded = makeIsExcluded(curation);
   // key: system|school|category → { ccsWith: Set, ccsMissing: Set }
   const agg = new Map();
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visibleMajors)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
       const cc = Number(doc.community_college_id);
       for (const r of requiredReceivers(doc, isExcluded)) {
@@ -293,7 +295,7 @@ async function categoryGapsData(db, auditDb, { majorContains = '', visibleMajors
  * Only CC-side courses (`cc:<course_id>` keys in curation_prereqs) are in
  * scope for v1 — that's the pathway the transfer student actually schedules.
  */
-async function complexityData(db, auditDb, { majorContains = '', visibleMajors = null } = {}) {
+async function complexityData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const isExcluded = makeIsExcluded(curation);
   const prereqDocs = await auditDb.collection('curation_prereqs').find().toArray();
@@ -301,7 +303,7 @@ async function complexityData(db, auditDb, { majorContains = '', visibleMajors =
 
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visibleMajors)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
       const solved = agreementMinSet(doc, { isExcluded });
       const keys = solved.courses.map((id) => `cc:${id}`);
@@ -366,7 +368,7 @@ async function complexityData(db, auditDb, { majorContains = '', visibleMajors =
  *   lost_units + est. cost — the non-mapping remainder, costed with
  *       ref_tuition (per-credit, university side) as the papers do.
  */
-async function timeToDegreeData(db, auditDb, { majorContains = '', visibleMajors = null } = {}) {
+async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const refs = await loadRefs(auditDb);
   const units = await loadCcCourseUnits(db);
@@ -381,7 +383,7 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visibleMajors
 
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visibleMajors)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
       const ccDegrees = byCc.get(Number(doc.community_college_id)) || [];
       if (!ccDegrees.length) continue;

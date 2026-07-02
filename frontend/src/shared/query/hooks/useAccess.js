@@ -49,7 +49,8 @@ export function useVisibleMajors() {
 export function useSetVisibleMajors() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (majors) => apiClient.put('/admin/visible-majors', { majors }).then((r) => r.data),
+    // pairs: [{ school_id, major }] — visibility is per school+major.
+    mutationFn: (pairs) => apiClient.put('/admin/visible-majors', { pairs }).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-visible-majors'] }),
   })
 }

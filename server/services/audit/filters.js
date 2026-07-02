@@ -4,7 +4,7 @@
 // module + the controller imports from here. parseFilter also applies the
 // research console's partner major-visibility scope (services/majorVisibility).
 
-const { majorScope, scopeTag } = require('../majorVisibility');
+const { majorScope, scopeTag, pairClause } = require('../majorVisibility');
 
 const ASSIST_ACADEMIC_YEAR = 76;
 const AUDIT_RESULTS      = 'audit_results';
@@ -57,13 +57,13 @@ async function parseFilter(req) {
     .filter((n) => Number.isFinite(n) && n > 0);
   const majorContains = String(req.query.majorContains || '').trim();
 
-  // Research-console access scoping: admins see every ported major
-  // (visibleMajors = null); partners are hard-limited to the admin-selected
-  // subset (possibly empty). Applied by systemMatch/verdictMatch below, so
-  // every audit read/stat automatically reflects the granted majors.
-  const visibleMajors = await majorScope(req);
+  // Research-console access scoping: admins see everything ported
+  // (visiblePairs = null); partners are hard-limited to the admin-selected
+  // (school, major) pairs (possibly empty). Applied by systemMatch/
+  // verdictMatch below, so every audit read/stat reflects the granted pairs.
+  const visiblePairs = await majorScope(req);
 
-  return { scope, schoolIds, majorContains, groupingId: null, pairs: [], visibleMajors };
+  return { scope, schoolIds, majorContains, groupingId: null, pairs: [], visiblePairs };
 }
 
 /**
@@ -80,7 +80,7 @@ function scopeKey(filter = {}) {
   // Partner visibility narrows the population, so it must be part of the key —
   // otherwise a partner-scoped result could be cached under (and served for)
   // the admin's unscoped view, or vice versa.
-  const vis = filter.visibleMajors != null ? `|v:${scopeTag(filter.visibleMajors)}` : '';
+  const vis = filter.visiblePairs != null ? `|v:${scopeTag(filter.visiblePairs)}` : '';
   if (filter.groupingId) return `g:${filter.groupingId}${vis}`;
   const ids = (filter.schoolIds || []).slice().sort((a, b) => a - b).join(',');
   const mc = String(filter.majorContains || '').trim().toLowerCase();
@@ -111,20 +111,21 @@ function systemMatch(system, filter) {
   }
   const m = {};
   if (filter.schoolIds.length) m[system.idField] = { $in: filter.schoolIds };
-  applyMajorClauses(m, filter);
+  applyMajorClauses(m, filter, system.idField);
   return m;
 }
 
 // Combine the (optional) majorContains regex and the (optional) partner
-// visibility allowlist onto a match object. Both constrain `major`, so when
-// both are present they go through $and.
-function applyMajorClauses(m, filter) {
+// visibility pair-allowlist onto a match object. Both can constrain the same
+// fields, so multiple clauses go through $and. `idField` is the school-id
+// field of the collection being matched (visibility is per school+major).
+function applyMajorClauses(m, filter, idField) {
   const clauses = [];
   if (filter.majorContains) {
     clauses.push({ major: { $regex: escapeRegex(filter.majorContains), $options: 'i' } });
   }
-  if (filter.visibleMajors != null) {
-    clauses.push({ major: { $in: filter.visibleMajors } });
+  if (filter.visiblePairs != null) {
+    clauses.push(pairClause(filter.visiblePairs, idField));
   }
   if (clauses.length === 1) Object.assign(m, clauses[0]);
   else if (clauses.length > 1) m.$and = [...(m.$and || []), ...clauses];
@@ -156,7 +157,8 @@ function verdictMatch(filter) {
       m.$or = SYSTEMS.map((s) => ({ [s.idField]: { $in: filter.schoolIds } }));
     }
   }
-  applyMajorClauses(m, filter);
+  // Verdicts carry the system-native school-id field; UC is the only system.
+  applyMajorClauses(m, filter, SYSTEMS[0].idField);
   return m;
 }
 

@@ -1,5 +1,5 @@
 const { createSerializedCache } = require('../services/responseCache');
-const { majorScope, scopeTag } = require('../services/majorVisibility');
+const { majorScope, scopeTag, pairClause } = require('../services/majorVisibility');
 
 // Per-college agreements payloads are identical for every student at that
 // college and change only when the offline data pipeline reloads them, yet each
@@ -31,7 +31,7 @@ const CATALOG_PROJECTION = {
 
 // Fetch a college's agreements + the schools list in two queries and group by
 // school in memory.
-async function batchAgreements({ db, communityCollegeId, schoolsCollection, agreementsCollection, schoolIdField, withAdmissions = false, schoolId = null, visibleMajors = null }) {
+async function batchAgreements({ db, communityCollegeId, schoolsCollection, agreementsCollection, schoolIdField, withAdmissions = false, schoolId = null, visiblePairs = null }) {
   const ccId = Number(communityCollegeId);
   const sid = schoolId != null ? Number(schoolId) : null;
   // Demand-loading: when a school is requested, narrow the read (and the
@@ -39,7 +39,7 @@ async function batchAgreements({ db, communityCollegeId, schoolsCollection, agre
   // instead of the whole college's ~3,200.
   const agreementFilter = { community_college_id: ccId };
   if (sid != null) agreementFilter[schoolIdField] = sid;
-  if (visibleMajors != null) agreementFilter.major = { $in: visibleMajors };
+  if (visiblePairs != null) Object.assign(agreementFilter, pairClause(visiblePairs, schoolIdField));
   const [schools, allAgreements] = await Promise.all([
     db.collection(schoolsCollection).find().toArray(),
     db.collection(agreementsCollection).find(agreementFilter, { projection: CATALOG_PROJECTION }).toArray(),
@@ -90,11 +90,11 @@ exports.getAllUCAgreementsForCommunityCollege = async (req, res) => {
   try {
     const ccId = String(req.params.community_college_id);
     const schoolId = readSchoolId(req);
-    // Partner visibility (null for admins) restricts which majors the batch
-    // returns, and is part of the cache key so scoped and unscoped payloads
-    // never cross.
-    const visibleMajors = await majorScope(req);
-    const buf = await cache.get(`uc:${ccId}:${schoolId ?? 'all'}:v${scopeTag(visibleMajors)}`, async () => {
+    // Partner visibility (null for admins) restricts which (school, major)
+    // pairs the batch returns, and is part of the cache key so scoped and
+    // unscoped payloads never cross.
+    const visiblePairs = await majorScope(req);
+    const buf = await cache.get(`uc:${ccId}:${schoolId ?? 'all'}:v${scopeTag(visiblePairs)}`, async () => {
       const agreements = await batchAgreements({
         db: req.app.locals.db,
         communityCollegeId: ccId,
@@ -103,7 +103,7 @@ exports.getAllUCAgreementsForCommunityCollege = async (req, res) => {
         schoolIdField: 'uc_school_id',
         withAdmissions: true,
         schoolId,
-        visibleMajors,
+        visiblePairs,
       });
       return Buffer.from(JSON.stringify(agreements));
     });

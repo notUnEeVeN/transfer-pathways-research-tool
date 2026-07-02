@@ -228,7 +228,7 @@ exports[`audit bootstrap — buildScope (getBootstrap) > matches the pinned boot
     "pairs": [],
     "schoolIds": [],
     "scope": "all",
-    "visibleMajors": null,
+    "visiblePairs": null,
   },
   "grouping": null,
   "uc": {

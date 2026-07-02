@@ -24,7 +24,7 @@ const { ObjectId } = require('mongodb');
 const cache = require('../services/auditCache');
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { currentDatasetVersion } = require('../services/datasetVersion');
-const { majorScope } = require('../services/majorVisibility');
+const { majorScope, pairAllowed } = require('../services/majorVisibility');
 // Audit business logic lives in services/audit/*; the controller keeps thin
 // handlers + the tier-list/search read helpers. stats.js owns the stats payload
 // (computeAuditStats + the DB-coupled _statsData); filters.js the query layer;
@@ -90,8 +90,9 @@ exports.getDoc = asyncHandler(async (req, res) => {
   if (!found) return res.status(404).json({ error: 'not found' });
   // Direct-by-id reads must honor partner visibility too — otherwise a doc id
   // outside the granted subset would leak through this endpoint.
-  const visibleMajors = await majorScope(req);
-  if (visibleMajors != null && !visibleMajors.includes(found.doc.major)) {
+  const visiblePairs = await majorScope(req);
+  const foundSys = SYSTEM_BY_KEY.get(found.system);
+  if (!pairAllowed(visiblePairs, found.doc[foundSys.idField], found.doc.major)) {
     return res.status(404).json({ error: 'not found' });
   }
   const { doc, system: systemKey } = found;
@@ -139,9 +140,10 @@ exports.postVerify = async (req, res) => {
     const oid = new ObjectId(doc_id);
     const found = await findAgreement(db, oid, bodySystem);
     if (!found) return res.status(404).json({ error: 'agreement not found' });
-    // Partners can only record verdicts inside their granted major subset.
-    const visibleMajors = await majorScope(req);
-    if (visibleMajors != null && !visibleMajors.includes(found.doc.major)) {
+    // Partners can only record verdicts inside their granted subset.
+    const visiblePairs = await majorScope(req);
+    const foundSys = SYSTEM_BY_KEY.get(found.system);
+    if (!pairAllowed(visiblePairs, found.doc[foundSys.idField], found.doc.major)) {
       return res.status(404).json({ error: 'agreement not found' });
     }
     const { doc: ref, system: systemKey } = found;

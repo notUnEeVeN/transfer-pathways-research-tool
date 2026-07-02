@@ -1,23 +1,25 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
-  getVisibleMajors, majorScope, scopeTag, invalidateVisibilityCache,
+  getVisiblePairs, majorScope, pairAllowed, pairClause, scopeTag, invalidateVisibilityCache,
 } from './majorVisibility';
 import { systemMatch, verdictMatch, scopeKey, SYSTEM_BY_KEY } from './audit/filters';
 
 const UC = SYSTEM_BY_KEY.get('uc');
+const CS_AT_1 = { school_id: 1, major: 'Computer Science B.S.' };
+const CS_AT_2 = { school_id: 2, major: 'Computer Science B.S.' };
 
-function fakeAuditDb(visible) {
+function fakeAuditDb(pairs) {
   return {
     collection: (name) => ({
       findOne: async () =>
-        name === 'dataset_config' && visible ? { _id: 'partner_access', visible_majors: visible } : null,
+        name === 'dataset_config' && pairs ? { _id: 'partner_access', visible_pairs: pairs } : null,
     }),
   };
 }
 
-const reqFor = (uid, visible) => ({
+const reqFor = (uid, pairs) => ({
   user: { uid },
-  app: { locals: { db: null, auditDb: fakeAuditDb(visible) } },
+  app: { locals: { db: null, auditDb: fakeAuditDb(pairs) } },
 });
 
 describe('majorScope', () => {
@@ -34,24 +36,38 @@ describe('majorScope', () => {
   });
 
   it('admins are unrestricted (null)', async () => {
-    expect(await majorScope(reqFor('admin-1', ['CS']))).toBeNull();
+    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toBeNull();
   });
 
-  it('partners get the configured subset', async () => {
-    expect(await majorScope(reqFor('partner-1', ['CS B.S.', 'CS B.A.']))).toEqual(['CS B.S.', 'CS B.A.']);
+  it('partners get the configured pairs, ids normalized to numbers', async () => {
+    const scope = await majorScope(reqFor('partner-1', [{ school_id: '1', major: 'Computer Science B.S.' }]));
+    expect(scope).toEqual([CS_AT_1]);
   });
 
   it('partners are denied-by-default when no config exists', async () => {
     expect(await majorScope(reqFor('partner-1', null))).toEqual([]);
-    expect(await getVisibleMajors(fakeAuditDb(null))).toEqual([]);
+    expect(await getVisiblePairs(fakeAuditDb(null))).toEqual([]);
+  });
+});
+
+describe('pairAllowed', () => {
+  it('is per (school, major) — same major name at another school is NOT allowed', () => {
+    expect(pairAllowed([CS_AT_1], 1, 'Computer Science B.S.')).toBe(true);
+    expect(pairAllowed([CS_AT_1], 2, 'Computer Science B.S.')).toBe(false);
+    expect(pairAllowed([CS_AT_1], 1, 'Mathematics B.S.')).toBe(false);
+  });
+
+  it('null scope (admin) allows everything; empty scope allows nothing', () => {
+    expect(pairAllowed(null, 9, 'Anything')).toBe(true);
+    expect(pairAllowed([], 1, 'Computer Science B.S.')).toBe(false);
   });
 });
 
 describe('scopeTag', () => {
   it('is "all" for admins and order-insensitive for subsets', () => {
     expect(scopeTag(null)).toBe('all');
-    expect(scopeTag(['a', 'b'])).toBe(scopeTag(['b', 'a']));
-    expect(scopeTag(['a'])).not.toBe(scopeTag(['a', 'b']));
+    expect(scopeTag([CS_AT_1, CS_AT_2])).toBe(scopeTag([CS_AT_2, CS_AT_1]));
+    expect(scopeTag([CS_AT_1])).not.toBe(scopeTag([CS_AT_1, CS_AT_2]));
     expect(scopeTag([])).not.toBe('all');
   });
 });
@@ -59,32 +75,36 @@ describe('scopeTag', () => {
 describe('visibility in the audit query builders', () => {
   const base = { scope: 'all', schoolIds: [], majorContains: '', groupingId: null, pairs: [] };
 
-  it('adds a $in clause on major for scoped filters', () => {
-    const m = systemMatch(UC, { ...base, visibleMajors: ['CS B.S.'] });
-    expect(m.major).toEqual({ $in: ['CS B.S.'] });
-    const v = verdictMatch({ ...base, visibleMajors: ['CS B.S.'] });
-    expect(v.major).toEqual({ $in: ['CS B.S.'] });
+  it('adds a per-pair $or clause for scoped filters', () => {
+    const m = systemMatch(UC, { ...base, visiblePairs: [CS_AT_1, CS_AT_2] });
+    expect(m.$or).toEqual([
+      { uc_school_id: 1, major: 'Computer Science B.S.' },
+      { uc_school_id: 2, major: 'Computer Science B.S.' },
+    ]);
+    const v = verdictMatch({ ...base, visiblePairs: [CS_AT_1] });
+    expect(v.$or).toEqual([{ uc_school_id: 1, major: 'Computer Science B.S.' }]);
   });
 
   it('combines with majorContains via $and', () => {
-    const m = systemMatch(UC, { ...base, majorContains: 'computer', visibleMajors: ['CS B.S.'] });
+    const m = systemMatch(UC, { ...base, majorContains: 'computer', visiblePairs: [CS_AT_1] });
     expect(m.$and).toHaveLength(2);
   });
 
   it('leaves admin (null) filters untouched', () => {
-    const m = systemMatch(UC, { ...base, visibleMajors: null });
+    const m = systemMatch(UC, { ...base, visiblePairs: null });
     expect(m).toEqual({});
   });
 
   it('an empty subset matches nothing (deny-by-default)', () => {
-    const m = systemMatch(UC, { ...base, visibleMajors: [] });
-    expect(m.major).toEqual({ $in: [] });
+    const m = systemMatch(UC, { ...base, visiblePairs: [] });
+    expect(m._id).toEqual({ $exists: false });
+    expect(pairClause([], 'uc_school_id')).toEqual({ _id: { $exists: false } });
   });
 
   it('cache keys separate admin and partner scopes', () => {
-    expect(scopeKey({ ...base, visibleMajors: null })).toBe('all');
-    expect(scopeKey({ ...base, visibleMajors: ['CS'] })).not.toBe('all');
-    expect(scopeKey({ ...base, visibleMajors: ['CS'] }))
-      .not.toBe(scopeKey({ ...base, visibleMajors: ['CS', 'EE'] }));
+    expect(scopeKey({ ...base, visiblePairs: null })).toBe('all');
+    expect(scopeKey({ ...base, visiblePairs: [CS_AT_1] })).not.toBe('all');
+    expect(scopeKey({ ...base, visiblePairs: [CS_AT_1] }))
+      .not.toBe(scopeKey({ ...base, visiblePairs: [CS_AT_1, CS_AT_2] }));
   });
 });

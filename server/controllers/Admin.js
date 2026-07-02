@@ -12,7 +12,7 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin } = require('../services/access');
-const { getVisibleMajors, setVisibleMajors } = require('../services/majorVisibility');
+const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
 
 const GRANTS = 'access_grants';
 
@@ -79,33 +79,54 @@ exports.revokeAccess = asyncHandler(async (req, res) => {
 
 // ── partner major visibility ──
 // The ported dataset (everything in uc_agreements) is the admin's universe;
-// `visible` is the subset partners can see. Deny-by-default: until the admin
-// selects majors, partners see nothing.
+// `visible` is the (school, major) PAIR subset partners can see — pair
+// granularity because the same major name exists at several campuses.
+// Deny-by-default: until the admin selects pairs, partners see nothing.
+
+// The ported universe, grouped by school for the admin UI.
+async function portedBySchool(db) {
+  const groups = await db.collection('uc_agreements').aggregate([
+    { $group: { _id: { school_id: '$uc_school_id', school: '$uc_school' }, majors: { $addToSet: '$major' } } },
+    { $sort: { '_id.school': 1 } },
+  ]).toArray();
+  return groups.map((g) => ({
+    school_id: g._id.school_id,
+    school: g._id.school,
+    majors: g.majors.sort(),
+  }));
+}
 
 exports.getVisibleMajors = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
-  const [ported, visible] = await Promise.all([
-    db.collection('uc_agreements').distinct('major'),
-    getVisibleMajors(auditDb),
+  const [schools, visible] = await Promise.all([
+    portedBySchool(db),
+    getVisiblePairs(auditDb),
   ]);
-  res.json({ ported: ported.sort(), visible });
+  res.json({ schools, visible });
 });
 
 exports.putVisibleMajors = asyncHandler(async (req, res) => {
-  const { majors } = req.body || {};
-  if (!Array.isArray(majors) || majors.some((m) => typeof m !== 'string')) {
-    return res.status(400).json({ error: 'majors must be an array of major names' });
+  const { pairs } = req.body || {};
+  if (
+    !Array.isArray(pairs) ||
+    pairs.some((p) => !p || !Number.isFinite(Number(p.school_id)) || typeof p.major !== 'string' || !p.major)
+  ) {
+    return res.status(400).json({ error: 'pairs must be an array of { school_id, major }' });
   }
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
-  const ported = new Set(await db.collection('uc_agreements').distinct('major'));
-  const unknown = majors.filter((m) => !ported.has(m));
+  const ported = new Set(
+    (await portedBySchool(db)).flatMap((s) => s.majors.map((m) => `${s.school_id}|${m}`))
+  );
+  const unknown = pairs.filter((p) => !ported.has(`${Number(p.school_id)}|${p.major}`));
   if (unknown.length) {
-    return res.status(400).json({ error: `not in the ported dataset: ${unknown.join(' · ')}` });
+    return res.status(400).json({
+      error: `not in the ported dataset: ${unknown.map((p) => `${p.school_id}:${p.major}`).join(' · ')}`,
+    });
   }
-  await setVisibleMajors(auditDb, majors, req.user?.uid);
-  res.json({ ok: true, visible: majors });
+  await setVisiblePairs(auditDb, pairs, req.user?.uid);
+  res.json({ ok: true, visible: pairs.map((p) => ({ school_id: Number(p.school_id), major: p.major })) });
 });
 
 // Available to every console user (partner or admin): tells the frontend
