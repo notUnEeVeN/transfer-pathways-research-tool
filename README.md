@@ -18,19 +18,24 @@ production data or infrastructure.
 | `scripts/` | `port.py` (incremental major porting), `merge_verdicts.py` (end-of-project) |
 | `notebooks/` | `paper_figures.ipynb` — reproduces the papers' figures from the analysis API |
 
-## API surface (all allowlist-gated)
+## API surface (all allowlist-gated; UC-only)
 
-- Reference reads: `/community-colleges`, `/schools`, `/uc|csu-agreements-batch/:cc`,
+Every data read is scoped server-side by **partner major visibility**: admins see
+all ported majors; partners see only the majors checked in Admin → Partner major
+access (deny-by-default).
+
+- Reference reads: `/community-colleges`, `/schools`, `/uc-agreements-batch/:cc`,
   `/courses/:cc`, `/university-courses/:uni`
-- Audit: `/audit/*` (same stack as the internal tool: verify, tiers, templates,
-  stats, matrix, groupings)
+- Audit: `/audit/*` (verify, tiers, templates, stats, matrix — no stale queue or
+  groupings on this console; the visible-major subset is the scoping mechanism)
 - Curation: `/curation/categories`, `/curation/receiver-overrides`,
   `/curation/prereqs`, `/curation/assoc-degrees`, `/curation/ref/:table`
 - Analysis (JSON or `?format=csv`, stamped with `dataset_version`):
   `/analysis/coverage`, `/analysis/credit-loss`, `/analysis/choice-cost`
   (`?schoolIds=` ordered), `/analysis/category-gaps`, `/analysis/complexity`,
   `/analysis/time-to-degree`, `/analysis/raw/:collection`
-- Admin (ADMIN_UIDS only): `/admin/dataset`, `/admin/access` (+ `/access/me` for all)
+- Admin (ADMIN_UIDS only): `/admin/dataset`, `/admin/access`,
+  `/admin/visible-majors` (+ `/access/me` for all)
 
 ## Key design points
 

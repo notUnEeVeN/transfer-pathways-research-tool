@@ -1,10 +1,13 @@
 """
-Incrementally port PMT data into the research cluster.
+Incrementally port PMT data into the research cluster (UC agreements only —
+the research project studies UC transfer pathways exclusively).
 
 The research Atlas only ever stores what the project needs: you (the admin)
 add or remove majors as the team's interests change, and this tool copies just
 those majors' agreements plus the catalog docs they reference. It runs on YOUR
 machine — the hosted research server never holds source-cluster credentials.
+Which of the ported majors PARTNERS can see is controlled separately, in the
+console's Admin tab (partner major access).
 
 Agreement `_id`s and receiver `hash_id`s are preserved verbatim so audit
 verdicts recorded against the research data can be merged back into the
@@ -43,8 +46,9 @@ from pymongo import MongoClient, UpdateOne
 HERE = Path(__file__).resolve().parent
 load_dotenv(HERE / ".env")
 
-AGREEMENT_COLLECTIONS = ("uc_agreements", "csu_agreements")
-FULL_COPY_COLLECTIONS = ("community_colleges", "uc_schools", "csu_schools")
+# UC-only: the research project studies UC transfer pathways exclusively.
+AGREEMENT_COLLECTIONS = ("uc_agreements",)
+FULL_COPY_COLLECTIONS = ("community_colleges", "uc_schools")
 
 
 def _env(name, default=None, required=False):
@@ -139,7 +143,6 @@ def bump_version(target_db, action, detail, counts):
 def ensure_indexes(target_db):
     target_db["community_colleges"].create_index("id", unique=True)
     target_db["uc_schools"].create_index("id", unique=True)
-    target_db["csu_schools"].create_index("id", unique=True)
     target_db["courses"].create_index("course_id")
     target_db["courses"].create_index("community_college_id")
     target_db["university_courses"].create_index("parent_id", unique=True)
@@ -148,9 +151,6 @@ def ensure_indexes(target_db):
     )
     target_db["uc_agreements"].create_index(
         [("uc_school", 1), ("community_college", 1), ("major", 1)], unique=True
-    )
-    target_db["csu_agreements"].create_index(
-        [("csu_school", 1), ("community_college", 1), ("major", 1)], unique=True
     )
     target_db["uc_major_admissions"].create_index([("uc_school", 1), ("major", 1)], unique=True)
 

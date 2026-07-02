@@ -36,6 +36,24 @@ export function useAdminAccessList() {
   })
 }
 
+export function useVisibleMajors() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['admin-visible-majors', user?.uid],
+    queryFn: () => apiClient.get('/admin/visible-majors').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 30 * 1000,
+  })
+}
+
+export function useSetVisibleMajors() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (majors) => apiClient.put('/admin/visible-majors', { majors }).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-visible-majors'] }),
+  })
+}
+
 export function useGrantAccess() {
   const qc = useQueryClient()
   return useMutation({

@@ -12,6 +12,7 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin } = require('../services/access');
+const { getVisibleMajors, setVisibleMajors } = require('../services/majorVisibility');
 
 const GRANTS = 'access_grants';
 
@@ -74,6 +75,37 @@ exports.revokeAccess = asyncHandler(async (req, res) => {
   invalidateGrantsCache();
   if (!deletedCount) return res.status(404).json({ error: 'no grant for that uid' });
   res.json({ ok: true });
+});
+
+// ── partner major visibility ──
+// The ported dataset (everything in uc_agreements) is the admin's universe;
+// `visible` is the subset partners can see. Deny-by-default: until the admin
+// selects majors, partners see nothing.
+
+exports.getVisibleMajors = asyncHandler(async (req, res) => {
+  const db = req.app.locals.db;
+  const auditDb = req.app.locals.auditDb || db;
+  const [ported, visible] = await Promise.all([
+    db.collection('uc_agreements').distinct('major'),
+    getVisibleMajors(auditDb),
+  ]);
+  res.json({ ported: ported.sort(), visible });
+});
+
+exports.putVisibleMajors = asyncHandler(async (req, res) => {
+  const { majors } = req.body || {};
+  if (!Array.isArray(majors) || majors.some((m) => typeof m !== 'string')) {
+    return res.status(400).json({ error: 'majors must be an array of major names' });
+  }
+  const db = req.app.locals.db;
+  const auditDb = req.app.locals.auditDb || db;
+  const ported = new Set(await db.collection('uc_agreements').distinct('major'));
+  const unknown = majors.filter((m) => !ported.has(m));
+  if (unknown.length) {
+    return res.status(400).json({ error: `not in the ported dataset: ${unknown.join(' · ')}` });
+  }
+  await setVisibleMajors(auditDb, majors, req.user?.uid);
+  res.json({ ok: true, visible: majors });
 });
 
 // Available to every console user (partner or admin): tells the frontend

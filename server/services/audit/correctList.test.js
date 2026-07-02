@@ -34,14 +34,18 @@ async function callCorrect(db, query = {}) {
   cache.clear();
   const res = { statusCode: 200, body: undefined, status(c) { this.statusCode = c; return this; }, json(b) { this.body = b; return this; } };
   let nextErr;
-  await Audit.getCorrect({ query, app: { locals: { db } } }, res, (e) => { nextErr = e; });
+  await Audit.getCorrect({ query, user: { uid: 'test-admin' }, app: { locals: { db } } }, res, (e) => { nextErr = e; });
   if (nextErr) throw nextErr;
   if (res.statusCode !== 200) throw new Error(`getCorrect ${res.statusCode}: ${JSON.stringify(res.body)}`);
   return res.body;
 }
 
 let harness, db;
-beforeAll(async () => { harness = await startInMemoryMongo(); db = harness.client.db('pmt_audit_test'); }, 120000);
+beforeAll(async () => {
+  process.env.ADMIN_UIDS = 'test-admin'; // admin view — visibility scope not under test here
+  harness = await startInMemoryMongo();
+  db = harness.client.db('pmt_audit_test');
+}, 120000);
 afterAll(async () => { if (harness) await harness.stop(); });
 beforeEach(async () => {
   cache.clear();

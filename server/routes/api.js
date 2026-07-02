@@ -26,11 +26,6 @@ router.get(
   agreementsController.getAllUCAgreementsForCommunityCollege
 );
 router.get(
-  '/csu-agreements-batch/:community_college_id',
-  ...guarded,
-  agreementsController.getAllCSUAgreementsForCommunityCollege
-);
-router.get(
   '/courses/:community_college_id',
   ...guarded,
   coursesController.getCoursesByCommunityCollegeId
@@ -54,17 +49,13 @@ router.post('/audit/verify',           jsonBody, auditController.postVerify);
 router.get('/audit/errors',            auditController.getErrors);
 router.get('/audit/conservative',      auditController.getConservative);
 router.get('/audit/flagged',           auditController.getFlagged);
-router.get('/audit/stale',             auditController.getStale);
 router.get('/audit/correct',           auditController.getCorrect);
 router.get('/audit/template-variants', auditController.getTemplateVariants);
 router.get('/audit/bootstrap',         auditController.getBootstrap);
 router.get('/audit/matrix',            auditController.getMatrix);
 router.get('/audit/search',            auditController.searchPicker);
-router.get('/audit/groupings',         auditController.listGroupings);
-router.post('/audit/groupings',        jsonBody, auditController.createGrouping);
-router.get('/audit/groupings/:id',     auditController.getGrouping);
-router.patch('/audit/groupings/:id',   jsonBody, auditController.renameGrouping);
-router.delete('/audit/groupings/:id',  auditController.deleteGrouping);
+// No /audit/stale or /audit/groupings here: staleness is the admin's concern
+// in the main tooling, and the visible-major subset replaces groupings.
 
 // ───────── Curation (categories, overrides, prereqs, ADTs, ref tables) ─────────
 // Open to every console user — partners do curation work; writes are stamped
@@ -106,5 +97,8 @@ router.get('/admin/dataset',            adminController.getDataset);
 router.get('/admin/access',             adminController.listAccess);
 router.post('/admin/access',            jsonBody, adminController.grantAccess);
 router.delete('/admin/access/:uid',     adminController.revokeAccess);
+// Which ported majors partners can see (deny-by-default until selected).
+router.get('/admin/visible-majors',     adminController.getVisibleMajors);
+router.put('/admin/visible-majors',     jsonBody, adminController.putVisibleMajors);
 
 module.exports = router;

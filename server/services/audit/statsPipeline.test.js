@@ -103,8 +103,11 @@ const VERDICTS = [
 
 // ───────── handler drivers ─────────
 
+// Fake reqs run as the test admin (ADMIN_UIDS below) so the partner
+// major-visibility scope stays out of these characterization tests —
+// visibility itself is covered in services/majorVisibility.test.js.
 function makeReq(db, query) {
-  return { query, app: { locals: { db } } };
+  return { query, user: { uid: 'test-admin' }, app: { locals: { db } } };
 }
 function makeRes() {
   return {
@@ -140,7 +143,7 @@ async function callHandler(handler, db, { query = {}, params = {}, body = {} } =
   cache.clear();
   const res = makeRes();
   let nextErr;
-  await handler({ query, params, body, app: { locals: { db } } }, res, (err) => { nextErr = err; });
+  await handler({ query, params, body, user: { uid: 'test-admin' }, app: { locals: { db } } }, res, (err) => { nextErr = err; });
   if (nextErr) throw nextErr;
   return res;
 }
@@ -178,6 +181,7 @@ function stripVolatile(payload) {
 let harness, db;
 
 beforeAll(async () => {
+  process.env.ADMIN_UIDS = 'test-admin';
   harness = await startInMemoryMongo();
   db = harness.client.db('pmt_audit_test');
 }, 120000);
@@ -262,25 +266,6 @@ describe('dedup guard — _statsData stats === buildScope stats', () => {
     expect(boot.uc.stats).toEqual(stats);
   });
 
-  it('agrees for an active grouping', async () => {
-    const groupingId = oid(7);
-    await db.collection('audit_groupings').insertOne({
-      _id: groupingId,
-      name: 'CS at UC Alpha',
-      members: [{ system: 'uc', school_id: 100, major: 'Computer Science' }],
-    });
-    const gid = String(groupingId);
-    const stats = await callStats(db, { groupingId: gid });
-    const boot = await callBootstrap(db, { groupingId: gid });
-    expect(boot.grouping).toBeTruthy();
-    expect(boot.all).toBeNull();
-    expect(boot.uc).toBeNull();
-    expect(boot.grouping.stats).toEqual(stats);
-    // Grouping narrows to school 100 / CS: docs 11,12,13; live verdicts v1,v2 (v6 stale).
-    expect(stats.total_docs).toBe(3);
-    expect(stats.n_audited).toBe(2);
-    expect(stats.n_stale).toBe(1);
-  });
 });
 
 describe('audit template variants — _templateVariantsData (getTemplateVariants)', () => {
@@ -302,53 +287,6 @@ describe('audit template variants — _templateVariantsData (getTemplateVariants
   it('matches the pinned template-variants snapshot', async () => {
     const rows = await callTemplateVariants(db, { scope: 'all' });
     expect(sortKeys(rows)).toMatchSnapshot();
-  });
-});
-
-describe('audit groupings CRUD (characterization)', () => {
-  it('creates, lists, gets (with doc_count + school_name enrichment), renames, deletes', async () => {
-    let res = await callHandler(Audit.createGrouping, db, {
-      body: { name: 'CS at Alpha', members: [{ system: 'uc', school_id: 100, major: 'Computer Science' }] },
-    });
-    expect(res.statusCode).toBe(200);
-    const id = res.body._id;
-    expect(res.body.member_count).toBe(1);
-
-    res = await callHandler(Audit.listGroupings, db, {});
-    expect(res.body.map((g) => g.name)).toContain('CS at Alpha');
-
-    // Enrichment: 100/Computer Science matches docs 11,12,13 → doc_count 3.
-    res = await callHandler(Audit.getGrouping, db, { params: { id } });
-    expect(res.statusCode).toBe(200);
-    expect(res.body.members[0].doc_count).toBe(3);
-    expect(res.body.members[0].school_name).toBe('UC Alpha');
-
-    res = await callHandler(Audit.renameGrouping, db, { params: { id }, body: { name: 'CS @ Alpha' } });
-    expect(res.statusCode).toBe(200);
-    expect(res.body.name).toBe('CS @ Alpha');
-
-    res = await callHandler(Audit.deleteGrouping, db, { params: { id } });
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual({ ok: true });
-
-    res = await callHandler(Audit.getGrouping, db, { params: { id } });
-    expect(res.statusCode).toBe(404);
-  });
-
-  it('rejects duplicate names (409), invalid ids (400), and empty members (400)', async () => {
-    await callHandler(Audit.createGrouping, db, {
-      body: { name: 'Dupe', members: [{ system: 'uc', school_id: 100, major: 'Computer Science' }] },
-    });
-    const dup = await callHandler(Audit.createGrouping, db, {
-      body: { name: 'dupe', members: [{ system: 'uc', school_id: 100, major: 'Mathematics' }] }, // case-insensitive collision
-    });
-    expect(dup.statusCode).toBe(409);
-
-    const badId = await callHandler(Audit.getGrouping, db, { params: { id: 'not-an-objectid' } });
-    expect(badId.statusCode).toBe(400);
-
-    const noMembers = await callHandler(Audit.createGrouping, db, { body: { name: 'Empty', members: [] } });
-    expect(noMembers.statusCode).toBe(400);
   });
 });
 
@@ -408,17 +346,4 @@ describe('audit bootstrap — memory-refactor characterization', () => {
     expect(deleted.major).toBe('Physics'); // falls back to the verdict's denormalized field
   });
 
-  it('builds grouping-scope templates from only the grouping members', async () => {
-    const groupingId = oid(7);
-    await db.collection('audit_groupings').insertOne({
-      _id: groupingId,
-      name: 'CS at UC Alpha',
-      members: [{ system: 'uc', school_id: 100, major: 'Computer Science' }],
-    });
-    const b = await callBootstrap(db, { groupingId: String(groupingId) });
-    expect(b.all).toBeNull();
-    expect(b.grouping.template_variants).toHaveLength(1); // only the 100/CS cluster
-    expect(b.grouping.template_variants[0].n_docs).toBe(3);
-    expect(b.grouping.template_variants[0].sample_university_id).toBe(100);
-  });
 });

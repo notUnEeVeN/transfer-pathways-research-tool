@@ -11,19 +11,16 @@ import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
-import GroupSelector from './GroupSelector'
-import { AssistSuppressContext } from './assistSuppress'
 // Stats components reused individually for a spacious full-width dashboard.
 import RiskGauge from './pages/Audit/components/stats/RiskGauge'
 import VerdictBar from './pages/Audit/components/stats/VerdictBar'
 import CoverageMeter from './pages/Audit/components/stats/CoverageMeter'
 import CoverageMatrix from './pages/Audit/components/stats/CoverageMatrix'
-import Lifecycle from './pages/Audit/components/stats/Lifecycle'
 import { int, compactNum } from './pages/Audit/components/stats/statsFormat'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
-import { DEFAULT_FILTER, describeFilter, openAssist } from './pages/Audit/lib/auditFormat'
+import { DEFAULT_FILTER, openAssist } from './pages/Audit/lib/auditFormat'
 import {
-  useAuditNext, useVerifyDoc, useAuditTemplateVariants, useAuditDoc, useAuditBootstrap, useAuditGroupings, filterToParams
+  useAuditNext, useVerifyDoc, useAuditTemplateVariants, useAuditDoc, useAuditBootstrap, filterToParams
 } from '@frontend/query/hooks/useAudit'
 import { qk } from '@frontend/query/keys'
 import apiClient from '@frontend/api/apiClient'
@@ -91,7 +88,6 @@ function Shell() {
   }
 
   return (
-    <AssistSuppressContext.Provider value={() => {}}>
       <div className='h-screen flex flex-col bg-surface text-ink'>
         <div className='shrink-0 flex items-center gap-3 px-4 h-12 border-b border-border'>
           <span className='text-label'>PMT Research</span>
@@ -119,7 +115,6 @@ function Shell() {
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
       </div>
-    </AssistSuppressContext.Provider>
   )
 }
 
@@ -172,7 +167,6 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
       <div className='h-full overflow-auto'>
         <div className='mx-auto max-w-screen-2xl px-8 py-8'>
           <Stack gap='section'>
-            {setFilter && <GroupSelector filter={filter} setFilter={setFilter} />}
             <div className='flex justify-center pt-8'>
               <EmptyState icon={CheckBadgeIcon} title='No verdicts yet'
                 description='Audit a uniform-random batch to establish the first 95% student-risk ceiling — coverage, the campus×major matrix, and the trend populate as verdicts are logged.' />
@@ -187,17 +181,13 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
     <div className='h-full overflow-auto'>
       <div className='mx-auto max-w-screen-2xl px-8 py-8'>
         <Stack gap='section'>
-          {setFilter && <GroupSelector filter={filter} setFilter={setFilter} />}
-          <ScopeLine stats={stats} filter={filter} />
+          <ScopeLine stats={stats} />
           <StatStrip tiles={buildStrip(stats)} />
           <InterpretationBanner stats={stats} />
           <RiskGauge stats={stats} />
           <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch'>
             <Ceilings stats={stats} />
-            <div className='h-full flex flex-col justify-between gap-6'>
-              <VerdictBar stats={stats} />
-              <Lifecycle stats={stats} compact />
-            </div>
+            <VerdictBar stats={stats} />
             <CoverageMeter stats={stats} fill />
             <CellsCard stats={stats} />
           </div>
@@ -291,17 +281,12 @@ function Ceilings({ stats: s }) {
   )
 }
 
-function ScopeLine({ stats, filter = DEFAULT_FILTER }) {
-  const groupingsQ = useAuditGroupings()
-  const activeGrouping = filter.groupingId
-    ? (groupingsQ.data || []).find((g) => g._id === filter.groupingId)
-    : null
-  const label = filter.groupingId
-    ? describeFilter(filter, activeGrouping)
-    : 'All UC agreements'
+// The population is whatever major subset the server grants this account
+// (admins: everything ported; partners: the admin-selected majors).
+function ScopeLine({ stats }) {
   return (
     <p className='text-caption'>
-      {label} ·{' '}
+      Your major subset ·{' '}
       <span className='text-ink-muted font-mono'>{int(stats.total_docs)}</span> docs ·{' '}
       <span className='text-ink-muted font-mono'>{int(stats.n_templates)}</span> templates ·{' '}
       <span className='text-ink-muted font-mono'>{int(stats.n_majors)}</span> majors
@@ -321,7 +306,6 @@ function buildStrip(s) {
     { label: 'Audited', value: int(nAudited), sub: `${int(nDirect)} random · ${int(nTargeted)} targeted` },
     { label: 'Templates audited', value: int(tplAud), sub: `of ${compactNum(tplTot)} · ${tplPct}%` },
     { label: 'Errors', value: int(s.n_errors ?? 0), sub: `of ${int(nAudited)} audited` },
-    { label: 'Stale', value: int(s.n_stale ?? 0) },
     { label: 'Flagged', value: int(s.n_flagged ?? 0) }
   ]
 }
@@ -494,7 +478,6 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter }) {
           <Tabs value={mode} onChange={setMode}
             options={[{ value: 'template', label: 'Random template' }, { value: 'random', label: 'Random doc' }]} />
           {isTemplate && <span className='text-caption text-ink-subtle'>{templatesLeft} templates left</span>}
-          {setFilter && <GroupSelector filter={filter} setFilter={setFilter} className='ml-auto' />}
         </div>
         {doc && (
           <div className='px-4 pt-2'>

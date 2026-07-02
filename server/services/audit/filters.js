@@ -1,14 +1,13 @@
 // Foundational audit query layer: system metadata, collection-name constants,
 // the query-string filter parser, the Mongo match-clause builders, and the
 // tiny pure doc helpers (receiver/cell counts). Every other services/audit/*
-// module + the controller imports from here, so it depends on nothing but the
-// mongodb driver (for parseFilter's ObjectId lookup).
+// module + the controller imports from here. parseFilter also applies the
+// research console's partner major-visibility scope (services/majorVisibility).
 
-const { ObjectId } = require('mongodb');
+const { majorScope, scopeTag } = require('../majorVisibility');
 
 const ASSIST_ACADEMIC_YEAR = 76;
 const AUDIT_RESULTS      = 'audit_results';
-const AUDIT_GROUPINGS    = 'audit_groupings';
 const COURSES            = 'courses';
 const UNIVERSITY_COURSES = 'university_courses';
 
@@ -58,27 +57,13 @@ async function parseFilter(req) {
     .filter((n) => Number.isFinite(n) && n > 0);
   const majorContains = String(req.query.majorContains || '').trim();
 
-  const groupingIdRaw = String(req.query.groupingId || '').trim();
-  let groupingId = null;
-  let pairs = [];
-  if (groupingIdRaw) {
-    try {
-      const oid = new ObjectId(groupingIdRaw);
-      // Groupings live on the audit handle (auditDb), which is the main db unless
-      // AUDIT_MONGO_URI selects a shared cluster.
-      const auditDb = req.app.locals.auditDb || req.app.locals.db;
-      const doc = await auditDb.collection(AUDIT_GROUPINGS).findOne(
-        { _id: oid }, { projection: { members: 1 } }
-      );
-      if (doc && Array.isArray(doc.members) && doc.members.length) {
-        groupingId = String(oid);
-        pairs = doc.members.filter((p) => p && p.system && p.school_id != null && p.major);
-      }
-    } catch {
-      // invalid ObjectId — fall through to legacy filter
-    }
-  }
-  return { scope, schoolIds, majorContains, groupingId, pairs };
+  // Research-console access scoping: admins see every ported major
+  // (visibleMajors = null); partners are hard-limited to the admin-selected
+  // subset (possibly empty). Applied by systemMatch/verdictMatch below, so
+  // every audit read/stat automatically reflects the granted majors.
+  const visibleMajors = await majorScope(req);
+
+  return { scope, schoolIds, majorContains, groupingId: null, pairs: [], visibleMajors };
 }
 
 /**
@@ -92,11 +77,15 @@ async function parseFilter(req) {
  *   whole corpus               → `all`
  */
 function scopeKey(filter = {}) {
-  if (filter.groupingId) return `g:${filter.groupingId}`;
+  // Partner visibility narrows the population, so it must be part of the key —
+  // otherwise a partner-scoped result could be cached under (and served for)
+  // the admin's unscoped view, or vice versa.
+  const vis = filter.visibleMajors != null ? `|v:${scopeTag(filter.visibleMajors)}` : '';
+  if (filter.groupingId) return `g:${filter.groupingId}${vis}`;
   const ids = (filter.schoolIds || []).slice().sort((a, b) => a - b).join(',');
   const mc = String(filter.majorContains || '').trim().toLowerCase();
-  if (ids || mc) return `f:${ids}|${mc}`;
-  return 'all';
+  if (ids || mc) return `f:${ids}|${mc}${vis}`;
+  return `all${vis}`;
 }
 
 function activeSystems(filter) {
@@ -122,7 +111,23 @@ function systemMatch(system, filter) {
   }
   const m = {};
   if (filter.schoolIds.length) m[system.idField] = { $in: filter.schoolIds };
-  if (filter.majorContains) m.major = { $regex: escapeRegex(filter.majorContains), $options: 'i' };
+  applyMajorClauses(m, filter);
+  return m;
+}
+
+// Combine the (optional) majorContains regex and the (optional) partner
+// visibility allowlist onto a match object. Both constrain `major`, so when
+// both are present they go through $and.
+function applyMajorClauses(m, filter) {
+  const clauses = [];
+  if (filter.majorContains) {
+    clauses.push({ major: { $regex: escapeRegex(filter.majorContains), $options: 'i' } });
+  }
+  if (filter.visibleMajors != null) {
+    clauses.push({ major: { $in: filter.visibleMajors } });
+  }
+  if (clauses.length === 1) Object.assign(m, clauses[0]);
+  else if (clauses.length > 1) m.$and = [...(m.$and || []), ...clauses];
   return m;
 }
 
@@ -151,7 +156,7 @@ function verdictMatch(filter) {
       m.$or = SYSTEMS.map((s) => ({ [s.idField]: { $in: filter.schoolIds } }));
     }
   }
-  if (filter.majorContains) m.major = { $regex: escapeRegex(filter.majorContains), $options: 'i' };
+  applyMajorClauses(m, filter);
   return m;
 }
 
@@ -182,7 +187,6 @@ function _countCells(doc) {
 
 module.exports = {
   AUDIT_RESULTS,
-  AUDIT_GROUPINGS,
   COURSES,
   UNIVERSITY_COURSES,
   CELLS_PER_RECEIVER,

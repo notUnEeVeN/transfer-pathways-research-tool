@@ -35,6 +35,9 @@ function makeRes() {
 
 let harness, db, auditDb;
 beforeAll(async () => {
+  // Run as an admin so the partner major-visibility scope stays out of these
+  // dual-connection characterizations.
+  process.env.ADMIN_UIDS = 'u1';
   harness = await startInMemoryMongo();
   db = harness.client.db('pmt_ref_test');        // reference: agreements
   auditDb = harness.client.db('pmt_audit_test');  // audit working state (separate handle)
@@ -72,7 +75,7 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     });
     const res = makeRes();
     let nextErr;
-    await Audit.getErrors({ query: {}, app: { locals: { db, auditDb } } }, res, (e) => { nextErr = e; });
+    await Audit.getErrors({ query: {}, user: { uid: 'u1' }, app: { locals: { db, auditDb } } }, res, (e) => { nextErr = e; });
     if (nextErr) throw nextErr;
     expect(res.statusCode).toBe(200);
     // The verdict (auditDb) joined to its agreement (db) — both handles exercised.
@@ -80,14 +83,6 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     expect(res.body[0].community_college).toBe('CC One');
   });
 
-  it('groupings CRUD lives on auditDb, not the reference db', async () => {
-    const res = makeRes();
-    await Audit.createGrouping({
-      body: { name: 'Bio at UCs', members: [{ system: 'uc', school_id: 100, major: 'Biology' }] },
-      app: { locals: { db, auditDb } },
-    }, res);
-    expect(res.statusCode).toBe(200);
-    expect(await auditDb.collection('audit_groupings').countDocuments()).toBe(1);
-    expect(await db.collection('audit_groupings').countDocuments()).toBe(0);
-  });
+  // (groupings CRUD test removed with the groupings feature — the research
+  // console scopes by the admin-selected visible-major subset instead.)
 });

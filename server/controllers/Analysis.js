@@ -14,6 +14,7 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { currentDatasetVersion } = require('../services/datasetVersion');
+const { majorScope, scopeTag } = require('../services/majorVisibility');
 const {
   coverageData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData,
@@ -30,14 +31,16 @@ async function cached(key, compute) {
   return rows;
 }
 
-function parseParams(req) {
+async function parseParams(req) {
   return {
-    scope: ['uc', 'csu'].includes(req.query.scope) ? req.query.scope : 'all',
     majorContains: String(req.query.majorContains || '').trim(),
     schoolIds: String(req.query.schoolIds || '')
       .split(',')
       .map((s) => Number(s.trim()))
       .filter(Number.isFinite),
+    // Partner visibility (null = admin, unrestricted). Applied inside every
+    // pathways query, so partners' analyses cover exactly the granted subset.
+    visibleMajors: await majorScope(req),
   };
 }
 
@@ -57,11 +60,11 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
   return asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const auditDb = req.app.locals.auditDb || db;
-    const params = parseParams(req);
+    const params = await parseParams(req);
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
-    const key = `${name}|${params.scope}|${params.majorContains}|${params.schoolIds.join(',')}`;
+    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|v:${scopeTag(params.visibleMajors)}`;
     const rows = await cached(key, () => computeFn(db, auditDb, params));
     const dataset_version = await currentDatasetVersion(db);
     if (req.query.format === 'csv') {

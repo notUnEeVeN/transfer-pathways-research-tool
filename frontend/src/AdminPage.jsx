@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Input } from './components/ui'
+import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox } from './components/ui'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
+  useVisibleMajors, useSetVisibleMajors,
 } from '@frontend/query/hooks/useAccess'
 
 /**
@@ -19,10 +20,74 @@ export default function AdminPage() {
   return (
     <div className='mx-auto max-w-screen-lg px-8 py-8'>
       <Stack gap='section'>
+        <MajorAccessPanel />
         <DatasetPanel />
         <AccessPanel />
       </Stack>
     </div>
+  )
+}
+
+// Which ported majors partners can see. Deny-by-default: nothing is visible
+// until majors are checked here. The server enforces the subset on every
+// audit/read/analysis query, so partners' stats reflect exactly this list.
+function MajorAccessPanel() {
+  const q = useVisibleMajors()
+  const save = useSetVisibleMajors()
+  const [selected, setSelected] = useState(null) // null until data loads
+
+  useEffect(() => {
+    if (q.data && selected === null) setSelected(new Set(q.data.visible))
+  }, [q.data, selected])
+
+  if (q.isLoading || selected === null) {
+    return <div className='flex justify-center py-8'><Spinner /></div>
+  }
+  if (q.isError) return <Alert type='error'>Failed to load the major list.</Alert>
+
+  const ported = q.data.ported || []
+  const savedSet = new Set(q.data.visible)
+  const dirty = selected.size !== savedSet.size || [...selected].some((m) => !savedSet.has(m))
+  const toggle = (m) => setSelected((s) => {
+    const next = new Set(s)
+    if (next.has(m)) next.delete(m); else next.add(m)
+    return next
+  })
+
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Partner major access</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Partners can only see (audit, browse, analyze) the checked majors —
+          their stats pages cover exactly this subset. Unchecked majors stay in
+          the database but are invisible to them. You always see everything.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        <div className='flex items-center gap-3 mb-3'>
+          <p className='text-label'>{selected.size} of {ported.length} majors visible to partners</p>
+          <div className='ml-auto flex items-center gap-2'>
+            <Button variant='ghost' onClick={() => setSelected(new Set(ported))}>All</Button>
+            <Button variant='ghost' onClick={() => setSelected(new Set())}>None</Button>
+            <Button onClick={() => save.mutate([...selected])} disabled={!dirty || save.isPending}>
+              {save.isPending ? 'Saving…' : dirty ? 'Save' : 'Saved'}
+            </Button>
+          </div>
+        </div>
+        {save.isError && <Alert type='error'>{save.error?.response?.data?.error || 'Save failed.'}</Alert>}
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1'>
+          {ported.map((m) => (
+            <Checkbox key={m} checked={selected.has(m)} onChange={() => toggle(m)} label={m} />
+          ))}
+        </div>
+        {!ported.length && (
+          <p className='text-caption text-ink-subtle'>
+            Nothing ported yet — run <span className='font-mono'>python port.py add "…"</span> first.
+          </p>
+        )}
+      </div>
+    </Stack>
   )
 }
 

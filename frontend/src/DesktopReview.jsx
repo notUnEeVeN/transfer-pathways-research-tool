@@ -3,11 +3,10 @@ import { FlagIcon, ArrowsRightLeftIcon, MagnifyingGlassIcon } from '@heroicons/r
 import { Button, Spinner, Alert, EmptyState, Stack, LoadingLogo, Skeleton, Tabs, Input, Textarea } from './components/ui'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import DocHead from './pages/Audit/components/DocHead'
-import GroupSelector from './GroupSelector'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { DEFAULT_FILTER, schoolNameOf, openAssist } from './pages/Audit/lib/auditFormat'
 import {
-  useAuditCorrect, useAuditConservative, useAuditErrors, useAuditFlagged, useAuditStale,
+  useAuditCorrect, useAuditConservative, useAuditErrors, useAuditFlagged,
   useAuditDoc, useVerifyDoc,
 } from '@frontend/query/hooks/useAudit'
 
@@ -15,14 +14,15 @@ import {
  * Review tab — browse previously-audited majors by tier and re-judge them in a
  * three-pane layout (list · ledger · actions). ASSIST opens in a managed popup
  * (openAssist); while that popup is open it follows the selection, so the
- * stale/error queue with auto-advance stays one action per item.
+ * error queue with auto-advance stays one action per item.
  */
+// No Stale tier here: staleness (parser drift) is the admin's concern in the
+// main tooling, not part of the research console.
 const TIERS = [
   { value: 'error', label: 'Error' },
   { value: 'conservative', label: 'Conservative' },
   { value: 'correct', label: 'Correct' },
   { value: 'flagged', label: 'Flagged' },
-  { value: 'stale', label: 'Stale' },
 ]
 
 const matchesSearch = (r, q) => {
@@ -47,8 +47,7 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
   const conservative = useAuditConservative(filter, { enabled: tier === 'conservative' })
   const errors = useAuditErrors(filter, { enabled: tier === 'error' })
   const flagged = useAuditFlagged(filter, { enabled: tier === 'flagged' })
-  const stale = useAuditStale(filter, { enabled: tier === 'stale' })
-  const activeQuery = { correct, conservative, error: errors, flagged, stale }[tier]
+  const activeQuery = { correct, conservative, error: errors, flagged }[tier]
 
   const rows = activeQuery.data || []
   const filtered = useMemo(
@@ -160,11 +159,10 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
     <div className='h-full overflow-hidden flex flex-col'>
       <div className='shrink-0 border-b border-border px-4 py-2.5 flex items-center gap-3'>
         <Tabs value={tier} onChange={(v) => { setTier(v); setSelectedId(null) }} options={TIERS} />
-        {setFilter && <GroupSelector filter={filter} setFilter={setFilter} className='ml-auto' />}
         <Input value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder='Search major / school / college…'
           leadingIcon={MagnifyingGlassIcon}
-          className={`w-64 ${setFilter ? '' : 'ml-auto'}`} />
+          className='w-64 ml-auto' />
       </div>
       <div className='flex-1 min-h-0 grid grid-cols-[300px_minmax(0,1fr)_320px]'>
         <div className='h-full overflow-auto border-r border-border p-3'>

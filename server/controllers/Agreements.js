@@ -1,4 +1,5 @@
 const { createSerializedCache } = require('../services/responseCache');
+const { majorScope, scopeTag } = require('../services/majorVisibility');
 
 // Per-college agreements payloads are identical for every student at that
 // college and change only when the offline data pipeline reloads them, yet each
@@ -30,7 +31,7 @@ const CATALOG_PROJECTION = {
 
 // Fetch a college's agreements + the schools list in two queries and group by
 // school in memory.
-async function batchAgreements({ db, communityCollegeId, schoolsCollection, agreementsCollection, schoolIdField, withAdmissions = false, schoolId = null }) {
+async function batchAgreements({ db, communityCollegeId, schoolsCollection, agreementsCollection, schoolIdField, withAdmissions = false, schoolId = null, visibleMajors = null }) {
   const ccId = Number(communityCollegeId);
   const sid = schoolId != null ? Number(schoolId) : null;
   // Demand-loading: when a school is requested, narrow the read (and the
@@ -38,6 +39,7 @@ async function batchAgreements({ db, communityCollegeId, schoolsCollection, agre
   // instead of the whole college's ~3,200.
   const agreementFilter = { community_college_id: ccId };
   if (sid != null) agreementFilter[schoolIdField] = sid;
+  if (visibleMajors != null) agreementFilter.major = { $in: visibleMajors };
   const [schools, allAgreements] = await Promise.all([
     db.collection(schoolsCollection).find().toArray(),
     db.collection(agreementsCollection).find(agreementFilter, { projection: CATALOG_PROJECTION }).toArray(),
@@ -88,7 +90,11 @@ exports.getAllUCAgreementsForCommunityCollege = async (req, res) => {
   try {
     const ccId = String(req.params.community_college_id);
     const schoolId = readSchoolId(req);
-    const buf = await cache.get(`uc:${ccId}:${schoolId ?? 'all'}`, async () => {
+    // Partner visibility (null for admins) restricts which majors the batch
+    // returns, and is part of the cache key so scoped and unscoped payloads
+    // never cross.
+    const visibleMajors = await majorScope(req);
+    const buf = await cache.get(`uc:${ccId}:${schoolId ?? 'all'}:v${scopeTag(visibleMajors)}`, async () => {
       const agreements = await batchAgreements({
         db: req.app.locals.db,
         communityCollegeId: ccId,
@@ -97,6 +103,7 @@ exports.getAllUCAgreementsForCommunityCollege = async (req, res) => {
         schoolIdField: 'uc_school_id',
         withAdmissions: true,
         schoolId,
+        visibleMajors,
       });
       return Buffer.from(JSON.stringify(agreements));
     });
@@ -107,41 +114,13 @@ exports.getAllUCAgreementsForCommunityCollege = async (req, res) => {
   }
 };
 
-exports.getAllCSUAgreementsForCommunityCollege = async (req, res) => {
-  try {
-    const ccId = String(req.params.community_college_id);
-    const schoolId = readSchoolId(req);
-    const buf = await cache.get(`csu:${ccId}:${schoolId ?? 'all'}`, async () => {
-      const agreements = await batchAgreements({
-        db: req.app.locals.db,
-        communityCollegeId: ccId,
-        schoolsCollection: 'csu_schools',
-        agreementsCollection: 'csu_agreements',
-        schoolIdField: 'csu_school_id',
-        schoolId,
-      });
-      return Buffer.from(JSON.stringify(agreements));
-    });
-    res.status(200).type('application/json').send(buf);
-  } catch (err) {
-    console.error('Error retrieving all CSU articulation agreements:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-// Lightweight school list (UC + CSU id/name) for the eligibility nav/tabs. Lets
-// the client render the school list + auto-select a school WITHOUT pulling any
-// agreements — the per-school slices then load on demand. Reference data, so the
-// client caches it hard.
+// Lightweight UC school list (id/name). The research console is UC-only.
 exports.getSchools = async (req, res) => {
   try {
     const db = req.app.locals.db;
     const proj = { projection: { _id: 0, id: 1, name: 1 } };
-    const [uc, csu] = await Promise.all([
-      db.collection('uc_schools').find({}, proj).toArray(),
-      db.collection('csu_schools').find({}, proj).toArray(),
-    ]);
-    res.status(200).json({ uc, csu });
+    const uc = await db.collection('uc_schools').find({}, proj).toArray();
+    res.status(200).json({ uc });
   } catch (err) {
     console.error('Error retrieving schools list:', err);
     res.status(500).json({ error: 'Internal server error' });
