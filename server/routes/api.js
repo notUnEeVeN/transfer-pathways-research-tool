@@ -75,6 +75,11 @@ router.get('/curation/ref/:table',              curationController.getRefTable);
 router.put('/curation/ref/:table',              jsonBody, curationController.putRefRow);
 router.delete('/curation/ref/:table/:id',       curationController.deleteRefRow);
 
+// ───────── Data explorer (scoped dataset summary + raw ASSIST payloads) ─────────
+const dataController = require('../controllers/Data');
+router.get('/data/summary',        ...guarded, dataController.getSummary);
+router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
+
 // ───────── Analysis + export (papers' statistics; JSON or ?format=csv) ─────────
 const analysisController = require('../controllers/Analysis');
 router.use('/analysis', ...guarded);

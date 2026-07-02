@@ -9,6 +9,8 @@ import { useAccessMe } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
+import DataPage from './DataPage'
+import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
 // Stats components reused individually for a spacious full-width dashboard.
@@ -95,6 +97,7 @@ function Shell() {
             <Tabs value={view} onChange={setView}
               options={[
                 { value: 'audit', label: 'Audit' },
+                { value: 'data',  label: 'Data' },
                 ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
               ]} />
             <span className='text-caption text-ink-subtle hidden sm:block'>{user.email}</span>
@@ -112,6 +115,7 @@ function Shell() {
               <Centered><LoadingLogo size={48} /></Centered>
             )
           )}
+          {view === 'data' && (dataAccess ? <DataPage /> : <Centered><LoadingLogo size={48} /></Centered>)}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
       </div>
@@ -181,6 +185,9 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
     <div className='h-full overflow-auto'>
       <div className='mx-auto max-w-screen-2xl px-8 py-8'>
         <Stack gap='section'>
+          {/* What's IN the dataset (scoped to this account) — audit progress
+              below covers what's been verified of it. */}
+          <DatasetSummaryPanel compact />
           <ScopeLine stats={stats} />
           <StatStrip tiles={buildStrip(stats)} />
           <InterpretationBanner stats={stats} />

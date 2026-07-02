@@ -1,6 +1,10 @@
 import React from 'react'
 import { CheckIcon } from '@heroicons/react/24/solid'
 
+// Checked state is styled inline (not via `checked:` utility classes) so the
+// filled box + white check render regardless of which token layer wins —
+// this console layers the shared UUI theme over the tool tokens, and the
+// two disagree about what `primary` / `on-primary` mean.
 export default function Checkbox({ checked, onChange, label, id, className = '' }) {
   const generatedId = React.useId()
   const cbId = id || generatedId
@@ -12,11 +16,16 @@ export default function Checkbox({ checked, onChange, label, id, className = '' 
           type='checkbox'
           checked={checked}
           onChange={onChange}
-          className='absolute inset-0 appearance-none w-4 h-4 rounded-sm border border-border-strong bg-surface group-hover:border-primary checked:bg-primary checked:border-primary transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+          className='absolute inset-0 appearance-none w-4 h-4 rounded-sm border transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+          style={{
+            backgroundColor: checked ? 'var(--color-primary, #3366ef)' : 'var(--color-surface, #fff)',
+            borderColor: checked ? 'var(--color-primary, #3366ef)' : 'var(--color-border-strong, #9ca3af)',
+          }}
         />
         {checked && (
           <CheckIcon
-            className='absolute inset-0 m-auto w-3 h-3 text-on-primary pointer-events-none'
+            className='absolute inset-0 m-auto w-3 h-3 pointer-events-none'
+            style={{ color: '#fff' }}
             strokeWidth={2.5}
           />
         )}
