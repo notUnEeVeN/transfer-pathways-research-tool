@@ -10,6 +10,7 @@ import RequirementsLedger from '@frontend/components/requirements/RequirementsLe
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import DataPage from './DataPage'
+import ApiPage from './DataApiDocs'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
@@ -98,6 +99,7 @@ function Shell() {
               options={[
                 { value: 'audit', label: 'Audit' },
                 { value: 'data',  label: 'Data' },
+                { value: 'api',   label: 'API' },
                 ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
               ]} />
             <span className='text-caption text-ink-subtle hidden sm:block'>{user.email}</span>
@@ -116,6 +118,7 @@ function Shell() {
             )
           )}
           {view === 'data' && (dataAccess ? <DataPage /> : <Centered><LoadingLogo size={48} /></Centered>)}
+          {view === 'api' && (dataAccess ? <ApiPage /> : <Centered><LoadingLogo size={48} /></Centered>)}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
       </div>

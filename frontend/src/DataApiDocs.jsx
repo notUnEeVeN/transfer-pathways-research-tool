@@ -169,53 +169,73 @@ Counting coverage yourself: a receiver counts as a gap when
 articulation_status == "not_articulated" AND is_required — and consider
 excluding reason "must_take_at_university" (it is not a college-side gap).`
 
-export default function DataApiDocs() {
+/**
+ * Top-level API page — the console's programmatic heart, next to Audit and
+ * Data. Sub-tabs: Tokens (credentials) · Endpoints (reference) · Data
+ * briefing (the one copyable block for humans/AI).
+ */
+export default function ApiPage() {
+  const [tab, setTab] = useState('tokens')
   return (
-    <div className='mx-auto max-w-screen-md'>
-      <Stack gap='section'>
-        <div>
-          <h2 className='text-heading'>API</h2>
-          <p className='text-caption text-ink-muted mt-1'>
-            Base URL <span className='font-mono text-ink'>{API_BASE_URL}</span> · header{' '}
-            <span className='font-mono text-ink'>Authorization: Bearer &lt;token&gt;</span> ·
-            all endpoints GET · <span className='font-mono'>?format=csv</span> on export/analysis
-            endpoints · responses scoped to your granted majors, stamped with{' '}
-            <span className='font-mono'>dataset_version</span>.
-          </p>
+    <div className='h-full flex flex-col'>
+      <div className='shrink-0 flex items-center px-4 h-11 border-b border-border'>
+        <Tabs value={tab} onChange={setTab}
+          options={[
+            { value: 'tokens',    label: 'Tokens' },
+            { value: 'endpoints', label: 'Endpoints' },
+            { value: 'briefing',  label: 'Data briefing' },
+          ]} />
+      </div>
+      <div className='flex-1 min-h-0 overflow-auto'>
+        <div className='mx-auto max-w-screen-md px-6 py-6'>
+          <Stack gap='section'>
+            <p className='text-caption text-ink-muted'>
+              Base URL <span className='font-mono text-ink'>{API_BASE_URL}</span> · header{' '}
+              <span className='font-mono text-ink'>Authorization: Bearer &lt;token&gt;</span> ·
+              all endpoints GET · <span className='font-mono'>?format=csv</span> on export/analysis
+              endpoints · responses scoped to your granted majors, stamped with{' '}
+              <span className='font-mono'>dataset_version</span>.
+            </p>
+            {tab === 'tokens' && <TokenManager />}
+            {tab === 'endpoints' && <EndpointsSection />}
+            {tab === 'briefing' && <BriefingSection />}
+          </Stack>
         </div>
+      </div>
+    </div>
+  )
+}
 
-        <TokenManager />
-
-        <section>
-          <h3 className='text-body-strong mb-2'>Endpoints</h3>
-          <Stack gap='comfortable'>
-            {ENDPOINTS.map((g) => (
-              <div key={g.group} className='surface-card p-4'>
-                <p className='text-label mb-2'>{g.group}</p>
-                <div className='divide-y divide-border/60'>
-                  {g.rows.map(([sig, desc]) => (
-                    <div key={sig} className='py-2'>
-                      <p className='font-mono text-caption text-ink'>{sig}</p>
-                      <p className='text-caption text-ink-muted mt-0.5'>{desc}</p>
-                    </div>
-                  ))}
-                </div>
+function EndpointsSection() {
+  return (
+    <Stack gap='comfortable'>
+      {ENDPOINTS.map((g) => (
+        <div key={g.group} className='surface-card p-4'>
+          <p className='text-label mb-2'>{g.group}</p>
+          <div className='divide-y divide-border/60'>
+            {g.rows.map(([sig, desc]) => (
+              <div key={sig} className='py-2'>
+                <p className='font-mono text-caption text-ink'>{sig}</p>
+                <p className='text-caption text-ink-muted mt-0.5'>{desc}</p>
               </div>
             ))}
-          </Stack>
-        </section>
+          </div>
+        </div>
+      ))}
+    </Stack>
+  )
+}
 
-        <section>
-          <h3 className='text-body-strong mb-2'>Data briefing</h3>
-          <p className='text-caption text-ink-muted mb-2'>
-            The complete data-structure reference as one copyable block — paste it into
-            your AI assistant (with a token) and it can start writing analysis scripts
-            against the live API.
-          </p>
-          <Code maxH='max-h-[70vh]'>{briefing(API_BASE_URL)}</Code>
-        </section>
-      </Stack>
-    </div>
+function BriefingSection() {
+  return (
+    <section>
+      <p className='text-caption text-ink-muted mb-2'>
+        The complete data-structure reference as one copyable block — paste it into
+        your AI assistant (with a token) and it can start writing analysis scripts
+        against the live API.
+      </p>
+      <Code>{briefing(API_BASE_URL)}</Code>
+    </section>
   )
 }
 

@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react'
 import { MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, LoadingLogo } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
-import DataApiDocs from './DataApiDocs'
 import { ANALYSES } from './analyses/registry'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import DocHead from './pages/Audit/components/DocHead'
@@ -39,7 +38,6 @@ export default function DataPage() {
             { value: 'cc',         label: 'CC courses' },
             { value: 'university', label: 'University courses' },
             { value: 'analysis',   label: 'Analysis' },
-            { value: 'api',        label: 'API' },
           ]} />
       </div>
       <div className='flex-1 min-h-0 overflow-auto'>
@@ -49,7 +47,6 @@ export default function DataPage() {
           {tab === 'cc' && <CcCoursesBrowser />}
           {tab === 'university' && <UniversityCoursesBrowser />}
           {tab === 'analysis' && <AnalysisTab />}
-          {tab === 'api' && <DataApiDocs />}
         </div>
       </div>
     </div>
