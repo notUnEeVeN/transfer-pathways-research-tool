@@ -13,9 +13,9 @@ export default function DatasetSummaryPanel({ compact = false }) {
   const q = useDataSummary()
   if (q.isLoading) return <div className='flex justify-center py-6'><Spinner /></div>
   if (q.isError) return <Alert type='error'>Failed to load the dataset summary.</Alert>
-  const { dataset_version, schools = [], counts = {}, changelog = [], scoped } = q.data || {}
+  const { dataset_version, schools = [], counts = {} } = q.data || {}
 
-  const chips = [
+  const stats = [
     ['Dataset', dataset_version || '—'],
     ['Agreements', Number(counts.agreements ?? 0).toLocaleString()],
     ['Majors', Number(counts.majors ?? 0).toLocaleString()],
@@ -23,27 +23,26 @@ export default function DatasetSummaryPanel({ compact = false }) {
     ['Colleges', Number(counts.community_colleges ?? 0).toLocaleString()],
     ['CC courses', Number(counts.courses ?? 0).toLocaleString()],
     ['UC courses', Number(counts.university_courses ?? 0).toLocaleString()],
-    ['Scope', scoped ? 'selected subset' : 'all ported'],
   ]
 
-  const chipStrip = (
-    <div className='surface-card px-4 py-3 flex flex-wrap items-baseline gap-x-6 gap-y-2'>
-      {chips.map(([label, value]) => (
-        <span key={label} className='inline-flex items-baseline gap-1.5'>
+  // Design-matched top bar: label-over-value segments separated by rules.
+  const statBar = (
+    <div className='surface-card px-4 py-3 flex flex-wrap divide-x divide-border'>
+      {stats.map(([label, value], i) => (
+        <div key={label} className={`flex flex-col gap-0.5 pr-6 ${i === 0 ? '' : 'pl-6'}`}>
           <span className='text-label text-ink-subtle'>{label}</span>
           <span className='text-body-strong font-mono tabular-nums text-ink'>{value}</span>
-        </span>
+        </div>
       ))}
     </div>
   )
 
-  if (compact) return chipStrip
+  if (compact) return statBar
 
   return (
     <Stack gap='comfortable'>
-      {chipStrip}
+      {statBar}
       <CampusTable schools={schools} />
-      <VersionHistory changelog={changelog} current={dataset_version} />
     </Stack>
   )
 }
@@ -113,29 +112,3 @@ function CampusTable({ schools }) {
   )
 }
 
-function VersionHistory({ changelog, current }) {
-  if (!changelog.length) return null
-  const actionLabel = { init: 'initialized', add: 'majors added', remove: 'majors removed', refresh: 'refreshed from source' }
-  return (
-    <div className='surface-card p-4'>
-      <div className='flex items-baseline gap-2 mb-2'>
-        <p className='text-label'>Dataset versions</p>
-        <span className='text-caption text-ink-subtle'>last {changelog.length}</span>
-      </div>
-      <div className='divide-y divide-border/60'>
-        {changelog.map((e) => (
-          <div key={`${e.dataset_version}-${e.at}`} className='py-2 flex items-baseline gap-3'>
-            <span className='text-body-strong font-mono shrink-0'>{e.dataset_version}</span>
-            {e.dataset_version === current && (
-              <span className='text-caption text-success shrink-0'>current</span>
-            )}
-            <span className='text-caption text-ink-muted'>{actionLabel[e.action] || e.action}</span>
-            <span className='ml-auto text-caption text-ink-subtle whitespace-nowrap'>
-              {e.at ? new Date(e.at).toLocaleString() : ''}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
