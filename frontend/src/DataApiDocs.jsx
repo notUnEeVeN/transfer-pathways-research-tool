@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ClipboardIcon, TrashIcon, KeyIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, Stack, Input } from './components/ui'
+import { Button, Alert, Spinner, Stack, Input, Tabs } from './components/ui'
 import { API_BASE_URL } from '@frontend/lib/constants'
 import { useApiTokens, useCreateApiToken, useRevokeApiToken } from '@frontend/query/hooks/useData'
 
