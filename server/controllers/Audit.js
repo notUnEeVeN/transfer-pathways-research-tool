@@ -393,8 +393,111 @@ exports.getFlagged = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
-// (No /audit/stale endpoint on the research console: staleness is a parser-
-// drift concern the admin handles in the main tooling; partners never see it.)
+/**
+ * Stale verdicts: audit rows whose stored raw_template_hash no longer
+ * matches the doc's current hash (parser change drifted the fingerprint),
+ * OR whose doc has been deleted entirely (a dataset refresh replaces
+ * agreements with new _ids, retiring their verdicts here). Surfaces
+ * verdicts of any tier so the auditor has one queue to walk after a
+ * parser update + refresh.
+ *
+ * Rows carry the original verdict + the audit's prior denormalized fields
+ * (school, major). When the current doc still exists the row also includes
+ * its current hash + an ASSIST URL so the auditor can re-verify in place;
+ * when the doc is gone the row shows a `reason='deleted'` flag instead.
+ *
+ * Re-verifying a stale row via /audit/verify writes a new audit row with
+ * the doc's current raw_template_hash, which moves the verdict back to the
+ * live set and out of this list automatically.
+ */
+async function _staleData(db, filter, auditDb = db) {
+  return cache.memoize('stale', filter, async () => {
+    const rawRows = await auditDb.collection(AUDIT_RESULTS).find(verdictMatch(filter)).toArray();
+    if (rawRows.length === 0) return [];
+    const { stale, currentHashByDocId, currentFpByDocId, currentParserOutputByDocId } = await _partitionLiveStale(db, rawRows);
+    if (stale.length === 0) return [];
+
+    // Look up each stale doc by id so we can render a preview when the doc
+    // still exists. We project the same fields _verdictListData does — the
+    // row shape mirrors the other tier tabs so the frontend can reuse the
+    // same row component.
+    const idsBySystem = new Map();
+    for (const r of stale) {
+      const sysKey = r.system || 'uc';
+      if (!idsBySystem.has(sysKey)) idsBySystem.set(sysKey, []);
+      idsBySystem.get(sysKey).push(r.doc_id);
+    }
+    const docByIdSystem = new Map();
+    for (const [sysKey, ids] of idsBySystem) {
+      const s = SYSTEM_BY_KEY.get(sysKey);
+      if (!s) continue;
+      const docs = await db.collection(s.coll).find(
+        { _id: { $in: ids } },
+        { projection: {
+          _id: 1, community_college: 1, community_college_id: 1,
+          [s.nameField]: 1, [s.idField]: 1, major: 1, major_id: 1,
+          raw_template_hash: 1, template_fp: 1, parser_output_hash: 1,
+        } }
+      ).toArray();
+      for (const d of docs) docByIdSystem.set(String(d._id), { d, sysKey });
+    }
+
+    const out = stale.map((r) => {
+      const sysKey = r.system || 'uc';
+      const s = SYSTEM_BY_KEY.get(sysKey);
+      if (!s) return null;
+      const entry = docByIdSystem.get(String(r.doc_id));
+      const docExists = !!entry;
+      const curHash = currentHashByDocId.get(String(r.doc_id));
+      const curFp   = currentFpByDocId.get(String(r.doc_id));
+      const curPo   = currentParserOutputByDocId.get(String(r.doc_id));
+      // Determine which kind of drift triggered the stale signal — helps
+      // the auditor know whether ASSIST itself changed (raw_drift),
+      // whether the UC-side parser was rebuilt (parser_drift), or whether
+      // the CC-side parser output changed (parser_output_drift).
+      let reason;
+      if (!docExists) reason = 'deleted';
+      else {
+        const rawDrift = r.raw_template_hash  != null && curHash != null && curHash !== r.raw_template_hash;
+        const fpDrift  = r.template_fp        != null && curFp   != null && curFp   !== r.template_fp;
+        const poDrift  = r.parser_output_hash != null && curPo   != null && curPo   !== r.parser_output_hash;
+        reason = rawDrift && (fpDrift || poDrift) ? 'raw_and_parser_drift'
+               : rawDrift                         ? 'raw_drift'
+               : (fpDrift || poDrift)             ? 'parser_drift'
+               : 'hash_drift';         // legacy fallback
+      }
+      const d = entry ? entry.d : null;
+      return {
+        id: String(r.doc_id),
+        doc_id: String(r.doc_id),
+        system: sysKey,
+        community_college: d ? d.community_college : null,
+        [s.nameField]: d ? d[s.nameField] : (r[s.nameField] ?? null),
+        major: d ? d.major : (r.major ?? null),
+        notes: r.notes || '',
+        source: r.source || 'verify',
+        prior_result: r.result,
+        reason,
+        prior_raw_template_hash:     r.raw_template_hash ?? null,
+        current_raw_template_hash:   curHash ?? null,
+        prior_template_fp:           r.template_fp ?? null,
+        current_template_fp:         curFp ?? null,
+        prior_parser_output_hash:    r.parser_output_hash ?? null,
+        current_parser_output_hash:  curPo ?? null,
+        assist_url: d ? ASSIST_URL(d.community_college_id, d[s.idField], d.major_id) : null,
+        verified_at: r.verified_at,
+      };
+    }).filter(Boolean);
+    out.sort((a, b) => String(b.verified_at).localeCompare(String(a.verified_at)));
+    return out;
+  });
+}
+
+exports.getStale = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const data = await _staleData(req.app.locals.db, await parseFilter(req), auditDb);
+  res.json(data);
+});
 
 exports.getTemplateVariants = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;

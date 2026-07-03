@@ -6,7 +6,7 @@ import DocHead from './pages/Audit/components/DocHead'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { DEFAULT_FILTER, schoolNameOf, openAssist } from './pages/Audit/lib/auditFormat'
 import {
-  useAuditCorrect, useAuditConservative, useAuditErrors, useAuditFlagged,
+  useAuditCorrect, useAuditConservative, useAuditErrors, useAuditFlagged, useAuditStale,
   useAuditDoc, useVerifyDoc,
 } from '@frontend/query/hooks/useAudit'
 
@@ -16,13 +16,15 @@ import {
  * (openAssist); while that popup is open it follows the selection, so the
  * error queue with auto-advance stays one action per item.
  */
-// No Stale tier here: staleness (parser drift) is the admin's concern in the
-// main tooling, not part of the research console.
+// Stale = verdicts whose agreement was re-parsed (hash drift) or replaced by
+// a dataset refresh (deleted). Re-added by request so prior flags/errors can
+// be revisited after parser updates.
 const TIERS = [
   { value: 'error', label: 'Error' },
   { value: 'conservative', label: 'Conservative' },
   { value: 'correct', label: 'Correct' },
   { value: 'flagged', label: 'Flagged' },
+  { value: 'stale', label: 'Stale' },
 ]
 
 const matchesSearch = (r, q) => {
@@ -47,7 +49,8 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
   const conservative = useAuditConservative(filter, { enabled: tier === 'conservative' })
   const errors = useAuditErrors(filter, { enabled: tier === 'error' })
   const flagged = useAuditFlagged(filter, { enabled: tier === 'flagged' })
-  const activeQuery = { correct, conservative, error: errors, flagged }[tier]
+  const stale = useAuditStale(filter, { enabled: tier === 'stale' })
+  const activeQuery = { correct, conservative, error: errors, flagged, stale }[tier]
 
   const rows = activeQuery.data || []
   const filtered = useMemo(

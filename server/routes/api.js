@@ -49,13 +49,15 @@ router.post('/audit/verify',           jsonBody, auditController.postVerify);
 router.get('/audit/errors',            auditController.getErrors);
 router.get('/audit/conservative',      auditController.getConservative);
 router.get('/audit/flagged',           auditController.getFlagged);
+router.get('/audit/stale',             auditController.getStale);
 router.get('/audit/correct',           auditController.getCorrect);
 router.get('/audit/template-variants', auditController.getTemplateVariants);
 router.get('/audit/bootstrap',         auditController.getBootstrap);
 router.get('/audit/matrix',            auditController.getMatrix);
 router.get('/audit/search',            auditController.searchPicker);
-// No /audit/stale or /audit/groupings here: staleness is the admin's concern
-// in the main tooling, and the visible-major subset replaces groupings.
+// No /audit/groupings here: the visible-major subset replaces groupings.
+// (Stale was re-added by request: after a parser refresh, retired verdicts
+// surface there so prior flags/errors can be revisited.)
 
 // ───────── Curation (categories, overrides, prereqs, ADTs, ref tables) ─────────
 // Open to every console user — partners do curation work; writes are stamped
