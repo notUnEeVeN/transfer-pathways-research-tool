@@ -98,6 +98,12 @@ router.get('/analysis/category-gaps',   analysisController.categoryGaps);
 router.get('/analysis/complexity',      analysisController.complexity);
 router.get('/analysis/time-to-degree',  analysisController.timeToDegree);
 router.get('/analysis/raw/:collection', analysisController.rawExport);
+// Bulk corpus exports (scoped; JSON or ?format=csv).
+router.use('/export', ...guarded);
+router.get('/export/agreements',         analysisController.exportAgreements);
+router.get('/export/receivers',          analysisController.exportReceivers);
+router.get('/export/courses',            analysisController.exportCourses);
+router.get('/export/university-courses', analysisController.exportUniversityCourses);
 
 // ───────── Admin (dataset visibility + partner access) ─────────
 // Admins come from ADMIN_UIDS (env); partners from access_grants (managed

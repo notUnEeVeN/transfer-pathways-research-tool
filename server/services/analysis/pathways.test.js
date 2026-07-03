@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { startInMemoryMongo } from '../../test/mongoHarness';
 import {
   coverageData, creditLossData, choiceCostData, categoryGapsData,
-  complexityData, timeToDegreeData,
+  complexityData, timeToDegreeData, receiversExportData,
 } from './pathways';
 
 let mongo;
@@ -161,6 +161,30 @@ describe('complexityData', () => {
     const cs1a = alpha.per_course.find((c) => c.key === 'cc:cs1a');
     expect(cs1b.delay).toBe(2);
     expect(cs1a.blocking).toBe(1);
+  });
+});
+
+describe('receiversExportData', () => {
+  it('flattens one row per receiver with agreement + group context and raw options', async () => {
+    const rows = await receiversExportData(db, db, P);
+    const alpha = rows.filter((r) => r.community_college_id === 10 && r.school_id === 1);
+    expect(alpha).toHaveLength(3); // includes the curation-excluded one — exports are raw
+    const calc = alpha.find((r) => r.hash_id === 'r-calc');
+    expect(calc.kind).toBe('course');
+    expect(calc.parent_ids).toEqual([101]);
+    expect(calc.is_required).toBe(true);
+    expect(calc.articulation_status).toBe('articulated');
+    expect(calc.options[0].course_ids).toEqual(['calcA']);
+    const missing = rows.find((r) => r.community_college_id === 20 && r.hash_id === 'r-cs1');
+    expect(missing.articulation_status).toBe('not_articulated');
+    expect(missing.n_options).toBe(0);
+  });
+
+  it('honors the visibility pair scope', async () => {
+    const rows = await receiversExportData(db, db, {
+      ...P, visiblePairs: [{ school_id: 2, major: 'Computer Science B.S.' }],
+    });
+    expect(rows.every((r) => r.school_id === 2)).toBe(true);
   });
 });
 

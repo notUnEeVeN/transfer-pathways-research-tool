@@ -4,12 +4,9 @@ import { Button, Alert, Spinner, Stack, Input } from './components/ui'
 import { API_BASE_URL } from '@frontend/lib/constants'
 import { useApiTokens, useCreateApiToken, useRevokeApiToken } from '@frontend/query/hooks/useData'
 
-/**
- * API documentation + personal-token manager — how partners (and their AI
- * assistants) pull the scoped dataset into scripts, notebooks, R, etc.
- * Everything served by these endpoints is already restricted to the caller's
- * granted (school, major) subset; tokens inherit exactly the owner's access.
- */
+// API reference — plain database documentation. Auth, data model, endpoints.
+// All responses are scoped server-side to the caller's granted (school,
+// major) subset and carry the dataset_version they were computed from.
 
 function Code({ children }) {
   const text = typeof children === 'string' ? children : String(children)
@@ -22,119 +19,104 @@ function Code({ children }) {
   )
 }
 
+const DATA_MODEL = `Collections (UC-only; ids are numeric unless noted)
+
+uc_agreements          one doc per (community college × UC campus × major)
+  _id                  string (ObjectId)
+  uc_school_id, uc_school, community_college_id, community_college
+  major, major_id      major_id = ASSIST UUID (string)
+  requirement_groups[] group → sections[] → receivers[]
+    group:    is_required, group_conjunction ('And'|'Or'),
+              group_advisement (satisfy N receivers), group_unit_advisement
+    section:  section_advisement, unit_advisement
+    receiver: one UC requirement
+      receiving          {kind:'course', parent_id} | {kind:'series', parent_ids[], conjunction}
+                         | {kind:'requirement', name} | {kind:'ge_area', code, name}
+      articulation_status  'articulated' | 'not_articulated' (+ not_articulated_reason)
+      options[]            alternative CC paths: {course_ids[], course_conjunction 'and'|'or'}
+      options_conjunction  'and'|'or' across options
+      hash_id              stable hash of the receiving side
+
+courses                CC catalog (referenced by the agreements in scope)
+  course_id (number), prefix, number, title, units, community_college_id, same_as[]
+
+university_courses     UC catalog
+  parent_id (number), prefix, number, title, min_units, max_units, department, university_id
+
+community_colleges / uc_schools    { id, name }`
+
 const ENDPOINTS = [
   {
-    group: 'Analysis (add ?format=csv for CSV; JSON includes dataset_version)',
+    group: 'Bulk exports — full scoped corpus, one call each',
     rows: [
-      ['GET /analysis/coverage', 'Per-agreement articulation coverage: receivers required/articulated, % , full-articulation flag. Params: majorContains.'],
-      ['GET /analysis/credit-loss', 'Minimal CC course set per agreement, units, many-to-one count, quarter/semester normalization, blocked receivers. Params: majorContains.'],
-      ['GET /analysis/choice-cost', 'Incremental CC courses per additional campus, in order. Params: schoolIds=7,117,79 (ordered, required), majorContains.'],
-      ['GET /analysis/category-gaps', '% of colleges missing articulation per campus × canonical course category (needs curation tags). Params: majorContains.'],
-      ['GET /analysis/complexity', 'Curricular-Analytics delay/blocking over curated prereqs, per pathway. Params: majorContains.'],
-      ['GET /analysis/time-to-degree', 'ADT transfer-credit rate + costed lost units (needs curated ADTs + tuition). Params: majorContains.'],
-      ['GET /analysis/raw/:collection', 'Raw working collections: audit_results, curation_course_categories, curation_receiver_overrides, curation_prereqs, curation_assoc_degrees, ref_campus_calendars, ref_tuition, ref_cc_districts, ref_locations.'],
+      ['GET /export/agreements', 'Every agreement in scope, full nested structure.'],
+      ['GET /export/receivers', 'One row per receiver: agreement keys, group/section context (is_required, conjunctions, advisements), receiving kind + parent_ids, articulation_status, options. The unit of analysis for most statistics.'],
+      ['GET /export/courses', 'The whole CC course catalog in scope.'],
+      ['GET /export/university-courses', 'The whole UC course catalog in scope.'],
     ],
   },
   {
-    group: 'Reference data (your visible subset)',
+    group: 'Precomputed analyses',
     rows: [
-      ['GET /data/summary', 'What your dataset contains: majors per campus, counts, dataset_version.'],
-      ['GET /community-colleges', 'All 115 community colleges (id, name).'],
+      ['GET /analysis/coverage', 'Per agreement: receivers required/articulated, pct_articulated, fully_articulated.'],
+      ['GET /analysis/credit-loss', 'Per agreement: minimal CC course set (+units), many_to_one count, semester_equiv_required (quarter-normalized), blocked receivers.'],
+      ['GET /analysis/choice-cost?schoolIds=7,117', 'Per college: incremental CC courses for each additional campus, in the given order (schoolIds required).'],
+      ['GET /analysis/category-gaps', 'Per campus × canonical course category: % of colleges missing articulation (needs curation tags).'],
+      ['GET /analysis/complexity', 'Per agreement pathway: prereq delay/blocking factors, total complexity (needs curated prereqs).'],
+      ['GET /analysis/time-to-degree', 'Per curated associate degree × agreement: transfer-credit rate, lost units, estimated cost.'],
+      ['GET /analysis/raw/:collection', 'audit_results · curation_course_categories · curation_receiver_overrides · curation_prereqs · curation_assoc_degrees · ref_campus_calendars · ref_tuition · ref_cc_districts · ref_locations'],
+    ],
+  },
+  {
+    group: 'Reference reads',
+    rows: [
+      ['GET /data/summary', 'Your subset: majors per campus, counts, dataset_version.'],
+      ['GET /community-colleges', 'All colleges (id, name).'],
       ['GET /schools', 'UC campuses (id, name).'],
-      ['GET /uc-agreements-batch/:ccId?school_id=:ucId', 'Agreements for one college (optionally one campus), grouped by campus, with admissions stats attached.'],
-      ['GET /audit/doc/:agreementId', 'One full agreement doc + course-name maps + ASSIST deep link.'],
-      ['GET /data/raw-assist/:agreementId', 'The live raw ASSIST.org API payload for one agreement.'],
-      ['GET /courses/:ccId', 'CC course catalog rows for one college (course_id, prefix, number, title, units).'],
-      ['GET /university-courses/:ucId', 'UC-side catalog rows for one campus (parent_id, prefix, number, title, units).'],
+      ['GET /uc-agreements-batch/:ccId?school_id=:ucId', 'One college’s agreements, grouped by campus, admissions stats attached.'],
+      ['GET /audit/doc/:agreementId', 'One agreement + course-name maps + ASSIST link.'],
+      ['GET /data/raw-assist/:agreementId', 'The upstream raw ASSIST.org payload for one agreement.'],
+      ['GET /courses/:ccId · GET /university-courses/:ucId', 'Catalog rows for one institution.'],
     ],
   },
 ]
 
-const pythonSnippet = (base) => `import io
-import pandas as pd
-import requests
+const pythonSnippet = (base) => `import io, requests, pandas as pd
 
 BASE = "${base}"
-TOKEN = "pmtr_..."   # generate above; keep it secret
-H = {"Authorization": f"Bearer {TOKEN}"}
+H = {"Authorization": "Bearer pmtr_..."}   # your token
 
-# Analysis endpoints → DataFrames (JSON keeps dataset_version for citation)
-r = requests.get(f"{BASE}/analysis/coverage", headers=H)
-r.raise_for_status()
-payload = r.json()
-coverage = pd.DataFrame(payload["rows"])
-print(payload["dataset_version"], coverage.shape)
+receivers = pd.DataFrame(requests.get(f"{BASE}/export/receivers", headers=H).json()["rows"])
+coverage  = pd.DataFrame(requests.get(f"{BASE}/analysis/coverage", headers=H).json()["rows"])
 
-# The papers' Fig-1-style heatmap in one line:
-heat = coverage.pivot_table(index="community_college", columns="school",
-                            values="pct_articulated")
-
-# CSV works too (dataset version rides in the X-Dataset-Version header):
 r = requests.get(f"{BASE}/analysis/credit-loss", params={"format": "csv"}, headers=H)
-loss = pd.read_csv(io.StringIO(r.text))
-print(r.headers["X-Dataset-Version"], loss.shape)`
-
-const aiPrompt = (base) => `You are helping me analyze California CS transfer-pathway data from the PMT
-Research API. Facts you need:
-
-- Base URL: ${base}
-- Auth: every request needs the header  Authorization: Bearer <my pmtr_ token>
-- All data is UC-only and scoped server-side to the majors I've been granted;
-  responses include "dataset_version" — record it beside any figure.
-- The data model is receiver-centric: an articulation agreement (one community
-  college × one UC campus × one major) contains requirement_groups → sections →
-  receivers. A receiver is one UC requirement with articulation_status
-  ('articulated' | 'not_articulated') and options — alternative CC course sets
-  that satisfy it (course_conjunction 'and'/'or' within an option,
-  options_conjunction across options). CC courses are keyed by numeric
-  course_id; UC courses by parent_id.
-
-Endpoints (GET, JSON by default, ?format=csv for CSV):
-- /analysis/coverage            per-agreement articulation coverage (% articulated, full-articulation flag)
-- /analysis/credit-loss         min CC courses + units per agreement, many-to-one, quarter-normalized
-- /analysis/choice-cost?schoolIds=7,117  incremental courses per added campus (ordered)
-- /analysis/category-gaps       % colleges missing articulation per campus × course category
-- /analysis/complexity          prereq delay/blocking factors per pathway
-- /analysis/time-to-degree      ADT transfer-credit rate + costed lost units
-- /analysis/raw/:collection     raw working collections (audit_results, curation_*, ref_*)
-- /data/summary                 my subset's majors + counts
-- /community-colleges, /schools, /courses/:ccId, /university-courses/:ucId
-- /uc-agreements-batch/:ccId?school_id=:ucId   full agreements (grouped by campus)
-- /audit/doc/:id                one agreement + course-name maps
-- /data/raw-assist/:id          the upstream raw ASSIST.org payload
-
-Typical tasks: coverage heatmaps (college × campus), credit-loss decomposition,
-inter-campus misalignment simulation, category gap charts, curricular
-complexity — the analyses from Jiang et al. (SIGCSE 2024) and the MA
-transfer-pathways papers. Prefer the /analysis endpoints (pre-computed rows)
-over recomputing from raw agreements unless the task needs receiver-level
-detail.`
+loss = pd.read_csv(io.StringIO(r.text))          # dataset version: r.headers["X-Dataset-Version"]`
 
 export default function DataApiDocs() {
   return (
     <div className='mx-auto max-w-screen-md'>
       <Stack gap='section'>
         <div>
-          <h2 className='text-heading'>Programmatic access</h2>
-          <p className='text-body text-ink-muted mt-1'>
-            Everything this console shows is also served as JSON/CSV for scripts and
-            notebooks — same endpoints, same access rules: responses cover exactly the
-            majors you've been granted, and every payload carries the{' '}
-            <span className='font-mono'>dataset_version</span> it was computed from
-            (record it beside any figure you keep).
+          <h2 className='text-heading'>API reference</h2>
+          <p className='text-caption text-ink-muted mt-1'>
+            Base URL <span className='font-mono text-ink'>{API_BASE_URL}</span> · header{' '}
+            <span className='font-mono text-ink'>Authorization: Bearer &lt;token&gt;</span> ·
+            all endpoints GET · JSON by default, <span className='font-mono'>?format=csv</span> where noted ·
+            responses are scoped to your granted majors and include{' '}
+            <span className='font-mono'>dataset_version</span>.
           </p>
         </div>
         <TokenManager />
         <section>
-          <h3 className='text-body-strong mb-2'>Quick start (Python / pandas)</h3>
+          <h3 className='text-body-strong mb-2'>Quick start</h3>
           <Code>{pythonSnippet(API_BASE_URL)}</Code>
         </section>
         <section>
+          <h3 className='text-body-strong mb-2'>Data model</h3>
+          <Code>{DATA_MODEL}</Code>
+        </section>
+        <section>
           <h3 className='text-body-strong mb-2'>Endpoints</h3>
-          <p className='text-caption text-ink-muted mb-3'>
-            Base URL: <span className='font-mono text-ink'>{API_BASE_URL}</span> · header{' '}
-            <span className='font-mono text-ink'>Authorization: Bearer &lt;token&gt;</span>
-          </p>
           <Stack gap='comfortable'>
             {ENDPOINTS.map((g) => (
               <div key={g.group} className='surface-card p-4'>
@@ -150,14 +132,6 @@ export default function DataApiDocs() {
               </div>
             ))}
           </Stack>
-        </section>
-        <section>
-          <h3 className='text-body-strong mb-2'>Working with an AI assistant</h3>
-          <p className='text-caption text-ink-muted mb-2'>
-            Paste this into Claude/ChatGPT (with your token) and it has everything it
-            needs to write analysis scripts against the live API:
-          </p>
-          <Code>{aiPrompt(API_BASE_URL)}</Code>
         </section>
       </Stack>
     </div>
@@ -180,13 +154,9 @@ function TokenManager() {
 
   return (
     <section>
-      <h3 className='text-body-strong mb-2'>Your API tokens</h3>
+      <h3 className='text-body-strong mb-2'>Tokens</h3>
       <div className='surface-card p-4'>
         <Stack gap='cozy'>
-          <p className='text-caption text-ink-muted'>
-            Tokens are long-lived credentials for scripts — they carry exactly your
-            access, nothing more. Treat them like passwords; revoke any you stop using.
-          </p>
           <form onSubmit={submit} className='flex flex-wrap items-center gap-2'>
             <Input className='w-64' value={label} onChange={(e) => setLabel(e.target.value)}
               placeholder='Label (e.g. "analysis notebook")' />

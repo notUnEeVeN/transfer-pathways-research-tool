@@ -18,6 +18,7 @@ const { majorScope, scopeTag } = require('../services/majorVisibility');
 const {
   coverageData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData,
+  agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
 
 const TTL_MS = 60 * 1000;
@@ -88,6 +89,12 @@ exports.choiceCost = makeEndpoint('choice-cost', choiceCostData, { needsSchoolId
 exports.categoryGaps = makeEndpoint('category-gaps', categoryGapsData);
 exports.complexity = makeEndpoint('complexity', complexityData);
 exports.timeToDegree = makeEndpoint('time-to-degree', timeToDegreeData);
+
+// Bulk exports — one call each for the whole scoped corpus (gzip on the wire).
+exports.exportAgreements = makeEndpoint('agreements', agreementsExportData);
+exports.exportReceivers = makeEndpoint('receivers', receiversExportData);
+exports.exportCourses = makeEndpoint('courses', coursesExportData);
+exports.exportUniversityCourses = makeEndpoint('university-courses', universityCoursesExportData);
 
 // Raw curated/reference exports for notebooks that want the underlying data.
 const RAW_EXPORTS = new Set([

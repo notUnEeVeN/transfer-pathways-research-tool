@@ -419,6 +419,82 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs 
   return rows;
 }
 
+// ── bulk exports (the raw material for custom statistics) ──
+
+/**
+ * Every agreement in scope, as stored (full requirement_groups). One call
+ * replaces 115 per-college fetches when a script wants the whole corpus.
+ */
+async function agreementsExportData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
+  const sys = SYSTEMS[0];
+  const docs = await db.collection(sys.coll)
+    .find(majorFilter(majorContains, visiblePairs, sys.idField))
+    .toArray();
+  return docs.map((d) => ({ ...d, _id: String(d._id) }));
+}
+
+/**
+ * The corpus flattened to ONE ROW PER RECEIVER — the unit of analysis in the
+ * transfer-pathway papers. Keeps full option structure (JSON-encoded in CSV)
+ * plus the group/section context needed to reconstruct requirement logic
+ * (is_required, conjunctions, advisements), so most statistics become a
+ * groupby away instead of a tree walk.
+ */
+async function receiversExportData(db, auditDb, params = {}) {
+  const docs = await agreementsExportData(db, auditDb, params);
+  const rows = [];
+  for (const doc of docs) {
+    (doc.requirement_groups || []).forEach((group, gi) => {
+      (group.sections || []).forEach((section, si) => {
+        (section.receivers || []).forEach((recv, ri) => {
+          const receiving = recv.receiving || {};
+          rows.push({
+            agreement_id: doc._id,
+            school_id: doc.uc_school_id,
+            school: doc.uc_school,
+            community_college_id: doc.community_college_id,
+            community_college: doc.community_college,
+            major: doc.major,
+            group_index: gi,
+            is_required: group.is_required !== false,
+            group_conjunction: group.group_conjunction ?? null,
+            group_advisement: group.group_advisement ?? null,
+            group_unit_advisement: group.group_unit_advisement ?? null,
+            section_index: si,
+            section_advisement: section.section_advisement ?? null,
+            section_unit_advisement: section.unit_advisement ?? null,
+            receiver_index: ri,
+            hash_id: recv.hash_id ?? null,
+            kind: receiving.kind ?? null,
+            receiving_name: receiving.name ?? null,
+            parent_ids: receiving.kind === 'course' ? [receiving.parent_id]
+              : receiving.kind === 'series' ? (receiving.parent_ids || [])
+              : [],
+            ge_code: receiving.code ?? null,
+            articulation_status: recv.articulation_status ?? null,
+            not_articulated_reason: recv.not_articulated_reason ?? null,
+            options_conjunction: recv.options_conjunction ?? null,
+            n_options: (recv.options || []).length,
+            options: recv.options || [],
+          });
+        });
+      });
+    });
+  }
+  return rows;
+}
+
+// Whole (referenced-only) catalogs in one call each.
+async function coursesExportData(db) {
+  const rows = await db.collection('courses').find().toArray();
+  return rows.map((r) => ({ ...r, _id: String(r._id) }));
+}
+
+async function universityCoursesExportData(db) {
+  const rows = await db.collection('university_courses').find().toArray();
+  return rows.map((r) => ({ ...r, _id: String(r._id) }));
+}
+
 module.exports = {
   coverageData,
   creditLossData,
@@ -426,5 +502,9 @@ module.exports = {
   categoryGapsData,
   complexityData,
   timeToDegreeData,
+  agreementsExportData,
+  receiversExportData,
+  coursesExportData,
+  universityCoursesExportData,
   _categoryOfReceiver: categoryOfReceiver,
 };
