@@ -29,7 +29,7 @@ export default function Tabs({ value, onChange, options, multiple = false, class
             aria-pressed={multiple ? active : undefined}
             onClick={() => onChange(opt.value)}
             className={`inline-flex items-center justify-center whitespace-nowrap px-4 h-8 rounded-md text-button transition-[background-color,color] duration-150 ${
-              active ? 'bg-primary text-on-primary' : 'text-ink-muted hover:text-ink hover:bg-surface-hover'
+              active ? 'bg-primary text-on-primary hover:bg-primary-hover' : 'text-ink-muted hover:text-ink hover:bg-surface-hover'
             }`}
           >
             {opt.label}

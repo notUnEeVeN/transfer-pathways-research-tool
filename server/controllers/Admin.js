@@ -13,6 +13,7 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin } = require('../services/access');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
+const { startRefresh, jobStatus } = require('../services/porter');
 
 const GRANTS = 'access_grants';
 
@@ -127,6 +128,25 @@ exports.putVisibleMajors = asyncHandler(async (req, res) => {
   }
   await setVisiblePairs(auditDb, pairs, req.user?.uid);
   res.json({ ok: true, visible: pairs.map((p) => ({ school_id: Number(p.school_id), major: p.major })) });
+});
+
+// ── dataset refresh (re-port from the source DB after parser updates) ──
+// Kicks off a background job; the panel polls the status endpoint. Replaced
+// agreements get NEW _ids (the parser rebuild regenerates them), so verdicts
+// recorded against replaced docs are orphaned — correct after a parser fix.
+
+exports.postRefreshDataset = asyncHandler(async (req, res) => {
+  try {
+    res.status(202).json(startRefresh(req.app.locals.db));
+  } catch (e) {
+    if (e.code === 'BUSY') return res.status(409).json({ error: e.message });
+    if (e.code === 'UNCONFIGURED') return res.status(501).json({ error: e.message });
+    throw e;
+  }
+});
+
+exports.getRefreshStatus = asyncHandler(async (req, res) => {
+  res.json(jobStatus());
 });
 
 // Available to every console user (partner or admin): tells the frontend

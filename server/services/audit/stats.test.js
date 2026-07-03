@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { wilsonUpper, wilsonUpperPct, wilsonUpperFinite, templateMatchConfidence, computeAuditStats } from './stats.js';
+import {
+  wilsonUpper,
+  wilsonUpperPct,
+  wilsonUpperFinite,
+  templateMatchConfidence,
+  normalizeAuditSource,
+  sampleMethodForSource,
+  computeAuditStats,
+} from './stats.js';
 
 describe('wilsonUpperPct', () => {
   it('returns null for an empty sample', () => {
@@ -39,6 +47,20 @@ describe('templateMatchConfidence', () => {
   it('is 1.0 today (byte-exact template hash → no matching uncertainty)', () => {
     expect(templateMatchConfidence()).toBe(1.0);
     expect(templateMatchConfidence({ system: 'uc' })).toBe(1.0);
+  });
+});
+
+describe('audit source provenance', () => {
+  it('classifies weighted random-template audits as random samples', () => {
+    expect(normalizeAuditSource('random_template_weighted')).toBe('random_template_weighted');
+    expect(sampleMethodForSource('random_template_weighted')).toBe('random');
+    expect(sampleMethodForSource('verify')).toBe('random');
+    expect(sampleMethodForSource('template')).toBe('targeted');
+  });
+
+  it('defaults unknown historical sources to verify/random', () => {
+    expect(normalizeAuditSource('surprise')).toBe('verify');
+    expect(sampleMethodForSource('surprise')).toBe('random');
   });
 });
 
@@ -90,12 +112,35 @@ describe('computeAuditStats — provenance & scope-restricted template bound', (
   it('counts every verdict in coverage/error totals regardless of source/scope', () => {
     expect(all.n_audited).toBe(4);
     expect(all.n_errors).toBe(3); // h2, h3, h4
+    expect(all.n_audited_random_doc).toBe(4);
+    expect(all.n_audited_random_template).toBe(0);
+    expect(all.n_audited_targeted).toBe(0);
   });
 
   it('restricts the headline bound to random draws over the requested scope', () => {
     expect(all.n_random_clusters).toBe(2);       // only h1 + h2 (random, scope all)
     expect(all.n_random_clusters_error).toBe(1); // h2
     expect(all.ci_upper_safety_pct).toBe(+(wilsonUpperFinite(1, 2, 100) * 100).toFixed(2));
+  });
+
+  it('counts pre-visibility random-template scope keys inside the visible stats scope', () => {
+    const visible = computeAuditStats({
+      ...base,
+      verdicts: [
+        mk({
+          major: 'Math',
+          raw_template_hash: 'h5',
+          source: 'random_template_weighted',
+          sample_method: 'random',
+          sample_scope: 'all',
+          result: 'correct',
+        }),
+      ],
+      sampleScope: 'all|v:abc123',
+    });
+
+    expect(visible.n_audited_direct).toBe(1);
+    expect(visible.n_random_clusters).toBe(1);
   });
 
   it('computes a separate bound for a grouping scope', () => {

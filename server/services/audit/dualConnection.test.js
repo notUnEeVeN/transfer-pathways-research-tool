@@ -10,6 +10,8 @@ const { ObjectId } = require('mongodb');
 const { startInMemoryMongo } = require('../../test/mongoHarness');
 const cache = require('../auditCache');
 const Audit = require('../../controllers/Audit');
+const { invalidateVisibilityCache } = require('../majorVisibility');
+const { scopeKey } = require('./filters');
 
 const oid = (n) => new ObjectId(String(n).padStart(24, '0'));
 
@@ -45,10 +47,12 @@ beforeAll(async () => {
 afterAll(async () => { if (harness) await harness.stop(); });
 beforeEach(async () => {
   cache.clear();
+  invalidateVisibilityCache();
   await db.collection('uc_agreements').deleteMany({});
   await db.collection('audit_results').deleteMany({});
   await auditDb.collection('audit_results').deleteMany({});
   await auditDb.collection('audit_groupings').deleteMany({});
+  await auditDb.collection('dataset_config').deleteMany({});
 });
 
 describe('audit dual-connection (auditDb separate from db)', () => {
@@ -63,6 +67,31 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     expect(res.statusCode).toBe(200);
     expect(await auditDb.collection('audit_results').countDocuments()).toBe(1); // landed on the audit handle
     expect(await db.collection('audit_results').countDocuments()).toBe(0);       // NOT on the reference handle
+  });
+
+  it('stamps weighted random-template verdicts as random samples for the visible stats scope', async () => {
+    const visiblePairs = [{ school_id: 100, major: 'Computer Science' }];
+    await auditDb.collection('dataset_config').insertOne({ _id: 'partner_access', visible_pairs: visiblePairs });
+    invalidateVisibilityCache();
+    await db.collection('uc_agreements').insertOne(agreement(3));
+
+    const res = makeRes();
+    await Audit.postVerify({
+      body: {
+        doc_id: String(oid(3)),
+        result: 'correct',
+        source: 'random_template_weighted',
+        system: 'uc',
+      },
+      user: { uid: 'u1' },
+      app: { locals: { db, auditDb } },
+    }, res);
+
+    expect(res.statusCode).toBe(200);
+    const row = await auditDb.collection('audit_results').findOne({ doc_id: oid(3) });
+    expect(row.source).toBe('random_template_weighted');
+    expect(row.sample_method).toBe('random');
+    expect(row.sample_scope).toBe(scopeKey({ visiblePairs }));
   });
 
   it('a tier read joins auditDb verdicts against db agreements', async () => {

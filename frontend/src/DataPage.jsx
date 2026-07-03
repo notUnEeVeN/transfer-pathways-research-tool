@@ -89,7 +89,7 @@ function AgreementsBrowser() {
               {agreements.map((a) => (
                 <button key={a._id} type='button' onClick={() => setSelectedId(a._id)}
                   className={`w-full text-left px-3 py-2 rounded-md border transition-colors mb-1 ${
-                    a._id === selectedId ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
+                    a._id === selectedId ? 'border-primary bg-primary-soft hover:bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
                   <span className='text-body break-words leading-snug'>{a.major}</span>
                 </button>
               ))}

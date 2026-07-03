@@ -55,7 +55,7 @@ export default function NavList({ items, selectedId, onSelect, ariaLabel, classN
             aria-current={active ? 'page' : undefined}
             className={`relative flex items-center gap-3 px-3 h-10 rounded-md text-left transition-colors ${
               active
-                ? 'bg-primary-soft text-body-strong text-ink'
+                ? 'bg-primary-soft text-body-strong text-ink hover:bg-primary-soft'
                 : 'text-body text-ink-muted hover:bg-surface-hover hover:text-ink'
             }`}
           >

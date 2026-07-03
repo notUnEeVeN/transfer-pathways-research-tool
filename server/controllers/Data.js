@@ -20,7 +20,8 @@ const TTL_MS = 60 * 1000;
 const summaryCache = new Map(); // scopeTag → { at, payload }
 
 // Walk an agreement's receivers, collecting referenced CC course_ids and
-// university parent_ids (mirrors scripts/port.py referenced_ids).
+// university parent_ids (mirrors scripts/port.py referenced_ids). Ids stay
+// RAW — course ids are numeric since the 2026-07 parser update.
 function collectRefs(doc, courseIds, parentIds) {
   for (const group of doc.requirement_groups || []) {
     for (const section of group.sections || []) {
@@ -29,7 +30,7 @@ function collectRefs(doc, courseIds, parentIds) {
         if (receiving.kind === 'course') parentIds.add(receiving.parent_id);
         else if (receiving.kind === 'series') (receiving.parent_ids || []).forEach((p) => parentIds.add(p));
         for (const opt of recv.options || []) {
-          (opt.course_ids || []).forEach((id) => courseIds.add(String(id)));
+          (opt.course_ids || []).forEach((id) => { if (id != null) courseIds.add(id); });
         }
       }
     }
@@ -78,7 +79,6 @@ exports.getSummary = asyncHandler(async (req, res) => {
     for await (const doc of db.collection('uc_agreements').find(match, { projection: { requirement_groups: 1 } })) {
       collectRefs(doc, courseIds, parentIds);
     }
-    courseIds.delete('null');
     parentIds.delete(null);
     nCourses = courseIds.size;
     nUniversityCourses = parentIds.size;

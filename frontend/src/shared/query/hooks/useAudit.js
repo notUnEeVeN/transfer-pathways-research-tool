@@ -271,7 +271,7 @@ export function useAuditMatrix(filter, { enabled = true } = {}) {
 /**
  * Record a per-doc verdict. Used by both the Verify tab and the Templates
  * tab — the Templates tab just hands in the sample doc_id and `source:
- * 'template'` so the row is tagged for later analysis.
+ * 'random_template_weighted'` so stats can count it as a random sample.
  *
  * Stats numbers are recomputed by the server from authoritative state; we
  * just invalidate and refetch. Optimistic bumps got this wrong in the past

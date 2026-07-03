@@ -17,7 +17,7 @@ createRoot(document.getElementById('root')).render(
       // namespaced to this console so it never rehydrates foreign-shaped
       // entries from other PMT apps sharing the same IndexedDB.
       maxAge: 24 * 60 * 60 * 1000,
-      buster: `research-console-${packagejson.version}`,
+      buster: `research-console-${packagejson.version}-audit-stats-v2`,
     }}
   >
     <ToastProvider>

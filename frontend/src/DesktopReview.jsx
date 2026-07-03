@@ -213,7 +213,7 @@ function ResultList({ query, rows, selectedId, onSelect, tier }) {
         {rows.map((r) => (
           <button key={r.id} type='button' onClick={() => onSelect(r.id)}
             className={`text-left px-3 py-2 rounded-md border transition-colors ${
-              r.id === selectedId ? 'border-primary bg-primary-soft' : 'border-border hover:bg-surface-hover'}`}>
+              r.id === selectedId ? 'border-primary bg-primary-soft hover:bg-primary-soft' : 'border-border hover:bg-surface-hover'}`}>
             <div className='text-body-strong break-words leading-snug'>{r.major}</div>
             <div className='text-caption break-words leading-snug'>{schoolNameOf(r)} ← {r.community_college || '—'}</div>
             {r.notes ? <div className='text-caption text-ink-subtle break-words mt-1'>{r.notes}</div> : null}

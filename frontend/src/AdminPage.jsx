@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox } from './components/ui'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
-  useVisibleMajors, useSetVisibleMajors,
+  useVisibleMajors, useSetVisibleMajors, useRefreshStatus, useStartRefresh,
 } from '@frontend/query/hooks/useAccess'
 
 /**
@@ -21,10 +22,92 @@ export default function AdminPage() {
     <div className='mx-auto max-w-screen-lg px-8 py-8'>
       <Stack gap='section'>
         <MajorAccessPanel />
+        <RefreshPanel />
         <DatasetPanel />
         <AccessPanel />
       </Stack>
     </div>
+  )
+}
+
+// Re-port the currently ported majors from the source DB (where the parser
+// writes) — for after parser updates. Background job on the server; this
+// panel polls until it finishes. Note: the parser rebuild regenerates
+// agreement _ids, so verdicts recorded on replaced docs are orphaned.
+function RefreshPanel() {
+  const qc = useQueryClient()
+  const status = useRefreshStatus()
+  const start = useStartRefresh()
+  const s = status.data
+  const running = !!s?.running
+
+  // When a run finishes, every dataset-derived view is stale — refetch broadly.
+  const wasRunning = React.useRef(false)
+  useEffect(() => {
+    if (wasRunning.current && !running) qc.invalidateQueries()
+    wasRunning.current = running
+  }, [running, qc])
+
+  if (!s) return null
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Refresh dataset</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Re-ports every currently ported major from the source database (where
+          the parser writes) — use after parser updates. Agreements are
+          replaced wholesale with fresh parser output; verdicts recorded on
+          replaced agreements are retired with them.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {!s.configured ? (
+          <Alert type='info'>
+            No source database configured on this server (SOURCE_MONGO_URI) —
+            refresh with <span className='font-mono'>python port.py</span> from the admin machine instead.
+          </Alert>
+        ) : (
+          <Stack gap='cozy'>
+            <div className='flex items-center gap-3'>
+              <Button onClick={() => start.mutate()} disabled={running || start.isPending}>
+                {running ? 'Refreshing…' : 'Refresh from source'}
+              </Button>
+              {running && (
+                <span className='inline-flex items-center gap-2 text-caption text-ink-muted'>
+                  <Spinner /> {s.step || 'working'}…
+                </span>
+              )}
+            </div>
+            {start.isError && (
+              <Alert type='error'>{start.error?.response?.data?.error || 'Could not start the refresh.'}</Alert>
+            )}
+            {!running && s.error && <Alert type='error'>Last refresh failed: {s.error}</Alert>}
+            {!running && s.result && (
+              <div className='text-caption text-ink-muted'>
+                <p>
+                  Last refresh → <span className='font-mono text-ink'>{s.result.dataset_version}</span>
+                  {s.finishedAt ? ` · ${new Date(s.finishedAt).toLocaleString()}` : ''}
+                </p>
+                <p className='mt-1'>
+                  {Number(s.result.agreements_after).toLocaleString()} agreements
+                  {' '}(was {Number(s.result.agreements_before).toLocaleString()})
+                  {' '}· {s.result.majors_refreshed} majors
+                  {' '}· courses +{s.result.courses_upserted}/−{s.result.courses_pruned}
+                  {' '}· university courses +{s.result.university_courses_upserted}/−{s.result.university_courses_pruned}
+                </p>
+                {(s.result.majors_missing_in_source || []).length > 0 && (
+                  <Alert type='warning' className='mt-2'>
+                    Majors no longer found in the source (renamed by the parser?):{' '}
+                    {s.result.majors_missing_in_source.join(' · ')} — port their new names
+                    with <span className='font-mono'>port.py add</span> or check the parser output.
+                  </Alert>
+                )}
+              </div>
+            )}
+          </Stack>
+        )}
+      </div>
+    </Stack>
   )
 }
 

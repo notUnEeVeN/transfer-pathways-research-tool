@@ -135,8 +135,14 @@
     text-decoration: none;
   }
   button {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
     font: inherit;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
   hr {
     border: 0;

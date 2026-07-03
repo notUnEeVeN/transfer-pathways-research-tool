@@ -51,6 +51,10 @@ const {
   _nextData,
   _buildBootstrapPayload,
 } = require('../services/audit/bootstrap');
+const {
+  normalizeAuditSource,
+  sampleMethodForSource,
+} = require('../services/audit/stats');
 
 // Look up an agreement doc by _id across all systems (or a specific one if
 // `preferSystem` is given). Returns { doc, system } or null.
@@ -114,7 +118,7 @@ exports.getDoc = asyncHandler(async (req, res) => {
 /**
  * Record a per-doc verdict. Body: { doc_id, result, notes, source?, system? }
  *   - result: 'correct' | 'error'
- *   - source: 'verify' | 'template' (informational — which tab produced it)
+ *   - source: 'verify' | 'random_template_weighted' | 'template'
  *   - system: 'uc' | 'csu' (hint; if omitted we probe each collection)
  *
  * Denormalizes the system-specific school id/name + major + template_fp onto
@@ -175,15 +179,16 @@ exports.postVerify = async (req, res) => {
     // pool only draws that were uniform over the population it reports on. They
     // are written with $setOnInsert below so they reflect the FIRST draw and
     // survive later reclassifications.
-    const sampleMethod = source === 'template' ? 'targeted' : 'random';
-    const sampleScope = scopeKey(req.body.scope || {});
+    const normalizedSource = normalizeAuditSource(source);
+    const sampleMethod = sampleMethodForSource(normalizedSource);
+    const sampleScope = scopeKey({ ...(req.body.scope || {}), visiblePairs });
     const payload = {
       doc_id: oid,
       result,
       notes: notes || '',
       // Preserve the real source ('verify' | 'random_template_weighted' |
       // 'template'); unknown values default to 'verify'.
-      source: ['verify', 'random_template_weighted', 'template'].includes(source) ? source : 'verify',
+      source: normalizedSource,
       system: systemKey,
       [sysEntry.idField]:   ref[sysEntry.idField]   ?? null,
       [sysEntry.nameField]: ref[sysEntry.nameField] ?? null,

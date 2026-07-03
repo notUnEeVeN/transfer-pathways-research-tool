@@ -87,6 +87,26 @@ function templateMatchConfidence(_tplCtx) {
 // selection; auditor-chosen 'template' picks are excluded. Source defaults to
 // 'verify' for legacy rows.
 const RANDOM_SOURCES = new Set(['verify', 'random_template_weighted']);
+const AUDIT_SOURCES = new Set(['verify', 'random_template_weighted', 'template']);
+
+function normalizeAuditSource(source) {
+  return AUDIT_SOURCES.has(source) ? source : 'verify';
+}
+
+function sampleMethodForSource(source) {
+  return RANDOM_SOURCES.has(normalizeAuditSource(source)) ? 'random' : 'targeted';
+}
+
+function stripVisibilityFromScope(scope) {
+  return String(scope || 'all').replace(/\|v:[^|]+$/, '');
+}
+
+function sampleScopeMatches(verdictScope, statsScope) {
+  // Rows written before visibility was added to sample_scope lack the |v: tag,
+  // but they were still drawn from the visibility-filtered audit pool.
+  const vScope = verdictScope || 'all';
+  return vScope === statsScope || vScope === stripVisibilityFromScope(statsScope);
+}
 
 // Tier ordering for cluster worst-tier propagation: correct < flagged <
 // conservative < error.
@@ -144,15 +164,18 @@ function computeAuditStats({ verdicts, totalDocs, nTemplates, nMajors, nCellsTot
   const k             = verdicts.filter((v) => v.result === 'error').length;        // Tier 3
   const nResolved     = verdicts.filter((v) => v.status === 'resolved').length;
   const nCorrect      = nAudited - nConservative - nFlagged - k;
+  const nAuditedRandomDoc = verdicts.filter((v) => normalizeAuditSource(v.source) === 'verify').length;
+  const nAuditedRandomTemplate = verdicts.filter((v) => normalizeAuditSource(v.source) === 'random_template_weighted').length;
+  const nAuditedTargeted = Math.max(nAudited - nAuditedRandomDoc - nAuditedRandomTemplate, 0);
 
   // ── Random-sample subset for the headline bound ──
   // Only verdicts drawn by a RANDOM mechanism over the SAME population this view
   // reports on (sampleScope). This is what keeps grouping-scoped random draws
   // OUT of the global bound. Legacy rows (no provenance) infer method from
   // source and default their scope to 'all' (their effective historical meaning).
-  const methodOf = (v) => v.sample_method || (RANDOM_SOURCES.has(v.source || 'verify') ? 'random' : 'targeted');
+  const methodOf = (v) => v.sample_method || sampleMethodForSource(v.source);
   const scopeOf  = (v) => v.sample_scope || 'all';
-  const directVerdicts = verdicts.filter((v) => methodOf(v) === 'random' && scopeOf(v) === sampleScope);
+  const directVerdicts = verdicts.filter((v) => methodOf(v) === 'random' && sampleScopeMatches(scopeOf(v), sampleScope));
   const nAuditedDirect = directVerdicts.length;
   const kDirect        = directVerdicts.filter((v) => v.result === 'error').length;
   const nConsDirect    = directVerdicts.filter((v) => v.result === 'conservative').length;
@@ -264,6 +287,9 @@ function computeAuditStats({ verdicts, totalDocs, nTemplates, nMajors, nCellsTot
 
   return {
     n_audited: nAudited,
+    n_audited_random_doc: nAuditedRandomDoc,
+    n_audited_random_template: nAuditedRandomTemplate,
+    n_audited_targeted: nAuditedTargeted,
     n_audited_direct: nAuditedDirect,                         // random in-scope doc audits
     n_errors_direct: kDirect,                                 // errors among those doc audits
     n_strict_direct: nConsDirect + nFlagDirect + kDirect,     // any deviation among those doc audits
@@ -464,6 +490,8 @@ module.exports = {
   wilsonUpperPct,
   wilsonUpperFinite,
   templateMatchConfidence,
+  normalizeAuditSource,
+  sampleMethodForSource,
   computeAuditStats,
   clusterKey,
   CELLS_PER_RECEIVER,

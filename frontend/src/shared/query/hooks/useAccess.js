@@ -55,6 +55,25 @@ export function useSetVisibleMajors() {
   })
 }
 
+// Dataset refresh (admin): background job on the server; poll while running.
+export function useRefreshStatus() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['admin-refresh-status', user?.uid],
+    queryFn: () => apiClient.get('/admin/refresh-dataset').then((r) => r.data),
+    enabled: !!user?.uid,
+    refetchInterval: (query) => (query.state.data?.running ? 1500 : false),
+  })
+}
+
+export function useStartRefresh() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: () => apiClient.post('/admin/refresh-dataset').then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-refresh-status'] }),
+  })
+}
+
 export function useGrantAccess() {
   const qc = useQueryClient()
   return useMutation({

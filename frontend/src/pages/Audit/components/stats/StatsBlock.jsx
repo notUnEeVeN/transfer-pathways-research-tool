@@ -75,12 +75,15 @@ function buildStrip(s) {
   const tplAud = s.n_templates_audited ?? 0
   const tplTot = s.n_templates ?? 0
   const tplPct = tplTot ? +((tplAud / tplTot) * 100).toFixed(1) : 0
-  const nDirect = s.n_audited_direct ?? 0
   const nAudited = s.n_audited ?? 0
-  const nTargeted = Math.max(nAudited - nDirect, 0)
+  const nRandomDoc = s.n_audited_random_doc ?? s.n_audited_direct ?? 0
+  const nRandomTemplate = s.n_audited_random_template ?? 0
+  const nTargeted = s.n_audited_targeted ?? Math.max(nAudited - nRandomDoc - nRandomTemplate, 0)
+  const sourceSub = `${int(nRandomDoc)} random doc · ${int(nRandomTemplate)} template${
+    nTargeted ? ` · ${int(nTargeted)} targeted` : ''
+  }`
   return [
-    { label: 'Random sample', value: int(nDirect), accent: true },
-    { label: 'Audited', value: int(nAudited), sub: `${int(nDirect)} random · ${int(nTargeted)} targeted` },
+    { label: 'Audited', value: int(nAudited), sub: sourceSub, accent: true },
     { label: 'Templates audited', value: int(tplAud), sub: `of ${compactNum(tplTot)} · ${tplPct}%` },
     { label: 'Errors', value: int(s.n_errors ?? 0), sub: `of ${int(nAudited)} audited` },
   ]
@@ -96,7 +99,7 @@ function AllMetrics({ stats: s, open, onToggle }) {
         { label: 'Total agreements', value: int(s.total_docs) },
         { label: 'Templates · majors', value: `${int(s.n_templates)} · ${int(s.n_majors)}` },
         { label: 'Audited — all sources', value: int(s.n_audited) },
-        { label: 'Audited — uniform-random', value: int(s.n_audited_direct) },
+        { label: 'Random doc · template', value: `${int(s.n_audited_random_doc ?? 0)} · ${int(s.n_audited_random_template ?? 0)}` },
       ],
     },
     {

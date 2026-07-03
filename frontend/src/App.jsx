@@ -205,10 +205,11 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
               { label: 'Strict mismatch', value: pct(stats.strict_rate_pct) },
               { label: 'Sample coverage', value: pct(stats.sample_coverage_pct) }
             ]} />
-            <MiniStats title='Sampling' rows={[
-              { label: 'Random sample', value: int(stats.n_audited_direct) },
-              { label: 'Targeted', value: int((stats.n_audited || 0) - (stats.n_audited_direct || 0)) },
-              { label: 'Audited / total', value: `${int(stats.n_audited)} / ${compactNum(stats.total_docs)}` }
+            <MiniStats title='Audit sources' rows={[
+              { label: 'Audited / total', value: `${int(stats.n_audited)} / ${compactNum(stats.total_docs)}` },
+              { label: 'Random doc', value: int(stats.n_audited_random_doc ?? stats.n_audited_direct ?? 0) },
+              { label: 'Random template', value: int(stats.n_audited_random_template ?? 0) },
+              { label: 'Targeted', value: int(stats.n_audited_targeted ?? 0) }
             ]} />
             <MiniStats title='Templates' rows={[
               { label: 'Audited', value: stats.n_templates ? `${int(stats.n_templates_audited)} / ${compactNum(stats.n_templates)}` : null },
@@ -305,12 +306,15 @@ function buildStrip(s) {
   const tplAud = s.n_templates_audited ?? 0
   const tplTot = s.n_templates ?? 0
   const tplPct = tplTot ? +((tplAud / tplTot) * 100).toFixed(1) : 0
-  const nDirect = s.n_audited_direct ?? 0
   const nAudited = s.n_audited ?? 0
-  const nTargeted = Math.max(nAudited - nDirect, 0)
+  const nRandomDoc = s.n_audited_random_doc ?? s.n_audited_direct ?? 0
+  const nRandomTemplate = s.n_audited_random_template ?? 0
+  const nTargeted = s.n_audited_targeted ?? Math.max(nAudited - nRandomDoc - nRandomTemplate, 0)
+  const sourceSub = `${int(nRandomDoc)} random doc · ${int(nRandomTemplate)} template${
+    nTargeted ? ` · ${int(nTargeted)} targeted` : ''
+  }`
   return [
-    { label: 'Random sample', value: int(nDirect), accent: true },
-    { label: 'Audited', value: int(nAudited), sub: `${int(nDirect)} random · ${int(nTargeted)} targeted` },
+    { label: 'Audited', value: int(nAudited), sub: sourceSub, accent: true },
     { label: 'Templates audited', value: int(tplAud), sub: `of ${compactNum(tplTot)} · ${tplPct}%` },
     { label: 'Errors', value: int(s.n_errors ?? 0), sub: `of ${int(nAudited)} audited` },
     { label: 'Flagged', value: int(s.n_flagged ?? 0) }

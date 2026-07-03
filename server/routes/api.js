@@ -105,5 +105,8 @@ router.delete('/admin/access/:uid',     adminController.revokeAccess);
 // Which ported majors partners can see (deny-by-default until selected).
 router.get('/admin/visible-majors',     adminController.getVisibleMajors);
 router.put('/admin/visible-majors',     jsonBody, adminController.putVisibleMajors);
+// Re-port the current majors from the source DB (post-parser-update refresh).
+router.post('/admin/refresh-dataset',   adminController.postRefreshDataset);
+router.get('/admin/refresh-dataset',    adminController.getRefreshStatus);
 
 module.exports = router;
