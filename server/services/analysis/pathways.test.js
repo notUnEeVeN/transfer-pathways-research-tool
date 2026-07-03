@@ -81,7 +81,27 @@ beforeAll(async () => {
     { _id: 2, system: 'semester' },
   ]);
   await db.collection('ref_tuition').insertMany([{ _id: 1, per_credit_usd: 100 }]);
-  await db.collection('ref_cc_districts').insertMany([{ _id: 10, district: 'North' }]);
+  await db.collection('ref_cc_districts').insertMany([
+    { _id: 10, district: 'North', region: 'Bay', counties_served: ['Alpha'] },
+    { _id: 20, district: 'North', region: 'Bay', counties_served: ['Alpha', 'Beta'] },
+  ]);
+  await db.collection('ref_uc_transfer_requirements').insertMany([
+    {
+      _id: 'uct-calc-a', school_id: 1, school: 'UC Test', uc_code: 'UCT',
+      group_id: 'Calc', set_id: 'A', source_order: 0,
+      receiving_code: 'CALC', parent_ids: [101], matched: true,
+    },
+    {
+      _id: 'uco-alt-a', school_id: 2, school: 'UC Other', uc_code: 'UCO',
+      group_id: 'Either', set_id: 'A', source_order: 0,
+      receiving_code: 'MISSING', parent_ids: [], matched: false,
+    },
+    {
+      _id: 'uco-alt-b', school_id: 2, school: 'UC Other', uc_code: 'UCO',
+      group_id: 'Either', set_id: 'B', source_order: 1,
+      receiving_code: 'DS', parent_ids: [104], matched: true,
+    },
+  ]);
   await db.collection('curation_prereqs').insertMany([
     { _id: 'cc:cs1b', prereqs: ['cc:cs1a'] },
     { _id: 'cc:cs1a', prereqs: [] },
@@ -106,9 +126,39 @@ describe('coverageData', () => {
     expect(alpha.receivers_required).toBe(2); // r-reco excluded
     expect(alpha.receivers_articulated).toBe(2);
     expect(alpha.fully_articulated).toBe(true);
+    expect(alpha.community_college_district).toBe('North');
+    expect(alpha.community_college_counties).toEqual(['Alpha']);
     const beta = rows.find((r) => r.community_college_id === 20);
     expect(beta.pct_articulated).toBe(50);
     expect(beta.fully_articulated).toBe(false);
+  });
+
+  it('groups by district/county using best-of articulation across member colleges', async () => {
+    const districtRows = await coverageData(db, db, { ...P, groupBy: 'district' });
+    const district = districtRows.find((r) => r.row_group_label === 'North' && r.school_id === 1);
+    expect(district.community_college_ids).toEqual([10, 20]);
+    expect(district.receivers_required).toBe(2);
+    expect(district.receivers_articulated).toBe(2);
+    expect(district.fully_articulated).toBe(true);
+
+    const countyRows = await coverageData(db, db, { ...P, groupBy: 'county' });
+    const betaCounty = countyRows.find((r) => r.row_group_label === 'Beta' && r.school_id === 1);
+    expect(betaCounty.community_college_ids).toEqual([20]);
+    expect(betaCounty.pct_articulated).toBe(50);
+  });
+
+  it('can evaluate curated paper requirements instead of all ASSIST-required receivers', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'paper' });
+    const beta = rows.find((r) => r.community_college_id === 20 && r.school_id === 1);
+    expect(beta.requirements).toBe('paper');
+    expect(beta.receivers_required).toBe(1);
+    expect(beta.receivers_articulated).toBe(1);
+    expect(beta.fully_articulated).toBe(true); // r-cs1 is missing, but not in the curated hard set.
+
+    const alphaOther = rows.find((r) => r.community_college_id === 10 && r.school_id === 2);
+    expect(alphaOther.requirement_groups_required).toBe(1);
+    expect(alphaOther.requirement_groups_satisfied).toBe(1);
+    expect(alphaOther.fully_articulated).toBe(true); // alternative set B is satisfied.
   });
 });
 

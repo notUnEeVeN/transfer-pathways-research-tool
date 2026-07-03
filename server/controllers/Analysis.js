@@ -7,6 +7,8 @@
  * Query params shared by all endpoints:
  *   scope=all|uc|csu           (default all)
  *   majorContains=<substring>  (case-insensitive; usually the whole point)
+ *   groupBy=college|district|county  (coverage only; default college)
+ *   requirements=assist|paper        (coverage only; default assist)
  * choice-cost additionally takes schoolIds=1,2,3 — an ORDERED list.
  *
  * Results are cached briefly per (endpoint × params); curation edits or a
@@ -15,11 +17,20 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { currentDatasetVersion } = require('../services/datasetVersion');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
+const { getReleasedIds } = require('../services/analysisReleases');
 const {
   coverageData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData,
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
+
+// Which analyses are released to partners on the Data → Analysis tab. Console-
+// gated (every signed-in console user reads it) — the frontend uses it to hide
+// unreleased analyses from partners and to badge Draft/Released for admins.
+exports.getReleases = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  res.json({ released_ids: await getReleasedIds(auditDb) });
+});
 
 const TTL_MS = 60 * 1000;
 const cache = new Map(); // key → { at, rows }
@@ -39,6 +50,12 @@ async function parseParams(req) {
       .split(',')
       .map((s) => Number(s.trim()))
       .filter(Number.isFinite),
+    groupBy: ['college', 'district', 'county'].includes(req.query.groupBy)
+      ? req.query.groupBy
+      : 'college',
+    requirements: ['assist', 'paper'].includes(req.query.requirements)
+      ? req.query.requirements
+      : 'assist',
     // Partner visibility (null = admin, unrestricted). Applied inside every
     // pathways query, so partners' analyses cover exactly the granted subset.
     visiblePairs: await majorScope(req),
@@ -65,7 +82,7 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
-    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|v:${scopeTag(params.visiblePairs)}`;
+    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|v:${scopeTag(params.visiblePairs)}`;
     const rows = await cached(key, () => computeFn(db, auditDb, params));
     const dataset_version = await currentDatasetVersion(db);
     if (req.query.format === 'csv') {
@@ -100,7 +117,7 @@ exports.exportUniversityCourses = makeEndpoint('university-courses', universityC
 const RAW_EXPORTS = new Set([
   'curation_course_categories', 'curation_receiver_overrides', 'curation_prereqs',
   'curation_assoc_degrees', 'ref_campus_calendars', 'ref_tuition',
-  'ref_cc_districts', 'ref_locations', 'audit_results',
+  'ref_cc_districts', 'ref_uc_transfer_requirements', 'ref_locations', 'audit_results',
 ]);
 
 exports.rawExport = asyncHandler(async (req, res) => {

@@ -1,8 +1,14 @@
 import React, { useMemo, useState } from 'react'
-import { MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, LoadingLogo } from './components/ui'
+import {
+  MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon,
+  ChartBarIcon, TrashIcon,
+} from '@heroicons/react/24/outline'
+import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, LoadingLogo, Badge } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
+import DataReferences from './DataReferences'
 import { ANALYSES } from './analyses/registry'
+import AnalysisCard from './analyses/AnalysisCard'
+import { useAccessMe, useAnalysisReleases } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { openAssist } from './pages/Audit/lib/auditFormat'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
@@ -10,6 +16,7 @@ import { useAuditDoc } from '@frontend/query/hooks/useAudit'
 import {
   useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch,
   useRawAssist, useDataSummary, useCoverage,
+  useFigures, useDeleteFigure, downloadFigure,
 } from '@frontend/query/hooks/useData'
 
 /**
@@ -25,8 +32,10 @@ import {
  *   CC courses          — the community-college course catalog (referenced
  *                         by the ported agreements), searchable per college
  *   University courses  — the UC-side catalog, searchable per campus
+ *   References          — imported lookup tables: UC hard minimums and
+ *                         community-college district geography
  */
-export default function DataPage() {
+export default function DataPage({ onNavigate = () => {} }) {
   const [tab, setTab] = useState('overview')
   return (
     <div className='h-full flex flex-col'>
@@ -37,6 +46,7 @@ export default function DataPage() {
             { value: 'agreements', label: 'Agreements' },
             { value: 'cc',         label: 'CC courses' },
             { value: 'university', label: 'University courses' },
+            { value: 'references', label: 'References' },
             { value: 'analysis',   label: 'Analysis' },
           ]} />
       </div>
@@ -46,7 +56,8 @@ export default function DataPage() {
           {tab === 'agreements' && <AgreementsBrowser />}
           {tab === 'cc' && <CcCoursesBrowser />}
           {tab === 'university' && <UniversityCoursesBrowser />}
-          {tab === 'analysis' && <AnalysisTab />}
+          {tab === 'references' && <DataReferences />}
+          {tab === 'analysis' && <AnalysisTab onNavigate={onNavigate} />}
         </div>
       </div>
     </div>
@@ -102,8 +113,8 @@ function AgreementsBrowser() {
   if (summary.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (summary.isError) return <Alert type='error'>Failed to load your dataset summary.</Alert>
   if (!nPrograms) {
-    return <EmptyState title='No programs in scope'
-      description='No majors are selected for your account yet — the project admin picks the subset.' />
+    return <EmptyState title='No programs yet'
+      description='The dataset has no programs at the moment — check back after the next data update.' />
   }
 
   // Auto-select when there's exactly one program.
@@ -117,7 +128,7 @@ function AgreementsBrowser() {
     <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
       {/* Program rail — the granted school+major pairs, grouped by campus */}
       <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
-        <p className='text-label mb-2'>Programs in your subset · {nPrograms}</p>
+        <p className='text-label mb-2'>Programs · {nPrograms}</p>
         <Stack gap='cozy'>
           {programsBySchool.map((g) => (
             <div key={g.school_id}>
@@ -180,7 +191,7 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
       <div>
         <p className='text-body-strong'>{program.major}</p>
         <p className='text-caption text-ink-muted'>
-          {program.school} · {withAgreement} of {rows.length || 115} colleges have an agreement in scope — sorted by coverage
+          {program.school} · {withAgreement} of {rows.length || 115} colleges have an agreement — sorted by coverage
         </p>
       </div>
       <div className='flex flex-wrap items-center gap-3'>
@@ -194,7 +205,7 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
             <span className='inline-block w-2.5 h-2.5 rounded-full' style={{ backgroundColor: 'var(--color-primary, #3366ef)' }} /> partial
           </span>
           <span className='inline-flex items-center gap-1.5'>
-            <span className='inline-block w-2.5 h-2.5 rounded-full bg-surface-muted border border-border' /> none in scope
+            <span className='inline-block w-2.5 h-2.5 rounded-full bg-surface-muted border border-border' /> no agreement
           </span>
         </span>
       </div>
@@ -219,7 +230,7 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
                   <td className='px-3 py-1.5 text-body'>{c.name}</td>
                   <td className='px-3 py-1.5'>
                     {c.cov ? <CoverageBar pct={c.cov.pct_articulated} full={c.cov.fully_articulated} /> :
-                      <span className='text-caption text-ink-subtle'>no agreement in scope</span>}
+                      <span className='text-caption text-ink-subtle'>no agreement</span>}
                   </td>
                   <td className='px-3 py-1.5 text-caption font-mono tabular-nums text-ink-muted'>
                     {c.cov ? `${c.cov.receivers_articulated}/${c.cov.receivers_required}` : '—'}
@@ -267,7 +278,7 @@ function ProgramAgreement({ program, collegeId, cov, onBack }) {
       {batch.isLoading ? (
         <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
       ) : !agreement ? (
-        <EmptyState title='No agreement' description='This college has no agreement for the selected program in your scope.' />
+        <EmptyState title='No agreement' description='This college has no agreement for the selected program.' />
       ) : (
         <AgreementDetail agreementId={agreement._id} cov={cov} />
       )}
@@ -275,31 +286,132 @@ function ProgramAgreement({ program, collegeId, cov, onBack }) {
   )
 }
 
-// ───────── analysis (registry-driven; populated over time) ─────────
+// ───────── analysis: live visualizers + published figure gallery ─────────
+//
+// Live visualizers compute from /analysis endpoints in the browser. Published
+// figures are notebook snapshots from pmt.publish(); the site stores and shows
+// rendered images only.
 
-function AnalysisTab() {
-  if (!ANALYSES.length) {
-    return (
-      <div className='mx-auto max-w-screen-md'>
-        <EmptyState title='Analyses land here'
-          description='This tab hosts statistical interpretations computed from the live, scoped API — the papers&apos; figures first (coverage heatmaps, credit-loss decomposition, choice cost), then new ones. Each analysis is a component registered in frontend/src/analyses/registry.js; because they read the live endpoints, a dataset refresh or subset change updates every figure automatically.' />
-      </div>
-    )
-  }
+// Small Draft/Released status pill — admin-only, shown in each analysis card
+// header so the admin can see at a glance what partners currently get.
+function ReleaseBadge({ released }) {
+  return <Badge variant={released ? 'success' : 'neutral'}>{released ? 'Released' : 'Draft'}</Badge>
+}
+
+function AnalysisTab({ onNavigate = () => {} }) {
+  const me = useAccessMe()
+  const isAdmin = me.data?.role === 'admin'
+  const releasesQ = useAnalysisReleases()
+  const releasedSet = useMemo(() => new Set(releasesQ.data?.released_ids || []), [releasesQ.data])
+  // Admins preview every registered analysis (badged Draft/Released); partners
+  // only see the released ones.
+  const visibleAnalyses = isAdmin ? ANALYSES : ANALYSES.filter((a) => releasedSet.has(a.id))
+  const hasVisibleAnalyses = visibleAnalyses.length > 0
+  const releasesPending = releasesQ.isLoading // don't flash "nothing" before releases load
+
+  const figs = useFigures()
+  const del = useDeleteFigure()
+  const figures = figs.data?.figures || []
+  const currentVersion = figs.data?.dataset_version || null
+
   return (
     <Stack gap='section'>
-      {ANALYSES.map(({ id, title, description, source, Component }) => (
-        <section key={id}>
+      {visibleAnalyses.map(({ id, title, source, Component }) => (
+        <AnalysisCard key={id} title={title} source={source} exportName={id}
+          badge={isAdmin ? <ReleaseBadge released={releasedSet.has(id)} /> : null}>
+          <Component />
+        </AnalysisCard>
+      ))}
+      {figs.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
+      {(figs.isLoading || releasesPending) && !hasVisibleAnalyses && <div className='flex justify-center py-10'><Spinner /></div>}
+      {!figs.isLoading && !releasesPending && !figs.isError && !figures.length && !hasVisibleAnalyses && (
+        <div className='mx-auto max-w-screen-md'>
+          <div className='surface-card p-8 text-center'>
+            <ChartBarIcon className='w-8 h-8 text-ink-subtle mx-auto mb-3' />
+            <p className='text-body-strong'>{isAdmin ? 'No figures published yet' : 'No analyses available yet'}</p>
+            <p className='text-body text-ink-muted mt-2 max-w-prose mx-auto'>
+              {isAdmin ? (
+                <>This gallery shows every figure the team publishes from Python —
+                one <span className='font-mono text-ink'>pmt.publish(fig, …)</span> call
+                in your notebook and it appears here for everyone, stamped with
+                the dataset version it was computed from.</>
+              ) : (
+                <>Analyses are released here as the team finishes them — check back
+                soon. Published notebook figures will also appear on this tab.</>
+              )}
+            </p>
+            {isAdmin && (
+              <div className='mt-4'>
+                <Button onClick={() => onNavigate('api')}>Set up in 2 minutes → API tab</Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {!!figures.length && (
+        <section>
           <div className='mb-3'>
-            <h2 className='text-heading'>{title}</h2>
+            <h2 className='text-heading'>Published figures</h2>
             <p className='text-caption text-ink-muted'>
-              {description}{source ? <> · <span className='text-ink-subtle'>{source}</span></> : null}
+              Notebook snapshots shared by the team
             </p>
           </div>
-          <Component />
+          <div className='grid grid-cols-1 xl:grid-cols-2 gap-6 items-start'>
+            {figures.map((f) => (
+              <FigureCard key={f.slug} fig={f} currentVersion={currentVersion}
+                onDelete={() => del.mutate(f.slug)} deleting={del.isPending} />
+            ))}
+          </div>
         </section>
-      ))}
+      )}
     </Stack>
+  )
+}
+
+function FigureCard({ fig, currentVersion, onDelete, deleting }) {
+  const stale = fig.dataset_version && currentVersion && fig.dataset_version !== currentVersion
+  return (
+    <div className='surface-card overflow-hidden'>
+      <div className='px-5 pt-4 pb-3 flex items-start gap-3'>
+        <div className='min-w-0'>
+          <p className='text-body-strong break-words'>{fig.title}</p>
+          {fig.caption && <p className='text-caption text-ink-muted mt-0.5'>{fig.caption}</p>}
+          <p className='text-caption text-ink-subtle mt-1'>
+            {fig.author_label || 'unknown author'}
+            {fig.updated_at ? ` · ${new Date(fig.updated_at).toLocaleString()}` : ''}
+            {fig.source_url && (
+              <> · <a className='text-primary hover:underline' href={fig.source_url}
+                target='_blank' rel='noreferrer'>source</a></>
+            )}
+          </p>
+        </div>
+        <div className='ml-auto shrink-0 text-right'>
+          {fig.dataset_version && (
+            <span className={`inline-block px-2 py-0.5 rounded-pill border text-label font-mono ${
+              stale ? 'border-warning text-warning' : 'border-border text-ink-muted'}`}>
+              {stale ? `computed on ${fig.dataset_version}` : fig.dataset_version}
+            </span>
+          )}
+        </div>
+      </div>
+      {fig.svg && (
+        <div className='px-5 pb-4 bg-white'>
+          {/* img (not inline SVG) so published markup can't run scripts */}
+          <img src={`data:image/svg+xml;base64,${fig.svg}`} alt={fig.title}
+            className='w-full h-auto' />
+        </div>
+      )}
+      <div className='px-5 py-2.5 border-t border-border flex items-center gap-1'>
+        {['svg', 'png', 'pdf'].map((fmt) => (
+          <Button key={fmt} variant='ghost' leadingIcon={ArrowDownTrayIcon}
+            onClick={() => downloadFigure(fig.slug, fmt)}>{fmt.toUpperCase()}</Button>
+        ))}
+        <span className='ml-auto text-caption text-ink-subtle font-mono'>{fig.slug}</span>
+        <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting}
+          onClick={() => { if (window.confirm(`Delete "${fig.title}"? Republishing the slug brings it back.`)) onDelete() }}>
+        </Button>
+      </div>
+    </div>
   )
 }
 
@@ -391,7 +503,7 @@ function AgreementDetail({ agreementId, cov = null }) {
           {cov && (
             <p className='text-caption text-ink-muted border-t border-border pt-2'>
               {cov.receivers_articulated} of {cov.receivers_required} required receivers articulated
-              {missing > 0 ? <> · <span className='text-ink'>{missing}</span> have no comparable community-college path in scope</> : ' · fully articulated'}
+              {missing > 0 ? <> · <span className='text-ink'>{missing}</span> have no comparable community-college path</> : ' · fully articulated'}
             </p>
           )}
         </>
@@ -472,7 +584,7 @@ function CcCoursesBrowser() {
           { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.units ?? '—'}</span> },
           { key: 'course_id', label: 'course_id', render: (r) => <span className='font-mono'>{r.course_id}</span> },
         ]} />
-      ) : <EmptyState title='No courses' description='No catalog rows for this college in your scope.' />)}
+      ) : <EmptyState title='No courses' description='No catalog rows for this college.' />)}
       {!collegeId && <EmptyState title='Choose a college' description='Pick a community college to browse its catalog.' />}
     </Stack>
   )
@@ -514,7 +626,7 @@ function UniversityCoursesBrowser() {
           { key: 'department', label: 'Department' },
           { key: 'parent_id', label: 'parent_id', render: (r) => <span className='font-mono'>{r.parent_id}</span> },
         ]} />
-      ) : <EmptyState title='No courses' description='No catalog rows for this campus in your scope.' />)}
+      ) : <EmptyState title='No courses' description='No catalog rows for this campus.' />)}
       {!schoolId && <EmptyState title='Choose a campus' description='Pick a UC campus to browse its receiving courses.' />}
     </Stack>
   )

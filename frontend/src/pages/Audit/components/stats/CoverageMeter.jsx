@@ -45,6 +45,9 @@ export default function CoverageMeter({ stats, fill = false }) {
         <Stack gap='tight'>
           <Row k='Docs covered' v={`${compactNum(docCount)} / ${compactNum(total)} · ${docCov}%`} />
           <Row k='Effective' v={`${effCov}%`} />
+          {stats.propagation_multiplier != null && (
+            <Row k='Propagation' v={`${stats.propagation_multiplier}×`} />
+          )}
         </Stack>
 
         <div className='hairline-t pt-3'>

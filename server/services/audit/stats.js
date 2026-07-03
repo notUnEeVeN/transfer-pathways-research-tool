@@ -295,6 +295,7 @@ function computeAuditStats({ verdicts, totalDocs, nTemplates, nMajors, nCellsTot
     n_strict_direct: nConsDirect + nFlagDirect + kDirect,     // any deviation among those doc audits
     n_random_clusters: nRandomClusters,                       // distinct randomly-drawn in-scope templates (the bound's n)
     n_random_clusters_error: kRandomError,                    // of those, how many errored
+    n_random_clusters_strict: kRandomStrict,                  // …how many deviated at all (error/conservative/flagged)
     sample_scope: sampleScope,                                // which population the bound is computed over
     n_correct: nCorrect,
     n_conservative: nConservative,

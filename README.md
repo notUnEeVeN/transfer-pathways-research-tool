@@ -82,6 +82,8 @@ cp .env.example .env   # SOURCE_* (your full dataset), TARGET_* (research cluste
 python port.py init
 python port.py list "computer science"
 python port.py add "computer science"
+python import_cc_districts.py        # optional geography ref table for district/county analyses
+python import_uc_transfer_requirements.py  # paper hard-requirement ref table
 python port.py status
 ```
 

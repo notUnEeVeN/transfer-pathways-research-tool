@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { TrashIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox } from './components/ui'
+import { TrashIcon, CheckIcon, NoSymbolIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/outline'
+import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox, SwitchField } from './components/ui'
 import { useQueryClient } from '@tanstack/react-query'
+import { ANALYSES } from './analyses/registry'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
   useVisibleMajors, useSetVisibleMajors, useRefreshStatus, useStartRefresh,
+  useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
+  useAnalysisReleases, useSetAnalysisReleases,
 } from '@frontend/query/hooks/useAccess'
 
 /**
@@ -21,12 +24,132 @@ export default function AdminPage() {
   return (
     <div className='mx-auto max-w-screen-lg px-8 py-8'>
       <Stack gap='section'>
+        <SignInRequestsPanel />
+        <BlockedAccountsPanel />
         <MajorAccessPanel />
+        <AnalysisReleasePanel />
         <RefreshPanel />
         <DatasetPanel />
         <AccessPanel />
       </Stack>
     </div>
+  )
+}
+
+// Accounts that signed in but aren't approved yet (filed automatically by
+// the denied screen). Granting from here unlocks their open tab within
+// seconds — their screen polls for access, no reload needed on either side.
+function SignInRequestsPanel() {
+  const list = useAccessRequests()
+  const grant = useGrantAccess()
+  const block = useBlockAccessRequest()
+  const requests = list.data?.requests || []
+
+  if (list.isLoading || (!requests.length && !list.isError)) {
+    // Nothing pending is the steady state — keep the page quiet, not empty-boxed.
+    return null
+  }
+
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Sign-in requests</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          These accounts signed in with Google but aren't approved yet. Grant
+          gives them the partner role on the spot — their waiting screen unlocks
+          within seconds. Reject blocks the account: it's removed here, any
+          existing access is revoked, and it can't request again until you
+          un-block it below.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {list.isError ? (
+          <Alert type='error'>Failed to load sign-in requests.</Alert>
+        ) : (
+          <div className='divide-y divide-border/60'>
+            {requests.map((r) => (
+              <div key={r.uid} className='py-2.5 flex items-center gap-3 flex-wrap'>
+                <div className='min-w-0'>
+                  <p className='text-body-strong break-words'>{r.email || r.name || r.uid}</p>
+                  <p className='text-caption text-ink-subtle break-words'>
+                    {r.name && r.email ? `${r.name} · ` : ''}
+                    <span className='font-mono'>{r.uid}</span>
+                    {r.last_seen ? ` · last attempt ${new Date(r.last_seen).toLocaleString()}` : ''}
+                    {r.attempts > 1 ? ` · ${r.attempts} attempts` : ''}
+                  </p>
+                </div>
+                <div className='ml-auto flex items-center gap-2 shrink-0'>
+                  <Button leadingIcon={CheckIcon} disabled={grant.isPending || block.isPending}
+                    onClick={() => grant.mutate({ uid: r.uid, email: r.email || '', note: '' })}>
+                    Grant access
+                  </Button>
+                  <Button variant='danger' leadingIcon={NoSymbolIcon} disabled={grant.isPending || block.isPending}
+                    onClick={() => block.mutate({ uid: r.uid, email: r.email || '', name: r.name || '' })}>
+                    Reject
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {grant.isError && (
+          <Alert type='error' className='mt-3'>{grant.error?.response?.data?.error || 'Grant failed.'}</Alert>
+        )}
+        {block.isError && (
+          <Alert type='error' className='mt-3'>{block.error?.response?.data?.error || 'Reject failed.'}</Alert>
+        )}
+      </div>
+    </Stack>
+  )
+}
+
+// Rejected accounts (the deny-list). Blocking clears the request and revokes
+// any grant; the account can't get back in until un-blocked. Quiet when empty.
+function BlockedAccountsPanel() {
+  const list = useBlockedAccounts()
+  const unblock = useUnblockAccount()
+  const blocked = list.data?.blocked || []
+
+  if (list.isLoading || (!blocked.length && !list.isError)) return null
+
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Blocked accounts</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Rejected accounts. They can't request access or sign in to the console.
+          Un-block to let them request again (you still approve the request).
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {list.isError ? (
+          <Alert type='error'>Failed to load blocked accounts.</Alert>
+        ) : (
+          <div className='divide-y divide-border/60'>
+            {blocked.map((b) => (
+              <div key={b.uid} className='py-2.5 flex items-center gap-3 flex-wrap'>
+                <div className='min-w-0'>
+                  <p className='text-body-strong break-words'>{b.email || b.name || b.uid}</p>
+                  <p className='text-caption text-ink-subtle break-words'>
+                    {b.name && b.email ? `${b.name} · ` : ''}
+                    <span className='font-mono'>{b.uid}</span>
+                    {b.blocked_at ? ` · blocked ${new Date(b.blocked_at).toLocaleString()}` : ''}
+                  </p>
+                </div>
+                <Button variant='ghost' className='ml-auto' leadingIcon={ArrowUturnLeftIcon}
+                  disabled={unblock.isPending}
+                  onClick={() => unblock.mutate(b.uid)}>
+                  Un-block
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+        {unblock.isError && (
+          <Alert type='error' className='mt-3'>{unblock.error?.response?.data?.error || 'Un-block failed.'}</Alert>
+        )}
+      </div>
+    </Stack>
   )
 }
 
@@ -214,6 +337,63 @@ function MajorAccessPanel() {
   )
 }
 
+// Which live analyses partners see on Data → Analysis. Off = hidden from
+// partners (you still preview it there, badged Draft). Release iteratively as
+// each analysis is finished. Toggling sends the full released set; switches
+// disable briefly during the save so quick flips can't race a stale set.
+function AnalysisReleasePanel() {
+  const q = useAnalysisReleases()
+  const save = useSetAnalysisReleases()
+  const released = new Set(q.data?.released_ids || [])
+
+  const toggle = (id) => {
+    const next = new Set(released)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    save.mutate([...next])
+  }
+
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Analysis releases</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Choose which live analyses partners see on the Data → Analysis tab.
+          Off means hidden from partners — you still see it there, badged Draft.
+          Release them one at a time as each is ready.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {q.isLoading ? (
+          <div className='flex justify-center py-4'><Spinner /></div>
+        ) : q.isError ? (
+          <Alert type='error'>Failed to load analysis releases.</Alert>
+        ) : !ANALYSES.length ? (
+          <p className='text-caption text-ink-subtle'>No analyses registered yet.</p>
+        ) : (
+          <div className='divide-y divide-border/60'>
+            {ANALYSES.map((a) => {
+              const on = released.has(a.id)
+              return (
+                <div key={a.id} className='py-2.5 flex items-center gap-3'>
+                  <div className='min-w-0'>
+                    <p className='text-body-strong break-words'>{a.title}</p>
+                    <p className='text-caption text-ink-subtle break-words'>{a.description || a.source || a.id}</p>
+                  </div>
+                  <SwitchField className='ml-auto shrink-0' label={on ? 'Released' : 'Draft'}
+                    srLabel={`Release ${a.title} to partners`} checked={on}
+                    disabled={save.isPending} onChange={() => toggle(a.id)} />
+                </div>
+              )
+            })}
+          </div>
+        )}
+        {save.isError && <Alert type='error' className='mt-3'>Could not save the release change. Try again.</Alert>}
+      </div>
+    </Stack>
+  )
+}
+
 function DatasetPanel() {
   const q = useAdminDataset()
   if (q.isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
@@ -291,10 +471,10 @@ function AccessPanel() {
       <div>
         <h2 className='text-heading'>Partner access</h2>
         <p className='text-caption text-ink-muted mt-1'>
-          Granted accounts can audit and browse the research dataset. A partner
-          finds their Firebase UID on the "No access" screen error… or you look
-          it up in the Firebase console by their email after their first
-          sign-in attempt.
+          Granted accounts can audit and browse the research dataset. Normally
+          you'll approve people from Sign-in requests (they appear there the
+          moment they try to sign in); this form pre-grants a Firebase UID
+          directly, e.g. before someone's first sign-in.
         </p>
       </div>
       <form onSubmit={submit} className='surface-card p-5'>

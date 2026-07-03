@@ -227,6 +227,23 @@ describe('audit stats — _statsData (getStats)', () => {
     const s = await callStats(db, { scope: 'all' });
     expect(sortKeys(s)).toMatchSnapshot();
   });
+
+  // The strict analogue of n_random_clusters_error: random-sample clusters
+  // whose worst verdict deviates AT ALL (error, conservative, or flagged).
+  // Feeds the Stats page's strict-mismatch hero gauge (observed k/n).
+  it('exports n_random_clusters_strict, counting non-error deviations too', async () => {
+    await db.collection('audit_results').deleteMany({});
+    await db.collection('audit_results').insertMany([
+      // Cluster A (100/CS/hashA): worst = conservative → strict but NOT error.
+      verdict(oid(11), { result: 'conservative' }),
+      // Cluster B (100/Math/hashB): correct → neither.
+      verdict(oid(21), { result: 'correct', source: 'random_template_weighted', major: 'Mathematics', major_id: 'm-math', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', receivers_checked: 3 }),
+    ]);
+    const s = await callStats(db, { scope: 'all' });
+    expect(s.n_random_clusters).toBe(2);
+    expect(s.n_random_clusters_error).toBe(0);
+    expect(s.n_random_clusters_strict).toBe(1);
+  });
 });
 
 describe('audit bootstrap — buildScope (getBootstrap)', () => {

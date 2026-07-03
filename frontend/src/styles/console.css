@@ -21,3 +21,34 @@
    the overrides so the equal-specificity bg-primary rule wins by source order. */
 .uui-scope .bg-primary { background-color: var(--background-color-primary); }
 .uui-scope .text-primary { color: var(--text-color-primary); }
+
+/* Analysis cards (Data → Analysis). Each analysis is wrapped in a surface-card
+   (see analyses/AnalysisCard). The analyses render their own inner surface-card
+   panels (control bar, matrix, table); inside an .analysis-card those flatten
+   to a transparent border so the whole thing reads as ONE card with sections
+   set off by spacing — not cards-inside-a-card. :where() keeps specificity 0 so
+   any inline background (e.g. the paper matrix's white fill) still wins. */
+.analysis-card :where(.surface-card) { border-color: transparent; }
+
+/* While an analysis card is being captured for export (exportCard.js toggles
+   this class), restyle it as a tight publication figure:
+   - lift internal scroll clips so the full matrix/table lands in the file;
+   - hide non-figure chrome (header, controls, stat strips) IN THE LIVE DOM so
+     the measured size equals the exported clone — filtered-but-still-measured
+     nodes were leaving a blank band on the PDF page;
+   - shrink-wrap the card to its content and slim the padding to a thin even
+     margin, so the figure sits centered with no dead space;
+   - pin the paper matrix to a fixed print cell size (instead of
+     container-width-driven), so the export is identical at any window width. */
+.analysis-card.exporting .overflow-auto,
+.analysis-card.exporting .overflow-x-auto {
+  overflow: visible !important;
+  max-height: none !important;
+}
+.analysis-card.exporting [data-export-exclude] { display: none !important; }
+.analysis-card.exporting {
+  width: fit-content;
+  max-width: none;
+  padding: 12px !important;
+}
+.analysis-card.exporting .paper-export-cells { --paper-cell: 14px !important; }

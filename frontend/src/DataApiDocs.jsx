@@ -1,204 +1,40 @@
 import React, { useState } from 'react'
-import { ClipboardIcon, TrashIcon, KeyIcon } from '@heroicons/react/24/outline'
+import { ClipboardIcon, CheckIcon, TrashIcon, KeyIcon, SparklesIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, Stack, Input, Tabs } from './components/ui'
 import { API_BASE_URL } from '@frontend/lib/constants'
-import { useApiTokens, useCreateApiToken, useRevokeApiToken } from '@frontend/query/hooks/useData'
-
-// API page: token manager on top, the endpoint reference, then ONE large
-// copy-pastable briefing that explains the whole data structure — written to
-// be handed to an AI assistant (and readable as plaintext) so analysis
-// scripts can be written against the live API immediately.
-
-function Code({ children, maxH = null }) {
-  const text = typeof children === 'string' ? children : String(children)
-  return (
-    <div className='surface-card relative'>
-      <Button variant='ghost' leadingIcon={ClipboardIcon} className='absolute top-1.5 right-1.5 z-10'
-        onClick={() => navigator.clipboard.writeText(text)}>Copy</Button>
-      <pre className={`p-3 pr-24 text-[11px] leading-relaxed font-mono overflow-auto whitespace-pre ${maxH || ''}`}>{text}</pre>
-    </div>
-  )
-}
-
-const ENDPOINTS = [
-  {
-    group: 'Bulk exports — full scoped corpus, one call each',
-    rows: [
-      ['GET /export/agreements', 'Every agreement in scope, full nested structure.'],
-      ['GET /export/receivers', 'One row per receiver with all agreement/group/section context — the unit of analysis for most statistics.'],
-      ['GET /export/courses', 'The whole CC course catalog in scope.'],
-      ['GET /export/university-courses', 'The whole UC course catalog in scope.'],
-    ],
-  },
-  {
-    group: 'Precomputed analyses',
-    rows: [
-      ['GET /analysis/coverage', 'Per agreement: receivers required/articulated, pct_articulated, fully_articulated.'],
-      ['GET /analysis/credit-loss', 'Per agreement: minimal CC course set (+units), many_to_one count, semester_equiv_required, blocked receivers.'],
-      ['GET /analysis/choice-cost?schoolIds=7,117', 'Per college: incremental CC courses per additional campus, in order (schoolIds required).'],
-      ['GET /analysis/category-gaps', 'Per campus × course category: % of colleges missing articulation (needs curation tags).'],
-      ['GET /analysis/complexity', 'Per pathway: prereq delay/blocking factors (needs curated prereqs).'],
-      ['GET /analysis/time-to-degree', 'Per curated associate degree × agreement: transfer-credit rate, lost units, cost.'],
-      ['GET /analysis/raw/:collection', 'audit_results · curation_* · ref_* working collections.'],
-    ],
-  },
-  {
-    group: 'Reference reads',
-    rows: [
-      ['GET /data/summary', 'Your subset: majors per campus, counts, dataset_version.'],
-      ['GET /community-colleges · GET /schools', 'Institutions (id, name).'],
-      ['GET /uc-agreements-batch/:ccId?school_id=:ucId', 'One college’s agreements, grouped by campus.'],
-      ['GET /audit/doc/:agreementId', 'One agreement + course-name maps + ASSIST link.'],
-      ['GET /data/raw-assist/:agreementId', 'The upstream raw ASSIST.org payload.'],
-      ['GET /courses/:ccId · GET /university-courses/:ucId', 'Catalog rows for one institution.'],
-    ],
-  },
-]
-
-const briefing = (base) => `PMT RESEARCH API — DATA BRIEFING
-Paste this whole block into your AI assistant (with your token) before asking
-for analysis scripts. It contains everything needed to use the data correctly.
-
-== CONTEXT ==
-The dataset covers California community-college → UC transfer articulation,
-parsed from ASSIST.org. It is UC-only and server-scoped: every response covers
-exactly the majors this account has been granted. Every JSON response includes
-"dataset_version" (CSV responses carry it in the X-Dataset-Version header) —
-record it beside any figure or table you produce.
-
-== ACCESS ==
-Base URL: ${base}
-Every request: header  Authorization: Bearer <token>   (tokens start pmtr_)
-All endpoints are GET. JSON by default; /export/* and /analysis/* also accept
-?format=csv. JSON list responses look like { dataset_version, n, rows: [...] }.
-
-Example (Python):
-    import requests, pandas as pd
-    H = {"Authorization": "Bearer pmtr_..."}
-    rows = requests.get("${base}/export/receivers", headers=H).json()["rows"]
-    receivers = pd.DataFrame(rows)
-
-== CORE CONCEPTS ==
-An ARTICULATION AGREEMENT is one document per (community college × UC campus
-× major). It lists the campus's requirements for that major and how (or
-whether) each one can be satisfied at that college.
-
-The model is RECEIVER-CENTRIC. A receiver is ONE campus-side requirement.
-Agreements nest: requirement_groups[] → sections[] → receivers[].
-
-RECEIVER fields:
-  receiving              what the campus asks for — one of four kinds:
-                           {kind:"course", parent_id}                    a single UC course
-                           {kind:"series", parent_ids[], conjunction}    several UC courses ("and"/"or")
-                           {kind:"requirement", name}                    free-text rule, no course
-                           {kind:"ge_area", code, name}                  a GE area
-  articulation_status    "articulated" | "not_articulated"
-  not_articulated_reason (when not articulated)
-                           "no_course_articulated"       college hasn't articulated it — the real coverage gap
-                           "must_take_at_university"     informational; taken after transfer, NOT a gap
-                           "never_articulated"           campus never accepts CC equivalents — hard stop
-                           "missing_articulation_entry"  parser-internal absence
-  options[]              alternative CC paths that satisfy the receiver:
-                           each option = { course_ids: [number], course_conjunction: "and"|"or" }
-                           "and" ⇒ take ALL courses in the option; "or" ⇒ any ONE
-  options_conjunction    across options: "or" ⇒ any one option suffices; "and" ⇒ all options required
-  hash_id                stable id of the receiving side (joins curation overlays)
-
-Example receiver — satisfied by course 195603 OR by BOTH 353175 and 353176:
-  { "receiving": {"kind":"course","parent_id":292039},
-    "articulation_status": "articulated",
-    "options": [
-      {"course_ids":[195603],        "course_conjunction":"and"},
-      {"course_ids":[353175,353176], "course_conjunction":"and"} ],
-    "options_conjunction": "or" }
-
-GROUP / SECTION context (matters for "what is actually required"):
-  group.is_required          false ⇒ recommended/elective — exclude from strict-requirement stats
-  group.group_conjunction    "And"|"Or" — "Or" ⇒ ONE of the group's sections suffices
-  group.group_advisement     satisfy any N receivers across the group (overrides section advisements)
-  group.group_unit_advisement  satisfy N units across the group (all section advisements null out)
-  section.section_advisement satisfy any N receivers in the section (null ⇒ all)
-  section.unit_advisement    satisfy N units in the section
-
-== FLAT EXPORT (usually what you want) ==
-GET /export/receivers returns one row per receiver with the tree already
-flattened onto it:
-  agreement_id, school_id, school, community_college_id, community_college,
-  major, group_index, is_required, group_conjunction, group_advisement,
-  group_unit_advisement, section_index, section_advisement,
-  section_unit_advisement, receiver_index, hash_id, kind, receiving_name,
-  parent_ids[], ge_code, articulation_status, not_articulated_reason,
-  options_conjunction, n_options, options[]
-(in CSV, list/object columns are JSON-encoded strings — json.loads them.)
-
-== CATALOGS & JOIN KEYS ==
-courses (CC catalog; only courses referenced by in-scope agreements):
-  course_id (number), prefix, number, title, units, community_college_id,
-  same_as[] (cross-listed equivalents), igetc_area[], csu_ge_area[],
-  calgetc_area[], uc_transferable
-university_courses (UC catalog):
-  parent_id (number, globally unique), prefix, number, title, min_units,
-  max_units, department, university_id
-Joins:
-  options.course_ids[i]        → courses.course_id        (numbers, both sides)
-  receiving.parent_id(s)       → university_courses.parent_id
-  uc_school_id                 → uc_schools.id  (= university_courses.university_id)
-  community_college_id         → community_colleges.id
-  agreement _id                → audit_results.doc_id     (human audit verdicts)
-  receiver hash_id             → curation_receiver_overrides._id
-  university parent_id         → curation_course_categories._id
-
-UC campus ids: Berkeley 79 · Davis 89 · Irvine 120 · UCLA 117 · Merced 144 ·
-Riverside 46 · San Diego 7 · Santa Barbara 128 · Santa Cruz 132
-
-== ANALYSIS GUIDANCE ==
-Prefer the precomputed /analysis endpoints when they fit; recompute from
-/export/receivers only when receiver-level detail is needed.
-  Coverage heatmap (college × campus % articulated)  → /analysis/coverage,
-    pivot pct_articulated by community_college × school
-  Credit loss / minimal course counts                → /analysis/credit-loss
-    (min_cc_courses solves option trees with overlap; many_to_one counts
-    receivers whose cheapest path needs >1 CC course; semester_equiv_required
-    normalizes quarter campuses by 2/3)
-  Inter-campus misalignment ("2nd choice adds N")    → /analysis/choice-cost
-    with an ordered schoolIds list; iterate permutations for averages
-  Course-category gap charts                         → /analysis/category-gaps
-  Curricular complexity (delay/blocking)             → /analysis/complexity
-  Transfer credit rate / lost units / cost           → /analysis/time-to-degree
-Counting coverage yourself: a receiver counts as a gap when
-articulation_status == "not_articulated" AND is_required — and consider
-excluding reason "must_take_at_university" (it is not a college-side gap).`
+import { useApiTokens, useCreateApiToken, useRevokeApiToken, usePmtPy } from '@frontend/query/hooks/useData'
+import {
+  ENDPOINT_GROUPS, GUIDE_SECTIONS,
+  AUTH_HEADER, pythonSnippet, buildAiBriefing,
+  PUBLISH_STEPS, EXAMPLE_FIGURE_SCRIPT, curlBootstrap,
+} from './apiDocs/content'
 
 /**
- * Top-level API page — the console's programmatic heart, next to Audit and
- * Data. Sub-tabs: Tokens (credentials) · Endpoints (reference) · Data
- * briefing (the one copyable block for humans/AI).
+ * API page — Tokens (credentials) · Endpoints (reference) · Data guide (the
+ * data model, readable). All documentation text lives in apiDocs/content.js;
+ * this file only renders it. The guide's "Copy for AI" button serializes the
+ * same content to markdown, so the page and the paste can't drift.
  */
 export default function ApiPage() {
-  const [tab, setTab] = useState('tokens')
+  const [tab, setTab] = useState('build')
   return (
     <div className='h-full flex flex-col'>
       <div className='shrink-0 flex items-center px-4 h-11 border-b border-border'>
         <Tabs value={tab} onChange={setTab}
           options={[
             { value: 'tokens',    label: 'Tokens' },
+            { value: 'build',     label: 'Build & publish' },
             { value: 'endpoints', label: 'Endpoints' },
-            { value: 'briefing',  label: 'Data briefing' },
+            { value: 'guide',     label: 'Data guide' },
           ]} />
       </div>
       <div className='flex-1 min-h-0 overflow-auto'>
-        <div className='mx-auto max-w-screen-md px-6 py-6'>
+        <div className='mx-auto max-w-screen-md px-6 py-10'>
           <Stack gap='section'>
-            <p className='text-caption text-ink-muted'>
-              Base URL <span className='font-mono text-ink'>{API_BASE_URL}</span> · header{' '}
-              <span className='font-mono text-ink'>Authorization: Bearer &lt;token&gt;</span> ·
-              all endpoints GET · <span className='font-mono'>?format=csv</span> on export/analysis
-              endpoints · responses scoped to your granted majors, stamped with{' '}
-              <span className='font-mono'>dataset_version</span>.
-            </p>
             {tab === 'tokens' && <TokenManager />}
+            {tab === 'build' && <BuildSection />}
             {tab === 'endpoints' && <EndpointsSection />}
-            {tab === 'briefing' && <BriefingSection />}
+            {tab === 'guide' && <GuideSection />}
           </Stack>
         </div>
       </div>
@@ -206,19 +42,203 @@ export default function ApiPage() {
   )
 }
 
+// ───────── shared bits ─────────
+
+function CopyButton({ text, label = 'Copy', variant = 'ghost', leadingIcon = ClipboardIcon }) {
+  const [copied, setCopied] = useState(false)
+  return (
+    <Button variant={variant} leadingIcon={copied ? CheckIcon : leadingIcon}
+      onClick={() => {
+        navigator.clipboard.writeText(typeof text === 'function' ? text() : text)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 1600)
+      }}>
+      {copied ? 'Copied' : label}
+    </Button>
+  )
+}
+
+function CodeBlock({ children }) {
+  const text = typeof children === 'string' ? children : String(children)
+  return (
+    <div className='surface-card relative'>
+      <div className='absolute top-1.5 right-1.5 z-10'><CopyButton text={text} /></div>
+      <pre className='p-3 pr-24 text-[11px] leading-relaxed font-mono overflow-auto whitespace-pre'>{text}</pre>
+    </div>
+  )
+}
+
+function DocTable({ head, rows }) {
+  return (
+    <div className='surface-card overflow-x-auto'>
+      <table className='w-full text-left'>
+        <thead className='border-b border-border'>
+          <tr>{head.map((h) => <th key={h} className='px-4 py-2.5 text-label whitespace-nowrap'>{h}</th>)}</tr>
+        </thead>
+        <tbody className='divide-y divide-border/60'>
+          {rows.map((r, i) => (
+            <tr key={i}>
+              {r.map((cell, j) => (
+                <td key={j} className={`px-4 py-2.5 text-caption align-top ${j === 0 ? 'text-ink font-mono' : 'text-ink-muted'}`}>
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+// ───────── build & publish ─────────
+
+function BuildSection() {
+  const py = usePmtPy()
+  const downloadPmtPy = () => {
+    const blob = new Blob([py.data || ''], { type: 'text/x-python' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'pmt.py'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return (
+    <Stack gap='section'>
+      <div>
+        <h3 className='text-heading'>Build a figure, share it with the team</h3>
+        <p className='text-body text-ink-muted mt-1 max-w-prose'>
+          Write your analysis in your own IDE or notebook — one call publishes
+          the figure to Data → Analysis, where everyone sees it.
+        </p>
+      </div>
+
+      <ol className='flex flex-col gap-4'>
+        {PUBLISH_STEPS.map(([title, desc], i) => (
+          <li key={title} className='flex gap-4'>
+            <span className='shrink-0 w-7 h-7 rounded-full border border-border flex items-center justify-center text-caption font-mono text-ink-muted'>
+              {i + 1}
+            </span>
+            <div>
+              <p className='text-body-strong'>{title}</p>
+              <p className='text-body text-ink-muted mt-0.5 max-w-prose'>{desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div>
+        <div className='flex items-center gap-2 mb-3'>
+          <h3 className='text-body-strong'>pmt.py</h3>
+          <span className='text-caption text-ink-subtle'>preconfigured for this API</span>
+          <div className='ml-auto flex gap-1'>
+            {py.data && <CopyButton text={py.data} />}
+            <Button variant='ghost' leadingIcon={ArrowDownTrayIcon} onClick={downloadPmtPy}
+              disabled={!py.data}>Download</Button>
+          </div>
+        </div>
+        {py.isLoading ? <div className='flex justify-center py-6'><Spinner /></div>
+          : py.isError ? <Alert type='error'>Could not load pmt.py from the API.</Alert>
+          : (
+            <pre className='surface-card p-4 text-[11px] leading-relaxed font-mono overflow-auto whitespace-pre max-h-[40vh]'>
+              {py.data}
+            </pre>
+          )}
+        <p className='text-caption text-ink-subtle mt-2'>
+          Or grab it straight from a notebook:
+        </p>
+        <div className='mt-1'><CodeBlock>{curlBootstrap(API_BASE_URL)}</CodeBlock></div>
+      </div>
+
+      <div>
+        <h3 className='text-body-strong mb-3'>A complete example</h3>
+        <CodeBlock>{EXAMPLE_FIGURE_SCRIPT}</CodeBlock>
+        <p className='text-body text-ink-muted mt-3 max-w-prose'>
+          Prefer to let an AI write it? The Data guide's{' '}
+          <span className='text-ink'>Copy for AI</span> button includes all of
+          this — paste it into your assistant and describe the figure you want.
+        </p>
+      </div>
+    </Stack>
+  )
+}
+
+// ───────── endpoints ─────────
+
+function GettingStarted() {
+  return (
+    <div className='surface-card p-6'>
+      <div className='flex flex-col gap-2 mb-4'>
+        <p className='text-body'>
+          <span className='text-ink-subtle'>Base URL</span>{' '}
+          <span className='font-mono text-ink'>{API_BASE_URL}</span>
+        </p>
+        <p className='text-body'>
+          <span className='text-ink-subtle'>Every request</span>{' '}
+          <span className='font-mono text-ink'>{AUTH_HEADER}</span>
+        </p>
+        <p className='text-caption text-ink-muted'>
+          All endpoints are GET · <span className='font-mono'>?format=csv</span> on
+          exports &amp; analyses · every response carries{' '}
+          <span className='font-mono'>dataset_version</span>
+        </p>
+      </div>
+      <CodeBlock>{pythonSnippet(API_BASE_URL)}</CodeBlock>
+    </div>
+  )
+}
+
+function EndpointCard({ e }) {
+  const hasDetails = e.returns || e.fields?.length || e.example
+  return (
+    <div className='py-5'>
+      <p className='font-mono text-caption text-ink-subtle'>
+        {e.method} <span className='text-ink'>{e.path}</span>
+      </p>
+      <p className='text-body-strong mt-1'>{e.title}</p>
+      <p className='text-body text-ink-muted mt-1 leading-relaxed max-w-prose'>{e.plain}</p>
+      {hasDetails && (
+        <details className='mt-2 group'>
+          <summary className='text-caption text-primary cursor-pointer select-none list-none inline-flex items-center gap-1'>
+            <span className='transition-transform group-open:rotate-90'>▸</span> Details
+          </summary>
+          <div className='mt-3 flex flex-col gap-3'>
+            {e.returns && (
+              <p className='text-caption'>
+                <span className='text-ink-subtle'>Returns</span>{' '}
+                <span className='font-mono text-ink'>{e.returns}</span>
+              </p>
+            )}
+            {e.fields?.length > 0 && (
+              <div className='divide-y divide-border/40 border border-border/60 rounded-md px-4'>
+                {e.fields.map(([f, d]) => (
+                  <div key={f} className='py-2'>
+                    <span className='font-mono text-caption text-ink break-words'>{f}</span>
+                    <p className='text-caption text-ink-muted mt-0.5'>{d}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {e.example && <CodeBlock>{e.example}</CodeBlock>}
+          </div>
+        </details>
+      )}
+    </div>
+  )
+}
+
 function EndpointsSection() {
   return (
-    <Stack gap='comfortable'>
-      {ENDPOINTS.map((g) => (
-        <div key={g.group} className='surface-card p-4'>
-          <p className='text-label mb-2'>{g.group}</p>
-          <div className='divide-y divide-border/60'>
-            {g.rows.map(([sig, desc]) => (
-              <div key={sig} className='py-2'>
-                <p className='font-mono text-caption text-ink'>{sig}</p>
-                <p className='text-caption text-ink-muted mt-0.5'>{desc}</p>
-              </div>
-            ))}
+    <Stack gap='section'>
+      <GettingStarted />
+      {ENDPOINT_GROUPS.map((g) => (
+        <div key={g.id}>
+          <h3 className='text-heading'>{g.title}</h3>
+          {g.blurb && <p className='text-body text-ink-muted mt-1'>{g.blurb}</p>}
+          <div className='surface-card px-6 divide-y divide-border/60 mt-3'>
+            {g.endpoints.map((e) => <EndpointCard key={e.path} e={e} />)}
           </div>
         </div>
       ))}
@@ -226,18 +246,48 @@ function EndpointsSection() {
   )
 }
 
-function BriefingSection() {
+// ───────── data guide ─────────
+
+function GuideSection() {
   return (
-    <section>
-      <p className='text-caption text-ink-muted mb-2'>
-        The complete data-structure reference as one copyable block — paste it into
-        your AI assistant (with a token) and it can start writing analysis scripts
-        against the live API.
-      </p>
-      <Code>{briefing(API_BASE_URL)}</Code>
-    </section>
+    <Stack gap='section'>
+      <div className='surface-card p-6 flex flex-wrap items-center gap-4'>
+        <div className='min-w-0 flex-1'>
+          <p className='text-body-strong'>How to read this dataset</p>
+          <p className='text-body text-ink-muted mt-1'>
+            The copy button turns this guide + the endpoint reference into one
+            markdown block for an AI assistant — paste it with a token and ask
+            for analysis scripts.
+          </p>
+        </div>
+        <CopyButton variant='primary' leadingIcon={SparklesIcon} label='Copy for AI'
+          text={() => buildAiBriefing(API_BASE_URL)} />
+      </div>
+      {GUIDE_SECTIONS.map((s) => (
+        <section key={s.id}>
+          <h3 className='text-heading mb-3'>{s.title}</h3>
+          <div className='flex flex-col gap-3'>
+            {s.blocks.map((b, i) => {
+              if (b.type === 'p') return <p key={i} className='text-body text-ink-muted leading-relaxed max-w-prose'>{b.text}</p>
+              if (b.type === 'code') return <CodeBlock key={i}>{b.text}</CodeBlock>
+              if (b.type === 'table') return <DocTable key={i} head={b.head} rows={b.rows} />
+              if (b.type === 'list') {
+                return (
+                  <ul key={i} className='list-disc pl-5 space-y-1.5'>
+                    {b.items.map((item) => <li key={item} className='text-body text-ink-muted'>{item}</li>)}
+                  </ul>
+                )
+              }
+              return null
+            })}
+          </div>
+        </section>
+      ))}
+    </Stack>
   )
 }
+
+// ───────── tokens ─────────
 
 function TokenManager() {
   const list = useApiTokens()
@@ -255,7 +305,15 @@ function TokenManager() {
 
   return (
     <section>
-      <h3 className='text-body-strong mb-2'>Tokens</h3>
+      <div className='mb-3'>
+        <h3 className='text-body-strong'>Personal API tokens</h3>
+        <p className='text-body text-ink-muted mt-1'>
+          A token lets scripts and notebooks call the API. Send it on every
+          request as{' '}
+          <span className='font-mono text-ink'>Authorization: Bearer pmtr_…</span>.
+          Treat it like a password; revoke it here if it leaks.
+        </p>
+      </div>
       <div className='surface-card p-4'>
         <Stack gap='cozy'>
           <form onSubmit={submit} className='flex flex-wrap items-center gap-2'>
@@ -271,8 +329,7 @@ function TokenManager() {
               <div className='flex items-center gap-2 flex-wrap'>
                 <span>Copy it now — it won't be shown again:</span>
                 <span className='font-mono text-caption break-all'>{freshToken}</span>
-                <Button variant='ghost' leadingIcon={ClipboardIcon}
-                  onClick={() => navigator.clipboard.writeText(freshToken)}>Copy</Button>
+                <CopyButton text={freshToken} />
               </div>
             </Alert>
           )}

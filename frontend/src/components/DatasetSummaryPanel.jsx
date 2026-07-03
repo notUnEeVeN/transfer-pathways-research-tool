@@ -63,7 +63,7 @@ function CampusTable({ schools }) {
   }, [coverage.data])
 
   if (!schools.length) {
-    return <p className='text-caption text-ink-subtle'>No majors in scope yet — the project admin selects the subset.</p>
+    return <p className='text-caption text-ink-subtle'>No majors in the dataset yet.</p>
   }
 
   return (
@@ -90,27 +90,17 @@ function CampusTable({ schools }) {
                 <td className='px-4 py-2 text-body'>{s.school}</td>
                 <td className='px-4 py-2 text-caption font-mono tabular-nums'>{s.majors.length}</td>
                 <td className='px-4 py-2 text-caption font-mono tabular-nums'>{s.n_agreements}</td>
-                <td className='px-4 py-2'>
+                <td className='px-4 py-2 text-caption font-mono tabular-nums'>
                   {coverage.isLoading ? <span className='text-caption text-ink-subtle'>…</span>
                     : mean == null ? <span className='text-caption text-ink-subtle'>—</span>
-                    : (
-                      <span className='inline-flex items-center gap-2'>
-                        <span className='inline-block w-28 h-2 rounded-pill bg-surface-muted border border-border overflow-hidden'>
-                          {/* Inline color: bg-primary/60 resolves to UUI's white surface token here. */}
-                          <span className='block h-full rounded-pill'
-                            style={{ width: `${Math.min(100, mean)}%`, backgroundColor: 'var(--color-primary, #3366ef)' }} />
-                        </span>
-                        <span className='text-caption font-mono tabular-nums text-ink'>{mean}%</span>
-                      </span>
-                    )}
+                    : <span className='text-ink'>{mean}%</span>}
                 </td>
               </tr>
             )
           })}
         </tbody>
       </table>
-      <p className='px-4 py-2 text-caption text-ink-subtle'>Mean of per-agreement articulation coverage across the campus's in-scope majors.</p>
+      <p className='px-4 py-2 text-caption text-ink-subtle'>Mean of per-agreement articulation coverage across the campus's majors.</p>
     </div>
   )
 }
-

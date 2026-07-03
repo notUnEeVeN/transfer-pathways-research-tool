@@ -62,6 +62,25 @@ function* requiredReceivers(agreement, isExcluded) {
   }
 }
 
+// Iterate every receiver in an agreement. Paper-style hard-requirement
+// coverage uses university-site minimums to decide what is required, so ASSIST
+// is used only as an equivalency source and its required/recommended grouping
+// is intentionally ignored.
+function* allReceivers(agreement) {
+  for (const group of agreement.requirement_groups || []) {
+    for (const section of group.sections || []) {
+      for (const r of section.receivers || []) yield r;
+    }
+  }
+}
+
+function receiverParentIds(receiver) {
+  const receiving = receiver.receiving || {};
+  if (receiving.kind === 'course' && receiving.parent_id != null) return [Number(receiving.parent_id)];
+  if (receiving.kind === 'series') return (receiving.parent_ids || []).map(Number).filter(Number.isFinite);
+  return [];
+}
+
 // ── reference-table joins ──
 
 async function loadRefs(auditDb) {
@@ -73,7 +92,11 @@ async function loadRefs(auditDb) {
   return {
     calendarByUniversity: new Map(cal.map((r) => [Number(r._id), r.system])),
     tuitionByUniversity: new Map(tuition.map((r) => [Number(r._id), Number(r.per_credit_usd)])),
-    districtByCc: new Map(districts.map((r) => [Number(r._id), r.district])),
+    districtByCc: new Map(districts.map((r) => [Number(r._id), {
+      district: r.district ?? null,
+      region: r.region ?? null,
+      counties_served: Array.isArray(r.counties_served) ? r.counties_served : [],
+    }])),
   };
 }
 
@@ -81,6 +104,44 @@ async function loadCcCourseUnits(db) {
   const rows = await db.collection('courses')
     .find({}, { projection: { course_id: 1, units: 1 } }).toArray();
   return new Map(rows.map((r) => [String(r.course_id), Number(r.units) || 0]));
+}
+
+async function loadTransferRequirements(auditDb) {
+  const rows = await auditDb.collection('ref_uc_transfer_requirements')
+    .find({}, { projection: {
+      school_id: 1, school: 1, uc_code: 1, group_id: 1, set_id: 1,
+      receiving_code: 1, parent_ids: 1, matched: 1,
+    } })
+    .sort({ school_id: 1, group_id: 1, set_id: 1, source_order: 1 })
+    .toArray();
+
+  const bySchool = new Map();
+  for (const row of rows) {
+    const schoolId = Number(row.school_id);
+    if (!bySchool.has(schoolId)) {
+      bySchool.set(schoolId, {
+        school_id: schoolId,
+        school: row.school,
+        uc_code: row.uc_code,
+        groups: new Map(),
+        parentIds: new Set(),
+      });
+    }
+    const school = bySchool.get(schoolId);
+    const groupId = String(row.group_id);
+    const setId = String(row.set_id);
+    if (!school.groups.has(groupId)) school.groups.set(groupId, { group_id: groupId, sets: new Map() });
+    const group = school.groups.get(groupId);
+    if (!group.sets.has(setId)) group.sets.set(setId, { set_id: setId, requirements: [] });
+    const parentIds = (row.parent_ids || []).map(Number).filter(Number.isFinite);
+    for (const parentId of parentIds) school.parentIds.add(parentId);
+    group.sets.get(setId).requirements.push({
+      receiving_code: row.receiving_code,
+      parent_ids: parentIds,
+      matched: row.matched !== false && parentIds.length > 0,
+    });
+  }
+  return bySchool;
 }
 
 // Combined major scope: the optional contains-search AND the partner
@@ -102,38 +163,251 @@ function escapeRegex(s) {
 // ── analyses ──
 
 /**
- * Coverage — the CA/MA papers' core figure. One row per agreement:
- * how many required receivers exist, how many are articulated, and whether
- * the CC fully articulates the school's requirements ("full articulation").
+ * Coverage — the CA/MA papers' core figure. By default, one row per
+ * agreement. With groupBy=district|county, rows are best-of aggregates:
+ * a receiver is counted articulated when any underlying college in the
+ * district/county articulates it.
  */
-async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
-  const curation = await loadCuration(auditDb);
-  const isExcluded = makeIsExcluded(curation);
-  const rows = [];
+function membershipsFor(doc, refs, mode) {
+  const ccId = Number(doc.community_college_id);
+  const ref = refs.districtByCc.get(ccId) || null;
+  const college = {
+    kind: 'college',
+    key: String(ccId),
+    label: doc.community_college,
+    community_college_id: ccId,
+    community_college: doc.community_college,
+    district: ref?.district ?? null,
+    region: ref?.region ?? null,
+    counties_served: ref?.counties_served ?? [],
+  };
+  if (mode === 'college') return [college];
+  if (mode === 'district') {
+    return [{
+      ...college,
+      kind: 'district',
+      key: ref?.district ? `district:${ref.district}` : `college:${ccId}`,
+      label: ref?.district || `${doc.community_college} (unmapped district)`,
+    }];
+  }
+  const counties = ref?.counties_served?.length ? ref.counties_served : [`${doc.community_college} (unmapped county)`];
+  return counties.map((county) => ({
+    ...college,
+    kind: 'county',
+    key: `county:${county}`,
+    label: county,
+    county,
+  }));
+}
+
+function evaluateTransferRequirementModel(model, articulatedParentIds) {
+  let receiversRequired = 0;
+  let receiversArticulated = 0;
+  let groupsSatisfied = 0;
+  const groupCount = model.groups.size;
+
+  for (const group of model.groups.values()) {
+    const setResults = [...group.sets.values()].map((set) => {
+      const requirements = set.requirements || [];
+      const articulated = requirements.filter((req) =>
+        (req.parent_ids || []).some((parentId) => articulatedParentIds.has(Number(parentId)))
+      ).length;
+      return {
+        total: requirements.length,
+        articulated,
+        missing: requirements.length - articulated,
+        satisfied: requirements.length > 0 && articulated === requirements.length,
+      };
+    });
+    const satisfied = setResults.find((result) => result.satisfied);
+    const best = satisfied || setResults.sort((a, b) =>
+      a.missing - b.missing || b.articulated - a.articulated || a.total - b.total
+    )[0] || { total: 0, articulated: 0, satisfied: false };
+    receiversRequired += best.total;
+    receiversArticulated += best.articulated;
+    if (best.satisfied) groupsSatisfied += 1;
+  }
+
+  return {
+    receivers_required: receiversRequired,
+    receivers_articulated: receiversArticulated,
+    requirement_groups_required: groupCount,
+    requirement_groups_satisfied: groupsSatisfied,
+    pct_articulated: receiversRequired ? +((receiversArticulated / receiversRequired) * 100).toFixed(1) : null,
+    fully_articulated: groupCount > 0 && groupsSatisfied === groupCount,
+  };
+}
+
+async function hardRequirementCoverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college' } = {}, refs) {
+  const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
+  const requirementsBySchool = await loadTransferRequirements(auditDb);
+  const buckets = new Map();
+
   for (const sys of systemsFor()) {
     const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
-      let total = 0;
-      let articulated = 0;
-      for (const r of requiredReceivers(doc, isExcluded)) {
-        total += 1;
-        if (r.articulation_status === 'articulated') articulated += 1;
+      const schoolRequirements = requirementsBySchool.get(Number(doc[sys.idField]));
+      if (!schoolRequirements) continue;
+      const memberships = membershipsFor(doc, refs, mode);
+      const programKey = `${sys.key}|${doc[sys.idField]}|hard-requirements`;
+      for (const m of memberships) {
+        const key = `${m.key}|${programKey}`;
+        if (!buckets.has(key)) {
+          buckets.set(key, {
+            system: sys.key,
+            school_id: doc[sys.idField],
+            school: doc[sys.nameField],
+            major: 'Curated hard transfer requirements',
+            requirementsModel: schoolRequirements,
+            row_group_kind: m.kind,
+            row_group_key: m.key,
+            row_group_label: m.label,
+            articulatedParentIds: new Set(),
+            sourceMajors: new Set(),
+            communityCollegeIds: new Set(),
+            communityColleges: new Set(),
+            districts: new Set(),
+            regions: new Set(),
+            counties: new Set(),
+          });
+        }
+        const bucket = buckets.get(key);
+        bucket.communityCollegeIds.add(Number(doc.community_college_id));
+        bucket.communityColleges.add(doc.community_college);
+        bucket.sourceMajors.add(doc.major);
+        if (m.district) bucket.districts.add(m.district);
+        if (m.region) bucket.regions.add(m.region);
+        for (const county of m.counties_served || []) bucket.counties.add(county);
       }
-      rows.push({
-        system: sys.key,
-        school_id: doc[sys.idField],
-        school: doc[sys.nameField],
-        community_college_id: doc.community_college_id,
-        community_college: doc.community_college,
-        major: doc.major,
-        receivers_required: total,
-        receivers_articulated: articulated,
-        pct_articulated: total ? +((articulated / total) * 100).toFixed(1) : null,
-        fully_articulated: total > 0 && articulated === total,
-      });
+
+      for (const r of allReceivers(doc)) {
+        if (r.articulation_status !== 'articulated') continue;
+        const parentIds = receiverParentIds(r)
+          .filter((parentId) => schoolRequirements.parentIds.has(Number(parentId)));
+        if (!parentIds.length) continue;
+        for (const m of memberships) {
+          const bucket = buckets.get(`${m.key}|${programKey}`);
+          for (const parentId of parentIds) bucket.articulatedParentIds.add(Number(parentId));
+        }
+      }
     }
   }
-  return rows;
+
+  return [...buckets.values()].map((b) => {
+    const evaluated = evaluateTransferRequirementModel(b.requirementsModel, b.articulatedParentIds);
+    const community_college_ids = [...b.communityCollegeIds].sort((a, b) => a - b);
+    const community_colleges = [...b.communityColleges].sort();
+    const districts = [...b.districts].sort();
+    const regions = [...b.regions].sort();
+    const counties = [...b.counties].sort();
+    return {
+      system: b.system,
+      school_id: b.school_id,
+      school: b.school,
+      community_college_id: b.row_group_kind === 'college' ? community_college_ids[0] : null,
+      community_college: b.row_group_kind === 'college' ? community_colleges[0] : null,
+      community_college_ids,
+      community_colleges,
+      community_college_district: districts[0] ?? null,
+      community_college_region: regions.length === 1 ? regions[0] : null,
+      community_college_counties: counties,
+      county: b.row_group_kind === 'county' ? b.row_group_label : null,
+      major: b.major,
+      source_majors: [...b.sourceMajors].sort(),
+      requirements: 'paper',
+      requirements_source: 'ref_uc_transfer_requirements',
+      uc_code: b.requirementsModel.uc_code,
+      row_group_kind: b.row_group_kind,
+      row_group_key: b.row_group_key,
+      row_group_label: b.row_group_label,
+      ...evaluated,
+    };
+  });
+}
+
+async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', requirements = 'assist' } = {}) {
+  const refs = await loadRefs(auditDb);
+  if (requirements === 'paper') {
+    return hardRequirementCoverageData(db, auditDb, { majorContains, visiblePairs, groupBy }, refs);
+  }
+
+  const curation = await loadCuration(auditDb);
+  const isExcluded = makeIsExcluded(curation);
+  const buckets = new Map();
+  const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
+
+  for (const sys of systemsFor()) {
+    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    for (const doc of docs) {
+      const memberships = membershipsFor(doc, refs, mode);
+      const programKey = `${sys.key}|${doc[sys.idField]}|${doc.major}`;
+      for (const m of memberships) {
+        const key = `${m.key}|${programKey}`;
+        if (!buckets.has(key)) {
+          buckets.set(key, {
+            system: sys.key,
+            school_id: doc[sys.idField],
+            school: doc[sys.nameField],
+            major: doc.major,
+            row_group_kind: m.kind,
+            row_group_key: m.key,
+            row_group_label: m.label,
+            receiverByHash: new Map(),
+            communityCollegeIds: new Set(),
+            communityColleges: new Set(),
+            districts: new Set(),
+            regions: new Set(),
+            counties: new Set(),
+          });
+        }
+        const bucket = buckets.get(key);
+        bucket.communityCollegeIds.add(Number(doc.community_college_id));
+        bucket.communityColleges.add(doc.community_college);
+        if (m.district) bucket.districts.add(m.district);
+        if (m.region) bucket.regions.add(m.region);
+        for (const county of m.counties_served || []) bucket.counties.add(county);
+      }
+      for (const r of requiredReceivers(doc, isExcluded)) {
+        const hash = String(r.hash_id ?? `${r.receiving?.kind || 'receiver'}:${r.receiving?.parent_id || ''}`);
+        for (const m of memberships) {
+          const bucket = buckets.get(`${m.key}|${programKey}`);
+          const cur = bucket.receiverByHash.get(hash) || false;
+          bucket.receiverByHash.set(hash, cur || r.articulation_status === 'articulated');
+        }
+      }
+    }
+  }
+  return [...buckets.values()].map((b) => {
+    const receiverValues = [...b.receiverByHash.values()];
+    const total = receiverValues.length;
+    const articulated = receiverValues.filter(Boolean).length;
+    const community_college_ids = [...b.communityCollegeIds].sort((a, b) => a - b);
+    const community_colleges = [...b.communityColleges].sort();
+    const districts = [...b.districts].sort();
+    const regions = [...b.regions].sort();
+    const counties = [...b.counties].sort();
+    return {
+      system: b.system,
+      school_id: b.school_id,
+      school: b.school,
+      community_college_id: b.row_group_kind === 'college' ? community_college_ids[0] : null,
+      community_college: b.row_group_kind === 'college' ? community_colleges[0] : null,
+      community_college_ids,
+      community_colleges,
+      community_college_district: districts[0] ?? null,
+      community_college_region: regions.length === 1 ? regions[0] : null,
+      community_college_counties: counties,
+      county: b.row_group_kind === 'county' ? b.row_group_label : null,
+      major: b.major,
+      row_group_kind: b.row_group_kind,
+      row_group_key: b.row_group_key,
+      row_group_label: b.row_group_label,
+      receivers_required: total,
+      receivers_articulated: articulated,
+      pct_articulated: total ? +((articulated / total) * 100).toFixed(1) : null,
+      fully_articulated: total > 0 && articulated === total,
+    };
+  });
 }
 
 /**
@@ -164,7 +438,9 @@ async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = 
         school: doc[sys.nameField],
         community_college_id: doc.community_college_id,
         community_college: doc.community_college,
-        district: refs.districtByCc.get(Number(doc.community_college_id)) ?? null,
+        district: refs.districtByCc.get(Number(doc.community_college_id))?.district ?? null,
+        district_region: refs.districtByCc.get(Number(doc.community_college_id))?.region ?? null,
+        district_counties: refs.districtByCc.get(Number(doc.community_college_id))?.counties_served ?? [],
         major: doc.major,
         receivers_required: required,
         receivers_satisfiable: solved.receiversSatisfied,

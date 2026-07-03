@@ -21,6 +21,22 @@
  *   }
  */
 
+import CoverageHeatmap from './CoverageHeatmap'
+import PaperDistrictHeatmap from './PaperDistrictHeatmap'
+
 export const ANALYSES = [
-  // Populated as interpretations are built — papers' figures first, then new ones.
+  {
+    id: 'paper-district-heatmap',
+    title: 'Paper-style district transfer heatmap',
+    description: 'District x UC campus complete-transfer matrix with paper baseline comparison',
+    source: 'Live /analysis/coverage + paper baseline',
+    Component: PaperDistrictHeatmap,
+  },
+  {
+    id: 'coverage-heatmap',
+    title: 'Articulation coverage heatmap',
+    description: 'Community college x campus-program percentage of required receivers articulated',
+    source: 'Live /analysis/coverage',
+    Component: CoverageHeatmap,
+  },
 ]

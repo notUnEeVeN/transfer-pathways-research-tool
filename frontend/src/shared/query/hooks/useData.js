@@ -72,13 +72,40 @@ export function useAgreementsBatch(collegeId, schoolId) {
 
 // Scoped per-agreement articulation coverage (the papers' heatmap input).
 // One fetch covers the whole visible subset; components index client-side.
-export function useCoverage() {
+export function useCoverage(params = {}, options = {}) {
   const { user } = useAuth()
+  const majorContains = String(params.majorContains || '').trim()
+  const groupBy = ['college', 'district', 'county'].includes(params.groupBy) ? params.groupBy : 'college'
+  const requirements = ['assist', 'paper'].includes(params.requirements) ? params.requirements : 'assist'
+  const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: ['analysis-coverage', user?.uid],
-    queryFn: () => apiClient.get('/analysis/coverage').then((r) => r.data),
-    enabled: !!user?.uid,
+    queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements],
+    queryFn: () =>
+      apiClient
+        .get('/analysis/coverage', {
+          params: {
+            ...(majorContains ? { majorContains } : {}),
+            ...(groupBy !== 'college' ? { groupBy } : {}),
+            ...(requirements !== 'assist' ? { requirements } : {}),
+          },
+        })
+        .then((r) => r.data),
+    enabled: !!user?.uid && enabled,
     staleTime: 5 * 60 * 1000,
+    ...queryOptions,
+  })
+}
+
+export function useAnalysisRaw(collection, options = {}) {
+  const { user } = useAuth()
+  const safeCollection = String(collection || '').trim()
+  const { enabled = true, ...queryOptions } = options
+  return useQuery({
+    queryKey: ['analysis-raw', user?.uid, safeCollection],
+    queryFn: () => apiClient.get(`/analysis/raw/${safeCollection}`).then((r) => r.data),
+    enabled: !!user?.uid && !!safeCollection && enabled,
+    staleTime: 5 * 60 * 1000,
+    ...queryOptions,
   })
 }
 
@@ -120,4 +147,49 @@ export function useRawAssist(agreementId, { enabled = true } = {}) {
     staleTime: 60 * 60 * 1000,
     retry: 1,
   })
+}
+
+// ── published figures (the shared stats gallery) ──
+
+export function useFigures() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['figures', user?.uid],
+    queryFn: () => apiClient.get('/figures').then((r) => r.data),
+    enabled: !!user?.uid,
+    // Teammates publish from their notebooks while the tab is open.
+    refetchInterval: 30 * 1000,
+  })
+}
+
+export function useDeleteFigure() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (slug) => apiClient.delete(`/figures/${slug}`).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['figures'] }),
+  })
+}
+
+// The pmt.py client, served by the API with the base URL baked in.
+export function usePmtPy() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['pmt-py', user?.uid],
+    queryFn: () => apiClient.get('/client/pmt.py', { responseType: 'text' }).then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: Infinity,
+  })
+}
+
+// Browser download of a figure format (needs the auth header, so no <a href>).
+export async function downloadFigure(slug, format) {
+  const res = await apiClient.get(`/figures/${slug}/${format}`, { responseType: 'blob' })
+  const disposition = res.headers['content-disposition'] || ''
+  const name = /filename="([^"]+)"/.exec(disposition)?.[1] || `${slug}.${format}`
+  const url = URL.createObjectURL(res.data)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = name
+  a.click()
+  URL.revokeObjectURL(url)
 }

@@ -5,7 +5,7 @@ import { FlagIcon, ArrowsRightLeftIcon, CheckBadgeIcon, LockClosedIcon } from '@
 import { Button, Spinner, Alert, EmptyState, StatStrip, Stack, LoadingLogo, Tabs, Input, Textarea } from './components/ui'
 import { auth } from '@frontend/lib/firebase'
 import { useAuth } from '@frontend/hooks/useAuth'
-import { useAccessMe } from '@frontend/query/hooks/useAccess'
+import { useAccessMe, useRequestAccess } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
@@ -15,10 +15,10 @@ import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
 // Stats components reused individually for a spacious full-width dashboard.
-import RiskGauge from './pages/Audit/components/stats/RiskGauge'
+import MismatchGauge from './pages/Audit/components/stats/MismatchGauge'
 import VerdictBar from './pages/Audit/components/stats/VerdictBar'
 import CoverageMeter from './pages/Audit/components/stats/CoverageMeter'
-import CoverageMatrix from './pages/Audit/components/stats/CoverageMatrix'
+import CampusCoverage from './pages/Audit/components/stats/CampusCoverage'
 import { int, compactNum } from './pages/Audit/components/stats/statsFormat'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { DEFAULT_FILTER, openAssist } from './pages/Audit/lib/auditFormat'
@@ -37,8 +37,9 @@ import apiClient from '@frontend/api/apiClient'
  *     allowlist mirror; the server enforces everything.
  *   - ASSIST.org opens in a managed popup window (openAssist) — there is no
  *     native split webview in a browser, and ASSIST blocks iframes.
- *   - Views: Audit (Judge · Review · Stats) for everyone; Admin (dataset +
- *     partner access) for admins.
+ *   - Views: Data (landing — overview, browse, analyses), Audit (Judge ·
+ *     Review · Stats), API for everyone; Admin (dataset + partner access +
+ *     sign-in requests) for admins.
  */
 export default function App() {
   const { user, loading } = useAuth()
@@ -57,19 +58,74 @@ function Centered({ children }) {
   )
 }
 
+/**
+ * Signed in but not granted. Files a sign-in request so the account shows up
+ * under Admin → Sign-in requests, then waits: useAccessMe polls while denied,
+ * so an admin's grant flips this screen into the console live. If the account
+ * has been rejected (deny-listed), /access/request answers { blocked: true }
+ * and this shows a terminal "declined" state instead of the waiting spinner.
+ */
+function AccessRequestedScreen({ email }) {
+  const requestAccess = useRequestAccess()
+  const fired = useRef(false)
+  useEffect(() => {
+    if (fired.current) return // StrictMode double-mount guard
+    fired.current = true
+    requestAccess.mutate()
+  }, [requestAccess])
+
+  const blocked = requestAccess.data?.blocked
+
+  return (
+    <div className='h-screen bg-surface text-ink flex items-center justify-center px-6'>
+      <Stack gap='comfortable' className='items-center'>
+        {blocked ? (
+          <EmptyState icon={LockClosedIcon} title='Access declined'
+            description={`${email || 'This account'} isn't approved for the research console. If you think this is a mistake, contact the project admin.`} />
+        ) : (
+          <>
+            <EmptyState icon={LockClosedIcon} title='Access requested'
+              description={`${email || 'This account'} isn't approved for the research console yet. Your sign-in has been recorded for the project admin — this page unlocks by itself once you're approved.`} />
+            <span className='inline-flex items-center gap-2 text-caption text-ink-subtle'>
+              <Spinner /> Waiting for approval — checking automatically
+            </span>
+          </>
+        )}
+        <Button variant='secondary' onClick={() => signOut(auth)}>Sign out</Button>
+      </Stack>
+    </div>
+  )
+}
+
+/**
+ * Access gate. The console renders ONLY on a positive allow from /access/me —
+ * so a signed-in-but-unapproved account never sees console chrome or data, not
+ * even briefly. While the check is in flight: a neutral "checking" screen.
+ * On denial (403 — not granted, or deny-listed): the request/declined screen,
+ * which re-polls so an admin's grant unlocks it live. The server enforces the
+ * same gate on every route; this is the UI half of it.
+ */
 function Shell() {
   const { user } = useAuth()
   const me = useAccessMe()
-  const role = me.data?.role ?? null
-  const denied = me.isError // 403 → signed in but not granted
-  const [view, setView] = useState('audit')
+
+  if (me.isPending) {
+    return <Centered><Spinner /> <span className='text-caption'>Checking access…</span></Centered>
+  }
+  if (me.isError) return <AccessRequestedScreen email={user.email} />
+  return <Console role={me.data?.role ?? 'partner'} user={user} />
+}
+
+// The authenticated, approved console. Reached only through the gate above, so
+// access is guaranteed here — every view can fetch without a per-view guard.
+function Console({ role, user }) {
+  const [view, setView] = useState('data')
   const [auditTab, setAuditTab] = useState('judge') // judge | review | stats
   const [filter, setFilter] = useState(DEFAULT_FILTER)
-  const dataAccess = !!user?.uid && !!role && !denied
 
-  // Eagerly run /audit/bootstrap once at the Shell level so the first visit to
-  // Review and Stats is warm — react-query dedupes with the Stats view's call.
-  useAuditBootstrap(filter, { enabled: dataAccess })
+  // Eagerly run /audit/bootstrap so the first visit to Review and Stats is
+  // warm — react-query dedupes with the Stats view's own call.
+  useAuditBootstrap(filter)
 
   const [statsSeen, setStatsSeen] = useState(false)
   const [reviewSeen, setReviewSeen] = useState(false)
@@ -78,18 +134,6 @@ function Shell() {
     if (view === 'audit' && auditTab === 'review') setReviewSeen(true)
   }, [view, auditTab])
 
-  if (denied) {
-    return (
-      <div className='h-screen bg-surface text-ink flex items-center justify-center px-6'>
-        <Stack gap='comfortable' className='items-center'>
-          <EmptyState icon={LockClosedIcon} title='No access'
-            description={`${user.email || 'This account'} isn't on the research console access list. Ask the project admin to grant it, then reload.`} />
-          <Button variant='secondary' onClick={() => signOut(auth)}>Sign out</Button>
-        </Stack>
-      </div>
-    )
-  }
-
   return (
       <div className='h-screen flex flex-col bg-surface text-ink'>
         <div className='shrink-0 flex items-center gap-3 px-4 h-12 border-b border-border'>
@@ -97,8 +141,8 @@ function Shell() {
           <div className='ml-auto flex items-center gap-3'>
             <Tabs value={view} onChange={setView}
               options={[
-                { value: 'audit', label: 'Audit' },
                 { value: 'data',  label: 'Data' },
+                { value: 'audit', label: 'Audit' },
                 { value: 'api',   label: 'API' },
                 ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
               ]} />
@@ -108,17 +152,13 @@ function Shell() {
         </div>
         <div className='flex-1 min-h-0 relative'>
           {view === 'audit' && (
-            dataAccess ? (
-              <AuditWorkspace
-                auditTab={auditTab} setAuditTab={setAuditTab}
-                filter={filter} setFilter={setFilter}
-                statsSeen={statsSeen} reviewSeen={reviewSeen} />
-            ) : (
-              <Centered><LoadingLogo size={48} /></Centered>
-            )
+            <AuditWorkspace
+              auditTab={auditTab} setAuditTab={setAuditTab}
+              filter={filter} setFilter={setFilter}
+              statsSeen={statsSeen} reviewSeen={reviewSeen} />
           )}
-          {view === 'data' && (dataAccess ? <DataPage /> : <Centered><LoadingLogo size={48} /></Centered>)}
-          {view === 'api' && (dataAccess ? <ApiPage /> : <Centered><LoadingLogo size={48} /></Centered>)}
+          {view === 'data' && <DataPage onNavigate={setView} />}
+          {view === 'api' && <ApiPage />}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
       </div>
@@ -176,7 +216,7 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
           <Stack gap='section'>
             <div className='flex justify-center pt-8'>
               <EmptyState icon={CheckBadgeIcon} title='No verdicts yet'
-                description='Audit a uniform-random batch to establish the first 95% student-risk ceiling — coverage, the campus×major matrix, and the trend populate as verdicts are logged.' />
+                description='Audit a uniform-random batch to establish the first 95% strict-mismatch ceiling — coverage and per-campus verification populate as verdicts are logged.' />
             </div>
           </Stack>
         </div>
@@ -194,53 +234,31 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
           <ScopeLine stats={stats} />
           <StatStrip tiles={buildStrip(stats)} />
           <InterpretationBanner stats={stats} />
-          <RiskGauge stats={stats} />
-          <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch'>
-            <Ceilings stats={stats} />
+          <MismatchGauge stats={stats} />
+          <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch'>
             <VerdictBar stats={stats} />
             <CoverageMeter stats={stats} fill />
             <CellsCard stats={stats} />
           </div>
-          <CoverageMatrix filter={filter} />
-          <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 items-start'>
-            <MiniStats title='Observed rates' rows={[
-              { label: 'Observed error', value: pct(stats.observed_error_pct) },
-              { label: 'Strict mismatch', value: pct(stats.strict_rate_pct) },
-              { label: 'Sample coverage', value: pct(stats.sample_coverage_pct) }
-            ]} />
-            <MiniStats title='Audit sources' rows={[
-              { label: 'Audited / total', value: `${int(stats.n_audited)} / ${compactNum(stats.total_docs)}` },
-              { label: 'Random doc', value: int(stats.n_audited_random_doc ?? stats.n_audited_direct ?? 0) },
-              { label: 'Random template', value: int(stats.n_audited_random_template ?? 0) },
-              { label: 'Targeted', value: int(stats.n_audited_targeted ?? 0) }
-            ]} />
-            <MiniStats title='Templates' rows={[
-              { label: 'Audited', value: stats.n_templates ? `${int(stats.n_templates_audited)} / ${compactNum(stats.n_templates)}` : null },
-              { label: 'Correct · errors', value: `${int(stats.n_templates_correct)} · ${int(stats.n_templates_errors)}` },
-              { label: 'Effective coverage', value: pct(stats.effective_template_coverage_pct) },
-              { label: 'Propagation', value: stats.propagation_multiplier != null ? `${stats.propagation_multiplier}×` : null },
-              { label: 'Avg rows / agreement', value: stats.avg_rows_per_agreement != null ? String(stats.avg_rows_per_agreement) : null }
-            ]} />
-          </div>
+          <CampusCoverage filter={filter} />
         </Stack>
       </div>
     </div>
   )
 }
 
-// Plain-English headline — what the gathered stats actually mean.
+// Plain-English headline — what the gathered stats actually mean, in dataset-
+// accuracy terms (this is a parser-accuracy audit, not a student-facing tool).
 function InterpretationBanner({ stats: s }) {
   const n = s.n_random_clusters ?? 0
-  const ceiling = s.ci_upper_safety_pct
-  const estMax = s.estimated_max_unsafe
+  const ceiling = s.ci_upper_strict_pct
+  const estMax = s.estimated_max_strict
   const total = s.total_docs ?? 0
   const tplTot = s.n_templates ?? 0
   const tplPct = tplTot ? +(((s.n_templates_audited ?? 0) / tplTot) * 100).toFixed(1) : 0
-  const errs = s.n_errors ?? 0
+  const mismatches = (s.n_errors ?? 0) + (s.n_conservative ?? 0) + (s.n_flagged ?? 0)
   const hasSample = ceiling != null && n > 0
-  const Em = ({ children, tone }) => (
-    <span className={`text-body-strong font-mono ${tone || 'text-ink'}`}>{children}</span>
-  )
+  const Em = ({ children }) => <span className='text-body-strong font-mono text-ink'>{children}</span>
   return (
     <div className='surface-card p-5 border-l-2 border-primary'>
       <p className='text-body text-ink-muted leading-relaxed'>
@@ -248,46 +266,16 @@ function InterpretationBanner({ stats: s }) {
           <>
             You’ve audited <Em>{int(s.n_audited ?? 0)}</Em> agreements
             {' '}(<Em>{int(s.n_audited_direct ?? 0)}</Em> as a uniform-random sample across <Em>{int(n)}</Em> templates),
-            finding <Em tone={errs > 0 ? 'text-danger' : 'text-success'}>{int(errs)}</Em> errors. With 95% confidence,
-            at most <Em tone={ceiling <= 5 ? 'text-success' : 'text-danger'}>{ceiling.toFixed(1)}%</Em> of students
-            {estMax != null ? <> (~<Em>{int(estMax)}</Em> of {int(total)} docs)</> : null} could be under-prepared.
+            finding <Em>{int(mismatches)}</Em> strict mismatches
+            {' '}(<Em>{int(s.n_errors ?? 0)}</Em> errors · <Em>{int(s.n_conservative ?? 0)}</Em> over-asks · <Em>{int(s.n_flagged ?? 0)}</Em> flagged).
+            With 95% confidence, at most <Em>{ceiling.toFixed(1)}%</Em> of agreements
+            {estMax != null ? <> (~<Em>{int(estMax)}</Em> of {int(total)} docs)</> : null} deviate from ASSIST.
             Template auditing has cleared <Em>{tplPct}%</Em> of all templates.
           </>
         ) : (
-          <>No uniform-random sample in scope yet — audit a random batch to establish the first 95% student-risk ceiling.</>
+          <>No uniform-random sample in scope yet — audit a random batch to establish the first 95% strict-mismatch ceiling.</>
         )}
       </p>
-    </div>
-  )
-}
-
-// The secondary 95% ceilings the hero gauge doesn't show.
-function Ceilings({ stats: s }) {
-  const rows = [
-    { label: 'Safety ceiling', pct: s.ci_upper_safety_pct, sub: s.estimated_max_unsafe != null ? `≤ ${int(s.estimated_max_unsafe)} docs` : null, danger: true },
-    { label: 'Strict mismatch', pct: s.ci_upper_strict_pct, sub: s.estimated_max_strict != null ? `≤ ${int(s.estimated_max_strict)} docs` : null },
-    { label: 'All audited templates', pct: s.cluster_student_risk_upper_pct, sub: s.n_audited_clusters ? `${int(s.n_audited_clusters)} templates` : null },
-    { label: 'Per-cell errors', pct: s.ci_upper_cell_pct, sub: s.estimated_max_cell_errors != null ? `≤ ${int(s.estimated_max_cell_errors)} cells` : null }
-  ].filter((r) => r.pct != null)
-  const axisMax = Math.max(8, ...rows.map((r) => r.pct)) * 1.15
-  return (
-    <div className='surface-card p-5 h-full flex flex-col'>
-      <p className='text-label mb-3'>Confidence ceilings · 95%</p>
-      <div className='flex-1 flex flex-col justify-between gap-3'>
-        {rows.map((r) => (
-          <div key={r.label}>
-            <div className='flex items-baseline justify-between gap-2'>
-              <span className='text-caption text-ink-muted'>{r.label}</span>
-              <span className='text-body-strong font-mono tabular-nums text-ink'>≤ {r.pct.toFixed(1)}%</span>
-            </div>
-            <div className='h-1.5 rounded-pill bg-surface-muted border border-border overflow-hidden mt-1'>
-              <div className={`h-full ${r.danger ? 'bg-danger/60' : 'bg-ink-subtle'}`}
-                style={{ width: `${Math.min(100, (r.pct / axisMax) * 100)}%` }} />
-            </div>
-            {r.sub && <p className='text-label text-ink-subtle mt-1'>{r.sub}</p>}
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
@@ -297,7 +285,7 @@ function Ceilings({ stats: s }) {
 function ScopeLine({ stats }) {
   return (
     <p className='text-caption'>
-      Your major subset ·{' '}
+      Dataset ·{' '}
       <span className='text-ink-muted font-mono'>{int(stats.total_docs)}</span> docs ·{' '}
       <span className='text-ink-muted font-mono'>{int(stats.n_templates)}</span> templates ·{' '}
       <span className='text-ink-muted font-mono'>{int(stats.n_majors)}</span> majors
@@ -354,27 +342,6 @@ function CellsCard({ stats: s }) {
           </div>
         ))}
       </div>
-    </div>
-  )
-}
-
-// Compact companion card: the supporting numbers beside a visual.
-function MiniStats({ title, rows, className = '' }) {
-  const visible = rows.filter((r) => r.value != null && r.value !== '')
-  if (!visible.length) return null
-  return (
-    <div className={`surface-card p-5 ${className}`}>
-      <Stack gap='cozy'>
-        <p className='text-label text-ink-muted'>{title}</p>
-        <div className='divide-y divide-border/60'>
-          {visible.map((r) => (
-            <div key={r.label} className='flex items-baseline justify-between gap-3 py-1.5'>
-              <span className='text-caption text-ink-subtle'>{r.label}</span>
-              <span className='text-body-strong font-mono tabular-nums text-ink'>{r.value}</span>
-            </div>
-          ))}
-        </div>
-      </Stack>
     </div>
   )
 }
@@ -501,7 +468,7 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter }) {
         <div className='px-4 py-2.5 flex flex-wrap items-center gap-2'>
           <Button onClick={() => submit('correct')} disabled={verify.isPending || !doc}>Correct</Button>
           <Button variant='warning' onClick={() => submit('conservative')} disabled={verify.isPending || !doc}
-            title='pmt asks for MORE than ASSIST. Student over-prepared, never under-prepared.'>Conservative</Button>
+            title='pmt asks for MORE than ASSIST — an over-ask, never an under-ask.'>Conservative</Button>
           <Button variant='danger' onClick={() => submit('error')} disabled={verify.isPending || !doc}>Error</Button>
           <Button variant='secondary' leadingIcon={FlagIcon} onClick={() => submit('flagged')} disabled={verify.isPending || !doc}
             title='Visually wrong / worth reviewing later. Notes required.'>Flag</Button>

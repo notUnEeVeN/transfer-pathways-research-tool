@@ -12,7 +12,9 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin } = require('../services/access');
+const { removeRequest, unblockUid } = require('../services/accessRequests');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
+const { setReleasedIds } = require('../services/analysisReleases');
 const { startRefresh, jobStatus } = require('../services/porter');
 
 const GRANTS = 'access_grants';
@@ -67,6 +69,8 @@ exports.grantAccess = asyncHandler(async (req, res) => {
     { upsert: true }
   );
   invalidateGrantsCache();
+  await removeRequest(auditDb, cleanUid); // their pending sign-in request, if any
+  await unblockUid(auditDb, cleanUid);    // clear any prior block — an explicit grant wins
   res.json({ ok: true });
 });
 
@@ -147,6 +151,20 @@ exports.postRefreshDataset = asyncHandler(async (req, res) => {
 
 exports.getRefreshStatus = asyncHandler(async (req, res) => {
   res.json(jobStatus());
+});
+
+// ── analysis release staging ──
+// Which registered analyses are live for partners. The registry (id ↔ React
+// component) is frontend code; this only stores the released id set. Admins
+// always see every analysis; releasing controls what partners see.
+exports.putAnalysisReleases = asyncHandler(async (req, res) => {
+  const { released_ids } = req.body || {};
+  if (!Array.isArray(released_ids) || released_ids.some((x) => typeof x !== 'string')) {
+    return res.status(400).json({ error: 'released_ids must be an array of analysis id strings' });
+  }
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const saved = await setReleasedIds(auditDb, released_ids, req.user?.uid);
+  res.json({ ok: true, released_ids: saved });
 });
 
 // Available to every console user (partner or admin): tells the frontend

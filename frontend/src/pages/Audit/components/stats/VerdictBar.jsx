@@ -12,7 +12,7 @@ const TIERS = [
 
 /**
  * Verdict composition — a single proportional bar split into the four tiers,
- * with the error segment pulled out and never invisible (the at-risk channel is
+ * with the error segment pulled out and never invisible (the error channel is
  * always shown), plus a dot/value/percent legend.
  */
 export default function VerdictBar({ stats }) {

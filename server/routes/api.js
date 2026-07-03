@@ -88,9 +88,22 @@ const dataController = require('../controllers/Data');
 router.get('/data/summary',        ...guarded, dataController.getSummary);
 router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
 
+// ───────── Published figures (the shared stats gallery) + pmt.py client ─────────
+// Figures are rendered images published from partners' local Python via
+// pmt.publish() — the server stores and lists them, it never runs their code.
+const figuresController = require('../controllers/Figures');
+const figureBody = express.json({ limit: '48mb' }); // 3 base64 formats ≤12MB decoded each
+router.get('/figures',                ...guarded, figuresController.list);
+router.post('/figures',               ...guarded, figureBody, figuresController.publish);
+router.get('/figures/:slug/:format',  ...guarded, figuresController.download);
+router.delete('/figures/:slug',       ...guarded, figuresController.remove);
+router.get('/client/pmt.py',          ...guarded, figuresController.pmtPy);
+
 // ───────── Analysis + export (papers' statistics; JSON or ?format=csv) ─────────
 const analysisController = require('../controllers/Analysis');
 router.use('/analysis', ...guarded);
+// Which analyses are released to partners (frontend hides unreleased ones).
+router.get('/analysis/releases',        analysisController.getReleases);
 router.get('/analysis/coverage',        analysisController.coverage);
 router.get('/analysis/credit-loss',     analysisController.creditLoss);
 router.get('/analysis/choice-cost',     analysisController.choiceCost);
@@ -110,15 +123,29 @@ router.get('/export/university-courses', analysisController.exportUniversityCour
 // here). Data porting itself runs locally via scripts/port.py — the hosted
 // server never holds source-cluster credentials.
 const adminController = require('../controllers/Admin');
+const accessRequestsController = require('../controllers/AccessRequests');
 router.get('/access/me', ...guarded, adminController.getMe);
+// Deliberately NOT allowlist-gated: the denied screen files the caller's
+// sign-in request here so the admin can approve it in-app.
+router.post('/access/request', authenticateToken, userLimiter, accessRequestsController.postRequest);
 router.use('/admin', authenticateToken, requireAdmin, userLimiter);
 router.get('/admin/dataset',            adminController.getDataset);
 router.get('/admin/access',             adminController.listAccess);
 router.post('/admin/access',            jsonBody, adminController.grantAccess);
 router.delete('/admin/access/:uid',     adminController.revokeAccess);
+// Pending sign-in requests (filed by /access/request; granting clears them).
+router.get('/admin/access-requests',        accessRequestsController.adminList);
+router.delete('/admin/access-requests/:uid', accessRequestsController.adminDismiss);
+// Rejected accounts (deny-list): reject a request, list the blocked, un-block.
+// Blocking clears the request, revokes any live grant, and stops re-requests.
+router.post('/admin/access-blocks',          jsonBody, accessRequestsController.adminBlock);
+router.get('/admin/access-blocks',           accessRequestsController.adminListBlocked);
+router.delete('/admin/access-blocks/:uid',   accessRequestsController.adminUnblock);
 // Which ported majors partners can see (deny-by-default until selected).
 router.get('/admin/visible-majors',     adminController.getVisibleMajors);
 router.put('/admin/visible-majors',     jsonBody, adminController.putVisibleMajors);
+// Release/unrelease live analyses to partners (Data → Analysis tab).
+router.put('/admin/analysis-releases',  jsonBody, adminController.putAnalysisReleases);
 // Re-port the current majors from the source DB (post-parser-update refresh).
 router.post('/admin/refresh-dataset',   adminController.postRefreshDataset);
 router.get('/admin/refresh-dataset',    adminController.getRefreshStatus);

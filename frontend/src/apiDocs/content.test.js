@@ -1,0 +1,90 @@
+import { describe, it, expect } from 'vitest'
+import {
+  ENDPOINT_GROUPS, GUIDE_SECTIONS, buildAiBriefing,
+  PUBLISH_STEPS, EXAMPLE_FIGURE_SCRIPT, curlBootstrap,
+} from './content'
+
+const allEndpoints = ENDPOINT_GROUPS.flatMap((g) => g.endpoints)
+const BLOCK_TYPES = new Set(['p', 'code', 'table', 'list'])
+
+describe('ENDPOINT_GROUPS content invariants', () => {
+  it('has groups with ids, titles and endpoints', () => {
+    expect(ENDPOINT_GROUPS.length).toBeGreaterThanOrEqual(3)
+    for (const g of ENDPOINT_GROUPS) {
+      expect(g.id).toBeTruthy()
+      expect(g.title).toBeTruthy()
+      expect(g.endpoints.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('every endpoint carries a real plain-English explanation, not a stub', () => {
+    for (const e of allEndpoints) {
+      expect(e.path.startsWith('/'), e.path).toBe(true)
+      expect(e.title, e.path).toBeTruthy()
+      // "what you get & why it matters" must be a sentence-level explanation
+      expect(e.plain.length, `plain too short for ${e.path}`).toBeGreaterThan(60)
+    }
+  })
+
+  it('covers the core surface (summary, receivers export, coverage analysis, figures)', () => {
+    const paths = allEndpoints.map((e) => e.path)
+    expect(paths).toContain('/data/summary')
+    expect(paths).toContain('/export/receivers')
+    expect(paths).toContain('/analysis/coverage')
+    expect(paths).toContain('/figures')
+    expect(paths).toContain('/client/pmt.py')
+  })
+})
+
+describe('publish-figures content', () => {
+  it('has quickstart steps and a worked example ending in pmt.publish', () => {
+    expect(PUBLISH_STEPS.length).toBeGreaterThanOrEqual(3)
+    for (const [t, d] of PUBLISH_STEPS) { expect(t).toBeTruthy(); expect(d).toBeTruthy() }
+    expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.fetch(')
+    expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.publish(')
+  })
+
+  it('bootstrap curl bakes in the base url', () => {
+    expect(curlBootstrap('https://x.test')).toContain('https://x.test/client/pmt.py')
+  })
+})
+
+describe('GUIDE_SECTIONS content invariants', () => {
+  it('sections have titles and only known block types', () => {
+    expect(GUIDE_SECTIONS.length).toBeGreaterThanOrEqual(5)
+    for (const s of GUIDE_SECTIONS) {
+      expect(s.title).toBeTruthy()
+      expect(s.blocks.length).toBeGreaterThan(0)
+      for (const b of s.blocks) expect(BLOCK_TYPES.has(b.type), `${s.title}: ${b.type}`).toBe(true)
+    }
+  })
+})
+
+describe('buildAiBriefing', () => {
+  const md = buildAiBriefing('https://api.example.test')
+
+  it('bakes in the base URL and auth header', () => {
+    expect(md).toContain('https://api.example.test')
+    expect(md).toContain('Authorization: Bearer')
+  })
+
+  it('includes every documented endpoint with its explanation', () => {
+    for (const e of allEndpoints) {
+      expect(md).toContain(e.path)
+      expect(md).toContain(e.plain)
+    }
+  })
+
+  it('includes every guide section', () => {
+    for (const s of GUIDE_SECTIONS) expect(md).toContain(s.title)
+  })
+
+  it('teaches the AI the publish workflow', () => {
+    expect(md).toContain('pmt.publish')
+    expect(md).toContain('/client/pmt.py')
+  })
+
+  it('is deterministic', () => {
+    expect(buildAiBriefing('https://api.example.test')).toBe(md)
+  })
+})
