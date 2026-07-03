@@ -188,10 +188,10 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
           placeholder='Find a college…' leadingIcon={MagnifyingGlassIcon} />
         <span className='inline-flex items-center gap-3 text-caption text-ink-subtle'>
           <span className='inline-flex items-center gap-1.5'>
-            <span className='inline-block w-2.5 h-2.5 rounded-full bg-success/70' /> complete
+            <span className='inline-block w-2.5 h-2.5 rounded-full' style={{ backgroundColor: 'var(--color-success, #16a34a)' }} /> complete
           </span>
           <span className='inline-flex items-center gap-1.5'>
-            <span className='inline-block w-2.5 h-2.5 rounded-full bg-primary/60' /> partial
+            <span className='inline-block w-2.5 h-2.5 rounded-full' style={{ backgroundColor: 'var(--color-primary, #3366ef)' }} /> partial
           </span>
           <span className='inline-flex items-center gap-1.5'>
             <span className='inline-block w-2.5 h-2.5 rounded-full bg-surface-muted border border-border' /> none in scope
@@ -235,12 +235,15 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
   )
 }
 
+// Fill colors are inline: utility classes like bg-primary/60 resolve to the
+// UUI theme's WHITE surface token here, which made the bars invisible.
 function CoverageBar({ pct, full }) {
   const v = Math.max(0, Math.min(100, pct ?? 0))
   return (
     <span className='inline-flex items-center gap-2'>
-      <span className='inline-block w-24 h-1.5 rounded-pill bg-surface-muted border border-border overflow-hidden'>
-        <span className={`block h-full ${full ? 'bg-success/70' : 'bg-primary/60'}`} style={{ width: `${v}%` }} />
+      <span className='inline-block w-24 h-2 rounded-pill bg-surface-muted border border-border overflow-hidden'>
+        <span className='block h-full rounded-pill'
+          style={{ width: `${v}%`, backgroundColor: full ? 'var(--color-success, #16a34a)' : 'var(--color-primary, #3366ef)' }} />
       </span>
       <span className='text-caption font-mono tabular-nums text-ink'>{pct != null ? `${pct}%` : '—'}</span>
     </span>

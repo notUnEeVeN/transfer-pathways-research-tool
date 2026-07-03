@@ -95,8 +95,10 @@ function CampusTable({ schools }) {
                     : mean == null ? <span className='text-caption text-ink-subtle'>—</span>
                     : (
                       <span className='inline-flex items-center gap-2'>
-                        <span className='inline-block w-28 h-1.5 rounded-pill bg-surface-muted border border-border overflow-hidden'>
-                          <span className='block h-full bg-primary/60' style={{ width: `${Math.min(100, mean)}%` }} />
+                        <span className='inline-block w-28 h-2 rounded-pill bg-surface-muted border border-border overflow-hidden'>
+                          {/* Inline color: bg-primary/60 resolves to UUI's white surface token here. */}
+                          <span className='block h-full rounded-pill'
+                            style={{ width: `${Math.min(100, mean)}%`, backgroundColor: 'var(--color-primary, #3366ef)' }} />
                         </span>
                         <span className='text-caption font-mono tabular-nums text-ink'>{mean}%</span>
                       </span>
