@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-6f0b1cf1-2e16-4d4b-a138-4f948d081d2c/fonts/fonts.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-6f0b1cf1-2e16-4d4b-a138-4f948d081d2c/_ds_bundle.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-6f0b1cf1-2e16-4d4b-a138-4f948d081d2c/styles.css">
+  <script src="_ds/plan-my-transfer-design-system-6f0b1cf1-2e16-4d4b-a138-4f948d081d2c/_ds_bundle.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{background:var(--color-canvas);font-family:var(--font-sans);color:var(--color-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    ::selection{background:var(--color-primary-soft)}
+    pre{tab-size:2}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--color-canvas);padding-bottom:72px">
+
+  <!-- ================= PERSISTENT HEADER ================= -->
+  <header style="background:var(--color-surface);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:20">
+    <div style="max-width:1520px;margin:0 auto;padding:14px 30px 0">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:13px">
+          <div style="width:34px;height:34px;border-radius:9px;background:var(--color-primary-soft);display:flex;align-items:center;justify-content:center;color:var(--color-primary);flex-shrink:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"></path><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"></path></svg>
+          </div>
+          <div>
+            <div class="text-label" style="margin-bottom:2px">Research Console</div>
+            <div style="display:flex;align-items:baseline;gap:11px">
+              <h1 class="text-heading-lg">Data</h1>
+              <span class="font-mono" style="font-size:12px;color:var(--color-ink-subtle)">articulation · CCC&#8202;→&#8202;UC · 2025–26 catalog</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:stretch;border:1px solid var(--color-border);border-radius:11px;overflow:hidden;background:var(--color-surface)">
+          <div style="padding:7px 14px;border-right:1px solid var(--color-border)">
+            <div class="text-label" style="font-size:9px;margin-bottom:2px">Dataset</div>
+            <div class="font-mono" style="font-size:13px;font-weight:500;color:var(--color-primary)">v2025.2</div>
+          </div>
+          <div style="padding:7px 14px;border-right:1px solid var(--color-border)">
+            <div class="text-label" style="font-size:9px;margin-bottom:2px">Agreements</div>
+            <div class="font-mono" style="font-size:13px;font-weight:500">3,002</div>
+          </div>
+          <div style="padding:7px 14px;border-right:1px solid var(--color-border)">
+            <div class="text-label" style="font-size:9px;margin-bottom:2px">Colleges</div>
+            <div class="font-mono" style="font-size:13px;font-weight:500">115</div>
+          </div>
+          <div style="padding:7px 14px;border-right:1px solid var(--color-border)">
+            <div class="text-label" style="font-size:9px;margin-bottom:2px">Receivers</div>
+            <div class="font-mono" style="font-size:13px;font-weight:500">9</div>
+          </div>
+          <div style="padding:7px 14px;border-right:1px solid var(--color-border)">
+            <div class="text-label" style="font-size:9px;margin-bottom:2px">Built</div>
+            <div class="font-mono" style="font-size:13px;font-weight:500;color:var(--color-ink-muted)">06‑18 04:12Z</div>
+          </div>
+          <div style="padding:7px 14px">
+            <div class="text-label" style="font-size:9px;margin-bottom:2px">Env</div>
+            <div style="display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:9999px;background:var(--color-success)"></span><span class="font-mono" style="font-size:13px;font-weight:500">prod</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <x-import component-from-global-scope="PMT.Tabs" value="{{ tab }}" on-change="{{ setTab }}" options="{{ tabOptions }}" hint-size="100%,44px"></x-import>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= BODY ================= -->
+  <main style="max-width:1520px;margin:0 auto;padding:22px 30px 0">
+
+    <!-- ---------- ANALYSIS (landing) ---------- -->
+    <sc-if value="{{ isAnalysis }}" hint-placeholder-val="{{ true }}">
+      <section>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+          <div>
+            <h2 class="text-heading-lg">Analysis</h2>
+            <p class="text-caption" style="margin:3px 0 0">Statistical figures computed live over the active dataset. Figures recompute on scope change.</p>
+          </div>
+          <div class="font-mono" style="font-size:11.5px;color:var(--color-ink-subtle);text-align:right;line-height:1.6">
+            scope: all campuses · v2025.2 · n=3,002<br>computed 2025‑06‑18 04:12:07Z · 1.83s
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px">
+
+          <!-- Figure 1 -->
+          <div class="surface-raised" style="grid-column:1 / -1;padding:18px 20px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+              <div><div class="text-label" style="margin-bottom:3px">Figure 1 · distribution</div><div class="text-heading">Articulation coverage across all agreements</div></div>
+              <div class="font-mono text-ink-subtle" style="font-size:11.5px">n = 3,002 · mean 71.3% · median 78% · σ 21.4</div>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:9px;height:150px;border-bottom:1px solid var(--color-border);padding-bottom:1px">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">42</span><div style="width:100%;height:9px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">71</span><div style="width:100%;height:14px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">118</span><div style="width:100%;height:24px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">176</span><div style="width:100%;height:36px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">243</span><div style="width:100%;height:50px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">331</span><div style="width:100%;height:68px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">452</span><div style="width:100%;height:92px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink)">588</span><div style="width:100%;height:120px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-ink-subtle)">512</span><div style="width:100%;height:104px;background:var(--color-ink-subtle);border-radius:3px 3px 0 0"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:flex-end;height:100%"><span class="font-mono" style="font-size:9.5px;color:var(--color-success)">469</span><div style="width:100%;height:96px;background:var(--color-success);border-radius:3px 3px 0 0"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px"><span class="font-mono text-ink-subtle" style="font-size:11px">0%</span><span class="text-caption">coverage bucket (width 10%) → share of agreements. Green = complete (90–100%).</span><span class="font-mono text-ink-subtle" style="font-size:11px">100%</span></div>
+          </div>
+
+          <!-- Figure 2 -->
+          <div class="surface-raised" style="padding:18px 20px">
+            <div class="text-label" style="margin-bottom:3px">Figure 2 · by receiver</div>
+            <div class="text-heading" style="margin-bottom:14px">Mean coverage by receiving campus</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Berkeley</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:81%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">81%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UCLA</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:79%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">79%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC San Diego</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:76%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">76%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Davis</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:74%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">74%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Irvine</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:71%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">71%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Santa Barbara</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:68%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">68%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Santa Cruz</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:66%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">66%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Riverside</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:63%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">63%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="text-body" style="width:138px;flex-shrink:0;font-size:12.5px">UC Merced</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:58%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">58%</span></div>
+            </div>
+            <div class="text-caption" style="margin-top:13px">Mean across programs, weighted by agreement count.</div>
+          </div>
+
+          <!-- Figure 3 -->
+          <div class="surface-raised" style="padding:18px 20px">
+            <div class="text-label" style="margin-bottom:3px">Figure 3 · bottlenecks</div>
+            <div class="text-heading" style="margin-bottom:14px">Least-articulated requirements — CSE, UCSD</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:11px"><span class="font-mono" style="width:78px;flex-shrink:0;font-size:12.5px">CSE 15L</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:22%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px;color:var(--color-danger)">22%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="font-mono" style="width:78px;flex-shrink:0;font-size:12.5px">CSE 21</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:38%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px;color:var(--color-danger)">38%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="font-mono" style="width:78px;flex-shrink:0;font-size:12.5px">CSE 30</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:41%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">41%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="font-mono" style="width:78px;flex-shrink:0;font-size:12.5px">MATH 18</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:52%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">52%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="font-mono" style="width:78px;flex-shrink:0;font-size:12.5px">CSE 20</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:64%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">64%</span></div>
+              <div style="display:flex;align-items:center;gap:11px"><span class="font-mono" style="width:78px;flex-shrink:0;font-size:12.5px">CSE 12</span><div style="flex:1;height:8px;background:var(--color-surface-sunken);border-radius:9999px;overflow:hidden"><div style="width:77%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="width:38px;text-align:right;font-size:12.5px">77%</span></div>
+            </div>
+            <div class="text-caption" style="margin-top:13px">Share of 115 colleges granting each required course. Red flags &lt; 40%.</div>
+          </div>
+
+          <!-- Figure 4 -->
+          <div class="surface-raised" style="padding:18px 20px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px"><div><div class="text-label" style="margin-bottom:3px">Figure 4 · trend</div><div class="text-heading">Mean coverage over dataset versions</div></div><span class="font-mono" style="font-size:12px;color:var(--color-success)">+8.3 pts</span></div>
+            <svg viewBox="0 0 380 150" width="100%" height="150" preserveAspectRatio="none" style="overflow:visible">
+              <line x1="34" y1="24" x2="380" y2="24" stroke="var(--color-border)" stroke-width="1" stroke-dasharray="2 4"></line>
+              <line x1="34" y1="70" x2="380" y2="70" stroke="var(--color-border)" stroke-width="1" stroke-dasharray="2 4"></line>
+              <line x1="34" y1="116" x2="380" y2="116" stroke="var(--color-border)" stroke-width="1"></line>
+              <text x="28" y="27" text-anchor="end" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">75</text>
+              <text x="28" y="73" text-anchor="end" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">65</text>
+              <text x="28" y="119" text-anchor="end" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">55</text>
+              <polyline points="60,98 135,89 210,75 285,66 360,60" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <circle cx="60" cy="98" r="3.5" fill="var(--color-surface)" stroke="var(--color-primary)" stroke-width="2"></circle>
+              <circle cx="135" cy="89" r="3.5" fill="var(--color-surface)" stroke="var(--color-primary)" stroke-width="2"></circle>
+              <circle cx="210" cy="75" r="3.5" fill="var(--color-surface)" stroke="var(--color-primary)" stroke-width="2"></circle>
+              <circle cx="285" cy="66" r="3.5" fill="var(--color-surface)" stroke="var(--color-primary)" stroke-width="2"></circle>
+              <circle cx="360" cy="60" r="4" fill="var(--color-success)" stroke="var(--color-success)" stroke-width="2"></circle>
+              <text x="60" y="134" text-anchor="middle" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">v2024.1</text>
+              <text x="135" y="134" text-anchor="middle" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">v2024.2</text>
+              <text x="210" y="134" text-anchor="middle" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">v2024.3</text>
+              <text x="285" y="134" text-anchor="middle" fill="var(--color-ink-subtle)" style="font-family:var(--font-mono);font-size:9px">v2025.1</text>
+              <text x="360" y="134" text-anchor="middle" fill="var(--color-ink)" style="font-family:var(--font-mono);font-size:9px">v2025.2</text>
+            </svg>
+            <div class="text-caption" style="margin-top:8px">Population mean, 63.0% → 71.3% since v2024.1.</div>
+          </div>
+
+          <!-- Figure 5 -->
+          <div class="surface-raised" style="padding:18px 20px">
+            <div class="text-label" style="margin-bottom:3px">Figure 5 · freshness</div>
+            <div class="text-heading" style="margin-bottom:16px">Agreement freshness</div>
+            <div style="display:flex;height:15px;border-radius:9999px;overflow:hidden"><div style="width:82%;background:var(--color-success)"></div><div style="width:14%;background:var(--color-ink-subtle)"></div><div style="width:4%;background:var(--color-conservative)"></div></div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-top:15px">
+              <div style="display:flex;align-items:center;gap:9px"><span style="width:9px;height:9px;border-radius:2px;background:var(--color-success);flex-shrink:0"></span><span class="text-body" style="font-size:12.5px;flex:1">Effective this catalog</span><span class="font-mono" style="font-size:12.5px">2,461</span><span class="font-mono text-ink-subtle" style="font-size:12px;width:42px;text-align:right">82%</span></div>
+              <div style="display:flex;align-items:center;gap:9px"><span style="width:9px;height:9px;border-radius:2px;background:var(--color-ink-subtle);flex-shrink:0"></span><span class="text-body" style="font-size:12.5px;flex:1">Carried forward</span><span class="font-mono" style="font-size:12.5px">431</span><span class="font-mono text-ink-subtle" style="font-size:12px;width:42px;text-align:right">14%</span></div>
+              <div style="display:flex;align-items:center;gap:9px"><span style="width:9px;height:9px;border-radius:2px;background:var(--color-conservative);flex-shrink:0"></span><span class="text-body" style="font-size:12.5px;flex:1">Stale &gt; 1 year</span><span class="font-mono" style="font-size:12.5px">110</span><span class="font-mono text-ink-subtle" style="font-size:12px;width:42px;text-align:right">4%</span></div>
+            </div>
+            <div class="text-caption" style="margin-top:14px">Recency of the upstream ASSIST fetch backing each agreement.</div>
+          </div>
+
+          <!-- Figure 6 -->
+          <div class="surface-raised" style="grid-column:1 / -1;padding:18px 20px">
+            <div class="text-label" style="margin-bottom:3px">Figure 6 · feeders</div>
+            <div class="text-heading" style="margin-bottom:14px">Feeder completeness — top &amp; bottom colleges</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px">
+              <div>
+                <div class="text-label" style="color:var(--color-success);margin-bottom:6px">Most complete</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">De Anza College</span><span class="font-mono" style="font-size:12.5px;color:var(--color-success)">96%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">Diablo Valley College</span><span class="font-mono" style="font-size:12.5px;color:var(--color-success)">95%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">Foothill College</span><span class="font-mono" style="font-size:12.5px;color:var(--color-success)">94%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">City College of San Francisco</span><span class="font-mono" style="font-size:12.5px;color:var(--color-success)">92%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0"><span class="text-body" style="font-size:12.5px">Santa Monica College</span><span class="font-mono" style="font-size:12.5px;color:var(--color-success)">90%</span></div>
+              </div>
+              <div>
+                <div class="text-label" style="margin-bottom:6px">Least complete</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">Feather River College</span><span class="font-mono text-ink-muted" style="font-size:12.5px">18%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">Lassen College</span><span class="font-mono text-ink-muted" style="font-size:12.5px">21%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">Barstow Community College</span><span class="font-mono text-ink-muted" style="font-size:12.5px">24%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px">Copper Mountain College</span><span class="font-mono text-ink-muted" style="font-size:12.5px">27%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0"><span class="text-body" style="font-size:12.5px">Cerro Coso Community College</span><span class="font-mono text-ink-muted" style="font-size:12.5px">29%</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ---------- AGREEMENTS ---------- -->
+    <sc-if value="{{ isAgreements }}" hint-placeholder-val="{{ false }}">
+      <section>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+          <div>
+            <h2 class="text-heading-lg">Agreements</h2>
+            <p class="text-caption" style="margin:3px 0 0">Drill from a receiving program, to sending colleges, to the requirement-level ledger.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px" class="text-caption">
+            <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:22px;height:7px;border-radius:9999px;background:var(--color-success)"></span>complete</span>
+            <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:22px;height:7px;border-radius:9999px;background:var(--color-ink-subtle)"></span>partial</span>
+            <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:22px;height:7px;border-radius:9999px;background:var(--color-surface-sunken);border:1px solid var(--color-border)"></span>none</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <!-- RAIL -->
+          <aside style="width:246px;flex-shrink:0">
+            <div class="surface-raised" style="overflow:hidden">
+              <div style="padding:11px 14px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between"><span class="text-label">Campus programs</span><span class="font-mono text-ink-subtle" style="font-size:11px">12</span></div>
+              <div style="max-height:600px;overflow:auto;padding:6px">
+                <div class="text-label" style="padding:9px 8px 4px;font-size:9.5px;color:var(--color-primary)">UC San Diego</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;background:var(--color-primary-soft);margin:1px 0"><span class="text-body" style="font-size:12.5px;color:var(--color-primary);font-weight:500">B.S. Computer Science</span><span class="font-mono" style="font-size:11px;color:var(--color-primary)">76%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Data Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">72%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Math–Computer Sci.</span><span class="font-mono text-ink-subtle" style="font-size:11px">69%</span></div>
+                <div class="text-label" style="padding:12px 8px 4px;font-size:9.5px">UC Berkeley</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.A. Computer Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">81%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.A. Data Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">77%</span></div>
+                <div class="text-label" style="padding:12px 8px 4px;font-size:9.5px">UCLA</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Computer Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">79%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Computer Sci. &amp; Eng.</span><span class="font-mono text-ink-subtle" style="font-size:11px">74%</span></div>
+                <div class="text-label" style="padding:12px 8px 4px;font-size:9.5px">UC Irvine</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Computer Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">71%</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Software Engineering</span><span class="font-mono text-ink-subtle" style="font-size:11px">68%</span></div>
+                <div class="text-label" style="padding:12px 8px 4px;font-size:9.5px">UC Davis</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Computer Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">74%</span></div>
+                <div class="text-label" style="padding:12px 8px 4px;font-size:9.5px">UC Santa Cruz</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:7px;margin:1px 0" style-hover="background:var(--color-surface-hover)"><span class="text-body" style="font-size:12.5px">B.S. Computer Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">66%</span></div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- COVERAGE TABLE -->
+          <div style="flex:1;min-width:0">
+            <div class="surface-raised" style="overflow:hidden">
+              <div style="padding:10px 14px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+                <div style="display:flex;align-items:baseline;gap:9px"><span class="text-body-strong" style="font-size:13px">UC San Diego · B.S. Computer Science</span><span class="font-mono text-ink-subtle" style="font-size:11px">115 colleges</span></div>
+                <span class="font-mono text-ink-subtle" style="font-size:11px">showing 22 · sorted by coverage ▾</span>
+              </div>
+              <div style="max-height:560px;overflow:auto">
+                <table style="width:100%;border-collapse:collapse">
+                  <thead>
+                    <tr>
+                      <th class="text-label" style="text-align:left;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:1">Sending college</th>
+                      <th class="text-label" style="text-align:right;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:1">Receiver courses</th>
+                      <th class="text-label" style="text-align:left;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:1;width:220px">Articulation coverage</th>
+                      <th class="text-label" style="text-align:right;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:1">%</th>
+                      <th style="width:30px;padding:9px 8px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0;z-index:1"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <sc-for list="{{ covRows }}" as="row" hint-placeholder-count="12">
+                      <tr style="background:{{ row.rowBg }}" style-hover="background:var(--color-surface-hover)">
+                        <td style="padding:7px 12px;border-bottom:1px solid var(--color-border);box-shadow:inset 3px 0 0 {{ row.accent }}"><span class="text-body" style="font-size:13px">{{ row.college }}</span></td>
+                        <td style="padding:7px 12px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">{{ row.counts }}</span></td>
+                        <td style="padding:7px 12px;border-bottom:1px solid var(--color-border)"><div style="height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="height:100%;border-radius:9999px;width:{{ row.barWidth }};background:{{ row.barColor }}"></div></div></td>
+                        <td style="padding:7px 12px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px;font-weight:500;color:{{ row.pctColor }}">{{ row.pctText }}</span></td>
+                        <td style="padding:7px 8px;border-bottom:1px solid var(--color-border);text-align:center"><span style="color:{{ row.chevron }};font-size:15px">›</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DETAIL -->
+        <div class="surface-raised" style="margin-top:14px;overflow:hidden">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:15px 18px;border-bottom:1px solid var(--color-border);background:var(--color-surface-muted)">
+            <div style="min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><span class="text-label">Agreement detail</span><span class="font-mono" style="font-size:11px;color:var(--color-ink-subtle)">asst:2025.2:ucsd:cse-bs:las-positas</span></div>
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap"><span class="font-mono" style="font-size:15px;color:var(--color-primary);font-weight:500">Las Positas College</span><span style="color:var(--color-ink-subtle)">→</span><span class="text-body-strong" style="font-size:15px">UC San Diego</span><span style="color:var(--color-ink-subtle)">·</span><span class="text-body" style="font-size:15px">B.S. Computer Science</span></div>
+              <div class="text-caption" style="margin-top:5px">Chabot–Las Positas CCD · CEEB 004622 · catalog 2025–26 · source ASSIST · fetched 2025‑06‑18 04:12Z</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="display:flex;align-items:baseline;gap:1px;justify-content:flex-end"><span class="text-stat" style="font-size:28px">66.7</span><span class="font-mono text-ink-subtle" style="font-size:14px">%</span></div>
+              <div class="font-mono text-ink-muted" style="font-size:11.5px">8 / 12 articulated</div>
+            </div>
+          </div>
+
+          <div style="padding:14px 18px 18px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+              <div style="display:inline-flex;background:var(--color-surface-sunken);border:1px solid var(--color-border);border-radius:8px;padding:3px;gap:2px">
+                <button onClick="{{ setRepLedger }}" style="{{ segLedger }}">Requirements ledger</button>
+                <button onClick="{{ setRepStored }}" style="{{ segStored }}">Stored JSON</button>
+                <button onClick="{{ setRepRaw }}" style="{{ segRaw }}">Raw upstream</button>
+              </div>
+              <span class="text-caption font-mono" style="font-size:11px">representation of the same agreement record</span>
+            </div>
+
+            <!-- LEDGER -->
+            <sc-if value="{{ showLedger }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+                  <button onClick="{{ exportLedger }}" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-ink-muted);padding:5px 11px;border-radius:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px" style-hover="background:var(--color-surface-hover);color:var(--color-ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12M7 12l5 5 5-5M5 21h14"></path></svg>Export CSV</button>
+                </div>
+                <div style="border:1px solid var(--color-border);border-radius:9px;overflow:hidden">
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;padding:8px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border)"><span class="text-label">Required · UC San Diego</span><span class="text-label">Satisfied by · Las Positas</span><span class="text-label" style="text-align:right">Status</span></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">CSE 8A</div><div class="text-caption" style="font-size:11px">Intro to Programming I · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">CIS 1</span><span class="text-caption" style="font-size:10.5px">or</span><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">CIS 7</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">CSE 8B</div><div class="text-caption" style="font-size:11px">Intro to Programming II · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">CIS 2</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Intermediate Programming</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">CSE 12</div><div class="text-caption" style="font-size:11px">Basic Data Structures · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">CS 20</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Data Structures &amp; Algorithms</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border);background:var(--color-surface-muted)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500;color:var(--color-ink-muted)">CSE 15L</div><div class="text-caption" style="font-size:11px">Software Tools &amp; Techniques Lab · 2u</div></div><div style="display:flex;align-items:center;gap:9px"><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span><span class="text-caption" style="font-style:italic;color:var(--color-ink-subtle);white-space:nowrap">Nothing granted yet</span><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span></div><div style="text-align:right"><span class="text-tag" style="color:var(--color-ink-subtle);border:1px solid var(--color-border);padding:2px 9px;border-radius:9999px">No match</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">CSE 20</div><div class="text-caption" style="font-size:11px">Discrete Mathematics · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">MATH 7</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Discrete Structures</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border);background:var(--color-surface-muted)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500;color:var(--color-ink-muted)">CSE 21</div><div class="text-caption" style="font-size:11px">Math for Algorithms &amp; Systems · 4u</div></div><div style="display:flex;align-items:center;gap:9px"><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span><span class="text-caption" style="font-style:italic;color:var(--color-ink-subtle);white-space:nowrap">Nothing granted yet</span><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span></div><div style="text-align:right"><span class="text-tag" style="color:var(--color-ink-subtle);border:1px solid var(--color-border);padding:2px 9px;border-radius:9999px">No match</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border);background:var(--color-surface-muted)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500;color:var(--color-ink-muted)">CSE 30</div><div class="text-caption" style="font-size:11px">Computer Organization · 4u</div></div><div style="display:flex;align-items:center;gap:9px"><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span><span class="text-caption" style="font-style:italic;color:var(--color-ink-subtle);white-space:nowrap">Nothing granted yet</span><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span></div><div style="text-align:right"><span class="text-tag" style="color:var(--color-ink-subtle);border:1px solid var(--color-border);padding:2px 9px;border-radius:9999px">No match</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border);background:var(--color-surface-muted)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500;color:var(--color-ink-muted)">MATH 18</div><div class="text-caption" style="font-size:11px">Linear Algebra · 4u</div></div><div style="display:flex;align-items:center;gap:9px"><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span><span class="text-caption" style="font-style:italic;color:var(--color-ink-subtle);white-space:nowrap">Nothing granted yet</span><span style="flex:1;border-top:1px dashed var(--color-border-strong)"></span></div><div style="text-align:right"><span class="text-tag" style="color:var(--color-ink-subtle);border:1px solid var(--color-border);padding:2px 9px;border-radius:9999px">No match</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">MATH 20A</div><div class="text-caption" style="font-size:11px">Calculus I · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">MATH 1</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Calculus I</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">MATH 20B</div><div class="text-caption" style="font-size:11px">Calculus II · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">MATH 2</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Calculus II</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--color-border)"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">MATH 20C</div><div class="text-caption" style="font-size:11px">Calculus III · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">MATH 3</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Multivariable Calculus</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr 132px;gap:14px;align-items:center;padding:10px 14px"><div><div class="font-mono" style="font-size:12.5px;font-weight:500">PHYS 2A</div><div class="text-caption" style="font-size:11px">Physics: Mechanics · 4u</div></div><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="font-mono" style="font-size:12px;background:var(--color-surface-sunken);padding:2px 7px;border-radius:5px">PHYS 8A</span><span class="text-caption" style="font-size:11px;color:var(--color-ink-muted)">Physics for Scientists I</span></div><div style="text-align:right"><span class="text-body-strong" style="display:inline-flex;align-items:center;gap:5px;color:var(--color-success);font-size:12px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Articulated</span></div></div>
+                </div>
+                <div class="text-caption" style="margin-top:10px">8 of 12 required receiving courses satisfied · 4 have no comparable community-college course in v2025.2.</div>
+              </div>
+            </sc-if>
+
+            <!-- STORED JSON -->
+            <sc-if value="{{ showStored }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--color-surface-sunken);border:1px solid var(--color-border);border-bottom:0;border-radius:8px 8px 0 0">
+                  <span class="font-mono text-ink-muted" style="font-size:11.5px">agreement.stored.json · 214 lines · 6.1 KB</span>
+                  <div style="display:flex;gap:6px">
+                    <button onClick="{{ copyStored }}" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-ink-muted);padding:5px 10px;border-radius:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px" style-hover="background:var(--color-surface-hover);color:var(--color-ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 012-2h8"></path></svg>Copy</button>
+                    <button onClick="{{ downloadStored }}" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-ink-muted);padding:5px 10px;border-radius:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px" style-hover="background:var(--color-surface-hover);color:var(--color-ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12M7 12l5 5 5-5M5 21h14"></path></svg>Download</button>
+                  </div>
+                </div>
+                <pre style="margin:0;padding:15px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:0 0 8px 8px;overflow:auto;max-height:440px;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--color-ink);white-space:pre">{{ storedJson }}</pre>
+                <div class="text-caption" style="margin-top:9px">Normalized to the PMT agreement schema · requirements array truncated to 4 of 12 entries for display.</div>
+              </div>
+            </sc-if>
+
+            <!-- RAW JSON -->
+            <sc-if value="{{ showRaw }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--color-surface-sunken);border:1px solid var(--color-border);border-bottom:0;border-radius:8px 8px 0 0">
+                  <span class="font-mono text-ink-muted" style="font-size:11.5px">assist.raw.json · 1,043 lines · 38.4 KB · cached</span>
+                  <div style="display:flex;gap:6px">
+                    <button onClick="{{ copyRaw }}" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-ink-muted);padding:5px 10px;border-radius:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px" style-hover="background:var(--color-surface-hover);color:var(--color-ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 012-2h8"></path></svg>Copy</button>
+                    <button onClick="{{ downloadRaw }}" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-ink-muted);padding:5px 10px;border-radius:6px;cursor:pointer;font-family:var(--font-sans);font-size:12px" style-hover="background:var(--color-surface-hover);color:var(--color-ink)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12M7 12l5 5 5-5M5 21h14"></path></svg>Download</button>
+                  </div>
+                </div>
+                <pre style="margin:0;padding:15px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:0 0 8px 8px;overflow:auto;max-height:440px;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--color-ink-muted);white-space:pre">{{ rawJson }}</pre>
+                <div class="text-caption" style="margin-top:9px">Verbatim upstream payload from assist.org · unmodified · used to regenerate the normalized record.</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ---------- OVERVIEW (placeholder) ---------- -->
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ false }}">
+      <section>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+          <div>
+            <h2 class="text-heading-lg">Overview</h2>
+            <p class="text-caption" style="margin:3px 0 0">Snapshot of the active articulation dataset and its receiving-campus coverage.</p>
+          </div>
+          <div class="font-mono" style="font-size:11.5px;color:var(--color-ink-subtle);text-align:right;line-height:1.6">
+            dataset v2025.2 · sealed 2025‑06‑18<br>42 majors · 9 receivers · 115 senders
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <x-import component-from-global-scope="PMT.StatStrip" tiles="{{ statTiles }}" hint-size="100%,96px"></x-import>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;align-items:start">
+          <!-- Majors per campus -->
+          <div class="surface-raised" style="overflow:hidden">
+            <div style="padding:11px 16px;border-bottom:1px solid var(--color-border);display:flex;align-items:baseline;justify-content:space-between"><span class="text-body-strong" style="font-size:13px">Majors tracked per receiving campus</span><span class="font-mono text-ink-subtle" style="font-size:11px">9 campuses</span></div>
+            <table style="width:100%;border-collapse:collapse">
+              <thead>
+                <tr>
+                  <th class="text-label" style="text-align:left;padding:9px 16px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border)">Campus</th>
+                  <th class="text-label" style="text-align:right;padding:9px 10px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border)">Majors</th>
+                  <th class="text-label" style="text-align:right;padding:9px 10px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border)">Agmts</th>
+                  <th class="text-label" style="text-align:left;padding:9px 16px 9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);width:150px">Mean coverage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC Berkeley</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">6</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">402</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:81%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">81%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UCLA</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">7</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">431</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:79%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">79%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC San Diego</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">8</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">468</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:76%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">76%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC Davis</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">5</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">356</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:74%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">74%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC Irvine</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">6</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">388</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:71%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">71%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC Santa Barbara</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">4</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">274</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:68%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">68%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC Santa Cruz</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">3</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">231</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:66%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">66%</span></div></td></tr>
+                <tr><td style="padding:8px 16px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">UC Riverside</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">2</span></td><td style="padding:8px 10px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">268</span></td><td style="padding:8px 16px 8px 14px;border-bottom:1px solid var(--color-border)"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:63%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">63%</span></div></td></tr>
+                <tr><td style="padding:8px 16px"><span class="text-body" style="font-size:13px">UC Merced</span></td><td style="padding:8px 10px;text-align:right"><span class="font-mono" style="font-size:12.5px">1</span></td><td style="padding:8px 10px;text-align:right"><span class="font-mono text-ink-muted" style="font-size:12.5px">184</span></td><td style="padding:8px 16px 8px 14px"><div style="display:flex;align-items:center;gap:9px"><div style="flex:1;height:7px;border-radius:9999px;background:var(--color-surface-sunken);overflow:hidden"><div style="width:58%;height:100%;background:var(--color-ink-subtle)"></div></div><span class="font-mono" style="font-size:12px;width:34px;text-align:right">58%</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Dataset versions -->
+          <div class="surface-raised" style="overflow:hidden">
+            <div style="padding:11px 16px;border-bottom:1px solid var(--color-border);display:flex;align-items:baseline;justify-content:space-between"><span class="text-body-strong" style="font-size:13px">Dataset versions</span><span class="font-mono text-ink-subtle" style="font-size:11px">4 of 11</span></div>
+            <div style="padding:6px 8px">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;background:var(--color-primary-soft)">
+                <div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px"><span class="font-mono" style="font-size:13px;font-weight:600;color:var(--color-primary)">v2025.2</span><span class="text-tag" style="background:var(--color-primary);color:var(--color-on-primary);padding:1px 7px;border-radius:9999px">current</span></div><div class="text-caption" style="margin-top:3px">Sealed 2025‑06‑18 · Fall 2025 refresh</div></div>
+                <div style="text-align:right"><div class="font-mono" style="font-size:13px">3,002</div><div class="font-mono" style="font-size:11px;color:var(--color-success)">+214</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px" style-hover="background:var(--color-surface-hover)">
+                <div style="flex:1;min-width:0"><span class="font-mono" style="font-size:13px;font-weight:500">v2025.1</span><div class="text-caption" style="margin-top:3px">Sealed 2025‑02‑03 · Spring 2025 refresh</div></div>
+                <div style="text-align:right"><div class="font-mono text-ink-muted" style="font-size:13px">2,788</div><div class="font-mono" style="font-size:11px;color:var(--color-ink-subtle)">+96</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px" style-hover="background:var(--color-surface-hover)">
+                <div style="flex:1;min-width:0"><span class="font-mono" style="font-size:13px;font-weight:500">v2024.3</span><div class="text-caption" style="margin-top:3px">Sealed 2024‑09‑12 · Fall 2024 refresh</div></div>
+                <div style="text-align:right"><div class="font-mono text-ink-muted" style="font-size:13px">2,692</div><div class="font-mono" style="font-size:11px;color:var(--color-ink-subtle)">+151</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px" style-hover="background:var(--color-surface-hover)">
+                <div style="flex:1;min-width:0"><span class="font-mono" style="font-size:13px;font-weight:500">v2024.2</span><div class="text-caption" style="margin-top:3px">Sealed 2024‑05‑20 · Spring 2024 refresh</div></div>
+                <div style="text-align:right"><div class="font-mono text-ink-muted" style="font-size:13px">2,541</div><div class="font-mono" style="font-size:11px;color:var(--color-ink-subtle)">+88</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ---------- CC COURSES (placeholder) ---------- -->
+    <sc-if value="{{ isCC }}" hint-placeholder-val="{{ false }}">
+      <section>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px">
+          <div><h2 class="text-heading-lg">CC courses</h2><p class="text-caption" style="margin:3px 0 0">Sending catalog — community-college courses and how many university courses each articulates to.</p></div>
+          <div class="font-mono" style="font-size:11.5px;color:var(--color-ink-subtle);text-align:right;line-height:1.6">115 colleges · 44,213 courses<br>v2025.2</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px;max-width:440px"><x-import component-from-global-scope="PMT.Input" leading-icon="{{ IconSearch }}" placeholder="Search course code, title, or college…" hint-size="100%,40px"></x-import></div>
+          <span class="font-mono text-ink-subtle" style="font-size:12px;margin-left:auto">342 courses</span>
+        </div>
+        <div class="surface-raised" style="overflow:hidden">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr>
+              <th class="text-label" style="text-align:left;padding:9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Code</th>
+              <th class="text-label" style="text-align:left;padding:9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Title</th>
+              <th class="text-label" style="text-align:left;padding:9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">College</th>
+              <th class="text-label" style="text-align:left;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Dept</th>
+              <th class="text-label" style="text-align:right;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Units</th>
+              <th class="text-label" style="text-align:right;padding:9px 16px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">→ UC</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{ ccRows }}" as="c" hint-placeholder-count="12">
+                <tr style-hover="background:var(--color-surface-hover)">
+                  <td style="padding:8px 14px;border-bottom:1px solid var(--color-border)"><span class="font-mono" style="font-size:12.5px;font-weight:500">{{ c.code }}</span></td>
+                  <td style="padding:8px 14px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">{{ c.title }}</span></td>
+                  <td style="padding:8px 14px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px;color:var(--color-ink-muted)">{{ c.college }}</span></td>
+                  <td style="padding:8px 12px;border-bottom:1px solid var(--color-border)"><span class="font-mono text-ink-subtle" style="font-size:12px">{{ c.dept }}</span></td>
+                  <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">{{ c.units }}</span></td>
+                  <td style="padding:8px 16px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px;color:var(--color-primary)">{{ c.maps }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ---------- UNIVERSITY COURSES (placeholder) ---------- -->
+    <sc-if value="{{ isUni }}" hint-placeholder-val="{{ false }}">
+      <section>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:14px">
+          <div><h2 class="text-heading-lg">University courses</h2><p class="text-caption" style="margin:3px 0 0">Receiving catalog — university courses and how many community-college courses articulate into each.</p></div>
+          <div class="font-mono" style="font-size:11.5px;color:var(--color-ink-subtle);text-align:right;line-height:1.6">9 campuses · 6,120 courses<br>v2025.2</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px;max-width:440px"><x-import component-from-global-scope="PMT.Input" leading-icon="{{ IconSearch }}" placeholder="Search course code, title, or campus…" hint-size="100%,40px"></x-import></div>
+          <span class="font-mono text-ink-subtle" style="font-size:12px;margin-left:auto">1,204 courses</span>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div class="surface-raised" style="overflow:hidden">
+              <table style="width:100%;border-collapse:collapse">
+                <thead><tr>
+                  <th class="text-label" style="text-align:left;padding:9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Code</th>
+                  <th class="text-label" style="text-align:left;padding:9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Title</th>
+                  <th class="text-label" style="text-align:left;padding:9px 14px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Campus</th>
+                  <th class="text-label" style="text-align:right;padding:9px 12px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Units</th>
+                  <th class="text-label" style="text-align:right;padding:9px 16px;background:var(--color-surface-muted);border-bottom:1px solid var(--color-border);position:sticky;top:0">Incoming</th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ uniRows }}" as="u" hint-placeholder-count="12">
+                    <tr style="background:{{ u.rowBg }}" style-hover="background:var(--color-surface-hover)">
+                      <td style="padding:8px 14px;border-bottom:1px solid var(--color-border);box-shadow:inset 3px 0 0 {{ u.accent }}"><span class="font-mono" style="font-size:12.5px;font-weight:500">{{ u.code }}</span></td>
+                      <td style="padding:8px 14px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:13px">{{ u.title }}</span></td>
+                      <td style="padding:8px 14px;border-bottom:1px solid var(--color-border)"><span class="text-body" style="font-size:12.5px;color:var(--color-ink-muted)">{{ u.campus }}</span></td>
+                      <td style="padding:8px 12px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px">{{ u.units }}</span></td>
+                      <td style="padding:8px 16px;border-bottom:1px solid var(--color-border);text-align:right"><span class="font-mono" style="font-size:12.5px;color:{{ u.incomingColor }}">{{ u.incomingText }}</span></td>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <aside style="width:344px;flex-shrink:0">
+            <div class="surface-raised" style="overflow:hidden">
+              <div style="padding:11px 15px;border-bottom:1px solid var(--color-border)"><span class="text-label">Incoming articulations</span><div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span class="font-mono" style="font-size:14px;font-weight:500">CSE 15L</span><span class="text-caption" style="font-size:11.5px">UC San Diego</span></div></div>
+              <div style="padding:10px"><x-import component-from-global-scope="PMT.EmptyState" icon="{{ IconEmpty }}" title="No articulations granted yet" description="{{ emptyDesc }}" action="{{ emptyAction }}" hint-size="100%,290px"></x-import></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ---------- API (placeholder) ---------- -->
+    <sc-if value="{{ isApi }}" hint-placeholder-val="{{ false }}">
+      <section>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+          <div><h2 class="text-heading-lg">API</h2><p class="text-caption" style="margin:3px 0 0">Read-only REST access to the same records powering this console. Bearer-token auth.</p></div>
+          <div class="font-mono" style="font-size:11.5px;color:var(--color-ink-subtle);text-align:right;line-height:1.6">v1 · stable<br>rate limit 600 req / 5 min</div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:1;min-width:420px">
+            <div class="surface-raised" style="padding:16px 18px;margin-bottom:14px">
+              <div class="text-label" style="margin-bottom:8px">Base URL</div>
+              <pre style="margin:0 0 16px;padding:11px 13px;background:var(--color-surface-sunken);border:1px solid var(--color-border);border-radius:8px;font-family:var(--font-mono);font-size:12.5px;color:var(--color-ink);overflow:auto">https://api.planmytransfer.org/v1</pre>
+              <div class="text-label" style="margin-bottom:10px">Endpoints</div>
+              <div style="display:flex;flex-direction:column;gap:0">
+                <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--color-border)"><span class="font-mono" style="font-size:10.5px;font-weight:600;color:var(--color-success);width:34px">GET</span><span class="font-mono" style="font-size:12.5px;width:210px">/agreements</span><span class="text-caption" style="flex:1">List agreements by campus, program, college</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--color-border)"><span class="font-mono" style="font-size:10.5px;font-weight:600;color:var(--color-success);width:34px">GET</span><span class="font-mono" style="font-size:12.5px;width:210px">/agreements/{id}</span><span class="text-caption" style="flex:1">One agreement with full requirement ledger</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--color-border)"><span class="font-mono" style="font-size:10.5px;font-weight:600;color:var(--color-success);width:34px">GET</span><span class="font-mono" style="font-size:12.5px;width:210px">/courses/sending</span><span class="text-caption" style="flex:1">Search the community-college catalog</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--color-border)"><span class="font-mono" style="font-size:10.5px;font-weight:600;color:var(--color-success);width:34px">GET</span><span class="font-mono" style="font-size:12.5px;width:210px">/courses/receiving</span><span class="text-caption" style="flex:1">Search the university catalog</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:9px 0"><span class="font-mono" style="font-size:10.5px;font-weight:600;color:var(--color-success);width:34px">GET</span><span class="font-mono" style="font-size:12.5px;width:210px">/analysis/coverage</span><span class="text-caption" style="flex:1">Aggregate coverage statistics</span></div>
+              </div>
+            </div>
+            <div class="surface-raised" style="padding:16px 18px">
+              <div class="text-label" style="margin-bottom:8px">Example request</div>
+              <pre style="margin:0 0 16px;padding:13px;background:var(--color-surface-sunken);border:1px solid var(--color-border);border-radius:8px;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--color-ink);overflow:auto">curl -s https://api.planmytransfer.org/v1/agreements \
+  -H "Authorization: Bearer $PMT_TOKEN" \
+  -G --data-urlencode "receiving_campus=UC San Diego" \
+     --data-urlencode "program=B.S. Computer Science" \
+     --data-urlencode "dataset=v2025.2"</pre>
+              <div class="text-label" style="margin-bottom:8px">Example response</div>
+              <pre style="margin:0;padding:13px;background:var(--color-surface-sunken);border:1px solid var(--color-border);border-radius:8px;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--color-ink-muted);overflow:auto">{
+  "dataset": "v2025.2",
+  "count": 115,
+  "results": [
+    { "college": "De Anza College", "coverage": 1.0, "articulated": 12, "required": 12 },
+    { "college": "Las Positas College", "coverage": 0.6667, "articulated": 8, "required": 12 }
+  ]
+}</pre>
+            </div>
+          </div>
+          <aside style="width:400px;flex-shrink:0">
+            <div class="surface-raised" style="overflow:hidden">
+              <div style="padding:12px 16px;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between"><span class="text-body-strong" style="font-size:13px">API tokens</span><x-import component-from-global-scope="PMT.Button" size="sm" variant="primary" hint-size="110px,32px">Create token</x-import></div>
+              <div style="padding:12px 16px;background:var(--color-success-soft);border-bottom:1px solid var(--color-border)">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px"><span style="width:6px;height:6px;border-radius:9999px;background:var(--color-success)"></span><span class="text-label" style="color:var(--color-success)">New token — copy now</span></div>
+                <div style="display:flex;align-items:center;gap:8px"><span class="font-mono" style="flex:1;font-size:12px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;padding:6px 9px;overflow:auto;white-space:nowrap">pmt_live_9f3c2b8a4d1e7c60a71</span><button onClick="{{ copyStored }}" style="border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-ink-muted);padding:6px 8px;border-radius:6px;cursor:pointer;display:inline-flex" style-hover="color:var(--color-ink)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 012-2h8"></path></svg></button></div>
+                <div class="text-caption" style="margin-top:7px;font-size:11px">The secret is shown once and cannot be retrieved later.</div>
+              </div>
+              <div style="padding:6px 8px">
+                <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 10px;border-radius:8px" style-hover="background:var(--color-surface-hover)"><div style="flex:1;min-width:0"><div class="text-body-strong" style="font-size:12.5px">notebook-analysis</div><div class="font-mono text-ink-subtle" style="font-size:11px;margin-top:2px">pmt_live_••••a71 · read:agreements read:courses</div></div><div style="text-align:right"><div class="text-caption" style="font-size:11px">used 3h ago</div><div class="text-caption" style="font-size:10.5px;color:var(--color-ink-subtle)">2025‑05‑02</div></div></div>
+                <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 10px;border-radius:8px" style-hover="background:var(--color-surface-hover)"><div style="flex:1;min-width:0"><div class="text-body-strong" style="font-size:12.5px">coverage-etl</div><div class="font-mono text-ink-subtle" style="font-size:11px;margin-top:2px">pmt_live_••••3c2 · read:*</div></div><div style="text-align:right"><div class="text-caption" style="font-size:11px">used 2d ago</div><div class="text-caption" style="font-size:10.5px;color:var(--color-ink-subtle)">2025‑03‑18</div></div></div>
+                <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 10px;border-radius:8px" style-hover="background:var(--color-surface-hover)"><div style="flex:1;min-width:0"><div class="text-body-strong" style="font-size:12.5px">grants-dashboard</div><div class="font-mono text-ink-subtle" style="font-size:11px;margin-top:2px">pmt_live_••••e08 · read:analysis</div></div><div style="text-align:right"><div class="text-caption" style="font-size:11px">used 41d ago</div><div class="text-caption" style="font-size:10.5px;color:var(--color-ink-subtle)">2024‑11‑01</div></div></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </sc-if>
+
+  </main>
+
+  <sc-if value="{{ hasCopied }}" hint-placeholder-val="{{ false }}">
+    <div class="font-mono" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--color-ink);color:var(--color-canvas);padding:9px 17px;border-radius:9999px;font-size:12.5px;box-shadow:var(--shadow-lg);z-index:60">{{ copiedMsg }}</div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;barTone&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;neutral&quot;, &quot;graded&quot;], &quot;default&quot;: &quot;neutral&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Coverage bars&quot;}, &quot;coverageSort&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;coverage&quot;, &quot;college&quot;], &quot;default&quot;: &quot;coverage&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Coverage bars&quot;}, &quot;defaultRepresentation&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;ledger&quot;, &quot;stored&quot;, &quot;raw&quot;], &quot;default&quot;: &quot;ledger&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Detail view&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'analysis', rep: (props && props.defaultRepresentation) || 'ledger', copied: '' };
+
+    this.storedJson = [
+      '{',
+      '  "agreement_id": "asst:2025.2:ucsd:cse-bs:las-positas",',
+      '  "dataset_version": "v2025.2",',
+      '  "receiving": {',
+      '    "campus": "UC San Diego",',
+      '    "program": "B.S. Computer Science",',
+      '    "department": "CSE",',
+      '    "catalog_year": "2025-2026"',
+      '  },',
+      '  "sending": {',
+      '    "college": "Las Positas College",',
+      '    "district": "Chabot-Las Positas CCD",',
+      '    "ceeb": "004622"',
+      '  },',
+      '  "coverage": { "required": 12, "articulated": 8, "pct": 0.6667 },',
+      '  "requirements": [',
+      '    {',
+      '      "receiving": { "code": "CSE 8A", "title": "Intro to Programming I", "units": 4 },',
+      '      "articulated": true,',
+      '      "logic": "OR",',
+      '      "sending": [',
+      '        { "code": "CIS 1", "title": "Problem Solving with Computers I", "units": 4 },',
+      '        { "code": "CIS 7", "title": "Programming in Python", "units": 4 }',
+      '      ]',
+      '    },',
+      '    {',
+      '      "receiving": { "code": "CSE 15L", "title": "Software Tools & Techniques Lab", "units": 2 },',
+      '      "articulated": false,',
+      '      "logic": null,',
+      '      "sending": []',
+      '    }',
+      '  ],',
+      '  "provenance": {',
+      '    "source": "assist.org",',
+      '    "assist_agreement_id": 91833,',
+      '    "fetched_at": "2025-06-18T04:12:07Z"',
+      '  }',
+      '}'
+    ].join('\n');
+
+    this.rawJson = [
+      '{',
+      '  "result": {',
+      '    "agreementId": 91833,',
+      '    "academicYearId": 74,',
+      '    "sendingInstitutionId": 118,',
+      '    "receivingInstitutionId": 7,',
+      '    "articulations": [',
+      '      {',
+      '        "type": "Course",',
+      '        "receivingAttributes": [],',
+      '        "course": {',
+      '          "prefix": "CSE", "courseNumber": "8A",',
+      '          "courseTitle": "Introduction to Programming and Computational Problem Solving I",',
+      '          "maxUnits": 4.0',
+      '        },',
+      '        "sendingArticulation": {',
+      '          "type": "Course",',
+      '          "items": [',
+      '            { "type": "CourseGroup", "conjunction": "Or", "items": [',
+      '              { "prefix": "CIS", "courseNumber": "1", "courseTitle": "Problem Solving with Computers I" },',
+      '              { "prefix": "CIS", "courseNumber": "7", "courseTitle": "Programming in Python" }',
+      '            ] }',
+      '          ]',
+      '        }',
+      '      },',
+      '      {',
+      '        "type": "Course",',
+      '        "course": { "prefix": "CSE", "courseNumber": "15L", "maxUnits": 2.0 },',
+      '        "sendingArticulation": { "type": "NoArticulation", "reason": "No Comparable Course" }',
+      '      }',
+      '    ]',
+      '  }',
+      '}'
+    ].join('\n');
+
+    this.ledgerCsv = [
+      'receiving_code,receiving_title,units,articulated,logic,sending',
+      'CSE 8A,Intro to Programming I,4,true,OR,CIS 1|CIS 7',
+      'CSE 8B,Intro to Programming II,4,true,,CIS 2',
+      'CSE 12,Basic Data Structures,4,true,,CS 20',
+      'CSE 15L,Software Tools & Techniques Lab,2,false,,',
+      'CSE 20,Discrete Mathematics,4,true,,MATH 7',
+      'CSE 21,Math for Algorithms & Systems,4,false,,',
+      'CSE 30,Computer Organization,4,false,,',
+      'MATH 18,Linear Algebra,4,false,,',
+      'MATH 20A,Calculus I,4,true,,MATH 1',
+      'MATH 20B,Calculus II,4,true,,MATH 2',
+      'MATH 20C,Calculus III,4,true,,MATH 3',
+      'PHYS 2A,Physics: Mechanics,4,true,,PHYS 8A'
+    ].join('\n');
+  }
+
+  IconSearch = (p) => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, className: p && p.className },
+    React.createElement('circle', { cx: 11, cy: 11, r: 7 }),
+    React.createElement('path', { d: 'M20.5 20.5l-4.2-4.2' }));
+
+  IconEmpty = (p) => React.createElement('svg', { width: 26, height: 26, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.4, className: p && p.className },
+    React.createElement('path', { d: 'M4 6h16M4 11h16M4 16h8' }),
+    React.createElement('circle', { cx: 17, cy: 17, r: 4 }),
+    React.createElement('path', { d: 'M20 20l2.2 2.2' }));
+
+  setTab = (v) => this.setState({ tab: v });
+  setRepLedger = () => this.setState({ rep: 'ledger' });
+  setRepStored = () => this.setState({ rep: 'stored' });
+  setRepRaw = () => this.setState({ rep: 'raw' });
+
+  copy = (key, text) => {
+    try { if (navigator.clipboard) navigator.clipboard.writeText(text); } catch (e) {}
+    this.setState({ copied: key });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ copied: '' }), 1600);
+  };
+  download = (name, text, type) => {
+    try {
+      const b = new Blob([text], { type: type || 'text/plain' });
+      const u = URL.createObjectURL(b);
+      const a = document.createElement('a');
+      a.href = u; a.download = name; a.click();
+      setTimeout(() => URL.revokeObjectURL(u), 800);
+    } catch (e) {}
+  };
+
+  colleges = [
+    { college: 'De Anza College', a: 12, n: 12 },
+    { college: 'Diablo Valley College', a: 12, n: 12 },
+    { college: 'Foothill College', a: 12, n: 12 },
+    { college: 'City College of San Francisco', a: 11, n: 12 },
+    { college: 'Santa Monica College', a: 11, n: 12 },
+    { college: 'Pasadena City College', a: 10, n: 12 },
+    { college: 'Mt. San Antonio College', a: 10, n: 12 },
+    { college: 'American River College', a: 10, n: 12 },
+    { college: 'Sierra College', a: 9, n: 12 },
+    { college: 'Orange Coast College', a: 9, n: 12 },
+    { college: 'El Camino College', a: 9, n: 12 },
+    { college: 'Las Positas College', a: 8, n: 12 },
+    { college: 'San Diego Mesa College', a: 8, n: 12 },
+    { college: 'Chabot College', a: 7, n: 12 },
+    { college: 'Ohlone College', a: 7, n: 12 },
+    { college: 'Cañada College', a: 6, n: 12 },
+    { college: 'Cosumnes River College', a: 6, n: 12 },
+    { college: 'Berkeley City College', a: 5, n: 12 },
+    { college: 'Solano College', a: 4, n: 12 },
+    { college: 'Napa Valley College', a: 2, n: 12 },
+    { college: 'Lassen College', a: 0, n: 12 },
+    { college: 'Feather River College', a: 0, n: 12 }
+  ];
+
+  ccRows = [
+    { code: 'CIS 22A', title: 'Beginning Programming Methodologies', college: 'De Anza College', dept: 'CIS', units: '4.0', maps: 6 },
+    { code: 'CIS 22C', title: 'Data Abstraction & Structures', college: 'De Anza College', dept: 'CIS', units: '4.5', maps: 9 },
+    { code: 'MATH 1A', title: 'Calculus', college: 'De Anza College', dept: 'MATH', units: '5.0', maps: 9 },
+    { code: 'CIS 1', title: 'Problem Solving with Computers I', college: 'Las Positas College', dept: 'CIS', units: '4.0', maps: 4 },
+    { code: 'CS 20', title: 'Data Structures & Algorithms', college: 'Las Positas College', dept: 'CS', units: '4.0', maps: 5 },
+    { code: 'COMSC 110', title: 'Intro to Programming', college: 'Diablo Valley College', dept: 'COMSC', units: '4.0', maps: 7 },
+    { code: 'COMSC 210', title: 'Program Design & Data Structures', college: 'Diablo Valley College', dept: 'COMSC', units: '4.0', maps: 8 },
+    { code: 'MATH 192', title: 'Calculus I', college: 'Diablo Valley College', dept: 'MATH', units: '5.0', maps: 9 },
+    { code: 'CS 110A', title: 'Intro to Programming Concepts', college: 'City College of SF', dept: 'CS', units: '4.0', maps: 6 },
+    { code: 'CS 110B', title: 'Programming Fundamentals', college: 'City College of SF', dept: 'CS', units: '4.0', maps: 6 },
+    { code: 'MATH 1', title: 'Calculus I', college: 'Santa Monica College', dept: 'MATH', units: '5.0', maps: 8 },
+    { code: 'CS 55', title: 'Data Structures', college: 'Santa Monica College', dept: 'CS', units: '3.0', maps: 5 },
+    { code: 'PHYS 8A', title: 'Physics for Scientists I', college: 'Foothill College', dept: 'PHYS', units: '6.0', maps: 7 },
+    { code: 'CS 1B', title: 'Intermediate Programming', college: 'Foothill College', dept: 'CS', units: '4.5', maps: 6 },
+    { code: 'CS 3A', title: 'Object-Oriented Programming', college: 'Pasadena City College', dept: 'CS', units: '4.0', maps: 5 },
+    { code: 'MATH 7A', title: 'Calculus & Analytic Geometry', college: 'Pasadena City College', dept: 'MATH', units: '5.0', maps: 8 }
+  ];
+
+  uniRows = [
+    { code: 'CSE 8A', title: 'Intro to Programming & Computational Problem Solving I', campus: 'UC San Diego', dept: 'CSE', units: '4.0', incoming: 47 },
+    { code: 'CSE 8B', title: 'Intro to Programming & Computational Problem Solving II', campus: 'UC San Diego', dept: 'CSE', units: '4.0', incoming: 39 },
+    { code: 'CSE 12', title: 'Basic Data Structures & Object-Oriented Design', campus: 'UC San Diego', dept: 'CSE', units: '4.0', incoming: 33 },
+    { code: 'CSE 15L', title: 'Software Tools & Techniques Laboratory', campus: 'UC San Diego', dept: 'CSE', units: '2.0', incoming: 0 },
+    { code: 'CSE 20', title: 'Discrete Mathematics', campus: 'UC San Diego', dept: 'CSE', units: '4.0', incoming: 28 },
+    { code: 'COMPSCI 61A', title: 'Structure & Interpretation of Computer Programs', campus: 'UC Berkeley', dept: 'EECS', units: '4.0', incoming: 52 },
+    { code: 'COMPSCI 61B', title: 'Data Structures', campus: 'UC Berkeley', dept: 'EECS', units: '4.0', incoming: 41 },
+    { code: 'COM SCI 31', title: 'Introduction to Computer Science I', campus: 'UCLA', dept: 'COM SCI', units: '4.0', incoming: 44 },
+    { code: 'COM SCI 32', title: 'Introduction to Computer Science II', campus: 'UCLA', dept: 'COM SCI', units: '4.0', incoming: 36 },
+    { code: 'MATH 20A', title: 'Calculus for Science & Engineering', campus: 'UC San Diego', dept: 'MATH', units: '4.0', incoming: 61 },
+    { code: 'ECS 36A', title: 'Programming & Problem Solving', campus: 'UC Davis', dept: 'ECS', units: '4.0', incoming: 31 },
+    { code: 'ICS 31', title: 'Introduction to Programming', campus: 'UC Irvine', dept: 'ICS', units: '4.0', incoming: 34 },
+    { code: 'CSE 30', title: 'Computer Organization & Systems Programming', campus: 'UC San Diego', dept: 'CSE', units: '4.0', incoming: 19 },
+    { code: 'CMPS 12A', title: 'Introduction to Programming', campus: 'UC Santa Cruz', dept: 'CSE', units: '5.0', incoming: 22 }
+  ];
+
+  statTiles = [
+    { label: 'Agreements', value: '3,002' },
+    { label: 'Colleges', value: '115' },
+    { label: 'Receiving campuses', value: '9' },
+    { label: 'Majors tracked', value: '42' },
+    { label: 'Course links', value: '18,204' },
+    { label: 'Mean coverage', value: '71.3%', accent: true }
+  ];
+
+  barColorFor(pct) {
+    const tone = this.props.barTone || 'neutral';
+    if (pct <= 0) return 'transparent';
+    if (pct >= 100) return 'var(--color-success)';
+    if (tone === 'graded') {
+      if (pct >= 67) return 'var(--color-primary)';
+      if (pct >= 34) return 'var(--color-conservative)';
+      return 'var(--color-danger)';
+    }
+    return 'var(--color-ink-subtle)';
+  }
+
+  renderVals() {
+    const tab = this.state.tab;
+    const rep = this.state.rep;
+
+    let cols = this.colleges.map(c => ({ college: c.college, a: c.a, n: c.n, pct: Math.round((c.a / c.n) * 100) }));
+    const sort = this.props.coverageSort || 'coverage';
+    if (sort === 'college') cols.sort((a, b) => a.college.localeCompare(b.college));
+    else cols.sort((a, b) => (b.pct - a.pct) || a.college.localeCompare(b.college));
+
+    const covRows = cols.map(c => {
+      const sel = c.college === 'Las Positas College';
+      return {
+        college: c.college,
+        counts: c.a + ' / ' + c.n,
+        pctText: c.pct + '%',
+        barWidth: Math.max(c.pct, 0) + '%',
+        barColor: this.barColorFor(c.pct),
+        pctColor: c.pct >= 100 ? 'var(--color-success)' : (c.pct <= 0 ? 'var(--color-ink-subtle)' : 'var(--color-ink)'),
+        rowBg: sel ? 'var(--color-primary-soft)' : 'transparent',
+        accent: sel ? 'var(--color-primary)' : 'transparent',
+        chevron: sel ? 'var(--color-primary)' : 'var(--color-ink-subtle)'
+      };
+    });
+
+    const segBase = 'border:0;cursor:pointer;padding:6px 13px;border-radius:6px;font-family:var(--font-sans);font-size:12px;font-weight:500;transition:background .12s,color .12s;';
+    const on = 'background:var(--color-surface);color:var(--color-ink);box-shadow:0 1px 2px #1216210f';
+    const off = 'background:transparent;color:var(--color-ink-muted)';
+
+    const copiedLabel = { stored: 'stored JSON', raw: 'raw payload' }[this.state.copied] || '';
+
+    return {
+      tab,
+      tabOptions: [
+        { value: 'overview', label: 'Overview' },
+        { value: 'agreements', label: 'Agreements' },
+        { value: 'cc', label: 'CC courses' },
+        { value: 'uni', label: 'University courses' },
+        { value: 'analysis', label: 'Analysis' },
+        { value: 'api', label: 'API' }
+      ],
+      setTab: this.setTab,
+      isOverview: tab === 'overview',
+      isAgreements: tab === 'agreements',
+      isCC: tab === 'cc',
+      isUni: tab === 'uni',
+      isAnalysis: tab === 'analysis',
+      isApi: tab === 'api',
+
+      covRows,
+      statTiles: this.statTiles,
+      ccRows: this.ccRows,
+      uniRows: this.uniRows.map(r => ({
+        code: r.code, title: r.title, campus: r.campus, dept: r.dept, units: r.units,
+        incoming: r.incoming,
+        incomingText: String(r.incoming),
+        incomingColor: r.incoming === 0 ? 'var(--color-ink-subtle)' : 'var(--color-ink)',
+        rowBg: r.code === 'CSE 15L' ? 'var(--color-primary-soft)' : 'transparent',
+        accent: r.code === 'CSE 15L' ? 'var(--color-primary)' : 'transparent'
+      })),
+
+      rep,
+      setRepLedger: this.setRepLedger,
+      setRepStored: this.setRepStored,
+      setRepRaw: this.setRepRaw,
+      showLedger: rep === 'ledger',
+      showStored: rep === 'stored',
+      showRaw: rep === 'raw',
+      segLedger: segBase + (rep === 'ledger' ? on : off),
+      segStored: segBase + (rep === 'stored' ? on : off),
+      segRaw: segBase + (rep === 'raw' ? on : off),
+
+      storedJson: this.storedJson,
+      rawJson: this.rawJson,
+      copyStored: () => this.copy('stored', this.storedJson),
+      copyRaw: () => this.copy('raw', this.rawJson),
+      downloadStored: () => this.download('agreement.stored.json', this.storedJson, 'application/json'),
+      downloadRaw: () => this.download('assist.raw.json', this.rawJson, 'application/json'),
+      exportLedger: () => this.download('las-positas_ucsd-cse.ledger.csv', this.ledgerCsv, 'text/csv'),
+
+      hasCopied: !!this.state.copied,
+      copiedMsg: 'Copied ' + copiedLabel + ' to clipboard',
+
+      IconSearch: this.IconSearch,
+      IconEmpty: this.IconEmpty,
+      emptyDesc: 'No community-college course currently articulates to CSE 15L (Software Tools & Techniques Laboratory) at UC San Diego in dataset v2025.2.',
+      emptyAction: React.createElement('button', {
+        onClick: () => {},
+        style: { display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid var(--color-border)', background: 'var(--color-surface)', color: 'var(--color-ink)', padding: '7px 14px', borderRadius: '8px', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 500 }
+      }, 'Open in ASSIST ↗')
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -45,7 +45,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
   if (hit && Date.now() - hit.at < TTL_MS) return res.json(hit.payload);
 
   const match = pairs != null ? pairClause(pairs, 'uc_school_id') : {};
-  const [groups, nColleges, dataset_version] = await Promise.all([
+  const [groups, nColleges, dataset_version, changelog] = await Promise.all([
     db.collection('uc_agreements').aggregate([
       { $match: match },
       {
@@ -59,6 +59,14 @@ exports.getSummary = asyncHandler(async (req, res) => {
     ]).toArray(),
     db.collection('community_colleges').estimatedDocumentCount(),
     currentDatasetVersion(db),
+    // Version history for the Overview. Only version/date/action — the
+    // changelog's `detail` lists major names, which may exceed a partner's
+    // granted subset.
+    db.collection('dataset_changelog')
+      .find({}, { projection: { _id: 0, dataset_version: 1, at: 1, action: 1 } })
+      .sort({ at: -1 })
+      .limit(8)
+      .toArray(),
   ]);
 
   // Courses in scope: whole collections for admins (that's exactly what was
@@ -87,6 +95,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
   const payload = {
     dataset_version,
     scoped: pairs != null,
+    changelog,
     schools: groups.map((g) => ({
       school_id: g._id.school_id,
       school: g._id.school,

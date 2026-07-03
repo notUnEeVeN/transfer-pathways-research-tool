@@ -4,7 +4,7 @@ import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, Loading
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import { ANALYSES } from './analyses/registry'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
-import DocHead from './pages/Audit/components/DocHead'
+import { openAssist } from './pages/Audit/lib/auditFormat'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { useAuditDoc } from '@frontend/query/hooks/useAudit'
 import {
@@ -83,6 +83,22 @@ function AgreementsBrowser() {
     return m
   }, [coverage.data, program])
 
+  // Mean coverage per program — shown beside each program in the rail.
+  const meanByProgram = useMemo(() => {
+    const acc = new Map()
+    for (const r of coverage.data?.rows || []) {
+      if (r.pct_articulated == null) continue
+      const k = pKey(r.school_id, r.major)
+      const cur = acc.get(k) || { sum: 0, n: 0 }
+      cur.sum += r.pct_articulated
+      cur.n += 1
+      acc.set(k, cur)
+    }
+    const out = new Map()
+    for (const [k, { sum, n }] of acc) out.set(k, Math.round(sum / n))
+    return out
+  }, [coverage.data])
+
   if (summary.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (summary.isError) return <Alert type='error'>Failed to load your dataset summary.</Alert>
   if (!nPrograms) {
@@ -108,12 +124,16 @@ function AgreementsBrowser() {
               <p className='text-caption text-ink-subtle mb-1'>{g.school}</p>
               {g.majors.map((m) => {
                 const active = program && pKey(program.school_id, program.major) === pKey(g.school_id, m)
+                const mean = meanByProgram.get(pKey(g.school_id, m))
                 return (
                   <button key={m} type='button'
                     onClick={() => { setProgram({ school_id: g.school_id, school: g.school, major: m }); setCollegeId(null) }}
-                    className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors mb-0.5 ${
+                    className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors mb-0.5 flex items-baseline gap-2 ${
                       active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
-                    <span className='text-body break-words leading-snug'>{m}</span>
+                    <span className='text-body break-words leading-snug min-w-0'>{m}</span>
+                    {mean != null && (
+                      <span className='ml-auto shrink-0 text-caption font-mono tabular-nums text-ink-muted'>{mean}%</span>
+                    )}
                   </button>
                 )
               })}
@@ -130,7 +150,9 @@ function AgreementsBrowser() {
         <ProgramColleges program={program} coverageByCc={coverageByCc}
           coverageLoading={coverage.isLoading} onPick={setCollegeId} />
       ) : (
-        <ProgramAgreement program={program} collegeId={collegeId} onBack={() => setCollegeId(null)} />
+        <ProgramAgreement program={program} collegeId={collegeId}
+          cov={coverageByCc.get(Number(collegeId)) || null}
+          onBack={() => setCollegeId(null)} />
       )}
     </div>
   )
@@ -161,8 +183,21 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
           {program.school} · {withAgreement} of {rows.length || 115} colleges have an agreement in scope — sorted by coverage
         </p>
       </div>
-      <Input className='w-72' value={q} onChange={(e) => setQ(e.target.value)}
-        placeholder='Find a college…' leadingIcon={MagnifyingGlassIcon} />
+      <div className='flex flex-wrap items-center gap-3'>
+        <Input className='w-72' value={q} onChange={(e) => setQ(e.target.value)}
+          placeholder='Find a college…' leadingIcon={MagnifyingGlassIcon} />
+        <span className='inline-flex items-center gap-3 text-caption text-ink-subtle'>
+          <span className='inline-flex items-center gap-1.5'>
+            <span className='inline-block w-2.5 h-2.5 rounded-full bg-success/70' /> complete
+          </span>
+          <span className='inline-flex items-center gap-1.5'>
+            <span className='inline-block w-2.5 h-2.5 rounded-full bg-primary/60' /> partial
+          </span>
+          <span className='inline-flex items-center gap-1.5'>
+            <span className='inline-block w-2.5 h-2.5 rounded-full bg-surface-muted border border-border' /> none in scope
+          </span>
+        </span>
+      </div>
       {colleges.isLoading || coverageLoading ? (
         <div className='flex justify-center py-8'><Spinner /></div>
       ) : (
@@ -214,7 +249,7 @@ function CoverageBar({ pct, full }) {
 
 // The agreement for (program × college): resolve its _id from the batch
 // endpoint, then reuse the three-representation detail view.
-function ProgramAgreement({ program, collegeId, onBack }) {
+function ProgramAgreement({ program, collegeId, cov, onBack }) {
   const batch = useAgreementsBatch(collegeId, program.school_id)
   const agreement = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(program.school_id))
@@ -231,7 +266,7 @@ function ProgramAgreement({ program, collegeId, onBack }) {
       ) : !agreement ? (
         <EmptyState title='No agreement' description='This college has no agreement for the selected program in your scope.' />
       ) : (
-        <AgreementDetail agreementId={agreement._id} />
+        <AgreementDetail agreementId={agreement._id} cov={cov} />
       )}
     </Stack>
   )
@@ -294,9 +329,10 @@ function JsonPanel({ data, filename }) {
   )
 }
 
-function AgreementDetail({ agreementId }) {
+function AgreementDetail({ agreementId, cov = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw
   const docQ = useAuditDoc(agreementId, 'uc')
+  const summary = useDataSummary()
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
   const courses = useCourseList(docQ.data?.course_names)
 
@@ -306,10 +342,37 @@ function AgreementDetail({ agreementId }) {
   if (!doc) return null
 
   const slug = `${doc.uc_school}-${doc.community_college}-${doc.major}`.replace(/[^a-z0-9]+/gi, '_')
+  const missing = cov ? cov.receivers_required - cov.receivers_articulated : null
 
   return (
     <Stack gap='cozy'>
-      <DocHead doc={doc} assistUrl={docQ.data?.assist_url} />
+      {/* Header: route title + provenance on the left, coverage stat + ASSIST on the right */}
+      <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
+        <div className='min-w-0'>
+          <p className='text-body-strong break-words'>
+            {doc.community_college} <span className='text-ink-subtle'>→</span> {doc.uc_school}
+            <span className='text-ink-subtle'> · </span>{doc.major}
+          </p>
+          <p className='text-caption text-ink-subtle mt-0.5 font-mono break-all'>
+            {doc._id}{summary.data?.dataset_version ? ` · dataset ${summary.data.dataset_version}` : ''} · source ASSIST
+          </p>
+        </div>
+        <div className='ml-auto flex items-center gap-4 shrink-0'>
+          {cov && (
+            <div className='text-right'>
+              <p className={`text-stat font-mono leading-none ${cov.fully_articulated ? 'text-success' : 'text-ink'}`}>
+                {cov.pct_articulated}%
+              </p>
+              <p className='text-caption text-ink-muted mt-0.5'>
+                {cov.receivers_articulated} / {cov.receivers_required} articulated
+              </p>
+            </div>
+          )}
+          {docQ.data?.assist_url && (
+            <Button variant='secondary' onClick={() => openAssist(docQ.data.assist_url)}>Open ASSIST</Button>
+          )}
+        </div>
+      </div>
       <Tabs value={view} onChange={setView}
         options={[
           { value: 'ledger', label: 'Rendered' },
@@ -317,10 +380,18 @@ function AgreementDetail({ agreementId }) {
           { value: 'raw',    label: 'Raw ASSIST API' },
         ]} />
       {view === 'ledger' && (
-        <div className='uui-scope'>
-          <RequirementsLedger major={doc} courses={courses}
-            universityCoursesById={docQ.data?.university_courses || null} preserveOrder />
-        </div>
+        <>
+          <div className='uui-scope'>
+            <RequirementsLedger major={doc} courses={courses}
+              universityCoursesById={docQ.data?.university_courses || null} preserveOrder />
+          </div>
+          {cov && (
+            <p className='text-caption text-ink-muted border-t border-border pt-2'>
+              {cov.receivers_articulated} of {cov.receivers_required} required receivers articulated
+              {missing > 0 ? <> · <span className='text-ink'>{missing}</span> have no comparable community-college path in scope</> : ' · fully articulated'}
+            </p>
+          )}
+        </>
       )}
       {view === 'stored' && <JsonPanel data={doc} filename={`${slug}.stored.json`} />}
       {view === 'raw' && (
