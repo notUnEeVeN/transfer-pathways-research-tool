@@ -77,6 +77,12 @@ router.get('/curation/ref/:table',              curationController.getRefTable);
 router.put('/curation/ref/:table',              jsonBody, curationController.putRefRow);
 router.delete('/curation/ref/:table/:id',       curationController.deleteRefRow);
 
+// ───────── Personal API tokens (programmatic access for scripts) ─────────
+const tokensController = require('../controllers/Tokens');
+router.get('/tokens',        ...guarded, tokensController.list);
+router.post('/tokens',       ...guarded, jsonBody, tokensController.create);
+router.delete('/tokens/:id', ...guarded, tokensController.revoke);
+
 // ───────── Data explorer (scoped dataset summary + raw ASSIST payloads) ─────────
 const dataController = require('../controllers/Data');
 router.get('/data/summary',        ...guarded, dataController.getSummary);

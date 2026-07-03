@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import apiClient from '../../api/apiClient'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -67,6 +67,46 @@ export function useAgreementsBatch(collegeId, schoolId) {
         .then((r) => r.data),
     enabled: !!user?.uid && collegeId != null && schoolId != null,
     staleTime: 10 * 60 * 1000,
+  })
+}
+
+// Scoped per-agreement articulation coverage (the papers' heatmap input).
+// One fetch covers the whole visible subset; components index client-side.
+export function useCoverage() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['analysis-coverage', user?.uid],
+    queryFn: () => apiClient.get('/analysis/coverage').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+// ── personal API tokens (programmatic access) ──
+
+export function useApiTokens() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['api-tokens', user?.uid],
+    queryFn: () => apiClient.get('/tokens').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 30 * 1000,
+  })
+}
+
+export function useCreateApiToken() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (label) => apiClient.post('/tokens', { label }).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['api-tokens'] }),
+  })
+}
+
+export function useRevokeApiToken() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id) => apiClient.delete(`/tokens/${id}`).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['api-tokens'] }),
   })
 }
 

@@ -1,13 +1,16 @@
 import React, { useMemo, useState } from 'react'
-import { MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, LoadingLogo } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
+import DataApiDocs from './DataApiDocs'
+import { ANALYSES } from './analyses/registry'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import DocHead from './pages/Audit/components/DocHead'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { useAuditDoc } from '@frontend/query/hooks/useAudit'
 import {
-  useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch, useRawAssist,
+  useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch,
+  useRawAssist, useDataSummary, useCoverage,
 } from '@frontend/query/hooks/useData'
 
 /**
@@ -35,6 +38,8 @@ export default function DataPage() {
             { value: 'agreements', label: 'Agreements' },
             { value: 'cc',         label: 'CC courses' },
             { value: 'university', label: 'University courses' },
+            { value: 'analysis',   label: 'Analysis' },
+            { value: 'api',        label: 'API' },
           ]} />
       </div>
       <div className='flex-1 min-h-0 overflow-auto'>
@@ -43,70 +48,222 @@ export default function DataPage() {
           {tab === 'agreements' && <AgreementsBrowser />}
           {tab === 'cc' && <CcCoursesBrowser />}
           {tab === 'university' && <UniversityCoursesBrowser />}
+          {tab === 'analysis' && <AnalysisTab />}
+          {tab === 'api' && <DataApiDocs />}
         </div>
       </div>
     </div>
   )
 }
 
-// ───────── agreements ─────────
+// ───────── agreements (program-first) ─────────
+//
+// Navigation follows the working set: pick one of the granted campus PROGRAMS
+// (school + major — the exact things the admin selected), then a college list
+// with live articulation coverage (the papers' heatmap column), then the
+// agreement itself. No blind dropdown pairing.
+
+const pKey = (schoolId, major) => `${schoolId}|${major}`
 
 function AgreementsBrowser() {
-  const colleges = useColleges()
-  const schools = useSchools()
+  const summary = useDataSummary()
+  const coverage = useCoverage()
+  const [program, setProgram] = useState(null) // { school_id, school, major }
   const [collegeId, setCollegeId] = useState(null)
-  const [schoolId, setSchoolId] = useState(null)
-  const [selectedId, setSelectedId] = useState(null)
 
-  const batch = useAgreementsBatch(collegeId, schoolId)
-  const agreements = useMemo(() => {
-    const group = (batch.data || []).find((g) => String(g.school_id) === String(schoolId))
-    return (group?.agreements || []).slice().sort((a, b) => a.major.localeCompare(b.major))
-  }, [batch.data, schoolId])
+  const programsBySchool = summary.data?.schools || []
+  const nPrograms = programsBySchool.reduce((s, g) => s + g.majors.length, 0)
 
-  const collegeOptions = (colleges.data || [])
-    .slice().sort((a, b) => a.name.localeCompare(b.name))
-    .map((c) => ({ value: String(c.id), label: c.name }))
-  const schoolOptions = (schools.data?.uc || [])
-    .slice().sort((a, b) => a.name.localeCompare(b.name))
-    .map((s) => ({ value: String(s.id), label: s.name }))
+  // Coverage rows for the active program, keyed by college.
+  const coverageByCc = useMemo(() => {
+    const m = new Map()
+    if (!program) return m
+    for (const r of coverage.data?.rows || []) {
+      if (Number(r.school_id) === Number(program.school_id) && r.major === program.major) {
+        m.set(Number(r.community_college_id), r)
+      }
+    }
+    return m
+  }, [coverage.data, program])
+
+  if (summary.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
+  if (summary.isError) return <Alert type='error'>Failed to load your dataset summary.</Alert>
+  if (!nPrograms) {
+    return <EmptyState title='No programs in scope'
+      description='No majors are selected for your account yet — the project admin picks the subset.' />
+  }
+
+  // Auto-select when there's exactly one program.
+  if (!program && nPrograms === 1) {
+    const g = programsBySchool.find((s) => s.majors.length)
+    setProgram({ school_id: g.school_id, school: g.school, major: g.majors[0] })
+    return null
+  }
 
   return (
-    <Stack gap='comfortable'>
-      <div className='flex flex-wrap items-center gap-3'>
-        <Select className='w-72' placeholder='Community college…' value={collegeId ?? ''}
-          options={collegeOptions} onChange={(v) => { setCollegeId(v); setSelectedId(null) }} />
-        <span className='text-caption text-ink-subtle'>→</span>
-        <Select className='w-64' placeholder='UC campus…' value={schoolId ?? ''}
-          options={schoolOptions} onChange={(v) => { setSchoolId(v); setSelectedId(null) }} />
-        {batch.isLoading && collegeId && schoolId && <Spinner />}
+    <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
+      {/* Program rail — the granted school+major pairs, grouped by campus */}
+      <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
+        <p className='text-label mb-2'>Programs in your subset · {nPrograms}</p>
+        <Stack gap='cozy'>
+          {programsBySchool.map((g) => (
+            <div key={g.school_id}>
+              <p className='text-caption text-ink-subtle mb-1'>{g.school}</p>
+              {g.majors.map((m) => {
+                const active = program && pKey(program.school_id, program.major) === pKey(g.school_id, m)
+                return (
+                  <button key={m} type='button'
+                    onClick={() => { setProgram({ school_id: g.school_id, school: g.school, major: m }); setCollegeId(null) }}
+                    className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors mb-0.5 ${
+                      active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
+                    <span className='text-body break-words leading-snug'>{m}</span>
+                  </button>
+                )
+              })}
+            </div>
+          ))}
+        </Stack>
       </div>
 
-      {collegeId && schoolId && !batch.isLoading && (
-        agreements.length ? (
-          <div className='grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-4 items-start'>
-            <div className='surface-card p-2 max-h-[70vh] overflow-auto'>
-              {agreements.map((a) => (
-                <button key={a._id} type='button' onClick={() => setSelectedId(a._id)}
-                  className={`w-full text-left px-3 py-2 rounded-md border transition-colors mb-1 ${
-                    a._id === selectedId ? 'border-primary bg-primary-soft hover:bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
-                  <span className='text-body break-words leading-snug'>{a.major}</span>
-                </button>
+      {/* College coverage list → agreement detail */}
+      {!program ? (
+        <EmptyState title='Pick a program'
+          description='Choose a campus program on the left to see how every community college articulates to it.' />
+      ) : collegeId == null ? (
+        <ProgramColleges program={program} coverageByCc={coverageByCc}
+          coverageLoading={coverage.isLoading} onPick={setCollegeId} />
+      ) : (
+        <ProgramAgreement program={program} collegeId={collegeId} onBack={() => setCollegeId(null)} />
+      )}
+    </div>
+  )
+}
+
+// Every college's articulation coverage for one program — one column of the
+// papers' heatmap, doubling as navigation.
+function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
+  const colleges = useColleges()
+  const [q, setQ] = useState('')
+
+  const rows = useMemo(() => {
+    const all = (colleges.data || [])
+      .map((c) => ({ ...c, cov: coverageByCc.get(Number(c.id)) || null }))
+      .sort((a, b) => (b.cov?.pct_articulated ?? -1) - (a.cov?.pct_articulated ?? -1) || a.name.localeCompare(b.name))
+    if (!q.trim()) return all
+    const s = q.toLowerCase()
+    return all.filter((c) => c.name.toLowerCase().includes(s))
+  }, [colleges.data, coverageByCc, q])
+
+  const withAgreement = rows.filter((r) => r.cov).length
+
+  return (
+    <Stack gap='cozy'>
+      <div>
+        <p className='text-body-strong'>{program.major}</p>
+        <p className='text-caption text-ink-muted'>
+          {program.school} · {withAgreement} of {rows.length || 115} colleges have an agreement in scope — sorted by coverage
+        </p>
+      </div>
+      <Input className='w-72' value={q} onChange={(e) => setQ(e.target.value)}
+        placeholder='Find a college…' leadingIcon={MagnifyingGlassIcon} />
+      {colleges.isLoading || coverageLoading ? (
+        <div className='flex justify-center py-8'><Spinner /></div>
+      ) : (
+        <div className='surface-card overflow-auto max-h-[65vh]'>
+          <table className='w-full text-left'>
+            <thead className='sticky top-0 bg-surface border-b border-border'>
+              <tr>
+                <th className='px-3 py-2 text-label'>Community college</th>
+                <th className='px-3 py-2 text-label whitespace-nowrap'>Coverage</th>
+                <th className='px-3 py-2 text-label whitespace-nowrap'>Receivers</th>
+                <th className='px-3 py-2 text-label' />
+              </tr>
+            </thead>
+            <tbody className='divide-y divide-border/60'>
+              {rows.map((c) => (
+                <tr key={c.id}
+                  className={c.cov ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-50'}
+                  onClick={() => c.cov && onPick(Number(c.id))}>
+                  <td className='px-3 py-1.5 text-body'>{c.name}</td>
+                  <td className='px-3 py-1.5'>
+                    {c.cov ? <CoverageBar pct={c.cov.pct_articulated} full={c.cov.fully_articulated} /> :
+                      <span className='text-caption text-ink-subtle'>no agreement in scope</span>}
+                  </td>
+                  <td className='px-3 py-1.5 text-caption font-mono tabular-nums text-ink-muted'>
+                    {c.cov ? `${c.cov.receivers_articulated}/${c.cov.receivers_required}` : '—'}
+                  </td>
+                  <td className='px-3 py-1.5 text-caption text-ink-subtle text-right'>{c.cov ? 'view →' : ''}</td>
+                </tr>
               ))}
-            </div>
-            {selectedId
-              ? <AgreementDetail agreementId={selectedId} />
-              : <EmptyState title='Pick a major' description='Select an agreement from the list to inspect it.' />}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </Stack>
+  )
+}
+
+function CoverageBar({ pct, full }) {
+  const v = Math.max(0, Math.min(100, pct ?? 0))
+  return (
+    <span className='inline-flex items-center gap-2'>
+      <span className='inline-block w-24 h-1.5 rounded-pill bg-surface-muted border border-border overflow-hidden'>
+        <span className={`block h-full ${full ? 'bg-success/70' : 'bg-primary/60'}`} style={{ width: `${v}%` }} />
+      </span>
+      <span className='text-caption font-mono tabular-nums text-ink'>{pct != null ? `${pct}%` : '—'}</span>
+    </span>
+  )
+}
+
+// The agreement for (program × college): resolve its _id from the batch
+// endpoint, then reuse the three-representation detail view.
+function ProgramAgreement({ program, collegeId, onBack }) {
+  const batch = useAgreementsBatch(collegeId, program.school_id)
+  const agreement = useMemo(() => {
+    const group = (batch.data || []).find((g) => Number(g.school_id) === Number(program.school_id))
+    return (group?.agreements || []).find((a) => a.major === program.major) || null
+  }, [batch.data, program])
+
+  return (
+    <Stack gap='cozy'>
+      <div>
+        <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
+      </div>
+      {batch.isLoading ? (
+        <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
+      ) : !agreement ? (
+        <EmptyState title='No agreement' description='This college has no agreement for the selected program in your scope.' />
+      ) : (
+        <AgreementDetail agreementId={agreement._id} />
+      )}
+    </Stack>
+  )
+}
+
+// ───────── analysis (registry-driven; populated over time) ─────────
+
+function AnalysisTab() {
+  if (!ANALYSES.length) {
+    return (
+      <div className='mx-auto max-w-screen-md'>
+        <EmptyState title='Analyses land here'
+          description='This tab hosts statistical interpretations computed from the live, scoped API — the papers&apos; figures first (coverage heatmaps, credit-loss decomposition, choice cost), then new ones. Each analysis is a component registered in frontend/src/analyses/registry.js; because they read the live endpoints, a dataset refresh or subset change updates every figure automatically.' />
+      </div>
+    )
+  }
+  return (
+    <Stack gap='section'>
+      {ANALYSES.map(({ id, title, description, source, Component }) => (
+        <section key={id}>
+          <div className='mb-3'>
+            <h2 className='text-heading'>{title}</h2>
+            <p className='text-caption text-ink-muted'>
+              {description}{source ? <> · <span className='text-ink-subtle'>{source}</span></> : null}
+            </p>
           </div>
-        ) : (
-          <EmptyState title='No agreements in scope'
-            description='This college × campus pair has no agreements within your granted majors.' />
-        )
-      )}
-      {!(collegeId && schoolId) && (
-        <EmptyState title='Choose a pair'
-          description='Pick a community college and a UC campus to list their articulation agreements.' />
-      )}
+          <Component />
+        </section>
+      ))}
     </Stack>
   )
 }
