@@ -255,9 +255,12 @@ export default function CoverageHeatmap() {
   const [rowModeValue, setRowModeValue] = useState('college')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   const deferredMajorFilter = useDeferredValue(majorFilter)
+  // Re-fetch on each page load / when this tab opens (so a manual DB refresh
+  // appears without remembering to click Refresh), but no background polling —
+  // the data is stagnant between refreshes.
   const coverage = useCoverage(
     { majorContains: deferredMajorFilter, groupBy: rowMode.value },
-    { staleTime: 30 * 1000, refetchInterval: 60 * 1000 }
+    { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
   const model = useMemo(() => buildHeatmap(rows), [rows])
@@ -269,7 +272,7 @@ export default function CoverageHeatmap() {
   }
 
   if (coverage.isError) {
-    return <Alert type='error'>Could not load /analysis/coverage.</Alert>
+    return <Alert type='error'>Could not load the coverage data.</Alert>
   }
 
   if (!rows.length) {

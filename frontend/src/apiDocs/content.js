@@ -30,6 +30,27 @@ export const GETTING_STARTED_NOTES = [
   'Most list endpoints accept majorContains=<substring> (case-insensitive) to filter to one major.',
 ]
 
+// ───────────────────────── starter code ─────────────────────────
+// The Starter tab is the single onboarding surface: the numbered steps below
+// plus the one official starter file (pmt.py, served with the API address baked
+// in — see server/client/pmtPy.js). publish() lives in the same file, so there
+// is no separate publish page.
+
+export const STARTER_EXPLANATION =
+  'One file with everything. Create a token, then either keep this next to your ' +
+  'notebook and import it, or paste it straight into a cell. fetch("/path") ' +
+  'returns a pandas DataFrame for any endpoint; publish(fig, slug, title) shares ' +
+  'a chart with the team on the Visuals tab. Change the path to reach a different ' +
+  'endpoint — the Endpoints tab lists them all.'
+
+export const STARTER_STEPS = [
+  ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
+  ['Get the starter file', 'Copy or download pmt.py below — it comes preconfigured with this API\'s address. Drop it next to your notebook, or paste it straight into a cell.'],
+  ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of the file (or set the PMT_TOKEN environment variable).'],
+  ['Pull data', 'fetch("/export/receivers") returns a pandas DataFrame. Change the path for any other endpoint (see the Endpoints tab) — from there it\'s ordinary pandas + matplotlib.'],
+  ['Share a figure', 'publish(fig, slug="…", title="…") sends your chart to the Visuals tab for the whole team, stamped with the dataset version. Re-publish the same slug to update it.'],
+]
+
 // ───────────────────────── endpoints ─────────────────────────
 
 export const ENDPOINT_GROUPS = [
@@ -315,6 +336,18 @@ export const ENDPOINT_GROUPS = [
   },
 ]
 
+// Endpoint groups withheld from the partner-facing docs: the precomputed
+// analyses and the figures-gallery mechanics. They stay defined above as the
+// canonical reference, but the Endpoints tab and the AI briefing render only
+// the partner-visible groups — analyses reach partners through the website
+// (Data → Analysis), staged by the admin, not handed out as fetch recipes.
+// Deliberate obscurity, not a hard wall: the endpoints still function so the
+// site's own released analyses keep rendering in the browser.
+export const HIDDEN_ENDPOINT_GROUP_IDS = new Set(['analysis', 'figures'])
+export const PARTNER_ENDPOINT_GROUPS = ENDPOINT_GROUPS.filter(
+  (g) => !HIDDEN_ENDPOINT_GROUP_IDS.has(g.id)
+)
+
 // ───────────────────────── the data guide ─────────────────────────
 
 export const GUIDE_SECTIONS = [
@@ -494,35 +527,29 @@ export const GUIDE_SECTIONS = [
   },
 ]
 
-// ───────────────────────── build & publish ─────────────────────────
+// ───────────────────────── AI-briefing helpers ─────────────────────────
+// Only used by buildAiBriefing() (the Data guide's "Copy for AI"); the human
+// Starter tab renders pmt.py itself, not these.
 
 export const curlBootstrap = (base) =>
   `curl -H "Authorization: Bearer pmtr_..." ${base}/client/pmt.py -o pmt.py`
-
-export const PUBLISH_STEPS = [
-  ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
-  ['Get pmt.py', 'Copy or download it below — it comes preconfigured with this API\'s address. Drop it next to your notebook or script.'],
-  ['Write your figure', 'Ordinary pandas + matplotlib in your own IDE or notebook. pmt.fetch("/analysis/…") returns DataFrames.'],
-  ['Publish', 'pmt.publish(fig, slug="…", title="…") — the figure appears in Data → Analysis for the whole team, stamped with the dataset version it was computed from. Republish the same slug to update it.'],
-]
 
 export const EXAMPLE_FIGURE_SCRIPT = `import matplotlib.pyplot as plt
 import pmt
 
 pmt.TOKEN = "pmtr_..."          # or: export PMT_TOKEN before launching
 
-cov = pmt.fetch("/analysis/coverage")
-heat = cov.pivot_table(index="community_college", columns="school",
-                       values="pct_articulated")
+# /export/receivers is one row per campus requirement — count them per campus.
+df = pmt.fetch("/export/receivers")
+counts = df.groupby("school").size().sort_values(ascending=False)
 
-fig, ax = plt.subplots(figsize=(8, 10))
-im = ax.imshow(heat.fillna(0), aspect="auto")
-ax.set_yticks(range(len(heat.index)), heat.index, fontsize=5)
-ax.set_xticks(range(len(heat.columns)), heat.columns, rotation=45, ha="right")
-fig.colorbar(im, label="% articulated")
+fig, ax = plt.subplots(figsize=(8, 5))
+counts.plot.bar(ax=ax)
+ax.set_ylabel("requirements")
+fig.tight_layout()
 
-pmt.publish(fig, slug="coverage-heatmap",
-            title="Articulation coverage, college × campus")`
+pmt.publish(fig, slug="requirements-by-campus",
+            title="Requirements per UC campus")`
 
 // ───────────────────────── the AI paste ─────────────────────────
 
@@ -565,10 +592,10 @@ export function buildAiBriefing(base) {
     ].join('\n'),
     '```python\n' + pythonSnippet(base) + '\n```',
     '## Endpoints',
-    ...ENDPOINT_GROUPS.flatMap((g) => [`### ${g.title}`, ...g.endpoints.map(mdEndpoint)]),
+    ...PARTNER_ENDPOINT_GROUPS.flatMap((g) => [`### ${g.title}`, ...g.endpoints.map(mdEndpoint)]),
     '## Publishing figures to the team gallery',
     'Figures are shared through the console: download the client once (`' + curlBootstrap(base) + '`), write ordinary pandas + matplotlib, and call pmt.publish(fig, slug, title) — the figure appears in the console\'s Data → Analysis gallery for the whole team, stamped with the dataset_version it was computed from. When asked to produce an analysis or figure, end scripts with a pmt.publish call.',
-    PUBLISH_STEPS.map(([t, d]) => `- ${t}: ${d}`).join('\n'),
+    STARTER_STEPS.map(([t, d]) => `- ${t}: ${d}`).join('\n'),
     '```python\n' + EXAMPLE_FIGURE_SCRIPT + '\n```',
     '## Data model & analysis rules',
     ...GUIDE_SECTIONS.flatMap((s) => [`### ${s.title}`, ...s.blocks.map(mdBlock)]),

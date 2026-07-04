@@ -1,13 +1,20 @@
 import React, { useMemo, useState } from 'react'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, EmptyState, Input, Spinner, Stack, Tabs } from './components/ui'
-import { useAnalysisRaw } from './shared/query/hooks/useData'
+import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, Tabs } from './components/ui'
+import { useRefTable, useDeleteRefRow } from './shared/query/hooks/useData'
+import { refTableByKey } from './references/refTablesRegistry'
+import RefRowModal from './references/RefRowModal'
+
+/**
+ * Data → References — the hand-curated reference tables, organized the way they
+ * read best (drill into a district or a UC campus) and editable in place: each
+ * row has edit/delete, and each view can add a row. Reads + writes go through
+ * the curation ref CRUD so an edit refetches. Edits are open to every console
+ * user and stamped with their uid.
+ */
 
 const intFmt = new Intl.NumberFormat()
-
-function norm(value) {
-  return String(value || '').toLowerCase()
-}
+const norm = (value) => String(value || '').toLowerCase()
 
 function groupBy(rows, keyFn) {
   const map = new Map()
@@ -26,7 +33,9 @@ function courseLabel(row) {
   return null
 }
 
-function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]' }) {
+// ── shared table with optional per-row edit/delete ──
+function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, onDelete, deleting }) {
+  const showActions = !!(onEdit || onDelete)
   return (
     <div className={`surface-card overflow-auto ${maxHeight}`}>
       <table className='min-w-full border-separate border-spacing-0 text-left'>
@@ -37,6 +46,7 @@ function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]' }) {
                 {col.label}
               </th>
             ))}
+            {showActions && <th className='sticky top-0 bg-surface border-b border-border px-2 py-2 text-label text-right'>edit</th>}
           </tr>
         </thead>
         <tbody>
@@ -47,6 +57,12 @@ function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]' }) {
                   {col.render ? col.render(row) : (row[col.key] ?? '-')}
                 </td>
               ))}
+              {showActions && (
+                <td className='border-b border-border px-2 py-1 text-right whitespace-nowrap'>
+                  {onEdit && <Button variant='ghost' leadingIcon={PencilSquareIcon} onClick={() => onEdit(row)} />}
+                  {onDelete && <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting} onClick={() => onDelete(row)} />}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -59,25 +75,15 @@ function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, q
   return (
     <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
       <p className='text-label mb-2'>{title} · {intFmt.format(count)}</p>
-      <Input
-        value={query}
-        onChange={(e) => onQuery(e.target.value)}
-        placeholder={placeholder}
-        leadingIcon={MagnifyingGlassIcon}
-        className='mb-3'
-      />
+      <Input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder}
+        leadingIcon={MagnifyingGlassIcon} className='mb-3' />
       <div className='space-y-1'>
         {rows.map((row) => {
           const active = String(row.key) === String(selectedKey)
           return (
-            <button
-              key={row.key}
-              type='button'
-              onClick={() => onSelect(row.key)}
+            <button key={row.key} type='button' onClick={() => onSelect(row.key)}
               className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors ${
-                active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'
-              }`}
-            >
+                active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
               {renderRow(row)}
             </button>
           )
@@ -87,9 +93,27 @@ function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, q
   )
 }
 
+// ── hook: shared edit/delete/add wiring for a reference table ──
+function useRowEditing(tableKey) {
+  const config = refTableByKey(tableKey)
+  const del = useDeleteRefRow(tableKey)
+  const [editing, setEditing] = useState(null)
+  return {
+    config,
+    editing,
+    openEdit: (row) => setEditing({ row: { ...row }, isNew: false }),
+    openAdd: (prefill = {}) => setEditing({ row: { ...config.newRow(), ...prefill }, isNew: true }),
+    close: () => setEditing(null),
+    remove: (row) => { if (window.confirm('Delete this row? This cannot be undone.')) del.mutate(row._id) },
+    deleting: del.isPending,
+  }
+}
+
+// ── CC districts: rail of districts → that district's colleges ──
 function DistrictLookup({ rows }) {
   const [query, setQuery] = useState('')
   const [selectedKey, setSelectedKey] = useState(null)
+  const ed = useRowEditing('ref_cc_districts')
 
   const districts = useMemo(() => {
     const byDistrict = groupBy(rows, (r) => r.district || 'Unmapped district')
@@ -106,42 +130,37 @@ function DistrictLookup({ rows }) {
     const q = norm(query)
     if (!q) return districts
     return districts.filter((row) =>
-      norm(row.name).includes(q) ||
-      norm(row.region).includes(q) ||
+      norm(row.name).includes(q) || norm(row.region).includes(q) ||
       norm(row.counties.join(' ')).includes(q) ||
-      row.colleges.some((college) => norm(college.community_college).includes(q))
-    )
+      row.colleges.some((c) => norm(c.community_college).includes(q)))
   }, [districts, query])
 
-  const selected = useMemo(() => {
-    return districts.find((row) => String(row.key) === String(selectedKey)) || districts[0] || null
-  }, [districts, selectedKey])
+  const selected = useMemo(
+    () => districts.find((row) => String(row.key) === String(selectedKey)) || districts[0] || null,
+    [districts, selectedKey])
 
   return (
     <Stack gap='cozy'>
-      <p className='text-caption text-ink-subtle'>
-        {intFmt.format(rows.length)} colleges mapped to {intFmt.format(districts.length)} districts
-      </p>
+      <div className='flex flex-wrap items-center gap-3'>
+        <span className='text-caption text-ink-subtle'>
+          {intFmt.format(rows.length)} colleges mapped to {intFmt.format(districts.length)} districts
+        </span>
+        <Button className='ml-auto' leadingIcon={PlusIcon}
+          onClick={() => ed.openAdd(selected ? { district: selected.name, region: selected.region } : {})}>
+          Add college
+        </Button>
+      </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-4 items-start'>
-        <ReferenceRail
-          title='Districts'
-          count={districts.length}
-          rows={railRows}
-          selectedKey={selected?.key}
-          onSelect={setSelectedKey}
-          query={query}
-          onQuery={setQuery}
+        <ReferenceRail title='Districts' count={districts.length} rows={railRows}
+          selectedKey={selected?.key} onSelect={setSelectedKey} query={query} onQuery={setQuery}
           placeholder='Find district, county, college…'
           renderRow={(row) => (
             <>
               <p className='text-body leading-snug'>{row.name}</p>
-              <p className='text-caption text-ink-subtle mt-0.5'>
-                {row.colleges.length} colleges · {row.region}
-              </p>
+              <p className='text-caption text-ink-subtle mt-0.5'>{row.colleges.length} colleges · {row.region}</p>
             </>
-          )}
-        />
+          )} />
 
         {!selected ? (
           <EmptyState title='No reference rows' description='The district reference table is empty.' />
@@ -149,34 +168,34 @@ function DistrictLookup({ rows }) {
           <Stack gap='cozy'>
             <div className='surface-card p-4'>
               <p className='text-body-strong'>{selected.name}</p>
-              <p className='text-caption text-ink-muted mt-1'>
-                {selected.region} · {selected.colleges.length} colleges
-              </p>
+              <p className='text-caption text-ink-muted mt-1'>{selected.region} · {selected.colleges.length} colleges</p>
               <div className='mt-3 flex flex-wrap gap-2'>
-                {selected.counties.map((county) => (
-                  <Badge key={county}>{county}</Badge>
-                ))}
+                {selected.counties.map((county) => <Badge key={county}>{county}</Badge>)}
               </div>
             </div>
 
             <DataTable
               rows={selected.colleges}
+              onEdit={ed.openEdit} onDelete={ed.remove} deleting={ed.deleting}
               columns={[
                 { key: 'community_college', label: 'Community college', cellClassName: 'text-ink' },
                 { key: 'counties_served', label: 'Counties served', render: (r) => (r.counties_served || []).join(', ') || '-' },
                 { key: '_id', label: 'cc id', render: (r) => <span className='font-mono'>{r._id}</span> },
-              ]}
-            />
+              ]} />
           </Stack>
         )}
       </div>
+
+      <RefRowModal config={ed.config} editing={ed.editing} onClose={ed.close} />
     </Stack>
   )
 }
 
+// ── UC minimums: rail of campuses → that campus's required courses ──
 function UcMinimumsLookup({ rows }) {
   const [query, setQuery] = useState('')
   const [selectedKey, setSelectedKey] = useState(null)
+  const ed = useRowEditing('ref_uc_transfer_requirements')
 
   const campuses = useMemo(() => {
     const byCampus = groupBy(rows, (r) => String(r.school_id))
@@ -184,8 +203,7 @@ function UcMinimumsLookup({ rows }) {
       const sorted = items.slice().sort((a, b) =>
         String(a.group_id).localeCompare(String(b.group_id)) ||
         String(a.set_id).localeCompare(String(b.set_id)) ||
-        Number(a.source_order || 0) - Number(b.source_order || 0)
-      )
+        Number(a.source_order || 0) - Number(b.source_order || 0))
       return {
         key,
         school: sorted[0]?.school || `School ${key}`,
@@ -193,9 +211,6 @@ function UcMinimumsLookup({ rows }) {
         requirements: sorted,
         matched: sorted.filter((r) => r.matched).length,
         groups: [...new Set(sorted.map((r) => r.group_id))].sort(),
-        alternativeGroups: [...groupBy(sorted, (r) => r.group_id).values()].filter((groupRows) =>
-          new Set(groupRows.map((r) => r.set_id)).size > 1
-        ).length,
       }
     }).sort((a, b) => a.school.localeCompare(b.school))
   }, [rows])
@@ -204,14 +219,9 @@ function UcMinimumsLookup({ rows }) {
     const q = norm(query)
     if (!q) return campuses
     return campuses.filter((campus) =>
-      norm(campus.school).includes(q) ||
-      norm(campus.ucCode).includes(q) ||
+      norm(campus.school).includes(q) || norm(campus.ucCode).includes(q) ||
       campus.requirements.some((row) =>
-        norm(row.group_id).includes(q) ||
-        norm(row.receiving_code).includes(q) ||
-        norm(courseLabel(row)).includes(q)
-      )
-    )
+        norm(row.group_id).includes(q) || norm(row.receiving_code).includes(q) || norm(courseLabel(row)).includes(q)))
   }, [campuses, query])
 
   const selected = campuses.find((row) => String(row.key) === String(selectedKey)) || campuses[0] || null
@@ -230,17 +240,16 @@ function UcMinimumsLookup({ rows }) {
         <span className='text-caption text-ink-subtle'>
           {intFmt.format(rows.length)} imported hard-minimum requirements · {intFmt.format(campuses.length)} UC campuses
         </span>
+        <Button className='ml-auto' leadingIcon={PlusIcon}
+          onClick={() => ed.openAdd(selected ? { uc_code: selected.ucCode } : {})}
+          disabled={!selected}>
+          Add requirement
+        </Button>
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-4 items-start'>
-        <ReferenceRail
-          title='UC campuses'
-          count={campuses.length}
-          rows={railRows}
-          selectedKey={selected?.key}
-          onSelect={setSelectedKey}
-          query={query}
-          onQuery={setQuery}
+        <ReferenceRail title='UC campuses' count={campuses.length} rows={railRows}
+          selectedKey={selected?.key} onSelect={setSelectedKey} query={query} onQuery={setQuery}
           placeholder='Find UCB, calculus, CSE…'
           renderRow={(campus) => (
             <>
@@ -250,13 +259,10 @@ function UcMinimumsLookup({ rows }) {
               </p>
               <p className='text-caption text-ink-subtle mt-0.5'>
                 {campus.requirements.length} courses · {campus.groups.length} groups
-                {campus.matched < campus.requirements.length
-                  ? ` · ${campus.requirements.length - campus.matched} not matched`
-                  : ''}
+                {campus.matched < campus.requirements.length ? ` · ${campus.requirements.length - campus.matched} not matched` : ''}
               </p>
             </>
-          )}
-        />
+          )} />
 
         {!selected ? (
           <EmptyState title='No minimums imported' description='The UC hard-minimum reference table is empty.' />
@@ -265,21 +271,18 @@ function UcMinimumsLookup({ rows }) {
             <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
               <div className='min-w-0'>
                 <p className='text-body-strong'>{selected.school}</p>
-                <p className='text-caption text-ink-muted mt-1'>
-                  {selected.ucCode} · {selected.requirements.length} required course entries
-                </p>
+                <p className='text-caption text-ink-muted mt-1'>{selected.ucCode} · {selected.requirements.length} required course entries</p>
               </div>
               <div className='ml-auto flex flex-wrap gap-2'>
                 {selected.matched < selected.requirements.length && (
-                  <Badge variant='conservative'>
-                    {selected.requirements.length - selected.matched} not matched
-                  </Badge>
+                  <Badge variant='conservative'>{selected.requirements.length - selected.matched} not matched</Badge>
                 )}
               </div>
             </div>
 
             <DataTable
               rows={selectedRows}
+              onEdit={ed.openEdit} onDelete={ed.remove} deleting={ed.deleting}
               columns={[
                 { key: 'group_id', label: 'Group', cellClassName: 'text-ink-muted whitespace-nowrap' },
                 {
@@ -310,44 +313,42 @@ function UcMinimumsLookup({ rows }) {
                     )
                   },
                 },
-              ]}
-            />
+              ]} />
           </Stack>
         )}
       </div>
+
+      <RefRowModal config={ed.config} editing={ed.editing} onClose={ed.close} />
     </Stack>
   )
 }
 
 export default function DataReferences() {
   const [tab, setTab] = useState('minimums')
-  const districts = useAnalysisRaw('ref_cc_districts')
-  const minimums = useAnalysisRaw('ref_uc_transfer_requirements')
+  const districts = useRefTable('ref_cc_districts')
+  const minimums = useRefTable('ref_uc_transfer_requirements')
 
   if (districts.isLoading || minimums.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   }
-
   if (districts.isError || minimums.isError) {
     return <Alert type='error'>Failed to load reference tables.</Alert>
   }
 
   return (
     <Stack gap='section'>
+      {/* Wrap in a flex row so the inline-flex tab bar stays content-width —
+          a bare Stack child gets stretched full-width by align-items: stretch. */}
       <div className='flex flex-wrap items-center gap-3'>
         <Tabs
           value={tab}
           onChange={setTab}
           options={[
-            { value: 'minimums', label: 'UC minimums' },
-            { value: 'districts', label: 'CC districts' },
+            { value: 'minimums', label: 'UC Min Requirements' },
+            { value: 'districts', label: 'CC Districts' },
           ]}
         />
-        <span className='text-caption text-ink-subtle'>
-          Live reference tables from /analysis/raw
-        </span>
       </div>
-
       {tab === 'minimums' && <UcMinimumsLookup rows={minimums.data?.rows || []} />}
       {tab === 'districts' && <DistrictLookup rows={districts.data?.rows || []} />}
     </Stack>

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon,
-  ChartBarIcon, TrashIcon,
+  ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, LoadingLogo, Badge } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
@@ -16,7 +16,7 @@ import { useAuditDoc } from '@frontend/query/hooks/useAudit'
 import {
   useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch,
   useRawAssist, useDataSummary, useCoverage,
-  useFigures, useDeleteFigure, downloadFigure,
+  useFigures, useDeleteFigure, useEditFigure, downloadFigure,
 } from '@frontend/query/hooks/useData'
 
 /**
@@ -47,7 +47,6 @@ export default function DataPage({ onNavigate = () => {} }) {
             { value: 'cc',         label: 'CC courses' },
             { value: 'university', label: 'University courses' },
             { value: 'references', label: 'References' },
-            { value: 'analysis',   label: 'Analysis' },
           ]} />
       </div>
       <div className='flex-1 min-h-0 overflow-auto'>
@@ -57,7 +56,6 @@ export default function DataPage({ onNavigate = () => {} }) {
           {tab === 'cc' && <CcCoursesBrowser />}
           {tab === 'university' && <UniversityCoursesBrowser />}
           {tab === 'references' && <DataReferences />}
-          {tab === 'analysis' && <AnalysisTab onNavigate={onNavigate} />}
         </div>
       </div>
     </div>
@@ -298,7 +296,10 @@ function ReleaseBadge({ released }) {
   return <Badge variant={released ? 'success' : 'neutral'}>{released ? 'Released' : 'Draft'}</Badge>
 }
 
-function AnalysisTab({ onNavigate = () => {} }) {
+// Exported so it can mount as the top-level "Visuals" tab (see App.jsx). It
+// stays defined here for now alongside the figure gallery it owns; a later
+// cleanup can split it into its own module.
+export function AnalysisTab({ onNavigate = () => {} }) {
   const me = useAccessMe()
   const isAdmin = me.data?.role === 'admin'
   const releasesQ = useAnalysisReleases()
@@ -309,22 +310,27 @@ function AnalysisTab({ onNavigate = () => {} }) {
   const hasVisibleAnalyses = visibleAnalyses.length > 0
   const releasesPending = releasesQ.isLoading // don't flash "nothing" before releases load
 
+  const myUid = me.data?.uid || null
   const figs = useFigures()
   const del = useDeleteFigure()
+  const edit = useEditFigure()
   const figures = figs.data?.figures || []
   const currentVersion = figs.data?.dataset_version || null
 
+  // Built-in analyses and published figures share one publish-ordered gallery —
+  // no visual distinction between "ours" and "theirs". Ordered oldest-first, so
+  // a newly published figure lands at the bottom.
+  const gallery = useMemo(() => {
+    const analysisItems = visibleAnalyses.map((a) => ({ kind: 'analysis', key: a.id, at: a.published_at, a }))
+    const figureItems = figures.map((f) => ({ kind: 'figure', key: f.slug, at: f.updated_at, f }))
+    return [...analysisItems, ...figureItems].sort((x, y) => new Date(x.at || 0) - new Date(y.at || 0))
+  }, [visibleAnalyses, figures])
+
   return (
     <Stack gap='section'>
-      {visibleAnalyses.map(({ id, title, source, Component }) => (
-        <AnalysisCard key={id} title={title} source={source} exportName={id}
-          badge={isAdmin ? <ReleaseBadge released={releasedSet.has(id)} /> : null}>
-          <Component />
-        </AnalysisCard>
-      ))}
       {figs.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
       {(figs.isLoading || releasesPending) && !hasVisibleAnalyses && <div className='flex justify-center py-10'><Spinner /></div>}
-      {!figs.isLoading && !releasesPending && !figs.isError && !figures.length && !hasVisibleAnalyses && (
+      {!figs.isLoading && !releasesPending && !figs.isError && !gallery.length && (
         <div className='mx-auto max-w-screen-md'>
           <div className='surface-card p-8 text-center'>
             <ChartBarIcon className='w-8 h-8 text-ink-subtle mx-auto mb-3' />
@@ -348,70 +354,116 @@ function AnalysisTab({ onNavigate = () => {} }) {
           </div>
         </div>
       )}
-      {!!figures.length && (
-        <section>
-          <div className='mb-3'>
-            <h2 className='text-heading'>Published figures</h2>
-            <p className='text-caption text-ink-muted'>
-              Notebook snapshots shared by the team
-            </p>
-          </div>
-          <div className='grid grid-cols-1 xl:grid-cols-2 gap-6 items-start'>
-            {figures.map((f) => (
-              <FigureCard key={f.slug} fig={f} currentVersion={currentVersion}
-                onDelete={() => del.mutate(f.slug)} deleting={del.isPending} />
-            ))}
-          </div>
-        </section>
-      )}
+      {gallery.map((item) => {
+        if (item.kind === 'figure') {
+          const f = item.f
+          return (
+            <FigureCard key={item.key} fig={f} currentVersion={currentVersion}
+              canModify={isAdmin || (!!myUid && f.author_uid === myUid)}
+              onDelete={() => del.mutate(f.slug)} deleting={del.isPending}
+              onSave={(fields) => edit.mutateAsync({ slug: f.slug, fields })}
+              saving={edit.isPending} />
+          )
+        }
+        const { a } = item
+        const Component = a.Component
+        return (
+          <AnalysisCard key={item.key} title={a.title}
+            source={`${a.author_label} · ${fmtGalleryDate(a.published_at)}`}
+            exportName={a.id}
+            badge={isAdmin ? <ReleaseBadge released={releasedSet.has(a.id)} /> : null}>
+            <Component />
+          </AnalysisCard>
+        )
+      })}
     </Stack>
   )
 }
 
-function FigureCard({ fig, currentVersion, onDelete, deleting }) {
+// Shared attribution date format for every gallery card (built-in analyses and
+// published figures alike), so they read identically.
+function fmtGalleryDate(value) {
+  if (!value) return ''
+  const d = new Date(value)
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+}
+
+// A published figure rendered through the same AnalysisCard shell as the
+// built-in analyses, so the whole tab reads as one gallery. Downloads serve the
+// STORED svg/png/pdf (true vector PDF), not a DOM capture. Owners and admins get
+// inline edit (metadata only — the image changes by re-publishing the slug) and
+// delete; everyone else sees a read-only card.
+function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave, saving }) {
+  const [editing, setEditing] = useState(false)
+  const [title, setTitle] = useState(fig.title)
+  const [caption, setCaption] = useState(fig.caption || '')
+  const [sourceUrl, setSourceUrl] = useState(fig.source_url || '')
   const stale = fig.dataset_version && currentVersion && fig.dataset_version !== currentVersion
+
+  const resetFields = () => {
+    setTitle(fig.title)
+    setCaption(fig.caption || '')
+    setSourceUrl(fig.source_url || '')
+  }
+
+  const save = async () => {
+    await onSave({
+      title: title.trim(),
+      caption: caption.trim() || null,
+      source_url: sourceUrl.trim() || null,
+    })
+    setEditing(false)
+  }
+
+  const source = (
+    <>
+      {fig.author_label || 'unknown author'}
+      {fig.updated_at ? ` · ${fmtGalleryDate(fig.updated_at)}` : ''}
+      {fig.source_url && (
+        <> · <a className='text-primary hover:underline' href={fig.source_url}
+          target='_blank' rel='noreferrer'>source</a></>
+      )}
+    </>
+  )
+
+  const badge = fig.dataset_version ? (
+    <span className={`inline-block px-2 py-0.5 rounded-pill border text-label font-mono ${
+      stale ? 'border-warning text-warning' : 'border-border text-ink-muted'}`}>
+      {stale ? `computed on ${fig.dataset_version}` : fig.dataset_version}
+    </span>
+  ) : null
+
+  const actions = canModify ? (
+    <>
+      <Button variant='ghost' leadingIcon={PencilSquareIcon}
+        onClick={() => { if (editing) resetFields(); setEditing((v) => !v) }} />
+      <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting}
+        onClick={() => { if (window.confirm(`Delete "${fig.title}"? Republishing the slug brings it back.`)) onDelete() }} />
+    </>
+  ) : null
+
   return (
-    <div className='surface-card overflow-hidden'>
-      <div className='px-5 pt-4 pb-3 flex items-start gap-3'>
-        <div className='min-w-0'>
-          <p className='text-body-strong break-words'>{fig.title}</p>
-          {fig.caption && <p className='text-caption text-ink-muted mt-0.5'>{fig.caption}</p>}
-          <p className='text-caption text-ink-subtle mt-1'>
-            {fig.author_label || 'unknown author'}
-            {fig.updated_at ? ` · ${new Date(fig.updated_at).toLocaleString()}` : ''}
-            {fig.source_url && (
-              <> · <a className='text-primary hover:underline' href={fig.source_url}
-                target='_blank' rel='noreferrer'>source</a></>
-            )}
-          </p>
-        </div>
-        <div className='ml-auto shrink-0 text-right'>
-          {fig.dataset_version && (
-            <span className={`inline-block px-2 py-0.5 rounded-pill border text-label font-mono ${
-              stale ? 'border-warning text-warning' : 'border-border text-ink-muted'}`}>
-              {stale ? `computed on ${fig.dataset_version}` : fig.dataset_version}
-            </span>
-          )}
-        </div>
-      </div>
-      {fig.svg && (
-        <div className='px-5 pb-4 bg-white'>
-          {/* img (not inline SVG) so published markup can't run scripts */}
-          <img src={`data:image/svg+xml;base64,${fig.svg}`} alt={fig.title}
-            className='w-full h-auto' />
+    <AnalysisCard title={fig.title} source={source} badge={badge} actions={actions}
+      downloadFormats={['svg', 'png', 'pdf']} onDownload={(fmt) => downloadFigure(fig.slug, fmt)}>
+      {editing && (
+        <div className='mb-4 flex flex-col gap-2' data-export-exclude>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Title' />
+          <Input value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Caption (optional)' />
+          <Input value={sourceUrl} onChange={(e) => setSourceUrl(e.target.value)} placeholder='Source URL (optional)' />
+          <div className='flex gap-2'>
+            <Button onClick={save} disabled={saving || !title.trim()}>{saving ? 'Saving…' : 'Save'}</Button>
+            <Button variant='ghost' onClick={() => { resetFields(); setEditing(false) }}>Cancel</Button>
+          </div>
         </div>
       )}
-      <div className='px-5 py-2.5 border-t border-border flex items-center gap-1'>
-        {['svg', 'png', 'pdf'].map((fmt) => (
-          <Button key={fmt} variant='ghost' leadingIcon={ArrowDownTrayIcon}
-            onClick={() => downloadFigure(fig.slug, fmt)}>{fmt.toUpperCase()}</Button>
-        ))}
-        <span className='ml-auto text-caption text-ink-subtle font-mono'>{fig.slug}</span>
-        <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting}
-          onClick={() => { if (window.confirm(`Delete "${fig.title}"? Republishing the slug brings it back.`)) onDelete() }}>
-        </Button>
-      </div>
-    </div>
+      {fig.svg && (
+        <div className='bg-white rounded-md overflow-hidden'>
+          {/* img (not inline SVG) so published markup can't run scripts */}
+          <img src={`data:image/svg+xml;base64,${fig.svg}`} alt={fig.title} className='w-full h-auto' />
+        </div>
+      )}
+      <p className='text-caption text-ink-subtle font-mono mt-2' data-export-exclude>{fig.slug}</p>
+    </AnalysisCard>
   )
 }
 

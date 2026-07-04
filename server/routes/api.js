@@ -96,6 +96,8 @@ const figureBody = express.json({ limit: '48mb' }); // 3 base64 formats ≤12MB 
 router.get('/figures',                ...guarded, figuresController.list);
 router.post('/figures',               ...guarded, figureBody, figuresController.publish);
 router.get('/figures/:slug/:format',  ...guarded, figuresController.download);
+// Edit (metadata) and delete are owner-or-admin only — enforced in the controller.
+router.patch('/figures/:slug',        ...guarded, jsonBody, figuresController.update);
 router.delete('/figures/:slug',       ...guarded, figuresController.remove);
 router.get('/client/pmt.py',          ...guarded, figuresController.pmtPy);
 

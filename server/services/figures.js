@@ -111,7 +111,49 @@ async function removeFigure(auditDb, slug) {
   return deletedCount > 0;
 }
 
+// Who owns a figure — the controller needs author_uid to gate edit/delete.
+// { found: false } distinguishes a missing figure (404) from one with a null
+// author (legacy rows before authorship was tracked; only admins can touch).
+async function getFigureAuthor(auditDb, slug) {
+  const doc = await auditDb.collection(COLLECTION).findOne(
+    { _id: slug }, { projection: { author_uid: 1 } });
+  if (!doc) return { found: false };
+  return { found: true, author_uid: doc.author_uid ?? null };
+}
+
+// Metadata-only edit. A figure's IMAGE only changes by re-publishing the slug
+// from the notebook; in-app editing is limited to the display text. Returns
+// { error } or { value } with just the provided, cleaned fields.
+function validateFigureMeta(body = {}) {
+  const out = {};
+  if (body.title !== undefined) {
+    if (typeof body.title !== 'string' || !body.title.trim()) {
+      return { error: 'title must be a non-empty string' };
+    }
+    out.title = body.title.trim();
+  }
+  if (body.caption !== undefined) {
+    out.caption = typeof body.caption === 'string' && body.caption.trim() ? body.caption.trim() : null;
+  }
+  if (body.source_url !== undefined) {
+    out.source_url = typeof body.source_url === 'string' && body.source_url.trim() ? body.source_url.trim() : null;
+  }
+  if (Object.keys(out).length === 0) {
+    return { error: 'nothing to update (title, caption, or source_url)' };
+  }
+  return { value: out };
+}
+
+async function updateFigureMeta(auditDb, slug, fields) {
+  const { matchedCount } = await auditDb.collection(COLLECTION).updateOne(
+    { _id: slug },
+    { $set: { ...fields, updated_at: new Date() } }
+  );
+  return matchedCount > 0;
+}
+
 module.exports = {
-  validateFigurePayload, resolveAuthorLabel,
+  validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
+  getFigureAuthor, updateFigureMeta,
 };

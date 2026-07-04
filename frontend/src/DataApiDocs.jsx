@@ -4,26 +4,28 @@ import { Button, Alert, Spinner, Stack, Input, Tabs } from './components/ui'
 import { API_BASE_URL } from '@frontend/lib/constants'
 import { useApiTokens, useCreateApiToken, useRevokeApiToken, usePmtPy } from '@frontend/query/hooks/useData'
 import {
-  ENDPOINT_GROUPS, GUIDE_SECTIONS,
-  AUTH_HEADER, pythonSnippet, buildAiBriefing,
-  PUBLISH_STEPS, EXAMPLE_FIGURE_SCRIPT, curlBootstrap,
+  PARTNER_ENDPOINT_GROUPS, GUIDE_SECTIONS,
+  AUTH_HEADER, buildAiBriefing,
+  STARTER_EXPLANATION, STARTER_STEPS,
 } from './apiDocs/content'
 
 /**
- * API page — Tokens (credentials) · Endpoints (reference) · Data guide (the
- * data model, readable). All documentation text lives in apiDocs/content.js;
- * this file only renders it. The guide's "Copy for AI" button serializes the
- * same content to markdown, so the page and the paste can't drift.
+ * API page — Tokens (credentials) · Starter (the one pmt.py starter file +
+ * getting-started steps, including publish) · Endpoints (partner-visible
+ * reference) · Data guide (the data model, readable). All documentation text
+ * lives in apiDocs/content.js and server/client/pmtPy.js; this file only
+ * renders it. The guide's "Copy for AI" button serializes the same content to
+ * markdown, so the page and the paste can't drift.
  */
 export default function ApiPage() {
-  const [tab, setTab] = useState('build')
+  const [tab, setTab] = useState('starter')
   return (
     <div className='h-full flex flex-col'>
       <div className='shrink-0 flex items-center px-4 h-11 border-b border-border'>
         <Tabs value={tab} onChange={setTab}
           options={[
             { value: 'tokens',    label: 'Tokens' },
-            { value: 'build',     label: 'Build & publish' },
+            { value: 'starter',   label: 'Starter' },
             { value: 'endpoints', label: 'Endpoints' },
             { value: 'guide',     label: 'Data guide' },
           ]} />
@@ -32,13 +34,74 @@ export default function ApiPage() {
         <div className='mx-auto max-w-screen-md px-6 py-10'>
           <Stack gap='section'>
             {tab === 'tokens' && <TokenManager />}
-            {tab === 'build' && <BuildSection />}
+            {tab === 'starter' && <StarterSection />}
             {tab === 'endpoints' && <EndpointsSection />}
             {tab === 'guide' && <GuideSection />}
           </Stack>
         </div>
       </div>
     </div>
+  )
+}
+
+// ───────── starter ─────────
+
+// The single onboarding surface: a short explanation, the getting-started
+// steps, and the one official starter file (pmt.py, served with the API address
+// baked in — Copy or Download). publish() lives in that same file, so there is
+// no separate publish page.
+function StarterSection() {
+  const py = usePmtPy()
+  const downloadPmtPy = () => {
+    const blob = new Blob([py.data || ''], { type: 'text/x-python' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'pmt.py'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return (
+    <Stack gap='section'>
+      <div>
+        <h3 className='text-heading'>Starter code</h3>
+        <p className='text-body text-ink-muted mt-1 max-w-prose'>{STARTER_EXPLANATION}</p>
+      </div>
+
+      <ol className='flex flex-col gap-4'>
+        {STARTER_STEPS.map(([title, desc], i) => (
+          <li key={title} className='flex gap-4'>
+            <span className='shrink-0 w-7 h-7 rounded-full border border-border flex items-center justify-center text-caption font-mono text-ink-muted'>
+              {i + 1}
+            </span>
+            <div>
+              <p className='text-body-strong'>{title}</p>
+              <p className='text-body text-ink-muted mt-0.5 max-w-prose'>{desc}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div>
+        <div className='flex items-center gap-2 mb-3'>
+          <h3 className='text-body-strong'>pmt.py</h3>
+          <span className='text-caption text-ink-subtle'>preconfigured for this API</span>
+          <div className='ml-auto flex gap-1'>
+            {py.data && <CopyButton text={py.data} />}
+            <Button variant='ghost' leadingIcon={ArrowDownTrayIcon} onClick={downloadPmtPy}
+              disabled={!py.data}>Download</Button>
+          </div>
+        </div>
+        {py.isLoading ? <div className='flex justify-center py-6'><Spinner /></div>
+          : py.isError ? <Alert type='error'>Could not load pmt.py from the API.</Alert>
+          : (
+            <pre className='surface-card p-4 text-[11px] leading-relaxed font-mono overflow-auto whitespace-pre max-h-[60vh]'>
+              {py.data}
+            </pre>
+          )}
+      </div>
+    </Stack>
   )
 }
 
@@ -91,86 +154,12 @@ function DocTable({ head, rows }) {
   )
 }
 
-// ───────── build & publish ─────────
-
-function BuildSection() {
-  const py = usePmtPy()
-  const downloadPmtPy = () => {
-    const blob = new Blob([py.data || ''], { type: 'text/x-python' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'pmt.py'
-    a.click()
-    URL.revokeObjectURL(url)
-  }
-
-  return (
-    <Stack gap='section'>
-      <div>
-        <h3 className='text-heading'>Build a figure, share it with the team</h3>
-        <p className='text-body text-ink-muted mt-1 max-w-prose'>
-          Write your analysis in your own IDE or notebook — one call publishes
-          the figure to Data → Analysis, where everyone sees it.
-        </p>
-      </div>
-
-      <ol className='flex flex-col gap-4'>
-        {PUBLISH_STEPS.map(([title, desc], i) => (
-          <li key={title} className='flex gap-4'>
-            <span className='shrink-0 w-7 h-7 rounded-full border border-border flex items-center justify-center text-caption font-mono text-ink-muted'>
-              {i + 1}
-            </span>
-            <div>
-              <p className='text-body-strong'>{title}</p>
-              <p className='text-body text-ink-muted mt-0.5 max-w-prose'>{desc}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      <div>
-        <div className='flex items-center gap-2 mb-3'>
-          <h3 className='text-body-strong'>pmt.py</h3>
-          <span className='text-caption text-ink-subtle'>preconfigured for this API</span>
-          <div className='ml-auto flex gap-1'>
-            {py.data && <CopyButton text={py.data} />}
-            <Button variant='ghost' leadingIcon={ArrowDownTrayIcon} onClick={downloadPmtPy}
-              disabled={!py.data}>Download</Button>
-          </div>
-        </div>
-        {py.isLoading ? <div className='flex justify-center py-6'><Spinner /></div>
-          : py.isError ? <Alert type='error'>Could not load pmt.py from the API.</Alert>
-          : (
-            <pre className='surface-card p-4 text-[11px] leading-relaxed font-mono overflow-auto whitespace-pre max-h-[40vh]'>
-              {py.data}
-            </pre>
-          )}
-        <p className='text-caption text-ink-subtle mt-2'>
-          Or grab it straight from a notebook:
-        </p>
-        <div className='mt-1'><CodeBlock>{curlBootstrap(API_BASE_URL)}</CodeBlock></div>
-      </div>
-
-      <div>
-        <h3 className='text-body-strong mb-3'>A complete example</h3>
-        <CodeBlock>{EXAMPLE_FIGURE_SCRIPT}</CodeBlock>
-        <p className='text-body text-ink-muted mt-3 max-w-prose'>
-          Prefer to let an AI write it? The Data guide's{' '}
-          <span className='text-ink'>Copy for AI</span> button includes all of
-          this — paste it into your assistant and describe the figure you want.
-        </p>
-      </div>
-    </Stack>
-  )
-}
-
 // ───────── endpoints ─────────
 
 function GettingStarted() {
   return (
     <div className='surface-card p-6'>
-      <div className='flex flex-col gap-2 mb-4'>
+      <div className='flex flex-col gap-2'>
         <p className='text-body'>
           <span className='text-ink-subtle'>Base URL</span>{' '}
           <span className='font-mono text-ink'>{API_BASE_URL}</span>
@@ -181,11 +170,11 @@ function GettingStarted() {
         </p>
         <p className='text-caption text-ink-muted'>
           All endpoints are GET · <span className='font-mono'>?format=csv</span> on
-          exports &amp; analyses · every response carries{' '}
-          <span className='font-mono'>dataset_version</span>
+          exports · every response carries{' '}
+          <span className='font-mono'>dataset_version</span>. Pass any path below
+          to <span className='font-mono'>fetch()</span> from the Starter tab.
         </p>
       </div>
-      <CodeBlock>{pythonSnippet(API_BASE_URL)}</CodeBlock>
     </div>
   )
 }
@@ -233,7 +222,7 @@ function EndpointsSection() {
   return (
     <Stack gap='section'>
       <GettingStarted />
-      {ENDPOINT_GROUPS.map((g) => (
+      {PARTNER_ENDPOINT_GROUPS.map((g) => (
         <div key={g.id}>
           <h3 className='text-heading'>{g.title}</h3>
           {g.blurb && <p className='text-body text-ink-muted mt-1'>{g.blurb}</p>}

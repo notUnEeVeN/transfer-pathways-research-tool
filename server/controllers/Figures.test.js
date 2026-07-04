@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 // shared between the test and the controller under test.
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { publish, list, download, remove, pmtPy } = cjs('./Figures');
+const { publish, list, download, update, remove, pmtPy } = cjs('./Figures');
 const { _resetDatasetVersionCache } = cjs('../services/datasetVersion');
 
 let mongo;
@@ -17,6 +17,8 @@ const PNG = b64('png-bytes');
 const PDF = b64('pdf-bytes');
 
 beforeAll(async () => {
+  // admin1 is the ADMIN_UIDS allowlist for these tests; u1/u2 stay partners.
+  process.env.ADMIN_UIDS = 'admin1';
   mongo = await startInMemoryMongo();
   db = mongo.client.db('figures_test');
 });
@@ -45,6 +47,7 @@ function fakeRes() {
     headers: {},
     body: undefined,
     status(c) { this.statusCode = c; return this; },
+    sendStatus(c) { this.statusCode = c; this.body = String(c); return this; },
     json(o) { this.body = o; return this; },
     setHeader(k, v) { this.headers[k] = v; },
     send(payload) { this.body = payload; return this; },
@@ -151,12 +154,66 @@ describe('GET /figures/:slug/:format (download)', () => {
   });
 });
 
-describe('DELETE /figures/:slug', () => {
-  it('removes the figure', async () => {
+describe('PATCH /figures/:slug (edit metadata)', () => {
+  it('lets the owner edit title/caption/source_url without touching the image', async () => {
     await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
-    const res = await run(remove, fakeReq({ uid: 'u2' }, { params: { slug: 'coverage-heatmap' } }));
+    const res = await run(update, fakeReq({ uid: 'u1' }, {
+      params: { slug: 'coverage-heatmap' },
+      body: { title: 'New title', caption: 'New caption', source_url: 'https://x.test' },
+    }));
+    expect(res.body).toMatchObject({ ok: true, slug: 'coverage-heatmap' });
+    const doc = await db.collection('figures').findOne({ _id: 'coverage-heatmap' });
+    expect(doc.title).toBe('New title');
+    expect(doc.caption).toBe('New caption');
+    expect(doc.source_url).toBe('https://x.test');
+    expect(doc.formats.svg).toBe(SVG); // image left alone — edits are metadata only
+  });
+
+  it("lets an admin edit another user's figure", async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
+    const res = await run(update, fakeReq({ uid: 'admin1' }, {
+      params: { slug: 'coverage-heatmap' }, body: { title: 'Admin edit' },
+    }));
+    expect(res.body).toMatchObject({ ok: true });
+    expect((await db.collection('figures').findOne({ _id: 'coverage-heatmap' })).title).toBe('Admin edit');
+  });
+
+  it('forbids a non-owner non-admin, leaving the figure unchanged', async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
+    const res = await run(update, fakeReq({ uid: 'u2' }, {
+      params: { slug: 'coverage-heatmap' }, body: { title: 'nope' },
+    }));
+    expect(res.statusCode).toBe(403);
+    expect((await db.collection('figures').findOne({ _id: 'coverage-heatmap' })).title).toBe('Coverage heatmap');
+  });
+
+  it('404s on unknown slug, 400 on an empty patch', async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
+    expect((await run(update, fakeReq({ uid: 'u1' }, { params: { slug: 'ghost' }, body: { title: 'x' } }))).statusCode).toBe(404);
+    expect((await run(update, fakeReq({ uid: 'u1' }, { params: { slug: 'coverage-heatmap' }, body: {} }))).statusCode).toBe(400);
+  });
+});
+
+describe('DELETE /figures/:slug', () => {
+  it('lets the owner delete their figure', async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
+    const res = await run(remove, fakeReq({ uid: 'u1' }, { params: { slug: 'coverage-heatmap' } }));
     expect(res.body).toMatchObject({ ok: true });
     expect(await db.collection('figures').countDocuments()).toBe(0);
+  });
+
+  it("lets an admin delete anyone's figure", async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
+    const res = await run(remove, fakeReq({ uid: 'admin1' }, { params: { slug: 'coverage-heatmap' } }));
+    expect(res.body).toMatchObject({ ok: true });
+    expect(await db.collection('figures').countDocuments()).toBe(0);
+  });
+
+  it('forbids a non-owner non-admin, leaving the figure intact', async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
+    const res = await run(remove, fakeReq({ uid: 'u2' }, { params: { slug: 'coverage-heatmap' } }));
+    expect(res.statusCode).toBe(403);
+    expect(await db.collection('figures').countDocuments()).toBe(1);
   });
 
   it('404s when nothing matches', async () => {

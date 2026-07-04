@@ -24,19 +24,28 @@
 import CoverageHeatmap from './CoverageHeatmap'
 import PaperDistrictHeatmap from './PaperDistrictHeatmap'
 
+// The built-in analyses render as first-class figures on the Analysis tab,
+// credited to the console owner and dated, alongside partners' published
+// figures — no endpoint is shown. `published_at` also sets their position in
+// the single publish-ordered gallery (oldest first; new figures land below).
+// TODO(owner): confirm the exact display name to attribute these to.
+export const ANALYSIS_AUTHOR = 'Tybalt Mallet'
+
 export const ANALYSES = [
   {
     id: 'paper-district-heatmap',
     title: 'Paper-style district transfer heatmap',
     description: 'District x UC campus complete-transfer matrix with paper baseline comparison',
-    source: 'Live /analysis/coverage + paper baseline',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-03T09:00:00',
     Component: PaperDistrictHeatmap,
   },
   {
     id: 'coverage-heatmap',
     title: 'Articulation coverage heatmap',
     description: 'Community college x campus-program percentage of required receivers articulated',
-    source: 'Live /analysis/coverage',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-03T09:05:00',
     Component: CoverageHeatmap,
   },
 ]

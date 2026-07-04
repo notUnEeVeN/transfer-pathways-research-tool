@@ -109,6 +109,39 @@ export function useAnalysisRaw(collection, options = {}) {
   })
 }
 
+// ── editable reference tables (curation ref CRUD) ──
+// Read + write the same collection through /curation/ref so an edit and the
+// refetch stay consistent. Server allowlists which tables are editable.
+
+export function useRefTable(table) {
+  const { user } = useAuth()
+  const safeTable = String(table || '').trim()
+  return useQuery({
+    queryKey: ['ref-table', safeTable, user?.uid],
+    queryFn: () => apiClient.get(`/curation/ref/${safeTable}`).then((r) => r.data),
+    enabled: !!user?.uid && !!safeTable,
+    staleTime: 60 * 1000,
+  })
+}
+
+export function useSaveRefRow(table) {
+  const qc = useQueryClient()
+  const safeTable = String(table || '').trim()
+  return useMutation({
+    mutationFn: (row) => apiClient.put(`/curation/ref/${safeTable}`, row).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
+  })
+}
+
+export function useDeleteRefRow(table) {
+  const qc = useQueryClient()
+  const safeTable = String(table || '').trim()
+  return useMutation({
+    mutationFn: (id) => apiClient.delete(`/curation/ref/${safeTable}/${encodeURIComponent(id)}`).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
+  })
+}
+
 // ── personal API tokens (programmatic access) ──
 
 export function useApiTokens() {
@@ -166,6 +199,16 @@ export function useDeleteFigure() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (slug) => apiClient.delete(`/figures/${slug}`).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['figures'] }),
+  })
+}
+
+// Metadata-only edit (title/caption/source_url). The image itself changes only
+// by re-publishing the slug from the notebook. Owner-or-admin, enforced server-side.
+export function useEditFigure() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ slug, fields }) => apiClient.patch(`/figures/${slug}`, fields).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['figures'] }),
   })
 }

@@ -314,9 +314,12 @@ function Chip({ color }) {
 
 export default function PaperDistrictHeatmap() {
   const [view, setView] = useState('live')
+  // Re-fetch fresh whenever the page (re)loads or you open this tab — so a
+  // manual DB refresh shows up without having to remember to click Refresh —
+  // but never poll in the background (the data is stagnant between refreshes).
   const coverage = useCoverage(
     { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'paper' },
-    { staleTime: 30 * 1000, refetchInterval: 60 * 1000 }
+    { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
   const liveModel = useMemo(() => buildLiveModel(rows), [rows])
@@ -329,7 +332,7 @@ export default function PaperDistrictHeatmap() {
   }
 
   if (coverage.isError) {
-    return <Alert type='error'>Could not load /analysis/coverage for the paper-style heatmap.</Alert>
+    return <Alert type='error'>Could not load the coverage data for the paper-style heatmap.</Alert>
   }
 
   return (
@@ -363,7 +366,7 @@ export default function PaperDistrictHeatmap() {
         </Button>
         <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle'>
           <span className='font-mono tabular-nums'>{datasetVersion}</span>
-          <span>{coverage.isFetching ? 'Updating' : 'Live endpoint'}</span>
+          <span>{coverage.isFetching ? 'Updating…' : 'Refresh to update'}</span>
         </div>
       </div>
 

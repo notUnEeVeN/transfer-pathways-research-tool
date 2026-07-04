@@ -1,10 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import {
-  ENDPOINT_GROUPS, GUIDE_SECTIONS, buildAiBriefing,
-  PUBLISH_STEPS, EXAMPLE_FIGURE_SCRIPT, curlBootstrap,
+  ENDPOINT_GROUPS, PARTNER_ENDPOINT_GROUPS, HIDDEN_ENDPOINT_GROUP_IDS,
+  GUIDE_SECTIONS, buildAiBriefing,
+  STARTER_STEPS, STARTER_EXPLANATION, EXAMPLE_FIGURE_SCRIPT, curlBootstrap,
 } from './content'
 
 const allEndpoints = ENDPOINT_GROUPS.flatMap((g) => g.endpoints)
+const partnerEndpoints = PARTNER_ENDPOINT_GROUPS.flatMap((g) => g.endpoints)
+const hiddenEndpoints = ENDPOINT_GROUPS
+  .filter((g) => HIDDEN_ENDPOINT_GROUP_IDS.has(g.id))
+  .flatMap((g) => g.endpoints)
 const BLOCK_TYPES = new Set(['p', 'code', 'table', 'list'])
 
 describe('ENDPOINT_GROUPS content invariants', () => {
@@ -34,12 +39,26 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     expect(paths).toContain('/figures')
     expect(paths).toContain('/client/pmt.py')
   })
+
+  it('withholds the analyses and figures groups from the partner-facing set', () => {
+    const partnerIds = PARTNER_ENDPOINT_GROUPS.map((g) => g.id)
+    expect(partnerIds).not.toContain('analysis')
+    expect(partnerIds).not.toContain('figures')
+    // but the core data reads a partner needs are still there
+    const paths = partnerEndpoints.map((e) => e.path)
+    expect(paths).toContain('/data/summary')
+    expect(paths).toContain('/export/receivers')
+  })
 })
 
-describe('publish-figures content', () => {
-  it('has quickstart steps and a worked example ending in pmt.publish', () => {
-    expect(PUBLISH_STEPS.length).toBeGreaterThanOrEqual(3)
-    for (const [t, d] of PUBLISH_STEPS) { expect(t).toBeTruthy(); expect(d).toBeTruthy() }
+describe('starter + publish content', () => {
+  it('has getting-started steps and a starter explanation', () => {
+    expect(STARTER_STEPS.length).toBeGreaterThanOrEqual(3)
+    for (const [t, d] of STARTER_STEPS) { expect(t).toBeTruthy(); expect(d).toBeTruthy() }
+    expect(STARTER_EXPLANATION.length).toBeGreaterThan(60)
+  })
+
+  it('the AI-briefing worked example still fetches and publishes', () => {
     expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.fetch(')
     expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.publish(')
   })
@@ -68,10 +87,16 @@ describe('buildAiBriefing', () => {
     expect(md).toContain('Authorization: Bearer')
   })
 
-  it('includes every documented endpoint with its explanation', () => {
-    for (const e of allEndpoints) {
+  it('includes every partner-facing endpoint with its explanation', () => {
+    for (const e of partnerEndpoints) {
       expect(md).toContain(e.path)
       expect(md).toContain(e.plain)
+    }
+  })
+
+  it('does not leak the withheld analyses/figures endpoints to the AI', () => {
+    for (const e of hiddenEndpoints) {
+      expect(md, `briefing should not document ${e.path}`).not.toContain(e.plain)
     }
   })
 

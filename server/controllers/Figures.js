@@ -7,13 +7,21 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { currentDatasetVersion } = require('../services/datasetVersion');
+const { isAdmin } = require('../services/access');
 const {
-  validateFigurePayload, resolveAuthorLabel,
+  validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
+  getFigureAuthor, updateFigureMeta,
 } = require('../services/figures');
 const { pmtPy } = require('../client/pmtPy');
 
 const auditHandle = (req) => req.app.locals.auditDb || req.app.locals.db;
+
+// Publishing is open to every console user, but a published figure belongs to
+// its author: only that author (or an admin) may edit or delete it. Legacy
+// figures with a null author_uid can be managed by admins only.
+const canModify = (user, authorUid) =>
+  isAdmin(user?.uid) || (!!user?.uid && user.uid === authorUid);
 
 exports.publish = asyncHandler(async (req, res) => {
   const { error, value } = validateFigurePayload(req.body);
@@ -46,9 +54,23 @@ exports.download = asyncHandler(async (req, res) => {
   res.send(file.buffer);
 });
 
+exports.update = asyncHandler(async (req, res) => {
+  const { error, value } = validateFigureMeta(req.body);
+  if (error) return res.status(400).json({ error });
+  const auditDb = auditHandle(req);
+  const author = await getFigureAuthor(auditDb, req.params.slug);
+  if (!author.found) return res.status(404).json({ error: 'no such figure' });
+  if (!canModify(req.user, author.author_uid)) return res.sendStatus(403);
+  await updateFigureMeta(auditDb, req.params.slug, value);
+  res.json({ ok: true, slug: req.params.slug });
+});
+
 exports.remove = asyncHandler(async (req, res) => {
-  const ok = await removeFigure(auditHandle(req), req.params.slug);
-  if (!ok) return res.status(404).json({ error: 'no such figure' });
+  const auditDb = auditHandle(req);
+  const author = await getFigureAuthor(auditDb, req.params.slug);
+  if (!author.found) return res.status(404).json({ error: 'no such figure' });
+  if (!canModify(req.user, author.author_uid)) return res.sendStatus(403);
+  await removeFigure(auditDb, req.params.slug);
   res.json({ ok: true });
 });
 

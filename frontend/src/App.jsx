@@ -9,7 +9,7 @@ import { useAccessMe, useRequestAccess } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
-import DataPage from './DataPage'
+import DataPage, { AnalysisTab } from './DataPage'
 import ApiPage from './DataApiDocs'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SignInScreen from './SignInScreen'
@@ -141,9 +141,10 @@ function Console({ role, user }) {
           <div className='ml-auto flex items-center gap-3'>
             <Tabs value={view} onChange={setView}
               options={[
-                { value: 'data',  label: 'Data' },
-                { value: 'audit', label: 'Audit' },
-                { value: 'api',   label: 'API' },
+                { value: 'data',    label: 'Data' },
+                { value: 'visuals', label: 'Visuals' },
+                { value: 'audit',   label: 'Audit' },
+                { value: 'api',     label: 'API' },
                 ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
               ]} />
             <span className='text-caption text-ink-subtle hidden sm:block'>{user.email}</span>
@@ -158,6 +159,13 @@ function Console({ role, user }) {
               statsSeen={statsSeen} reviewSeen={reviewSeen} />
           )}
           {view === 'data' && <DataPage onNavigate={setView} />}
+          {view === 'visuals' && (
+            <div className='h-full overflow-auto'>
+              <div className='mx-auto max-w-screen-2xl px-6 py-6'>
+                <AnalysisTab onNavigate={setView} />
+              </div>
+            </div>
+          )}
           {view === 'api' && <ApiPage />}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
