@@ -4,6 +4,7 @@ import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, Tabs } from '.
 import { useRefTable, useDeleteRefRow } from './shared/query/hooks/useData'
 import { refTableByKey } from './references/refTablesRegistry'
 import RefRowModal from './references/RefRowModal'
+import RouteHint from './components/RouteHint'
 
 /**
  * Data → References — hand-curated reference tables, drill-in by district or UC
@@ -69,12 +70,16 @@ function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, onDelete
   )
 }
 
-function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, query, onQuery, placeholder }) {
+function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, query, onQuery, placeholder, search = true }) {
   return (
     <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
       <p className='text-label mb-2'>{title} · {intFmt.format(count)}</p>
-      <Input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder}
-        leadingIcon={MagnifyingGlassIcon} className='mb-3' />
+      {search && (
+        <div className='mb-3'>
+          <Input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder}
+            leadingIcon={MagnifyingGlassIcon} />
+        </div>
+      )}
       <div className='space-y-1'>
         {rows.map((row) => {
           const active = String(row.key) === String(selectedKey)
@@ -143,6 +148,7 @@ function DistrictLookup({ rows }) {
         <span className='text-caption text-ink-subtle'>
           {intFmt.format(rows.length)} colleges mapped to {intFmt.format(districts.length)} districts
         </span>
+        <RouteHint path='/curation/ref/ref_cc_districts' />
         <Button className='ml-auto' leadingIcon={PlusIcon}
           onClick={() => ed.openAdd(selected ? { district: selected.name, region: selected.region } : {})}>
           Add college
@@ -238,6 +244,7 @@ function UcMinimumsLookup({ rows }) {
         <span className='text-caption text-ink-subtle'>
           {intFmt.format(rows.length)} imported hard-minimum requirements · {intFmt.format(campuses.length)} UC campuses
         </span>
+        <RouteHint path='/curation/ref/ref_uc_transfer_requirements' />
         <Button className='ml-auto' leadingIcon={PlusIcon}
           onClick={() => ed.openAdd(selected ? { uc_code: selected.ucCode } : {})}
           disabled={!selected}>
@@ -246,21 +253,9 @@ function UcMinimumsLookup({ rows }) {
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-4 items-start'>
-        <ReferenceRail title='UC campuses' count={campuses.length} rows={railRows}
-          selectedKey={selected?.key} onSelect={setSelectedKey} query={query} onQuery={setQuery}
-          placeholder='Find UCB, calculus, CSE…'
-          renderRow={(campus) => (
-            <>
-              <p className='text-body leading-snug'>
-                {campus.school}
-                {campus.ucCode && <span className='ml-2 text-caption font-mono text-ink-subtle'>{campus.ucCode}</span>}
-              </p>
-              <p className='text-caption text-ink-subtle mt-0.5'>
-                {campus.requirements.length} courses · {campus.groups.length} groups
-                {campus.matched < campus.requirements.length ? ` · ${campus.requirements.length - campus.matched} not matched` : ''}
-              </p>
-            </>
-          )} />
+        <ReferenceRail title='UC campuses' count={campuses.length} rows={railRows} search={false}
+          selectedKey={selected?.key} onSelect={setSelectedKey}
+          renderRow={(campus) => <p className='text-body leading-snug'>{campus.school}</p>} />
 
         {!selected ? (
           <EmptyState title='No minimums imported' description='The UC hard-minimum reference table is empty.' />

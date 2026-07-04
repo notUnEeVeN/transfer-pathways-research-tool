@@ -3,8 +3,9 @@ import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon,
   ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, Select, LoadingLogo, Badge } from './components/ui'
+import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, LoadingLogo, Badge } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
+import RouteHint from './components/RouteHint'
 import DataReferences from './DataReferences'
 import { ANALYSES } from './analyses/registry'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -123,7 +124,9 @@ function AgreementsBrowser() {
   }
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
+    <Stack gap='cozy'>
+      <div className='flex justify-end'><RouteHint path='/schools' /></div>
+      <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
       {/* Program rail — the granted school+major pairs, grouped by campus */}
       <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
         <p className='text-label mb-2'>Programs · {nPrograms}</p>
@@ -163,7 +166,8 @@ function AgreementsBrowser() {
           cov={coverageByCc.get(Number(collegeId)) || null}
           onBack={() => setCollegeId(null)} />
       )}
-    </div>
+      </div>
+    </Stack>
   )
 }
 
@@ -270,8 +274,11 @@ function ProgramAgreement({ program, collegeId, cov, onBack }) {
 
   return (
     <Stack gap='cozy'>
-      <div>
+      <div className='flex flex-wrap items-center gap-3'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
+        <span className='ml-auto'>
+          <RouteHint path={`/uc-agreements-batch/${collegeId}?school_id=${program.school_id}`} />
+        </span>
       </div>
       {batch.isLoading ? (
         <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
@@ -593,85 +600,117 @@ const courseSearch = (rows, q, fields) => {
   return rows.filter((r) => fields.some((f) => String(r[f] ?? '').toLowerCase().includes(s)))
 }
 
-function CcCoursesBrowser() {
-  const colleges = useColleges()
-  const [collegeId, setCollegeId] = useState(null)
-  const [q, setQ] = useState('')
-  const coursesQ = useCcCourses(collegeId)
+// Rail of institutions (buttons) → the picked one's course catalog. Shared by
+// the CC and University course browsers. The route label updates as you drill
+// in: the list route while browsing, the item route once one is picked.
+function CatalogBrowser({ items, useCourses, columns, searchFields, blurb, railTitle, pickText, listRoute, itemRoute, railSearch = true }) {
+  const [selectedId, setSelectedId] = useState(null)
+  const [railQ, setRailQ] = useState('')
+  const [courseQ, setCourseQ] = useState('')
+  const coursesQ = useCourses(selectedId)
 
-  const options = (colleges.data || [])
-    .slice().sort((a, b) => a.name.localeCompare(b.name))
-    .map((c) => ({ value: String(c.id), label: c.name }))
+  const sortedItems = useMemo(() => (items || []).slice().sort((a, b) => a.name.localeCompare(b.name)), [items])
+  const railItems = useMemo(() => {
+    const s = railQ.trim().toLowerCase()
+    return s ? sortedItems.filter((i) => i.name.toLowerCase().includes(s)) : sortedItems
+  }, [sortedItems, railQ])
   const rows = useMemo(
-    () => courseSearch(coursesQ.data || [], q, ['prefix', 'number', 'title'])
+    () => courseSearch(coursesQ.data || [], courseQ, searchFields)
       .slice().sort((a, b) => `${a.prefix} ${a.number}`.localeCompare(`${b.prefix} ${b.number}`)),
-    [coursesQ.data, q]
+    [coursesQ.data, courseQ, searchFields]
   )
 
   return (
     <Stack gap='cozy'>
-      <p className='text-caption text-ink-muted'>
-        Community-college catalog — only courses referenced by the ported agreements are in the research database.
-      </p>
       <div className='flex flex-wrap items-center gap-3'>
-        <Select className='w-72' placeholder='Community college…' value={collegeId ?? ''}
-          options={options} onChange={setCollegeId} />
-        <Input className='w-64' value={q} onChange={(e) => setQ(e.target.value)}
-          placeholder='Search prefix / number / title…' leadingIcon={MagnifyingGlassIcon} />
-        {collegeId && !coursesQ.isLoading && <span className='text-caption text-ink-subtle'>{rows.length} courses</span>}
+        <p className='text-caption text-ink-muted max-w-prose'>{blurb}</p>
+        <span className='ml-auto'><RouteHint path={selectedId != null ? itemRoute(selectedId) : listRoute} /></span>
       </div>
-      {coursesQ.isLoading && collegeId && <div className='flex justify-center py-8'><Spinner /></div>}
-      {collegeId && !coursesQ.isLoading && (rows.length ? (
-        <CourseTable rows={rows} columns={[
-          { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
-          { key: 'title', label: 'Title' },
-          { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.units ?? '—'}</span> },
-          { key: 'course_id', label: 'course_id', render: (r) => <span className='font-mono'>{r.course_id}</span> },
-        ]} />
-      ) : <EmptyState title='No courses' description='No catalog rows for this college.' />)}
-      {!collegeId && <EmptyState title='Choose a college' description='Pick a community college to browse its catalog.' />}
+      <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
+        <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
+          <p className='text-label mb-2'>{railTitle} · {sortedItems.length}</p>
+          {railSearch && (
+            <div className='mb-3'>
+              <Input value={railQ} onChange={(e) => setRailQ(e.target.value)} placeholder='Find…'
+                leadingIcon={MagnifyingGlassIcon} />
+            </div>
+          )}
+          <div className='space-y-1'>
+            {railItems.map((it) => {
+              const active = String(it.id) === String(selectedId)
+              return (
+                <button key={it.id} type='button'
+                  onClick={() => { setSelectedId(it.id); setCourseQ('') }}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors ${
+                    active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
+                  <span className='text-body leading-snug break-words'>{it.name}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {selectedId == null ? (
+          <EmptyState title={pickText} description='Pick one from the list to browse its catalog.' />
+        ) : (
+          <Stack gap='cozy'>
+            <div className='flex flex-wrap items-center gap-3'>
+              <Input className='w-64' value={courseQ} onChange={(e) => setCourseQ(e.target.value)}
+                placeholder='Search prefix / number / title…' leadingIcon={MagnifyingGlassIcon} />
+              {!coursesQ.isLoading && <span className='text-caption text-ink-subtle'>{rows.length} courses</span>}
+            </div>
+            {coursesQ.isLoading ? <div className='flex justify-center py-8'><Spinner /></div>
+              : rows.length ? <CourseTable rows={rows} columns={columns} />
+              : <EmptyState title='No courses' description='No catalog rows here.' />}
+          </Stack>
+        )}
+      </div>
     </Stack>
+  )
+}
+
+function CcCoursesBrowser() {
+  const colleges = useColleges()
+  return (
+    <CatalogBrowser
+      items={colleges.data || []}
+      useCourses={useCcCourses}
+      railTitle='Community colleges'
+      pickText='Choose a college'
+      blurb='Community-college catalog — only courses referenced by the ported agreements are in the research database.'
+      listRoute='/community-colleges'
+      itemRoute={(id) => `/courses/${id}`}
+      searchFields={['prefix', 'number', 'title']}
+      columns={[
+        { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
+        { key: 'title', label: 'Title' },
+        { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.units ?? '—'}</span> },
+        { key: 'course_id', label: 'course_id', render: (r) => <span className='font-mono'>{r.course_id}</span> },
+      ]}
+    />
   )
 }
 
 function UniversityCoursesBrowser() {
   const schools = useSchools()
-  const [schoolId, setSchoolId] = useState(null)
-  const [q, setQ] = useState('')
-  const coursesQ = useUniversityCourses(schoolId)
-
-  const options = (schools.data?.uc || [])
-    .slice().sort((a, b) => a.name.localeCompare(b.name))
-    .map((s) => ({ value: String(s.id), label: s.name }))
-  const rows = useMemo(
-    () => courseSearch(coursesQ.data || [], q, ['prefix', 'number', 'title', 'department'])
-      .slice().sort((a, b) => `${a.prefix} ${a.number}`.localeCompare(`${b.prefix} ${b.number}`)),
-    [coursesQ.data, q]
-  )
-
   return (
-    <Stack gap='cozy'>
-      <p className='text-caption text-ink-muted'>
-        UC-side catalog — the receiving courses the ported agreements articulate to.
-      </p>
-      <div className='flex flex-wrap items-center gap-3'>
-        <Select className='w-64' placeholder='UC campus…' value={schoolId ?? ''}
-          options={options} onChange={setSchoolId} />
-        <Input className='w-64' value={q} onChange={(e) => setQ(e.target.value)}
-          placeholder='Search prefix / number / title…' leadingIcon={MagnifyingGlassIcon} />
-        {schoolId && !coursesQ.isLoading && <span className='text-caption text-ink-subtle'>{rows.length} courses</span>}
-      </div>
-      {coursesQ.isLoading && schoolId && <div className='flex justify-center py-8'><Spinner /></div>}
-      {schoolId && !coursesQ.isLoading && (rows.length ? (
-        <CourseTable rows={rows} columns={[
-          { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
-          { key: 'title', label: 'Title' },
-          { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.min_units ?? '—'}{r.max_units != null && r.max_units !== r.min_units ? `–${r.max_units}` : ''}</span> },
-          { key: 'department', label: 'Department' },
-          { key: 'parent_id', label: 'parent_id', render: (r) => <span className='font-mono'>{r.parent_id}</span> },
-        ]} />
-      ) : <EmptyState title='No courses' description='No catalog rows for this campus.' />)}
-      {!schoolId && <EmptyState title='Choose a campus' description='Pick a UC campus to browse its receiving courses.' />}
-    </Stack>
+    <CatalogBrowser
+      items={schools.data?.uc || []}
+      useCourses={useUniversityCourses}
+      railTitle='UC campuses'
+      railSearch={false}
+      pickText='Choose a campus'
+      blurb='UC-side catalog — the receiving courses the ported agreements articulate to.'
+      listRoute='/schools'
+      itemRoute={(id) => `/university-courses/${id}`}
+      searchFields={['prefix', 'number', 'title', 'department']}
+      columns={[
+        { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
+        { key: 'title', label: 'Title' },
+        { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.min_units ?? '—'}{r.max_units != null && r.max_units !== r.min_units ? `–${r.max_units}` : ''}</span> },
+        { key: 'department', label: 'Department' },
+        { key: 'parent_id', label: 'parent_id', render: (r) => <span className='font-mono'>{r.parent_id}</span> },
+      ]}
+    />
   )
 }
