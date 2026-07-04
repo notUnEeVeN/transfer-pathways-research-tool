@@ -213,14 +213,17 @@ export function useEditFigure() {
   })
 }
 
-// The pmt.py client, served by the API with the base URL baked in.
+// The pmt.py client, served by the API with the base URL baked in. Refetch on
+// mount (staleTime 0) so a redeploy's updated client shows up — the query cache
+// is persisted to IndexedDB, so a stale-forever entry would otherwise survive
+// reloads and never pick up server changes.
 export function usePmtPy() {
   const { user } = useAuth()
   return useQuery({
     queryKey: ['pmt-py', user?.uid],
     queryFn: () => apiClient.get('/client/pmt.py', { responseType: 'text' }).then((r) => r.data),
     enabled: !!user?.uid,
-    staleTime: Infinity,
+    staleTime: 0,
   })
 }
 
