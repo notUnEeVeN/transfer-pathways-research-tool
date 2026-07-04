@@ -17,9 +17,17 @@ const VIEWS = [
   { value: 'diff', label: 'Difference' },
 ]
 
-const LABEL_MODES = [
-  { value: 'paper', label: 'UC1–9' },
-  { value: 'names', label: 'Campus names' },
+// Which requirements model "complete" is measured against:
+//   paper  — the hand-curated university-website hard minimums
+//            (ref_uc_transfer_requirements), the paper's methodology.
+//   assist — ASSIST's own stated requirement surface: a cell is complete when
+//            at least one CS program at the campus has EVERY receiver in its
+//            required agreement groups articulated (curation overrides
+//            honored). Far stricter in practice — ASSIST pages list required
+//            receivers that articulate almost nowhere.
+const REQ_MODES = [
+  { value: 'paper', label: 'Website minimums' },
+  { value: 'assist', label: 'ASSIST minimums' },
 ]
 
 // Row label under each mode. Campus names keep the paper's `*` annotation
@@ -177,12 +185,12 @@ function labelFor({ view, live, paper }) {
   return live ? 'newly complete in our data' : 'complete in paper baseline only'
 }
 
-function titleFor({ uc, district, liveCell, live, paper, view }) {
+function titleFor({ uc, district, liveCell, live, paper, view, reqMode }) {
   const parts = [
     `${uc.id} · ${uc.campus}`,
     `District ${district.index}: ${district.name}`,
     `Cell: ${labelFor({ view, live, paper })}`,
-    `Our data: ${live ? 'complete' : 'missing'}`,
+    `Our data (${reqMode === 'assist' ? 'ASSIST-stated minimums' : 'website minimums'}): ${live ? 'complete' : 'missing'}`,
     `Paper baseline: ${paper ? 'complete' : 'missing'}`,
   ]
   if (liveCell) {
@@ -192,7 +200,7 @@ function titleFor({ uc, district, liveCell, live, paper, view }) {
   return parts.join('\n')
 }
 
-function PaperMatrix({ liveModel, view, labelMode }) {
+function PaperMatrix({ liveModel, view, labelMode, reqMode }) {
   return (
     <div style={{ containerType: 'inline-size' }}>
       <div
@@ -253,8 +261,8 @@ function PaperMatrix({ liveModel, view, labelMode }) {
                     return (
                       <td
                         key={district.index}
-                        title={titleFor({ uc, district, liveCell, live, paper, view })}
-                        aria-label={titleFor({ uc, district, liveCell, live, paper, view })}
+                        title={titleFor({ uc, district, liveCell, live, paper, view, reqMode })}
+                        aria-label={titleFor({ uc, district, liveCell, live, paper, view, reqMode })}
                         className='p-0'
                         style={{
                           background: fill,
@@ -334,12 +342,20 @@ function Chip({ color }) {
 
 export default function PaperDistrictHeatmap() {
   const [view, setView] = useState('live')
+  const [reqMode, setReqMode] = useState('paper')
   const [labelMode, setLabelMode] = useState('paper')
-  // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on demand.
-  const coverage = useCoverage(
+  // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on
+  // demand. The ASSIST-minimums variant fetches lazily on first selection and
+  // then stays cached, so flipping the toggle is instant afterwards.
+  const paperCoverage = useCoverage(
     { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'paper' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
+  const assistCoverage = useCoverage(
+    { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'assist' },
+    { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false, enabled: reqMode === 'assist' }
+  )
+  const coverage = reqMode === 'assist' ? assistCoverage : paperCoverage
   const rows = coverage.data?.rows || []
   const liveModel = useMemo(() => buildLiveModel(rows), [rows])
   const diff = useMemo(() => compare(liveModel), [liveModel])
@@ -376,15 +392,15 @@ export default function PaperDistrictHeatmap() {
           </div>
         </div>
         <div className='flex flex-col'>
-          <span className='field-label'>Row labels</span>
+          <span className='field-label'>Minimums</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {LABEL_MODES.map((mode) => (
+            {REQ_MODES.map((mode) => (
               <button
                 key={mode.value}
                 type='button'
-                onClick={() => setLabelMode(mode.value)}
+                onClick={() => setReqMode(mode.value)}
                 className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  labelMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                  reqMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
                 }`}
               >
                 {mode.label}
@@ -410,16 +426,27 @@ export default function PaperDistrictHeatmap() {
       <div data-export-exclude>
         <StatStrip
           tiles={[
-            { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: `${intFmt.format(PAPER_CELL_COUNT)} district-campus cells`, accent: true },
-            { label: 'Paper complete cells', value: intFmt.format(PAPER_COMPLETE_COUNT), sub: 'baseline matrix' },
-            { label: 'Net change', value: signedFmt.format(net), sub: `${intFmt.format(diff.changed)} changed cells` },
+            { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: reqMode === 'assist' ? 'per ASSIST-stated minimums' : 'per website minimums', accent: true },
+            { label: 'Paper complete cells', value: intFmt.format(PAPER_COMPLETE_COUNT), sub: 'baseline · website minimums' },
+            { label: 'Net vs paper', value: signedFmt.format(net), sub: `${intFmt.format(diff.changed)} changed cells` },
             { label: 'Matrix agreement', value: `${pctFmt.format(diff.agreementPct)}%`, sub: `${intFmt.format(diff.gained)} gained · ${intFmt.format(diff.lost)} lost` },
           ]}
         />
       </div>
 
-      <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} />
-      {view === 'diff' && <DifferenceLegend />}
+      <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />
+      <div className='flex flex-wrap items-center gap-4' data-export-exclude>
+        {view === 'diff' && <DifferenceLegend />}
+        {/* Deliberately quiet: label naming is a reading preference, not an
+            analysis control, so it lives under the matrix as plain text. */}
+        <button
+          type='button'
+          onClick={() => setLabelMode(labelMode === 'paper' ? 'names' : 'paper')}
+          className='ml-auto text-tag font-mono text-ink-subtle hover:text-ink underline underline-offset-2'
+        >
+          {labelMode === 'paper' ? 'show campus names' : 'show UC1–9 ids'}
+        </button>
+      </div>
     </Stack>
   )
 }
