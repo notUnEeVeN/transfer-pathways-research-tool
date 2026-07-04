@@ -142,6 +142,19 @@ export function useSetAnalysisReleases() {
   })
 }
 
+// Disabled analyses are hidden from EVERYONE (admins included) and never
+// mounted — nothing fetched or computed until re-enabled. Same config doc and
+// query key as releases, so both switches stay in sync from one fetch.
+export function useSetAnalysisDisabled() {
+  const qc = useQueryClient()
+  return useMutation({
+    // disabledIds: string[] — the full set of disabled analysis ids.
+    mutationFn: (disabledIds) =>
+      apiClient.put('/admin/analysis-disabled', { disabled_ids: disabledIds }).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['analysis-releases'] }),
+  })
+}
+
 // Dataset refresh (admin): background job on the server; poll while running.
 export function useRefreshStatus() {
   const { user } = useAuth()

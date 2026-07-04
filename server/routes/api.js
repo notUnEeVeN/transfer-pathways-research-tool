@@ -148,6 +148,8 @@ router.get('/admin/visible-majors',     adminController.getVisibleMajors);
 router.put('/admin/visible-majors',     jsonBody, adminController.putVisibleMajors);
 // Release/unrelease live analyses to partners (Data → Analysis tab).
 router.put('/admin/analysis-releases',  jsonBody, adminController.putAnalysisReleases);
+// Disable/enable analyses outright (hidden from everyone, nothing computed).
+router.put('/admin/analysis-disabled',  jsonBody, adminController.putAnalysisDisabled);
 // Re-port the current majors from the source DB (post-parser-update refresh).
 router.post('/admin/refresh-dataset',   adminController.postRefreshDataset);
 router.get('/admin/refresh-dataset',    adminController.getRefreshStatus);

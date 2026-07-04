@@ -14,7 +14,7 @@ const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin } = require('../services/access');
 const { removeRequest, unblockUid } = require('../services/accessRequests');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
-const { setReleasedIds } = require('../services/analysisReleases');
+const { setReleasedIds, setDisabledIds } = require('../services/analysisReleases');
 const { startRefresh, jobStatus } = require('../services/porter');
 
 const GRANTS = 'access_grants';
@@ -165,6 +165,20 @@ exports.putAnalysisReleases = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
   const saved = await setReleasedIds(auditDb, released_ids, req.user?.uid);
   res.json({ ok: true, released_ids: saved });
+});
+
+// Which registered analyses are disabled outright — hidden from every role
+// (admins included) so nothing mounts or computes until re-enabled. The
+// admin's "park it, work on them one at a time" switch; disabled wins over
+// released.
+exports.putAnalysisDisabled = asyncHandler(async (req, res) => {
+  const { disabled_ids } = req.body || {};
+  if (!Array.isArray(disabled_ids) || disabled_ids.some((x) => typeof x !== 'string')) {
+    return res.status(400).json({ error: 'disabled_ids must be an array of analysis id strings' });
+  }
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const saved = await setDisabledIds(auditDb, disabled_ids, req.user?.uid);
+  res.json({ ok: true, disabled_ids: saved });
 });
 
 // Available to every console user (partner or admin): tells the frontend

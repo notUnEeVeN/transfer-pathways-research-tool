@@ -7,7 +7,7 @@ import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
   useVisibleMajors, useSetVisibleMajors, useRefreshStatus, useStartRefresh,
   useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
-  useAnalysisReleases, useSetAnalysisReleases,
+  useAnalysisReleases, useSetAnalysisReleases, useSetAnalysisDisabled,
 } from '@frontend/query/hooks/useAccess'
 
 /**
@@ -337,20 +337,32 @@ function MajorAccessPanel() {
   )
 }
 
-// Which live analyses partners see on Data → Analysis. Off = hidden from
-// partners (you still preview it there, badged Draft). Release iteratively as
-// each analysis is finished. Toggling sends the full released set; switches
-// disable briefly during the save so quick flips can't race a stale set.
+// Which live analyses partners see on Data → Analysis, and which are enabled
+// at all. Enabled off = disabled: hidden from EVERYONE (you included) and
+// never mounted, so nothing is fetched or computed — park work-in-progress
+// analyses and bring them back one at a time. Released off = hidden from
+// partners only (you still preview it, badged Draft). Toggling sends the full
+// id set; switches disable briefly during the save so quick flips can't race
+// a stale set.
 function AnalysisReleasePanel() {
   const q = useAnalysisReleases()
   const save = useSetAnalysisReleases()
+  const saveDisabled = useSetAnalysisDisabled()
   const released = new Set(q.data?.released_ids || [])
+  const disabled = new Set(q.data?.disabled_ids || [])
+  const saving = save.isPending || saveDisabled.isPending
 
-  const toggle = (id) => {
+  const toggleReleased = (id) => {
     const next = new Set(released)
     if (next.has(id)) next.delete(id)
     else next.add(id)
     save.mutate([...next])
+  }
+  const toggleDisabled = (id) => {
+    const next = new Set(disabled)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    saveDisabled.mutate([...next])
   }
 
   return (
@@ -358,9 +370,10 @@ function AnalysisReleasePanel() {
       <div>
         <h2 className='text-heading'>Analysis releases</h2>
         <p className='text-caption text-ink-muted mt-1'>
-          Choose which live analyses partners see on the Data → Analysis tab.
-          Off means hidden from partners — you still see it there, badged Draft.
-          Release them one at a time as each is ready.
+          Enabled off removes the analysis from the Visuals tab for everyone —
+          you included — and skips its computation entirely, until you switch it
+          back on to work on it. Of the enabled ones, Released controls what
+          partners see (off = you preview it, badged Draft).
         </p>
       </div>
       <div className='surface-card p-5'>
@@ -373,22 +386,28 @@ function AnalysisReleasePanel() {
         ) : (
           <div className='divide-y divide-border/60'>
             {ANALYSES.map((a) => {
+              const off = disabled.has(a.id)
               const on = released.has(a.id)
               return (
-                <div key={a.id} className='py-2.5 flex items-center gap-3'>
-                  <div className='min-w-0'>
+                <div key={a.id} className='py-2.5 flex items-center gap-5'>
+                  <div className={`min-w-0 ${off ? 'opacity-50' : ''}`}>
                     <p className='text-body-strong break-words'>{a.title}</p>
                     <p className='text-caption text-ink-subtle break-words'>{a.description || a.source || a.id}</p>
                   </div>
-                  <SwitchField className='ml-auto shrink-0' label={on ? 'Released' : 'Draft'}
+                  <SwitchField className='ml-auto shrink-0' label={off ? 'Disabled' : 'Enabled'}
+                    srLabel={`Enable ${a.title} on the Visuals tab`} checked={!off}
+                    disabled={saving} onChange={() => toggleDisabled(a.id)} />
+                  <SwitchField className='shrink-0' label={on ? 'Released' : 'Draft'}
                     srLabel={`Release ${a.title} to partners`} checked={on}
-                    disabled={save.isPending} onChange={() => toggle(a.id)} />
+                    disabled={saving || off} onChange={() => toggleReleased(a.id)} />
                 </div>
               )
             })}
           </div>
         )}
-        {save.isError && <Alert type='error' className='mt-3'>Could not save the release change. Try again.</Alert>}
+        {(save.isError || saveDisabled.isError) && (
+          <Alert type='error' className='mt-3'>Could not save the change. Try again.</Alert>
+        )}
       </div>
     </Stack>
   )

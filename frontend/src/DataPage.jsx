@@ -309,9 +309,14 @@ export function AnalysisTab({ onNavigate = () => {} }) {
   const isAdmin = me.data?.role === 'admin'
   const releasesQ = useAnalysisReleases()
   const releasedSet = useMemo(() => new Set(releasesQ.data?.released_ids || []), [releasesQ.data])
-  // Admins preview every registered analysis (badged Draft/Released); partners
+  const disabledSet = useMemo(() => new Set(releasesQ.data?.disabled_ids || []), [releasesQ.data])
+  // Disabled analyses are gone for every role — not mounted, so their
+  // endpoints are never fetched (Admin → Analysis releases re-enables them).
+  // Of the rest, admins preview everything (badged Draft/Released); partners
   // only see the released ones.
-  const visibleAnalyses = isAdmin ? ANALYSES : ANALYSES.filter((a) => releasedSet.has(a.id))
+  const visibleAnalyses = ANALYSES.filter(
+    (a) => !disabledSet.has(a.id) && (isAdmin || releasedSet.has(a.id))
+  )
   const hasVisibleAnalyses = visibleAnalyses.length > 0
   const releasesPending = releasesQ.isLoading // don't flash "nothing" before releases load
 

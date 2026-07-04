@@ -7,7 +7,7 @@ const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const { invalidateReleasesCache } = cjs('../services/analysisReleases');
 const { getReleases } = cjs('./Analysis');
-const { putAnalysisReleases } = cjs('./Admin');
+const { putAnalysisReleases, putAnalysisDisabled } = cjs('./Admin');
 
 let mongo;
 let db;
@@ -48,15 +48,16 @@ const run = (handler, req) => new Promise((resolve, reject) => {
 });
 
 describe('GET /analysis/releases', () => {
-  it('defaults to [] (hidden until released)', async () => {
+  it('defaults to [] for both sets (hidden from partners, all enabled for admins)', async () => {
     const res = await run(getReleases, fakeReq({ uid: 'partner' }));
-    expect(res.body).toEqual({ released_ids: [] });
+    expect(res.body).toEqual({ released_ids: [], disabled_ids: [] });
   });
 
-  it('returns the saved release set to any console user', async () => {
+  it('returns the saved release + disabled sets to any console user', async () => {
     await run(putAnalysisReleases, fakeReq({ uid: 'admin' }, { body: { released_ids: ['coverage-heatmap'] } }));
+    await run(putAnalysisDisabled, fakeReq({ uid: 'admin' }, { body: { disabled_ids: ['complexity'] } }));
     const res = await run(getReleases, fakeReq({ uid: 'partner' }));
-    expect(res.body).toEqual({ released_ids: ['coverage-heatmap'] });
+    expect(res.body).toEqual({ released_ids: ['coverage-heatmap'], disabled_ids: ['complexity'] });
   });
 });
 
@@ -77,5 +78,23 @@ describe('PUT /admin/analysis-releases', () => {
   it('400s when an entry is not a string', async () => {
     const res = await run(putAnalysisReleases, fakeReq({ uid: 'admin' }, { body: { released_ids: ['ok', 3] } }));
     expect(res.statusCode).toBe(400);
+  });
+});
+
+describe('PUT /admin/analysis-disabled', () => {
+  it('sets the disabled set (trim + dedupe) without touching releases', async () => {
+    await run(putAnalysisReleases, fakeReq({ uid: 'admin' }, { body: { released_ids: ['a'] } }));
+    const res = await run(putAnalysisDisabled, fakeReq({ uid: 'admin' }, { body: { disabled_ids: [' b ', 'b', 'c'] } }));
+    expect(res.body).toMatchObject({ ok: true, disabled_ids: ['b', 'c'] });
+    const doc = await db.collection('dataset_config').findOne({ _id: 'analysis_releases' });
+    expect(doc.released_ids).toEqual(['a']);
+    expect(doc.disabled_ids).toEqual(['b', 'c']);
+  });
+
+  it('400s when disabled_ids is not an array of strings', async () => {
+    const bad1 = await run(putAnalysisDisabled, fakeReq({ uid: 'admin' }, { body: { disabled_ids: 'x' } }));
+    expect(bad1.statusCode).toBe(400);
+    const bad2 = await run(putAnalysisDisabled, fakeReq({ uid: 'admin' }, { body: { disabled_ids: ['ok', 3] } }));
+    expect(bad2.statusCode).toBe(400);
   });
 });

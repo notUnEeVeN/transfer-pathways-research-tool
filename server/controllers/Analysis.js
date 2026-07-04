@@ -17,19 +17,24 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { currentDatasetVersion } = require('../services/datasetVersion');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
-const { getReleasedIds } = require('../services/analysisReleases');
+const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
 const {
   coverageData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData,
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
 
-// Which analyses are released to partners on the Data → Analysis tab. Console-
-// gated (every signed-in console user reads it) — the frontend uses it to hide
-// unreleased analyses from partners and to badge Draft/Released for admins.
+// Which analyses are released to partners on the Data → Analysis tab, and
+// which are disabled outright (hidden from everyone, nothing mounted or
+// computed). Console-gated (every signed-in console user reads it) — the
+// frontend hides unreleased analyses from partners, hides disabled ones from
+// all roles, and badges Draft/Released for admins.
 exports.getReleases = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  res.json({ released_ids: await getReleasedIds(auditDb) });
+  res.json({
+    released_ids: await getReleasedIds(auditDb),
+    disabled_ids: await getDisabledIds(auditDb),
+  });
 });
 
 const TTL_MS = 60 * 1000;
