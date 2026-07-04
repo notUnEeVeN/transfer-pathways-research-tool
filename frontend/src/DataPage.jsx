@@ -296,9 +296,7 @@ function ReleaseBadge({ released }) {
   return <Badge variant={released ? 'success' : 'neutral'}>{released ? 'Released' : 'Draft'}</Badge>
 }
 
-// Exported so it can mount as the top-level "Visuals" tab (see App.jsx). It
-// stays defined here for now alongside the figure gallery it owns; a later
-// cleanup can split it into its own module.
+// Exported for the top-level Visuals tab (App.jsx); lives here with its gallery.
 export function AnalysisTab({ onNavigate = () => {} }) {
   const me = useAccessMe()
   const isAdmin = me.data?.role === 'admin'
@@ -317,9 +315,7 @@ export function AnalysisTab({ onNavigate = () => {} }) {
   const figures = figs.data?.figures || []
   const currentVersion = figs.data?.dataset_version || null
 
-  // Built-in analyses and published figures share one publish-ordered gallery —
-  // no visual distinction between "ours" and "theirs". Ordered oldest-first, so
-  // a newly published figure lands at the bottom.
+  // Built-in analyses + published figures in one gallery, oldest-first.
   const gallery = useMemo(() => {
     const analysisItems = visibleAnalyses.map((a) => ({ kind: 'analysis', key: a.id, at: a.published_at, a }))
     const figureItems = figures.map((f) => ({ kind: 'figure', key: f.slug, at: f.updated_at, f }))
@@ -380,19 +376,15 @@ export function AnalysisTab({ onNavigate = () => {} }) {
   )
 }
 
-// Shared attribution date format for every gallery card (built-in analyses and
-// published figures alike), so they read identically.
+// Shared date format for gallery cards.
 function fmtGalleryDate(value) {
   if (!value) return ''
   const d = new Date(value)
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-// A published figure rendered through the same AnalysisCard shell as the
-// built-in analyses, so the whole tab reads as one gallery. Downloads serve the
-// STORED svg/png/pdf (true vector PDF), not a DOM capture. Owners and admins get
-// inline edit (metadata only — the image changes by re-publishing the slug) and
-// delete; everyone else sees a read-only card.
+// Published figure in the AnalysisCard shell. Downloads serve the stored
+// svg/png/pdf. Owner/admin get edit (metadata) + delete; others read-only.
 function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave, saving }) {
   const [editing, setEditing] = useState(false)
   const [title, setTitle] = useState(fig.title)

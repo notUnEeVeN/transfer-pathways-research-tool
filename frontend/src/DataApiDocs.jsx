@@ -10,12 +10,9 @@ import {
 } from './apiDocs/content'
 
 /**
- * API page — Tokens (credentials) · Starter (the one pmt.py starter file +
- * getting-started steps, including publish) · Endpoints (partner-visible
- * reference) · Data guide (the data model, readable). All documentation text
- * lives in apiDocs/content.js and server/client/pmtPy.js; this file only
- * renders it. The guide's "Copy for AI" button serializes the same content to
- * markdown, so the page and the paste can't drift.
+ * API page: Tokens · Starter (pmt.py + steps, incl. publish) · Endpoints · Data
+ * guide. Copy lives in apiDocs/content.js and server/client/pmtPy.js; this file
+ * renders it. "Copy for AI" serializes the same content, so page and paste stay in sync.
  */
 export default function ApiPage() {
   const [tab, setTab] = useState('starter')
@@ -46,10 +43,7 @@ export default function ApiPage() {
 
 // ───────── starter ─────────
 
-// The single onboarding surface: a short explanation, the getting-started
-// steps, and the one official starter file (pmt.py, served with the API address
-// baked in — Copy or Download). publish() lives in that same file, so there is
-// no separate publish page.
+// Onboarding: explanation + steps + the served pmt.py (Copy/Download).
 function StarterSection() {
   const py = usePmtPy()
   const downloadPmtPy = () => {

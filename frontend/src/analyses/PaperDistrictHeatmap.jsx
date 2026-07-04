@@ -314,9 +314,7 @@ function Chip({ color }) {
 
 export default function PaperDistrictHeatmap() {
   const [view, setView] = useState('live')
-  // Re-fetch fresh whenever the page (re)loads or you open this tab — so a
-  // manual DB refresh shows up without having to remember to click Refresh —
-  // but never poll in the background (the data is stagnant between refreshes).
+  // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on demand.
   const coverage = useCoverage(
     { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'paper' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }

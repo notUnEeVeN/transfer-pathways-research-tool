@@ -31,17 +31,11 @@ export const GETTING_STARTED_NOTES = [
 ]
 
 // ───────────────────────── starter code ─────────────────────────
-// The Starter tab is the single onboarding surface: the numbered steps below
-// plus the one official starter file (pmt.py, served with the API address baked
-// in — see server/client/pmtPy.js). publish() lives in the same file, so there
-// is no separate publish page.
+// Starter tab content: the steps below + the served pmt.py (see
+// server/client/pmtPy.js). publish() ships in the same file — no separate page.
 
 export const STARTER_EXPLANATION =
-  'One file with everything. Create a token, then either keep this next to your ' +
-  'notebook and import it, or paste it straight into a cell. fetch("/path") ' +
-  'returns a pandas DataFrame for any endpoint; publish(fig, slug, title) shares ' +
-  'a chart with the team on the Visuals tab. Change the path to reach a different ' +
-  'endpoint — the Endpoints tab lists them all.'
+  'One file: fetch() reads any endpoint into a DataFrame, publish() shares a chart.'
 
 export const STARTER_STEPS = [
   ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
@@ -336,13 +330,9 @@ export const ENDPOINT_GROUPS = [
   },
 ]
 
-// Endpoint groups withheld from the partner-facing docs: the precomputed
-// analyses and the figures-gallery mechanics. They stay defined above as the
-// canonical reference, but the Endpoints tab and the AI briefing render only
-// the partner-visible groups — analyses reach partners through the website
-// (Data → Analysis), staged by the admin, not handed out as fetch recipes.
-// Deliberate obscurity, not a hard wall: the endpoints still function so the
-// site's own released analyses keep rendering in the browser.
+// Hidden from the Endpoints tab + AI briefing: analyses and figures. Still
+// defined (canonical) and still functional — analyses reach partners via the
+// site, not as fetch recipes. Obscurity, not a wall.
 export const HIDDEN_ENDPOINT_GROUP_IDS = new Set(['analysis', 'figures'])
 export const PARTNER_ENDPOINT_GROUPS = ENDPOINT_GROUPS.filter(
   (g) => !HIDDEN_ENDPOINT_GROUP_IDS.has(g.id)
@@ -528,8 +518,7 @@ export const GUIDE_SECTIONS = [
 ]
 
 // ───────────────────────── AI-briefing helpers ─────────────────────────
-// Only used by buildAiBriefing() (the Data guide's "Copy for AI"); the human
-// Starter tab renders pmt.py itself, not these.
+// Used only by buildAiBriefing(); the Starter tab renders pmt.py, not these.
 
 export const curlBootstrap = (base) =>
   `curl -H "Authorization: Bearer pmtr_..." ${base}/client/pmt.py -o pmt.py`

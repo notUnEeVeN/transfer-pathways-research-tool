@@ -17,9 +17,7 @@ const { pmtPy } = require('../client/pmtPy');
 
 const auditHandle = (req) => req.app.locals.auditDb || req.app.locals.db;
 
-// Publishing is open to every console user, but a published figure belongs to
-// its author: only that author (or an admin) may edit or delete it. Legacy
-// figures with a null author_uid can be managed by admins only.
+// Edit/delete a figure: author or admin only. Legacy null-author rows: admin only.
 const canModify = (user, authorUid) =>
   isAdmin(user?.uid) || (!!user?.uid && user.uid === authorUid);
 

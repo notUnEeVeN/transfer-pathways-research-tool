@@ -1,30 +1,22 @@
 /**
- * Reference-table registry — descriptive, first-time-friendly labels plus an
- * editable field schema for each hand-curated reference table shown on the
- * Data → References tab. Every table is edited through the generic
- * ReferenceTableEditor; the server allowlists which collections are writable
- * (see server/controllers/Curation.js REF_TABLES).
+ * Reference-table registry: label + editable field schema per table on Data →
+ * References. RefRowModal renders the fields; server allowlists writable
+ * collections (Curation.js REF_TABLES).
  *
- * Per table:
- *   key         collection name (matches the server allowlist)
- *   label       tab + heading label
- *   description one-line explanation for first-time readers
- *   columns     field keys to show as grid columns
- *   fields      editable fields for the row editor { key, label, type, ... }
- *   makeId      _id for a NEW row (existing rows keep their _id)
- *   newRow      defaults for a new row
- *   searchText  row → haystack string for the search box
- *   derive      optional: compute stored fields from edited fields on save
- *   campusIdField optional: row field holding the UC school_id (matched-course picker)
+ *   key      collection name
+ *   label    tab/heading
+ *   fields   row-editor fields { key, label, type, ... }
+ *   makeId   _id for a new row (existing rows keep theirs)
+ *   newRow   new-row defaults
+ *   derive   optional: compute stored fields on save
  *
- * Field types: 'text' | 'number' | 'bool' | 'tags' | 'select' | 'matched-course'.
+ * Field types: text | number | bool | tags | select | matched-course.
  */
 
 const normCode = (s) => String(s || '').toUpperCase().replace(/\s+/g, ' ').trim()
 const slug = (s) => String(s || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '')
 
-// UC campus code → { school_id, school }. Mirrors the import script so new
-// minimum-requirement rows carry consistent campus fields.
+// UC code → { school_id, school }; mirrors the import script.
 export const UC_SCHOOLS = {
   UCB: { school_id: 79, school: 'UC Berkeley' },
   UCD: { school_id: 89, school: 'UC Davis' },

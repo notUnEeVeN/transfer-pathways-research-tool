@@ -16,13 +16,11 @@ import { exportAnalysisCard } from './exportCard'
  * shows release status; partners never see unreleased analyses, so they get no
  * badge. `actions` are extra header controls (e.g. a figure's edit/delete).
  *
- * Two export modes share one card shell:
- *   - Live analyses (default): PDF + high-res PNG captured from the DOM
- *     (LaTeX-native PDF drops into \includegraphics{}). The capture skips
- *     everything marked data-export-exclude so the file reads as a figure.
- *   - Published figures: pass `downloadFormats` (+ `onDownload`) and the header
- *     serves the STORED svg/png/pdf the notebook rendered — a true vector PDF,
- *     not a re-capture — instead of the DOM-capture buttons.
+ * Two export modes:
+ *   - Live analyses (default): PDF + high-res PNG captured from the DOM (skips
+ *     data-export-exclude nodes; LaTeX-native PDF).
+ *   - Published figures: pass downloadFormats + onDownload to serve the STORED
+ *     svg/png/pdf instead of re-capturing.
  */
 export default function AnalysisCard({
   title, source, badge, exportName, children, downloadFormats, onDownload, actions,

@@ -41,23 +41,17 @@ const CANONICAL_CATEGORIES = [
 ];
 const BROAD_AXES = ['computing', 'math', 'science', 'non_stem'];
 
-// Hand-curated reference tables, editable in the console's References tab. The
-// generic get/put/delete CRUD below is keyed by _id and stamps the curator, so
-// adding a table here is all it takes to make it viewable + editable.
+// Editable reference tables (References tab). CRUD below is keyed by _id and
+// stamps the curator; add a table here to make it editable.
 const REF_TABLES = new Set([
   'ref_campus_calendars', // { _id: <university_id>, system: 'quarter'|'semester' }
   'ref_tuition',          // { _id: <university_id>, per_credit_usd, source }
   'ref_cc_districts',     // { _id: <cc_id>, community_college, district, region, counties_served[] }
   'ref_locations',        // { _id: '<kind>:<id>', kind: 'cc'|'university', lat, lng }
-  // Hard-minimum UC transfer requirements (imported; now editable, incl. the
-  // matched UC course link).
-  'ref_uc_transfer_requirements', // { _id, uc_code, school_id, school, group_id, set_id, receiving_code, matched, matched_courses[] }
-  // Hand-gathered CC course prerequisites (imported from the prior research).
-  'ref_prerequisites',    // { _id, college, course_code, course_name, units, prerequisites[] }
-  // Cal-GETC / UC-7 requirement structure (from PlanMyTransfer).
-  'ref_ge_patterns',      // { _id, pattern, area_code, area_name, subgroup_code, subgroup_name, required, note }
-  // IGETC requirement structure.
-  'ref_igetc',            // { _id, area_code, area_name, sub_area, sub_name, required_courses, required_units, note }
+  'ref_uc_transfer_requirements', // UC hard minimums { _id, uc_code, school_id, school, group_id, set_id, receiving_code, matched, matched_courses[] }
+  'ref_prerequisites',    // CC course prereqs { _id, college, course_code, course_name, units, prerequisites[] }
+  'ref_ge_patterns',      // Cal-GETC / UC-7 { _id, pattern, area_code, area_name, subgroup_code, subgroup_name, required, note }
+  'ref_igetc',            // IGETC { _id, area_code, area_name, sub_area, sub_name, required_courses, required_units, note }
 ]);
 
 const stamp = (req) => ({ curated_by: req.user?.uid ?? null, curated_at: new Date() });

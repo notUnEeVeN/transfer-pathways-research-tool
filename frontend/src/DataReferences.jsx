@@ -6,11 +6,9 @@ import { refTableByKey } from './references/refTablesRegistry'
 import RefRowModal from './references/RefRowModal'
 
 /**
- * Data → References — the hand-curated reference tables, organized the way they
- * read best (drill into a district or a UC campus) and editable in place: each
- * row has edit/delete, and each view can add a row. Reads + writes go through
- * the curation ref CRUD so an edit refetches. Edits are open to every console
- * user and stamped with their uid.
+ * Data → References — hand-curated reference tables, drill-in by district or UC
+ * campus, editable in place (row edit/delete/add). Reads + writes via the
+ * curation ref CRUD; edits open to any console user, stamped with their uid.
  */
 
 const intFmt = new Intl.NumberFormat()
@@ -337,8 +335,8 @@ export default function DataReferences() {
 
   return (
     <Stack gap='section'>
-      {/* Wrap in a flex row so the inline-flex tab bar stays content-width —
-          a bare Stack child gets stretched full-width by align-items: stretch. */}
+      {/* Flex row keeps the inline-flex tab bar content-width; a bare Stack
+          child stretches full-width. */}
       <div className='flex flex-wrap items-center gap-3'>
         <Tabs
           value={tab}

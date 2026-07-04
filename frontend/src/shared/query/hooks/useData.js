@@ -110,8 +110,7 @@ export function useAnalysisRaw(collection, options = {}) {
 }
 
 // ── editable reference tables (curation ref CRUD) ──
-// Read + write the same collection through /curation/ref so an edit and the
-// refetch stay consistent. Server allowlists which tables are editable.
+// Read + write via /curation/ref so edits refetch consistently.
 
 export function useRefTable(table) {
   const { user } = useAuth()
@@ -213,10 +212,9 @@ export function useEditFigure() {
   })
 }
 
-// The pmt.py client, served by the API with the base URL baked in. Refetch on
-// mount (staleTime 0) so a redeploy's updated client shows up — the query cache
-// is persisted to IndexedDB, so a stale-forever entry would otherwise survive
-// reloads and never pick up server changes.
+// pmt.py client, base URL baked in server-side. staleTime 0 → refetch on mount
+// so redeploys show up (cache persists to IndexedDB; stale-forever would survive
+// reloads).
 export function usePmtPy() {
   const { user } = useAuth()
   return useQuery({

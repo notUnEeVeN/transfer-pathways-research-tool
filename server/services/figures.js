@@ -111,9 +111,8 @@ async function removeFigure(auditDb, slug) {
   return deletedCount > 0;
 }
 
-// Who owns a figure — the controller needs author_uid to gate edit/delete.
-// { found: false } distinguishes a missing figure (404) from one with a null
-// author (legacy rows before authorship was tracked; only admins can touch).
+// author_uid for edit/delete gating. found:false = missing (404); null author
+// = legacy row (admin-only).
 async function getFigureAuthor(auditDb, slug) {
   const doc = await auditDb.collection(COLLECTION).findOne(
     { _id: slug }, { projection: { author_uid: 1 } });
@@ -121,9 +120,8 @@ async function getFigureAuthor(auditDb, slug) {
   return { found: true, author_uid: doc.author_uid ?? null };
 }
 
-// Metadata-only edit. A figure's IMAGE only changes by re-publishing the slug
-// from the notebook; in-app editing is limited to the display text. Returns
-// { error } or { value } with just the provided, cleaned fields.
+// Metadata-only edit (the image changes only via re-publish). Returns { error }
+// or { value } with the provided, cleaned fields.
 function validateFigureMeta(body = {}) {
   const out = {};
   if (body.title !== undefined) {

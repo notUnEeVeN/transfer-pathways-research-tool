@@ -255,9 +255,7 @@ export default function CoverageHeatmap() {
   const [rowModeValue, setRowModeValue] = useState('college')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   const deferredMajorFilter = useDeferredValue(majorFilter)
-  // Re-fetch on each page load / when this tab opens (so a manual DB refresh
-  // appears without remembering to click Refresh), but no background polling —
-  // the data is stagnant between refreshes.
+  // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on demand.
   const coverage = useCoverage(
     { majorContains: deferredMajorFilter, groupBy: rowMode.value },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
