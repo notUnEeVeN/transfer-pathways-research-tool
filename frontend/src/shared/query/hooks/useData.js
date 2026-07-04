@@ -96,6 +96,55 @@ export function useCoverage(params = {}, options = {}) {
   })
 }
 
+// The rest of the /analysis family — same scoping and caching contract as
+// useCoverage. One fetch per (endpoint × filter); components shape client-side.
+function useAnalysisEndpoint(key, path, params = {}, options = {}) {
+  const { user } = useAuth()
+  const majorContains = String(params.majorContains || '').trim()
+  const schoolIds = (params.schoolIds || []).map(Number).filter(Number.isFinite)
+  const { enabled = true, ...queryOptions } = options
+  return useQuery({
+    queryKey: [key, user?.uid, majorContains, schoolIds.join(',')],
+    queryFn: () =>
+      apiClient
+        .get(path, {
+          params: {
+            ...(majorContains ? { majorContains } : {}),
+            ...(schoolIds.length ? { schoolIds: schoolIds.join(',') } : {}),
+          },
+        })
+        .then((r) => r.data),
+    enabled: !!user?.uid && enabled,
+    staleTime: 5 * 60 * 1000,
+    ...queryOptions,
+  })
+}
+
+export function useCreditLoss(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-credit-loss', '/analysis/credit-loss', params, options)
+}
+
+// choice-cost requires an ORDERED schoolIds list; disabled until one is picked.
+export function useChoiceCost(params = {}, options = {}) {
+  const hasSchools = (params.schoolIds || []).length > 0
+  return useAnalysisEndpoint('analysis-choice-cost', '/analysis/choice-cost', params, {
+    ...options,
+    enabled: hasSchools && (options.enabled ?? true),
+  })
+}
+
+export function useCategoryGaps(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-category-gaps', '/analysis/category-gaps', params, options)
+}
+
+export function useComplexity(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-complexity', '/analysis/complexity', params, options)
+}
+
+export function useTimeToDegree(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-time-to-degree', '/analysis/time-to-degree', params, options)
+}
+
 export function useAnalysisRaw(collection, options = {}) {
   const { user } = useAuth()
   const safeCollection = String(collection || '').trim()

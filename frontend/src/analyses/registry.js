@@ -23,6 +23,11 @@
 
 import CoverageHeatmap from './CoverageHeatmap'
 import PaperDistrictHeatmap from './PaperDistrictHeatmap'
+import CreditLoss from './CreditLoss'
+import ChoiceCost from './ChoiceCost'
+import CategoryGaps from './CategoryGaps'
+import Complexity from './Complexity'
+import TimeToDegree from './TimeToDegree'
 
 // The built-in analyses render as first-class figures on the Analysis tab,
 // credited to the console owner and dated, alongside partners' published
@@ -47,5 +52,45 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:05:00',
     Component: CoverageHeatmap,
+  },
+  {
+    id: 'credit-loss',
+    title: 'Cheapest-path credit load',
+    description: 'Distribution of minimal CC courses/units per agreement, by campus',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-04T09:00:00',
+    Component: CreditLoss,
+  },
+  {
+    id: 'choice-cost',
+    title: 'Cost of keeping choices open',
+    description: 'Incremental CC courses each additional campus demands, in application order',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-04T09:01:00',
+    Component: ChoiceCost,
+  },
+  {
+    id: 'category-gaps',
+    title: 'Course-category gaps',
+    description: 'Share of colleges missing an articulated equivalent, per campus x category',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-04T09:02:00',
+    Component: CategoryGaps,
+  },
+  {
+    id: 'complexity',
+    title: 'Pathway complexity',
+    description: 'Curricular Analytics delay + blocking scores over the curated prereq graph',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-04T09:03:00',
+    Component: Complexity,
+  },
+  {
+    id: 'time-to-degree',
+    title: 'Transfer credit rate',
+    description: 'Associate-degree units counting toward each agreement, with lost-unit cost',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-04T09:04:00',
+    Component: TimeToDegree,
   },
 ]
