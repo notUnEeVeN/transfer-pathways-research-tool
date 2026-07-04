@@ -4,7 +4,7 @@
  * distribution channel. The API tab renders this same text with Copy /
  * Download buttons (single source: this template).
  */
-const pmtPy = (baseUrl) => `"""PMT Research API — starter client.
+const pmtPy = (baseUrl) => `"""Transfer Pathways Research API — starter client.
 
     fetch(path)               -> pandas DataFrame from any endpoint
     publish(fig, slug, title) -> share a matplotlib figure to Visuals

@@ -29,7 +29,7 @@ import { qk } from '@frontend/query/keys'
 import apiClient from '@frontend/api/apiClient'
 
 /**
- * PMT Research Console — web port of the internal desktop audit tool.
+ * Transfer Pathways Research Console — web port of the internal desktop audit tool.
  *
  * Differences from the desktop shell it was ported from:
  *   - Interactive Google sign-in (no silent local-server token mint).
@@ -137,7 +137,7 @@ function Console({ role, user }) {
   return (
       <div className='h-screen flex flex-col bg-surface text-ink'>
         <div className='shrink-0 flex items-center gap-3 px-4 h-12 border-b border-border'>
-          <span className='text-label'>PMT Research</span>
+          <span className='text-label'>Transfer Pathways Research</span>
           <div className='ml-auto flex items-center gap-3'>
             <Tabs value={view} onChange={setView}
               options={[

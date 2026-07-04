@@ -62,7 +62,7 @@ if (hasFrontendBuild) {
   app.use(express.static(distDir));
 } else {
   app.get('/', (req, res) => {
-    res.send('PMT research API is running.');
+    res.send('Transfer Pathways Research API is running.');
   });
 }
 

@@ -1,4 +1,4 @@
-# PMT Research Console
+# Transfer Pathways Research Console
 
 Research-facing variant of the Plan My Transfer tooling, built for a CS transfer-pathways
 research project (replicating and extending the analyses in the SIGCSE CA/MA transfer

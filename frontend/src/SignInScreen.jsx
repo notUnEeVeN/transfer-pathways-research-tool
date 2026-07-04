@@ -26,7 +26,7 @@ export default function SignInScreen() {
       <div className='w-full max-w-sm'>
         <Stack gap='comfortable'>
           <div>
-            <h1 className='text-heading'>PMT Research Console</h1>
+            <h1 className='text-heading'>Transfer Pathways Research Console</h1>
             <p className='text-caption text-ink-muted mt-1'>
               Transfer-pathway auditing and analysis. Access is limited to
               project members — sign in with the Google account your admin

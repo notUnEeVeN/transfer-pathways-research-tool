@@ -571,7 +571,7 @@ const mdEndpoint = (e) => {
  */
 export function buildAiBriefing(base) {
   return [
-    '# PMT Research API — data briefing',
+    '# Transfer Pathways Research API — data briefing',
     'You are working against a private research API over California community-college → UC transfer-articulation data (parsed from ASSIST.org). This briefing is the complete reference: access, endpoints, data model, and analysis rules.',
     '## Access',
     [
