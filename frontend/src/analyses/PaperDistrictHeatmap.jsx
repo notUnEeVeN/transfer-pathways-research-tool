@@ -17,6 +17,18 @@ const VIEWS = [
   { value: 'diff', label: 'Difference' },
 ]
 
+const LABEL_MODES = [
+  { value: 'paper', label: 'UC1–9' },
+  { value: 'names', label: 'Campus names' },
+]
+
+// Row label under each mode. Campus names keep the paper's `*` annotation
+// (selective-admission majors) so the two modes stay comparable.
+function rowLabel(uc, labelMode) {
+  if (labelMode !== 'names') return uc.id
+  return uc.campus.replace(/^UC\s+/i, '') + (uc.id.endsWith('*') ? '*' : '')
+}
+
 const UC_BY_SCHOOL_ID = new Map([
   [89, 'UC1*'],
   [144, 'UC2'],
@@ -180,7 +192,7 @@ function titleFor({ uc, district, liveCell, live, paper, view }) {
   return parts.join('\n')
 }
 
-function PaperMatrix({ liveModel, view }) {
+function PaperMatrix({ liveModel, view, labelMode }) {
   return (
     <div style={{ containerType: 'inline-size' }}>
       <div
@@ -193,8 +205,11 @@ function PaperMatrix({ liveModel, view }) {
           // wrapper above (an element can't query its own size). The subtracted
           // budget covers card padding + vertical axis label + row-id column +
           // gap; overflow-x-auto is a safety net for the smallest phones (4px
-          // floor).
-          '--paper-cell': 'clamp(4px, calc((100cqw - 100px) / 72), 18px)',
+          // floor). Campus-name labels are wider than the paper's UC ids, so
+          // that mode reserves a bigger label column.
+          '--paper-cell': labelMode === 'names'
+            ? 'clamp(4px, calc((100cqw - 195px) / 72), 18px)'
+            : 'clamp(4px, calc((100cqw - 100px) / 72), 18px)',
           '--paper-label': 'clamp(8px, calc(var(--paper-cell) * 0.78), 14px)',
           '--paper-axis': 'clamp(11px, calc(var(--paper-cell) * 1.45), 28px)',
         }}
@@ -228,7 +243,7 @@ function PaperMatrix({ liveModel, view }) {
                     className='pr-1 text-right font-normal whitespace-nowrap text-black'
                     style={{ fontSize: 'var(--paper-label)' }}
                   >
-                    {uc.id}
+                    {rowLabel(uc, labelMode)}
                   </th>
                   {DISTRICTS.map((district) => {
                     const liveCell = liveModel.cells.get(cellKey(uc.id, district.index))
@@ -274,6 +289,11 @@ function PaperMatrix({ liveModel, view }) {
                         textOrientation: 'mixed',
                         fontFamily: 'Arial, sans-serif',
                         fontSize: 'var(--paper-label)',
+                        // Vertical text's width is its line box; at 1.5 it
+                        // exceeds --paper-cell and (border-collapse) forces
+                        // every column wider than the cell var. 1 keeps the
+                        // label narrower than the cell at every size.
+                        lineHeight: 1,
                       }}
                     >
                       {district.index}
@@ -314,6 +334,7 @@ function Chip({ color }) {
 
 export default function PaperDistrictHeatmap() {
   const [view, setView] = useState('live')
+  const [labelMode, setLabelMode] = useState('paper')
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on demand.
   const coverage = useCoverage(
     { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'paper' },
@@ -354,6 +375,23 @@ export default function PaperDistrictHeatmap() {
             ))}
           </div>
         </div>
+        <div className='flex flex-col'>
+          <span className='field-label'>Row labels</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {LABEL_MODES.map((mode) => (
+              <button
+                key={mode.value}
+                type='button'
+                onClick={() => setLabelMode(mode.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  labelMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
         <Button
           variant='secondary'
           leadingIcon={ArrowPathIcon}
@@ -380,7 +418,7 @@ export default function PaperDistrictHeatmap() {
         />
       </div>
 
-      <PaperMatrix liveModel={liveModel} view={view} />
+      <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} />
       {view === 'diff' && <DifferenceLegend />}
     </Stack>
   )
