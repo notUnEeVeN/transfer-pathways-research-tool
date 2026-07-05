@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon,
-  ChartBarIcon, TrashIcon, PencilSquareIcon,
+  ChartBarIcon, TrashIcon, PencilSquareIcon, CodeBracketIcon, ArrowPathIcon,
 } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, LoadingLogo, Badge } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
@@ -9,6 +9,8 @@ import RouteHint from './components/RouteHint'
 import DataReferences from './DataReferences'
 import { ANALYSES } from './analyses/registry'
 import AnalysisCard from './analyses/AnalysisCard'
+import FigureScriptModal, { liveBadge } from './analyses/FigureScriptModal'
+import { fmtDate as fmtGalleryDate } from './shared/fmtDate'
 import { useAccessMe, useAnalysisReleases } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { openAssist } from './pages/Audit/lib/auditFormat'
@@ -18,6 +20,7 @@ import {
   useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch,
   useRawAssist, useDataSummary, useCoverage,
   useFigures, useDeleteFigure, useEditFigure, downloadFigure,
+  useRefreshFigureScript,
 } from '@frontend/query/hooks/useData'
 
 /**
@@ -388,20 +391,22 @@ export function AnalysisTab({ onNavigate = () => {} }) {
   )
 }
 
-// Shared date format for gallery cards.
-function fmtGalleryDate(value) {
-  if (!value) return ''
-  const d = new Date(value)
-  return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
-}
 
 // Published figure in the AnalysisCard shell. Downloads serve the stored
 // svg/png/pdf. Owner/admin get edit (metadata) + delete; others read-only.
+// Live figures (mode 'live') carry a script the server re-runs on data
+// changes: everyone can view the code; owner/admin also get refresh & controls.
+const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
+
 function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave, saving }) {
   const [editing, setEditing] = useState(false)
+  const [codeOpen, setCodeOpen] = useState(false)
   const [title, setTitle] = useState(fig.title)
   const [caption, setCaption] = useState(fig.caption || '')
   const [sourceUrl, setSourceUrl] = useState(fig.source_url || '')
+  const refresh = useRefreshFigureScript()
+  const isLive = fig.mode === 'live'
+  const live = liveBadge(fig)
   const stale = fig.dataset_version && currentVersion && fig.dataset_version !== currentVersion
 
   const resetFields = () => {
@@ -421,7 +426,7 @@ function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave
 
   const source = (
     <>
-      {fig.author_label || 'unknown author'}
+      {fig.author_label || shortAuthorUid(fig.author_uid)}
       {fig.updated_at ? ` · ${fmtGalleryDate(fig.updated_at)}` : ''}
       {fig.source_url && (
         <> · <a className='text-primary hover:underline' href={fig.source_url}
@@ -430,21 +435,46 @@ function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave
     </>
   )
 
-  const badge = fig.dataset_version ? (
-    <span className={`inline-block px-2 py-0.5 rounded-pill border text-label font-mono ${
-      stale ? 'border-warning text-warning' : 'border-border text-ink-muted'}`}>
-      {stale ? `computed on ${fig.dataset_version}` : fig.dataset_version}
-    </span>
-  ) : null
-
-  const actions = canModify ? (
+  const badge = (
     <>
-      <Button variant='ghost' leadingIcon={PencilSquareIcon}
-        onClick={() => { if (editing) resetFields(); setEditing((v) => !v) }} />
-      <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting}
-        onClick={() => { if (window.confirm(`Delete "${fig.title}"? Republishing the slug brings it back.`)) onDelete() }} />
+      {live && <Badge variant={live.variant}>{live.text}</Badge>}
+      {fig.dataset_version && (
+        <span className={`inline-block px-2 py-0.5 rounded-pill border text-label font-mono ${
+          stale ? 'border-warning text-warning' : 'border-border text-ink-muted'}`}>
+          {stale ? `computed on ${fig.dataset_version}` : fig.dataset_version}
+        </span>
+      )}
     </>
-  ) : null
+  )
+
+  const actions = (
+    <>
+      {isLive && (
+        <Button variant='ghost' leadingIcon={CodeBracketIcon} onClick={() => setCodeOpen(true)}>
+          View code
+        </Button>
+      )}
+      {isLive && canModify && (
+        <Button variant='ghost' leadingIcon={ArrowPathIcon} disabled={refresh.isPending}
+          onClick={() => refresh.mutate(fig.slug)}>
+          {refresh.isPending ? 'Running…' : 'Refresh'}
+        </Button>
+      )}
+      {canModify && (
+        <>
+          <Button variant='ghost' leadingIcon={PencilSquareIcon}
+            onClick={() => { if (editing) resetFields(); setEditing((v) => !v) }} />
+          <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting}
+            onClick={() => {
+              const warning = isLive
+                ? `Delete "${fig.title}"? Its script and run history go with it.`
+                : `Delete "${fig.title}"? Republishing the slug brings it back.`
+              if (window.confirm(warning)) onDelete()
+            }} />
+        </>
+      )}
+    </>
+  )
 
   return (
     <AnalysisCard title={fig.title} source={source} badge={badge} actions={actions}
@@ -467,6 +497,10 @@ function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave
         </div>
       )}
       <p className='text-caption text-ink-subtle font-mono mt-2' data-export-exclude>{fig.slug}</p>
+      {isLive && (
+        <FigureScriptModal open={codeOpen} onClose={() => setCodeOpen(false)}
+          slug={fig.slug} title={fig.title} cardCanModify={canModify} />
+      )}
     </AnalysisCard>
   )
 }

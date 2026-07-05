@@ -89,8 +89,8 @@ router.get('/data/summary',        ...guarded, dataController.getSummary);
 router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
 
 // ───────── Published figures (the shared stats gallery) + pmt.py client ─────────
-// Figures are rendered images published from partners' local Python via
-// pmt.publish() — the server stores and lists them, it never runs their code.
+// Static figures are rendered images published from partners' local Python via
+// pmt.publish() — stored and listed, nothing executed.
 const figuresController = require('../controllers/Figures');
 const figureBody = express.json({ limit: '48mb' }); // 3 base64 formats ≤12MB decoded each
 router.get('/figures',                ...guarded, figuresController.list);
@@ -100,6 +100,20 @@ router.get('/figures/:slug/:format',  ...guarded, figuresController.download);
 router.patch('/figures/:slug',        ...guarded, jsonBody, figuresController.update);
 router.delete('/figures/:slug',       ...guarded, figuresController.remove);
 router.get('/client/pmt.py',          ...guarded, figuresController.pmtPy);
+
+// ───────── Live figures (scripts the server re-runs on data changes) ─────────
+// pmt.publish_script() posts the script; the server dry-runs it sandboxed
+// (services/figureRunner.js) and publishes only what a successful run
+// captured. Code is viewable by every console user; logs and the control
+// surface (refresh, enable, detach) are owner-or-admin, in the controller.
+const figureScriptsController = require('../controllers/FigureScripts');
+const scriptBody = express.json({ limit: '1mb' }); // ≤200KB code + JSON escaping headroom
+router.post('/figure-scripts',                ...guarded, scriptBody, figureScriptsController.publish);
+router.get('/figure-scripts/:slug',           ...guarded, figureScriptsController.get);
+router.post('/figure-scripts/:slug/refresh',  ...guarded, figureScriptsController.refresh);
+router.put('/figure-scripts/:slug/enabled',   ...guarded, jsonBody, figureScriptsController.setEnabled);
+router.delete('/figure-scripts/:slug',        ...guarded, figureScriptsController.detach);
+router.get('/figure-scripts/:slug/runs',      ...guarded, figureScriptsController.runs);
 
 // ───────── Analysis + export (papers' statistics; JSON or ?format=csv) ─────────
 const analysisController = require('../controllers/Analysis');
@@ -153,5 +167,8 @@ router.put('/admin/analysis-disabled',  jsonBody, adminController.putAnalysisDis
 // Re-port the current majors from the source DB (post-parser-update refresh).
 router.post('/admin/refresh-dataset',   adminController.postRefreshDataset);
 router.get('/admin/refresh-dataset',    adminController.getRefreshStatus);
+// Pause/resume scheduled live-figure refreshes (the runner's global switch).
+router.get('/admin/figure-runner',      adminController.getFigureRunner);
+router.put('/admin/figure-runner',      jsonBody, adminController.putFigureRunner);
 
 module.exports = router;

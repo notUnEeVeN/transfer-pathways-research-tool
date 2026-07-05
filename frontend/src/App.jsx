@@ -97,13 +97,37 @@ function AccessRequestedScreen({ email }) {
   )
 }
 
+function AccessCheckFailedScreen({ error, onRetry }) {
+  const status = error?.response?.status
+  const detail = status
+    ? `The access check returned HTTP ${status}.`
+    : 'The access check could not reach the API.'
+
+  return (
+    <div className='h-screen bg-surface text-ink flex items-center justify-center px-6'>
+      <div className='w-full max-w-md'>
+        <Stack gap='comfortable'>
+          <EmptyState icon={LockClosedIcon} title='Could not check access'
+            description='Your account was not marked unapproved. The console could not verify access with the server.' />
+          <Alert type='error'>{detail}</Alert>
+          <div className='flex items-center justify-center gap-2'>
+            <Button variant='primary' onClick={onRetry}>Try again</Button>
+            <Button variant='secondary' onClick={() => signOut(auth)}>Sign out</Button>
+          </div>
+        </Stack>
+      </div>
+    </div>
+  )
+}
+
 /**
  * Access gate. The console renders ONLY on a positive allow from /access/me —
  * so a signed-in-but-unapproved account never sees console chrome or data, not
  * even briefly. While the check is in flight: a neutral "checking" screen.
- * On denial (403 — not granted, or deny-listed): the request/declined screen,
- * which re-polls so an admin's grant unlocks it live. The server enforces the
- * same gate on every route; this is the UI half of it.
+ * On actual denial (403 — not granted, or deny-listed): the request/declined
+ * screen, which re-polls so an admin's grant unlocks it live. Other failures
+ * stay retryable; a down API or transient auth error must not masquerade as a
+ * revoked account.
  */
 function Shell() {
   const { user } = useAuth()
@@ -112,7 +136,11 @@ function Shell() {
   if (me.isPending) {
     return <Centered><Spinner /> <span className='text-caption'>Checking access…</span></Centered>
   }
-  if (me.isError) return <AccessRequestedScreen email={user.email} />
+  if (me.isError) {
+    const status = me.error?.response?.status
+    if (status === 403) return <AccessRequestedScreen email={user.email} />
+    return <AccessCheckFailedScreen error={me.error} onRetry={() => me.refetch()} />
+  }
   return <Console role={me.data?.role ?? 'partner'} user={user} />
 }
 

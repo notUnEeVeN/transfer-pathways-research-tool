@@ -261,6 +261,61 @@ export function useEditFigure() {
   })
 }
 
+// ── live figures (scripts the server re-runs on data changes) ──
+
+// The script behind a live figure. Fetched when the View-code modal opens;
+// includes last_run (log for owner/admin only) and the server's can_modify.
+export function useFigureScript(slug, { enabled = true } = {}) {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['figure-script', slug, user?.uid],
+    queryFn: () => apiClient.get(`/figure-scripts/${slug}`).then((r) => r.data),
+    enabled: !!user?.uid && !!slug && enabled,
+    staleTime: 0,
+  })
+}
+
+// Owner/admin: re-run the script right now (synchronous on the server; the
+// promise resolves when the run finishes either way).
+export function useRefreshFigureScript() {
+  const qc = useQueryClient()
+  const invalidate = (slug) => {
+    qc.invalidateQueries({ queryKey: ['figures'] })
+    qc.invalidateQueries({ queryKey: ['figure-script', slug] })
+  }
+  return useMutation({
+    mutationFn: (slug) => apiClient.post(`/figure-scripts/${slug}/refresh`).then((r) => r.data),
+    // Refresh the gallery and modal on failure too — the run log and the
+    // amber state are the interesting parts of a failed run.
+    onSuccess: (_data, slug) => invalidate(slug),
+    onError: (_err, slug) => invalidate(slug),
+  })
+}
+
+export function useSetFigureScriptEnabled() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ slug, enabled }) =>
+      apiClient.put(`/figure-scripts/${slug}/enabled`, { enabled }).then((r) => r.data),
+    onSuccess: (_data, { slug }) => {
+      qc.invalidateQueries({ queryKey: ['figures'] })
+      qc.invalidateQueries({ queryKey: ['figure-script', slug] })
+    },
+  })
+}
+
+// Owner/admin: drop the script, keep the figure as a static snapshot.
+export function useDetachFigureScript() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (slug) => apiClient.delete(`/figure-scripts/${slug}`).then((r) => r.data),
+    onSuccess: (_data, slug) => {
+      qc.invalidateQueries({ queryKey: ['figures'] })
+      qc.invalidateQueries({ queryKey: ['figure-script', slug] })
+    },
+  })
+}
+
 // pmt.py client, base URL baked in server-side. staleTime 0 → refetch on mount
 // so redeploys show up (cache persists to IndexedDB; stale-forever would survive
 // reloads).

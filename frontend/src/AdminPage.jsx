@@ -8,6 +8,7 @@ import {
   useVisibleMajors, useSetVisibleMajors, useRefreshStatus, useStartRefresh,
   useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
   useAnalysisReleases, useSetAnalysisReleases, useSetAnalysisDisabled,
+  useFigureRunner, useSetFigureRunner,
 } from '@frontend/query/hooks/useAccess'
 
 /**
@@ -28,6 +29,7 @@ export default function AdminPage() {
         <BlockedAccountsPanel />
         <MajorAccessPanel />
         <AnalysisReleasePanel />
+        <FigureRunnerPanel />
         <RefreshPanel />
         <DatasetPanel />
         <AccessPanel />
@@ -408,6 +410,49 @@ function AnalysisReleasePanel() {
         {(save.isError || saveDisabled.isError) && (
           <Alert type='error' className='mt-3'>Could not save the change. Try again.</Alert>
         )}
+      </div>
+    </Stack>
+  )
+}
+
+// Global stop button for scheduled live-figure refreshes (partner scripts the
+// server re-runs on data changes). Paused stops the scheduler only —
+// publish_script and per-figure Refresh still work — and pending version
+// bumps/curation drift are caught up after resuming.
+function FigureRunnerPanel() {
+  const q = useFigureRunner()
+  const save = useSetFigureRunner()
+  const paused = !!q.data?.paused
+
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Live figure runner</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Live figures re-run their scripts automatically after dataset ports and
+          curation changes. Pause this if a script misbehaves or during heavy
+          audit sessions — nothing is lost; refreshes catch up when resumed.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {q.isLoading ? (
+          <div className='flex justify-center py-4'><Spinner /></div>
+        ) : q.isError ? (
+          <Alert type='error'>Failed to load the runner state.</Alert>
+        ) : (
+          <div className='flex items-center gap-5'>
+            <div className='min-w-0'>
+              <p className='text-body-strong'>Scheduled refreshes</p>
+              <p className='text-caption text-ink-subtle'>
+                {paused ? 'Paused — live figures keep their last render.' : 'Running — refreshes on version bumps and curation drift.'}
+              </p>
+            </div>
+            <SwitchField className='ml-auto shrink-0' label={paused ? 'Paused' : 'Running'}
+              srLabel='Pause scheduled live-figure refreshes' checked={!paused}
+              disabled={save.isPending} onChange={() => save.mutate(!paused)} />
+          </div>
+        )}
+        {save.isError && <Alert type='error' className='mt-3'>Could not save the change. Try again.</Alert>}
       </div>
     </Stack>
   )

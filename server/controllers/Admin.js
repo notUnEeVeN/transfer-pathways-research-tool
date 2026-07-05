@@ -16,6 +16,7 @@ const { removeRequest, unblockUid } = require('../services/accessRequests');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
 const { setReleasedIds, setDisabledIds } = require('../services/analysisReleases');
 const { startRefresh, jobStatus } = require('../services/porter');
+const { getRunnerPaused, setRunnerPaused } = require('../services/refreshScheduler');
 
 const GRANTS = 'access_grants';
 
@@ -179,6 +180,25 @@ exports.putAnalysisDisabled = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
   const saved = await setDisabledIds(auditDb, disabled_ids, req.user?.uid);
   res.json({ ok: true, disabled_ids: saved });
+});
+
+// ── live-figure runner pause switch ──
+// The global stop button for scheduled script refreshes; publish_script and
+// manual refreshes keep working. Version changes and curation drift are
+// retained while paused and caught up after resuming.
+exports.getFigureRunner = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  res.json({ paused: await getRunnerPaused(auditDb) });
+});
+
+exports.putFigureRunner = asyncHandler(async (req, res) => {
+  const { paused } = req.body || {};
+  if (typeof paused !== 'boolean') {
+    return res.status(400).json({ error: 'paused must be a boolean' });
+  }
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  await setRunnerPaused(auditDb, paused, req.user?.uid);
+  res.json({ ok: true, paused });
 });
 
 // Available to every console user (partner or admin): tells the frontend

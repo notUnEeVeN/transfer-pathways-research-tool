@@ -119,6 +119,27 @@ export function useSetVisibleMajors() {
   })
 }
 
+// Live-figure runner pause switch (admin). Paused = scheduled refreshes stop;
+// publish_script and manual refreshes keep working, and pending work catches
+// up after resuming.
+export function useFigureRunner() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['figure-runner'],
+    queryFn: () => apiClient.get('/admin/figure-runner').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 30 * 1000,
+  })
+}
+
+export function useSetFigureRunner() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (paused) => apiClient.put('/admin/figure-runner', { paused }).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['figure-runner'] }),
+  })
+}
+
 // Which live analyses are released to partners (Data → Analysis tab). Console-
 // gated read, same result for everyone — the Data page filters unreleased ones
 // out for partners and badges Draft/Released for admins.

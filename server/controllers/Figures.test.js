@@ -225,7 +225,7 @@ describe('GET /client/pmt.py', () => {
   it('serves the python client with the API base URL baked in', async () => {
     const res = await run(pmtPy, fakeReq({ uid: 'u1' }, { protocol: 'https', host: 'api.example.test' }));
     expect(res.headers['Content-Type']).toContain('text/x-python');
-    expect(res.body).toContain('API = "https://api.example.test"');
+    expect(res.body).toContain('API = os.environ.get("PMT_API_URL") or "https://api.example.test"');
     expect(res.body).toContain('def fetch(');
     expect(res.body).toContain('def publish(');
     expect(res.body).toContain('PMT_TOKEN');

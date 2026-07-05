@@ -8,11 +8,14 @@ const pmtPy = (baseUrl) => `"""Transfer Pathways Research API — starter client
 
     fetch(path)               -> pandas DataFrame from any endpoint
     publish(fig, slug, title) -> share a matplotlib figure to Visuals
+    publish_script("fig.py")  -> make that figure LIVE: the server re-runs the
+                                 script whenever the dataset changes
 
 Set TOKEN below (or the PMT_TOKEN env var). The Endpoints tab lists the paths.
 """
 import base64
 import io
+import json
 import os
 
 import pandas as pd
@@ -20,7 +23,9 @@ import requests
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
-API = "${baseUrl}"
+# PMT_API_URL is set by the server's figure runner so published scripts talk to
+# the local API; on your machine the baked-in URL is used.
+API = os.environ.get("PMT_API_URL") or "${baseUrl}"
 
 # Paste your token here (console -> API -> Tokens), or set the PMT_TOKEN env var.
 TOKEN = os.environ.get("PMT_TOKEN") or "pmtr_..."
@@ -90,11 +95,65 @@ def publish(fig, slug, title, caption=None, source_url=None):
         "dataset_version": _last_dataset_version,
         "formats": formats,
     }
+
+    # Inside the server's figure runner, publish() hands the rendered figure to
+    # the runner instead of POSTing — same script, both environments.
+    capture = os.environ.get("PMT_CAPTURE")
+    if capture:
+        if os.path.exists(capture):
+            raise RuntimeError(
+                "publish() was called more than once — a live script publishes "
+                "exactly one figure. Split extra figures into their own scripts."
+            )
+        with open(capture, "w") as f:
+            json.dump(payload, f)
+        print(f"captured '{slug}' for the figure runner")
+        # mirror the server response shape so code written against the
+        # laptop path behaves identically in the sandbox
+        return {"ok": True, "slug": slug,
+                "dataset_version": payload["dataset_version"], "captured": True}
+
     r = _session.post(f"{API}/figures", headers=_auth_headers(), json=payload, timeout=120)
     r.raise_for_status()
     out = r.json()
     print(f"published '{slug}' -> Visuals (dataset {out.get('dataset_version') or 'current'})")
     return out
+
+
+def publish_script(path, enabled=True):
+    """Publish a script as a LIVE figure.
+
+    The server dry-runs the file in its sandbox right now (against your data
+    scope) and, if it works, publishes the figure it produced and re-runs the
+    script automatically whenever the dataset changes. Requirements: the file
+    must be self-contained (runs top-to-bottom), import pmt, take its token
+    from the environment, and call pmt.publish() exactly once. Available
+    packages: pandas, numpy, matplotlib, requests.
+    """
+    with open(path, encoding="utf-8") as f:
+        code = f.read()
+    r = _session.post(
+        f"{API}/figure-scripts",
+        headers=_auth_headers(),
+        json={"code": code, "enabled": bool(enabled)},
+        timeout=300,  # the dry-run happens synchronously
+    )
+    try:
+        body = r.json()
+    except ValueError:
+        body = {}
+    if r.ok and body.get("ok"):
+        secs = (body.get("duration_ms") or 0) / 1000
+        print(
+            f"published '{body.get('slug')}' as LIVE (ran in {secs:.1f}s, "
+            f"dataset {body.get('dataset_version') or 'current'})"
+        )
+    else:
+        print(f"publish_script failed ({r.status_code}): {body.get('error') or r.text[:300]}")
+        if body.get("log"):
+            print("--- run log ---")
+            print(body["log"])
+    return body
 
 
 # ── A first call, so you can confirm it works ────────────────────────────────

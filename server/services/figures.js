@@ -53,16 +53,21 @@ function validateFigurePayload(body = {}) {
   };
 }
 
+const shortUidLabel = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : null);
+
 // The publisher's display name. Firebase tokens carry an email; pmtr_ tokens
 // (the usual publish path) only carry a uid, so fall back to the partner's
-// grant email, then the token label.
+// grant email, then a durable token label, then a short UID label.
 async function resolveAuthorLabel(auditDb, user = {}) {
   if (user.email) return user.email;
   if (!user.uid) return null;
   const grant = await auditDb.collection('access_grants').findOne({ _id: user.uid }, { projection: { email: 1 } });
   if (grant?.email) return grant.email;
-  const token = await auditDb.collection('api_tokens').findOne({ uid: user.uid }, { projection: { label: 1 } });
-  return token?.label ?? null;
+  const token = await auditDb.collection('api_tokens').findOne(
+    { uid: user.uid, ephemeral: { $ne: true }, label: { $type: 'string', $ne: '' } },
+    { projection: { label: 1 }, sort: { last_used_at: -1, created_at: -1 } }
+  );
+  return token?.label ?? shortUidLabel(user.uid);
 }
 
 async function upsertFigure(auditDb, payload, { author_uid, author_label }) {
@@ -111,6 +116,18 @@ async function removeFigure(auditDb, slug) {
   return deletedCount > 0;
 }
 
+// Live-figure state, maintained by the figure runner. computed_at only moves
+// on success: an error keeps the last good render (and its timestamp) visible.
+async function markFigureLive(auditDb, slug, { status }) {
+  const $set = { mode: 'live', 'live.status': status };
+  if (status === 'ok') $set['live.computed_at'] = new Date();
+  await auditDb.collection(COLLECTION).updateOne({ _id: slug }, { $set });
+}
+
+async function clearFigureLive(auditDb, slug) {
+  await auditDb.collection(COLLECTION).updateOne({ _id: slug }, { $unset: { mode: '', live: '' } });
+}
+
 // author_uid for edit/delete gating. found:false = missing (404); null author
 // = legacy row (admin-only).
 async function getFigureAuthor(auditDb, slug) {
@@ -153,5 +170,5 @@ async function updateFigureMeta(auditDb, slug, fields) {
 module.exports = {
   validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
-  getFigureAuthor, updateFigureMeta,
+  getFigureAuthor, updateFigureMeta, markFigureLive, clearFigureLive,
 };

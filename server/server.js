@@ -10,6 +10,10 @@ const apiRoutes = require('./routes/api');
 const { globalIpLimiter } = require('./middleware/rateLimit');
 const { errorHandler } = require('./middleware/errorHandler');
 const { ensureAuditIndexes } = require('./services/audit/indexes');
+const { createFigureRuntime } = require('./services/liveFigures');
+const { createRefreshScheduler, markDirtyOnWrite } = require('./services/refreshScheduler');
+const { ensureFigureScriptIndexes } = require('./services/figureScripts');
+const { ensureTokenIndexes } = require('./services/apiTokens');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -76,6 +80,15 @@ connectDB()
     const auditDb = await connectAuditDB(db);
     app.locals.auditDb = auditDb;
     ensureAuditIndexes(auditDb).catch((e) => console.warn(`[audit] index setup failed: ${e.message}`));
+    ensureFigureScriptIndexes(auditDb).catch((e) => console.warn(`[figures] index setup failed: ${e.message}`));
+    ensureTokenIndexes(auditDb).catch((e) => console.warn(`[tokens] index setup failed: ${e.message}`));
+    // Live-figure runtime: one shared run queue for publish_script dry-runs,
+    // manual refreshes, and the scheduler. Scripts call back into this server
+    // over loopback, so the scheduler only starts once listen() succeeds.
+    const figureRuntime = createFigureRuntime({ db, auditDb, port });
+    app.locals.figureRuntime = figureRuntime;
+    const refreshScheduler = createRefreshScheduler({ db, auditDb, runtime: figureRuntime });
+    app.use(markDirtyOnWrite(refreshScheduler));
     // Platform liveness probe: a quick Mongo ping + process uptime. Returns 200
     // when the DB answers, 503 otherwise, so the host's health check can tell a
     // live server from one that's up but can't reach Mongo.
@@ -112,6 +125,7 @@ connectDB()
     app.use(errorHandler);
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
+      refreshScheduler.start();
     });
   })
   .catch((error) => {

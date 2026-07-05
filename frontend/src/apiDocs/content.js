@@ -35,7 +35,7 @@ export const GETTING_STARTED_NOTES = [
 // server/client/pmtPy.js). publish() ships in the same file — no separate page.
 
 export const STARTER_EXPLANATION =
-  'One file: fetch() reads any endpoint into a DataFrame, publish() shares a chart.'
+  'One file: fetch() reads any endpoint into a DataFrame, publish() shares a chart, publish_script() keeps it up to date automatically.'
 
 export const STARTER_STEPS = [
   ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
@@ -43,6 +43,7 @@ export const STARTER_STEPS = [
   ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of the file (or set the PMT_TOKEN environment variable).'],
   ['Pull data', 'fetch("/export/receivers") returns a pandas DataFrame. Change the path for any other endpoint (see the Endpoints tab) — from there it\'s ordinary pandas + matplotlib.'],
   ['Share a figure', 'publish(fig, slug="…", title="…") sends your chart to the Visuals tab for the whole team, stamped with the dataset version. Re-publish the same slug to update it.'],
+  ['Make it live (optional)', 'publish_script("my_fig.py") uploads the whole script: the server test-runs it immediately (you get the log back), then re-runs it automatically whenever the dataset changes — the gallery card shows "Live" and never goes stale. The script must run top-to-bottom, read its token from the environment, call publish() exactly once, and stick to pandas / numpy / matplotlib / requests.'],
 ]
 
 // ───────────────────────── endpoints ─────────────────────────
@@ -254,7 +255,7 @@ export const ENDPOINT_GROUPS = [
         path: '/figures',
         title: 'Publish a figure',
         plain:
-          'What pmt.publish() calls: slug, title, optional caption/source_url, and base64 SVG/PNG/PDF renders. Republishing a slug replaces the previous version.',
+          'What pmt.publish() calls: slug, title, optional caption/source_url, and base64 SVG/PNG/PDF renders. Republishing a slug replaces the previous version (a slug someone ELSE made live is protected — 403; pick your own slug).',
         returns: '{ ok, slug, dataset_version }',
         fields: [
           ['slug', 'the figure\'s stable id: a-z 0-9 - _ (e.g. "coverage-heatmap")'],
@@ -278,6 +279,50 @@ export const ENDPOINT_GROUPS = [
         plain:
           'The stored file — svg, 300-dpi png, or vector pdf. The pdf is what the paper\'s \\includegraphics wants.',
         returns: 'the binary file',
+      },
+      {
+        method: 'POST',
+        path: '/figure-scripts',
+        title: 'Publish a LIVE figure',
+        plain:
+          'What pmt.publish_script() calls: the whole script file. The server dry-runs it in a sandbox right now (against your data scope) and answers with the run log; on success the captured figure is published and re-runs automatically whenever the dataset or curation state changes. One pmt.publish() call per script; read the token from the environment; pandas/numpy/matplotlib/requests available.',
+        returns: '{ ok, slug, dataset_version, duration_ms, log } — or 422 with { error, log } when the run fails',
+        fields: [
+          ['code', 'the script text (≤200KB, self-contained, no hardcoded pmtr_ tokens)'],
+          ['enabled', 'optional, default true — false publishes the figure but skips auto-refresh'],
+        ],
+      },
+      {
+        method: 'GET',
+        path: '/figure-scripts/:slug',
+        title: 'The script behind a live figure',
+        plain:
+          'Readable by every console user — the "View code" button. Copy it, change the slug inside publish(), and publish_script it as your own variant. Owners and admins also get the last run\'s log.',
+        returns: '{ slug, code, enabled, updated_at, last_run, can_modify }',
+      },
+      {
+        method: 'POST',
+        path: '/figure-scripts/:slug/refresh',
+        title: 'Re-run a live figure now',
+        plain:
+          'Owner or admin: runs the stored script immediately (same as the card\'s Refresh button) and replaces the render on success. Failures keep the last good image and return the log.',
+        returns: '{ ok, slug, dataset_version, duration_ms }',
+      },
+      {
+        method: 'PUT',
+        path: '/figure-scripts/:slug/enabled',
+        title: 'Turn auto-refresh on/off',
+        plain:
+          'Owner or admin: { enabled: false } keeps the figure and its script but stops scheduled re-runs; true re-arms them and forgives the failure streak.',
+        returns: '{ ok, slug, enabled }',
+      },
+      {
+        method: 'DELETE',
+        path: '/figure-scripts/:slug',
+        title: 'Detach a script (make static)',
+        plain:
+          'Owner or admin: removes the script and its run history; the figure itself stays in the gallery as an ordinary static snapshot of its last render.',
+        returns: '{ ok, slug }',
       },
     ],
   },
@@ -584,6 +629,7 @@ export function buildAiBriefing(base) {
     ...PARTNER_ENDPOINT_GROUPS.flatMap((g) => [`### ${g.title}`, ...g.endpoints.map(mdEndpoint)]),
     '## Publishing figures to the team gallery',
     'Figures are shared through the console: download the client once (`' + curlBootstrap(base) + '`), write ordinary pandas + matplotlib, and call pmt.publish(fig, slug, title) — the figure appears in the console\'s Data → Analysis gallery for the whole team, stamped with the dataset_version it was computed from. When asked to produce an analysis or figure, end scripts with a pmt.publish call.',
+    'To keep a figure current automatically, publish the whole script with pmt.publish_script("file.py"): the server test-runs it sandboxed and then re-runs it on every dataset change. Live scripts must be self-contained (run top-to-bottom), take the token from the PMT_TOKEN environment variable rather than hardcoding it, call pmt.publish() exactly once, and import only pandas/numpy/matplotlib/requests (plus the stdlib).',
     STARTER_STEPS.map(([t, d]) => `- ${t}: ${d}`).join('\n'),
     '```python\n' + EXAMPLE_FIGURE_SCRIPT + '\n```',
     '## Data model & analysis rules',
