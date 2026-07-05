@@ -23,12 +23,11 @@ export default function MismatchGauge({ stats }) {
 
   const hasSample = ceiling != null && n > 0
 
-  // Axis 0 → axisMax with headroom past the ceiling and a floor, so a small
-  // bound isn't a sliver. Clamp to 100%: a RATE can't exceed 100, and a tiny
-  // sample (e.g. n=1, ceiling ~79%) must not push the labels past it.
-  const axisMax = Math.min(100, Math.max(8, (ceiling ?? 0) * 1.4))
-  const pos = (v) => `${Math.min(100, (v / axisMax) * 100)}%`
-  const ticks = [0, axisMax / 4, axisMax / 2, (axisMax * 3) / 4, axisMax]
+  // Keep the gauge on the true rate scale: 0% at the left, 100% at the right.
+  // Dynamic scaling made small Wilson bounds look visually comparable to much
+  // larger bounds, which defeats the purpose of the bar.
+  const pos = (v) => `${Math.min(100, Math.max(0, v ?? 0))}%`
+  const ticks = [0, 25, 50, 75, 100]
 
   return (
     <div className='surface-card p-5'>
