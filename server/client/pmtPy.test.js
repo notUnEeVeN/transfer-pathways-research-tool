@@ -24,8 +24,19 @@ describe('pmt.py template', () => {
     expect(src).toContain('"dataset_version": payload["dataset_version"]');
   });
 
-  it('ships publish_script() posting to /figure-scripts', () => {
-    expect(src).toContain('def publish_script(');
+  it('exposes one public publish() method for live figure files', () => {
+    expect(src.match(/^def /gm)).toHaveLength(2);
+    expect(src).toContain('def get(path, **params):');
+    expect(src).toContain('def publish(file, slug, title');
+    expect(src).toContain('pmt.publish("my_figure.py", slug="my-figure", title="My figure")');
+    expect(src).toContain('fetch = get');
+    expect(src).not.toContain('def publish_static(');
+    expect(src).not.toContain('def publish_script(');
+    expect(src).not.toContain('def fetch(');
+    expect(src).not.toContain('def _');
+  });
+
+  it('posts live figure files to /figure-scripts', () => {
     expect(src).toContain('/figure-scripts');
   });
 

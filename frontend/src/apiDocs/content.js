@@ -35,15 +35,14 @@ export const GETTING_STARTED_NOTES = [
 // server/client/pmtPy.js). publish() ships in the same file — no separate page.
 
 export const STARTER_EXPLANATION =
-  'One file: fetch() reads any endpoint into a DataFrame, publish() shares a chart, publish_script() keeps it up to date automatically.'
+  'One file: get() reads any endpoint into a DataFrame, publish() uploads a live figure script the server can rerun.'
 
 export const STARTER_STEPS = [
   ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
-  ['Get the starter file', 'Copy or download pmt.py below — it comes preconfigured with this API\'s address. Drop it next to your notebook, or paste it straight into a cell.'],
-  ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of the file (or set the PMT_TOKEN environment variable).'],
-  ['Pull data', 'fetch("/export/receivers") returns a pandas DataFrame. Change the path for any other endpoint (see the Endpoints tab) — from there it\'s ordinary pandas + matplotlib.'],
-  ['Share a figure', 'publish(fig, slug="…", title="…") sends your chart to the Visuals tab for the whole team, stamped with the dataset version. Re-publish the same slug to update it.'],
-  ['Make it live (optional)', 'publish_script("my_fig.py") uploads the whole script: the server test-runs it immediately (you get the log back), then re-runs it automatically whenever the dataset changes — the gallery card shows "Live" and never goes stale. The script must run top-to-bottom, read its token from the environment, call publish() exactly once, and stick to pandas / numpy / matplotlib / requests.'],
+  ['Get the starter file', 'Copy or download pmt.py below — it comes preconfigured with this API\'s address. Keep it next to your analysis script or notebook and import it.'],
+  ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of pmt.py (or set the PMT_TOKEN environment variable). Do not paste tokens into live figure scripts.'],
+  ['Pull data', 'get("/export/receivers") returns a pandas DataFrame. Change the path for any other endpoint (see the Endpoints tab) — from there it\'s ordinary pandas + matplotlib.'],
+  ['Publish live', 'Save a normal .py script that creates a matplotlib Figure named fig, then call publish("my_figure.py", slug="…", title="…"). The server test-runs it immediately and reruns it whenever the dataset changes.'],
 ]
 
 // ───────────────────────── endpoints ─────────────────────────
@@ -240,22 +239,22 @@ export const ENDPOINT_GROUPS = [
   {
     id: 'figures',
     title: 'Figures — the shared gallery',
-    blurb: 'What pmt.py talks to. Publish from a notebook; the team sees it in Data → Analysis.',
+    blurb: 'What pmt.py talks to. Publish a live script; the team sees it in Data → Analysis.',
     endpoints: [
       {
         method: 'GET',
         path: '/client/pmt.py',
         title: 'The Python client',
         plain:
-          'pmt.py with this API\'s address already baked in — fetch() returns DataFrames, publish() sends figures to the gallery. Also available with Copy/Download in Build & publish.',
+          'pmt.py with this API\'s address already baked in — get() returns DataFrames and publish() creates live figures from local .py scripts. Also available with Copy/Download in Build & publish.',
         returns: 'the pmt.py source (text/x-python)',
       },
       {
         method: 'POST',
         path: '/figures',
-        title: 'Publish a figure',
+        title: 'Store a rendered figure',
         plain:
-          'What pmt.publish() calls: slug, title, optional caption/source_url, and base64 SVG/PNG/PDF renders. Republishing a slug replaces the previous version (a slug someone ELSE made live is protected — 403; pick your own slug).',
+          'Legacy/static storage endpoint for a rendered figure: slug, title, optional caption/source_url, and base64 SVG/PNG/PDF renders. Live publishing goes through pmt.publish("file.py", ...); this endpoint stores the render after the runner captures it.',
         returns: '{ ok, slug, dataset_version }',
         fields: [
           ['slug', 'the figure\'s stable id: a-z 0-9 - _ (e.g. "coverage-heatmap")'],
@@ -285,7 +284,7 @@ export const ENDPOINT_GROUPS = [
         path: '/figure-scripts',
         title: 'Publish a LIVE figure',
         plain:
-          'What pmt.publish_script() calls: the whole script file. The server dry-runs it in a sandbox right now (against your data scope) and answers with the run log; on success the captured figure is published and re-runs automatically whenever the dataset or curation state changes. One pmt.publish() call per script; read the token from the environment; pandas/numpy/matplotlib/requests available.',
+          'What pmt.publish("file.py", slug=..., title=...) calls: the whole script file plus its figure metadata. The server dry-runs it in a sandbox right now against your data scope; on success the captured figure is published and reruns automatically whenever the dataset or curation state changes. Scripts should build one matplotlib Figure named fig, read the token from the environment, and use pandas/numpy/matplotlib/requests.',
         returns: '{ ok, slug, dataset_version, duration_ms, log } — or 422 with { error, log } when the run fails',
         fields: [
           ['code', 'the script text (≤200KB, self-contained, no hardcoded pmtr_ tokens)'],
@@ -297,7 +296,7 @@ export const ENDPOINT_GROUPS = [
         path: '/figure-scripts/:slug',
         title: 'The script behind a live figure',
         plain:
-          'Readable by every console user — the "View code" button. Copy it, change the slug inside publish(), and publish_script it as your own variant. Owners and admins also get the last run\'s log.',
+          'Readable by every console user — the "View code" button. Copy it to a new .py file, then publish that file with a new slug to make your own variant. Owners and admins also get the last run\'s log.',
         returns: '{ slug, code, enabled, updated_at, last_run, can_modify }',
       },
       {
@@ -571,18 +570,21 @@ export const curlBootstrap = (base) =>
 export const EXAMPLE_FIGURE_SCRIPT = `import matplotlib.pyplot as plt
 import pmt
 
-pmt.TOKEN = "pmtr_..."          # or: export PMT_TOKEN before launching
+# Before running: set PMT_TOKEN in your shell, or paste the token into pmt.py.
 
 # /export/receivers is one row per campus requirement — count them per campus.
-df = pmt.fetch("/export/receivers")
+df = pmt.get("/export/receivers")
 counts = df.groupby("school").size().sort_values(ascending=False)
 
 fig, ax = plt.subplots(figsize=(8, 5))
 counts.plot.bar(ax=ax)
 ax.set_ylabel("requirements")
-fig.tight_layout()
+fig.tight_layout()`
 
-pmt.publish(fig, slug="requirements-by-campus",
+export const EXAMPLE_PUBLISH_COMMAND = `import pmt
+
+pmt.publish("requirements_by_campus.py",
+            slug="requirements-by-campus",
             title="Requirements per UC campus")`
 
 // ───────────────────────── the AI paste ─────────────────────────
@@ -628,10 +630,11 @@ export function buildAiBriefing(base) {
     '## Endpoints',
     ...PARTNER_ENDPOINT_GROUPS.flatMap((g) => [`### ${g.title}`, ...g.endpoints.map(mdEndpoint)]),
     '## Publishing figures to the team gallery',
-    'Figures are shared through the console: download the client once (`' + curlBootstrap(base) + '`), write ordinary pandas + matplotlib, and call pmt.publish(fig, slug, title) — the figure appears in the console\'s Data → Analysis gallery for the whole team, stamped with the dataset_version it was computed from. When asked to produce an analysis or figure, end scripts with a pmt.publish call.',
-    'To keep a figure current automatically, publish the whole script with pmt.publish_script("file.py"): the server test-runs it sandboxed and then re-runs it on every dataset change. Live scripts must be self-contained (run top-to-bottom), take the token from the PMT_TOKEN environment variable rather than hardcoding it, call pmt.publish() exactly once, and import only pandas/numpy/matplotlib/requests (plus the stdlib).',
+    'Figures are shared through the console: download the client once (`' + curlBootstrap(base) + '`), write ordinary pandas + matplotlib in a .py script that creates a matplotlib Figure named `fig`, then publish that file with `pmt.publish("file.py", slug="...", title="...")`. This publishes a live figure: the server test-runs the script and re-runs it on every dataset change.',
+    'Live scripts must be self-contained (run top-to-bottom), take the token from the PMT_TOKEN environment variable rather than hardcoding it, create exactly one matplotlib Figure named `fig`, and import only pandas/numpy/matplotlib/requests (plus the stdlib).',
     STARTER_STEPS.map(([t, d]) => `- ${t}: ${d}`).join('\n'),
     '```python\n' + EXAMPLE_FIGURE_SCRIPT + '\n```',
+    '```python\n' + EXAMPLE_PUBLISH_COMMAND + '\n```',
     '## Data model & analysis rules',
     ...GUIDE_SECTIONS.flatMap((s) => [`### ${s.title}`, ...s.blocks.map(mdBlock)]),
   ].join('\n\n')

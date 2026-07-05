@@ -183,7 +183,7 @@ exports.putAnalysisDisabled = asyncHandler(async (req, res) => {
 });
 
 // ── live-figure runner pause switch ──
-// The global stop button for scheduled script refreshes; publish_script and
+// The global stop button for scheduled script refreshes; new publishes and
 // manual refreshes keep working. Version changes and curation drift are
 // retained while paused and caught up after resuming.
 exports.getFigureRunner = asyncHandler(async (req, res) => {

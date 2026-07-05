@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   ENDPOINT_GROUPS, PARTNER_ENDPOINT_GROUPS, HIDDEN_ENDPOINT_GROUP_IDS,
   GUIDE_SECTIONS, buildAiBriefing,
-  STARTER_STEPS, STARTER_EXPLANATION, EXAMPLE_FIGURE_SCRIPT, curlBootstrap,
+  STARTER_STEPS, STARTER_EXPLANATION, EXAMPLE_FIGURE_SCRIPT, EXAMPLE_PUBLISH_COMMAND, curlBootstrap,
 } from './content'
 
 const allEndpoints = ENDPOINT_GROUPS.flatMap((g) => g.endpoints)
@@ -58,9 +58,17 @@ describe('starter + publish content', () => {
     expect(STARTER_EXPLANATION.length).toBeGreaterThan(60)
   })
 
-  it('the AI-briefing worked example still fetches and publishes', () => {
-    expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.fetch(')
-    expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.publish(')
+  it('the AI-briefing worked example still gets data and publishes a live file', () => {
+    expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.get(')
+    expect(EXAMPLE_FIGURE_SCRIPT).not.toContain('pmt.fetch(')
+    expect(EXAMPLE_FIGURE_SCRIPT).not.toContain('pmt.publish(')
+    expect(EXAMPLE_PUBLISH_COMMAND).toContain('pmt.publish("requirements_by_campus.py"')
+  })
+
+  it('keeps the starter docs to a single public publish method', () => {
+    const starter = [STARTER_EXPLANATION, ...STARTER_STEPS.flat()].join('\n')
+    expect(starter).not.toContain('publish_script')
+    expect(starter).not.toContain('publish_static')
   })
 
   it('bootstrap curl bakes in the base url', () => {
@@ -107,6 +115,8 @@ describe('buildAiBriefing', () => {
   it('teaches the AI the publish workflow', () => {
     expect(md).toContain('pmt.publish')
     expect(md).toContain('/client/pmt.py')
+    expect(md).not.toContain('publish_script')
+    expect(md).not.toContain('publish_static')
   })
 
   it('is deterministic', () => {

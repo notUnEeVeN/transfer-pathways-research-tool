@@ -34,7 +34,7 @@ access (deny-by-default).
   `/analysis/coverage`, `/analysis/credit-loss`, `/analysis/choice-cost`
   (`?schoolIds=` ordered), `/analysis/category-gaps`, `/analysis/complexity`,
   `/analysis/time-to-degree`, `/analysis/raw/:collection`
-- Figures: `/figures` (static publish/list/download) and `/figure-scripts`
+- Figures: `/figures` (gallery storage/list/download) and `/figure-scripts`
   (live figures — publish/view/refresh/enable/detach; see below)
 - Admin (ADMIN_UIDS only): `/admin/dataset`, `/admin/access`,
   `/admin/visible-majors`, `/admin/figure-runner` (+ `/access/me` for all)
@@ -56,24 +56,23 @@ access (deny-by-default).
   get the audit/curation/analysis surfaces only.
 - **Export-first analytics.** The frontend offers canned exploratory views; publication
   figures come from partner scripts against the CSV/JSON export endpoints.
-- **Live figures.** A published figure can carry its script:
-  `pmt.publish_script("fig.py")` dry-runs the file server-side and, on success,
+- **Live figures.** `pmt.publish("figure.py", slug=..., title=...)` is the
+  default publishing path: the server dry-runs the script and, on success,
   re-runs it automatically after dataset ports and curation changes, so the
   gallery tracks the data instead of going stale. See below.
 
 ## Live figures (partner scripts the server re-runs)
 
-Static publishing (`pmt.publish(fig, slug, title)`) is unchanged and remains
-the right choice for frozen, submitted-paper figures. Live mode is opt-in per
-figure:
+Live publishing is the default for `.py` scripts:
 
-1. Write an ordinary script locally — `import pmt`, `fetch(...)`, pandas,
-   matplotlib, ending in one `pmt.publish(...)` call. Iterate until it looks
-   right.
-2. `pmt.publish_script("fig.py")` — the server runs the file in a sandbox
-   immediately and replies in your terminal with the run log (pass) or the
-   traceback (fail; nothing is published). Slug/title come from the
-   `publish()` call inside the script — the same file works on your laptop.
+1. Write an ordinary script locally — `import pmt`, `get(...)`, pandas,
+   matplotlib — and leave the matplotlib Figure in a variable named `fig`.
+   Iterate until it looks right.
+2. Publish the file with
+   `pmt.publish("my_figure.py", slug="my-figure", title="My figure")`.
+   The local call uploads that file; the server runs it in a sandbox
+   immediately and replies in your terminal with the run log (pass) or
+   traceback (fail; nothing is published).
 3. From then on the script re-runs automatically: after `port.py` bumps
    `dataset_version` (server polls every 5 min), after curation/audit writes
    (debounced 15-min sweep), on the card's Refresh button, and at boot for
@@ -82,13 +81,13 @@ figure:
 
 Rules for live scripts: self-contained top-to-bottom file, token from the
 `PMT_TOKEN` env var (never hardcoded — uploads containing a `pmtr_` literal are
-rejected), exactly one `publish()` call, no local file dependencies, imports
+rejected), exactly one matplotlib Figure named `fig`, no local file dependencies, imports
 limited to `server/runner-requirements.txt` (pandas, numpy, matplotlib,
 requests) plus the stdlib. Run credentials are **read-only**: scripts can
 fetch anything in the author's scope but cannot write audit/curation state or
-publish over HTTP (the runner captures `publish()` itself). Iterating locally
-on the same file keeps working — the author (or an admin) may `pmt.publish()`
-statically onto their own live slug; anyone else gets a 403.
+publish over HTTP (the runner captures the figure itself). Iterating locally
+on the same file keeps working. For notebooks/REPLs, save the code as a `.py`
+file and publish that file.
 
 Execution model: subprocess with a from-scratch environment (no server
 secrets), data access only through this same API with a short-lived token

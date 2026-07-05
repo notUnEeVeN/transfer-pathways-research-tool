@@ -1,7 +1,7 @@
 /**
  * Live-figure runtime — the one pipeline every script execution goes through,
- * whether triggered by publish_script, the card's Refresh button, or the
- * scheduler.
+ * whether triggered by pmt.publish("file.py", ...), the card's Refresh button,
+ * or the scheduler.
  *
  *   run the script (queued, as its author) → validate the captured publish
  *   payload → authorize → store figure + script → record the run.

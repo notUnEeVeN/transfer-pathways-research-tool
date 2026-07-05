@@ -1,11 +1,11 @@
 /**
  * Published figures — the team's shared statistics gallery.
  *
- * Partners run their analysis scripts locally (pmt.py, served at
- * /client/pmt.py) and call pmt.publish(fig, slug, title): the rendered
- * SVG/PNG/PDF land here, one doc per slug (latest wins), stamped with the
- * dataset_version the data was fetched at. The console's Data → Analysis tab
- * lists them for everyone; downloads feed the paper.
+ * Partners publish live analysis scripts through pmt.py (served at
+ * /client/pmt.py). The runner captures the rendered SVG/PNG/PDF here, one doc
+ * per slug (latest wins), stamped with the dataset_version the data was
+ * fetched at. The console's Data → Analysis tab lists them for everyone;
+ * downloads feed the paper.
  *
  * Storage (audit handle):
  *   figures: { _id: slug, title, caption, source_url, author_uid,
