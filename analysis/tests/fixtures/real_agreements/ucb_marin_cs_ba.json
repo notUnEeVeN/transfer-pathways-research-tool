@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "uc_school": "UC Berkeley",
+    "uc_school_id": 79,
+    "community_college": "College of Marin",
+    "community_college_id": 4,
+    "major": "Computer Science, B.A."
+  },
+  "requirement_groups": [
+    {
+      "is_required": true,
+      "group_conjunction": "And",
+      "group_advisement": null,
+      "group_unit_advisement": null,
+      "group_min_distinct_sections": null,
+      "group_max_distinct_sections": null,
+      "group_section_min_courses": null,
+      "sections": [
+        {
+          "section_advisement": 2,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 351686,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    303691
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "af674fe4c29297c316bda34867abec938273eda99d4056ff0e90c41cb2b9ead4"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 245397,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    303686
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "a54988e7239fa0a90ca0c5ccfdf0bfa8e220be0647645eb3d9d1f209601be092"
+            }
+          ]
+        },
+        {
+          "section_advisement": 1,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 246154,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    192213,
+                    353070
+                  ],
+                  "course_conjunction": "and"
+                },
+                {
+                  "course_ids": [
+                    411007
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "or",
+              "hash_id": "389dbd372a36f10cb19644660ea7e91033c8464ff85bad09d5c52777219dd854"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 304910,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "eb9bec0bc093229093cf32a7d448a9c0954a966a69e38c3ce169d2351b5046a7"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 385829,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    192213
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "4b3b712db104637be465b11d912bf4aefcdb25e9ef2ca91398dcc4bc56b4187d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "is_required": false,
+      "group_conjunction": "And",
+      "group_advisement": null,
+      "group_unit_advisement": null,
+      "group_min_distinct_sections": null,
+      "group_max_distinct_sections": null,
+      "group_section_min_courses": null,
+      "sections": [
+        {
+          "section_advisement": 4,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 292039,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "2aa01bc0dc66abb2dde4c1630cac4f9ba7c58c977db38f654f56a57dca49d37e"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 256849,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    167678
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "d62be6d8d99e351c76b7581b27316e5abbf83a4f6c4d311487ed7e67cbb1eab3"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 208145,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "8a1245056fc24a4a8018a29b166935896a6d367dfb5f6ecf9f1e9ea002b0ac8e"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 356766,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "must_take_at_university",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "cc7a856c7ea3afe234d31a14e31532ccb556396fcedc6cecbd82a677e2bf8530"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ucode_by_parent": {
+    "208145": "COMPSCI 61C",
+    "245397": "MATH 52",
+    "246154": "MATH 54",
+    "256849": "COMPSCI 61B",
+    "292039": "COMPSCI 61A",
+    "304910": "EECS 16A",
+    "351686": "MATH 51",
+    "356766": "COMPSCI 70",
+    "385829": "MATH 56"
+  }
+}

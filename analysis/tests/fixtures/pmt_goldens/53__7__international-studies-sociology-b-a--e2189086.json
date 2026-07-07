@@ -1,0 +1,278 @@
+{
+  "golden_version": 1,
+  "meta": {
+    "community_college": "Mt. San Jacinto College",
+    "community_college_id": 53,
+    "major": "International Studies - Sociology  B.A.",
+    "major_id": "80553c9f-bb64-4bfb-f347-08ddd3b241a4",
+    "parser_output_hash": "7b287fe16d2d659ad4bac69424f94c96",
+    "raw_template_hash": "1a84fef44a",
+    "system": "uc",
+    "template_fp": "2bd0467608ab929cd6353d148e006e49",
+    "uc_school": "UC San Diego",
+    "uc_school_id": 7,
+    "verdict": {
+      "source": "random_template_weighted",
+      "verified_at": "2026-06-17T11:46:15.542Z",
+      "verifier_uid": "bgD1vYo0WFYmFxhnzihG4CoMrGu2"
+    }
+  },
+  "parsed": {
+    "advisement": "General Information\nDATED MATERIAL SUBJECT TO CHANGE. PLEASE CONSULT THE CURRENT UCSD GENERAL CATALOG FOR ANY ADDITIONAL INFORMATION. Special Advising Note: Transfer students are strongly advised to complete as many preparatory courses as soon as possible for their major before enrolling at UC San Diego. Preparing well for the major helps students move efficiently toward graduation. Why International Studies? The International Studies Program (ISP) at UC San Diego offers an interdisciplinary major that brings the insights of different disciplines—anthropology, economics, international business, history, linguistics, literature, philosophy, political science and sociology—to the deep exploration of the causes and consequences of the processes found across the globe. The major provides students with both a firm grounding in a discipline and the flexibility to permit exploration from alternative perspectives. For more information, please visit http://isp.ucsd.edu . In addition to the BA in International Studies, ISP and the School of Global Policy and Strategy (GPS) offer a sequential Bachelor of Arts / Master of International Affairs program. With careful preparation, transfer students are able to complete their BA in International Studies and then their Master of International Affairs in three years following transfer to UCSD. Application to the program is required. Please see the International Studies – Bachelor/Master articulation agreement for requirements as well as the following website for more information: http://isp.ucsd.edu/programs/bachelor-master/index.html International Studies Major Lower-Division Requirements NOTE: Students are encouraged to complete these requirements before transfer to UCSD. All courses (excluding language courses) must be taken for a letter grade of C- or better. 1. Language Requirement: • Completion of the fourth quarter college-level course in a foreign language. 1. Note: If there is not an articulation agreement in place for language courses at this particular community college, please contact the International Studies Program at isp@ucsd.edu for the procedure to obtain credit at UCSD. • OR the language requirement may also be completed by one of the following options: o Graduation from a high school outside of the United States where a language other than English was spoken. o Score of 4 or better on an AP world language exam or 3 or better on an AP world literature exam. o Score of 6 or 7 on the IB Language Exam. o Score of 700 or better on a SAT II language exam. o Passing of a proficiency exam at UCSD. 2. Disciplinary Focus specific lower-division pre-requisite courses: • Economics Disciplinary Focus o Additional lower-division courses are required. Please see the International Studies – Economics articulation agreement. • International Business Disciplinary Focus o Additional lower-division courses are required. Please see the International Studies - International Business articulation agreement. • Philosophy Disciplinary Focus o Additional lower-division courses are required. Please see the International Studies - Philosophy articulation agreement. Please contact the International Studies program at isp@ucsd.edu or (858) 822-5299 for additional information or clarification.\nUC San Diego Advanced Placement (AP) and International Baccalaureate (IB) credit policies are detailed in the links below: Advanced Placement (AP) https://www.ucsd.edu/catalog/pdf/APC-chart.pdf International Baccalaureate (IB) https://catalog.ucsd.edu/_files/international-baccalaureate-credits-chart.pdf",
+    "requirement_groups": [
+      {
+        "group_advisement": 1.0,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "86969bc8901e4c9c294891899dc259290a3de916b76bb2fd212479c6938626bc",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 271151,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "ca9051a2458c10edd168c9ded76b623ae2a0cd78e8f6d5c8cd1e464ff9187a60",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 308521,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "60caee545b00b84f3d8d3ae26f68c51081c0c29e5319188e058db507788d49ec",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIAB 1D, LIAB 1DX",
+                  "parent_ids": [
+                    145603,
+                    126974
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "460470ba8d20c7a83c6b6cebf0f894b5d9c81fd801d9e015b121488559249634",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIFR 1D, LIFR 1DX",
+                  "parent_ids": [
+                    146556,
+                    126679
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "17b5d5ea962697788ab088c82ddf72a75321c91d3954025534660ae80b064d95",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 282872,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "4f60becd34f56c98f56f6b7c64f363aadde01063bc64b80e83a77f63ab98e9ac",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIGM 1D, LIGM 1DX",
+                  "parent_ids": [
+                    146554,
+                    146548
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "548dc1e24acfc45c2734a679a9ca107712ef6596056db69e7887d6e09febe28e",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 308532,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "8c08c8387d6d50e41ac90f9cd451ce65fd5bb6e6d29a6eedf9a10e4b75f90e30",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIIT 1D, LIIT 1DX",
+                  "parent_ids": [
+                    127094,
+                    127095
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "ca41cbda756aeb74617833474c6eb1f2b3a59a3f8ddef288f6f1539f8d3ab476",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 308526,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "df4c3b0486b8e26d76c14803c2ebf7759e53f3c4e36fd5430bb732663344cc73",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 305133,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "bcf5dbce567898b82080e5c409816b43cdd7ae7e2fd3ae635c238799b35a7d42",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIPO 1D, LIPO 1DX",
+                  "parent_ids": [
+                    328049,
+                    147022
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "bcb1329b2f7ed2181115bfe1ec3aa3c647faa1dbbc85ea0977d77f1c95bc6acf",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 308524,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "3383ffb3c18a42b001b93233343f6dff2feaa71267f48003e8e609ef60c66cd3",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      191179
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LISL 1D, LISL 1DX",
+                  "parent_ids": [
+                    126674,
+                    146546
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "66a83abd10f159fe3adff760f1d7f78b4ce48441b7bd7850191bcd780aeffacd",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      253984
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LISP 1D, LISP 1DX",
+                  "parent_ids": [
+                    146555,
+                    145154
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "a7f09473b01cbc6295c89ed674c5bbfadb90dc72c963f618f779294018d1d8cb",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      288991
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 359466,
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": null,
+            "unit_advisement": null
+          }
+        ]
+      }
+    ]
+  }
+}

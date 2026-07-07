@@ -16,7 +16,8 @@ production data or infrastructure.
 | `server/` | Trimmed Express API: read routes, audit stack, admin, curation, analysis/export |
 | `frontend/` | Web console: audit workbench (Judge · Review · Stats) + admin (dataset, access) |
 | `scripts/` | `port.py` (incremental major porting), `merge_verdicts.py` (end-of-project) |
-| `notebooks/` | `paper_figures.ipynb` — reproduces the papers' figures from the analysis API |
+| `analysis/` | Auditable Python behind the paper-figure ports (one module per figure) + `paper_figures.ipynb` |
+| `docs/` | Methodology + difference analyses for the ported paper figures (`docs/figures/`) |
 
 ## API surface (all allowlist-gated; UC-only)
 

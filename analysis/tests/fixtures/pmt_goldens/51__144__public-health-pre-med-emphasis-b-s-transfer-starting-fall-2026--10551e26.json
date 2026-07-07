@@ -1,0 +1,620 @@
+{
+  "golden_version": 1,
+  "meta": {
+    "community_college": "Foothill College",
+    "community_college_id": 51,
+    "major": "PUBLIC HEALTH, Pre-Med Emphasis, B.S. (Transfer Starting Fall 2026)",
+    "major_id": "d25ded99-e7d5-41f2-5ba5-08dd9e07c477",
+    "parser_output_hash": "69bf76de41b6fd0277483c851d8f10f0",
+    "raw_template_hash": "341e7dd488",
+    "system": "uc",
+    "template_fp": "c8c54dd39c0ae8b70dce9f5a5db58b33",
+    "uc_school": "UC Merced",
+    "uc_school_id": 144,
+    "verdict": {
+      "source": "random_template_weighted",
+      "verified_at": "2026-06-17T15:23:01.896Z",
+      "verifier_uid": "bgD1vYo0WFYmFxhnzihG4CoMrGu2"
+    }
+  },
+  "parsed": {
+    "advisement": "The Public Health, B.S. major is designed to impart a basic understanding of Public Health built on a foundation of population health, biology, epidemiology, and biostatistics, and to provide Public Health majors with knowledge of public health principles. A B.S. in Public Health will prepare students for occupation in data management, public health practice, clinical and behavioral practice and research, non-profit leadership, as well as other professional roles that require graduate education. For admission to the Public Health, B.S. major, students must earn an overall transferrable GPA of 3.0 or better, and complete classes articulated with the following UC Merced courses by the end of spring term prior to fall enrollment or by the end of fall term prior to spring enrollment. For Admission purposes all major preparation courses requires a \"C\" or better. * REQUIRED major preparation courses: IGETC Certification (Please visit your Community College Counselor to learn more about the requirement and process) PSY 010 or PH 010 BIO 011 and BIO 012 MATH 011 or MATH 021 CHEM 002 and CHEM 010 *Please continue to check ASSIST every year as this information is valid for the academic year listed on the top of the agreement. Additional Major Preparation Courses: Recommended to be completed prior to Transfer: Public Health Requirement: PH 001, PH 005, PH 010 Biology Requirement: BIO 011 and BIO 11L, BIO 12 and BIO 12L Math Requirement: MATH 011 or MATH 021 Chemistry Requirement: CHEM 002 and CHEM 002L, CHEM 010 and CHEM 010L Pre-Med Emphasis Requirement: CHEM 008 and CHEM 008L, PHYS 018 and PHYS 018L, MATH 012 AP Exam Score Course Exemptions An AP Chemistry score of 5 exempts CHEM 002 and CHEM 010 An AP Mathematics: Calculus AB score of 4 or 5 exempts MATH 011 or MATH 021 An AP Mathematics: Calculus BC score of 3 or higher exempts MATH 011 or MATH 021 An AP Mathematics: Calculus BC score of 4 or 5 exempts MATH 011 and MATH 012 or MATH 021 and MATH 022 An AP Mathematics: Calculus BC Subscore AB: score of 3 or higher exempts MATH 011 or MATH 021 An AP Psychology score of 4 or 5 exempts PSY 001 An AP Statistics score of 4 exempts PH 010 or PSY 010 UC Merced Advance Placement (AP) and International Baccalaureate (IB) credit policies are detailed in the link below: A dvance Placement (AP) and International Baccalaureate (IB) Examinations\nIMPORTANT TRANSFER INFORMATION\nPlease read the catalog page for more information about the Public Health, Pre-Med Emphasis major. In addition to the Major Selection Criteria, all Upper-Division Transfer applicants must meet minimum University of California admissions requirements . Visit https://admissions.ucmerced.edu/transfer/requirements for more specific UC Merced admissions information. Prior to Transferring to UC Merced, please be advised of the following for Junior Transfers: 1) WRI 001 and WRI 010 are admissions requirements: WRI 001 is fulfilled by IGETC/Cal-GETC 1A - English Composition. WRI 010 is fulfilled by IGETC/Cal-GETC 1B - Critical Thinking/English Composition. Please visit your California Community College prefix or Department agreement to find the course articulation. 2) Transfer Admissions Guarantee (TAG): UC Merced is one of the six UC's that offers Transfer Admissions Guarantee. Please visit the TAG website for more information: https://admissions.ucmerced.edu/transfer/tag 3) General Education (GE Requirements): Public Health majors are required to complete IGETC Certification for admissions. Please visit your Community College Counselor to learn more about the IGETC areas & course requirements along with the Certification process. 4. This agreement displays all lower-division (or Major Preparation) courses required in the major. UC Merced courses on the left, approved (articulated) transfer courses to the right. 5. Changes to this Agreements: Major requirements are subject to change from one academic year to the next. Newly-articulated courses are added on a rolling basis, and articulated courses can be revised. Visit ASSIST every semester for the latest information and consult with an Academic Counselor at your institution on a regular basis. For more questions about admissions, please email: transfer@ucmerced.edu .",
+    "requirement_groups": [
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "2517d4996c0ce31d9aa307987118e8d572304491fc623064c880c3ea56c417b0",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "requirement",
+                  "name": "IGETC Certification"
+                }
+              }
+            ],
+            "section_advisement": 1,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": 1.0,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "bf406dd3b612fa6fb8bedc31f40ae2894a276639f03275dd06887380b00dcbf7",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      305025
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      359245
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      287881
+                    ]
+                  }
+                ],
+                "options_conjunction": "or",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 269489,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "d2528f83daadcde52dad9f59b3060221c8c4bb3175ba4139be573453778adc2d",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      359245
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      287881
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      305025
+                    ]
+                  }
+                ],
+                "options_conjunction": "or",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 383812,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": null,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": 1.0,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "df52145e8a162522651126e19779646d96e9370d3115b808094032ad5454d3cd",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 387273,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "19c8fac1a9f3baaa2e5997be0d730cc0b5c653b6f490053db8afeddd18526b36",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      302038
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "BIO 011, BIO 011L",
+                  "parent_ids": [
+                    387273,
+                    387274
+                  ],
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": null,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": 1.0,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "facefec893a1d992b9aecfc7102ebb216a1cc61a866640e1861147be9dac5158",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 387275,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "e4c6b78d04f47880ba9002b3951f791c9195c7425f7dee5f90af82818ef61352",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      290487
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      279335
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "BIO 012, BIO 012L",
+                  "parent_ids": [
+                    387275,
+                    387276
+                  ],
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": null,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": 1.0,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "8b5ae34b3455ebcf4814fc6702519bb3af5adc32a7eb8330d3b6bec50f7650f3",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 357251,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "27fc0ca58b24f1b01450a144ee2ff7954cdfd7683f5ce788cb8defe79ab54df9",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      359157,
+                      280536
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      305211,
+                      362986
+                    ]
+                  }
+                ],
+                "options_conjunction": "or",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 269482,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": null,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "c00816fce1016b9fec3885f5315e3cbe651dadc5ee5cb8fe6a5209c26c2cc410",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      307909,
+                      359224
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "CHEM 002, CHEM 002L",
+                  "parent_ids": [
+                    269472,
+                    418583
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "b24488be22bb94d0b1ba918b3d231462af4ef1cd9a3f0ae05b4048912f099b3e",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      359224,
+                      307792
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "CHEM 010, CHEM 010L",
+                  "parent_ids": [
+                    299510,
+                    418584
+                  ],
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": 2,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": false,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "bcbe03fe892740b8f8f992f456f0b7e33b53a98cb9f0faf80cc4986b12ddbc43",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      305207
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 273195,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "c5507b5f7d6fda861204710222e3d879a3c7efd7535f8049e48a2d01768c158b",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 304580,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "d2528f83daadcde52dad9f59b3060221c8c4bb3175ba4139be573453778adc2d",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      359245
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      287881
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      305025
+                    ]
+                  }
+                ],
+                "options_conjunction": "or",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 383812,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "d0dd2e6631c1a8515b184c52f771cd476b7c5bfc0684f483f36e68934692a95a",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 271660,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "22344ad9e9abc6d0c0c3c1df16d2af9e465a5741a6d8dbaa941798d62858a439",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      302338,
+                      133106,
+                      274316,
+                      120515
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "CHEM 008, CHEM 008L",
+                  "parent_ids": [
+                    269634,
+                    64928
+                  ],
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "9b59e0288e21df5dbc6fb9cffc59684b68e942cd61885dc16c6eda8cd607f7d0",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      283224,
+                      57663,
+                      246162,
+                      316411
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "PHYS 018, PHYS 018L",
+                  "parent_ids": [
+                    270463,
+                    377518
+                  ],
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": 6,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "cefddb758f8993453bdbd26ba275f238ebb8a965b2b66a05e15ec070fee76700",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      358896
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      304349
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      308059
+                    ]
+                  }
+                ],
+                "options_conjunction": "or",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 269491,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": 1,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "d2c8df9e15f3bb621939292375aab796b32bb9d9f2667bae7645ee563a4f54ac",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      308185
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      285707
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      248928
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      309481
+                    ]
+                  },
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      280456
+                    ]
+                  }
+                ],
+                "options_conjunction": "or",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 296253,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": 1,
+            "unit_advisement": null
+          }
+        ]
+      }
+    ]
+  }
+}

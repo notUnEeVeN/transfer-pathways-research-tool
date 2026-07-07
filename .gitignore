@@ -6,6 +6,8 @@ dist/
 *.log
 .DS_Store
 serviceAccount*.json
-notebooks/.ipynb_checkpoints/
+__pycache__/
+.venv/
+analysis/.ipynb_checkpoints/
 # Local API scratch file — contains a personal pmtr_ token
 temp.py

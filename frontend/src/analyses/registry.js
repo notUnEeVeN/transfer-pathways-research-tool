@@ -22,6 +22,7 @@
  */
 
 import CoverageHeatmap from './CoverageHeatmap'
+import PaperCreditLoss from './PaperCreditLoss'
 import PaperDistrictHeatmap from './PaperDistrictHeatmap'
 import CreditLoss from './CreditLoss'
 import ChoiceCost from './ChoiceCost'
@@ -37,6 +38,14 @@ import TimeToDegree from './TimeToDegree'
 export const ANALYSIS_AUTHOR = 'Tybalt Mallet'
 
 export const ANALYSES = [
+  {
+    id: 'paper-credit-loss',
+    title: 'Paper-style credit loss (Figure 1)',
+    description: 'Per UC campus: CS/Math transfer requirement vs average CCC courses at 1st-4th choice, paper baseline',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-06T09:00:00',
+    Component: PaperCreditLoss,
+  },
   {
     id: 'paper-district-heatmap',
     title: 'Paper-style district transfer heatmap',

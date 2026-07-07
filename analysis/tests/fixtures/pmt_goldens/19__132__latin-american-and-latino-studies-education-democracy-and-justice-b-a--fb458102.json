@@ -1,0 +1,103 @@
+{
+  "golden_version": 1,
+  "meta": {
+    "community_college": "Victor Valley College",
+    "community_college_id": 19,
+    "major": "Latin American and Latino Studies/Education, Democracy, and Justice B.A.",
+    "major_id": "ca735345-2d20-47f6-1fd7-08ddcb96df9e",
+    "parser_output_hash": "ca0b139d8288bd12d7bbbc75ebb833b9",
+    "raw_template_hash": "3ced3bf953",
+    "system": "uc",
+    "template_fp": "a4a46145e5e08f7dbee11572ac7aa0e9",
+    "uc_school": "UC Santa Cruz",
+    "uc_school_id": 132,
+    "verdict": {
+      "source": "random_template_weighted",
+      "verified_at": "2026-06-17T01:57:22.251Z",
+      "verifier_uid": "bgD1vYo0WFYmFxhnzihG4CoMrGu2"
+    }
+  },
+  "parsed": {
+    "advisement": "ADMISSIONS INFORMATION FOR ALL MAJORS\nAll transfer applicants must meet the University of California admissions eligibility requirements and the campus’s admission selection criteria. All requirements must be completed by the end of the spring term prior to transfer. For more information on UC admissions eligibility and admission to UC Santa Cruz, visit the Admissions website . The UC Santa Cruz Transfer Admission Guarantee (TAG) is a formal agreement that guarantees your fall admission to your chosen major, provided you are transferring from a California Community College and meet specific requirements. Visit the UC Santa Cruz TAG webpage for more information.\nIMPORTANT MAJOR PREPARATION\nThis is a non-screening major: completion of specific major coursework is not required for admission. However, students are strongly encouraged to complete as many lower-division courses as possible from the \" Recommended Preparation \" section below to support timely degree completion. Students applying to non-screening majors are also encouraged to complete the California General Education Transfer Curriculum (Cal-GETC) or all UC Santa Cruz general education requirements prior to transfer. For guidance on incorporating Cal-GETC into your academic plan, consult your community college counselor.\nEXAM CREDIT\nSome Advanced Placement (AP), International Baccalaureate Higher Level (IBH), and Advanced Level (A-level) exams satisfy UCSC course requirements. UCSC's exam credit policies may be found on the Degree Progress Unit website .\nLatin American and Latino Studies/Education, Democracy, and Justice B.A.\nThe Latin American and Latino Studies (LALS) and Education programs at UC Santa Cruz welcome transfer students. Prospective transfer students interested in a combined LALS and Education, Democracy, and Justice (EDJ) major are encouraged to complete two lower-division courses, or their articulated equivalents, prior to transferring: EDUC 60 – Schooling, Democracy, and Justice One LALS introductory course Please visit the Latin American and Latino Studies (LALS) website to learn more about this major. UC Santa Cruz General Catalog: Latin American and Latino Studies/Education, Democracy, and Justice B.A. Program Statement Prospective transfer students who would like to connect with an LALS advisor are strongly encouraged to email lalsadvising@ucsc.edu .",
+    "requirement_groups": [
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": false,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "82de5eff0e56809f9e5ad9c9436af75270ea805f0337b66abb5dcb1469e20306",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 304783,
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": 1.0,
+            "unit_advisement": null
+          },
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "cd84d41645cb673a4b92404163cfe1ba5e77797bd6f1a12dadfc674b7a1ace6f",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 306890,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "35a9a54a5da1deb3f9d0bca1d2231d56015d751060a0014fcf9b3fbfb3949137",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 410657,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "06e1ba3378266b3805d2898cb9b23453ec5119d8161e693977794d2e96f12912",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      380347
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 398872,
+                  "units": 5.0
+                }
+              }
+            ],
+            "section_advisement": 1.0,
+            "unit_advisement": null
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -11,6 +11,7 @@
  * framing; see optionSolver.js for the min-set semantics.
  */
 const { agreementMinSet, manyToOneCount } = require('./optionSolver');
+const { isMajorArticulable } = require('./eligibility');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
@@ -60,6 +61,40 @@ function* requiredReceivers(agreement, isExcluded) {
       }
     }
   }
+}
+
+const receiverHashKey = (r) =>
+  String(r.hash_id ?? `${r.receiving?.kind || 'receiver'}:${r.receiving?.parent_id || ''}`);
+
+// Build a poolable "major" for isMajorArticulable: the campus's requirement
+// structure (group/section advisements preserved) with each receiver's
+// articulation set to the OR across the bucket's colleges (articulatedByHash).
+// An articulated receiver gets a synthetic satisfiable option so the ported
+// eligibility adapter can evaluate it; unarticulated receivers stay optionless.
+// This makes fully_articulated honor choose-N (section/group advisement) instead
+// of demanding every receiver, while preserving the heatmap's cross-college
+// pooling (articulatedByHash already ORs sibling colleges).
+function assistCombinedMajor(requirementGroups, articulatedByHash, isExcluded) {
+  let synthId = 0;
+  return {
+    requirement_groups: (requirementGroups || []).map((g) => ({
+      ...g,
+      sections: (g.sections || []).map((s) => ({
+        ...s,
+        receivers: (s.receivers || []).filter((r) => !isExcluded(r)).map((r) => {
+          const articulated = articulatedByHash.get(receiverHashKey(r)) === true;
+          synthId += 1;
+          return {
+            receiving: r.receiving,
+            hash_id: r.hash_id,
+            articulation_status: articulated ? 'articulated' : 'not_articulated',
+            options: articulated ? [{ course_ids: [`elig-${synthId}`], course_conjunction: 'and' }] : [],
+            options_conjunction: 'and',
+          };
+        }),
+      })),
+    })),
+  };
 }
 
 // Iterate every receiver in an agreement. Paper-style hard-requirement
@@ -148,6 +183,34 @@ async function loadTransferRequirements(auditDb) {
 // visibility pair-allowlist (null = admin, unrestricted). Visibility is per
 // (school, major) pair — see services/majorVisibility.js.
 const { pairClause } = require('../majorVisibility');
+// The exact ASSIST program the paper scraped per campus (paper repo
+// cs_urls/). The paper-port figures pin to these stored names and IGNORE
+// partner visibility scoping — they are fixed aggregate research figures, and
+// an admin toggling visible majors (e.g. to UCB's EECS B.S.) must never
+// change them. Keep in sync with analysis/paper_credit_loss.PAPER_MAJORS.
+const PAPER_MAJORS = {
+  89: ['Computer Science & Engineering B.S.', 'Computer Science B.S.'],
+  144: ['APPLIED MATHEMATICAL SCIENCES, Computer Science Emphasis, B.S.',
+    'COMPUTER SCIENCE AND ENGINEERING, B.S. '], // trailing space is stored
+  7: ['CSE: Computer Science B.S.',
+    'CSE: Computer Science with a Specialization in Bioinformatics B.S.',
+    'Mathematics/Computer Science B.S.'],
+  128: ['Computer Science, B.S.'],
+  117: ['Computer Science and Engineering/B.S.', 'Computer Science/B.S.',
+    'Linguistics and Computer Science/B.A.'],
+  // UCB needs BOTH: ASSIST moved its paper-era CS math articulations onto
+  // the EECS page — single-program pinning breaks paper replication.
+  79: ['Computer Science, B.A.', 'Electrical Engineering & Computer Sciences, B.S.'],
+  132: ['Computer Science B.A.', 'Computer Science B.S.', 'Computer Science Minor',
+    'Computer Science: Computer Game Design B.S.'],
+  120: ['Computer Science and Engineering, B.S.', 'Computer Science, B.S.'],
+  46: ['Computer Science with Business Applications B.S.', 'Computer Science, B.S.'],
+};
+
+function paperMajorsQuery(idField = 'uc_school_id') {
+  return { $or: Object.entries(PAPER_MAJORS).map(([sid, majors]) => ({ [idField]: Number(sid), major: { $in: majors } })) };
+}
+
 function majorFilter(majorContains, visiblePairs = null, idField = 'uc_school_id') {
   const clauses = [];
   if (majorContains) clauses.push({ major: { $regex: escapeRegex(majorContains), $options: 'i' } });
@@ -238,13 +301,16 @@ function evaluateTransferRequirementModel(model, articulatedParentIds) {
   };
 }
 
-async function hardRequirementCoverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college' } = {}, refs) {
+async function hardRequirementCoverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', pin = null } = {}, refs) {
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
   const requirementsBySchool = await loadTransferRequirements(auditDb);
   const buckets = new Map();
 
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    // pin==='paper' (the paper-style figures): exact scraped programs, no
+    // visibility scoping. Otherwise the normal major/visibility filter.
+    const query = pin === 'paper' ? paperMajorsQuery(sys.idField) : majorFilter(majorContains, visiblePairs, sys.idField);
+    const docs = await db.collection(sys.coll).find(query).toArray();
     for (const doc of docs) {
       const schoolRequirements = requirementsBySchool.get(Number(doc[sys.idField]));
       if (!schoolRequirements) continue;
@@ -325,10 +391,10 @@ async function hardRequirementCoverageData(db, auditDb, { majorContains = '', vi
   });
 }
 
-async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', requirements = 'assist' } = {}) {
+async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', requirements = 'assist', pin = null } = {}) {
   const refs = await loadRefs(auditDb);
   if (requirements === 'paper') {
-    return hardRequirementCoverageData(db, auditDb, { majorContains, visiblePairs, groupBy }, refs);
+    return hardRequirementCoverageData(db, auditDb, { majorContains, visiblePairs, groupBy, pin }, refs);
   }
 
   const curation = await loadCuration(auditDb);
@@ -337,7 +403,10 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
 
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    // pin==='paper' (the paper-style figures): exact scraped programs,
+    // visibility scoping deliberately not applied — see PAPER_MAJORS.
+    const query = pin === 'paper' ? paperMajorsQuery(sys.idField) : majorFilter(majorContains, visiblePairs, sys.idField);
+    const docs = await db.collection(sys.coll).find(query).toArray();
     for (const doc of docs) {
       const memberships = membershipsFor(doc, refs, mode);
       const programKey = `${sys.key}|${doc[sys.idField]}|${doc.major}`;
@@ -352,6 +421,10 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
             row_group_kind: m.kind,
             row_group_key: m.key,
             row_group_label: m.label,
+            // Structure template for choose-N articulability (advisements live
+            // here). Same campus×major structure across pooled sibling colleges;
+            // per-receiver articulation is OR'd into receiverByHash below.
+            requirementGroups: doc.requirement_groups,
             receiverByHash: new Map(),
             communityCollegeIds: new Set(),
             communityColleges: new Set(),
@@ -368,7 +441,7 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
         for (const county of m.counties_served || []) bucket.counties.add(county);
       }
       for (const r of requiredReceivers(doc, isExcluded)) {
-        const hash = String(r.hash_id ?? `${r.receiving?.kind || 'receiver'}:${r.receiving?.parent_id || ''}`);
+        const hash = receiverHashKey(r);
         for (const m of memberships) {
           const bucket = buckets.get(`${m.key}|${programKey}`);
           const cur = bucket.receiverByHash.get(hash) || false;
@@ -381,6 +454,11 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
     const receiverValues = [...b.receiverByHash.values()];
     const total = receiverValues.length;
     const articulated = receiverValues.filter(Boolean).length;
+    // Choose-N-correct completeness: does the campus's ASSIST-stated minimum
+    // articulate (pooling sibling colleges via receiverByHash)? Replaces the old
+    // advisement-blind `articulated === total` rule.
+    const fully_articulated = isMajorArticulable(
+      assistCombinedMajor(b.requirementGroups, b.receiverByHash, isExcluded), true);
     const community_college_ids = [...b.communityCollegeIds].sort((a, b) => a - b);
     const community_colleges = [...b.communityColleges].sort();
     const districts = [...b.districts].sort();
@@ -405,7 +483,7 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
       receivers_required: total,
       receivers_articulated: articulated,
       pct_articulated: total ? +((articulated / total) * 100).toFixed(1) : null,
-      fully_articulated: total > 0 && articulated === total,
+      fully_articulated,
     };
   });
 }

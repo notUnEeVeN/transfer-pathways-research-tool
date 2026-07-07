@@ -77,9 +77,10 @@ export function useCoverage(params = {}, options = {}) {
   const majorContains = String(params.majorContains || '').trim()
   const groupBy = ['college', 'district', 'county'].includes(params.groupBy) ? params.groupBy : 'college'
   const requirements = ['assist', 'paper'].includes(params.requirements) ? params.requirements : 'assist'
+  const pin = params.pin === 'paper' ? 'paper' : null
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements],
+    queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements, pin],
     queryFn: () =>
       apiClient
         .get('/analysis/coverage', {
@@ -87,6 +88,7 @@ export function useCoverage(params = {}, options = {}) {
             ...(majorContains ? { majorContains } : {}),
             ...(groupBy !== 'college' ? { groupBy } : {}),
             ...(requirements !== 'assist' ? { requirements } : {}),
+            ...(pin ? { pin } : {}),
           },
         })
         .then((r) => r.data),

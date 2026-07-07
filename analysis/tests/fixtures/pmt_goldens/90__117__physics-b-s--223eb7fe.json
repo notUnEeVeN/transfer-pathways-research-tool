@@ -1,0 +1,329 @@
+{
+  "golden_version": 1,
+  "meta": {
+    "community_college": "Yuba College",
+    "community_college_id": 90,
+    "major": "Physics/B.S.",
+    "major_id": "4550f762-6cbd-4ecf-1fb3-08ddcb96df9e",
+    "parser_output_hash": "5f3786be2340a2339fe8261e48222310",
+    "raw_template_hash": "d130f8a4d5",
+    "system": "uc",
+    "template_fp": "e27fe287c03b851511d0a94ae06f9aff",
+    "uc_school": "UC Los Angeles",
+    "uc_school_id": 117,
+    "verdict": {
+      "source": "random_template_weighted",
+      "verified_at": "2026-06-17T11:55:05.486Z",
+      "verifier_uid": "bgD1vYo0WFYmFxhnzihG4CoMrGu2"
+    }
+  },
+  "parsed": {
+    "advisement": "IMPORTANT MAJOR INFORMATION\nThe Physics/B.S. major provides students with a solid preparation to universally-acknowledged core physics concepts, both in the classroom and the laboratory setting. Listed below are the lower division preparation courses for the major. To be considered for this major, you must complete the following courses by the end of spring before transfer: One and half years of Calculus through Multivariable, One course in Linear Algebra, One and a half years of Calculus Based Physics with Lab for the major (mechanics, electricity, and magnetism). One course of General Chemistry, one course in Differential Equations, and one course in Computer Programming is Strongly Recommended . It is STRONGLY RECOMMENDED that all major prep be completed prior to transfer. All courses must be taken for a letter grade. For more information regarding this major and UCLA's transfer selection process, visit https://pa.ucla.edu and https:// admission.ucla.edu . PLEASE NOTE: the community college courses listed below have been approved to satisfy the preparation for this major at UCLA, but they may not be exact equivalents of the UCLA courses listed.\nAP/IB CREDIT\nThe AP Exam Scores listed below may be used to satisfy the major prep: A score of 4 or higher on the AP Physics C Mechanics exam may be used in place of Physics 1A. A score of 4 or higher on the AP Chemistry exam may be used in place of Chem 20A. A score of 5 on AP Calculus AB exam is equivalent to Math 31A and can be used in place of this calculus course. A score of 5 on the AP Calculus BC exam is equivalent to Math 31A and 31B and can be used in place of these calculus courses. The IB Exam Scores listed below may be used to satisfy the major prep: A score of 6 or higher on the IB HL Analysis & Approaches exam is equivalent to Math 31A and can be used in place of this calculus course.",
+    "requirement_groups": [
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "d3b05de15707a4772636593c799bcbdd8ef5e3269c7e957deb5f6ab30f8c0c0e",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      273959
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 291192,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "6377c4eb6a3e628aa372a43ad4ead451867b7be94459a8e5e38ae75bebaa13dd",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      352962
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 262286,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "1afef9c9336ff76353e1aa65db8abd3bc1799d45defe7f12c98e84a142b4a736",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      303986
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 355719,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "3e7910b6811e33cc8b438c8a884d75f118180962ac411bb74ce6114d7e0f7da3",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      303986
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 296204,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "b6f2f1a31709381023e0c2b155d4ae58cf745733ab1da2e0fff65e3046edfc2a",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      215927
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 291195,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "c4fb66d83283d002a57e29f7aeb55c6f104d517e773834717c66525c0971169f",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      259850
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 1807,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": 6,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "489627a2f000e47f736b564becdc1ba2256791da4c6f241e70d2d2bd3e3265d8",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      353192,
+                      290990,
+                      253838
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "PHYSICS 1A, PHYSICS 1B, PHYSICS 1C, PHYSICS 4AL, PHYSICS 4BL",
+                  "parent_ids": [
+                    283150,
+                    283153,
+                    308650,
+                    121312,
+                    122675
+                  ],
+                  "units": 19.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "e9dee7a1b9f492311d4be7ca91dd542ca640c3974aca9fba8ae7f59badaa8c28",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 356106,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "2ff652b52e2094e356d5b20ab9281224903f608870f838da1a9609e75d52a240",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 387528,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": 3,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "ec35fb5210d4b76af70870ca3b7a2a0362c53f92f71a1928d453b17f4bec3c08",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      307997
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 1827,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": 1,
+            "unit_advisement": null
+          }
+        ]
+      },
+      {
+        "group_advisement": 1.0,
+        "group_conjunction": "Or",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "articulated",
+                "hash_id": "09b19d3edd2b33cd97ffaf3fe7e39e262bde8e978fe1fc9013f3dae5bd1bca8c",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      183925
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 1153,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "22e74a1a3738494ea0914fbd84c85bb669987812d599ddccdf55cb6eee70df91",
+                "not_articulated_reason": "never_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 383648,
+                  "units": 4.0
+                }
+              },
+              {
+                "articulation_status": "articulated",
+                "hash_id": "9690c60824dd53bd4f203a55e087bbf20df5e065970187ba1f6f397f927cd30c",
+                "not_articulated_reason": null,
+                "options": [
+                  {
+                    "course_conjunction": "and",
+                    "course_ids": [
+                      183925
+                    ]
+                  }
+                ],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 298652,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": null,
+            "unit_advisement": null
+          }
+        ]
+      }
+    ]
+  }
+}

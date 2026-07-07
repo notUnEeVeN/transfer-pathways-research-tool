@@ -1,0 +1,129 @@
+{
+  "golden_version": 1,
+  "meta": {
+    "community_college": "Los Angeles City College",
+    "community_college_id": 3,
+    "major": "German Studies B.A.",
+    "major_id": "c70dc262-58bb-4a8b-f362-08ddd3b241a4",
+    "parser_output_hash": "f338651f6a4ede9a32714dccc209207f",
+    "raw_template_hash": "39042850f9",
+    "system": "uc",
+    "template_fp": "204b9d75e8081aca03eb82e7c71a45df",
+    "uc_school": "UC San Diego",
+    "uc_school_id": 7,
+    "verdict": {
+      "source": "verify",
+      "verified_at": "2026-06-17T03:43:09.514Z",
+      "verifier_uid": "bgD1vYo0WFYmFxhnzihG4CoMrGu2"
+    }
+  },
+  "parsed": {
+    "advisement": "General Information\nDATED MATERIAL, SUBJECT TO CHANGE. PLEASE CONSULT CURRENT UCSD GENERAL CATALOG FOR ANY ADDITIONAL INFORMATION. The upper-division courses required for this major are not currently being offered, and the major is unavailable to declare from Spring 2025 through the end of Spring 2028. A minor is recommended at this time. In consultation with a faculty member, students in the German Studies program design individual plans of study from the many core courses offered in the Departments of History, Literature, Music, Philosophy, Political Science, Sociology, and Theatre and Dance. Further courses, including some offered by other departments, may be incorporated into the student's program. Students need to attain competence in German (two years of university level language courses or the equivalent) before they can take certain required upper-division courses. For more information please visit http://caesar.ucsd.edu/german/major.html Required: Two years lower division German language.\nUC San Diego Advanced Placement (AP) and International Baccalaureate (IB) credit policies are detailed in the links below: Advanced Placement (AP) https://www.ucsd.edu/catalog/pdf/APC-chart.pdf International Baccalaureate (IB) https://catalog.ucsd.edu/_files/international-baccalaureate-credits-chart.pdf",
+    "requirement_groups": [
+      {
+        "group_advisement": null,
+        "group_conjunction": "And",
+        "group_max_distinct_sections": null,
+        "group_min_distinct_sections": null,
+        "group_section_min_courses": null,
+        "group_unit_advisement": null,
+        "is_required": true,
+        "sections": [
+          {
+            "receivers": [
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "b2a2fd4f6eaa0e3a0bd11f554c74d3e6a01cbcd544f64b86d05af67614b38980",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIGM 1A, LIGM 1AX",
+                  "parent_ids": [
+                    146553,
+                    126678
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "c660018b67ca0109c51d9d9a1dc60e051e035825899ca0f53a187426e51dc116",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIGM 1B, LIGM 1BX",
+                  "parent_ids": [
+                    126676,
+                    145152
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "315f3e7665351863f787e2eb895f33b5d23ed48bfea903ace42527d3f45463f9",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "conjunction": "and",
+                  "kind": "series",
+                  "name": "LIGM 1C, LIGM 1CX",
+                  "parent_ids": [
+                    146550,
+                    146557
+                  ],
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "548dc1e24acfc45c2734a679a9ca107712ef6596056db69e7887d6e09febe28e",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 308532,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "b5f92e6e05520ddea374b366d472ad9c88a6d9a8ba416651722823c48bc02758",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 282869,
+                  "units": 5.0
+                }
+              },
+              {
+                "articulation_status": "not_articulated",
+                "hash_id": "8564f5a97a601cb1fea8e727e83bb5f4b5a05efa706c0d22fdc169696cafc2ae",
+                "not_articulated_reason": "no_course_articulated",
+                "options": [],
+                "options_conjunction": "and",
+                "receiving": {
+                  "kind": "course",
+                  "parent_id": 259945,
+                  "units": 4.0
+                }
+              }
+            ],
+            "section_advisement": 6,
+            "unit_advisement": null
+          }
+        ]
+      }
+    ]
+  }
+}

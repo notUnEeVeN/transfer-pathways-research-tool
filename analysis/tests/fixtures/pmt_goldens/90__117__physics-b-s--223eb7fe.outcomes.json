@@ -1,0 +1,1032 @@
+{
+  "golden_version": 1,
+  "scenario_version": 1,
+  "meta": {
+    "community_college_id": 90,
+    "uc_school_id": 117,
+    "major": "Physics/B.S.",
+    "parser_output_hash": "5f3786be2340a2339fe8261e48222310"
+  },
+  "outcomes": {
+    "empty": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 6,
+            "originalTotal": 6,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 6,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 6,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 3,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 1,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "or",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 2,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "half": {
+      "major": {
+        "completed": false,
+        "percentage": 77.78
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 4,
+            "total": 6,
+            "originalTotal": 6,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 4,
+              "maxContribution": 6,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 4,
+                "total": 6,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 3,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 1,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "or",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 2,
+              "maxContribution": 2,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "exact_ask": {
+      "major": {
+        "completed": true,
+        "percentage": 100
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 6,
+            "total": 6,
+            "originalTotal": 6,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 6,
+              "maxContribution": 6,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 3,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 1,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "or",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 2,
+              "maxContribution": 2,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "all": {
+      "major": {
+        "completed": true,
+        "percentage": 100
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 6,
+            "total": 6,
+            "originalTotal": 6,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 6,
+              "maxContribution": 6,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 3,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 1,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "or",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 2,
+              "maxContribution": 2,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "all_d_grades": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 6,
+            "originalTotal": 6,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 6,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 6,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 3,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 1,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "or",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 2,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "crosscc": {
+      "major": {
+        "completed": false,
+        "percentage": 27.27
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 6,
+            "originalTotal": 6,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 6,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 6,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 2,
+            "total": 3,
+            "originalTotal": 3,
+            "label": "courses"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 2,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 2,
+                "total": 3,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1,
+                "unit": ""
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "completed": true,
+          "effectiveAsk": 1,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 1,
+            "label": "course"
+          },
+          "rule": null,
+          "interSectionConj": "or",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 3,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

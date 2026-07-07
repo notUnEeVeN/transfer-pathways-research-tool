@@ -1,0 +1,382 @@
+{
+  "golden_version": 1,
+  "scenario_version": 1,
+  "meta": {
+    "community_college_id": 19,
+    "uc_school_id": 132,
+    "major": "Latin American and Latino Studies/Education, Democracy, and Justice B.A.",
+    "parser_output_hash": "ca0b139d8288bd12d7bbbc75ebb833b9"
+  },
+  "outcomes": {
+    "empty": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 2,
+            "label": "section"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 0,
+              "maxContribution": 0,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "none"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            },
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "half": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 2,
+            "label": "section"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 0,
+              "maxContribution": 0,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "none"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            },
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "exact_ask": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 2,
+            "label": "section"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 0,
+              "maxContribution": 0,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "none"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            },
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "all": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 1,
+            "total": 1,
+            "originalTotal": 2,
+            "label": "section"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 0,
+              "maxContribution": 0,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "none"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            },
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "all_d_grades": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 1,
+            "originalTotal": 2,
+            "label": "section"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 0,
+              "maxContribution": 0,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "none"
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                }
+              ]
+            },
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 1,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 1
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": false
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "crosscc": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 2,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": true,
+              "contribution": 1,
+              "maxContribution": 1,
+              "rule": "Complete 1 of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

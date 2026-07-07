@@ -1,0 +1,466 @@
+{
+  "golden_version": 1,
+  "scenario_version": 1,
+  "meta": {
+    "community_college_id": 140,
+    "uc_school_id": 79,
+    "major": "Physics, B.A.",
+    "parser_output_hash": "2b9da981b86e98a74c41efeb83b8ae91"
+  },
+  "outcomes": {
+    "empty": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 4,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 4
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 3
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "half": {
+      "major": {
+        "completed": false,
+        "percentage": 57.14
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 2,
+              "maxContribution": 4,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 2,
+                "total": 4
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": false,
+              "contribution": 2,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 2,
+                "total": 3
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "exact_ask": {
+      "major": {
+        "completed": true,
+        "percentage": 100
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 2,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 4,
+              "maxContribution": 4,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": true,
+              "contribution": 3,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "all": {
+      "major": {
+        "completed": true,
+        "percentage": 100
+      },
+      "groups": [
+        {
+          "completed": true,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 2,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": true,
+              "contribution": 4,
+              "maxContribution": 4,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": true,
+              "contribution": 3,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "done"
+              },
+              "receivers": [
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                },
+                {
+                  "completed": true,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "all_d_grades": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 4,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 4
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 3
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "crosscc": {
+      "major": {
+        "completed": false,
+        "percentage": 0
+      },
+      "groups": [
+        {
+          "completed": false,
+          "effectiveAsk": 0,
+          "displayStat": {
+            "done": 0,
+            "total": 2,
+            "originalTotal": 2,
+            "label": "sections"
+          },
+          "rule": null,
+          "interSectionConj": "And",
+          "pooled": false,
+          "sections": [
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 4,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 4
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            },
+            {
+              "completed": false,
+              "contribution": 0,
+              "maxContribution": 3,
+              "rule": "Complete all of:",
+              "status": {
+                "kind": "progress",
+                "done": 0,
+                "total": 3
+              },
+              "receivers": [
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                },
+                {
+                  "completed": false,
+                  "available": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

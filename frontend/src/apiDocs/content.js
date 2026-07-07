@@ -159,7 +159,7 @@ export const ENDPOINT_GROUPS = [
         fields: [
           ['receivers_required, receivers_articulated', 'required-receiver counts (recommended groups excluded)'],
           ['pct_articulated', '0–100, null when there are no required receivers'],
-          ['fully_articulated', 'true when every required receiver is articulated'],
+          ['fully_articulated', "true when the campus's ASSIST-stated minimums articulate — honors choose-N (section/group advisement), not every receiver"],
         ],
       },
       {

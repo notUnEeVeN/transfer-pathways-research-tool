@@ -61,6 +61,9 @@ async function parseParams(req) {
     requirements: ['assist', 'paper'].includes(req.query.requirements)
       ? req.query.requirements
       : 'assist',
+    // pin=paper: the paper-port figures' fixed major set (pathways.js
+    // PAPER_MAJORS) — exact scraped programs, visibility scoping not applied.
+    pin: req.query.pin === 'paper' ? 'paper' : null,
     // Partner visibility (null = admin, unrestricted). Applied inside every
     // pathways query, so partners' analyses cover exactly the granted subset.
     visiblePairs: await majorScope(req),
@@ -87,7 +90,7 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
-    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|v:${scopeTag(params.visiblePairs)}`;
+    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
     const rows = await cached(key, () => computeFn(db, auditDb, params));
     const dataset_version = await currentDatasetVersion(db);
     if (req.query.format === 'csv') {

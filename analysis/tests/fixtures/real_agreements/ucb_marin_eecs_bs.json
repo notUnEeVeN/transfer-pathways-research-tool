@@ -1,0 +1,552 @@
+{
+  "meta": {
+    "uc_school": "UC Berkeley",
+    "uc_school_id": 79,
+    "community_college": "College of Marin",
+    "community_college_id": 4,
+    "major": "Electrical Engineering & Computer Sciences, B.S."
+  },
+  "requirement_groups": [
+    {
+      "is_required": true,
+      "group_conjunction": "And",
+      "group_advisement": null,
+      "group_unit_advisement": null,
+      "group_min_distinct_sections": null,
+      "group_max_distinct_sections": null,
+      "group_section_min_courses": null,
+      "sections": [
+        {
+          "section_advisement": 6,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 351686,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    303691
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "af674fe4c29297c316bda34867abec938273eda99d4056ff0e90c41cb2b9ead4"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 245397,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    303686
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "a54988e7239fa0a90ca0c5ccfdf0bfa8e220be0647645eb3d9d1f209601be092"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 352027,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    284592
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "76a5278d407738f9fe51cbe37ba66740771010519ac52a32c8690e5aaa04711a"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 246154,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    192213,
+                    353070
+                  ],
+                  "course_conjunction": "and"
+                },
+                {
+                  "course_ids": [
+                    411007
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "or",
+              "hash_id": "389dbd372a36f10cb19644660ea7e91033c8464ff85bad09d5c52777219dd854"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 245412,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    285096
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "90a3fcffecc27960b452622fca1f7d7cdfb5e467436616572905ff1396bc6d28"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 275225,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    285101
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "e4b67fb2f5e161ae8ac8e5ca00ffc2034603a1c8d2d9d71449f915a3fd317a7d"
+            }
+          ]
+        },
+        {
+          "section_advisement": 2,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "requirement",
+                "name": "Courses that satisfy Reading & Composition A"
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    155646
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "0fe38c9ab92c60518b8dcab7959e6ec311f2a4585df6f8fff7ba422fad142197"
+            },
+            {
+              "receiving": {
+                "kind": "requirement",
+                "name": "Courses that satisfy Reading & Composition B"
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    255040,
+                    255132
+                  ],
+                  "course_conjunction": "or"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "6b0b9687e14672faaff7376621e07f0ffdeff9856e10ea96f5ce63a1b8b05340"
+            }
+          ]
+        },
+        {
+          "section_advisement": 1,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 283495,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "58e4b1a1db689515711c6d9a341df9706b6b8f0c63e9980a565ab41a938cb3f6"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 353834,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "096c6ff33466f377dfa554502b51421a8cba1293aca9ccd12b2a466d9207a670"
+            },
+            {
+              "receiving": {
+                "kind": "series",
+                "name": "BIOLOGY 1A, BIOLOGY 1AL",
+                "conjunction": "and",
+                "parent_ids": [
+                  275173,
+                  326365
+                ],
+                "units": 5
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    387474,
+                    410948
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "bb977f092f0e4eb68bd1fb5ec3e2e83d6ef142693c4b1936155b139879d9dff7"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 351700,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    410948
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "9e758f9b7e9e66336a21fed2d30adcf2185405ef6778f852ab79f62bf0832faa"
+            },
+            {
+              "receiving": {
+                "kind": "series",
+                "name": "BIOLOGY 1A, BIOLOGY 1AL, BIOLOGY 1B",
+                "conjunction": "and",
+                "parent_ids": [
+                  275173,
+                  326365,
+                  351700
+                ],
+                "units": 9
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    309226,
+                    305262,
+                    304781
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "f4507386dfc88583ed9f8db88a6995b26fe6d82854d708da452e23b48aa9d455"
+            },
+            {
+              "receiving": {
+                "kind": "series",
+                "name": "CHEM 1A, CHEM 1AL",
+                "conjunction": "and",
+                "parent_ids": [
+                  263888,
+                  57026
+                ],
+                "units": 5
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    302617
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "d768fd3f3e29540cf9cf7113c17d4907ea8730353c68d8f5efedb04f818273ef"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 351685,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    307791
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "4d8251dd4caa37c2ebea1b89b8454bdd05ab382aeda41a3ece2a41cc599784b6"
+            },
+            {
+              "receiving": {
+                "kind": "series",
+                "name": "CHEM 3A, CHEM 3AL",
+                "conjunction": "and",
+                "parent_ids": [
+                  206562,
+                  113962
+                ],
+                "units": 5
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    308067
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "eb285d9d82a501cbe19eba23a2bae702d06fafcc7e4409753592cefd7319b25e"
+            },
+            {
+              "receiving": {
+                "kind": "series",
+                "name": "CHEM 3B, CHEM 3BL",
+                "conjunction": "and",
+                "parent_ids": [
+                  206564,
+                  113963
+                ],
+                "units": 5
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    307957
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "db50f7674268437f3651bc42a3d9b753c78fac776f2f11a2f54fc8346f62dc3d"
+            },
+            {
+              "receiving": {
+                "kind": "series",
+                "name": "MCELLBI 32, MCELLBI 32L",
+                "conjunction": "and",
+                "parent_ids": [
+                  135534,
+                  25696
+                ],
+                "units": 5
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    308161
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "2096462cb3be0b31430096e41473bee8ed6002e6f10cae3192a04cf10836469b"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 281317,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    278350
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "c2d8f6f118d5ca448906d55df1bb422c6c18b9518b028dc795613b735240d390"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "is_required": false,
+      "group_conjunction": "And",
+      "group_advisement": null,
+      "group_unit_advisement": null,
+      "group_min_distinct_sections": null,
+      "group_max_distinct_sections": null,
+      "group_section_min_courses": null,
+      "sections": [
+        {
+          "section_advisement": 6,
+          "unit_advisement": null,
+          "receivers": [
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 292039,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "2aa01bc0dc66abb2dde4c1630cac4f9ba7c58c977db38f654f56a57dca49d37e"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 256849,
+                "units": 4
+              },
+              "articulation_status": "articulated",
+              "not_articulated_reason": null,
+              "options": [
+                {
+                  "course_ids": [
+                    167678
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
+              "options_conjunction": "and",
+              "hash_id": "d62be6d8d99e351c76b7581b27316e5abbf83a4f6c4d311487ed7e67cbb1eab3"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 208145,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "8a1245056fc24a4a8018a29b166935896a6d367dfb5f6ecf9f1e9ea002b0ac8e"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 356766,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "must_take_at_university",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "cc7a856c7ea3afe234d31a14e31532ccb556396fcedc6cecbd82a677e2bf8530"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 304910,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "eb9bec0bc093229093cf32a7d448a9c0954a966a69e38c3ce169d2351b5046a7"
+            },
+            {
+              "receiving": {
+                "kind": "course",
+                "parent_id": 304911,
+                "units": 4
+              },
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
+              "options": [],
+              "options_conjunction": "and",
+              "hash_id": "2bfd1caea24f1d16970b2a8a638d47452fe02c07ab90ac3226044ac55a3199c6"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ucode_by_parent": {
+    "25696": "MCELLBI 32L",
+    "57026": "CHEM 1AL",
+    "113962": "CHEM 3AL",
+    "113963": "CHEM 3BL",
+    "135534": "MCELLBI 32",
+    "206562": "CHEM 3A",
+    "206564": "CHEM 3B",
+    "208145": "COMPSCI 61C",
+    "245397": "MATH 52",
+    "245412": "PHYSICS 7A",
+    "246154": "MATH 54",
+    "256849": "COMPSCI 61B",
+    "263888": "CHEM 1A",
+    "275173": "BIOLOGY 1A",
+    "275225": "PHYSICS 7B",
+    "281317": "PHYSICS 7C",
+    "283495": "ASTRON 7A",
+    "292039": "COMPSCI 61A",
+    "304910": "EECS 16A",
+    "304911": "EECS 16B",
+    "326365": "BIOLOGY 1AL",
+    "351685": "CHEM 1B",
+    "351686": "MATH 51",
+    "351700": "BIOLOGY 1B",
+    "352027": "MATH 53",
+    "353834": "ASTRON 7B",
+    "356766": "COMPSCI 70"
+  }
+}

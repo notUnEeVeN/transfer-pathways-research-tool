@@ -1,0 +1,309 @@
+[
+  {
+    "campus": "UCSD",
+    "college": "Allan Hancock College",
+    "major": "CSE: Computer Science B.S.",
+    "optimal_courses": 8,
+    "greedy_courses": 8,
+    "unarticulated": 3,
+    "selected_programs": {
+      "7": {
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "agreement_id": "6a20bb70ab5af349b0affe9c"
+      }
+    },
+    "chosen_bundles": [
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "CHEM 6A",
+        "courses": [
+          "CHEM 150 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "CSE 11",
+        "courses": [
+          "CS 112 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "CSE 20",
+        "courses": [
+          "CS 161 (3.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "CSE 30",
+        "courses": [
+          "CS 131 (3.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "MATH 18",
+        "courses": [
+          "MATH 184 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "MATH 20A",
+        "courses": [
+          "MATH 181 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "MATH 20B",
+        "courses": [
+          "MATH 182 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science B.S.",
+        "receiver": "MATH 20C",
+        "courses": [
+          "MATH 183 (4.00)"
+        ]
+      }
+    ],
+    "unarticulated_receivers": [
+      "CSE 12",
+      "CSE 21",
+      "CSE 29"
+    ]
+  },
+  {
+    "campus": "UCSD",
+    "college": "Allan Hancock College",
+    "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+    "optimal_courses": 13,
+    "greedy_courses": 13,
+    "unarticulated": 3,
+    "selected_programs": {
+      "7": {
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "agreement_id": "6a20bb70ab5af349b0affe9e"
+      }
+    },
+    "chosen_bundles": [
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "BILD 1",
+        "courses": [
+          "BIOL 150 (5.00)",
+          "BIOL 154 (5.00)",
+          "BIOL 155 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "BILD 3",
+        "courses": [
+          "BIOL 150 (5.00)",
+          "BIOL 154 (5.00)",
+          "BIOL 155 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "BILD 4",
+        "courses": [
+          "BIOL 150 (5.00)",
+          "BIOL 154 (5.00)",
+          "BIOL 155 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "CHEM 41A",
+        "courses": [
+          "CHEM 180 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "CHEM 6A",
+        "courses": [
+          "CHEM 150 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "CHEM 6B",
+        "courses": [
+          "CHEM 150 (5.00)",
+          "CHEM 151 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "CSE 11",
+        "courses": [
+          "CS 112 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "CSE 30",
+        "courses": [
+          "CS 131 (3.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "MATH 18",
+        "courses": [
+          "MATH 184 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "MATH 20A",
+        "courses": [
+          "MATH 181 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "MATH 20B",
+        "courses": [
+          "MATH 182 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
+        "receiver": "MATH 20C",
+        "courses": [
+          "MATH 183 (4.00)"
+        ]
+      }
+    ],
+    "unarticulated_receivers": [
+      "CSE 12",
+      "CSE 21",
+      "CSE 29"
+    ]
+  },
+  {
+    "campus": "UCSD",
+    "college": "Allan Hancock College",
+    "major": "Mathematics/Computer Science B.S.",
+    "optimal_courses": 5,
+    "greedy_courses": 5,
+    "unarticulated": 3,
+    "selected_programs": {
+      "7": {
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "agreement_id": "6a20bb70ab5af349b0afff1c"
+      }
+    },
+    "chosen_bundles": [
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "receiver": "CSE 11",
+        "courses": [
+          "CS 112 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "receiver": "MATH 18",
+        "courses": [
+          "MATH 184 (5.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "receiver": "MATH 20A",
+        "courses": [
+          "MATH 181 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "receiver": "MATH 20B",
+        "courses": [
+          "MATH 182 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "receiver": "MATH 20C",
+        "courses": [
+          "MATH 183 (4.00)"
+        ]
+      },
+      {
+        "campus": "UCSD",
+        "college": "Allan Hancock College",
+        "major": "Mathematics/Computer Science B.S.",
+        "receiver": "MATH 20D",
+        "courses": [
+          "MATH 184 (5.00)"
+        ]
+      }
+    ],
+    "unarticulated_receivers": [
+      "1 of [CSE 15L / CSE 29]",
+      "CSE 12",
+      "MATH 20E"
+    ]
+  }
+]

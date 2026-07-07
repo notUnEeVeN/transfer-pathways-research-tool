@@ -17,10 +17,13 @@ const recv = (options, { status = 'articulated', hash = 'h', parentId = 1, oc = 
   hash_id: hash,
 });
 const opt = (ids, cc = 'and') => ({ course_ids: ids, course_conjunction: cc });
+// "Complete all listed" — the ASSIST parser stores section_advisement = the
+// receiver count for that (agreements.py), so a genuinely-missing receiver
+// leaves the choose-N minimum unmet. (A null advisement would mean "any one".)
 const oneGroup = (receivers, isRequired = true) => [{
   is_required: isRequired, group_conjunction: 'And', group_advisement: null,
   group_unit_advisement: null,
-  sections: [{ section_advisement: null, unit_advisement: null, receivers }],
+  sections: [{ section_advisement: receivers.length, unit_advisement: null, receivers }],
 }];
 
 beforeAll(async () => {
@@ -57,6 +60,22 @@ beforeAll(async () => {
         recv([opt(['ds1'])], { hash: 'r-ds', parentId: 104 }),
       ]),
     },
+    {
+      // Choose-1-of-2 with an unarticulated alternative — the phantom-blocker
+      // case the fix targets: articulate 1 of the 2 and the campus minimum is met.
+      uc_school: 'UC Choose', uc_school_id: 3,
+      community_college: 'CC Gamma', community_college_id: 30,
+      major: 'Computer Science B.S.',
+      requirement_groups: [{
+        is_required: true, group_conjunction: 'And', group_advisement: null, group_unit_advisement: null,
+        sections: [{
+          section_advisement: 1, unit_advisement: null, receivers: [
+            recv([opt(['calcG'])], { hash: 'r-choose-art', parentId: 201 }),
+            recv([], { status: 'not_articulated', hash: 'r-choose-unart', parentId: 202 }),
+          ],
+        }],
+      }],
+    },
   ]);
   await db.collection('courses').insertMany([
     { course_id: 'calcA', units: 5, community_college_id: 10 },
@@ -65,6 +84,7 @@ beforeAll(async () => {
     { course_id: 'calcB', units: 4, community_college_id: 20 },
     { course_id: 'ds1', units: 4, community_college_id: 10 },
     { course_id: 'ge1', units: 3, community_college_id: 10 },
+    { course_id: 'calcG', units: 4, community_college_id: 30 },
   ]);
 
   // Curation: categories, an exclusion, calendars/tuition, prereqs, an ADT.
@@ -84,6 +104,7 @@ beforeAll(async () => {
   await db.collection('ref_cc_districts').insertMany([
     { _id: 10, district: 'North', region: 'Bay', counties_served: ['Alpha'] },
     { _id: 20, district: 'North', region: 'Bay', counties_served: ['Alpha', 'Beta'] },
+    { _id: 30, district: 'South', region: 'Bay', counties_served: ['Gamma'] },
   ]);
   await db.collection('ref_uc_transfer_requirements').insertMany([
     {
@@ -131,6 +152,13 @@ describe('coverageData', () => {
     const beta = rows.find((r) => r.community_college_id === 20);
     expect(beta.pct_articulated).toBe(50);
     expect(beta.fully_articulated).toBe(false);
+  });
+
+  it('honors choose-N: an unarticulated alternative does not block when the minimum is met', async () => {
+    const rows = await coverageData(db, db, P);
+    const gamma = rows.find((r) => r.community_college_id === 30 && r.school_id === 3);
+    expect(gamma.pct_articulated).toBe(50);     // 1 of 2 receivers articulate
+    expect(gamma.fully_articulated).toBe(true); // but section_advisement=1 is met — no phantom block
   });
 
   it('groups by district/county using best-of articulation across member colleges', async () => {
