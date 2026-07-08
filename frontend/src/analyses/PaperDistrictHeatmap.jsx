@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, Spinner, Stack, StatStrip } from '../components/ui'
+import { Alert, Button, Spinner, Stack, StatStrip, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 import { DISTRICTS, PAPER_CELL_COUNT, PAPER_COMPLETE_COUNT, UC_ROWS } from './paperDistrictBaseline'
 
@@ -11,10 +11,12 @@ const GAIN = '#0d7964'
 const LOSS = '#cb1d51'
 const GRID = '#111111'
 
-const VIEWS = [
-  { value: 'live', label: 'Our data' },
+// The three meaningful matrices: the transcribed paper original, and our data
+// against each minimums source. "Difference" is an overlay (a toggle), not a version.
+const VERSIONS = [
   { value: 'paper', label: 'Paper baseline' },
-  { value: 'diff', label: 'Difference' },
+  { value: 'website', label: 'Website minimums' },
+  { value: 'assist', label: 'ASSIST minimums' },
 ]
 
 // Which requirements model "complete" is measured against:
@@ -25,10 +27,6 @@ const VIEWS = [
 //            required agreement groups articulated (curation overrides
 //            honored). Far stricter in practice — ASSIST pages list required
 //            receivers that articulate almost nowhere.
-const REQ_MODES = [
-  { value: 'paper', label: 'Website minimums' },
-  { value: 'assist', label: 'ASSIST minimums' },
-]
 
 // Row label under each mode. Campus names keep the paper's `*` annotation
 // (selective-admission majors) so the two modes stay comparable.
@@ -341,9 +339,15 @@ function Chip({ color }) {
 }
 
 export default function PaperDistrictHeatmap() {
-  const [view, setView] = useState('live')
-  const [reqMode, setReqMode] = useState('paper')
+  const [version, setVersion] = useState('website')  // 'paper' | 'website' | 'assist'
+  const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('paper')
+
+  // Derive the underlying view/minimums from version + differences toggle. Note the
+  // coverage endpoint uses requirements:'paper' for the website minimums.
+  const reqMode = version === 'assist' ? 'assist' : 'paper'
+  const diffOn = showDiff && version !== 'paper'
+  const view = version === 'paper' ? 'paper' : (diffOn ? 'diff' : 'live')
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on
   // demand. The ASSIST-minimums variant fetches lazily on first selection and
   // then stays cached, so flipping the toggle is instant afterwards.
@@ -379,38 +383,29 @@ export default function PaperDistrictHeatmap() {
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
         <div className='flex flex-col'>
-          <span className='field-label'>View</span>
+          <span className='field-label'>Version</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {VIEWS.map((mode) => (
+            {VERSIONS.map((v) => (
               <button
-                key={mode.value}
+                key={v.value}
                 type='button'
-                onClick={() => setView(mode.value)}
+                onClick={() => setVersion(v.value)}
                 className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  view === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                  version === v.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
                 }`}
               >
-                {mode.label}
+                {v.label}
               </button>
             ))}
           </div>
         </div>
-        <div className='flex flex-col'>
-          <span className='field-label'>Minimums</span>
-          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {REQ_MODES.map((mode) => (
-              <button
-                key={mode.value}
-                type='button'
-                onClick={() => setReqMode(mode.value)}
-                className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  reqMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
-                }`}
-              >
-                {mode.label}
-              </button>
-            ))}
-          </div>
+        <div className='flex h-9 items-center'>
+          <SwitchField
+            label='Show differences'
+            checked={diffOn}
+            onChange={() => setShowDiff((s) => !s)}
+            disabled={version === 'paper'}
+          />
         </div>
         <Button
           variant='secondary'

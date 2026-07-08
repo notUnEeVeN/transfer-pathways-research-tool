@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { Stack, StatStrip } from '../components/ui'
+import { Stack, StatStrip, SwitchField } from '../components/ui'
 import { CHOICE_LABELS, PAPER_COLORS, PAPER_UC_BARS } from './paperCreditLossBaseline'
 import assistData from './data/paper-credit-loss.assist.json'
 import oursData from './data/paper-credit-loss.ours.json'
@@ -65,18 +65,11 @@ const ASSIST_BARS = PAPER_UC_BARS.map((paper) => {
   }
 })
 
-const VIEWS = [
+// The three meaningful figures: the transcribed paper original, and our data
+// against each minimums source. "Difference" is an overlay (a toggle), not a
+// version — see the Show-differences switch below.
+const VERSIONS = [
   { value: 'paper', label: 'Paper baseline' },
-  { value: 'live', label: 'Our data' },
-  { value: 'diff', label: 'Difference' },
-]
-
-const ASSIST_VIEWS = [
-  { value: 'live', label: 'Our data (ASSIST)' },
-  { value: 'diff', label: 'Difference vs website minimums' },
-]
-
-const REQ_MODES = [
   { value: 'website', label: 'Website minimums' },
   { value: 'assist', label: 'ASSIST minimums' },
 ]
@@ -353,11 +346,16 @@ function diffStats(bars, baseline) {
 }
 
 export default function PaperCreditLoss() {
-  const [view, setView] = useState('paper')
-  const [reqMode, setReqMode] = useState('website')
+  const [version, setVersion] = useState('paper')  // 'paper' | 'website' | 'assist'
+  const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('paper')
 
-  const viewModes = reqMode === 'assist' ? ASSIST_VIEWS : VIEWS
+  // Derive the underlying view/minimums from the version + differences toggle so
+  // the existing bar/ghost rendering is unchanged.
+  const reqMode = version === 'assist' ? 'assist' : 'website'
+  const diffOn = showDiff && version !== 'paper'
+  const view = version === 'paper' ? 'paper' : (diffOn ? 'diff' : 'live')
+
   const activeData = reqMode === 'assist' ? assistData : oursData
   const liveBars = reqMode === 'assist' ? ASSIST_BARS : OURS_BARS
   const baselineBars = reqMode === 'assist' ? OURS_BARS : PAPER_UC_BARS
@@ -374,41 +372,29 @@ export default function PaperCreditLoss() {
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
         <div className='flex flex-col'>
-          <span className='field-label'>View</span>
+          <span className='field-label'>Version</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {viewModes.map((mode) => (
+            {VERSIONS.map((v) => (
               <button
-                key={mode.value}
+                key={v.value}
                 type='button'
-                onClick={() => setView(mode.value)}
+                onClick={() => setVersion(v.value)}
                 className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  view === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                  version === v.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
                 }`}
               >
-                {mode.label}
+                {v.label}
               </button>
             ))}
           </div>
         </div>
-        <div className='flex flex-col'>
-          <span className='field-label'>Minimums</span>
-          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {REQ_MODES.map((mode) => (
-              <button
-                key={mode.value}
-                type='button'
-                onClick={() => {
-                  setReqMode(mode.value)
-                  if (mode.value === 'assist' && view === 'paper') setView('live')
-                }}
-                className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  reqMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
-                }`}
-              >
-                {mode.label}
-              </button>
-            ))}
-          </div>
+        <div className='flex h-9 items-center'>
+          <SwitchField
+            label='Show differences'
+            checked={diffOn}
+            onChange={() => setShowDiff((s) => !s)}
+            disabled={version === 'paper'}
+          />
         </div>
         <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle'>
           {view === 'paper'
