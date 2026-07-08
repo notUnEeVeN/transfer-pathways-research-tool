@@ -98,6 +98,30 @@ export function useCoverage(params = {}, options = {}) {
   })
 }
 
+// Per-college ASSIST-vs-hand-curated minimums comparison for one (campus, major,
+// college). Returns the unified per-requirement table + per-side summaries;
+// powers the Data tab's college comparison view (Level 2).
+export function useRequirementComparison({ schoolId, major, communityCollegeId } = {}, options = {}) {
+  const { user } = useAuth()
+  const school_id = Number(schoolId)
+  const community_college_id = Number(communityCollegeId)
+  const majorName = String(major || '').trim()
+  const { enabled = true, ...queryOptions } = options
+  const ready = Number.isFinite(school_id) && Number.isFinite(community_college_id) && !!majorName
+  return useQuery({
+    queryKey: ['analysis-requirement-comparison', user?.uid, school_id, community_college_id, majorName],
+    queryFn: () =>
+      apiClient
+        .get('/analysis/requirement-comparison', {
+          params: { school_id, major: majorName, community_college_id },
+        })
+        .then((r) => r.data),
+    enabled: !!user?.uid && enabled && ready,
+    staleTime: 5 * 60 * 1000,
+    ...queryOptions,
+  })
+}
+
 // The rest of the /analysis family — same scoping and caching contract as
 // useCoverage. One fetch per (endpoint × filter); components shape client-side.
 function useAnalysisEndpoint(key, path, params = {}, options = {}) {

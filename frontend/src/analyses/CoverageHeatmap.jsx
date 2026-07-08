@@ -11,11 +11,11 @@ const ROW_MODES = [
 ]
 
 // Which minimums the coverage % is measured against. 'assist' = ASSIST-stated
-// required groups (engine, choose-N correct); 'paper' = the curated website
+// required groups (engine, choose-N correct); 'paper' = the hand-curated
 // minimums (ref_uc_transfer_requirements, the paper's set-based rule).
 const REQ_MODES = [
   { value: 'assist', label: 'ASSIST minimums' },
-  { value: 'paper', label: 'Website minimums' },
+  { value: 'paper', label: 'Hand-curated minimums' },
 ]
 
 const intFmt = new Intl.NumberFormat()

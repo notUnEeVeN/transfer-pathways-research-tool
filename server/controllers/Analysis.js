@@ -19,7 +19,7 @@ const { currentDatasetVersion } = require('../services/datasetVersion');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
 const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
 const {
-  coverageData, creditLossData, choiceCostData,
+  coverageData, requirementComparisonData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData,
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
@@ -109,6 +109,24 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
 }
 
 exports.coverage = makeEndpoint('coverage', coverageData);
+
+// Per-college ASSIST-vs-website minimums comparison (one campus × major ×
+// college). Single object, not a row list, so it can't ride makeEndpoint;
+// same per-key cache + X-Dataset-Version contract.
+exports.requirementComparison = asyncHandler(async (req, res) => {
+  const schoolId = Number(req.query.school_id);
+  const communityCollegeId = Number(req.query.community_college_id);
+  const major = String(req.query.major || '').trim();
+  if (!Number.isFinite(schoolId) || !Number.isFinite(communityCollegeId) || !major) {
+    return res.status(400).json({ error: 'school_id, major, and community_college_id are required' });
+  }
+  const db = req.app.locals.db;
+  const auditDb = req.app.locals.auditDb || db;
+  const key = `requirement-comparison|${schoolId}|${communityCollegeId}|${major}`;
+  const data = await cached(key, () => requirementComparisonData(db, auditDb, { schoolId, major, communityCollegeId }));
+  const dataset_version = await currentDatasetVersion(db);
+  res.json({ dataset_version, ...data });
+});
 exports.creditLoss = makeEndpoint('credit-loss', creditLossData);
 exports.choiceCost = makeEndpoint('choice-cost', choiceCostData, { needsSchoolIds: true });
 exports.categoryGaps = makeEndpoint('category-gaps', categoryGapsData);

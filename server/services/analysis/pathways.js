@@ -588,6 +588,202 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
 }
 
 /**
+ * Per-college ASSIST-vs-website minimums comparison for one (campus, major,
+ * college). Unifies the curated website hard-minimum and the ASSIST-stated
+ * required groups by UC course, tagging each in_website / in_assist / articulated
+ * against ONE articulation reality (the college's articulated parent_ids), plus a
+ * coverage summary per side. Powers the Data tab's college comparison view.
+ *
+ * The two summaries reuse the same logic the coverage heatmap uses so the numbers
+ * agree: website via evaluateTransferRequirementModel (best-set-per-group), ASSIST
+ * via the eligibility engine on the agreement's exclusion-filtered groups (choose-N
+ * honored). articulated is the college-level truth — does the CC articulate this UC
+ * course anywhere in its CS agreements for this campus — so both columns compare.
+ */
+async function requirementComparisonData(db, auditDb, { schoolId, major, communityCollegeId } = {}) {
+  schoolId = Number(schoolId);
+  communityCollegeId = Number(communityCollegeId);
+  const [requirementsBySchool, curation] = await Promise.all([
+    loadTransferRequirements(auditDb),
+    loadCuration(auditDb),
+  ]);
+  const model = requirementsBySchool.get(schoolId);
+  const isExcluded = makeIsExcluded(curation);
+
+  // The chosen ASSIST agreement (specific major) + the college's CS agreements for
+  // this campus (the articulation reality both sides are judged against).
+  const [agreement, collegeDocs] = await Promise.all([
+    db.collection('uc_agreements').findOne(
+      { uc_school_id: schoolId, major, community_college_id: communityCollegeId },
+      { projection: { requirement_groups: 1, community_college: 1, uc_school: 1 } }),
+    db.collection('uc_agreements').find(
+      { uc_school_id: schoolId, community_college_id: communityCollegeId,
+        major: { $regex: 'computer science', $options: 'i' } },
+      { projection: { requirement_groups: 1 } }).toArray(),
+  ]);
+
+  // College-level articulation: every UC parent_id this CC articulates for this
+  // campus (union across its CS agreements), plus a parent_id -> UC code label
+  // and the articulating CC course_ids (options as OR-of-AND, the specific
+  // agreement preferred so the CC courses match the ledger shown next door).
+  const articulatedParents = new Set();
+  const codeOfParent = new Map();
+  const ccByParent = new Map(); // parent_id -> string[][] (options -> CC course_id strings)
+  const orderedDocs = agreement ? [agreement, ...collegeDocs] : collegeDocs;
+  for (const doc of orderedDocs) {
+    for (const r of allReceivers(doc)) {
+      const label = r.receiving && r.receiving.name;
+      const articulated = r.articulation_status === 'articulated';
+      const opts = articulated
+        ? (r.options || []).map((o) => (o.course_ids || []).map(String)).filter((o) => o.length)
+        : [];
+      for (const pid of receiverParentIds(r)) {
+        if (label && !codeOfParent.has(pid)) codeOfParent.set(pid, label);
+        if (articulated) {
+          articulatedParents.add(pid);
+          if (opts.length && !ccByParent.has(pid)) ccByParent.set(pid, opts);
+        }
+      }
+    }
+  }
+  const isArticulated = (pid) => pid != null && articulatedParents.has(Number(pid));
+
+  const reqRow = (pid, labelHint) => {
+    const label = labelHint || (pid != null ? codeOfParent.get(pid) : null) || null;
+    if (pid != null && label && !codeOfParent.has(pid)) codeOfParent.set(pid, label);
+    return { parent_id: pid ?? null, uc_code: label, articulated: isArticulated(pid) };
+  };
+
+  // WEBSITE side: curated best-set-per-group requirements + the parent_id set the
+  // website minimum actually asks for (used to decide what ASSIST adds on top).
+  const websiteReqs = []; // { parent_id, uc_code, articulated }
+  const websiteParentSet = new Set();
+  let wReq = 0; let wArt = 0; let wGroups = 0; let wSat = 0;
+  if (model) {
+    wGroups = model.groups.size;
+    for (const group of model.groups.values()) {
+      const sets = [...group.sets.values()].map((set) => {
+        const reqs = set.requirements || [];
+        const artic = reqs.filter((req) => (req.parent_ids || []).some(isArticulated)).length;
+        return { set, total: reqs.length, artic, missing: reqs.length - artic, satisfied: reqs.length > 0 && artic === reqs.length };
+      });
+      const best = sets.find((s) => s.satisfied)
+        || sets.sort((a, b) => a.missing - b.missing || b.artic - a.artic || a.total - b.total)[0];
+      if (!best) continue;
+      wReq += best.total; wArt += best.artic; if (best.satisfied) wSat += 1;
+      for (const req of best.set.requirements || []) {
+        const pid = (req.parent_ids || [])[0] ?? null;
+        if (pid != null && req.receiving_code && !codeOfParent.has(pid)) codeOfParent.set(pid, req.receiving_code);
+        websiteReqs.push({ parent_id: pid, uc_code: req.receiving_code, articulated: (req.parent_ids || []).some(isArticulated) });
+        for (const p of req.parent_ids || []) websiteParentSet.add(Number(p));
+      }
+    }
+  }
+
+  // ASSIST side: the choose-N-honored summary + only the courses ASSIST asks for
+  // BEYOND the website minimum. A required section is "already covered" when the
+  // website minimum provides enough of its alternatives — so a choose-1 section
+  // whose one taken alternative is a website course adds nothing (its other
+  // alternatives are NOT extra requirements, they are just unchosen options).
+  const assistReceiverParents = new Set();
+  const extraGroups = []; // { choose, gap, options: [{ parent_id, uc_code, articulated }] }
+  let assistPct = null; let assistFully = false; let aReq = 0; let aArt = 0;
+  let extraCount = 0; let extraArticulated = 0;
+  if (agreement) {
+    const groups = prepRequirementGroups(agreement, isExcluded);
+    const eligMajor = { requirement_groups: groups };
+    assistPct = +calculateMajorCompletionPercentage(eligMajor, allArticulatingCourses(eligMajor), [], true).toFixed(1);
+    assistFully = isMajorArticulable(eligMajor, true);
+    const counts = chooseNMinimum(groups);
+    aReq = counts.required; aArt = counts.satisfiable;
+    const inWebsite = (r) => receiverParentIds(r).some((pid) => websiteParentSet.has(pid));
+    for (const g of groups) {
+      if (!g.is_required) continue;
+      for (const s of g.sections || []) {
+        const recvs = s.receivers || [];
+        if (!recvs.length) continue;
+        for (const r of recvs) for (const pid of receiverParentIds(r)) assistReceiverParents.add(pid);
+        const ask = s.section_advisement != null
+          ? Math.min(s.section_advisement, recvs.length)
+          : Math.min(1, recvs.length);
+        // How much of this section the website minimum already satisfies.
+        const covered = recvs.filter(inWebsite).length;
+        const needed = ask - Math.min(covered, ask);
+        if (needed <= 0) continue; // website minimum already covers this section
+        // The remaining need is met from the alternatives the website doesn't have.
+        const options = recvs.filter((r) => !inWebsite(r)).map((r) => {
+          const label = (r.receiving && r.receiving.name);
+          return reqRow(receiverParentIds(r)[0] ?? null, label);
+        });
+        const articulatedOpts = options.filter((o) => o.articulated).length;
+        extraGroups.push({ choose: needed, gap: articulatedOpts < needed, options });
+        extraCount += needed;
+        extraArticulated += Math.min(needed, articulatedOpts);
+      }
+    }
+  }
+  // Website courses ASSIST doesn't ask for (surfaces "ASSIST requires N fewer").
+  for (const r of websiteReqs) r.in_assist = r.parent_id != null && assistReceiverParents.has(Number(r.parent_id));
+  const websiteOnly = websiteReqs.filter((r) => r.parent_id != null && !r.in_assist).length;
+
+  // Enrich every emitted row with authoritative UC codes + CC articulating courses.
+  const enrichRows = [...websiteReqs, ...extraGroups.flatMap((g) => g.options)];
+  const pids = enrichRows.map((r) => r.parent_id).filter((p) => p != null);
+  if (pids.length) {
+    const ucRows = await db.collection('university_courses')
+      .find({ parent_id: { $in: pids } }, { projection: { parent_id: 1, prefix: 1, number: 1 } }).toArray();
+    const uniCode = new Map();
+    for (const u of ucRows) {
+      const pid = Number(u.parent_id);
+      if (uniCode.has(pid)) continue;
+      const code = [u.prefix, u.number].filter(Boolean).join(' ').trim();
+      if (code) uniCode.set(pid, code);
+    }
+    for (const r of enrichRows) {
+      const code = r.parent_id != null && uniCode.get(Number(r.parent_id));
+      if (code) r.uc_code = code;
+    }
+  }
+  const ccIds = [...new Set([...ccByParent.values()].flat(2))];
+  const ccCode = new Map();
+  if (ccIds.length) {
+    const ccRows = await db.collection('courses')
+      .find({ course_id: { $in: ccIds.map(Number) } }, { projection: { course_id: 1, prefix: 1, number: 1 } }).toArray();
+    for (const c of ccRows) {
+      const code = [c.prefix, c.number].filter(Boolean).join(' ').trim();
+      if (code) ccCode.set(String(c.course_id), code);
+    }
+  }
+  for (const r of enrichRows) {
+    const opts = r.parent_id != null ? ccByParent.get(Number(r.parent_id)) : null;
+    r.cc_options = (opts || []).map((opt) => opt.map((cid) => ccCode.get(cid) || `#${cid}`));
+  }
+
+  const byCode = (a, b) => String(a.uc_code || '~').localeCompare(String(b.uc_code || '~'), undefined, { numeric: true });
+  websiteReqs.sort(byCode);
+  for (const g of extraGroups) g.options.sort(byCode);
+  extraGroups.sort((a, b) => byCode(a.options[0] || {}, b.options[0] || {}));
+
+  return {
+    school_id: schoolId,
+    school: (agreement && agreement.uc_school) || (model && model.school) || null,
+    major,
+    community_college_id: communityCollegeId,
+    community_college: (agreement && agreement.community_college) || null,
+    website: { required: wReq, articulated: wArt, pct: wReq ? +((wArt / wReq) * 100).toFixed(1) : null, fully: wGroups > 0 && wSat === wGroups },
+    assist: { required: aReq, articulated: aArt, pct: assistPct, fully: assistFully },
+    // Extra = courses ASSIST requires beyond the website minimum (choose-N honored).
+    // net_courses = ASSIST minimum size − website minimum size (negative = fewer).
+    assist_extra: extraCount,
+    assist_extra_articulated: extraArticulated,
+    website_only: websiteOnly,
+    net_courses: aReq - wReq,
+    website_requirements: websiteReqs,
+    assist_extra_groups: extraGroups,
+  };
+}
+
+/**
  * Credit loss — per agreement, the papers' decomposition:
  *   min_cc_courses      — overlap-aware minimal CC course count (optionSolver)
  *   min_cc_units        — those courses' units (CC catalog join)
@@ -970,6 +1166,7 @@ async function universityCoursesExportData(db) {
 
 module.exports = {
   coverageData,
+  requirementComparisonData,
   creditLossData,
   choiceCostData,
   categoryGapsData,

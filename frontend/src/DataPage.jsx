@@ -18,7 +18,7 @@ import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { useAuditDoc } from '@frontend/query/hooks/useAudit'
 import {
   useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch,
-  useRawAssist, useDataSummary, useCoverage,
+  useRawAssist, useDataSummary, useCoverage, useRequirementComparison,
   useFigures, useDeleteFigure, useEditFigure, downloadFigure,
   useRefreshFigureScript,
 } from '@frontend/query/hooks/useData'
@@ -78,13 +78,14 @@ const pKey = (schoolId, major) => `${schoolId}|${major}`
 function AgreementsBrowser() {
   const summary = useDataSummary()
   const coverage = useCoverage()
+  const websiteCoverage = useCoverage({ requirements: 'paper' })
   const [program, setProgram] = useState(null) // { school_id, school, major }
   const [collegeId, setCollegeId] = useState(null)
 
   const programsBySchool = summary.data?.schools || []
   const nPrograms = programsBySchool.reduce((s, g) => s + g.majors.length, 0)
 
-  // Coverage rows for the active program, keyed by college.
+  // ASSIST coverage rows for the active program (per major), keyed by college.
   const coverageByCc = useMemo(() => {
     const m = new Map()
     if (!program) return m
@@ -95,6 +96,17 @@ function AgreementsBrowser() {
     }
     return m
   }, [coverage.data, program])
+
+  // Website (curated hard-minimum) coverage is campus-level — one row per
+  // (school, college), identical across majors — so join by college only.
+  const websiteByCc = useMemo(() => {
+    const m = new Map()
+    if (!program) return m
+    for (const r of websiteCoverage.data?.rows || []) {
+      if (Number(r.school_id) === Number(program.school_id)) m.set(Number(r.community_college_id), r)
+    }
+    return m
+  }, [websiteCoverage.data, program])
 
   // Mean coverage per program — shown beside each program in the rail.
   const meanByProgram = useMemo(() => {
@@ -162,11 +174,12 @@ function AgreementsBrowser() {
         <EmptyState title='Pick a program'
           description='Choose a campus program on the left to see how every community college articulates to it.' />
       ) : collegeId == null ? (
-        <ProgramColleges program={program} coverageByCc={coverageByCc}
-          coverageLoading={coverage.isLoading} onPick={setCollegeId} />
+        <ProgramColleges program={program} coverageByCc={coverageByCc} websiteByCc={websiteByCc}
+          coverageLoading={coverage.isLoading || websiteCoverage.isLoading} onPick={setCollegeId} />
       ) : (
         <ProgramAgreement program={program} collegeId={collegeId}
           cov={coverageByCc.get(Number(collegeId)) || null}
+          website={websiteByCc.get(Number(collegeId)) || null}
           onBack={() => setCollegeId(null)} />
       )}
       </div>
@@ -174,29 +187,33 @@ function AgreementsBrowser() {
   )
 }
 
-// Every college's articulation coverage for one program — one column of the
-// papers' heatmap, doubling as navigation.
-function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
+// Every college's minimums coverage for one program, ASSIST vs the hand-curated
+// hard-minimum side by side — doubling as navigation into the course-level
+// comparison (Level 2).
+function ProgramColleges({ program, coverageByCc, websiteByCc, coverageLoading, onPick }) {
   const colleges = useColleges()
   const [q, setQ] = useState('')
 
   const rows = useMemo(() => {
-    const all = (colleges.data || [])
-      .map((c) => ({ ...c, cov: coverageByCc.get(Number(c.id)) || null }))
-      .sort((a, b) => (b.cov?.pct_articulated ?? -1) - (a.cov?.pct_articulated ?? -1) || a.name.localeCompare(b.name))
+    const all = (colleges.data || []).map((c) => {
+      const assist = coverageByCc.get(Number(c.id)) || null
+      const web = websiteByCc.get(Number(c.id)) || null
+      return { ...c, assist, web }
+    }).filter((c) => c.assist || c.web)
+      .sort((a, b) => (b.assist?.pct_articulated ?? -1) - (a.assist?.pct_articulated ?? -1) || a.name.localeCompare(b.name))
     if (!q.trim()) return all
     const s = q.toLowerCase()
     return all.filter((c) => c.name.toLowerCase().includes(s))
-  }, [colleges.data, coverageByCc, q])
+  }, [colleges.data, coverageByCc, websiteByCc, q])
 
-  const withAgreement = rows.filter((r) => r.cov).length
+  const withAgreement = rows.filter((r) => r.assist).length
 
   return (
     <Stack gap='cozy'>
       <div>
         <p className='text-body-strong'>{program.major}</p>
         <p className='text-caption text-ink-muted'>
-          {program.school} · {withAgreement} of {rows.length || 115} colleges have an agreement — sorted by coverage
+          {program.school} · {withAgreement} colleges with an agreement · Hand-curated = hand-gathered hard minimum, ASSIST = full stated minimum
         </p>
       </div>
       <div className='flex flex-wrap items-center gap-3'>
@@ -222,25 +239,26 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
             <thead className='sticky top-0 bg-surface border-b border-border'>
               <tr>
                 <th className='px-3 py-2 text-label'>Community college</th>
-                <th className='px-3 py-2 text-label whitespace-nowrap'>Coverage</th>
-                <th className='px-3 py-2 text-label whitespace-nowrap'>Receivers</th>
+                <th className='px-3 py-2 text-label whitespace-nowrap'>Hand curated</th>
+                <th className='px-3 py-2 text-label whitespace-nowrap'>ASSIST min.</th>
                 <th className='px-3 py-2 text-label' />
               </tr>
             </thead>
             <tbody className='divide-y divide-border/60'>
               {rows.map((c) => (
                 <tr key={c.id}
-                  className={c.cov ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-50'}
-                  onClick={() => c.cov && onPick(Number(c.id))}>
+                  className={c.assist ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-60'}
+                  onClick={() => c.assist && onPick(Number(c.id))}>
                   <td className='px-3 py-1.5 text-body'>{c.name}</td>
                   <td className='px-3 py-1.5'>
-                    {c.cov ? <CoverageBar pct={c.cov.pct_articulated} full={c.cov.fully_articulated} /> :
+                    {c.web ? <CoverageBar pct={c.web.pct_articulated} full={c.web.fully_articulated} width='w-20' /> :
+                      <span className='text-caption text-ink-subtle'>—</span>}
+                  </td>
+                  <td className='px-3 py-1.5'>
+                    {c.assist ? <CoverageBar pct={c.assist.pct_articulated} full={c.assist.fully_articulated} width='w-20' /> :
                       <span className='text-caption text-ink-subtle'>no agreement</span>}
                   </td>
-                  <td className='px-3 py-1.5 text-caption font-mono tabular-nums text-ink-muted'>
-                    {c.cov ? `${c.cov.receivers_articulated}/${c.cov.receivers_required}` : '—'}
-                  </td>
-                  <td className='px-3 py-1.5 text-caption text-ink-subtle text-right'>{c.cov ? 'view →' : ''}</td>
+                  <td className='px-3 py-1.5 text-caption text-ink-subtle text-right'>{c.assist ? 'view →' : ''}</td>
                 </tr>
               ))}
             </tbody>
@@ -253,11 +271,11 @@ function ProgramColleges({ program, coverageByCc, coverageLoading, onPick }) {
 
 // Fill colors are inline: utility classes like bg-primary/60 resolve to the
 // UUI theme's WHITE surface token here, which made the bars invisible.
-function CoverageBar({ pct, full }) {
+function CoverageBar({ pct, full, width = 'w-24' }) {
   const v = Math.max(0, Math.min(100, pct ?? 0))
   return (
     <span className='inline-flex items-center gap-2'>
-      <span className='inline-block w-24 h-2 rounded-pill bg-surface-muted border border-border overflow-hidden'>
+      <span className={`inline-block ${width} h-2 rounded-pill bg-surface-muted border border-border overflow-hidden`}>
         <span className='block h-full rounded-pill'
           style={{ width: `${v}%`, backgroundColor: full ? 'var(--color-success, #16a34a)' : 'var(--color-primary, #3366ef)' }} />
       </span>
@@ -288,7 +306,8 @@ function ProgramAgreement({ program, collegeId, cov, onBack }) {
       ) : !agreement ? (
         <EmptyState title='No agreement' description='This college has no agreement for the selected program.' />
       ) : (
-        <AgreementDetail agreementId={agreement._id} cov={cov} />
+        <AgreementDetail agreementId={agreement._id} cov={cov}
+          compareFor={{ schoolId: program.school_id, major: program.major, communityCollegeId: collegeId }} />
       )}
     </Stack>
   )
@@ -534,8 +553,8 @@ function JsonPanel({ data, filename }) {
   )
 }
 
-function AgreementDetail({ agreementId, cov = null }) {
-  const [view, setView] = useState('ledger') // ledger | stored | raw
+function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
+  const [view, setView] = useState('ledger') // ledger | stored | raw | comparison
   const docQ = useAuditDoc(agreementId, 'uc')
   const summary = useDataSummary()
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
@@ -583,7 +602,9 @@ function AgreementDetail({ agreementId, cov = null }) {
           { value: 'ledger', label: 'Rendered' },
           { value: 'stored', label: 'Stored JSON' },
           { value: 'raw',    label: 'Raw ASSIST API' },
+          ...(compareFor ? [{ value: 'comparison', label: 'Comparison' }] : []),
         ]} />
+      {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
       {view === 'ledger' && (
         <>
           <div className='uui-scope'>
@@ -605,6 +626,156 @@ function AgreementDetail({ agreementId, cov = null }) {
         : raw.data ? <JsonPanel data={raw.data} filename={`${slug}.assist-raw.json`} /> : null
       )}
     </Stack>
+  )
+}
+
+// Level 2 — ASSIST vs the hand-curated hard-minimum for one college. Three
+// summary tiles, then the hand-curated minimum as a ledger-like UC → CC list
+// (the CC course that articulates each requirement here), then a separately-
+// labeled list of the courses ASSIST asks for BEYOND the hand-curated minimum
+// (choose-N honored — an unchosen alternative of a satisfied section is not counted).
+function ComparisonView({ compareFor }) {
+  const cmp = useRequirementComparison(compareFor)
+  if (cmp.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
+  if (cmp.isError) return <Alert type='error'>Failed to load the minimums comparison.</Alert>
+  const d = cmp.data
+  if (!d || !d.website_requirements) return <EmptyState title='No comparison' description='No curated or ASSIST minimums to compare for this college.' />
+
+  const web = d.website || {}
+  const assist = d.assist || {}
+  const net = d.net_courses ?? 0
+  const extraGroups = d.assist_extra_groups || []
+  const netSub = net === 0
+    ? 'ASSIST and the hand-curated minimum require the same number of courses'
+    : `ASSIST requires ${Math.abs(net)} ${net > 0 ? 'more' : 'fewer'} course${Math.abs(net) === 1 ? '' : 's'} than the hand-curated minimum`
+
+  return (
+    <Stack gap='cozy'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
+        <StatTile label='Hand-curated minimum' value={web.pct != null ? `${web.pct}%` : '—'}
+          sub={`${web.articulated ?? 0} / ${web.required ?? 0} required · ${web.fully ? 'fully prepared' : 'not fully'}`}
+          full={web.fully} />
+        <StatTile label='ASSIST minimum' value={assist.pct != null ? `${assist.pct}%` : '—'}
+          sub={`${assist.articulated ?? 0} / ${assist.required ?? 0} required · ${assist.fully ? 'fully prepared' : 'not fully'}`}
+          full={assist.fully} />
+        <StatTile label='Minimum difference' value={net === 0 ? 'same' : `${net > 0 ? '+' : '−'}${Math.abs(net)}`}
+          sub={netSub} />
+      </div>
+
+      <div className='surface-card overflow-hidden'>
+        <div className='px-4 py-2.5 border-b border-border'>
+          <p className='text-body-strong'>Hand-curated minimum</p>
+          <p className='text-caption text-ink-muted mt-0.5'>
+            The hand-curated per-campus hard minimum, and how {d.community_college || 'this college'} articulates each course.
+          </p>
+        </div>
+        <div className='divide-y divide-border/60'>
+          {d.website_requirements.map((r, i) => (
+            <MinRow key={r.parent_id ?? `${r.uc_code}-${i}`}
+              code={r.uc_code} parentId={r.parent_id} articulated={r.articulated} ccOptions={r.cc_options}
+              college={d.community_college}
+              note={r.in_assist ? null : 'not in ASSIST minimum'} />
+          ))}
+        </div>
+      </div>
+
+      <div className='surface-card overflow-hidden'>
+        <div className='px-4 py-2.5 border-b border-border bg-primary-soft/40'>
+          <p className='text-body-strong'>ASSIST requires beyond the hand-curated minimum</p>
+          <p className='text-caption text-ink-muted mt-0.5'>
+            {extraGroups.length
+              ? `${d.assist_extra} additional required course${d.assist_extra === 1 ? '' : 's'} in the full ASSIST minimum for this major — ${d.assist_extra_articulated} articulate here.`
+              : 'ASSIST asks for nothing beyond the hand-curated minimum for this major.'}
+          </p>
+        </div>
+        {extraGroups.length > 0 && (
+          <div className='divide-y divide-border/60'>
+            {extraGroups.map((g, gi) => <ExtraGroup key={gi} group={g} college={d.community_college} />)}
+          </div>
+        )}
+      </div>
+    </Stack>
+  )
+}
+
+// One ASSIST-extra section. When every option is required (choose === count) the
+// options render as plain rows; a genuine choose-k section renders a "Choose k of"
+// header and gets the gap wash only if the whole choice is unsatisfiable here.
+function ExtraGroup({ group, college }) {
+  const isChoice = group.choose < group.options.length
+  if (!isChoice) {
+    return (
+      <>
+        {group.options.map((o, i) => (
+          <MinRow key={o.parent_id ?? `${o.uc_code}-${i}`}
+            code={o.uc_code} parentId={o.parent_id} articulated={o.articulated} ccOptions={o.cc_options}
+            college={college} gap={!o.articulated} />
+        ))}
+      </>
+    )
+  }
+  return (
+    <div className={group.gap ? 'bg-danger-soft/30' : ''}>
+      <p className='px-4 pt-2.5 pb-1 text-label text-ink-muted'>Choose {group.choose} of</p>
+      {group.options.map((o, i) => (
+        <MinRow key={o.parent_id ?? `${o.uc_code}-${i}`}
+          code={o.uc_code} parentId={o.parent_id} articulated={o.articulated} ccOptions={o.cc_options}
+          college={college} indent />
+      ))}
+    </div>
+  )
+}
+
+// One requirement: UC course on the left, the articulating CC course(s) on the
+// right (chips, "+" within an option and "or" between options), or a clear
+// not-articulated note. Unsatisfiable required rows (gaps) get a soft danger wash.
+function MinRow({ code, parentId, articulated, ccOptions, college, gap = false, note = null, indent = false }) {
+  return (
+    <div className={`flex items-baseline gap-3 px-4 py-2.5 ${indent ? 'pl-8' : ''} ${gap ? 'bg-danger-soft/30' : ''}`}>
+      <span className='font-mono text-body-strong text-ink w-24 shrink-0'>{code || `#${parentId}`}</span>
+      <span className='text-ink-subtle shrink-0'>→</span>
+      <span className='min-w-0 flex-1'>
+        {articulated && ccOptions?.length ? (
+          <CcOptions options={ccOptions} />
+        ) : (
+          <span className='text-caption' style={{ color: 'var(--color-danger)' }}>
+            not articulated{college ? ` at ${college}` : ''}
+          </span>
+        )}
+      </span>
+      {note && <span className='text-caption text-ink-subtle shrink-0 italic'>{note}</span>}
+    </div>
+  )
+}
+
+// CC course options as chips: codes within one option joined by "+", options by "or".
+function CcOptions({ options }) {
+  return (
+    <span className='inline-flex flex-wrap items-center gap-x-1.5 gap-y-1'>
+      {options.map((opt, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && <span className='text-caption text-ink-subtle italic px-0.5'>or</span>}
+          <span className='inline-flex flex-wrap items-center gap-1'>
+            {opt.map((code, j) => (
+              <React.Fragment key={j}>
+                {j > 0 && <span className='text-caption text-ink-subtle'>+</span>}
+                <span className='px-2 py-0.5 rounded-md bg-surface-muted border border-border font-mono text-caption text-ink'>{code}</span>
+              </React.Fragment>
+            ))}
+          </span>
+        </React.Fragment>
+      ))}
+    </span>
+  )
+}
+
+function StatTile({ label, value, sub, full }) {
+  return (
+    <div className='surface-card p-3'>
+      <p className='text-label text-ink-muted'>{label}</p>
+      <p className={`text-stat font-mono leading-none mt-1 ${full ? 'text-success' : 'text-ink'}`}>{value}</p>
+      <p className='text-caption text-ink-subtle mt-1'>{sub}</p>
+    </div>
   )
 }
 

@@ -15,7 +15,7 @@ const GRID = '#111111'
 // against each minimums source. "Difference" is an overlay (a toggle), not a version.
 const VERSIONS = [
   { value: 'paper', label: 'Paper baseline' },
-  { value: 'website', label: 'Website minimums' },
+  { value: 'website', label: 'Hand-curated minimums' },
   { value: 'assist', label: 'ASSIST minimums' },
 ]
 
@@ -188,7 +188,7 @@ function titleFor({ uc, district, liveCell, live, paper, view, reqMode }) {
     `${uc.id} · ${uc.campus}`,
     `District ${district.index}: ${district.name}`,
     `Cell: ${labelFor({ view, live, paper })}`,
-    `Our data (${reqMode === 'assist' ? 'ASSIST-stated minimums' : 'website minimums'}): ${live ? 'complete' : 'missing'}`,
+    `Our data (${reqMode === 'assist' ? 'ASSIST-stated minimums' : 'hand-curated minimums'}): ${live ? 'complete' : 'missing'}`,
     `Paper baseline: ${paper ? 'complete' : 'missing'}`,
   ]
   if (liveCell) {
@@ -425,8 +425,8 @@ export default function PaperDistrictHeatmap() {
       <div data-export-exclude>
         <StatStrip
           tiles={[
-            { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: reqMode === 'assist' ? 'per ASSIST-stated minimums' : 'per website minimums', accent: true },
-            { label: 'Paper complete cells', value: intFmt.format(PAPER_COMPLETE_COUNT), sub: 'baseline · website minimums' },
+            { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: reqMode === 'assist' ? 'per ASSIST-stated minimums' : 'per hand-curated minimums', accent: true },
+            { label: 'Paper complete cells', value: intFmt.format(PAPER_COMPLETE_COUNT), sub: 'baseline · hand-curated minimums' },
             { label: 'Net vs paper', value: signedFmt.format(net), sub: `${intFmt.format(diff.changed)} changed cells` },
             { label: 'Matrix agreement', value: `${pctFmt.format(diff.agreementPct)}%`, sub: `${intFmt.format(diff.gained)} gained · ${intFmt.format(diff.lost)} lost` },
           ]}

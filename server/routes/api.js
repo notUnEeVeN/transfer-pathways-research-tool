@@ -121,6 +121,7 @@ router.use('/analysis', ...guarded);
 // Which analyses are released to partners (frontend hides unreleased ones).
 router.get('/analysis/releases',        analysisController.getReleases);
 router.get('/analysis/coverage',        analysisController.coverage);
+router.get('/analysis/requirement-comparison', analysisController.requirementComparison);
 router.get('/analysis/credit-loss',     analysisController.creditLoss);
 router.get('/analysis/choice-cost',     analysisController.choiceCost);
 router.get('/analysis/category-gaps',   analysisController.categoryGaps);

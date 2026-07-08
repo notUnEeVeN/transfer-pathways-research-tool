@@ -70,7 +70,7 @@ const ASSIST_BARS = PAPER_UC_BARS.map((paper) => {
 // version — see the Show-differences switch below.
 const VERSIONS = [
   { value: 'paper', label: 'Paper baseline' },
-  { value: 'website', label: 'Website minimums' },
+  { value: 'website', label: 'Hand-curated minimums' },
   { value: 'assist', label: 'ASSIST minimums' },
 ]
 
@@ -365,7 +365,7 @@ export default function PaperCreditLoss() {
     () => diffStats(liveBars, baselineBars),
     [liveBars, baselineBars]
   )
-  const comparisonLabel = reqMode === 'assist' ? 'website minimums' : 'paper'
+  const comparisonLabel = reqMode === 'assist' ? 'hand-curated minimums' : 'paper'
 
   return (
     <Stack gap='section'>

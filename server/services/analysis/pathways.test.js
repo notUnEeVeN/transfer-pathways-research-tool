@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { startInMemoryMongo } from '../../test/mongoHarness';
 import {
-  coverageData, creditLossData, choiceCostData, categoryGapsData,
-  complexityData, timeToDegreeData, receiversExportData,
+  coverageData, requirementComparisonData, creditLossData, choiceCostData,
+  categoryGapsData, complexityData, timeToDegreeData, receiversExportData,
 } from './pathways';
 
 let mongo;
@@ -189,6 +189,65 @@ describe('coverageData', () => {
     expect(alphaOther.requirement_groups_required).toBe(1);
     expect(alphaOther.requirement_groups_satisfied).toBe(1);
     expect(alphaOther.fully_articulated).toBe(true); // alternative set B is satisfied.
+  });
+});
+
+describe('requirementComparisonData', () => {
+  it('lists the website minimum and only the courses ASSIST adds on top', async () => {
+    const cmp = await requirementComparisonData(db, db, {
+      schoolId: 1, major: 'Computer Science B.S.', communityCollegeId: 10,
+    });
+    // Website hard-minimum is just calculus (parent 101), which Alpha articulates.
+    expect(cmp.website).toMatchObject({ required: 1, articulated: 1, pct: 100, fully: true });
+    // ASSIST asks for calculus + intro programming (r-reco is curation-excluded).
+    expect(cmp.assist).toMatchObject({ required: 2, articulated: 2, pct: 100, fully: true });
+    // Intro programming (102) is the one course ASSIST adds beyond the website min.
+    expect(cmp.assist_extra).toBe(1);
+    expect(cmp.assist_extra_articulated).toBe(1);
+    expect(cmp.net_courses).toBe(1); // ASSIST minimum is one course larger
+    // Website list: calculus, flagged as also in the ASSIST minimum.
+    const calc = cmp.website_requirements.find((r) => r.parent_id === 101);
+    expect(calc).toMatchObject({ articulated: true, in_assist: true });
+    // Extra list: a single required course (intro programming), articulated via cs1a + cs1b.
+    expect(cmp.assist_extra_groups).toHaveLength(1);
+    const g = cmp.assist_extra_groups[0];
+    expect(g.choose).toBe(1);
+    expect(g.options).toHaveLength(1);
+    expect(g.options[0].parent_id).toBe(102);
+    expect(g.options[0].cc_options[0]).toHaveLength(2);
+  });
+
+  it('choose-N covered by the website minimum is not counted as an extra', async () => {
+    // The UCB shape: a "choose 1 of {A(in website), B}" section is already
+    // satisfied by the website course A, so B is NOT an extra requirement.
+    await db.collection('uc_agreements').insertOne({
+      uc_school: 'UC Choose2', uc_school_id: 5,
+      community_college: 'CC Delta', community_college_id: 40,
+      major: 'Computer Science B.S.',
+      requirement_groups: [{
+        is_required: true, group_conjunction: 'And', group_advisement: null, group_unit_advisement: null,
+        sections: [{
+          section_advisement: 1, unit_advisement: null, receivers: [
+            recv([opt(['calcD'])], { hash: 'r-in-web', parentId: 301 }),          // in the website min
+            recv([], { status: 'not_articulated', hash: 'r-extra', parentId: 302 }), // an unchosen alternative
+          ],
+        }],
+      }],
+    });
+    await db.collection('courses').insertOne({ course_id: 'calcD', units: 4, community_college_id: 40 });
+    await db.collection('ref_uc_transfer_requirements').insertOne({
+      _id: 'uch2-a', school_id: 5, school: 'UC Choose2', uc_code: 'UCH2',
+      group_id: 'G', set_id: 'A', source_order: 0, receiving_code: 'CALC', parent_ids: [301], matched: true,
+    });
+
+    const cmp = await requirementComparisonData(db, db, {
+      schoolId: 5, major: 'Computer Science B.S.', communityCollegeId: 40,
+    });
+    expect(cmp.website).toMatchObject({ required: 1, articulated: 1, fully: true });
+    expect(cmp.assist).toMatchObject({ required: 1, articulated: 1, fully: true });
+    // The website course 301 satisfies the choose-1 → nothing extra, no false gap.
+    expect(cmp.assist_extra).toBe(0);
+    expect(cmp.assist_extra_groups).toEqual([]);
   });
 });
 
