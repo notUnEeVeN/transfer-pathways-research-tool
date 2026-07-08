@@ -9,6 +9,22 @@ data — with every difference named at the course level.**
 > Dataset `2026-07-06-v1` · CS majors · 9 UC campuses × 72 CC districts ×
 > 4 choice positions · July 6, 2026
 
+## How to read this note
+
+For the reminder version, start with
+[`../visualization-quick-reference.md`](../visualization-quick-reference.md).
+
+This page is the full receipt trail:
+
+| Section | Use it for |
+| --- | --- |
+| [The short version](#the-short-version) | Headline result and one-liner |
+| [What each bar means](#what-each-bar-means-and-how-both-versions-compute-it) | Paper-vs-ours computation rules |
+| [Algorithm-equivalence check](#algorithm-equivalence-check-our-code-on-the-papers-own-data) | Proof that our implementation matches the paper on the paper's inputs |
+| [The differences on our data](#the-differences-on-our-data-with-receipts) | Course-level explanation of current-data movers |
+| [ASSIST-stated minimums variant](#assist-stated-minimums-variant) | Our diagnostic extension, demand table, blockers, and validation |
+| [Reproduce it yourself](#reproduce-it-yourself) | Commands and generated outputs |
+
 ## The short version
 
 **Did we recreate their analysis correctly?** Yes — decision for decision,
@@ -18,7 +34,7 @@ per-district course count, and 32 of 36 figure numbers to the penny; the
 remaining four sit in cells where their own script isn't run-to-run
 reproducible — see the equivalence check below).
 
-**What's different on our data?** Almost nothing: **seven of nine campuses
+**What's different on our data?** Almost nothing: **six of nine campuses
 match the paper exactly at first choice**, and nothing anywhere differs by
 more than 0.08 of a course. No methodology differences remain — only the
 ASSIST articulation data changed (2025–26 snapshot vs theirs):
@@ -34,17 +50,20 @@ ASSIST articulation data changed (2025–26 snapshot vs theirs):
   [`analysis/results/articulation_changes.csv`](../../analysis/results/articulation_changes.csv).
 
 **The one-liner:** *"Provably the same algorithm — it reproduces their
-numbers on their data — run on newer ASSIST data: seven of nine campuses
-identical, the rest within ±0.08, every difference a named articulation
-change."*
+numbers on their data — run on newer ASSIST data: six of nine campuses
+identical at first choice, the rest within ±0.08, every difference a named
+articulation change."*
 
 **ASSIST-stated minimums extension:** when demand comes from `uc_agreements`
-required groups instead of the website-minimum curation, eligibility is decided
-by the ported Plan My Transfer formula, honoring ASSIST choose-N advisements (a
-section that says "Complete 1 of the following" is satisfied by any one). Eight
-of nine campuses have fully transferable districts (UCB 69, UCM 69, UCR 62,
-UCSB 49, UCSC 46, UCI 43, UCD 28, UCSD 1); only UCLA has zero, blocked by
-genuinely required receivers such as `COM SCI 35L`.
+required groups (the one Settings-selected CS major per campus) instead of the
+website-minimum curation — with sibling colleges pooled per requirement, exactly
+as the paper pools — both eligibility and the minimum-course count are decided by
+the ported Plan My Transfer algorithms: the eligibility formula (honoring choose-N:
+"Complete 1 of the following" is satisfied by any one) and the branch-and-bound
+minimum-course picker. Seven of nine campuses have fully transferable districts
+(UCB 69, UCR 57, UCM 64, UCSB 50, UCSC 47, UCI 39, UCD 30); UCSD and UCLA have
+zero, each blocked at every district by a genuinely required receiver (UCLA
+`COM SCI 35L`, UCSD `CSE 29`).
 
 ---
 
@@ -54,8 +73,8 @@ genuinely required receivers such as `COM SCI 35L`.
   `ref_uc_transfer_requirements` (+ quarter→semester conversion) rather than
   transcribed; the script asserts they reproduce the paper's constants and
   fails loudly on drift.
-- **Blue bars: 7 of 9 campuses reproduce the paper's 1st-choice average
-  exactly**; every delta in the figure is within ±0.08.
+- **Blue bars: 6 of 9 campuses reproduce the paper's 1st-choice average
+exactly**; every delta in the figure is within ±0.08.
 - **Per-district: 86.4% of all 2,592 (campus × district × position)
   average-pairs are identical to two decimals.** 31 cells flip
   transferability across all positions — 25 of them gains. At 1st choice:
@@ -232,41 +251,52 @@ the same (now provably equivalent) machinery.
 This is **our extension**, not a paper replication. The paper asked how many
 CCC courses satisfy a fixed, hand-curated set of UC website minimums. The
 ASSIST variant asks the same credit-loss question against the minimums ASSIST
-agreements themselves state — decided by the ported Plan My Transfer
-eligibility formula (`analysis/pmt_eligibility.py`), which honors choose-N
-advisements: a section that says "Complete 1 of the following" is satisfied by
-any one of its receivers. Only Los Angeles has no district where a college
-meets every ASSIST-stated minimum.
+agreements themselves state, for the one hand-selected CS major per campus you
+share with partners (Settings → `dataset_config.partner_access`; falls back to
+`PAPER_MAJORS` if unset). Both halves are the website's own algorithms, ported
+so the figure inherits the console's rigor: the eligibility decision from
+`analysis/pmt_eligibility.py` (which honors choose-N — "Complete 1 of the
+following" is satisfied by any one receiver), and the minimum-course count from
+`analysis/pmt_min_courses.py`, a faithful branch-and-bound port of the site's
+minimum-course picker (`missingCourses.js`) that delegates every completion
+decision back to the eligibility engine. Under these single-major minimums, San
+Diego and Los Angeles have no district where one college meets every requirement.
 
 ### Methodology map
 
 | Piece | Website-minimums figure | ASSIST-stated-minimums variant |
 | --- | --- | --- |
-| Demand source | `ref_uc_transfer_requirements` fixed per campus | `uc_agreements.requirement_groups` with `is_required !== false`, per college × campus × program |
-| Advisements | Website curation groups/sets | Coverage + blockers use the ported PMT eligibility formula (`analysis/pmt_eligibility.py`): section/group choose-N, OR sections, and series honored — with our one modification, unmet ASSIST-stated demand is NOT default-accepted. Course cost still uses the choose-N MILP; curation receiver exclusions skipped |
-| Unit of evaluation | District pools sibling-college supply against fixed campus demand | Each college is solved separately; district value is the best college by `(unarticulated, articulated, college name)` |
-| Program choice | Not applicable; paper rows are campus-level | Inside the MILP: exactly one CS program selected per campus at that college |
-| Missing campus agreement | Not a case in the paper model | Counts as all-unarticulated using that campus's modal ASSIST receiver count |
+| Demand source | `ref_uc_transfer_requirements` fixed per campus | `uc_agreements.requirement_groups` (truthy `is_required`) for the one Settings-selected CS major per campus |
+| Advisements | Website curation groups/sets | Both coverage/blockers (`pmt_eligibility.py`, strict) and the course count (`pmt_min_courses.py`, non-strict) delegate every completion decision to the ported eligibility engine, so section/group choose-N, unit advisements, OR sections, series, and `same_as` cross-listing are all honored by construction — no separate advisement re-encoding. Curation receiver exclusions applied (none in the current dataset) |
+| Unit of evaluation | District pools sibling-college supply against fixed campus demand | **Same** — sibling colleges pooled per requirement, keeping the **best college per requirement** (fewest-course alternative, ties by name — the paper's `creating_district_csvs` rule); one district-pooled model per campus |
+| Program choice | Not applicable; paper rows are campus-level | The one Settings-selected CS major per campus |
+| Missing campus agreement | Not a case in the paper model | Counts as all-unarticulated using that campus's required-course (gold) count |
 | Unarticulated identity | Curated receiving course names | Hybrid grain: a genuinely must-take receiver → its university course code (from `university_courses.parent_id`); a choose-N section short of its minimum → a section-level `N of [A / B / …]` descriptor |
 | Downstream averaging | P(9,4), ÷336, round per district, transferable-average filter | Same permutation and averaging machinery; districts with no fully articulated path render as `0` with `districts_included: 0` |
 
 ### Demand and averages
 
-Gold bars now use the modal required-receiver count across ASSIST agreements
-for that campus. The spread column is native ASSIST receiver count before
-quarter-to-semester conversion.
+Gold bars are the canonical CS major's required UC-course count (choose-N aware),
+converted to semester equivalents. The native column is that count before
+quarter-to-semester conversion. ASSIST states the full lower-division prep, so the
+gold is higher than the website's hand-picked hard minimum.
 
-| Campus | Website gold | ASSIST modal gold | ASSIST native spread | Distinct values | Fully transferable districts | ASSIST 1st-choice avg |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| UCD | 5.33 | 6.00 | 7–19 | 9 | 28 | 8.68 |
-| UCM | 6.00 | 6.00 | 6–10 | 2 | 69 | 6.78 |
-| UCSD | 4.67 | 6.00 | 9–16 | 3 | 1 | 7.00 |
-| UCSB | 4.67 | 4.67 | 7–7 | 1 | 49 | 7.00 |
-| UCLA | 4.67 | 6.67 | 10–18 | 4 | 0 | 0.00 |
-| UCB | 4.00 | 3.00 | 3–9 | 3 | 69 | 3.81 |
-| UCSC | 3.33 | 3.33 | 5–8 | 2 | 46 | 5.07 |
-| UCI | 4.00 | 2.67 | 4–7 | 4 | 43 | 5.28 |
-| UCR | 3.33 | 4.00 | 6–7 | 2 | 62 | 6.84 |
+| Campus | Website gold | ASSIST gold | ASSIST native | Fully transferable districts | ASSIST 1st-choice avg |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| UCD | 5.33 | 8.00 | 12 | 30 | 8.93 |
+| UCM | 6.00 | 10.00 | 10 | 64 | 10.98 |
+| UCSD | 4.67 | 7.33 | 11 | 0 | 0.00 |
+| UCSB | 4.67 | 4.67 | 7 | 50 | 7.02 |
+| UCLA | 4.67 | 11.33 | 17 | 0 | 0.00 |
+| UCB | 4.00 | 3.00 | 3 | 69 | 3.83 |
+| UCSC | 3.33 | 3.33 | 5 | 47 | 5.15 |
+| UCI | 4.00 | 8.00 | 12 | 39 | 5.36 |
+| UCR | 3.33 | 4.67 | 7 | 57 | 7.67 |
+
+*(San Diego and Los Angeles collapse to zero transferable districts because their
+single CS major has a genuinely-required receiver no CCC articulates — UCSD's
+`CSE 29`, UCLA's `COM SCI 35L` — which the website's smaller curated minimum did
+not include.)*
 
 Receipts:
 [`paper-credit-loss.assist.json`](../../frontend/src/analyses/data/paper-credit-loss.assist.json)
@@ -286,42 +316,41 @@ of the following" section (e.g. `UCB MATH 56`, 71 districts; `UCI I&C SCI 53`,
 | Campus | ASSIST-stated blocker | Grain | Districts blocked |
 | --- | --- | --- | ---: |
 | UCLA | `COM SCI 35L` | course | 72 |
-| UCSD | `1 of [CSE 15L / CSE 29]` | section | 71 |
-| UCLA | `1 of [COM SCI M51A / EC ENGR M16]` | section | 61 |
-| UCSD | `MATH 20E` | course | 49 |
-| UCD | `ECS 036C` | course | 35 |
+| UCSD | `CSE 29` | course | 71 |
+| UCSD | `CSE 21` | course | 70 |
+| UCLA | `1 of [COM SCI M51A / EC ENGR M16]` | section | 63 |
+| UCD | `ECS 036C` | course | 38 |
 
 Series requirements count as one receiver (e.g. `UCI I&C SCI 31 + 32 + 33`, 29
 districts). Full receipt:
 [`paper_credit_loss_assist_blocker_summary.csv`](../../analysis/results/paper_credit_loss_assist_blocker_summary.csv).
-
-Worked example (the fix): **UCB × College of Marin, Computer Science B.A.** has
-one required group — section 0 "Complete 2: `MATH 51`, `MATH 52`" (both
-articulate, via `MATH 123` / `MATH 124`) and section 1 "Complete 1 of:
-`MATH 54`, `EECS 16A`, `MATH 56`" (`MATH 54` and `MATH 56` articulate). It is
-therefore fully articulable; the old rule wrongly counted the unarticulated
-`EECS 16A` (and, aggregated across districts, `MATH 56`) as a blocker. The
-generated examples live in
-[`paper_credit_loss_assist_examples.json`](../../analysis/results/paper_credit_loss_assist_examples.json).
+The choose-N grain still means an unarticulated alternative inside a satisfiable
+"Complete 1 of the following" section is never a phantom blocker — only sections
+that genuinely cannot reach their minimum surface.
 
 ### Validation
 
-- **Exact ≤ greedy:** 2,415 individual campus × college × program agreements
-  checked. Distribution of `greedy − exact`: `+0:2313`, `+1:72`, `+2:17`,
-  `+3:13`.
-- **Coverage cross-check:** the single-campus ASSIST MILP has 367 complete
-  campus × district cells; an INDEPENDENT oracle — `is_major_articulable` from
-  the ported PMT formula (the `is_major_completed` predicate path, distinct from
-  the `articulation_blockers` walk that drives the MILP) — also has 367;
-  mismatches: 0. Both paths are locked against PMT's own golden outcomes by
-  `analysis/tests/test_pmt_fidelity.py`, so this is a genuine independent check,
-  not a same-file replica of the rule under test.
+- **Optimizer fidelity:** `pmt_min_courses.py` is locked against the vendored JS
+  picker (`server/services/analysis/minCourses.js`) by
+  `analysis/tests/test_pmt_min_courses.py` — every synthetic advisement branch
+  (choose-N, unit advisements, D-buckets, `same_as`, OR sections) plus 27 real
+  ASSIST agreements reproduce the JS course-id set exactly. Regenerate the
+  goldens with `node server/services/analysis/genMinCoursesGoldens.js`.
+- **Loop-closer:** every one of the 648 pooled (campus × district) models' optimizer
+  course sets is re-checked against the eligibility engine at run time
+  (`validate_assist_optimizer`) — the chosen courses must actually satisfy
+  `is_major_completed`. This caught a real gap (ASSIST courses absent from the
+  `courses` collection) during the port.
+- **Coverage cross-check:** the single-campus complete cells (blocker walk) equal
+  the INDEPENDENT `is_major_articulable` oracle (`is_major_completed` predicate
+  path) — 356 == 356, mismatches 0. Both paths are locked against PMT's own
+  golden outcomes by `analysis/tests/test_pmt_fidelity.py`.
 - **Heatmap pooling** (server `coverageData`, `groupBy='district'`) is validated
   separately by `server/services/analysis/pathways.test.js`; the vendored JS
-  port is locked against the same PMT goldens by
+  eligibility port is locked against the same PMT goldens by
   `server/services/analysis/eligibility.test.js`.
-- **Determinism:** the deterministic CSVs hash to district `ef9a322a…`, blocker
-  summary `7c98be6a…`, complete districts `3e4937f2…`.
+- **Determinism:** the deterministic CSVs hash to district `748601cb…`, blocker
+  summary `c9a2eae2…`, complete districts `702525f2…`.
 - **Render/build:** `npm run build --prefix frontend` passes; headless Chrome
   screenshots at `1991×1191` for Website, ASSIST, and ASSIST-difference views
   render without label collisions.
@@ -330,9 +359,10 @@ generated examples live in
 
 **"Why do some bars go to zero?"**
 The blue bars average only districts whose rounded unarticulated average is
-zero. Under ASSIST-stated demand, Davis, San Diego, Los Angeles, and Berkeley
-have no such districts, so their averages render as `0` with
-`districts_included: 0` rather than hiding the collapse.
+zero. Under the single-major ASSIST demand, San Diego and Los Angeles have no
+such districts — every college is blocked by a genuinely required receiver — so
+their averages render as `0` with `districts_included: 0` rather than hiding the
+collapse.
 
 **"Why is the heatmap slightly more complete?"**
 The heatmap's district mode pools sibling colleges before testing

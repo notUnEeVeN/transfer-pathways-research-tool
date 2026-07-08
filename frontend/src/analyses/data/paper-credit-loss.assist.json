@@ -1,11 +1,11 @@
 {
   "generated_by": "analysis/paper_credit_loss.py",
-  "generated_at": "2026-07-07T15:32:00+00:00",
+  "generated_at": "2026-07-08T17:29:00+00:00",
   "dataset_version": "2026-07-06-v1",
   "requirements": "assist",
   "major_filter": "computer science",
   "districts_total": 72,
-  "method": "ASSIST-stated required groups: best-college district value, program choice inside each college-level MILP, P(9,4) choice permutations; see docs/figures/paper-credit-loss.md",
+  "method": "the paper's credit-loss method with ASSIST demand: the one canonical CS major per campus (from Settings) states the required groups; its articulations are pooled per receiver across sibling colleges (best college per requirement, the paper's rule); minimum CC courses from the ported PMT branch-and-bound optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations + transferable-average; see docs/figures/paper-credit-loss.md",
   "campuses": [
     {
       "code": "UCD",
@@ -13,75 +13,30 @@
       "school_id": 89,
       "quarter": true,
       "requirement": {
-        "native_count": 9,
-        "semester_equiv": 6.0,
-        "quarter_count": 9
-      },
-      "demand": {
-        "modal_native_count": 9,
-        "min_native_count": 7,
-        "max_native_count": 19,
-        "distinct_native_values": 9,
-        "agreement_count": 230,
-        "value_counts": [
-          {
-            "native_count": 7,
-            "agreements": 9
-          },
-          {
-            "native_count": 8,
-            "agreements": 24
-          },
-          {
-            "native_count": 9,
-            "agreements": 82
-          },
-          {
-            "native_count": 14,
-            "agreements": 1
-          },
-          {
-            "native_count": 15,
-            "agreements": 2
-          },
-          {
-            "native_count": 16,
-            "agreements": 12
-          },
-          {
-            "native_count": 17,
-            "agreements": 27
-          },
-          {
-            "native_count": 18,
-            "agreements": 33
-          },
-          {
-            "native_count": 19,
-            "agreements": 40
-          }
-        ]
+        "native_count": 12,
+        "semester_equiv": 8.0,
+        "quarter_count": 12
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 8.68,
-          "districts_included": 28
+          "transferable_average": 8.93,
+          "districts_included": 30
         },
         {
           "order": 2,
-          "transferable_average": 3.64,
-          "districts_included": 23
+          "transferable_average": 3.93,
+          "districts_included": 30
         },
         {
           "order": 3,
-          "transferable_average": 2.07,
-          "districts_included": 23
+          "transferable_average": 2.42,
+          "districts_included": 30
         },
         {
           "order": 4,
-          "transferable_average": 1.27,
-          "districts_included": 23
+          "transferable_average": 1.68,
+          "districts_included": 30
         }
       ]
     },
@@ -91,47 +46,30 @@
       "school_id": 144,
       "quarter": false,
       "requirement": {
-        "native_count": 6,
-        "semester_equiv": 6,
+        "native_count": 10,
+        "semester_equiv": 10,
         "quarter_count": null
-      },
-      "demand": {
-        "modal_native_count": 6,
-        "min_native_count": 6,
-        "max_native_count": 10,
-        "distinct_native_values": 2,
-        "agreement_count": 230,
-        "value_counts": [
-          {
-            "native_count": 6,
-            "agreements": 115
-          },
-          {
-            "native_count": 10,
-            "agreements": 115
-          }
-        ]
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 6.78,
-          "districts_included": 69
+          "transferable_average": 10.98,
+          "districts_included": 64
         },
         {
           "order": 2,
-          "transferable_average": 3.1,
-          "districts_included": 69
+          "transferable_average": 5.78,
+          "districts_included": 64
         },
         {
           "order": 3,
-          "transferable_average": 2.12,
-          "districts_included": 69
+          "transferable_average": 3.93,
+          "districts_included": 64
         },
         {
           "order": 4,
-          "transferable_average": 1.51,
-          "districts_included": 69
+          "transferable_average": 2.77,
+          "districts_included": 64
         }
       ]
     },
@@ -141,51 +79,30 @@
       "school_id": 7,
       "quarter": true,
       "requirement": {
-        "native_count": 9,
-        "semester_equiv": 6.0,
-        "quarter_count": 9
-      },
-      "demand": {
-        "modal_native_count": 9,
-        "min_native_count": 9,
-        "max_native_count": 16,
-        "distinct_native_values": 3,
-        "agreement_count": 345,
-        "value_counts": [
-          {
-            "native_count": 9,
-            "agreements": 115
-          },
-          {
-            "native_count": 11,
-            "agreements": 115
-          },
-          {
-            "native_count": 16,
-            "agreements": 115
-          }
-        ]
+        "native_count": 11,
+        "semester_equiv": 7.33,
+        "quarter_count": 11
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 7.0,
-          "districts_included": 1
+          "transferable_average": 0.0,
+          "districts_included": 0
         },
         {
           "order": 2,
-          "transferable_average": 2.25,
-          "districts_included": 1
+          "transferable_average": 0.0,
+          "districts_included": 0
         },
         {
           "order": 3,
-          "transferable_average": 1.07,
-          "districts_included": 1
+          "transferable_average": 0.0,
+          "districts_included": 0
         },
         {
           "order": 4,
-          "transferable_average": 0.59,
-          "districts_included": 1
+          "transferable_average": 0.0,
+          "districts_included": 0
         }
       ]
     },
@@ -199,39 +116,26 @@
         "semester_equiv": 4.67,
         "quarter_count": 7
       },
-      "demand": {
-        "modal_native_count": 7,
-        "min_native_count": 7,
-        "max_native_count": 7,
-        "distinct_native_values": 1,
-        "agreement_count": 115,
-        "value_counts": [
-          {
-            "native_count": 7,
-            "agreements": 115
-          }
-        ]
-      },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 7.0,
-          "districts_included": 49
+          "transferable_average": 7.02,
+          "districts_included": 50
         },
         {
           "order": 2,
-          "transferable_average": 2.5,
-          "districts_included": 47
+          "transferable_average": 2.49,
+          "districts_included": 50
         },
         {
           "order": 3,
-          "transferable_average": 1.29,
-          "districts_included": 47
+          "transferable_average": 1.32,
+          "districts_included": 50
         },
         {
           "order": 4,
-          "transferable_average": 0.75,
-          "districts_included": 47
+          "transferable_average": 0.79,
+          "districts_included": 50
         }
       ]
     },
@@ -241,34 +145,9 @@
       "school_id": 117,
       "quarter": true,
       "requirement": {
-        "native_count": 10,
-        "semester_equiv": 6.67,
-        "quarter_count": 10
-      },
-      "demand": {
-        "modal_native_count": 10,
-        "min_native_count": 10,
-        "max_native_count": 18,
-        "distinct_native_values": 4,
-        "agreement_count": 345,
-        "value_counts": [
-          {
-            "native_count": 10,
-            "agreements": 115
-          },
-          {
-            "native_count": 16,
-            "agreements": 114
-          },
-          {
-            "native_count": 17,
-            "agreements": 115
-          },
-          {
-            "native_count": 18,
-            "agreements": 1
-          }
-        ]
+        "native_count": 17,
+        "semester_equiv": 11.33,
+        "quarter_count": 17
       },
       "choices": [
         {
@@ -303,46 +182,25 @@
         "semester_equiv": 3,
         "quarter_count": null
       },
-      "demand": {
-        "modal_native_count": 3,
-        "min_native_count": 3,
-        "max_native_count": 9,
-        "distinct_native_values": 3,
-        "agreement_count": 230,
-        "value_counts": [
-          {
-            "native_count": 3,
-            "agreements": 115
-          },
-          {
-            "native_count": 8,
-            "agreements": 6
-          },
-          {
-            "native_count": 9,
-            "agreements": 109
-          }
-        ]
-      },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 3.81,
+          "transferable_average": 3.83,
           "districts_included": 69
         },
         {
           "order": 2,
-          "transferable_average": 0.77,
+          "transferable_average": 0.98,
           "districts_included": 69
         },
         {
           "order": 3,
-          "transferable_average": 0.29,
+          "transferable_average": 0.47,
           "districts_included": 69
         },
         {
           "order": 4,
-          "transferable_average": 0.09,
+          "transferable_average": 0.23,
           "districts_included": 69
         }
       ]
@@ -357,43 +215,26 @@
         "semester_equiv": 3.33,
         "quarter_count": 5
       },
-      "demand": {
-        "modal_native_count": 5,
-        "min_native_count": 5,
-        "max_native_count": 8,
-        "distinct_native_values": 2,
-        "agreement_count": 460,
-        "value_counts": [
-          {
-            "native_count": 5,
-            "agreements": 345
-          },
-          {
-            "native_count": 8,
-            "agreements": 115
-          }
-        ]
-      },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 5.07,
-          "districts_included": 46
+          "transferable_average": 5.15,
+          "districts_included": 47
         },
         {
           "order": 2,
-          "transferable_average": 1.56,
-          "districts_included": 45
+          "transferable_average": 1.61,
+          "districts_included": 47
         },
         {
           "order": 3,
-          "transferable_average": 0.84,
-          "districts_included": 45
+          "transferable_average": 0.94,
+          "districts_included": 47
         },
         {
           "order": 4,
-          "transferable_average": 0.49,
-          "districts_included": 45
+          "transferable_average": 0.62,
+          "districts_included": 47
         }
       ]
     },
@@ -403,55 +244,30 @@
       "school_id": 120,
       "quarter": true,
       "requirement": {
-        "native_count": 4,
-        "semester_equiv": 2.67,
-        "quarter_count": 4
-      },
-      "demand": {
-        "modal_native_count": 4,
-        "min_native_count": 4,
-        "max_native_count": 7,
-        "distinct_native_values": 4,
-        "agreement_count": 230,
-        "value_counts": [
-          {
-            "native_count": 4,
-            "agreements": 106
-          },
-          {
-            "native_count": 5,
-            "agreements": 9
-          },
-          {
-            "native_count": 6,
-            "agreements": 106
-          },
-          {
-            "native_count": 7,
-            "agreements": 9
-          }
-        ]
+        "native_count": 12,
+        "semester_equiv": 8.0,
+        "quarter_count": 12
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 5.28,
-          "districts_included": 43
+          "transferable_average": 5.36,
+          "districts_included": 39
         },
         {
           "order": 2,
-          "transferable_average": 1.99,
-          "districts_included": 42
+          "transferable_average": 2.1,
+          "districts_included": 39
         },
         {
           "order": 3,
-          "transferable_average": 1.41,
-          "districts_included": 42
+          "transferable_average": 1.62,
+          "districts_included": 39
         },
         {
           "order": 4,
-          "transferable_average": 1.15,
-          "districts_included": 42
+          "transferable_average": 1.43,
+          "districts_included": 39
         }
       ]
     },
@@ -461,47 +277,30 @@
       "school_id": 46,
       "quarter": true,
       "requirement": {
-        "native_count": 6,
-        "semester_equiv": 4.0,
-        "quarter_count": 6
-      },
-      "demand": {
-        "modal_native_count": 6,
-        "min_native_count": 6,
-        "max_native_count": 7,
-        "distinct_native_values": 2,
-        "agreement_count": 230,
-        "value_counts": [
-          {
-            "native_count": 6,
-            "agreements": 115
-          },
-          {
-            "native_count": 7,
-            "agreements": 115
-          }
-        ]
+        "native_count": 7,
+        "semester_equiv": 4.67,
+        "quarter_count": 7
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 6.84,
-          "districts_included": 62
+          "transferable_average": 7.67,
+          "districts_included": 57
         },
         {
           "order": 2,
-          "transferable_average": 2.93,
-          "districts_included": 62
+          "transferable_average": 3.03,
+          "districts_included": 57
         },
         {
           "order": 3,
-          "transferable_average": 1.9,
-          "districts_included": 62
+          "transferable_average": 1.72,
+          "districts_included": 57
         },
         {
           "order": 4,
-          "transferable_average": 1.3,
-          "districts_included": 62
+          "transferable_average": 1.05,
+          "districts_included": 57
         }
       ]
     }

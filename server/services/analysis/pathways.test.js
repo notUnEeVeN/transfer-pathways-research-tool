@@ -157,8 +157,10 @@ describe('coverageData', () => {
   it('honors choose-N: an unarticulated alternative does not block when the minimum is met', async () => {
     const rows = await coverageData(db, db, P);
     const gamma = rows.find((r) => r.community_college_id === 30 && r.school_id === 3);
-    expect(gamma.pct_articulated).toBe(50);     // 1 of 2 receivers articulate
-    expect(gamma.fully_articulated).toBe(true); // but section_advisement=1 is met — no phantom block
+    // section_advisement=1 (choose 1 of 2) → the true minimum is 1, and it articulates,
+    // so coverage is 100% of the minimum (not the naive 1/2 receiver count).
+    expect(gamma.pct_articulated).toBe(100);
+    expect(gamma.fully_articulated).toBe(true);
   });
 
   it('groups by district/county using best-of articulation across member colleges', async () => {

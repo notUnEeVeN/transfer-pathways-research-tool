@@ -1,20 +1,30 @@
 # Docs
 
-Methodology and verification notes for the research console — everything a
-teammate (or reviewer) needs to trust a figure without re-deriving it.
+Methodology and verification notes for the research console.
+
+## Start here
+
+For a fast reminder of what the visualizations prove, open
+[`visualization-quick-reference.md`](visualization-quick-reference.md). It is
+the condensed map: headline results, caveats, and links into the receipts.
+
+Use the individual figure docs when you need to defend a number, rerun a check,
+or answer a reviewer-style question.
 
 ## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `figures/` | One document per ported paper figure: provenance, methodology (paper vs ours), how the port was verified, and the difference analysis with receipts |
+| [`visualization-quick-reference.md`](visualization-quick-reference.md) | One compact read of the important takeaways from all current visualization work |
+| [`figures/`](figures/) | Deep notes, one per ported paper figure: provenance, methodology, verification, difference analysis, and receipts |
+| [`plans/`](plans/) | Implementation plans and research notes for in-progress or proposed analysis work |
 
 ## Figure documents
 
-| Doc | Figure | Status |
+| Doc | Figure | Use it for |
 | --- | --- | --- |
-| [figures/paper-district-heatmap.md](figures/paper-district-heatmap.md) | District × UC complete-transfer matrix | Replicated; 99.5% agreement, 3 one-directional gains, receipts verified |
-| [figures/paper-credit-loss.md](figures/paper-credit-loss.md) | Figure 1 — credit loss (requirements vs CCC equivalents, 1st–4th choice) | Replicated + recomputed on our data; algorithm-equivalence proven on the paper's own inputs (100% course-count agreement); includes ASSIST-stated-minimums extension with demand distributions, blockers, and validation receipts |
+| [figures/paper-district-heatmap.md](figures/paper-district-heatmap.md) | District x UC complete-transfer matrix | Full proof of the 99.5% replication result and receipts for the 3 gained cells |
+| [figures/paper-credit-loss.md](figures/paper-credit-loss.md) | Figure 1: credit loss, 1st-4th choice | Full paper-method replication, current-data deltas, ASSIST-stated-minimums extension, blockers, and validation |
 
 ## Conventions
 

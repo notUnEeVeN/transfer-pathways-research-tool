@@ -10,8 +10,9 @@
  * receivers. Methodological choices mirror the papers' best-case-scenario
  * framing; see optionSolver.js for the min-set semantics.
  */
-const { agreementMinSet, manyToOneCount } = require('./optionSolver');
-const { isMajorArticulable } = require('./eligibility');
+const { manyToOneCount } = require('./optionSolver');
+const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
+const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
@@ -139,6 +140,93 @@ async function loadCcCourseUnits(db) {
   const rows = await db.collection('courses')
     .find({}, { projection: { course_id: 1, units: 1 } }).toArray();
   return new Map(rows.map((r) => [String(r.course_id), Number(r.units) || 0]));
+}
+
+// CC-course catalog (units + same_as) keyed by stringified course_id — the
+// optimizer's coursesById. String keys match the stringified option ids below.
+async function loadCoursesById(db) {
+  const rows = await db.collection('courses')
+    .find({}, { projection: { course_id: 1, units: 1, same_as: 1 } }).toArray();
+  const m = new Map();
+  for (const r of rows) {
+    m.set(String(r.course_id), {
+      course_id: String(r.course_id),
+      units: r.units,
+      same_as: (r.same_as || []).map((p) => ({ course_id: String(p.course_id) })),
+    });
+  }
+  return m;
+}
+
+// Exclusion-filtered requirement_groups with option course_ids stringified (raw
+// DB ids are numbers; the optimizer's synthetic transcript uses strings, so both
+// it and the eligibility engine must compare string-to-string).
+function prepRequirementGroups(doc, isExcluded) {
+  return (doc.requirement_groups || []).map((g) => ({
+    ...g,
+    sections: (g.sections || []).map((s) => ({
+      ...s,
+      receivers: (s.receivers || []).filter((r) => !isExcluded(r)).map((r) => ({
+        ...r,
+        options: (r.options || []).map((o) => ({ ...o, course_ids: (o.course_ids || []).map(String) })),
+      })),
+    })),
+  }));
+}
+
+// Choose-N true minimum for one prepped agreement: per required section, the ask
+// (min(section_advisement, receivers), or 1 for a no-advisement "any one" section)
+// and how much of it articulates. So "Complete 1 of 3" counts as one required
+// course, satisfied when any one articulates — not the naive 3-required/2-articulated.
+function chooseNMinimum(groups) {
+  let required = 0;
+  let satisfiable = 0;
+  for (const g of groups) {
+    if (!g.is_required) continue;
+    for (const s of g.sections || []) {
+      const recvs = s.receivers || [];
+      if (!recvs.length) continue;
+      const ask = s.section_advisement != null
+        ? Math.min(s.section_advisement, recvs.length)
+        : Math.min(1, recvs.length);
+      const articulated = recvs.filter((r) => r.articulation_status === 'articulated').length;
+      required += ask;
+      satisfiable += Math.min(articulated, ask);
+    }
+  }
+  return { required, satisfiable, blocked: required - satisfiable };
+}
+
+// Exact minimum-course pathway + choose-N-correct requirement counts for one
+// agreement — the engine-based replacement for the greedy agreementMinSet.
+// `coursesById` is the CC catalog; ids ASSIST references but that are absent
+// from `courses` get a placeholder so the optimizer can still pick them (they
+// still count, exactly as the older figures counted them by name).
+function agreementMinSetExact(doc, isExcluded, coursesById) {
+  const groups = prepRequirementGroups(doc, isExcluded);
+  for (const g of groups) {
+    for (const s of g.sections || []) {
+      for (const r of s.receivers || []) {
+        for (const o of r.options || []) {
+          for (const id of o.course_ids || []) {
+            if (!coursesById.has(id)) coursesById.set(id, { course_id: id, units: null, same_as: [] });
+          }
+        }
+      }
+    }
+  }
+  const major = { requirement_groups: groups };
+  const courses = selectMissingAcrossMajorsOptimal([major], {
+    userCourses: [], coursesById, includeRecommended: false, crossCc: [],
+  });
+  const counts = chooseNMinimum(groups);
+  return {
+    courses,
+    receiversRequired: counts.required,
+    receiversSatisfiable: counts.satisfiable,
+    receiversBlocked: counts.blocked,
+    fullyArticulated: isMajorArticulable(major, true),
+  };
 }
 
 async function loadTransferRequirements(auditDb) {
@@ -454,11 +542,19 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
     const receiverValues = [...b.receiverByHash.values()];
     const total = receiverValues.length;
     const articulated = receiverValues.filter(Boolean).length;
-    // Choose-N-correct completeness: does the campus's ASSIST-stated minimum
-    // articulate (pooling sibling colleges via receiverByHash)? Replaces the old
-    // advisement-blind `articulated === total` rule.
-    const fully_articulated = isMajorArticulable(
-      assistCombinedMajor(b.requirementGroups, b.receiverByHash, isExcluded), true);
+    // Choose-N-correct coverage via the eligibility engine (pooling sibling
+    // colleges through receiverByHash). `fully_articulated` = can you meet the
+    // stated minimum at all; `pct_articulated` = what FRACTION of the true
+    // choose-N minimum articulates (strict asks = the stated need, not the
+    // advisement-blind "every listed receiver must articulate" count). So a
+    // "Complete 1 of {A,B,C}" section counts as one requirement, satisfied when
+    // any one articulates — e.g. Allan Hancock → UCB CS B.A. reads 100%, not 4/5.
+    const combined = assistCombinedMajor(b.requirementGroups, b.receiverByHash, isExcluded);
+    const fully_articulated = isMajorArticulable(combined, true);
+    const hasRequired = (combined.requirement_groups || []).some((g) => g.is_required);
+    const pctArticulated = hasRequired
+      ? +calculateMajorCompletionPercentage(combined, allArticulatingCourses(combined), [], true).toFixed(1)
+      : null;
     const community_college_ids = [...b.communityCollegeIds].sort((a, b) => a - b);
     const community_colleges = [...b.communityColleges].sort();
     const districts = [...b.districts].sort();
@@ -482,7 +578,10 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
       row_group_label: b.row_group_label,
       receivers_required: total,
       receivers_articulated: articulated,
-      pct_articulated: total ? +((articulated / total) * 100).toFixed(1) : null,
+      // Engine-based coverage: fraction of the true choose-N minimum that
+      // articulates (100 ⟺ fully_articulated). receivers_* above are the raw
+      // per-receiver counts kept for context, not the displayed percentage.
+      pct_articulated: pctArticulated,
       fully_articulated,
     };
   });
@@ -502,14 +601,15 @@ async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = 
   const curation = await loadCuration(auditDb);
   const refs = await loadRefs(auditDb);
   const units = await loadCcCourseUnits(db);
+  const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
   const rows = [];
   for (const sys of systemsFor()) {
     const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
-      const solved = agreementMinSet(doc, { isExcluded });
+      const solved = agreementMinSetExact(doc, isExcluded, coursesById);
       const calendar = refs.calendarByUniversity.get(Number(doc[sys.idField])) || null;
-      const required = solved.receiversConsidered;
+      const required = solved.receiversRequired;
       rows.push({
         system: sys.key,
         school_id: doc[sys.idField],
@@ -521,8 +621,8 @@ async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = 
         district_counties: refs.districtByCc.get(Number(doc.community_college_id))?.counties_served ?? [],
         major: doc.major,
         receivers_required: required,
-        receivers_satisfiable: solved.receiversSatisfied,
-        receivers_blocked: solved.blockedReceivers.length,
+        receivers_satisfiable: solved.receiversSatisfiable,
+        receivers_blocked: solved.receiversBlocked,
         min_cc_courses: solved.courses.length,
         min_cc_units: +solved.courses
           .reduce((sum, id) => sum + (units.get(id) || 0), 0)
@@ -560,6 +660,7 @@ async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = 
     }
   }
 
+  const coursesById = await loadCoursesById(db);
   const order = schoolIds.map(Number);
   const rows = [];
   for (const [ccId, { community_college, agreements }] of byCc) {
@@ -571,7 +672,7 @@ async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = 
         steps.push({ school_id: schoolId, school: null, has_agreement: false, additional_courses: null });
         continue;
       }
-      const solved = agreementMinSet(entry.doc, { isExcluded });
+      const solved = agreementMinSetExact(entry.doc, isExcluded, coursesById);
       const additional = solved.courses.filter((id) => !taken.has(id));
       additional.forEach((id) => taken.add(id));
       steps.push({
@@ -579,7 +680,7 @@ async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = 
         school: entry.doc[entry.sys.nameField],
         has_agreement: true,
         additional_courses: additional.length,
-        blocked_receivers: solved.blockedReceivers.length,
+        blocked_receivers: solved.receiversBlocked,
       });
     }
     rows.push({
@@ -608,22 +709,38 @@ async function categoryGapsData(db, auditDb, { majorContains = '', visiblePairs 
     const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
       const cc = Number(doc.community_college_id);
-      for (const r of requiredReceivers(doc, isExcluded)) {
-        const category = categoryOfReceiver(r, curation);
-        const key = `${sys.key}|${doc[sys.idField]}|${category}`;
-        if (!agg.has(key)) {
-          agg.set(key, {
-            system: sys.key,
-            school_id: doc[sys.idField],
-            school: doc[sys.nameField],
-            category,
-            ccsWith: new Set(),
-            ccsMissing: new Set(),
-          });
+      // Walk sections (not a flat receiver list) so choose-N context survives: a
+      // category is only a GAP when its section genuinely can't meet its stated
+      // minimum via articulations. An unarticulated *optional* alternative in a
+      // satisfiable "Complete 1 of …" section is NOT a gap (the heatmap premise fix).
+      for (const group of doc.requirement_groups || []) {
+        if (!group.is_required) continue;
+        for (const section of group.sections || []) {
+          const recvs = (section.receivers || []).filter((r) => !isExcluded(r));
+          if (!recvs.length) continue;
+          const articulated = recvs.filter((r) => r.articulation_status === 'articulated').length;
+          const ask = section.section_advisement != null
+            ? Math.min(section.section_advisement, recvs.length)
+            : Math.min(1, recvs.length); // no advisement → any one satisfies
+          const sectionMet = articulated >= ask;
+          for (const r of recvs) {
+            const category = categoryOfReceiver(r, curation);
+            const key = `${sys.key}|${doc[sys.idField]}|${category}`;
+            if (!agg.has(key)) {
+              agg.set(key, {
+                system: sys.key,
+                school_id: doc[sys.idField],
+                school: doc[sys.nameField],
+                category,
+                ccsWith: new Set(),
+                ccsMissing: new Set(),
+              });
+            }
+            const cell = agg.get(key);
+            cell.ccsWith.add(cc);
+            if (r.articulation_status !== 'articulated' && !sectionMet) cell.ccsMissing.add(cc);
+          }
         }
-        const cell = agg.get(key);
-        cell.ccsWith.add(cc);
-        if (r.articulation_status !== 'articulated') cell.ccsMissing.add(cc);
       }
     }
   }
@@ -654,12 +771,13 @@ async function complexityData(db, auditDb, { majorContains = '', visiblePairs = 
   const isExcluded = makeIsExcluded(curation);
   const prereqDocs = await auditDb.collection('curation_prereqs').find().toArray();
   const prereqsByKey = new Map(prereqDocs.map((d) => [String(d._id), (d.prereqs || []).map(String)]));
+  const coursesById = await loadCoursesById(db);
 
   const rows = [];
   for (const sys of systemsFor()) {
     const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
     for (const doc of docs) {
-      const solved = agreementMinSet(doc, { isExcluded });
+      const solved = agreementMinSetExact(doc, isExcluded, coursesById);
       const keys = solved.courses.map((id) => `cc:${id}`);
       const inSet = new Set(keys);
       const parents = (k) => (prereqsByKey.get(k) || []).filter((p) => inSet.has(p));
@@ -726,6 +844,7 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs 
   const curation = await loadCuration(auditDb);
   const refs = await loadRefs(auditDb);
   const units = await loadCcCourseUnits(db);
+  const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
   const degrees = await auditDb.collection('curation_assoc_degrees').find().toArray();
   const byCc = new Map();
@@ -741,7 +860,7 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs 
     for (const doc of docs) {
       const ccDegrees = byCc.get(Number(doc.community_college_id)) || [];
       if (!ccDegrees.length) continue;
-      const solved = agreementMinSet(doc, { isExcluded });
+      const solved = agreementMinSetExact(doc, isExcluded, coursesById);
       const needed = new Set(solved.courses);
       for (const deg of ccDegrees) {
         const degCourses = (deg.course_ids || []).map(String);
@@ -861,4 +980,6 @@ module.exports = {
   coursesExportData,
   universityCoursesExportData,
   _categoryOfReceiver: categoryOfReceiver,
+  _chooseNMinimum: chooseNMinimum,
+  _agreementMinSetExact: agreementMinSetExact,
 };

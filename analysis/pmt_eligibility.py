@@ -318,13 +318,13 @@ def calculate_completed_units(group, user_courses, cross_cc=None):
 _INF = float("inf")
 
 
-def section_effective_ask(section, cross_cc=None):
+def section_effective_ask(section, cross_cc=None, strict=False):
     cross_cc = cross_cc or []
-    articulated = available_count(section.get("receivers"), cross_cc)
+    articulated = available_count(section.get("receivers"), cross_cc, strict)
     if section.get("section_advisement") is not None:
         return min(section["section_advisement"], articulated)
     if section.get("unit_advisement") is not None:
-        return min(section["unit_advisement"], available_units(section.get("receivers"), cross_cc))
+        return min(section["unit_advisement"], available_units(section.get("receivers"), cross_cc, strict))
     return min(1, articulated)
 
 
@@ -336,7 +336,12 @@ def section_done_count(section, user_courses, ask, cross_cc=None):
     return min(done, ask)
 
 
-def calculate_major_completion_percentage(major, user_courses, cross_cc=None):
+def calculate_major_completion_percentage(major, user_courses, cross_cc=None, strict=False):
+    """% of the major's minimum satisfied by user_courses. strict=False is PMT's
+    default (asks cap at what articulates locally); strict=True makes the ask the
+    full stated choose-N minimum, so unmet demand lowers the %. Feeding the
+    all-articulating transcript with strict=True yields "% of the true minimum
+    that articulates" — the heatmap coverage metric (mirrors eligibility.js)."""
     cross_cc = cross_cc or []
     required = [g for g in ((major or {}).get("requirement_groups") or []) if g.get("is_required")]
     if len(required) == 0:
@@ -352,11 +357,11 @@ def calculate_major_completion_percentage(major, user_courses, cross_cc=None):
         if group.get("group_advisement") is not None:
             group_conj = (group.get("group_conjunction") or "And").lower()
             if group_conj == "or" and not or_sections_are_bare_buckets(group):
-                reachable = [s for s in (group.get("sections") or []) if section_is_reachable(s, cross_cc)]
+                reachable = [s for s in (group.get("sections") or []) if section_is_reachable(s, cross_cc, strict)]
                 best_ask = _INF
                 best_done = 0
                 for s in reachable:
-                    ask = section_effective_ask(s, cross_cc)
+                    ask = section_effective_ask(s, cross_cc, strict)
                     done = section_done_count(s, user_courses, ask, cross_cc)
                     if done >= ask:
                         best_ask = ask
@@ -370,21 +375,21 @@ def calculate_major_completion_percentage(major, user_courses, cross_cc=None):
             else:
                 if group.get("group_min_distinct_sections") is not None:
                     group_ask = group["group_min_distinct_sections"]
-                    group_done = min(d_bucket_qualifying_count(group, user_courses, cross_cc), group_ask)
+                    group_done = min(d_bucket_qualifying_count(group, user_courses, cross_cc, strict), group_ask)
                 else:
-                    group_ask = get_effective_group_ask(group, cross_cc)
+                    group_ask = get_effective_group_ask(group, cross_cc, strict)
                     total_contribution = group_capped_contribution(group, user_courses, cross_cc)
                     group_done = min(total_contribution, group_ask)
         elif group.get("group_unit_advisement") is not None:
-            achievable = sum(available_units(s.get("receivers"), cross_cc) for s in (group.get("sections") or []))
+            achievable = sum(available_units(s.get("receivers"), cross_cc, strict) for s in (group.get("sections") or []))
             group_ask = min(group["group_unit_advisement"], achievable)
             group_done = min(calculate_completed_units(group, user_courses, cross_cc), group_ask)
         elif (group.get("group_conjunction") or "And").lower() == "or":
-            reachable = [s for s in (group.get("sections") or []) if section_is_reachable(s, cross_cc)]
+            reachable = [s for s in (group.get("sections") or []) if section_is_reachable(s, cross_cc, strict)]
             best_ask = _INF
             best_done = 0
             for s in reachable:
-                ask = section_effective_ask(s, cross_cc)
+                ask = section_effective_ask(s, cross_cc, strict)
                 done = section_done_count(s, user_courses, ask, cross_cc)
                 if done >= ask:
                     best_ask = ask
@@ -397,7 +402,7 @@ def calculate_major_completion_percentage(major, user_courses, cross_cc=None):
             group_done = best_done
         else:
             for s in (group.get("sections") or []):
-                ask = section_effective_ask(s, cross_cc)
+                ask = section_effective_ask(s, cross_cc, strict)
                 group_ask += ask
                 group_done += section_done_count(s, user_courses, ask, cross_cc)
 

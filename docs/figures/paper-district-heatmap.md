@@ -4,6 +4,14 @@
 
 > Dataset `2026-07-03-v2` · CS majors · 9 UC campuses × 72 CC districts · July 4, 2026
 
+## How to read this note
+
+For the condensed memory-refresh version, start with
+[`../visualization-quick-reference.md`](../visualization-quick-reference.md).
+This page is the full receipt trail for the 99.5% heatmap replication result:
+the exact computation rule, the three gained cells, and the course-level
+evidence behind each one.
+
 ## The short version
 
 We rebuilt the paper's district transfer matrix on our data and compared it

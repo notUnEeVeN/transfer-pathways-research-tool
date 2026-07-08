@@ -128,7 +128,7 @@ import os
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from itertools import permutations
+from itertools import permutations, product
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
 
@@ -137,6 +137,7 @@ from pymongo import MongoClient
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pmt_eligibility as pmt_elig  # noqa: E402  faithful PMT eligibility port + our one modification
+import pmt_min_courses as pmt_min  # noqa: E402  faithful PMT minimum-course optimizer port
 
 MAJOR_FILTER_TEXT = "computer science"  # legacy label; loaders pin PAPER_MAJORS
 
@@ -183,6 +184,40 @@ CAMPUSES = [
     {"code": "UCR", "id": "UC9*", "school_id": 46, "quarter": True},
 ]
 CODE_BY_SCHOOL = {c["school_id"]: c["code"] for c in CAMPUSES}
+CAMPUS_SCHOOL_IDS = {c["school_id"] for c in CAMPUSES}
+
+
+def load_canonical_majors(db):
+    """school_id -> [major, ...] from the console's settings selection.
+
+    Reads dataset_config.partner_access.visible_pairs (the admin-selected working
+    dataset — the majors shared with researchers; lives in the research DB), scoped
+    to the 9 figure campuses. The ASSIST variant uses this instead of the frozen
+    PAPER_MAJORS union, so the figure tracks whatever is selected in Settings.
+    Falls back to PAPER_MAJORS (loudly) when no selection has been saved, or for any
+    campus the selection omits, so the figure never silently loses a bar.
+    """
+    doc = db.dataset_config.find_one({"_id": "partner_access"})
+    pairs = (doc or {}).get("visible_pairs")
+    if not pairs:
+        print("canonical majors: no dataset_config.partner_access selection — "
+              "falling back to PAPER_MAJORS")
+        return {sid: list(majors) for sid, majors in PAPER_MAJORS.items()}
+    out = defaultdict(list)
+    for p in pairs:
+        sid = int(p["school_id"])
+        if sid in CAMPUS_SCHOOL_IDS:
+            out[sid].append(str(p["major"]))
+    for sid in CAMPUS_SCHOOL_IDS:
+        if sid not in out:
+            print(f"canonical majors: campus {sid} absent from selection — using PAPER_MAJORS")
+            out[sid] = list(PAPER_MAJORS[sid])
+    return dict(out)
+
+
+def canonical_major_query(canonical):
+    return {"$or": [{"uc_school_id": sid, "major": {"$in": majors}}
+                    for sid, majors in canonical.items()]}
 
 # The paper figure's constants (grouped_bar_graph.py L64–84 + the order CSVs'
 # TRANSFERABLE AVERAGE rows) — the gold assertion + --diff baseline.
@@ -697,104 +732,163 @@ def blocker_identities(blockers, code_of_parent):
     return out
 
 
-def build_assist_agreement_model(doc, is_excluded, name_of, code_of_parent,
-                                 fallback_counter):
-    """Normalize one ASSIST agreement for the college-level MILP.
+def prep_requirement_groups(doc, is_excluded):
+    """Exclusion-filtered requirement_groups with option course_ids stringified.
 
-    The course-load constraints honor ASSIST advisements (choose-N, OR
-    sections, etc.). The blocker set and the `articulable` flag come from the
-    ported Plan My Transfer eligibility engine (analysis/pmt_eligibility.py)
-    with our one modification — unmet ASSIST-stated demand is NOT
-    default-accepted — so choose-N alternatives no longer produce phantom
-    blockers.
+    The optimizer's synthetic transcript rows carry str course_ids, so every
+    option course_id it (and the eligibility engine) compares against must be a
+    str too — raw DB ids are ints. Stringifying is output-invariant for the
+    strict blocker walk (it compares synth-vs-option within one type) and
+    required for the optimizer. All group/section/receiver fields are preserved.
     """
-    receivers = []
-    groups = []
-    identity_cache = {}
-    demand_count = 0
+    out = []
+    for g in doc.get("requirement_groups") or []:
+        sections = []
+        for s in g.get("sections") or []:
+            recs = []
+            for r in s.get("receivers") or []:
+                if is_excluded(r):
+                    continue
+                opts = [{**o, "course_ids": [str(i) for i in (o.get("course_ids") or [])]}
+                        for o in (r.get("options") or [])]
+                recs.append({**r, "options": opts})
+            sections.append({**s, "receivers": recs})
+        out.append({**g, "sections": sections})
+    return out
 
-    def identities_for(receiver):
-        key = id(receiver)
-        if key not in identity_cache:
-            identity_cache[key] = receiver_unarticulated_identities(
-                receiver, code_of_parent, fallback_counter
-            )
-        return identity_cache[key]
 
-    def add_receiver(receiver):
-        rid = len(receivers)
-        h = receiver_hash(receiver)
-        alts = dedup_alternatives(receiver_alternatives(receiver, name_of))
-        identities = identities_for(receiver)
-        receiving = receiver.get("receiving") or {}
-        label = " + ".join(identities) if identities else h
-        receivers.append({
-            "id": rid,
-            "hash": h,
-            "label": label,
-            "kind": receiving.get("kind"),
-            "articulated": receiver.get("articulation_status") == "articulated",
-            "alternatives": alts,
-            "unarticulated_identities": identities,
-        })
-        return rid
+def referenced_option_ids(groups):
+    """Every CC course_id (str) any option in these requirement_groups references."""
+    return {str(i)
+            for g in groups
+            for s in g.get("sections") or []
+            for r in s.get("receivers") or []
+            for o in r.get("options") or []
+            for i in o.get("course_ids") or []}
 
+
+def agreement_demand_count(doc, is_excluded):
+    """Number of required receivers the ASSIST agreement asks for, honoring
+    choose-N (section/group advisements, OR sections) — the campus's ASSIST-
+    stated minimum, feeding the gold bar. Excluded receivers don't count."""
+    demand = 0
     for group in doc.get("requirement_groups") or []:
         if group.get("is_required") is False:
             continue
-
-        sections = []
+        section_needs = []
         for section in group.get("sections") or []:
-            ids = []
-            for receiver in section.get("receivers") or []:
-                if is_excluded(receiver):
-                    continue
-                ids.append(add_receiver(receiver))
-            sections.append({"need": section_need(section, ids), "receivers": tuple(ids)})
-
+            n_recv = sum(1 for r in (section.get("receivers") or []) if not is_excluded(r))
+            section_needs.append(min(advisement_value(section.get("section_advisement"), n_recv), n_recv))
         if group.get("group_advisement") is not None:
-            flat = tuple(rid for s in sections for rid in s["receivers"])
-            need = min(advisement_value(group.get("group_advisement"), len(flat)), len(flat))
-            groups.append({"mode": "n", "need": need, "receivers": flat})
-            demand_count += need
-        elif group.get("group_conjunction") == "Or" and len(sections) > 1:
-            groups.append({"mode": "or", "sections": tuple(sections)})
-            demand_count += min((s["need"] for s in sections), default=0)
+            flat = sum(1 for section in group.get("sections") or []
+                       for r in (section.get("receivers") or []) if not is_excluded(r))
+            demand += min(advisement_value(group.get("group_advisement"), flat), flat)
+        elif group.get("group_conjunction") == "Or" and len(group.get("sections") or []) > 1:
+            demand += min(section_needs, default=0)
         else:
-            groups.append({"mode": "all", "sections": tuple(sections)})
-            demand_count += sum(s["need"] for s in sections)
+            demand += sum(section_needs)
+    return demand
 
-    # Coverage/blockers via the ported PMT eligibility engine (strict = our
-    # modification). Evaluate the same exclusion-filtered structure the MILP
-    # uses. coverage_missing drives the MILP's blocker (u) variables; articulable
-    # is the independent boolean the coverage cross-check validates against.
-    elig_major = {
-        "requirement_groups": [
-            {**g, "sections": [
-                {**s, "receivers": [r for r in (s.get("receivers") or []) if not is_excluded(r)]}
-                for s in (g.get("sections") or [])
-            ]}
-            for g in (doc.get("requirement_groups") or [])
-        ]
-    }
-    coverage_missing = tuple(blocker_identities(
-        pmt_elig.articulation_blockers(elig_major, strict=True), code_of_parent))
-    articulable = pmt_elig.is_major_articulable(elig_major, strict=True)
 
+def build_assist_agreement_model(doc, is_excluded):
+    """Normalize one ASSIST agreement (metadata + exclusion-filtered, id-stringified
+    requirement_groups). These per-agreement models are pooled per (campus, district)
+    by pool_campus_model before any cover is computed."""
     return {
-        "agreement_id": str(doc["_id"]),
         "school_id": int(doc["uc_school_id"]),
         "campus_code": CODE_BY_SCHOOL.get(int(doc["uc_school_id"]), str(doc["uc_school_id"])),
         "college_id": int(doc["community_college_id"]),
         "college": doc.get("community_college") or str(doc["community_college_id"]),
         "district": doc.get("_district"),
         "major": doc.get("major") or "",
-        "receivers": tuple(receivers),
-        "groups": tuple(groups),
-        "articulable": articulable,
-        "coverage_missing": coverage_missing,
-        "demand_count": demand_count,
+        "requirement_groups": prep_requirement_groups(doc, is_excluded),
     }
+
+
+def id_alternatives(receiver):
+    """OR-list of AND-bundles (frozensets of str course_ids) that satisfy a receiver,
+    reusing the website path's receiver_alternatives with an id-valued name map."""
+    return receiver_alternatives(receiver, str)
+
+
+def pool_campus_model(agreements):
+    """Pool one campus's canonical-major agreements across sibling colleges into one
+    requirement_groups — the paper's district pooling, done per UC receiver.
+
+    The UC-side structure is uniform across colleges for a (campus, major) (verified:
+    same required-receiver hash set), so we take it from the most complete agreement
+    and, for each receiver (keyed by hash_id), keep the SINGLE BEST COLLEGE's CC-course
+    alternatives — the college whose smallest alternative has the fewest courses, ties
+    by college name. This is exactly the paper's per-row pooling (creating_district_csvs
+    kept one college per requirement); unioning every college's alternatives is both
+    wrong (the paper doesn't) and pathologically slow for the optimizer.
+    """
+    by_major = defaultdict(list)
+    for a in agreements:
+        by_major[a["major"]].append(a)
+
+    def receiver_count(a):
+        return sum(len(s.get("receivers") or [])
+                   for g in a["requirement_groups"] for s in g.get("sections") or [])
+
+    out_groups = []
+    for major in sorted(by_major):
+        ags = by_major[major]
+        # per receiver hash: {college name -> set of that college's alternatives}
+        by_hash = defaultdict(lambda: defaultdict(set))
+        for a in ags:
+            for g in a["requirement_groups"]:
+                for s in g.get("sections") or []:
+                    for r in s.get("receivers") or []:
+                        alts = set(id_alternatives(r))
+                        if alts:
+                            by_hash[r.get("hash_id")][a["college"]] |= alts
+        # keep the best college's alternatives per receiver (paper's per-row rule)
+        pooled = {}
+        for h, colmap in by_hash.items():
+            best_col = min(colmap, key=lambda c: (min(len(b) for b in colmap[c]), c))
+            pooled[h] = colmap[best_col]
+        rep = max(ags, key=receiver_count)
+        for g in rep["requirement_groups"]:
+            sections = []
+            for s in g.get("sections") or []:
+                receivers = []
+                for r in s.get("receivers") or []:
+                    alts = pooled.get(r.get("hash_id")) or set()
+                    if alts:
+                        options = [{"course_ids": sorted(b), "course_conjunction": "and"}
+                                   for b in sorted(alts, key=lambda x: (len(x), sorted(x)))]
+                        receivers.append({**r, "articulation_status": "articulated",
+                                          "options_conjunction": "or", "options": options})
+                    else:
+                        receivers.append({**r, "articulation_status": "not_articulated", "options": []})
+                sections.append({**s, "receivers": receivers})
+            out_groups.append({**g, "sections": sections})
+    return out_groups
+
+
+def pooled_gold_count(groups):
+    """Distinct required UC courses the pooled model asks for — choose-N aware and
+    dedup'd by UC receiving, so requirements shared across the campus's CS programs
+    count once. The figure's gold bar (before quarter→semester conversion)."""
+    required = set()
+    for g in groups:
+        if not g.get("is_required"):
+            continue
+        for s in g.get("sections") or []:
+            pids, seen = [], []
+            for r in s.get("receivers") or []:
+                p = (r.get("receiving") or {}).get("parent_id")
+                pids.append(p if p is not None else r.get("hash_id"))
+            adv = s.get("section_advisement")
+            need = min(adv, len(pids)) if adv is not None else len(pids)
+            for p in pids:
+                if p not in seen:
+                    seen.append(p)
+                if len(seen) >= need:
+                    break
+            required.update(seen)
+    return len(required)
 
 
 def modal_count(values):
@@ -806,289 +900,133 @@ def modal_count(values):
 
 
 def load_assist_inputs(db):
-    """Load every object the ASSIST variant needs before multiprocessing."""
-    import re
+    """Build the pooled per-(campus, district) requirement models the ASSIST figure
+    needs — the paper's method with ASSIST demand.
 
-    curation = load_curation(db)
-    is_excluded = make_is_excluded(curation)
-    course_name = cc_course_names(db)
+    Demand = the ONE canonical CS major per campus from Settings
+    (dataset_config.partner_access; falls back to PAPER_MAJORS); its ASSIST required
+    groups define the minimum, and its articulations are pooled per UC receiver
+    across sibling colleges within a district — exactly the paper's college pooling.
+    Returns district_models[district] = {campus_sid: pooled_requirement_groups}, the
+    per-campus gold (required UC course count), and the CC-course catalog.
+    """
+    is_excluded = make_is_excluded(load_curation(db))
     code_of_parent = university_course_codes(db)
-    fallback_counter = [0]
+    canonical = load_canonical_majors(db)
 
-    def name_of(course_id):
-        return course_name.get(course_id, f"course:{course_id}")
+    # course_id -> {course_id, units, same_as, name} for the optimizer (str ids, to
+    # match the stringified option ids in prep_requirement_groups).
+    courses_by_id = {}
+    for c in db.courses.find({}, {"course_id": 1, "prefix": 1, "number": 1, "units": 1, "same_as": 1}):
+        cid = str(c["course_id"])
+        units = c.get("units")
+        label = f"{c.get('prefix', '?')} {c.get('number', cid)}"
+        if isinstance(units, (int, float)):
+            label = f"{label} ({units:.2f})"
+        courses_by_id[cid] = {
+            "course_id": cid,
+            "units": units,
+            "same_as": [{"course_id": str(p.get("course_id"))}
+                        for p in (c.get("same_as") or []) if p.get("course_id") is not None],
+            "name": label,
+        }
 
-    ref_by_cc = {
-        int(r["_id"]): r
-        for r in db.ref_cc_districts.find({}, {"community_college": 1, "district": 1})
-    }
-    district_colleges = defaultdict(list)
-    for cc_id, row in ref_by_cc.items():
-        district = row.get("district")
-        if district:
-            district_colleges[district].append({
-                "college_id": cc_id,
-                "college": row.get("community_college") or f"cc:{cc_id}",
-            })
+    ref_by_cc = {int(r["_id"]): r
+                 for r in db.ref_cc_districts.find({}, {"community_college": 1, "district": 1})}
+    all_districts = sorted({r["district"] for r in ref_by_cc.values() if r.get("district")})
 
-    fields = {
-        "uc_school_id": 1, "uc_school": 1, "community_college_id": 1,
-        "community_college": 1, "major": 1, "requirement_groups": 1,
-    }
-    agreements_by_college = defaultdict(lambda: defaultdict(list))
-    demand_values = defaultdict(list)
-    docs = db.uc_agreements.find(
-        paper_major_query(),
-        fields,
-    ).sort([("community_college_id", 1), ("uc_school_id", 1), ("major", 1), ("_id", 1)])
-    for doc in docs:
+    fields = {"uc_school_id": 1, "community_college_id": 1, "community_college": 1,
+              "major": 1, "requirement_groups": 1}
+    by_district_campus = defaultdict(lambda: defaultdict(list))
+    by_campus = defaultdict(list)
+    n_agreements = 0
+    for doc in db.uc_agreements.find(canonical_major_query(canonical), fields):
         ref = ref_by_cc.get(int(doc["community_college_id"]))
         if not ref or not ref.get("district"):
             continue
         doc["_district"] = ref["district"]
-        model = build_assist_agreement_model(
-            doc, is_excluded, name_of, code_of_parent, fallback_counter
-        )
-        agreements_by_college[model["college_id"]][model["school_id"]].append(model)
-        demand_values[model["school_id"]].append(model["demand_count"])
+        m = build_assist_agreement_model(doc, is_excluded)
+        # An articulated course ASSIST references but that is absent from the
+        # `courses` collection still counts (the old figure counted it by name).
+        for cid in referenced_option_ids(m["requirement_groups"]):
+            if cid not in courses_by_id:
+                courses_by_id[cid] = {"course_id": cid, "units": None,
+                                      "same_as": [], "name": f"course:{cid}"}
+        by_district_campus[m["district"]][m["school_id"]].append(m)
+        by_campus[m["school_id"]].append(m)
+        n_agreements += 1
 
-    demand_stats = {}
+    # Pool per (campus, district). A district with no agreement for a campus just
+    # omits it (that campus counts as all-unarticulated in the cover).
+    district_models = {
+        district: {sid: pool_campus_model(ags)
+                   for sid, ags in by_district_campus.get(district, {}).items()}
+        for district in all_districts
+    }
+
+    # Gold bar: the campus's required UC course count. The UC-side structure is
+    # uniform across districts, so compute once from the campus's union structure.
+    gold = {}
     for c in CAMPUSES:
-        vals = sorted(demand_values.get(c["school_id"], []))
-        native = modal_count(vals)
-        semester = round(native / 1.5, 2) if c["quarter"] else native
-        demand_stats[c["school_id"]] = {
+        native = pooled_gold_count(pool_campus_model(by_campus.get(c["school_id"], [])))
+        gold[c["school_id"]] = {
             "native_count": native,
-            "semester_equiv": semester,
+            "semester_equiv": round(native / 1.5, 2) if c["quarter"] else native,
             "quarter_count": native if c["quarter"] else None,
-            "demand": {
-                "modal_native_count": native,
-                "min_native_count": min(vals) if vals else 0,
-                "max_native_count": max(vals) if vals else 0,
-                "distinct_native_values": len(set(vals)),
-                "agreement_count": len(vals),
-                "value_counts": [
-                    {"native_count": value, "agreements": count}
-                    for value, count in sorted(Counter(vals).items())
-                ],
-            },
         }
 
-    district_payloads = []
-    for district in sorted(district_colleges):
-        colleges = []
-        for college in sorted(district_colleges[district],
-                              key=lambda c: (c["college"], c["college_id"])):
-            by_sid = {}
-            for sid, agreements in agreements_by_college.get(college["college_id"], {}).items():
-                by_sid[int(sid)] = sorted(
-                    agreements,
-                    key=lambda a: (a["campus_code"], a["major"], a["agreement_id"]),
-                )
-            colleges.append({**college, "agreements_by_sid": by_sid})
-        district_payloads.append((district, colleges))
-
     return {
-        "district_payloads": district_payloads,
-        "demand_stats": demand_stats,
-        "fallback_receivers": fallback_counter[0],
-        "agreement_count": sum(len(v) for college in agreements_by_college.values()
-                               for v in college.values()),
+        "district_models": district_models,
+        "all_districts": all_districts,
+        "gold": gold,
+        "courses_by_id": courses_by_id,
+        "code_of_parent": code_of_parent,
+        "agreement_count": n_agreements,
     }
 
 
-def no_agreement_unarticulated(sid, demand_stats):
-    count = demand_stats[sid]["native_count"]
+def no_agreement_unarticulated(sid, gold):
+    """A campus with no agreement in a district counts as all-unarticulated, using
+    its required UC course count (the gold native count)."""
     code = CODE_BY_SCHOOL[sid]
-    return {f"{code} no agreement #{i + 1}" for i in range(count)}
-
-
-def assist_college_cover(college, school_ids, demand_stats, return_details=False):
-    """Best cover for one college over a campus subset.
-
-    Objective is lexicographic: fewest coverage blockers, then fewest distinct
-    CC course names, then deterministic weighted tie-breaks. Course demand
-    honors advisements; coverage blockers mirror the console's ASSIST
-    receiver-hash completeness rule for the selected program(s).
-    """
-    import pulp
-
-    active = []
-    unarticulated = set()
-    for sid in school_ids:
-        agreements = college["agreements_by_sid"].get(sid, [])
-        if agreements:
-            active.append((sid, agreements))
-        else:
-            unarticulated.update(no_agreement_unarticulated(sid, demand_stats))
-
-    if not active:
-        details = {"selected_programs": {}, "chosen_bundles": []}
-        return frozenset(), frozenset(unarticulated), details if return_details else None
-
-    programs = []
-    for sid, agreements in active:
-        for agreement in agreements:
-            programs.append({"sid": sid, "agreement": agreement})
-
-    course_names = sorted({
-        name
-        for program in programs
-        for receiver in program["agreement"]["receivers"]
-        for alt in receiver["alternatives"]
-        for name in alt
-    })
-    blocker_names = sorted({
-        identity
-        for program in programs
-        for identity in program["agreement"]["coverage_missing"]
-    })
-
-    model = pulp.LpProblem("AssistCreditLoss", pulp.LpMinimize)
-    x = {
-        name: pulp.LpVariable(f"x_{i}", cat="Binary")
-        for i, name in enumerate(course_names)
-    }
-    u = {
-        name: pulp.LpVariable(f"u_{i}", cat="Binary")
-        for i, name in enumerate(blocker_names)
-    }
-    p = {
-        i: pulp.LpVariable(f"p_{i}", cat="Binary")
-        for i in range(len(programs))
-    }
-
-    for sid, _agreements in active:
-        idxs = [i for i, program in enumerate(programs) if program["sid"] == sid]
-        model += pulp.lpSum(p[i] for i in idxs) == 1
-
-    receiver_vars = {}
-    alt_vars = {}
-    for pi, program in enumerate(programs):
-        agreement = program["agreement"]
-        for identity in agreement["coverage_missing"]:
-            model += u[identity] >= p[pi]
-
-        for receiver in agreement["receivers"]:
-            if not receiver["alternatives"]:
-                continue
-            rv = pulp.LpVariable(f"r_{pi}_{receiver['id']}", cat="Binary")
-            receiver_vars[(pi, receiver["id"])] = rv
-            model += rv <= p[pi]
-            avs = []
-            for ai, alt in enumerate(receiver["alternatives"]):
-                av = pulp.LpVariable(f"a_{pi}_{receiver['id']}_{ai}", cat="Binary")
-                alt_vars[(pi, receiver["id"], ai)] = (av, alt)
-                avs.append(av)
-                model += av <= p[pi]
-                for name in alt:
-                    model += x[name] >= av
-            model += pulp.lpSum(avs) == rv
-
-    def vars_for(pi, receiver_ids):
-        return [receiver_vars[(pi, rid)] for rid in receiver_ids
-                if (pi, rid) in receiver_vars]
-
-    for pi, program in enumerate(programs):
-        for gi, group in enumerate(program["agreement"]["groups"]):
-            if group["mode"] == "n":
-                rvars = vars_for(pi, group["receivers"])
-                target = min(group["need"], len(rvars))
-                model += pulp.lpSum(rvars) == target * p[pi]
-            elif group["mode"] == "or":
-                sections = list(group["sections"])
-                if not sections:
-                    continue
-                q = {
-                    si: pulp.LpVariable(f"q_{pi}_{gi}_{si}", cat="Binary")
-                    for si in range(len(sections))
-                }
-                model += pulp.lpSum(q.values()) == p[pi]
-                for si, section in enumerate(sections):
-                    rvars = vars_for(pi, section["receivers"])
-                    target = min(section["need"], len(rvars))
-                    model += pulp.lpSum(rvars) == target * q[si]
-            else:  # all sections
-                for section in group["sections"]:
-                    rvars = vars_for(pi, section["receivers"])
-                    target = min(section["need"], len(rvars))
-                    model += pulp.lpSum(rvars) == target * p[pi]
-
-    UNART_WEIGHT = 1_000_000_000
-    COURSE_WEIGHT = 1_000_000
-    model += (
-        UNART_WEIGHT * pulp.lpSum(u.values())
-        + COURSE_WEIGHT * pulp.lpSum(x.values())
-        + pulp.lpSum((i + 1) * u[name] for i, name in enumerate(blocker_names))
-        + pulp.lpSum((i + 1) * x[name] for i, name in enumerate(course_names))
-    )
-
-    status = model.solve(pulp.PULP_CBC_CMD(msg=False))
-    if pulp.LpStatus[status] != "Optimal":
-        raise RuntimeError(
-            f"ASSIST MILP failed for {college['college']} / {school_ids}: "
-            f"{pulp.LpStatus[status]}"
-        )
-
-    articulated = {name for name in course_names if pulp.value(x[name]) > 0.5}
-    unarticulated.update(name for name in blocker_names if pulp.value(u[name]) > 0.5)
-
-    details = None
-    if return_details:
-        selected = {}
-        for pi, program in enumerate(programs):
-            if pulp.value(p[pi]) > 0.5:
-                agreement = program["agreement"]
-                selected[program["sid"]] = {
-                    "college": agreement["college"],
-                    "major": agreement["major"],
-                    "agreement_id": agreement["agreement_id"],
-                }
-        bundles = []
-        for (pi, rid, ai), (av, alt) in alt_vars.items():
-            if pulp.value(av) > 0.5:
-                agreement = programs[pi]["agreement"]
-                receiver = agreement["receivers"][rid]
-                bundles.append({
-                    "campus": agreement["campus_code"],
-                    "college": agreement["college"],
-                    "major": agreement["major"],
-                    "receiver": receiver["label"],
-                    "courses": tuple(sorted(alt)),
-                })
-        details = {"selected_programs": selected, "chosen_bundles": sorted(
-            bundles, key=lambda b: (b["campus"], b["college"], b["major"], b["receiver"], b["courses"])
-        )}
-
-    return frozenset(articulated), frozenset(unarticulated), details
+    return {f"{code} no agreement #{i + 1}" for i in range(gold[sid]["native_count"])}
 
 
 def assist_district_totals(args):
-    """One district under ASSIST-stated demand: best college per subset."""
-    district, colleges, demand_stats = args
+    """One district: the paper's P(9,4) sweep, with the pooled ASSIST requirement
+    models. cover(subset) = the PMT optimizer over the subset's present campuses
+    (sharing CC courses), plus each campus's strict-eligibility blockers as
+    unarticulated; campuses with no agreement in the district count as
+    all-unarticulated."""
+    district, models, courses_by_id, code_of_parent, gold = args
     school_ids = [c["school_id"] for c in CAMPUSES]
+
+    # Per-campus strict blockers are independent of the subset — compute once.
+    blockers_by_sid = {
+        sid: frozenset(blocker_identities(
+            pmt_elig.articulation_blockers({"requirement_groups": groups}, strict=True),
+            code_of_parent))
+        for sid, groups in models.items()
+    }
+
     cache = {}
 
     def cover(subset):
         subset = frozenset(subset)
         if subset not in cache:
-            candidates = []
-            for college in colleges:
-                art, unart, _details = assist_college_cover(
-                    college, sorted(subset), demand_stats
-                )
-                candidates.append((
-                    len(unart), len(art), college["college"], college["college_id"],
-                    art, unart,
-                ))
-            best = min(candidates, key=lambda c: c[:4])
-            cache[subset] = {
-                "articulated": best[4],
-                "unarticulated": best[5],
-                "college": best[2],
-                "college_id": best[3],
-            }
-        return cache[subset]["articulated"], cache[subset]["unarticulated"]
+            majors, unart = [], set()
+            for sid in sorted(subset):
+                groups = models.get(sid)
+                if groups is not None:
+                    majors.append({"requirement_groups": groups})
+                    unart |= blockers_by_sid.get(sid, frozenset())
+                else:
+                    unart |= no_agreement_unarticulated(sid, gold)
+            course_ids = pmt_min.select_missing_across_majors_optimal(
+                majors, {"user_courses": [], "courses_by_id": courses_by_id,
+                         "include_recommended": False, "cross_cc": []}) if majors else []
+            cache[subset] = (frozenset(course_ids), frozenset(unart))
+        return cache[subset]
 
     totals = defaultdict(lambda: [0, 0])
     for combo in permutations(school_ids, K):
@@ -1102,213 +1040,73 @@ def assist_district_totals(args):
 
     singles = {}
     for sid in school_ids:
-        subset = frozenset([sid])
-        cover(subset)
-        entry = cache[subset]
+        art, unart = cover(frozenset([sid]))
         singles[CODE_BY_SCHOOL[sid]] = {
-            "college": entry["college"],
-            "college_id": entry["college_id"],
-            "articulated_count": len(entry["articulated"]),
-            "unarticulated_count": len(entry["unarticulated"]),
-            "unarticulated": tuple(sorted(entry["unarticulated"])),
+            "articulated_count": len(art),
+            "unarticulated_count": len(unart),
+            "unarticulated": tuple(sorted(unart)),
         }
     return district, dict(totals), singles
 
 
-def coverage_complete_cells(district_payloads):
-    """(campus, district) cells that are fully articulable at their best single
-    college — computed from the model's `articulable` flag, which comes from the
-    independent is_major_articulable adapter (the is_major_completed predicate
-    path, distinct from the articulation_blockers walk that drives the MILP).
-    This is the "best one college" unit the credit-loss MILP uses.
-    """
-    complete = set()
-    for district, colleges in district_payloads:
-        for college in colleges:
-            for sid, agreements in college["agreements_by_sid"].items():
-                if any(a["articulable"] for a in agreements):
-                    complete.add((CODE_BY_SCHOOL[int(sid)], district))
-    return complete
+def coverage_complete_cells(district_models):
+    """(campus, district) cells whose pooled model is fully articulable — the
+    INDEPENDENT oracle (is_major_completed predicate path), distinct from the
+    articulation_blockers walk that drives the figure's unarticulated counts."""
+    return {
+        (CODE_BY_SCHOOL[sid], district)
+        for district, models in district_models.items()
+        for sid, groups in models.items()
+        if pmt_elig.is_major_articulable({"requirement_groups": groups}, strict=True)
+    }
 
 
-def validate_assist_coverage(district_payloads, singles_by_district):
-    """Cross-check the MILP's complete cells against an INDEPENDENT oracle.
-
-    The MILP marks a cell complete when its chosen program has zero blockers
-    (articulation_blockers walk). The oracle marks it complete when some college
-    has an is_major_articulable agreement (is_major_completed predicate). Both
-    paths are validated against PMT's own goldens by tests/test_pmt_fidelity.py,
-    so agreement here confirms the MILP wiring (exclusions, no-agreement, subset
-    logic) — not a same-file replica of a shared rule.
-    """
-    milp_complete = {
+def validate_assist_coverage(district_models, singles_by_district):
+    """Cross-check the figure's complete cells (blocker walk, unarticulated == 0)
+    against the independent is_major_articulable oracle on the same pooled models.
+    Both paths are locked to PMT's goldens by tests/test_pmt_fidelity.py."""
+    walk_complete = {
         (code, district)
         for district, singles in singles_by_district.items()
         for code, row in singles.items()
         if row["unarticulated_count"] == 0
     }
-    oracle_complete = coverage_complete_cells(district_payloads)
-    missing = sorted(oracle_complete - milp_complete)
-    extra = sorted(milp_complete - oracle_complete)
-    print("\nASSIST coverage cross-check (MILP blockers vs independent is_major_articulable):")
-    print(f"  MILP single-campus complete cells:  {len(milp_complete)}")
-    print(f"  PMT-articulable complete cells:      {len(oracle_complete)}")
+    oracle_complete = coverage_complete_cells(district_models)
+    missing = sorted(oracle_complete - walk_complete)
+    extra = sorted(walk_complete - oracle_complete)
+    print("\nASSIST coverage cross-check (blocker walk vs independent is_major_articulable):")
+    print(f"  blocker-walk complete cells:     {len(walk_complete)}")
+    print(f"  PMT-articulable complete cells:   {len(oracle_complete)}")
     if missing or extra:
         for code, district in missing[:20]:
-            print(f"  MISSING in MILP: {code} × {district}")
+            print(f"  MISSING in walk:  {code} × {district}")
         for code, district in extra[:20]:
-            print(f"  EXTRA in MILP:   {code} × {district}")
+            print(f"  EXTRA in walk:    {code} × {district}")
         raise RuntimeError(
             f"ASSIST coverage validation failed: {len(missing)} missing, {len(extra)} extra"
         )
     print("  OK")
 
 
-def cheapest_alt(receiver, chosen):
-    alts = receiver["alternatives"]
-    if not alts:
-        return None
-    return min(alts, key=lambda alt: (len(set(alt) - chosen), len(alt), tuple(sorted(alt))))
-
-
-def greedy_satisfy_n(receivers, need, chosen, blocked, picks):
-    candidates = []
-    for receiver in receivers:
-        best = cheapest_alt(receiver, chosen)
-        if not best:
-            blocked.append(receiver)
-            continue
-        candidates.append((len(set(best) - chosen), len(best), tuple(sorted(best)), receiver))
-    candidates.sort(key=lambda x: x[:3])
-
-    satisfied = 0
-    for _cost, _length, _key, receiver in candidates:
-        if satisfied >= need:
-            break
-        best = cheapest_alt(receiver, chosen)
-        if not best:
-            continue
-        chosen.update(best)
-        picks.append({"receiver": receiver, "alt": best})
-        satisfied += 1
-    return satisfied
-
-
-def greedy_agreement_courses(agreement):
-    """Straightforward optionSolver-style greedy upper bound for one agreement."""
-    receivers = {r["id"]: r for r in agreement["receivers"]}
-    chosen = set()
-    blocked = []
-    picks = []
-
-    for group in agreement["groups"]:
-        if group["mode"] == "n":
-            greedy_satisfy_n(
-                [receivers[rid] for rid in group["receivers"]],
-                group["need"], chosen, blocked, picks,
-            )
-        elif group["mode"] == "or":
-            best = None
-            for section in group["sections"]:
-                trial = set(chosen)
-                trial_blocked = []
-                trial_picks = []
-                section_receivers = [receivers[rid] for rid in section["receivers"]]
-                got = greedy_satisfy_n(
-                    section_receivers, section["need"], trial, trial_blocked, trial_picks
-                )
-                if got < min(section["need"], len(section_receivers)):
-                    continue
-                cost = len(trial - chosen)
-                candidate = (cost, len(trial), tuple(sorted(trial)), trial, trial_picks, got)
-                if best is None or candidate[:3] < best[:3]:
-                    best = candidate
-            if best is not None:
-                _cost, _length, _key, trial, trial_picks, _got = best
-                chosen.update(trial)
-                picks.extend(trial_picks)
-            elif group["sections"]:
-                section = group["sections"][0]
-                greedy_satisfy_n(
-                    [receivers[rid] for rid in section["receivers"]],
-                    section["need"], chosen, blocked, picks,
-                )
-        else:
-            for section in group["sections"]:
-                greedy_satisfy_n(
-                    [receivers[rid] for rid in section["receivers"]],
-                    section["need"], chosen, blocked, picks,
-                )
-
-    # A light local pass, same spirit as optionSolver.improvePicks.
-    for _pass in range(4):
-        changed = False
-        for pick in picks:
-            others = set().union(*(p["alt"] for p in picks if p is not pick))
-            best = cheapest_alt(pick["receiver"], others)
-            if best and len(set(best) - others) < len(set(pick["alt"]) - others):
-                pick["alt"] = best
-                changed = True
-        if not changed:
-            break
-    return set().union(*(p["alt"] for p in picks)) if picks else set()
-
-
-def validate_assist_greedy(district_payloads, demand_stats, sample_limit=3):
-    rows = []
-    examples = []
-    for _district, colleges in district_payloads:
-        for college in colleges:
-            for sid, agreements in college["agreements_by_sid"].items():
-                for agreement in agreements:
-                    fake = {
-                        "college_id": college["college_id"],
-                        "college": college["college"],
-                        "agreements_by_sid": {int(sid): [agreement]},
-                    }
-                    art, unart, details = assist_college_cover(
-                        fake, [int(sid)], demand_stats, return_details=len(examples) < sample_limit
-                    )
-                    greedy = greedy_agreement_courses(agreement)
-                    row = {
-                        "campus": agreement["campus_code"],
-                        "college": agreement["college"],
-                        "major": agreement["major"],
-                        "optimal_courses": len(art),
-                        "greedy_courses": len(greedy),
-                        "unarticulated": len(unart),
-                    }
-                    rows.append(row)
-                    if len(art) > len(greedy):
-                        raise RuntimeError(
-                            "ASSIST optimal > greedy for "
-                            f"{agreement['campus_code']} × {agreement['college']} × "
-                            f"{agreement['major']}: optimal {len(art)}, greedy {len(greedy)}"
-                        )
-                    if details and len(examples) < sample_limit:
-                        examples.append({
-                            **row,
-                            "selected_programs": details["selected_programs"],
-                            "chosen_bundles": details["chosen_bundles"][:12],
-                            "unarticulated_receivers": tuple(sorted(unart))[:12],
-                        })
-
-    diffs = Counter(row["greedy_courses"] - row["optimal_courses"] for row in rows)
-    unarts = Counter(row["unarticulated"] for row in rows)
-    print("\nASSIST exact-vs-greedy check:")
-    print(f"  agreements checked: {len(rows)}")
-    print("  greedy - optimal course-count distribution: " +
-          ", ".join(f"{k:+d}:{v}" for k, v in sorted(diffs.items())))
-    print("  unarticulated-count distribution (first 12 buckets): " +
-          ", ".join(f"{k}:{v}" for k, v in sorted(unarts.items())[:12]))
-    return rows, examples
-
-
-def write_assist_examples(root, examples):
-    path = root / "results" / "paper_credit_loss_assist_examples.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(examples, indent=2) + "\n")
-    return path
+def validate_assist_optimizer(district_models, courses_by_id):
+    """Loop-closer: every pooled (campus × district) model's optimizer course set
+    actually satisfies the eligibility engine (non-strict). Runs over every model,
+    so any shape/type surprise the golden sample missed fails loudly here."""
+    checked = 0
+    for district, models in district_models.items():
+        for sid, groups in models.items():
+            major = {"requirement_groups": groups}
+            ids = pmt_min.select_missing_across_majors_optimal(
+                [major], {"user_courses": [], "courses_by_id": courses_by_id,
+                          "include_recommended": False, "cross_cc": []})
+            transcript = [pmt_min.synthetic_course_for(i, courses_by_id) for i in ids]
+            if not pmt_elig.is_major_completed(major, transcript, [], strict=False):
+                raise RuntimeError(
+                    f"optimizer loop-closer failed: {CODE_BY_SCHOOL[sid]} × {district} — "
+                    f"chosen set {sorted(ids)} does not satisfy the engine")
+            checked += 1
+    print(f"ASSIST optimizer loop-closer: {checked} pooled (campus×district) models — "
+          f"every chosen course set satisfies the eligibility engine. OK")
 
 
 def preserve_generated_at_if_unchanged(path, out):
@@ -1338,14 +1136,12 @@ def write_assist_blockers(root, singles_by_district):
                 complete.append({
                     "campus": code,
                     "district": district,
-                    "college": row["college"],
                     "articulated_count": row["articulated_count"],
                 })
             for identity in row["unarticulated"]:
                 detailed.append({
                     "district": district,
                     "campus": code,
-                    "college": row["college"],
                     "unarticulated_receiver": identity,
                 })
                 key = (code, identity)
@@ -1650,19 +1446,15 @@ def main():
         root = Path(__file__).resolve().parent
         print(f"dataset {dataset_version} · loading ASSIST-stated requirements …")
         assist = load_assist_inputs(db)
-        demand_stats = assist["demand_stats"]
-        district_payloads = assist["district_payloads"]
-        print(f"{len(district_payloads)} districts · {assist['agreement_count']} "
-              f"campus×college×program agreements")
-        print(f"unarticulated receiver-code fallbacks: {assist['fallback_receivers']}")
+        gold = assist["gold"]
+        district_models = assist["district_models"]
+        courses_by_id = assist["courses_by_id"]
+        code_of_parent = assist["code_of_parent"]
+        print(f"{len(assist['all_districts'])} districts · {assist['agreement_count']} "
+              f"campus×college agreements (one canonical CS major per campus)")
 
-        greedy_rows, examples = [], []
-        if not args.skip_assist_validations:
-            greedy_rows, examples = validate_assist_greedy(district_payloads, demand_stats)
-            examples_path = write_assist_examples(root, examples)
-            print(f"wrote {examples_path.relative_to(root.parent)}")
-
-        work = [(district, colleges, demand_stats) for district, colleges in district_payloads]
+        work = [(district, models, courses_by_id, code_of_parent, gold)
+                for district, models in sorted(district_models.items())]
         results = {}
         singles_by_district = {}
         with Pool(args.workers) as pool:
@@ -1674,7 +1466,8 @@ def main():
                 print(f"  [{i}/{len(work)}] {district}")
 
         if not args.skip_assist_validations:
-            validate_assist_coverage(district_payloads, singles_by_district)
+            validate_assist_coverage(district_models, singles_by_district)
+            validate_assist_optimizer(district_models, courses_by_id)
 
         per_uc_per_position = 336
         district_rows_out = []
@@ -1702,16 +1495,10 @@ def main():
                     "transferable_average": round(sum(vals) / len(vals), 2) if vals else 0.0,
                     "districts_included": len(vals),
                 })
-            stats = demand_stats[c["school_id"]]
             campuses_out.append({
                 "code": c["code"], "id": c["id"], "school_id": c["school_id"],
                 "quarter": c["quarter"],
-                "requirement": {
-                    "native_count": stats["native_count"],
-                    "semester_equiv": stats["semester_equiv"],
-                    "quarter_count": stats["quarter_count"],
-                },
-                "demand": stats["demand"],
+                "requirement": gold[c["school_id"]],
                 "choices": choices,
             })
 
@@ -1721,15 +1508,45 @@ def main():
             "dataset_version": dataset_version,
             "requirements": "assist",
             "major_filter": MAJOR_FILTER_TEXT,
-            "districts_total": len(district_payloads),
-            "method": "ASSIST-stated required groups: best-college district value, "
-                      "program choice inside each college-level MILP, P(9,4) "
-                      "choice permutations; see docs/figures/paper-credit-loss.md",
+            "districts_total": len(assist["all_districts"]),
+            "method": "the paper's credit-loss method with ASSIST demand: the one canonical CS "
+                      "major per campus (from Settings) states the required groups; its articulations "
+                      "are pooled per receiver across sibling colleges (best college per requirement, "
+                      "the paper's rule); minimum CC courses from the ported PMT branch-and-bound "
+                      "optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations "
+                      "+ transferable-average; see docs/figures/paper-credit-loss.md",
             "campuses": campuses_out,
         }
 
         json_path = root.parent / "frontend" / "src" / "analyses" / "data" / "paper-credit-loss.assist.json"
         json_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Re-baseline diff: what moved vs the committed assist.json. The optimizer +
+        # settings-major switch changes numbers exactly where the old MILP diverged
+        # from the eligibility engine — every moved bar is printed here.
+        if json_path.exists():
+            try:
+                old = json.loads(json_path.read_text())
+            except Exception:
+                old = None
+            if old:
+                old_by = {oc["code"]: oc for oc in old.get("campuses", [])}
+                print("\nRe-baseline vs previous assist.json (new − old):")
+                for c in campuses_out:
+                    oc = old_by.get(c["code"])
+                    if not oc:
+                        continue
+                    old_choices = oc.get("choices", [])
+                    deltas = [round(ch["transferable_average"]
+                                    - (old_choices[i]["transferable_average"] if i < len(old_choices) else 0.0), 2)
+                              for i, ch in enumerate(c["choices"])]
+                    req_old = oc.get("requirement", {}).get("semester_equiv")
+                    req_new = c["requirement"]["semester_equiv"]
+                    moved = any(abs(d) >= 0.005 for d in deltas) or req_old != req_new
+                    print(f"  {c['code']:>4} req {req_old}→{req_new}  "
+                          + "  ".join(f"{ORDINALS[i]}:{d:+.2f}" for i, d in enumerate(deltas))
+                          + ("  <<< moved" if moved else ""))
+
         out = preserve_generated_at_if_unchanged(json_path, out)
         json_path.write_text(json.dumps(out, indent=2) + "\n")
 
@@ -1745,8 +1562,6 @@ def main():
         blocker_paths = write_assist_blockers(root, singles_by_district)
         print(f"wrote {json_path.relative_to(root.parent)} and {csv_path.relative_to(root.parent)}")
         print("wrote " + ", ".join(str(p.relative_to(root.parent)) for p in blocker_paths.values()))
-        if greedy_rows:
-            print(f"validated {len(greedy_rows)} single-agreement optima against greedy upper bounds")
 
         if args.diff:
             website_path = root.parent / "frontend" / "src" / "analyses" / "data" / "paper-credit-loss.ours.json"
