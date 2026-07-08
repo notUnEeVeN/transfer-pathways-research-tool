@@ -10,6 +10,14 @@ const ROW_MODES = [
   { value: 'county', label: 'County', noun: 'counties', header: 'County served' },
 ]
 
+// Which minimums the coverage % is measured against. 'assist' = ASSIST-stated
+// required groups (engine, choose-N correct); 'paper' = the curated website
+// minimums (ref_uc_transfer_requirements, the paper's set-based rule).
+const REQ_MODES = [
+  { value: 'assist', label: 'ASSIST minimums' },
+  { value: 'paper', label: 'Website minimums' },
+]
+
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 
@@ -253,11 +261,12 @@ function Legend() {
 export default function CoverageHeatmap() {
   const [majorFilter, setMajorFilter] = useState(DEFAULT_MAJOR_FILTER)
   const [rowModeValue, setRowModeValue] = useState('college')
+  const [reqMode, setReqMode] = useState('assist')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   const deferredMajorFilter = useDeferredValue(majorFilter)
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on demand.
   const coverage = useCoverage(
-    { majorContains: deferredMajorFilter, groupBy: rowMode.value },
+    { majorContains: deferredMajorFilter, groupBy: rowMode.value, requirements: reqMode },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
@@ -332,6 +341,23 @@ export default function CoverageHeatmap() {
                 onClick={() => setRowModeValue(mode.value)}
                 className={`px-3 text-button border-r border-border last:border-r-0 ${
                   rowMode.value === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className='flex flex-col'>
+          <span className='field-label'>Minimums</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {REQ_MODES.map((mode) => (
+              <button
+                key={mode.value}
+                type='button'
+                onClick={() => setReqMode(mode.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  reqMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
                 }`}
               >
                 {mode.label}
