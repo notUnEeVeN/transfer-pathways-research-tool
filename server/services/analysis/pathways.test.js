@@ -249,6 +249,25 @@ describe('requirementComparisonData', () => {
     expect(cmp.assist_extra).toBe(0);
     expect(cmp.assist_extra_groups).toEqual([]);
   });
+
+  it('finds the agreement when the stored major has trailing whitespace', async () => {
+    // Some ASSIST program names are stored with a trailing space (e.g. UC
+    // Merced's CSE B.S.); the caller sends the trimmed name, so the lookup
+    // must not depend on an exact string match or the ASSIST side goes empty.
+    await db.collection('uc_agreements').insertOne({
+      uc_school: 'UC Space', uc_school_id: 6,
+      community_college: 'CC Epsilon', community_college_id: 50,
+      major: 'Computer Science B.S. ', // trailing space, as stored
+      requirement_groups: oneGroup([recv([opt(['calcE'])], { hash: 'r-sp', parentId: 401 })]),
+    });
+    await db.collection('courses').insertOne({ course_id: 'calcE', units: 4, community_college_id: 50 });
+
+    const cmp = await requirementComparisonData(db, db, {
+      schoolId: 6, major: 'Computer Science B.S.', communityCollegeId: 50, // trimmed
+    });
+    expect(cmp.assist.required).toBe(1); // agreement found despite the trailing space
+    expect(cmp.assist.fully).toBe(true);
+  });
 });
 
 describe('creditLossData', () => {

@@ -610,17 +610,16 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   const model = requirementsBySchool.get(schoolId);
   const isExcluded = makeIsExcluded(curation);
 
-  // The chosen ASSIST agreement (specific major) + the college's CS agreements for
-  // this campus (the articulation reality both sides are judged against).
-  const [agreement, collegeDocs] = await Promise.all([
-    db.collection('uc_agreements').findOne(
-      { uc_school_id: schoolId, major, community_college_id: communityCollegeId },
-      { projection: { requirement_groups: 1, community_college: 1, uc_school: 1 } }),
-    db.collection('uc_agreements').find(
-      { uc_school_id: schoolId, community_college_id: communityCollegeId,
-        major: { $regex: 'computer science', $options: 'i' } },
-      { projection: { requirement_groups: 1 } }).toArray(),
-  ]);
+  // All of the college's agreements at this campus, then pick the chosen major
+  // tolerant of stored whitespace — some ASSIST program names carry a trailing
+  // space (e.g. UC Merced's "...B.S. "), so an exact/trimmed query would miss.
+  const collegeAll = await db.collection('uc_agreements').find(
+    { uc_school_id: schoolId, community_college_id: communityCollegeId },
+    { projection: { requirement_groups: 1, community_college: 1, uc_school: 1, major: 1 } }).toArray();
+  const wantedMajor = String(major || '').trim();
+  const agreement = collegeAll.find((a) => String(a.major || '').trim() === wantedMajor) || null;
+  // Articulation reality: the college's CS agreements for this campus.
+  const collegeDocs = collegeAll.filter((a) => /computer science/i.test(a.major || ''));
 
   // College-level articulation: every UC parent_id this CC articulates for this
   // campus (union across its CS agreements), plus a parent_id -> UC code label
