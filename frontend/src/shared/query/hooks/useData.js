@@ -19,7 +19,11 @@ export function useDataSummary() {
 export function useColleges() {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['colleges', user?.uid],
+    // 'geo' bumps the key past the pre-geography cache: /community-colleges now
+    // carries district/region/counties_served, and the old response is
+    // persisted to IndexedDB with staleTime:Infinity, so without a new key the
+    // browser would keep serving colleges with no geography (empty filters).
+    queryKey: ['colleges', 'geo', user?.uid],
     queryFn: () => apiClient.get('/community-colleges').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: Infinity,
@@ -77,7 +81,7 @@ export function useCoverage(params = {}, options = {}) {
   const majorContains = String(params.majorContains || '').trim()
   const groupBy = ['college', 'district', 'county'].includes(params.groupBy) ? params.groupBy : 'college'
   const requirements = ['assist', 'paper'].includes(params.requirements) ? params.requirements : 'assist'
-  const pin = params.pin === 'paper' ? 'paper' : null
+  const pin = ['paper', 'settings'].includes(params.pin) ? params.pin : null
   const { enabled = true, ...queryOptions } = options
   return useQuery({
     queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements, pin],

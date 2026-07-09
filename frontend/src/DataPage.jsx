@@ -6,6 +6,8 @@ import {
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, LoadingLogo, Badge } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import RouteHint from './components/RouteHint'
+import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
+import { matchesGeo } from './shared/lib/collegeGeo'
 import DataReferences from './DataReferences'
 import { ANALYSES } from './analyses/registry'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -193,6 +195,7 @@ function AgreementsBrowser() {
 function ProgramColleges({ program, coverageByCc, websiteByCc, coverageLoading, onPick }) {
   const colleges = useColleges()
   const [q, setQ] = useState('')
+  const [geo, setGeo] = useState(EMPTY_GEO)
 
   const rows = useMemo(() => {
     const all = (colleges.data || []).map((c) => {
@@ -200,11 +203,12 @@ function ProgramColleges({ program, coverageByCc, websiteByCc, coverageLoading, 
       const web = websiteByCc.get(Number(c.id)) || null
       return { ...c, assist, web }
     }).filter((c) => c.assist || c.web)
+      .filter((c) => matchesGeo(c, geo))
       .sort((a, b) => (b.assist?.pct_articulated ?? -1) - (a.assist?.pct_articulated ?? -1) || a.name.localeCompare(b.name))
     if (!q.trim()) return all
     const s = q.toLowerCase()
     return all.filter((c) => c.name.toLowerCase().includes(s))
-  }, [colleges.data, coverageByCc, websiteByCc, q])
+  }, [colleges.data, coverageByCc, websiteByCc, q, geo])
 
   const withAgreement = rows.filter((r) => r.assist).length
 
@@ -216,6 +220,7 @@ function ProgramColleges({ program, coverageByCc, websiteByCc, coverageLoading, 
           {program.school} · {withAgreement} colleges with an agreement · Hand-curated = hand-gathered hard minimum, ASSIST = full stated minimum
         </p>
       </div>
+      <CollegeGeoFilters colleges={colleges.data || []} value={geo} onChange={setGeo} />
       <div className='flex flex-wrap items-center gap-3'>
         <Input className='w-72' value={q} onChange={(e) => setQ(e.target.value)}
           placeholder='Find a college…' leadingIcon={MagnifyingGlassIcon} />
@@ -249,7 +254,10 @@ function ProgramColleges({ program, coverageByCc, websiteByCc, coverageLoading, 
                 <tr key={c.id}
                   className={c.assist ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-60'}
                   onClick={() => c.assist && onPick(Number(c.id))}>
-                  <td className='px-3 py-1.5 text-body'>{c.name}</td>
+                  <td className='px-3 py-1.5 text-body'>
+                    {c.name}
+                    {c.district && <span className='block text-caption text-ink-subtle'>{c.district}</span>}
+                  </td>
                   <td className='px-3 py-1.5'>
                     {c.web ? <CoverageBar pct={c.web.pct_articulated} full={c.web.fully_articulated} width='w-20' /> :
                       <span className='text-caption text-ink-subtle'>—</span>}
@@ -813,7 +821,7 @@ const courseSearch = (rows, q, fields) => {
 // Rail of institutions (buttons) → the picked one's course catalog. Shared by
 // the CC and University course browsers. The route label updates as you drill
 // in: the list route while browsing, the item route once one is picked.
-function CatalogBrowser({ items, useCourses, columns, searchFields, blurb, railTitle, pickText, listRoute, itemRoute, railSearch = true }) {
+function CatalogBrowser({ items, useCourses, columns, searchFields, blurb, railTitle, pickText, listRoute, itemRoute, railSearch = true, toolbar = null, itemSubtitle = null }) {
   const [selectedId, setSelectedId] = useState(null)
   const [railQ, setRailQ] = useState('')
   const [courseQ, setCourseQ] = useState('')
@@ -836,6 +844,7 @@ function CatalogBrowser({ items, useCourses, columns, searchFields, blurb, railT
         <p className='text-caption text-ink-muted max-w-prose'>{blurb}</p>
         <span className='ml-auto'><RouteHint path={selectedId != null ? itemRoute(selectedId) : listRoute} /></span>
       </div>
+      {toolbar}
       <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
         <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
           <p className='text-label mb-2'>{railTitle} · {sortedItems.length}</p>
@@ -854,6 +863,9 @@ function CatalogBrowser({ items, useCourses, columns, searchFields, blurb, railT
                   className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors ${
                     active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
                   <span className='text-body leading-snug break-words'>{it.name}</span>
+                  {itemSubtitle && itemSubtitle(it) && (
+                    <span className='block text-caption text-ink-subtle leading-snug mt-0.5'>{itemSubtitle(it)}</span>
+                  )}
                 </button>
               )
             })}
@@ -881,11 +893,16 @@ function CatalogBrowser({ items, useCourses, columns, searchFields, blurb, railT
 
 function CcCoursesBrowser() {
   const colleges = useColleges()
+  const [geo, setGeo] = useState(EMPTY_GEO)
+  const all = colleges.data || []
+  const filtered = useMemo(() => all.filter((c) => matchesGeo(c, geo)), [all, geo])
   return (
     <CatalogBrowser
-      items={colleges.data || []}
+      items={filtered}
       useCourses={useCcCourses}
       railTitle='Community colleges'
+      toolbar={<CollegeGeoFilters colleges={all} value={geo} onChange={setGeo} />}
+      itemSubtitle={(it) => it.district || null}
       pickText='Choose a college'
       blurb='Community-college catalog — only courses referenced by the ported agreements are in the research database.'
       listRoute='/community-colleges'

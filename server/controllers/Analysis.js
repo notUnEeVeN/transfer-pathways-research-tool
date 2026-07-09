@@ -63,7 +63,9 @@ async function parseParams(req) {
       : 'assist',
     // pin=paper: the paper-port figures' fixed major set (pathways.js
     // PAPER_MAJORS) — exact scraped programs, visibility scoping not applied.
-    pin: req.query.pin === 'paper' ? 'paper' : null,
+    // pin=settings: those same figures' ASSIST view, resolving each campus's
+    // program from the working-dataset selection instead (see settingsMajors).
+    pin: ['paper', 'settings'].includes(req.query.pin) ? req.query.pin : null,
     // Partner visibility (null = admin, unrestricted). Applied inside every
     // pathways query, so partners' analyses cover exactly the granted subset.
     visiblePairs: await majorScope(req),

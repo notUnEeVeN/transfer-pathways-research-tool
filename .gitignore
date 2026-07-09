@@ -8,6 +8,7 @@ dist/
 serviceAccount*.json
 __pycache__/
 .venv/
+pmt-env/
 analysis/.ipynb_checkpoints/
 # Local API scratch file — contains a personal pmtr_ token
 temp.py

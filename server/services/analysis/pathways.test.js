@@ -3,6 +3,7 @@ import { startInMemoryMongo } from '../../test/mongoHarness';
 import {
   coverageData, requirementComparisonData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData, receiversExportData,
+  _settingsMajors, _paperMajors,
 } from './pathways';
 
 let mongo;
@@ -189,6 +190,44 @@ describe('coverageData', () => {
     expect(alphaOther.requirement_groups_required).toBe(1);
     expect(alphaOther.requirement_groups_satisfied).toBe(1);
     expect(alphaOther.fully_articulated).toBe(true); // alternative set B is satisfied.
+  });
+});
+
+describe('settingsMajors (pin=settings resolution)', () => {
+  afterAll(async () => {
+    // Leave no working-dataset selection behind for the other suites.
+    await db.collection('dataset_config').deleteOne({ _id: 'partner_access' });
+  });
+
+  it('reads the working-dataset selection, scopes to figure campuses, falls back to PAPER_MAJORS', async () => {
+    await db.collection('dataset_config').replaceOne(
+      { _id: 'partner_access' },
+      {
+        _id: 'partner_access',
+        visible_pairs: [
+          { school_id: 79, major: 'Electrical Engineering & Computer Sciences, B.S.' }, // UCB → EECS only
+          { school_id: 99999, major: 'Not A Figure Campus' }, // ignored: outside the nine campuses
+        ],
+      },
+      { upsert: true }
+    );
+
+    const byCampus = await _settingsMajors(db);
+
+    // the selected campus reflects exactly the working-dataset choice…
+    expect(byCampus.get(79)).toEqual(['Electrical Engineering & Computer Sciences, B.S.']);
+    // …a campus the selection omits falls back to PAPER_MAJORS (never dropped)…
+    expect(byCampus.get(89)).toEqual(_paperMajors[89]);
+    // …and non-figure campuses never enter the scope.
+    expect(byCampus.has(99999)).toBe(false);
+    expect([...byCampus.keys()].sort((a, b) => a - b))
+      .toEqual(Object.keys(_paperMajors).map(Number).sort((a, b) => a - b));
+  });
+
+  it('falls back entirely to PAPER_MAJORS when no selection has been saved', async () => {
+    await db.collection('dataset_config').deleteOne({ _id: 'partner_access' });
+    const byCampus = await _settingsMajors(db);
+    expect(byCampus.get(79)).toEqual(_paperMajors[79]); // both CS B.A. + EECS B.S.
   });
 });
 

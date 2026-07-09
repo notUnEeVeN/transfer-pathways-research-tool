@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { Stack, StatStrip, SwitchField } from '../components/ui'
 import { CHOICE_LABELS, PAPER_COLORS, PAPER_UC_BARS } from './paperCreditLossBaseline'
 import assistData from './data/paper-credit-loss.assist.json'
@@ -15,7 +16,8 @@ import oursData from './data/paper-credit-loss.ours.json'
  * figure recomputed on our dataset (analysis/paper_credit_loss.py → the
  * committed data/paper-credit-loss.ours.json), `diff` overlays the paper
  * baseline as dashed outlines on our bars and labels each bar with its
- * signed delta. Provenance + verification: docs/figures/paper-credit-loss.md.
+ * signed delta. An optional, collapsed-by-default difference matrix gives the
+ * same deltas as a diverging heatmap. Provenance: docs/figures/paper-credit-loss.md.
  *
  * The SVG reproduces the paper's matplotlib render geometrically: the axes
  * box, bar positions, and text sizes below were measured off the published
@@ -345,10 +347,84 @@ function diffStats(bars, baseline) {
   }
 }
 
+// The matrix's diverging poles. Crimson (LOSS) = more courses; a validated teal
+// = fewer. This teal is a touch more saturated than the bars' GAIN so the
+// "better" tints don't read gray against the neutral midpoint (dataviz palette
+// check). CVD-safe (ΔE ~21 vs crimson) and always paired with the signed number.
+const DIVERGE_TEAL = '#0f9d7c'
+
+// Diverging cell fill for a signed delta: teal toward "fewer courses" (better),
+// crimson toward "more" (worse), transparent near zero. Alpha scales with
+// magnitude and is capped so the value text stays legible over the tint.
+function deltaFill(d, maxAbs) {
+  if (Math.abs(d) < 0.005 || !maxAbs) return 'transparent'
+  const a = 0.1 + 0.62 * Math.min(1, Math.abs(d) / maxAbs)
+  const n = parseInt((d > 0 ? LOSS : DIVERGE_TEAL).slice(1), 16)
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a.toFixed(3)})`
+}
+
+const COL_SHORT = ['Req', '1st', '2nd', '3rd', '4th']
+const COL_LONG = ['CS/Math requirement', '1st choice', '2nd choice', '3rd choice', '4th choice']
+
+// The whole signed-difference matrix (campus × requirement/choice) as a compact
+// diverging heatmap — the "read every number at once" companion to the bars.
+// Color shows direction + magnitude; the number gives the exact value; hover
+// adds the before → after. On-screen only (not part of the exported figure).
+function DifferenceHeatmap({ live, baseline, comparisonLabel, labelMode }) {
+  const rows = live.map((uc, i) => {
+    const b = baseline[i]
+    const our = [barTop(uc), ...uc.choices]
+    const base = [barTop(b), ...b.choices]
+    return { code: uc.code, id: uc.id, name: uc.campus, our, base, deltas: our.map((v, k) => +(v - base[k]).toFixed(2)) }
+  })
+  const maxAbs = Math.max(0.001, ...rows.flatMap((r) => r.deltas.map((d) => Math.abs(d))))
+  const rowLabel = (r) => (labelMode === 'names' ? r.name.replace(/^UC\s+/i, '') : r.id)
+
+  return (
+    <div className='surface-card p-4' data-export-exclude>
+      <div className='flex flex-wrap items-center justify-between gap-3 mb-3'>
+        <p className='text-label'>Every difference · courses vs {comparisonLabel}</p>
+        <div className='flex items-center gap-2 text-tag text-ink-subtle'>
+          <span>fewer / better</span>
+          <span className='h-3 w-24 rounded' style={{ background: `linear-gradient(to right, ${DIVERGE_TEAL}, rgba(148,163,184,0.45), ${LOSS})` }} />
+          <span>more / worse</span>
+        </div>
+      </div>
+      <div className='overflow-x-auto'>
+        <table className='w-full text-body tabular-nums' style={{ borderCollapse: 'separate', borderSpacing: 5 }}>
+          <thead>
+            <tr>
+              <th className='text-left px-3 py-2 font-normal text-ink-subtle'>Campus</th>
+              {COL_SHORT.map((c) => (
+                <th key={c} className='px-3 py-2 font-normal text-ink-subtle text-center w-[15%]'>{c}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.code}>
+                <th scope='row' className='text-left px-3 py-2.5 font-medium text-ink whitespace-nowrap'>{rowLabel(r)}</th>
+                {r.deltas.map((d, k) => (
+                  <td key={k} className='px-3 py-2.5 text-center rounded-md text-ink font-medium'
+                    style={{ backgroundColor: deltaFill(d, maxAbs) }}
+                    title={`${r.name} · ${COL_LONG[k]}: ${fmt(r.base[k])} → ${fmt(r.our[k])} (${signed(d)})`}>
+                    {Math.abs(d) < 0.005 ? <span className='text-ink-subtle font-normal'>0</span> : signed(d)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
 export default function PaperCreditLoss() {
   const [version, setVersion] = useState('paper')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
-  const [labelMode, setLabelMode] = useState('paper')
+  const [labelMode, setLabelMode] = useState('names')
+  const [showMatrix, setShowMatrix] = useState(false)
 
   // Derive the underlying view/minimums from the version + differences toggle so
   // the existing bar/ghost rendering is unchanged.
@@ -426,13 +502,26 @@ export default function PaperCreditLoss() {
         <FigureSVG bars={bars} ghost={ghost} labelMode={labelMode} />
       </div>
 
+      {view === 'diff' && (
+        <div data-export-exclude>
+          <button
+            type='button'
+            onClick={() => setShowMatrix((s) => !s)}
+            aria-expanded={showMatrix}
+            className='flex items-center gap-1.5 text-caption text-ink-muted hover:text-ink'
+          >
+            <ChevronRightIcon className={`w-4 h-4 transition-transform ${showMatrix ? 'rotate-90' : ''}`} />
+            {showMatrix ? 'Hide difference matrix' : 'More details — every difference as a matrix'}
+          </button>
+          {showMatrix && (
+            <div className='mt-3'>
+              <DifferenceHeatmap live={liveBars} baseline={baselineBars} comparisonLabel={comparisonLabel} labelMode={labelMode} />
+            </div>
+          )}
+        </div>
+      )}
+
       <div className='flex flex-wrap items-center gap-4' data-export-exclude>
-        <span className='text-caption text-ink-subtle'>
-          {view === 'diff'
-            ? `Bars = ${reqMode === 'assist' ? 'our ASSIST-minimums data' : 'our data'}. Solid red segment = courses added vs ${comparisonLabel}; translucent green block = courses no longer needed (tops out at the comparison level); black tick = comparison level; gray 0.00 = unchanged.`
-            : 'Gold = CS/Math requirement in semester-course equivalents; hatched cap = quarter-system excess; blues = average CCC courses at 1st–4th choice.'}
-          {' '}Provenance and verification: docs/figures/paper-credit-loss.md.
-        </span>
         <button
           type='button'
           onClick={() => setLabelMode(labelMode === 'paper' ? 'names' : 'paper')}

@@ -38,6 +38,15 @@ async function getVisiblePairs(auditDb) {
   return (await loadConfig(auditDb)) ?? [];
 }
 
+// Uncached read of the saved selection, for callers that must reflect the
+// current working dataset immediately rather than within the visibility cache's
+// TTL (e.g. the paper figures' ASSIST view, which resolves each campus's
+// program from this selection). Returns normalized pairs; [] when unset.
+async function readVisiblePairsUncached(auditDb) {
+  const doc = await auditDb.collection(CONFIG).findOne({ _id: DOC_ID });
+  return doc ? (doc.visible_pairs || []).map(normalizePair) : [];
+}
+
 async function setVisiblePairs(auditDb, pairs, uid) {
   await auditDb.collection(CONFIG).replaceOne(
     { _id: DOC_ID },
@@ -94,6 +103,6 @@ function scopeTag(pairs) {
 }
 
 module.exports = {
-  getVisiblePairs, setVisiblePairs, invalidateVisibilityCache,
+  getVisiblePairs, readVisiblePairsUncached, setVisiblePairs, invalidateVisibilityCache,
   majorScope, pairAllowed, pairClause, scopeTag,
 };

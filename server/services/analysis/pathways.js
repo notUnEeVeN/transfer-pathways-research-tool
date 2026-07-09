@@ -270,7 +270,7 @@ async function loadTransferRequirements(auditDb) {
 // Combined major scope: the optional contains-search AND the partner
 // visibility pair-allowlist (null = admin, unrestricted). Visibility is per
 // (school, major) pair — see services/majorVisibility.js.
-const { pairClause } = require('../majorVisibility');
+const { pairClause, readVisiblePairsUncached } = require('../majorVisibility');
 // The exact ASSIST program the paper scraped per campus (paper repo
 // cs_urls/). The paper-port figures pin to these stored names and IGNORE
 // partner visibility scoping — they are fixed aggregate research figures, and
@@ -297,6 +297,47 @@ const PAPER_MAJORS = {
 
 function paperMajorsQuery(idField = 'uc_school_id') {
   return { $or: Object.entries(PAPER_MAJORS).map(([sid, majors]) => ({ [idField]: Number(sid), major: { $in: majors } })) };
+}
+
+// The nine figure campuses = the PAPER_MAJORS keys (UC school ids). Every
+// paper-port figure is scoped to exactly these campuses.
+const CAMPUS_SCHOOL_IDS = Object.keys(PAPER_MAJORS).map(Number);
+
+// pin==='settings': resolve each figure campus's program from the admin's
+// working-dataset selection (dataset_config.partner_access.visible_pairs),
+// scoped to the nine campuses and falling back to PAPER_MAJORS for any campus
+// the selection omits (so a campus is never dropped). This is how a paper-port
+// figure's ASSIST view tracks the selected program — e.g. UCB's EECS B.S. —
+// while its website/paper views stay pinned to PAPER_MAJORS. Ignores the
+// caller's partner scope (an aggregate research figure is identical for
+// everyone). Mirrors analysis/paper_credit_loss.load_canonical_majors.
+async function settingsMajors(auditDb) {
+  const pairs = await readVisiblePairsUncached(auditDb); // normalized [{school_id, major}], [] when unset
+  const byCampus = new Map();
+  for (const p of pairs) {
+    const sid = Number(p.school_id);
+    if (!CAMPUS_SCHOOL_IDS.includes(sid)) continue;
+    if (!byCampus.has(sid)) byCampus.set(sid, []);
+    byCampus.get(sid).push(String(p.major));
+  }
+  for (const sid of CAMPUS_SCHOOL_IDS) {
+    if (!byCampus.get(sid)?.length) byCampus.set(sid, [...PAPER_MAJORS[sid]]);
+  }
+  return byCampus;
+}
+
+function settingsMajorsQuery(byCampus, idField = 'uc_school_id') {
+  return { $or: [...byCampus.entries()].map(([sid, majors]) => ({ [idField]: Number(sid), major: { $in: majors } })) };
+}
+
+// The major-scope query for one system, honoring the coverage pin. Kept in one
+// place so coverageData and hardRequirementCoverageData resolve majors
+// identically. `settings` is the pre-resolved settingsMajors() map (null unless
+// pin==='settings').
+function coverageMajorQuery({ pin, majorContains, visiblePairs, settings }, idField) {
+  if (pin === 'paper') return paperMajorsQuery(idField);
+  if (pin === 'settings') return settingsMajorsQuery(settings, idField);
+  return majorFilter(majorContains, visiblePairs, idField);
 }
 
 function majorFilter(majorContains, visiblePairs = null, idField = 'uc_school_id') {
@@ -393,11 +434,13 @@ async function hardRequirementCoverageData(db, auditDb, { majorContains = '', vi
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
   const requirementsBySchool = await loadTransferRequirements(auditDb);
   const buckets = new Map();
+  const settings = pin === 'settings' ? await settingsMajors(auditDb) : null;
 
   for (const sys of systemsFor()) {
-    // pin==='paper' (the paper-style figures): exact scraped programs, no
-    // visibility scoping. Otherwise the normal major/visibility filter.
-    const query = pin === 'paper' ? paperMajorsQuery(sys.idField) : majorFilter(majorContains, visiblePairs, sys.idField);
+    // pin==='paper': exact scraped programs; pin==='settings': the working-
+    // dataset selection (both ignore visibility scoping — aggregate figures).
+    // Otherwise the normal major/visibility filter.
+    const query = coverageMajorQuery({ pin, majorContains, visiblePairs, settings }, sys.idField);
     const docs = await db.collection(sys.coll).find(query).toArray();
     for (const doc of docs) {
       const schoolRequirements = requirementsBySchool.get(Number(doc[sys.idField]));
@@ -489,11 +532,13 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
   const isExcluded = makeIsExcluded(curation);
   const buckets = new Map();
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
+  const settings = pin === 'settings' ? await settingsMajors(auditDb) : null;
 
   for (const sys of systemsFor()) {
-    // pin==='paper' (the paper-style figures): exact scraped programs,
-    // visibility scoping deliberately not applied — see PAPER_MAJORS.
-    const query = pin === 'paper' ? paperMajorsQuery(sys.idField) : majorFilter(majorContains, visiblePairs, sys.idField);
+    // pin==='paper': exact scraped programs; pin==='settings': the working-
+    // dataset selection (e.g. the paper heatmap's ASSIST view — see
+    // settingsMajors). Both ignore visibility scoping. Otherwise the normal filter.
+    const query = coverageMajorQuery({ pin, majorContains, visiblePairs, settings }, sys.idField);
     const docs = await db.collection(sys.coll).find(query).toArray();
     for (const doc of docs) {
       const memberships = membershipsFor(doc, refs, mode);
@@ -1178,4 +1223,6 @@ module.exports = {
   _categoryOfReceiver: categoryOfReceiver,
   _chooseNMinimum: chooseNMinimum,
   _agreementMinSetExact: agreementMinSetExact,
+  _settingsMajors: settingsMajors,
+  _paperMajors: PAPER_MAJORS,
 };

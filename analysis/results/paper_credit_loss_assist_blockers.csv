@@ -156,7 +156,7 @@ El Camino Community College District,UCLA,COM SCI 35L
 El Camino Community College District,UCSD,CSE 21
 El Camino Community College District,UCSD,CSE 29
 El Camino Community College District,UCSD,CSE 30
-Feather River Community College District,UCB,1 of [EECS 16A / MATH 54 / MATH 56]
+Feather River Community College District,UCB,MATH 54
 Feather River Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
 Feather River Community College District,UCD,ECS 020
 Feather River Community College District,UCD,ECS 036A
@@ -291,7 +291,10 @@ Lake Tahoe Community College District,UCSD,CSE 20
 Lake Tahoe Community College District,UCSD,CSE 21
 Lake Tahoe Community College District,UCSD,CSE 29
 Lake Tahoe Community College District,UCSD,CSE 30
-Lassen Community College District,UCB,1 of [EECS 16A / MATH 54 / MATH 56]
+Lassen Community College District,UCB,MATH 53
+Lassen Community College District,UCB,MATH 54
+Lassen Community College District,UCB,PHYSICS 7A
+Lassen Community College District,UCB,PHYSICS 7B
 Lassen Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
 Lassen Community College District,UCD,ECS 020
 Lassen Community College District,UCD,ECS 036A
@@ -456,9 +459,13 @@ Ohlone Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Ohlone Community College District,UCLA,COM SCI 35L
 Ohlone Community College District,UCSD,CSE 21
 Ohlone Community College District,UCSD,CSE 29
-Palo Verde Community College District,UCB,1 of [EECS 16A / MATH 54 / MATH 56]
+Palo Verde Community College District,UCB,1 of [ASTRON 7A / ASTRON 7B / BIOLOGY 1A + BIOLOGY 1AL / BIOLOGY 1B / CHEM 1A + CHEM 1AL / CHEM 1B / CHEM 3A + CHEM 3AL / CHEM 3B + CHEM 3BL / MCELLBI 32 + MCELLBI 32L / PHYSICS 7C]
 Palo Verde Community College District,UCB,MATH 51
 Palo Verde Community College District,UCB,MATH 52
+Palo Verde Community College District,UCB,MATH 53
+Palo Verde Community College District,UCB,MATH 54
+Palo Verde Community College District,UCB,PHYSICS 7A
+Palo Verde Community College District,UCB,PHYSICS 7B
 Palo Verde Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
 Palo Verde Community College District,UCD,ECS 020
 Palo Verde Community College District,UCD,ECS 036A

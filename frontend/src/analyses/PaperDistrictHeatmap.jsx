@@ -341,7 +341,7 @@ function Chip({ color }) {
 export default function PaperDistrictHeatmap() {
   const [version, setVersion] = useState('website')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
-  const [labelMode, setLabelMode] = useState('paper')
+  const [labelMode, setLabelMode] = useState('names')
 
   // Derive the underlying view/minimums from version + differences toggle. Note the
   // coverage endpoint uses requirements:'paper' for the website minimums.
@@ -351,16 +351,19 @@ export default function PaperDistrictHeatmap() {
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on
   // demand. The ASSIST-minimums variant fetches lazily on first selection and
   // then stays cached, so flipping the toggle is instant afterwards.
-  // pin:'paper' — the server resolves the exact per-campus programs the paper
-  // scraped (pathways.js PAPER_MAJORS) and ignores partner-visibility
-  // toggles, so this figure can never drift with admin settings (e.g. UCB's
-  // EECS B.S. being made visible instead of Computer Science, B.A.).
+  // The paper/website views pin:'paper' — the server resolves the exact
+  // per-campus programs the paper scraped (pathways.js PAPER_MAJORS) and ignores
+  // partner-visibility toggles, so those views can never drift with admin
+  // settings. The ASSIST view instead pins:'settings' — it resolves each
+  // campus's program from the working-dataset selection (falling back to
+  // PAPER_MAJORS), so it tracks the selected program (e.g. UCB's EECS B.S.
+  // instead of Computer Science, B.A.) while the paper/website views stay frozen.
   const paperCoverage = useCoverage(
     { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'paper', pin: 'paper' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const assistCoverage = useCoverage(
-    { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'assist', pin: 'paper' },
+    { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'assist', pin: 'settings' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false, enabled: reqMode === 'assist' }
   )
   const coverage = reqMode === 'assist' ? assistCoverage : paperCoverage

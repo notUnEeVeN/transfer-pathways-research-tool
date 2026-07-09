@@ -70,8 +70,8 @@ export const ENDPOINT_GROUPS = [
         path: '/community-colleges',
         title: 'The community colleges',
         plain:
-          'All community colleges as { id, name } — the lookup for the community_college_id values used everywhere else.',
-        returns: '[ { id, name }, ... ]',
+          'All community colleges as { id, name, district, region, counties_served } — the lookup for the community_college_id values used everywhere else, with district/region/county geography (from ref_cc_districts) for filtering the college list. Geography is null/[] for any college not yet mapped.',
+        returns: '[ { id, name, district, region, counties_served: [ ... ] }, ... ]',
       },
       {
         method: 'GET',

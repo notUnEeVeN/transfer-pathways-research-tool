@@ -1,6 +1,6 @@
 {
   "generated_by": "analysis/paper_credit_loss.py",
-  "generated_at": "2026-07-08T17:29:00+00:00",
+  "generated_at": "2026-07-09T14:49:32+00:00",
   "dataset_version": "2026-07-06-v1",
   "requirements": "assist",
   "major_filter": "computer science",
@@ -25,17 +25,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 3.93,
+          "transferable_average": 3.83,
           "districts_included": 30
         },
         {
           "order": 3,
-          "transferable_average": 2.42,
+          "transferable_average": 2.38,
           "districts_included": 30
         },
         {
           "order": 4,
-          "transferable_average": 1.68,
+          "transferable_average": 1.65,
           "districts_included": 30
         }
       ]
@@ -58,17 +58,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 5.78,
+          "transferable_average": 5.15,
           "districts_included": 64
         },
         {
           "order": 3,
-          "transferable_average": 3.93,
+          "transferable_average": 3.05,
           "districts_included": 64
         },
         {
           "order": 4,
-          "transferable_average": 2.77,
+          "transferable_average": 1.78,
           "districts_included": 64
         }
       ]
@@ -129,12 +129,12 @@
         },
         {
           "order": 3,
-          "transferable_average": 1.32,
+          "transferable_average": 1.36,
           "districts_included": 50
         },
         {
           "order": 4,
-          "transferable_average": 0.79,
+          "transferable_average": 0.8,
           "districts_included": 50
         }
       ]
@@ -178,29 +178,29 @@
       "school_id": 79,
       "quarter": false,
       "requirement": {
-        "native_count": 3,
-        "semester_equiv": 3,
+        "native_count": 10,
+        "semester_equiv": 10,
         "quarter_count": null
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 3.83,
+          "transferable_average": 10.09,
           "districts_included": 69
         },
         {
           "order": 2,
-          "transferable_average": 0.98,
+          "transferable_average": 5.12,
           "districts_included": 69
         },
         {
           "order": 3,
-          "transferable_average": 0.47,
+          "transferable_average": 3.38,
           "districts_included": 69
         },
         {
           "order": 4,
-          "transferable_average": 0.23,
+          "transferable_average": 2.26,
           "districts_included": 69
         }
       ]
@@ -228,12 +228,12 @@
         },
         {
           "order": 3,
-          "transferable_average": 0.94,
+          "transferable_average": 1.0,
           "districts_included": 47
         },
         {
           "order": 4,
-          "transferable_average": 0.62,
+          "transferable_average": 0.66,
           "districts_included": 47
         }
       ]
@@ -261,12 +261,12 @@
         },
         {
           "order": 3,
-          "transferable_average": 1.62,
+          "transferable_average": 1.65,
           "districts_included": 39
         },
         {
           "order": 4,
-          "transferable_average": 1.43,
+          "transferable_average": 1.44,
           "districts_included": 39
         }
       ]
@@ -289,17 +289,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 3.03,
+          "transferable_average": 2.61,
           "districts_included": 57
         },
         {
           "order": 3,
-          "transferable_average": 1.72,
+          "transferable_average": 1.36,
           "districts_included": 57
         },
         {
           "order": 4,
-          "transferable_average": 1.05,
+          "transferable_average": 0.76,
           "districts_included": 57
         }
       ]
