@@ -10,8 +10,9 @@
  *   - Data access goes through the normal HTTP API with a short-lived
  *     ephemeral token minted for the figure's author, so every enforcement
  *     layer (allowlist, major visibility, rate limits) applies unchanged.
- *   - pmt.py is written fresh into the workdir each run, pointed at this
- *     server, with PMT_CAPTURE set: publish() writes its payload to a file
+ *   - starter.py and its old pmt.py alias are written fresh into the workdir
+ *     each run, pointed at this server, with PMT_CAPTURE set: publish() writes
+ *     its payload to a file
  *     instead of POSTing, and the caller decides what to store.
  *   - A wall-clock kill, an output cap, and a small serial queue bound
  *     resource use.
@@ -41,6 +42,7 @@ async function executeScript({
   try {
     const mplDir = path.join(workdir, '.mpl');
     await fs.mkdir(mplDir);
+    await fs.writeFile(path.join(workdir, 'starter.py'), pmtSource, 'utf8');
     await fs.writeFile(path.join(workdir, 'pmt.py'), pmtSource, 'utf8');
     await fs.writeFile(path.join(workdir, 'script.py'), code, 'utf8');
 

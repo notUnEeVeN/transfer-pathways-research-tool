@@ -10,7 +10,7 @@ import {
 } from './apiDocs/content'
 
 /**
- * API page: Tokens · Starter (pmt.py + steps, incl. publish) · Endpoints · Data
+ * API page: Tokens · Starter (starter.py + steps, incl. publish) · Endpoints · Data
  * guide. Copy lives in apiDocs/content.js and server/client/pmtPy.js; this file
  * renders it. "Copy for AI" serializes the same content, so page and paste stay in sync.
  */
@@ -43,7 +43,7 @@ export default function ApiPage() {
 
 // ───────── starter ─────────
 
-// Onboarding: explanation + steps + the served pmt.py (Copy/Download).
+// Onboarding: explanation + steps + the served starter.py (Copy/Download).
 function StarterSection() {
   const py = usePmtPy()
   const downloadPmtPy = () => {
@@ -51,7 +51,7 @@ function StarterSection() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'pmt.py'
+    a.download = 'starter.py'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -79,7 +79,7 @@ function StarterSection() {
 
       <div>
         <div className='flex items-center gap-2 mb-3'>
-          <h3 className='text-body-strong'>pmt.py</h3>
+          <h3 className='text-body-strong'>starter.py</h3>
           <span className='text-caption text-ink-subtle'>preconfigured for this API</span>
           <div className='ml-auto flex gap-1'>
             {py.data && <CopyButton text={py.data} />}
@@ -88,7 +88,7 @@ function StarterSection() {
           </div>
         </div>
         {py.isLoading ? <div className='flex justify-center py-6'><Spinner /></div>
-          : py.isError ? <Alert type='error'>Could not load pmt.py from the API.</Alert>
+          : py.isError ? <Alert type='error'>Could not load starter.py from the API.</Alert>
           : (
             <pre className='surface-card p-4 text-[11px] leading-relaxed font-mono overflow-auto whitespace-pre max-h-[60vh]'>
               {py.data}

@@ -1,15 +1,17 @@
 /**
- * The pmt.py client, served at GET /client/pmt.py with the API base URL baked
- * in — partners never receive files out-of-band; the console is the only
- * distribution channel. The API tab renders this same text with Copy /
- * Download buttons (single source: this template).
+ * The starter.py client, served at GET /client/starter.py with the API base
+ * URL baked in — partners never receive files out-of-band; the console is the
+ * only distribution channel. /client/pmt.py remains a compatibility alias.
+ * The API tab renders this same text with Copy / Download buttons (single
+ * source: this template).
  */
 const pmtPy = (baseUrl) => `"""Transfer Pathways Research API — starter client.
 
     get(path)                            -> pandas DataFrame from any endpoint
     publish("fig.py", slug=..., title=...) -> publish one LIVE figure
 
-Set TOKEN below (or the PMT_TOKEN env var). The Endpoints tab lists the paths.
+Save this file as starter.py. Set TOKEN below (or the PMT_TOKEN env var).
+The Endpoints tab lists the paths.
 """
 import base64
 import io
@@ -72,6 +74,7 @@ def publish(file, slug, title, caption=None, source_url=None, enabled=True):
     """Publish one LIVE figure.
 
     Recommended use:
+        import starter as pmt
         pmt.publish("my_figure.py", slug="my-figure", title="My figure")
 
     The script should run top-to-bottom and leave one matplotlib Figure named
@@ -159,6 +162,19 @@ def publish(file, slug, title, caption=None, source_url=None, enabled=True):
 if __name__ == "__main__":
     schools = get("/schools")
     print("Connected. UC campuses:", [s["name"] for s in schools["uc"]])
+
+    # Create a file called hello_figure.py in this same folder, then paste this
+    # matplotlib code into it:
+    """
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3])
+ax.set_title("Hello figure")
+fig.tight_layout()
+    """
+
+    publish("hello_figure.py", slug="hello-figure", title="Hello figure")
 `;
 
 module.exports = { pmtPy };

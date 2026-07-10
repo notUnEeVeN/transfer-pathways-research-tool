@@ -11,14 +11,39 @@
  * the app without a redeploy. Admins themselves come from env only.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { invalidateGrantsCache, isAdmin } = require('../services/access');
+const { invalidateGrantsCache, isAdmin, adminUids } = require('../services/access');
 const { removeRequest, unblockUid } = require('../services/accessRequests');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
 const { setReleasedIds, setDisabledIds } = require('../services/analysisReleases');
 const { startRefresh, jobStatus } = require('../services/porter');
 const { getRunnerPaused, setRunnerPaused } = require('../services/refreshScheduler');
+const { listDisplayNames, setDisplayName } = require('../services/displayNames');
 
 const GRANTS = 'access_grants';
+
+// Team roster with editable display names. Everyone who can be an assignee —
+// env admins + granted partners — with the name the admin has set (or the
+// email/uid fallback shown so the admin knows who each account is).
+exports.listTeam = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const [grants, names] = await Promise.all([
+    auditDb.collection(GRANTS).find({}, { projection: { email: 1 } }).toArray(),
+    listDisplayNames(auditDb),
+  ]);
+  const emailOf = new Map(grants.map((g) => [String(g._id), g.email ?? null]));
+  const admins = adminUids();
+  const uids = [...new Set([...admins, ...grants.map((g) => String(g._id))])];
+  const rows = uids
+    .map((uid) => ({ uid, name: names.get(uid) ?? null, email: emailOf.get(uid) ?? null, is_admin: admins.includes(uid) }))
+    .sort((a, b) => String(a.name || a.email || a.uid).localeCompare(String(b.name || b.email || b.uid)));
+  res.json({ rows });
+});
+
+exports.setTeamName = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const name = await setDisplayName(auditDb, req.params.uid, req.body?.name, req.user?.uid);
+  res.json({ ok: true, uid: req.params.uid, name });
+});
 
 exports.getDataset = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;

@@ -14,6 +14,7 @@ const { createFigureRuntime } = require('./services/liveFigures');
 const { createRefreshScheduler, markDirtyOnWrite } = require('./services/refreshScheduler');
 const { ensureFigureScriptIndexes } = require('./services/figureScripts');
 const { ensureTokenIndexes } = require('./services/apiTokens');
+const { ensureTaskIndexes } = require('./services/tasks');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -82,6 +83,7 @@ connectDB()
     ensureAuditIndexes(auditDb).catch((e) => console.warn(`[audit] index setup failed: ${e.message}`));
     ensureFigureScriptIndexes(auditDb).catch((e) => console.warn(`[figures] index setup failed: ${e.message}`));
     ensureTokenIndexes(auditDb).catch((e) => console.warn(`[tokens] index setup failed: ${e.message}`));
+    ensureTaskIndexes(auditDb).catch((e) => console.warn(`[tasks] index setup failed: ${e.message}`));
     // Live-figure runtime: one shared run queue for publish_script dry-runs,
     // manual refreshes, and the scheduler. Scripts call back into this server
     // over loopback, so the scheduler only starts once listen() succeeds.

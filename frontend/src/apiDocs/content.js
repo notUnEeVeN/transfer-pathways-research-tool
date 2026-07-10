@@ -31,7 +31,7 @@ export const GETTING_STARTED_NOTES = [
 ]
 
 // ───────────────────────── starter code ─────────────────────────
-// Starter tab content: the steps below + the served pmt.py (see
+// Starter tab content: the steps below + the served starter.py (see
 // server/client/pmtPy.js). publish() ships in the same file — no separate page.
 
 export const STARTER_EXPLANATION =
@@ -39,10 +39,10 @@ export const STARTER_EXPLANATION =
 
 export const STARTER_STEPS = [
   ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
-  ['Get the starter file', 'Copy or download pmt.py below — it comes preconfigured with this API\'s address. Keep it next to your analysis script or notebook and import it.'],
-  ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of pmt.py (or set the PMT_TOKEN environment variable). Do not paste tokens into live figure scripts.'],
+  ['Get the starter file', 'Copy or download starter.py below — it comes preconfigured with this API\'s address. Keep it next to your analysis script or notebook and import it as pmt.'],
+  ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of starter.py (or set the PMT_TOKEN environment variable). Do not paste tokens into live figure scripts.'],
   ['Pull data', 'get("/export/receivers") returns a pandas DataFrame. Change the path for any other endpoint (see the Endpoints tab) — from there it\'s ordinary pandas + matplotlib.'],
-  ['Publish live', 'Save a normal .py script that creates a matplotlib Figure named fig, then call publish("my_figure.py", slug="…", title="…"). The server test-runs it immediately and reruns it whenever the dataset changes.'],
+  ['Publish live', 'The bottom of starter.py shows copy-ready code for hello_figure.py, followed by the publish call. Create hello_figure.py from that block, then run python starter.py.'],
 ]
 
 // ───────────────────────── endpoints ─────────────────────────
@@ -239,15 +239,15 @@ export const ENDPOINT_GROUPS = [
   {
     id: 'figures',
     title: 'Figures — the shared gallery',
-    blurb: 'What pmt.py talks to. Publish a live script; the team sees it in Data → Analysis.',
+    blurb: 'What starter.py talks to. Publish a live script; the team sees it in Data → Analysis.',
     endpoints: [
       {
         method: 'GET',
-        path: '/client/pmt.py',
+        path: '/client/starter.py',
         title: 'The Python client',
         plain:
-          'pmt.py with this API\'s address already baked in — get() returns DataFrames and publish() creates live figures from local .py scripts. Also available with Copy/Download in Build & publish.',
-        returns: 'the pmt.py source (text/x-python)',
+          'starter.py with this API\'s address already baked in — get() returns DataFrames and publish() creates live figures from local .py scripts. Also available with Copy/Download in Build & publish. /client/pmt.py remains available as a compatibility alias.',
+        returns: 'the starter.py source (text/x-python)',
       },
       {
         method: 'POST',
@@ -259,7 +259,7 @@ export const ENDPOINT_GROUPS = [
         fields: [
           ['slug', 'the figure\'s stable id: a-z 0-9 - _ (e.g. "coverage-heatmap")'],
           ['title, caption, source_url', 'what the gallery card shows'],
-          ['dataset_version', 'the version the data was fetched at (pmt.py fills this in)'],
+          ['dataset_version', 'the version the data was fetched at (starter.py fills this in)'],
           ['formats', '{ svg (required), png, pdf } as base64'],
         ],
       },
@@ -322,6 +322,57 @@ export const ENDPOINT_GROUPS = [
         plain:
           'Owner or admin: removes the script and its run history; the figure itself stays in the gallery as an ordinary static snapshot of its last render.',
         returns: '{ ok, slug }',
+      },
+    ],
+  },
+  {
+    id: 'tasks',
+    title: 'Tasks (shared board)',
+    blurb: 'The Tasks tab, scriptable — the same shared board, readable and writable with a personal token.',
+    endpoints: [
+      {
+        method: 'GET',
+        path: '/tasks',
+        title: 'The shared task board',
+        plain:
+          'Every task on the team board. The { rows } envelope means pmt.get(\'/tasks\') lands as a DataFrame, stamped with the current dataset_version.',
+        returns: '{ dataset_version, rows: [ { _id, title, description, status, progress, assignee_uid, assignee_label, notes, ... } ] }',
+        fields: [
+          ['status', 'backlog | todo | in_progress | done'],
+          ['progress', 'self-reported percent, 0–100'],
+          ['notes', '[ { uid, label, text, at } ] — team tips on how to tackle it'],
+          ['dataset_version_created / _completed', 'the dataset the task was opened / closed against'],
+        ],
+      },
+      {
+        method: 'GET',
+        path: '/tasks/roster',
+        title: 'Assignable people',
+        plain: 'Everyone on the project (admins + granted partners) as { uid, label } for assignment.',
+        returns: '{ rows: [ { uid, label } ] }',
+      },
+      {
+        method: 'POST',
+        path: '/tasks',
+        title: 'Create a task',
+        plain:
+          'Any console user. Minimum { title }; optionally description, status, progress, assignee_uid. Creation is stamped with your identity and the current dataset_version.',
+        returns: 'the created task document',
+      },
+      {
+        method: 'PUT',
+        path: '/tasks/:id',
+        title: 'Update a task (partial)',
+        plain:
+          'Send only the fields you are changing — e.g. { status: \'done\' } from a notebook when a script finishes the work. Moving into done stamps completed_by/completed_at.',
+        returns: 'the updated task document',
+      },
+      {
+        method: 'DELETE',
+        path: '/tasks/:id',
+        title: 'Delete a task',
+        plain: 'Removes the task outright. Prefer PUT { archived: true } to tidy a done column without losing history.',
+        returns: '{ ok: true }',
       },
     ],
   },
@@ -562,15 +613,15 @@ export const GUIDE_SECTIONS = [
 ]
 
 // ───────────────────────── AI-briefing helpers ─────────────────────────
-// Used only by buildAiBriefing(); the Starter tab renders pmt.py, not these.
+// Used only by buildAiBriefing(); the Starter tab renders starter.py, not these.
 
 export const curlBootstrap = (base) =>
-  `curl -H "Authorization: Bearer pmtr_..." ${base}/client/pmt.py -o pmt.py`
+  `curl -H "Authorization: Bearer pmtr_..." ${base}/client/starter.py -o starter.py`
 
 export const EXAMPLE_FIGURE_SCRIPT = `import matplotlib.pyplot as plt
-import pmt
+import starter as pmt
 
-# Before running: set PMT_TOKEN in your shell, or paste the token into pmt.py.
+# Before running: set PMT_TOKEN in your shell, or paste the token into starter.py.
 
 # /export/receivers is one row per campus requirement — count them per campus.
 df = pmt.get("/export/receivers")
@@ -581,7 +632,7 @@ counts.plot.bar(ax=ax)
 ax.set_ylabel("requirements")
 fig.tight_layout()`
 
-export const EXAMPLE_PUBLISH_COMMAND = `import pmt
+export const EXAMPLE_PUBLISH_COMMAND = `import starter as pmt
 
 pmt.publish("requirements_by_campus.py",
             slug="requirements-by-campus",

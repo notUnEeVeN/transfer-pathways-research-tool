@@ -88,7 +88,7 @@ const dataController = require('../controllers/Data');
 router.get('/data/summary',        ...guarded, dataController.getSummary);
 router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
 
-// ───────── Published figures (the shared stats gallery) + pmt.py client ─────────
+// ───────── Published figures (the shared stats gallery) + starter.py client ─────────
 // Static figures are rendered images published from partners' local Python via
 // pmt.publish() — stored and listed, nothing executed.
 const figuresController = require('../controllers/Figures');
@@ -99,7 +99,8 @@ router.get('/figures/:slug/:format',  ...guarded, figuresController.download);
 // Edit (metadata) and delete are owner-or-admin only — enforced in the controller.
 router.patch('/figures/:slug',        ...guarded, jsonBody, figuresController.update);
 router.delete('/figures/:slug',       ...guarded, figuresController.remove);
-router.get('/client/pmt.py',          ...guarded, figuresController.pmtPy);
+router.get('/client/starter.py',      ...guarded, figuresController.pmtPy);
+router.get('/client/pmt.py',          ...guarded, figuresController.pmtPy); // compatibility alias
 
 // ───────── Live figures (scripts the server re-runs on data changes) ─────────
 // pmt.publish_script() posts the script; the server dry-runs it sandboxed
@@ -135,6 +136,18 @@ router.get('/export/receivers',          analysisController.exportReceivers);
 router.get('/export/courses',            analysisController.exportCourses);
 router.get('/export/university-courses', analysisController.exportUniversityCourses);
 
+// ───────── Tasks (the team's kanban over figures/analyses/audits) ─────────
+// Open to every console user — everyone may edit anything (3-person team
+// decision); writes are stamped with who. /tasks/roster is registered before
+// the '/tasks/:id' verbs so "roster" is never parsed as a task id.
+const tasksController = require('../controllers/Tasks');
+router.use('/tasks', ...guarded);
+router.get('/tasks',           tasksController.list);
+router.get('/tasks/roster',    tasksController.roster);
+router.post('/tasks',          jsonBody, tasksController.create);
+router.put('/tasks/:id',       jsonBody, tasksController.update);
+router.delete('/tasks/:id',    tasksController.remove);
+
 // ───────── Admin (dataset visibility + partner access) ─────────
 // Admins come from ADMIN_UIDS (env); partners from access_grants (managed
 // here). Data porting itself runs locally via scripts/port.py — the hosted
@@ -150,6 +163,9 @@ router.get('/admin/dataset',            adminController.getDataset);
 router.get('/admin/access',             adminController.listAccess);
 router.post('/admin/access',            jsonBody, adminController.grantAccess);
 router.delete('/admin/access/:uid',     adminController.revokeAccess);
+// Editable display names per account (shown for task assignees + figure authors).
+router.get('/admin/team',               adminController.listTeam);
+router.put('/admin/team/:uid',          jsonBody, adminController.setTeamName);
 // Pending sign-in requests (filed by /access/request; granting clears them).
 router.get('/admin/access-requests',        accessRequestsController.adminList);
 router.delete('/admin/access-requests/:uid', accessRequestsController.adminDismiss);

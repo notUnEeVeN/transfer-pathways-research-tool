@@ -9,7 +9,7 @@ const PYTHON = (() => {
   try { return execSync('which python3', { encoding: 'utf8' }).trim(); } catch { return null; }
 })();
 
-describe('pmt.py template', () => {
+describe('starter.py template', () => {
   const src = pmtPy('https://research.example.org');
 
   it('lets the runner override the baked API base via PMT_API_URL', () => {
@@ -29,6 +29,14 @@ describe('pmt.py template', () => {
     expect(src).toContain('def get(path, **params):');
     expect(src).toContain('def publish(file, slug, title');
     expect(src).toContain('pmt.publish("my_figure.py", slug="my-figure", title="My figure")');
+    expect(src).toContain('publish("hello_figure.py", slug="hello-figure", title="Hello figure")');
+    expect(src).toContain('import starter as pmt');
+    expect(src).toContain('Create a file called hello_figure.py');
+    expect(src).toContain('"""\nimport matplotlib.pyplot as plt');
+    expect(src).toContain('fig, ax = plt.subplots()');
+    expect(src).not.toContain('HELLO_FIGURE_PY');
+    expect(src).not.toContain('PUBLISH_HELLO_FIGURE');
+    expect(src).not.toMatch(/^# import matplotlib/m);
     expect(src).toContain('fetch = get');
     expect(src).not.toContain('def publish_static(');
     expect(src).not.toContain('def publish_script(');
@@ -46,7 +54,7 @@ describe('pmt.py template', () => {
 
   it.skipIf(!PYTHON)('is valid python (py_compile passes on the rendered source)', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pmtpy-test-'));
-    const file = path.join(dir, 'pmt.py');
+    const file = path.join(dir, 'starter.py');
     fs.writeFileSync(file, src);
     try {
       execSync(`${PYTHON} -m py_compile ${JSON.stringify(file)}`, { encoding: 'utf8' });

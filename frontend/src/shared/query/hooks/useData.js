@@ -346,14 +346,14 @@ export function useDetachFigureScript() {
   })
 }
 
-// pmt.py client, base URL baked in server-side. staleTime 0 → refetch on mount
+// starter.py client, base URL baked in server-side. staleTime 0 → refetch on mount
 // so redeploys show up (cache persists to IndexedDB; stale-forever would survive
 // reloads).
 export function usePmtPy() {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['pmt-py', user?.uid],
-    queryFn: () => apiClient.get('/client/pmt.py', { responseType: 'text' }).then((r) => r.data),
+    queryKey: ['starter-py', user?.uid],
+    queryFn: () => apiClient.get('/client/starter.py', { responseType: 'text' }).then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 0,
   })
@@ -370,4 +370,72 @@ export async function downloadFigure(slug, format) {
   a.download = name
   a.click()
   URL.revokeObjectURL(url)
+}
+
+// ── tasks (shared board) ──
+
+export function useTasks() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['tasks', user?.uid],
+    // Whole { rows, dataset_version } envelope — consumers want the version too.
+    queryFn: () => apiClient.get('/tasks').then((r) => r.data),
+    enabled: !!user?.uid,
+    // Teammates edit the shared board while the tab is open (same reasoning
+    // as useFigures).
+    refetchInterval: 30 * 1000,
+    staleTime: 15 * 1000,
+  })
+}
+
+export function useTaskRoster() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['task-roster', user?.uid],
+    queryFn: () => apiClient.get('/tasks/roster').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+export function useCreateTask() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (task) => apiClient.post('/tasks', task).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+  })
+}
+
+// Optimistic: drag-and-drop moves a card locally, so the board must not flicker
+// back while the PUT is in flight. Patch the cached row immediately, roll back
+// on error, and reconcile with the server in onSettled either way.
+export function useUpdateTask() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, patch }) => apiClient.put(`/tasks/${id}`, patch).then((r) => r.data),
+    onMutate: async ({ id, patch }) => {
+      await qc.cancelQueries({ queryKey: ['tasks'] })
+      const previous = qc.getQueriesData({ queryKey: ['tasks'] })
+      qc.setQueriesData({ queryKey: ['tasks'] }, (old) => {
+        if (!old?.rows) return old
+        return {
+          ...old,
+          rows: old.rows.map((row) => (row._id === id ? { ...row, ...patch } : row)),
+        }
+      })
+      return { previous }
+    },
+    onError: (_err, _vars, context) => {
+      for (const [queryKey, data] of context?.previous || []) qc.setQueryData(queryKey, data)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+  })
+}
+
+export function useDeleteTask() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id) => apiClient.delete(`/tasks/${id}`).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+  })
 }

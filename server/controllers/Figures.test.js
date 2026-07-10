@@ -221,7 +221,7 @@ describe('DELETE /figures/:slug', () => {
   });
 });
 
-describe('GET /client/pmt.py', () => {
+describe('GET /client/starter.py', () => {
   it('serves the python client with the API base URL baked in', async () => {
     const res = await run(pmtPy, fakeReq({ uid: 'u1' }, { protocol: 'https', host: 'api.example.test' }));
     expect(res.headers['Content-Type']).toContain('text/x-python');
@@ -229,5 +229,6 @@ describe('GET /client/pmt.py', () => {
     expect(res.body).toContain('def get(');
     expect(res.body).toContain('def publish(');
     expect(res.body).toContain('PMT_TOKEN');
+    expect(res.body).toContain('Create a file called hello_figure.py');
   });
 });

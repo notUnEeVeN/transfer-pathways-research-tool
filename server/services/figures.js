@@ -12,6 +12,8 @@
  *              author_label, dataset_version, formats: { svg, png, pdf },
  *              created_at, updated_at }
  */
+const { getDisplayName } = require('./displayNames');
+
 const COLLECTION = 'figures';
 
 const SLUG_RE = /^[a-z0-9][a-z0-9_-]{0,63}$/;
@@ -59,6 +61,12 @@ const shortUidLabel = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : null);
 // (the usual publish path) only carry a uid, so fall back to the partner's
 // grant email, then a durable token label, then a short UID label.
 async function resolveAuthorLabel(auditDb, user = {}) {
+  // An admin-set display name wins over everything, so names read consistently
+  // across task assignees and figure authors (services/displayNames.js).
+  if (user.uid) {
+    const name = await getDisplayName(auditDb, user.uid);
+    if (name) return name;
+  }
   if (user.email) return user.email;
   if (!user.uid) return null;
   const grant = await auditDb.collection('access_grants').findOne({ _id: user.uid }, { projection: { email: 1 } });

@@ -11,7 +11,7 @@ import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import DataPage, { AnalysisTab } from './DataPage'
 import ApiPage from './DataApiDocs'
-import DatasetSummaryPanel from './components/DatasetSummaryPanel'
+import TasksPage from './tasks/TasksPage'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
 // Stats components reused individually for a spacious full-width dashboard.
@@ -172,6 +172,7 @@ function Console({ role, user }) {
                 { value: 'data',    label: 'Data' },
                 { value: 'visuals', label: 'Visuals' },
                 { value: 'audit',   label: 'Audit' },
+                { value: 'tasks',   label: 'Tasks' },
                 { value: 'api',     label: 'API' },
                 ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
               ]} />
@@ -191,6 +192,13 @@ function Console({ role, user }) {
             <div className='h-full overflow-auto'>
               <div className='mx-auto max-w-screen-2xl px-6 py-6'>
                 <AnalysisTab onNavigate={setView} />
+              </div>
+            </div>
+          )}
+          {view === 'tasks' && (
+            <div className='h-full overflow-auto'>
+              <div className='mx-auto max-w-screen-2xl px-6 py-6'>
+                <TasksPage />
               </div>
             </div>
           )}
@@ -264,9 +272,6 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
     <div className='h-full overflow-auto'>
       <div className='mx-auto max-w-screen-2xl px-8 py-8'>
         <Stack gap='section'>
-          {/* What's IN the dataset (scoped to this account) — audit progress
-              below covers what's been verified of it. */}
-          <DatasetSummaryPanel compact />
           <ScopeLine stats={stats} />
           <StatStrip tiles={buildStrip(stats)} />
           <InterpretationBanner stats={stats} />

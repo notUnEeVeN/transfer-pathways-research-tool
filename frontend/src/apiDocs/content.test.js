@@ -37,7 +37,7 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     expect(paths).toContain('/export/receivers')
     expect(paths).toContain('/analysis/coverage')
     expect(paths).toContain('/figures')
-    expect(paths).toContain('/client/pmt.py')
+    expect(paths).toContain('/client/starter.py')
   })
 
   it('withholds the analyses and figures groups from the partner-facing set', () => {
@@ -72,7 +72,8 @@ describe('starter + publish content', () => {
   })
 
   it('bootstrap curl bakes in the base url', () => {
-    expect(curlBootstrap('https://x.test')).toContain('https://x.test/client/pmt.py')
+    expect(curlBootstrap('https://x.test')).toContain('https://x.test/client/starter.py')
+    expect(curlBootstrap('https://x.test')).toContain('-o starter.py')
   })
 })
 
@@ -114,7 +115,7 @@ describe('buildAiBriefing', () => {
 
   it('teaches the AI the publish workflow', () => {
     expect(md).toContain('pmt.publish')
-    expect(md).toContain('/client/pmt.py')
+    expect(md).toContain('/client/starter.py')
     expect(md).not.toContain('publish_script')
     expect(md).not.toContain('publish_static')
   })

@@ -215,3 +215,29 @@ export function useRevokeAccess() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-access'] }),
   })
 }
+
+// ── team display names (admin) ──
+
+export function useTeam() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['admin-team', user?.uid],
+    queryFn: () => apiClient.get('/admin/team').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 30 * 1000,
+  })
+}
+
+export function useSetTeamName() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ uid, name }) => apiClient.put(`/admin/team/${uid}`, { name }).then((r) => r.data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['admin-team'] })
+      // Names feed the task assignee picker and any resolved author label.
+      qc.invalidateQueries({ queryKey: ['task-roster'] })
+      qc.invalidateQueries({ queryKey: ['tasks'] })
+      qc.invalidateQueries({ queryKey: ['figures'] })
+    },
+  })
+}

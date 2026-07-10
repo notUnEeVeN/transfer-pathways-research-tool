@@ -60,4 +60,4 @@ async function isConsoleAllowed(uid, auditDb, env = process.env) {
   return (await grantedUids(auditDb)).has(uid);
 }
 
-module.exports = { parseUids, isAdmin, isConsoleAllowed, invalidateGrantsCache };
+module.exports = { parseUids, adminUids, isAdmin, isConsoleAllowed, invalidateGrantsCache };

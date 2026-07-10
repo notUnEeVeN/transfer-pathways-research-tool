@@ -8,7 +8,7 @@ import {
   useVisibleMajors, useSetVisibleMajors, useRefreshStatus, useStartRefresh,
   useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
   useAnalysisReleases, useSetAnalysisReleases, useSetAnalysisDisabled,
-  useFigureRunner, useSetFigureRunner,
+  useFigureRunner, useSetFigureRunner, useTeam, useSetTeamName,
 } from '@frontend/query/hooks/useAccess'
 
 /**
@@ -27,6 +27,7 @@ export default function AdminPage() {
       <Stack gap='section'>
         <SignInRequestsPanel />
         <BlockedAccountsPanel />
+        <TeamNamesPanel />
         <MajorAccessPanel />
         <AnalysisReleasePanel />
         <FigureRunnerPanel />
@@ -510,6 +511,59 @@ function DatasetPanel() {
             </div>
           ))}
         </div>
+      </div>
+    </Stack>
+  )
+}
+
+// Editable display name per account, so task assignees and figure authors read
+// as real names instead of a mix of emails and short UIDs. One row per account
+// (env admins + granted partners); the email/uid fallback is shown so you know
+// who's who. Saving a blank name clears it (reverts to the fallback).
+function TeamNameRow({ member, onSave, saving }) {
+  const [name, setName] = useState(member.name || '')
+  useEffect(() => { setName(member.name || '') }, [member.name])
+  const dirty = name.trim() !== (member.name || '')
+  return (
+    <div className='py-2 flex items-center gap-3'>
+      <div className='min-w-0 w-56 shrink-0'>
+        <p className='text-body break-words'>{member.email || <span className='font-mono text-caption'>{member.uid}</span>}</p>
+        <p className='text-tag text-ink-subtle'>{member.is_admin ? 'admin' : 'partner'}{member.email ? ` · ${member.uid.slice(0, 10)}…` : ''}</p>
+      </div>
+      <Input className='flex-1' value={name} onChange={(e) => setName(e.target.value)} placeholder='Display name' />
+      <Button variant={dirty ? 'primary' : 'ghost'} disabled={!dirty || saving}
+        onClick={() => onSave(member.uid, name.trim())}>Save</Button>
+    </div>
+  )
+}
+
+function TeamNamesPanel() {
+  const team = useTeam()
+  const setName = useSetTeamName()
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Team names</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Give each account a display name. It's what shows for task assignees
+          and figure authors everywhere in the console — instead of the mix of
+          emails and UIDs. Clear a name to fall back to the email/UID.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {team.isLoading ? <Spinner /> : team.isError ? (
+          <Alert type='error'>Failed to load the team.</Alert>
+        ) : !(team.data?.rows || []).length ? (
+          <p className='text-caption text-ink-subtle'>No accounts yet — grant a partner or set ADMIN_UIDS.</p>
+        ) : (
+          <div className='divide-y divide-border/60'>
+            {team.data.rows.map((m) => (
+              <TeamNameRow key={m.uid} member={m} saving={setName.isPending}
+                onSave={(uid, name) => setName.mutate({ uid, name })} />
+            ))}
+          </div>
+        )}
+        {setName.isError && <Alert type='error' className='mt-3'>Could not save the name.</Alert>}
       </div>
     </Stack>
   )

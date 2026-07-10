@@ -13,7 +13,7 @@ const PYTHON = (() => {
   try { return execSync('which python3', { encoding: 'utf8' }).trim(); } catch { return null; }
 })();
 
-const PMT_STUB = '# pmt.py stub written by the runner\n';
+const PMT_STUB = '# starter.py stub written by the runner\n';
 
 let workRoot;
 beforeEach(async () => {
@@ -72,16 +72,22 @@ json.dump({"env": dict(os.environ)}, open(os.environ["PMT_CAPTURE"], "w"))
     }
   });
 
-  it('places pmt.py next to the script so `import pmt` resolves', async () => {
+  it('places starter.py and pmt.py next to the script so both import names resolve', async () => {
     const result = await run(`
 import json, os
-json.dump({"files": sorted(os.listdir(".")), "pmt_head": open("pmt.py").read()[:10]},
+json.dump({
+  "files": sorted(os.listdir(".")),
+  "pmt_head": open("pmt.py").read()[:10],
+  "starter_head": open("starter.py").read()[:10],
+},
           open(os.environ["PMT_CAPTURE"], "w"))
 `);
     expect(result.status).toBe('ok');
+    expect(result.captured.files).toContain('starter.py');
     expect(result.captured.files).toContain('pmt.py');
     expect(result.captured.files).toContain('script.py');
     expect(result.captured.pmt_head).toBe(PMT_STUB.slice(0, 10));
+    expect(result.captured.starter_head).toBe(PMT_STUB.slice(0, 10));
   });
 
   it('reports a raising script as error with the traceback in the log', async () => {
