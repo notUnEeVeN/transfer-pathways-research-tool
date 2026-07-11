@@ -185,25 +185,20 @@ describe('listRoster', () => {
     else process.env.ADMIN_UIDS = savedAdminUids;
   });
 
-  it('merges env admins with grants, preferring grant emails as labels', async () => {
+  it('merges env admins with grants, but only accounts with a display name set', async () => {
     process.env.ADMIN_UIDS = 'admin-uid-1,admin-uid-2';
     await db.collection('access_grants').insertMany([
       { _id: 'partner-uid-1', email: 'zoe@example.edu' },
-      { _id: 'admin-uid-1', email: 'alice@example.edu' }, // admin with a grant → email label
+      { _id: 'admin-uid-1', email: 'alice@example.edu' }, // admin with a grant → still needs a name
     ]);
+    await db.collection('display_names').insertOne({ _id: 'admin-uid-1', name: 'Alice' });
 
     const rows = await listRoster(db);
-    expect(rows).toHaveLength(3); // admin-uid-1 appears once despite being in both sources
-    expect(rows.map((r) => r.label)).toEqual([
-      'alice@example.edu',
-      'UID admin-ui', // no grant, no token → short-uid fallback
-      'zoe@example.edu',
-    ]); // sorted by label
-    expect(rows.find((r) => r.label === 'alice@example.edu').uid).toBe('admin-uid-1');
-    expect(rows.find((r) => r.uid === 'partner-uid-1').label).toBe('zoe@example.edu');
+    // admin-uid-2 (no name) and partner-uid-1 (no name) are excluded
+    expect(rows).toEqual([{ uid: 'admin-uid-1', label: 'Alice' }]);
   });
 
-  it('an admin-set display name wins over the email/uid fallback', async () => {
+  it('an admin-set display name is the only label used', async () => {
     process.env.ADMIN_UIDS = 'admin-uid-1';
     await db.collection('access_grants').insertOne({ _id: 'partner-uid-1', email: 'zoe@example.edu' });
     await db.collection('display_names').insertMany([
@@ -214,13 +209,13 @@ describe('listRoster', () => {
     expect(rows.map((r) => r.label)).toEqual(['Tybalt', 'Zoe M.']);
   });
 
-  it('falls back to a durable api token label before the short uid', async () => {
+  it('leaves out accounts with no display name set, even with a durable api token label', async () => {
     process.env.ADMIN_UIDS = 'admin-uid-9';
     await db.collection('api_tokens').insertOne({
       _id: 'hash', uid: 'admin-uid-9', label: 'laptop-notebook', created_at: new Date(), last_used_at: null,
     });
     const rows = await listRoster(db);
-    expect(rows).toEqual([{ uid: 'admin-uid-9', label: 'laptop-notebook' }]);
+    expect(rows).toEqual([]);
   });
 });
 

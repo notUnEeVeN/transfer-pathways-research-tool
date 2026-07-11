@@ -34,7 +34,7 @@ exports.listTeam = asyncHandler(async (req, res) => {
   const admins = adminUids();
   const uids = [...new Set([...admins, ...grants.map((g) => String(g._id))])];
   const rows = uids
-    .map((uid) => ({ uid, name: names.get(uid) ?? null, email: emailOf.get(uid) ?? null, is_admin: admins.includes(uid) }))
+    .map((uid) => ({ uid, name: names.get(uid) ?? null, email: emailOf.get(uid) ?? null, is_admin: admins.has(uid) }))
     .sort((a, b) => String(a.name || a.email || a.uid).localeCompare(String(b.name || b.email || b.uid)));
   res.json({ rows });
 });

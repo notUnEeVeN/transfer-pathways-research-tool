@@ -20,8 +20,8 @@
  */
 const crypto = require('crypto');
 const { currentDatasetVersion } = require('./datasetVersion');
-const { resolveAuthorLabel } = require('./figures');
 const { adminUids } = require('./access');
+const { listDisplayNames } = require('./displayNames');
 
 const COLLECTION = 'tasks';
 const GRANTS = 'access_grants';
@@ -158,15 +158,17 @@ async function deleteTask(auditDb, id) {
 
 // ── roster ──
 
-// Who a task can be assigned to: every console user — ADMIN_UIDS (env) plus
-// the access_grants collection. Labels come from the same chain the figure
-// gallery uses (grant email → durable token label → short UID).
+// Who a task can be assigned to: console users — ADMIN_UIDS (env) plus the
+// access_grants collection — who have an admin-set display name. Unnamed
+// accounts are left off the picker so assignees always read as real names,
+// never an email/token/short-UID fallback.
 async function listRoster(auditDb) {
   const grants = await auditDb.collection(GRANTS).find({}, { projection: { _id: 1 } }).toArray();
   const uids = new Set([...adminUids(), ...grants.map((g) => String(g._id))]);
-  const rows = await Promise.all(
-    [...uids].map(async (uid) => ({ uid, label: await resolveAuthorLabel(auditDb, { uid }) }))
-  );
+  const names = await listDisplayNames(auditDb);
+  const rows = [...uids]
+    .filter((uid) => names.has(uid))
+    .map((uid) => ({ uid, label: names.get(uid) }));
   rows.sort((a, b) => String(a.label).localeCompare(String(b.label)));
   return rows;
 }
