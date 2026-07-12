@@ -203,43 +203,6 @@ export const ENDPOINT_GROUPS = [
       },
     ],
   },
-  {
-    id: 'tasks',
-    title: 'Tasks',
-    blurb: 'Porting workflow logs, derived progress, and peer approval.',
-    endpoints: [
-      {
-        method: 'GET', path: '/tasks', title: 'Shared board',
-        plain: 'All tasks plus the available task types and stage definitions.',
-        returns: '{ task_types, workflows, rows }',
-      },
-      {
-        method: 'POST', path: '/tasks', title: 'Create a porting task',
-        plain: 'Send at least { title }. Progress begins at zero and cannot be set directly.',
-        returns: 'created task',
-      },
-      {
-        method: 'PUT', path: '/tasks/:id', title: 'Update task metadata',
-        plain: 'A partial update for title, description, assignment, order, status, notes, or archive state.',
-        returns: 'updated task',
-      },
-      {
-        method: 'POST', path: '/tasks/:id/stages/:stage/notes', title: 'Append a stage note',
-        plain: 'Send { note } at any time. Notes are iterative and do not complete the stage.',
-        returns: 'updated task',
-      },
-      {
-        method: 'POST', path: '/tasks/:id/stages/:stage/complete', title: 'Complete a stage',
-        plain: 'Stages complete in order. Team approval requires a review note from someone other than the creator.',
-        returns: 'updated task',
-      },
-      {
-        method: 'POST', path: '/tasks/:id/stages/:stage/reopen', title: 'Reopen from a stage',
-        plain: 'Send { note }; this reopens the selected stage and every downstream stage and recalculates progress.',
-        returns: 'updated task',
-      },
-    ],
-  },
 ]
 
 export const PARTNER_ENDPOINT_GROUPS = ENDPOINT_GROUPS

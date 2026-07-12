@@ -28,13 +28,14 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     }
   })
 
-  it('covers the canonical source, curated, export, and task surfaces', () => {
+  it('covers the teammate-facing source, curated, export, and spot-check surfaces', () => {
     const paths = allEndpoints.map((e) => e.path)
     expect(paths).toContain('/data/summary')
     expect(paths).toContain('/assist/institutions?kind=community_college')
     expect(paths).toContain('/curated/requirements?kind=transfer_minimum')
     expect(paths).toContain('/exports/receivers')
-    expect(paths).toContain('/tasks')
+    expect(paths).toContain('/audit/doc/:agreementId')
+    expect(paths.some((path) => path.startsWith('/tasks'))).toBe(false)
   })
 
   it('publishes only the permanent /api contract', () => {
