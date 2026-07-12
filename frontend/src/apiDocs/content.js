@@ -18,14 +18,14 @@ export const GETTING_STARTED_NOTES = [
 ]
 
 export const STARTER_EXPLANATION =
-  'One local helper: get() reads shared data and publish() renders your matplotlib figure locally before sharing the finished files.'
+  'One local helper: get() reads shared data and publish() renders one figure or named static states locally before sharing the finished files.'
 
 export const STARTER_STEPS = [
   ['Create a token', 'Generate a personal token in the Tokens tab. Keep it out of shared notebooks.'],
   ['Get starter.py', 'Download the file below and keep it beside your notebook or analysis script.'],
   ['Set the token', 'Set PMT_TOKEN in your shell, or place the token in TOKEN at the top of your local starter.py.'],
   ['Read data', 'Call pmt.get("exports/receivers") or another path from the Endpoints tab. It returns a pandas DataFrame when the response contains rows.'],
-  ['Publish a figure', 'Pass the completed matplotlib Figure to pmt.publish(fig, slug=..., title=...). Your machine creates SVG, PNG, and PDF; only those files are uploaded.'],
+  ['Publish a figure', 'Pass one completed Figure to pmt.publish(fig, ...), or pass named variants for controls such as ASSIST vs hand-curated. Your machine creates every SVG, PNG, and PDF; only those files are uploaded.'],
 ]
 
 export const ENDPOINT_GROUPS = [
@@ -335,7 +335,7 @@ export function buildAiBriefing(base) {
       ...group.endpoints.map(mdEndpoint),
     ]),
     '## Publishing',
-    'Build the matplotlib Figure locally, then call pmt.publish(fig, ...). The local client renders SVG, PNG, and PDF and uploads only those finished files. No Python code runs on the server.',
+    'Build the matplotlib Figure locally, then call pmt.publish(fig, ...). For a finite switch such as ASSIST vs hand-curated, pass variants with figure, key, label, and state fields plus declarative controls. The local client renders every SVG, PNG, and PDF and uploads only those finished files. No Python code runs on the server.',
     '```python\n' + EXAMPLE_FIGURE_SCRIPT + '\n```',
     '## Data model',
     ...GUIDE_SECTIONS.flatMap((section) => [

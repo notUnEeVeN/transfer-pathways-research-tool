@@ -9,7 +9,8 @@ import { useAccessMe, useRequestAccess } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
-import DataPage, { AnalysisTab } from './DataPage'
+import DataPage from './DataPage'
+import VisualsPage from './visuals/VisualsPage'
 import ApiPage from './DataApiDocs'
 import TasksPage from './tasks/TasksPage'
 import SignInScreen from './SignInScreen'
@@ -191,7 +192,7 @@ function Console({ role, user }) {
           {view === 'visuals' && (
             <div className='h-full overflow-auto'>
               <div className='mx-auto max-w-screen-2xl px-6 py-6'>
-                <AnalysisTab onNavigate={setView} />
+                <VisualsPage onNavigate={setView} />
               </div>
             </div>
           )}

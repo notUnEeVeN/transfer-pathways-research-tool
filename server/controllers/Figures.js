@@ -36,7 +36,9 @@ exports.list = asyncHandler(async (req, res) => {
 });
 
 exports.download = asyncHandler(async (req, res) => {
-  const file = await getFigureFormat(auditHandle(req), req.params.slug, req.params.format);
+  const file = await getFigureFormat(
+    auditHandle(req), req.params.slug, req.params.format, req.params.variant || null
+  );
   if (!file) return res.status(404).json({ error: 'no such figure/format' });
   res.setHeader('Content-Type', file.contentType);
   res.setHeader('Content-Disposition', `attachment; filename="${file.filename}"`);

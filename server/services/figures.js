@@ -2,13 +2,23 @@
  * Published figures — the team's shared statistics gallery.
  *
  * Partners render figures on their own machines and publish only the finished
- * SVG/PNG/PDF files through pmt.publish(fig, ...). One document is stored per
- * slug (latest owner publish wins); no Python code is uploaded or executed.
+ * SVG/PNG/PDF files through pmt.publish(fig, ...). One root is stored per slug
+ * (latest owner publish wins), with child records only for additional static
+ * states; no Python code is uploaded or executed.
  *
  * Storage (audit handle):
- *   published_figures: { _id: slug, title, caption, source_url, author_uid,
- *              author_label, formats: { svg: Binary, png: Binary, pdf: Binary },
- *              created_at, updated_at }
+ *   published_figures root:
+ *     { _id: slug, title, caption, source_url, author_uid, author_label,
+ *       formats: { svg, png, pdf }, controls?, variants?, default_variant?,
+ *       created_at, updated_at }
+ *
+ *   published_figures non-default variant:
+ *     { _id: `${slug}::${key}`, record_type: 'figure_variant',
+ *       figure_slug: slug, variant_key: key, formats: { svg, png, pdf } }
+ *
+ * The root always owns the default files, preserving the original one-document
+ * contract. Extra variants are child records so a multi-state figure cannot
+ * run into MongoDB's 16 MiB document limit.
  */
 const { getDisplayName } = require('./displayNames');
 const { getMember } = require('./teamMembers');
@@ -16,23 +26,21 @@ const { getMember } = require('./teamMembers');
 const COLLECTION = 'published_figures';
 
 const SLUG_RE = /^[a-z0-9][a-z0-9_-]{0,63}$/;
+const CONTROL_KEY_RE = /^[a-z][a-z0-9_-]{0,31}$/;
 const FORMATS = { svg: 'image/svg+xml', png: 'image/png', pdf: 'application/pdf' };
-// Keep the whole BSON document safely below MongoDB's 16 MiB document limit.
-// Binary is stored directly instead of base64, which also avoids 33% storage
-// overhead. A normal 300-dpi paper figure is comfortably below this total.
-const MAX_TOTAL_BYTES = 12 * 1024 * 1024;
+const VARIANT_RECORD = 'figure_variant';
+const MAX_VARIANTS = 16;
+// Each stored file set remains safely below MongoDB's 16 MiB document limit.
+// The larger request cap covers several independent child records in one
+// publication while still bounding memory use for this private API.
+const MAX_FILESET_BYTES = 12 * 1024 * 1024;
+const MAX_PUBLISH_BYTES = 48 * 1024 * 1024;
 
 const b64Bytes = (s) => Math.floor((s.length * 3) / 4);
 
-// Returns { error } or { value: clean payload }.
-function validateFigurePayload(body = {}) {
-  const { slug, title, caption, source_url, formats } = body;
-  if (typeof slug !== 'string' || !SLUG_RE.test(slug)) {
-    return { error: 'slug must be 1-64 chars of a-z 0-9 - _ (e.g. "coverage-heatmap")' };
-  }
-  if (typeof title !== 'string' || !title.trim()) return { error: 'title required' };
+function validateFormats(formats, field = 'formats') {
   if (!formats || typeof formats !== 'object' || typeof formats.svg !== 'string' || !formats.svg) {
-    return { error: 'formats.svg required (base64) — publish from pmt.py renders it automatically' };
+    return { error: `${field}.svg required (base64) - publish from pmt.py renders it automatically` };
   }
   const clean = {};
   let totalBytes = 0;
@@ -42,16 +50,130 @@ function validateFigurePayload(body = {}) {
     totalBytes += b64Bytes(data);
     clean[fmt] = data;
   }
-  if (totalBytes > MAX_TOTAL_BYTES) {
-    return { error: `figure files exceed ${Math.round(MAX_TOTAL_BYTES / 1024 / 1024)}MB total — reduce the PNG size/dpi` };
+  if (totalBytes > MAX_FILESET_BYTES) {
+    return { error: `${field} files exceed 12MB total - reduce the PNG size/dpi` };
   }
+  return { value: clean, totalBytes };
+}
+
+function validateControls(rawControls, variants) {
+  if (rawControls == null) return { value: [] };
+  if (!Array.isArray(rawControls) || rawControls.length > 6) {
+    return { error: 'controls must be an array with at most 6 entries' };
+  }
+  const controls = [];
+  const seen = new Set();
+  for (const raw of rawControls) {
+    if (!raw || typeof raw !== 'object' || !CONTROL_KEY_RE.test(String(raw.key || ''))) {
+      return { error: 'each control needs a lowercase key (a-z, 0-9, - or _)' };
+    }
+    const key = String(raw.key);
+    if (seen.has(key)) return { error: `duplicate control key "${key}"` };
+    seen.add(key);
+    const label = typeof raw.label === 'string' && raw.label.trim() ? raw.label.trim() : key;
+    if (raw.type === 'toggle') {
+      controls.push({ key, label, type: 'toggle', default: Boolean(raw.default) });
+      continue;
+    }
+    if (raw.type !== 'select' || !Array.isArray(raw.options) || raw.options.length < 2 || raw.options.length > 12) {
+      return { error: `control "${key}" must be a toggle or a select with 2-12 options` };
+    }
+    const optionValues = new Set();
+    const options = [];
+    for (const option of raw.options) {
+      const value = String(option?.value ?? '').trim();
+      const optionLabel = String(option?.label ?? '').trim();
+      if (!value || !optionLabel || optionValues.has(value)) {
+        return { error: `control "${key}" has an invalid or duplicate option` };
+      }
+      optionValues.add(value);
+      options.push({ value, label: optionLabel });
+    }
+    const fallback = options[0].value;
+    const defaultValue = optionValues.has(String(raw.default)) ? String(raw.default) : fallback;
+    controls.push({ key, label, type: 'select', options, default: defaultValue });
+  }
+
+  for (const variant of variants) {
+    const state = variant.state || {};
+    for (const control of controls) {
+      if (!(control.key in state)) return { error: `variant "${variant.key}" is missing state.${control.key}` };
+      if (control.type === 'toggle' && typeof state[control.key] !== 'boolean') {
+        return { error: `variant "${variant.key}" state.${control.key} must be true or false` };
+      }
+      if (control.type === 'select' && !control.options.some((option) => option.value === String(state[control.key]))) {
+        return { error: `variant "${variant.key}" has an unknown state.${control.key}` };
+      }
+    }
+  }
+  return { value: controls };
+}
+
+// Returns { error } or { value: clean payload }.
+function validateFigurePayload(body = {}) {
+  const { slug, title, caption, source_url, formats } = body;
+  if (typeof slug !== 'string' || !SLUG_RE.test(slug)) {
+    return { error: 'slug must be 1-64 chars of a-z 0-9 - _ (e.g. "coverage-heatmap")' };
+  }
+  if (typeof title !== 'string' || !title.trim()) return { error: 'title required' };
+  let totalBytes = 0;
+  let cleanFormats = null;
+  let variants = null;
+
+  if (body.variants != null) {
+    if (!Array.isArray(body.variants) || body.variants.length < 2 || body.variants.length > MAX_VARIANTS) {
+      return { error: `variants must contain 2-${MAX_VARIANTS} figure states` };
+    }
+    const seen = new Set();
+    variants = [];
+    for (const raw of body.variants) {
+      const key = String(raw?.key || '');
+      if (!SLUG_RE.test(key) || seen.has(key)) return { error: `invalid or duplicate variant key "${key}"` };
+      seen.add(key);
+      const checked = validateFormats(raw.formats, `variants.${key}.formats`);
+      if (checked.error) return checked;
+      totalBytes += checked.totalBytes;
+      const state = raw.state && typeof raw.state === 'object' && !Array.isArray(raw.state)
+        ? { ...raw.state }
+        : {};
+      variants.push({
+        key,
+        label: typeof raw.label === 'string' && raw.label.trim() ? raw.label.trim() : key,
+        state,
+        formats: checked.value,
+      });
+    }
+    const defaultVariant = String(body.default_variant || variants[0].key);
+    if (!seen.has(defaultVariant)) return { error: 'default_variant must name one of the variants' };
+    const controls = validateControls(body.controls, variants);
+    if (controls.error) return controls;
+    if (totalBytes > MAX_PUBLISH_BYTES) {
+      return { error: 'variant files exceed 48MB total - reduce the number of variants or PNG dpi' };
+    }
+    cleanFormats = variants.find((variant) => variant.key === defaultVariant).formats;
+    return {
+      value: {
+        slug,
+        title: title.trim(),
+        caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
+        source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
+        formats: cleanFormats,
+        variants,
+        controls: controls.value,
+        default_variant: defaultVariant,
+      },
+    };
+  }
+
+  const checked = validateFormats(formats);
+  if (checked.error) return checked;
   return {
     value: {
       slug,
       title: title.trim(),
       caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
       source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
-      formats: clean,
+      formats: checked.value,
     },
   };
 }
@@ -81,20 +203,41 @@ async function resolveAuthorLabel(auditDb, user = {}) {
 
 async function upsertFigure(auditDb, payload, { author_uid, author_label }) {
   const now = new Date();
-  const { slug, formats, ...rest } = payload;
-  const binaryFormats = Object.fromEntries(
-    Object.entries(formats).map(([format, value]) => [format, Buffer.from(value, 'base64')])
+  const { slug, formats, variants, controls, default_variant, ...rest } = payload;
+  const toBinary = (input) => Object.fromEntries(
+    Object.entries(input).map(([format, value]) => [format, Buffer.from(value, 'base64')])
   );
+  const children = (variants || [])
+    .filter((variant) => variant.key !== default_variant)
+    .map((variant) => ({
+      _id: `${slug}::${variant.key}`,
+      record_type: VARIANT_RECORD,
+      figure_slug: slug,
+      variant_key: variant.key,
+      title: rest.title,
+      state: variant.state,
+      formats: toBinary(variant.formats),
+      created_at: now,
+      updated_at: now,
+    }));
+
+  await auditDb.collection(COLLECTION).deleteMany({ figure_slug: slug, record_type: VARIANT_RECORD });
+  if (children.length) await auditDb.collection(COLLECTION).insertMany(children);
+
+  const variantMeta = variants?.map(({ key, label, state }) => ({ key, label, state })) || null;
   await auditDb.collection(COLLECTION).updateOne(
     { _id: slug },
     {
       $set: {
         ...rest,
-        formats: binaryFormats,
+        record_type: 'figure',
+        formats: toBinary(formats),
         author_uid: author_uid ?? null,
         author_label: author_label ?? null,
         updated_at: now,
+        ...(variantMeta ? { variants: variantMeta, controls, default_variant } : {}),
       },
+      ...(!variantMeta ? { $unset: { variants: '', controls: '', default_variant: '' } } : {}),
       $setOnInsert: { created_at: now },
     },
     { upsert: true }
@@ -103,21 +246,23 @@ async function upsertFigure(auditDb, payload, { author_uid, author_label }) {
 
 async function listFigures(auditDb) {
   const docs = await auditDb.collection(COLLECTION)
-    .find({}, { projection: { 'formats.png': 0, 'formats.pdf': 0 } })
+    .find({ record_type: { $ne: VARIANT_RECORD } }, { projection: { formats: 0, record_type: 0 } })
     .sort({ updated_at: -1 })
     .toArray();
-  return docs.map(({ _id, formats, ...rest }) => ({
-    slug: String(_id),
-    svg: formats?.svg ? Buffer.from(formats.svg.buffer ?? formats.svg).toString('base64') : null,
-    ...rest,
-  }));
+  return docs.map(({ _id, ...rest }) => ({ slug: String(_id), ...rest }));
 }
 
-async function getFigureFormat(auditDb, slug, format) {
+async function getFigureFormat(auditDb, slug, format, variantKey = null) {
   const contentType = FORMATS[format];
   if (!contentType) return null;
-  const doc = await auditDb.collection(COLLECTION).findOne(
+  const root = await auditDb.collection(COLLECTION).findOne(
     { _id: slug },
+    { projection: { default_variant: 1, [`formats.${format}`]: 1 } }
+  );
+  if (!root) return null;
+  const useRoot = !variantKey || variantKey === root.default_variant;
+  const doc = useRoot ? root : await auditDb.collection(COLLECTION).findOne(
+    { figure_slug: slug, variant_key: variantKey, record_type: VARIANT_RECORD },
     { projection: { [`formats.${format}`]: 1 } }
   );
   const data = doc?.formats?.[format];
@@ -125,13 +270,15 @@ async function getFigureFormat(auditDb, slug, format) {
   return {
     contentType,
     buffer: Buffer.from(data.buffer ?? data),
-    filename: `${slug}.${format}`,
+    filename: `${slug}${variantKey ? `-${variantKey}` : ''}.${format}`,
   };
 }
 
 async function removeFigure(auditDb, slug) {
-  const { deletedCount } = await auditDb.collection(COLLECTION).deleteOne({ _id: slug });
-  return deletedCount > 0;
+  const root = await auditDb.collection(COLLECTION).deleteOne({ _id: slug });
+  if (!root.deletedCount) return false;
+  await auditDb.collection(COLLECTION).deleteMany({ figure_slug: slug, record_type: VARIANT_RECORD });
+  return true;
 }
 
 // author_uid for edit/delete gating. found:false = missing (404); null author
@@ -173,9 +320,18 @@ async function updateFigureMeta(auditDb, slug, fields) {
   return matchedCount > 0;
 }
 
+async function ensureFigureIndexes(auditDb) {
+  if (!auditDb) return;
+  await auditDb.collection(COLLECTION).createIndex({ record_type: 1, updated_at: -1 });
+  await auditDb.collection(COLLECTION).createIndex(
+    { figure_slug: 1, variant_key: 1 },
+    { partialFilterExpression: { record_type: VARIANT_RECORD } }
+  );
+}
+
 module.exports = {
   validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
-  getFigureAuthor, updateFigureMeta,
-  COLLECTION,
+  getFigureAuthor, updateFigureMeta, ensureFigureIndexes,
+  COLLECTION, VARIANT_RECORD,
 };

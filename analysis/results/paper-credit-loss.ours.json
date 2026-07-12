@@ -1,0 +1,307 @@
+{
+  "generated_by": "analysis/paper_credit_loss.py",
+  "generated_at": "2026-07-12T04:37:26+00:00",
+  "data_refreshed_at": "2026-07-11T16:30:59.444000",
+  "major_filter": "computer science",
+  "districts_total": 72,
+  "method": "paper Figure 1 replication: district-pooled optimal set cover over all P(9,4) choice permutations; see docs/figures/paper-credit-loss.md",
+  "campuses": [
+    {
+      "code": "UCD",
+      "id": "UC1*",
+      "school_id": 89,
+      "quarter": true,
+      "requirement": {
+        "native_count": 8,
+        "semester_equiv": 5.33,
+        "quarter_count": 8
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 7.15,
+          "districts_included": 27
+        },
+        {
+          "order": 2,
+          "transferable_average": 3.63,
+          "districts_included": 26
+        },
+        {
+          "order": 3,
+          "transferable_average": 2.55,
+          "districts_included": 24
+        },
+        {
+          "order": 4,
+          "transferable_average": 1.89,
+          "districts_included": 24
+        }
+      ]
+    },
+    {
+      "code": "UCM",
+      "id": "UC2",
+      "school_id": 144,
+      "quarter": false,
+      "requirement": {
+        "native_count": 6,
+        "semester_equiv": 6,
+        "quarter_count": null
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 6.8,
+          "districts_included": 64
+        },
+        {
+          "order": 2,
+          "transferable_average": 2.76,
+          "districts_included": 64
+        },
+        {
+          "order": 3,
+          "transferable_average": 1.48,
+          "districts_included": 59
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.77,
+          "districts_included": 57
+        }
+      ]
+    },
+    {
+      "code": "UCSD",
+      "id": "UC3*",
+      "school_id": 7,
+      "quarter": true,
+      "requirement": {
+        "native_count": 7,
+        "semester_equiv": 4.67,
+        "quarter_count": 7
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 7.14,
+          "districts_included": 37
+        },
+        {
+          "order": 2,
+          "transferable_average": 3.12,
+          "districts_included": 37
+        },
+        {
+          "order": 3,
+          "transferable_average": 1.88,
+          "districts_included": 37
+        },
+        {
+          "order": 4,
+          "transferable_average": 1.23,
+          "districts_included": 36
+        }
+      ]
+    },
+    {
+      "code": "UCSB",
+      "id": "UC4*",
+      "school_id": 128,
+      "quarter": true,
+      "requirement": {
+        "native_count": 7,
+        "semester_equiv": 4.67,
+        "quarter_count": 7
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 7.02,
+          "districts_included": 50
+        },
+        {
+          "order": 2,
+          "transferable_average": 3.02,
+          "districts_included": 50
+        },
+        {
+          "order": 3,
+          "transferable_average": 1.76,
+          "districts_included": 49
+        },
+        {
+          "order": 4,
+          "transferable_average": 1.06,
+          "districts_included": 48
+        }
+      ]
+    },
+    {
+      "code": "UCLA",
+      "id": "UC5*",
+      "school_id": 117,
+      "quarter": true,
+      "requirement": {
+        "native_count": 7,
+        "semester_equiv": 4.67,
+        "quarter_count": 7
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 5.89,
+          "districts_included": 47
+        },
+        {
+          "order": 2,
+          "transferable_average": 2.23,
+          "districts_included": 47
+        },
+        {
+          "order": 3,
+          "transferable_average": 1.17,
+          "districts_included": 46
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.6,
+          "districts_included": 46
+        }
+      ]
+    },
+    {
+      "code": "UCB",
+      "id": "UC6",
+      "school_id": 79,
+      "quarter": false,
+      "requirement": {
+        "native_count": 4,
+        "semester_equiv": 4,
+        "quarter_count": null
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 4.83,
+          "districts_included": 69
+        },
+        {
+          "order": 2,
+          "transferable_average": 1.65,
+          "districts_included": 69
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.83,
+          "districts_included": 68
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.38,
+          "districts_included": 68
+        }
+      ]
+    },
+    {
+      "code": "UCSC",
+      "id": "UC7*",
+      "school_id": 132,
+      "quarter": true,
+      "requirement": {
+        "native_count": 5,
+        "semester_equiv": 3.33,
+        "quarter_count": 5
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 5.15,
+          "districts_included": 47
+        },
+        {
+          "order": 2,
+          "transferable_average": 2.25,
+          "districts_included": 46
+        },
+        {
+          "order": 3,
+          "transferable_average": 1.58,
+          "districts_included": 44
+        },
+        {
+          "order": 4,
+          "transferable_average": 1.16,
+          "districts_included": 43
+        }
+      ]
+    },
+    {
+      "code": "UCI",
+      "id": "UC8*",
+      "school_id": 120,
+      "quarter": true,
+      "requirement": {
+        "native_count": 6,
+        "semester_equiv": 4.0,
+        "quarter_count": 6
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 4.4,
+          "districts_included": 5
+        },
+        {
+          "order": 2,
+          "transferable_average": 2.28,
+          "districts_included": 4
+        },
+        {
+          "order": 3,
+          "transferable_average": 2.15,
+          "districts_included": 4
+        },
+        {
+          "order": 4,
+          "transferable_average": 1.58,
+          "districts_included": 6
+        }
+      ]
+    },
+    {
+      "code": "UCR",
+      "id": "UC9*",
+      "school_id": 46,
+      "quarter": true,
+      "requirement": {
+        "native_count": 5,
+        "semester_equiv": 3.33,
+        "quarter_count": 5
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 4.0,
+          "districts_included": 57
+        },
+        {
+          "order": 2,
+          "transferable_average": 1.26,
+          "districts_included": 57
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.74,
+          "districts_included": 55
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.48,
+          "districts_included": 55
+        }
+      ]
+    }
+  ]
+}

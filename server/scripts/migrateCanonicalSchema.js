@@ -518,7 +518,12 @@ const INDEXES = Object.freeze({
   agreement_reviews: [[{ system: 1, doc_id: 1 }, { unique: true }], [{ result: 1 }, {}]],
   team_members: [[{ access_status: 1 }, {}]],
   settings: [],
-  published_figures: [[{ updated_at: -1 }, {}]],
+  published_figures: [
+    [{ record_type: 1, updated_at: -1 }, {}],
+    [{ figure_slug: 1, variant_key: 1 }, {
+      partialFilterExpression: { record_type: 'figure_variant' },
+    }],
+  ],
 });
 
 const VALIDATORS = Object.freeze({

@@ -1678,7 +1678,9 @@ def main():
     csv_path = root / "results" / "paper_credit_loss_districts.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     with open(csv_path, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(district_rows_out[0].keys()))
+        w = csv.DictWriter(
+            f, fieldnames=list(district_rows_out[0].keys()), lineterminator="\n"
+        )
         w.writeheader()
         w.writerows(district_rows_out)
     print(f"wrote {json_path.relative_to(root.parent)} and {csv_path.relative_to(root.parent)}")

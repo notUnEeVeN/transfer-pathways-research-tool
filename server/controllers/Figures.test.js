@@ -65,6 +65,28 @@ const validBody = (over = {}) => ({
   ...over,
 });
 
+const validVariantBody = () => validBody({
+  formats: undefined,
+  controls: [{
+    key: 'version', label: 'Version', type: 'select', default: 'current',
+    options: [
+      { value: 'paper', label: 'Paper baseline' },
+      { value: 'current', label: 'Current data' },
+    ],
+  }],
+  default_variant: 'current',
+  variants: [
+    {
+      key: 'paper', label: 'Paper baseline', state: { version: 'paper' },
+      formats: { svg: b64('<svg id="paper"/>'), png: b64('paper-png'), pdf: b64('paper-pdf') },
+    },
+    {
+      key: 'current', label: 'Current data', state: { version: 'current' },
+      formats: { svg: b64('<svg id="current"/>'), png: b64('current-png'), pdf: b64('current-pdf') },
+    },
+  ],
+});
+
 describe('POST /publish', () => {
   it('stores locally rendered files keyed by slug and stamped with the author', async () => {
     const res = await run(publish, fakeReq({ uid: 'u1', email: 'ada@b.edu' }, { body: validBody() }));
@@ -87,6 +109,15 @@ describe('POST /publish', () => {
     expect(doc.author_uid).toBe('u1');
     expect(doc.created_at.getTime()).toBe(first.created_at.getTime());
     expect(doc.updated_at.getTime()).toBeGreaterThan(first.updated_at.getTime());
+  });
+
+  it('publishes named static variants without storing code', async () => {
+    const res = await run(publish, fakeReq({ uid: 'u1' }, { body: validVariantBody() }));
+    expect(res.body).toEqual({ ok: true, slug: 'coverage-heatmap' });
+    const docs = await db.collection('published_figures').find().toArray();
+    expect(docs).toHaveLength(2);
+    expect(docs.find((doc) => doc._id === 'coverage-heatmap').default_variant).toBe('current');
+    expect(JSON.stringify(docs)).not.toContain('import ');
   });
 
   it('resolves an author label from team_members when the token has no email (pmtr_ path)', async () => {
@@ -120,16 +151,17 @@ describe('POST /publish', () => {
 });
 
 describe('GET /gallery (list)', () => {
-  it('returns figures newest-first with inline svg but without png/pdf payloads', async () => {
+  it('returns figures newest-first without any binary payloads', async () => {
     await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ slug: 'older' }) }));
     await new Promise((r) => setTimeout(r, 5));
     await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ slug: 'newer' }) }));
     const res = await run(list, fakeReq({ uid: 'u1' }));
     const rows = res.body.figures;
     expect(rows.map((f) => f.slug)).toEqual(['newer', 'older']);
-    expect(rows[0].svg).toBe(SVG);
+    expect(rows[0].svg).toBeUndefined();
     expect(rows[0].formats).toBeUndefined();
     expect(JSON.stringify(rows)).not.toContain(PNG);
+    expect(JSON.stringify(rows)).not.toContain(SVG);
   });
 });
 
@@ -148,6 +180,16 @@ describe('GET /gallery/:slug/:format (download)', () => {
     await run(publish, fakeReq({ uid: 'u1' }, { body: validBody() }));
     expect((await run(download, fakeReq({ uid: 'u1' }, { params: { slug: 'nope', format: 'svg' } }))).statusCode).toBe(404);
     expect((await run(download, fakeReq({ uid: 'u1' }, { params: { slug: 'coverage-heatmap', format: 'exe' } }))).statusCode).toBe(404);
+  });
+
+
+  it('serves a selected named variant', async () => {
+    await run(publish, fakeReq({ uid: 'u1' }, { body: validVariantBody() }));
+    const res = await run(download, fakeReq({ uid: 'u1' }, {
+      params: { slug: 'coverage-heatmap', variant: 'paper', format: 'pdf' },
+    }));
+    expect(res.headers['Content-Disposition']).toContain('coverage-heatmap-paper.pdf');
+    expect(res.body.toString()).toBe('paper-pdf');
   });
 });
 

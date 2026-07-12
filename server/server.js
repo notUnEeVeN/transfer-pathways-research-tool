@@ -12,6 +12,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 const { ensureAuditIndexes } = require('./services/audit/indexes');
 const { ensureTokenIndexes } = require('./services/apiTokens');
 const { ensureTaskIndexes } = require('./services/tasks');
+const { ensureFigureIndexes } = require('./services/figures');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -84,6 +85,7 @@ connectDB()
     }
     ensureTokenIndexes(auditDb).catch((e) => console.warn(`[tokens] index setup failed: ${e.message}`));
     ensureTaskIndexes(auditDb).catch((e) => console.warn(`[tasks] index setup failed: ${e.message}`));
+    ensureFigureIndexes(auditDb).catch((e) => console.warn(`[figures] index setup failed: ${e.message}`));
     // Platform liveness probe: a quick Mongo ping + process uptime. Returns 200
     // when the DB answers, 503 otherwise, so the host's health check can tell a
     // live server from one that's up but can't reach Mongo.

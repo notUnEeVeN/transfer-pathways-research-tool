@@ -82,9 +82,10 @@ router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
 // pmt.publish(fig, ...) renders on the teammate's machine. The server receives
 // finished files only; no uploaded Python is ever executed.
 const figuresController = require('../controllers/Figures');
-const figureBody = express.json({ limit: '20mb' });
+const figureBody = express.json({ limit: '72mb' });
 router.get('/gallery',                 ...guarded, figuresController.list);
 router.post('/publish',                ...guarded, figureBody, figuresController.publish);
+router.get('/gallery/:slug/variants/:variant/:format', ...guarded, figuresController.download);
 router.get('/gallery/:slug/:format',   ...guarded, figuresController.download);
 router.patch('/gallery/:slug',         ...guarded, jsonBody, figuresController.update);
 router.delete('/gallery/:slug',        ...guarded, figuresController.remove);

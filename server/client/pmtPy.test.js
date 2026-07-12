@@ -18,9 +18,9 @@ describe('pmt.py template', () => {
   });
 
   it('exposes only data reads and local figure publishing', () => {
-    expect(src.match(/^def /gm)).toHaveLength(2);
+    expect(src.match(/^def /gm)).toHaveLength(3);
     expect(src).toContain('def get(path, **params):');
-    expect(src).toContain('def publish(fig, slug, title, caption=None, source_url=None):');
+    expect(src).toContain('def publish(fig=None, slug=None, title=None, caption=None, source_url=None,');
     expect(src).toContain('fetch = get');
     expect(src).not.toContain('PMT_CAPTURE');
     expect(src).not.toContain('figure-scripts');
@@ -31,7 +31,14 @@ describe('pmt.py template', () => {
     expect(src).toContain('for fmt in ("svg", "png", "pdf")');
     expect(src).toContain('fig.savefig(');
     expect(src).toContain('f"{API}/publish"');
-    expect(src).toContain('"formats": formats');
+    expect(src).toContain('payload["formats"] = _render_formats(fig)');
+  });
+
+  it('renders named states locally before uploading their control metadata', () => {
+    expect(src).toContain('variants=None, controls=None, default_variant=None');
+    expect(src).toContain('"formats": _render_formats(figure)');
+    expect(src).toContain('"default_variant": default_variant or rendered[0]["key"]');
+    expect(src).not.toContain('exec(');
   });
 
   it('includes a directly runnable matplotlib example', () => {

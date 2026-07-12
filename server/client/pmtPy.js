@@ -8,7 +8,8 @@
 const pmtPy = (apiBaseUrl) => `"""Transfer Pathways research client.
 
     get(path, **params)                    -> pandas DataFrame or JSON
-    publish(fig, slug=..., title=...)      -> publish finished figure files
+    publish(fig, slug=..., title=...)      -> publish one finished figure
+    publish(variants=[...], ...)           -> publish named static states
 
 Set TOKEN below (or the PMT_TOKEN environment variable). Figure rendering
 happens on this machine; the server receives only SVG, PNG, and PDF output.
@@ -51,18 +52,10 @@ def get(path, **params):
 fetch = get  # compatibility for the earliest research notebooks
 
 
-def publish(fig, slug, title, caption=None, source_url=None):
-    """Render a matplotlib Figure locally and publish the finished files."""
-    if not TOKEN or TOKEN == "pmtr_...":
-        raise RuntimeError(
-            "Set PMT_TOKEN or paste a token into TOKEN. Create one in the "
-            "website under API -> Tokens."
-        )
+def _render_formats(fig):
+    """Render one matplotlib Figure into the three gallery file formats."""
     if not hasattr(fig, "savefig"):
-        raise TypeError("publish() expects a matplotlib Figure")
-    if not slug or not title:
-        raise TypeError("publish(fig, ...) requires slug= and title=")
-
+        raise TypeError("publish() expects matplotlib Figures")
     formats = {}
     for fmt in ("svg", "png", "pdf"):
         buffer = io.BytesIO()
@@ -73,18 +66,64 @@ def publish(fig, slug, title, caption=None, source_url=None):
             **({"dpi": 300} if fmt == "png" else {}),
         )
         formats[fmt] = base64.b64encode(buffer.getvalue()).decode("ascii")
+    return formats
+
+
+def publish(fig=None, slug=None, title=None, caption=None, source_url=None,
+            variants=None, controls=None, default_variant=None):
+    """Render locally and publish one figure or a set of named static states.
+
+    A variant entry is a plain dict with key, label, state, and figure fields.
+    Controls describe how the website switches among those already
+    rendered states; no analysis code is uploaded or executed by the server.
+
+    Example state:
+        {"key": "assist", "label": "ASSIST minimums",
+         "state": {"minimums": "assist"}, "figure": assist_fig}
+    """
+    if not TOKEN or TOKEN == "pmtr_...":
+        raise RuntimeError(
+            "Set PMT_TOKEN or paste a token into TOKEN. Create one in the "
+            "website under API -> Tokens."
+        )
+    if not slug or not title:
+        raise TypeError("publish(fig, ...) requires slug= and title=")
+
+    payload = {
+        "slug": slug,
+        "title": title,
+        "caption": caption,
+        "source_url": source_url,
+    }
+    if variants is None:
+        payload["formats"] = _render_formats(fig)
+    else:
+        if fig is not None:
+            raise TypeError("pass fig or variants, not both")
+        if not isinstance(variants, (list, tuple)) or len(variants) < 2:
+            raise TypeError("variants must contain at least two figure states")
+        rendered = []
+        for variant in variants:
+            if not isinstance(variant, dict):
+                raise TypeError("each variant must be a dict")
+            figure = variant.get("figure")
+            rendered.append({
+                "key": variant.get("key"),
+                "label": variant.get("label"),
+                "state": variant.get("state") or {},
+                "formats": _render_formats(figure),
+            })
+        payload.update({
+            "variants": rendered,
+            "controls": controls or [],
+            "default_variant": default_variant or rendered[0]["key"],
+        })
 
     response = requests.post(
         f"{API}/publish",
         headers={"Authorization": f"Bearer {TOKEN}"},
-        json={
-            "slug": slug,
-            "title": title,
-            "caption": caption,
-            "source_url": source_url,
-            "formats": formats,
-        },
-        timeout=180,
+        json=payload,
+        timeout=300,
     )
     try:
         body = response.json()
