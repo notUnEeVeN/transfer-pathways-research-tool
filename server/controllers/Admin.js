@@ -1,25 +1,20 @@
 /**
  * Admin endpoints (ADMIN_UIDS only — see middleware/requireAdmin).
  *
- * Dataset visibility: what the research cluster currently holds, as written
- * by scripts/port.py (dataset_meta / dataset_changelog on the reference
- * handle). The actual porting runs locally via that script — this server
- * never holds source-cluster credentials.
+ * Dataset visibility: current counts and last refresh time. Historical port
+ * versions/changelog were intentionally removed from the permanent model.
  *
- * Access management: partner access lives in the `access_grants` collection
- * (audit handle), keyed by Firebase UID, so admins add/remove partners from
- * the app without a redeploy. Admins themselves come from env only.
+ * Access management lives in `team_members`, keyed by Firebase UID, so admins
+ * add/remove partners from the app without a redeploy. Admins themselves come
+ * from env only.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin, adminUids } = require('../services/access');
-const { removeRequest, unblockUid } = require('../services/accessRequests');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
-const { setReleasedIds, setDisabledIds } = require('../services/analysisReleases');
-const { startRefresh, jobStatus } = require('../services/porter');
-const { getRunnerPaused, setRunnerPaused } = require('../services/refreshScheduler');
 const { listDisplayNames, setDisplayName } = require('../services/displayNames');
-
-const GRANTS = 'access_grants';
+const {
+  listMembers, grantMember, revokeMember,
+} = require('../services/teamMembers');
 
 // Team roster with editable display names. Everyone who can be an assignee —
 // env admins + granted partners — with the name the admin has set (or the
@@ -27,7 +22,7 @@ const GRANTS = 'access_grants';
 exports.listTeam = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
   const [grants, names] = await Promise.all([
-    auditDb.collection(GRANTS).find({}, { projection: { email: 1 } }).toArray(),
+    listMembers(auditDb, { access_status: 'granted' }),
     listDisplayNames(auditDb),
   ]);
   const emailOf = new Map(grants.map((g) => [String(g._id), g.email ?? null]));
@@ -47,21 +42,31 @@ exports.setTeamName = asyncHandler(async (req, res) => {
 
 exports.getDataset = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
-  const meta = await db.collection('dataset_meta').findOne({ _id: 'current' });
-  const changelog = await db
-    .collection('dataset_changelog')
-    .find({}, { projection: { _id: 0 } })
-    .sort({ at: -1 })
-    .limit(20)
-    .toArray();
-  res.json({ meta, changelog });
+  const auditDb = req.app.locals.auditDb || db;
+  const [settings, ...values] = await Promise.all([
+    auditDb.collection('settings').findOne({ _id: 'app' }),
+    ...['assist_agreements', 'assist_courses', 'assist_institutions', 'admissions']
+      .map((name) => db.collection(name).estimatedDocumentCount()),
+  ]);
+  const names = ['assist_agreements', 'assist_courses', 'assist_institutions', 'admissions'];
+  const counts = Object.fromEntries(names.map((name, index) => [name, values[index]]));
+  const majors = await db.collection('assist_agreements').distinct('major');
+  res.json({
+    meta: {
+      updated_at: settings?.last_data_refresh_at ?? null,
+      counts,
+      majors: { agreements: majors.sort() },
+    },
+    changelog: [],
+  });
 });
 
 // Who can use the console right now: role of the caller's own view comes from
 // /access/me; this lists everyone for the management UI.
 exports.listAccess = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  const grants = await auditDb.collection(GRANTS).find().sort({ granted_at: 1 }).toArray();
+  const grants = await auditDb.collection('team_members')
+    .find({ access_status: 'granted' }).sort({ granted_at: 1 }).toArray();
   res.json({
     partners: grants.map((g) => ({
       uid: String(g._id),
@@ -83,40 +88,33 @@ exports.grantAccess = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: 'That UID is already an admin (ADMIN_UIDS)' });
   }
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  await auditDb.collection(GRANTS).replaceOne(
-    { _id: cleanUid },
-    {
-      _id: cleanUid,
-      email: typeof email === 'string' ? email.trim() : null,
-      note: typeof note === 'string' ? note.trim() : null,
-      granted_by: req.user?.uid ?? null,
-      granted_at: new Date(),
-    },
-    { upsert: true }
-  );
+  await grantMember(auditDb, {
+    uid: cleanUid,
+    email: typeof email === 'string' ? email.trim() : null,
+    note: typeof note === 'string' ? note.trim() : null,
+    by: req.user?.uid,
+  });
   invalidateGrantsCache();
-  await removeRequest(auditDb, cleanUid); // their pending sign-in request, if any
-  await unblockUid(auditDb, cleanUid);    // clear any prior block — an explicit grant wins
   res.json({ ok: true });
 });
 
 exports.revokeAccess = asyncHandler(async (req, res) => {
   const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  const { deletedCount } = await auditDb.collection(GRANTS).deleteOne({ _id: req.params.uid });
+  const revoked = await revokeMember(auditDb, req.params.uid);
   invalidateGrantsCache();
-  if (!deletedCount) return res.status(404).json({ error: 'no grant for that uid' });
+  if (!revoked) return res.status(404).json({ error: 'no grant for that uid' });
   res.json({ ok: true });
 });
 
 // ── partner major visibility ──
-// The ported dataset (everything in uc_agreements) is the admin's universe;
+// The ported dataset (everything in assist_agreements) is the admin's universe;
 // `visible` is the (school, major) PAIR subset partners can see — pair
 // granularity because the same major name exists at several campuses.
 // Deny-by-default: until the admin selects pairs, partners see nothing.
 
 // The ported universe, grouped by school for the admin UI.
 async function portedBySchool(db) {
-  const groups = await db.collection('uc_agreements').aggregate([
+  const groups = await db.collection('assist_agreements').aggregate([
     { $group: { _id: { school_id: '$uc_school_id', school: '$uc_school' }, majors: { $addToSet: '$major' } } },
     { $sort: { '_id.school': 1 } },
   ]).toArray();
@@ -158,72 +156,6 @@ exports.putVisibleMajors = asyncHandler(async (req, res) => {
   }
   await setVisiblePairs(auditDb, pairs, req.user?.uid);
   res.json({ ok: true, visible: pairs.map((p) => ({ school_id: Number(p.school_id), major: p.major })) });
-});
-
-// ── dataset refresh (re-port from the source DB after parser updates) ──
-// Kicks off a background job; the panel polls the status endpoint. Replaced
-// agreements get NEW _ids (the parser rebuild regenerates them), so verdicts
-// recorded against replaced docs are orphaned — correct after a parser fix.
-
-exports.postRefreshDataset = asyncHandler(async (req, res) => {
-  try {
-    res.status(202).json(startRefresh(req.app.locals.db));
-  } catch (e) {
-    if (e.code === 'BUSY') return res.status(409).json({ error: e.message });
-    if (e.code === 'UNCONFIGURED') return res.status(501).json({ error: e.message });
-    throw e;
-  }
-});
-
-exports.getRefreshStatus = asyncHandler(async (req, res) => {
-  res.json(jobStatus());
-});
-
-// ── analysis release staging ──
-// Which registered analyses are live for partners. The registry (id ↔ React
-// component) is frontend code; this only stores the released id set. Admins
-// always see every analysis; releasing controls what partners see.
-exports.putAnalysisReleases = asyncHandler(async (req, res) => {
-  const { released_ids } = req.body || {};
-  if (!Array.isArray(released_ids) || released_ids.some((x) => typeof x !== 'string')) {
-    return res.status(400).json({ error: 'released_ids must be an array of analysis id strings' });
-  }
-  const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  const saved = await setReleasedIds(auditDb, released_ids, req.user?.uid);
-  res.json({ ok: true, released_ids: saved });
-});
-
-// Which registered analyses are disabled outright — hidden from every role
-// (admins included) so nothing mounts or computes until re-enabled. The
-// admin's "park it, work on them one at a time" switch; disabled wins over
-// released.
-exports.putAnalysisDisabled = asyncHandler(async (req, res) => {
-  const { disabled_ids } = req.body || {};
-  if (!Array.isArray(disabled_ids) || disabled_ids.some((x) => typeof x !== 'string')) {
-    return res.status(400).json({ error: 'disabled_ids must be an array of analysis id strings' });
-  }
-  const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  const saved = await setDisabledIds(auditDb, disabled_ids, req.user?.uid);
-  res.json({ ok: true, disabled_ids: saved });
-});
-
-// ── live-figure runner pause switch ──
-// The global stop button for scheduled script refreshes; new publishes and
-// manual refreshes keep working. Version changes and curation drift are
-// retained while paused and caught up after resuming.
-exports.getFigureRunner = asyncHandler(async (req, res) => {
-  const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  res.json({ paused: await getRunnerPaused(auditDb) });
-});
-
-exports.putFigureRunner = asyncHandler(async (req, res) => {
-  const { paused } = req.body || {};
-  if (typeof paused !== 'boolean') {
-    return res.status(400).json({ error: 'paused must be a boolean' });
-  }
-  const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  await setRunnerPaused(auditDb, paused, req.user?.uid);
-  res.json({ ok: true, paused });
 });
 
 // Available to every console user (partner or admin): tells the frontend

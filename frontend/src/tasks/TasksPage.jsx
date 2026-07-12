@@ -2,7 +2,10 @@ import React, { useMemo, useState } from 'react'
 import { ClipboardDocumentListIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Button, EmptyState, Spinner, Stack, StatStrip, SwitchField, Tabs, useToast } from '../components/ui'
 import { useAuth } from '../shared/hooks/useAuth'
-import { useTasks, useTaskRoster, useCreateTask, useUpdateTask, useDeleteTask } from '../shared/query/hooks/useData'
+import {
+  useAddTaskStageNote, useCompleteTaskStage, useCreateTask, useDeleteTask, useReopenTaskStage,
+  useTaskRoster, useTasks, useUpdateTask,
+} from '../shared/query/hooks/useData'
 import { SEED_TASKS } from './seedTasks'
 import TaskBoard from './TaskBoard'
 import TaskList from './TaskList'
@@ -17,9 +20,7 @@ const VIEWS = [
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
 /**
- * TasksPage — the team's shared task board. Deliberately simple: title,
- * description, assignee, board status, a self-reported progress bar, and notes
- * where the team leaves tips on how to tackle each task.
+ * TasksPage — the team's shared board over typed, stage-driven research work.
  */
 export default function TasksPage() {
   const { user } = useAuth()
@@ -28,6 +29,9 @@ export default function TasksPage() {
   const rosterQ = useTaskRoster()
   const createTask = useCreateTask()
   const updateTask = useUpdateTask()
+  const addTaskStageNote = useAddTaskStageNote()
+  const completeTaskStage = useCompleteTaskStage()
+  const reopenTaskStage = useReopenTaskStage()
   const deleteTask = useDeleteTask()
 
   const tasks = tasksQ.data?.rows || []
@@ -45,9 +49,21 @@ export default function TasksPage() {
     return { open, doing, doneWeek }
   }, [tasks])
 
-  const onMove = (task, patch) => updateTask.mutate({ id: task._id, patch }, {
-    onError: () => toast.error('Could not move the task.'),
-  })
+  const onMove = (task, patch) => {
+    if (patch.status === 'done' && (task.progress || 0) < 100) {
+      toast.error('Complete team approval before moving this task to Done.')
+      setModal({ task })
+      return
+    }
+    if (task.status === 'done' && patch.status && patch.status !== 'done') {
+      toast.error('Reopen a workflow stage before moving this task out of Done.')
+      setModal({ task })
+      return
+    }
+    updateTask.mutate({ id: task._id, patch }, {
+      onError: (error) => toast.error(error?.response?.data?.error || 'Could not move the task.'),
+    })
+  }
   const onDelete = (task) => deleteTask.mutate(task._id, {
     onSuccess: () => toast.success('Task deleted'),
     onError: () => toast.error('Could not delete the task.'),
@@ -150,6 +166,9 @@ export default function TasksPage() {
           me={user}
           onCreate={(body) => createTask.mutateAsync(body)}
           onPatch={(id, patch) => updateTask.mutateAsync({ id, patch })}
+          onAddStageNote={(id, stage, note) => addTaskStageNote.mutateAsync({ id, stage, note })}
+          onCompleteStage={(id, stage) => completeTaskStage.mutateAsync({ id, stage })}
+          onReopenStage={(id, stage, note) => reopenTaskStage.mutateAsync({ id, stage, note })}
           onDelete={onDelete}
         />
       )}

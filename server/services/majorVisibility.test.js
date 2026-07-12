@@ -12,7 +12,7 @@ function fakeAuditDb(pairs) {
   return {
     collection: (name) => ({
       findOne: async () =>
-        name === 'dataset_config' && pairs ? { _id: 'partner_access', visible_pairs: pairs } : null,
+        name === 'settings' && pairs ? { _id: 'app', visible_pairs: pairs } : null,
     }),
   };
 }

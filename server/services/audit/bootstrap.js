@@ -66,7 +66,7 @@ async function _courseMap(db, cc_id, doc) {
   const ids = _collectCourseIds(doc);
   if (ids.length === 0) return {};
   const rows = await db.collection(COURSES).find(
-    { community_college_id: Number(cc_id), course_id: { $in: ids } },
+    { side: 'sending', community_college_id: Number(cc_id), course_id: { $in: ids } },
     { projection: { course_id: 1, prefix: 1, number: 1, title: 1, units: 1, _id: 0 } }
   ).toArray();
   const out = {};
@@ -84,7 +84,7 @@ async function _universityCoursesMap(db, doc) {
   const pids = _collectUniversityParentIds(doc);
   if (pids.length === 0) return {};
   const rows = await db.collection(UNIVERSITY_COURSES).find(
-    { parent_id: { $in: pids } },
+    { side: 'receiving', parent_id: { $in: pids } },
     { projection: { parent_id: 1, prefix: 1, number: 1, title: 1, min_units: 1, max_units: 1, _id: 0 } }
   ).toArray();
   const out = {};

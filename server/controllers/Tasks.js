@@ -6,9 +6,9 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const {
-  listTasks, createTask, updateTask, deleteTask, listRoster, ValidationError,
+  listTasks, createTask, updateTask, addTaskStageNote, completeTaskStage, reopenTaskStage,
+  deleteTask, listRoster, TASK_TYPES, PORTING_STAGES, ValidationError,
 } = require('../services/tasks');
-const { currentDatasetVersion } = require('../services/datasetVersion');
 
 const tasksDb = (req) => req.app.locals.auditDb || req.app.locals.db;
 
@@ -23,15 +23,12 @@ const handler = (fn) => asyncHandler(async (req, res) => {
   }
 });
 
-// dataset_version rides along so pmt.get('/tasks') DataFrames carry the
-// snapshot identity, same as the analysis endpoints. Read on the REFERENCE
-// handle — dataset_meta lives there, not on auditDb.
 exports.list = handler(async (req, res) => {
-  const [rows, dataset_version] = await Promise.all([
-    listTasks(tasksDb(req)),
-    currentDatasetVersion(req.app.locals.db),
-  ]);
-  res.json({ rows, dataset_version });
+  res.json({
+    rows: await listTasks(tasksDb(req)),
+    task_types: TASK_TYPES,
+    workflows: { porting: PORTING_STAGES },
+  });
 });
 
 exports.create = handler(async (req, res) => {
@@ -41,6 +38,33 @@ exports.create = handler(async (req, res) => {
 
 exports.update = handler(async (req, res) => {
   const doc = await updateTask(tasksDb(req), req.app.locals.db, req.params.id, req.body || {}, req.user?.uid ?? null);
+  if (!doc) return res.status(404).json({ error: 'no such task' });
+  res.json(doc);
+});
+
+exports.addStageNote = handler(async (req, res) => {
+  const doc = await addTaskStageNote(
+    tasksDb(req), req.params.id, req.params.stage,
+    req.body || {}, req.user?.uid ?? null
+  );
+  if (!doc) return res.status(404).json({ error: 'no such task' });
+  res.json(doc);
+});
+
+exports.completeStage = handler(async (req, res) => {
+  const doc = await completeTaskStage(
+    tasksDb(req), req.app.locals.db, req.params.id, req.params.stage,
+    req.body || {}, req.user?.uid ?? null
+  );
+  if (!doc) return res.status(404).json({ error: 'no such task' });
+  res.json(doc);
+});
+
+exports.reopenStage = handler(async (req, res) => {
+  const doc = await reopenTaskStage(
+    tasksDb(req), req.params.id, req.params.stage,
+    req.body || {}, req.user?.uid ?? null
+  );
   if (!doc) return res.status(404).json({ error: 'no such task' });
   res.json(doc);
 });

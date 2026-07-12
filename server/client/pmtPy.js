@@ -1,180 +1,112 @@
 /**
- * The starter.py client, served at GET /client/starter.py with the API base
- * URL baked in — partners never receive files out-of-band; the console is the
- * only distribution channel. /client/pmt.py remains a compatibility alias.
- * The API tab renders this same text with Copy / Download buttons (single
- * source: this template).
+ * The small Python client served from GET /api/client.py.
+ *
+ * Research happens on the caller's machine: get() reads the shared datasets,
+ * and publish() renders a completed matplotlib Figure locally before uploading
+ * only its SVG/PNG/PDF files. No partner code is sent to or run by the server.
  */
-const pmtPy = (baseUrl) => `"""Transfer Pathways Research API — starter client.
+const pmtPy = (apiBaseUrl) => `"""Transfer Pathways research client.
 
-    get(path)                            -> pandas DataFrame from any endpoint
-    publish("fig.py", slug=..., title=...) -> publish one LIVE figure
+    get(path, **params)                    -> pandas DataFrame or JSON
+    publish(fig, slug=..., title=...)      -> publish finished figure files
 
-Save this file as starter.py. Set TOKEN below (or the PMT_TOKEN env var).
-The Endpoints tab lists the paths.
+Set TOKEN below (or the PMT_TOKEN environment variable). Figure rendering
+happens on this machine; the server receives only SVG, PNG, and PDF output.
 """
 import base64
 import io
-import json
 import os
 
 import pandas as pd
 import requests
 
-# ── Configuration ────────────────────────────────────────────────────────────
 
-# PMT_API_URL is set by the server's figure runner so published scripts talk to
-# the local API; on your machine the baked-in URL is used.
-API = os.environ.get("PMT_API_URL") or "${baseUrl}"
-
-# Paste your token here (console -> API -> Tokens), or set the PMT_TOKEN env var.
+API = (os.environ.get("PMT_API_URL") or "${apiBaseUrl}").rstrip("/")
 TOKEN = os.environ.get("PMT_TOKEN") or "pmtr_..."
 
 
-# dataset_version of the last get(); captured figures are stamped with it.
-_last_dataset_version = None
-
-
 def get(path, **params):
-    """Read any endpoint into pandas.
-
-        receivers = get("/export/receivers")
-        cs_only = get("/export/receivers", majorContains="computer science")
-    """
-    global _last_dataset_version
+    """Read an API dataset into pandas when the response contains rows."""
     if not TOKEN or TOKEN == "pmtr_...":
         raise RuntimeError(
-            "Set your API token: paste it into TOKEN at the top of this file, "
-            "or set the PMT_TOKEN environment variable. Create one in the "
-            "console under API -> Tokens."
+            "Set PMT_TOKEN or paste a token into TOKEN. Create one in the "
+            "website under API -> Tokens."
         )
-    r = requests.get(
-        f"{API}{path}",
+    url = f"{API}/{str(path).lstrip('/')}"
+    response = requests.get(
+        url,
         headers={"Authorization": f"Bearer {TOKEN}"},
         params=params,
         timeout=120,
     )
-    r.raise_for_status()
-    data = r.json()
-
+    response.raise_for_status()
+    data = response.json()
     if isinstance(data, dict) and "rows" in data:
-        _last_dataset_version = data.get("dataset_version") or _last_dataset_version
-        df = pd.DataFrame(data["rows"])
-        df.attrs["dataset_version"] = data.get("dataset_version")
-        return df
+        return pd.DataFrame(data["rows"])
     if isinstance(data, list):
         return pd.DataFrame(data)
     return data
 
 
-fetch = get  # old scripts used fetch(); new scripts should use get().
+fetch = get  # compatibility for the earliest research notebooks
 
 
-def publish(file, slug, title, caption=None, source_url=None, enabled=True):
-    """Publish one LIVE figure.
-
-    Recommended use:
-        import starter as pmt
-        pmt.publish("my_figure.py", slug="my-figure", title="My figure")
-
-    The script should run top-to-bottom and leave one matplotlib Figure named
-    fig. The server dry-runs it immediately, then re-runs it whenever the
-    dataset changes.
-    """
+def publish(fig, slug, title, caption=None, source_url=None):
+    """Render a matplotlib Figure locally and publish the finished files."""
     if not TOKEN or TOKEN == "pmtr_...":
         raise RuntimeError(
-            "Set your API token: paste it into TOKEN at the top of this file, "
-            "or set the PMT_TOKEN environment variable. Create one in the "
-            "console under API -> Tokens."
+            "Set PMT_TOKEN or paste a token into TOKEN. Create one in the "
+            "website under API -> Tokens."
         )
+    if not hasattr(fig, "savefig"):
+        raise TypeError("publish() expects a matplotlib Figure")
+    if not slug or not title:
+        raise TypeError("publish(fig, ...) requires slug= and title=")
 
-    # The server sets PMT_CAPTURE while test-running your script. In that one
-    # case, publish(fig, ...) renders the figure instead of uploading a file.
-    capture = os.environ.get("PMT_CAPTURE")
-    if capture:
-        fig = file
-        if not hasattr(fig, "savefig"):
-            raise TypeError("publish() takes a matplotlib Figure inside the figure runner.")
-        if os.path.exists(capture):
-            raise RuntimeError("publish() was called more than once; a live script publishes exactly one figure.")
-        formats = {}
-        for fmt in ("svg", "png", "pdf"):
-            buf = io.BytesIO()
-            fig.savefig(buf, format=fmt, bbox_inches="tight",
-                        **({"dpi": 300} if fmt == "png" else {}))
-            formats[fmt] = base64.b64encode(buf.getvalue()).decode("ascii")
-        payload = {
+    formats = {}
+    for fmt in ("svg", "png", "pdf"):
+        buffer = io.BytesIO()
+        fig.savefig(
+            buffer,
+            format=fmt,
+            bbox_inches="tight",
+            **({"dpi": 300} if fmt == "png" else {}),
+        )
+        formats[fmt] = base64.b64encode(buffer.getvalue()).decode("ascii")
+
+    response = requests.post(
+        f"{API}/publish",
+        headers={"Authorization": f"Bearer {TOKEN}"},
+        json={
             "slug": slug,
             "title": title,
             "caption": caption,
             "source_url": source_url,
-            "dataset_version": _last_dataset_version,
             "formats": formats,
-        }
-        with open(capture, "w") as f:
-            json.dump(payload, f)
-        print(f"captured '{slug}' for the figure runner")
-        return {"ok": True, "slug": slug,
-                "dataset_version": payload["dataset_version"], "captured": True}
-
-    if not isinstance(file, (str, os.PathLike)):
-        raise TypeError("publish() expects a .py file path, e.g. publish('my_fig.py', slug='my-fig', title='My figure').")
-    if not slug or not title:
-        raise TypeError("publish(path, ...) requires slug= and title=")
-
-    with open(file, encoding="utf-8") as f:
-        code = f.read()
-    code += (
-        "\\n\\n# Added by pmt.publish(...) so the server can capture this live figure.\\n"
-        "import pmt as _pmt_live\\n"
-        "_pmt_live.publish(fig, "
-        f"slug={repr(slug)}, title={repr(title)}, "
-        f"caption={repr(caption)}, source_url={repr(source_url)})\\n"
-    )
-
-    r = requests.post(
-        f"{API}/figure-scripts",
-        headers={"Authorization": f"Bearer {TOKEN}"},
-        json={"code": code, "enabled": bool(enabled)},
-        timeout=300,
+        },
+        timeout=180,
     )
     try:
-        body = r.json()
+        body = response.json()
     except ValueError:
         body = {}
-    if r.ok and body.get("ok"):
-        secs = (body.get("duration_ms") or 0) / 1000
-        print(
-            f"published '{body.get('slug')}' as LIVE (ran in {secs:.1f}s, "
-            f"dataset {body.get('dataset_version') or 'current'})"
+    if not response.ok:
+        raise RuntimeError(
+            f"publish failed ({response.status_code}): "
+            f"{body.get('error') or response.text[:300]}"
         )
-    else:
-        print(f"publish failed ({r.status_code}): {body.get('error') or r.text[:300]}")
-        if body.get("log"):
-            print("--- run log ---")
-            print(body["log"])
+    print(f"published '{body.get('slug', slug)}'")
     return body
 
 
-# ── A first call, so you can confirm it works ────────────────────────────────
-# Runs on execute/paste, not on import. Read-only.
-
 if __name__ == "__main__":
-    schools = get("/schools")
-    print("Connected. UC campuses:", [s["name"] for s in schools["uc"]])
+    import matplotlib.pyplot as plt
 
-    # Create a file called hello_figure.py in this same folder, then paste this
-    # matplotlib code into it:
-    """
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots()
-ax.plot([1, 2, 3])
-ax.set_title("Hello figure")
-fig.tight_layout()
-    """
-
-    publish("hello_figure.py", slug="hello-figure", title="Hello figure")
+    fig, ax = plt.subplots()
+    ax.plot([1, 2, 3])
+    ax.set_title("Hello figure")
+    fig.tight_layout()
+    publish(fig, slug="hello-figure", title="Hello figure")
 `;
 
 module.exports = { pmtPy };

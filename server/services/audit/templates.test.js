@@ -54,9 +54,9 @@ afterAll(async () => { if (harness) await harness.stop(); });
 
 beforeEach(async () => {
   cache.clear();
-  await db.collection('uc_agreements').deleteMany({});
-  await db.collection('audit_results').deleteMany({});
-  await db.collection('uc_agreements').insertMany([
+  await db.collection('assist_agreements').deleteMany({});
+  await db.collection('agreement_reviews').deleteMany({});
+  await db.collection('assist_agreements').insertMany([
     // cluster h1: 3 docs, same (school 100, CS)
     { _id: new ObjectId(), uc_school_id: 100, uc_school: 'UC Alpha', major: 'CS', major_id: 'm1', community_college: 'CC A', raw_template_hash: 'h1', requirement_groups: rg('r1') },
     { _id: new ObjectId(), uc_school_id: 100, uc_school: 'UC Alpha', major: 'CS', major_id: 'm1', community_college: 'CC B', raw_template_hash: 'h1', requirement_groups: rg('r1') },
@@ -80,7 +80,7 @@ it('clusters agreements into one row per (school, major, template hash)', async 
 });
 
 it('streams the agreements scan instead of buffering with toArray()', async () => {
-  const guard = makeStreamGuardDb(db, 'uc_agreements');
+  const guard = makeStreamGuardDb(db, 'assist_agreements');
   cache.clear();
   await _templateVariantsData(guard, ALL);
   expect(guard.flags.toArrayCalled).toBe(false); // must NOT materialize the whole collection

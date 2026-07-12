@@ -1,51 +1,62 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { startInMemoryMongo } from '../test/mongoHarness';
-import { upsertFigure, listFigures, markFigureLive, clearFigureLive } from './figures';
+import {
+  validateFigurePayload, upsertFigure, listFigures, getFigureFormat, removeFigure,
+} from './figures';
 
 let mongo;
 let db;
+const b64 = (value) => Buffer.from(value).toString('base64');
 
 beforeAll(async () => {
   mongo = await startInMemoryMongo();
-  db = mongo.client.db('figures_live_test');
+  db = mongo.client.db('published_figures_test');
 }, 60_000);
 afterAll(async () => { await mongo.stop(); });
-beforeEach(async () => { await db.collection('figures').deleteMany({}); });
+beforeEach(async () => { await db.collection('published_figures').deleteMany({}); });
 
-const payload = (slug) => ({
-  slug, title: 'T', caption: null, source_url: null,
-  dataset_version: '2026-07-01-v1', formats: { svg: 'aGk=' },
+const payload = (slug = 'figure-a') => ({
+  slug,
+  title: 'Figure A',
+  caption: null,
+  source_url: null,
+  formats: { svg: b64('<svg/>'), png: b64('png'), pdf: b64('pdf') },
 });
 
-describe('live figure state', () => {
-  it('markFigureLive flips a published figure to live and stamps compute state', async () => {
-    await upsertFigure(db, payload('fig-a'), { author_uid: 'u1', author_label: 'U' });
-    await markFigureLive(db, 'fig-a', { status: 'ok' });
+describe('published figures', () => {
+  it('stores binary files and lists only an inline base64 SVG', async () => {
+    await upsertFigure(db, payload(), { author_uid: 'u1', author_label: 'Ada' });
 
-    const [fig] = await listFigures(db);
-    expect(fig.mode).toBe('live');
-    expect(fig.live.status).toBe('ok');
-    expect(fig.live.computed_at).toBeInstanceOf(Date);
+    const stored = await db.collection('published_figures').findOne({ _id: 'figure-a' });
+    expect(Buffer.from(stored.formats.png.buffer).toString()).toBe('png');
+    expect(stored.created_at).toBeInstanceOf(Date);
+
+    const [listed] = await listFigures(db);
+    expect(listed).toMatchObject({ slug: 'figure-a', title: 'Figure A', author_uid: 'u1' });
+    expect(listed.svg).toBe(b64('<svg/>'));
+    expect(listed.formats).toBeUndefined();
   });
 
-  it('an error state keeps the previous computed_at (last good render is still shown)', async () => {
-    await upsertFigure(db, payload('fig-a'), { author_uid: 'u1', author_label: 'U' });
-    await markFigureLive(db, 'fig-a', { status: 'ok' });
-    const [before] = await listFigures(db);
-
-    await markFigureLive(db, 'fig-a', { status: 'error' });
-    const [after] = await listFigures(db);
-    expect(after.live.status).toBe('error');
-    expect(after.live.computed_at.getTime()).toBe(before.live.computed_at.getTime());
+  it('returns decoded downloads with stable filenames', async () => {
+    await upsertFigure(db, payload(), { author_uid: 'u1', author_label: 'Ada' });
+    const file = await getFigureFormat(db, 'figure-a', 'pdf');
+    expect(file.contentType).toBe('application/pdf');
+    expect(file.filename).toBe('figure-a.pdf');
+    expect(file.buffer.toString()).toBe('pdf');
   });
 
-  it('clearFigureLive returns the figure to a plain static one', async () => {
-    await upsertFigure(db, payload('fig-a'), { author_uid: 'u1', author_label: 'U' });
-    await markFigureLive(db, 'fig-a', { status: 'ok' });
-    await clearFigureLive(db, 'fig-a');
+  it('validates slugs, required SVG, and the total file cap', () => {
+    expect(validateFigurePayload(payload()).error).toBeUndefined();
+    expect(validateFigurePayload(payload('Bad slug')).error).toMatch(/slug/);
+    expect(validateFigurePayload({ ...payload(), formats: { png: b64('png') } }).error).toMatch(/svg/);
+    expect(validateFigurePayload({
+      ...payload(), formats: { svg: 'A'.repeat(17 * 1024 * 1024) },
+    }).error).toMatch(/12MB/);
+  });
 
-    const [fig] = await listFigures(db);
-    expect(fig.mode).toBeUndefined();
-    expect(fig.live).toBeUndefined();
+  it('deletes by durable slug', async () => {
+    await upsertFigure(db, payload(), { author_uid: 'u1', author_label: 'Ada' });
+    expect(await removeFigure(db, 'figure-a')).toBe(true);
+    expect(await removeFigure(db, 'figure-a')).toBe(false);
   });
 });

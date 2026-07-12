@@ -33,7 +33,7 @@ const UC_CODE_OPTIONS = Object.entries(UC_SCHOOLS).map(([code, v]) => ({ value: 
 
 export const REFERENCE_TABLES = [
   {
-    key: 'ref_uc_transfer_requirements',
+    key: 'transfer_minimums',
     label: 'UC minimum requirements',
     description:
       'The hard-minimum courses each UC major requires, by campus. Hand-curated — edit to refine, and link the UC course each requirement matches.',
@@ -63,7 +63,7 @@ export const REFERENCE_TABLES = [
     searchText: (r) => `${r.school} ${r.uc_code} ${r.group_id} ${r.receiving_code}`,
   },
   {
-    key: 'ref_cc_districts',
+    key: 'community_college_geography',
     label: 'Community-college districts',
     description:
       'Which district each community college belongs to, plus its region and the counties it serves.',
@@ -80,7 +80,7 @@ export const REFERENCE_TABLES = [
     searchText: (r) => `${r.community_college} ${r.district} ${r.region} ${(r.counties_served || []).join(' ')}`,
   },
   {
-    key: 'ref_prerequisites',
+    key: 'course_prerequisites',
     label: 'Course prerequisites',
     description:
       'Hand-gathered prerequisite chains for community-college courses (e.g. Calculus II requires Calculus I).',
@@ -97,7 +97,7 @@ export const REFERENCE_TABLES = [
     searchText: (r) => `${r.college} ${r.course_code} ${r.course_name}`,
   },
   {
-    key: 'ref_ge_patterns',
+    key: 'ge_patterns',
     label: 'GE patterns (Cal-GETC / UC-7)',
     description:
       'The general-education requirement structure — each area and subgroup and how many courses it requires. Hand-curated.',
@@ -116,7 +116,7 @@ export const REFERENCE_TABLES = [
     searchText: (r) => `${r.pattern} ${r.area_code} ${r.area_name} ${r.subgroup_code} ${r.subgroup_name}`,
   },
   {
-    key: 'ref_igetc',
+    key: 'igetc_areas',
     label: 'IGETC areas',
     description:
       'The IGETC area structure — required courses and units per sub-area, with UC-vs-CSU notes.',

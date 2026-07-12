@@ -132,10 +132,12 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
                       <ArchiveBoxArrowDownIcon className='w-4 h-4' />
                     </button>
                   )}
-                  <button type='button' onClick={() => onNewIn(status)} aria-label={`New task in ${label}`}
-                    className='text-ink-subtle hover:text-ink rounded-md p-0.5'>
-                    <PlusIcon className='w-4 h-4' />
-                  </button>
+                  {status !== 'done' && (
+                    <button type='button' onClick={() => onNewIn(status)} aria-label={`New task in ${label}`}
+                      className='text-ink-subtle hover:text-ink rounded-md p-0.5'>
+                      <PlusIcon className='w-4 h-4' />
+                    </button>
+                  )}
                 </span>
               )}
             </div>

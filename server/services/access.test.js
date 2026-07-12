@@ -3,9 +3,11 @@ import { parseUids, isAdmin, isConsoleAllowed, invalidateGrantsCache } from './a
 
 function fakeAuditDb(grantUids) {
   return {
-    collection: () => ({
+    collection: (name) => ({
       find: () => ({
-        toArray: async () => grantUids.map((uid) => ({ _id: uid })),
+        toArray: async () => name === 'team_members'
+          ? grantUids.map((uid) => ({ _id: uid }))
+          : [],
       }),
     }),
   };

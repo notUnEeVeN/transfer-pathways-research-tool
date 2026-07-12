@@ -1,8 +1,4 @@
-// Index management for the app-written `audit_results` collection. Unlike the
-// pipeline-owned collections (uc_agreements, courses, …) whose indexes are
-// created by the Python build/publish tooling, audit_results is written by this
-// server (verify/correct/resolve), so the app is the right home for ensuring its
-// read indexes exist.
+// Index management for the app-written `agreement_reviews` collection.
 //
 // Every audit read path (stats, bootstrap, tier-lists, next, per-school)
 // filters by `system` plus either `doc_id` (point lookups / template joins) or
@@ -11,7 +7,7 @@
 
 const { AUDIT_RESULTS } = require('./filters');
 
-// Receives the AUDIT handle (auditDb) — audit_results lives there, which is the
+// Receives the AUDIT handle (auditDb) — agreement_reviews lives there, which is the
 // main db unless AUDIT_MONGO_URI selects a shared cluster.
 async function ensureAuditIndexes(auditDb) {
   if (!auditDb) return;

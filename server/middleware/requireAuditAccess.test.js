@@ -7,9 +7,11 @@ function fakeApp(grantUids) {
     locals: {
       db: null,
       auditDb: {
-        collection: () => ({
+        collection: (name) => ({
           find: () => ({
-            toArray: async () => grantUids.map((uid) => ({ _id: uid })),
+            toArray: async () => name === 'team_members'
+              ? grantUids.map((uid) => ({ _id: uid }))
+              : [],
           }),
         }),
       },

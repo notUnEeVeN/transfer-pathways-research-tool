@@ -24,9 +24,7 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-  await db.collection('access_requests').deleteMany({});
-  await db.collection('access_grants').deleteMany({});
-  await db.collection('access_blocks').deleteMany({});
+  await db.collection('team_members').deleteMany({});
   invalidateGrantsCache();
 });
 
@@ -55,21 +53,23 @@ describe('POST /access/request', () => {
   it('records a request for a signed-in, ungranted browser user', async () => {
     const res = await run(postRequest, fakeReq({ uid: 'u1', email: 'a@b.edu', name: 'Ada' }));
     expect(res.body).toMatchObject({ granted: false, requested: true });
-    const doc = await db.collection('access_requests').findOne({ _id: 'u1' });
-    expect(doc).toMatchObject({ email: 'a@b.edu', name: 'Ada', attempts: 1 });
+    const doc = await db.collection('team_members').findOne({ _id: 'u1' });
+    expect(doc).toMatchObject({
+      email: 'a@b.edu', identity_name: 'Ada', request_attempts: 1, access_status: 'pending',
+    });
   });
 
   it('no-ops with granted:true when the caller already has access', async () => {
-    await db.collection('access_grants').insertOne({ _id: 'u1' });
+    await db.collection('team_members').insertOne({ _id: 'u1', access_status: 'granted' });
     const res = await run(postRequest, fakeReq({ uid: 'u1', email: 'a@b.edu' }));
     expect(res.body).toMatchObject({ granted: true });
-    expect(await db.collection('access_requests').countDocuments()).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ access_status: 'pending' })).toBe(0);
   });
 
   it('rejects API-token callers', async () => {
     const res = await run(postRequest, fakeReq({ uid: 'u1', api_token: true }));
     expect(res.statusCode).toBe(403);
-    expect(await db.collection('access_requests').countDocuments()).toBe(0);
+    expect(await db.collection('team_members').countDocuments()).toBe(0);
   });
 });
 
@@ -87,7 +87,7 @@ describe('DELETE /admin/access-requests/:uid', () => {
     await run(postRequest, fakeReq({ uid: 'u1', email: 'a@b.edu' }));
     const res = await run(adminDismiss, fakeReq({ uid: 'admin' }, { params: { uid: 'u1' } }));
     expect(res.body).toMatchObject({ ok: true });
-    expect(await db.collection('access_requests').countDocuments()).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ access_status: 'pending' })).toBe(0);
   });
 
   it('404s when there is nothing to dismiss', async () => {
@@ -103,41 +103,47 @@ describe('grantAccess integration', () => {
     req.body = { uid: 'u1', email: 'a@b.edu', note: '' };
     const res = await run(grantAccess, req);
     expect(res.body).toMatchObject({ ok: true });
-    expect(await db.collection('access_requests').countDocuments()).toBe(0);
-    expect(await db.collection('access_grants').countDocuments({ _id: 'u1' })).toBe(1);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'pending' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'granted' })).toBe(1);
   });
 
   it('granting a previously blocked uid clears the block (grant wins)', async () => {
-    await db.collection('access_blocks').insertOne({ _id: 'u1', blocked_at: new Date() });
+    await db.collection('team_members').insertOne({
+      _id: 'u1', access_status: 'blocked', blocked_at: new Date(),
+    });
     const req = fakeReq({ uid: 'admin' });
     req.body = { uid: 'u1', email: 'a@b.edu', note: '' };
     await run(grantAccess, req);
-    expect(await db.collection('access_blocks').countDocuments({ _id: 'u1' })).toBe(0);
-    expect(await db.collection('access_grants').countDocuments({ _id: 'u1' })).toBe(1);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'blocked' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'granted' })).toBe(1);
   });
 });
 
 describe('POST /access/request when blocked', () => {
   it('returns blocked:true and records no request', async () => {
-    await db.collection('access_blocks').insertOne({ _id: 'u1', blocked_at: new Date() });
+    await db.collection('team_members').insertOne({
+      _id: 'u1', access_status: 'blocked', blocked_at: new Date(),
+    });
     const res = await run(postRequest, fakeReq({ uid: 'u1', email: 'a@b.edu' }));
     expect(res.body).toMatchObject({ granted: false, blocked: true });
-    expect(await db.collection('access_requests').countDocuments({ _id: 'u1' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'pending' })).toBe(0);
   });
 });
 
 describe('POST /admin/access-blocks (reject)', () => {
   it('blocks a uid, clears its pending request, and revokes any grant', async () => {
     await run(postRequest, fakeReq({ uid: 'u1', email: 'a@b.edu' }));
-    await db.collection('access_grants').insertOne({ _id: 'u1' }); // was granted before
+    await db.collection('team_members').updateOne(
+      { _id: 'u1' }, { $set: { access_status: 'granted' } }
+    );
     invalidateGrantsCache();
     const req = fakeReq({ uid: 'admin' });
     req.body = { uid: 'u1', email: 'a@b.edu', name: 'Ada' };
     const res = await run(adminBlock, req);
     expect(res.body).toMatchObject({ ok: true });
-    expect(await db.collection('access_blocks').countDocuments({ _id: 'u1' })).toBe(1);
-    expect(await db.collection('access_requests').countDocuments({ _id: 'u1' })).toBe(0);
-    expect(await db.collection('access_grants').countDocuments({ _id: 'u1' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'blocked' })).toBe(1);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'pending' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'granted' })).toBe(0);
   });
 
   it('400s without a uid', async () => {
@@ -155,7 +161,7 @@ describe('POST /admin/access-blocks (reject)', () => {
       req.body = { uid: 'boss' };
       const res = await run(adminBlock, req);
       expect(res.statusCode).toBe(400);
-      expect(await db.collection('access_blocks').countDocuments({ _id: 'boss' })).toBe(0);
+      expect(await db.collection('team_members').countDocuments({ _id: 'boss', access_status: 'blocked' })).toBe(0);
     } finally {
       process.env.ADMIN_UIDS = prev;
     }
@@ -180,7 +186,7 @@ describe('DELETE /admin/access-blocks/:uid (un-block)', () => {
     await run(adminBlock, req);
     const ok = await run(adminUnblock, fakeReq({ uid: 'admin' }, { params: { uid: 'u1' } }));
     expect(ok.body).toMatchObject({ ok: true });
-    expect(await db.collection('access_blocks').countDocuments({ _id: 'u1' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'blocked' })).toBe(0);
     const none = await run(adminUnblock, fakeReq({ uid: 'admin' }, { params: { uid: 'u1' } }));
     expect(none.statusCode).toBe(404);
   });

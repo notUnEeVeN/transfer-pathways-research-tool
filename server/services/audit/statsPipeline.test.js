@@ -192,11 +192,10 @@ afterAll(async () => {
 
 beforeEach(async () => {
   cache.clear();
-  await db.collection('uc_agreements').deleteMany({});
-  await db.collection('audit_results').deleteMany({});
-  await db.collection('audit_groupings').deleteMany({});
-  await db.collection('uc_agreements').insertMany(AGREEMENTS.map((d) => ({ ...d, requirement_groups: d.requirement_groups.map((g) => ({ ...g })) })));
-  await db.collection('audit_results').insertMany(VERDICTS.map((v) => ({ ...v })));
+  await db.collection('assist_agreements').deleteMany({});
+  await db.collection('agreement_reviews').deleteMany({});
+  await db.collection('assist_agreements').insertMany(AGREEMENTS.map((d) => ({ ...d, requirement_groups: d.requirement_groups.map((g) => ({ ...g })) })));
+  await db.collection('agreement_reviews').insertMany(VERDICTS.map((v) => ({ ...v })));
 });
 
 describe('audit stats — _statsData (getStats)', () => {
@@ -232,8 +231,8 @@ describe('audit stats — _statsData (getStats)', () => {
   // whose worst verdict deviates AT ALL (error, conservative, or flagged).
   // Feeds the Stats page's strict-mismatch hero gauge (observed k/n).
   it('exports n_random_clusters_strict, counting non-error deviations too', async () => {
-    await db.collection('audit_results').deleteMany({});
-    await db.collection('audit_results').insertMany([
+    await db.collection('agreement_reviews').deleteMany({});
+    await db.collection('agreement_reviews').insertMany([
       // Cluster A (100/CS/hashA): worst = conservative → strict but NOT error.
       verdict(oid(11), { result: 'conservative' }),
       // Cluster B (100/Math/hashB): correct → neither.

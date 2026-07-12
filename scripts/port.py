@@ -4,8 +4,9 @@ the research project studies UC transfer pathways exclusively).
 
 The research Atlas only ever stores what the project needs: you (the admin)
 add or remove majors as the team's interests change, and this tool copies just
-those majors' agreements plus the catalog docs they reference. It runs on YOUR
-machine — the hosted research server never holds source-cluster credentials.
+those majors' agreements plus complete CC/UC catalog docs for the included
+schools. It runs on YOUR machine — the hosted research server never holds
+source-cluster credentials.
 Which of the ported majors PARTNERS can see is controlled separately, in the
 console's Admin tab (partner major access).
 
@@ -14,18 +15,19 @@ verdicts recorded against the research data can be merged back into the
 production audit store later (scripts/merge_verdicts.py).
 
 Commands (run from scripts/):
-    python port.py init                     # colleges + schools + indexes (once)
+    python port.py init                     # colleges + schools + full catalogs + indexes (once)
     python port.py list "computer science"  # preview source majors matching a filter
     python port.py add  "computer science"  # port matching majors (contains, case-insens.)
     python port.py add  --exact "CSE: Computer Science B.S."
     python port.py remove --exact "CSE: Computer Science B.S."
+    python port.py refresh-catalogs         # backfill/update all CC + UC catalog docs
     python port.py status                   # what the research cluster holds now
 
-Every add/remove bumps `dataset_meta.dataset_version` (YYYY-MM-DD-vN) and
-appends to `dataset_changelog`, so analyses/exports/verdicts are attributable
-to an exact dataset state. Audit verdicts, groupings, and curations are never
-touched — removing a major orphans its verdicts harmlessly; re-adding the
-major reconnects them (same `_id`s).
+Every mutating operation records `settings.last_data_refresh_at`. Audit
+verdicts and curated data are never touched — removing a major orphans its
+reviews harmlessly; re-adding the major reconnects them (same `_id`s).
+Source-shaped staging collections exist only for the duration of a port and
+are removed after the canonical rebuild succeeds.
 
 Env (scripts/.env or shell):
     SOURCE_MONGO_URI (default mongodb://localhost:27017)
@@ -37,6 +39,7 @@ import argparse
 import datetime
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -49,6 +52,8 @@ load_dotenv(HERE / ".env")
 # UC-only: the research project studies UC transfer pathways exclusively.
 AGREEMENT_COLLECTIONS = ("uc_agreements",)
 FULL_COPY_COLLECTIONS = ("community_colleges", "uc_schools")
+CANONICAL_AGREEMENTS = "assist_agreements"
+CANONICAL_ADMISSIONS = "admissions"
 
 
 def _env(name, default=None, required=False):
@@ -82,26 +87,6 @@ def matched_majors(db, mfilter):
     return {coll: sorted(db[coll].distinct("major", mfilter)) for coll in AGREEMENT_COLLECTIONS}
 
 
-def referenced_ids(db, mfilter):
-    """course_ids + university parent_ids referenced by the matched agreements."""
-    course_ids, parent_ids = set(), set()
-    for coll in AGREEMENT_COLLECTIONS:
-        for doc in db[coll].find(mfilter, {"requirement_groups": 1}):
-            for group in doc.get("requirement_groups") or []:
-                for section in group.get("sections") or []:
-                    for recv in section.get("receivers") or []:
-                        receiving = recv.get("receiving") or {}
-                        if receiving.get("kind") == "course":
-                            parent_ids.add(receiving.get("parent_id"))
-                        elif receiving.get("kind") == "series":
-                            parent_ids.update(receiving.get("parent_ids") or [])
-                        for opt in recv.get("options") or []:
-                            course_ids.update(opt.get("course_ids") or [])
-    course_ids.discard(None)
-    parent_ids.discard(None)
-    return course_ids, parent_ids
-
-
 def upsert_by_id(target_coll, docs):
     """Idempotent copy preserving _ids (replace-or-insert)."""
     ops = [UpdateOne({"_id": d["_id"]}, {"$set": d}, upsert=True) for d in docs]
@@ -112,32 +97,100 @@ def upsert_by_id(target_coll, docs):
     return len(ops)
 
 
-def bump_version(target_db, action, detail, counts):
-    today = datetime.date.today().isoformat()
-    prefix = f"{today}-v"
-    seen = [
-        v for v in target_db["dataset_changelog"].distinct("dataset_version") if v.startswith(prefix)
-    ]
-    ns = [int(v[len(prefix):]) for v in seen if v[len(prefix):].isdigit()]
-    version = f"{prefix}{max(ns) + 1 if ns else 1}"
-    now = datetime.datetime.now(datetime.timezone.utc)
+def prepare_agreement_stage(target_db):
+    """Build temporary source-shaped inputs from canonical data."""
+    if (
+        target_db["uc_agreements"].estimated_document_count() == 0
+        and target_db[CANONICAL_AGREEMENTS].estimated_document_count() > 0
+    ):
+        upsert_by_id(
+            target_db["uc_agreements"],
+            list(target_db[CANONICAL_AGREEMENTS].find()),
+        )
+    if (
+        target_db["uc_major_admissions"].estimated_document_count() == 0
+        and target_db[CANONICAL_ADMISSIONS].estimated_document_count() > 0
+    ):
+        upsert_by_id(
+            target_db["uc_major_admissions"],
+            list(target_db[CANONICAL_ADMISSIONS].find()),
+        )
 
-    majors = {
-        coll: sorted(target_db[coll].distinct("major")) for coll in AGREEMENT_COLLECTIONS
-    }
-    meta = {
-        "dataset_version": version,
-        "updated_at": now,
-        "majors": majors,
-        "counts": {c: target_db[c].estimated_document_count() for c in (
-            *AGREEMENT_COLLECTIONS, "courses", "university_courses", "uc_major_admissions",
-        )},
-    }
-    target_db["dataset_meta"].replace_one({"_id": "current"}, {"_id": "current", **meta}, upsert=True)
-    target_db["dataset_changelog"].insert_one(
-        {"dataset_version": version, "at": now, "action": action, "detail": detail, "counts": counts}
+
+def rebuild_canonical():
+    """Install canonical data, then remove all temporary source-shaped inputs."""
+    migration = HERE.parent / "server" / "scripts" / "migrateCanonicalSchema.js"
+    command = ["node", str(migration), "--apply"]
+    try:
+        subprocess.run(command, cwd=migration.parent.parent, check=True)
+        subprocess.run(
+            [*command, "--drop-legacy", "--yes"],
+            cwd=migration.parent.parent,
+            check=True,
+        )
+    except FileNotFoundError:
+        sys.exit("Node.js is required to rebuild the canonical research schema.")
+    except subprocess.CalledProcessError as exc:
+        sys.exit(f"Canonical schema rebuild failed (exit {exc.returncode}).")
+
+
+def replace_collection(target_coll, docs, required=True):
+    """Replace a catalog collection with source docs, preserving source _ids."""
+    docs = list(docs)
+    if required and not docs:
+        sys.exit(f"Refusing to replace {target_coll.name}: source query returned zero docs.")
+    target_coll.delete_many({})
+    for i in range(0, len(docs), 1000):
+        target_coll.insert_many(docs[i : i + 1000], ordered=False)
+    return len(docs)
+
+
+def source_school_ids(source_db):
+    cc_ids = sorted(
+        {row.get("id") for row in source_db["community_colleges"].find({}, {"id": 1, "_id": 0})}
+        - {None}
     )
-    return version
+    uc_ids = sorted(
+        {row.get("id") for row in source_db["uc_schools"].find({}, {"id": 1, "_id": 0})}
+        - {None}
+    )
+    if not cc_ids:
+        sys.exit("No community_colleges ids found in source; refusing to sync catalogs.")
+    if not uc_ids:
+        sys.exit("No uc_schools ids found in source; refusing to sync university catalogs.")
+    return cc_ids, uc_ids
+
+
+def sync_full_catalogs(source_db, target_db):
+    """Copy every CC course and every UC course for the included schools."""
+    cc_ids, uc_ids = source_school_ids(source_db)
+    return {
+        "courses": replace_collection(
+            target_db["courses"],
+            source_db["courses"].find({"community_college_id": {"$in": cc_ids}}),
+        ),
+        "university_courses": replace_collection(
+            target_db["university_courses"],
+            source_db["university_courses"].find({"university_id": {"$in": uc_ids}}),
+        ),
+    }
+
+
+def mark_refreshed(target_db, counts):
+    now = datetime.datetime.now(datetime.timezone.utc)
+    target_db["settings"].update_one(
+        {"_id": "app"},
+        {
+            "$set": {
+                "last_data_refresh_at": now,
+                "last_refresh_counts": counts,
+                "canonical_dirty": True,
+            },
+            "$setOnInsert": {"visible_pairs": []},
+        },
+        upsert=True,
+    )
+    return now
 
 
 def ensure_indexes(target_db):
@@ -157,12 +210,15 @@ def ensure_indexes(target_db):
 
 def cmd_init(args):
     source_db, target_db = connect()
+    prepare_agreement_stage(target_db)
     counts = {}
     for coll in FULL_COPY_COLLECTIONS:
         counts[coll] = upsert_by_id(target_db[coll], list(source_db[coll].find()))
+    counts.update(sync_full_catalogs(source_db, target_db))
     ensure_indexes(target_db)
-    version = bump_version(target_db, "init", "colleges + schools", counts)
-    print(f"Initialized research cluster @ dataset_version {version}:")
+    refreshed_at = mark_refreshed(target_db, counts)
+    rebuild_canonical()
+    print(f"Initialized research cluster @ {refreshed_at.isoformat()}:")
     for coll, n in counts.items():
         print(f"  {coll}: {n} docs")
 
@@ -181,6 +237,7 @@ def cmd_list(args):
 
 def cmd_add(args):
     source_db, target_db = connect()
+    prepare_agreement_stage(target_db)
     mfilter = major_filter(args.term, args.exact)
     matched = matched_majors(source_db, mfilter)
     if not any(matched.values()):
@@ -194,30 +251,26 @@ def cmd_add(args):
         sys.exit("Aborted.")
 
     counts = {}
+    for coll in FULL_COPY_COLLECTIONS:
+        counts[coll] = upsert_by_id(target_db[coll], list(source_db[coll].find()))
     for coll in AGREEMENT_COLLECTIONS:
         counts[coll] = upsert_by_id(target_db[coll], list(source_db[coll].find(mfilter)))
     counts["uc_major_admissions"] = upsert_by_id(
         target_db["uc_major_admissions"], list(source_db["uc_major_admissions"].find(mfilter))
     )
-    course_ids, parent_ids = referenced_ids(source_db, mfilter)
-    counts["courses"] = upsert_by_id(
-        target_db["courses"],
-        list(source_db["courses"].find({"course_id": {"$in": sorted(course_ids)}})),
-    )
-    counts["university_courses"] = upsert_by_id(
-        target_db["university_courses"],
-        list(source_db["university_courses"].find({"parent_id": {"$in": sorted(parent_ids)}})),
-    )
+    counts.update(sync_full_catalogs(source_db, target_db))
     ensure_indexes(target_db)
     all_names = sorted({m for majors in matched.values() for m in majors})
-    version = bump_version(target_db, "add", all_names, counts)
-    print(f"\nPorted @ dataset_version {version}:")
+    refreshed_at = mark_refreshed(target_db, counts)
+    rebuild_canonical()
+    print(f"\nPorted @ {refreshed_at.isoformat()}:")
     for coll, n in counts.items():
         print(f"  {coll}: {n} docs")
 
 
 def cmd_remove(args):
-    _, target_db = connect()
+    source_db, target_db = connect()
+    prepare_agreement_stage(target_db)
     mfilter = major_filter(args.term, args.exact)
     matched = matched_majors(target_db, mfilter)
     if not any(matched.values()):
@@ -235,39 +288,60 @@ def cmd_remove(args):
     for coll in AGREEMENT_COLLECTIONS:
         counts[coll] = -target_db[coll].delete_many(mfilter).deleted_count
     counts["uc_major_admissions"] = -target_db["uc_major_admissions"].delete_many(mfilter).deleted_count
-
-    # Prune catalog docs no longer referenced by any remaining agreement.
-    still_course_ids, still_parent_ids = referenced_ids(target_db, {})
-    counts["courses"] = -target_db["courses"].delete_many(
-        {"course_id": {"$nin": sorted(still_course_ids)}}
-    ).deleted_count
-    counts["university_courses"] = -target_db["university_courses"].delete_many(
-        {"parent_id": {"$nin": sorted(still_parent_ids)}}
-    ).deleted_count
+    for coll in FULL_COPY_COLLECTIONS:
+        counts[coll] = upsert_by_id(target_db[coll], list(source_db[coll].find()))
+    counts.update(sync_full_catalogs(source_db, target_db))
+    ensure_indexes(target_db)
 
     all_names = sorted({m for majors in matched.values() for m in majors})
-    version = bump_version(target_db, "remove", all_names, counts)
-    print(f"\nRemoved @ dataset_version {version}:")
+    refreshed_at = mark_refreshed(target_db, counts)
+    rebuild_canonical()
+    print(f"\nRemoved @ {refreshed_at.isoformat()}:")
+    for coll, n in counts.items():
+        print(f"  {coll}: {n} docs")
+
+
+def cmd_refresh_catalogs(args):
+    source_db, target_db = connect()
+    prepare_agreement_stage(target_db)
+    for coll in FULL_COPY_COLLECTIONS:
+        upsert_by_id(target_db[coll], list(source_db[coll].find()))
+    counts = sync_full_catalogs(source_db, target_db)
+    ensure_indexes(target_db)
+    refreshed_at = mark_refreshed(target_db, counts)
+    rebuild_canonical()
+    print(f"Refreshed full catalogs @ {refreshed_at.isoformat()}:")
     for coll, n in counts.items():
         print(f"  {coll}: {n} docs")
 
 
 def cmd_status(args):
     _, target_db = connect()
-    meta = target_db["dataset_meta"].find_one({"_id": "current"})
-    if not meta:
+    settings = target_db["settings"].find_one({"_id": "app"})
+    if not settings:
         sys.exit("Research cluster not initialized — run `python port.py init` first.")
-    print(f"dataset_version: {meta['dataset_version']}  (updated {meta['updated_at']})")
-    for coll, majors in (meta.get("majors") or {}).items():
+    print(f"last refreshed: {settings.get('last_data_refresh_at', 'unknown')}")
+    agreement_collection = (
+        CANONICAL_AGREEMENTS
+        if target_db[CANONICAL_AGREEMENTS].estimated_document_count()
+        else "uc_agreements"
+    )
+    majors_by_collection = {
+        agreement_collection: sorted(target_db[agreement_collection].distinct("major"))
+    }
+    for coll, majors in majors_by_collection.items():
         print(f"\n{coll} — {len(majors)} major(s):")
         for m in majors:
             print(f"  {m}")
     print("\ncounts:")
-    for coll, n in (meta.get("counts") or {}).items():
-        print(f"  {coll}: {n}")
-    print("\nrecent changes:")
-    for entry in target_db["dataset_changelog"].find().sort("at", -1).limit(10):
-        print(f"  {entry['dataset_version']}  {entry['action']}: {entry['detail']}")
+    if agreement_collection == CANONICAL_AGREEMENTS:
+        print(f"  {CANONICAL_AGREEMENTS}: {target_db[CANONICAL_AGREEMENTS].estimated_document_count()}")
+        print(f"  assist_courses (sending): {target_db['assist_courses'].count_documents({'side': 'sending'})}")
+        print(f"  assist_courses (receiving): {target_db['assist_courses'].count_documents({'side': 'receiving'})}")
+        print(f"  admissions: {target_db[CANONICAL_ADMISSIONS].estimated_document_count()}")
+    else:
+        for coll in (*AGREEMENT_COLLECTIONS, "courses", "university_courses", "uc_major_admissions"):
+            print(f"  {coll}: {target_db[coll].estimated_document_count()}")
 
 
 def main():
@@ -275,6 +349,7 @@ def main():
     sub = ap.add_subparsers(dest="command", required=True)
 
     sub.add_parser("init", help="copy colleges + schools, create indexes")
+    sub.add_parser("refresh-catalogs", help="copy every CC + UC course for the included schools")
     p_list = sub.add_parser("list", help="preview source majors matching a term")
     p_add = sub.add_parser("add", help="port majors matching a term")
     p_remove = sub.add_parser("remove", help="remove majors from the research cluster")
@@ -287,7 +362,14 @@ def main():
         p.add_argument("--yes", action="store_true", help="skip the interactive confirm")
 
     args = ap.parse_args()
-    {"init": cmd_init, "list": cmd_list, "add": cmd_add, "remove": cmd_remove, "status": cmd_status}[
+    {
+        "init": cmd_init,
+        "refresh-catalogs": cmd_refresh_catalogs,
+        "list": cmd_list,
+        "add": cmd_add,
+        "remove": cmd_remove,
+        "status": cmd_status,
+    }[
         args.command
     ](args)
 

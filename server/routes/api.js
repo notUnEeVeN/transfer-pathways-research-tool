@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const communityCollegeController = require('../controllers/CommunityCollege');
-const agreementsController = require('../controllers/Agreements');
-const coursesController = require('../controllers/Courses');
-const universityCoursesController = require('../controllers/UniversityCourses');
+const canonicalDataController = require('../controllers/CanonicalData');
+const analysisController = require('../controllers/Analysis');
+const curationController = require('../controllers/Curation');
+const degreeRequirementsController = require('../controllers/DegreeRequirements');
 const authenticateToken = require('../middleware/auth');
 const requireAuditAccess = require('../middleware/requireAuditAccess');
 const requireAdmin = require('../middleware/requireAdmin');
@@ -17,30 +17,38 @@ const jsonBody = express.json({ limit: '256kb' });
 // data routes reuse the same guard as the audit console.
 const guarded = [authenticateToken, requireAuditAccess, userLimiter];
 
-// ───────── Reference data (research subset) ─────────
-router.get('/community-colleges', ...guarded, communityCollegeController.listAll);
-router.get('/schools', ...guarded, agreementsController.getSchools);
-router.get(
-  '/uc-agreements-batch/:community_college_id',
-  ...guarded,
-  agreementsController.getAllUCAgreementsForCommunityCollege
-);
-router.get(
-  '/courses/:community_college_id',
-  ...guarded,
-  coursesController.getCoursesByCommunityCollegeId
-);
-router.get(
-  '/university-courses/:university_id',
-  ...guarded,
-  universityCoursesController.getUniversityCoursesByUniversityId
-);
+// ───────── Canonical data contract ─────────
+// The router is mounted at /api. Storage names stay private; these are the
+// stable paths new notebooks and the web app use from this migration onward.
+router.get('/assist/institutions', ...guarded, canonicalDataController.listInstitutions);
+router.put('/assist/institutions/:id', ...guarded, jsonBody, canonicalDataController.putInstitutionProfile);
+router.delete('/assist/institutions/:id/profile', ...guarded, canonicalDataController.deleteInstitutionProfile);
+router.get('/assist/courses',      ...guarded, canonicalDataController.listCourses);
+router.get('/assist/agreements',   ...guarded, canonicalDataController.listAgreements);
+router.get('/assist/coverage',     ...guarded, analysisController.coverage);
+router.get('/admissions',          ...guarded, canonicalDataController.listAdmissions);
+router.get('/curated/requirements', ...guarded, canonicalDataController.listRequirements);
+router.get('/curated/requirement-comparison', ...guarded, analysisController.requirementComparison);
+router.put('/curated/requirements/:kind', ...guarded, jsonBody, canonicalDataController.putRequirement);
+router.delete('/curated/requirements/:kind/:id', ...guarded, canonicalDataController.deleteRequirement);
+router.get('/curated/prerequisites', ...guarded, canonicalDataController.listPrerequisites);
+router.put('/curated/prerequisites', ...guarded, jsonBody, canonicalDataController.putPrerequisite);
+router.delete('/curated/prerequisites/:id', ...guarded, canonicalDataController.deletePrerequisite);
+router.get('/curated/course-categories', ...guarded, curationController.listCategories);
+router.put('/curated/course-categories/:parentId', ...guarded, jsonBody, curationController.putCategory);
+router.get('/curated/receiver-overrides', ...guarded, curationController.listOverrides);
+router.put('/curated/receiver-overrides/:hashId', ...guarded, jsonBody, curationController.putOverride);
+router.get('/curated/associate-degrees', ...guarded, curationController.listAssocDegrees);
+router.put('/curated/associate-degrees', ...guarded, jsonBody, curationController.putAssocDegree);
+router.delete('/curated/associate-degrees/:id', ...guarded, curationController.deleteAssocDegree);
+router.get('/curated/degrees', ...guarded, degreeRequirementsController.list);
+router.get('/curated/degree-evaluation', ...guarded, degreeRequirementsController.evaluate);
 
 // ───────── Audit console ─────────
 // Same audit stack as the production tool, minus its local-Mongo gates: the
 // research reference handle points at the dedicated research cluster by
-// design. Verdicts carry dataset_version + source for the eventual manual
-// merge back into the production audit store.
+// design. Verdicts carry their source for the eventual manual merge back into
+// the production audit store.
 const auditController = require('../controllers/Audit');
 router.use('/audit', ...guarded);
 router.get('/audit/next',              auditController.getNext);
@@ -59,24 +67,6 @@ router.get('/audit/search',            auditController.searchPicker);
 // (Stale was re-added by request: after a parser refresh, retired verdicts
 // surface there so prior flags/errors can be revisited.)
 
-// ───────── Curation (categories, overrides, prereqs, ADTs, ref tables) ─────────
-// Open to every console user — partners do curation work; writes are stamped
-// with the curator's uid.
-const curationController = require('../controllers/Curation');
-router.use('/curation', ...guarded);
-router.get('/curation/categories',              curationController.listCategories);
-router.put('/curation/categories/:parentId',    jsonBody, curationController.putCategory);
-router.get('/curation/receiver-overrides',      curationController.listOverrides);
-router.put('/curation/receiver-overrides/:hashId', jsonBody, curationController.putOverride);
-router.get('/curation/prereqs',                 curationController.listPrereqs);
-router.put('/curation/prereqs/:key',            jsonBody, curationController.putPrereqs);
-router.get('/curation/assoc-degrees',           curationController.listAssocDegrees);
-router.put('/curation/assoc-degrees',           jsonBody, curationController.putAssocDegree);
-router.delete('/curation/assoc-degrees/:id',    curationController.deleteAssocDegree);
-router.get('/curation/ref/:table',              curationController.getRefTable);
-router.put('/curation/ref/:table',              jsonBody, curationController.putRefRow);
-router.delete('/curation/ref/:table/:id',       curationController.deleteRefRow);
-
 // ───────── Personal API tokens (programmatic access for scripts) ─────────
 const tokensController = require('../controllers/Tokens');
 router.get('/tokens',        ...guarded, tokensController.list);
@@ -88,55 +78,26 @@ const dataController = require('../controllers/Data');
 router.get('/data/summary',        ...guarded, dataController.getSummary);
 router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
 
-// ───────── Published figures (the shared stats gallery) + starter.py client ─────────
-// Static figures are rendered images published from partners' local Python via
-// pmt.publish() — stored and listed, nothing executed.
+// ───────── Locally rendered figures + Python client ─────────
+// pmt.publish(fig, ...) renders on the teammate's machine. The server receives
+// finished files only; no uploaded Python is ever executed.
 const figuresController = require('../controllers/Figures');
-const figureBody = express.json({ limit: '48mb' }); // 3 base64 formats ≤12MB decoded each
-router.get('/figures',                ...guarded, figuresController.list);
-router.post('/figures',               ...guarded, figureBody, figuresController.publish);
-router.get('/figures/:slug/:format',  ...guarded, figuresController.download);
-// Edit (metadata) and delete are owner-or-admin only — enforced in the controller.
-router.patch('/figures/:slug',        ...guarded, jsonBody, figuresController.update);
-router.delete('/figures/:slug',       ...guarded, figuresController.remove);
-router.get('/client/starter.py',      ...guarded, figuresController.pmtPy);
-router.get('/client/pmt.py',          ...guarded, figuresController.pmtPy); // compatibility alias
+const figureBody = express.json({ limit: '20mb' });
+router.get('/gallery',                 ...guarded, figuresController.list);
+router.post('/publish',                ...guarded, figureBody, figuresController.publish);
+router.get('/gallery/:slug/:format',   ...guarded, figuresController.download);
+router.patch('/gallery/:slug',         ...guarded, jsonBody, figuresController.update);
+router.delete('/gallery/:slug',        ...guarded, figuresController.remove);
+router.get('/client.py',               ...guarded, figuresController.pmtPy);
 
-// ───────── Live figures (scripts the server re-runs on data changes) ─────────
-// pmt.publish_script() posts the script; the server dry-runs it sandboxed
-// (services/figureRunner.js) and publishes only what a successful run
-// captured. Code is viewable by every console user; logs and the control
-// surface (refresh, enable, detach) are owner-or-admin, in the controller.
-const figureScriptsController = require('../controllers/FigureScripts');
-const scriptBody = express.json({ limit: '1mb' }); // ≤200KB code + JSON escaping headroom
-router.post('/figure-scripts',                ...guarded, scriptBody, figureScriptsController.publish);
-router.get('/figure-scripts/:slug',           ...guarded, figureScriptsController.get);
-router.post('/figure-scripts/:slug/refresh',  ...guarded, figureScriptsController.refresh);
-router.put('/figure-scripts/:slug/enabled',   ...guarded, jsonBody, figureScriptsController.setEnabled);
-router.delete('/figure-scripts/:slug',        ...guarded, figureScriptsController.detach);
-router.get('/figure-scripts/:slug/runs',      ...guarded, figureScriptsController.runs);
+// ───────── Bulk source-data exports (JSON or ?format=csv) ─────────
+router.use('/exports', ...guarded);
+router.get('/exports/agreements',         analysisController.exportAgreements);
+router.get('/exports/receivers',          analysisController.exportReceivers);
+router.get('/exports/courses',            analysisController.exportCourses);
+router.get('/exports/university-courses', analysisController.exportUniversityCourses);
 
-// ───────── Analysis + export (papers' statistics; JSON or ?format=csv) ─────────
-const analysisController = require('../controllers/Analysis');
-router.use('/analysis', ...guarded);
-// Which analyses are released to partners (frontend hides unreleased ones).
-router.get('/analysis/releases',        analysisController.getReleases);
-router.get('/analysis/coverage',        analysisController.coverage);
-router.get('/analysis/requirement-comparison', analysisController.requirementComparison);
-router.get('/analysis/credit-loss',     analysisController.creditLoss);
-router.get('/analysis/choice-cost',     analysisController.choiceCost);
-router.get('/analysis/category-gaps',   analysisController.categoryGaps);
-router.get('/analysis/complexity',      analysisController.complexity);
-router.get('/analysis/time-to-degree',  analysisController.timeToDegree);
-router.get('/analysis/raw/:collection', analysisController.rawExport);
-// Bulk corpus exports (scoped; JSON or ?format=csv).
-router.use('/export', ...guarded);
-router.get('/export/agreements',         analysisController.exportAgreements);
-router.get('/export/receivers',          analysisController.exportReceivers);
-router.get('/export/courses',            analysisController.exportCourses);
-router.get('/export/university-courses', analysisController.exportUniversityCourses);
-
-// ───────── Tasks (the team's kanban over figures/analyses/audits) ─────────
+// ───────── Tasks (typed research workflows + shared kanban) ─────────
 // Open to every console user — everyone may edit anything (3-person team
 // decision); writes are stamped with who. /tasks/roster is registered before
 // the '/tasks/:id' verbs so "roster" is never parsed as a task id.
@@ -145,11 +106,14 @@ router.use('/tasks', ...guarded);
 router.get('/tasks',           tasksController.list);
 router.get('/tasks/roster',    tasksController.roster);
 router.post('/tasks',          jsonBody, tasksController.create);
+router.post('/tasks/:id/stages/:stage/notes',    jsonBody, tasksController.addStageNote);
+router.post('/tasks/:id/stages/:stage/complete', jsonBody, tasksController.completeStage);
+router.post('/tasks/:id/stages/:stage/reopen',   jsonBody, tasksController.reopenStage);
 router.put('/tasks/:id',       jsonBody, tasksController.update);
 router.delete('/tasks/:id',    tasksController.remove);
 
 // ───────── Admin (dataset visibility + partner access) ─────────
-// Admins come from ADMIN_UIDS (env); partners from access_grants (managed
+// Admins come from ADMIN_UIDS (env); partners from team_members (managed
 // here). Data porting itself runs locally via scripts/port.py — the hosted
 // server never holds source-cluster credentials.
 const adminController = require('../controllers/Admin');
@@ -177,15 +141,4 @@ router.delete('/admin/access-blocks/:uid',   accessRequestsController.adminUnblo
 // Which ported majors partners can see (deny-by-default until selected).
 router.get('/admin/visible-majors',     adminController.getVisibleMajors);
 router.put('/admin/visible-majors',     jsonBody, adminController.putVisibleMajors);
-// Release/unrelease live analyses to partners (Data → Analysis tab).
-router.put('/admin/analysis-releases',  jsonBody, adminController.putAnalysisReleases);
-// Disable/enable analyses outright (hidden from everyone, nothing computed).
-router.put('/admin/analysis-disabled',  jsonBody, adminController.putAnalysisDisabled);
-// Re-port the current majors from the source DB (post-parser-update refresh).
-router.post('/admin/refresh-dataset',   adminController.postRefreshDataset);
-router.get('/admin/refresh-dataset',    adminController.getRefreshStatus);
-// Pause/resume scheduled live-figure refreshes (the runner's global switch).
-router.get('/admin/figure-runner',      adminController.getFigureRunner);
-router.put('/admin/figure-runner',      jsonBody, adminController.putFigureRunner);
-
 module.exports = router;

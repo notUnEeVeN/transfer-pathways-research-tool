@@ -30,12 +30,10 @@ or answer a reviewer-style question.
 
 Every ported figure keeps three artifacts in sync:
 
-1. **The website component** (`frontend/src/analyses/Paper*.jsx`) with views
-   for *Paper baseline*, *Our data*, and *Difference* — the baseline view must
-   reproduce the paper render exactly (verified, not assumed).
-2. **Auditable Python** (`analysis/`) that reimplements the computation
-   from scratch — no code shared with the website — so results can be
-   independently reproduced and explained (`--diff`, `--explain` flags).
+1. **Auditable local Python** (`analysis/`) that computes and renders the
+   figure from canonical data (`--diff`, `--explain` flags where applicable).
+2. **A published gallery artifact** created with `pmt.publish(fig, ...)` after
+   the local values and rendering have been checked.
 3. **A figure doc** (`docs/figures/*.md`) recording provenance, the
    verification performed, known rendering substitutions, and the difference
    analysis with course-level receipts.

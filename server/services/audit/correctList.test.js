@@ -49,18 +49,18 @@ beforeAll(async () => {
 afterAll(async () => { if (harness) await harness.stop(); });
 beforeEach(async () => {
   cache.clear();
-  await db.collection('uc_agreements').deleteMany({});
-  await db.collection('audit_results').deleteMany({});
+  await db.collection('assist_agreements').deleteMany({});
+  await db.collection('agreement_reviews').deleteMany({});
 });
 
 describe('GET /audit/correct — _correctData', () => {
   it('returns only LIVE correct verdicts, most-recent first, with the list row shape', async () => {
-    await db.collection('uc_agreements').insertMany([
+    await db.collection('assist_agreements').insertMany([
       agreement(1, { major: 'Biology', major_id: 'm-bio' }),
       agreement(2, { major: 'Chemistry', major_id: 'm-chem' }),
       agreement(3, { major: 'Physics', major_id: 'm-phys' }),
     ]);
-    await db.collection('audit_results').insertMany([
+    await db.collection('agreement_reviews').insertMany([
       verdict(1, { major: 'Biology',   verified_at: '2026-05-01T00:00:00.000Z' }),
       verdict(2, { major: 'Chemistry', verified_at: '2026-05-03T00:00:00.000Z' }), // newest
       verdict(3, { major: 'Physics',   result: 'conservative' }),                  // wrong tier → excluded
@@ -78,19 +78,19 @@ describe('GET /audit/correct — _correctData', () => {
   });
 
   it('drops STALE correct verdicts (hash drift)', async () => {
-    await db.collection('uc_agreements').insertMany([agreement(1, { major: 'Biology' })]);
-    await db.collection('audit_results').insertMany([
+    await db.collection('assist_agreements').insertMany([agreement(1, { major: 'Biology' })]);
+    await db.collection('agreement_reviews').insertMany([
       verdict(1, { major: 'Biology', raw_template_hash: 'OLDHASH' }), // drifted → stale → excluded
     ]);
     expect(await callCorrect(db)).toEqual([]);
   });
 
   it('search filters by denormalized major/school; limit caps the count', async () => {
-    await db.collection('uc_agreements').insertMany([
+    await db.collection('assist_agreements').insertMany([
       agreement(1, { major: 'Biology', major_id: 'm-bio' }),
       agreement(2, { major: 'Chemistry', major_id: 'm-chem' }),
     ]);
-    await db.collection('audit_results').insertMany([
+    await db.collection('agreement_reviews').insertMany([
       verdict(1, { major: 'Biology' }),
       verdict(2, { major: 'Chemistry', verified_at: '2026-05-02T00:00:00.000Z' }),
     ]);

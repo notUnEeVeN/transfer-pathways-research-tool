@@ -54,7 +54,7 @@ numbers on their data — run on newer ASSIST data: six of nine campuses
 identical at first choice, the rest within ±0.08, every difference a named
 articulation change."*
 
-**ASSIST-stated minimums extension:** when demand comes from `uc_agreements`
+**ASSIST-stated minimums extension:** when demand comes from `assist_agreements`
 required groups (the one Settings-selected CS major per campus) instead of the
 website-minimum curation — with sibling colleges pooled per requirement, exactly
 as the paper pools — both eligibility and the minimum-course count are decided by
@@ -70,7 +70,7 @@ zero, each blocked at every district by a genuinely required receiver (UCLA
 ## Verdict (detail)
 
 - **Gold requirement bars: 9 of 9 campuses identical.** Derived from
-  `ref_uc_transfer_requirements` (+ quarter→semester conversion) rather than
+  `curated_requirements` (+ quarter→semester conversion) rather than
   transcribed; the script asserts they reproduce the paper's constants and
   fails loudly on drift.
 - **Blue bars: 6 of 9 campuses reproduce the paper's 1st-choice average
@@ -103,8 +103,8 @@ choice. The gap between gold and dark blue is the credit-loss story.
 
 | Ingredient | Paper | Ours |
 | --- | --- | --- |
-| **Requirement rows** | Hand-curated per-campus minimums (`course_reqs.json`), group → alternative sets → rows | **The same curation**, imported verbatim (`ref_uc_transfer_requirements`); gold bars derived from it and asserted equal to the paper's constants |
-| **Articulations** | ASSIST agreements, circa the paper's scrape (college CSVs) | ASSIST agreements, 2025–26 (`uc_agreements`) |
+| **Requirement rows** | Hand-curated per-campus minimums (`course_reqs.json`), group → alternative sets → rows | **The same curation**, imported verbatim (`curated_requirements`); gold bars derived from it and asserted equal to the paper's constants |
+| **Articulations** | ASSIST agreements, circa the paper's scrape (college CSVs) | ASSIST agreements, 2025–26 (`assist_agreements`) |
 | **Receiver → requirement mapping** | A scraped row survives only if its Receiving matches a curated key EXACTLY: one required course, or one whole set's combined list (their CSVs carry exactly two such combined rows in all 72 districts: UCR Calc `MATH 9A;9B;9C`, UCI Intro `I&C SCI 31;32;33`); partial-series and cross-group receivers are dropped | Replicated exactly, via catalog `parent_ids`: one-course receivers map to their row, whole-set series to a combined row, everything else dropped |
 | **Visibility** | A requirement never mentioned by the agreement is absent from the CSVs — costs nothing, blocks nothing; mentioned-but-not-articulated rows block transferability | Replicated: unmentioned row identities are invisible per district |
 | **Method** | Identical, reimplemented from `optimal_total_combinations.py`: single best college per row (fewest-course option), one optimal MILP set cover (CBC) per campus subset, exactly one set per group, all P(9,4) = 3,024 permutations, marginal courses per slot, ÷ 336, transferable average over districts with rounded unarticulated = 0, round-then-average | (same — `analysis/paper_credit_loss.py` documents every rule) |
@@ -252,7 +252,7 @@ This is **our extension**, not a paper replication. The paper asked how many
 CCC courses satisfy a fixed, hand-curated set of UC website minimums. The
 ASSIST variant asks the same credit-loss question against the minimums ASSIST
 agreements themselves state, for the one hand-selected CS major per campus you
-share with partners (Settings → `dataset_config.partner_access`; falls back to
+share with partners (Settings -> `settings.app.visible_pairs`; falls back to
 `PAPER_MAJORS` if unset). Both halves are the website's own algorithms, ported
 so the figure inherits the console's rigor: the eligibility decision from
 `analysis/pmt_eligibility.py` (which honors choose-N — "Complete 1 of the
@@ -266,7 +266,7 @@ Diego and Los Angeles have no district where one college meets every requirement
 
 | Piece | Website-minimums figure | ASSIST-stated-minimums variant |
 | --- | --- | --- |
-| Demand source | `ref_uc_transfer_requirements` fixed per campus | `uc_agreements.requirement_groups` (truthy `is_required`) for the one Settings-selected CS major per campus |
+| Demand source | `curated_requirements` fixed per campus | `assist_agreements.requirement_groups` (truthy `is_required`) for the one Settings-selected CS major per campus |
 | Advisements | Website curation groups/sets | Both coverage/blockers (`pmt_eligibility.py`, strict) and the course count (`pmt_min_courses.py`, non-strict) delegate every completion decision to the ported eligibility engine, so section/group choose-N, unit advisements, OR sections, series, and `same_as` cross-listing are all honored by construction — no separate advisement re-encoding. Curation receiver exclusions applied (none in the current dataset) |
 | Unit of evaluation | District pools sibling-college supply against fixed campus demand | **Same** — sibling colleges pooled per requirement, keeping the **best college per requirement** (fewest-course alternative, ties by name — the paper's `creating_district_csvs` rule); one district-pooled model per campus |
 | Program choice | Not applicable; paper rows are campus-level | The one Settings-selected CS major per campus |
@@ -299,7 +299,7 @@ single CS major has a genuinely-required receiver no CCC articulates — UCSD's
 not include.)*
 
 Receipts:
-[`paper-credit-loss.assist.json`](../../frontend/src/analyses/data/paper-credit-loss.assist.json)
+[`paper-credit-loss.assist.json`](../../analysis/results/paper-credit-loss.assist.json)
 stores the demand distribution per campus, and
 [`paper_credit_loss_assist_complete_districts.csv`](../../analysis/results/paper_credit_loss_assist_complete_districts.csv)
 lists every surviving campus × district × college.
@@ -375,27 +375,13 @@ No. This mode deliberately measures what ASSIST agreement pages mark required,
 after our curation exclusions. It is a diagnostic demand model for comparing
 surfaces, not a claim that the paper used or endorsed this definition.
 
-## The website figure and how the port was verified
+## Figure verification
 
-[`frontend/src/analyses/PaperCreditLoss.jsx`](../../frontend/src/analyses/PaperCreditLoss.jsx)
-renders three views: **Paper baseline** (transcribed numbers,
-[`paperCreditLossBaseline.js`](../../frontend/src/analyses/paperCreditLossBaseline.js)),
-**Our data** (the committed
-[`paper-credit-loss.ours.json`](../../frontend/src/analyses/data/paper-credit-loss.ours.json)),
-and **Difference** — our bars with the delta *region* shaded (solid red
-segment = courses added vs the paper, translucent green block = courses no
-longer needed), a black tick at the paper's level, and signed delta labels;
-unchanged bars stay plain so the movers stand out.
-
-The SVG reproduces the paper's matplotlib render geometrically — axes box,
-bar layout, legend frame/rows, hatch period, tick/label bands all measured
-off the published 300-dpi PNG; Blues sampled exactly (`#08306b`, `#1764ab`,
-`#4a98c9`, `#94c4df`). Render parity was verified by rasterizing the
-component in headless Chrome and 50/50-blending it over the paper PNG — no
-geometric ghosting; evidence in
-[`assets/paper-credit-loss/`](assets/paper-credit-loss/). The one deliberate
-substitution is the font: Arial in place of matplotlib's DejaVu Sans (not
-web-safe); values, geometry, colors, hatching and layout are identical.
+The local matplotlib render reproduces the paper's axes, grouped bars,
+hatching, labels, and Blues palette (`#08306b`, `#1764ab`, `#4a98c9`,
+`#94c4df`). Value and geometry checks are recorded in
+[`assets/paper-credit-loss/`](assets/paper-credit-loss/). After verification,
+the finished Figure is published to the gallery with `pmt.publish(fig, ...)`.
 
 ## Reproduce it yourself
 
@@ -407,9 +393,9 @@ cd analysis
 .venv/bin/python paper_credit_loss.py --articulation-diff  # course-level change list
 ```
 
-Outputs: `frontend/src/analyses/data/paper-credit-loss.ours.json` (stamped
-with `dataset_version`; the website's Our data / Difference views),
-`frontend/src/analyses/data/paper-credit-loss.assist.json` (ASSIST-minimums
+Outputs: `analysis/results/paper-credit-loss.ours.json` (stamped
+with `data_refreshed_at`),
+`analysis/results/paper-credit-loss.assist.json` (ASSIST-minimums
 view),
 `analysis/results/paper_credit_loss_districts.csv` (per-district receipts),
 `analysis/results/paper_credit_loss_assist_districts.csv` (ASSIST per-district
@@ -419,9 +405,9 @@ surface). Re-run after dataset ports.
 
 ---
 
-*Sources: `ref_uc_transfer_requirements` (imported from the paper repo's
-`course_reqs.json`) · `uc_agreements` (ASSIST 2025–26) · `ref_cc_districts` ·
-`courses`. Paper artifacts: `question_1/csvs/2026/order_4/
+*Sources: `curated_requirements` (imported from the paper repo's
+`course_reqs.json`) · `assist_agreements` (ASSIST 2025–26) · `assist_institutions` ·
+`assist_courses`. Paper artifacts: `question_1/csvs/2026/order_4/
 optimal_order_{1..4}_averages.csv` + `grouped_bar_graph.py` +
 `optimal_total_combinations.py` + `creating_districts/` in
 transfer-agreements-analysis. Independent implementation:

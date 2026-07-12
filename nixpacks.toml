@@ -1,9 +1,0 @@
-# Adds python to the Node build image for the live-figure runner
-# (services/figureRunner.js). The venv itself is created by the buildCommand
-# in railway.json; PYTHON_BIN points the runner at it.
-[phases.setup]
-nixPkgs = ['...', 'python311']
-nixLibs = ['...', 'stdenv.cc.cc.lib']
-
-[variables]
-PYTHON_BIN = '/app/.runner-venv/bin/python3'

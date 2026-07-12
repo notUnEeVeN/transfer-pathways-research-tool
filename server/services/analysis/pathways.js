@@ -5,8 +5,8 @@
  *
  * Everything here works on REQUIRED requirement groups by default, honors
  * curation receiver-overrides (exclude), and reports course categories via
- * `curation_course_categories` (university parent_id → canonical category)
- * with `curation_receiver_overrides` as the fallback for non-course
+ * `curated_mappings` course categories (university parent_id → canonical
+ * category), with receiver overrides as the fallback for non-course
  * receivers. Methodological choices mirror the papers' best-case-scenario
  * framing; see optionSolver.js for the min-set semantics.
  */
@@ -16,7 +16,7 @@ const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingC
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
-  { key: 'uc', coll: 'uc_agreements', idField: 'uc_school_id', nameField: 'uc_school' },
+  { key: 'uc', coll: 'assist_agreements', idField: 'uc_school_id', nameField: 'uc_school' },
 ];
 
 const systemsFor = () => SYSTEMS;
@@ -25,12 +25,16 @@ const systemsFor = () => SYSTEMS;
 
 async function loadCuration(auditDb) {
   const [cats, overrides] = await Promise.all([
-    auditDb.collection('curation_course_categories').find().toArray(),
-    auditDb.collection('curation_receiver_overrides').find().toArray(),
+    auditDb.collection('curated_mappings').find({ kind: 'course_category' }).toArray(),
+    auditDb.collection('curated_mappings').find({ kind: 'receiver_override' }).toArray(),
   ]);
   return {
-    categoryByParent: new Map(cats.map((c) => [Number(c._id), c])),
-    overrideByHash: new Map(overrides.map((o) => [String(o._id), o])),
+    categoryByParent: new Map(cats.map((c) => [
+      Number(String(c.course_id || c.legacy_id || '').replace(/^university:/, '')), c,
+    ])),
+    overrideByHash: new Map(overrides.map((o) => [
+      String(o.receiver_hash ?? o.legacy_id ?? '').replace(/^receiver_override:/, ''), o,
+    ])),
   };
 }
 
@@ -119,16 +123,16 @@ function receiverParentIds(receiver) {
 
 // ── reference-table joins ──
 
-async function loadRefs(auditDb) {
-  const [cal, tuition, districts] = await Promise.all([
-    auditDb.collection('ref_campus_calendars').find().toArray(),
-    auditDb.collection('ref_tuition').find().toArray(),
-    auditDb.collection('ref_cc_districts').find().toArray(),
-  ]);
+async function loadRefs(db) {
+  const institutions = await db.collection('assist_institutions').find().toArray();
+  const universities = institutions.filter((row) => row.kind === 'university');
+  const colleges = institutions.filter((row) => row.kind === 'community_college');
   return {
-    calendarByUniversity: new Map(cal.map((r) => [Number(r._id), r.system])),
-    tuitionByUniversity: new Map(tuition.map((r) => [Number(r._id), Number(r.per_credit_usd)])),
-    districtByCc: new Map(districts.map((r) => [Number(r._id), {
+    calendarByUniversity: new Map(universities.map((r) => [Number(r.source_id), r.academic_calendar])),
+    tuitionByUniversity: new Map(universities
+      .filter((r) => r.tuition_per_credit_usd != null)
+      .map((r) => [Number(r.source_id), Number(r.tuition_per_credit_usd)])),
+    districtByCc: new Map(colleges.map((r) => [Number(r.source_id), {
       district: r.district ?? null,
       region: r.region ?? null,
       counties_served: Array.isArray(r.counties_served) ? r.counties_served : [],
@@ -137,22 +141,24 @@ async function loadRefs(auditDb) {
 }
 
 async function loadCcCourseUnits(db) {
-  const rows = await db.collection('courses')
-    .find({}, { projection: { course_id: 1, units: 1 } }).toArray();
+  const rows = await db.collection('assist_courses')
+    .find({ side: 'sending' }, { projection: { course_id: 1, units: 1 } }).toArray();
   return new Map(rows.map((r) => [String(r.course_id), Number(r.units) || 0]));
 }
 
 // CC-course catalog (units + same_as) keyed by stringified course_id — the
 // optimizer's coursesById. String keys match the stringified option ids below.
 async function loadCoursesById(db) {
-  const rows = await db.collection('courses')
-    .find({}, { projection: { course_id: 1, units: 1, same_as: 1 } }).toArray();
+  const rows = await db.collection('assist_courses')
+    .find({ side: 'sending' }, { projection: { course_id: 1, units: 1, same_as: 1, same_as_keys: 1 } }).toArray();
   const m = new Map();
   for (const r of rows) {
     m.set(String(r.course_id), {
       course_id: String(r.course_id),
       units: r.units,
-      same_as: (r.same_as || []).map((p) => ({ course_id: String(p.course_id) })),
+      same_as: (r.same_as_keys || r.same_as || []).map((p) => ({
+        course_id: String(p?.course_id ?? p).replace(/^cc:/, ''),
+      })),
     });
   }
   return m;
@@ -229,9 +235,9 @@ function agreementMinSetExact(doc, isExcluded, coursesById) {
   };
 }
 
-async function loadTransferRequirements(auditDb) {
-  const rows = await auditDb.collection('ref_uc_transfer_requirements')
-    .find({}, { projection: {
+async function loadTransferRequirements(db) {
+  const rows = await db.collection('curated_requirements')
+    .find({ kind: 'transfer_minimum' }, { projection: {
       school_id: 1, school: 1, uc_code: 1, group_id: 1, set_id: 1,
       receiving_code: 1, parent_ids: 1, matched: 1,
     } })
@@ -304,7 +310,7 @@ function paperMajorsQuery(idField = 'uc_school_id') {
 const CAMPUS_SCHOOL_IDS = Object.keys(PAPER_MAJORS).map(Number);
 
 // pin==='settings': resolve each figure campus's program from the admin's
-// working-dataset selection (dataset_config.partner_access.visible_pairs),
+// working-dataset selection (settings.app.visible_pairs),
 // scoped to the nine campuses and falling back to PAPER_MAJORS for any campus
 // the selection omits (so a campus is never dropped). This is how a paper-port
 // figure's ASSIST view tracks the selected program — e.g. UCB's EECS B.S. —
@@ -432,7 +438,7 @@ function evaluateTransferRequirementModel(model, articulatedParentIds) {
 
 async function hardRequirementCoverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', pin = null } = {}, refs) {
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
-  const requirementsBySchool = await loadTransferRequirements(auditDb);
+  const requirementsBySchool = await loadTransferRequirements(db);
   const buckets = new Map();
   const settings = pin === 'settings' ? await settingsMajors(auditDb) : null;
 
@@ -512,7 +518,7 @@ async function hardRequirementCoverageData(db, auditDb, { majorContains = '', vi
       major: b.major,
       source_majors: [...b.sourceMajors].sort(),
       requirements: 'paper',
-      requirements_source: 'ref_uc_transfer_requirements',
+      requirements_source: 'curated_requirements',
       uc_code: b.requirementsModel.uc_code,
       row_group_kind: b.row_group_kind,
       row_group_key: b.row_group_key,
@@ -523,7 +529,7 @@ async function hardRequirementCoverageData(db, auditDb, { majorContains = '', vi
 }
 
 async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', requirements = 'assist', pin = null } = {}) {
-  const refs = await loadRefs(auditDb);
+  const refs = await loadRefs(db);
   if (requirements === 'paper') {
     return hardRequirementCoverageData(db, auditDb, { majorContains, visiblePairs, groupBy, pin }, refs);
   }
@@ -649,7 +655,7 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   schoolId = Number(schoolId);
   communityCollegeId = Number(communityCollegeId);
   const [requirementsBySchool, curation] = await Promise.all([
-    loadTransferRequirements(auditDb),
+    loadTransferRequirements(db),
     loadCuration(auditDb),
   ]);
   const model = requirementsBySchool.get(schoolId);
@@ -658,7 +664,7 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   // All of the college's agreements at this campus, then pick the chosen major
   // tolerant of stored whitespace — some ASSIST program names carry a trailing
   // space (e.g. UC Merced's "...B.S. "), so an exact/trimmed query would miss.
-  const collegeAll = await db.collection('uc_agreements').find(
+  const collegeAll = await db.collection('assist_agreements').find(
     { uc_school_id: schoolId, community_college_id: communityCollegeId },
     { projection: { requirement_groups: 1, community_college: 1, uc_school: 1, major: 1 } }).toArray();
   const wantedMajor = String(major || '').trim();
@@ -774,8 +780,8 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   const enrichRows = [...websiteReqs, ...extraGroups.flatMap((g) => g.options)];
   const pids = enrichRows.map((r) => r.parent_id).filter((p) => p != null);
   if (pids.length) {
-    const ucRows = await db.collection('university_courses')
-      .find({ parent_id: { $in: pids } }, { projection: { parent_id: 1, prefix: 1, number: 1 } }).toArray();
+    const ucRows = await db.collection('assist_courses')
+      .find({ side: 'receiving', parent_id: { $in: pids } }, { projection: { parent_id: 1, prefix: 1, number: 1 } }).toArray();
     const uniCode = new Map();
     for (const u of ucRows) {
       const pid = Number(u.parent_id);
@@ -791,8 +797,8 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   const ccIds = [...new Set([...ccByParent.values()].flat(2))];
   const ccCode = new Map();
   if (ccIds.length) {
-    const ccRows = await db.collection('courses')
-      .find({ course_id: { $in: ccIds.map(Number) } }, { projection: { course_id: 1, prefix: 1, number: 1 } }).toArray();
+    const ccRows = await db.collection('assist_courses')
+      .find({ side: 'sending', course_id: { $in: ccIds.map(Number) } }, { projection: { course_id: 1, prefix: 1, number: 1 } }).toArray();
     for (const c of ccRows) {
       const code = [c.prefix, c.number].filter(Boolean).join(' ').trim();
       if (code) ccCode.set(String(c.course_id), code);
@@ -835,11 +841,11 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
  *   many_to_one         — receivers whose cheapest path still takes >1 course
  *   semester_equiv_required — required receiver count normalized by the
  *       campus calendar (quarter course = 2/3 semester course), the CA
- *       paper's semester-to-quarter loss axis. Needs ref_campus_calendars.
+ *       paper's semester-to-quarter loss axis. Uses institution calendar data.
  */
 async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
-  const refs = await loadRefs(auditDb);
+  const refs = await loadRefs(db);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
@@ -1003,14 +1009,16 @@ async function categoryGapsData(db, auditDb, { majorContains = '', visiblePairs 
  *   delay factor    — longest prereq chain through the course
  *   blocking factor — number of courses this course unlocks (descendants)
  *   complexity      — per-course delay + blocking, summed per pathway
- * Only CC-side courses (`cc:<course_id>` keys in curation_prereqs) are in
+ * Only CC-side courses (`cc:<course_id>` keys in curated_prerequisites) are in
  * scope for v1 — that's the pathway the transfer student actually schedules.
  */
 async function complexityData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const isExcluded = makeIsExcluded(curation);
-  const prereqDocs = await auditDb.collection('curation_prereqs').find().toArray();
-  const prereqsByKey = new Map(prereqDocs.map((d) => [String(d._id), (d.prereqs || []).map(String)]));
+  const prereqDocs = await auditDb.collection('curated_prerequisites').find().toArray();
+  const prereqsByKey = new Map(prereqDocs.map((d) => [
+    String(d._id), (d.prerequisite_ids || d.prereqs || []).map(String),
+  ]));
   const coursesById = await loadCoursesById(db);
 
   const rows = [];
@@ -1078,15 +1086,16 @@ async function complexityData(db, auditDb, { majorContains = '', visiblePairs = 
  *       min-set (i.e. actually count toward the university requirements)
  *   transfer_credit_rate — transferable / total ADT units
  *   lost_units + est. cost — the non-mapping remainder, costed with
- *       ref_tuition (per-credit, university side) as the papers do.
+ *       institution tuition (per-credit, university side) as the papers do.
  */
 async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
-  const refs = await loadRefs(auditDb);
+  const refs = await loadRefs(db);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
-  const degrees = await auditDb.collection('curation_assoc_degrees').find().toArray();
+  const degrees = await auditDb.collection('curated_requirements')
+    .find({ kind: 'associate_degree' }).toArray();
   const byCc = new Map();
   for (const d of degrees) {
     const cc = Number(d.community_college_id);
@@ -1103,7 +1112,7 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs 
       const solved = agreementMinSetExact(doc, isExcluded, coursesById);
       const needed = new Set(solved.courses);
       for (const deg of ccDegrees) {
-        const degCourses = (deg.course_ids || []).map(String);
+        const degCourses = (deg.course_ids || []).map((id) => String(id).replace(/^cc:/, ''));
         const degUnits = deg.units ?? +degCourses
           .reduce((s, id) => s + (units.get(id) || 0), 0).toFixed(1);
         const transferable = +degCourses
@@ -1197,14 +1206,14 @@ async function receiversExportData(db, auditDb, params = {}) {
   return rows;
 }
 
-// Whole (referenced-only) catalogs in one call each.
+// Complete CC and UC catalogs in one call each.
 async function coursesExportData(db) {
-  const rows = await db.collection('courses').find().toArray();
+  const rows = await db.collection('assist_courses').find({ side: 'sending' }).toArray();
   return rows.map((r) => ({ ...r, _id: String(r._id) }));
 }
 
 async function universityCoursesExportData(db) {
-  const rows = await db.collection('university_courses').find().toArray();
+  const rows = await db.collection('assist_courses').find({ side: 'receiving' }).toArray();
   return rows.map((r) => ({ ...r, _id: String(r._id) }));
 }
 

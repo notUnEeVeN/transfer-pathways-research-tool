@@ -15,7 +15,7 @@ Env (scripts/.env or shell):
   TARGET_DB_NAME   (default pmt_research)
 
 Output collection:
-  ref_uc_transfer_requirements:
+  curated_requirements (kind=transfer_minimum):
     { _id, uc_code, school_id, school, group_id, set_id, source_order,
       receiving_code, normalized_code, parent_ids[], matched, source,
       updated_at }
@@ -82,7 +82,7 @@ def connect():
 
 def used_parent_ids_by_school(db):
     out = {}
-    cursor = db["uc_agreements"].find({}, {"uc_school_id": 1, "requirement_groups": 1})
+    cursor = db["assist_agreements"].find({}, {"uc_school_id": 1, "requirement_groups": 1})
     for agreement in cursor:
         school_id = int(agreement["uc_school_id"])
         used = out.setdefault(school_id, set())
@@ -100,8 +100,8 @@ def used_parent_ids_by_school(db):
 
 
 def university_course_lookup(db):
-    rows = db["university_courses"].find(
-        {},
+    rows = db["assist_courses"].find(
+        {"side": "receiving"},
         {"parent_id": 1, "prefix": 1, "number": 1, "title": 1, "_id": 0},
     )
     return {
@@ -165,9 +165,13 @@ def build_ops(docs, source):
     now = dt.datetime.now(dt.timezone.utc)
     ops = []
     for doc in docs:
+        legacy_id = doc_id(doc["uc_code"], doc["group_id"], doc["set_id"], doc["receiving_code"])
         payload = {
             **doc,
-            "_id": doc_id(doc["uc_code"], doc["group_id"], doc["set_id"], doc["receiving_code"]),
+            "_id": f"transfer_minimum:{legacy_id}",
+            "legacy_id": legacy_id,
+            "kind": "transfer_minimum",
+            "institution_id": f"uc:{doc['school_id']}",
             "source": source,
             "updated_at": now,
         }
@@ -203,11 +207,8 @@ def main():
 
     ops = build_ops(docs, "transfer-agreements-analysis/scraping/files/course_reqs.json")
     if ops:
-        db["ref_uc_transfer_requirements"].bulk_write(ops, ordered=False)
-        db["ref_uc_transfer_requirements"].create_index("school_id")
-        db["ref_uc_transfer_requirements"].create_index([("school_id", 1), ("group_id", 1), ("set_id", 1)])
-        db["ref_uc_transfer_requirements"].create_index("parent_ids")
-    print("ref_uc_transfer_requirements updated.")
+        db["curated_requirements"].bulk_write(ops, ordered=False)
+    print("curated_requirements transfer minimums updated.")
 
 
 if __name__ == "__main__":

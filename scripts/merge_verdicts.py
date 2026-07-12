@@ -7,8 +7,8 @@ connection strings — nothing automatic, nothing hosted.
 
 Why it works: port.py preserved agreement `_id`s, so a research verdict's
 `doc_id` refers to the same agreement in the main store. Verdicts carry
-`dataset_version` + `verdict_origin: 'research'`, which survive the merge, so
-research-sourced rows remain identifiable. The main tool's staleness logic
+`verdict_origin: 'research'`, so research-sourced rows remain identifiable.
+The main tool's staleness logic
 (raw_template_hash / parser_output_hash comparison) then naturally marks any
 verdict whose agreement has since been re-parsed as stale, instead of letting
 it silently misreport.
@@ -38,7 +38,8 @@ from pymongo import MongoClient
 HERE = Path(__file__).resolve().parent
 load_dotenv(HERE / ".env")
 
-AUDIT_RESULTS = "audit_results"
+RESEARCH_REVIEWS = "agreement_reviews"
+MAIN_AUDIT_RESULTS = "audit_results"
 
 
 def _env(name, default=None, required=False):
@@ -63,12 +64,12 @@ def main():
         _env("MAIN_AUDIT_DB_NAME", "pmt_data")
     ]
 
-    rows = list(research[AUDIT_RESULTS].find())
+    rows = list(research[RESEARCH_REVIEWS].find())
     if not rows:
         sys.exit("No research verdicts to merge.")
 
     existing = {
-        d["doc_id"] for d in main_store[AUDIT_RESULTS].find({}, {"doc_id": 1})
+        d["doc_id"] for d in main_store[MAIN_AUDIT_RESULTS].find({}, {"doc_id": 1})
     }
     fresh = [r for r in rows if r["doc_id"] not in existing]
     conflicts = [r for r in rows if r["doc_id"] in existing]
@@ -77,13 +78,6 @@ def main():
     print(f"  new to the main store:      {len(fresh)}")
     print(f"  conflicts (already judged): {len(conflicts)}"
           f" -> {'OVERWRITE (--prefer-research)' if args.prefer_research else 'skip'}")
-    by_version = {}
-    for r in rows:
-        by_version[r.get("dataset_version") or "unversioned"] = by_version.get(
-            r.get("dataset_version") or "unversioned", 0) + 1
-    for v, n in sorted(by_version.items()):
-        print(f"  dataset_version {v}: {n}")
-
     if args.dry_run:
         print("\n--dry-run: nothing written.")
         return
@@ -95,7 +89,7 @@ def main():
     for r in to_write:
         doc = dict(r)
         doc.pop("_id", None)  # target keeps its own row identity; doc_id is the key
-        main_store[AUDIT_RESULTS].update_one(
+        main_store[MAIN_AUDIT_RESULTS].update_one(
             {"doc_id": doc["doc_id"]}, {"$set": doc}, upsert=True
         )
         written += 1

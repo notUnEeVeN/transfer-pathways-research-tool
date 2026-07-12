@@ -3,7 +3,7 @@ import { Alert, Spinner, Stack } from './ui'
 import { useDataSummary, useCoverage } from '@frontend/query/hooks/useData'
 
 /**
- * Dataset overview — a dataset identity chip strip and a campus summary table
+ * Dataset overview — a refresh-status chip strip and a campus summary table
  * (majors · agreements · mean coverage under BOTH minimum sources: the
  * hand-curated hard minimum and the full ASSIST-stated minimum — the same two
  * the Agreements tab compares per college). Server-scoped: every number reflects
@@ -14,10 +14,10 @@ export default function DatasetSummaryPanel({ compact = false }) {
   const q = useDataSummary()
   if (q.isLoading) return <div className='flex justify-center py-6'><Spinner /></div>
   if (q.isError) return <Alert type='error'>Failed to load the dataset summary.</Alert>
-  const { dataset_version, schools = [], counts = {} } = q.data || {}
+  const { last_data_refresh_at, schools = [], counts = {} } = q.data || {}
 
   const stats = [
-    ['Dataset', dataset_version || '—'],
+    ['Refreshed', last_data_refresh_at ? new Date(last_data_refresh_at).toLocaleDateString() : '—'],
     ['Agreements', Number(counts.agreements ?? 0).toLocaleString()],
     ['Majors', Number(counts.majors ?? 0).toLocaleString()],
     ['Campuses', schools.length],

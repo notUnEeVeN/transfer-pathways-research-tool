@@ -4,7 +4,7 @@
 //   admin   — Firebase UIDs in the ADMIN_UIDS env var (comma-separated).
 //             Bootstrapped from env so the deployment always has an owner.
 //             Admins manage the dataset and partner access from the app.
-//   partner — UIDs granted in the `access_grants` collection (managed by
+//   partner — UIDs whose `team_members.access_status` is granted (managed by
 //             admins via /admin/access; no redeploy needed to add/remove).
 //
 // The backend is the real security boundary; any client-side role mirror only
@@ -42,7 +42,8 @@ let grantsCache = { at: 0, uids: new Set() };
 async function grantedUids(auditDb) {
   const now = Date.now();
   if (now - grantsCache.at > GRANTS_TTL_MS) {
-    const docs = await auditDb.collection('access_grants').find({}, { projection: { _id: 1 } }).toArray();
+    const docs = await auditDb.collection('team_members')
+      .find({ access_status: 'granted' }, { projection: { _id: 1 } }).toArray();
     grantsCache = { at: now, uids: new Set(docs.map((d) => String(d._id))) };
   }
   return grantsCache.uids;

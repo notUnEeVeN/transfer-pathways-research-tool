@@ -1,16 +1,16 @@
 """
-Import the hand-curated general-education requirement structure into two
-editable reference tables:
+Import the hand-curated general-education requirement structure into
+curated_requirements:
 
-  ref_ge_patterns  — Cal-GETC (from PlanMyTransfer's transferPatterns.js, the
+  ge_pattern rows  — Cal-GETC (from PlanMyTransfer's transferPatterns.js, the
                      current standard) + UC-7 (from the prior research
                      ge_reqs.json "7CoursePattern"). One row per (pattern, area,
                      subgroup) with the number of courses required.
-  ref_igetc        — the IGETC area structure, from the prior research
+  igetc rows       — the IGETC area structure, from the prior research
                      igetc.json (areas + sub-areas, required courses/units).
 
-These are the "stats a person gathered" (not algorithmic), so they belong in an
-editable table the References tab can adjust in place.
+These are the "stats a person gathered" (not algorithmic), so they remain
+editable through the curated API.
 
 Env (scripts/.env or shell):
   TARGET_MONGO_URI (required, unless --dry-run)
@@ -146,10 +146,10 @@ def main():
     now = dt.datetime.now(dt.timezone.utc)
     ge_rows = build_ge_patterns(now, args.ge_json)
     igetc_rows = build_igetc(now, args.igetc_json)
-    print(f"ref_ge_patterns: {len(ge_rows)} rows "
+    print(f"GE patterns: {len(ge_rows)} rows "
           f"({sum(r['pattern'] == 'calgetc' for r in ge_rows)} Cal-GETC, "
           f"{sum(r['pattern'] == 'uc7' for r in ge_rows)} UC-7)")
-    print(f"ref_igetc: {len(igetc_rows)} rows")
+    print(f"IGETC: {len(igetc_rows)} rows")
     if ge_rows:
         print("GE sample:", json.dumps({k: v for k, v in ge_rows[0].items() if k != "updated_at"}, ensure_ascii=False))
     if igetc_rows:
@@ -162,10 +162,18 @@ def main():
     from pymongo import MongoClient, UpdateOne
     uri = _env("TARGET_MONGO_URI", required=True)
     db = MongoClient(uri)[_env("TARGET_DB_NAME", "pmt_research")]
-    db["ref_ge_patterns"].bulk_write([UpdateOne({"_id": r["_id"]}, {"$set": r}, upsert=True) for r in ge_rows], ordered=False)
-    db["ref_ge_patterns"].create_index("pattern")
-    db["ref_igetc"].bulk_write([UpdateOne({"_id": r["_id"]}, {"$set": r}, upsert=True) for r in igetc_rows], ordered=False)
-    print(f"ref_ge_patterns ({len(ge_rows)}) and ref_igetc ({len(igetc_rows)}) updated.")
+    canonical = [
+        {**row, "_id": f"ge_pattern:{row['_id']}", "legacy_id": row["_id"], "kind": "ge_pattern"}
+        for row in ge_rows
+    ] + [
+        {**row, "_id": f"igetc:{row['_id']}", "legacy_id": row["_id"],
+         "kind": "igetc", "pattern": "igetc"}
+        for row in igetc_rows
+    ]
+    db["curated_requirements"].bulk_write([
+        UpdateOne({"_id": row["_id"]}, {"$set": row}, upsert=True) for row in canonical
+    ], ordered=False)
+    print(f"curated_requirements updated ({len(canonical)} GE/IGETC rows).")
 
 
 if __name__ == "__main__":

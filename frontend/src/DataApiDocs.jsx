@@ -10,7 +10,7 @@ import {
 } from './apiDocs/content'
 
 /**
- * API page: Tokens · Starter (starter.py + steps, incl. publish) · Endpoints · Data
+ * API page: Tokens, Starter, Endpoints, and Data guide.
  * guide. Copy lives in apiDocs/content.js and server/client/pmtPy.js; this file
  * renders it. "Copy for AI" serializes the same content, so page and paste stay in sync.
  */
@@ -163,10 +163,8 @@ function GettingStarted() {
           <span className='font-mono text-ink'>{AUTH_HEADER}</span>
         </p>
         <p className='text-caption text-ink-muted'>
-          All endpoints are GET · <span className='font-mono'>?format=csv</span> on
-          exports · every response carries{' '}
-          <span className='font-mono'>dataset_version</span>. Pass any path below
-          to <span className='font-mono'>fetch()</span> from the Starter tab.
+          Use <span className='font-mono'>?format=csv</span> on bulk exports.
+          Pass any path below to <span className='font-mono'>get()</span> from the Starter tab.
         </p>
       </div>
     </div>

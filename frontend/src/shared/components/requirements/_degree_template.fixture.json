@@ -1,0 +1,280 @@
+{
+  "_id": "degree:79",
+  "school_id": 79,
+  "school": "UC Berkeley",
+  "program": "Electrical Engineering & Computer Sciences, B.S.",
+  "total_units": 120,
+  "source_url": "https://guide.berkeley.edu/undergraduate/degree-programs/electrical-engineering-computer-sciences/",
+  "updated_at": "2026-07-11T19:52:05.812Z",
+  "total": 29,
+  "by_tier": {
+    "transferable": {
+      "total": 14,
+      "covered": null
+    },
+    "breadth": {
+      "total": 6,
+      "covered": null
+    },
+    "nontransferable": {
+      "total": 9,
+      "covered": null
+    }
+  },
+  "groups": [
+    {
+      "label": "Lower-division mathematics",
+      "tier": "transferable",
+      "total": 4,
+      "covered": null,
+      "lines": [
+        {
+          "code": "MATH 51",
+          "title": "Calculus I",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "MATH 52",
+          "title": "Calculus II",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "MATH 53",
+          "title": "Multivariable Calculus",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "MATH 54",
+          "title": "Linear Algebra and Differential Equations",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Lower-division computer science",
+      "tier": "transferable",
+      "total": 4,
+      "covered": null,
+      "lines": [
+        {
+          "code": "COMPSCI 61A",
+          "title": "The Structure and Interpretation of Computer Programs",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "COMPSCI 61B",
+          "title": "Data Structures",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "COMPSCI 61C",
+          "title": "Machine Structures",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "COMPSCI 70",
+          "title": "Discrete Mathematics and Probability Theory",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Lower-division electrical engineering",
+      "tier": "transferable",
+      "total": 2,
+      "covered": null,
+      "lines": [
+        {
+          "code": "EECS 16A",
+          "title": "Designing Information Devices and Systems I",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "EECS 16B",
+          "title": "Designing Information Devices and Systems II",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Physics (7-series; the 5-series alternative is not articulable in our data)",
+      "tier": "transferable",
+      "total": 2,
+      "covered": null,
+      "lines": [
+        {
+          "code": "PHYSICS 7A",
+          "title": "Physics for Scientists and Engineers",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "PHYSICS 7B",
+          "title": "Physics for Scientists and Engineers",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Natural science elective (select one)",
+      "tier": "transferable",
+      "total": 1,
+      "covered": null,
+      "lines": [
+        {
+          "title": "Natural science elective (select one)",
+          "detail": "choose 1 of 10",
+          "need": 1,
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Reading & Composition (English)",
+      "tier": "breadth",
+      "total": 2,
+      "covered": null,
+      "lines": [
+        {
+          "code": "ENGLISH R1A",
+          "title": "Reading and Composition",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        },
+        {
+          "code": "ENGLISH R1B",
+          "title": "Reading and Composition",
+          "covered": null,
+          "cc": [],
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Humanities & Social Sciences breadth",
+      "tier": "breadth",
+      "total": 4,
+      "covered": null,
+      "lines": [
+        {
+          "title": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+          "detail": "4 from IGETC 3A / 3B / 4",
+          "need": 4,
+          "covered": null,
+          "qualifying": null,
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "American History & Institutions",
+      "tier": "transferable",
+      "total": 1,
+      "covered": null,
+      "lines": [
+        {
+          "title": "American History & Institutions — assumed satisfiable (UC-required; a U.S. history/government course exists at every CC)",
+          "detail": "assumed — UC-required, universal at CCs",
+          "need": 1,
+          "covered": null,
+          "status": "template"
+        }
+      ]
+    },
+    {
+      "label": "Upper-division EECS technical electives (20 units incl. one design course)",
+      "tier": "nontransferable",
+      "total": 5,
+      "covered": null,
+      "lines": [
+        {
+          "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+          "covered": null,
+          "status": "university"
+        },
+        {
+          "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+          "covered": null,
+          "status": "university"
+        },
+        {
+          "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+          "covered": null,
+          "status": "university"
+        },
+        {
+          "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+          "covered": null,
+          "status": "university"
+        },
+        {
+          "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+          "covered": null,
+          "status": "university"
+        }
+      ]
+    },
+    {
+      "label": "Ethics / social implications of technology",
+      "tier": "nontransferable",
+      "total": 1,
+      "covered": null,
+      "lines": [
+        {
+          "title": "Ethics / social implications of technology",
+          "covered": null,
+          "status": "university"
+        }
+      ]
+    },
+    {
+      "label": "Free electives (to reach the 120-unit minimum)",
+      "tier": "nontransferable",
+      "total": 3,
+      "covered": null,
+      "lines": [
+        {
+          "title": "Free electives (to reach the 120-unit minimum)",
+          "covered": null,
+          "status": "university"
+        },
+        {
+          "title": "Free electives (to reach the 120-unit minimum)",
+          "covered": null,
+          "status": "university"
+        },
+        {
+          "title": "Free electives (to reach the 120-unit minimum)",
+          "covered": null,
+          "status": "university"
+        }
+      ]
+    }
+  ]
+}

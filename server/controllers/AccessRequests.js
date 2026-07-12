@@ -13,7 +13,6 @@ const {
   blockUid, unblockUid, isBlocked, listBlocked,
 } = require('../services/accessRequests');
 
-const GRANTS = 'access_grants';
 const auditHandle = (req) => req.app.locals.auditDb || req.app.locals.db;
 
 exports.postRequest = asyncHandler(async (req, res) => {
@@ -55,7 +54,6 @@ exports.adminBlock = asyncHandler(async (req, res) => {
   }
   const auditDb = auditHandle(req);
   await blockUid(auditDb, { uid: cleanUid, email, name, blockedBy: req.user?.uid });
-  await auditDb.collection(GRANTS).deleteOne({ _id: cleanUid }); // revoke if they held one
   invalidateGrantsCache();
   res.json({ ok: true });
 });

@@ -1,5 +1,5 @@
 """
-Import California community-college district geography into ref_cc_districts.
+Import California community-college district geography into assist_institutions.
 
 This is a narrow bridge from the prior research repo: we reuse only its
 district -> colleges / counties / region reference mapping, then compute all
@@ -12,10 +12,8 @@ Env (scripts/.env or shell):
   TARGET_MONGO_URI (required)
   TARGET_DB_NAME   (default pmt_research)
 
-Output collection:
-  ref_cc_districts:
-    { _id: <community_college_id>, district, region, counties_served[],
-      source_college_name, updated_at }
+Updates the district, region, counties_served, and provenance fields on each
+canonical community-college institution row.
 """
 import argparse
 import datetime as dt
@@ -79,25 +77,27 @@ def build_ops(db, mapping):
     now = dt.datetime.now(dt.timezone.utc)
     ops = []
     unmatched = []
-    for cc in db["community_colleges"].find({}, {"id": 1, "name": 1}).sort("name", 1):
+    collection = db["assist_institutions"]
+    for raw in collection.find(
+        {"kind": "community_college"}, {"source_id": 1, "name": 1}
+    ).sort("name", 1):
+        cc = {"id": raw["source_id"], "name": raw["name"]}
         key = normalize(cc["name"])
         hit = mapping.get(key) or mapping.get(ALIASES.get(key, ""))
         if not hit:
             unmatched.append(cc["name"])
             continue
         ops.append(UpdateOne(
-            {"_id": int(cc["id"])},
+            {"_id": f"cc:{int(cc['id'])}"},
             {"$set": {
-                "_id": int(cc["id"]),
-                "community_college": cc["name"],
                 "district": hit["district"],
                 "region": hit["region"],
                 "counties_served": hit["counties_served"],
-                "source_college_name": hit["source_college_name"],
-                "source": "transfer-agreements-analysis/creating_districts/districts.json",
+                "district_source_college_name": hit["source_college_name"],
+                "district_source": "transfer-agreements-analysis/creating_districts/districts.json",
                 "updated_at": now,
             }},
-            upsert=True,
+            upsert=False,
         ))
     return ops, unmatched
 
@@ -127,10 +127,8 @@ def main():
         return
 
     if ops:
-        db["ref_cc_districts"].bulk_write(ops, ordered=False)
-        db["ref_cc_districts"].create_index("district")
-        db["ref_cc_districts"].create_index("counties_served")
-    print("ref_cc_districts updated.")
+        db["assist_institutions"].bulk_write(ops, ordered=False)
+    print("assist_institutions district profiles updated.")
 
 
 if __name__ == "__main__":

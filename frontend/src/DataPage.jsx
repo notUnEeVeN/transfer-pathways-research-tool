@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon,
-  ChartBarIcon, TrashIcon, PencilSquareIcon, CodeBracketIcon, ArrowPathIcon,
+  ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, LoadingLogo, Badge } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
@@ -9,11 +9,9 @@ import RouteHint from './components/RouteHint'
 import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
 import { matchesGeo } from './shared/lib/collegeGeo'
 import DataReferences from './DataReferences'
-import { ANALYSES } from './analyses/registry'
 import AnalysisCard from './analyses/AnalysisCard'
-import FigureScriptModal, { liveBadge } from './analyses/FigureScriptModal'
 import { fmtDate as fmtGalleryDate } from './shared/fmtDate'
-import { useAccessMe, useAnalysisReleases } from '@frontend/query/hooks/useAccess'
+import { useAccessMe } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { openAssist } from './pages/Audit/lib/auditFormat'
 import { useCourseList } from './pages/Audit/hooks/useCourseList'
@@ -22,14 +20,14 @@ import {
   useColleges, useSchools, useCcCourses, useUniversityCourses, useAgreementsBatch,
   useRawAssist, useDataSummary, useCoverage, useRequirementComparison,
   useFigures, useDeleteFigure, useEditFigure, downloadFigure,
-  useRefreshFigureScript,
+  useDegreeRequirements, useDegreeEvaluation,
 } from '@frontend/query/hooks/useData'
 
 /**
  * Data explorer — the partners' access point into the research database.
  * Everything shown is server-scoped to the caller's granted subset.
  *
- *   Overview            — dataset version, counts, majors per school
+ *   Overview            — counts, refresh time, and majors per school
  *   Agreements          — college × school × major browser; each agreement
  *                         viewable three ways: the PMT requirements ledger
  *                         (the website's own rendering), the JSON document
@@ -52,6 +50,7 @@ export default function DataPage({ onNavigate = () => {} }) {
             { value: 'agreements', label: 'Agreements' },
             { value: 'cc',         label: 'CC courses' },
             { value: 'university', label: 'University courses' },
+            { value: 'degree',     label: 'Degree reqs' },
             { value: 'references', label: 'References' },
           ]} />
       </div>
@@ -61,6 +60,7 @@ export default function DataPage({ onNavigate = () => {} }) {
           {tab === 'agreements' && <AgreementsBrowser />}
           {tab === 'cc' && <CcCoursesBrowser />}
           {tab === 'university' && <UniversityCoursesBrowser />}
+          {tab === 'degree' && <DegreeRequirementsBrowser />}
           {tab === 'references' && <DataReferences />}
         </div>
       </div>
@@ -142,7 +142,9 @@ function AgreementsBrowser() {
 
   return (
     <Stack gap='cozy'>
-      <div className='flex justify-end'><RouteHint path='/schools' /></div>
+      <div className='flex justify-end'>
+        <RouteHint path='/api/assist/institutions?kind=university' />
+      </div>
       <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
       {/* Program rail — the granted school+major pairs, grouped by campus */}
       <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
@@ -306,7 +308,7 @@ function ProgramAgreement({ program, collegeId, cov, onBack }) {
       <div className='flex flex-wrap items-center gap-3'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
         <span className='ml-auto'>
-          <RouteHint path={`/uc-agreements-batch/${collegeId}?school_id=${program.school_id}`} />
+          <RouteHint path={`/api/assist/agreements?college_id=cc:${collegeId}&university_id=uc:${program.school_id}`} />
         </span>
       </div>
       {batch.isLoading ? (
@@ -321,68 +323,36 @@ function ProgramAgreement({ program, collegeId, cov, onBack }) {
   )
 }
 
-// ───────── analysis: live visualizers + published figure gallery ─────────
-//
-// Live visualizers compute from /analysis endpoints in the browser. Published
-// figures are notebook snapshots from pmt.publish(); the site stores and shows
-// rendered images only.
-
-// Small Draft/Released status pill — admin-only, shown in each analysis card
-// header so the admin can see at a glance what partners currently get.
-function ReleaseBadge({ released }) {
-  return <Badge variant={released ? 'success' : 'neutral'}>{released ? 'Released' : 'Draft'}</Badge>
-}
+// ───────── locally produced figure gallery ─────────
 
 // Exported for the top-level Visuals tab (App.jsx); lives here with its gallery.
 export function AnalysisTab({ onNavigate = () => {} }) {
   const me = useAccessMe()
   const isAdmin = me.data?.role === 'admin'
-  const releasesQ = useAnalysisReleases()
-  const releasedSet = useMemo(() => new Set(releasesQ.data?.released_ids || []), [releasesQ.data])
-  const disabledSet = useMemo(() => new Set(releasesQ.data?.disabled_ids || []), [releasesQ.data])
-  // Disabled analyses are gone for every role — not mounted, so their
-  // endpoints are never fetched (Admin → Analysis releases re-enables them).
-  // Of the rest, admins preview everything (badged Draft/Released); partners
-  // only see the released ones.
-  const visibleAnalyses = ANALYSES.filter(
-    (a) => !disabledSet.has(a.id) && (isAdmin || releasedSet.has(a.id))
-  )
-  const hasVisibleAnalyses = visibleAnalyses.length > 0
-  const releasesPending = releasesQ.isLoading // don't flash "nothing" before releases load
 
   const myUid = me.data?.uid || null
   const figs = useFigures()
   const del = useDeleteFigure()
   const edit = useEditFigure()
   const figures = figs.data?.figures || []
-  const currentVersion = figs.data?.dataset_version || null
 
-  // Built-in analyses + published figures in one gallery, oldest-first.
-  const gallery = useMemo(() => {
-    const analysisItems = visibleAnalyses.map((a) => ({ kind: 'analysis', key: a.id, at: a.published_at, a }))
-    const figureItems = figures.map((f) => ({ kind: 'figure', key: f.slug, at: f.updated_at, f }))
-    return [...analysisItems, ...figureItems].sort((x, y) => new Date(x.at || 0) - new Date(y.at || 0))
-  }, [visibleAnalyses, figures])
+  const gallery = useMemo(
+    () => figures.slice().sort((a, b) => new Date(a.updated_at || 0) - new Date(b.updated_at || 0)),
+    [figures]
+  )
 
   return (
     <Stack gap='section'>
       {figs.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
-      {(figs.isLoading || releasesPending) && !hasVisibleAnalyses && <div className='flex justify-center py-10'><Spinner /></div>}
-      {!figs.isLoading && !releasesPending && !figs.isError && !gallery.length && (
+      {figs.isLoading && <div className='flex justify-center py-10'><Spinner /></div>}
+      {!figs.isLoading && !figs.isError && !gallery.length && (
         <div className='mx-auto max-w-screen-md'>
           <div className='surface-card p-8 text-center'>
             <ChartBarIcon className='w-8 h-8 text-ink-subtle mx-auto mb-3' />
-            <p className='text-body-strong'>{isAdmin ? 'No figures published yet' : 'No analyses available yet'}</p>
+            <p className='text-body-strong'>No figures published yet</p>
             <p className='text-body text-ink-muted mt-2 max-w-prose mx-auto'>
-              {isAdmin ? (
-                <>This gallery shows every figure the team publishes from Python —
-                one <span className='font-mono text-ink'>pmt.publish(fig, …)</span> call
-                in your notebook and it appears here for everyone, stamped with
-                the dataset version it was computed from.</>
-              ) : (
-                <>Analyses are released here as the team finishes them — check back
-                soon. Published notebook figures will also appear on this tab.</>
-              )}
+              Build the visual locally, then call <span className='font-mono text-ink'>pmt.publish(fig, …)</span>.
+              The finished SVG, PNG, and PDF appear here for the team.
             </p>
             {isAdmin && (
               <div className='mt-4'>
@@ -392,49 +362,27 @@ export function AnalysisTab({ onNavigate = () => {} }) {
           </div>
         </div>
       )}
-      {gallery.map((item) => {
-        if (item.kind === 'figure') {
-          const f = item.f
-          return (
-            <FigureCard key={item.key} fig={f} currentVersion={currentVersion}
-              canModify={isAdmin || (!!myUid && f.author_uid === myUid)}
-              onDelete={() => del.mutate(f.slug)} deleting={del.isPending}
-              onSave={(fields) => edit.mutateAsync({ slug: f.slug, fields })}
-              saving={edit.isPending} />
-          )
-        }
-        const { a } = item
-        const Component = a.Component
-        return (
-          <AnalysisCard key={item.key} title={a.title}
-            source={`${a.author_label} · ${fmtGalleryDate(a.published_at)}`}
-            exportName={a.id}
-            badge={isAdmin ? <ReleaseBadge released={releasedSet.has(a.id)} /> : null}>
-            <Component />
-          </AnalysisCard>
-        )
-      })}
+      {gallery.map((figure) => (
+        <FigureCard key={figure.slug} fig={figure}
+          canModify={isAdmin || (!!myUid && figure.author_uid === myUid)}
+          onDelete={() => del.mutate(figure.slug)} deleting={del.isPending}
+          onSave={(fields) => edit.mutateAsync({ slug: figure.slug, fields })}
+          saving={edit.isPending} />
+      ))}
     </Stack>
   )
 }
 
 
-// Published figure in the AnalysisCard shell. Downloads serve the stored
-// svg/png/pdf. Owner/admin get edit (metadata) + delete; others read-only.
-// Live figures (mode 'live') carry a script the server re-runs on data
-// changes: everyone can view the code; owner/admin also get refresh & controls.
+// Published figure in the AnalysisCard shell. Teammates render these locally;
+// the gallery stores finished SVG/PNG/PDF files only.
 const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
 
-function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave, saving }) {
+function FigureCard({ fig, canModify, onDelete, deleting, onSave, saving }) {
   const [editing, setEditing] = useState(false)
-  const [codeOpen, setCodeOpen] = useState(false)
   const [title, setTitle] = useState(fig.title)
   const [caption, setCaption] = useState(fig.caption || '')
   const [sourceUrl, setSourceUrl] = useState(fig.source_url || '')
-  const refresh = useRefreshFigureScript()
-  const isLive = fig.mode === 'live'
-  const live = liveBadge(fig)
-  const stale = fig.dataset_version && currentVersion && fig.dataset_version !== currentVersion
 
   const resetFields = () => {
     setTitle(fig.title)
@@ -462,41 +410,15 @@ function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave
     </>
   )
 
-  const badge = (
-    <>
-      {live && <Badge variant={live.variant}>{live.text}</Badge>}
-      {fig.dataset_version && (
-        <span className={`inline-block px-2 py-0.5 rounded-pill border text-label font-mono ${
-          stale ? 'border-warning text-warning' : 'border-border text-ink-muted'}`}>
-          {stale ? `computed on ${fig.dataset_version}` : fig.dataset_version}
-        </span>
-      )}
-    </>
-  )
-
   const actions = (
     <>
-      {isLive && (
-        <Button variant='ghost' leadingIcon={CodeBracketIcon} onClick={() => setCodeOpen(true)}>
-          View code
-        </Button>
-      )}
-      {isLive && canModify && (
-        <Button variant='ghost' leadingIcon={ArrowPathIcon} disabled={refresh.isPending}
-          onClick={() => refresh.mutate(fig.slug)}>
-          {refresh.isPending ? 'Running…' : 'Refresh'}
-        </Button>
-      )}
       {canModify && (
         <>
           <Button variant='ghost' leadingIcon={PencilSquareIcon}
             onClick={() => { if (editing) resetFields(); setEditing((v) => !v) }} />
           <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting}
             onClick={() => {
-              const warning = isLive
-                ? `Delete "${fig.title}"? Its script and run history go with it.`
-                : `Delete "${fig.title}"? Republishing the slug brings it back.`
-              if (window.confirm(warning)) onDelete()
+              if (window.confirm(`Delete "${fig.title}"? Republishing the slug brings it back.`)) onDelete()
             }} />
         </>
       )}
@@ -504,7 +426,7 @@ function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave
   )
 
   return (
-    <AnalysisCard title={fig.title} source={source} badge={badge} actions={actions}
+    <AnalysisCard title={fig.title} source={source} actions={actions}
       downloadFormats={['svg', 'png', 'pdf']} onDownload={(fmt) => downloadFigure(fig.slug, fmt)}>
       {editing && (
         <div className='mb-4 flex flex-col gap-2' data-export-exclude>
@@ -524,10 +446,6 @@ function FigureCard({ fig, currentVersion, canModify, onDelete, deleting, onSave
         </div>
       )}
       <p className='text-caption text-ink-subtle font-mono mt-2' data-export-exclude>{fig.slug}</p>
-      {isLive && (
-        <FigureScriptModal open={codeOpen} onClose={() => setCodeOpen(false)}
-          slug={fig.slug} title={fig.title} cardCanModify={canModify} />
-      )}
     </AnalysisCard>
   )
 }
@@ -564,7 +482,6 @@ function JsonPanel({ data, filename }) {
 function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw | comparison
   const docQ = useAuditDoc(agreementId, 'uc')
-  const summary = useDataSummary()
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
   const courses = useCourseList(docQ.data?.course_names)
 
@@ -586,7 +503,7 @@ function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
             <span className='text-ink-subtle'> · </span>{doc.major}
           </p>
           <p className='text-caption text-ink-subtle mt-0.5 font-mono break-all'>
-            {doc._id}{summary.data?.dataset_version ? ` · dataset ${summary.data.dataset_version}` : ''} · source ASSIST
+            {doc._id} · source ASSIST
           </p>
         </div>
         <div className='ml-auto flex items-center gap-4 shrink-0'>
@@ -611,8 +528,12 @@ function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
           { value: 'stored', label: 'Stored JSON' },
           { value: 'raw',    label: 'Raw ASSIST API' },
           ...(compareFor ? [{ value: 'comparison', label: 'Comparison' }] : []),
+          ...(compareFor ? [{ value: 'degree', label: '4-year degree' }] : []),
         ]} />
       {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
+      {view === 'degree' && compareFor && (
+        <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+      )}
       {view === 'ledger' && (
         <>
           <div className='uui-scope'>
@@ -904,9 +825,9 @@ function CcCoursesBrowser() {
       toolbar={<CollegeGeoFilters colleges={all} value={geo} onChange={setGeo} />}
       itemSubtitle={(it) => it.district || null}
       pickText='Choose a college'
-      blurb='Community-college catalog — only courses referenced by the ported agreements are in the research database.'
-      listRoute='/community-colleges'
-      itemRoute={(id) => `/courses/${id}`}
+      blurb='Full community-college catalog for every school in the research dataset.'
+      listRoute='/api/assist/institutions?kind=community_college'
+      itemRoute={(id) => `/api/assist/courses?institution_id=cc:${id}`}
       searchFields={['prefix', 'number', 'title']}
       columns={[
         { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
@@ -927,9 +848,9 @@ function UniversityCoursesBrowser() {
       railTitle='UC campuses'
       railSearch={false}
       pickText='Choose a campus'
-      blurb='UC-side catalog — the receiving courses the ported agreements articulate to.'
-      listRoute='/schools'
-      itemRoute={(id) => `/university-courses/${id}`}
+      blurb='Full UC catalog for every campus in the research dataset.'
+      listRoute='/api/assist/institutions?kind=university'
+      itemRoute={(id) => `/api/assist/courses?institution_id=uc:${id}`}
       searchFields={['prefix', 'number', 'title', 'department']}
       columns={[
         { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
@@ -939,5 +860,181 @@ function UniversityCoursesBrowser() {
         { key: 'parent_id', label: 'parent_id', render: (r) => <span className='font-mono'>{r.parent_id}</span> },
       ]}
     />
+  )
+}
+
+// ───────── degree requirements (hand-gathered full four-year degree) ─────────
+//
+// Read-only inspector over curated degree requirements — the hand-gathered whole
+// degree per campus (not the transfer minimum). Total = every requirement slot;
+// only transferable + breadth slots can be satisfied by a CC. See
+// docs/figures/degree-coverage-sources.md.
+
+function DegreeRequirementsBrowser() {
+  const q = useDegreeRequirements()
+  const [selectedId, setSelectedId] = useState(null)
+
+  const rows = q.data?.rows || []
+  const selected = rows.find((r) => String(r._id) === String(selectedId)) || rows[0] || null
+
+  if (q.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
+  if (q.isError) return <Alert type='error'>Failed to load the degree requirements.</Alert>
+  if (!rows.length) {
+    return <EmptyState title='No degree requirements yet'
+      description='Run scripts/import_uc_degree_requirements.py to load the hand-gathered four-year degree requirements.' />
+  }
+
+  return (
+    <Stack gap='cozy'>
+      <p className='text-caption text-ink-muted max-w-prose'>
+        Hand-gathered full four-year degree requirements per campus, modeled in the ASSIST requirement shape.
+        The <span className='text-ink'>denominator</span> for the degree-coverage figure is the total requirement
+        slots; only <span className='text-ink'>transferable</span> and <span className='text-ink'>breadth</span> slots
+        can be satisfied at a community college.
+      </p>
+      <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
+        <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
+          <p className='text-label mb-2'>UC campuses · {rows.length}</p>
+          <div className='space-y-1'>
+            {rows.map((r) => {
+              const active = selected && String(r._id) === String(selected._id)
+              return (
+                <button key={r._id} type='button' onClick={() => setSelectedId(r._id)}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors ${
+                    active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
+                  <span className='text-body leading-snug break-words'>{r.school}</span>
+                  <span className='block text-caption text-ink-subtle leading-snug mt-0.5'>{r.program}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        {selected && <DegreeRequirementsDetail doc={selected} />}
+      </div>
+    </Stack>
+  )
+}
+
+// ── shared readable renderer: groups → course rows, no "Required" tags ──
+
+// One requirement line: course code + title on the left; when evaluated against a
+// college, a right-side status (green + the CC course, "at the university", a
+// partial count, or a muted dash for no equivalent here).
+function DegreeLine({ line, evaluated }) {
+  return (
+    <div className='flex items-baseline gap-3 py-0.5'>
+      {line.code
+        ? <span className='font-mono text-body text-ink shrink-0 w-24'>{line.code}</span>
+        : <span className='shrink-0 w-24' />}
+      <span className='text-body text-ink-muted min-w-0 flex-1'>
+        {line.title}
+        {line.detail && <span className='text-caption text-ink-subtle'> · {line.detail}</span>}
+      </span>
+      {evaluated && (
+        <span className='shrink-0 text-caption text-right max-w-[45%]'>
+          {line.status === 'covered' && (
+            <span className='text-success'>✓ {
+              line.qualifying != null ? `${line.qualifying} courses qualify`
+                : line.cc?.length ? line.cc.slice(0, 3).join(', ')
+                : 'articulated'
+            }</span>
+          )}
+          {line.status === 'partial' && (
+            <span className='text-ink'>{line.qualifying != null ? `${line.qualifying} qualify · ` : ''}{line.covered} of {line.need}</span>
+          )}
+          {line.status === 'university' && <span className='text-ink-subtle italic'>at the university</span>}
+          {line.status === 'missing' && <span className='text-ink-subtle'>—</span>}
+        </span>
+      )}
+    </div>
+  )
+}
+
+function DegreeGroupBlock({ group, evaluated }) {
+  const nonTransferable = group.tier === 'nontransferable'
+  return (
+    <div className='px-4 py-3'>
+      <div className='flex items-baseline gap-2 mb-1'>
+        <p className='text-body-strong'>{group.label}</p>
+        <span className={`ml-auto text-caption font-mono tabular-nums ${
+          evaluated ? (group.covered === group.total ? 'text-success' : 'text-ink-muted') : 'text-ink-subtle'}`}>
+          {evaluated ? `${group.covered}/${group.total}` : `${group.total} course${group.total === 1 ? '' : 's'}`}
+        </span>
+      </div>
+      {nonTransferable ? (
+        <p className='text-caption text-ink-subtle italic'>
+          {group.total} course{group.total === 1 ? '' : 's'} — completed at the university
+        </p>
+      ) : (
+        group.lines.map((l, j) => <DegreeLine key={j} line={l} evaluated={evaluated} />)
+      )}
+    </div>
+  )
+}
+
+function DegreeGroups({ groups, evaluated }) {
+  return (
+    <div className='surface-card divide-y divide-border/60'>
+      {groups.map((g, i) => <DegreeGroupBlock key={i} group={g} evaluated={evaluated} />)}
+    </div>
+  )
+}
+
+export function DegreeRequirementsDetail({ doc }) {
+  // Defensive: a persisted (IndexedDB) response from an earlier endpoint shape
+  // may lack `groups` — never crash the tab; the refetch replaces it.
+  const groups = Array.isArray(doc.groups) ? doc.groups : []
+  return (
+    <Stack gap='cozy'>
+      <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
+        <div className='min-w-0'>
+          <p className='text-body-strong break-words'>{doc.school} <span className='text-ink-subtle'>·</span> {doc.program}</p>
+          <p className='text-caption text-ink-muted mt-0.5'>
+            {doc.total_units != null ? `${doc.total_units}-unit degree · ` : ''}{doc.total} requirements to graduate
+            {doc.source_url && <> · <a className='text-primary hover:underline' href={doc.source_url} target='_blank' rel='noreferrer'>source</a></>}
+          </p>
+        </div>
+        <div className='ml-auto text-right shrink-0'>
+          <p className='text-stat font-mono leading-none text-ink'>{doc.total}</p>
+          <p className='text-caption text-ink-muted mt-0.5'>total requirements</p>
+        </div>
+      </div>
+      <DegreeGroups groups={groups} evaluated={false} />
+    </Stack>
+  )
+}
+
+// One campus's whole four-year degree evaluated against the selected college:
+// how many of the degree's requirements the college can satisfy, grouped and
+// readable. Shown as a tab inside an agreement pair view.
+function DegreeCompletionView({ schoolId, collegeId }) {
+  const q = useDegreeEvaluation(schoolId, collegeId)
+  if (q.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
+  if (q.isError) {
+    return <EmptyState title='No degree template yet'
+      description='This campus has no hand-gathered four-year degree requirements yet — add it in the Degree reqs tab.' />
+  }
+  const d = q.data
+  const c = d.completion
+  const groups = Array.isArray(d.groups) ? d.groups : []
+  const tier = (k) => c.by_tier?.[k] || { total: 0, covered: 0 }
+  return (
+    <Stack gap='cozy'>
+      <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
+        <StatTile label='4-year degree transferable' value={c.pct != null ? `${c.pct}%` : '—'}
+          sub={`${c.covered} of ${c.total} requirements`} />
+        <StatTile label='Major prep' value={`${tier('transferable').covered}/${tier('transferable').total}`}
+          sub='math, CS, science' />
+        <StatTile label='Breadth (H/SS)' value={`${tier('breadth').covered}/${tier('breadth').total}`}
+          sub='R&C + humanities/social science' />
+        <StatTile label='At the university' value={`${tier('nontransferable').total}`}
+          sub='upper-division — cannot transfer' />
+      </div>
+      <p className='text-caption text-ink-muted'>
+        {d.school} · {d.program}, evaluated against this college — every lower-division course this college
+        articulates counts toward the whole degree. Upper-division and residency requirements can't transfer by construction.
+      </p>
+      <DegreeGroups groups={groups} evaluated />
+    </Stack>
   )
 }

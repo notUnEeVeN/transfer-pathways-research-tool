@@ -7,8 +7,8 @@
 // universe stays visible and the selection is edited. Partners additionally
 // get deny-by-default before any selection exists.
 //
-//   dataset_config (audit handle):
-//     { _id: 'partner_access', visible_pairs: [{ school_id: Number, major: String }] }
+//   settings (audit handle):
+//     { _id: 'app', visible_pairs: [{ school_id: Number, major: String }] }
 //
 // Enforcement is server-side at the query builders (audit filters, agreements
 // batch, analysis) — the frontend never sees data outside the subset, so
@@ -16,8 +16,8 @@
 const crypto = require('crypto');
 const { isAdmin } = require('./access');
 
-const CONFIG = 'dataset_config';
-const DOC_ID = 'partner_access';
+const CONFIG = 'settings';
+const DOC_ID = 'app';
 
 const TTL_MS = 15 * 1000;
 let cache = { at: 0, loaded: false, pairs: undefined }; // pairs: undefined = no config doc yet
@@ -48,13 +48,15 @@ async function readVisiblePairsUncached(auditDb) {
 }
 
 async function setVisiblePairs(auditDb, pairs, uid) {
-  await auditDb.collection(CONFIG).replaceOne(
+  const clean = pairs.map(normalizePair);
+  await auditDb.collection(CONFIG).updateOne(
     { _id: DOC_ID },
     {
-      _id: DOC_ID,
-      visible_pairs: pairs.map(normalizePair),
-      updated_by: uid ?? null,
-      updated_at: new Date(),
+      $set: {
+        visible_pairs: clean,
+        updated_by: uid ?? null,
+        updated_at: new Date(),
+      },
     },
     { upsert: true }
   );

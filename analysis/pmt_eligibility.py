@@ -6,7 +6,7 @@ Ported line-for-line from the production single-source-of-truth at
 oracle for "does a community college satisfy a UC campus's ASSIST-stated
 requirements".
 
-Agreement shape (identical for PMT goldens' ``parsed`` and our ``uc_agreements``
+Agreement shape (identical for PMT goldens' ``parsed`` and our ``assist_agreements``
 docs)::
 
     major.requirement_groups[].sections[].receivers[].options[]

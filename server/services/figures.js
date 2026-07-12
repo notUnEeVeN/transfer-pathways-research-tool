@@ -1,32 +1,32 @@
 /**
  * Published figures — the team's shared statistics gallery.
  *
- * Partners publish live analysis scripts through pmt.py (served at
- * /client/pmt.py). The runner captures the rendered SVG/PNG/PDF here, one doc
- * per slug (latest wins), stamped with the dataset_version the data was
- * fetched at. The console's Data → Analysis tab lists them for everyone;
- * downloads feed the paper.
+ * Partners render figures on their own machines and publish only the finished
+ * SVG/PNG/PDF files through pmt.publish(fig, ...). One document is stored per
+ * slug (latest owner publish wins); no Python code is uploaded or executed.
  *
  * Storage (audit handle):
- *   figures: { _id: slug, title, caption, source_url, author_uid,
- *              author_label, dataset_version, formats: { svg, png, pdf },
+ *   published_figures: { _id: slug, title, caption, source_url, author_uid,
+ *              author_label, formats: { svg: Binary, png: Binary, pdf: Binary },
  *              created_at, updated_at }
  */
 const { getDisplayName } = require('./displayNames');
+const { getMember } = require('./teamMembers');
 
-const COLLECTION = 'figures';
+const COLLECTION = 'published_figures';
 
 const SLUG_RE = /^[a-z0-9][a-z0-9_-]{0,63}$/;
 const FORMATS = { svg: 'image/svg+xml', png: 'image/png', pdf: 'application/pdf' };
-// Per-format decoded cap. 300-dpi PNGs of dense heatmaps run a few MB;
-// anything past this is a mistake, not a figure.
-const MAX_FORMAT_BYTES = 12 * 1024 * 1024;
+// Keep the whole BSON document safely below MongoDB's 16 MiB document limit.
+// Binary is stored directly instead of base64, which also avoids 33% storage
+// overhead. A normal 300-dpi paper figure is comfortably below this total.
+const MAX_TOTAL_BYTES = 12 * 1024 * 1024;
 
 const b64Bytes = (s) => Math.floor((s.length * 3) / 4);
 
 // Returns { error } or { value: clean payload }.
 function validateFigurePayload(body = {}) {
-  const { slug, title, caption, source_url, dataset_version, formats } = body;
+  const { slug, title, caption, source_url, formats } = body;
   if (typeof slug !== 'string' || !SLUG_RE.test(slug)) {
     return { error: 'slug must be 1-64 chars of a-z 0-9 - _ (e.g. "coverage-heatmap")' };
   }
@@ -35,13 +35,15 @@ function validateFigurePayload(body = {}) {
     return { error: 'formats.svg required (base64) — publish from pmt.py renders it automatically' };
   }
   const clean = {};
+  let totalBytes = 0;
   for (const [fmt, data] of Object.entries(formats)) {
     if (!(fmt in FORMATS)) return { error: `unknown format "${fmt}" (svg, png, pdf)` };
     if (typeof data !== 'string' || !data) continue;
-    if (b64Bytes(data) > MAX_FORMAT_BYTES) {
-      return { error: `${fmt} exceeds ${Math.round(MAX_FORMAT_BYTES / 1024 / 1024)}MB — reduce the figure size/dpi` };
-    }
+    totalBytes += b64Bytes(data);
     clean[fmt] = data;
+  }
+  if (totalBytes > MAX_TOTAL_BYTES) {
+    return { error: `figure files exceed ${Math.round(MAX_TOTAL_BYTES / 1024 / 1024)}MB total — reduce the PNG size/dpi` };
   }
   return {
     value: {
@@ -49,7 +51,6 @@ function validateFigurePayload(body = {}) {
       title: title.trim(),
       caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
       source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
-      dataset_version: typeof dataset_version === 'string' && dataset_version ? dataset_version : null,
       formats: clean,
     },
   };
@@ -69,8 +70,8 @@ async function resolveAuthorLabel(auditDb, user = {}) {
   }
   if (user.email) return user.email;
   if (!user.uid) return null;
-  const grant = await auditDb.collection('access_grants').findOne({ _id: user.uid }, { projection: { email: 1 } });
-  if (grant?.email) return grant.email;
+  const member = await getMember(auditDb, user.uid);
+  if (member?.email) return member.email;
   const token = await auditDb.collection('api_tokens').findOne(
     { uid: user.uid, ephemeral: { $ne: true }, label: { $type: 'string', $ne: '' } },
     { projection: { label: 1 }, sort: { last_used_at: -1, created_at: -1 } }
@@ -80,11 +81,20 @@ async function resolveAuthorLabel(auditDb, user = {}) {
 
 async function upsertFigure(auditDb, payload, { author_uid, author_label }) {
   const now = new Date();
-  const { slug, ...rest } = payload;
+  const { slug, formats, ...rest } = payload;
+  const binaryFormats = Object.fromEntries(
+    Object.entries(formats).map(([format, value]) => [format, Buffer.from(value, 'base64')])
+  );
   await auditDb.collection(COLLECTION).updateOne(
     { _id: slug },
     {
-      $set: { ...rest, author_uid: author_uid ?? null, author_label: author_label ?? null, updated_at: now },
+      $set: {
+        ...rest,
+        formats: binaryFormats,
+        author_uid: author_uid ?? null,
+        author_label: author_label ?? null,
+        updated_at: now,
+      },
       $setOnInsert: { created_at: now },
     },
     { upsert: true }
@@ -98,7 +108,7 @@ async function listFigures(auditDb) {
     .toArray();
   return docs.map(({ _id, formats, ...rest }) => ({
     slug: String(_id),
-    svg: formats?.svg ?? null,
+    svg: formats?.svg ? Buffer.from(formats.svg.buffer ?? formats.svg).toString('base64') : null,
     ...rest,
   }));
 }
@@ -108,32 +118,20 @@ async function getFigureFormat(auditDb, slug, format) {
   if (!contentType) return null;
   const doc = await auditDb.collection(COLLECTION).findOne(
     { _id: slug },
-    { projection: { [`formats.${format}`]: 1, dataset_version: 1 } }
+    { projection: { [`formats.${format}`]: 1 } }
   );
   const data = doc?.formats?.[format];
   if (!data) return null;
   return {
     contentType,
-    buffer: Buffer.from(data, 'base64'),
-    filename: `${slug}${doc.dataset_version ? `__${doc.dataset_version}` : ''}.${format}`,
+    buffer: Buffer.from(data.buffer ?? data),
+    filename: `${slug}.${format}`,
   };
 }
 
 async function removeFigure(auditDb, slug) {
   const { deletedCount } = await auditDb.collection(COLLECTION).deleteOne({ _id: slug });
   return deletedCount > 0;
-}
-
-// Live-figure state, maintained by the figure runner. computed_at only moves
-// on success: an error keeps the last good render (and its timestamp) visible.
-async function markFigureLive(auditDb, slug, { status }) {
-  const $set = { mode: 'live', 'live.status': status };
-  if (status === 'ok') $set['live.computed_at'] = new Date();
-  await auditDb.collection(COLLECTION).updateOne({ _id: slug }, { $set });
-}
-
-async function clearFigureLive(auditDb, slug) {
-  await auditDb.collection(COLLECTION).updateOne({ _id: slug }, { $unset: { mode: '', live: '' } });
 }
 
 // author_uid for edit/delete gating. found:false = missing (404); null author
@@ -178,5 +176,6 @@ async function updateFigureMeta(auditDb, slug, fields) {
 module.exports = {
   validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
-  getFigureAuthor, updateFigureMeta, markFigureLive, clearFigureLive,
+  getFigureAuthor, updateFigureMeta,
+  COLLECTION,
 };

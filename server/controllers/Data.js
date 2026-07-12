@@ -3,16 +3,15 @@
  * Everything is scoped by partner visibility (admins see all ported data).
  *
  *   GET /data/summary          — what the caller's dataset contains: majors
- *       per school, agreement counts, and the CC/university courses their
- *       agreements reference. This is the number-for-number mirror of the
- *       admin dataset panel, restricted to the caller's granted pairs.
+ *       per school, agreement counts, and course counts. Admins see the full
+ *       ported catalogs; partners see the CC/university courses their visible
+ *       agreements reference.
  *   GET /data/raw-assist/:id   — the raw ASSIST.org API payload for one
  *       agreement (live per-major fetch through the session proxy; the same
  *       upstream JSON the parser's raw_cache mirrors).
  */
 const { ObjectId } = require('mongodb');
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { currentDatasetVersion } = require('../services/datasetVersion');
 const { majorScope, pairAllowed, pairClause, scopeTag } = require('../services/majorVisibility');
 const { fetchRawAgreement } = require('../services/assistProxy');
 
@@ -45,8 +44,8 @@ exports.getSummary = asyncHandler(async (req, res) => {
   if (hit && Date.now() - hit.at < TTL_MS) return res.json(hit.payload);
 
   const match = pairs != null ? pairClause(pairs, 'uc_school_id') : {};
-  const [groups, nColleges, dataset_version, changelog] = await Promise.all([
-    db.collection('uc_agreements').aggregate([
+  const [groups, nColleges, settings] = await Promise.all([
+    db.collection('assist_agreements').aggregate([
       { $match: match },
       {
         $group: {
@@ -57,16 +56,9 @@ exports.getSummary = asyncHandler(async (req, res) => {
       },
       { $sort: { '_id.school': 1 } },
     ]).toArray(),
-    db.collection('community_colleges').estimatedDocumentCount(),
-    currentDatasetVersion(db),
-    // Version history for the Overview. Only version/date/action — the
-    // changelog's `detail` lists major names, which may exceed a partner's
-    // granted subset.
-    db.collection('dataset_changelog')
-      .find({}, { projection: { _id: 0, dataset_version: 1, at: 1, action: 1 } })
-      .sort({ at: -1 })
-      .limit(8)
-      .toArray(),
+    db.collection('assist_institutions').countDocuments({ kind: 'community_college' }),
+    (req.app.locals.auditDb || db).collection('settings')
+      .findOne({ _id: 'app' }, { projection: { last_data_refresh_at: 1 } }),
   ]);
 
   // Courses in scope: whole collections for admins (that's exactly what was
@@ -75,8 +67,8 @@ exports.getSummary = asyncHandler(async (req, res) => {
   let nUniversityCourses;
   if (pairs == null) {
     [nCourses, nUniversityCourses] = await Promise.all([
-      db.collection('courses').estimatedDocumentCount(),
-      db.collection('university_courses').estimatedDocumentCount(),
+      db.collection('assist_courses').countDocuments({ side: 'sending' }),
+      db.collection('assist_courses').countDocuments({ side: 'receiving' }),
     ]);
   } else if (!pairs.length) {
     nCourses = 0;
@@ -84,7 +76,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
   } else {
     const courseIds = new Set();
     const parentIds = new Set();
-    for await (const doc of db.collection('uc_agreements').find(match, { projection: { requirement_groups: 1 } })) {
+    for await (const doc of db.collection('assist_agreements').find(match, { projection: { requirement_groups: 1 } })) {
       collectRefs(doc, courseIds, parentIds);
     }
     parentIds.delete(null);
@@ -93,9 +85,8 @@ exports.getSummary = asyncHandler(async (req, res) => {
   }
 
   const payload = {
-    dataset_version,
+    last_data_refresh_at: settings?.last_data_refresh_at ?? null,
     scoped: pairs != null,
-    changelog,
     schools: groups.map((g) => ({
       school_id: g._id.school_id,
       school: g._id.school,
@@ -117,7 +108,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
 exports.getRawAssist = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   if (!ObjectId.isValid(req.params.id)) return res.status(400).json({ error: 'Invalid agreement id' });
-  const doc = await db.collection('uc_agreements').findOne(
+  const doc = await db.collection('assist_agreements').findOne(
     { _id: new ObjectId(req.params.id) },
     { projection: { uc_school_id: 1, community_college_id: 1, major: 1, major_id: 1 } }
   );

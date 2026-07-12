@@ -1,692 +1,383 @@
-/**
- * API documentation content — the single source of truth for the API tab.
- *
- * The Endpoints page and the Data guide render these objects, and
- * buildAiBriefing() serializes the SAME objects to markdown for the
- * "Copy for AI" button — the page and the paste can't drift apart.
- *
- * Writing rules: short and plain. One or two sentences per endpoint — what
- * it returns and when to reach for it. Technical field lists stay behind
- * the expander (and in the AI paste).
- */
+/** Shared content for the rendered API guide and the "Copy for AI" briefing. */
 
-// ───────────────────────── getting started ─────────────────────────
-
-export const AUTH_HEADER = 'Authorization: Bearer <your pmtr_… token>'
+export const AUTH_HEADER = 'Authorization: Bearer <your pmtr_... token>'
 
 export const pythonSnippet = (base) => `import requests, pandas as pd
 
 API = "${base}"
-H = {"Authorization": "Bearer pmtr_..."}  # create a token in the Tokens tab
+H = {"Authorization": "Bearer pmtr_..."}
 
-rows = requests.get(f"{API}/export/receivers", headers=H).json()["rows"]
-df = pd.DataFrame(rows)   # one row per campus requirement`
+rows = requests.get(f"{API}/exports/receivers", headers=H).json()["rows"]
+df = pd.DataFrame(rows)`
 
-// Rendered as one compact line on the page; listed in full in the AI paste.
 export const GETTING_STARTED_NOTES = [
-  'Every endpoint is a GET with the Authorization header.',
-  'JSON list responses look like { dataset_version, n, rows }. Export and analysis endpoints also take ?format=csv (the version then rides in the X-Dataset-Version header).',
-  'The dataset is versioned — record dataset_version beside any figure or table you produce so results stay attributable to an exact dataset state.',
-  'Most list endpoints accept majorContains=<substring> (case-insensitive) to filter to one major.',
+  'The permanent base path is /api; there is no version segment.',
+  'List responses expose rows, while bulk exports also include n and params.',
+  'Bulk exports accept ?format=csv. Nested values are JSON-encoded in CSV cells.',
+  'The course exports are full catalogs for all 115 community colleges and all 9 UC campuses in the source scope.',
 ]
-
-// ───────────────────────── starter code ─────────────────────────
-// Starter tab content: the steps below + the served starter.py (see
-// server/client/pmtPy.js). publish() ships in the same file — no separate page.
 
 export const STARTER_EXPLANATION =
-  'One file: get() reads any endpoint into a DataFrame, publish() uploads a live figure script the server can rerun.'
+  'One local helper: get() reads shared data and publish() renders your matplotlib figure locally before sharing the finished files.'
 
 export const STARTER_STEPS = [
-  ['Create a token', 'Tokens tab → Generate token. That string is your API password for scripts — keep it out of shared notebooks.'],
-  ['Get the starter file', 'Copy or download starter.py below — it comes preconfigured with this API\'s address. Keep it next to your analysis script or notebook and import it as pmt.'],
-  ['Add your token', 'Paste your pmtr_ token into TOKEN at the top of starter.py (or set the PMT_TOKEN environment variable). Do not paste tokens into live figure scripts.'],
-  ['Pull data', 'get("/export/receivers") returns a pandas DataFrame. Change the path for any other endpoint (see the Endpoints tab) — from there it\'s ordinary pandas + matplotlib.'],
-  ['Publish live', 'The bottom of starter.py shows copy-ready code for hello_figure.py, followed by the publish call. Create hello_figure.py from that block, then run python starter.py.'],
+  ['Create a token', 'Generate a personal token in the Tokens tab. Keep it out of shared notebooks.'],
+  ['Get starter.py', 'Download the file below and keep it beside your notebook or analysis script.'],
+  ['Set the token', 'Set PMT_TOKEN in your shell, or place the token in TOKEN at the top of your local starter.py.'],
+  ['Read data', 'Call pmt.get("exports/receivers") or another path from the Endpoints tab. It returns a pandas DataFrame when the response contains rows.'],
+  ['Publish a figure', 'Pass the completed matplotlib Figure to pmt.publish(fig, slug=..., title=...). Your machine creates SVG, PNG, and PDF; only those files are uploaded.'],
 ]
-
-// ───────────────────────── endpoints ─────────────────────────
 
 export const ENDPOINT_GROUPS = [
   {
-    id: 'scope',
+    id: 'orientation',
     title: 'Orientation',
     endpoints: [
       {
         method: 'GET',
         path: '/data/summary',
-        title: 'The dataset at a glance',
-        plain:
-          'Majors per campus, document counts, the current dataset_version, and recent changes. Call it first.',
-        returns: '{ dataset_version, schools: [...], counts: {...}, changelog: [...] }',
+        title: 'Dataset summary',
+        plain: 'Current refresh time, visible campus programs, and scoped document counts.',
+        returns: '{ last_data_refresh_at, scoped, schools, counts }',
+      },
+      {
+        method: 'GET',
+        path: '/assist/institutions?kind=community_college',
+        title: 'Institutions',
+        plain: 'Community colleges or universities. Omit kind for both.',
+        returns: '{ rows: [ { institution_id, source_id, kind, system, name, ... } ] }',
         fields: [
-          ['schools[]', 'per campus: school_id, school, majors[], n_agreements'],
-          ['counts', 'agreements, majors, community_colleges, courses, university_courses'],
-          ['changelog[]', 'recent port operations: dataset_version, at, action'],
+          ['institution_id', 'Stable namespaced id such as cc:113 or uc:79.'],
+          ['district, region, counties_served', 'Curated geography on community-college rows.'],
+          ['academic_calendar, tuition_per_credit_usd', 'Curated university facts when available.'],
+        ],
+      },
+    ],
+  },
+  {
+    id: 'assist',
+    title: 'ASSIST data',
+    blurb: 'Source-derived institutions, complete course catalogs, agreements, and admissions.',
+    endpoints: [
+      {
+        method: 'GET',
+        path: '/assist/courses?institution_id=cc:113',
+        title: 'One institution catalog',
+        plain: 'Every course for one community college or UC campus. Use institution_id=uc:<id> for receiving courses.',
+        returns: '{ rows: [course documents] }',
+        fields: [
+          ['_id', 'Canonical id: cc:<course_id> or university:<parent_id>.'],
+          ['side', 'sending for CC courses; receiving for university courses.'],
+          ['institution_id', 'The namespaced institution id.'],
         ],
       },
       {
         method: 'GET',
-        path: '/community-colleges',
-        title: 'The community colleges',
-        plain:
-          'All community colleges as { id, name, district, region, counties_served } — the lookup for the community_college_id values used everywhere else, with district/region/county geography (from ref_cc_districts) for filtering the college list. Geography is null/[] for any college not yet mapped.',
-        returns: '[ { id, name, district, region, counties_served: [ ... ] }, ... ]',
+        path: '/assist/courses?ids=cc:123,university:456',
+        title: 'Courses by id',
+        plain: 'Fetch up to 500 mixed sending/receiving course ids in one request.',
+        returns: '{ rows: [course documents] }',
       },
       {
         method: 'GET',
-        path: '/schools',
-        title: 'The universities',
-        plain:
-          'The UC campuses as { id, name }, wrapped in { uc: [...] }. These are the school_id / university_id values on every other endpoint.',
-        returns: '{ uc: [ { id, name }, ... ] }',
+        path: '/assist/agreements?college_id=cc:113&university_id=uc:79',
+        title: 'Agreements for a school pair',
+        plain: 'Nested ASSIST agreement documents. Add major=<exact name> to select one program.',
+        returns: '{ rows: [agreement documents] }',
+      },
+      {
+        method: 'GET',
+        path: '/admissions?institution_id=uc:79&major=Computer%20Science',
+        title: 'Transfer admissions',
+        plain: 'Available transfer admit-rate and GPA records, optionally narrowed to a campus and exact major.',
+        returns: '{ rows: [admission documents] }',
+      },
+    ],
+  },
+  {
+    id: 'curated',
+    title: 'Hand-curated data',
+    blurb: 'Human-gathered requirements and mappings kept separate from ASSIST-derived records.',
+    endpoints: [
+      {
+        method: 'GET',
+        path: '/curated/requirements?kind=transfer_minimum',
+        title: 'Requirements by kind',
+        plain: 'Kinds are transfer_minimum, degree, ge_pattern, igetc, and associate_degree.',
+        returns: '{ rows: [requirement documents] }',
+      },
+      {
+        method: 'GET',
+        path: '/curated/prerequisites',
+        title: 'Course prerequisites',
+        plain: 'Resolved course-id edges plus rows marked needs_review when source text could not be mapped safely.',
+        returns: '{ rows: [ { course_id, prerequisite_ids, unresolved_prerequisites, status, ... } ] }',
+      },
+      {
+        method: 'GET',
+        path: '/curated/course-categories',
+        title: 'University course categories',
+        plain: 'Human category labels attached to university course parent ids.',
+        returns: '{ categories, canonical, broad }',
+      },
+      {
+        method: 'GET',
+        path: '/curated/receiver-overrides',
+        title: 'Receiver judgments',
+        plain: 'Human exclusions or category overrides keyed by agreement receiver hash.',
+        returns: '{ overrides }',
+      },
+      {
+        method: 'GET',
+        path: '/curated/degrees',
+        title: 'Readable degree requirements',
+        plain: 'Full four-year degree templates enriched with university course labels and slot totals.',
+        returns: '{ rows, generated_at }',
+      },
+      {
+        method: 'GET',
+        path: '/curated/degree-evaluation?school_id=79&community_college_id=113',
+        title: 'Evaluate one degree at one college',
+        plain: 'The degree ledger, transferable coverage, and tier totals for a campus/college pair.',
+        returns: '{ school_id, community_college_id, completion, groups, ... }',
       },
     ],
   },
   {
     id: 'exports',
     title: 'Bulk exports',
-    blurb: 'The whole corpus, one call each. JSON or ?format=csv.',
+    blurb: 'The whole research corpus in one call. Add ?format=csv when useful.',
     endpoints: [
       {
         method: 'GET',
-        path: '/export/receivers',
-        title: 'Every campus requirement, one row each',
-        plain:
-          'The workhorse. Each requirement of each agreement as a flat row — status, satisfying course options, and the requirement logic included. Most statistics are a pandas groupby over this table.',
-        returns: '{ dataset_version, n, rows: [...] } — one row per receiver',
+        path: '/exports/receivers',
+        title: 'Every receiving requirement',
+        plain: 'One flattened row per agreement receiver, including group/section logic and CC course options.',
+        returns: '{ params, n, rows }',
         fields: [
-          ['agreement_id / school_id / school / community_college_id / community_college / major', 'where the requirement lives'],
-          ['group_index, is_required, group_conjunction, group_advisement, group_unit_advisement', 'requirement-group logic (see the guide)'],
-          ['section_index, section_advisement, section_unit_advisement, receiver_index', 'section logic'],
-          ['hash_id', 'stable id of the campus-side requirement — joins the curation overlays'],
-          ['kind, receiving_name, parent_ids[], ge_code', 'what the campus asks for: course, series, requirement, or ge_area'],
-          ['articulation_status, not_articulated_reason', 'whether the college can satisfy it, and if not, why'],
-          ['options[], options_conjunction, n_options', 'the CC course combinations that satisfy it'],
-        ],
-        example:
-          '# gap rate by campus:\ndf[df.is_required & (df.articulation_status == "not_articulated")\n   & (df.not_articulated_reason != "must_take_at_university")]\\\n  .groupby("school").size()',
-      },
-      {
-        method: 'GET',
-        path: '/export/agreements',
-        title: 'Full agreements, as stored',
-        plain:
-          'The nested requirement trees, exactly as the database holds them. Use when you need the tree itself — /export/receivers is the already-flattened version.',
-        returns: '{ dataset_version, n, rows: [agreement docs] }',
-      },
-      {
-        method: 'GET',
-        path: '/export/courses',
-        title: 'The community-college catalog',
-        plain:
-          'Receiver options point into it via course_id; units feed credit-loss math. Includes cross-listing and GE-area tags.',
-        returns: '{ dataset_version, n, rows: [...] }',
-        fields: [
-          ['course_id', 'numeric id — joins options[].course_ids'],
-          ['prefix, number, title, units, community_college_id', 'the catalog row'],
-          ['same_as[]', 'cross-listed equivalent course ids'],
-          ['igetc_area[], csu_ge_area[], calgetc_area[], uc_transferable', 'GE / transferability tags'],
+          ['agreement_id, school_id, community_college_id, major', 'Agreement identity.'],
+          ['is_required, group_advisement, section_advisement', 'Requirement logic.'],
+          ['parent_ids, articulation_status, options', 'Receiving course ids and sending-course solutions.'],
         ],
       },
       {
         method: 'GET',
-        path: '/export/university-courses',
-        title: 'The university-side catalog',
-        plain:
-          'The campus courses agreements articulate to. Receivers point into it via parent_id; units are a min–max range.',
-        returns: '{ dataset_version, n, rows: [...] }',
-        fields: [
-          ['parent_id', 'globally unique numeric id — joins receiving.parent_id(s)'],
-          ['prefix, number, title, department, university_id', 'the catalog row'],
-          ['min_units, max_units', 'unit range'],
-        ],
+        path: '/exports/agreements',
+        title: 'Every agreement',
+        plain: 'Full nested agreement trees, visibility-scoped for the caller.',
+        returns: '{ params, n, rows }',
+      },
+      {
+        method: 'GET',
+        path: '/exports/courses',
+        title: 'All community-college courses',
+        plain: 'The full 115-college sending catalog, not only courses referenced by selected agreements.',
+        returns: '{ params, n, rows }',
+      },
+      {
+        method: 'GET',
+        path: '/exports/university-courses',
+        title: 'All UC courses',
+        plain: 'The full receiving catalog for all 9 UC campuses in the source database.',
+        returns: '{ params, n, rows }',
       },
     ],
   },
   {
-    id: 'analysis',
-    title: 'Precomputed analyses',
-    blurb: "The papers' measures, ready to plot. All accept majorContains= and ?format=csv.",
+    id: 'spot',
+    title: 'Spot checks',
     endpoints: [
       {
         method: 'GET',
-        path: '/analysis/coverage',
-        title: 'How complete each agreement is',
-        plain:
-          'One row per agreement by default: required receivers, how many are articulated, and the percentage. Add groupBy=district|county for rollups or requirements=paper to evaluate the imported hard-requirement subset.',
-        returns: '{ dataset_version, params, n, rows: [...] }',
-        fields: [
-          ['receivers_required, receivers_articulated', 'required-receiver counts (recommended groups excluded)'],
-          ['pct_articulated', '0–100, null when there are no required receivers'],
-          ['fully_articulated', "true when the campus's ASSIST-stated minimums articulate — honors choose-N (section/group advisement), not every receiver"],
-        ],
+        path: '/audit/doc/:agreementId',
+        title: 'One readable agreement',
+        plain: 'An agreement plus CC/UC course-name maps and its ASSIST link.',
+        returns: '{ doc, course_names, university_courses, assist_url, system }',
       },
       {
         method: 'GET',
-        path: '/analysis/credit-loss',
-        title: 'The cheapest path, and what it costs',
-        plain:
-          'Solves each agreement\'s option trees for the minimal CC course set: courses, units, many-to-one requirements, blocked receivers — with quarter → semester normalization.',
-        returns: '{ dataset_version, params, n, rows: [...] }',
-        fields: [
-          ['min_cc_courses, min_cc_units, courses[]', 'the solved minimal course set'],
-          ['receivers_required, receivers_satisfiable, receivers_blocked', 'how much of the agreement is satisfiable'],
-          ['many_to_one', 'receivers whose cheapest path needs >1 CC course'],
-          ['campus_calendar, semester_equiv_required', 'quarter/semester normalization'],
-          ['district', "the college's district, for district rollups"],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/analysis/choice-cost?schoolIds=7,117',
-        title: 'The cost of keeping campus options open',
-        plain:
-          'Takes an ORDERED schoolIds list; per college, reports how many extra CC courses each successive campus adds. Order matters — permute for averages.',
-        returns: '{ dataset_version, params, n, rows: [...] }',
-        fields: [
-          ['total_courses', 'union course count across the whole list'],
-          ['steps[]', 'per campus, in order: school_id, school, has_agreement, additional_courses, blocked_receivers'],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/analysis/category-gaps',
-        title: 'Which kinds of course block transfer, where',
-        plain:
-          'Per campus × course category: the share of colleges missing an articulated equivalent. Uses the curation tags; untagged receivers land in category null.',
-        returns: '{ dataset_version, params, n, rows: [...] }',
-        fields: [
-          ['category', 'canonical category from curation (null = untagged)'],
-          ['ccs_with_requirement, ccs_missing_articulation, pct_missing', 'the gap measure'],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/analysis/complexity',
-        title: 'How tangled the prerequisite path is',
-        plain:
-          'Delay/blocking complexity of each agreement\'s minimal pathway over the curated prerequisite graph. Check prereq_data_coverage_pct before trusting a row.',
-        returns: '{ dataset_version, params, n, rows: [...] }',
-        fields: [
-          ['complexity, max_delay', 'the headline scores'],
-          ['n_courses, n_prereq_edges, prereq_data_coverage_pct', 'pathway size and prereq-data completeness'],
-          ['per_course[]', 'per course: key, delay, blocking'],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/analysis/time-to-degree',
-        title: 'What an associate degree is worth at transfer',
-        plain:
-          'Per curated associate degree × agreement: units that transfer, the credit rate, units lost, and the estimated cost of the loss. Empty until degrees are curated.',
-        returns: '{ dataset_version, params, n, rows: [...] }',
-        fields: [
-          ['assoc_degree, assoc_degree_units', 'the curated degree'],
-          ['transferable_units, transfer_credit_rate_pct, lost_units, est_lost_cost_usd', 'the value-at-transfer measures'],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/analysis/raw/:collection',
-        title: 'The working collections',
-        plain:
-          'Raw dump of one working collection: audit_results (human verdicts — doc_id joins agreement _id), the curation_* tables, or the ref_* reference data.',
-        returns: '{ dataset_version, n, rows: [...] }',
-      },
-    ],
-  },
-  {
-    id: 'figures',
-    title: 'Figures — the shared gallery',
-    blurb: 'What starter.py talks to. Publish a live script; the team sees it in Data → Analysis.',
-    endpoints: [
-      {
-        method: 'GET',
-        path: '/client/starter.py',
-        title: 'The Python client',
-        plain:
-          'starter.py with this API\'s address already baked in — get() returns DataFrames and publish() creates live figures from local .py scripts. Also available with Copy/Download in Build & publish. /client/pmt.py remains available as a compatibility alias.',
-        returns: 'the starter.py source (text/x-python)',
-      },
-      {
-        method: 'POST',
-        path: '/figures',
-        title: 'Store a rendered figure',
-        plain:
-          'Legacy/static storage endpoint for a rendered figure: slug, title, optional caption/source_url, and base64 SVG/PNG/PDF renders. Live publishing goes through pmt.publish("file.py", ...); this endpoint stores the render after the runner captures it.',
-        returns: '{ ok, slug, dataset_version }',
-        fields: [
-          ['slug', 'the figure\'s stable id: a-z 0-9 - _ (e.g. "coverage-heatmap")'],
-          ['title, caption, source_url', 'what the gallery card shows'],
-          ['dataset_version', 'the version the data was fetched at (starter.py fills this in)'],
-          ['formats', '{ svg (required), png, pdf } as base64'],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/figures',
-        title: 'The published figures',
-        plain:
-          'The gallery listing: every published figure\'s metadata and SVG, plus the current dataset_version for staleness checks.',
-        returns: '{ dataset_version, figures: [ { slug, title, caption, author_label, dataset_version, svg, … } ] }',
-      },
-      {
-        method: 'GET',
-        path: '/figures/:slug/:format',
-        title: 'Download a figure',
-        plain:
-          'The stored file — svg, 300-dpi png, or vector pdf. The pdf is what the paper\'s \\includegraphics wants.',
-        returns: 'the binary file',
-      },
-      {
-        method: 'POST',
-        path: '/figure-scripts',
-        title: 'Publish a LIVE figure',
-        plain:
-          'What pmt.publish("file.py", slug=..., title=...) calls: the whole script file plus its figure metadata. The server dry-runs it in a sandbox right now against your data scope; on success the captured figure is published and reruns automatically whenever the dataset or curation state changes. Scripts should build one matplotlib Figure named fig, read the token from the environment, and use pandas/numpy/matplotlib/requests.',
-        returns: '{ ok, slug, dataset_version, duration_ms, log } — or 422 with { error, log } when the run fails',
-        fields: [
-          ['code', 'the script text (≤200KB, self-contained, no hardcoded pmtr_ tokens)'],
-          ['enabled', 'optional, default true — false publishes the figure but skips auto-refresh'],
-        ],
-      },
-      {
-        method: 'GET',
-        path: '/figure-scripts/:slug',
-        title: 'The script behind a live figure',
-        plain:
-          'Readable by every console user — the "View code" button. Copy it to a new .py file, then publish that file with a new slug to make your own variant. Owners and admins also get the last run\'s log.',
-        returns: '{ slug, code, enabled, updated_at, last_run, can_modify }',
-      },
-      {
-        method: 'POST',
-        path: '/figure-scripts/:slug/refresh',
-        title: 'Re-run a live figure now',
-        plain:
-          'Owner or admin: runs the stored script immediately (same as the card\'s Refresh button) and replaces the render on success. Failures keep the last good image and return the log.',
-        returns: '{ ok, slug, dataset_version, duration_ms }',
-      },
-      {
-        method: 'PUT',
-        path: '/figure-scripts/:slug/enabled',
-        title: 'Turn auto-refresh on/off',
-        plain:
-          'Owner or admin: { enabled: false } keeps the figure and its script but stops scheduled re-runs; true re-arms them and forgives the failure streak.',
-        returns: '{ ok, slug, enabled }',
-      },
-      {
-        method: 'DELETE',
-        path: '/figure-scripts/:slug',
-        title: 'Detach a script (make static)',
-        plain:
-          'Owner or admin: removes the script and its run history; the figure itself stays in the gallery as an ordinary static snapshot of its last render.',
-        returns: '{ ok, slug }',
+        path: '/data/raw-assist/:agreementId',
+        title: 'Upstream ASSIST payload',
+        plain: 'A live fetch of the raw ASSIST response for parser-fidelity checks.',
+        returns: 'raw ASSIST JSON',
       },
     ],
   },
   {
     id: 'tasks',
-    title: 'Tasks (shared board)',
-    blurb: 'The Tasks tab, scriptable — the same shared board, readable and writable with a personal token.',
+    title: 'Tasks',
+    blurb: 'Porting workflow logs, derived progress, and peer approval.',
     endpoints: [
       {
-        method: 'GET',
-        path: '/tasks',
-        title: 'The shared task board',
-        plain:
-          'Every task on the team board. The { rows } envelope means pmt.get(\'/tasks\') lands as a DataFrame, stamped with the current dataset_version.',
-        returns: '{ dataset_version, rows: [ { _id, title, description, status, progress, assignee_uid, assignee_label, notes, ... } ] }',
-        fields: [
-          ['status', 'backlog | todo | in_progress | done'],
-          ['progress', 'self-reported percent, 0–100'],
-          ['notes', '[ { uid, label, text, at } ] — team tips on how to tackle it'],
-          ['dataset_version_created / _completed', 'the dataset the task was opened / closed against'],
-        ],
+        method: 'GET', path: '/tasks', title: 'Shared board',
+        plain: 'All tasks plus the available task types and stage definitions.',
+        returns: '{ task_types, workflows, rows }',
       },
       {
-        method: 'GET',
-        path: '/tasks/roster',
-        title: 'Assignable people',
-        plain: 'Everyone on the project (admins + granted partners) as { uid, label } for assignment.',
-        returns: '{ rows: [ { uid, label } ] }',
+        method: 'POST', path: '/tasks', title: 'Create a porting task',
+        plain: 'Send at least { title }. Progress begins at zero and cannot be set directly.',
+        returns: 'created task',
       },
       {
-        method: 'POST',
-        path: '/tasks',
-        title: 'Create a task',
-        plain:
-          'Any console user. Minimum { title }; optionally description, status, progress, assignee_uid. Creation is stamped with your identity and the current dataset_version.',
-        returns: 'the created task document',
+        method: 'PUT', path: '/tasks/:id', title: 'Update task metadata',
+        plain: 'A partial update for title, description, assignment, order, status, notes, or archive state.',
+        returns: 'updated task',
       },
       {
-        method: 'PUT',
-        path: '/tasks/:id',
-        title: 'Update a task (partial)',
-        plain:
-          'Send only the fields you are changing — e.g. { status: \'done\' } from a notebook when a script finishes the work. Moving into done stamps completed_by/completed_at.',
-        returns: 'the updated task document',
+        method: 'POST', path: '/tasks/:id/stages/:stage/notes', title: 'Append a stage note',
+        plain: 'Send { note } at any time. Notes are iterative and do not complete the stage.',
+        returns: 'updated task',
       },
       {
-        method: 'DELETE',
-        path: '/tasks/:id',
-        title: 'Delete a task',
-        plain: 'Removes the task outright. Prefer PUT { archived: true } to tidy a done column without losing history.',
-        returns: '{ ok: true }',
-      },
-    ],
-  },
-  {
-    id: 'single',
-    title: 'Single-document reads',
-    blurb: 'What the console UI itself calls — for spot-checking one agreement or institution.',
-    endpoints: [
-      {
-        method: 'GET',
-        path: '/uc-agreements-batch/:ccId?school_id=:ucId',
-        title: "One college's agreements, grouped by campus",
-        plain:
-          'Resolves a (college, campus, major) pick to an agreement — optionally filtered to one campus with school_id.',
-        returns: '[ { school_id, agreements: [...] }, ... ]',
+        method: 'POST', path: '/tasks/:id/stages/:stage/complete', title: 'Complete a stage',
+        plain: 'Stages complete in order. Team approval requires a review note from someone other than the creator.',
+        returns: 'updated task',
       },
       {
-        method: 'GET',
-        path: '/audit/doc/:agreementId',
-        title: 'One agreement, ready to read',
-        plain:
-          'A single agreement plus course-name maps and its ASSIST.org link — everything needed to eyeball an agreement your stats flagged.',
-        returns: '{ doc, course_names, university_courses, assist_url, ... }',
-      },
-      {
-        method: 'GET',
-        path: '/data/raw-assist/:agreementId',
-        title: 'The upstream ASSIST payload',
-        plain:
-          'The raw ASSIST.org response the parser consumed — ground truth for parser-fidelity checks. Live upstream fetch, so slower.',
-        returns: 'the raw ASSIST JSON',
-      },
-      {
-        method: 'GET',
-        path: '/courses/:ccId',
-        title: "One college's catalog rows",
-        plain:
-          'Filtered form of /export/courses for interactive lookups — pull the whole catalog once for analysis instead.',
-        returns: '[ course rows ]',
-      },
-      {
-        method: 'GET',
-        path: '/university-courses/:ucId',
-        title: "One campus's catalog rows",
-        plain:
-          'Filtered form of /export/university-courses — the receiving courses agreements articulate to there.',
-        returns: '[ university course rows ]',
+        method: 'POST', path: '/tasks/:id/stages/:stage/reopen', title: 'Reopen from a stage',
+        plain: 'Send { note }; this reopens the selected stage and every downstream stage and recalculates progress.',
+        returns: 'updated task',
       },
     ],
   },
 ]
 
-// Hidden from the Endpoints tab + AI briefing: analyses and figures. Still
-// defined (canonical) and still functional — analyses reach partners via the
-// site, not as fetch recipes. Obscurity, not a wall.
-export const HIDDEN_ENDPOINT_GROUP_IDS = new Set(['analysis', 'figures'])
-export const PARTNER_ENDPOINT_GROUPS = ENDPOINT_GROUPS.filter(
-  (g) => !HIDDEN_ENDPOINT_GROUP_IDS.has(g.id)
-)
-
-// ───────────────────────── the data guide ─────────────────────────
+export const PARTNER_ENDPOINT_GROUPS = ENDPOINT_GROUPS
 
 export const GUIDE_SECTIONS = [
   {
-    id: 'what',
+    id: 'dataset',
     title: 'The dataset',
     blocks: [
       {
         type: 'p',
-        text:
-          'Articulation agreements between California community colleges and UC campuses, parsed from ASSIST.org. One agreement exists per (college × campus × major): the campus\'s requirements for that major, and how — or whether — each can be satisfied at that college.',
+        text: 'The database contains complete CC and UC course catalogs for every included school. Agreement selection is narrower: one document per ported college, UC campus, and major.',
       },
       {
         type: 'p',
-        text:
-          'The dataset is versioned. Every response carries dataset_version — record it beside anything you publish.',
+        text: 'ASSIST-derived records use the assist_* collections and /assist routes. Human-gathered records use curated_* collections and /curated routes. Refresh time and source URLs provide provenance; there is no dataset-version field.',
       },
     ],
   },
   {
     id: 'shape',
-    title: 'The shape of an agreement',
+    title: 'Agreement shape',
     blocks: [
       {
         type: 'code',
-        text:
-`agreement                     "De Anza → UCSD, Computer Science B.S."
-└─ requirement_groups[]       "complete A and B and C" (or one-of, or N-of)
-   └─ sections[]              blocks inside a group
-      └─ receivers[]          ← ONE campus requirement each (the atom)`,
+        text: `agreement\n\u2514\u2500 requirement_groups[]\n   \u2514\u2500 sections[]\n      \u2514\u2500 receivers[]\n         \u2514\u2500 options[]`,
       },
       {
         type: 'p',
-        text:
-          'The receiver is the unit almost every analysis works in: "the campus wants this" plus "here is how you satisfy it at this college". /export/receivers gives you exactly these leaves, one per row, tree context flattened on.',
+        text: 'A receiver is one UC-side requirement. Its options are the CC course combinations that satisfy it. The receivers export flattens these leaves while retaining group and section logic.',
       },
     ],
   },
   {
-    id: 'receiver',
-    title: 'Reading a receiver',
-    blocks: [
-      { type: 'p', text: 'What the campus asks for comes in four kinds:' },
-      {
-        type: 'table',
-        head: ['kind', 'meaning', 'joins to'],
-        rows: [
-          ['course', 'a single university course', 'receiving.parent_id → university_courses'],
-          ['series', 'several university courses as a unit', 'receiving.parent_ids[] → university_courses'],
-          ['requirement', 'a free-text rule, no course behind it', '—'],
-          ['ge_area', 'a general-education area', 'receiving.code'],
-        ],
-      },
-      {
-        type: 'p',
-        text: 'When articulation_status is "not_articulated", the reason decides whether it counts as a gap:',
-      },
-      {
-        type: 'table',
-        head: ['not_articulated_reason', 'meaning', 'a gap?'],
-        rows: [
-          ['no_course_articulated', 'the college has no articulated equivalent', 'yes — the real gap'],
-          ['must_take_at_university', 'meant to be taken after transfer', 'usually no'],
-          ['never_articulated', 'campus never accepts CC equivalents here', 'campus policy — report separately'],
-          ['missing_articulation_entry', 'parser-internal absence', 'treat as unknown'],
-        ],
-      },
-      {
-        type: 'p',
-        text:
-          'The satisfying side is options[] — each option one acceptable CC course combination. Within an option, "and" = take all, "or" = any one; options_conjunction works the same across options:',
-      },
-      {
-        type: 'code',
-        text:
-`{ "receiving": { "kind": "course", "parent_id": 292039 },
-  "articulation_status": "articulated",
-  "options": [
-    { "course_ids": [195603],         "course_conjunction": "and" },  // 195603 alone…
-    { "course_ids": [353175, 353176], "course_conjunction": "and" }   // …or BOTH of these
-  ],
-  "options_conjunction": "or" }`,
-      },
-      {
-        type: 'p',
-        text:
-          'Several CC courses for one campus course — the second option here — is what credit-loss counts as many_to_one.',
-      },
-    ],
-  },
-  {
-    id: 'required',
-    title: 'What counts as required',
+    id: 'logic',
+    title: 'Requirement logic',
     blocks: [
       {
         type: 'table',
-        head: ['field', 'rule'],
+        head: ['field', 'meaning'],
         rows: [
-          ['is_required = false', 'the whole group is recommended — exclude from strict stats'],
-          ['group_conjunction = "Or"', 'ONE of the group\'s sections suffices'],
-          ['group_advisement = N', 'any N receivers across the group'],
-          ['group_unit_advisement = N', 'N units across the group (overrides section advisements)'],
-          ['section_advisement = N', 'any N receivers in the section (null = all)'],
-          ['section_unit_advisement = N', 'N units in the section'],
+          ['is_required = false', 'Recommended group; exclude from strict minimum calculations.'],
+          ['group_conjunction = Or', 'One section/group branch can satisfy the requirement.'],
+          ['group_advisement = N', 'Choose N receivers across the group.'],
+          ['section_advisement = N', 'Choose N receivers in the section.'],
+          ['options_conjunction', 'How alternative options combine.'],
+          ['course_conjunction', 'Whether course ids inside one option are AND or OR.'],
         ],
-      },
-      {
-        type: 'p',
-        text:
-          'The gap rule used throughout the precomputed analyses: is_required AND articulation_status = "not_articulated", usually excluding reason "must_take_at_university". Apply the same rule when recomputing from /export/receivers.',
       },
     ],
   },
   {
     id: 'joins',
-    title: 'Joining the tables',
+    title: 'Stable joins',
     blocks: [
       {
         type: 'table',
         head: ['from', 'to'],
         rows: [
-          ['options[].course_ids[i]', 'courses.course_id'],
-          ['receiving.parent_id / parent_ids[]', 'university_courses.parent_id'],
-          ['school_id (= university_courses.university_id)', 'schools.uc[].id'],
-          ['community_college_id', 'community-colleges id'],
-          ['agreement _id', 'audit_results.doc_id'],
-          ['receiver hash_id', 'curation_receiver_overrides._id'],
-          ['university parent_id', 'curation_course_categories._id'],
+          ['agreement.college_id', 'assist_institutions.institution_id (cc:<id>)'],
+          ['agreement.university_id', 'assist_institutions.institution_id (uc:<id>)'],
+          ['options[].course_keys[]', 'assist_courses._id (cc:<course_id>)'],
+          ['receiving.course_id / course_ids[]', 'assist_courses._id (university:<parent_id>)'],
+          ['receiver.hash_id', 'curated receiver override receiver_hash'],
+          ['agreement _id', 'agreement_reviews.doc_id'],
         ],
       },
       {
         type: 'p',
-        text:
-          'In CSV exports, list/object columns (options, parent_ids, steps, …) arrive JSON-encoded — json.loads them first.',
-      },
-    ],
-  },
-  {
-    id: 'which',
-    title: 'Which endpoint answers which question',
-    blocks: [
-      {
-        type: 'table',
-        head: ['question', 'endpoint'],
-        rows: [
-          ['How complete is articulation, college × campus?', '/analysis/coverage'],
-          ['How many courses/units does the cheapest path need?', '/analysis/credit-loss'],
-          ['What does a 2nd/3rd campus choice cost?', '/analysis/choice-cost?schoolIds=… (ordered)'],
-          ['Which course categories block transfer where?', '/analysis/category-gaps'],
-          ['How prerequisite-tangled is the pathway?', '/analysis/complexity'],
-          ['How much of an associate degree transfers?', '/analysis/time-to-degree'],
-          ['Anything receiver-level the above don\'t cover', '/export/receivers + pandas'],
-          ['How reliable is the parsed data?', '/analysis/raw/audit_results'],
-        ],
-      },
-      {
-        type: 'p',
-        text:
-          'Prefer the precomputed endpoints — they already handle required-vs-recommended logic, option solving, and calendar normalization.',
-      },
-    ],
-  },
-  {
-    id: 'campuses',
-    title: 'Campus ids',
-    blocks: [
-      {
-        type: 'table',
-        head: ['campus', 'id'],
-        rows: [
-          ['UC Berkeley', '79'], ['UC Davis', '89'], ['UC Irvine', '120'], ['UCLA', '117'],
-          ['UC Merced', '144'], ['UC Riverside', '46'], ['UC San Diego', '7'],
-          ['UC Santa Barbara', '128'], ['UC Santa Cruz', '132'],
-        ],
+        text: 'Legacy numeric course_id and parent_id fields remain on canonical course rows during the transition, but new code should prefer namespaced ids.',
       },
     ],
   },
 ]
 
-// ───────────────────────── AI-briefing helpers ─────────────────────────
-// Used only by buildAiBriefing(); the Starter tab renders starter.py, not these.
-
 export const curlBootstrap = (base) =>
-  `curl -H "Authorization: Bearer pmtr_..." ${base}/client/starter.py -o starter.py`
+  `curl -H "Authorization: Bearer pmtr_..." ${base}/client.py -o starter.py`
 
 export const EXAMPLE_FIGURE_SCRIPT = `import matplotlib.pyplot as plt
 import starter as pmt
 
-# Before running: set PMT_TOKEN in your shell, or paste the token into starter.py.
-
-# /export/receivers is one row per campus requirement — count them per campus.
-df = pmt.get("/export/receivers")
+df = pmt.get("exports/receivers")
 counts = df.groupby("school").size().sort_values(ascending=False)
 
 fig, ax = plt.subplots(figsize=(8, 5))
 counts.plot.bar(ax=ax)
 ax.set_ylabel("requirements")
-fig.tight_layout()`
+fig.tight_layout()
 
-export const EXAMPLE_PUBLISH_COMMAND = `import starter as pmt
-
-pmt.publish("requirements_by_campus.py",
+pmt.publish(fig,
             slug="requirements-by-campus",
             title="Requirements per UC campus")`
 
-// ───────────────────────── the AI paste ─────────────────────────
+export const EXAMPLE_PUBLISH_COMMAND =
+  'pmt.publish(fig, slug="requirements-by-campus", title="Requirements per UC campus")'
 
 const mdTable = (head, rows) => [
   `| ${head.join(' | ')} |`,
   `| ${head.map(() => '---').join(' | ')} |`,
-  ...rows.map((r) => `| ${r.join(' | ')} |`),
+  ...rows.map((row) => `| ${row.join(' | ')} |`),
 ].join('\n')
 
-const mdBlock = (b) => {
-  if (b.type === 'p') return b.text
-  if (b.type === 'code') return '```\n' + b.text + '\n```'
-  if (b.type === 'table') return mdTable(b.head, b.rows)
-  if (b.type === 'list') return b.items.map((i) => `- ${i}`).join('\n')
+const mdBlock = (block) => {
+  if (block.type === 'p') return block.text
+  if (block.type === 'code') return '```\n' + block.text + '\n```'
+  if (block.type === 'table') return mdTable(block.head, block.rows)
+  if (block.type === 'list') return block.items.map((item) => `- ${item}`).join('\n')
   return ''
 }
 
-const mdEndpoint = (e) => {
-  const parts = [`### ${e.method} ${e.path} — ${e.title}`, e.plain]
-  if (e.returns) parts.push(`Returns: \`${e.returns}\``)
-  if (e.fields?.length) parts.push(e.fields.map(([f, d]) => `- \`${f}\` — ${d}`).join('\n'))
-  if (e.example) parts.push('```python\n' + e.example + '\n```')
+const mdEndpoint = (endpoint) => {
+  const parts = [`### ${endpoint.method} ${endpoint.path} - ${endpoint.title}`, endpoint.plain]
+  if (endpoint.returns) parts.push(`Returns: \`${endpoint.returns}\``)
+  if (endpoint.fields?.length) {
+    parts.push(endpoint.fields.map(([field, description]) => `- \`${field}\` - ${description}`).join('\n'))
+  }
   return parts.join('\n\n')
 }
 
-/**
- * The one block to paste into an AI assistant (alongside a pmtr_ token) so it
- * can write analysis scripts against the live API. Same source objects as the
- * rendered docs — humans read the page, the AI reads this.
- */
 export function buildAiBriefing(base) {
   return [
-    '# Transfer Pathways Research API — data briefing',
-    'You are working against a private research API over California community-college → UC transfer-articulation data (parsed from ASSIST.org). This briefing is the complete reference: access, endpoints, data model, and analysis rules.',
-    '## Access',
-    [
-      `- Base URL: ${base}`,
-      `- Every request: \`${AUTH_HEADER}\` (tokens start with pmtr_)`,
-      ...GETTING_STARTED_NOTES.map((n) => `- ${n}`),
-    ].join('\n'),
+    '# Transfer Pathways Research API',
+    `Base URL: ${base}`,
+    `Every request: \`${AUTH_HEADER}\``,
+    ...GETTING_STARTED_NOTES.map((note) => `- ${note}`),
     '```python\n' + pythonSnippet(base) + '\n```',
     '## Endpoints',
-    ...PARTNER_ENDPOINT_GROUPS.flatMap((g) => [`### ${g.title}`, ...g.endpoints.map(mdEndpoint)]),
-    '## Publishing figures to the team gallery',
-    'Figures are shared through the console: download the client once (`' + curlBootstrap(base) + '`), write ordinary pandas + matplotlib in a .py script that creates a matplotlib Figure named `fig`, then publish that file with `pmt.publish("file.py", slug="...", title="...")`. This publishes a live figure: the server test-runs the script and re-runs it on every dataset change.',
-    'Live scripts must be self-contained (run top-to-bottom), take the token from the PMT_TOKEN environment variable rather than hardcoding it, create exactly one matplotlib Figure named `fig`, and import only pandas/numpy/matplotlib/requests (plus the stdlib).',
-    STARTER_STEPS.map(([t, d]) => `- ${t}: ${d}`).join('\n'),
+    ...PARTNER_ENDPOINT_GROUPS.flatMap((group) => [
+      `### ${group.title}`,
+      ...group.endpoints.map(mdEndpoint),
+    ]),
+    '## Publishing',
+    'Build the matplotlib Figure locally, then call pmt.publish(fig, ...). The local client renders SVG, PNG, and PDF and uploads only those finished files. No Python code runs on the server.',
     '```python\n' + EXAMPLE_FIGURE_SCRIPT + '\n```',
-    '```python\n' + EXAMPLE_PUBLISH_COMMAND + '\n```',
-    '## Data model & analysis rules',
-    ...GUIDE_SECTIONS.flatMap((s) => [`### ${s.title}`, ...s.blocks.map(mdBlock)]),
+    '## Data model',
+    ...GUIDE_SECTIONS.flatMap((section) => [
+      `### ${section.title}`,
+      ...section.blocks.map(mdBlock),
+    ]),
   ].join('\n\n')
 }

@@ -7,16 +7,16 @@
 const { majorScope, scopeTag, pairClause } = require('../majorVisibility');
 
 const ASSIST_ACADEMIC_YEAR = 76;
-const AUDIT_RESULTS      = 'audit_results';
-const COURSES            = 'courses';
-const UNIVERSITY_COURSES = 'university_courses';
+const AUDIT_RESULTS      = 'agreement_reviews';
+const COURSES            = 'assist_courses';
+const UNIVERSITY_COURSES = 'assist_courses';
 
 // Per-system metadata. UC-only for now; CSU was removed pending advanced
 // internal audit tooling. To re-introduce CSU later, append its row here
 // and re-add the matching csu entries in the bootstrap (next/schools)
 // + the frontend SCOPE_OPTIONS / SYSTEM_LABEL.
 const SYSTEMS = [
-  { key: 'uc',  coll: 'uc_agreements',  idField: 'uc_school_id',  nameField: 'uc_school'  },
+  { key: 'uc',  coll: 'assist_agreements',  idField: 'uc_school_id',  nameField: 'uc_school'  },
 ];
 const SYSTEM_BY_KEY = new Map(SYSTEMS.map((s) => [s.key, s]));
 
@@ -132,7 +132,7 @@ function applyMajorClauses(m, filter, idField) {
   return m;
 }
 
-// Mongo match clause for `audit_results`. Verdicts carry a system-tagged
+// Mongo match clause for `agreement_reviews`. Verdicts carry a system-tagged
 // school id. UC is the only active system today, so schoolIds match against
 // uc_school_id directly; the multi-system $or branch below is dormant
 // scaffolding for re-introducing a second system (see SYSTEMS note above),

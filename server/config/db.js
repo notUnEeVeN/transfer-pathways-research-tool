@@ -21,7 +21,7 @@ const connectDB = async () => {
   }
 };
 
-// Audit working-state DB — owns `audit_results` + `audit_groupings`. Defaults to
+// Team working-state DB — owns reviews, tasks, access, and published figures. Defaults to
 // the main connection when AUDIT_MONGO_URI is unset (or equals MONGO_URI), so
 // single-DB setups are completely unchanged. When AUDIT_MONGO_URI points at a
 // shared Atlas cluster, this opens a SECOND client so two people share verdicts

@@ -3,6 +3,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Badge, EmptyState, Panel } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import { COLUMNS } from './TaskBoard'
+import { taskTypeLabel } from './taskWorkflow'
 
 const STATUS_LABEL = Object.fromEntries(COLUMNS.map((c) => [c.status, c.label]))
 const STATUS_TONE = { backlog: 'neutral', todo: 'neutral', in_progress: 'accent', done: 'success' }
@@ -35,9 +36,15 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
             className='w-full text-left px-4 py-2.5 flex items-center gap-3 hover:bg-surface-hover transition-colors'>
             <Badge variant={STATUS_TONE[t.status]}>{STATUS_LABEL[t.status] || t.status}</Badge>
             {t.archived && <Badge>archived</Badge>}
+            <Badge className='hidden md:inline-flex'>{taskTypeLabel(t.task_type)}</Badge>
             <span className={`text-body flex-1 min-w-0 truncate ${t.status === 'done' || t.archived ? 'text-ink-muted' : ''}`}>{t.title}</span>
-            {t.status === 'in_progress' && t.progress > 0 && (
-              <span className='hidden md:inline text-tag text-ink-subtle tabular-nums w-10 text-right'>{t.progress}%</span>
+            {t.status !== 'done' && (
+              <span className='hidden lg:flex items-center gap-2 w-28 shrink-0'>
+                <span className='h-1.5 flex-1 rounded-full bg-surface-sunken overflow-hidden'>
+                  <span className='block h-full rounded-full bg-primary' style={{ width: `${Math.max(0, Math.min(100, t.progress || 0))}%` }} />
+                </span>
+                <span className='text-tag text-ink-subtle tabular-nums w-8 text-right'>{t.progress || 0}%</span>
+              </span>
             )}
             <span className='hidden sm:inline-flex items-center gap-1.5 w-40 shrink-0'>
               {t.assignee_uid

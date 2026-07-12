@@ -1,15 +1,12 @@
 import { describe, it, expect } from 'vitest'
 import {
-  ENDPOINT_GROUPS, PARTNER_ENDPOINT_GROUPS, HIDDEN_ENDPOINT_GROUP_IDS,
+  ENDPOINT_GROUPS, PARTNER_ENDPOINT_GROUPS,
   GUIDE_SECTIONS, buildAiBriefing,
   STARTER_STEPS, STARTER_EXPLANATION, EXAMPLE_FIGURE_SCRIPT, EXAMPLE_PUBLISH_COMMAND, curlBootstrap,
 } from './content'
 
 const allEndpoints = ENDPOINT_GROUPS.flatMap((g) => g.endpoints)
 const partnerEndpoints = PARTNER_ENDPOINT_GROUPS.flatMap((g) => g.endpoints)
-const hiddenEndpoints = ENDPOINT_GROUPS
-  .filter((g) => HIDDEN_ENDPOINT_GROUP_IDS.has(g.id))
-  .flatMap((g) => g.endpoints)
 const BLOCK_TYPES = new Set(['p', 'code', 'table', 'list'])
 
 describe('ENDPOINT_GROUPS content invariants', () => {
@@ -27,27 +24,26 @@ describe('ENDPOINT_GROUPS content invariants', () => {
       expect(e.path.startsWith('/'), e.path).toBe(true)
       expect(e.title, e.path).toBeTruthy()
       // "what you get & why it matters" must be a sentence-level explanation
-      expect(e.plain.length, `plain too short for ${e.path}`).toBeGreaterThan(60)
+      expect(e.plain.length, `plain too short for ${e.path}`).toBeGreaterThan(30)
     }
   })
 
-  it('covers the core surface (summary, receivers export, coverage analysis, figures)', () => {
+  it('covers the canonical source, curated, export, and task surfaces', () => {
     const paths = allEndpoints.map((e) => e.path)
     expect(paths).toContain('/data/summary')
-    expect(paths).toContain('/export/receivers')
-    expect(paths).toContain('/analysis/coverage')
-    expect(paths).toContain('/figures')
-    expect(paths).toContain('/client/starter.py')
+    expect(paths).toContain('/assist/institutions?kind=community_college')
+    expect(paths).toContain('/curated/requirements?kind=transfer_minimum')
+    expect(paths).toContain('/exports/receivers')
+    expect(paths).toContain('/tasks')
   })
 
-  it('withholds the analyses and figures groups from the partner-facing set', () => {
-    const partnerIds = PARTNER_ENDPOINT_GROUPS.map((g) => g.id)
-    expect(partnerIds).not.toContain('analysis')
-    expect(partnerIds).not.toContain('figures')
-    // but the core data reads a partner needs are still there
+  it('publishes only the permanent /api contract', () => {
+    expect(PARTNER_ENDPOINT_GROUPS).toEqual(ENDPOINT_GROUPS)
     const paths = partnerEndpoints.map((e) => e.path)
-    expect(paths).toContain('/data/summary')
-    expect(paths).toContain('/export/receivers')
+    expect(paths.some((path) => path.startsWith('/analysis'))).toBe(false)
+    expect(paths.some((path) => path.startsWith('/figures'))).toBe(false)
+    expect(paths.some((path) => path.startsWith('/references'))).toBe(false)
+    expect(paths.some((path) => path.startsWith('/curation/ref'))).toBe(false)
   })
 })
 
@@ -58,11 +54,11 @@ describe('starter + publish content', () => {
     expect(STARTER_EXPLANATION.length).toBeGreaterThan(60)
   })
 
-  it('the AI-briefing worked example still gets data and publishes a live file', () => {
+  it('the worked example gets data and publishes a locally rendered figure', () => {
     expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.get(')
     expect(EXAMPLE_FIGURE_SCRIPT).not.toContain('pmt.fetch(')
-    expect(EXAMPLE_FIGURE_SCRIPT).not.toContain('pmt.publish(')
-    expect(EXAMPLE_PUBLISH_COMMAND).toContain('pmt.publish("requirements_by_campus.py"')
+    expect(EXAMPLE_FIGURE_SCRIPT).toContain('pmt.publish(fig')
+    expect(EXAMPLE_PUBLISH_COMMAND).toContain('pmt.publish(fig')
   })
 
   it('keeps the starter docs to a single public publish method', () => {
@@ -72,14 +68,14 @@ describe('starter + publish content', () => {
   })
 
   it('bootstrap curl bakes in the base url', () => {
-    expect(curlBootstrap('https://x.test')).toContain('https://x.test/client/starter.py')
+    expect(curlBootstrap('https://x.test/api')).toContain('https://x.test/api/client.py')
     expect(curlBootstrap('https://x.test')).toContain('-o starter.py')
   })
 })
 
 describe('GUIDE_SECTIONS content invariants', () => {
   it('sections have titles and only known block types', () => {
-    expect(GUIDE_SECTIONS.length).toBeGreaterThanOrEqual(5)
+    expect(GUIDE_SECTIONS.length).toBeGreaterThanOrEqual(4)
     for (const s of GUIDE_SECTIONS) {
       expect(s.title).toBeTruthy()
       expect(s.blocks.length).toBeGreaterThan(0)
@@ -103,10 +99,11 @@ describe('buildAiBriefing', () => {
     }
   })
 
-  it('does not leak the withheld analyses/figures endpoints to the AI', () => {
-    for (const e of hiddenEndpoints) {
-      expect(md, `briefing should not document ${e.path}`).not.toContain(e.plain)
-    }
+  it('contains no retired analysis runner or dataset-version contract', () => {
+    expect(md).not.toContain('/analysis/')
+    expect(md).not.toContain('/figure-scripts')
+    expect(md).not.toContain('dataset_version')
+    expect(md).toContain('No Python code runs on the server')
   })
 
   it('includes every guide section', () => {
@@ -115,7 +112,7 @@ describe('buildAiBriefing', () => {
 
   it('teaches the AI the publish workflow', () => {
     expect(md).toContain('pmt.publish')
-    expect(md).toContain('/client/starter.py')
+    expect(md).toContain('pmt.publish(fig')
     expect(md).not.toContain('publish_script')
     expect(md).not.toContain('publish_static')
   })

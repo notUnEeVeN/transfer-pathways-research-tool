@@ -8,13 +8,13 @@
 
 const { AUDIT_RESULTS, SYSTEM_BY_KEY, _countReceivers } = require('./filters');
 
-// Lazy one-shot backfill: ensure every audit_results row carries the
+// Lazy one-shot backfill: ensure every agreement_reviews row carries the
 // per-doc fields the audit reads (receivers_checked for the cell-level
 // stat; raw_template_hash for cluster-key dispatch). Both are derived
 // from the agreement doc the verdict pointed to. Idempotent — only
 // touches rows missing the relevant field. Fires once per process.
 let _ensureVerdictDenormP = null;
-// auditDb holds audit_results (defaults to db); db holds the agreement docs the
+// auditDb holds agreement_reviews (defaults to db); db holds the agreement docs the
 // denorm fields are derived from.
 function _ensureVerdictDenorm(db, auditDb = db) {
   if (!_ensureVerdictDenormP) {

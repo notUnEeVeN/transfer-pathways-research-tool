@@ -19,12 +19,10 @@ export function useDataSummary() {
 export function useColleges() {
   const { user } = useAuth()
   return useQuery({
-    // 'geo' bumps the key past the pre-geography cache: /community-colleges now
-    // carries district/region/counties_served, and the old response is
-    // persisted to IndexedDB with staleTime:Infinity, so without a new key the
-    // browser would keep serving colleges with no geography (empty filters).
-    queryKey: ['colleges', 'geo', user?.uid],
-    queryFn: () => apiClient.get('/community-colleges').then((r) => r.data),
+    queryKey: ['institutions', 'community-college', user?.uid],
+    queryFn: () => apiClient
+      .get('/assist/institutions', { params: { kind: 'community_college' } })
+      .then((r) => r.data.rows.map((row) => ({ ...row, id: row.source_id }))),
     enabled: !!user?.uid,
     staleTime: Infinity,
   })
@@ -33,8 +31,10 @@ export function useColleges() {
 export function useSchools() {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['schools', user?.uid],
-    queryFn: () => apiClient.get('/schools').then((r) => r.data),
+    queryKey: ['institutions', 'university', user?.uid],
+    queryFn: () => apiClient
+      .get('/assist/institutions', { params: { kind: 'university' } })
+      .then((r) => ({ uc: r.data.rows.map((row) => ({ ...row, id: row.source_id })) })),
     enabled: !!user?.uid,
     staleTime: Infinity,
   })
@@ -44,7 +44,9 @@ export function useCcCourses(collegeId) {
   const { user } = useAuth()
   return useQuery({
     queryKey: ['cc-courses', user?.uid, collegeId],
-    queryFn: () => apiClient.get(`/courses/${collegeId}`).then((r) => r.data),
+    queryFn: () => apiClient
+      .get('/assist/courses', { params: { institution_id: `cc:${collegeId}` } })
+      .then((r) => r.data.rows),
     enabled: !!user?.uid && collegeId != null,
     staleTime: 10 * 60 * 1000,
   })
@@ -54,7 +56,9 @@ export function useUniversityCourses(schoolId) {
   const { user } = useAuth()
   return useQuery({
     queryKey: ['university-courses', user?.uid, schoolId],
-    queryFn: () => apiClient.get(`/university-courses/${schoolId}`).then((r) => r.data),
+    queryFn: () => apiClient
+      .get('/assist/courses', { params: { institution_id: `uc:${schoolId}` } })
+      .then((r) => r.data.rows),
     enabled: !!user?.uid && schoolId != null,
     staleTime: 10 * 60 * 1000,
   })
@@ -67,8 +71,14 @@ export function useAgreementsBatch(collegeId, schoolId) {
     queryKey: ['agreements-batch', user?.uid, collegeId, schoolId],
     queryFn: () =>
       apiClient
-        .get(`/uc-agreements-batch/${collegeId}`, { params: { school_id: schoolId } })
-        .then((r) => r.data),
+        .get('/assist/agreements', {
+          params: { college_id: `cc:${collegeId}`, university_id: `uc:${schoolId}` },
+        })
+        .then((r) => [{
+          school_id: Number(schoolId),
+          school_name: r.data.rows[0]?.uc_school || null,
+          agreements: r.data.rows,
+        }]),
     enabled: !!user?.uid && collegeId != null && schoolId != null,
     staleTime: 10 * 60 * 1000,
   })
@@ -87,7 +97,7 @@ export function useCoverage(params = {}, options = {}) {
     queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements, pin],
     queryFn: () =>
       apiClient
-        .get('/analysis/coverage', {
+        .get('/assist/coverage', {
           params: {
             ...(majorContains ? { majorContains } : {}),
             ...(groupBy !== 'college' ? { groupBy } : {}),
@@ -116,7 +126,7 @@ export function useRequirementComparison({ schoolId, major, communityCollegeId }
     queryKey: ['analysis-requirement-comparison', user?.uid, school_id, community_college_id, majorName],
     queryFn: () =>
       apiClient
-        .get('/analysis/requirement-comparison', {
+        .get('/curated/requirement-comparison', {
           params: { school_id, major: majorName, community_college_id },
         })
         .then((r) => r.data),
@@ -126,79 +136,77 @@ export function useRequirementComparison({ schoolId, major, communityCollegeId }
   })
 }
 
-// The rest of the /analysis family — same scoping and caching contract as
-// useCoverage. One fetch per (endpoint × filter); components shape client-side.
-function useAnalysisEndpoint(key, path, params = {}, options = {}) {
-  const { user } = useAuth()
-  const majorContains = String(params.majorContains || '').trim()
-  const schoolIds = (params.schoolIds || []).map(Number).filter(Number.isFinite)
-  const { enabled = true, ...queryOptions } = options
-  return useQuery({
-    queryKey: [key, user?.uid, majorContains, schoolIds.join(',')],
-    queryFn: () =>
-      apiClient
-        .get(path, {
-          params: {
-            ...(majorContains ? { majorContains } : {}),
-            ...(schoolIds.length ? { schoolIds: schoolIds.join(',') } : {}),
-          },
-        })
-        .then((r) => r.data),
-    enabled: !!user?.uid && enabled,
-    staleTime: 5 * 60 * 1000,
-    ...queryOptions,
-  })
-}
+// ── editable curated/reference data ──
 
-export function useCreditLoss(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-credit-loss', '/analysis/credit-loss', params, options)
+const REQUIREMENT_KIND = {
+  transfer_minimums: 'transfer_minimum',
+  ge_patterns: 'ge_pattern',
+  igetc_areas: 'igetc',
 }
-
-// choice-cost requires an ORDERED schoolIds list; disabled until one is picked.
-export function useChoiceCost(params = {}, options = {}) {
-  const hasSchools = (params.schoolIds || []).length > 0
-  return useAnalysisEndpoint('analysis-choice-cost', '/analysis/choice-cost', params, {
-    ...options,
-    enabled: hasSchools && (options.enabled ?? true),
-  })
-}
-
-export function useCategoryGaps(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-category-gaps', '/analysis/category-gaps', params, options)
-}
-
-export function useComplexity(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-complexity', '/analysis/complexity', params, options)
-}
-
-export function useTimeToDegree(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-time-to-degree', '/analysis/time-to-degree', params, options)
-}
-
-export function useAnalysisRaw(collection, options = {}) {
-  const { user } = useAuth()
-  const safeCollection = String(collection || '').trim()
-  const { enabled = true, ...queryOptions } = options
-  return useQuery({
-    queryKey: ['analysis-raw', user?.uid, safeCollection],
-    queryFn: () => apiClient.get(`/analysis/raw/${safeCollection}`).then((r) => r.data),
-    enabled: !!user?.uid && !!safeCollection && enabled,
-    staleTime: 5 * 60 * 1000,
-    ...queryOptions,
-  })
-}
-
-// ── editable reference tables (curation ref CRUD) ──
-// Read + write via /curation/ref so edits refetch consistently.
 
 export function useRefTable(table) {
   const { user } = useAuth()
   const safeTable = String(table || '').trim()
   return useQuery({
     queryKey: ['ref-table', safeTable, user?.uid],
-    queryFn: () => apiClient.get(`/curation/ref/${safeTable}`).then((r) => r.data),
+    queryFn: async () => {
+      if (safeTable === 'community_college_geography') {
+        const { data } = await apiClient.get('/assist/institutions', { params: { kind: 'community_college' } })
+        return {
+          rows: data.rows.map((row) => ({
+            ...row,
+            _id: row.source_id,
+            community_college: row.name,
+          })),
+        }
+      }
+      if (safeTable === 'course_prerequisites') {
+        const { data } = await apiClient.get('/curated/prerequisites')
+        return data
+      }
+      const kind = REQUIREMENT_KIND[safeTable]
+      if (!kind) throw new Error(`Unknown curated resource: ${safeTable}`)
+      const { data } = await apiClient.get('/curated/requirements', { params: { kind } })
+      return data
+    },
     enabled: !!user?.uid && !!safeTable,
     staleTime: 60 * 1000,
+  })
+}
+
+// Hand-gathered full-degree requirements (Data → Degree reqs), enriched
+// server-side with course codes and per-tier slot tallies. Read-only.
+export function useDegreeRequirements() {
+  const { user } = useAuth()
+  return useQuery({
+    // Bump the version whenever the response shape changes so a persisted
+    // (IndexedDB) response from an older shape can't hydrate and crash the tab.
+    queryKey: ['degree-requirements', 'v3', user?.uid],
+    queryFn: () => apiClient.get('/curated/degrees').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
+// One degree evaluated against one community college: the merged ledger + the
+// share of the four-year degree that transfers. 404s (no template for a campus)
+// don't retry — the caller shows an empty state.
+export function useDegreeEvaluation(schoolId, collegeId, options = {}) {
+  const { user } = useAuth()
+  const sid = Number(schoolId)
+  const cid = Number(collegeId)
+  const ready = Number.isFinite(sid) && Number.isFinite(cid)
+  const { enabled = true, ...queryOptions } = options
+  return useQuery({
+    queryKey: ['degree-evaluation', user?.uid, sid, cid],
+    queryFn: () =>
+      apiClient
+        .get('/curated/degree-evaluation', { params: { school_id: sid, community_college_id: cid } })
+        .then((r) => r.data),
+    enabled: !!user?.uid && ready && enabled,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+    ...queryOptions,
   })
 }
 
@@ -206,7 +214,15 @@ export function useSaveRefRow(table) {
   const qc = useQueryClient()
   const safeTable = String(table || '').trim()
   return useMutation({
-    mutationFn: (row) => apiClient.put(`/curation/ref/${safeTable}`, row).then((r) => r.data),
+    mutationFn: (row) => {
+      if (safeTable === 'community_college_geography') {
+        return apiClient.put(`/assist/institutions/cc:${row._id}`, row).then((r) => r.data)
+      }
+      if (safeTable === 'course_prerequisites') {
+        return apiClient.put('/curated/prerequisites', row).then((r) => r.data)
+      }
+      return apiClient.put(`/curated/requirements/${REQUIREMENT_KIND[safeTable]}`, row).then((r) => r.data)
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
   })
 }
@@ -215,7 +231,16 @@ export function useDeleteRefRow(table) {
   const qc = useQueryClient()
   const safeTable = String(table || '').trim()
   return useMutation({
-    mutationFn: (id) => apiClient.delete(`/curation/ref/${safeTable}/${encodeURIComponent(id)}`).then((r) => r.data),
+    mutationFn: (id) => {
+      if (safeTable === 'community_college_geography') {
+        return apiClient.delete(`/assist/institutions/cc:${id}/profile`).then((r) => r.data)
+      }
+      if (safeTable === 'course_prerequisites') {
+        return apiClient.delete(`/curated/prerequisites/${encodeURIComponent(id)}`).then((r) => r.data)
+      }
+      const kind = REQUIREMENT_KIND[safeTable]
+      return apiClient.delete(`/curated/requirements/${kind}/${encodeURIComponent(id)}`).then((r) => r.data)
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
   })
 }
@@ -266,7 +291,7 @@ export function useFigures() {
   const { user } = useAuth()
   return useQuery({
     queryKey: ['figures', user?.uid],
-    queryFn: () => apiClient.get('/figures').then((r) => r.data),
+    queryFn: () => apiClient.get('/gallery').then((r) => r.data),
     enabled: !!user?.uid,
     // Teammates publish from their notebooks while the tab is open.
     refetchInterval: 30 * 1000,
@@ -276,7 +301,7 @@ export function useFigures() {
 export function useDeleteFigure() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (slug) => apiClient.delete(`/figures/${slug}`).then((r) => r.data),
+    mutationFn: (slug) => apiClient.delete(`/gallery/${slug}`).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['figures'] }),
   })
 }
@@ -286,63 +311,8 @@ export function useDeleteFigure() {
 export function useEditFigure() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ slug, fields }) => apiClient.patch(`/figures/${slug}`, fields).then((r) => r.data),
+    mutationFn: ({ slug, fields }) => apiClient.patch(`/gallery/${slug}`, fields).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['figures'] }),
-  })
-}
-
-// ── live figures (scripts the server re-runs on data changes) ──
-
-// The script behind a live figure. Fetched when the View-code modal opens;
-// includes last_run (log for owner/admin only) and the server's can_modify.
-export function useFigureScript(slug, { enabled = true } = {}) {
-  const { user } = useAuth()
-  return useQuery({
-    queryKey: ['figure-script', slug, user?.uid],
-    queryFn: () => apiClient.get(`/figure-scripts/${slug}`).then((r) => r.data),
-    enabled: !!user?.uid && !!slug && enabled,
-    staleTime: 0,
-  })
-}
-
-// Owner/admin: re-run the script right now (synchronous on the server; the
-// promise resolves when the run finishes either way).
-export function useRefreshFigureScript() {
-  const qc = useQueryClient()
-  const invalidate = (slug) => {
-    qc.invalidateQueries({ queryKey: ['figures'] })
-    qc.invalidateQueries({ queryKey: ['figure-script', slug] })
-  }
-  return useMutation({
-    mutationFn: (slug) => apiClient.post(`/figure-scripts/${slug}/refresh`).then((r) => r.data),
-    // Refresh the gallery and modal on failure too — the run log and the
-    // amber state are the interesting parts of a failed run.
-    onSuccess: (_data, slug) => invalidate(slug),
-    onError: (_err, slug) => invalidate(slug),
-  })
-}
-
-export function useSetFigureScriptEnabled() {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: ({ slug, enabled }) =>
-      apiClient.put(`/figure-scripts/${slug}/enabled`, { enabled }).then((r) => r.data),
-    onSuccess: (_data, { slug }) => {
-      qc.invalidateQueries({ queryKey: ['figures'] })
-      qc.invalidateQueries({ queryKey: ['figure-script', slug] })
-    },
-  })
-}
-
-// Owner/admin: drop the script, keep the figure as a static snapshot.
-export function useDetachFigureScript() {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: (slug) => apiClient.delete(`/figure-scripts/${slug}`).then((r) => r.data),
-    onSuccess: (_data, slug) => {
-      qc.invalidateQueries({ queryKey: ['figures'] })
-      qc.invalidateQueries({ queryKey: ['figure-script', slug] })
-    },
   })
 }
 
@@ -353,7 +323,7 @@ export function usePmtPy() {
   const { user } = useAuth()
   return useQuery({
     queryKey: ['starter-py', user?.uid],
-    queryFn: () => apiClient.get('/client/starter.py', { responseType: 'text' }).then((r) => r.data),
+    queryFn: () => apiClient.get('/client.py', { responseType: 'text' }).then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 0,
   })
@@ -361,7 +331,7 @@ export function usePmtPy() {
 
 // Browser download of a figure format (needs the auth header, so no <a href>).
 export async function downloadFigure(slug, format) {
-  const res = await apiClient.get(`/figures/${slug}/${format}`, { responseType: 'blob' })
+  const res = await apiClient.get(`/gallery/${slug}/${format}`, { responseType: 'blob' })
   const disposition = res.headers['content-disposition'] || ''
   const name = /filename="([^"]+)"/.exec(disposition)?.[1] || `${slug}.${format}`
   const url = URL.createObjectURL(res.data)
@@ -378,7 +348,6 @@ export function useTasks() {
   const { user } = useAuth()
   return useQuery({
     queryKey: ['tasks', user?.uid],
-    // Whole { rows, dataset_version } envelope — consumers want the version too.
     queryFn: () => apiClient.get('/tasks').then((r) => r.data),
     enabled: !!user?.uid,
     // Teammates edit the shared board while the tab is open (same reasoning
@@ -429,6 +398,40 @@ export function useUpdateTask() {
       for (const [queryKey, data] of context?.previous || []) qc.setQueryData(queryKey, data)
     },
     onSettled: () => qc.invalidateQueries({ queryKey: ['tasks'] }),
+  })
+}
+
+const putTaskInCache = (queryClient, task) => {
+  queryClient.setQueriesData({ queryKey: ['tasks'] }, (old) => {
+    if (!old?.rows) return old
+    return { ...old, rows: old.rows.map((row) => (row._id === task._id ? task : row)) }
+  })
+}
+
+export function useAddTaskStageNote() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, stage, note }) =>
+      apiClient.post(`/tasks/${id}/stages/${stage}/notes`, { note }).then((response) => response.data),
+    onSuccess: (task) => putTaskInCache(qc, task),
+  })
+}
+
+export function useCompleteTaskStage() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, stage, note }) =>
+      apiClient.post(`/tasks/${id}/stages/${stage}/complete`, { note }).then((response) => response.data),
+    onSuccess: (task) => putTaskInCache(qc, task),
+  })
+}
+
+export function useReopenTaskStage() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, stage, note }) =>
+      apiClient.post(`/tasks/${id}/stages/${stage}/reopen`, { note }).then((response) => response.data),
+    onSuccess: (task) => putTaskInCache(qc, task),
   })
 }
 

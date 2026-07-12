@@ -11,6 +11,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "dev:local": "MONGO_URI=mongodb://localhost:27017 DB_NAME=pmt_research nodemon server.js",
+    "schema:audit": "node scripts/migrateCanonicalSchema.js",
+    "schema:apply": "node scripts/migrateCanonicalSchema.js --apply",
+    "schema:cleanup": "node scripts/migrateCanonicalSchema.js --apply --drop-legacy --yes",
     "test": "vitest run",
     "test:watch": "vitest"
   },

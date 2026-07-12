@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon, CheckIcon, NoSymbolIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox, SwitchField } from './components/ui'
-import { useQueryClient } from '@tanstack/react-query'
-import { ANALYSES } from './analyses/registry'
+import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox } from './components/ui'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
-  useVisibleMajors, useSetVisibleMajors, useRefreshStatus, useStartRefresh,
+  useVisibleMajors, useSetVisibleMajors,
   useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
-  useAnalysisReleases, useSetAnalysisReleases, useSetAnalysisDisabled,
-  useFigureRunner, useSetFigureRunner, useTeam, useSetTeamName,
+  useTeam, useSetTeamName,
 } from '@frontend/query/hooks/useAccess'
 
 /**
  * Admin view (ADMIN_UIDS accounts only — the server enforces it; this page
  * simply isn't offered to partners).
  *
- * Dataset: what the research cluster currently holds — version, majors,
- * counts, and the port changelog. Data itself is ported from the admin's
+ * Dataset: what the research cluster currently holds — majors, counts, and
+ * last refresh time. Data itself is ported from the admin's
  * machine with scripts/port.py; this view is the read-side.
  *
  * Access: grant/revoke partner accounts by Firebase UID.
@@ -29,9 +26,6 @@ export default function AdminPage() {
         <BlockedAccountsPanel />
         <TeamNamesPanel />
         <MajorAccessPanel />
-        <AnalysisReleasePanel />
-        <FigureRunnerPanel />
-        <RefreshPanel />
         <DatasetPanel />
         <AccessPanel />
       </Stack>
@@ -156,87 +150,6 @@ function BlockedAccountsPanel() {
   )
 }
 
-// Re-port the currently ported majors from the source DB (where the parser
-// writes) — for after parser updates. Background job on the server; this
-// panel polls until it finishes. Note: the parser rebuild regenerates
-// agreement _ids, so verdicts recorded on replaced docs are orphaned.
-function RefreshPanel() {
-  const qc = useQueryClient()
-  const status = useRefreshStatus()
-  const start = useStartRefresh()
-  const s = status.data
-  const running = !!s?.running
-
-  // When a run finishes, every dataset-derived view is stale — refetch broadly.
-  const wasRunning = React.useRef(false)
-  useEffect(() => {
-    if (wasRunning.current && !running) qc.invalidateQueries()
-    wasRunning.current = running
-  }, [running, qc])
-
-  if (!s) return null
-  return (
-    <Stack gap='comfortable'>
-      <div>
-        <h2 className='text-heading'>Refresh dataset</h2>
-        <p className='text-caption text-ink-muted mt-1'>
-          Re-ports every currently ported major from the source database (where
-          the parser writes) — use after parser updates. Agreements are
-          replaced wholesale with fresh parser output; verdicts recorded on
-          replaced agreements are retired with them.
-        </p>
-      </div>
-      <div className='surface-card p-5'>
-        {!s.configured ? (
-          <Alert type='info'>
-            No source database configured on this server (SOURCE_MONGO_URI) —
-            refresh with <span className='font-mono'>python port.py</span> from the admin machine instead.
-          </Alert>
-        ) : (
-          <Stack gap='cozy'>
-            <div className='flex items-center gap-3'>
-              <Button onClick={() => start.mutate()} disabled={running || start.isPending}>
-                {running ? 'Refreshing…' : 'Refresh from source'}
-              </Button>
-              {running && (
-                <span className='inline-flex items-center gap-2 text-caption text-ink-muted'>
-                  <Spinner /> {s.step || 'working'}…
-                </span>
-              )}
-            </div>
-            {start.isError && (
-              <Alert type='error'>{start.error?.response?.data?.error || 'Could not start the refresh.'}</Alert>
-            )}
-            {!running && s.error && <Alert type='error'>Last refresh failed: {s.error}</Alert>}
-            {!running && s.result && (
-              <div className='text-caption text-ink-muted'>
-                <p>
-                  Last refresh → <span className='font-mono text-ink'>{s.result.dataset_version}</span>
-                  {s.finishedAt ? ` · ${new Date(s.finishedAt).toLocaleString()}` : ''}
-                </p>
-                <p className='mt-1'>
-                  {Number(s.result.agreements_after).toLocaleString()} agreements
-                  {' '}(was {Number(s.result.agreements_before).toLocaleString()})
-                  {' '}· {s.result.majors_refreshed} majors
-                  {' '}· courses +{s.result.courses_upserted}/−{s.result.courses_pruned}
-                  {' '}· university courses +{s.result.university_courses_upserted}/−{s.result.university_courses_pruned}
-                </p>
-                {(s.result.majors_missing_in_source || []).length > 0 && (
-                  <Alert type='warning' className='mt-2'>
-                    Majors no longer found in the source (renamed by the parser?):{' '}
-                    {s.result.majors_missing_in_source.join(' · ')} — port their new names
-                    with <span className='font-mono'>port.py add</span> or check the parser output.
-                  </Alert>
-                )}
-              </div>
-            )}
-          </Stack>
-        )}
-      </div>
-    </Stack>
-  )
-}
-
 // Which ported (school, major) pairs partners can see, organized by campus —
 // the same major name can exist at several UCs, so grants are per campus
 // program, not per name. Deny-by-default: nothing is visible until checked.
@@ -340,125 +253,6 @@ function MajorAccessPanel() {
   )
 }
 
-// Which live analyses partners see on Data → Analysis, and which are enabled
-// at all. Enabled off = disabled: hidden from EVERYONE (you included) and
-// never mounted, so nothing is fetched or computed — park work-in-progress
-// analyses and bring them back one at a time. Released off = hidden from
-// partners only (you still preview it, badged Draft). Toggling sends the full
-// id set; switches disable briefly during the save so quick flips can't race
-// a stale set.
-function AnalysisReleasePanel() {
-  const q = useAnalysisReleases()
-  const save = useSetAnalysisReleases()
-  const saveDisabled = useSetAnalysisDisabled()
-  const released = new Set(q.data?.released_ids || [])
-  const disabled = new Set(q.data?.disabled_ids || [])
-  const saving = save.isPending || saveDisabled.isPending
-
-  const toggleReleased = (id) => {
-    const next = new Set(released)
-    if (next.has(id)) next.delete(id)
-    else next.add(id)
-    save.mutate([...next])
-  }
-  const toggleDisabled = (id) => {
-    const next = new Set(disabled)
-    if (next.has(id)) next.delete(id)
-    else next.add(id)
-    saveDisabled.mutate([...next])
-  }
-
-  return (
-    <Stack gap='comfortable'>
-      <div>
-        <h2 className='text-heading'>Analysis releases</h2>
-        <p className='text-caption text-ink-muted mt-1'>
-          Enabled off removes the analysis from the Visuals tab for everyone —
-          you included — and skips its computation entirely, until you switch it
-          back on to work on it. Of the enabled ones, Released controls what
-          partners see (off = you preview it, badged Draft).
-        </p>
-      </div>
-      <div className='surface-card p-5'>
-        {q.isLoading ? (
-          <div className='flex justify-center py-4'><Spinner /></div>
-        ) : q.isError ? (
-          <Alert type='error'>Failed to load analysis releases.</Alert>
-        ) : !ANALYSES.length ? (
-          <p className='text-caption text-ink-subtle'>No analyses registered yet.</p>
-        ) : (
-          <div className='divide-y divide-border/60'>
-            {ANALYSES.map((a) => {
-              const off = disabled.has(a.id)
-              const on = released.has(a.id)
-              return (
-                <div key={a.id} className='py-2.5 flex items-center gap-5'>
-                  <div className={`min-w-0 ${off ? 'opacity-50' : ''}`}>
-                    <p className='text-body-strong break-words'>{a.title}</p>
-                    <p className='text-caption text-ink-subtle break-words'>{a.description || a.source || a.id}</p>
-                  </div>
-                  <SwitchField className='ml-auto shrink-0' label={off ? 'Disabled' : 'Enabled'}
-                    srLabel={`Enable ${a.title} on the Visuals tab`} checked={!off}
-                    disabled={saving} onChange={() => toggleDisabled(a.id)} />
-                  <SwitchField className='shrink-0' label={on ? 'Released' : 'Draft'}
-                    srLabel={`Release ${a.title} to partners`} checked={on}
-                    disabled={saving || off} onChange={() => toggleReleased(a.id)} />
-                </div>
-              )
-            })}
-          </div>
-        )}
-        {(save.isError || saveDisabled.isError) && (
-          <Alert type='error' className='mt-3'>Could not save the change. Try again.</Alert>
-        )}
-      </div>
-    </Stack>
-  )
-}
-
-// Global stop button for scheduled live-figure refreshes (partner scripts the
-// server re-runs on data changes). Paused stops the scheduler only —
-// publish_script and per-figure Refresh still work — and pending version
-// bumps/curation drift are caught up after resuming.
-function FigureRunnerPanel() {
-  const q = useFigureRunner()
-  const save = useSetFigureRunner()
-  const paused = !!q.data?.paused
-
-  return (
-    <Stack gap='comfortable'>
-      <div>
-        <h2 className='text-heading'>Live figure runner</h2>
-        <p className='text-caption text-ink-muted mt-1'>
-          Live figures re-run their scripts automatically after dataset ports and
-          curation changes. Pause this if a script misbehaves or during heavy
-          audit sessions — nothing is lost; refreshes catch up when resumed.
-        </p>
-      </div>
-      <div className='surface-card p-5'>
-        {q.isLoading ? (
-          <div className='flex justify-center py-4'><Spinner /></div>
-        ) : q.isError ? (
-          <Alert type='error'>Failed to load the runner state.</Alert>
-        ) : (
-          <div className='flex items-center gap-5'>
-            <div className='min-w-0'>
-              <p className='text-body-strong'>Scheduled refreshes</p>
-              <p className='text-caption text-ink-subtle'>
-                {paused ? 'Paused — live figures keep their last render.' : 'Running — refreshes on version bumps and curation drift.'}
-              </p>
-            </div>
-            <SwitchField className='ml-auto shrink-0' label={paused ? 'Paused' : 'Running'}
-              srLabel='Pause scheduled live-figure refreshes' checked={!paused}
-              disabled={save.isPending} onChange={() => save.mutate(!paused)} />
-          </div>
-        )}
-        {save.isError && <Alert type='error' className='mt-3'>Could not save the change. Try again.</Alert>}
-      </div>
-    </Stack>
-  )
-}
-
 function DatasetPanel() {
   const q = useAdminDataset()
   if (q.isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
@@ -477,8 +271,7 @@ function DatasetPanel() {
       <div>
         <h2 className='text-heading'>Dataset</h2>
         <p className='text-caption text-ink-muted mt-1'>
-          <span className='font-mono text-ink'>{meta.dataset_version}</span>
-          {' '}· updated {meta.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}
+          Updated {meta.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}
           {' '}· ported with <span className='font-mono'>scripts/port.py</span> from the admin machine
         </p>
       </div>
@@ -498,20 +291,6 @@ function DatasetPanel() {
             : <p className='text-caption text-ink-subtle'>none ported</p>}
         </div>
       ))}
-      <div className='surface-card p-5'>
-        <p className='text-label mb-2'>Recent changes</p>
-        <div className='divide-y divide-border/60'>
-          {(q.data?.changelog || []).map((e, i) => (
-            <div key={i} className='py-2 flex items-baseline gap-3'>
-              <span className='text-caption font-mono text-ink-muted shrink-0'>{e.dataset_version}</span>
-              <span className='text-caption text-ink-subtle shrink-0'>{e.action}</span>
-              <span className='text-caption break-words'>
-                {Array.isArray(e.detail) ? e.detail.join(' · ') : String(e.detail ?? '')}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
     </Stack>
   )
 }

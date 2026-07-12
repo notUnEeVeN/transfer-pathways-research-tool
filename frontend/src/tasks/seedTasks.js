@@ -8,6 +8,7 @@
 const seed = (source, fig, title, description) => ({
   title: `${source} Fig. ${fig} — ${title}`,
   description,
+  task_type: 'porting',
   status: 'todo',
 })
 
@@ -30,7 +31,7 @@ export const SEED_TASKS = [
   seed('MA', 4, 'Extra credit hours a transfer student needs',
     'Credit hours above the standard degree total that the transfer pathway requires.'),
   seed('MA', 5, 'Extra cost of transferring',
-    'The extra credit hours priced at per-campus tuition (ref_tuition).'),
+    'The extra credit hours priced with the curated per-campus tuition data.'),
   seed('MA', 6, 'Curricular complexity — transfer vs resident',
     'Complexity difference (blocking/delay factors) between the transfer pathway and the resident degree.'),
   seed('MA', 7, 'Per-campus transfer outcomes summary',

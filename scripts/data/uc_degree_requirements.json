@@ -1,0 +1,1348 @@
+{
+  "_meta": {
+    "purpose": "Hand-gathered FULL four-year BSCS/EECS graduation requirements per UC campus, modeled in the ASSIST agreement requirement_groups shape so the degree-coverage figure (MA Fig. 1) can reuse the existing choose-N eligibility engine. Course codes are resolved to university_courses.parent_id by scripts/import_uc_degree_requirements.py; provenance for every datum lives in docs/figures/degree-coverage-sources.md.",
+    "authoring_schema": {
+      "campus_key -> object": {
+        "school_id": "UC source id (matches assist_institutions.source_id and assist_agreements.uc_school_id)",
+        "school": "display name",
+        "program": "the exact degree program these requirements describe",
+        "total_units": "minimum units for graduation (secondary; the engine counts course-slots)",
+        "source_url": "primary catalog URL for the program (details per-datum in the source-of-truth doc)",
+        "groups[]": {
+          "title": "human label",
+          "tier": "transferable | breadth | nontransferable",
+          "requirements[]": {
+            "select": "N — the choose-N count (section_advisement)",
+            "from": "one of: [course codes] (explicit courses, resolved to parent_id) | {departments:[...], max_number:N} (proxy list: all lower-div courses in these depts) | null (non-transferable slots — never satisfiable by any CC)"
+          }
+        }
+      }
+    },
+    "notes": [
+      "tier=transferable: real lower-division courses a CC can articulate (has a parent_id).",
+      "tier=breadth: H/SS / natural-science that transfers near-universally via breadth articulation; modeled as select-N from a department proxy list (v1). Refinement TODO: split R&C (2) from breadth (4).",
+      "tier=nontransferable: upper-division / residency / free electives — no CC equivalent by construction (ASSIST never articulates UC upper-division). Rendered as kind='requirement' receivers with no parent_id, so they always count against the denominator and are never satisfiable.",
+      "EECS<->ELENG alias: our scraped data still stores EECS 16A/16B; the current Berkeley catalog calls these ELENG 66/64. The importer aliases them, so codes may be authored either way."
+    ]
+  },
+  "UCB": {
+    "school_id": 79,
+    "school": "UC Berkeley",
+    "program": "Electrical Engineering & Computer Sciences, B.S.",
+    "total_units": 120,
+    "source_url": "https://guide.berkeley.edu/undergraduate/degree-programs/electrical-engineering-computer-sciences/",
+    "groups": [
+      {
+        "title": "Lower-division mathematics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "MATH 51"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 52"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 53"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 54"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "COMPSCI 61A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "COMPSCI 61B"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "COMPSCI 61C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "COMPSCI 70"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division electrical engineering",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "ELENG 66"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "ELENG 64"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Physics (7-series; the 5-series alternative is not articulable in our data)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "PHYSICS 7A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "PHYSICS 7B"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Natural science elective (select one)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "ASTRON 7A",
+              "ASTRON 7B",
+              "BIOLOGY 1A",
+              "BIOLOGY 1B",
+              "CHEM 1A",
+              "CHEM 1B",
+              "CHEM 3A",
+              "CHEM 3B",
+              "MCELLBI 32",
+              "PHYSICS 7C"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "ENGLISH R1A"
+            ],
+            "ge_area": "1A"
+          },
+          {
+            "select": 1,
+            "from": [
+              "ENGLISH R1B"
+            ],
+            "ge_area": "1B"
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-required; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 5,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Ethics / social implications of technology",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Free electives (to reach the 120-unit minimum)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCSD": {
+    "school_id": 7,
+    "school": "UC San Diego",
+    "program": "Computer Science, B.S. (CS26)",
+    "total_units": 180,
+    "source_url": "https://cse.ucsd.edu/undergraduate/bs-computer-science",
+    "groups": [
+      {
+        "title": "Lower-division mathematics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "MATH 20A",
+              "MATH 20B",
+              "MATH 20C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 18"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "CSE 11"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CSE 12"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CSE 15L",
+              "CSE 29"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CSE 20",
+              "MATH 15A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CSE 21"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CSE 30"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Natural science (select one)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "PHYS 2A",
+              "PHYS 4A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 18 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 18,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCR": {
+    "school_id": 46,
+    "school": "UC Riverside",
+    "program": "Computer Science, B.S.",
+    "total_units": 180,
+    "source_url": "https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf",
+    "groups": [
+      {
+        "title": "Lower-division mathematics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "MATH 5A",
+              "MATH 9A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 5B",
+              "MATH 9B"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 5C",
+              "MATH 9C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 10A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 31"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "CS 10A",
+              "CS 10B",
+              "CS 10C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CS 61"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CS 11"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Physics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "PHYS 40A",
+              "PHYS 40B",
+              "PHYS 40C"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 19 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 19,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCD": {
+    "school_id": 89,
+    "school": "UC Davis",
+    "program": "Computer Science, B.S.",
+    "total_units": 180,
+    "source_url": "https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/",
+    "groups": [
+      {
+        "title": "Lower-division mathematics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "MAT 021A",
+              "MAT 021B",
+              "MAT 021C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MAT 022A",
+              "MAT 067"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": [
+              "ECS 020"
+            ]
+          },
+          {
+            "select": 3,
+            "from": [
+              "ECS 036A",
+              "ECS 036B",
+              "ECS 036C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "ECS 050"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Natural science (choose three)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "PHY 009A",
+              "PHY 009B",
+              "PHY 009C",
+              "CHE 002A",
+              "CHE 002B",
+              "BIS 002A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 16 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 16,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCLA": {
+    "school_id": 117,
+    "school": "UCLA",
+    "program": "Computer Science, B.S.",
+    "total_units": 180,
+    "source_url": "https://www.seasoasa.ucla.edu/curric-24-25/44-compsci-ugstd-24.html",
+    "groups": [
+      {
+        "title": "Lower-division mathematics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 6,
+            "from": [
+              "MATH 31A",
+              "MATH 31B",
+              "MATH 32A",
+              "MATH 32B",
+              "MATH 33A",
+              "MATH 33B"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 61"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 4,
+            "from": [
+              "COM SCI 31",
+              "COM SCI 32",
+              "COM SCI 33",
+              "COM SCI 35L"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "COM SCI M51A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Physics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "PHYSICS 1A",
+              "PHYSICS 1B",
+              "PHYSICS 1C"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "PHYSICS 4AL",
+              "PHYSICS 4BL"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 20 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 20,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCI": {
+    "school_id": 120,
+    "school": "UC Irvine",
+    "program": "Computer Science, B.S.",
+    "total_units": 180,
+    "source_url": "https://catalogue.uci.edu/donaldbrenschoolofinformationandcomputersciences/departmentofcomputerscience/computerscience_bs/",
+    "groups": [
+      {
+        "title": "Lower-division mathematics & statistics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 2,
+            "from": [
+              "MATH 2A",
+              "MATH 2B"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "I&C SCI 6N",
+              "MATH 3A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "STATS 67"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "I&C SCI 31",
+              "I&C SCI 32",
+              "I&C SCI 33"
+            ]
+          },
+          {
+            "select": 2,
+            "from": [
+              "I&C SCI 45C",
+              "I&C SCI 46"
+            ]
+          },
+          {
+            "select": 2,
+            "from": [
+              "I&C SCI 51",
+              "I&C SCI 53"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "IN4MATX 43"
+            ]
+          },
+          {
+            "select": 2,
+            "from": [
+              "I&C SCI 6B",
+              "I&C SCI 6D"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 17 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 17,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCSB": {
+    "school_id": 128,
+    "school": "UC Santa Barbara",
+    "program": "Computer Science, B.S.",
+    "total_units": 180,
+    "source_url": "https://catalog.ucsb.edu/programs/BSCMPSC",
+    "groups": [
+      {
+        "title": "Lower-division mathematics & statistics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 5,
+            "from": [
+              "MATH 3A",
+              "MATH 3B",
+              "MATH 4A",
+              "MATH 4B",
+              "MATH 6A"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "PSTAT 120A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 5,
+            "from": [
+              "CMPSC 16",
+              "CMPSC 24",
+              "CMPSC 32",
+              "CMPSC 40",
+              "CMPSC 64"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 17 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 17,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCSC": {
+    "school_id": 132,
+    "school": "UC Santa Cruz",
+    "program": "Computer Science, B.S.",
+    "total_units": 180,
+    "source_url": "https://catalog.ucsc.edu/en/current/general-catalog/academic-units/baskin-engineering/computer-science-and-engineering/computer-science-bs",
+    "groups": [
+      {
+        "title": "Lower-division mathematics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 2,
+            "from": [
+              "MATH 19A",
+              "MATH 19B"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 21"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 23A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 5,
+            "from": [
+              "CSE 12",
+              "CSE 13S",
+              "CSE 16",
+              "CSE 20",
+              "CSE 30"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 12 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 12,
+            "from": null
+          }
+        ]
+      }
+    ]
+  },
+  "UCM": {
+    "school_id": 144,
+    "school": "UC Merced",
+    "program": "Computer Science and Engineering, B.S.",
+    "total_units": 120,
+    "source_url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4233",
+    "groups": [
+      {
+        "title": "Lower-division mathematics & statistics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": [
+              "MATH 021",
+              "MATH 022",
+              "MATH 023"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 024",
+              "MATH 041"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 032",
+              "ENGR 080"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lower-division computer science & engineering",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 5,
+            "from": [
+              "CSE 015",
+              "CSE 022",
+              "CSE 024",
+              "CSE 030",
+              "CSE 031"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "ENGR 065"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Physics",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 4,
+            "from": [
+              "PHYS 008",
+              "PHYS 008L",
+              "PHYS 009",
+              "PHYS 009L"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reading & Composition (English)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-A",
+              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "ge_areas": [
+                "1A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "R&C-B",
+              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "ge_areas": [
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "from": {
+              "code": "H/SS",
+              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "ge_areas": [
+                "3A",
+                "3B",
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "American History & Institutions",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "AH&I",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 9 courses",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 9,
+            "from": null
+          }
+        ]
+      }
+    ]
+  }
+}

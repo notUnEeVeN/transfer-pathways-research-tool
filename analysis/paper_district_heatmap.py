@@ -1,16 +1,12 @@
 """Reproduce the console's "Paper-style district transfer heatmap" from the DB.
 
-This is a faithful, readable port of the exact computation behind the figure,
-so the math can be audited end-to-end. The website pipeline it mirrors:
-
-  frontend  PaperDistrictHeatmap.jsx
-     └─ GET /analysis/coverage?majorContains=computer science
-                              &groupBy=district&requirements=paper
-        └─ server/services/analysis/pathways.js :: hardRequirementCoverageData()
+This is the local, auditable computation behind the published figure. It reads
+canonical MongoDB source/curation collections and renders on this machine.
 
 The model, in words
 -------------------
-1. WHAT COUNTS AS "REQUIRED" comes from `ref_uc_transfer_requirements` — the
+1. WHAT COUNTS AS "REQUIRED" comes from `curated_requirements` rows whose kind
+   is `transfer_minimum` — the
    hand-curated per-campus hard transfer minimums scraped from university
    websites (imported by scripts/import_uc_transfer_requirements.py), NOT from
    ASSIST's required/recommended grouping. Each campus's requirements form:
@@ -23,7 +19,7 @@ The model, in words
    the university courses it needs; each course is identified by the
    university-catalog `parent_ids` it was matched to.
 
-2. WHAT COUNTS AS "ARTICULATED" comes from the ASSIST-derived `uc_agreements`.
+2. WHAT COUNTS AS "ARTICULATED" comes from `assist_agreements`.
    ASSIST is used ONLY as an equivalency source here: we walk every receiver
    in every CS agreement (required or not) and collect the university-course
    parent_ids whose `articulation_status == 'articulated'` — i.e. the campus
@@ -92,7 +88,7 @@ MAJOR_FILTER = {"$or": [{"uc_school_id": sid, "major": {"$in": majors}}
 
 # ── the paper's frame: 72 districts (column order) and 9 campuses (row order) ─
 # District names as printed in the paper's matrix, left to right. Our data
-# joins on `ref_cc_districts.district`, normalized (see normalize_name).
+# joins on `assist_institutions.district`, normalized (see normalize_name).
 DISTRICTS = [
     "Allan Hancock Joint Community College District",
     "Antelope Valley Community College District",
@@ -214,7 +210,7 @@ def load_requirement_models(db):
     courses outside it can't satisfy anything, so we ignore them.
     """
     models = {}
-    rows = db.ref_uc_transfer_requirements.find().sort(
+    rows = db.curated_requirements.find({"kind": "transfer_minimum"}).sort(
         [("school_id", 1), ("group_id", 1), ("set_id", 1), ("source_order", 1)]
     )
     for row in rows:
@@ -248,13 +244,15 @@ def load_articulations(db, models):
     requirement model above decides what is required).
     """
     district_of = {
-        int(d["_id"]): d.get("district")
-        for d in db.ref_cc_districts.find({}, {"district": 1})
+        int(d["source_id"]): d.get("district")
+        for d in db.assist_institutions.find(
+            {"kind": "community_college"}, {"source_id": 1, "district": 1}
+        )
     }
     per_cell = defaultdict(lambda: defaultdict(set))
     fields = {"uc_school_id": 1, "community_college_id": 1, "community_college": 1,
               "major": 1, "requirement_groups": 1}
-    for doc in db.uc_agreements.find(MAJOR_FILTER, fields):
+    for doc in db.assist_agreements.find(MAJOR_FILTER, fields):
         school_id = int(doc["uc_school_id"])
         model = models.get(school_id)
         if not model:
@@ -358,8 +356,8 @@ def explain(db, models, per_cell, campus_query, district_query):
     # CC course names for the receipts: parent_id → the CC courses whose
     # articulated receivers point at it, per college.
     cc_courses = defaultdict(lambda: defaultdict(set))
-    docs = db.uc_agreements.find(
-        {"uc_school_id": school_id, "major": MAJOR_FILTER},
+    docs = db.assist_agreements.find(
+        {"uc_school_id": school_id, "major": {"$in": PAPER_MAJORS[school_id]}},
         {"community_college": 1, "requirement_groups": 1},
     )
     for doc in docs:
@@ -378,8 +376,10 @@ def explain(db, models, per_cell, campus_query, district_query):
                         f"{c.get('prefix', '')}{c.get('number', '')}".strip() or str(cid)
                         for option in receiver.get("options") or []
                         for cid in option.get("course_ids") or []
-                        for c in [db.courses.find_one({"course_id": int(cid)},
-                                                      {"prefix": 1, "number": 1}) or {}]
+                        for c in [db.assist_courses.find_one(
+                            {"side": "sending", "course_id": int(cid)},
+                            {"prefix": 1, "number": 1},
+                        ) or {}]
                     }
                     for pid in pids:
                         cc_courses[college][pid].update(names)

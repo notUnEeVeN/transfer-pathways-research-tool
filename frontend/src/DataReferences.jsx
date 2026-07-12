@@ -116,7 +116,7 @@ function useRowEditing(tableKey) {
 function DistrictLookup({ rows }) {
   const [query, setQuery] = useState('')
   const [selectedKey, setSelectedKey] = useState(null)
-  const ed = useRowEditing('ref_cc_districts')
+  const ed = useRowEditing('community_college_geography')
 
   const districts = useMemo(() => {
     const byDistrict = groupBy(rows, (r) => r.district || 'Unmapped district')
@@ -148,7 +148,7 @@ function DistrictLookup({ rows }) {
         <span className='text-caption text-ink-subtle'>
           {intFmt.format(rows.length)} colleges mapped to {intFmt.format(districts.length)} districts
         </span>
-        <RouteHint path='/curation/ref/ref_cc_districts' />
+        <RouteHint path='/api/assist/institutions?kind=community_college' />
         <Button className='ml-auto' leadingIcon={PlusIcon}
           onClick={() => ed.openAdd(selected ? { district: selected.name, region: selected.region } : {})}>
           Add college
@@ -199,7 +199,7 @@ function DistrictLookup({ rows }) {
 function UcMinimumsLookup({ rows }) {
   const [query, setQuery] = useState('')
   const [selectedKey, setSelectedKey] = useState(null)
-  const ed = useRowEditing('ref_uc_transfer_requirements')
+  const ed = useRowEditing('transfer_minimums')
 
   const campuses = useMemo(() => {
     const byCampus = groupBy(rows, (r) => String(r.school_id))
@@ -244,7 +244,7 @@ function UcMinimumsLookup({ rows }) {
         <span className='text-caption text-ink-subtle'>
           {intFmt.format(rows.length)} imported hard-minimum requirements · {intFmt.format(campuses.length)} UC campuses
         </span>
-        <RouteHint path='/curation/ref/ref_uc_transfer_requirements' />
+        <RouteHint path='/api/curated/requirements?kind=transfer_minimum' />
         <Button className='ml-auto' leadingIcon={PlusIcon}
           onClick={() => ed.openAdd(selected ? { uc_code: selected.ucCode } : {})}
           disabled={!selected}>
@@ -318,8 +318,8 @@ function UcMinimumsLookup({ rows }) {
 
 export default function DataReferences() {
   const [tab, setTab] = useState('minimums')
-  const districts = useRefTable('ref_cc_districts')
-  const minimums = useRefTable('ref_uc_transfer_requirements')
+  const districts = useRefTable('community_college_geography')
+  const minimums = useRefTable('transfer_minimums')
 
   if (districts.isLoading || minimums.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>

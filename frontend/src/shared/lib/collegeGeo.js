@@ -1,5 +1,5 @@
 // Geography filtering for the community-college lists in the data explorer.
-// Colleges come from /community-colleges already carrying { district, region,
+// Colleges come from /assist/institutions already carrying { district, region,
 // counties_served } (see server/controllers/CommunityCollege.js). A college
 // belongs to exactly one district/region and serves one or more counties.
 

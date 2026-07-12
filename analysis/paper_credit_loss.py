@@ -3,9 +3,8 @@
 This is a faithful, readable port of the paper pipeline behind
 `question_1/csvs/2026/order_4/optimal_order_{1..4}_averages.csv` in
 transfer-agreements-analysis — the numbers drawn as the BLUE bars of Figure 1 —
-plus the derivation of the GOLD requirement bars. The website consumes the
-output JSON (see Outputs below); the paper-baseline numbers stay transcribed
-in frontend/src/analyses/paperCreditLossBaseline.js.
+plus the derivation of the GOLD requirement bars. Outputs stay in
+`analysis/results`; finished figures are published locally with pmt.publish().
 
 The paper's method, in words
 ----------------------------
@@ -13,17 +12,17 @@ The paper's method, in words
 question_1/scripts/scripts_for_data/optimal_total_combinations.py)
 
 1. REQUIREMENT ROWS. Each campus's hand-curated hard minimums
-   (course_reqs.json → our `ref_uc_transfer_requirements`) form
+   (course_reqs.json → `curated_requirements`, kind `transfer_minimum`) form
    group → alternative sets → rows (university courses). The paper filtered
    its ASSIST-scraped college CSVs down to exactly these rows.
 
 2. SENDING OPTIONS PER ROW, PER COLLEGE. From the college's ASSIST CS
    agreement: the CC-course alternatives that articulate the row's university
    course. An alternative is an AND-bundle of CC courses; a row offers OR
-   alternatives. (Our source: `uc_agreements` receivers;
+   alternatives. (Our source: `assist_agreements` receivers;
    `options[].course_conjunction` / `options_conjunction` encode the same
    AND/OR structure as the paper's semicolon bundles / "Courses Group N"
-   columns.)
+   columns. The source rows live in `assist_agreements`.)
 
    RECEIVER → ROW MAPPING, exactly as the paper's key filter behaves
    (creating_district_csvs.py kept a scraped row only when its Receiving
@@ -117,8 +116,8 @@ Env (scripts/.env or shell): MONGO_URI / TARGET_MONGO_URI, DB_NAME
 
 Outputs
 -------
-  ../frontend/src/analyses/data/paper-credit-loss.ours.json  (the figure)
-  results/paper_credit_loss_districts.csv                    (per-district receipts)
+  results/paper-credit-loss.ours.json       (figure data)
+  results/paper_credit_loss_districts.csv   (per-district receipts)
 """
 
 import argparse
@@ -190,17 +189,17 @@ CAMPUS_SCHOOL_IDS = {c["school_id"] for c in CAMPUSES}
 def load_canonical_majors(db):
     """school_id -> [major, ...] from the console's settings selection.
 
-    Reads dataset_config.partner_access.visible_pairs (the admin-selected working
+    Reads settings.app.visible_pairs (the admin-selected working
     dataset — the majors shared with researchers; lives in the research DB), scoped
     to the 9 figure campuses. The ASSIST variant uses this instead of the frozen
     PAPER_MAJORS union, so the figure tracks whatever is selected in Settings.
     Falls back to PAPER_MAJORS (loudly) when no selection has been saved, or for any
     campus the selection omits, so the figure never silently loses a bar.
     """
-    doc = db.dataset_config.find_one({"_id": "partner_access"})
+    doc = db.settings.find_one({"_id": "app"})
     pairs = (doc or {}).get("visible_pairs")
     if not pairs:
-        print("canonical majors: no dataset_config.partner_access selection — "
+        print("canonical majors: no settings.app selection — "
               "falling back to PAPER_MAJORS")
         return {sid: list(majors) for sid, majors in PAPER_MAJORS.items()}
     out = defaultdict(list)
@@ -257,7 +256,7 @@ def load_requirement_models(db):
     the pooling work with (the paper's (UC, Group ID, Set ID, Receiving) key).
     """
     models = {}
-    rows = db.ref_uc_transfer_requirements.find().sort(
+    rows = db.curated_requirements.find({"kind": "transfer_minimum"}).sort(
         [("school_id", 1), ("group_id", 1), ("set_id", 1), ("source_order", 1)]
     )
     for row in rows:
@@ -354,14 +353,18 @@ def load_district_rows(db, models):
     """
     import re
     district_of = {
-        int(d["_id"]): d.get("district")
-        for d in db.ref_cc_districts.find({}, {"district": 1})
+        int(d["source_id"]): d.get("district")
+        for d in db.assist_institutions.find(
+            {"kind": "community_college"}, {"source_id": 1, "district": 1}
+        )
     }
     # course_id → display name; the paper deduplicates by the printed
     # "PREFIX NUMBER (units)" string, so same-named courses at sibling
     # colleges (or the same course reached from two campuses) merge.
     name_of_cache = {}
-    for c in db.courses.find({}, {"course_id": 1, "prefix": 1, "number": 1, "units": 1}):
+    for c in db.assist_courses.find(
+        {"side": "sending"}, {"course_id": 1, "prefix": 1, "number": 1, "units": 1}
+    ):
         units = c.get("units")
         name_of_cache[int(c["course_id"])] = (
             f"{c.get('prefix', '?')} {c.get('number', c['course_id'])} ({units:.2f})"
@@ -411,7 +414,7 @@ def load_district_rows(db, models):
     visible = defaultdict(set)  # district → {identity mentioned by any receiver}
     fields = {"uc_school_id": 1, "community_college_id": 1, "community_college": 1,
               "requirement_groups": 1}
-    for doc in db.uc_agreements.find(paper_major_query(), fields):
+    for doc in db.assist_agreements.find(paper_major_query(), fields):
         model = models.get(int(doc["uc_school_id"]))
         if not model:
             continue
@@ -601,8 +604,8 @@ def district_totals(args):
 def load_curation(db):
     return {
         "override_by_hash": {
-            str(o["_id"]): o
-            for o in db.curation_receiver_overrides.find()
+            str(o["receiver_hash"]): o
+            for o in db.curated_mappings.find({"kind": "receiver_override"})
         }
     }
 
@@ -618,7 +621,9 @@ def make_is_excluded(curation):
 
 def cc_course_names(db):
     names = {}
-    for c in db.courses.find({}, {"course_id": 1, "prefix": 1, "number": 1, "units": 1}):
+    for c in db.assist_courses.find(
+        {"side": "sending"}, {"course_id": 1, "prefix": 1, "number": 1, "units": 1}
+    ):
         units = c.get("units")
         names[int(c["course_id"])] = (
             f"{c.get('prefix', '?')} {c.get('number', c['course_id'])} ({units:.2f})"
@@ -632,7 +637,7 @@ def university_course_codes(db):
     """parent_id -> display course code, e.g. 'COMPSCI 61A'."""
     codes = {}
     fields = {"parent_id": 1, "course_code": 1, "prefix": 1, "number": 1}
-    for c in db.university_courses.find({}, fields).sort([("parent_id", 1)]):
+    for c in db.assist_courses.find({"side": "receiving"}, fields).sort([("parent_id", 1)]):
         pid = c.get("parent_id")
         if pid is None or int(pid) in codes:
             continue
@@ -904,7 +909,7 @@ def load_assist_inputs(db):
     needs — the paper's method with ASSIST demand.
 
     Demand = the ONE canonical CS major per campus from Settings
-    (dataset_config.partner_access; falls back to PAPER_MAJORS); its ASSIST required
+    (settings.app; falls back to PAPER_MAJORS); its ASSIST required
     groups define the minimum, and its articulations are pooled per UC receiver
     across sibling colleges within a district — exactly the paper's college pooling.
     Returns district_models[district] = {campus_sid: pooled_requirement_groups}, the
@@ -917,7 +922,10 @@ def load_assist_inputs(db):
     # course_id -> {course_id, units, same_as, name} for the optimizer (str ids, to
     # match the stringified option ids in prep_requirement_groups).
     courses_by_id = {}
-    for c in db.courses.find({}, {"course_id": 1, "prefix": 1, "number": 1, "units": 1, "same_as": 1}):
+    for c in db.assist_courses.find(
+        {"side": "sending"},
+        {"course_id": 1, "prefix": 1, "number": 1, "units": 1, "same_as": 1, "same_as_keys": 1},
+    ):
         cid = str(c["course_id"])
         units = c.get("units")
         label = f"{c.get('prefix', '?')} {c.get('number', cid)}"
@@ -926,13 +934,15 @@ def load_assist_inputs(db):
         courses_by_id[cid] = {
             "course_id": cid,
             "units": units,
-            "same_as": [{"course_id": str(p.get("course_id"))}
-                        for p in (c.get("same_as") or []) if p.get("course_id") is not None],
+            "same_as": [{"course_id": str(p.get("course_id") if isinstance(p, dict) else p).replace("cc:", "")}
+                        for p in (c.get("same_as_keys") or c.get("same_as") or [])],
             "name": label,
         }
 
-    ref_by_cc = {int(r["_id"]): r
-                 for r in db.ref_cc_districts.find({}, {"community_college": 1, "district": 1})}
+    ref_by_cc = {int(r["source_id"]): r
+                 for r in db.assist_institutions.find(
+                     {"kind": "community_college"}, {"source_id": 1, "name": 1, "district": 1}
+                 )}
     all_districts = sorted({r["district"] for r in ref_by_cc.values() if r.get("district")})
 
     fields = {"uc_school_id": 1, "community_college_id": 1, "community_college": 1,
@@ -940,7 +950,7 @@ def load_assist_inputs(db):
     by_district_campus = defaultdict(lambda: defaultdict(list))
     by_campus = defaultdict(list)
     n_agreements = 0
-    for doc in db.uc_agreements.find(canonical_major_query(canonical), fields):
+    for doc in db.assist_agreements.find(canonical_major_query(canonical), fields):
         ref = ref_by_cc.get(int(doc["community_college_id"]))
         if not ref or not ref.get("district"):
             continue
@@ -1412,7 +1422,7 @@ def validate_on_paper_data(paper_repo, workers):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--requirements", choices=("website", "assist"), default="website",
-                    help="demand model: website/ref_uc_transfer_requirements (default) "
+                    help="demand model: curated website minimums (default) "
                          "or ASSIST-stated required groups")
     ap.add_argument("--diff", action="store_true", help="print per-bar deltas vs the paper baseline")
     ap.add_argument("--workers", type=int, default=max(1, cpu_count() - 2))
@@ -1438,13 +1448,14 @@ def main():
         return
 
     db = connect()
-    dataset_version = (db.dataset_changelog.find_one(sort=[("_id", -1)]) or {}).get(
-        "dataset_version", "unversioned")
+    data_refreshed_at = (db.settings.find_one({"_id": "app"}) or {}).get(
+        "last_data_refresh_at")
+    data_refreshed_at = data_refreshed_at.isoformat() if data_refreshed_at else None
     models = load_requirement_models(db)
 
     if args.requirements == "assist":
         root = Path(__file__).resolve().parent
-        print(f"dataset {dataset_version} · loading ASSIST-stated requirements …")
+        print(f"data refreshed {data_refreshed_at or 'unknown'} · loading ASSIST-stated requirements …")
         assist = load_assist_inputs(db)
         gold = assist["gold"]
         district_models = assist["district_models"]
@@ -1505,7 +1516,7 @@ def main():
         out = {
             "generated_by": "analysis/paper_credit_loss.py",
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "dataset_version": dataset_version,
+            "data_refreshed_at": data_refreshed_at,
             "requirements": "assist",
             "major_filter": MAJOR_FILTER_TEXT,
             "districts_total": len(assist["all_districts"]),
@@ -1518,7 +1529,7 @@ def main():
             "campuses": campuses_out,
         }
 
-        json_path = root.parent / "frontend" / "src" / "analyses" / "data" / "paper-credit-loss.assist.json"
+        json_path = root / "results" / "paper-credit-loss.assist.json"
         json_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Re-baseline diff: what moved vs the committed assist.json. The optimizer +
@@ -1564,7 +1575,7 @@ def main():
         print("wrote " + ", ".join(str(p.relative_to(root.parent)) for p in blocker_paths.values()))
 
         if args.diff:
-            website_path = root.parent / "frontend" / "src" / "analyses" / "data" / "paper-credit-loss.ours.json"
+            website_path = root / "results" / "paper-credit-loss.ours.json"
             website = json.loads(website_path.read_text())
             website_by_code = {c["code"]: c for c in website["campuses"]}
             print("\nASSIST minimums vs website minimums (assist − website):")
@@ -1602,7 +1613,7 @@ def main():
             sys.exit("Refusing to continue (both sides come from the same curation; "
                      "drift means an import problem). Re-run with --allow-requirement-drift to override.")
 
-    print(f"dataset {dataset_version} · loading district rows …")
+    print(f"data refreshed {data_refreshed_at or 'unknown'} · loading district rows …")
     districts = load_district_rows(db, models)
     print(f"{len(districts)} districts · "
           f"{sum(len(opts) for opts, _ in districts.values())} pooled rows · "
@@ -1652,7 +1663,7 @@ def main():
     out = {
         "generated_by": "analysis/paper_credit_loss.py",
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "dataset_version": dataset_version,
+        "data_refreshed_at": data_refreshed_at,
         "major_filter": MAJOR_FILTER_TEXT,
         "districts_total": len(districts),
         "method": "paper Figure 1 replication: district-pooled optimal set cover over "
@@ -1661,7 +1672,7 @@ def main():
     }
 
     root = Path(__file__).resolve().parent
-    json_path = root.parent / "frontend" / "src" / "analyses" / "data" / "paper-credit-loss.ours.json"
+    json_path = root / "results" / "paper-credit-loss.ours.json"
     json_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(out, indent=2) + "\n")
     csv_path = root / "results" / "paper_credit_loss_districts.csv"

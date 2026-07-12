@@ -65,7 +65,7 @@ evaluation rule; the only input that differs is the ASSIST snapshot.
 
 | Ingredient | Paper | Ours |
 | --- | --- | --- |
-| **What is required** | Hand-curated per-campus hard minimums from university websites (`course_reqs.json`) | **The same file**, imported verbatim into `ref_uc_transfer_requirements` |
+| **What is required** | Hand-curated per-campus hard minimums from university websites (`course_reqs.json`) | **The same file**, imported verbatim into `curated_requirements` |
 | **What is articulated** | ASSIST agreements, circa the paper's scrape | ASSIST agreements, 2025–26 scrape |
 | **Evaluation rule** | Identical: a requirement is met if any of its matched university courses is articulated; a set is met if all its requirements are; a group if any set is; the cell is complete if every group is. Districts pool their colleges (a student may attend any college in the district). | (same) |
 
@@ -188,9 +188,8 @@ python paper_district_heatmap.py --figure out.png    # paper-style PNG
 
 ---
 
-*Sources: `ref_uc_transfer_requirements` (imported from the paper repo's
-`course_reqs.json`) · `uc_agreements` (ASSIST 2025–26) · `ref_cc_districts`.
-Pipeline: `server/services/analysis/pathways.js :: hardRequirementCoverageData`
-→ `/analysis/coverage?requirements=paper&groupBy=district` →
-`frontend/src/analyses/PaperDistrictHeatmap.jsx`. Independent check:
-`analysis/paper_district_heatmap.py`.*
+*Sources: `curated_requirements` (imported from the paper repo's
+`course_reqs.json`) · `assist_agreements` (ASSIST 2025–26) ·
+`assist_institutions`. Local computation and render:
+`analysis/paper_district_heatmap.py`; publish the checked matplotlib Figure
+with `pmt.publish(fig, ...)`.*

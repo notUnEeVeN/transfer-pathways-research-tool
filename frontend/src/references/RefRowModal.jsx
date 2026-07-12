@@ -6,7 +6,7 @@ import { UC_SCHOOLS } from './refTablesRegistry'
 
 const norm = (v) => String(v ?? '').toLowerCase()
 
-// The matched-UC-course picker (ref_uc_transfer_requirements): search the
+// The matched-UC-course picker for transfer minimums: search the
 // campus's university courses and link one.
 function MatchedCourseField({ value = [], schoolId, onChange }) {
   const [query, setQuery] = useState('')

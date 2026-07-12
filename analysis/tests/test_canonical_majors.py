@@ -12,7 +12,7 @@ class FakeColl:
 
 class FakeDB:
     def __init__(self, doc):
-        self.dataset_config = FakeColl(doc)
+        self.settings = FakeColl(doc)
 
 
 # The live selection: exactly one CS major per campus.
@@ -30,7 +30,7 @@ LIVE_PAIRS = [
 
 
 def test_reads_visible_pairs_one_per_campus():
-    canon = pcl.load_canonical_majors(FakeDB({"_id": "partner_access", "visible_pairs": LIVE_PAIRS}))
+    canon = pcl.load_canonical_majors(FakeDB({"_id": "app", "visible_pairs": LIVE_PAIRS}))
     assert set(canon) == pcl.CAMPUS_SCHOOL_IDS
     assert canon[7] == ["CSE: Computer Science B.S."]
     assert canon[144] == ["COMPUTER SCIENCE AND ENGINEERING, B.S. "]
@@ -39,7 +39,7 @@ def test_reads_visible_pairs_one_per_campus():
 
 def test_supports_multiple_majors_per_campus():
     pairs = LIVE_PAIRS + [{"school_id": 7, "major": "Mathematics/Computer Science B.S."}]
-    canon = pcl.load_canonical_majors(FakeDB({"_id": "partner_access", "visible_pairs": pairs}))
+    canon = pcl.load_canonical_majors(FakeDB({"_id": "app", "visible_pairs": pairs}))
     assert set(canon[7]) == {"CSE: Computer Science B.S.", "Mathematics/Computer Science B.S."}
 
 
@@ -50,7 +50,7 @@ def test_fallback_to_paper_majors_when_absent():
 
 def test_missing_campus_falls_back_per_campus():
     partial = [p for p in LIVE_PAIRS if p["school_id"] != 79]  # drop UCB
-    canon = pcl.load_canonical_majors(FakeDB({"_id": "partner_access", "visible_pairs": partial}))
+    canon = pcl.load_canonical_majors(FakeDB({"_id": "app", "visible_pairs": partial}))
     assert canon[79] == list(pcl.PAPER_MAJORS[79])
     assert canon[7] == ["CSE: Computer Science B.S."]
 

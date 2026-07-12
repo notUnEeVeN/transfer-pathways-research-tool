@@ -1,7 +1,7 @@
 /**
  * Internal audit console endpoints.
  *
- * Source of truth for verdicts: `audit_results` (one row per doc).
+ * Source of truth for verdicts: `agreement_reviews` (one row per agreement).
  * Template status is DERIVED from per-doc rows — verified iff any doc has a
  * verdict, errored iff any has result='error'. No cross-collection writes.
  *
@@ -23,7 +23,6 @@
 const { ObjectId } = require('mongodb');
 const cache = require('../services/auditCache');
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { currentDatasetVersion } = require('../services/datasetVersion');
 const { majorScope, pairAllowed } = require('../services/majorVisibility');
 // Audit business logic lives in services/audit/*; the controller keeps thin
 // handlers + the tier-list/search read helpers. stats.js owns the stats payload
@@ -205,10 +204,6 @@ exports.postVerify = async (req, res) => {
       cells_in_error:    cellsInError,
       verifier_uid: req.user?.uid ?? null,
       verified_at:  new Date(),
-      // Research provenance: which frozen snapshot this verdict was judged
-      // against, and that it came from the research console — both required
-      // by the end-of-project merge back into the production audit store.
-      dataset_version: await currentDatasetVersion(db),
       verdict_origin: 'research',
       ...(isOpen ? { status: 'open' } : {}),
     };

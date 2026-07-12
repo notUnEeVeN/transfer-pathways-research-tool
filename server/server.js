@@ -10,9 +10,6 @@ const apiRoutes = require('./routes/api');
 const { globalIpLimiter } = require('./middleware/rateLimit');
 const { errorHandler } = require('./middleware/errorHandler');
 const { ensureAuditIndexes } = require('./services/audit/indexes');
-const { createFigureRuntime } = require('./services/liveFigures');
-const { createRefreshScheduler, markDirtyOnWrite } = require('./services/refreshScheduler');
-const { ensureFigureScriptIndexes } = require('./services/figureScripts');
 const { ensureTokenIndexes } = require('./services/apiTokens');
 const { ensureTaskIndexes } = require('./services/tasks');
 
@@ -74,23 +71,19 @@ if (hasFrontendBuild) {
 connectDB()
   .then(async (db) => {
     app.locals.db = db;
-    // Audit working state (audit_results + audit_groupings) lives on auditDb,
+    // Team working state (reviews, tasks, access, and figures) lives on auditDb,
     // which is the same handle as `db` unless AUDIT_MONGO_URI selects a
     // separate cluster. On the research deployment both usually point at the
     // research cluster.
     const auditDb = await connectAuditDB(db);
     app.locals.auditDb = auditDb;
-    ensureAuditIndexes(auditDb).catch((e) => console.warn(`[audit] index setup failed: ${e.message}`));
-    ensureFigureScriptIndexes(auditDb).catch((e) => console.warn(`[figures] index setup failed: ${e.message}`));
+    try {
+      await ensureAuditIndexes(auditDb);
+    } catch (e) {
+      console.warn(`[audit] index setup failed: ${e.message}`);
+    }
     ensureTokenIndexes(auditDb).catch((e) => console.warn(`[tokens] index setup failed: ${e.message}`));
     ensureTaskIndexes(auditDb).catch((e) => console.warn(`[tasks] index setup failed: ${e.message}`));
-    // Live-figure runtime: one shared run queue for publish_script dry-runs,
-    // manual refreshes, and the scheduler. Scripts call back into this server
-    // over loopback, so the scheduler only starts once listen() succeeds.
-    const figureRuntime = createFigureRuntime({ db, auditDb, port });
-    app.locals.figureRuntime = figureRuntime;
-    const refreshScheduler = createRefreshScheduler({ db, auditDb, runtime: figureRuntime });
-    app.use(markDirtyOnWrite(refreshScheduler));
     // Platform liveness probe: a quick Mongo ping + process uptime. Returns 200
     // when the DB answers, 503 otherwise, so the host's health check can tell a
     // live server from one that's up but can't reach Mongo.
@@ -112,7 +105,14 @@ connectDB()
       }
       res.status(health.ok ? 200 : 503).json(health);
     });
-    app.use('/', apiRoutes);
+    // `/api` is the permanent contract.
+    app.use('/api', apiRoutes);
+    // Unknown canonical API paths must stay API responses. Without this
+    // boundary they fall through to the SPA shell and misleadingly return
+    // HTML with status 200.
+    app.use('/api', (req, res) => {
+      res.status(404).json({ error: 'API route not found' });
+    });
     // SPA fallback: any GET the API didn't claim returns the app shell so
     // client-side routes survive deep links and refreshes. Registered after the
     // API routes so real endpoints always win; skipped when there's no build.
@@ -127,7 +127,6 @@ connectDB()
     app.use(errorHandler);
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
-      refreshScheduler.start();
     });
   })
   .catch((error) => {

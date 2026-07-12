@@ -1,39 +1,9 @@
-/**
- * Curation endpoints — the human-judgment layer the papers' analyses need on
- * top of the raw ASSIST data. All console users (admins + partners) can
- * curate; every write is stamped with who/when. Collections live on the audit
- * handle (working state, like verdicts), keyed so they survive re-porting:
- *
- *   curation_course_categories — canonical course category per UNIVERSITY
- *     course (`_id` = parent_id). Categories drive the papers' course-barrier
- *     and per-category analyses (Calculus, Intro Programming, Data
- *     Structures, …) plus the broad computing/math/science/non-STEM axis.
- *
- *   curation_receiver_overrides — per-receiver (`_id` = hash_id) judgment
- *     calls: exclude a receiver from analysis (e.g. "recommended", not
- *     strictly required) and/or categorize non-course receivers
- *     (requirement/ge_area/series kinds that have no parent_id).
- *
- *   curation_prereqs — prerequisite edges for curricular-complexity and
- *     pathway analyses. `_id` = `cc:<course_id>` or `uni:<parent_id>`;
- *     `prereqs` lists keys in the same format. ASSIST has no prereq data, so
- *     these are entered/verified by hand (or a scraper writing through this
- *     same endpoint).
- *
- *   curation_assoc_degrees — associate-degree (ADT/ASCS) requirement docs per
- *     community college, for transfer-credit-rate / time-to-degree analyses.
- *
- *   ref_* reference tables (small, whitelisted): campus calendars
- *     (quarter/semester), tuition per credit, CC districts, campus locations.
- */
+/** Human judgments stored in the permanent curated collections. */
 const { asyncHandler } = require('../middleware/asyncHandler');
 
-const CATEGORIES = 'curation_course_categories';
-const OVERRIDES = 'curation_receiver_overrides';
-const PREREQS = 'curation_prereqs';
-const ASSOC = 'curation_assoc_degrees';
+const MAPPINGS = 'curated_mappings';
+const REQUIREMENTS = 'curated_requirements';
 
-// Canonical course categories (CA-paper granularity) + broad axis (MA paper).
 const CANONICAL_CATEGORIES = [
   'calculus', 'advanced_math', 'discrete_math', 'other_math',
   'intro_programming', 'data_structures', 'computer_org', 'other_computing',
@@ -41,27 +11,17 @@ const CANONICAL_CATEGORIES = [
 ];
 const BROAD_AXES = ['computing', 'math', 'science', 'non_stem'];
 
-// Editable reference tables (References tab). CRUD below is keyed by _id and
-// stamps the curator; add a table here to make it editable.
-const REF_TABLES = new Set([
-  'ref_campus_calendars', // { _id: <university_id>, system: 'quarter'|'semester' }
-  'ref_tuition',          // { _id: <university_id>, per_credit_usd, source }
-  'ref_cc_districts',     // { _id: <cc_id>, community_college, district, region, counties_served[] }
-  'ref_locations',        // { _id: '<kind>:<id>', kind: 'cc'|'university', lat, lng }
-  'ref_uc_transfer_requirements', // UC hard minimums { _id, uc_code, school_id, school, group_id, set_id, receiving_code, matched, matched_courses[] }
-  'ref_prerequisites',    // CC course prereqs { _id, college, course_code, course_name, units, prerequisites[] }
-  'ref_ge_patterns',      // Cal-GETC / UC-7 { _id, pattern, area_code, area_name, subgroup_code, subgroup_name, required, note }
-  'ref_igetc',            // IGETC { _id, area_code, area_name, sub_area, sub_name, required_courses, required_units, note }
-]);
-
 const stamp = (req) => ({ curated_by: req.user?.uid ?? null, curated_at: new Date() });
 const curationDb = (req) => req.app.locals.auditDb || req.app.locals.db;
 
-// ── course categories ──
-
 exports.listCategories = asyncHandler(async (req, res) => {
-  const docs = await curationDb(req).collection(CATEGORIES).find().toArray();
-  res.json({ categories: docs, canonical: CANONICAL_CATEGORIES, broad: BROAD_AXES });
+  const rows = await curationDb(req).collection(MAPPINGS)
+    .find({ kind: 'course_category' }).toArray();
+  const categories = rows.map(({ _id, kind, course_id, legacy_id, ...row }) => ({
+    ...row,
+    _id: Number(legacy_id ?? String(course_id).replace(/^university:/, '')),
+  }));
+  res.json({ categories, canonical: CANONICAL_CATEGORIES, broad: BROAD_AXES });
 });
 
 exports.putCategory = asyncHandler(async (req, res) => {
@@ -74,22 +34,37 @@ exports.putCategory = asyncHandler(async (req, res) => {
   if (broad != null && !BROAD_AXES.includes(broad)) {
     return res.status(400).json({ error: `broad must be one of ${BROAD_AXES.join(', ')}` });
   }
+  const db = curationDb(req);
+  const id = `course_category:${parentId}`;
   if (category == null && broad == null) {
-    await curationDb(req).collection(CATEGORIES).deleteOne({ _id: parentId });
+    await db.collection(MAPPINGS).deleteOne({ _id: id });
     return res.json({ ok: true, cleared: true });
   }
-  await curationDb(req).collection(CATEGORIES).replaceOne(
-    { _id: parentId },
-    { _id: parentId, category: category ?? null, broad: broad ?? null, note: note ?? null, ...stamp(req) },
+  await db.collection(MAPPINGS).replaceOne(
+    { _id: id },
+    {
+      _id: id,
+      kind: 'course_category',
+      course_id: `university:${parentId}`,
+      legacy_id: parentId,
+      category: category ?? null,
+      broad: broad ?? null,
+      note: note ?? null,
+      ...stamp(req),
+    },
     { upsert: true }
   );
   res.json({ ok: true });
 });
 
-// ── receiver overrides ──
-
 exports.listOverrides = asyncHandler(async (req, res) => {
-  res.json({ overrides: await curationDb(req).collection(OVERRIDES).find().toArray() });
+  const rows = await curationDb(req).collection(MAPPINGS)
+    .find({ kind: 'receiver_override' }).toArray();
+  const overrides = rows.map(({ _id, kind, receiver_hash, legacy_id, ...row }) => ({
+    ...row,
+    _id: String(receiver_hash ?? legacy_id),
+  }));
+  res.json({ overrides });
 });
 
 exports.putOverride = asyncHandler(async (req, res) => {
@@ -102,14 +77,19 @@ exports.putOverride = asyncHandler(async (req, res) => {
   if (broad != null && !BROAD_AXES.includes(broad)) {
     return res.status(400).json({ error: `broad must be one of ${BROAD_AXES.join(', ')}` });
   }
+  const db = curationDb(req);
+  const id = `receiver_override:${hashId}`;
   if (exclude == null && category == null && broad == null) {
-    await curationDb(req).collection(OVERRIDES).deleteOne({ _id: hashId });
+    await db.collection(MAPPINGS).deleteOne({ _id: id });
     return res.json({ ok: true, cleared: true });
   }
-  await curationDb(req).collection(OVERRIDES).replaceOne(
-    { _id: hashId },
+  await db.collection(MAPPINGS).replaceOne(
+    { _id: id },
     {
-      _id: hashId,
+      _id: id,
+      kind: 'receiver_override',
+      receiver_hash: hashId,
+      legacy_id: hashId,
       exclude: exclude === true,
       category: category ?? null,
       broad: broad ?? null,
@@ -121,39 +101,16 @@ exports.putOverride = asyncHandler(async (req, res) => {
   res.json({ ok: true });
 });
 
-// ── prerequisites ──
-
-const PREREQ_KEY = /^(cc:.+|uni:\d+)$/;
-
-exports.listPrereqs = asyncHandler(async (req, res) => {
-  res.json({ prereqs: await curationDb(req).collection(PREREQS).find().toArray() });
-});
-
-exports.putPrereqs = asyncHandler(async (req, res) => {
-  const key = String(req.params.key || '').trim();
-  if (!PREREQ_KEY.test(key)) {
-    return res.status(400).json({ error: 'key must be cc:<course_id> or uni:<parent_id>' });
-  }
-  const { prereqs, note } = req.body || {};
-  if (!Array.isArray(prereqs) || prereqs.some((p) => !PREREQ_KEY.test(String(p)))) {
-    return res.status(400).json({ error: 'prereqs must be an array of cc:<course_id> / uni:<parent_id> keys' });
-  }
-  if (!prereqs.length && !String(note || '').trim()) {
-    await curationDb(req).collection(PREREQS).deleteOne({ _id: key });
-    return res.json({ ok: true, cleared: true });
-  }
-  await curationDb(req).collection(PREREQS).replaceOne(
-    { _id: key },
-    { _id: key, prereqs: prereqs.map(String), note: note ?? null, ...stamp(req) },
-    { upsert: true }
-  );
-  res.json({ ok: true });
-});
-
-// ── associate degrees ──
-
 exports.listAssocDegrees = asyncHandler(async (req, res) => {
-  res.json({ degrees: await curationDb(req).collection(ASSOC).find().toArray() });
+  const rows = await curationDb(req).collection(REQUIREMENTS)
+    .find({ kind: 'associate_degree' }).toArray();
+  const degrees = rows.map(({ kind, institution_id, legacy_id, ...row }) => ({
+    ...row,
+    _id: legacy_id ?? String(row._id).replace(/^associate_degree:/, ''),
+    community_college_id: Number(String(institution_id || '').replace(/^cc:/, '')),
+    course_ids: (row.course_ids || []).map((id) => String(id).replace(/^cc:/, '')),
+  }));
+  res.json({ degrees });
 });
 
 exports.putAssocDegree = asyncHandler(async (req, res) => {
@@ -165,63 +122,33 @@ exports.putAssocDegree = asyncHandler(async (req, res) => {
   if (!Array.isArray(course_ids)) {
     return res.status(400).json({ error: 'course_ids must be an array of CC course_ids' });
   }
-  const id = `${ccId}:${String(name).trim()}`;
-  await curationDb(req).collection(ASSOC).replaceOne(
+  const legacyId = `${ccId}:${String(name).trim()}`;
+  const id = `associate_degree:${legacyId}`;
+  await curationDb(req).collection(REQUIREMENTS).replaceOne(
     { _id: id },
     {
       _id: id,
+      kind: 'associate_degree',
+      legacy_id: legacyId,
+      institution_id: `cc:${ccId}`,
       community_college_id: ccId,
       name: String(name).trim(),
-      course_ids: course_ids.map(String),
+      course_ids: course_ids.map((value) => `cc:${String(value).replace(/^cc:/, '')}`),
       units: Number.isFinite(Number(units)) ? Number(units) : null,
       note: note ?? null,
       ...stamp(req),
     },
     { upsert: true }
   );
-  res.json({ ok: true, id });
+  res.json({ ok: true, id: legacyId });
 });
 
 exports.deleteAssocDegree = asyncHandler(async (req, res) => {
-  const { deletedCount } = await curationDb(req).collection(ASSOC).deleteOne({ _id: req.params.id });
-  if (!deletedCount) return res.status(404).json({ error: 'no such degree doc' });
-  res.json({ ok: true });
-});
-
-// ── reference tables ──
-
-exports.getRefTable = asyncHandler(async (req, res) => {
-  const table = req.params.table;
-  if (!REF_TABLES.has(table)) return res.status(404).json({ error: 'unknown reference table' });
-  res.json({ rows: await curationDb(req).collection(table).find().toArray() });
-});
-
-exports.putRefRow = asyncHandler(async (req, res) => {
-  const table = req.params.table;
-  if (!REF_TABLES.has(table)) return res.status(404).json({ error: 'unknown reference table' });
-  const row = req.body || {};
-  if (row._id == null || row._id === '') return res.status(400).json({ error: 'row _id required' });
-  // Numeric ids arrive as strings from forms; ref tables keyed by institution
-  // id store them as numbers so they join against the reference collections.
-  const id = /^\d+$/.test(String(row._id)) ? Number(row._id) : row._id;
-  await curationDb(req).collection(table).replaceOne(
-    { _id: id },
-    { ...row, _id: id, ...stamp(req) },
-    { upsert: true }
-  );
-  res.json({ ok: true });
-});
-
-exports.deleteRefRow = asyncHandler(async (req, res) => {
-  const table = req.params.table;
-  if (!REF_TABLES.has(table)) return res.status(404).json({ error: 'unknown reference table' });
-  const raw = req.params.id;
-  const id = /^\d+$/.test(String(raw)) ? Number(raw) : raw;
-  const { deletedCount } = await curationDb(req).collection(table).deleteOne({ _id: id });
-  if (!deletedCount) return res.status(404).json({ error: 'no such row' });
+  const result = await curationDb(req).collection(REQUIREMENTS)
+    .deleteOne({ _id: `associate_degree:${req.params.id}` });
+  if (!result.deletedCount) return res.status(404).json({ error: 'no such degree doc' });
   res.json({ ok: true });
 });
 
 exports.CANONICAL_CATEGORIES = CANONICAL_CATEGORIES;
 exports.BROAD_AXES = BROAD_AXES;
-exports.REF_TABLES = REF_TABLES;

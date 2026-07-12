@@ -69,17 +69,18 @@ def main():
         os.environ.get("TARGET_DB_NAME", "pmt_research")]
 
     pairs = {(int(p["school_id"]), p["major"])
-             for p in db.dataset_config.find_one({"_id": "partner_access"})["visible_pairs"]}
+             for p in db.settings.find_one({"_id": "app"})["visible_pairs"]}
     q = {"$or": [{"uc_school_id": sid, "major": m} for sid, m in pairs]}
 
     courses = {int(c["course_id"]): {"units": c.get("units"),
                                      "same_as": [{"course_id": str(p.get("course_id"))}
                                                  for p in (c.get("same_as") or [])]}
-               for c in db.courses.find({}, {"course_id": 1, "units": 1, "same_as": 1})}
+               for c in db.assist_courses.find(
+                   {"side": "sending"}, {"course_id": 1, "units": 1, "same_as": 1})}
 
     # Deterministic: sort agreements, take up to 3 per campus, preferring variety
     # (a series receiver, a course-or option, a plain choose-N) when present.
-    docs = list(db.uc_agreements.find(q, {"uc_school_id": 1, "community_college_id": 1,
+    docs = list(db.assist_agreements.find(q, {"uc_school_id": 1, "community_college_id": 1,
                                           "community_college": 1, "major": 1, "requirement_groups": 1})
                 .sort([("uc_school_id", 1), ("community_college_id", 1), ("major", 1), ("_id", 1)]))
 

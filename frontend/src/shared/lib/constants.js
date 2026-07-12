@@ -33,7 +33,10 @@ export const DATA_LAST_UPDATED = 'June 1, 2026'
  * falling back to the local dev server. This console must never default to the
  * production PMT API.
  */
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+const configuredApiBase = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/+$/, '')
+export const API_BASE_URL = configuredApiBase.endsWith('/api')
+  ? configuredApiBase
+  : `${configuredApiBase}/api`
 
 // Single source of truth lives in the shared eligibility logic (server/shared,
 // via the @shared alias) so the grade→GPA scale can't drift between frontend

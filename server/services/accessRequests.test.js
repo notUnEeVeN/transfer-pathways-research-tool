@@ -18,42 +18,41 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-  await db.collection('access_requests').deleteMany({});
-  await db.collection('access_grants').deleteMany({});
-  await db.collection('access_blocks').deleteMany({});
+  await db.collection('team_members').deleteMany({});
 });
 
 describe('recordRequest', () => {
   it('creates a request doc on first attempt', async () => {
     await recordRequest(db, { uid: 'u1', email: 'a@b.edu', name: 'Ada' });
-    const doc = await db.collection('access_requests').findOne({ _id: 'u1' });
+    const doc = await db.collection('team_members').findOne({ _id: 'u1' });
     expect(doc.email).toBe('a@b.edu');
-    expect(doc.name).toBe('Ada');
-    expect(doc.attempts).toBe(1);
+    expect(doc.identity_name).toBe('Ada');
+    expect(doc.request_attempts).toBe(1);
+    expect(doc.access_status).toBe('pending');
     expect(doc.first_seen).toBeInstanceOf(Date);
     expect(doc.last_seen).toBeInstanceOf(Date);
   });
 
   it('increments attempts and bumps last_seen on repeat attempts, keeping first_seen', async () => {
     await recordRequest(db, { uid: 'u1', email: 'a@b.edu', name: 'Ada' });
-    const first = await db.collection('access_requests').findOne({ _id: 'u1' });
+    const first = await db.collection('team_members').findOne({ _id: 'u1' });
     await new Promise((r) => setTimeout(r, 5));
     await recordRequest(db, { uid: 'u1', email: 'a@b.edu', name: 'Ada' });
-    const doc = await db.collection('access_requests').findOne({ _id: 'u1' });
-    expect(doc.attempts).toBe(2);
+    const doc = await db.collection('team_members').findOne({ _id: 'u1' });
+    expect(doc.request_attempts).toBe(2);
     expect(doc.first_seen.getTime()).toBe(first.first_seen.getTime());
     expect(doc.last_seen.getTime()).toBeGreaterThan(first.last_seen.getTime());
   });
 
   it('refreshes email/name from the token on later attempts and tolerates missing fields', async () => {
     await recordRequest(db, { uid: 'u1' });
-    let doc = await db.collection('access_requests').findOne({ _id: 'u1' });
+    let doc = await db.collection('team_members').findOne({ _id: 'u1' });
     expect(doc.email).toBeNull();
-    expect(doc.name).toBeNull();
+    expect(doc.identity_name).toBeNull();
     await recordRequest(db, { uid: 'u1', email: 'new@b.edu', name: 'Ada L.' });
-    doc = await db.collection('access_requests').findOne({ _id: 'u1' });
+    doc = await db.collection('team_members').findOne({ _id: 'u1' });
     expect(doc.email).toBe('new@b.edu');
-    expect(doc.name).toBe('Ada L.');
+    expect(doc.identity_name).toBe('Ada L.');
   });
 
   it('rejects a missing uid', async () => {
@@ -73,7 +72,9 @@ describe('listPendingRequests', () => {
   it('excludes uids that already hold a grant', async () => {
     await recordRequest(db, { uid: 'pending' });
     await recordRequest(db, { uid: 'granted-later' });
-    await db.collection('access_grants').insertOne({ _id: 'granted-later' });
+    await db.collection('team_members').updateOne(
+      { _id: 'granted-later' }, { $set: { access_status: 'granted' } }
+    );
     const rows = await listPendingRequests(db);
     expect(rows.map((r) => r.uid)).toEqual(['pending']);
   });
@@ -95,10 +96,11 @@ describe('listPendingRequests', () => {
 });
 
 describe('removeRequest', () => {
-  it('deletes the request and reports whether one existed', async () => {
+  it('dismisses the request and reports whether one existed', async () => {
     await recordRequest(db, { uid: 'u1' });
     expect(await removeRequest(db, 'u1')).toBe(true);
-    expect(await db.collection('access_requests').countDocuments()).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ access_status: 'pending' })).toBe(0);
+    expect((await db.collection('team_members').findOne({ _id: 'u1' })).access_status).toBe('revoked');
     expect(await removeRequest(db, 'u1')).toBe(false);
   });
 });
@@ -107,10 +109,12 @@ describe('blockUid / isBlocked / unblockUid / listBlocked', () => {
   it('records a block (with who/when) and clears any pending request', async () => {
     await recordRequest(db, { uid: 'u1', email: 'a@b.edu', name: 'Ada' });
     await blockUid(db, { uid: 'u1', email: 'a@b.edu', name: 'Ada', blockedBy: 'admin' });
-    const block = await db.collection('access_blocks').findOne({ _id: 'u1' });
-    expect(block).toMatchObject({ email: 'a@b.edu', name: 'Ada', blocked_by: 'admin' });
+    const block = await db.collection('team_members').findOne({ _id: 'u1' });
+    expect(block).toMatchObject({
+      email: 'a@b.edu', identity_name: 'Ada', blocked_by: 'admin', access_status: 'blocked',
+    });
     expect(block.blocked_at).toBeInstanceOf(Date);
-    expect(await db.collection('access_requests').countDocuments({ _id: 'u1' })).toBe(0);
+    expect(await db.collection('team_members').countDocuments({ _id: 'u1', access_status: 'pending' })).toBe(0);
   });
 
   it('rejects a missing uid', async () => {
@@ -126,9 +130,9 @@ describe('blockUid / isBlocked / unblockUid / listBlocked', () => {
   it('refreshes email/name on a repeat block', async () => {
     await blockUid(db, { uid: 'u1', email: null, name: null });
     await blockUid(db, { uid: 'u1', email: 'new@b.edu', name: 'Ada L.' });
-    const block = await db.collection('access_blocks').findOne({ _id: 'u1' });
-    expect(block).toMatchObject({ email: 'new@b.edu', name: 'Ada L.' });
-    expect(await db.collection('access_blocks').countDocuments()).toBe(1);
+    const block = await db.collection('team_members').findOne({ _id: 'u1' });
+    expect(block).toMatchObject({ email: 'new@b.edu', identity_name: 'Ada L.' });
+    expect(await db.collection('team_members').countDocuments({ access_status: 'blocked' })).toBe(1);
   });
 
   it('unblockUid deletes and reports whether one existed', async () => {
@@ -155,7 +159,9 @@ describe('listPendingRequests excludes blocked uids', () => {
     await recordRequest(db, { uid: 'blocked' });
     // Block without going through the controller path — simulate a stale
     // request doc that outlived the block, proving the list is a safety net.
-    await db.collection('access_blocks').insertOne({ _id: 'blocked', blocked_at: new Date() });
+    await db.collection('team_members').updateOne(
+      { _id: 'blocked' }, { $set: { access_status: 'blocked', blocked_at: new Date() } }
+    );
     const rows = await listPendingRequests(db);
     expect(rows.map((r) => r.uid)).toEqual(['pending']);
   });

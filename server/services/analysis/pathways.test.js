@@ -32,7 +32,7 @@ beforeAll(async () => {
   db = mongo.client.db('pathways_test');
 
   // Two UC agreements at School 1 for CC 10 and CC 20, one CSU untouched.
-  await db.collection('uc_agreements').insertMany([
+  await db.collection('assist_agreements').insertMany([
     {
       uc_school: 'UC Test', uc_school_id: 1,
       community_college: 'CC Alpha', community_college_id: 10,
@@ -78,63 +78,58 @@ beforeAll(async () => {
       }],
     },
   ]);
-  await db.collection('courses').insertMany([
-    { course_id: 'calcA', units: 5, community_college_id: 10 },
-    { course_id: 'cs1a', units: 3, community_college_id: 10 },
-    { course_id: 'cs1b', units: 3, community_college_id: 10 },
-    { course_id: 'calcB', units: 4, community_college_id: 20 },
-    { course_id: 'ds1', units: 4, community_college_id: 10 },
-    { course_id: 'ge1', units: 3, community_college_id: 10 },
-    { course_id: 'calcG', units: 4, community_college_id: 30 },
+  await db.collection('assist_courses').insertMany([
+    { course_id: 'calcA', units: 5, community_college_id: 10, side: 'sending' },
+    { course_id: 'cs1a', units: 3, community_college_id: 10, side: 'sending' },
+    { course_id: 'cs1b', units: 3, community_college_id: 10, side: 'sending' },
+    { course_id: 'calcB', units: 4, community_college_id: 20, side: 'sending' },
+    { course_id: 'ds1', units: 4, community_college_id: 10, side: 'sending' },
+    { course_id: 'ge1', units: 3, community_college_id: 10, side: 'sending' },
+    { course_id: 'calcG', units: 4, community_college_id: 30, side: 'sending' },
   ]);
 
   // Curation: categories, an exclusion, calendars/tuition, prereqs, an ADT.
-  await db.collection('curation_course_categories').insertMany([
-    { _id: 101, category: 'calculus', broad: 'math' },
-    { _id: 102, category: 'intro_programming', broad: 'computing' },
-    { _id: 104, category: 'data_structures', broad: 'computing' },
+  await db.collection('curated_mappings').insertMany([
+    { _id: 'course_category:101', kind: 'course_category', course_id: 'university:101', category: 'calculus', broad: 'math' },
+    { _id: 'course_category:102', kind: 'course_category', course_id: 'university:102', category: 'intro_programming', broad: 'computing' },
+    { _id: 'course_category:104', kind: 'course_category', course_id: 'university:104', category: 'data_structures', broad: 'computing' },
+    { _id: 'receiver_override:r-reco', kind: 'receiver_override', receiver_hash: 'r-reco', exclude: true },
   ]);
-  await db.collection('curation_receiver_overrides').insertMany([
-    { _id: 'r-reco', exclude: true },
+  await db.collection('assist_institutions').insertMany([
+    { _id: 'uc:1', source_id: 1, kind: 'university', academic_calendar: 'quarter', tuition_per_credit_usd: 100 },
+    { _id: 'uc:2', source_id: 2, kind: 'university', academic_calendar: 'semester' },
+    { _id: 'cc:10', source_id: 10, kind: 'community_college', district: 'North', region: 'Bay', counties_served: ['Alpha'] },
+    { _id: 'cc:20', source_id: 20, kind: 'community_college', district: 'North', region: 'Bay', counties_served: ['Alpha', 'Beta'] },
+    { _id: 'cc:30', source_id: 30, kind: 'community_college', district: 'South', region: 'Bay', counties_served: ['Gamma'] },
   ]);
-  await db.collection('ref_campus_calendars').insertMany([
-    { _id: 1, system: 'quarter' },
-    { _id: 2, system: 'semester' },
-  ]);
-  await db.collection('ref_tuition').insertMany([{ _id: 1, per_credit_usd: 100 }]);
-  await db.collection('ref_cc_districts').insertMany([
-    { _id: 10, district: 'North', region: 'Bay', counties_served: ['Alpha'] },
-    { _id: 20, district: 'North', region: 'Bay', counties_served: ['Alpha', 'Beta'] },
-    { _id: 30, district: 'South', region: 'Bay', counties_served: ['Gamma'] },
-  ]);
-  await db.collection('ref_uc_transfer_requirements').insertMany([
+  await db.collection('curated_requirements').insertMany([
     {
-      _id: 'uct-calc-a', school_id: 1, school: 'UC Test', uc_code: 'UCT',
+      _id: 'transfer_minimum:uct-calc-a', kind: 'transfer_minimum', school_id: 1, school: 'UC Test', uc_code: 'UCT',
       group_id: 'Calc', set_id: 'A', source_order: 0,
       receiving_code: 'CALC', parent_ids: [101], matched: true,
     },
     {
-      _id: 'uco-alt-a', school_id: 2, school: 'UC Other', uc_code: 'UCO',
+      _id: 'transfer_minimum:uco-alt-a', kind: 'transfer_minimum', school_id: 2, school: 'UC Other', uc_code: 'UCO',
       group_id: 'Either', set_id: 'A', source_order: 0,
       receiving_code: 'MISSING', parent_ids: [], matched: false,
     },
     {
-      _id: 'uco-alt-b', school_id: 2, school: 'UC Other', uc_code: 'UCO',
+      _id: 'transfer_minimum:uco-alt-b', kind: 'transfer_minimum', school_id: 2, school: 'UC Other', uc_code: 'UCO',
       group_id: 'Either', set_id: 'B', source_order: 1,
       receiving_code: 'DS', parent_ids: [104], matched: true,
     },
   ]);
-  await db.collection('curation_prereqs').insertMany([
-    { _id: 'cc:cs1b', prereqs: ['cc:cs1a'] },
-    { _id: 'cc:cs1a', prereqs: [] },
+  await db.collection('curated_prerequisites').insertMany([
+    { _id: 'cc:cs1b', course_id: 'cc:cs1b', prerequisite_ids: ['cc:cs1a'], status: 'resolved' },
+    { _id: 'cc:cs1a', course_id: 'cc:cs1a', prerequisite_ids: [], status: 'resolved' },
   ]);
-  await db.collection('curation_assoc_degrees').insertMany([
+  await db.collection('curated_requirements').insertMany([
     {
-      _id: '10:CS ADT', community_college_id: 10, name: 'CS ADT',
-      course_ids: ['calcA', 'cs1a', 'cs1b', 'ge1'], units: null,
+      _id: 'associate_degree:10:CS ADT', kind: 'associate_degree', institution_id: 'cc:10',
+      community_college_id: 10, name: 'CS ADT',
+      course_ids: ['cc:calcA', 'cc:cs1a', 'cc:cs1b', 'cc:ge1'], units: null,
     },
   ]);
-  await db.collection('dataset_meta').insertOne({ _id: 'current', dataset_version: 'test-v1' });
 }, 60_000);
 
 afterAll(async () => { await mongo.stop(); });
@@ -196,14 +191,14 @@ describe('coverageData', () => {
 describe('settingsMajors (pin=settings resolution)', () => {
   afterAll(async () => {
     // Leave no working-dataset selection behind for the other suites.
-    await db.collection('dataset_config').deleteOne({ _id: 'partner_access' });
+    await db.collection('settings').deleteOne({ _id: 'app' });
   });
 
   it('reads the working-dataset selection, scopes to figure campuses, falls back to PAPER_MAJORS', async () => {
-    await db.collection('dataset_config').replaceOne(
-      { _id: 'partner_access' },
+    await db.collection('settings').replaceOne(
+      { _id: 'app' },
       {
-        _id: 'partner_access',
+        _id: 'app',
         visible_pairs: [
           { school_id: 79, major: 'Electrical Engineering & Computer Sciences, B.S.' }, // UCB → EECS only
           { school_id: 99999, major: 'Not A Figure Campus' }, // ignored: outside the nine campuses
@@ -225,7 +220,7 @@ describe('settingsMajors (pin=settings resolution)', () => {
   });
 
   it('falls back entirely to PAPER_MAJORS when no selection has been saved', async () => {
-    await db.collection('dataset_config').deleteOne({ _id: 'partner_access' });
+    await db.collection('settings').deleteOne({ _id: 'app' });
     const byCampus = await _settingsMajors(db);
     expect(byCampus.get(79)).toEqual(_paperMajors[79]); // both CS B.A. + EECS B.S.
   });
@@ -259,7 +254,7 @@ describe('requirementComparisonData', () => {
   it('choose-N covered by the website minimum is not counted as an extra', async () => {
     // The UCB shape: a "choose 1 of {A(in website), B}" section is already
     // satisfied by the website course A, so B is NOT an extra requirement.
-    await db.collection('uc_agreements').insertOne({
+    await db.collection('assist_agreements').insertOne({
       uc_school: 'UC Choose2', uc_school_id: 5,
       community_college: 'CC Delta', community_college_id: 40,
       major: 'Computer Science B.S.',
@@ -273,9 +268,9 @@ describe('requirementComparisonData', () => {
         }],
       }],
     });
-    await db.collection('courses').insertOne({ course_id: 'calcD', units: 4, community_college_id: 40 });
-    await db.collection('ref_uc_transfer_requirements').insertOne({
-      _id: 'uch2-a', school_id: 5, school: 'UC Choose2', uc_code: 'UCH2',
+    await db.collection('assist_courses').insertOne({ course_id: 'calcD', units: 4, community_college_id: 40, side: 'sending' });
+    await db.collection('curated_requirements').insertOne({
+      _id: 'transfer_minimum:uch2-a', kind: 'transfer_minimum', school_id: 5, school: 'UC Choose2', uc_code: 'UCH2',
       group_id: 'G', set_id: 'A', source_order: 0, receiving_code: 'CALC', parent_ids: [301], matched: true,
     });
 
@@ -293,13 +288,13 @@ describe('requirementComparisonData', () => {
     // Some ASSIST program names are stored with a trailing space (e.g. UC
     // Merced's CSE B.S.); the caller sends the trimmed name, so the lookup
     // must not depend on an exact string match or the ASSIST side goes empty.
-    await db.collection('uc_agreements').insertOne({
+    await db.collection('assist_agreements').insertOne({
       uc_school: 'UC Space', uc_school_id: 6,
       community_college: 'CC Epsilon', community_college_id: 50,
       major: 'Computer Science B.S. ', // trailing space, as stored
       requirement_groups: oneGroup([recv([opt(['calcE'])], { hash: 'r-sp', parentId: 401 })]),
     });
-    await db.collection('courses').insertOne({ course_id: 'calcE', units: 4, community_college_id: 50 });
+    await db.collection('assist_courses').insertOne({ course_id: 'calcE', units: 4, community_college_id: 50, side: 'sending' });
 
     const cmp = await requirementComparisonData(db, db, {
       schoolId: 6, major: 'Computer Science B.S.', communityCollegeId: 50, // trimmed

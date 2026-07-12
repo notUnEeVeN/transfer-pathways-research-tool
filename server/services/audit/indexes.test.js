@@ -1,25 +1,28 @@
 // ensureAuditIndexes creates the two read indexes the audit paths rely on
 // (system+doc_id point lookups, system+result verdict tallies) on the
-// audit_results collection. Uses a fake collection that records the createIndexes
+// agreement_reviews collection. Uses a fake collection that records the createIndexes
 // call, plus a real in-memory Mongo to prove the specs are accepted end-to-end.
 const { startInMemoryMongo } = require('../../test/mongoHarness');
 const { ensureAuditIndexes } = require('./indexes');
 const { AUDIT_RESULTS } = require('./filters');
 
 describe('ensureAuditIndexes', () => {
-  it('createIndexes on audit_results with the two keyspecs', async () => {
+  it('creates the two agreement-review indexes', async () => {
     let target = null;
     let specs = null;
     const db = {
       collection: (name) => {
         target = name;
-        return { createIndexes: async (s) => { specs = s; } };
+        return {
+          findOne: async () => ({ _id: 'already-migrated' }),
+          createIndexes: async (s) => { specs = s; },
+        };
       },
     };
 
     await ensureAuditIndexes(db);
 
-    expect(target).toBe(AUDIT_RESULTS); // 'audit_results'
+    expect(target).toBe(AUDIT_RESULTS);
     const keys = specs.map((s) => s.key);
     expect(keys).toContainEqual({ system: 1, doc_id: 1 });
     expect(keys).toContainEqual({ system: 1, result: 1 });

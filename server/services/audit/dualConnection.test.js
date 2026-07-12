@@ -1,5 +1,5 @@
 // Dual-connection audit test: proves the W4 split actually routes audit working
-// state (audit_results / audit_groupings) to `auditDb` while reference data
+// state (`agreement_reviews`) to `auditDb` while reference data
 // (agreements) stays on `db`. Uses one in-memory mongo with TWO logical db
 // handles — distinct objects, like the real local-vs-Atlas pair, but cheap.
 //
@@ -48,16 +48,15 @@ afterAll(async () => { if (harness) await harness.stop(); });
 beforeEach(async () => {
   cache.clear();
   invalidateVisibilityCache();
-  await db.collection('uc_agreements').deleteMany({});
-  await db.collection('audit_results').deleteMany({});
-  await auditDb.collection('audit_results').deleteMany({});
-  await auditDb.collection('audit_groupings').deleteMany({});
-  await auditDb.collection('dataset_config').deleteMany({});
+  await db.collection('assist_agreements').deleteMany({});
+  await db.collection('agreement_reviews').deleteMany({});
+  await auditDb.collection('agreement_reviews').deleteMany({});
+  await auditDb.collection('settings').deleteMany({});
 });
 
 describe('audit dual-connection (auditDb separate from db)', () => {
   it('postVerify writes the verdict to auditDb, not the reference db', async () => {
-    await db.collection('uc_agreements').insertOne(agreement(1));
+    await db.collection('assist_agreements').insertOne(agreement(1));
     const res = makeRes();
     await Audit.postVerify({
       body: { doc_id: String(oid(1)), result: 'correct', system: 'uc' },
@@ -65,15 +64,15 @@ describe('audit dual-connection (auditDb separate from db)', () => {
       app: { locals: { db, auditDb } },
     }, res);
     expect(res.statusCode).toBe(200);
-    expect(await auditDb.collection('audit_results').countDocuments()).toBe(1); // landed on the audit handle
-    expect(await db.collection('audit_results').countDocuments()).toBe(0);       // NOT on the reference handle
+    expect(await auditDb.collection('agreement_reviews').countDocuments()).toBe(1); // landed on the audit handle
+    expect(await db.collection('agreement_reviews').countDocuments()).toBe(0);       // NOT on the reference handle
   });
 
   it('stamps weighted random-template verdicts as random samples for the visible stats scope', async () => {
     const visiblePairs = [{ school_id: 100, major: 'Computer Science' }];
-    await auditDb.collection('dataset_config').insertOne({ _id: 'partner_access', visible_pairs: visiblePairs });
+    await auditDb.collection('settings').insertOne({ _id: 'app', visible_pairs: visiblePairs });
     invalidateVisibilityCache();
-    await db.collection('uc_agreements').insertOne(agreement(3));
+    await db.collection('assist_agreements').insertOne(agreement(3));
 
     const res = makeRes();
     await Audit.postVerify({
@@ -88,15 +87,15 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     }, res);
 
     expect(res.statusCode).toBe(200);
-    const row = await auditDb.collection('audit_results').findOne({ doc_id: oid(3) });
+    const row = await auditDb.collection('agreement_reviews').findOne({ doc_id: oid(3) });
     expect(row.source).toBe('random_template_weighted');
     expect(row.sample_method).toBe('random');
     expect(row.sample_scope).toBe(scopeKey({ visiblePairs }));
   });
 
   it('a tier read joins auditDb verdicts against db agreements', async () => {
-    await db.collection('uc_agreements').insertOne(agreement(2, { major: 'Biology' }));
-    await auditDb.collection('audit_results').insertOne({
+    await db.collection('assist_agreements').insertOne(agreement(2, { major: 'Biology' }));
+    await auditDb.collection('agreement_reviews').insertOne({
       doc_id: oid(2), result: 'error', system: 'uc',
       uc_school_id: 100, uc_school: 'UC Alpha', major: 'Biology',
       raw_template_hash: 'hashA', template_fp: 'fpA', parser_output_hash: 'poA',

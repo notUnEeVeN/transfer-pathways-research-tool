@@ -4,7 +4,7 @@
  * concurrent audits; verdict / resolve mutations call clear() so changes
  * are visible immediately to whoever submitted them. (This is a single-
  * operator tool, so a slightly longer window between manual reads is fine,
- * and the audit_results indexes make the post-clear recompute cheap.)
+ * and the agreement_reviews indexes make the post-clear recompute cheap.)
  *
  * If we ever run multiple server instances, this becomes a per-instance
  * cache (different processes won't share entries). That's acceptable —
