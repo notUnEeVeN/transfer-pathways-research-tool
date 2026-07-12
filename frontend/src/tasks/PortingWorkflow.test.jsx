@@ -98,4 +98,31 @@ describe('PortingWorkflow', () => {
     expect(screen.getByText(/Waiting for another teammate/)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Approve task' })).not.toBeInTheDocument()
   })
+
+  it('groups the workflow log into elapsed weeks', () => {
+    render(
+      <PortingWorkflow
+        task={{
+          ...baseTask,
+          created_at: '2026-07-01T16:00:00.000Z',
+          workflow_log: [
+            {
+              _id: 'week-1', stage: 'understand', action: 'noted', note: 'First week note',
+              by: 'author', by_label: 'Ari', at: '2026-07-02T16:00:00.000Z',
+            },
+            {
+              _id: 'week-2', stage: 'research', action: 'noted', note: 'Second week note',
+              by: 'author', by_label: 'Ari', at: '2026-07-09T16:00:00.000Z',
+            },
+          ],
+        }}
+        me={{ uid: 'author' }} onAddStageNote={vi.fn()}
+        onCompleteStage={vi.fn()} onReopenStage={vi.fn()}
+      />
+    )
+
+    expect(screen.getByRole('heading', { name: 'Week 1' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Week 2' })).toBeInTheDocument()
+    expect(screen.getAllByText('Second week note')).toHaveLength(2)
+  })
 })

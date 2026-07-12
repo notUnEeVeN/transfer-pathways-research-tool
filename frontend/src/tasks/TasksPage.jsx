@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react'
-import { ClipboardDocumentListIcon, PlusIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowDownTrayIcon, ClipboardDocumentListIcon, PlusIcon, SparklesIcon,
+} from '@heroicons/react/24/outline'
 import { Button, EmptyState, Spinner, Stack, StatStrip, SwitchField, Tabs, useToast } from '../components/ui'
 import { useAuth } from '../shared/hooks/useAuth'
 import {
@@ -10,6 +12,7 @@ import { SEED_TASKS } from './seedTasks'
 import TaskBoard from './TaskBoard'
 import TaskList from './TaskList'
 import TaskModal from './TaskModal'
+import { buildTaskHistoryAiBriefing, buildTaskHistoryMarkdown } from './taskHistory'
 
 const VIEWS = [
   { value: 'board', label: 'Board' },
@@ -69,6 +72,28 @@ export default function TasksPage() {
     onError: () => toast.error('Could not delete the task.'),
   })
 
+  const copyForAi = async (historyTasks, successMessage) => {
+    try {
+      await navigator.clipboard.writeText(buildTaskHistoryAiBriefing(historyTasks))
+      toast.success(successMessage)
+    } catch {
+      toast.error('Could not copy the task history.')
+    }
+  }
+
+  const exportHistory = (historyTasks, filename, successMessage) => {
+    const report = buildTaskHistoryMarkdown(historyTasks)
+    const url = URL.createObjectURL(new Blob([report], { type: 'text/markdown;charset=utf-8' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${filename}-${new Date().toISOString().slice(0, 10)}.md`
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+    toast.success(successMessage)
+  }
+
   // Sweep the Done column into the archive — off the board, still in the All
   // list behind the "Show archived" switch. Reversible per task from its modal.
   const archiveDone = async () => {
@@ -99,12 +124,30 @@ export default function TasksPage() {
   }
 
   const mine = tasks.filter((t) => t.assignee_uid === user?.uid)
+  const modalTask = modal?.task
+    ? (tasks.find((task) => task._id === modal.task._id) || modal.task)
+    : null
+  const taskFilename = modalTask?.title
+    ? `task-history-${modalTask.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)}`
+    : 'task-history'
 
   return (
     <Stack gap='section'>
       <div className='flex flex-wrap items-center gap-3'>
         <Tabs value={view} onChange={setView} options={VIEWS} />
-        <span className='ml-auto'>
+        <span className='ml-auto flex flex-wrap items-center justify-end gap-1'>
+          {tasks.length > 0 && (
+            <>
+              <Button size='sm' variant='ghost' leadingIcon={SparklesIcon}
+                onClick={() => copyForAi(tasks, 'Complete task history copied for AI')}>
+                Copy all for AI
+              </Button>
+              <Button size='sm' variant='ghost' leadingIcon={ArrowDownTrayIcon}
+                onClick={() => exportHistory(tasks, 'research-task-history', 'Complete task history exported')}>
+                Export all
+              </Button>
+            </>
+          )}
           <Button leadingIcon={PlusIcon} onClick={() => setModal({ initialStatus: 'todo' })}>New task</Button>
         </span>
       </div>
@@ -160,7 +203,7 @@ export default function TasksPage() {
           onClose={() => setModal(null)}
           // the LIVE row, not the snapshot captured at open — notes append to
           // task.notes, and a stale snapshot would drop earlier posts
-          task={modal.task ? (tasks.find((t) => t._id === modal.task._id) || modal.task) : null}
+          task={modalTask}
           initialStatus={modal.initialStatus || 'todo'}
           roster={rosterQ.data?.rows || []}
           me={user}
@@ -169,6 +212,8 @@ export default function TasksPage() {
           onAddStageNote={(id, stage, note) => addTaskStageNote.mutateAsync({ id, stage, note })}
           onCompleteStage={(id, stage) => completeTaskStage.mutateAsync({ id, stage })}
           onReopenStage={(id, stage, note) => reopenTaskStage.mutateAsync({ id, stage, note })}
+          onCopyHistory={() => copyForAi([modalTask], 'Task history copied for AI')}
+          onExportHistory={() => exportHistory([modalTask], taskFilename, 'Task history exported')}
           onDelete={onDelete}
         />
       )}

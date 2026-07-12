@@ -1,12 +1,14 @@
 import React, { useMemo, useState } from 'react'
 import {
-  ArrowPathIcon, CheckIcon, ClockIcon, LockClosedIcon, PencilSquareIcon,
+  ArrowDownTrayIcon, ArrowPathIcon, CheckIcon, ClockIcon, LockClosedIcon,
+  PencilSquareIcon, SparklesIcon,
 } from '@heroicons/react/24/outline'
 import { Badge, Button, CompletionCheck, Textarea } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import {
   currentStageIndex, isStageComplete, stagesForTask,
 } from './taskWorkflow'
+import { groupEventsByWeek } from './taskHistory'
 
 const fmtWhen = (value) => (value
   ? new Date(value).toLocaleString(undefined, {
@@ -64,6 +66,7 @@ const eventAction = (event) => {
 
 export default function PortingWorkflow({
   task, me, roster = [], onAddStageNote, onCompleteStage, onReopenStage,
+  onCopyHistory, onExportHistory,
 }) {
   const stages = stagesForTask(task)
   const activeIndex = currentStageIndex(task)
@@ -139,16 +142,25 @@ export default function PortingWorkflow({
     }
   }
 
-  const log = [...(task.workflow_log || [])].reverse()
+  const log = task.workflow_log || []
+  const logWeeks = groupEventsByWeek(log, task.created_at, { descending: true })
 
   return (
     <div>
-      <div className='flex items-end justify-between gap-4'>
+      <div className='flex flex-wrap items-end justify-between gap-3'>
         <div>
           <h3 className='text-heading'>Porting workflow</h3>
           <p className='text-caption text-ink-subtle mt-0.5'>{completedCount} of {stages.length} stages complete</p>
         </div>
-        <span className='text-heading text-primary tabular-nums'>{progress}%</span>
+        <div className='flex flex-wrap items-center justify-end gap-1'>
+          {onCopyHistory && (
+            <Button size='sm' variant='ghost' leadingIcon={SparklesIcon} onClick={onCopyHistory}>Copy for AI</Button>
+          )}
+          {onExportHistory && (
+            <Button size='sm' variant='ghost' leadingIcon={ArrowDownTrayIcon} onClick={onExportHistory}>Export</Button>
+          )}
+          <span className='text-heading text-primary tabular-nums ml-2'>{progress}%</span>
+        </div>
       </div>
       <div className='mt-3 h-2 rounded-full bg-surface-sunken overflow-hidden' role='progressbar'
         aria-label='Task progress' aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
@@ -301,14 +313,21 @@ export default function PortingWorkflow({
             <h4 className='text-body-strong'>Workflow log</h4>
             <Badge>{log.length}</Badge>
           </div>
-          <div className='mt-3 max-h-64 overflow-y-auto divide-y divide-border'>
-            {log.map((event) => (
-              <div key={event._id} className='py-2.5 first:pt-0'>
-                <p className='text-tag text-ink-subtle'>
-                  {actorLabel(event.by, event.by_label)} {eventAction(event)} {stageLabel(stages, event.stage)} · {fmtWhen(event.at)}
-                </p>
-                {event.note && <p className='text-body mt-0.5 whitespace-pre-wrap break-words'>{event.note}</p>}
-              </div>
+          <div className='mt-3 max-h-64 overflow-y-auto'>
+            {logWeeks.map(({ week, events }) => (
+              <section key={week} aria-labelledby={`workflow-week-${week}`} className='pb-3 last:pb-0'>
+                <h5 id={`workflow-week-${week}`} className='text-label text-ink-muted py-1.5'>Week {week}</h5>
+                <div className='divide-y divide-border'>
+                  {events.map((event) => (
+                    <div key={event._id} className='py-2.5 first:pt-1'>
+                      <p className='text-tag text-ink-subtle'>
+                        {actorLabel(event.by, event.by_label)} {eventAction(event)} {stageLabel(stages, event.stage)} · {fmtWhen(event.at)}
+                      </p>
+                      {event.note && <p className='text-body mt-0.5 whitespace-pre-wrap break-words'>{event.note}</p>}
+                    </div>
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         </section>
