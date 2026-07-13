@@ -6,7 +6,7 @@
  * The college's articulations come from its real agreements with this UC; the
  * readable grouped view + the counting live in services/degreeSlots.js.
  */
-const { buildDegreeGroups, loadUniversityCourses, loadCollegeGeAreas } = require('./degreeSlots');
+const { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, loadCollegeGeAreas } = require('./degreeSlots');
 
 const COLLECTION = 'curated_requirements';
 
@@ -55,9 +55,12 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
   // that ASSIST's major-prep agreements never carry.
   const ccGeAreas = await loadCollegeGeAreas(db, community_college_id);
 
-  const { total, covered, by_tier, groups } = buildDegreeGroups(degree.requirement_groups, {
+  const { total, covered, by_tier } = buildDegreeGroups(degree.requirement_groups, {
     articulated, optionsByParent, universityCoursesById, coursesById, ccGeAreas,
   });
+  // Merged agreement-shaped groups so the frontend renders this tab through the
+  // shared RequirementsLedger, matching the Rendered tab.
+  const ledger = buildLedgerGroups(degree.requirement_groups, { articulated, optionsByParent, coursesById, ccGeAreas });
 
   return {
     school_id,
@@ -67,7 +70,9 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
     community_college_id,
     n_agreements: agreements.length,
     completion: { total, covered, pct: total ? Math.round((100 * covered) / total) : null, by_tier },
-    groups,
+    requirement_groups: ledger.requirement_groups,
+    courses: ledger.courses,
+    university_courses_by_id: universityCoursesById,
   };
 }
 

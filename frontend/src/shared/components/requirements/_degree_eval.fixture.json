@@ -1,12 +1,121 @@
 {
-  "_id": "degree:79",
-  "school_id": 79,
-  "school": "UC Berkeley",
-  "program": "Electrical Engineering & Computer Sciences, B.S.",
-  "total_units": 120,
-  "source_url": "https://guide.berkeley.edu/undergraduate/degree-programs/electrical-engineering-computer-sciences/",
-  "updated_at": null,
-  "total": 29,
+  "courses": [
+    {
+      "course_id": 281095,
+      "prefix": "MATH",
+      "number": "071"
+    },
+    {
+      "course_id": 365973,
+      "prefix": "MATH",
+      "number": "066"
+    },
+    {
+      "course_id": 308233,
+      "prefix": "MATH",
+      "number": "072"
+    },
+    {
+      "course_id": 368985,
+      "prefix": "MATH",
+      "number": "067"
+    },
+    {
+      "course_id": 159965,
+      "prefix": "MATH",
+      "number": "073"
+    },
+    {
+      "course_id": 154647,
+      "prefix": "MATH",
+      "number": "078"
+    },
+    {
+      "course_id": 198047,
+      "prefix": "MATH",
+      "number": "079"
+    },
+    {
+      "course_id": 371443,
+      "prefix": "COMSC",
+      "number": "078"
+    },
+    {
+      "course_id": 353175,
+      "prefix": "COMSC",
+      "number": "076"
+    },
+    {
+      "course_id": 247466,
+      "prefix": "PHYS",
+      "number": "004A"
+    },
+    {
+      "course_id": 365970,
+      "prefix": "PHYS",
+      "number": "007A"
+    },
+    {
+      "course_id": 365971,
+      "prefix": "PHYS",
+      "number": "007B"
+    },
+    {
+      "course_id": 305060,
+      "prefix": "BIOL",
+      "number": "004A"
+    },
+    {
+      "course_id": 305061,
+      "prefix": "BIOL",
+      "number": "004B"
+    },
+    {
+      "course_id": 280494,
+      "prefix": "CHEM",
+      "number": "001A"
+    },
+    {
+      "course_id": 300843,
+      "prefix": "CHEM",
+      "number": "001B"
+    },
+    {
+      "course_id": 281387,
+      "prefix": "CHEM",
+      "number": "012A"
+    },
+    {
+      "course_id": 280506,
+      "prefix": "CHEM",
+      "number": "012B"
+    },
+    {
+      "course_id": 337611,
+      "prefix": "ENGL",
+      "number": "C1000"
+    },
+    {
+      "course_id": 165262,
+      "prefix": "ENGL",
+      "number": "C1001"
+    },
+    {
+      "course_id": 166240,
+      "prefix": "MUSIC",
+      "number": "091"
+    },
+    {
+      "course_id": 177806,
+      "prefix": "THEAT",
+      "number": "020"
+    },
+    {
+      "course_id": 192712,
+      "prefix": "THEAT",
+      "number": "040"
+    }
+  ],
   "requirement_groups": [
     {
       "is_required": true,
@@ -24,9 +133,28 @@
                 "parent_id": 351686,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    281095
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:281095"
+                  ]
+                },
+                {
+                  "course_ids": [
+                    365973
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:365973"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "dfd78268348345532126440d4a41587de1babe8bbd4e55b65d9c7f41613c4935",
               "tier": "transferable"
@@ -37,9 +165,28 @@
                 "parent_id": 245397,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    308233
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:308233"
+                  ]
+                },
+                {
+                  "course_ids": [
+                    368985
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:368985"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "d1e89780096f0664f00e5aea266321fadb912309f27df12042b792b36da62c71",
               "tier": "transferable"
@@ -50,9 +197,19 @@
                 "parent_id": 352027,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    159965
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:159965"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "745fe98ba01325f705d5e9cf1df942184fe64c221a284d4f22f1701cd452091e",
               "tier": "transferable"
@@ -63,9 +220,21 @@
                 "parent_id": 246154,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    154647,
+                    198047
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:154647",
+                    "cc:198047"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "ebcf63a0d0c02a7b75ecb3afb3802dafc81e9cc38bf0fe892a8ac3e425f3068d",
               "tier": "transferable"
@@ -90,9 +259,19 @@
                 "parent_id": 292039,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    371443
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:371443"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "f4687d0284f9c66882109c540ae8fd5eff75fe75c07de2d84fb93691a6e72cfc",
               "tier": "transferable"
@@ -103,9 +282,19 @@
                 "parent_id": 256849,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    353175
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:353175"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "8be39e38285ba242122889f14d6d9dde364ad72a350f125d19b92d53f8c26b51",
               "tier": "transferable"
@@ -116,8 +305,8 @@
                 "parent_id": 208145,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "e171082bc3a032c6d5d4fc1f9b87224880a3962d8623e7aad346fa6762c72812",
@@ -129,8 +318,8 @@
                 "parent_id": 356766,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "2f110afcee6a22d9ce63aebe674b58fed4a0ddf32e40eaa2ba69ecb4f931fe70",
@@ -156,8 +345,8 @@
                 "parent_id": 304910,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "9ffbd6d460d561ab72c136f354109559d1752539fde29bcc2be048b8a94df8e7",
@@ -169,8 +358,8 @@
                 "parent_id": 304911,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "35706a2f43620f6a7a7588d70c0cb0ac50ed307fdb9b661a995053852e051911",
@@ -196,9 +385,28 @@
                 "parent_id": 245412,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    247466
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:247466"
+                  ]
+                },
+                {
+                  "course_ids": [
+                    365970
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:365970"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "000dd7262b93a20f31179381d2dceab05f44dfd6017145cedb4519c16fbe047e",
               "tier": "transferable"
@@ -209,9 +417,19 @@
                 "parent_id": 275225,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    365971
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:365971"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "5a367f321b1d4fefb9641ba6dab26482ce8d7140cf02d46bfb2bdb66126636f9",
               "tier": "transferable"
@@ -237,8 +455,8 @@
                 "parent_id": 283495,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "dc1ab57f2480bcae3cb9de48958029eeac3f77550f25105a475bf5003888d1fc",
@@ -250,8 +468,8 @@
                 "parent_id": 353834,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "9b10b2611c9e54cccc48be683da2deb748a5c22f63b2b79dd2db72b7693ad940",
@@ -263,9 +481,21 @@
                 "parent_id": 275173,
                 "units": 3
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    305060,
+                    305061
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:305060",
+                    "cc:305061"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "89c1d9fbbabfff75a1719788a8d618894fcf004a2e533b93a61c9ec445731cfa",
               "tier": "transferable"
@@ -276,9 +506,19 @@
                 "parent_id": 351700,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    305061
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:305061"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "d74ac9a77c4d0083258c01133a13ea0d9371d8b8d8e264ad85e6ed24d044499e",
               "tier": "transferable"
@@ -289,9 +529,19 @@
                 "parent_id": 263888,
                 "units": 3
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    280494
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:280494"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "37116197a42cc2f49cad7c4aa2b8b350ac665ad7a3257535dfb8f7bac78f14bd",
               "tier": "transferable"
@@ -302,9 +552,19 @@
                 "parent_id": 351685,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    300843
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:300843"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "e161e0add987f3e3ae334d15dfb44d6e0f7bdc99536b78ce88cda0721754bee1",
               "tier": "transferable"
@@ -315,9 +575,19 @@
                 "parent_id": 206562,
                 "units": 3
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    281387
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:281387"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "00b931ead6967d1cedb89346274a9bd1259edd541802ced73dcc969b65709713",
               "tier": "transferable"
@@ -328,9 +598,19 @@
                 "parent_id": 206564,
                 "units": 3
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    280506
+                  ],
+                  "course_conjunction": "and",
+                  "course_keys": [
+                    "cc:280506"
+                  ]
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "5b09e9e77fa7ea0f8f3abe229db0ccf4462bac7a79df7d5852fb88346826f723",
               "tier": "transferable"
@@ -341,8 +621,8 @@
                 "parent_id": 135534,
                 "units": 3
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "943352e97da3e94d539b8073a2ea52bdc9c9965a65a7b5913c7cbf5149a7dd18",
@@ -354,8 +634,8 @@
                 "parent_id": 281317,
                 "units": 4
               },
-              "articulation_status": null,
-              "not_articulated_reason": null,
+              "articulation_status": "not_articulated",
+              "not_articulated_reason": "no_course_articulated",
               "options": [],
               "options_conjunction": "or",
               "hash_id": "db6fbd70e14dc059bd515fbb33552dc8b9af9054dc370fc512340961b43444d2",
@@ -381,9 +661,16 @@
                 "parent_id": 281224,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    337611
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "375a51857614d703c03164ad8bcda779f50650729ed55d0736442802e9a1f468",
               "tier": "breadth",
@@ -397,9 +684,16 @@
                 "parent_id": 351651,
                 "units": 4
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    165262
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "0c223911f528d9523bb08dff7e7ae9c213e3e798f7b6dbdfbf26a3411177fb6f",
               "tier": "breadth",
@@ -430,9 +724,28 @@
                 "parent_id": null,
                 "units": null
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
-              "options": [],
+              "options": [
+                {
+                  "course_ids": [
+                    166240
+                  ],
+                  "course_conjunction": "and"
+                },
+                {
+                  "course_ids": [
+                    177806
+                  ],
+                  "course_conjunction": "and"
+                },
+                {
+                  "course_ids": [
+                    192712
+                  ],
+                  "course_conjunction": "and"
+                }
+              ],
               "options_conjunction": "or",
               "hash_id": "c6fa00469eebc8bae65de5d8fc0883fa80ac9c2f5ed07b0122c88e63fe09590e",
               "tier": "breadth",
@@ -471,7 +784,7 @@
                 "parent_id": null,
                 "units": null
               },
-              "articulation_status": null,
+              "articulation_status": "articulated",
               "not_articulated_reason": null,
               "options": [],
               "options_conjunction": "or",

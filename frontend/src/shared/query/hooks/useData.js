@@ -174,14 +174,14 @@ export function useRefTable(table) {
   })
 }
 
-// Hand-gathered full-degree requirements (Data → Degree reqs), enriched
-// server-side with course codes and per-tier slot tallies. Read-only.
+// Hand-gathered full-degree requirements (the campus degree templates),
+// agreement-shaped so the shared ledger renders them directly. Read-only.
 export function useDegreeRequirements() {
   const { user } = useAuth()
   return useQuery({
     // Bump the version whenever the response shape changes so a persisted
     // (IndexedDB) response from an older shape can't hydrate and crash the tab.
-    queryKey: ['degree-requirements', 'v3', user?.uid],
+    queryKey: ['degree-requirements', 'v4', user?.uid],
     queryFn: () => apiClient.get('/curated/degrees').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 60 * 1000,

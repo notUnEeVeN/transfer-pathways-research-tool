@@ -197,4 +197,78 @@ async function loadCollegeGeAreas(db, communityCollegeId) {
   return map;
 }
 
-module.exports = { buildDegreeGroups, loadUniversityCourses, loadCollegeGeAreas };
+// Stamp per-college articulation onto the stored (agreement-shaped) degree so the
+// shared RequirementsLedger can render the "4-year degree" tab in the exact same
+// style as an agreement. Returns { requirement_groups, courses } — courses is the
+// CC-course lookup the ledger's sending side needs. Major-prep options come from
+// the real agreements; R&C/H/SS options are a few of the college's GE-area courses;
+// non-transferable + assumed (AH&I) receivers stay optionless.
+//
+// `template: true` renders the stored degree with NO college context: course and
+// GE receivers keep a null articulation_status (the ledger leaves their sending
+// side blank), while at-the-university slots still carry their reason.
+function buildLedgerGroups(requirementGroups, ctx = {}) {
+  const { articulated = new Set(), optionsByParent = new Map(), coursesById = new Map(), ccGeAreas = null, template = false } = ctx;
+  const usedCourses = new Map();
+  const addOptCourses = (opts) => {
+    for (const o of opts) for (const cid of o.course_ids || []) {
+      const c = coursesById.get(Number(cid));
+      if (c && !usedCourses.has(Number(cid))) usedCourses.set(Number(cid), { course_id: Number(cid), prefix: c.prefix, number: c.number });
+    }
+  };
+  const geOptions = (areas) => {
+    const hits = geCoverCourses(areas, ccGeAreas).slice(0, 3);
+    for (const h of hits) if (!usedCourses.has(h.course_id)) usedCourses.set(h.course_id, { course_id: h.course_id, prefix: h.prefix, number: h.number });
+    return hits.map((h) => ({ course_ids: [h.course_id], course_conjunction: 'and' }));
+  };
+
+  const stamp = (r, s) => {
+    const rec = r.receiving || {};
+    if (template) {
+      if (rec.kind === 'course' || rec.kind === 'ge_area') {
+        return { ...r, articulation_status: null, not_articulated_reason: null, options: [] };
+      }
+      return { ...r, articulation_status: 'not_articulated', not_articulated_reason: 'must_take_at_university', options: [] };
+    }
+    if (rec.kind === 'course') {
+      const pid = Number(rec.parent_id);
+      let isArt = articulated.has(pid);
+      let opts = isArt ? (optionsByParent.get(pid) || r.options || []) : [];
+      if (!isArt && Array.isArray(r.ge_areas) && r.ge_areas.length) {
+        const g2 = geOptions(r.ge_areas); // R&C R1A/R1B fallback via IGETC 1A/1B
+        if (g2.length) { isArt = true; opts = g2; }
+      }
+      addOptCourses(opts);
+      return { ...r, articulation_status: isArt ? 'articulated' : 'not_articulated', not_articulated_reason: isArt ? null : 'no_course_articulated', options: opts };
+    }
+    if (rec.kind === 'ge_area') {
+      if (r.assume_satisfiable) return { ...r, articulation_status: 'articulated', options: [] };
+      const opts = geOptions(s.ge_areas || r.ge_areas || []);
+      return { ...r, articulation_status: opts.length ? 'articulated' : 'not_articulated', options: opts };
+    }
+    return { ...r, articulation_status: 'not_articulated', not_articulated_reason: 'must_take_at_university', options: [] };
+  };
+
+  const groups = (requirementGroups || []).map((g) => {
+    // Collapse a group's "take-all" course sections (every receiver required) into
+    // ONE section, so the ledger shows a single "Complete all of:" card with the
+    // courses as rows instead of one card per course. Choose-N sections (e.g. the
+    // science elective) and non-course sections stay separate.
+    const takeAll = [];
+    const others = [];
+    for (const s of g.sections || []) {
+      const recvs = s.receivers || [];
+      const ask = s.section_advisement ?? 1;
+      const allCourses = recvs.length > 0 && recvs.every((r) => r.receiving?.kind === 'course');
+      if (allCourses && ask === recvs.length) takeAll.push(...recvs);
+      else others.push(s);
+    }
+    const sections = [];
+    if (takeAll.length) sections.push({ section_advisement: takeAll.length, unit_advisement: null, receivers: takeAll.map((r) => stamp(r, {})) });
+    for (const s of others) sections.push({ ...s, receivers: (s.receivers || []).map((r) => stamp(r, s)) });
+    return { ...g, is_required: true, sections };
+  });
+  return { requirement_groups: groups, courses: [...usedCourses.values()] };
+}
+
+module.exports = { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, loadCollegeGeAreas };

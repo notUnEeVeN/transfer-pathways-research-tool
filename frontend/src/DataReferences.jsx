@@ -1,15 +1,19 @@
 import React, { useMemo, useState } from 'react'
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, Tabs } from './components/ui'
+import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack } from './components/ui'
 import { useRefTable, useDeleteRefRow } from './shared/query/hooks/useData'
 import { refTableByKey } from './references/refTablesRegistry'
 import RefRowModal from './references/RefRowModal'
 import RouteHint from './components/RouteHint'
 
 /**
- * Data → References — hand-curated reference tables, drill-in by district or UC
- * campus, editable in place (row edit/delete/add). Reads + writes via the
- * curation ref CRUD; edits open to any console user, stamped with their uid.
+ * Hand-curated reference tables, editable in place (row edit/delete/add) via
+ * the curation ref CRUD; edits open to any console user, stamped with their uid.
+ *
+ *   DistrictsTab    — Data → Districts: CC district geography, rail of
+ *                     districts → that district's colleges
+ *   CampusMinimums  — one campus's hand-curated UC hard minimum, shown inside
+ *                     the Agreements flow next to the degree template
  */
 
 const intFmt = new Intl.NumberFormat()
@@ -112,7 +116,14 @@ function useRowEditing(tableKey) {
   }
 }
 
-// ── CC districts: rail of districts → that district's colleges ──
+// ── Data → Districts: rail of CC districts → that district's colleges ──
+export default function DistrictsTab() {
+  const districts = useRefTable('community_college_geography')
+  if (districts.isLoading) return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
+  if (districts.isError) return <Alert type='error'>Failed to load the district table.</Alert>
+  return <DistrictLookup rows={districts.data?.rows || []} />
+}
+
 function DistrictLookup({ rows }) {
   const [query, setQuery] = useState('')
   const [selectedKey, setSelectedKey] = useState(null)
@@ -195,155 +206,87 @@ function DistrictLookup({ rows }) {
   )
 }
 
-// ── UC minimums: rail of campuses → that campus's required courses ──
-function UcMinimumsLookup({ rows }) {
-  const [query, setQuery] = useState('')
-  const [selectedKey, setSelectedKey] = useState(null)
+// ── one campus's hand-curated UC hard minimum (Agreements → Min requirements) ──
+export function CampusMinimums({ schoolId }) {
+  const minimums = useRefTable('transfer_minimums')
   const ed = useRowEditing('transfer_minimums')
 
-  const campuses = useMemo(() => {
-    const byCampus = groupBy(rows, (r) => String(r.school_id))
-    return [...byCampus.entries()].map(([key, items]) => {
-      const sorted = items.slice().sort((a, b) =>
-        String(a.group_id).localeCompare(String(b.group_id)) ||
-        String(a.set_id).localeCompare(String(b.set_id)) ||
-        Number(a.source_order || 0) - Number(b.source_order || 0))
-      return {
-        key,
-        school: sorted[0]?.school || `School ${key}`,
-        ucCode: sorted[0]?.uc_code || '',
-        requirements: sorted,
-        matched: sorted.filter((r) => r.matched).length,
-        groups: [...new Set(sorted.map((r) => r.group_id))].sort(),
-      }
-    }).sort((a, b) => a.school.localeCompare(b.school))
-  }, [rows])
+  const rows = useMemo(() => {
+    const mine = (minimums.data?.rows || []).filter((r) => Number(r.school_id) === Number(schoolId))
+    return mine.sort((a, b) =>
+      String(a.group_id).localeCompare(String(b.group_id)) ||
+      String(a.set_id).localeCompare(String(b.set_id)) ||
+      Number(a.source_order || 0) - Number(b.source_order || 0))
+  }, [minimums.data, schoolId])
 
-  const railRows = useMemo(() => {
-    const q = norm(query)
-    if (!q) return campuses
-    return campuses.filter((campus) =>
-      norm(campus.school).includes(q) || norm(campus.ucCode).includes(q) ||
-      campus.requirements.some((row) =>
-        norm(row.group_id).includes(q) || norm(row.receiving_code).includes(q) || norm(courseLabel(row)).includes(q)))
-  }, [campuses, query])
-
-  const selected = campuses.find((row) => String(row.key) === String(selectedKey)) || campuses[0] || null
-  const selectedRows = selected?.requirements || []
-  const selectedGroupSetCounts = useMemo(() => {
+  const groupSetCounts = useMemo(() => {
     const counts = new Map()
-    for (const [groupId, groupRows] of groupBy(selectedRows, (r) => r.group_id || 'Ungrouped')) {
+    for (const [groupId, groupRows] of groupBy(rows, (r) => r.group_id || 'Ungrouped')) {
       counts.set(groupId, new Set(groupRows.map((r) => r.set_id)).size)
     }
     return counts
-  }, [selectedRows])
+  }, [rows])
+
+  if (minimums.isLoading) return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
+  if (minimums.isError) return <Alert type='error'>Failed to load the UC minimums table.</Alert>
+
+  const school = rows[0]?.school || null
+  const ucCode = rows[0]?.uc_code || ''
+  const unmatched = rows.filter((r) => !r.matched).length
 
   return (
     <Stack gap='cozy'>
-      <div className='flex flex-wrap items-center gap-3'>
-        <span className='text-caption text-ink-subtle'>
-          {intFmt.format(rows.length)} imported hard-minimum requirements · {intFmt.format(campuses.length)} UC campuses
-        </span>
-        <RouteHint path='/api/curated/requirements?kind=transfer_minimum' />
-        <Button className='ml-auto' leadingIcon={PlusIcon}
-          onClick={() => ed.openAdd(selected ? { uc_code: selected.ucCode } : {})}
-          disabled={!selected}>
-          Add requirement
-        </Button>
+      <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
+        <div className='min-w-0'>
+          <p className='text-body-strong'>{school || 'No minimums for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}</p>
+          <p className='text-caption text-ink-muted mt-0.5'>Hand-curated hard minimum · {rows.length} course entries</p>
+        </div>
+        <div className='ml-auto flex items-center gap-2 shrink-0'>
+          {unmatched > 0 && <Badge variant='conservative'>{unmatched} not matched</Badge>}
+          <Button leadingIcon={PlusIcon} onClick={() => ed.openAdd(ucCode ? { uc_code: ucCode } : {})}>
+            Add requirement
+          </Button>
+        </div>
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-4 items-start'>
-        <ReferenceRail title='UC campuses' count={campuses.length} rows={railRows} search={false}
-          selectedKey={selected?.key} onSelect={setSelectedKey}
-          renderRow={(campus) => <p className='text-body leading-snug'>{campus.school}</p>} />
-
-        {!selected ? (
-          <EmptyState title='No minimums imported' description='The UC hard-minimum reference table is empty.' />
-        ) : (
-          <Stack gap='cozy'>
-            <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
-              <div className='min-w-0'>
-                <p className='text-body-strong'>{selected.school}</p>
-                <p className='text-caption text-ink-muted mt-1'>{selected.ucCode} · {selected.requirements.length} required course entries</p>
-              </div>
-              <div className='ml-auto flex flex-wrap gap-2'>
-                {selected.matched < selected.requirements.length && (
-                  <Badge variant='conservative'>{selected.requirements.length - selected.matched} not matched</Badge>
-                )}
-              </div>
-            </div>
-
-            <DataTable
-              rows={selectedRows}
-              onEdit={ed.openEdit} onDelete={ed.remove} deleting={ed.deleting}
-              columns={[
-                { key: 'group_id', label: 'Group', cellClassName: 'text-ink-muted whitespace-nowrap' },
-                {
-                  key: 'receiving_code',
-                  label: 'Required course',
-                  render: (r) => {
-                    const hasAlternatives = (selectedGroupSetCounts.get(r.group_id || 'Ungrouped') || 0) > 1
-                    return (
-                      <span className='inline-flex flex-wrap items-center gap-2'>
-                        <span className='font-mono text-ink'>{r.receiving_code}</span>
-                        {hasAlternatives && <span className='text-tag text-ink-subtle font-mono'>alt {r.set_id}</span>}
-                        {!r.matched && <Badge variant='conservative'>not matched</Badge>}
-                      </span>
-                    )
-                  },
-                },
-                {
-                  key: 'matched_course',
-                  label: 'Matched UC course',
-                  render: (r) => {
-                    const match = r.matched_courses?.[0]
-                    if (!r.matched) return <span className='text-ink-subtle'>-</span>
-                    return (
-                      <span>
-                        <span className='font-mono text-ink'>{courseLabel(r)}</span>
-                        {match?.title ? <span className='ml-2'>{match.title}</span> : null}
-                      </span>
-                    )
-                  },
-                },
-              ]} />
-          </Stack>
-        )}
-      </div>
+      {rows.length > 0 && (
+        <DataTable
+          rows={rows}
+          onEdit={ed.openEdit} onDelete={ed.remove} deleting={ed.deleting}
+          columns={[
+            { key: 'group_id', label: 'Group', cellClassName: 'text-ink-muted whitespace-nowrap' },
+            {
+              key: 'receiving_code',
+              label: 'Required course',
+              render: (r) => {
+                const hasAlternatives = (groupSetCounts.get(r.group_id || 'Ungrouped') || 0) > 1
+                return (
+                  <span className='inline-flex flex-wrap items-center gap-2'>
+                    <span className='font-mono text-ink'>{r.receiving_code}</span>
+                    {hasAlternatives && <span className='text-tag text-ink-subtle font-mono'>alt {r.set_id}</span>}
+                    {!r.matched && <Badge variant='conservative'>not matched</Badge>}
+                  </span>
+                )
+              },
+            },
+            {
+              key: 'matched_course',
+              label: 'Matched UC course',
+              render: (r) => {
+                const match = r.matched_courses?.[0]
+                if (!r.matched) return <span className='text-ink-subtle'>-</span>
+                return (
+                  <span>
+                    <span className='font-mono text-ink'>{courseLabel(r)}</span>
+                    {match?.title ? <span className='ml-2'>{match.title}</span> : null}
+                  </span>
+                )
+              },
+            },
+          ]} />
+      )}
 
       <RefRowModal config={ed.config} editing={ed.editing} onClose={ed.close} />
-    </Stack>
-  )
-}
-
-export default function DataReferences() {
-  const [tab, setTab] = useState('minimums')
-  const districts = useRefTable('community_college_geography')
-  const minimums = useRefTable('transfer_minimums')
-
-  if (districts.isLoading || minimums.isLoading) {
-    return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
-  }
-  if (districts.isError || minimums.isError) {
-    return <Alert type='error'>Failed to load reference tables.</Alert>
-  }
-
-  return (
-    <Stack gap='section'>
-      {/* Flex row keeps the inline-flex tab bar content-width; a bare Stack
-          child stretches full-width. */}
-      <div className='flex flex-wrap items-center gap-3'>
-        <Tabs
-          value={tab}
-          onChange={setTab}
-          options={[
-            { value: 'minimums', label: 'UC Min Requirements' },
-            { value: 'districts', label: 'CC Districts' },
-          ]}
-        />
-      </div>
-      {tab === 'minimums' && <UcMinimumsLookup rows={minimums.data?.rows || []} />}
-      {tab === 'districts' && <DistrictLookup rows={districts.data?.rows || []} />}
     </Stack>
   )
 }

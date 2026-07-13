@@ -1,5 +1,6 @@
 import React from 'react'
 import { Alert, Spinner, Stack } from './ui'
+import RouteHint from './RouteHint'
 import { useDataSummary, useCoverage } from '@frontend/query/hooks/useData'
 
 /**
@@ -42,6 +43,9 @@ export default function DatasetSummaryPanel({ compact = false }) {
 
   return (
     <Stack gap='comfortable'>
+      <div className='flex justify-end'>
+        <RouteHint path='/api/data/summary' />
+      </div>
       {statBar}
       <CampusTable schools={schools} />
     </Stack>
@@ -112,10 +116,6 @@ function CampusTable({ schools }) {
           ))}
         </tbody>
       </table>
-      <p className='px-4 py-2 text-caption text-ink-subtle'>
-        Mean articulation coverage across the campus's community colleges, under the hand-curated hard minimum
-        and the full ASSIST-stated minimum. Compare course-by-course per college in the Agreements tab.
-      </p>
     </div>
   )
 }

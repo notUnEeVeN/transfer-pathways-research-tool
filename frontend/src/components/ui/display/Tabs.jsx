@@ -15,7 +15,9 @@ export default function Tabs({ value, onChange, options, multiple = false, class
   const isActive = (v) => (multiple ? Array.isArray(value) && value.includes(v) : v === value)
   return (
     <div
-      className={`inline-flex items-center gap-1 p-1 rounded-lg surface-sunken shrink-0 ${className}`}
+      // w-fit: a flex-column parent (Stack) would otherwise stretch the pill
+      // to the container's full width.
+      className={`inline-flex items-center gap-1 p-1 rounded-lg surface-sunken shrink-0 w-fit ${className}`}
       role={multiple ? 'group' : 'tablist'}
     >
       {options.map((opt) => {

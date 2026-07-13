@@ -271,10 +271,24 @@ function SendingSide({ receiver, courses, userCourses, mark }) {
 
 function ReceiverRow({ receiver, ctx }) {
   const { courses, userCourses, crossCc, universityCoursesById } = ctx
-  const completed = isReceiverCompleted(receiver, userCourses, crossCc)
+  const completed = ctx.showCompletion && isReceiverCompleted(receiver, userCourses, crossCc)
   const notArt = receiver.articulation_status === 'not_articulated'
   const hasOptions = (receiver.options || []).length > 0 || (receiver.cell_groups || []).length > 0
   const unavailable = !completed && (notArt || !hasOptions)
+  // A stored template (no college context yet): articulation was never stamped,
+  // so there is no sending side to speak of — leave the right column blank
+  // rather than claiming "no course articulates".
+  const unstamped = receiver.articulation_status == null && !hasOptions
+
+  if (unstamped) {
+    return (
+      <div className='grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-4 py-3'>
+        <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={false} />
+        <span aria-hidden />
+        <span aria-hidden />
+      </div>
+    )
+  }
 
   return (
     <div className='grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-4 py-3'>
@@ -315,7 +329,11 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
   // courses across the sections" group). Exception: a section with nothing
   // articulated stays grey — there's nothing here to mark as done.
   const natural = sectionStatus(section, group, userCourses, crossCc, soleStat, pooled)
-  const status = groupComplete && natural.kind !== 'none' ? { kind: 'done' } : natural
+  // With completion display off, only the greyed nothing-at-a-CC state survives;
+  // vacuous "done" (auto-satisfied because nothing articulates) never shows.
+  const status = !ctx.showCompletion
+    ? (natural.kind === 'none' ? natural : { kind: 'progress' })
+    : groupComplete && natural.kind !== 'none' ? { kind: 'done' } : natural
   const done = status.kind === 'done'
   // Nothing actionable at a CC — grey the whole section and footnote it.
   const greyed = status.kind === 'none'
@@ -339,7 +357,7 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
 
 function Group({ group, ctx, showMissing }) {
   const { userCourses, crossCc } = ctx
-  const groupComplete = isGroupCompleted(group, userCourses, crossCc)
+  const groupComplete = ctx.showCompletion && isGroupCompleted(group, userCourses, crossCc)
   const sections = group.sections || []
 
   const visible = sections
@@ -378,7 +396,10 @@ function Group({ group, ctx, showMissing }) {
       <Stack gap='cozy' className='flex-1 min-w-0'>
         <Stack gap='tight'>
           <div className='flex items-center gap-2'>
-            <h3 className='text-xl font-semibold text-primary tracking-tight'>{group.is_required ? 'Required' : 'Recommended'}</h3>
+            {/* A group `title` (degree/comparison views) replaces the generic
+                Required/Recommended heading; agreements have no title so they
+                keep the original wording. */}
+            <h3 className='text-xl font-semibold text-primary tracking-tight'>{group.title || (group.is_required ? 'Required' : 'Recommended')}</h3>
             {groupComplete && <CompletionCheck />}
           </div>
           {ruleLine && <p className='text-lg font-semibold text-tertiary'>{ruleLine}</p>}
@@ -413,7 +434,12 @@ export default function RequirementsLedger({
   universityCoursesById = null,
   showMissing = false,
   preserveOrder = false,
-  onToggleCourse = null
+  onToggleCourse = null,
+  // Completion affordances (green checks, success tint) come from the PMT
+  // eligibility engine, which treats requirements nothing articulates as
+  // vacuously satisfied. Right for a student plan; misleading in reference
+  // views with no student — those pass false to render plain.
+  showCompletion = true
 }) {
   if (!major || !Array.isArray(major.requirement_groups)) return null
 
@@ -422,7 +448,7 @@ export default function RequirementsLedger({
     ? major.requirement_groups
     : [...major.requirement_groups].sort((a, b) => (a.is_required === b.is_required ? 0 : a.is_required ? -1 : 1))
 
-  const ctx = { courses, userCourses, crossCc, universityCoursesById }
+  const ctx = { courses, userCourses, crossCc, universityCoursesById, showCompletion }
 
   const cards = groups
     .filter((g) => !(showMissing && (!g.is_required || isGroupCompleted(g, userCourses, crossCc))))

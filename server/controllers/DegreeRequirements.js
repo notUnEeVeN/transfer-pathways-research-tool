@@ -1,15 +1,12 @@
 /**
  * Read-only views of the hand-gathered full-degree requirements
- * (`curated_requirements`, kind `degree`): the template list (Data → Degree
- * reqs) and one
- * degree evaluated against a community college (the "4-year degree" tab).
- *
- * Both return the same readable grouped shape from services/degreeSlots.js, so
- * the frontend renders them with one component. See
+ * (`curated_requirements`, kind `degree`): the template list (agreement-shaped
+ * groups the shared RequirementsLedger renders directly) and one degree
+ * evaluated against a community college (the "4-year degree" tab). See
  * docs/figures/degree-coverage-sources.md.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { buildDegreeGroups, loadUniversityCourses } = require('../services/degreeSlots');
+const { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses } = require('../services/degreeSlots');
 const { evaluateDegreeAtCollege } = require('../services/degreeCoverage');
 
 const COLLECTION = 'curated_requirements';
@@ -21,7 +18,8 @@ exports.list = asyncHandler(async (req, res) => {
   const rows = [];
   for (const doc of docs) {
     const universityCoursesById = await loadUniversityCourses(db, doc.requirement_groups);
-    const { total, by_tier, groups } = buildDegreeGroups(doc.requirement_groups, { universityCoursesById });
+    const { total } = buildDegreeGroups(doc.requirement_groups, { universityCoursesById });
+    const ledger = buildLedgerGroups(doc.requirement_groups, { template: true });
     rows.push({
       _id: doc._id,
       school_id: doc.school_id,
@@ -31,8 +29,8 @@ exports.list = asyncHandler(async (req, res) => {
       source_url: doc.source_url || null,
       updated_at: doc.updated_at || null,
       total,
-      by_tier,
-      groups,
+      requirement_groups: ledger.requirement_groups,
+      university_courses_by_id: universityCoursesById,
     });
   }
   res.json({ rows, generated_at: new Date() });
