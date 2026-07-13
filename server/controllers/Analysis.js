@@ -1,9 +1,8 @@
 /**
  * Analysis + export endpoints. Each analysis serves JSON by default and a
- * flat CSV with `?format=csv` (nested cells JSON-encoded) — the export-first
- * contract: partners reproduce the papers' figures in notebooks against
- * these. This is a legacy compatibility surface; new work reads the canonical
- * data API and computes locally before publishing a finished figure.
+ * flat CSV with `?format=csv` (nested cells JSON-encoded). The analysis routes
+ * power the built-in Visuals cards and remain useful to local notebooks; bulk
+ * exports support analyses that should be computed entirely on-device.
  *
  * Query params shared by all endpoints:
  *   scope=all|uc|csu           (default all)
@@ -17,13 +16,25 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
+const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
 const {
-  coverageData, requirementComparisonData,
+  coverageData, requirementComparisonData, creditLossData, choiceCostData,
+  categoryGapsData, complexityData, timeToDegreeData,
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
 
 const TTL_MS = 60 * 1000;
 const cache = new Map(); // key → { at, rows }
+
+// Presentation settings for the built-in Visuals cards. The route is console-
+// gated; the frontend uses the same response for the admin and partner views.
+exports.getReleases = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  res.json({
+    released_ids: await getReleasedIds(auditDb),
+    disabled_ids: await getDisabledIds(auditDb),
+  });
+});
 
 async function cached(key, compute) {
   const hit = cache.get(key);
@@ -109,6 +120,13 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   const data = await cached(key, () => requirementComparisonData(db, auditDb, { schoolId, major, communityCollegeId }));
   res.json(data);
 });
+
+exports.creditLoss = makeEndpoint('credit-loss', creditLossData);
+exports.choiceCost = makeEndpoint('choice-cost', choiceCostData, { needsSchoolIds: true });
+exports.categoryGaps = makeEndpoint('category-gaps', categoryGapsData);
+exports.complexity = makeEndpoint('complexity', complexityData);
+exports.timeToDegree = makeEndpoint('time-to-degree', timeToDegreeData);
+
 // Bulk exports — one call each for the whole scoped corpus (gzip on the wire).
 exports.exportAgreements = makeEndpoint('agreements', agreementsExportData);
 exports.exportReceivers = makeEndpoint('receivers', receiversExportData);

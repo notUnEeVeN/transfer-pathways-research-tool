@@ -575,7 +575,13 @@ const VALIDATORS = Object.freeze({
     $jsonSchema: { bsonType: 'object', required: ['_id', 'visible_pairs', 'canonical_dirty'] },
   },
   published_figures: {
-    $jsonSchema: { bsonType: 'object', required: ['_id', 'title', 'formats'] },
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['_id', 'title'],
+      properties: {
+        publication_type: { enum: ['static', 'interactive'] },
+      },
+    },
   },
 });
 

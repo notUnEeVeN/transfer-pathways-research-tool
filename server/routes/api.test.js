@@ -4,8 +4,8 @@ const paths = router.stack
   .filter((layer) => layer.route)
   .map((layer) => layer.route.path);
 
-describe('canonical API router', () => {
-  it('contains the stable source, curated, export, task, and publish paths', () => {
+describe('research API router', () => {
+  it('contains the stable data, analysis, export, task, and publish paths', () => {
     expect(paths).toContain('/assist/institutions');
     expect(paths).toContain('/assist/courses');
     expect(paths).toContain('/assist/agreements');
@@ -15,10 +15,19 @@ describe('canonical API router', () => {
     expect(paths).toContain('/tasks');
     expect(paths).toContain('/publish');
     expect(paths).toContain('/gallery');
+    expect(paths).toContain('/analysis/coverage');
+    expect(paths).toContain('/analysis/releases');
+    expect(paths).toContain('/analysis/requirement-comparison');
+    expect(paths).toContain('/analysis/credit-loss');
+    expect(paths).toContain('/analysis/choice-cost');
+    expect(paths).toContain('/analysis/category-gaps');
+    expect(paths).toContain('/analysis/complexity');
+    expect(paths).toContain('/analysis/time-to-degree');
+    expect(paths).toContain('/admin/analysis-releases');
+    expect(paths).toContain('/admin/analysis-disabled');
   });
 
   it('does not expose retired names beneath /api', () => {
-    expect(paths.some((path) => String(path).startsWith('/analysis/'))).toBe(false);
     expect(paths.some((path) => String(path).startsWith('/figure-scripts'))).toBe(false);
     expect(paths.some((path) => String(path).startsWith('/references/'))).toBe(false);
     expect(paths.some((path) => String(path).startsWith('/curation/ref'))).toBe(false);

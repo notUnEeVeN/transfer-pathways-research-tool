@@ -251,8 +251,8 @@ the same (now provably equivalent) machinery.
 This is **our extension**, not a paper replication. The paper asked how many
 CCC courses satisfy a fixed, hand-curated set of UC website minimums. The
 ASSIST variant asks the same credit-loss question against the minimums ASSIST
-agreements themselves state, for the one hand-selected CS major per campus you
-share with partners (Settings -> `settings.app.visible_pairs`; falls back to
+agreements themselves state, for the one hand-selected CS major per campus in
+the working dataset (Settings -> `settings.app.visible_pairs`; falls back to
 `PAPER_MAJORS` if unset). Both halves are the website's own algorithms, ported
 so the figure inherits the console's rigor: the eligibility decision from
 `analysis/pmt_eligibility.py` (which honors choose-N — "Complete 1 of the

@@ -1,16 +1,23 @@
 /**
- * Published figures — the team's shared statistics gallery.
+ * Published visuals — the team's shared statistics gallery.
  *
- * Partners render figures on their own machines and publish only the finished
- * SVG/PNG/PDF files through pmt.publish(fig, ...). One root is stored per slug
- * (latest owner publish wins), with child records only for additional static
- * states; no Python code is uploaded or executed.
+ * The beginner path stays deliberately small: partners render figures on their
+ * own machines and publish only finished SVG/PNG/PDF files. A named interactive
+ * publication instead stores a validated renderer manifest; the frontend then
+ * mounts the same audited React component as the corresponding built-in. No
+ * Python or JavaScript supplied by a researcher is uploaded or executed.
  *
  * Storage (audit handle):
- *   published_figures root:
+ *   published_figures static root:
  *     { _id: slug, title, caption, source_url, author_uid, author_label,
- *       formats: { svg, png, pdf }, controls?, variants?, default_variant?,
+ *       publication_type: 'static', formats: { svg, png, pdf },
+ *       controls?, variants?, default_variant?,
  *       created_at, updated_at }
+ *
+ *   published_figures interactive root:
+ *     { _id: slug, title, caption, source_url, author_uid, author_label,
+ *       publication_type: 'interactive',
+ *       visual: { id, options }, created_at, updated_at }
  *
  *   published_figures non-default variant:
  *     { _id: `${slug}::${key}`, record_type: 'figure_variant',
@@ -29,7 +36,13 @@ const SLUG_RE = /^[a-z0-9][a-z0-9_-]{0,63}$/;
 const CONTROL_KEY_RE = /^[a-z][a-z0-9_-]{0,31}$/;
 const FORMATS = { svg: 'image/svg+xml', png: 'image/png', pdf: 'application/pdf' };
 const VARIANT_RECORD = 'figure_variant';
+const STATIC_PUBLICATION = 'static';
+const INTERACTIVE_PUBLICATION = 'interactive';
+// Interactive publication is intentionally allowlisted. A renderer id is a
+// capability exposed by this codebase, never a module path supplied by a user.
+const INTERACTIVE_RENDERERS = new Set(['paper-credit-loss']);
 const MAX_VARIANTS = 16;
+const MAX_VISUAL_OPTIONS_BYTES = 32 * 1024;
 // Each stored file set remains safely below MongoDB's 16 MiB document limit.
 // The larger request cap covers several independent child records in one
 // publication while still bounding memory use for this private API.
@@ -116,6 +129,49 @@ function validateFigurePayload(body = {}) {
     return { error: 'slug must be 1-64 chars of a-z 0-9 - _ (e.g. "coverage-heatmap")' };
   }
   if (typeof title !== 'string' || !title.trim()) return { error: 'title required' };
+  const metadata = {
+    slug,
+    title: title.trim(),
+    caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
+    source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
+  };
+
+  // A named visual is rendered by a component already shipped with the app.
+  // It is mutually exclusive with static files so each publication has one
+  // unambiguous rendering contract.
+  if (body.visual != null) {
+    if (formats != null || body.variants != null || body.controls != null || body.default_variant != null) {
+      return { error: 'visual publications cannot include formats, variants, or static controls' };
+    }
+    if (body.source != null) {
+      return { error: 'source is not a publishing option; use source_url for provenance' };
+    }
+    const id = String(body.visual || '').trim();
+    if (!INTERACTIVE_RENDERERS.has(id)) {
+      return { error: `unknown interactive visual "${id}"` };
+    }
+    const options = body.options == null ? {} : body.options;
+    if (!options || typeof options !== 'object' || Array.isArray(options)) {
+      return { error: 'interactive options must be an object' };
+    }
+    let optionsBytes;
+    try {
+      optionsBytes = Buffer.byteLength(JSON.stringify(options));
+    } catch {
+      return { error: 'interactive options must be JSON-serializable' };
+    }
+    if (optionsBytes > MAX_VISUAL_OPTIONS_BYTES) {
+      return { error: 'interactive options exceed 32KB' };
+    }
+    return {
+      value: {
+        ...metadata,
+        publication_type: INTERACTIVE_PUBLICATION,
+        visual: { id, options: { ...options } },
+      },
+    };
+  }
+
   let totalBytes = 0;
   let cleanFormats = null;
   let variants = null;
@@ -153,10 +209,8 @@ function validateFigurePayload(body = {}) {
     cleanFormats = variants.find((variant) => variant.key === defaultVariant).formats;
     return {
       value: {
-        slug,
-        title: title.trim(),
-        caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
-        source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
+        ...metadata,
+        publication_type: STATIC_PUBLICATION,
         formats: cleanFormats,
         variants,
         controls: controls.value,
@@ -169,10 +223,8 @@ function validateFigurePayload(body = {}) {
   if (checked.error) return checked;
   return {
     value: {
-      slug,
-      title: title.trim(),
-      caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
-      source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
+      ...metadata,
+      publication_type: STATIC_PUBLICATION,
       formats: checked.value,
     },
   };
@@ -203,11 +255,15 @@ async function resolveAuthorLabel(auditDb, user = {}) {
 
 async function upsertFigure(auditDb, payload, { author_uid, author_label }) {
   const now = new Date();
-  const { slug, formats, variants, controls, default_variant, ...rest } = payload;
+  const {
+    slug, formats, variants, controls, default_variant, visual,
+    publication_type = STATIC_PUBLICATION, ...rest
+  } = payload;
+  const interactive = publication_type === INTERACTIVE_PUBLICATION;
   const toBinary = (input) => Object.fromEntries(
     Object.entries(input).map(([format, value]) => [format, Buffer.from(value, 'base64')])
   );
-  const children = (variants || [])
+  const children = interactive ? [] : (variants || [])
     .filter((variant) => variant.key !== default_variant)
     .map((variant) => ({
       _id: `${slug}::${variant.key}`,
@@ -224,20 +280,30 @@ async function upsertFigure(auditDb, payload, { author_uid, author_label }) {
   await auditDb.collection(COLLECTION).deleteMany({ figure_slug: slug, record_type: VARIANT_RECORD });
   if (children.length) await auditDb.collection(COLLECTION).insertMany(children);
 
-  const variantMeta = variants?.map(({ key, label, state }) => ({ key, label, state })) || null;
+  const variantMeta = (!interactive && variants)
+    ? variants.map(({ key, label, state }) => ({ key, label, state }))
+    : null;
+  // Keep an empty formats object on interactive roots while deployed databases
+  // transition from the original validator that required this field. The list
+  // endpoint projects it out, and interactive cards never request asset files.
+  const storedFormats = interactive ? {} : toBinary(formats);
   await auditDb.collection(COLLECTION).updateOne(
     { _id: slug },
     {
       $set: {
         ...rest,
         record_type: 'figure',
-        formats: toBinary(formats),
+        publication_type,
+        formats: storedFormats,
         author_uid: author_uid ?? null,
         author_label: author_label ?? null,
         updated_at: now,
+        ...(interactive ? { visual } : {}),
         ...(variantMeta ? { variants: variantMeta, controls, default_variant } : {}),
       },
-      ...(!variantMeta ? { $unset: { variants: '', controls: '', default_variant: '' } } : {}),
+      $unset: interactive
+        ? { variants: '', controls: '', default_variant: '' }
+        : { visual: '', ...(!variantMeta ? { variants: '', controls: '', default_variant: '' } : {}) },
       $setOnInsert: { created_at: now },
     },
     { upsert: true }
@@ -333,5 +399,6 @@ module.exports = {
   validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
   getFigureAuthor, updateFigureMeta, ensureFigureIndexes,
-  COLLECTION, VARIANT_RECORD,
+  COLLECTION, VARIANT_RECORD, STATIC_PUBLICATION, INTERACTIVE_PUBLICATION,
+  INTERACTIVE_RENDERERS,
 };

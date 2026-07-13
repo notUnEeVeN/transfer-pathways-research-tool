@@ -1,12 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
   getVisiblePairs, majorScope, pairAllowed, pairClause, scopeTag, invalidateVisibilityCache,
+  onePairPerSchool,
 } from './majorVisibility';
 import { systemMatch, verdictMatch, scopeKey, SYSTEM_BY_KEY } from './audit/filters';
 
 const UC = SYSTEM_BY_KEY.get('uc');
 const CS_AT_1 = { school_id: 1, major: 'Computer Science B.S.' };
 const CS_AT_2 = { school_id: 2, major: 'Computer Science B.S.' };
+const MATH_AT_1 = { school_id: 1, major: 'Mathematics B.S.' };
 
 function fakeAuditDb(pairs) {
   return {
@@ -44,6 +46,12 @@ describe('majorScope', () => {
   it('pairs are normalized (string ids become numbers)', async () => {
     const scope = await majorScope(reqFor('partner-1', [{ school_id: '1', major: 'Computer Science B.S.' }]));
     expect(scope).toEqual([CS_AT_1]);
+  });
+
+  it('keeps only the first choice per campus from legacy settings', async () => {
+    expect(onePairPerSchool([CS_AT_1, MATH_AT_1, CS_AT_2])).toEqual([CS_AT_1, CS_AT_2]);
+    expect(await majorScope(reqFor('partner-1', [CS_AT_1, MATH_AT_1, CS_AT_2])))
+      .toEqual([CS_AT_1, CS_AT_2]);
   });
 
   it('before any selection exists: admins unrestricted, partners denied', async () => {

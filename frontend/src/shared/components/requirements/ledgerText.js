@@ -52,6 +52,15 @@ export function unitText(min, max) {
 export function sectionRule(section, group, receivers, soleStat, pooled) {
   if (section.unit_advisement) return `Complete ${section.unit_advisement} units of:`
 
+  // A GE category receiver is one placeholder for many catalog courses. Its
+  // section_advisement is the real number of courses required, even though the
+  // renderer intentionally receives only one category row.
+  const category = receivers.length === 1 ? receivers[0]?.category_match : null
+  if (category) {
+    const count = category.required_count ?? section.section_advisement ?? 1
+    return `Complete ${count} ${count === 1 ? 'course' : 'courses'} from:`
+  }
+
   // The "choose N" count when this section is itself a choice; null = take all.
   let choice = null
   if (section.section_advisement != null) {

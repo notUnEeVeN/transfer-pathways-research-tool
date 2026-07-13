@@ -1,9 +1,10 @@
 /**
- * Static figure gallery endpoints + the served pmt.py client.
+ * Published visual gallery endpoints + the served pmt.py client.
  *
  * All behind the standard guarded stack. Publishing is open to every console
  * user (the gallery is a shared whiteboard for a small trusted team). The
- * client renders locally and these routes store only finished image files.
+ * Static figures render locally; interactive publications store only a
+ * validated reference to a renderer shipped with the frontend.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const {

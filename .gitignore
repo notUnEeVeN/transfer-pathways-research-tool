@@ -10,5 +10,6 @@ __pycache__/
 .venv/
 pmt-env/
 analysis/.ipynb_checkpoints/
-# Local API scratch file — contains a personal pmtr_ token
+# Local researcher files — may contain a personal pmtr_ token
 temp.py
+starter.py

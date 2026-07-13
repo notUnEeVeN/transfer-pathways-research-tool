@@ -18,14 +18,16 @@ export const GETTING_STARTED_NOTES = [
 ]
 
 export const STARTER_EXPLANATION =
-  'One local helper: get() reads shared data and publish() renders one figure or named static states locally before sharing the finished files.'
+  'One local helper: get() reads shared data, while publish() shares anything from a basic Matplotlib figure to a supported interactive visual rendered exactly like the website built-ins.'
 
 export const STARTER_STEPS = [
   ['Create a token', 'Generate a personal token in the Tokens tab. Keep it out of shared notebooks.'],
   ['Get starter.py', 'Download the file below and keep it beside your notebook or analysis script.'],
   ['Set the token', 'Set PMT_TOKEN in your shell, or place the token in TOKEN at the top of your local starter.py.'],
+  ['Choose an example', 'Use Single figure for the usual workflow. Use Multiple states only when one visual needs a finite selector or toggle. Both import the same starter.py.'],
   ['Read data', 'Call pmt.get("exports/receivers") or another path from the Endpoints tab. It returns a pandas DataFrame when the response contains rows.'],
-  ['Publish a figure', 'Pass one completed Figure to pmt.publish(fig, ...), or pass named variants for controls such as ASSIST vs hand-curated. Your machine creates every SVG, PNG, and PDF; only those files are uploaded.'],
+  ['Publish a figure', 'Pass one completed Figure to pmt.publish(fig, ...). Your machine creates every SVG, PNG, and PDF; only those finished files are uploaded.'],
+  ['Add functionality when useful', 'Pass named variants for finite controls, or use visual="paper-credit-loss" to mount a supported interactive renderer with the same controls and export behavior as the built-in.'],
 ]
 
 export const ENDPOINT_GROUPS = [
@@ -140,6 +142,66 @@ export const ENDPOINT_GROUPS = [
         title: 'Evaluate one degree at one college',
         plain: 'The degree ledger, transferable coverage, and tier totals for a campus/college pair.',
         returns: '{ school_id, community_college_id, completion, groups, ... }',
+      },
+    ],
+  },
+  {
+    id: 'analysis',
+    title: 'Built-in visual data',
+    blurb: 'Computed measures used by the Visuals tab. Add ?format=csv to download rows.',
+    endpoints: [
+      {
+        method: 'GET',
+        path: '/analysis/coverage?majorContains=Computer%20Science',
+        title: 'Articulation coverage',
+        plain: 'Required receivers, articulated receivers, and completion percentage for each visible agreement or geography rollup.',
+        returns: '{ params, n, rows: [coverage records] }',
+        fields: [
+          ['groupBy', 'Optional query value: college, district, or county.'],
+          ['requirements', 'Optional query value: assist or paper.'],
+        ],
+      },
+      {
+        method: 'GET',
+        path: '/analysis/requirement-comparison?school_id=79&major=Computer%20Science&community_college_id=113',
+        title: 'Requirement comparison',
+        plain: 'Compares one ASSIST agreement with the hand-curated transfer minimums for the same university, major, and community college.',
+        returns: '{ assist, curated, rows, summaries, ... }',
+      },
+      {
+        method: 'GET',
+        path: '/analysis/credit-loss?majorContains=Computer%20Science',
+        title: 'Cheapest-path credit load',
+        plain: 'Solves each visible agreement for its smallest satisfiable community-college course set, including blocked requirements and normalized units.',
+        returns: '{ params, n, rows: [credit-load records] }',
+      },
+      {
+        method: 'GET',
+        path: '/analysis/choice-cost?schoolIds=7,117&majorContains=Computer%20Science',
+        title: 'Cost of keeping choices open',
+        plain: 'For an ordered university list, reports the additional community-college courses introduced by each successive campus choice.',
+        returns: '{ params, n, rows: [ { community_college, total_courses, steps } ] }',
+      },
+      {
+        method: 'GET',
+        path: '/analysis/category-gaps?majorContains=Computer%20Science',
+        title: 'Course-category gaps',
+        plain: 'Measures how often each curated university-course category lacks an articulated equivalent across the visible colleges.',
+        returns: '{ params, n, rows: [category-gap records] }',
+      },
+      {
+        method: 'GET',
+        path: '/analysis/complexity?majorContains=Computer%20Science',
+        title: 'Pathway complexity',
+        plain: 'Calculates delay and blocking complexity for each minimal pathway over the curated prerequisite graph.',
+        returns: '{ params, n, rows: [complexity records] }',
+      },
+      {
+        method: 'GET',
+        path: '/analysis/time-to-degree?majorContains=Computer%20Science',
+        title: 'Transfer credit rate',
+        plain: 'Compares curated associate-degree courses with matching agreements to estimate transferable units, lost units, and cost where available.',
+        returns: '{ params, n, rows: [transfer-credit records] }',
       },
     ],
   },
@@ -299,6 +361,92 @@ pmt.publish(fig,
 export const EXAMPLE_PUBLISH_COMMAND =
   'pmt.publish(fig, slug="requirements-by-campus", title="Requirements per UC campus")'
 
+export const EXAMPLE_INTERACTIVE_PUBLISH = `pmt.publish(
+    visual="paper-credit-loss",
+    slug="paper-credit-loss-copy",
+    title="Paper-style credit loss (published copy)",
+)`
+
+export const EXAMPLE_VARIANT_SCRIPT = `import matplotlib.pyplot as plt
+import starter as pmt
+
+
+def make_figure(values, title, color):
+    """Build one complete state of the published visual."""
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.bar(["A", "B", "C"], values, color=color)
+    ax.set_title(title)
+    ax.set_ylabel("Students")
+    fig.tight_layout()
+    return fig
+
+
+baseline = make_figure([3, 5, 4], "Baseline", "#536b8e")
+updated = make_figure([4, 7, 6], "Updated data", "#16856b")
+
+try:
+    pmt.publish(
+        slug="two-state-example",
+        title="Basic multiple-state example",
+        variants=[
+            {
+                "key": "baseline",
+                "label": "Baseline",
+                "state": {"version": "baseline"},
+                "figure": baseline,
+            },
+            {
+                "key": "updated",
+                "label": "Updated data",
+                "state": {"version": "updated"},
+                "figure": updated,
+            },
+        ],
+        controls=[
+            {
+                "key": "version",
+                "label": "Version",
+                "type": "select",
+                "default": "baseline",
+                "options": [
+                    {"value": "baseline", "label": "Baseline"},
+                    {"value": "updated", "label": "Updated data"},
+                ],
+            },
+        ],
+        default_variant="baseline",
+    )
+finally:
+    plt.close(baseline)
+    plt.close(updated)`
+
+export const STARTER_TEMPLATES = [
+  {
+    id: 'simple',
+    label: 'Single figure',
+    filename: 'simple_figure.py',
+    summary: 'Read data, build one Matplotlib figure, and publish it.',
+    code: EXAMPLE_FIGURE_SCRIPT,
+  },
+  {
+    id: 'variants',
+    label: 'Multiple states',
+    filename: 'variant_figure.py',
+    summary: 'Render a finite set of figures locally and add a selector that switches among them.',
+    code: EXAMPLE_VARIANT_SCRIPT,
+  },
+]
+
+const publishingRules = [
+  'The researcher already has starter.py. Generate or edit only their analysis script; do not recreate the client.',
+  'Import it with `import starter as pmt` and use the single public `pmt.publish(...)` method.',
+  'Never place a real pmtr_ token in generated code. The researcher supplies it through the PMT_TOKEN environment variable.',
+  'All calculations and Matplotlib rendering happen locally. No Python code runs on the server, and no researcher-supplied JavaScript is accepted.',
+  'Use one completed Figure for a normal publication. Use variants only for a finite set of states known when the script runs.',
+  'For variants, every control key must exist in every variant state, and state values must exactly match the declared control option values.',
+  'Use an allowlisted `visual="..."` renderer only when exact website-native behavior is requested and that renderer is documented as supported.',
+]
+
 const mdTable = (head, rows) => [
   `| ${head.join(' | ')} |`,
   `| ${head.map(() => '---').join(' | ')} |`,
@@ -335,8 +483,13 @@ export function buildAiBriefing(base) {
       ...group.endpoints.map(mdEndpoint),
     ]),
     '## Publishing',
-    'Build the matplotlib Figure locally, then call pmt.publish(fig, ...). For a finite switch such as ASSIST vs hand-curated, pass variants with figure, key, label, and state fields plus declarative controls. The local client renders every SVG, PNG, and PDF and uploads only those finished files. No Python code runs on the server.',
+    publishingRules.map((rule) => `- ${rule}`).join('\n'),
+    '### Single figure',
     '```python\n' + EXAMPLE_FIGURE_SCRIPT + '\n```',
+    '### Multiple states',
+    '```python\n' + EXAMPLE_VARIANT_SCRIPT + '\n```',
+    '### Website-native renderer',
+    '```python\n' + EXAMPLE_INTERACTIVE_PUBLISH + '\n```',
     '## Data model',
     ...GUIDE_SECTIONS.flatMap((section) => [
       `### ${section.title}`,

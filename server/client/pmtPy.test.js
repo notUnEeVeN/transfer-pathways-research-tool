@@ -17,10 +17,11 @@ describe('pmt.py template', () => {
     expect(src).toContain('f"{API}/{str(path).lstrip(\'/\')}"');
   });
 
-  it('exposes only data reads and local figure publishing', () => {
+  it('exposes only data reads and declarative figure publishing', () => {
     expect(src.match(/^def /gm)).toHaveLength(3);
     expect(src).toContain('def get(path, **params):');
     expect(src).toContain('def publish(fig=None, slug=None, title=None, caption=None, source_url=None,');
+    expect(src).toContain('visual=None, options=None');
     expect(src).toContain('fetch = get');
     expect(src).not.toContain('PMT_CAPTURE');
     expect(src).not.toContain('figure-scripts');
@@ -41,9 +42,19 @@ describe('pmt.py template', () => {
     expect(src).not.toContain('exec(');
   });
 
-  it('includes a directly runnable matplotlib example', () => {
-    expect(src).toContain('fig, ax = plt.subplots()');
-    expect(src).toContain('publish(fig, slug="hello-figure", title="Hello figure")');
+  it('publishes allowlisted interactive visuals as semantic manifests', () => {
+    expect(src).toContain('if visual is not None:');
+    expect(src).toContain('payload["visual"] = str(visual)');
+    expect(src).toContain('interactive visuals own their controls');
+    expect(src).toContain('publish(visual="paper-credit-loss"');
+  });
+
+  it('uses a read-only get call as its directly runnable connection check', () => {
+    const main = src.split('if __name__ == "__main__":')[1];
+    expect(main).toContain('get("assist/institutions", kind="university")');
+    expect(main).toContain('institution_id');
+    expect(main).not.toContain('publish(');
+    expect(main).not.toContain('matplotlib');
   });
 
   it('renders with no unexpanded template placeholders', () => {

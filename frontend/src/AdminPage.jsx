@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon, CheckIcon, NoSymbolIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Input, Checkbox } from './components/ui'
+import { Button, Alert, Spinner, EmptyState, Stack, Input, Select, SwitchField } from './components/ui'
+import { ANALYSES } from './analyses/registry'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
   useVisibleMajors, useSetVisibleMajors,
   useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
+  useVisualSettings, useSetPublishedVisuals, useSetHiddenVisuals,
   useTeam, useSetTeamName,
 } from '@frontend/query/hooks/useAccess'
 
@@ -26,6 +28,7 @@ export default function AdminPage() {
         <BlockedAccountsPanel />
         <TeamNamesPanel />
         <MajorAccessPanel />
+        <VisualSettingsPanel />
         <DatasetPanel />
         <AccessPanel />
       </Stack>
@@ -150,21 +153,25 @@ function BlockedAccountsPanel() {
   )
 }
 
-// Which ported (school, major) pairs partners can see, organized by campus —
-// the same major name can exist at several UCs, so grants are per campus
-// program, not per name. Deny-by-default: nothing is visible until checked.
-// The server enforces the subset on every audit/read/analysis query, so
-// partners' stats reflect exactly this selection.
-const pairKey = (schoolId, major) => `${schoolId}|${major}`
+// The working dataset contains exactly one major for each UC campus. Keep the
+// form state keyed by campus so the UI cannot construct an invalid selection.
+export function majorsBySchool(pairs = []) {
+  const selected = new Map()
+  for (const pair of pairs) {
+    const key = String(Number(pair.school_id))
+    if (!selected.has(key)) selected.set(key, pair.major)
+  }
+  return selected
+}
 
 function MajorAccessPanel() {
   const q = useVisibleMajors()
   const save = useSetVisibleMajors()
-  const [selected, setSelected] = useState(null) // Set of "school_id|major", null until data loads
+  const [selected, setSelected] = useState(null) // Map of school_id -> major; null until data loads
 
   useEffect(() => {
     if (q.data && selected === null) {
-      setSelected(new Set((q.data.visible || []).map((p) => pairKey(p.school_id, p.major))))
+      setSelected(majorsBySchool(q.data.visible))
     }
   }, [q.data, selected])
 
@@ -174,23 +181,21 @@ function MajorAccessPanel() {
   if (q.isError) return <Alert type='error'>Failed to load the major list.</Alert>
 
   const schools = q.data.schools || []
-  const allKeys = schools.flatMap((s) => s.majors.map((m) => pairKey(s.school_id, m)))
-  const savedSet = new Set((q.data.visible || []).map((p) => pairKey(p.school_id, p.major)))
-  const dirty = selected.size !== savedSet.size || [...selected].some((k) => !savedSet.has(k))
-  const toggle = (k) => setSelected((s) => {
-    const next = new Set(s)
-    if (next.has(k)) next.delete(k); else next.add(k)
-    return next
-  })
-  const setMany = (keys, on) => setSelected((s) => {
-    const next = new Set(s)
-    keys.forEach((k) => (on ? next.add(k) : next.delete(k)))
+  const saved = majorsBySchool(q.data.visible)
+  const dirty = selected.size !== saved.size || [...selected].some(([schoolId, major]) => saved.get(schoolId) !== major)
+  const configuredCount = schools.filter((school) => selected.has(String(Number(school.school_id)))).length
+  const complete = configuredCount === schools.length
+  const chooseMajor = (schoolId, major) => setSelected((current) => {
+    const next = new Map(current)
+    const key = String(Number(schoolId))
+    if (major) next.set(key, major)
+    else next.delete(key)
     return next
   })
   const submit = () => {
-    const pairs = [...selected].map((k) => {
-      const i = k.indexOf('|')
-      return { school_id: Number(k.slice(0, i)), major: k.slice(i + 1) }
+    const pairs = schools.flatMap((school) => {
+      const major = selected.get(String(Number(school.school_id)))
+      return major ? [{ school_id: Number(school.school_id), major }] : []
     })
     save.mutate(pairs)
   }
@@ -198,47 +203,40 @@ function MajorAccessPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Partner major access</h2>
+        <h2 className='text-heading'>Working major by campus</h2>
         <p className='text-caption text-ink-muted mt-1'>
-          Partners can only see (audit, browse, analyze) the checked campus
-          programs — their stats pages cover exactly this selection. Grants are
-          per school + major, so checking UCSD's "Computer Science B.S." does
-          not grant another campus's program with the same name. You always
-          see everything.
+          Choose one major for each UC included in the working dataset. The
+          selection scopes browsing, audits, analyses, and visuals for everyone;
+          the full ported dataset remains available in the admin inventory below.
         </p>
       </div>
       <div className='surface-card p-5'>
         <div className='flex items-center gap-3 mb-4'>
-          <p className='text-label'>{selected.size} of {allKeys.length} programs visible to partners</p>
+          <p className='text-label'>{configuredCount} of {schools.length} campuses configured</p>
           <div className='ml-auto flex items-center gap-2'>
-            <Button variant='ghost' onClick={() => setMany(allKeys, true)}>All</Button>
-            <Button variant='ghost' onClick={() => setSelected(new Set())}>None</Button>
-            <Button onClick={submit} disabled={!dirty || save.isPending}>
-              {save.isPending ? 'Saving…' : dirty ? 'Save' : 'Saved'}
+            <Button onClick={submit} disabled={!complete || !dirty || save.isPending}>
+              {save.isPending ? 'Saving…' : !complete ? 'Choose all campuses' : dirty ? 'Save' : 'Saved'}
             </Button>
           </div>
         </div>
+        {!complete && (
+          <p className='text-caption text-ink-muted mb-4'>Choose one major for every UC campus before saving.</p>
+        )}
         {save.isError && <Alert type='error'>{save.error?.response?.data?.error || 'Save failed.'}</Alert>}
         <Stack gap='comfortable'>
           {schools.map((s) => {
-            const keys = s.majors.map((m) => pairKey(s.school_id, m))
-            const nOn = keys.filter((k) => selected.has(k)).length
+            const schoolId = String(Number(s.school_id))
+            const value = selected.get(schoolId) || ''
+            const options = s.majors.map((major) => ({ value: major, label: major }))
             return (
-              <div key={s.school_id}>
-                <div className='flex items-center gap-3 border-b border-border pb-1.5 mb-2'>
+              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,28rem)] gap-3 items-center border-b border-border pb-4'>
+                <div className='min-w-0'>
                   <p className='text-body-strong'>{s.school}</p>
-                  <span className='text-caption text-ink-subtle'>{nOn} / {keys.length} visible</span>
-                  <div className='ml-auto flex items-center gap-1'>
-                    <Button variant='ghost' onClick={() => setMany(keys, true)}>All</Button>
-                    <Button variant='ghost' onClick={() => setMany(keys, false)}>None</Button>
-                  </div>
+                  <p className='text-caption text-ink-subtle'>{s.majors.length} available {s.majors.length === 1 ? 'major' : 'majors'}</p>
                 </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1'>
-                  {s.majors.map((m) => {
-                    const k = pairKey(s.school_id, m)
-                    return <Checkbox key={k} checked={selected.has(k)} onChange={() => toggle(k)} label={m} />
-                  })}
-                </div>
+                <Select value={value} options={options} placeholder='Choose a major…'
+                  onChange={(major) => chooseMajor(s.school_id, major)}
+                  aria-label={`${s.school} major`} />
               </div>
             )
           })}
@@ -247,6 +245,82 @@ function MajorAccessPanel() {
           <p className='text-caption text-ink-subtle'>
             Nothing ported yet — run <span className='font-mono'>python port.py add "…"</span> first.
           </p>
+        )}
+      </div>
+    </Stack>
+  )
+}
+
+// Two independent controls for each recovered built-in. Availability decides
+// whether the card mounts in the admin gallery at all. Publishing decides
+// whether partners see an available card; a hidden card always stays hidden.
+function VisualSettingsPanel() {
+  const settings = useVisualSettings()
+  const setPublished = useSetPublishedVisuals()
+  const setHidden = useSetHiddenVisuals()
+  const published = new Set(settings.data?.released_ids || [])
+  const hidden = new Set(settings.data?.disabled_ids || [])
+  const saving = setPublished.isPending || setHidden.isPending
+
+  const togglePublished = (id) => {
+    const next = new Set(published)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    setPublished.mutate([...next])
+  }
+
+  const toggleHidden = (id) => {
+    const next = new Set(hidden)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    setHidden.mutate([...next])
+  }
+
+  return (
+    <Stack gap='comfortable'>
+      <div>
+        <h2 className='text-heading'>Built-in visuals</h2>
+        <p className='text-caption text-ink-muted mt-1'>
+          Available controls your admin Visuals gallery. Published controls the
+          team gallery; hidden visuals remain unpublished until they are made
+          available again.
+        </p>
+      </div>
+      <div className='surface-card p-5'>
+        {settings.isLoading ? (
+          <div className='flex justify-center py-4'><Spinner /></div>
+        ) : settings.isError ? (
+          <Alert type='error'>Failed to load visual settings.</Alert>
+        ) : (
+          <div className='divide-y divide-border/60'>
+            {ANALYSES.map((analysis) => {
+              const isHidden = hidden.has(analysis.id)
+              const isPublished = published.has(analysis.id)
+              return (
+                <div key={analysis.id} className='py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5'>
+                  <div className={`min-w-0 ${isHidden ? 'opacity-50' : ''}`}>
+                    <p className='text-body-strong break-words'>{analysis.title}</p>
+                    <p className='text-caption text-ink-subtle break-words'>{analysis.description}</p>
+                  </div>
+                  <div className='flex items-center gap-5 sm:ml-auto shrink-0'>
+                    <SwitchField className='w-32 justify-end'
+                      label={isHidden ? 'Hidden' : 'Available'}
+                      srLabel={`Show ${analysis.title} in the admin Visuals gallery`}
+                      checked={!isHidden} disabled={saving}
+                      onChange={() => toggleHidden(analysis.id)} />
+                    <SwitchField className='w-36 justify-end'
+                      label={isPublished ? 'Published' : 'Admin only'}
+                      srLabel={`Publish ${analysis.title} to the team`}
+                      checked={isPublished} disabled={saving || isHidden}
+                      onChange={() => togglePublished(analysis.id)} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+        {(setPublished.isError || setHidden.isError) && (
+          <Alert type='error' className='mt-3'>Could not save the visual setting.</Alert>
         )}
       </div>
     </Stack>

@@ -113,9 +113,39 @@ export function useVisibleMajors() {
 export function useSetVisibleMajors() {
   const qc = useQueryClient()
   return useMutation({
-    // pairs: [{ school_id, major }] — visibility is per school+major.
+    // Exactly one pair per ported school. A visibility edit changes the working
+    // dataset globally, so every active query must be refreshed.
     mutationFn: (pairs) => apiClient.put('/admin/visible-majors', { pairs }).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-visible-majors'] }),
+    onSuccess: () => qc.invalidateQueries(),
+  })
+}
+
+// Built-in Visuals presentation settings. Admins can preview every available
+// card; partners only receive cards in the published set.
+export function useVisualSettings() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['visual-settings', user?.uid],
+    queryFn: () => apiClient.get('/analysis/releases').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 15 * 1000,
+    refetchInterval: 30 * 1000,
+  })
+}
+
+export function useSetPublishedVisuals() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (ids) => apiClient.put('/admin/analysis-releases', { released_ids: ids }).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['visual-settings'] }),
+  })
+}
+
+export function useSetHiddenVisuals() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (ids) => apiClient.put('/admin/analysis-disabled', { disabled_ids: ids }).then((r) => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['visual-settings'] }),
   })
 }
 

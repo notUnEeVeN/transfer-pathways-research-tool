@@ -97,7 +97,7 @@ export function useCoverage(params = {}, options = {}) {
     queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements, pin],
     queryFn: () =>
       apiClient
-        .get('/assist/coverage', {
+        .get('/analysis/coverage', {
           params: {
             ...(majorContains ? { majorContains } : {}),
             ...(groupBy !== 'college' ? { groupBy } : {}),
@@ -134,6 +134,55 @@ export function useRequirementComparison({ schoolId, major, communityCollegeId }
     staleTime: 5 * 60 * 1000,
     ...queryOptions,
   })
+}
+
+// Remaining built-in visual analyses share one scoped, cacheable query shape.
+// choice-cost is the exception: schoolIds is ordered because each step measures
+// the incremental cost of adding that campus to the student's options.
+function useAnalysisEndpoint(key, path, params = {}, options = {}) {
+  const { user } = useAuth()
+  const majorContains = String(params.majorContains || '').trim()
+  const schoolIds = (params.schoolIds || []).map(Number).filter(Number.isFinite)
+  const { enabled = true, ...queryOptions } = options
+  return useQuery({
+    queryKey: [key, user?.uid, majorContains, schoolIds.join(',')],
+    queryFn: () =>
+      apiClient
+        .get(path, {
+          params: {
+            ...(majorContains ? { majorContains } : {}),
+            ...(schoolIds.length ? { schoolIds: schoolIds.join(',') } : {}),
+          },
+        })
+        .then((r) => r.data),
+    enabled: !!user?.uid && enabled,
+    staleTime: 5 * 60 * 1000,
+    ...queryOptions,
+  })
+}
+
+export function useCreditLoss(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-credit-loss', '/analysis/credit-loss', params, options)
+}
+
+export function useChoiceCost(params = {}, options = {}) {
+  const hasSchools = (params.schoolIds || []).length > 0
+  return useAnalysisEndpoint('analysis-choice-cost', '/analysis/choice-cost', params, {
+    ...options,
+    enabled: hasSchools && (options.enabled ?? true),
+  })
+}
+
+export function useCategoryGaps(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-category-gaps', '/analysis/category-gaps', params, options)
+}
+
+export function useComplexity(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-complexity', '/analysis/complexity', params, options)
+}
+
+export function useTimeToDegree(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-time-to-degree', '/analysis/time-to-degree', params, options)
 }
 
 // ── editable curated/reference data ──
@@ -174,8 +223,8 @@ export function useRefTable(table) {
   })
 }
 
-// Hand-gathered full-degree requirements (the campus degree templates),
-// agreement-shaped so the shared ledger renders them directly. Read-only.
+// Hand-gathered full-degree requirements enriched into the agreement shape the
+// shared ledger renders directly.
 export function useDegreeRequirements() {
   const { user } = useAuth()
   return useQuery({
@@ -185,6 +234,39 @@ export function useDegreeRequirements() {
     queryFn: () => apiClient.get('/curated/degrees').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 60 * 1000,
+  })
+}
+
+// Canonical, un-enriched degree documents. The structured editor works on this
+// shape so saving never persists display-only category counts or CC matches.
+export function useDegreeRequirementDocuments() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['degree-requirement-documents', user?.uid],
+    queryFn: () => apiClient
+      .get('/curated/requirements', { params: { kind: 'degree' } })
+      .then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
+export function useSaveDegreeRequirement() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (document) => apiClient
+      .put('/curated/requirements/degree', document)
+      .then((r) => r.data),
+    onSuccess: async () => {
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: ['degree-requirement-documents'] }),
+        qc.invalidateQueries({ queryKey: ['degree-requirements'] }),
+        qc.invalidateQueries({ queryKey: ['degree-evaluation'] }),
+        qc.invalidateQueries({
+          predicate: (query) => String(query.queryKey[0] || '').startsWith('analysis-'),
+        }),
+      ])
+    },
   })
 }
 
@@ -210,6 +292,14 @@ export function useDegreeEvaluation(schoolId, collegeId, options = {}) {
   })
 }
 
+const invalidateCuratedData = (qc, safeTable) => Promise.all([
+  qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
+  qc.invalidateQueries({
+    predicate: (query) => String(query.queryKey[0] || '').startsWith('analysis-'),
+  }),
+  qc.invalidateQueries({ queryKey: ['degree-evaluation'] }),
+])
+
 export function useSaveRefRow(table) {
   const qc = useQueryClient()
   const safeTable = String(table || '').trim()
@@ -223,7 +313,7 @@ export function useSaveRefRow(table) {
       }
       return apiClient.put(`/curated/requirements/${REQUIREMENT_KIND[safeTable]}`, row).then((r) => r.data)
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
+    onSuccess: () => invalidateCuratedData(qc, safeTable),
   })
 }
 
@@ -241,7 +331,7 @@ export function useDeleteRefRow(table) {
       const kind = REQUIREMENT_KIND[safeTable]
       return apiClient.delete(`/curated/requirements/${kind}/${encodeURIComponent(id)}`).then((r) => r.data)
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
+    onSuccess: () => invalidateCuratedData(qc, safeTable),
   })
 }
 

@@ -49,6 +49,9 @@ export const REFERENCE_TABLES = [
     derive: (row) => {
       const uc = UC_SCHOOLS[row.uc_code] || {}
       const matched_courses = Array.isArray(row.matched_courses) ? row.matched_courses : []
+      const parent_ids = matched_courses
+        .map((course) => Number(course.parent_id))
+        .filter(Number.isFinite)
       return {
         ...row,
         school: uc.school ?? row.school ?? null,
@@ -56,6 +59,7 @@ export const REFERENCE_TABLES = [
         normalized_code: normCode(row.receiving_code),
         matched: matched_courses.length > 0,
         matched_courses,
+        parent_ids,
       }
     },
     makeId: (row) => `${row.uc_code}:${row.group_id}:${row.set_id}:${normCode(row.receiving_code).replace(/\s+/g, '_')}`,

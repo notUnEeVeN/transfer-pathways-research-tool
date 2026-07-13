@@ -187,14 +187,13 @@ CAMPUS_SCHOOL_IDS = {c["school_id"] for c in CAMPUSES}
 
 
 def load_canonical_majors(db):
-    """school_id -> [major, ...] from the console's settings selection.
+    """school_id -> [major] from the console's one-major-per-campus selection.
 
     Reads settings.app.visible_pairs (the admin-selected working
-    dataset — the majors shared with researchers; lives in the research DB), scoped
-    to the 9 figure campuses. The ASSIST variant uses this instead of the frozen
-    PAPER_MAJORS union, so the figure tracks whatever is selected in Settings.
-    Falls back to PAPER_MAJORS (loudly) when no selection has been saved, or for any
-    campus the selection omits, so the figure never silently loses a bar.
+    dataset; lives in the research DB), scoped to the 9 figure campuses. The
+    ASSIST variant uses this instead of the frozen PAPER_MAJORS union, so the
+    figure tracks exactly what is selected in Settings. It falls back to
+    PAPER_MAJORS only when no selection has ever been saved.
     """
     doc = db.settings.find_one({"_id": "app"})
     pairs = (doc or {}).get("visible_pairs")
@@ -202,16 +201,12 @@ def load_canonical_majors(db):
         print("canonical majors: no settings.app selection — "
               "falling back to PAPER_MAJORS")
         return {sid: list(majors) for sid, majors in PAPER_MAJORS.items()}
-    out = defaultdict(list)
+    out = {}
     for p in pairs:
         sid = int(p["school_id"])
-        if sid in CAMPUS_SCHOOL_IDS:
-            out[sid].append(str(p["major"]))
-    for sid in CAMPUS_SCHOOL_IDS:
-        if sid not in out:
-            print(f"canonical majors: campus {sid} absent from selection — using PAPER_MAJORS")
-            out[sid] = list(PAPER_MAJORS[sid])
-    return dict(out)
+        if sid in CAMPUS_SCHOOL_IDS and sid not in out:
+            out[sid] = [str(p["major"])]
+    return out
 
 
 def canonical_major_query(canonical):

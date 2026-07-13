@@ -6,7 +6,7 @@ import { useApiTokens, useCreateApiToken, useRevokeApiToken, usePmtPy } from '@f
 import {
   PARTNER_ENDPOINT_GROUPS, GUIDE_SECTIONS,
   AUTH_HEADER, buildAiBriefing,
-  STARTER_EXPLANATION, STARTER_STEPS,
+  STARTER_EXPLANATION, STARTER_STEPS, STARTER_TEMPLATES,
 } from './apiDocs/content'
 
 /**
@@ -43,18 +43,23 @@ export default function ApiPage() {
 
 // ───────── starter ─────────
 
-// Onboarding: explanation + steps + the served starter.py (Copy/Download).
+function downloadText(text, filename) {
+  const blob = new Blob([text], { type: 'text/x-python' })
+  const url = URL.createObjectURL(blob)
+  const anchor = document.createElement('a')
+  anchor.href = url
+  anchor.download = filename
+  anchor.click()
+  URL.revokeObjectURL(url)
+}
+
+// One stable API client plus two researcher-side starting scripts. Keeping the
+// examples separate lets existing starter.py users add variants without
+// replacing the client they already import.
 function StarterSection() {
   const py = usePmtPy()
-  const downloadPmtPy = () => {
-    const blob = new Blob([py.data || ''], { type: 'text/x-python' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'starter.py'
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+  const [templateId, setTemplateId] = useState('simple')
+  const template = STARTER_TEMPLATES.find((item) => item.id === templateId) || STARTER_TEMPLATES[0]
 
   return (
     <Stack gap='section'>
@@ -83,7 +88,8 @@ function StarterSection() {
           <span className='text-caption text-ink-subtle'>preconfigured for this API</span>
           <div className='ml-auto flex gap-1'>
             {py.data && <CopyButton text={py.data} />}
-            <Button variant='ghost' leadingIcon={ArrowDownTrayIcon} onClick={downloadPmtPy}
+            <Button variant='ghost' leadingIcon={ArrowDownTrayIcon}
+              onClick={() => downloadText(py.data || '', 'starter.py')}
               disabled={!py.data}>Download</Button>
           </div>
         </div>
@@ -94,6 +100,26 @@ function StarterSection() {
               {py.data}
             </pre>
           )}
+      </div>
+
+      <div>
+        <h3 className='text-body-strong'>Starting examples</h3>
+        <p className='text-body text-ink-muted mt-1 mb-3 max-w-prose'>
+          Keep the same starter.py and choose the smallest script that matches the visual.
+        </p>
+        <Tabs value={template.id} onChange={setTemplateId}
+          options={STARTER_TEMPLATES.map((item) => ({ value: item.id, label: item.label }))} />
+        <div className='flex flex-wrap items-start gap-3 mt-4 mb-3'>
+          <div className='min-w-0 flex-1'>
+            <p className='text-body-strong font-mono'>{template.filename}</p>
+            <p className='text-caption text-ink-muted mt-0.5'>{template.summary}</p>
+          </div>
+          <div className='flex gap-1'>
+            <Button variant='ghost' leadingIcon={ArrowDownTrayIcon}
+              onClick={() => downloadText(template.code, template.filename)}>Download</Button>
+          </div>
+        </div>
+        <CodeBlock>{template.code}</CodeBlock>
       </div>
     </Stack>
   )
@@ -236,9 +262,9 @@ function GuideSection() {
         <div className='min-w-0 flex-1'>
           <p className='text-body-strong'>How to read this dataset</p>
           <p className='text-body text-ink-muted mt-1'>
-            The copy button turns this guide + the endpoint reference into one
-            markdown block for an AI assistant — paste it with a token and ask
-            for analysis scripts.
+            This copies the endpoint reference, database structure, publishing
+            rules, and both starter examples as one prompt for an AI assistant.
+            Keep personal tokens out of the prompt.
           </p>
         </div>
         <CopyButton variant='primary' leadingIcon={SparklesIcon} label='Copy for AI'

@@ -265,6 +265,31 @@ function SendingSide({ receiver, courses, userCourses, mark }) {
   )
 }
 
+function CategoryMatch({ match }) {
+  const areas = (match.areas || []).join(', ')
+  if (match.assumed) {
+    return (
+      <div className='min-w-0'>
+        <p className='text-sm font-medium text-primary'>Qualifying community-college course</p>
+        <p className='text-sm text-tertiary mt-0.5'>Available across community colleges; verify the approved local course.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className='min-w-0'>
+      <p className='text-sm font-medium text-primary'>
+        {match.qualifying_count == null
+          ? 'Eligible course category'
+          : `${match.qualifying_count} qualifying ${match.qualifying_count === 1 ? 'course' : 'courses'}`}
+      </p>
+      <p className='text-sm text-tertiary mt-0.5'>
+        {areas ? `UC-transferable courses tagged for IGETC ${areas}` : 'Approved UC-transferable breadth courses'}
+      </p>
+    </div>
+  )
+}
+
 // ---------------------------------------------------------------------------
 // Receiver row — requirement  ←  satisfied by
 // ---------------------------------------------------------------------------
@@ -279,6 +304,18 @@ function ReceiverRow({ receiver, ctx }) {
   // so there is no sending side to speak of — leave the right column blank
   // rather than claiming "no course articulates".
   const unstamped = receiver.articulation_status == null && !hasOptions
+
+  // Category requirements stand for an entire catalog subset, not a short OR
+  // list. Show the category and its full qualifying count on the sending side.
+  if (receiver.category_match) {
+    return (
+      <div className='grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-4 py-3'>
+        <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={false} />
+        <div className='flex justify-center'><ArrowNarrowLeft className='w-5 h-5 text-quaternary' /></div>
+        <CategoryMatch match={receiver.category_match} />
+      </div>
+    )
+  }
 
   if (unstamped) {
     return (
@@ -329,10 +366,15 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
   // courses across the sections" group). Exception: a section with nothing
   // articulated stays grey — there's nothing here to mark as done.
   const natural = sectionStatus(section, group, userCourses, crossCc, soleStat, pooled)
+  const isUnstampedTemplate = receivers.length > 0 && receivers.every(
+    (receiver) => receiver.articulation_status == null
+  )
   // With completion display off, only the greyed nothing-at-a-CC state survives;
   // vacuous "done" (auto-satisfied because nothing articulates) never shows.
+  // An unstamped template has no college context yet, so lack of options is
+  // neutral rather than evidence that the requirement cannot articulate.
   const status = !ctx.showCompletion
-    ? (natural.kind === 'none' ? natural : { kind: 'progress' })
+    ? (natural.kind === 'none' && !isUnstampedTemplate ? natural : { kind: 'progress' })
     : groupComplete && natural.kind !== 'none' ? { kind: 'done' } : natural
   const done = status.kind === 'done'
   // Nothing actionable at a CC — grey the whole section and footnote it.
@@ -344,7 +386,12 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
   return (
     <SectionCard
       tone={done ? 'success' : greyed ? 'muted' : 'primary'}
-      header={rule ? <span className='text-sm font-medium text-primary'>{rule}</span> : null}
+      header={section.title || rule ? (
+        <span className='flex flex-1 flex-wrap items-center gap-x-4 gap-y-1 min-w-0'>
+          {section.title && <span className='text-sm font-semibold text-primary'>{section.title}</span>}
+          {rule && <span className={`text-sm font-medium text-primary ${section.title ? 'ml-auto' : ''}`}>{rule}</span>}
+        </span>
+      ) : null}
       headerMark={done ? <CompletionCheck /> : null}
       footer={greyed ? <p className='px-4 py-2.5 text-sm text-quaternary bg-primary border-t border-secondary'>{NO_CC_NOTE}</p> : null}
     >

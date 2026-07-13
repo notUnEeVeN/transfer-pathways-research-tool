@@ -1,7 +1,8 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { FigureCard } from './VisualsPage'
+import { FigureCard, InteractiveFigureCard, filterBuiltInAnalyses } from './VisualsPage'
+import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
 
 const svg = (id) => Buffer.from(`<svg id="${id}"/>`).toString('base64')
@@ -64,5 +65,72 @@ describe('published visual variants', () => {
       { responseType: 'blob' }
     )
     request.mockRestore()
+  })
+})
+
+describe('published interactive visual', () => {
+  const interactive = {
+    slug: 'paper-credit-loss-copy',
+    title: 'Paper-style credit loss (published copy)',
+    publication_type: 'interactive',
+    visual: { id: 'paper-credit-loss', options: {} },
+    author_uid: 'u1',
+    author_label: 'Researcher',
+  }
+
+  it('uses the exact built-in component and preserves its interactions', () => {
+    expect(getAnalysisById('paper-credit-loss')?.Component).toBe(ANALYSES[0].Component)
+
+    render(<InteractiveFigureCard fig={interactive} canModify={false}
+      onDelete={vi.fn()} deleting={false} onSave={vi.fn()} saving={false} />)
+
+    expect(screen.getByRole('img').getAttribute('viewBox')).toBe('0 0 1990.3 1190.3')
+    const differences = screen.getByRole('switch', { name: 'Show differences' })
+    expect(differences).toBeDisabled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Hand-curated minimums' }))
+    expect(differences).not.toBeDisabled()
+    fireEvent.click(differences)
+    expect(screen.getByText(/More details.*every difference as a matrix/)).toBeTruthy()
+  })
+
+  it('fails closed when an old manifest names an unavailable renderer', () => {
+    render(<InteractiveFigureCard fig={{ ...interactive, visual: { id: 'missing' } }} canModify={false}
+      onDelete={vi.fn()} deleting={false} onSave={vi.fn()} saving={false} />)
+    expect(screen.getByText(/renderer is not available/)).toBeTruthy()
+  })
+})
+
+describe('built-in visual registry', () => {
+  it('keeps the complete recovered visual set', () => {
+    expect(ANALYSES.map((analysis) => analysis.id)).toEqual([
+      'paper-credit-loss',
+      'paper-district-heatmap',
+      'coverage-heatmap',
+      'credit-loss',
+      'choice-cost',
+      'category-gaps',
+      'complexity',
+      'time-to-degree',
+    ])
+  })
+
+  it('shows admins every available visual regardless of publication', () => {
+    const visible = filterBuiltInAnalyses(ANALYSES, {
+      isAdmin: true,
+      releasedIds: ['coverage-heatmap'],
+      disabledIds: ['complexity'],
+    })
+    expect(visible.map((analysis) => analysis.id)).toContain('credit-loss')
+    expect(visible.map((analysis) => analysis.id)).not.toContain('complexity')
+  })
+
+  it('shows partners only published visuals that remain available', () => {
+    const visible = filterBuiltInAnalyses(ANALYSES, {
+      isAdmin: false,
+      releasedIds: ['coverage-heatmap', 'complexity'],
+      disabledIds: ['complexity'],
+    })
+    expect(visible.map((analysis) => analysis.id)).toEqual(['coverage-heatmap'])
   })
 })

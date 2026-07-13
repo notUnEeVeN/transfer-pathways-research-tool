@@ -44,6 +44,18 @@ router.delete('/curated/associate-degrees/:id', ...guarded, curationController.d
 router.get('/curated/degrees', ...guarded, degreeRequirementsController.list);
 router.get('/curated/degree-evaluation', ...guarded, degreeRequirementsController.evaluate);
 
+// ───────── Built-in visual analyses (JSON or ?format=csv) ─────────
+// These routes compute from the same canonical collections as the data API.
+// majorScope keeps every result limited to the caller's visible programs.
+router.get('/analysis/releases', ...guarded, analysisController.getReleases);
+router.get('/analysis/coverage', ...guarded, analysisController.coverage);
+router.get('/analysis/requirement-comparison', ...guarded, analysisController.requirementComparison);
+router.get('/analysis/credit-loss', ...guarded, analysisController.creditLoss);
+router.get('/analysis/choice-cost', ...guarded, analysisController.choiceCost);
+router.get('/analysis/category-gaps', ...guarded, analysisController.categoryGaps);
+router.get('/analysis/complexity', ...guarded, analysisController.complexity);
+router.get('/analysis/time-to-degree', ...guarded, analysisController.timeToDegree);
+
 // ───────── Audit console ─────────
 // Same audit stack as the production tool, minus its local-Mongo gates: the
 // research reference handle points at the dedicated research cluster by
@@ -78,9 +90,10 @@ const dataController = require('../controllers/Data');
 router.get('/data/summary',        ...guarded, dataController.getSummary);
 router.get('/data/raw-assist/:id', ...guarded, dataController.getRawAssist);
 
-// ───────── Locally rendered figures + Python client ─────────
-// pmt.publish(fig, ...) renders on the teammate's machine. The server receives
-// finished files only; no uploaded Python is ever executed.
+// ───────── Published visuals + Python client ─────────
+// Static figures are rendered on the teammate's machine. Named interactive
+// visuals store only an allowlisted renderer manifest. Neither path executes
+// researcher-supplied Python or JavaScript on the server.
 const figuresController = require('../controllers/Figures');
 const figureBody = express.json({ limit: '72mb' });
 router.get('/gallery',                 ...guarded, figuresController.list);
@@ -142,4 +155,6 @@ router.delete('/admin/access-blocks/:uid',   accessRequestsController.adminUnblo
 // Which ported majors partners can see (deny-by-default until selected).
 router.get('/admin/visible-majors',     adminController.getVisibleMajors);
 router.put('/admin/visible-majors',     jsonBody, adminController.putVisibleMajors);
+router.put('/admin/analysis-releases',  jsonBody, adminController.putAnalysisReleases);
+router.put('/admin/analysis-disabled',  jsonBody, adminController.putAnalysisDisabled);
 module.exports = router;

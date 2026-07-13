@@ -17,4 +17,31 @@ describe('RequirementsLedger — merged degree doc (ledger style)', () => {
     // groups must not read as satisfied
     expect(container.querySelectorAll('[role="img"]').length).toBe(0)
   })
+
+  it('renders breadth as a category count rather than a truncated OR list', () => {
+    const category = {
+      requirement_groups: [{
+        title: 'Humanities & Social Sciences breadth',
+        is_required: true,
+        sections: [{
+          section_advisement: 4,
+          receivers: [{
+            receiving: { kind: 'ge_area', code: 'H/SS', name: 'Humanities & Social Sciences breadth' },
+            category_match: {
+              kind: 'ge_area', areas: ['3A', '3B', '4'], required_count: 4,
+              qualifying_count: 87, assumed: false,
+            },
+            articulation_status: 'articulated', options: [],
+          }],
+        }],
+      }],
+    }
+    const { container } = render(
+      <RequirementsLedger major={category} preserveOrder showCompletion={false} />
+    )
+    expect(container.textContent).toContain('Complete 4 courses from:')
+    expect(container.textContent).toContain('87 qualifying courses')
+    expect(container.textContent).toContain('IGETC 3A, 3B, 4')
+    expect(container.textContent).not.toContain('Requirements with no community-college equivalent')
+  })
 })

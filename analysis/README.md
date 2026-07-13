@@ -1,8 +1,9 @@
 # Local analysis and visuals
 
-Research calculations and rendering run on the researcher's machine. The
-server stores only finished SVG, PNG, and PDF assets. The former browser-side
-visuals now have one readable Python entry point each under `visuals/`.
+Research calculations run on the researcher's machine. A publication can
+either upload finished SVG, PNG, and PDF assets or reference an interactive
+renderer already shipped with the website. The Python implementations under
+`visuals/` remain readable, locally runnable alternatives.
 
 | File | Visual | Published controls |
 | --- | --- | --- |
@@ -50,3 +51,21 @@ PMT_CLIENT=../starter.py .venv/bin/python -m visuals.paper_credit_loss \
 
 Republishing a slug replaces all of its stored states together. A variant
 switch in the gallery only swaps finished files; it never runs research code.
+
+For a website-native publication, use a supported renderer name instead of a
+Matplotlib figure:
+
+```python
+pmt.publish(
+    visual="paper-credit-loss",
+    slug="paper-credit-loss-copy",
+    title="Paper-style credit loss (published copy)",
+)
+```
+
+This stores a validated manifest, not source code. The gallery resolves that
+manifest to the same React component used by the built-in visual, so its
+controls and rendering stay identical as the application evolves. The
+allowlist is intentionally narrow; `paper-credit-loss` is the first parity
+pilot, and additional renderers can be exposed after their data contracts are
+reviewed.

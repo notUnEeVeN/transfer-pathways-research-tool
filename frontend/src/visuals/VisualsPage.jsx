@@ -1,13 +1,25 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { PencilSquareIcon, TrashIcon, ChartBarIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, Spinner, Stack, SwitchField } from '../components/ui'
+import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, SwitchField } from '../components/ui'
 import AnalysisCard from '../analyses/AnalysisCard'
+import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
 import { fmtDate } from '../shared/fmtDate'
-import { useAccessMe } from '../shared/query/hooks/useAccess'
+import { useAccessMe, useVisualSettings } from '../shared/query/hooks/useAccess'
 import { useDeleteFigure, useEditFigure, useFigures } from '../shared/query/hooks/useData'
 
 const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
+
+export function filterBuiltInAnalyses(analyses, { isAdmin, releasedIds = [], disabledIds = [] }) {
+  const released = new Set(releasedIds)
+  const disabled = new Set(disabledIds)
+  return analyses.filter((analysis) =>
+    !disabled.has(analysis.id) && (isAdmin || released.has(analysis.id)))
+}
+
+function PublicationBadge({ published }) {
+  return <Badge variant={published ? 'success' : 'neutral'}>{published ? 'Published' : 'Admin only'}</Badge>
+}
 
 function stateMatches(variant, controls, desired) {
   return controls.every((control) => variant.state?.[control.key] === desired[control.key])
@@ -126,41 +138,10 @@ export function VariantControls({ controls, variants, active, onSelect }) {
   )
 }
 
-export function FigureCard({ fig, canModify, onDelete, deleting, onSave, saving }) {
-  const variants = fig.variants?.length
-    ? fig.variants
-    : [{ key: null, label: fig.title, state: {}, svg: fig.svg }]
-  const controls = fig.controls || []
-  const initialKey = fig.default_variant || variants[0]?.key || null
-  const [variantKey, setVariantKey] = useState(initialKey)
-  const active = variants.find((variant) => variant.key === variantKey) || variants[0] || null
-  const assetKey = active?.key || '__default__'
-  const inlineSrc = active?.svg ? `data:image/svg+xml;base64,${active.svg}` : null
-  const [loadedSvgs, setLoadedSvgs] = useState({})
-  const [assetError, setAssetError] = useState(false)
-  const imageSrc = inlineSrc || loadedSvgs[assetKey] || null
-
-  useEffect(() => {
-    if (!variants.some((variant) => variant.key === variantKey)) setVariantKey(initialKey)
-  }, [initialKey, variantKey, variants])
-
-  useEffect(() => {
-    setLoadedSvgs({})
-  }, [fig.updated_at])
-
-  useEffect(() => {
-    if (inlineSrc || loadedSvgs[assetKey]) return undefined
-    let cancelled = false
-    setAssetError(false)
-    apiClient.get(figureAssetPath(fig.slug, 'svg', active?.key), { responseType: 'blob' })
-      .then((response) => blobAsDataUrl(response.data))
-      .then((src) => {
-        if (!cancelled) setLoadedSvgs((current) => ({ ...current, [assetKey]: src }))
-      })
-      .catch(() => { if (!cancelled) setAssetError(true) })
-    return () => { cancelled = true }
-  }, [active?.key, assetKey, fig.slug, inlineSrc, loadedSvgs])
-
+function PublicationCard({
+  fig, canModify, onDelete, deleting, onSave, saving, children,
+  downloadFormats = null, onDownload = null, exportName = null, showFooter = true,
+}) {
   const [editing, setEditing] = useState(false)
   const [title, setTitle] = useState(fig.title)
   const [caption, setCaption] = useState(fig.caption || '')
@@ -207,8 +188,8 @@ export function FigureCard({ fig, canModify, onDelete, deleting, onSave, saving 
 
   return (
     <AnalysisCard title={fig.title} source={source} actions={actions}
-      downloadFormats={['svg', 'png', 'pdf']}
-      onDownload={(format) => downloadFigure(fig.slug, format, active?.key)}>
+      exportName={exportName || fig.slug}
+      downloadFormats={downloadFormats} onDownload={onDownload}>
       {editing && (
         <div className='mb-4 pb-4 border-b border-border flex flex-col gap-2' data-export-exclude>
           <Input value={title} onChange={(event) => setTitle(event.target.value)} placeholder='Title' />
@@ -220,6 +201,52 @@ export function FigureCard({ fig, canModify, onDelete, deleting, onSave, saving 
           </div>
         </div>
       )}
+      {children}
+      {showFooter && fig.caption && <p className='text-body text-ink-muted mt-3 max-w-prose'>{fig.caption}</p>}
+      {showFooter && <p className='text-caption text-ink-subtle font-mono mt-2' data-export-exclude>{fig.slug}</p>}
+    </AnalysisCard>
+  )
+}
+
+export function FigureCard({ fig, canModify, onDelete, deleting, onSave, saving }) {
+  const variants = fig.variants?.length
+    ? fig.variants
+    : [{ key: null, label: fig.title, state: {}, svg: fig.svg }]
+  const controls = fig.controls || []
+  const initialKey = fig.default_variant || variants[0]?.key || null
+  const [variantKey, setVariantKey] = useState(initialKey)
+  const active = variants.find((variant) => variant.key === variantKey) || variants[0] || null
+  const assetKey = active?.key || '__default__'
+  const inlineSrc = active?.svg ? `data:image/svg+xml;base64,${active.svg}` : null
+  const [loadedSvgs, setLoadedSvgs] = useState({})
+  const [assetError, setAssetError] = useState(false)
+  const imageSrc = inlineSrc || loadedSvgs[assetKey] || null
+
+  useEffect(() => {
+    if (!variants.some((variant) => variant.key === variantKey)) setVariantKey(initialKey)
+  }, [initialKey, variantKey, variants])
+
+  useEffect(() => {
+    setLoadedSvgs({})
+  }, [fig.updated_at])
+
+  useEffect(() => {
+    if (inlineSrc || loadedSvgs[assetKey]) return undefined
+    let cancelled = false
+    setAssetError(false)
+    apiClient.get(figureAssetPath(fig.slug, 'svg', active?.key), { responseType: 'blob' })
+      .then((response) => blobAsDataUrl(response.data))
+      .then((src) => {
+        if (!cancelled) setLoadedSvgs((current) => ({ ...current, [assetKey]: src }))
+      })
+      .catch(() => { if (!cancelled) setAssetError(true) })
+    return () => { cancelled = true }
+  }, [active?.key, assetKey, fig.slug, inlineSrc, loadedSvgs])
+
+  return (
+    <PublicationCard fig={fig} canModify={canModify} onDelete={onDelete} deleting={deleting}
+      onSave={onSave} saving={saving} downloadFormats={['svg', 'png', 'pdf']}
+      onDownload={(format) => downloadFigure(fig.slug, format, active?.key)}>
       <VariantControls controls={controls} variants={variants} active={active} onSelect={setVariantKey} />
       {!imageSrc && !assetError && <div className='flex justify-center py-10'><Spinner /></div>}
       {assetError && <Alert type='error'>Could not load this figure state.</Alert>}
@@ -229,9 +256,25 @@ export function FigureCard({ fig, canModify, onDelete, deleting, onSave, saving 
             className='w-full h-auto' />
         </div>
       )}
-      {fig.caption && <p className='text-body text-ink-muted mt-3 max-w-prose'>{fig.caption}</p>}
-      <p className='text-caption text-ink-subtle font-mono mt-2' data-export-exclude>{fig.slug}</p>
-    </AnalysisCard>
+    </PublicationCard>
+  )
+}
+
+export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSave, saving }) {
+  // Resolve manifests through the built-in registry so published and native
+  // copies share one renderer instead of drifting into parallel implementations.
+  const analysis = getAnalysisById(fig.visual?.id)
+  const Component = analysis?.Component || null
+
+  return (
+    <PublicationCard fig={fig} canModify={canModify} onDelete={onDelete} deleting={deleting}
+      onSave={onSave} saving={saving} showFooter={!analysis}>
+      {!Component ? (
+        <Alert type='error'>This interactive visual renderer is not available in the current application.</Alert>
+      ) : (
+        <Component publicationOptions={fig.visual?.options || {}} />
+      )}
+    </PublicationCard>
   )
 }
 
@@ -239,31 +282,73 @@ export default function VisualsPage({ onNavigate = () => {} }) {
   const me = useAccessMe()
   const isAdmin = me.data?.role === 'admin'
   const myUid = me.data?.uid || null
+  const visualSettings = useVisualSettings()
+  const releasedIds = visualSettings.data?.released_ids || []
+  const disabledIds = visualSettings.data?.disabled_ids || []
+  const visibleAnalyses = useMemo(
+    () => visualSettings.isLoading
+      ? []
+      : filterBuiltInAnalyses(ANALYSES, { isAdmin, releasedIds, disabledIds }),
+    [disabledIds, isAdmin, releasedIds, visualSettings.isLoading]
+  )
+  const releasedSet = useMemo(() => new Set(releasedIds), [releasedIds])
   const figuresQuery = useFigures()
   const deleteFigure = useDeleteFigure()
   const editFigure = useEditFigure()
   const figures = figuresQuery.data?.figures || []
-  const gallery = useMemo(
-    () => figures.slice().sort((a, b) => new Date(a.updated_at || 0) - new Date(b.updated_at || 0)),
-    [figures]
-  )
+  const gallery = useMemo(() => {
+    const builtIns = visibleAnalyses.map((analysis) => ({
+      kind: 'analysis', key: analysis.id, at: analysis.published_at, analysis,
+    }))
+    const published = figures.map((figure) => ({
+      kind: 'figure', key: figure.slug, at: figure.updated_at, figure,
+    }))
+    return [...builtIns, ...published]
+      .sort((a, b) => new Date(a.at || 0) - new Date(b.at || 0))
+  }, [figures, visibleAnalyses])
+
+  const loading = figuresQuery.isLoading || visualSettings.isLoading
+  const failed = figuresQuery.isError || visualSettings.isError
 
   return (
     <Stack gap='section'>
       {figuresQuery.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
-      {figuresQuery.isLoading && <div className='flex justify-center py-10'><Spinner /></div>}
-      {!figuresQuery.isLoading && !figuresQuery.isError && !gallery.length && (
-        <EmptyState icon={ChartBarIcon} title='No figures published yet'
-          description='Build a visual locally and publish its finished files for the team.'
-          action={isAdmin ? <Button onClick={() => onNavigate('api')}>Open API setup</Button> : null} />
+      {visualSettings.isError && <Alert type='error'>Failed to load built-in visual settings.</Alert>}
+      {loading && !gallery.length && <div className='flex justify-center py-10'><Spinner /></div>}
+      {!loading && !failed && !gallery.length && (
+        <EmptyState icon={ChartBarIcon}
+          title={isAdmin ? 'No visuals available' : 'No visuals published yet'}
+          description={isAdmin
+            ? 'Make a built-in visual available in Admin, or publish a finished local figure.'
+            : 'Published visuals will appear here as the team finishes them.'}
+          action={isAdmin ? <Button onClick={() => onNavigate('admin')}>Open visual settings</Button> : null} />
       )}
-      {gallery.map((figure) => (
-        <FigureCard key={figure.slug} fig={figure}
-          canModify={isAdmin || (!!myUid && figure.author_uid === myUid)}
-          onDelete={() => deleteFigure.mutate(figure.slug)} deleting={deleteFigure.isPending}
-          onSave={(fields) => editFigure.mutateAsync({ slug: figure.slug, fields })}
-          saving={editFigure.isPending} />
-      ))}
+      {gallery.map((item) => {
+        if (item.kind === 'figure') {
+          const figure = item.figure
+          const PublishedCard = figure.publication_type === 'interactive'
+            ? InteractiveFigureCard
+            : FigureCard
+          return (
+            <PublishedCard key={item.key} fig={figure}
+              canModify={isAdmin || (!!myUid && figure.author_uid === myUid)}
+              onDelete={() => deleteFigure.mutate(figure.slug)} deleting={deleteFigure.isPending}
+              onSave={(fields) => editFigure.mutateAsync({ slug: figure.slug, fields })}
+              saving={editFigure.isPending} />
+          )
+        }
+
+        const { analysis } = item
+        const Component = analysis.Component
+        return (
+          <AnalysisCard key={item.key} title={analysis.title}
+            source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
+            exportName={analysis.id}
+            badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
+            <Component />
+          </AnalysisCard>
+        )
+      })}
     </Stack>
   )
 }

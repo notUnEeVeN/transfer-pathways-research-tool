@@ -87,6 +87,13 @@ const validVariantBody = () => validBody({
   ],
 });
 
+const validInteractiveBody = () => ({
+  slug: 'paper-credit-loss-copy',
+  title: 'Paper-style credit loss (published copy)',
+  caption: 'Exact renderer pilot',
+  visual: 'paper-credit-loss',
+});
+
 describe('POST /publish', () => {
   it('stores locally rendered files keyed by slug and stamped with the author', async () => {
     const res = await run(publish, fakeReq({ uid: 'u1', email: 'ada@b.edu' }, { body: validBody() }));
@@ -120,6 +127,21 @@ describe('POST /publish', () => {
     expect(JSON.stringify(docs)).not.toContain('import ');
   });
 
+  it('publishes a named interactive renderer without static files or uploaded code', async () => {
+    const res = await run(publish, fakeReq(
+      { uid: 'u1', email: 'ada@b.edu' },
+      { body: validInteractiveBody() }
+    ));
+    expect(res.body).toEqual({ ok: true, slug: 'paper-credit-loss-copy' });
+    const doc = await db.collection('published_figures').findOne({ _id: 'paper-credit-loss-copy' });
+    expect(doc).toMatchObject({
+      publication_type: 'interactive',
+      visual: { id: 'paper-credit-loss', options: {} },
+      author_uid: 'u1',
+    });
+    expect(JSON.stringify(doc)).not.toContain('import ');
+  });
+
   it('resolves an author label from team_members when the token has no email (pmtr_ path)', async () => {
     await db.collection('team_members').insertOne({
       _id: 'u9', access_status: 'granted', email: 'partner@b.edu',
@@ -141,6 +163,14 @@ describe('POST /publish', () => {
     expect((await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ slug: 'Bad Slug!' }) }))).statusCode).toBe(400);
     expect((await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ title: '' }) }))).statusCode).toBe(400);
     expect((await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ formats: { png: PNG } }) }))).statusCode).toBe(400);
+  });
+
+  it('rejects an unknown interactive renderer', async () => {
+    const res = await run(publish, fakeReq({ uid: 'u1' }, {
+      body: { ...validInteractiveBody(), visual: 'unknown-visual' },
+    }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toContain('unknown interactive visual');
   });
 
   it('rejects oversized format payloads', async () => {

@@ -37,10 +37,10 @@ def test_reads_visible_pairs_one_per_campus():
     assert all(len(v) == 1 for v in canon.values())
 
 
-def test_supports_multiple_majors_per_campus():
+def test_legacy_duplicates_keep_the_first_major_per_campus():
     pairs = LIVE_PAIRS + [{"school_id": 7, "major": "Mathematics/Computer Science B.S."}]
     canon = pcl.load_canonical_majors(FakeDB({"_id": "app", "visible_pairs": pairs}))
-    assert set(canon[7]) == {"CSE: Computer Science B.S.", "Mathematics/Computer Science B.S."}
+    assert canon[7] == ["CSE: Computer Science B.S."]
 
 
 def test_fallback_to_paper_majors_when_absent():
@@ -48,10 +48,10 @@ def test_fallback_to_paper_majors_when_absent():
     assert canon == {sid: list(m) for sid, m in pcl.PAPER_MAJORS.items()}
 
 
-def test_missing_campus_falls_back_per_campus():
+def test_saved_selection_does_not_reintroduce_an_omitted_campus():
     partial = [p for p in LIVE_PAIRS if p["school_id"] != 79]  # drop UCB
     canon = pcl.load_canonical_majors(FakeDB({"_id": "app", "visible_pairs": partial}))
-    assert canon[79] == list(pcl.PAPER_MAJORS[79])
+    assert 79 not in canon
     assert canon[7] == ["CSE: Computer Science B.S."]
 
 

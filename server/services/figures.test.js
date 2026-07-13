@@ -56,6 +56,14 @@ const variantPayload = () => ({
   ],
 });
 
+const interactivePayload = () => ({
+  slug: 'paper-credit-loss-copy',
+  title: 'Paper-style credit loss (published copy)',
+  caption: 'Interactive publication pilot',
+  source_url: null,
+  visual: 'paper-credit-loss',
+});
+
 describe('published figures', () => {
   it('stores binary files while the list response stays metadata-only', async () => {
     await upsertFigure(db, payload(), { author_uid: 'u1', author_label: 'Ada' });
@@ -98,6 +106,25 @@ describe('published figures', () => {
     expect(file.buffer.toString()).toBe('diff-pdf');
   });
 
+  it('stores a validated interactive renderer manifest without image files', async () => {
+    const checked = validateFigurePayload(interactivePayload());
+    expect(checked.error).toBeUndefined();
+    expect(checked.value).toMatchObject({
+      publication_type: 'interactive',
+      visual: { id: 'paper-credit-loss', options: {} },
+    });
+
+    await upsertFigure(db, checked.value, { author_uid: 'u1', author_label: 'Ada' });
+    const stored = await db.collection('published_figures').findOne({ _id: 'paper-credit-loss-copy' });
+    expect(stored.publication_type).toBe('interactive');
+    expect(stored.visual.id).toBe('paper-credit-loss');
+    expect(stored.formats).toEqual({});
+
+    const [listed] = await listFigures(db);
+    expect(listed.visual).toEqual({ id: 'paper-credit-loss', options: {} });
+    expect(listed.formats).toBeUndefined();
+  });
+
   it('validates slugs, required SVG, and the total file cap', () => {
     expect(validateFigurePayload(payload()).error).toBeUndefined();
     expect(validateFigurePayload(payload('Bad slug')).error).toMatch(/slug/);
@@ -109,6 +136,25 @@ describe('published figures', () => {
       ...variantPayload(),
       variants: variantPayload().variants.map((variant) => ({ ...variant, state: {} })),
     }).error).toMatch(/missing state.version/);
+    expect(validateFigurePayload({ ...interactivePayload(), visual: 'not-a-renderer' }).error)
+      .toMatch(/unknown interactive visual/);
+    expect(validateFigurePayload({ ...interactivePayload(), source: 'live' }).error)
+      .toMatch(/use source_url/);
+    expect(validateFigurePayload({ ...interactivePayload(), formats: { svg: b64('<svg/>') } }).error)
+      .toMatch(/cannot include formats/);
+  });
+
+  it('clears stale static variants when a slug becomes interactive', async () => {
+    const staticChecked = validateFigurePayload({ ...variantPayload(), slug: 'paper-credit-loss-copy' });
+    await upsertFigure(db, staticChecked.value, { author_uid: 'u1', author_label: 'Ada' });
+    expect(await db.collection('published_figures').countDocuments()).toBe(3);
+
+    const interactiveChecked = validateFigurePayload(interactivePayload());
+    await upsertFigure(db, interactiveChecked.value, { author_uid: 'u1', author_label: 'Ada' });
+    expect(await db.collection('published_figures').countDocuments()).toBe(1);
+    const root = await db.collection('published_figures').findOne({ _id: 'paper-credit-loss-copy' });
+    expect(root.variants).toBeUndefined();
+    expect(root.visual.id).toBe('paper-credit-loss');
   });
 
   it('deletes by durable slug', async () => {

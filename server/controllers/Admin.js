@@ -11,6 +11,7 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { invalidateGrantsCache, isAdmin, adminUids } = require('../services/access');
 const { getVisiblePairs, setVisiblePairs } = require('../services/majorVisibility');
+const { setReleasedIds, setDisabledIds } = require('../services/analysisReleases');
 const { listDisplayNames, setDisplayName } = require('../services/displayNames');
 const {
   listMembers, grantMember, revokeMember,
@@ -106,11 +107,11 @@ exports.revokeAccess = asyncHandler(async (req, res) => {
   res.json({ ok: true });
 });
 
-// ── partner major visibility ──
-// The ported dataset (everything in assist_agreements) is the admin's universe;
-// `visible` is the (school, major) PAIR subset partners can see — pair
-// granularity because the same major name exists at several campuses.
-// Deny-by-default: until the admin selects pairs, partners see nothing.
+// ── working major visibility ──
+// The ported dataset (everything in assist_agreements) is the admin inventory;
+// `visible` selects exactly one working major for each campus. The same major
+// name can exist at several campuses, so each choice remains a school+major
+// pair. Deny-by-default: until choices are saved, partners see nothing.
 
 // The ported universe, grouped by school for the admin UI.
 async function portedBySchool(db) {
@@ -143,10 +144,15 @@ exports.putVisibleMajors = asyncHandler(async (req, res) => {
   ) {
     return res.status(400).json({ error: 'pairs must be an array of { school_id, major }' });
   }
+  const schoolIds = pairs.map((p) => Number(p.school_id));
+  if (new Set(schoolIds).size !== schoolIds.length) {
+    return res.status(400).json({ error: 'choose at most one major per UC campus' });
+  }
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
+  const schools = await portedBySchool(db);
   const ported = new Set(
-    (await portedBySchool(db)).flatMap((s) => s.majors.map((m) => `${s.school_id}|${m}`))
+    schools.flatMap((s) => s.majors.map((m) => `${s.school_id}|${m}`))
   );
   const unknown = pairs.filter((p) => !ported.has(`${Number(p.school_id)}|${p.major}`));
   if (unknown.length) {
@@ -154,8 +160,38 @@ exports.putVisibleMajors = asyncHandler(async (req, res) => {
       error: `not in the ported dataset: ${unknown.map((p) => `${p.school_id}:${p.major}`).join(' · ')}`,
     });
   }
-  await setVisiblePairs(auditDb, pairs, req.user?.uid);
-  res.json({ ok: true, visible: pairs.map((p) => ({ school_id: Number(p.school_id), major: p.major })) });
+  const selectedSchoolIds = new Set(schoolIds);
+  const missing = schools.filter((school) => !selectedSchoolIds.has(Number(school.school_id)));
+  if (missing.length) {
+    return res.status(400).json({
+      error: `choose one major for every UC campus; missing: ${missing.map((school) => school.school).join(' · ')}`,
+    });
+  }
+  const visible = await setVisiblePairs(auditDb, pairs, req.user?.uid);
+  res.json({ ok: true, visible });
+});
+
+// Built-in visual presentation settings. Published controls partner gallery
+// visibility; hidden controls whether the card mounts anywhere, including the
+// admin's own gallery. Each update changes only its own list.
+exports.putAnalysisReleases = asyncHandler(async (req, res) => {
+  const { released_ids } = req.body || {};
+  if (!Array.isArray(released_ids) || released_ids.some((id) => typeof id !== 'string')) {
+    return res.status(400).json({ error: 'released_ids must be an array of analysis id strings' });
+  }
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const saved = await setReleasedIds(auditDb, released_ids, req.user?.uid);
+  res.json({ ok: true, released_ids: saved });
+});
+
+exports.putAnalysisDisabled = asyncHandler(async (req, res) => {
+  const { disabled_ids } = req.body || {};
+  if (!Array.isArray(disabled_ids) || disabled_ids.some((id) => typeof id !== 'string')) {
+    return res.status(400).json({ error: 'disabled_ids must be an array of analysis id strings' });
+  }
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const saved = await setDisabledIds(auditDb, disabled_ids, req.user?.uid);
+  res.json({ ok: true, disabled_ids: saved });
 });
 
 // Available to every console user (partner or admin): tells the frontend

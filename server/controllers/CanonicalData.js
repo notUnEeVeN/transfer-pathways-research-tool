@@ -19,7 +19,6 @@ const REQUIREMENT_PREFIX = Object.freeze({
   associate_degree: 'associate_degree',
 });
 const REQUIREMENT_KINDS = Object.keys(REQUIREMENT_PREFIX);
-const workDb = (req) => req.app.locals.auditDb || req.app.locals.db;
 
 function parseInstitutionId(value, expectedKind = null) {
   const raw = String(value ?? '').trim();
@@ -121,14 +120,14 @@ exports.listRequirements = asyncHandler(async (req, res) => {
   if (kind && !REQUIREMENT_KINDS.includes(kind)) {
     return res.status(400).json({ error: `kind must be one of ${REQUIREMENT_KINDS.join(', ')}` });
   }
-  const rows = await workDb(req).collection(COLLECTIONS.requirements)
+  const rows = await req.app.locals.db.collection(COLLECTIONS.requirements)
     .find(kind ? { kind } : {})
     .toArray();
   res.json({ rows });
 });
 
 exports.putRequirement = asyncHandler(async (req, res) => {
-  const db = workDb(req);
+  const db = req.app.locals.db;
   const kind = String(req.params.kind || '').trim();
   if (!REQUIREMENT_KINDS.includes(kind)) {
     return res.status(404).json({ error: 'unknown requirement kind' });
@@ -146,6 +145,7 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     kind,
     curated_by: req.user?.uid ?? null,
     curated_at: new Date(),
+    updated_at: new Date(),
   };
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
@@ -161,14 +161,14 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   const prefix = `${REQUIREMENT_PREFIX[kind]}:`;
   const rawId = decodeURIComponent(String(req.params.id));
   const canonicalId = rawId.startsWith(prefix) ? rawId : `${prefix}${rawId}`;
-  const result = await workDb(req).collection(COLLECTIONS.requirements)
+  const result = await req.app.locals.db.collection(COLLECTIONS.requirements)
     .deleteOne({ _id: canonicalId });
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
   res.json({ ok: true });
 });
 
 exports.listPrerequisites = asyncHandler(async (req, res) => {
-  const rows = await workDb(req).collection(COLLECTIONS.prerequisites).find().toArray();
+  const rows = await req.app.locals.db.collection(COLLECTIONS.prerequisites).find().toArray();
   res.json({ rows });
 });
 
@@ -184,14 +184,14 @@ exports.putPrerequisite = asyncHandler(async (req, res) => {
     curated_by: req.user?.uid ?? null,
     curated_at: new Date(),
   };
-  await workDb(req).collection(COLLECTIONS.prerequisites)
+  await req.app.locals.db.collection(COLLECTIONS.prerequisites)
     .replaceOne({ _id: id }, canonical, { upsert: true });
   res.json({ ok: true, id });
 });
 
 exports.deletePrerequisite = asyncHandler(async (req, res) => {
   const id = decodeURIComponent(String(req.params.id));
-  const result = await workDb(req).collection(COLLECTIONS.prerequisites).deleteOne({ _id: id });
+  const result = await req.app.locals.db.collection(COLLECTIONS.prerequisites).deleteOne({ _id: id });
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
   res.json({ ok: true });
 });

@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react'
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack } from './components/ui'
+import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, Tabs } from './components/ui'
 import { useRefTable, useDeleteRefRow } from './shared/query/hooks/useData'
-import { refTableByKey } from './references/refTablesRegistry'
+import { refTableByKey, UC_SCHOOLS } from './references/refTablesRegistry'
 import RefRowModal from './references/RefRowModal'
 import RouteHint from './components/RouteHint'
+import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 
 /**
  * Hand-curated reference tables, editable in place (row edit/delete/add) via
@@ -34,6 +35,177 @@ function courseLabel(row) {
   if (match?.prefix && match?.number) return `${match.prefix} ${match.number}`
   if (Array.isArray(row.parent_ids) && row.parent_ids.length) return row.parent_ids.join(', ')
   return null
+}
+
+function splitCourseCode(code) {
+  const match = String(code || '').trim().match(/^(.*?)\s+(\S+)$/)
+  return match
+    ? { prefix: match[1], number: match[2] }
+    : { prefix: String(code || '').trim(), number: '' }
+}
+
+function readableGroupName(value) {
+  return String(value || 'Other')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Za-z])(\d)/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/Eqations/gi, 'Equations')
+    .trim()
+}
+
+const MINIMUM_CATEGORIES = [
+  {
+    key: 'mathematics',
+    title: 'Mathematics',
+    groupPattern: /(calc|math|algebra|differential|vector|statistic|probability)/i,
+    coursePattern: /^(MATH|MAT|STAT|STATS)\b/i,
+  },
+  {
+    key: 'computer_science',
+    title: 'Computer Science',
+    groupPattern: /(intro|program|data.?structure|organization|algorithm|computer|software|system|architecture)/i,
+    coursePattern: /^(CS|CSE|COM\s*SCI|CMPSC|COMPSCI|ECS|I&C\s*SCI|IN4MATX)\b/i,
+  },
+  {
+    key: 'natural_science',
+    title: 'Natural Science',
+    groupPattern: /(physics|chemistry|biology|science)/i,
+    coursePattern: /^(PHYS|PHYSICS|CHEM|BIO|BIOLOGY|ASTRON|GEOL)\b/i,
+  },
+]
+
+function minimumCategory(groupId, rows) {
+  const named = MINIMUM_CATEGORIES.find((category) => category.groupPattern.test(String(groupId || '')))
+  if (named) return named
+  const codes = rows.map((row) => String(row.receiving_code || '').trim()).filter(Boolean)
+  const byCourses = MINIMUM_CATEGORIES.find(
+    (category) => codes.length > 0 && codes.every((code) => category.coursePattern.test(code))
+  )
+  return byCourses || { key: 'other', title: 'Other Requirements' }
+}
+
+function minimumSectionRank(groupId, categoryKey) {
+  const value = String(groupId || '').replace(/[^a-z0-9]/gi, '').toLowerCase()
+  if (categoryKey === 'mathematics') {
+    const calc = value.match(/^calc(\d+)$/)
+    if (calc) return Number(calc[1])
+    if (value === 'calc') return 1
+    if (/multivariable|vector/.test(value)) return 20
+    if (/linearalgebra/.test(value)) return 30
+    if (/differential/.test(value)) return 40
+    if (/discrete/.test(value)) return 50
+  }
+  if (categoryKey === 'computer_science') {
+    const intro = value.match(/^intro(\d+)$/)
+    if (intro) return Number(intro[1])
+    if (value === 'intro') return 1
+    if (/program/.test(value)) return 20
+    if (/data.?structure/.test(value)) return 30
+    if (/organization|architecture|system/.test(value)) return 40
+  }
+  return 100
+}
+
+function declaredMinimumAsk(rows) {
+  const values = rows
+    .map((row) => Number(row.source_entry?.[2]))
+    .filter((value) => Number.isFinite(value) && value > 0)
+  return values.length === rows.length && values.every((value) => value === values[0])
+    ? values[0]
+    : null
+}
+
+/**
+ * Translate the compact curated-minimum rows into the same requirement shape
+ * used by ASSIST agreements and degree templates. Atomic requirements become
+ * named sections inside broad subject groups; their set alternatives remain
+ * local to that section.
+ */
+export function minimumsToLedger(inputRows = []) {
+  const rows = inputRows.slice().sort((a, b) =>
+    String(a.group_id).localeCompare(String(b.group_id)) ||
+    String(a.set_id).localeCompare(String(b.set_id)) ||
+    Number(a.source_order || 0) - Number(b.source_order || 0))
+  const universityCoursesById = {}
+  const toCourseId = (row) => {
+    const matched = row.matched_courses?.[0] || null
+    const parentId = matched?.parent_id ?? row.parent_ids?.[0] ?? `minimum:${row._id || row.receiving_code}`
+    const parsed = splitCourseCode(row.receiving_code)
+    universityCoursesById[parentId] = {
+      prefix: matched?.prefix || parsed.prefix,
+      number: matched?.number || parsed.number,
+      title: matched?.title || null,
+    }
+    return parentId
+  }
+  const courseReceiver = (row) => ({
+    receiving: { kind: 'course', parent_id: toCourseId(row), units: null },
+    articulation_status: null,
+    options: [],
+    options_conjunction: 'or',
+  })
+
+  const atomicSections = [...groupBy(rows, (row) => row.group_id || 'Other')]
+    .map(([groupId, groupRows]) => {
+      const category = minimumCategory(groupId, groupRows)
+      const sets = [...groupBy(groupRows, (row) => String(row.set_id || 'A'))]
+      const declaredAsk = declaredMinimumAsk(groupRows)
+      let receivers
+      let sectionAdvisement
+
+      if (sets.length === 1 || sets.every(([, setRows]) => setRows.length === 1)) {
+        receivers = groupRows.map(courseReceiver)
+        const fallback = sets.length === 1 ? groupRows.length : 1
+        sectionAdvisement = Math.min(declaredAsk || fallback, receivers.length)
+      } else {
+        // A multi-course alternative is one series receiver, preserving
+        // OR-of-AND semantics if future curated rows introduce such a set.
+        receivers = sets.map(([, setRows]) => ({
+          receiving: {
+            kind: 'series',
+            parent_ids: setRows.map(toCourseId),
+            conjunction: 'and',
+            units: null,
+          },
+          articulation_status: null,
+          options: [],
+          options_conjunction: 'or',
+        }))
+        sectionAdvisement = 1
+      }
+
+      return {
+        category,
+        rank: minimumSectionRank(groupId, category.key),
+        section: {
+          title: readableGroupName(groupId),
+          source_group_id: groupId,
+          section_advisement: sectionAdvisement,
+          receivers,
+        },
+      }
+    })
+
+  const requirement_groups = [...groupBy(atomicSections, (item) => item.category.key)]
+    .map(([, items]) => ({
+      title: items[0].category.title,
+      categoryOrder: MINIMUM_CATEGORIES.findIndex((category) => category.key === items[0].category.key),
+      is_required: true,
+      group_conjunction: 'And',
+      sections: items
+        .slice()
+        .sort((a, b) => a.rank - b.rank || a.section.title.localeCompare(b.section.title))
+        .map((item) => item.section),
+    }))
+    .sort((a, b) => {
+      const aOrder = a.categoryOrder < 0 ? MINIMUM_CATEGORIES.length : a.categoryOrder
+      const bOrder = b.categoryOrder < 0 ? MINIMUM_CATEGORIES.length : b.categoryOrder
+      return aOrder - bOrder
+    })
+    .map(({ categoryOrder: _categoryOrder, ...group }) => group)
+
+  return { requirement_groups, universityCoursesById }
 }
 
 // ── shared table with optional per-row edit/delete ──
@@ -210,6 +382,7 @@ function DistrictLookup({ rows }) {
 export function CampusMinimums({ schoolId }) {
   const minimums = useRefTable('transfer_minimums')
   const ed = useRowEditing('transfer_minimums')
+  const [view, setView] = useState('preview')
 
   const rows = useMemo(() => {
     const mine = (minimums.data?.rows || []).filter((r) => Number(r.school_id) === Number(schoolId))
@@ -231,25 +404,48 @@ export function CampusMinimums({ schoolId }) {
   if (minimums.isError) return <Alert type='error'>Failed to load the UC minimums table.</Alert>
 
   const school = rows[0]?.school || null
-  const ucCode = rows[0]?.uc_code || ''
+  const campusEntry = Object.entries(UC_SCHOOLS)
+    .find(([, campus]) => Number(campus.school_id) === Number(schoolId))
+  const ucCode = rows[0]?.uc_code || campusEntry?.[0] || ''
+  const schoolName = school || campusEntry?.[1]?.school || null
   const unmatched = rows.filter((r) => !r.matched).length
+  const ledger = minimumsToLedger(rows)
 
   return (
     <Stack gap='cozy'>
       <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
         <div className='min-w-0'>
-          <p className='text-body-strong'>{school || 'No minimums for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}</p>
+          <p className='text-body-strong'>{schoolName || 'No minimums for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}</p>
           <p className='text-caption text-ink-muted mt-0.5'>Hand-curated hard minimum · {rows.length} course entries</p>
         </div>
-        <div className='ml-auto flex items-center gap-2 shrink-0'>
+        <div className='ml-auto flex flex-wrap items-center gap-2 shrink-0'>
           {unmatched > 0 && <Badge variant='conservative'>{unmatched} not matched</Badge>}
-          <Button leadingIcon={PlusIcon} onClick={() => ed.openAdd(ucCode ? { uc_code: ucCode } : {})}>
-            Add requirement
-          </Button>
+          <Tabs value={view} onChange={setView} options={[
+            { value: 'preview', label: 'Rendered' },
+            { value: 'edit', label: 'Edit rows' },
+          ]} />
+          {view === 'edit' && (
+            <Button leadingIcon={PlusIcon} onClick={() => ed.openAdd(ucCode ? { uc_code: ucCode } : {})}>
+              Add requirement
+            </Button>
+          )}
         </div>
       </div>
 
-      {rows.length > 0 && (
+      {view === 'preview' && rows.length > 0 && (
+        <div className='uui-scope'>
+          <RequirementsLedger major={{ requirement_groups: ledger.requirement_groups }}
+            universityCoursesById={ledger.universityCoursesById}
+            preserveOrder showCompletion={false} />
+        </div>
+      )}
+
+      {view === 'preview' && rows.length === 0 && (
+        <EmptyState title='No minimum requirements'
+          description='This campus does not have a hand-curated minimum yet. Open Edit rows to add its first requirement.' />
+      )}
+
+      {view === 'edit' && rows.length > 0 && (
         <DataTable
           rows={rows}
           onEdit={ed.openEdit} onDelete={ed.remove} deleting={ed.deleting}

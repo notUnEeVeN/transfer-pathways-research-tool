@@ -201,8 +201,8 @@ async function loadCollegeGeAreas(db, communityCollegeId) {
 // shared RequirementsLedger can render the "4-year degree" tab in the exact same
 // style as an agreement. Returns { requirement_groups, courses } — courses is the
 // CC-course lookup the ledger's sending side needs. Major-prep options come from
-// the real agreements; R&C/H/SS options are a few of the college's GE-area courses;
-// non-transferable + assumed (AH&I) receivers stay optionless.
+// real agreements. GE-area requirements carry category metadata and a complete
+// qualifying-course count instead of a misleading three-course sample.
 //
 // `template: true` renders the stored degree with NO college context: course and
 // GE receivers keep a null articulation_status (the ledger leaves their sending
@@ -225,7 +225,22 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
   const stamp = (r, s) => {
     const rec = r.receiving || {};
     if (template) {
-      if (rec.kind === 'course' || rec.kind === 'ge_area') {
+      if (rec.kind === 'ge_area') {
+        return {
+          ...r,
+          articulation_status: null,
+          not_articulated_reason: null,
+          options: [],
+          category_match: {
+            kind: 'ge_area',
+            areas: [...(s.ge_areas || r.ge_areas || [])],
+            required_count: s.section_advisement ?? 1,
+            qualifying_count: null,
+            assumed: Boolean(r.assume_satisfiable),
+          },
+        };
+      }
+      if (rec.kind === 'course') {
         return { ...r, articulation_status: null, not_articulated_reason: null, options: [] };
       }
       return { ...r, articulation_status: 'not_articulated', not_articulated_reason: 'must_take_at_university', options: [] };
@@ -242,9 +257,22 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
       return { ...r, articulation_status: isArt ? 'articulated' : 'not_articulated', not_articulated_reason: isArt ? null : 'no_course_articulated', options: opts };
     }
     if (rec.kind === 'ge_area') {
-      if (r.assume_satisfiable) return { ...r, articulation_status: 'articulated', options: [] };
-      const opts = geOptions(s.ge_areas || r.ge_areas || []);
-      return { ...r, articulation_status: opts.length ? 'articulated' : 'not_articulated', options: opts };
+      const areas = [...(s.ge_areas || r.ge_areas || [])];
+      const hits = r.assume_satisfiable ? [] : geCoverCourses(areas, ccGeAreas);
+      const required = s.section_advisement ?? 1;
+      return {
+        ...r,
+        articulation_status: r.assume_satisfiable || hits.length >= required ? 'articulated' : 'not_articulated',
+        not_articulated_reason: null,
+        options: [],
+        category_match: {
+          kind: 'ge_area',
+          areas,
+          required_count: required,
+          qualifying_count: r.assume_satisfiable ? null : hits.length,
+          assumed: Boolean(r.assume_satisfiable),
+        },
+      };
     }
     return { ...r, articulation_status: 'not_articulated', not_articulated_reason: 'must_take_at_university', options: [] };
   };
