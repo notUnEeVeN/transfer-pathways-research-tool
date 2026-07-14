@@ -32,12 +32,20 @@ const connectAuditDB = async (fallbackDb) => {
   if (!uri || uri === process.env.MONGO_URI) return fallbackDb;
   const target = describeTarget(uri);
   try {
-    const client = await MongoClient.connect(uri, { compressors: ['zlib'] });
+    // Fail fast: dev machines are sometimes offline (campus WiFi blocks
+    // Atlas), and a hung connect would stall boot for 30s.
+    const client = await MongoClient.connect(uri, {
+      compressors: ['zlib'],
+      serverSelectionTimeoutMS: 5000,
+    });
     console.log(`Connected to audit ${target}`);
     return client.db(process.env.DB_NAME);
   } catch (error) {
-    console.error(`Error connecting to audit ${target}:`, error);
-    process.exit(1);
+    // Working state written during the fallback stays on the main handle and
+    // will NOT sync to the shared cluster — loud warning, not a crash, so
+    // offline dev still boots.
+    console.warn(`[audit] cannot reach ${target} (${error.message}) — falling back to the main DB. Task/figure/review edits made now will stay local.`);
+    return fallbackDb;
   }
 };
 
