@@ -674,17 +674,18 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'template'
               : (
                 <>
                   <DocHead doc={doc} assistUrl={assistUrl} />
-                  <div className='flex items-baseline gap-3'>
-                    <h3 className='text-[21px] font-[650] tracking-[-.01em]'>Required</h3>
-                    <div className='text-[13px] text-ink-subtle'>
-                      Click a row to mark it in error — the count updates itself. Tick the box on the right to simulate a student plan.
-                      {taken.length > 0 && (
-                        <>
-                          {' · '}Simulating {taken.length} CC course{taken.length === 1 ? '' : 's'}{' '}
-                          <button type='button' onClick={() => setTaken([])} className='text-primary hover:underline'>Clear</button>
-                        </>
-                      )}
-                    </div>
+                  {/* No heading here — the ledger's own group header already
+                      titles the requirements; a second "Required" read as
+                      clutter. Just the interaction hint (and the live
+                      simulate counter, which is functional). */}
+                  <div className='text-[13px] text-ink-subtle'>
+                    Click a row to mark it in error · tick a box on the right to simulate a student plan.
+                    {taken.length > 0 && (
+                      <>
+                        {' · '}Simulating {taken.length} CC course{taken.length === 1 ? '' : 's'}{' '}
+                        <button type='button' onClick={() => setTaken([])} className='text-primary hover:underline'>Clear</button>
+                      </>
+                    )}
                   </div>
                   <div className='uui-scope'>
                     <RequirementsLedger

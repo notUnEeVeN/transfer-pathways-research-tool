@@ -4,11 +4,11 @@ import { int } from './statsFormat'
 
 /**
  * Template verification by campus — one row per campus: audited / total
- * template clusters as a coverage bar + percent. The "where to audit next"
- * view. Rows with errors also surface a visible `{n} err` marker beside the
- * campus name; full detail (exact counts, live error count) still rides in
- * the row's `title` tooltip — the 3-column layout (name / bar / pct, mockup
- * v2:653-662) only has room for the headline percent.
+ * template clusters as a coverage bar + the audited/total fraction (the
+ * fraction, not a percent, so how many templates are LEFT is readable at a
+ * glance). The "where to audit next" view. Rows with errors also surface a
+ * visible `{n} err` marker beside the campus name; full detail (exact
+ * counts, live error count) still rides in the row's `title` tooltip.
  *
  * Replaces the campus × major-area coverage matrix: on the research dataset
  * (CS-only majors) the area columns collapsed to a single meaningful column,
@@ -43,7 +43,7 @@ export default function CampusCoverage({ filter }) {
             (errors > 0 ? ` · ${int(errors)} error${errors === 1 ? '' : 's'}` : '')
           return (
             <div key={`${r.system}|${r.school_id}`} title={detail}
-              className='grid grid-cols-[180px_1fr_64px] items-center gap-4 px-[22px] py-[11px] border-b border-border/40 last:border-0 hover:bg-surface-hover'>
+              className='grid grid-cols-[180px_1fr_72px] items-center gap-4 px-[22px] py-[11px] border-b border-border/40 last:border-0 hover:bg-surface-hover'>
               <div className='flex items-center'>
                 <span className='text-[13.5px] font-[550] truncate'>{r.campus}</span>
                 {errors > 0 && <span className='ml-2 text-[11.5px] font-semibold text-danger whitespace-nowrap'>{errors} err</span>}
@@ -55,7 +55,10 @@ export default function CampusCoverage({ filter }) {
                   style={{ width: `${v}%`, backgroundColor: v >= 90 ? 'var(--color-success, #17855A)' : 'var(--color-primary, #193018)' }}
                 />
               </span>
-              <span className='text-[13px] font-[550] text-right'>{pct.toFixed(1)}%</span>
+              {/* The fraction (not a percent) so what's LEFT per campus is readable at a glance. */}
+              <span className='text-[13px] font-[550] text-right tabular whitespace-nowrap'>
+                {int(r.templatesAudited)}/{int(r.templatesTotal)}
+              </span>
             </div>
           )
         })
