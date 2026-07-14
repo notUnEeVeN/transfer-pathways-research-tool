@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Bookmark/tab icon: the five-petal mark on a forest tile so it reads on
+       light and dark UI alike. The bare mark stays at /logo.svg (LoadingLogo
+       masks that file — don't point icons at it). -->
+  <rect width="64" height="64" rx="14" fill="#193018"/>
+  <g fill="#96F060" transform="translate(32 40.9) scale(0.13)">
+    <path id="p" d="M -36 -106 L -36 -171 Q -36 -173 -32 -173 A 43.6 43.6 0 0 0 32 -173 Q 36 -173 36 -171 L 36 -106 A 36 36 0 0 1 -36 -106 Z"/>
+    <use href="#p" transform="rotate(45)"/>
+    <use href="#p" transform="rotate(-45)"/>
+    <use href="#p" transform="rotate(90)"/>
+    <use href="#p" transform="rotate(-90)"/>
+  </g>
+</svg>
