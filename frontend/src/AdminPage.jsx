@@ -69,12 +69,12 @@ function AuditPulsePanel() {
   if (q.isLoading || q.isError) return null
   const weeks = q.data?.weeks || []
   const people = q.data?.people || []
-  const thisWeek = q.data?.this_week || { count: 0, errors: 0, conservative: 0 }
+  const totals = q.data?.totals || { count: 0, errors: 0, conservative: 0 }
   const max = Math.max(1, ...weeks.map((w) => w.count))
   const fmtWeek = (value) => new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
   const yieldParts = [
-    { n: thisWeek.errors, label: `${thisWeek.errors} error${thisWeek.errors === 1 ? '' : 's'}`, dot: 'var(--color-danger-bright)' },
-    { n: thisWeek.conservative, label: `${thisWeek.conservative} conservative`, dot: 'var(--color-conservative-fill)' },
+    { n: totals.errors, label: `${totals.errors} error${totals.errors === 1 ? '' : 's'}`, dot: 'var(--color-danger-bright)' },
+    { n: totals.conservative, label: `${totals.conservative} conservative`, dot: 'var(--color-conservative-fill)' },
   ].filter((part) => part.n > 0)
 
   return (
@@ -89,10 +89,10 @@ function AuditPulsePanel() {
       </div>
       <div className='bg-surface-sunken rounded-[18px] px-[22px] py-4 flex items-center gap-6 flex-wrap'>
         <div className='shrink-0 min-w-[96px]'>
-          <p className='text-label text-[10.5px]'>This week</p>
-          {thisWeek.count > 0 ? (
+          <p className='text-label text-[10.5px]'>All time</p>
+          {totals.count > 0 ? (
             <p className='mt-1 text-[22px] font-[600] tracking-[-.01em] leading-none'>
-              {thisWeek.count} <span className='text-[12px] font-[400] text-ink-subtle'>audits</span>
+              {totals.count} <span className='text-[12px] font-[400] text-ink-subtle'>audits</span>
             </p>
           ) : (
             <p className='mt-1.5 text-caption text-ink-subtle'>No audits yet</p>
