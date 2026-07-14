@@ -585,7 +585,7 @@
         ]
       },
       {
-        "title": "Lower-division computer science (programming: one series in its entirety — no mixing)",
+        "title": "Lower-division computer science",
         "tier": "transferable",
         "requirements": [
           {
@@ -599,8 +599,11 @@
             "units": 12,
             "from": {
               "series": [
-                ["ECS 036A", "ECS 036B", "ECS 036C"],
-                ["ECS 032A", "ECS 032B", "ECS 032C", "ECS 034"]
+                [
+                  "ECS 036A",
+                  "ECS 036B",
+                  "ECS 036C"
+                ]
               ]
             }
           },
@@ -613,37 +616,48 @@
         ]
       },
       {
-        "title": "Lower-division science (choose three — any combination of subjects; BIO 1/2/3 omitted, not in ASSIST yet)",
+        "title": "Lower-division science — one three-course series (BIO variants omitted, not in ASSIST yet)",
         "tier": "transferable",
         "requirements": [
           {
-            "select": 3,
-            "from": [
-              "PHY 009A",
-              "PHY 009B",
-              "PHY 009C",
-              "CHE 002A",
-              "CHE 002B",
-              "CHE 002C",
-              "CHE 004A",
-              "CHE 004B",
-              "CHE 004C",
-              "BIS 002A",
-              "BIS 002B",
-              "BIS 002C"
-            ]
+            "select": 1,
+            "units": 15,
+            "from": {
+              "series": [
+                [
+                  "BIS 002A",
+                  "BIS 002B",
+                  "BIS 002C"
+                ],
+                [
+                  "CHE 002A",
+                  "CHE 002B",
+                  "CHE 002C"
+                ],
+                [
+                  "CHE 004A",
+                  "CHE 004B",
+                  "CHE 004C"
+                ],
+                [
+                  "PHY 009A",
+                  "PHY 009B",
+                  "PHY 009C"
+                ]
+              ]
+            }
           }
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "General education — Cal-GETC pattern (completing IGETC/Cal-GETC exempts ALL Davis GE; math and one science area come from the major)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "code": "GE-1A",
+              "label": "English Composition (Cal-GETC 1A)",
               "ge_areas": [
                 "1A"
               ]
@@ -652,28 +666,81 @@
           {
             "select": 1,
             "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "code": "GE-1B",
+              "label": "Critical Thinking & Composition (Cal-GETC 1B)",
               "ge_areas": [
                 "1B"
               ]
             }
-          }
-        ]
-      },
-      {
-        "title": "Humanities & Social Sciences breadth",
-        "tier": "breadth",
-        "requirements": [
+          },
           {
-            "select": 4,
+            "select": 1,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "GE-1C",
+              "label": "Oral Communication (Cal-GETC 1C)",
               "ge_areas": [
-                "3A",
-                "3B",
-                "4"
+                "1C"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-3A",
+              "label": "Arts (Cal-GETC 3A)",
+              "ge_areas": [
+                "3A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-3B",
+              "label": "Humanities (Cal-GETC 3B)",
+              "ge_areas": [
+                "3B"
+              ]
+            }
+          },
+          {
+            "select": 2,
+            "from": {
+              "code": "GE-4",
+              "label": "Social & Behavioral Sciences — 2 courses (Cal-GETC 4)",
+              "ge_areas": [
+                "4",
+                "4A",
+                "4B",
+                "4C",
+                "4D",
+                "4E",
+                "4F",
+                "4G",
+                "4H",
+                "4I",
+                "4J"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-5",
+              "label": "Science — the area the major series didn't cover (Cal-GETC 5A physical / 5B biological)",
+              "ge_areas": [
+                "5A",
+                "5B"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-7",
+              "label": "Ethnic Studies (Cal-GETC 7)",
+              "ge_areas": [
+                "7"
               ]
             }
           }

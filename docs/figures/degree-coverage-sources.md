@@ -217,7 +217,8 @@ edit any of them and re-run `scripts/import_uc_degree_requirements.py`.
    versions were noted by the agents but not modeled.
 2. **Breadth = uniform**: 2 Reading & Composition (IGETC 1A + 1B) + 4 H/SS (IGETC
    Area 3 + 4) + American History & Institutions (assumed). Modeled identically at
-   every campus for comparability. Non-Berkeley R&C uses **IGETC-area tags (1A/1B)**,
+   every campus for comparability. *(Campus-by-campus verification is replacing
+   this: Davis now carries its own Cal-GETC GE model — see its section.)* Non-Berkeley R&C uses **IGETC-area tags (1A/1B)**,
    not specific English course codes, because those aren't reliably in our scraped
    data — same evaluation result (a CC's 1A/1B course satisfies it).
 3. **Transferable major-prep** = each campus's lower-division required math + CS +
@@ -248,7 +249,7 @@ normalization (by units, or excluding free electives) is left to you.
 | UC Merced *(sem)* | 65% | 20/31 | 14/16 | 6/6 | 9 |
 | UC San Diego | 42% | 15/36 | 9/12 | 6/6 | 18 |
 | UC Riverside | 46% | 18/39 | 12/14 | 6/6 | 19 |
-| UC Davis | 52% | 16/31 | 10/11 | 6/6 | 14 |
+| UC Davis | 53% | 17/32 | 8/9 | 9/9 | 14 |
 | UCLA | 49% | 21/43 | 15/17 | 6/6 | 20 |
 | UC Irvine | 45% | 17/38 | 11/15 | 6/6 | 17 |
 | UC Santa Barbara | 46% | 16/35 | 10/12 | 6/6 | 17 |
@@ -277,7 +278,8 @@ Source: https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf
 
 ### UC Davis — Computer Science, B.S., catalog 2026-27 (College of Engineering)
 Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/ · checklist https://cs.ucdavis.edu/sites/g/files/dgvnsk8441/files/media/documents/CS%20Major%20Checklist_0.pdf
-- Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-027A-or-067 (lin alg); ECS 020 (discrete); programming = **one series in its entirety, no mixing** (checklist rule): ECS 036A/B/C **or** ECS 032A/B/C+034 — modeled as a select-1 of `series` receivers (articulated only when every course in the series articulates), 12 authored units; ECS 050 (org); 3 sciences chosen from PHY 009A/B/C, CHE 002A/B/C, CHE 004A/B/C, BIS 002A/B/C — per the checklist, science courses "can be from any combination of subjects", so the flat choose-3 is correct (no series lock).
+- Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-027A-or-067 (lin alg); ECS 020 (discrete); programming = the **ECS 036A/B/C series in its entirety** (checklist: "mixing of courses between series is not allowed"; the ECS 032/034 alternative is for non-majors switching in, deliberately not modeled — team decision 2026-07-14); ECS 050 (org); science = **one complete three-course series** (team decision 2026-07-14, reading the checklist's series structure with chained prerequisites): BIS 002A/B/C, CHE 002A/B/C, CHE 004A/B/C, or PHY 009A/B/C (BIO variants omitted — not in ASSIST yet). Series receivers articulate only when every course in the series does; authored units 12 (programming) / 15 (science).
+- **GE modeled per Davis, not the uniform proxy** (team decision 2026-07-14): the catalog states IGETC/Cal-GETC completion **exempts ALL Davis GE**, so GE = the Cal-GETC pattern minus what the major covers (2A math; one of 5A/5B science): 1A + 1B + 1C + 3A + 3B + 4×2 + remaining 5A/5B + 7 = 9 slots, each evaluated from the college's own IGETC-area course tags. AH&I stays its own assumed slot (UC-wide, separate from GE).
 - Non-transferable: 14 (checklist-verified 2026-07-14: 7 upper-division core — ECS 122A, one theory, 140A, 150, 154A, one probability, one composition — + 7 CS electives; was 16, an overcount).
 - Notes: CS moved L&S → CoE effective Fall 2024 (courses identical, GE wrapper differs). Current catalog uses "choose 3 sciences" (older years hard-required PHY 9A + CHE 2A).
 - **Catalog-vs-ASSIST vintage (verified 2026-07-14):** the source is the
