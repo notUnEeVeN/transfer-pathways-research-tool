@@ -1,19 +1,25 @@
 export const TASK_TYPE_OPTIONS = [
   { value: 'porting', label: 'Porting' },
+  { value: 'data_verification', label: 'Data Verification' },
 ]
+
+// Checklist-shaped types: workflow points are user-authored per task
+// (task.checklist_items), completable in any order, no peer gate. Mirrors
+// the server's CHECKLIST_TASK_TYPES.
+export const isChecklistTask = (task) => task?.task_type === 'data_verification'
 
 export const PORTING_STAGES = [
   {
     key: 'understand',
     label: 'Read & understand',
-    description: 'Read the source graph and document its measure, population, encodings, and assumptions.',
+    description: 'Read the source graph and understand its measure, population, encodings, and assumptions.',
     weight: 15,
     notePrompt: 'What did you learn about the graph and its assumptions?',
   },
   {
     key: 'research',
     label: 'Research missing data',
-    description: 'Identify and gather missing sources, then record coverage gaps and caveats.',
+    description: 'Identify and gather missing sources, including coverage gaps and caveats.',
     weight: 20,
     notePrompt: 'What did you find, add, or determine is still missing?',
   },
@@ -34,7 +40,7 @@ export const PORTING_STAGES = [
   {
     key: 'publish',
     label: 'Publish',
-    description: 'Publish the finished visual and record where the team can review it.',
+    description: 'Publish the finished visual so the team can review it.',
     weight: 10,
     notePrompt: 'Where was the visual published?',
   },
@@ -57,17 +63,30 @@ export const PORTING_STAGES = [
 
 export const WORKFLOWS = { porting: PORTING_STAGES }
 
-export const stagesForTask = (task) => WORKFLOWS[task?.task_type || 'porting'] || PORTING_STAGES
+export const stagesForTask = (task) => {
+  if (isChecklistTask(task)) {
+    const items = Array.isArray(task?.checklist_items) ? task.checklist_items : []
+    const weight = items.length ? 100 / items.length : 0
+    return items.map((item) => ({
+      key: item.key,
+      label: item.label,
+      description: null,
+      weight,
+      notePrompt: 'What did you check, and what did you find?',
+    }))
+  }
+  return WORKFLOWS[task?.task_type || 'porting'] || PORTING_STAGES
+}
 
 export const isStageComplete = (task, stageKey) => {
   const state = task?.workflow_stages?.[stageKey]
   return Boolean(state?.completed || state?.completed_at)
 }
 
-export const derivedProgress = (task) => stagesForTask(task).reduce(
+export const derivedProgress = (task) => Math.round(stagesForTask(task).reduce(
   (total, stage) => total + (isStageComplete(task, stage.key) ? stage.weight : 0),
   0
-)
+))
 
 export const currentStageIndex = (task) => stagesForTask(task).findIndex(
   (stage) => !isStageComplete(task, stage.key)
@@ -106,3 +125,18 @@ export const withBoardAssignment = (task, patch, user, roster = []) => {
 export const taskTypeLabel = (taskType) => (
   TASK_TYPE_OPTIONS.find((option) => option.value === taskType)?.label || taskType || 'Porting'
 )
+
+// Type chip tone: porting reads lavender, verification reads mint/success.
+export const taskTypeBadgeVariant = (taskType) => (
+  taskType === 'data_verification' ? 'verify' : 'conservative'
+)
+
+// Card copy under the dot strip. Checklist items are "verified", stages are
+// worked; a fully-verified checklist says so instead of naming a next step.
+export const nextStepLabel = (task) => {
+  const upcoming = nextStage(task)
+  if (isChecklistTask(task)) {
+    return upcoming ? `Next: verify ${upcoming.label}` : 'All checkpoints verified'
+  }
+  return upcoming ? `Next: ${upcoming.label}` : null
+}

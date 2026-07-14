@@ -835,7 +835,7 @@
                   <div style="display:flex;flex-direction:column;gap:10px;max-height:620px;overflow-y:auto">
                     <sc-for list="{{ col.cards }}" as="card" hint-placeholder-count="2">
                       <div onClick="{{ card.onOpen }}" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)">
-                        <span style="align-self:flex-start;font-size:11.5px;font-weight:600;color:#6C4FD0;background:#F0EAFC;border-radius:999px;padding:3px 10px">Porting</span>
+                        <span style="align-self:flex-start;font-size:11.5px;font-weight:600;color:{{ card.typeFg }};background:{{ card.typeBg }};border-radius:999px;padding:3px 10px">{{ card.typeLabel }}</span>
                         <div style="font-size:13.5px;font-weight:600;line-height:1.35">{{ card.title }}</div>
                         <div style="display:flex;align-items:center;gap:8px">
                           <div style="display:flex;align-items:center">
@@ -883,7 +883,7 @@
                 <sc-for list="{{ listRows }}" as="row" hint-placeholder-count="6">
                   <div onClick="{{ row.onOpen }}" style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:{{ row.bb }};cursor:pointer" style-hover="background:var(--cw-hover,#F9FBEF)">
                     <span style="flex:none;font-size:11.5px;font-weight:600;color:{{ row.statusFg }};background:{{ row.statusBg }};border-radius:999px;padding:3px 10px">{{ row.statusLabel }}</span>
-                    <span style="flex:none;font-size:11.5px;font-weight:600;color:#6C4FD0;background:#F0EAFC;border-radius:999px;padding:3px 10px">Porting</span>
+                    <span style="flex:none;font-size:11.5px;font-weight:600;color:{{ row.typeFg }};background:{{ row.typeBg }};border-radius:999px;padding:3px 10px">{{ row.typeLabel }}</span>
                     <span style="font-size:13.5px;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.title }}</span>
                     <span style="margin-left:auto;flex:none;display:flex;align-items:center;gap:8px">
                       <span style="width:80px;height:5px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden;display:inline-block"><span style="display:block;height:100%;border-radius:999px;width:{{ row.pctW }};background:#193018"></span></span>
@@ -1162,7 +1162,7 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
             <div style="display:flex;align-items:flex-start;gap:12px;padding:22px 26px 0">
               <div>
                 <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">New task</div>
-                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">Porting</div>
+                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ newTypeLabel }}</div>
               </div>
               <button onClick="{{ closeNewTask }}" style="margin-left:auto;width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
             </div>
@@ -1178,7 +1178,11 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
                 <div style="display:flex;flex-direction:column;gap:6px">
                   <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Task type</span>
-                  <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-size:13.5px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>Porting</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  <div style="display:flex;align-items:stretch;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+                    <sc-for list="{{ newTypeSeg }}" as="t" hint-placeholder-count="2">
+                      <button onClick="{{ t.onClick }}" style="flex:1;border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:{{ t.w }};padding:8px 10px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }};white-space:nowrap">{{ t.label }}</button>
+                    </sc-for>
+                  </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:6px">
                   <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Assignee</span>
@@ -1193,20 +1197,54 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
                 <button onClick="{{ closeNewTask }}" style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:9px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Cancel</button>
                 <button onClick="{{ createTask }}" style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:9px 20px" style-hover="background:#234424">Create task</button>
               </div>
-              <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);margin-top:6px;padding-top:18px;display:flex;flex-direction:column;gap:12px">
-                <div style="display:flex;align-items:baseline;gap:10px">
-                  <span style="font-size:14px;font-weight:650">Porting stages</span>
-                  <span style="margin-left:auto;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">6 stages</span>
+              <sc-if value="{{ newIsPorting }}" hint-placeholder-val="{{ true }}">
+                <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);margin-top:6px;padding-top:18px;display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:baseline;gap:10px">
+                    <span style="font-size:14px;font-weight:650">Porting stages</span>
+                    <span style="margin-left:auto;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">7 stages</span>
+                  </div>
+                  <div style="font-size:12.5px;line-height:1.5;color:var(--cw-ink-subtle,#7E8F76)">Porting tasks follow the same fixed pipeline, completed in order.</div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:24px">
+                    <sc-for list="{{ portingStages }}" as="ps" hint-placeholder-count="7">
+                      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
+                        <span style="flex:none;width:22px;height:22px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);display:grid;place-items:center;font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F)">{{ ps.num }}</span>
+                        <span style="font-size:13.5px;color:var(--cw-ink-soft,#33452F)">{{ ps.name }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:24px">
-                  <sc-for list="{{ portingStages }}" as="ps" hint-placeholder-count="6">
-                    <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
-                      <span style="flex:none;width:22px;height:22px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);display:grid;place-items:center;font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F)">{{ ps.num }}</span>
-                      <span style="font-size:13.5px;color:var(--cw-ink-soft,#33452F)">{{ ps.name }}</span>
+              </sc-if>
+              <sc-if value="{{ newIsVerify }}" hint-placeholder-val="{{ false }}">
+                <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);margin-top:6px;padding-top:18px;display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:baseline;gap:10px">
+                    <span style="font-size:14px;font-weight:650">Verification checkpoints</span>
+                    <span style="margin-left:auto;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">{{ newItemCount }}</span>
+                  </div>
+                  <div style="font-size:12.5px;line-height:1.5;color:var(--cw-ink-subtle,#7E8F76)">Checkpoints are this task's flexible progression — verify them in any order, and add more as you find them.</div>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                    <span style="font-size:12px;font-weight:600;color:var(--cw-ink-subtle,#7E8F76)">Quick fill</span>
+                    <button onClick="{{ prefillCampuses }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:6px 13px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1.5 L6 10.5 M1.5 6 L10.5 6"></path></svg>One per UC campus</button>
+                    <sc-if value="{{ hasNewItems }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ clearNewItems }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:6px 11px" style-hover="background:#FFE9E3;color:#D22F14">Clear all</button>
+                    </sc-if>
+                  </div>
+                  <sc-if value="{{ hasNewItems }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column">
+                      <sc-for list="{{ newItemRows }}" as="ni" hint-placeholder-count="3">
+                        <div style="display:flex;align-items:center;gap:10px;padding:6.5px 0;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
+                          <span style="flex:none;width:22px;height:22px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);display:grid;place-items:center;font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F)">{{ ni.num }}</span>
+                          <span style="font-size:13.5px;color:var(--cw-ink-soft,#33452F);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ni.name }}</span>
+                          <button onClick="{{ ni.onRemove }}" title="Remove checkpoint" style="margin-left:auto;flex:none;width:24px;height:24px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-faint,#93A18B)" style-hover="background:#FFE9E3;color:#D22F14"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
+                        </div>
+                      </sc-for>
                     </div>
-                  </sc-for>
+                  </sc-if>
+                  <div style="display:flex;gap:10px;align-items:center">
+                    <input value="{{ newItemDraft }}" onChange="{{ onNewItemDraft }}" onKeyDown="{{ onNewItemKey }}" placeholder="Add a checkpoint — a campus, dataset, or spot-check…" style="flex:1;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:9px 16px;font-family:inherit;font-size:13px;color:#193018;outline:none;min-width:0">
+                    <button onClick="{{ addNewItem }}" style="flex:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Add</button>
+                  </div>
                 </div>
-              </div>
+              </sc-if>
             </div>
           </div>
         </div>
@@ -1340,6 +1378,146 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
         </div>
       </sc-if>
 
+      <!-- ===== Data verification modal ===== -->
+      <sc-if value="{{ vfOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeVf }}" style="position:fixed;inset:0;background:rgba(25,48,24,.45);z-index:60;display:grid;place-items:center;padding:24px">
+          <div onClick="{{ eatClick }}" data-screen-label="Data verification modal" style="background:#FFFFFF;border-radius:22px;box-shadow:0 24px 64px rgba(25,48,24,.3);width:1080px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:20px 26px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+              <div>
+                <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">Task workflow</div>
+                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">Data Verification · {{ vfPct }}% complete</div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:4px">
+                <button style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2.5" width="10" height="3" rx="0.8"></rect><path d="M3 5.5 L3 11.5 L11 11.5 L11 5.5 M5.8 8 L8.2 8"></path></svg></button>
+                <button style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:#FFE9E3;color:#D22F14"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 4 L11.5 4 M5.5 4 L5.5 2.5 L8.5 2.5 L8.5 4 M4 4 L4.5 11.5 L9.5 11.5 L10 4 M6 6 L6 9.5 M8 6 L8 9.5"></path></svg></button>
+                <button onClick="{{ closeVf }}" style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:330px 1fr;overflow-y:auto">
+              <div style="padding:24px;border-right:1px solid var(--cw-hairline,#E9EEDA);display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:14px;font-weight:650">Task details</span>
+                  <span style="margin-left:auto;font-size:11.5px;font-weight:600;color:#17855A;background:var(--cw-mint,#F0FFE7);border-radius:999px;padding:3px 10px">Data Verification</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Title</span>
+                  <input value="{{ vfTitle }}" onChange="{{ onVfTitle }}" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box">
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Description</span>
+                  <textarea value="{{ vfDesc }}" onChange="{{ onVfDesc }}" style="min-height:96px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Task type</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--cw-canvas,#F8FAEC);border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--cw-ink-faint,#93A18B)"><span>Data Verification</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#AEB6A0" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Assignee</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>Tybalt Mallet</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Status</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>{{ vfStatusLabel }}</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:8px">
+                  <button onClick="{{ closeVf }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:8px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">Cancel</button>
+                  <button style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:8px 16px" style-hover="background:#234424">Save details</button>
+                </div>
+                <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);padding-top:16px;display:flex;flex-direction:column;gap:10px">
+                  <span style="font-size:13.5px;font-weight:650">General notes</span>
+                  <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">No general notes yet.</span>
+                  <textarea placeholder="Add a general note…" style="min-height:64px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                  <button style="align-self:flex-end;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:7px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Post</button>
+                  <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">Created Jul 14, 9:33 AM</span>
+                </div>
+              </div>
+
+              <div style="padding:24px 30px 32px;display:flex;flex-direction:column;gap:16px;min-width:0">
+                <div style="display:flex;align-items:flex-end;gap:10px">
+                  <div>
+                    <div style="font-size:15px;font-weight:650">Verification checkpoints</div>
+                    <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ vfCountLabel }}</div>
+                  </div>
+                  <span style="margin-left:auto;font-size:22px;font-weight:650;letter-spacing:-.01em;line-height:1;color:#17855A">{{ vfPct }}%</span>
+                </div>
+                <div style="display:flex;gap:4px">
+                  <sc-for list="{{ vfSegs }}" as="sg" hint-placeholder-count="9">
+                    <span style="flex:1;height:7px;border-radius:999px;background:{{ sg.bg }};transition:background .2s ease"></span>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ vfAllDone }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--cw-mint,#F0FFE7);border:1px solid #96F060;border-radius:12px;padding:11px 14px">
+                    <span style="flex:none;width:26px;height:26px;border-radius:999px;background:#193018;display:grid;place-items:center"><svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></span>
+                    <span style="font-size:13px;font-weight:600;color:#193018">Every checkpoint is verified — this task is ready to close.</span>
+                    <button onClick="{{ vfMarkDone }}" style="margin-left:auto;flex:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:8px 16px" style-hover="background:#234424">Mark task done</button>
+                  </div>
+                </sc-if>
+                <div style="display:flex;flex-direction:column;margin-top:2px">
+                  <sc-for list="{{ vfRows }}" as="r" hint-placeholder-count="9">
+                    <div style="display:flex;gap:16px">
+                      <div style="display:flex;flex-direction:column;align-items:center">
+                        <button onClick="{{ r.onToggle }}" title="{{ r.nodeTip }}" style="flex:none;width:28px;height:28px;border-radius:999px;background:{{ r.dotBg }};border:2px solid {{ r.dotBorder }};display:grid;place-items:center;box-sizing:border-box;cursor:pointer;padding:0;font-family:inherit;animation:{{ r.pulse }}">
+                          <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></sc-if>
+                          <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}"><span style="font-size:11.5px;font-weight:650;color:{{ r.numFg }}">{{ r.num }}</span></sc-if>
+                        </button>
+                        <span style="width:2px;flex:1;min-height:12px;border-radius:1px;background:{{ r.lineBg }};margin-top:4px"></span>
+                      </div>
+                      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px;padding-bottom:22px">
+                        <div style="display:flex;align-items:center;gap:10px;min-height:28px">
+                          <span style="font-size:14.5px;font-weight:{{ r.nameW }};color:{{ r.nameFg }}">{{ r.name }}</span>
+                          <sc-if value="{{ r.isNext }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#193018;background:#96F060;border-radius:999px;padding:2.5px 9px">Up next</span></sc-if>
+                          <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:12px;color:var(--cw-ink-faint,#93A18B)">{{ r.meta }}</span></sc-if>
+                          <div style="margin-left:auto;flex:none;display:flex;align-items:center;gap:6px">
+                            <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
+                              <button onClick="{{ r.onToggle }}" style="display:flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:6px 10px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5 L9 5.5 A2.75 2.75 0 1 1 9 11 L5 11 M3 5.5 L5.8 2.7 M3 5.5 L5.8 8.3"></path></svg>Undo</button>
+                            </sc-if>
+                            <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}">
+                              <button onClick="{{ r.onNote }}" style="display:flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:6px 10px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2 L12 4 L5.5 10.5 L3 11 L3.5 8.5 Z"></path></svg>Note</button>
+                            </sc-if>
+                            <sc-if value="{{ r.solidVerify }}" hint-placeholder-val="{{ false }}">
+                              <button onClick="{{ r.onToggle }}" style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:7px 9px 7px 15px" style-hover="background:#234424"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg>Verify<span style="font-size:10px;font-weight:700;color:#96F060;background:rgba(240,255,231,.14);border:1px solid rgba(240,255,231,.3);border-radius:5px;padding:1.5px 5.5px;line-height:1.3">V</span></button>
+                            </sc-if>
+                            <sc-if value="{{ r.ghostVerify }}" hint-placeholder-val="{{ true }}">
+                              <button onClick="{{ r.onToggle }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:6.5px 14px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg>Verify</button>
+                            </sc-if>
+                            <button onClick="{{ r.onRemove }}" title="Remove checkpoint" style="width:26px;height:26px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-faint,#93A18B)" style-hover="background:#FFE9E3;color:#D22F14"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
+                          </div>
+                        </div>
+                        <sc-if value="{{ r.hasNote }}" hint-placeholder-val="{{ false }}">
+                          <div style="border-left:2px solid var(--cw-mid,#D9E2C4);padding-left:12px;display:flex;flex-direction:column;gap:6px">
+                            <div style="font-size:13px;line-height:1.55;color:var(--cw-ink-soft,#33452F)">{{ r.note }}</div>
+                            <div style="display:flex;align-items:center;gap:7px">
+                              <span style="width:18px;height:18px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8px;font-weight:700">TY</span>
+                              <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">{{ r.noteMeta }}</span>
+                            </div>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ r.noteOpen }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;flex-direction:column;gap:8px">
+                            <textarea value="{{ vfNoteDraft }}" onChange="{{ onVfNoteDraft }}" placeholder="What did you check, and what did you find?" style="min-height:64px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                            <div style="display:flex;justify-content:flex-end;gap:8px">
+                              <button onClick="{{ vfCloseNote }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 13px" style-hover="background:var(--cw-mint,#F0FFE7)">Cancel</button>
+                              <button onClick="{{ r.onSaveNote }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:7px 15px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2 L12 4 L5.5 10.5 L3 11 L3.5 8.5 Z"></path></svg>Save note</button>
+                            </div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                  <div style="display:flex;gap:16px;align-items:center">
+                    <span style="flex:none;width:28px;height:28px;border-radius:999px;border:1.5px dashed var(--cw-strong,#C9D3B4);box-sizing:border-box;display:grid;place-items:center;color:var(--cw-ink-subtle,#7E8F76)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1.5 L6 10.5 M1.5 6 L10.5 6"></path></svg></span>
+                    <input value="{{ vfNewItem }}" onChange="{{ onVfNewItem }}" onKeyDown="{{ onVfNewKey }}" placeholder="Add a checkpoint — a campus, dataset, or spot-check…" style="flex:1;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:9.5px 16px;font-family:inherit;font-size:13px;color:#193018;outline:none;min-width:0">
+                    <button onClick="{{ vfAdd }}" style="flex:none;display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
     </div>
   </sc-if>
 
@@ -1405,11 +1583,25 @@ class Component extends DCLogic {
       { title: 'MA Fig. 5 — Extra cost of transferring', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
       { title: 'MA Fig. 6 — Curricular complexity — transfer vs resident', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
       { title: 'MA Fig. 7 — Per-campus transfer outcomes summary', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'Verifying 4 Year Degree Requirements', status: 'inprogress', type: 'verify', assignee: 'Tybalt Mallet', date: 'Jul 14',
+        desc: "Verify each UC campus' 4 year degree requirements being used for the Graduation requirement coverage heatmap visualization, before considering the visual fully completed.",
+        items: [
+          { name: 'UC Berkeley', done: true, at: 'Jul 14, 9:41 AM' },
+          { name: 'UC Davis', done: true, at: 'Jul 14, 9:52 AM', note: 'L&S unit ceiling changed in the 2025–26 catalog — re-pulled the requirement set and re-ran the coverage rows for Davis.', noteAt: 'Jul 14, 9:53 AM' },
+          { name: 'UC Irvine', done: true, at: 'Jul 14, 10:04 AM' },
+          { name: 'UC Los Angeles', done: false },
+          { name: 'UC Merced', done: false },
+          { name: 'UC Riverside', done: false },
+          { name: 'UC San Diego', done: false },
+          { name: 'UC Santa Barbara', done: false },
+          { name: 'UC Santa Cruz', done: false }
+        ] },
       { title: "MA Fig. 1 — Share of each UC's requirements met at every CC", status: 'inprogress', pct: 15, next: 'Research missing data', assignee: 'Tybalt Mallet', comments: 2, date: 'Jul 11' }
     ],
-    newTaskOpen: false, newTitle: '', newDesc: '',
+    newTaskOpen: false, newTitle: '', newDesc: '', newType: 'porting', newItems: [], newItemDraft: '',
     wfOpen: false, wfTitle: '', wfDesc: '', wfStatus: 'In progress', wfAssignee: 'Tybalt Mallet',
     wfDone: 1, wfNotes: {}, stageNote: '',
+    vfOpen: false, vfTaskIdx: -1, vfNoteFor: -1, vfNoteDraft: '', vfNewItem: '',
     apiTab: 'tokens', tokenLabel: '',
     tokens: [{ label: 'unlabeled token', created: '7/9/2026', last: '7/9/2026, 5:38:27 PM' }],
     district: 'Allan Hancock Joint Community College District', districtQ: '',
@@ -1515,6 +1707,7 @@ class Component extends DCLogic {
     ['Data & endpoints', 'Confirm the existing data access is sufficient or create the endpoint(s) the visual needs.'],
     ['Develop visualization', 'Implement and validate the visual against the source graph and research question.'],
     ['Publish', 'Publish the finished visual and record where the team can review it.'],
+    ['Self-verify', 'Re-check the published figure against the source: numbers, labels, filters, and populations all match.'],
     ['Team approval', 'A second teammate reviews the data and approach and approves the figure.']
   ];
 
@@ -1577,15 +1770,25 @@ class Component extends DCLogic {
     ['section_conjunction = And', 'Every receiver in the section must be satisfied for the branch to count.']
   ];
 
-  PCT_TABLE = [0, 15, 33, 50, 67, 83, 100];
+  PCT_TABLE = [0, 14, 29, 43, 57, 71, 86, 100];
 
   componentDidMount() {
     this._kb = (e) => {
       const t = e.target && e.target.tagName;
       if (t === 'INPUT' || t === 'TEXTAREA') return;
       const s = this.state;
-      if (s.screen !== 'app' || s.tab !== 'audit' || (s.auditTab || 'judge') !== 'judge') return;
       const k = e.key.toLowerCase();
+      if (s.vfOpen) {
+        if (k === 'v') {
+          const t = s.tasks[s.vfTaskIdx];
+          const i = t && t.items ? t.items.findIndex((x) => !x.done) : -1;
+          if (i >= 0) this.vfPatch((items) => { items[i] = { ...items[i], done: true, at: this.vfStamp() }; return items; });
+        } else if (k === 'escape') {
+          this.setState({ vfOpen: false });
+        }
+        return;
+      }
+      if (s.screen !== 'app' || s.tab !== 'audit' || (s.auditTab || 'judge') !== 'judge') return;
       if (k === 'c') this.setVerdict('Correct');
       else if (k === 'v') this.setVerdict('Conservative');
       else if (k === 'e') this.setVerdict('Error');
@@ -1609,6 +1812,10 @@ class Component extends DCLogic {
   }
 
   openWf(t) {
+    if (t.type === 'verify') {
+      this.setState({ vfOpen: true, vfTaskIdx: this.state.tasks.indexOf(t), vfNoteFor: -1, vfNoteDraft: '', vfNewItem: '' });
+      return;
+    }
     const rich = t.status === 'inprogress';
     this.setState({
       wfOpen: true,
@@ -1622,6 +1829,37 @@ class Component extends DCLogic {
     });
   }
 
+  vfStamp() {
+    return 'Jul 14, ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  vfPatch(fn) {
+    const tasks = this.state.tasks.slice();
+    const t = { ...tasks[this.state.vfTaskIdx] };
+    t.items = fn(t.items.slice());
+    tasks[this.state.vfTaskIdx] = t;
+    this.setState({ tasks });
+  }
+
+  vfSetTask(patch) {
+    const tasks = this.state.tasks.slice();
+    tasks[this.state.vfTaskIdx] = { ...tasks[this.state.vfTaskIdx], ...patch };
+    this.setState({ tasks });
+  }
+
+  vfAddItem() {
+    const n = this.state.vfNewItem.trim();
+    if (!n) return;
+    this.vfPatch((items) => items.concat({ name: n, done: false }));
+    this.setState({ vfNewItem: '' });
+  }
+
+  addNewItem() {
+    const n = this.state.newItemDraft.trim();
+    if (!n) return;
+    this.setState({ newItems: this.state.newItems.concat(n), newItemDraft: '' });
+  }
+
   CWMAP = {
     paper: { canvas: '#F6F5EF', mint: '#EDEFE1', sunken: '#ECEBE0', sunken2: '#F0EFE7', hover: '#F5F4ED', hover2: '#F2F1E9', border: '#E1E0D3', hairline: '#E9E8DC', hairline2: '#F0EFE4', strong: '#C2C0AC', mid: '#D7D5C3', inkMuted: '#4E554B', inkSubtle: '#747B70', inkFaint: '#92978C', inkSoft: '#353D32' },
     crisp: { canvas: '#FFFFFF', mint: '#EFF8E5', sunken: '#F1F3EB', sunken2: '#F5F6F0', hover: '#F6F8F1', hover2: '#F3F5EE', border: '#DFE3D8', hairline: '#E9EDE2', hairline2: '#F1F3EA', strong: '#B9C0AC', mid: '#D3D8C7', inkMuted: '#3F4840', inkSubtle: '#5F6A60', inkFaint: '#828B81', inkSoft: '#28332B' }
@@ -1633,45 +1871,60 @@ class Component extends DCLogic {
 
     // ---- Tasks
     const tasksTabs = this.seg([['board', 'Board'], ['my', 'My tasks'], ['all', 'All tasks']], s.tasksTab, (k) => this.setState({ tasksTab: k }));
-    const mkCard = (t, i, arr) => ({
-      title: t.title,
-      pct: t.pct + '%', pctW: t.pct + '%',
-      next: 'Next: ' + t.next,
-      dots: this.STAGES.map(([name], di, darr) => {
-        const doneN = t.pct > 0 ? 1 : 0;
-        return {
-          name,
-          bg: di < doneN ? '#193018' : '#FFFFFF',
-          border: di < doneN ? '#193018' : (di === doneN ? '#96F060' : 'var(--cw-strong,#C9D3B4)'),
-          lineBg: di === darr.length - 1 ? 'transparent' : 'var(--cw-mid,#D9E2C4)'
-        };
-      }),
-      stageLabel: (t.pct > 0 ? 1 : 0) + ' of 6',
-      hasAssignee: !!t.assignee, unassigned: !t.assignee, assignee: t.assignee || '',
-      hasComments: !!t.comments, comments: t.comments || 0,
-      statusLabel: t.status === 'inprogress' ? 'In progress' : 'To do',
-      statusBg: t.status === 'inprogress' ? '#DFF4E7' : 'var(--cw-sunken,#EFF5DE)',
-      statusFg: t.status === 'inprogress' ? '#0F6B45' : 'var(--cw-ink-muted,#52664F)',
-      date: t.date,
-      bb: arr ? hairline(i, arr) : 'none',
-      onOpen: () => this.openWf(t)
-    });
+    const mkCard = (t, i, arr) => {
+      const vf = t.type === 'verify';
+      const vTotal = vf ? t.items.length : 7;
+      const vDone = vf ? t.items.filter((x) => x.done).length : (t.pct > 0 ? 1 : 0);
+      const vNextIdx = vf ? t.items.findIndex((x) => !x.done) : -1;
+      const pct = vf ? (vTotal ? Math.round(vDone / vTotal * 100) : 0) : t.pct;
+      return {
+        title: t.title,
+        typeLabel: vf ? 'Data Verification' : 'Porting',
+        typeFg: vf ? '#17855A' : '#6C4FD0',
+        typeBg: vf ? 'var(--cw-mint,#F0FFE7)' : '#F0EAFC',
+        pct: pct + '%', pctW: pct + '%',
+        next: vf ? (vNextIdx >= 0 ? 'Next: verify ' + t.items[vNextIdx].name : 'All checkpoints verified') : 'Next: ' + t.next,
+        dots: vf
+          ? t.items.map((x, di, darr) => ({
+              name: x.name,
+              bg: x.done ? '#193018' : '#FFFFFF',
+              border: x.done ? '#193018' : (di === vNextIdx ? '#96F060' : 'var(--cw-strong,#C9D3B4)'),
+              lineBg: di === darr.length - 1 ? 'transparent' : 'var(--cw-mid,#D9E2C4)'
+            }))
+          : this.STAGES.map(([name], di, darr) => ({
+              name,
+              bg: di < vDone ? '#193018' : '#FFFFFF',
+              border: di < vDone ? '#193018' : (di === vDone ? '#96F060' : 'var(--cw-strong,#C9D3B4)'),
+              lineBg: di === darr.length - 1 ? 'transparent' : 'var(--cw-mid,#D9E2C4)'
+            })),
+        stageLabel: vDone + ' of ' + vTotal,
+        hasAssignee: !!t.assignee, unassigned: !t.assignee, assignee: t.assignee || '',
+        hasComments: !!t.comments, comments: t.comments || 0,
+        statusLabel: t.status === 'done' ? 'Done' : t.status === 'inprogress' ? 'In progress' : 'To do',
+        statusBg: t.status === 'todo' ? 'var(--cw-sunken,#EFF5DE)' : '#DFF4E7',
+        statusFg: t.status === 'todo' ? 'var(--cw-ink-muted,#52664F)' : '#0F6B45',
+        date: t.date,
+        bb: arr ? hairline(i, arr) : 'none',
+        onOpen: () => this.openWf(t)
+      };
+    };
     const todo = s.tasks.filter((t) => t.status === 'todo');
     const inprog = s.tasks.filter((t) => t.status === 'inprogress');
+    const doneTasks = s.tasks.filter((t) => t.status === 'done');
     const boardCols = [
       { label: 'Backlog', count: 0, empty: true, cards: [] },
       { label: 'To do', count: todo.length, empty: todo.length === 0, cards: todo.map((t) => mkCard(t)) },
       { label: 'In progress', count: inprog.length, empty: inprog.length === 0, cards: inprog.map((t) => mkCard(t)) },
-      { label: 'Done', count: 0, empty: true, cards: [] }
+      { label: 'Done', count: doneTasks.length, empty: doneTasks.length === 0, cards: doneTasks.map((t) => mkCard(t)) }
     ];
-    const myList = inprog.filter((t) => t.assignee === 'Tybalt Mallet');
-    const allList = todo.concat(inprog);
+    const myList = inprog.concat(doneTasks).filter((t) => t.assignee === 'Tybalt Mallet');
+    const allList = todo.concat(inprog).concat(doneTasks);
     const listSrc = s.tasksTab === 'my' ? myList : allList;
     const listRows = listSrc.map((t, i) => mkCard(t, i, listSrc));
     const taskStats = [
       { label: 'Open', value: String(todo.length), fg: '#193018', bl: 'none' },
       { label: 'In progress', value: String(inprog.length), fg: '#17855A', bl: '1px solid var(--cw-hairline,#E9EEDA)' },
-      { label: 'Done this week', value: '0', fg: '#193018', bl: '1px solid var(--cw-hairline,#E9EEDA)' }
+      { label: 'Done this week', value: String(doneTasks.length), fg: '#193018', bl: '1px solid var(--cw-hairline,#E9EEDA)' }
     ];
 
     // ---- Workflow modal
@@ -1692,7 +1945,38 @@ class Component extends DCLogic {
         bb: hairline(i, arr)
       };
     });
-    const wfPct = this.PCT_TABLE[Math.min(6, s.wfDone)];
+    const wfPct = this.PCT_TABLE[Math.min(7, s.wfDone)];
+
+    // ---- Data verification modal
+    const vt = s.vfOpen && s.vfTaskIdx >= 0 ? s.tasks[s.vfTaskIdx] : null;
+    const vfItems = vt ? vt.items : [];
+    const vfDoneN = vfItems.filter((x) => x.done).length;
+    const vfNextIdx = vfItems.findIndex((x) => !x.done);
+    const vfPct = vfItems.length ? Math.round(vfDoneN / vfItems.length * 100) : 0;
+    const vfRows = vfItems.map((x, i) => {
+      const isNext = i === vfNextIdx;
+      return {
+        name: x.name, num: String(i + 1),
+        done: !!x.done, notDone: !x.done, isNext,
+        solidVerify: isNext, ghostVerify: !x.done && !isNext,
+        numFg: isNext ? '#193018' : 'var(--cw-ink-faint,#93A18B)',
+        nameFg: x.done ? 'var(--cw-ink-muted,#52664F)' : '#193018',
+        nameW: x.done ? '550' : (isNext ? '650' : '600'),
+        meta: 'Tybalt Mallet · ' + (x.at || ''),
+        dotBg: x.done ? '#17855A' : '#FFFFFF',
+        dotBorder: x.done ? '#17855A' : (isNext ? '#96F060' : 'var(--cw-border,#E3E9D2)'),
+        pulse: isNext ? 'pmtPulse 2.4s ease infinite' : 'none',
+        lineBg: x.done ? '#17855A' : 'var(--cw-hairline,#E9EEDA)',
+        nodeTip: x.done ? 'Click to un-verify' : 'Mark verified',
+        hasNote: !!x.note && s.vfNoteFor !== i, note: x.note || '', noteMeta: 'Tybalt Mallet · ' + (x.noteAt || ''),
+        noteOpen: s.vfNoteFor === i,
+        onToggle: () => this.vfPatch((items) => { items[i] = { ...items[i], done: !items[i].done, at: this.vfStamp() }; return items; }),
+        onNote: () => this.setState(s.vfNoteFor === i ? { vfNoteFor: -1, vfNoteDraft: '' } : { vfNoteFor: i, vfNoteDraft: x.note || '' }),
+        onSaveNote: () => { const txt = s.vfNoteDraft.trim(); this.vfPatch((items) => { items[i] = { ...items[i], note: txt || null, noteAt: this.vfStamp() }; return items; }); this.setState({ vfNoteFor: -1, vfNoteDraft: '' }); },
+        onRemove: () => { this.vfPatch((items) => { items.splice(i, 1); return items; }); if (s.vfNoteFor === i) this.setState({ vfNoteFor: -1, vfNoteDraft: '' }); }
+      };
+    });
+    const vfSegs = vfItems.map((x, i) => ({ bg: x.done ? '#17855A' : (i === vfNextIdx ? '#96F060' : 'var(--cw-sunken,#EFF5DE)') }));
 
     // ---- API
     const tokenRows = s.tokens.length
@@ -1764,10 +2048,26 @@ class Component extends DCLogic {
       newTitle: s.newTitle, onNewTitle: (e) => this.setState({ newTitle: e.target.value }),
       newDesc: s.newDesc, onNewDesc: (e) => this.setState({ newDesc: e.target.value }),
       createTask: () => {
-        const t = { title: s.newTitle.trim() || 'Untitled porting task', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 13' };
-        this.setState({ tasks: [t].concat(s.tasks), newTaskOpen: false, newTitle: '', newDesc: '' });
+        const verify = s.newType === 'verify';
+        const base = { title: s.newTitle.trim() || (verify ? 'Untitled verification task' : 'Untitled porting task'), status: 'todo', assignee: null, date: 'Jul 14', desc: s.newDesc };
+        const t = verify
+          ? { ...base, type: 'verify', items: s.newItems.map((n) => ({ name: n, done: false })) }
+          : { ...base, pct: 0, next: 'Read & understand' };
+        this.setState({ tasks: [t].concat(s.tasks), newTaskOpen: false, newTitle: '', newDesc: '', newItems: [], newItemDraft: '' });
       },
       portingStages: this.STAGES.map(([name], i) => ({ num: String(i + 1), name })),
+      newTypeSeg: this.seg([['porting', 'Porting'], ['verify', 'Data Verification']], s.newType, (k) => this.setState({ newType: k })),
+      newTypeLabel: s.newType === 'verify' ? 'Data Verification' : 'Porting',
+      newIsPorting: s.newType !== 'verify',
+      newIsVerify: s.newType === 'verify',
+      newItemRows: s.newItems.map((n, i) => ({ num: String(i + 1), name: n, onRemove: () => { const next = s.newItems.slice(); next.splice(i, 1); this.setState({ newItems: next }); } })),
+      hasNewItems: s.newItems.length > 0,
+      newItemCount: s.newItems.length === 1 ? '1 checkpoint' : s.newItems.length + ' checkpoints',
+      newItemDraft: s.newItemDraft, onNewItemDraft: (e) => this.setState({ newItemDraft: e.target.value }),
+      onNewItemKey: (e) => { if (e.key === 'Enter') this.addNewItem(); },
+      addNewItem: () => this.addNewItem(),
+      prefillCampuses: () => this.setState({ newItems: this.CAMPUSES.slice() }),
+      clearNewItems: () => this.setState({ newItems: [] }),
 
       wfOpen: s.wfOpen,
       closeWf: () => this.setState({ wfOpen: false }),
@@ -1775,7 +2075,21 @@ class Component extends DCLogic {
       wfDesc: s.wfDesc, onWfDesc: (e) => this.setState({ wfDesc: e.target.value }),
       wfStatus: s.wfStatus, wfAssignee: s.wfAssignee,
       wfStages, wfPct, wfPctW: wfPct + '%',
-      wfDoneLabel: s.wfDone + ' of 6 stages complete',
+      wfDoneLabel: s.wfDone + ' of 7 stages complete',
+      vfOpen: s.vfOpen,
+      closeVf: () => this.setState({ vfOpen: false }),
+      vfTitle: vt ? vt.title : '', onVfTitle: (e) => this.vfSetTask({ title: e.target.value }),
+      vfDesc: vt ? (vt.desc || '') : '', onVfDesc: (e) => this.vfSetTask({ desc: e.target.value }),
+      vfStatusLabel: vt ? (vt.status === 'done' ? 'Done' : vt.status === 'inprogress' ? 'In progress' : 'To do') : '',
+      vfPct, vfRows, vfSegs,
+      vfAllDone: vfItems.length > 0 && vfNextIdx === -1,
+      vfCountLabel: vfDoneN + ' of ' + vfItems.length + ' checkpoints verified',
+      vfMarkDone: () => { this.vfSetTask({ status: 'done' }); this.setState({ vfOpen: false }); },
+      vfNoteDraft: s.vfNoteDraft, onVfNoteDraft: (e) => this.setState({ vfNoteDraft: e.target.value }),
+      vfCloseNote: () => this.setState({ vfNoteFor: -1, vfNoteDraft: '' }),
+      vfNewItem: s.vfNewItem, onVfNewItem: (e) => this.setState({ vfNewItem: e.target.value }),
+      onVfNewKey: (e) => { if (e.key === 'Enter') this.vfAddItem(); },
+      vfAdd: () => this.vfAddItem(),
       stageNote: s.stageNote, onStageNote: (e) => this.setState({ stageNote: e.target.value }),
       onSaveNote: () => {
         if (!s.stageNote.trim()) return;

@@ -2,7 +2,10 @@ import React from 'react'
 import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import { Badge } from '../components/ui'
-import { currentStageIndex, nextStage, stagesForTask, taskTypeLabel } from './taskWorkflow'
+import {
+  currentStageIndex, isStageComplete, nextStepLabel, stagesForTask,
+  taskTypeBadgeVariant, taskTypeLabel,
+} from './taskWorkflow'
 
 /**
  * TaskCard — one task on the board. Workflow stage progress is server-derived;
@@ -12,11 +15,13 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
   const notes = task.notes || []
   const workflowNotes = (task.workflow_log || []).filter((entry) => entry.note)
   const isDone = task.status === 'done'
-  const upcoming = nextStage(task)
+  const nextLine = nextStepLabel(task)
 
   const stages = stagesForTask(task)
-  const cur = currentStageIndex(task)
-  const doneN = cur === -1 ? stages.length : cur
+  // Up-next = first incomplete in list order; fills are per-stage (checklist
+  // items complete in any order, so "everything before the cursor" is wrong).
+  const upNextIndex = currentStageIndex(task)
+  const doneN = stages.filter((stage) => isStageComplete(task, stage.key)).length
 
   return (
     <div
@@ -30,8 +35,8 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
       className={`w-full overflow-hidden text-left surface-card p-3 outline-none transition-[background-color,border-color,box-shadow] hover:bg-surface-hover hover:border-border-strong focus-visible:ring-2 focus-visible:ring-primary/40 ${dragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
     >
       <div className='flex flex-wrap items-center gap-1.5 mb-2'>
-        <Badge variant='accent'>{taskTypeLabel(task.task_type)}</Badge>
-        {isDone && <Badge variant='success'>Approved</Badge>}
+        <Badge variant={taskTypeBadgeVariant(task.task_type)}>{taskTypeLabel(task.task_type)}</Badge>
+        {isDone && <Badge variant='success'>{task.task_type === 'data_verification' ? 'Done' : 'Approved'}</Badge>}
       </div>
 
       <p className={`text-body-strong leading-snug break-words ${isDone ? 'text-ink-muted line-through decoration-ink-subtle/60' : ''}`}>
@@ -45,9 +50,9 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
               <span
                 title={stage.label}
                 className={`w-3 h-3 rounded-pill box-border shrink-0 ${
-                  i < doneN
+                  isStageComplete(task, stage.key)
                     ? 'bg-primary border-2 border-primary'
-                    : i === doneN
+                    : i === upNextIndex
                       ? 'bg-surface border-2 border-accent'
                       : 'bg-surface border-2 border-border-strong'
                 }`}
@@ -58,7 +63,7 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
         </div>
         <span className='ml-auto text-tag text-ink-subtle whitespace-nowrap tabular'>{doneN} of {stages.length}</span>
       </div>
-      {!isDone && upcoming && <p className='text-tag text-ink-subtle mt-1.5 truncate'>Next: {upcoming.label}</p>}
+      {!isDone && nextLine && <p className='text-tag text-ink-subtle mt-1.5 truncate'>{nextLine}</p>}
 
       <div className='mt-2.5 flex items-center gap-2 min-h-[1.25rem]'>
         {task.assignee_uid ? (

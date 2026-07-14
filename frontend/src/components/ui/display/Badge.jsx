@@ -6,7 +6,9 @@ const tones = {
   success: 'bg-success-soft text-success',
   danger: 'bg-danger-soft text-danger',
   // Lavender — over-prepared verdict tier / caution (internal-tool only).
-  conservative: 'bg-conservative-soft text-conservative'
+  conservative: 'bg-conservative-soft text-conservative',
+  // Mint fill with success ink — the Data Verification task-type chip.
+  verify: 'bg-primary-soft text-success'
 }
 
 /**

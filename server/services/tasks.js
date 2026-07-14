@@ -1,9 +1,11 @@
 /**
  * Tasks — the team's lightweight kanban over the research work itself.
  *
- * Tasks are typed workflows. Porting is the first type: six ordered stages,
- * weighted progress derived from completed stages, iterative stage notes, and
- * final approval by someone other than the task creator.
+ * Tasks are typed workflows. Porting: seven ordered, code-defined stages,
+ * weighted progress, iterative stage notes, and final approval by someone
+ * other than the task creator. Data verification (checklist-shaped):
+ * user-authored items stored on the doc, completable in any order, no peer
+ * gate — same stage engine, notes, and audit log throughout.
  * Everyone-equal by design: any console user may edit any task; immutable-ish
  * workflow log entries record who did what.
  *
@@ -24,8 +26,16 @@ const { getDisplayName, listDisplayNames } = require('./displayNames');
 const COLLECTION = 'tasks';
 
 const STATUSES = ['backlog', 'todo', 'in_progress', 'done'];
-const TASK_TYPES = ['porting'];
+const TASK_TYPES = ['porting', 'data_verification'];
 const DEFAULT_TASK_TYPE = 'porting';
+
+// Checklist-shaped types: the workflow points are user-authored per task
+// (stored on the doc as `checklist_items`), completable in any order, with
+// no peer gate. 'data_verification' is the first; future checklist types
+// just join this set.
+const CHECKLIST_TASK_TYPES = new Set(['data_verification']);
+const isChecklistType = (taskType) => CHECKLIST_TASK_TYPES.has(taskType);
+const MAX_CHECKLIST_ITEMS = 100;
 
 // The weights intentionally put most of the work in research and development.
 // Publishing and peer approval remain explicit gates instead of disappearing
@@ -34,13 +44,13 @@ const PORTING_STAGES = Object.freeze([
   {
     key: 'understand',
     label: 'Read & understand',
-    description: 'Read the source graph and document its measure, population, encodings, and assumptions.',
+    description: 'Read the source graph and understand its measure, population, encodings, and assumptions.',
     weight: 15,
   },
   {
     key: 'research',
     label: 'Research missing data',
-    description: 'Identify and gather missing sources, then record coverage gaps and caveats.',
+    description: 'Identify and gather missing sources, including coverage gaps and caveats.',
     weight: 20,
   },
   {
@@ -58,7 +68,7 @@ const PORTING_STAGES = Object.freeze([
   {
     key: 'publish',
     label: 'Publish',
-    description: 'Publish the finished visual and record where the team can review it.',
+    description: 'Publish the finished visual so the team can review it.',
     weight: 10,
   },
   {
@@ -112,18 +122,61 @@ const cleanStageNote = (value) => {
   return note;
 };
 
-const cleanOptionalStageNote = (value) => (value == null ? null : cleanStageNote(value));
+const cleanOptionalStageNote = (value) => (
+  value == null || (typeof value === 'string' && !value.trim()) ? null : cleanStageNote(value)
+);
 
 const isRecord = (value) => value && typeof value === 'object' && !Array.isArray(value);
 const isStageDone = (state) => Boolean(state?.completed || state?.completed_at);
 const stagesFor = (taskType = DEFAULT_TASK_TYPE) => WORKFLOWS[taskType] || [];
 
-function progressForStages(taskType, states = {}) {
-  return stagesFor(taskType).reduce(
+// ── checklist items (user-authored workflow points) ──
+
+const slugify = (label) => label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'item';
+
+// Accepts strings or {key?, label} rows; keys are kept when supplied (so a
+// rename doesn't orphan the item's log history) and slug-generated when new.
+function cleanChecklistItems(value) {
+  const rows = cleanArray('checklist_items', value);
+  if (!rows.length) fail('checklist_items must have at least one item');
+  if (rows.length > MAX_CHECKLIST_ITEMS) fail(`checklist_items must have ${MAX_CHECKLIST_ITEMS} or fewer items`);
+  const used = new Set();
+  return rows.map((row) => {
+    const label = typeof row === 'string' ? row.trim() : (typeof row?.label === 'string' ? row.label.trim() : '');
+    if (!label) fail('every checklist item needs a label');
+    if (label.length > 200) fail('checklist item labels must be 200 characters or fewer');
+    let key = typeof row?.key === 'string' && row.key.trim() ? row.key.trim() : slugify(label);
+    while (used.has(key)) key = `${key}_2`;
+    used.add(key);
+    return { key, label };
+  });
+}
+
+// The stage list for a task: code-defined for workflow types (porting),
+// doc-defined for checklist types. Equal weights keep the shared
+// weighted-progress rollup working unchanged.
+function stagesForTask(taskLike) {
+  const taskType = taskLike?.task_type || DEFAULT_TASK_TYPE;
+  if (isChecklistType(taskType)) {
+    const items = Array.isArray(taskLike?.checklist_items) ? taskLike.checklist_items : [];
+    const weight = items.length ? 100 / items.length : 0;
+    return items.map((item) => ({ key: item.key, label: item.label, weight }));
+  }
+  return stagesFor(taskType);
+}
+
+function progressForStages(taskLike, states = {}) {
+  // Rounded: checklist weights are fractional (100/N) and float sums drift.
+  return Math.round(stagesForTask(taskLike).reduce(
     (total, stage) => total + (isStageDone(states[stage.key]) ? stage.weight : 0),
     0
-  );
+  ));
 }
+
+const isWorkflowComplete = (taskLike, states = {}) => {
+  const stages = stagesForTask(taskLike);
+  return stages.length > 0 && stages.every((stage) => isStageDone(states[stage.key]));
+};
 
 // Completed tasks from the old free-form model stay completed. Their stage
 // rows are visibly marked as migrated, rather than inventing six historical
@@ -177,7 +230,10 @@ function normalizeTask(doc) {
     ? doc.workflow_stages
     : (doc.status === 'done' ? legacyCompletedStages(doc) : {});
   const workflowStages = backfillSelfVerifyStage(doc, baseStages);
-  return {
+  const checklistItems = isChecklistType(taskType)
+    ? (Array.isArray(doc.checklist_items) ? doc.checklist_items : [])
+    : undefined;
+  const normalized = {
     ...cleanDoc,
     // The board dropped its Backlog column; legacy docs stored 'backlog' surface
     // as 'todo' on read. 'backlog' stays in the STATUSES write allowlist for
@@ -187,8 +243,10 @@ function normalizeTask(doc) {
     workflow_stages: workflowStages,
     workflow_log: Array.isArray(doc.workflow_log) ? doc.workflow_log : [],
     workflow_revision: Number.isInteger(doc.workflow_revision) ? doc.workflow_revision : 0,
-    progress: progressForStages(taskType, workflowStages),
   };
+  if (checklistItems) normalized.checklist_items = checklistItems;
+  normalized.progress = progressForStages(normalized, workflowStages);
+  return normalized;
 }
 
 async function nextOrder(auditDb, status) {
@@ -218,6 +276,12 @@ async function createTask(auditDb, db, body = {}, uid) {
   const taskType = body.task_type != null
     ? cleanEnum('task_type', body.task_type, TASK_TYPES)
     : DEFAULT_TASK_TYPE;
+  let checklistItems;
+  if (isChecklistType(taskType)) {
+    checklistItems = cleanChecklistItems(body.checklist_items ?? []);
+  } else if (body.checklist_items != null) {
+    fail(`${taskType} tasks have a fixed workflow — checklist_items only apply to checklist task types`);
+  }
 
   // Append to the bottom of the destination column, leaving reorder gaps.
   const order = await nextOrder(auditDb, status);
@@ -229,6 +293,7 @@ async function createTask(auditDb, db, body = {}, uid) {
     title,
     description: cleanNullableString('description', body.description),
     task_type: taskType,
+    ...(checklistItems ? { checklist_items: checklistItems } : {}),
     status,
     order,
     progress: 0,
@@ -286,11 +351,32 @@ async function updateTask(auditDb, db, id, patch = {}, uid) {
   if ($set.task_type && $set.task_type !== normalized.task_type && normalized.progress > 0) {
     fail('task_type cannot change after workflow work has started');
   }
-  if ($set.status === 'done' && normalized.progress !== 100) {
-    fail('complete every workflow stage, including team approval, before marking this task done');
+  // Checklist items are editable until checked: an item whose key is already
+  // completed must survive the patch (its log history stays meaningful).
+  if ('checklist_items' in patch) {
+    if (!isChecklistType($set.task_type || normalized.task_type)) {
+      fail('checklist_items only apply to checklist task types');
+    }
+    if (normalized.status === 'done') {
+      fail('reopen an item before editing the checklist of a done task');
+    }
+    $set.checklist_items = cleanChecklistItems(patch.checklist_items);
+    const keptKeys = new Set($set.checklist_items.map((item) => item.key));
+    for (const [key, state] of Object.entries(normalized.workflow_stages)) {
+      if (isStageDone(state) && !keptKeys.has(key)) {
+        fail('completed checklist items cannot be removed — reopen the item first');
+      }
+    }
   }
-  if ($set.status && $set.status !== 'done' && existing.status === 'done' && normalized.progress === 100) {
-    fail('reopen a workflow stage to move an approved task out of done');
+  const workflowComplete = isWorkflowComplete(
+    { ...normalized, ...('checklist_items' in $set ? { checklist_items: $set.checklist_items } : {}) },
+    normalized.workflow_stages
+  );
+  if ($set.status === 'done' && !workflowComplete) {
+    fail('complete every workflow stage before marking this task done');
+  }
+  if ($set.status && $set.status !== 'done' && existing.status === 'done' && workflowComplete) {
+    fail('reopen a workflow stage to move a completed task out of done');
   }
 
   // Done-transition bookkeeping: entering 'done' stamps who/when; leaving it
@@ -313,10 +399,10 @@ async function updateTask(auditDb, db, id, patch = {}, uid) {
   return normalizeTask(updated);
 }
 
-function stageByKey(taskType, stageKey) {
-  const workflow = stagesFor(taskType);
+function stageByKey(task, stageKey) {
+  const workflow = stagesForTask(task);
   const index = workflow.findIndex((stage) => stage.key === stageKey);
-  if (index === -1) fail(`unknown ${taskType} stage: ${stageKey}`);
+  if (index === -1) fail(`unknown ${task.task_type} stage: ${stageKey}`);
   return { workflow, stage: workflow[index], index };
 }
 
@@ -326,9 +412,9 @@ const workflowRevisionFilter = (existing) => (
     : { _id: existing._id, $or: [{ workflow_revision: { $exists: false } }, { workflow_revision: null }] }
 );
 
-// Notes from an earlier completion cycle should not let a reopened stage be
-// completed immediately. A reopen event also invalidates notes for every
-// downstream stage it reopens.
+// If optional notes were saved separately, carry only the latest one from the
+// current completion cycle into the stage snapshot. A reopen starts a new cycle
+// for that stage and every downstream stage it invalidates; the full log stays.
 function currentStageNotes(task, stageKey) {
   let cycleStart = -1;
   for (let index = 0; index < task.workflow_log.length; index += 1) {
@@ -350,7 +436,7 @@ async function addTaskStageNote(auditDb, id, stageKey, body = {}, uid) {
   const existing = await auditDb.collection(COLLECTION).findOne({ _id: id });
   if (!existing) return null;
   const task = normalizeTask(existing);
-  stageByKey(task.task_type, stageKey);
+  stageByKey(task, stageKey);
   const note = cleanStageNote(body.note);
   const now = new Date();
   const actorLabel = await getDisplayName(auditDb, uid);
@@ -384,13 +470,16 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
   const existing = await auditDb.collection(COLLECTION).findOne({ _id: id });
   if (!existing) return null;
   const task = normalizeTask(existing);
-  const { workflow, stage, index } = stageByKey(task.task_type, stageKey);
+  const { workflow, stage, index } = stageByKey(task, stageKey);
   const note = cleanOptionalStageNote(body.note);
   const savedNotes = currentStageNotes(task, stage.key);
 
   if (isStageDone(task.workflow_stages[stage.key])) fail(`${stage.label} is already complete`);
-  const missingPrior = workflow.slice(0, index).find((prior) => !isStageDone(task.workflow_stages[prior.key]));
-  if (missingPrior) fail(`complete ${missingPrior.label} first`);
+  // Checklist items are independent — only code-defined workflows are ordered.
+  if (!isChecklistType(task.task_type)) {
+    const missingPrior = workflow.slice(0, index).find((prior) => !isStageDone(task.workflow_stages[prior.key]));
+    if (missingPrior) fail(`complete ${missingPrior.label} first`);
+  }
   // Everyone-equal, narrowed: an assigned task's non-peer stages are the
   // assignee's to complete (an unassigned task has no such signal, so anyone
   // may — otherwise a task nobody claimed could never move). The peer
@@ -406,30 +495,28 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
   } else if (task.assignee_uid && uid !== task.assignee_uid) {
     fail('only the assignee can complete stages');
   }
-  if (!note && savedNotes.length === 0) {
-    fail(`add a note to ${stage.label} before completing it`);
-  }
-  if (stage.requires_peer && !note && !savedNotes.some((event) => event.by === uid)) {
-    fail('add your review note before approving this task');
-  }
-
   const now = new Date();
   const actorLabel = await getDisplayName(auditDb, uid);
   const eventId = `tl-${crypto.randomBytes(5).toString('hex')}`;
   const latestNote = note || savedNotes.at(-1)?.note;
+  const stageState = {
+    completed: true,
+    completed_at: now,
+    completed_by: uid ?? null,
+    completed_by_label: actorLabel,
+    event_id: eventId,
+  };
+  if (latestNote) stageState.note = latestNote;
   const workflowStages = {
     ...task.workflow_stages,
-    [stage.key]: {
-      completed: true,
-      completed_at: now,
-      completed_by: uid ?? null,
-      completed_by_label: actorLabel,
-      note: latestNote,
-      event_id: eventId,
-    },
+    [stage.key]: stageState,
   };
-  const progress = progressForStages(task.task_type, workflowStages);
-  const final = progress === 100;
+  // Checklist tasks never auto-close: verifying the last checkpoint surfaces a
+  // "ready to close" banner and the user marks the task done explicitly (a
+  // status patch, allowed once the workflow is complete). Staged workflows
+  // keep flipping to done at 100% — approval IS the closing act there.
+  const progress = progressForStages(task, workflowStages);
+  const final = !isChecklistType(task.task_type) && isWorkflowComplete(task, workflowStages);
   const status = final ? 'done' : 'in_progress';
   const event = {
     _id: eventId,
@@ -474,13 +561,20 @@ async function reopenTaskStage(auditDb, id, stageKey, body = {}, uid) {
   const existing = await auditDb.collection(COLLECTION).findOne({ _id: id });
   if (!existing) return null;
   const task = normalizeTask(existing);
-  const { workflow, stage, index } = stageByKey(task.task_type, stageKey);
-  const note = cleanStageNote(body.note);
+  const { workflow, stage, index } = stageByKey(task, stageKey);
+  // Un-verifying a checkpoint is a one-click undo; reopening a staged
+  // workflow invalidates downstream work, so it still demands a reason.
+  const note = isChecklistType(task.task_type)
+    ? cleanOptionalStageNote(body.note)
+    : cleanStageNote(body.note);
   if (!isStageDone(task.workflow_stages[stage.key])) fail(`${stage.label} is not complete`);
 
   const workflowStages = { ...task.workflow_stages };
   const affectedStages = [];
-  for (const affected of workflow.slice(index)) {
+  // Ordered workflows invalidate everything downstream of the reopened stage;
+  // a checklist item stands alone, so only it reopens.
+  const invalidated = isChecklistType(task.task_type) ? [stage] : workflow.slice(index);
+  for (const affected of invalidated) {
     if (isStageDone(workflowStages[affected.key])) affectedStages.push(affected.key);
     delete workflowStages[affected.key];
   }
@@ -496,7 +590,7 @@ async function reopenTaskStage(auditDb, id, stageKey, body = {}, uid) {
     by_label: actorLabel,
     at: now,
   };
-  const progress = progressForStages(task.task_type, workflowStages);
+  const progress = progressForStages(task, workflowStages);
   const $set = {
     task_type: task.task_type,
     workflow_stages: workflowStages,
@@ -524,10 +618,11 @@ async function reopenTaskStage(auditDb, id, stageKey, body = {}, uid) {
 // ── stage-note management ──
 // Stage notes are the iterative { action:'noted' } workflow_log rows. They are
 // almost always an error a reviewer spotted, so the note's author may retract
-// their own note, and the task owner (assignee/creator) or the author may mark
-// one resolved. Only 'noted' rows are touchable — completion/reopen events are
-// the immutable audit trail. These are log-only mutations: they bump updated_at
-// but not workflow_revision (no stage state changes, so no CAS race to guard).
+// their own note. Task owners resolve notes from other teammates; note authors
+// may resolve their own note only on a task they do not own. Only 'noted' rows
+// are touchable — completion/reopen events are the immutable audit trail. These
+// are log-only mutations: they bump updated_at but not workflow_revision (no
+// stage state changes, so no CAS race to guard).
 
 function notedLogEntry(existing, logId, verb) {
   const entry = (existing.workflow_log || []).find((event) => event._id === logId);
@@ -560,8 +655,13 @@ async function resolveTaskLogNote(auditDb, id, logId, body = {}, uid) {
   const resolved = cleanBool('resolved', body.resolved);
   const actor = uid ?? null;
   const entry = notedLogEntry(existing, logId, 'resolved');
-  const allowed = actor === existing.assignee_uid || actor === existing.created_by || actor === entry.by;
-  if (!allowed) fail('only the task owner or the note author can resolve a note');
+  const isOwner = Boolean(actor)
+    && (actor === existing.assignee_uid || actor === existing.created_by);
+  const isAuthor = Boolean(actor) && actor === entry.by;
+  const allowed = (isOwner && !isAuthor) || (!isOwner && isAuthor);
+  if (!allowed) {
+    fail("you can resolve another teammate's note on your task, or your own note on theirs");
+  }
 
   const now = new Date();
   // Toggling off returns the note to its pristine noted shape ($unset all four
@@ -665,7 +765,7 @@ async function ensureTaskIndexes(auditDb) {
 module.exports = {
   STATUSES, TASK_TYPES, PORTING_STAGES,
   ValidationError,
-  normalizeTask, progressForStages,
+  normalizeTask, progressForStages, stagesForTask,
   listTasks, createTask, updateTask, addTaskStageNote, completeTaskStage, reopenTaskStage,
   deleteTaskLogNote, resolveTaskLogNote,
   deleteTask, listRoster,

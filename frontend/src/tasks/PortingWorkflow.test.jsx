@@ -56,17 +56,28 @@ describe('PortingWorkflow', () => {
     ))
   })
 
-  it('saves an unsaved draft before completing the stage', async () => {
-    const onAddStageNote = vi.fn().mockResolvedValue({})
+  it('completes a stage without requiring a note', async () => {
+    const onAddStageNote = vi.fn()
     const onCompleteStage = vi.fn().mockResolvedValue({})
     render(
       <PortingWorkflow task={baseTask} me={{ uid: 'author' }}
         onAddStageNote={onAddStageNote} onCompleteStage={onCompleteStage} onReopenStage={vi.fn()} />
     )
 
+    expect(screen.getByText('Stage note (optional)')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Complete stage' }))
-    expect(screen.getByText('Add at least one note before completing this stage.')).toBeInTheDocument()
-    expect(onCompleteStage).not.toHaveBeenCalled()
+
+    await waitFor(() => expect(onCompleteStage).toHaveBeenCalledWith('tp-test0001', 'understand'))
+    expect(onAddStageNote).not.toHaveBeenCalled()
+  })
+
+  it('saves an optional unsaved draft before completing the stage', async () => {
+    const onAddStageNote = vi.fn().mockResolvedValue({})
+    const onCompleteStage = vi.fn().mockResolvedValue({})
+    render(
+      <PortingWorkflow task={baseTask} me={{ uid: 'author' }}
+        onAddStageNote={onAddStageNote} onCompleteStage={onCompleteStage} onReopenStage={vi.fn()} />
+    )
 
     fireEvent.change(screen.getByPlaceholderText('What did you learn about the graph and its assumptions?'), {
       target: { value: 'Documented the denominator and source assumptions.' },
@@ -177,7 +188,7 @@ describe('PortingWorkflow assignee-gated completion (T22)', () => {
     expect(screen.queryByRole('button', { name: 'Approve task' })).not.toBeInTheDocument()
   })
 
-  it('renders approve button for third-party reviewer at active approval stage on assigned task', () => {
+  it('lets a third-party reviewer approve without writing a review note', async () => {
     const workflowStages = Object.fromEntries(PORTING_STAGES.slice(0, -1).map((stage) => [
       stage.key,
       {
@@ -188,14 +199,20 @@ describe('PortingWorkflow assignee-gated completion (T22)', () => {
         note: `Finished ${stage.label}`,
       },
     ]))
+    const onAddStageNote = vi.fn()
+    const onCompleteStage = vi.fn().mockResolvedValue({})
     render(
       <PortingWorkflow
         task={{ ...assignedTask, status: 'in_progress', progress: 90, workflow_stages: workflowStages }}
-        me={{ uid: 'reviewer' }} onAddStageNote={vi.fn()} onCompleteStage={vi.fn()} onReopenStage={vi.fn()}
+        me={{ uid: 'reviewer' }} onAddStageNote={onAddStageNote}
+        onCompleteStage={onCompleteStage} onReopenStage={vi.fn()}
       />
     )
 
-    expect(screen.getByRole('button', { name: /approve task/i })).toBeInTheDocument()
+    expect(screen.getByText('Review note (optional)')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /approve task/i }))
+    await waitFor(() => expect(onCompleteStage).toHaveBeenCalledWith('tp-test0001', 'approval'))
+    expect(onAddStageNote).not.toHaveBeenCalled()
   })
 })
 
@@ -204,8 +221,8 @@ describe('PortingWorkflow stage-note delete & resolve', () => {
     _id: 'tl-note1', stage: 'understand', action: 'noted', note: 'Spotted a mismatch in the totals.',
     by: 'author', by_label: 'Ari', at: '2026-07-11T10:00:00Z', ...over,
   })
-  const notedTask = (entry) => ({
-    ...baseTask, status: 'in_progress', workflow_log: [entry],
+  const notedTask = (entry, over = {}) => ({
+    ...baseTask, status: 'in_progress', workflow_log: [entry], ...over,
   })
   const wiring = (over) => ({
     onAddStageNote: vi.fn(), onCompleteStage: vi.fn(), onReopenStage: vi.fn(),
@@ -218,6 +235,7 @@ describe('PortingWorkflow stage-note delete & resolve', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Delete note' }))
     await waitFor(() => expect(props.onDeleteStageNote).toHaveBeenCalledWith('tp-test0001', 'tl-note1'))
+    expect(screen.queryByRole('button', { name: 'Resolve' })).not.toBeInTheDocument()
   })
 
   it('hides the delete control from someone who is not the note author', () => {
@@ -227,7 +245,8 @@ describe('PortingWorkflow stage-note delete & resolve', () => {
 
   it('lets the task owner resolve an open note', async () => {
     const props = wiring()
-    render(<PortingWorkflow task={notedTask(notedEntry())} me={{ uid: 'author' }} {...props} />)
+    render(<PortingWorkflow task={notedTask(notedEntry({ by: 'reviewer', by_label: 'Bea' }))}
+      me={{ uid: 'author' }} {...props} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Resolve' }))
     await waitFor(() => expect(props.onResolveStageNote).toHaveBeenCalledWith('tp-test0001', 'tl-note1', true))
@@ -235,11 +254,23 @@ describe('PortingWorkflow stage-note delete & resolve', () => {
 
   it('marks a resolved note and toggles it back open', async () => {
     const props = wiring()
-    const resolved = notedEntry({ resolved: true, resolved_by: 'author', resolved_by_label: 'Ari', resolved_at: '2026-07-12T10:00:00Z' })
+    const resolved = notedEntry({
+      by: 'reviewer', by_label: 'Bea', resolved: true,
+      resolved_by: 'author', resolved_by_label: 'Ari', resolved_at: '2026-07-12T10:00:00Z',
+    })
     render(<PortingWorkflow task={notedTask(resolved)} me={{ uid: 'author' }} {...props} />)
 
     expect(screen.getByText('Resolved')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Resolved/ }))
     await waitFor(() => expect(props.onResolveStageNote).toHaveBeenCalledWith('tp-test0001', 'tl-note1', false))
+  })
+
+  it("lets an author resolve or delete their own note on somebody else's task", () => {
+    render(<PortingWorkflow
+      task={notedTask(notedEntry(), { created_by: 'owner', assignee_uid: 'owner' })}
+      me={{ uid: 'author' }} {...wiring()} />)
+
+    expect(screen.getByRole('button', { name: 'Resolve' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Delete note' })).toBeInTheDocument()
   })
 })

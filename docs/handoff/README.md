@@ -3,11 +3,12 @@
 Everything a Claude Code instance needs to re-skin the working website. Read in this order:
 
 1. **`REVAMP-HANDOFF.md`** — the design decisions: identity (no "Plan My Transfer" naming), palette rationale, per-surface deltas, definition of done. The master spec.
+2. **`TASKS-HANDOFF.md`** — addendum for the Task surfaces (Jul 14): Data Verification task type + checkpoint workflow modal, unified New task modal, 7-stage porting sync.
 2. **`tokens.css`** — drop-in replacement for `frontend/src/styles/tokens.css` (Tailwind v4 `@theme` / `@utility` syntax, light + dark, crisp colorway default). Adjust only the `@font-face` src paths.
 3. **`Logo.jsx`** — drop-in replacement for `frontend/src/components/ui/display/Logo.jsx` (new mark, `currentColor`, collision-safe ids). `logo.svg` is the same mark as a standalone asset.
 4. **`mockups/`** — the two approved interactive prototypes. **These are the visual source of truth**; `…v2` wins any conflict with prose.
    - `Transfer Pathways Console.dc.html` — faithful port of every existing page in the new brand.
-   - `Transfer Pathways Console v2.dc.html` — **approved direction**: adds the Judge redesign (row-click error marking, sticky verdict dock, C/V/E/F/N shortcuts), Agreements redesign (campus chips + command-bar search + detail stat tiles), and Tasks stage-dot cards.
+   - `Transfer Pathways Console v2.dc.html` — **approved direction**: adds the Judge redesign (row-click error marking, sticky verdict dock, C/V/E/F/N shortcuts), Agreements redesign (campus chips + command-bar search + detail stat tiles), Tasks stage-dot cards, the Data Verification workflow modal, and the unified New task modal.
    - `support.js` — runtime; open the HTML files in a browser to click through every screen, modal, and state.
 
 ## How to read the mockups as spec

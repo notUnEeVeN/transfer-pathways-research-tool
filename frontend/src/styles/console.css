@@ -47,25 +47,65 @@
    any inline background (e.g. the paper matrix's white fill) still wins. */
 .analysis-card :where(.surface-card) { border-color: transparent; }
 
-/* While an analysis card is being captured for export (exportCard.js toggles
-   this class), restyle it as a tight publication figure:
-   - lift internal scroll clips so the full matrix/table lands in the file;
-   - hide non-figure chrome (header, controls, stat strips) IN THE LIVE DOM so
-     the measured size equals the exported clone — filtered-but-still-measured
-     nodes were leaving a blank band on the PDF page;
-   - shrink-wrap the card to its content and slim the padding to a thin even
-     margin, so the figure sits centered with no dead space;
-   - pin the paper matrix to a fixed print cell size (instead of
-     container-width-driven), so the export is identical at any window width. */
+/* Publication frame used only by exportCard.js. A stable width keeps flex-based
+   plots from collapsing to their labels; intrinsically wider tables can still
+   grow via scrollWidth. Every on-screen scroll cap is lifted so the final row
+   is present, and long labels wrap instead of being exported as ellipses. */
 .analysis-card.exporting .overflow-auto,
-.analysis-card.exporting .overflow-x-auto {
+.analysis-card.exporting .overflow-x-auto,
+.analysis-card.exporting .overflow-y-auto {
   overflow: visible !important;
   max-height: none !important;
 }
 .analysis-card.exporting [data-export-exclude] { display: none !important; }
 .analysis-card.exporting {
-  width: fit-content;
+  width: 1200px;
+  min-width: 1200px;
   max-width: none;
-  padding: 12px !important;
+  padding: 24px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color-scheme: light;
+  background: #ffffff !important;
+  color: #193018 !important;
+
+  /* Exports are publication assets, so they stay on the readable light
+     palette even when the console itself is in dark mode. */
+  --color-primary: #193018;
+  --color-primary-hover: #234424;
+  --color-primary-soft: #eff8e5;
+  --color-on-primary: #f0ffe7;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f6f8f1;
+  --color-surface-sunken: #f1f3eb;
+  --color-surface-hover: #f6f8f1;
+  --color-border: #dfe3d8;
+  --color-border-strong: #b9c0ac;
+  --color-ink: #193018;
+  --color-ink-muted: #3f4840;
+  --color-ink-subtle: #5f6a60;
+  --color-success: #17855a;
+  --color-success-soft: #dff4e7;
+  --color-danger: #d22f14;
+  --color-danger-soft: #ffe9e3;
+}
+.analysis-card.exporting *,
+.analysis-card.exporting *::before,
+.analysis-card.exporting *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.analysis-card.exporting .truncate {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
 }
 .analysis-card.exporting .paper-export-cells { --paper-cell: 14px !important; }
+
+/* Data Verification checklist — the up-next node's pulsing accent ring. */
+@keyframes pmtPulse {
+  0% { box-shadow: 0 0 0 0 rgba(150, 240, 96, 0.55); }
+  70% { box-shadow: 0 0 0 7px rgba(150, 240, 96, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(150, 240, 96, 0); }
+}

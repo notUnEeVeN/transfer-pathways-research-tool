@@ -162,16 +162,12 @@ describe('porting workflow', () => {
       .rejects.toThrow(/note/);
     await expect(addTaskStageNote(db, task._id, 'not-a-stage', { note: 'x' }, 'author'))
       .rejects.toThrow(/unknown/);
-    await expect(completeTaskStage(db, db, task._id, 'understand', {}, 'author'))
-      .rejects.toThrow(/add a note/);
 
     const future = await addTaskStageNote(
       db, task._id, 'visualization', { note: 'Try a district choropleth.' }, 'author'
     );
     expect(future.progress).toBe(0);
     expect(future.status).toBe('todo');
-    await expect(completeTaskStage(db, db, task._id, 'understand', {}, 'author'))
-      .rejects.toThrow(/add a note/);
 
     await addTaskStageNote(db, task._id, 'understand', { note: 'Confirmed the denominator.' }, 'author');
     const noted = await addTaskStageNote(
@@ -189,67 +185,50 @@ describe('porting workflow', () => {
     expect(complete.workflow_log.at(-1)).not.toHaveProperty('note');
   });
 
-  it('requires ordered, noted stages and derives weighted progress', async () => {
+  it('requires ordered stages, treats notes as optional, and derives weighted progress', async () => {
     await db.collection('team_members').insertMany([
       { _id: 'author', access_status: 'profile_only', display_name: 'Ari' },
       { _id: 'reviewer', access_status: 'profile_only', display_name: 'Bea' },
     ]);
     const task = await createTask(db, db, { title: 'Port the graph', status: 'backlog' }, 'author');
 
-    await expect(completeTaskStage(db, db, task._id, 'understand', { note: '   ' }, 'author'))
-      .rejects.toThrow(/note/);
     await expect(completeTaskStage(db, db, task._id, 'research', { note: 'found source' }, 'author'))
       .rejects.toThrow(/Read & understand/);
 
+    // A blank optional note is treated the same as omitting it.
     const understood = await completeTaskStage(
-      db, db, task._id, 'understand', { note: 'Documented the denominator and encodings.' }, 'author'
+      db, db, task._id, 'understand', { note: '   ' }, 'author'
     );
     expect(understood.progress).toBe(15);
     expect(understood.status).toBe('in_progress');
     expect(understood.workflow_stages.understand.completed_by_label).toBe('Ari');
+    expect(understood.workflow_stages.understand).not.toHaveProperty('note');
     expect(understood.workflow_log[0]).toMatchObject({
       stage: 'understand', action: 'completed', by: 'author', by_label: 'Ari',
     });
 
-    const research = await completeTaskStage(
-      db, db, task._id, 'research', { note: 'Added the missing district source.' }, 'author'
-    );
+    const research = await completeTaskStage(db, db, task._id, 'research', {}, 'author');
     expect(research.progress).toBe(35);
-    const data = await completeTaskStage(
-      db, db, task._id, 'data_access', { note: 'Existing endpoint has every required field.' }, 'author'
-    );
+    const data = await completeTaskStage(db, db, task._id, 'data_access', {}, 'author');
     expect(data.progress).toBe(50);
-    const visual = await completeTaskStage(
-      db, db, task._id, 'visualization', { note: 'Matched source values and checked labels.' }, 'author'
-    );
+    const visual = await completeTaskStage(db, db, task._id, 'visualization', {}, 'author');
     expect(visual.progress).toBe(75);
-    const published = await completeTaskStage(
-      db, db, task._id, 'publish', { note: 'Published as district-coverage-v1.' }, 'author'
-    );
+    const published = await completeTaskStage(db, db, task._id, 'publish', {}, 'author');
     expect(published.progress).toBe(85);
-    const selfVerified = await completeTaskStage(
-      db, db, task._id, 'self_verify', { note: 'Re-checked the published output against the data.' }, 'author'
-    );
+    const selfVerified = await completeTaskStage(db, db, task._id, 'self_verify', {}, 'author');
     expect(selfVerified.progress).toBe(90);
 
-    await expect(completeTaskStage(
-      db, db, task._id, 'approval', { note: 'Looks good.' }, 'author'
-    )).rejects.toThrow(/other than the task creator/);
+    await expect(completeTaskStage(db, db, task._id, 'approval', {}, 'author'))
+      .rejects.toThrow(/other than the task creator/);
 
-    await addTaskStageNote(db, task._id, 'approval', { note: 'Creator handoff note.' }, 'author');
-    await expect(completeTaskStage(db, db, task._id, 'approval', {}, 'reviewer'))
-      .rejects.toThrow(/your review note/);
-    await addTaskStageNote(db, task._id, 'approval', { note: 'Verified the data and approach.' }, 'reviewer');
-    const approved = await completeTaskStage(
-      db, db, task._id, 'approval', {}, 'reviewer'
-    );
+    const approved = await completeTaskStage(db, db, task._id, 'approval', {}, 'reviewer');
     expect(approved.progress).toBe(100);
     expect(approved.status).toBe('done');
     expect(approved.completed_by).toBe('reviewer');
     expect(approved.completed_by_label).toBe('Bea');
     expect(approved.completed_at).toBeInstanceOf(Date);
     expect(approved).not.toHaveProperty('dataset_version_completed');
-    expect(approved.workflow_log).toHaveLength(9);
+    expect(approved.workflow_log).toHaveLength(7);
   });
 
   it('reopens a stage and every downstream stage while retaining the log', async () => {
@@ -275,11 +254,9 @@ describe('porting workflow', () => {
       affected_stages: PORTING_STAGES.slice(1).map((stage) => stage.key),
     });
 
-    await expect(completeTaskStage(db, db, task._id, 'research', {}, 'author'))
-      .rejects.toThrow(/add a note/);
-    await addTaskStageNote(db, task._id, 'research', { note: 'Rechecked the changed population.' }, 'author');
     const recompleted = await completeTaskStage(db, db, task._id, 'research', {}, 'author');
     expect(recompleted.progress).toBe(35);
+    expect(recompleted.workflow_stages.research).not.toHaveProperty('note');
   });
 });
 
@@ -366,7 +343,7 @@ describe('ensureTaskIndexes', () => {
 describe('constants', () => {
   it('exports the status whitelist the client mirrors', () => {
     expect(STATUSES).toEqual(['backlog', 'todo', 'in_progress', 'done']);
-    expect(TASK_TYPES).toEqual(['porting']);
+    expect(TASK_TYPES).toEqual(['porting', 'data_verification']);
     expect(PORTING_STAGES.reduce((sum, stage) => sum + stage.weight, 0)).toBe(100);
   });
 });

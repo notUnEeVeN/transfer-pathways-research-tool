@@ -3,7 +3,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Badge, EmptyState, Panel } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import { COLUMNS } from './TaskBoard'
-import { isAwaitingVerification, taskTypeLabel } from './taskWorkflow'
+import { isAwaitingVerification, taskTypeBadgeVariant, taskTypeLabel } from './taskWorkflow'
 
 const STATUS_LABEL = Object.fromEntries(COLUMNS.map((c) => [c.status, c.label]))
 // Verification is a derived board state (stored status stays in_progress); its
@@ -40,7 +40,7 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
             className='w-full text-left px-5 py-3 border-b border-border/40 last:border-0 hover:bg-surface-hover cursor-pointer flex items-center gap-3 transition-colors'>
             <Badge variant={STATUS_TONE[displayStatus]}>{STATUS_LABEL[displayStatus] || displayStatus}</Badge>
             {t.archived && <Badge>archived</Badge>}
-            <Badge className='hidden md:inline-flex'>{taskTypeLabel(t.task_type)}</Badge>
+            <Badge variant={taskTypeBadgeVariant(t.task_type)} className='hidden md:inline-flex'>{taskTypeLabel(t.task_type)}</Badge>
             <span className={`text-[13.5px] font-semibold flex-1 min-w-0 truncate ${t.status === 'done' || t.archived ? 'text-ink-muted' : ''}`}>{t.title}</span>
             {t.status !== 'done' && (
               <span className='hidden lg:flex items-center gap-2 shrink-0'>

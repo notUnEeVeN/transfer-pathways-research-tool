@@ -1,13 +1,17 @@
 import React, { useMemo, useState } from 'react'
 import {
-  ArchiveBoxIcon, ArchiveBoxXMarkIcon, TrashIcon, XMarkIcon,
+  ArchiveBoxIcon, ArchiveBoxXMarkIcon, PlusIcon, TrashIcon, XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {
   Badge, Button, Combobox, CompletionCheck, IconButton, Input, Modal, Select, Textarea,
 } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import PortingWorkflow from './PortingWorkflow'
-import { PORTING_STAGES, TASK_TYPE_OPTIONS, taskTypeLabel } from './taskWorkflow'
+import VerificationChecklist from './VerificationChecklist'
+import {
+  PORTING_STAGES, TASK_TYPE_OPTIONS, isChecklistTask, taskTypeBadgeVariant, taskTypeLabel,
+} from './taskWorkflow'
+import { useSchools } from '@frontend/query/hooks/useData'
 
 const OPEN_STATUS_OPTIONS = [
   { value: 'todo', label: 'To do' },
@@ -35,9 +39,27 @@ export default function TaskModal({
     assignee_uid: task?.assignee_uid || '',
   }))
   const [note, setNote] = useState('')
+  const [newItems, setNewItems] = useState([])
+  const [itemDraft, setItemDraft] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const set = (patch) => setDraft((current) => ({ ...current, ...patch }))
+
+  // Checklist types carry user-authored checkpoints; on create they're built
+  // here (typed or quick-filled). Editing items later happens in the
+  // verification panel, not here.
+  const creatingChecklist = !editing && isChecklistTask({ task_type: draft.task_type })
+  const schools = useSchools()
+  const addDraftItem = () => {
+    const label = itemDraft.trim()
+    if (!label) return
+    setNewItems((current) => [...current, label])
+    setItemDraft('')
+  }
+  const prefillCampuses = () => {
+    const names = (schools.data?.uc || []).map((row) => row.name).sort((a, b) => a.localeCompare(b))
+    if (names.length) setNewItems(names)
+  }
 
   const rosterOptions = useMemo(
     () => [{ value: '', label: 'Unassigned' }, ...roster.map((person) => ({ value: person.uid, label: person.label }))],
@@ -48,6 +70,7 @@ export default function TaskModal({
 
   const save = async () => {
     if (!draft.title.trim()) { setError('A title is required.'); return }
+    if (creatingChecklist && !newItems.length) { setError('Add at least one checkpoint.'); return }
     const body = {
       title: draft.title.trim(),
       description: draft.description,
@@ -55,6 +78,7 @@ export default function TaskModal({
       assignee_uid: draft.assignee_uid || null,
       assignee_label: roster.find((person) => person.uid === draft.assignee_uid)?.label || null,
     }
+    if (creatingChecklist) body.checklist_items = newItems
     if (!editing || task.status !== 'done') body.status = draft.status
     setSaving(true)
     setError(null)
@@ -94,8 +118,25 @@ export default function TaskModal({
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
         <div>
           <p className='field-label'>Task type</p>
-          <Select value={draft.task_type} onChange={(value) => set({ task_type: value })}
-            options={TASK_TYPE_OPTIONS} disabled={editing && (task?.progress || 0) > 0} />
+          {editing ? (
+            <Select value={draft.task_type} onChange={(value) => set({ task_type: value })}
+              options={TASK_TYPE_OPTIONS} disabled={(task?.progress || 0) > 0} />
+          ) : (
+            <div className='flex items-stretch gap-0.5 bg-surface-sunken rounded-pill p-[3px]'>
+              {TASK_TYPE_OPTIONS.map((option) => {
+                const active = draft.task_type === option.value
+                return (
+                  <button key={option.value} type='button'
+                    onClick={() => set({ task_type: option.value })}
+                    className={`flex-1 rounded-pill px-2.5 py-2 text-[12.5px] whitespace-nowrap cursor-pointer transition-colors ${
+                      active ? 'bg-surface font-[650] shadow-xs' : 'font-[500] text-ink-muted hover:text-ink'
+                    }`}>
+                    {option.label}
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
         <div>
           <p className='field-label'>Assignee</p>
@@ -109,7 +150,7 @@ export default function TaskModal({
         {editing && task.status === 'done' ? (
           <div className='input-field flex items-center gap-2 text-success'>
             <CompletionCheck size='sm' />
-            <span>Done via team approval</span>
+            <span>{isChecklistTask(task) ? 'Done — every item verified' : 'Done via team approval'}</span>
           </div>
         ) : (
           <Select value={draft.status} onChange={(value) => set({ status: value })} options={OPEN_STATUS_OPTIONS} />
@@ -131,7 +172,7 @@ export default function TaskModal({
       onClose={onClose}
       size={editing ? 'xl' : 'lg'}
       title={editing ? 'Task workflow' : 'New task'}
-      subtitle={editing ? `${taskTypeLabel(task.task_type)} · ${task.progress || 0}% complete` : 'Porting'}
+      subtitle={editing ? `${taskTypeLabel(task.task_type)} · ${task.progress || 0}% complete` : taskTypeLabel(draft.task_type)}
       actions={editing && (
         <span className='inline-flex items-center gap-1'>
           <IconButton
@@ -149,7 +190,7 @@ export default function TaskModal({
             <section aria-labelledby='task-details-title'>
               <div className='flex items-center justify-between gap-3 mb-4'>
                 <h3 id='task-details-title' className='text-heading'>Task details</h3>
-                <Badge variant='accent'>{taskTypeLabel(task.task_type)}</Badge>
+                <Badge variant={taskTypeBadgeVariant(task.task_type)}>{taskTypeLabel(task.task_type)}</Badge>
               </div>
               {details}
             </section>
@@ -186,11 +227,65 @@ export default function TaskModal({
           </div>
 
           <div className='min-w-0 lg:border-l lg:border-border lg:pl-6'>
-            <PortingWorkflow task={task} me={me} roster={roster}
-              onAddStageNote={onAddStageNote} onCompleteStage={onCompleteStage}
-              onReopenStage={onReopenStage} onDeleteStageNote={onDeleteStageNote}
-              onResolveStageNote={onResolveStageNote} />
+            {isChecklistTask(task) ? (
+              <VerificationChecklist task={task} me={me} roster={roster}
+                onCompleteStage={onCompleteStage} onReopenStage={onReopenStage}
+                onAddStageNote={onAddStageNote} onDeleteStageNote={onDeleteStageNote}
+                onPatch={onPatch} onClose={onClose} />
+            ) : (
+              <PortingWorkflow task={task} me={me} roster={roster}
+                onAddStageNote={onAddStageNote} onCompleteStage={onCompleteStage}
+                onReopenStage={onReopenStage} onDeleteStageNote={onDeleteStageNote}
+                onResolveStageNote={onResolveStageNote} />
+            )}
           </div>
+        </div>
+      ) : creatingChecklist ? (
+        <div>
+          {details}
+          <section className='mt-6 pt-5 border-t border-border'>
+            <div className='flex items-baseline justify-between gap-3'>
+              <h3 className='text-body-strong'>Verification checkpoints</h3>
+              <span className='text-tag text-ink-subtle'>
+                {newItems.length === 1 ? '1 checkpoint' : `${newItems.length} checkpoints`}
+              </span>
+            </div>
+            <p className='text-caption text-ink-subtle mt-2'>
+              Checkpoints are this task's flexible progression — verify them in any order, and add more as you find them.
+            </p>
+            <div className='mt-3 flex flex-wrap items-center gap-2'>
+              <span className='text-tag font-[600] text-ink-subtle'>Quick fill</span>
+              <Button size='sm' variant='secondary' leadingIcon={PlusIcon}
+                onClick={prefillCampuses} disabled={!(schools.data?.uc || []).length}>
+                One per UC campus
+              </Button>
+              {newItems.length > 0 && (
+                <Button size='sm' variant='ghost' className='hover:!bg-danger-soft hover:!text-danger'
+                  onClick={() => setNewItems([])}>Clear all</Button>
+              )}
+            </div>
+            {newItems.length > 0 && (
+              <ol className='mt-2'>
+                {newItems.map((name, index) => (
+                  <li key={`${name}-${index}`} className='flex items-center gap-2.5 py-[6.5px] border-b border-border/40'>
+                    <span className='grid place-items-center w-[22px] h-[22px] rounded-pill bg-surface-sunken text-[11px] font-[650] text-ink-muted shrink-0'>{index + 1}</span>
+                    <span className='text-[13.5px] min-w-0 truncate'>{name}</span>
+                    <IconButton icon={XMarkIcon} label={`Remove ${name}`} size='sm' className='ml-auto'
+                      onClick={() => setNewItems((current) => current.filter((_, i) => i !== index))} />
+                  </li>
+                ))}
+              </ol>
+            )}
+            <div className='mt-3 flex items-center gap-2.5'>
+              <input value={itemDraft}
+                onChange={(event) => setItemDraft(event.target.value)}
+                onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); addDraftItem() } }}
+                placeholder='Add a checkpoint — a campus, dataset, or spot-check…'
+                className='flex-1 min-w-0 bg-surface border border-border rounded-pill px-4 py-[9px] text-[13px] outline-none placeholder:text-ink-subtle focus:border-primary' />
+              <Button size='sm' variant='secondary' disabled={!itemDraft.trim()} onClick={addDraftItem}>Add</Button>
+            </div>
+            {error && !newItems.length && <p className='text-caption text-danger mt-2'>{error}</p>}
+          </section>
         </div>
       ) : (
         <div>
@@ -200,6 +295,9 @@ export default function TaskModal({
               <h3 className='text-body-strong'>Porting stages</h3>
               <span className='text-tag text-ink-subtle'>{PORTING_STAGES.length} stages</span>
             </div>
+            <p className='text-caption text-ink-subtle mt-2'>
+              Porting tasks follow the same fixed pipeline, completed in order.
+            </p>
             <ol className='mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6'>
               {PORTING_STAGES.map((stage, index) => (
                 <li key={stage.key} className='flex items-center gap-2.5 py-[9px] border-b border-border/40'>

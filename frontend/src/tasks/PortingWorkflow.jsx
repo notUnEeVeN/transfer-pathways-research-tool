@@ -40,36 +40,21 @@ const logNotesForStage = (task, stageKey, state) => {
   return events
 }
 
-const currentCycleNotes = (task, stageKey) => {
-  const log = task.workflow_log || []
-  let cycleStart = -1
-  log.forEach((event, index) => {
-    if (event.action === 'reopened'
-      && (event.stage === stageKey || event.affected_stages?.includes(stageKey))) {
-      cycleStart = index
-    }
-  })
-  return log.slice(cycleStart + 1).filter((event) => (
-    event.stage === stageKey
-    && (event.action === 'noted' || event.action === 'completed')
-    && typeof event.note === 'string'
-    && event.note.trim()
-  ))
-}
-
 const eventAction = (event) => {
   if (event.action === 'noted') return 'added a note to'
   if (event.action === 'reopened') return 'reopened'
   return 'completed'
 }
 
+// Porting's ordered, code-defined stage timeline. Checklist-shaped tasks
+// render through VerificationChecklist instead.
 export default function PortingWorkflow({
   task, me, roster = [], onAddStageNote, onCompleteStage, onReopenStage,
   onDeleteStageNote, onResolveStageNote,
 }) {
   const stages = stagesForTask(task)
   const activeIndex = currentStageIndex(task)
-  const completedCount = activeIndex === -1 ? stages.length : activeIndex
+  const completedCount = stages.filter((stage) => isStageComplete(task, stage.key)).length
   const progress = Math.max(0, Math.min(100, task.progress || 0))
   const [drafts, setDrafts] = useState({})
   const [noteStage, setNoteStage] = useState(null)
@@ -77,9 +62,11 @@ export default function PortingWorkflow({
   const [busyAction, setBusyAction] = useState(null)
   const [busyNote, setBusyNote] = useState(null)
   const [error, setError] = useState(null)
-  // The task owner (assignee or creator) may resolve any review note; the author
-  // may resolve or delete their own.
-  const isOwner = me?.uid === task.assignee_uid || me?.uid === task.created_by
+  // Owners resolve feedback from other teammates. A note author may resolve
+  // their own feedback only when it is on somebody else's task (or delete it).
+  const viewerUid = me?.uid
+  const isOwner = Boolean(viewerUid)
+    && (viewerUid === task.assignee_uid || viewerUid === task.created_by)
 
   const names = useMemo(() => new Map(roster.map((person) => [person.uid, person.label])), [roster])
   const creatorLabel = task.created_by_label || names.get(task.created_by) || 'The task creator'
@@ -89,8 +76,8 @@ export default function PortingWorkflow({
   // such signal, so anyone may — otherwise a task nobody claimed could never
   // move). The peer approval stage is the opposite: it must come from someone
   // who did NOT do the work, so both the creator and the assignee are excluded.
-  const isCreator = me?.uid === task.created_by
-  const isAssignee = me?.uid === task.assignee_uid
+  const isCreator = viewerUid === task.created_by
+  const isAssignee = viewerUid === task.assignee_uid
   const setDraft = (key, value) => setDrafts((current) => ({ ...current, [key]: value }))
 
   const saveNote = async (stage, active) => {
@@ -109,17 +96,8 @@ export default function PortingWorkflow({
     }
   }
 
-  const complete = async (stage, savedNotes) => {
+  const complete = async (stage) => {
     const draft = (drafts[stage.key] || '').trim()
-    if (!draft && savedNotes.length === 0) {
-      setError({ stage: stage.key, message: 'Add at least one note before completing this stage.' })
-      return
-    }
-    if (stage.requiresPeer && !draft && !savedNotes.some((event) => event.by === me?.uid)) {
-      setError({ stage: stage.key, message: 'Add your review note before approving this task.' })
-      return
-    }
-
     setBusyAction(`complete:${stage.key}`)
     setError(null)
     try {
@@ -208,7 +186,6 @@ export default function PortingWorkflow({
             : (task.assignee_uid ? isAssignee : true)
           const completedAfter = stages.slice(index + 1).filter((later) => isStageComplete(task, later.key)).length
           const stageNotes = logNotesForStage(task, stage.key, state)
-          const savedNotes = currentCycleNotes(task, stage.key)
           const showComposer = reopening !== stage.key && (active || noteStage === stage.key)
           return (
             <li key={stage.key} className='relative grid grid-cols-[2rem_minmax(0,1fr)] gap-3 pb-6 last:pb-0'>
@@ -248,8 +225,10 @@ export default function PortingWorkflow({
                       // Only iterative review notes ('noted') are deletable/resolvable —
                       // completion notes are part of the immutable stage record.
                       const manageable = entry.action === 'noted'
-                      const canDelete = manageable && Boolean(onDeleteStageNote) && me?.uid === entry.by
-                      const canResolve = manageable && Boolean(onResolveStageNote) && (isOwner || me?.uid === entry.by)
+                      const isNoteAuthor = Boolean(viewerUid) && viewerUid === entry.by
+                      const canDelete = manageable && Boolean(onDeleteStageNote) && isNoteAuthor
+                      const canResolve = manageable && Boolean(onResolveStageNote)
+                        && ((isOwner && !isNoteAuthor) || (!isOwner && isNoteAuthor))
                       const resolved = Boolean(entry.resolved)
                       return (
                         <div key={entry._id}>
@@ -322,7 +301,7 @@ export default function PortingWorkflow({
 
                 {showComposer && (
                   <div className='mt-3 space-y-2'>
-                    <Textarea label={stage.requiresPeer && active ? 'Review note' : 'Stage note'} rows={3}
+                    <Textarea label={`${stage.requiresPeer && active ? 'Review note' : 'Stage note'} (optional)`} rows={3}
                       value={drafts[stage.key] || ''}
                       onChange={(event) => setDraft(stage.key, event.target.value)}
                       placeholder={stage.notePrompt}
@@ -339,7 +318,7 @@ export default function PortingWorkflow({
                         <Button size='sm' leadingIcon={CheckIcon}
                           loading={busyAction === `complete:${stage.key}`}
                           disabled={Boolean(busyAction) && busyAction !== `complete:${stage.key}`}
-                          onClick={() => complete(stage, savedNotes)}>
+                          onClick={() => complete(stage)}>
                           {stage.requiresPeer ? 'Approve task' : 'Complete stage'}
                         </Button>
                       )}

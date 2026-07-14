@@ -25,7 +25,7 @@ beforeEach(async () => {
 const completeThrough = async (taskId, stopKey, uid) => {
   let last;
   for (const stage of PORTING_STAGES) {
-    last = await completeTaskStage(db, db, taskId, stage.key, { note: `did ${stage.key}` }, uid);
+    last = await completeTaskStage(db, db, taskId, stage.key, {}, uid);
     if (stage.key === stopKey) break;
   }
   return last;
@@ -55,13 +55,10 @@ describe('seven-stage porting workflow', () => {
     expect(published.progress).toBe(85);
     expect(published.status).toBe('in_progress');
 
-    const selfVerified = await completeTaskStage(
-      db, db, task._id, 'self_verify', { note: 'Re-checked the output and the source numbers.' }, 'author'
-    );
+    const selfVerified = await completeTaskStage(db, db, task._id, 'self_verify', {}, 'author');
     expect(selfVerified.progress).toBe(90);
     expect(selfVerified.status).toBe('in_progress');
 
-    await addTaskStageNote(db, task._id, 'approval', { note: 'Verified the data and approach.' }, 'reviewer');
     const approved = await completeTaskStage(db, db, task._id, 'approval', {}, 'reviewer');
     expect(approved.progress).toBe(100);
     expect(approved.status).toBe('done');
@@ -70,7 +67,6 @@ describe('seven-stage porting workflow', () => {
   it('rejects completing approval before self_verify is done', async () => {
     const task = await createTask(db, db, { title: 'Port the graph' }, 'author');
     await completeThrough(task._id, 'publish', 'author'); // stops after publish, self_verify still open
-    await addTaskStageNote(db, task._id, 'approval', { note: 'ready?' }, 'reviewer');
     await expect(completeTaskStage(db, db, task._id, 'approval', {}, 'reviewer'))
       .rejects.toThrow(/Self-verify/);
   });
@@ -89,30 +85,25 @@ describe('assignee-gated stage completion (T22)', () => {
   it('rejects a non-assignee completing an early stage on an assigned task', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
     await expect(completeTaskStage(
-      db, db, task._id, 'understand', { note: 'Confirmed the denominator.' }, 'someone-else'
+      db, db, task._id, 'understand', {}, 'someone-else'
     )).rejects.toThrow(/only the assignee can complete stages/);
   });
 
   it('lets the assignee complete an early stage on an assigned task', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
-    const done = await completeTaskStage(
-      db, db, task._id, 'understand', { note: 'Confirmed the denominator.' }, 'assignee'
-    );
+    const done = await completeTaskStage(db, db, task._id, 'understand', {}, 'assignee');
     expect(done.workflow_stages.understand.completed).toBe(true);
   });
 
   it('lets any member complete a stage on an unassigned task (avoids deadlock)', async () => {
     const task = await createTask(db, db, { title: 'Port the graph' }, 'author');
-    const done = await completeTaskStage(
-      db, db, task._id, 'understand', { note: 'Confirmed the denominator.' }, 'whoever'
-    );
+    const done = await completeTaskStage(db, db, task._id, 'understand', {}, 'whoever');
     expect(done.workflow_stages.understand.completed).toBe(true);
   });
 
   it('rejects the assignee approving their own work', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
     await completeThrough(task._id, 'self_verify', 'assignee');
-    await addTaskStageNote(db, task._id, 'approval', { note: 'Ready for review.' }, 'assignee');
     await expect(completeTaskStage(db, db, task._id, 'approval', {}, 'assignee'))
       .rejects.toThrow(/approval must come from a teammate who didn't do the work/);
   });
@@ -120,24 +111,21 @@ describe('assignee-gated stage completion (T22)', () => {
   it('still rejects the creator approving their own task (unaffected by the assignee rule)', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
     await completeThrough(task._id, 'self_verify', 'assignee');
-    await addTaskStageNote(db, task._id, 'approval', { note: 'Creator handoff note.' }, 'author');
     await expect(completeTaskStage(db, db, task._id, 'approval', {}, 'author'))
       .rejects.toThrow(/other than the task creator/);
   });
 
-  it('lets a third teammate, neither creator nor assignee, approve with a note', async () => {
+  it('lets a third teammate, neither creator nor assignee, approve without a note', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
     await completeThrough(task._id, 'self_verify', 'assignee');
-    const approved = await completeTaskStage(
-      db, db, task._id, 'approval', { note: 'Verified the data and approach.' }, 'reviewer'
-    );
+    const approved = await completeTaskStage(db, db, task._id, 'approval', {}, 'reviewer');
     expect(approved.status).toBe('done');
     expect(approved.progress).toBe(100);
   });
 
   it('still lets a non-assignee reopen a completed stage', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
-    await completeTaskStage(db, db, task._id, 'understand', { note: 'Confirmed the denominator.' }, 'assignee');
+    await completeTaskStage(db, db, task._id, 'understand', {}, 'assignee');
     const reopened = await reopenTaskStage(
       db, task._id, 'understand', { note: 'Needs another pass.' }, 'someone-else'
     );
@@ -154,13 +142,10 @@ describe('assignee-gated stage completion (T22)', () => {
     // Self actor tries to approve their own work — should reject. When the
     // actor is both creator AND assignee, either exclusion rule may fire
     // first; the guard is that the rejection happens at all.
-    await addTaskStageNote(db, task._id, 'approval', { note: 'Ready.' }, 'self');
     await expect(completeTaskStage(db, db, task._id, 'approval', {}, 'self'))
       .rejects.toThrow(/someone other than the task creator|approval must come from a teammate/);
-    // Third-party with review note succeeds
-    const approved = await completeTaskStage(
-      db, db, task._id, 'approval', { note: 'Verified independently.' }, 'third-party'
-    );
+    // Third-party approval succeeds without requiring a review note.
+    const approved = await completeTaskStage(db, db, task._id, 'approval', {}, 'third-party');
     expect(approved.status).toBe('done');
     expect(approved.progress).toBe(100);
   });
@@ -280,20 +265,25 @@ describe('deleteTaskLogNote', () => {
 });
 
 describe('resolveTaskLogNote', () => {
-  const seedNotedTask = async (author = 'author', assignee = 'author') => {
+  const seedNotedTask = async ({
+    noteAuthor = 'author', assignee = 'owner', creator = 'creator',
+  } = {}) => {
     await db.collection('team_members').insertMany([
       { _id: 'author', access_status: 'profile_only', display_name: 'Ari' },
       { _id: 'owner', access_status: 'profile_only', display_name: 'Cy' },
+      { _id: 'creator', access_status: 'profile_only', display_name: 'Eli' },
       { _id: 'stranger', access_status: 'profile_only', display_name: 'Dee' },
     ]);
-    const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: assignee }, author);
-    const withNote = await addTaskStageNote(db, task._id, 'visualization', { note: 'Spotted an error.' }, author);
+    const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: assignee }, creator);
+    const withNote = await addTaskStageNote(
+      db, task._id, 'visualization', { note: 'Spotted an error.' }, noteAuthor
+    );
     const noted = withNote.workflow_log.find((event) => event.action === 'noted');
     return { task, noted };
   };
 
   it('lets the assignee resolve and then reopen a note, toggling the fields', async () => {
-    const { task, noted } = await seedNotedTask('author', 'owner');
+    const { task, noted } = await seedNotedTask();
     const resolved = await resolveTaskLogNote(db, task._id, noted._id, { resolved: true }, 'owner');
     const entry = resolved.workflow_log.find((event) => event._id === noted._id);
     expect(entry.resolved).toBe(true);
@@ -309,20 +299,26 @@ describe('resolveTaskLogNote', () => {
     expect(cleared.resolved_at).toBeUndefined();
   });
 
-  it('lets the note author resolve their own note', async () => {
-    const { task, noted } = await seedNotedTask('author', 'owner');
+  it("lets the note author resolve their own note on somebody else's task", async () => {
+    const { task, noted } = await seedNotedTask();
     const resolved = await resolveTaskLogNote(db, task._id, noted._id, { resolved: true }, 'author');
     expect(resolved.workflow_log.find((event) => event._id === noted._id).resolved).toBe(true);
   });
 
-  it('refuses a teammate who is neither owner, creator, nor author', async () => {
-    const { task, noted } = await seedNotedTask('author', 'owner');
+  it('refuses an owner resolving their own note on their task', async () => {
+    const { task, noted } = await seedNotedTask({ noteAuthor: 'owner' });
+    await expect(resolveTaskLogNote(db, task._id, noted._id, { resolved: true }, 'owner'))
+      .rejects.toThrow(/resolve/);
+  });
+
+  it('refuses a teammate who is neither owner nor author', async () => {
+    const { task, noted } = await seedNotedTask();
     await expect(resolveTaskLogNote(db, task._id, noted._id, { resolved: true }, 'stranger'))
       .rejects.toThrow(/resolve/);
   });
 
   it('requires a boolean resolved flag and a noted entry', async () => {
-    const { task, noted } = await seedNotedTask('author', 'owner');
+    const { task, noted } = await seedNotedTask();
     await expect(resolveTaskLogNote(db, task._id, noted._id, {}, 'owner')).rejects.toThrow(/resolved/);
     // 'owner' is the assignee here — completion is unrelated to what this test
     // checks (only 'noted' log entries, not 'completed' ones, are resolvable).
