@@ -42,14 +42,19 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
             {t.archived && <Badge>archived</Badge>}
             <Badge variant={taskTypeBadgeVariant(t.task_type)} className='hidden md:inline-flex'>{taskTypeLabel(t.task_type)}</Badge>
             <span className={`text-[13.5px] font-semibold flex-1 min-w-0 truncate ${t.status === 'done' || t.archived ? 'text-ink-muted' : ''}`}>{t.title}</span>
-            {t.status !== 'done' && (
+            {t.status !== 'done' && (t.task_type === 'audit_fix' ? (
+              // The fix inbox has no progress framing — just how many are open.
+              <Badge className='hidden lg:inline-flex tabular'>
+                {(t.checklist_items || []).filter((item) => !(t.workflow_stages?.[item.key]?.completed || t.workflow_stages?.[item.key]?.completed_at)).length} open
+              </Badge>
+            ) : (
               <span className='hidden lg:flex items-center gap-2 shrink-0'>
                 <span className='w-20 h-[5px] rounded-full bg-surface-sunken overflow-hidden shrink-0'>
                   <span className='block h-full rounded-full bg-primary' style={{ width: `${Math.max(0, Math.min(100, t.progress || 0))}%` }} />
                 </span>
                 <span className='text-[11.5px] text-ink-subtle w-8 text-right shrink-0'>{t.progress || 0}%</span>
               </span>
-            )}
+            ))}
             <span className='hidden sm:inline-flex items-center gap-1.5 w-40 shrink-0'>
               {t.assignee_uid
                 ? (<><UserInitialsAvatar email={t.assignee_label || t.assignee_uid} size='sm' className='!w-[22px] !h-[22px]' />

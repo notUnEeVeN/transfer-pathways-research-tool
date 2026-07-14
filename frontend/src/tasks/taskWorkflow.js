@@ -131,10 +131,10 @@ export const taskTypeLabel = (taskType) => (
   TASK_TYPE_OPTIONS.find((option) => option.value === taskType)?.label || taskType || 'Porting'
 )
 
-// Type chip tone: porting lavender, verification mint/success, audit fixes accent.
+// Type chip tone: porting lavender, verification mint/success, audit fixes danger.
 export const taskTypeBadgeVariant = (taskType) => (
   taskType === 'data_verification' ? 'verify'
-    : taskType === 'audit_fix' ? 'accent'
+    : taskType === 'audit_fix' ? 'danger'
       : 'conservative'
 )
 
@@ -143,7 +143,7 @@ export const taskTypeBadgeVariant = (taskType) => (
 export const nextStepLabel = (task) => {
   const upcoming = nextStage(task)
   if (task?.task_type === 'audit_fix') {
-    return upcoming ? `Next: fix ${upcoming.label}` : 'All audit fixes resolved'
+    return upcoming ? `Next: fix ${upcoming.label}` : 'Inbox clear — new verdicts reopen it'
   }
   if (isChecklistTask(task)) {
     return upcoming ? `Next: verify ${upcoming.label}` : 'All checkpoints verified'

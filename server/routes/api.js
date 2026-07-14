@@ -142,6 +142,7 @@ router.get('/access/me', ...guarded, adminController.getMe);
 router.post('/access/request', authenticateToken, userLimiter, accessRequestsController.postRequest);
 router.use('/admin', authenticateToken, requireAdmin, userLimiter);
 router.get('/admin/dataset',            adminController.getDataset);
+router.get('/admin/audit-pulse',        adminController.getAuditPulse);
 router.get('/admin/access',             adminController.listAccess);
 router.post('/admin/access',            jsonBody, adminController.grantAccess);
 router.delete('/admin/access/:uid',     adminController.revokeAccess);

@@ -74,24 +74,15 @@ export default function VerificationChecklist({
   const doneCount = stages.filter((stage) => isStageComplete(task, stage.key)).length
   const allDone = stages.length > 0 && doneCount === stages.length
   const pct = Math.max(0, Math.min(100, task.progress || 0))
-  // Same checklist mechanics, different vocabulary: audit-fix items are
-  // machine-appended docs to FIX; verification checkpoints are claims to VERIFY.
-  const isAuditFix = task.task_type === 'audit_fix'
-  const copy = isAuditFix
-    ? {
-        title: 'Audit fixes',
-        count: `${doneCount} of ${stages.length} fixes resolved`,
-        verb: 'Fixed',
-        banner: 'Every audit fix is resolved — this task is ready to close (new verdicts will reopen it).',
-        addPlaceholder: 'Add a fix by hand — a doc, campus, or parser case…',
-      }
-    : {
-        title: 'Verification checkpoints',
-        count: `${doneCount} of ${stages.length} checkpoints verified`,
-        verb: 'Verify',
-        banner: 'Every checkpoint is verified — this task is ready to close.',
-        addPlaceholder: 'Add a checkpoint — a campus, dataset, or spot-check…',
-      }
+  // Audit-fix tasks render through AuditFixInbox; this component is the
+  // data-verification checkpoint timeline.
+  const copy = {
+    title: 'Verification checkpoints',
+    count: `${doneCount} of ${stages.length} checkpoints verified`,
+    verb: 'Verify',
+    banner: 'Every checkpoint is verified — this task is ready to close.',
+    addPlaceholder: 'Add a checkpoint — a campus, dataset, or spot-check…',
+  }
 
   const names = useMemo(() => new Map(roster.map((person) => [person.uid, person.label])), [roster])
   const actorLabel = (uid, storedLabel) => storedLabel || names.get(uid) || uid || 'Unknown teammate'

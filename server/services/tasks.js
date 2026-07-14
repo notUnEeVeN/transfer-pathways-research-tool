@@ -148,7 +148,10 @@ function cleanChecklistItems(value) {
     let key = typeof row?.key === 'string' && row.key.trim() ? row.key.trim() : slugify(label);
     while (used.has(key)) key = `${key}_2`;
     used.add(key);
-    return { key, label };
+    const item = { key, label };
+    // Audit-fix items carry their verdict tier so the inbox can group/color.
+    if (row?.tier === 'error' || row?.tier === 'conservative') item.tier = row.tier;
+    return item;
   });
 }
 
@@ -511,12 +514,13 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
     ...task.workflow_stages,
     [stage.key]: stageState,
   };
-  // Checklist tasks never auto-close: verifying the last checkpoint surfaces a
-  // "ready to close" banner and the user marks the task done explicitly (a
-  // status patch, allowed once the workflow is complete). Staged workflows
-  // keep flipping to done at 100% — approval IS the closing act there.
+  // Data-verification tasks never auto-close: verifying the last checkpoint
+  // surfaces a "ready to close" banner and the user marks the task done
+  // explicitly. Porting flips to done at 100% (approval IS the closing act),
+  // and the audit-fix inbox closes itself when its last item resolves — a
+  // later verdict starts a fresh wave.
   const progress = progressForStages(task, workflowStages);
-  const final = !isChecklistType(task.task_type) && isWorkflowComplete(task, workflowStages);
+  const final = task.task_type !== 'data_verification' && isWorkflowComplete(task, workflowStages);
   const status = final ? 'done' : 'in_progress';
   const event = {
     _id: eventId,
@@ -714,11 +718,18 @@ async function recordAuditVerdictFix(auditDb, { docId, result, label, note }, ui
   // A 'correct' verdict only ever resolves; it never creates the task.
   if (!existing) {
     if (!isFix) return null;
+    // Fixing requires re-running the parser/import scripts, which only the
+    // admin has — so the standing task is theirs from birth.
+    const admins = [...adminUids()];
+    const names = await listDisplayNames(auditDb);
+    const assignee = admins.find((adminUid) => names.has(adminUid)) ?? admins[0] ?? null;
     const created = await createTask(auditDb, null, {
       title: AUDIT_FIX_TITLE,
       description: 'Parser/articulation fixes surfaced by audit verdicts. Items are appended automatically when a doc is judged error or conservative, and check themselves off when a re-audit comes back correct.',
       task_type: 'audit_fix',
-      checklist_items: [{ key: itemKey, label }],
+      checklist_items: [{ key: itemKey, label, tier: result }],
+      assignee_uid: assignee,
+      assignee_label: assignee ? (names.get(assignee) ?? null) : null,
       notes: [],
     }, uid);
     if (!note) return normalizeTask(created);
@@ -735,7 +746,7 @@ async function recordAuditVerdictFix(auditDb, { docId, result, label, note }, ui
   let workflowStages = task.workflow_stages;
 
   if (isFix) {
-    if (!known) $set.checklist_items = [...items, { key: itemKey, label }];
+    if (!known) $set.checklist_items = [...items, { key: itemKey, label, tier: result }];
     if (known && isStageDone(task.workflow_stages[itemKey])) {
       // The doc regressed after being fixed — reopen its item.
       workflowStages = { ...workflowStages };
@@ -774,6 +785,18 @@ async function recordAuditVerdictFix(auditDb, { docId, result, label, note }, ui
   $set.workflow_log = log;
   $set.workflow_revision = task.workflow_revision + 1;
   $set.progress = progressForStages({ ...task, checklist_items: nextItems }, workflowStages);
+  // The inbox leaves the board on its own: resolving the last open item
+  // closes the task (a later verdict starts a fresh wave, since the finder
+  // skips done tasks). Fix items keep an open inbox in play.
+  if (isWorkflowComplete({ ...task, checklist_items: nextItems }, workflowStages)) {
+    $set.status = 'done';
+    $set.completed_by = uid ?? null;
+    $set.completed_by_label = actorLabel;
+    $set.completed_at = now;
+    $set.order = await nextOrder(auditDb, 'done');
+  } else if (isFix && existing.status !== 'in_progress' && existing.status !== 'todo') {
+    $set.status = 'in_progress';
+  }
   const updated = await auditDb.collection(COLLECTION).findOneAndUpdate(
     workflowRevisionFilter(existing), { $set }, { returnDocument: 'after' }
   );

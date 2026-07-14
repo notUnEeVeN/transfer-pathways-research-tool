@@ -182,6 +182,18 @@ export function useTeam() {
   })
 }
 
+// Audit pulse — read-only auditing activity for the admin page (10 weeks of
+// verdict volume, this week's per-person split, and what was caught).
+export function useAuditPulse() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['admin-audit-pulse', user?.uid],
+    queryFn: () => apiClient.get('/admin/audit-pulse').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
 export function useSetTeamName() {
   const qc = useQueryClient()
   return useMutation({

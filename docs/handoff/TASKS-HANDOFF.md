@@ -1,10 +1,10 @@
 # Tasks Addendum — Workflow & Creation Surfaces
 
-Addendum to `REVAMP-HANDOFF.md` covering the Task surfaces added/changed on Jul 14: the **Data Verification task type**, its **workflow modal** (checkpoint progression), the **unified New task modal**, and the **7-stage porting sync**. The visual source of truth is `mockups/Transfer Pathways Console v2.dc.html` (open in a browser → Tasks tab). Same reading rules as the master spec: styles are inline on each element; map `var(--cw-*)` / raw hexes to `tokens.css` names per the table at the bottom.
+Addendum to `REVAMP-HANDOFF.md` covering the Task surfaces added/changed on Jul 14: the **Data Verification task type**, its **workflow modal** (checkpoint progression), the **unified New task modal**, the **7-stage porting sync**, the **Audit Fixes task type** (machine-fed inbox — §7), and the **Audit pulse module** (§8). The visual source of truth is `mockups/Transfer Pathways Console v2.dc.html` (open in a browser → Tasks tab). Same reading rules as the master spec: styles are inline on each element; map `var(--cw-*)` / raw hexes to `tokens.css` names per the table at the bottom.
 
 Where to look in the mockup source:
-- Template: elements marked `data-screen-label="Data verification modal"` and `data-screen-label="New task modal"`; board/list cards under `data-screen-label="Tasks"`.
-- Logic class: `openWf` (routes by `task.type`), `vfPatch` / `vfSetTask` / `vfStamp` / `vfAddItem` / `addNewItem`, the `// ---- Data verification modal` block in `extraVals`, and the `vfOpen` keyboard branch in `componentDidMount`.
+- Template: elements marked `data-screen-label="Data verification modal"`, `data-screen-label="Audit fixes modal"`, `data-screen-label="New task modal"`, `data-screen-label="Audit pulse card"` (Tasks) / `"Audit pulse panel"` (Admin); board/list cards under `data-screen-label="Tasks"`.
+- Logic class: `openWf` (routes by `task.type`), `vfPatch` / `vfSetTask` / `vfStamp` / `vfAddItem` / `addNewItem` / `fxPatch` / `fxSetTask`, the `// ---- Data verification modal`, `// ---- Audit fixes modal`, and `// ---- Audit pulse` blocks in `extraVals`, and the `vfOpen` keyboard branch in `componentDidMount`.
 
 ---
 
@@ -21,6 +21,16 @@ Where to look in the mockup source:
              at:   'Jul 14, 9:41 AM',   // set when toggled done
              note: 'string'|null,       // one note per checkpoint
              noteAt: 'Jul 14, 9:53 AM' } ] }
+
+// Audit Fixes (new) — ONE standing task, machine-created; nobody makes these by hand
+{ title: 'Audit fixes', status, type: 'fixes', assignee: null, date: 'auto', desc,
+  fixes: [ { campus, college, major,
+             tier: 'error'|'conservative',
+             state: 'open'|'fixed'|'auto',  // fixed = human; auto = correct re-audit resolved it
+             reopened: bool, reopenedAt,     // machine regression flag (re-audit failed again)
+             by, at,                          // auditor + verdict date
+             note,                            // auditor's verdict note (verbatim)
+             resAt } ] }                      // resolution timestamp
 ```
 
 - Percent = `round(done / items.length * 100)`. No PCT table — verification is not staged.
@@ -86,9 +96,32 @@ One modal for both types. 640px, radius 22px.
 4. Add / remove checkpoints re-numbers rows and recomputes %.
 5. One note per checkpoint, edited inline; note survives verify/undo.
 6. All-verified banner ⇄ appears/disappears live; Mark task done moves the task to Done.
-7. Creation: segmented type switch swaps the lower section; quick-fill seeds the 9 UC campuses; created tasks open correctly from the board.
+7. Creation: segmented type switch swaps the lower section; quick-fill seeds the 9 UC campuses; created tasks open correctly from the board. (Audit Fixes is NOT offered in creation — the system owns it.)
 
-## 6. Color mapping (mockup → tokens.css)
+## 6. Audit Fixes — machine-fed fix inbox
+
+One standing task pinned in To do. Every error/conservative verdict in the Audit judge appends a fix item; a correct re-audit sets `state:'auto'` ("Re-audited correct"); a regression re-opens the item with `reopened: true`. Rarely "finished" by design — never render progress framing (no bar, no percent, no N-of-M).
+
+**Card / list:** chip "Audit Fixes" = `danger` on `danger-soft`; dot strip = one tier-colored dot per item (error `danger-bright`, conservative `conservative-fill`, resolved = sunken), **no connectors** (a collection, not a pipeline); count reads `6 open`; the list view swaps the progress bar for a `6 open` chip; next-line: `Next: fix <college> → <campus>` or `Inbox clear — new verdicts reopen it`.
+
+**Modal right column ("Fix inbox")** — same frame + left rail as the other types (created line: "Created automatically by the Audit judge · standing task"):
+- Header: `6 open fixes` + tier dot-chips (`●4 errors ●2 conservative`); right: small segmented **By campus / By tier** grouping switch. One faint feed-explainer line ("Fed automatically by the Audit judge…").
+- Groups: uppercase header + `N open` chip (tier groups get a tier dot); errors sort before conservative within a campus.
+- Rows are dense and identical: 8px tier dot · `campus · college · major` · tier chip (Error = `danger`/`danger-soft`, Conservative = `conservative`/`conservative-soft`) · quoted auditor note + author/date (single-line ellipsis, full note in `title`) · quiet outline **Fixed** button.
+- Machine voice: auto-resolved rows show a soft `success-soft` disc with a ⟳ glyph and `Re-audited correct · Audit · time` in `success`; human-fixed rows show the filled `primary` disc + `accent` check and `Fixed · name · time` in faint ink. Regressions carry a small `⟳ Reopened <date>` chip in `danger`/`danger-soft`.
+- Resolved items sink to a collapsible "Resolved · N" section (Hide/Show, default shown); every resolved row has a ghost Reopen.
+- All-clear: quiet `primary-soft` banner — "Inbox clear — everything flagged is fixed or re-audited correct. Ready to close whenever — new verdicts will reopen it on their own." with a ghost **Close task** (never a celebration CTA).
+
+## 7. Audit pulse module (two placements)
+
+Read-only "how much auditing is happening" module — **hard rule: no goals, denominators, or finish lines** (no %, no N-of-M, no "remaining"). Volume and yield shown together but distinctly; empty weeks are neutral ("No audits yet this week"), never red.
+
+- Shows: this-week count (`23` + "audits this week") · 10-week bar row (current week `primary`, past weeks `border-strong`, zero weeks a 3px neutral stub; native `title` tooltip per bar: week · count · yield · campuses) · per-person split (avatar + count, ordered by activity) · yield dot-chips (`●2 errors ●1 conservative caught` — errors `danger-bright`, conservative `conservative-fill`).
+- **Placement A** (Tasks): 400px white card beside the Open/In-progress/Done stat strip (grid `1fr 400px`), pulsing `accent` live-dot in the header.
+- **Placement B** (Admin): same data as a quieter horizontal `surface-sunken` panel (muted bar tones, no live-dot) with its own section heading + rationale line.
+- Tweak `auditPulseEmpty` (data-props) previews the quiet state.
+
+## 8. Color mapping (mockup → tokens.css)
 
 | In mockup | Token |
 |---|---|
@@ -102,5 +135,7 @@ One modal for both types. 640px, radius 22px.
 | `var(--cw-border)` / `var(--cw-hairline*)` | `--color-border` (hairlines: border at reduced weight) |
 | `var(--cw-strong)` outline buttons | `--color-border-strong` |
 | `var(--cw-ink-muted/subtle/faint)` | `--color-ink-muted` / `--color-ink-subtle` (faint ≈ subtle at 80%) |
-| `#6C4FD0` / `#F0EAFC` porting chip | `--color-conservative` / `--color-conservative-soft` |
-| `#FFE9E3` / `#D22F14` destructive hover | `--color-danger-soft` / `--color-danger` |
+| `#6C4FD0` / `#F0EAFC` porting chip + conservative tier | `--color-conservative` / `--color-conservative-soft` |
+| `#C7B5F1` conservative dots/fills | `--color-conservative-fill` |
+| `#FE4F32` error dots/bars | `--color-danger-bright` |
+| `#FFE9E3` / `#D22F14` error tier chip, Audit Fixes chip, destructive hover | `--color-danger-soft` / `--color-danger` |

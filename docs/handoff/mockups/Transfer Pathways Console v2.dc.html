@@ -810,13 +810,54 @@
             </div>
           </div>
 
-          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;display:flex;align-items:stretch;padding:6px 0">
-            <sc-for list="{{ taskStats }}" as="st" hint-placeholder-count="3">
-              <div style="flex:1;padding:16px 22px;border-left:{{ st.bl }}">
-                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
-                <div style="margin-top:6px;font-size:25px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+          <div style="display:grid;grid-template-columns:1fr 400px;gap:14px;align-items:stretch">
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;display:flex;align-items:stretch;padding:6px 0">
+              <sc-for list="{{ taskStats }}" as="st" hint-placeholder-count="3">
+                <div style="flex:1;padding:16px 22px;border-left:{{ st.bl }}">
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
+                  <div style="margin-top:6px;font-size:25px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div data-screen-label="Audit pulse card" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:14px 18px 13px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box">
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Audit pulse</span>
+                <span style="width:7px;height:7px;border-radius:999px;background:#96F060;animation:pmtPulse 2.2s ease-out infinite"></span>
+                <span style="margin-left:auto;font-size:11px;color:var(--cw-ink-faint,#93A18B)">last 10 weeks</span>
               </div>
-            </sc-for>
+              <div style="display:flex;align-items:flex-end;gap:16px">
+                <sc-if value="{{ apHasAudits }}" hint-placeholder-val="{{ true }}">
+                  <div style="flex:none">
+                    <div style="font-size:25px;font-weight:600;letter-spacing:-.01em;line-height:1">{{ apCount }}</div>
+                    <div style="margin-top:4px;font-size:12px;color:var(--cw-ink-subtle,#7E8F76);white-space:nowrap">audits this week</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ apQuiet }}" hint-placeholder-val="{{ false }}">
+                  <div style="flex:none;align-self:center;font-size:12.5px;line-height:1.45;color:var(--cw-ink-subtle,#7E8F76);max-width:118px">No audits yet this week</div>
+                </sc-if>
+                <div style="flex:1;display:flex;align-items:flex-end;gap:3px;height:42px;min-width:0">
+                  <sc-for list="{{ apBars }}" as="b" hint-placeholder-count="10">
+                    <span title="{{ b.tip }}" style="flex:1;height:{{ b.h }};background:{{ b.bg }};border-radius:3px 3px 1.5px 1.5px;cursor:default" style-hover="background:#17855A"></span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;min-height:20px;flex-wrap:wrap">
+                <sc-for list="{{ apPeople }}" as="p" hint-placeholder-count="3">
+                  <span title="{{ p.name }}" style="display:flex;align-items:center;gap:5px">
+                    <span style="width:20px;height:20px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8.5px;font-weight:700">{{ p.init }}</span>
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">{{ p.n }}</span>
+                  </span>
+                </sc-for>
+                <sc-if value="{{ apHasYield }}" hint-placeholder-val="{{ true }}">
+                  <span style="margin-left:auto;display:flex;align-items:center;gap:9px">
+                    <sc-for list="{{ apYieldParts }}" as="yp" hint-placeholder-count="2">
+                      <span style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:999px;background:{{ yp.dot }}"></span><span style="font-size:12px;color:var(--cw-ink-muted,#52664F)">{{ yp.label }}</span></span>
+                    </sc-for>
+                    <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">caught</span>
+                  </span>
+                </sc-if>
+              </div>
+            </div>
           </div>
 
           <sc-if value="{{ boardView }}" hint-placeholder-val="{{ true }}">
@@ -886,8 +927,13 @@
                     <span style="flex:none;font-size:11.5px;font-weight:600;color:{{ row.typeFg }};background:{{ row.typeBg }};border-radius:999px;padding:3px 10px">{{ row.typeLabel }}</span>
                     <span style="font-size:13.5px;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.title }}</span>
                     <span style="margin-left:auto;flex:none;display:flex;align-items:center;gap:8px">
-                      <span style="width:80px;height:5px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden;display:inline-block"><span style="display:block;height:100%;border-radius:999px;width:{{ row.pctW }};background:#193018"></span></span>
-                      <span style="font-size:11.5px;color:var(--cw-ink-subtle,#7E8F76);width:32px">{{ row.pct }}</span>
+                      <sc-if value="{{ row.hasBar }}" hint-placeholder-val="{{ true }}">
+                        <span style="width:80px;height:5px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden;display:inline-block"><span style="display:block;height:100%;border-radius:999px;width:{{ row.pctW }};background:#193018"></span></span>
+                        <span style="font-size:11.5px;color:var(--cw-ink-subtle,#7E8F76);width:32px">{{ row.pct }}</span>
+                      </sc-if>
+                      <sc-if value="{{ row.isFixes }}" hint-placeholder-val="{{ false }}">
+                        <span style="font-size:11.5px;font-weight:600;color:#D22F14;background:#FFE9E3;border-radius:999px;padding:3px 10px">{{ row.openLabel }}</span>
+                      </sc-if>
                     </span>
                     <sc-if value="{{ row.hasAssignee }}" hint-placeholder-val="{{ false }}">
                       <span style="flex:none;display:flex;align-items:center;gap:6px"><span style="width:20px;height:20px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8.5px;font-weight:700">TY</span><span style="font-size:12.5px;color:var(--cw-ink-soft,#33452F)">{{ row.assignee }}</span></span>
@@ -1069,6 +1115,45 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
               <div style="margin-top:1px;font-size:12.5px;color:rgba(240,255,231,.62)">transfer-pathways-tool.up.railway.app · live research database — changes apply immediately</div>
             </div>
             <span style="margin-left:auto;font-size:11.5px;font-weight:600;color:#193018;background:#96F060;border-radius:999px;padding:4px 11px">live</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Audit pulse</div>
+            <div style="max-width:76ch;font-size:13px;line-height:1.55;color:var(--cw-ink-subtle,#7E8F76)">Read-only auditing activity — volume, who's auditing, and what it caught. No targets or totals: the template pool is effectively unbounded, so activity is the signal, not completion.</div>
+            <div data-screen-label="Audit pulse panel" style="background:var(--cw-sunken2,#F1F6E1);border-radius:18px;padding:16px 22px;display:flex;align-items:center;gap:22px">
+              <div style="flex:none;min-width:96px">
+                <div style="font-size:10.5px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">This week</div>
+                <sc-if value="{{ apHasAudits }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin-top:4px;font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1">{{ apCount }} <span style="font-size:12px;font-weight:400;color:var(--cw-ink-subtle,#7E8F76)">audits</span></div>
+                </sc-if>
+                <sc-if value="{{ apQuiet }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:5px;font-size:12.5px;line-height:1.4;color:var(--cw-ink-subtle,#7E8F76)">No audits yet</div>
+                </sc-if>
+              </div>
+              <div style="flex:1;display:flex;align-items:flex-end;gap:3px;height:38px;min-width:0">
+                <sc-for list="{{ apBars }}" as="b" hint-placeholder-count="10">
+                  <span title="{{ b.tip }}" style="flex:1;height:{{ b.h }};background:{{ b.bgB }};border-radius:3px 3px 1.5px 1.5px;cursor:default" style-hover="background:#17855A"></span>
+                </sc-for>
+              </div>
+              <div style="flex:none;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+                <div style="display:flex;align-items:center;gap:10px;min-height:18px">
+                  <sc-for list="{{ apPeople }}" as="p" hint-placeholder-count="3">
+                    <span title="{{ p.name }}" style="display:flex;align-items:center;gap:5px">
+                      <span style="width:18px;height:18px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8px;font-weight:700">{{ p.init }}</span>
+                      <span style="font-size:12px;font-weight:600;color:var(--cw-ink-soft,#33452F)">{{ p.n }}</span>
+                    </span>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ apHasYield }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <sc-for list="{{ apYieldParts }}" as="yp" hint-placeholder-count="2">
+                      <span style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:999px;background:{{ yp.dot }}"></span><span style="font-size:12px;color:var(--cw-ink-muted,#52664F)">{{ yp.label }}</span></span>
+                    </sc-for>
+                    <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">caught</span>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:10px">
@@ -1518,6 +1603,154 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
         </div>
       </sc-if>
 
+      <!-- ===== Audit fixes modal ===== -->
+      <sc-if value="{{ fxModalOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeFx }}" style="position:fixed;inset:0;background:rgba(25,48,24,.45);z-index:60;display:grid;place-items:center;padding:24px">
+          <div onClick="{{ eatClick }}" data-screen-label="Audit fixes modal" style="background:#FFFFFF;border-radius:22px;box-shadow:0 24px 64px rgba(25,48,24,.3);width:1080px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:20px 26px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+              <div>
+                <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">Task workflow</div>
+                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ fxSubLabel }}</div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:4px">
+                <button style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2.5" width="10" height="3" rx="0.8"></rect><path d="M3 5.5 L3 11.5 L11 11.5 L11 5.5 M5.8 8 L8.2 8"></path></svg></button>
+                <button onClick="{{ closeFx }}" style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:330px 1fr;overflow-y:auto">
+              <div style="padding:24px;border-right:1px solid var(--cw-hairline,#E9EEDA);display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:14px;font-weight:650">Task details</span>
+                  <span style="margin-left:auto;font-size:11.5px;font-weight:600;color:#D22F14;background:#FFE9E3;border-radius:999px;padding:3px 10px">Audit Fixes</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Title</span>
+                  <input value="{{ fxTitle }}" onChange="{{ onFxTitle }}" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box">
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Description</span>
+                  <textarea value="{{ fxDesc }}" onChange="{{ onFxDesc }}" style="min-height:96px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Task type</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--cw-canvas,#F8FAEC);border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--cw-ink-faint,#93A18B)"><span>Audit Fixes</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#AEB6A0" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Assignee</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>Unassigned</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Status</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>{{ fxStatusLabel }}</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:8px">
+                  <button onClick="{{ closeFx }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:8px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">Cancel</button>
+                  <button style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:8px 16px" style-hover="background:#234424">Save details</button>
+                </div>
+                <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);padding-top:16px;display:flex;flex-direction:column;gap:10px">
+                  <span style="font-size:13.5px;font-weight:650">General notes</span>
+                  <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">No general notes yet.</span>
+                  <textarea placeholder="Add a general note…" style="min-height:64px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                  <button style="align-self:flex-end;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:7px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Post</button>
+                  <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">Created automatically by the Audit judge · standing task</span>
+                </div>
+              </div>
+
+              <div style="padding:24px 30px 32px;display:flex;flex-direction:column;gap:12px;min-width:0">
+                <div style="display:flex;align-items:flex-start;gap:10px">
+                  <div>
+                    <div style="font-size:15px;font-weight:650">Fix inbox</div>
+                    <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ fxCountLabel }}</div>
+                  </div>
+                  <div style="margin-left:auto;display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+                    <sc-for list="{{ fxSeg }}" as="t" hint-placeholder-count="2">
+                      <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:{{ t.w }};padding:5.5px 12px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <sc-if value="{{ fxHasOpen }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <sc-for list="{{ fxTierParts }}" as="tp" hint-placeholder-count="2">
+                      <span style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:999px;background:{{ tp.dot }}"></span><span style="font-size:12px;color:var(--cw-ink-muted,#52664F)">{{ tp.label }}</span></span>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div style="font-size:12px;line-height:1.5;color:var(--cw-ink-faint,#93A18B)">Fed automatically by the Audit judge — error and conservative verdicts land here, and a correct re-audit checks its item off on its own.</div>
+                <sc-if value="{{ fxAllClear }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--cw-mint,#F0FFE7);border-radius:12px;padding:12px 16px">
+                    <span style="flex:none;width:26px;height:26px;border-radius:999px;background:#193018;display:grid;place-items:center"><svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></span>
+                    <div>
+                      <div style="font-size:13px;font-weight:600;color:#193018">Inbox clear — everything flagged is fixed or re-audited correct.</div>
+                      <div style="margin-top:2px;font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">Ready to close whenever — new verdicts will reopen it on their own.</div>
+                    </div>
+                    <button onClick="{{ fxCloseTask }}" style="margin-left:auto;flex:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:7px 15px" style-hover="background:var(--cw-mint,#F0FFE7)">Close task</button>
+                  </div>
+                </sc-if>
+                <div style="display:flex;flex-direction:column">
+                  <sc-for list="{{ fxGroups }}" as="g" hint-placeholder-count="3">
+                    <div style="display:flex;flex-direction:column">
+                      <div style="display:flex;align-items:center;gap:8px;padding:12px 0 5px">
+                        <sc-if value="{{ g.hasDot }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:999px;background:{{ g.dot }}"></span></sc-if>
+                        <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ g.label }}</span>
+                        <span style="font-size:11.5px;font-weight:600;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:1.5px 8px">{{ g.count }}</span>
+                      </div>
+                      <sc-for list="{{ g.rows }}" as="fr" hint-placeholder-count="2">
+                        <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
+                          <span style="flex:none;width:8px;height:8px;border-radius:999px;background:{{ fr.dot }};margin-top:6px"></span>
+                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                              <span style="font-size:13.5px;font-weight:600">{{ fr.campus }}</span>
+                              <span style="color:var(--cw-ink-faint,#93A18B)">·</span>
+                              <span style="font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ fr.college }}</span>
+                              <span style="color:var(--cw-ink-faint,#93A18B)">·</span>
+                              <span style="font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ fr.major }}</span>
+                              <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:{{ fr.tierFg }};background:{{ fr.tierBg }};border-radius:999px;padding:2px 8px">{{ fr.tier }}</span>
+                              <sc-if value="{{ fr.reopened }}" hint-placeholder-val="{{ false }}">
+                                <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:#D22F14;background:#FFE9E3;border-radius:999px;padding:2px 8px"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9.8 6 A3.8 3.8 0 1 1 8.4 3.1 M8.6 0.9 L8.6 3.3 L6.2 3.3"></path></svg>{{ fr.reopenedLabel }}</span>
+                              </sc-if>
+                            </div>
+                            <div title="{{ fr.fullNote }}" style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ fr.note }}</div>
+                          </div>
+                          <button onClick="{{ fr.onFix }}" style="flex:none;display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:5.5px 13px;margin-top:1px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg>Fixed</button>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ fxHasResolved }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column">
+                      <div style="display:flex;align-items:center;gap:8px;padding:14px 0 5px">
+                        <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Resolved</span>
+                        <span style="font-size:11.5px;font-weight:600;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:1.5px 8px">{{ fxResolvedCount }}</span>
+                        <button onClick="{{ toggleFxResolved }}" style="margin-left:auto;cursor:pointer;font-family:inherit;font-size:12px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:4px 10px" style-hover="background:var(--cw-mint,#F0FFE7)">{{ fxResToggleLabel }}</button>
+                      </div>
+                      <sc-if value="{{ fxShowResolved }}" hint-placeholder-val="{{ true }}">
+                        <sc-for list="{{ fxResolvedRows }}" as="fr" hint-placeholder-count="3">
+                          <div style="display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
+                            <sc-if value="{{ fr.human }}" hint-placeholder-val="{{ false }}">
+                              <span title="Marked fixed by a teammate" style="flex:none;width:17px;height:17px;border-radius:999px;background:#193018;display:grid;place-items:center"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2.2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></span>
+                            </sc-if>
+                            <sc-if value="{{ fr.auto }}" hint-placeholder-val="{{ true }}">
+                              <span title="Checked off automatically by a re-audit" style="flex:none;width:17px;height:17px;border-radius:999px;background:#DFF4E7;display:grid;place-items:center"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#17855A" stroke-width="1.5"><path d="M9.8 6 A3.8 3.8 0 1 1 8.4 3.1 M8.6 0.9 L8.6 3.3 L6.2 3.3"></path></svg></span>
+                            </sc-if>
+                            <span style="font-size:13px;font-weight:550;color:var(--cw-ink-muted,#52664F);white-space:nowrap">{{ fr.campus }}</span>
+                            <span style="font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76);white-space:nowrap">{{ fr.college }}</span>
+                            <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ fr.major }}</span>
+                            <span style="margin-left:auto;flex:none;font-size:12px;color:{{ fr.resFg }};white-space:nowrap">{{ fr.resLabel }}</span>
+                            <button onClick="{{ fr.onReopen }}" style="flex:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:4px 10px" style-hover="background:var(--cw-mint,#F0FFE7)">Reopen</button>
+                          </div>
+                        </sc-for>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
     </div>
   </sc-if>
 
@@ -1563,7 +1796,7 @@ BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;colorway&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;meadow&quot;,&quot;paper&quot;,&quot;crisp&quot;],&quot;default&quot;:&quot;crisp&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colorway&quot;,&quot;description&quot;:&quot;Page palette: meadow = current green-tinted, paper = warm neutral (less green), crisp = white canvas + darker text for max readability&quot;},&quot;topbar&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;forest&quot;,&quot;ivory&quot;],&quot;default&quot;:&quot;forest&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Chrome&quot;,&quot;description&quot;:&quot;Top bar treatment: dark forest brand bar or light ivory hairline bar&quot;},&quot;conservative&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;lavender&quot;,&quot;amber&quot;],&quot;default&quot;:&quot;lavender&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Semantic colors&quot;,&quot;description&quot;:&quot;Hue for the Conservative verdict tier&quot;},&quot;routeHints&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chrome&quot;,&quot;description&quot;:&quot;Show the API-route chip in the sub-navigation&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;colorway&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;meadow&quot;,&quot;paper&quot;,&quot;crisp&quot;],&quot;default&quot;:&quot;crisp&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colorway&quot;,&quot;description&quot;:&quot;Page palette: meadow = current green-tinted, paper = warm neutral (less green), crisp = white canvas + darker text for max readability&quot;},&quot;topbar&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;forest&quot;,&quot;ivory&quot;],&quot;default&quot;:&quot;forest&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Chrome&quot;,&quot;description&quot;:&quot;Top bar treatment: dark forest brand bar or light ivory hairline bar&quot;},&quot;conservative&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;lavender&quot;,&quot;amber&quot;],&quot;default&quot;:&quot;lavender&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Semantic colors&quot;,&quot;description&quot;:&quot;Hue for the Conservative verdict tier&quot;},&quot;routeHints&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Chrome&quot;,&quot;description&quot;:&quot;Show the API-route chip in the sub-navigation&quot;},&quot;auditPulseEmpty&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Audit pulse&quot;,&quot;description&quot;:&quot;Preview the module's quiet state (no audits yet this week)&quot;}}">
 class Component extends DCLogic {
   state = {
     screen: 'app', tab: 'data', dataTab: 'overview',
@@ -1574,6 +1807,19 @@ class Component extends DCLogic {
     v1: 'hand', diff: false, v2rows: 'college', v2min: 'assist',
     tasksTab: 'board', archived: false,
     tasks: [
+      { title: 'Audit fixes', status: 'todo', type: 'fixes', assignee: null, date: 'auto',
+        desc: 'Standing inbox for audit findings. Error and conservative verdicts from the Audit judge land here as fix items; a correct re-audit resolves its item automatically.',
+        fixes: [
+          { campus: 'UC Davis', college: 'De Anza College', major: 'Computer Science, B.S.', tier: 'error', state: 'open', by: 'Lucky Hong', at: 'Jul 12', note: 'MATH 22 maps to a retired receiving course — the agreement now lists MAT 67 for the series.' },
+          { campus: 'UC Davis', college: 'Foothill College', major: 'Economics, B.A.', tier: 'conservative', state: 'open', reopened: true, reopenedAt: 'Jul 13', by: 'Roy Martinez', at: 'Jul 8', note: 'Honors variant (ECON 1AH) accepted by ASSIST but the template rejects it.' },
+          { campus: 'UC Davis', college: 'American River College', major: 'Statistics, B.S.', tier: 'error', state: 'open', by: 'Lucky Hong', at: 'Jul 13', note: 'Unit sum for the STAT series is 12 in the template, 15 in the source agreement.' },
+          { campus: 'UC Berkeley', college: 'Berkeley City College', major: 'Electrical Engineering & Computer Sciences, B.S.', tier: 'error', state: 'open', by: 'Roy Martinez', at: 'Jul 11', note: 'R&C Part B is satisfied by ENGL C1000 per the 2025–26 update; template still requires the legacy pair.' },
+          { campus: 'UC Berkeley', college: 'Chabot College', major: 'Data Science, B.A.', tier: 'conservative', state: 'auto', resAt: 'Jul 13, 4:02 PM', by: 'Lucky Hong', at: 'Jul 6', note: 'Template omits the CS 8 alternative that ASSIST accepts.' },
+          { campus: 'UC San Diego', college: 'San Diego Mesa College', major: 'Cognitive Science, B.S.', tier: 'error', state: 'fixed', resAt: 'Jul 14, 10:12 AM', by: 'Roy Martinez', at: 'Jul 9', note: 'COGS 14A prerequisite chain is missing from requirement group 2.' },
+          { campus: 'UC San Diego', college: 'MiraCosta College', major: 'Biology, B.S.', tier: 'conservative', state: 'open', by: 'Lucky Hong', at: 'Jul 12', note: 'BIO 202 honors section not recognized; ASSIST treats it as equivalent.' },
+          { campus: 'UC Irvine', college: 'Saddleback College', major: 'Informatics, B.S.', tier: 'error', state: 'open', by: 'Roy Martinez', at: 'Jul 13', note: 'IN4MATX 43 is listed twice with conflicting unit counts.' },
+          { campus: 'UC Irvine', college: 'Irvine Valley College', major: 'Psychology, B.A.', tier: 'conservative', state: 'auto', resAt: 'Jul 14, 9:20 AM', by: 'Lucky Hong', at: 'Jul 7', note: 'PSYC 2 lab pairing marked required; the source says recommended.' }
+        ] },
       { title: 'CA Fig. 4 — Articulation coverage across California', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
       { title: 'CA Fig. 3 — How many UCs each district fully articulates to', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 10' },
       { title: 'CA Fig. 5 — Which requirements block transfer at each campus', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
@@ -1602,6 +1848,7 @@ class Component extends DCLogic {
     wfOpen: false, wfTitle: '', wfDesc: '', wfStatus: 'In progress', wfAssignee: 'Tybalt Mallet',
     wfDone: 1, wfNotes: {}, stageNote: '',
     vfOpen: false, vfTaskIdx: -1, vfNoteFor: -1, vfNoteDraft: '', vfNewItem: '',
+    fxOpen: false, fxTaskIdx: -1, fxGroup: 'campus', fxShowResolved: true,
     apiTab: 'tokens', tokenLabel: '',
     tokens: [{ label: 'unlabeled token', created: '7/9/2026', last: '7/9/2026, 5:38:27 PM' }],
     district: 'Allan Hancock Joint Community College District', districtQ: '',
@@ -1772,6 +2019,19 @@ class Component extends DCLogic {
 
   PCT_TABLE = [0, 14, 29, 43, 57, 71, 86, 100];
 
+  AUDIT_WEEKS = [
+    { wk: 'May 11', count: 18, err: 1, cons: 0, campuses: 4 },
+    { wk: 'May 18', count: 34, err: 3, cons: 1, campuses: 6 },
+    { wk: 'May 25', count: 27, err: 2, cons: 0, campuses: 5 },
+    { wk: 'Jun 1', count: 41, err: 4, cons: 2, campuses: 7 },
+    { wk: 'Jun 8', count: 12, err: 0, cons: 1, campuses: 3 },
+    { wk: 'Jun 15', count: 0, err: 0, cons: 0, campuses: 0 },
+    { wk: 'Jun 22', count: 22, err: 1, cons: 0, campuses: 5 },
+    { wk: 'Jun 29', count: 8, err: 0, cons: 0, campuses: 2 },
+    { wk: 'Jul 6', count: 31, err: 3, cons: 1, campuses: 6 },
+    { wk: 'Jul 13', count: 23, err: 2, cons: 1, campuses: 5, by: [['TY', 'Tybalt Mallet', 12], ['LH', 'Lucky Hong', 8], ['RM', 'Roy Martinez', 3]] }
+  ];
+
   componentDidMount() {
     this._kb = (e) => {
       const t = e.target && e.target.tagName;
@@ -1812,6 +2072,10 @@ class Component extends DCLogic {
   }
 
   openWf(t) {
+    if (t.type === 'fixes') {
+      this.setState({ fxOpen: true, fxTaskIdx: this.state.tasks.indexOf(t) });
+      return;
+    }
     if (t.type === 'verify') {
       this.setState({ vfOpen: true, vfTaskIdx: this.state.tasks.indexOf(t), vfNoteFor: -1, vfNoteDraft: '', vfNewItem: '' });
       return;
@@ -1854,6 +2118,20 @@ class Component extends DCLogic {
     this.setState({ vfNewItem: '' });
   }
 
+  fxPatch(fn) {
+    const tasks = this.state.tasks.slice();
+    const t = { ...tasks[this.state.fxTaskIdx] };
+    t.fixes = fn(t.fixes.slice());
+    tasks[this.state.fxTaskIdx] = t;
+    this.setState({ tasks });
+  }
+
+  fxSetTask(patch) {
+    const tasks = this.state.tasks.slice();
+    tasks[this.state.fxTaskIdx] = { ...tasks[this.state.fxTaskIdx], ...patch };
+    this.setState({ tasks });
+  }
+
   addNewItem() {
     const n = this.state.newItemDraft.trim();
     if (!n) return;
@@ -1873,18 +2151,30 @@ class Component extends DCLogic {
     const tasksTabs = this.seg([['board', 'Board'], ['my', 'My tasks'], ['all', 'All tasks']], s.tasksTab, (k) => this.setState({ tasksTab: k }));
     const mkCard = (t, i, arr) => {
       const vf = t.type === 'verify';
+      const fx = t.type === 'fixes';
+      const fxOpenList = fx ? t.fixes.filter((f) => f.state === 'open') : [];
       const vTotal = vf ? t.items.length : 7;
       const vDone = vf ? t.items.filter((x) => x.done).length : (t.pct > 0 ? 1 : 0);
       const vNextIdx = vf ? t.items.findIndex((x) => !x.done) : -1;
       const pct = vf ? (vTotal ? Math.round(vDone / vTotal * 100) : 0) : t.pct;
       return {
         title: t.title,
-        typeLabel: vf ? 'Data Verification' : 'Porting',
-        typeFg: vf ? '#17855A' : '#6C4FD0',
-        typeBg: vf ? 'var(--cw-mint,#F0FFE7)' : '#F0EAFC',
+        typeLabel: fx ? 'Audit Fixes' : (vf ? 'Data Verification' : 'Porting'),
+        typeFg: fx ? '#D22F14' : (vf ? '#17855A' : '#6C4FD0'),
+        typeBg: fx ? '#FFE9E3' : (vf ? 'var(--cw-mint,#F0FFE7)' : '#F0EAFC'),
         pct: pct + '%', pctW: pct + '%',
-        next: vf ? (vNextIdx >= 0 ? 'Next: verify ' + t.items[vNextIdx].name : 'All checkpoints verified') : 'Next: ' + t.next,
-        dots: vf
+        hasBar: !fx, isFixes: fx, openLabel: fxOpenList.length + ' open',
+        next: fx
+          ? (fxOpenList.length ? 'Next: fix ' + fxOpenList[0].college + ' → ' + fxOpenList[0].campus : 'Inbox clear — new verdicts reopen it')
+          : (vf ? (vNextIdx >= 0 ? 'Next: verify ' + t.items[vNextIdx].name : 'All checkpoints verified') : 'Next: ' + t.next),
+        dots: fx
+          ? t.fixes.slice(0, 12).map((f) => ({
+              name: f.campus + ' · ' + f.college,
+              bg: f.state === 'open' ? (f.tier === 'error' ? '#FE4F32' : '#C7B5F1') : 'var(--cw-sunken,#EFF5DE)',
+              border: f.state === 'open' ? (f.tier === 'error' ? '#FE4F32' : '#C7B5F1') : 'var(--cw-strong,#C9D3B4)',
+              lineBg: 'transparent'
+            }))
+          : vf
           ? t.items.map((x, di, darr) => ({
               name: x.name,
               bg: x.done ? '#193018' : '#FFFFFF',
@@ -1897,7 +2187,7 @@ class Component extends DCLogic {
               border: di < vDone ? '#193018' : (di === vDone ? '#96F060' : 'var(--cw-strong,#C9D3B4)'),
               lineBg: di === darr.length - 1 ? 'transparent' : 'var(--cw-mid,#D9E2C4)'
             })),
-        stageLabel: vDone + ' of ' + vTotal,
+        stageLabel: fx ? fxOpenList.length + ' open' : vDone + ' of ' + vTotal,
         hasAssignee: !!t.assignee, unassigned: !t.assignee, assignee: t.assignee || '',
         hasComments: !!t.comments, comments: t.comments || 0,
         statusLabel: t.status === 'done' ? 'Done' : t.status === 'inprogress' ? 'In progress' : 'To do',
@@ -1926,6 +2216,31 @@ class Component extends DCLogic {
       { label: 'In progress', value: String(inprog.length), fg: '#17855A', bl: '1px solid var(--cw-hairline,#E9EEDA)' },
       { label: 'Done this week', value: String(doneTasks.length), fg: '#193018', bl: '1px solid var(--cw-hairline,#E9EEDA)' }
     ];
+
+    // ---- Audit pulse
+    const apEmpty = !!this.props.auditPulseEmpty;
+    const apWeeks = this.AUDIT_WEEKS.map((w, i) => apEmpty && i === this.AUDIT_WEEKS.length - 1 ? { ...w, count: 0, err: 0, cons: 0, campuses: 0, by: [] } : w);
+    const apCur = apWeeks[apWeeks.length - 1];
+    const apMax = Math.max.apply(null, apWeeks.map((w) => w.count).concat(1));
+    const apYieldStr = (w) => {
+      const p = [];
+      if (w.err) p.push(w.err + (w.err > 1 ? ' errors' : ' error'));
+      if (w.cons) p.push(w.cons + ' conservative');
+      return p.join(' · ');
+    };
+    const apBars = apWeeks.map((w, i) => {
+      const cur = i === apWeeks.length - 1;
+      const y = apYieldStr(w);
+      return {
+        h: (w.count === 0 ? 3 : Math.max(6, Math.round(w.count / apMax * 42))) + 'px',
+        bg: w.count === 0 ? 'var(--cw-sunken,#EFF5DE)' : (cur ? '#193018' : 'var(--cw-strong,#C9D3B4)'),
+        bgB: w.count === 0 ? 'var(--cw-hairline,#E9EEDA)' : (cur ? 'var(--cw-ink-muted,#52664F)' : 'var(--cw-mid,#D9E2C4)'),
+        tip: 'Week of ' + w.wk + (w.count === 0 ? ' · no audits' : ' · ' + w.count + ' audits' + (y ? ' · ' + y : '') + ' · ' + w.campuses + (w.campuses > 1 ? ' campuses' : ' campus'))
+      };
+    });
+    const apYieldParts = [];
+    if (apCur.err) apYieldParts.push({ dot: '#FE4F32', label: apCur.err + (apCur.err > 1 ? ' errors' : ' error') });
+    if (apCur.cons) apYieldParts.push({ dot: '#C7B5F1', label: apCur.cons + ' conservative' });
 
     // ---- Workflow modal
     const wfStages = this.STAGES.map(([title, desc], i, arr) => {
@@ -1977,6 +2292,46 @@ class Component extends DCLogic {
       };
     });
     const vfSegs = vfItems.map((x, i) => ({ bg: x.done ? '#17855A' : (i === vfNextIdx ? '#96F060' : 'var(--cw-sunken,#EFF5DE)') }));
+
+    // ---- Audit fixes modal
+    const fxT = s.fxOpen && s.fxTaskIdx >= 0 ? s.tasks[s.fxTaskIdx] : null;
+    const fxAll = fxT ? fxT.fixes.map((f, i) => ({ f, i })) : [];
+    const fxOpenL = fxAll.filter((x) => x.f.state === 'open');
+    const fxResL = fxAll.filter((x) => x.f.state !== 'open');
+    const fxErrN = fxOpenL.filter((x) => x.f.tier === 'error').length;
+    const fxConsN = fxOpenL.length - fxErrN;
+    const mkFxRow = ({ f, i }) => ({
+      campus: f.campus, college: f.college, major: f.major,
+      tier: f.tier === 'error' ? 'Error' : 'Conservative',
+      tierFg: f.tier === 'error' ? '#D22F14' : '#6C4FD0',
+      tierBg: f.tier === 'error' ? '#FFE9E3' : '#F0EAFC',
+      dot: f.tier === 'error' ? '#FE4F32' : '#C7B5F1',
+      reopened: !!f.reopened, reopenedLabel: 'Reopened ' + (f.reopenedAt || ''),
+      note: '“' + f.note + '” — ' + f.by + ' · ' + f.at,
+      fullNote: f.note,
+      human: f.state === 'fixed', auto: f.state === 'auto',
+      resLabel: f.state === 'auto' ? 'Re-audited correct · Audit · ' + (f.resAt || '') : 'Fixed · Tybalt Mallet · ' + (f.resAt || ''),
+      resFg: f.state === 'auto' ? '#17855A' : 'var(--cw-ink-faint,#93A18B)',
+      onFix: () => this.fxPatch((fixes) => { fixes[i] = { ...fixes[i], state: 'fixed', reopened: false, resAt: this.vfStamp() }; return fixes; }),
+      onReopen: () => this.fxPatch((fixes) => { fixes[i] = { ...fixes[i], state: 'open', reopened: false }; return fixes; })
+    });
+    const errFirst = (a, b) => (a.f.tier === 'error' ? 0 : 1) - (b.f.tier === 'error' ? 0 : 1);
+    let fxGroups;
+    if (s.fxGroup === 'tier') {
+      fxGroups = [
+        { label: 'Errors', dot: '#FE4F32', rows: fxOpenL.filter((x) => x.f.tier === 'error').map(mkFxRow), hasDot: true },
+        { label: 'Conservative', dot: '#C7B5F1', rows: fxOpenL.filter((x) => x.f.tier !== 'error').map(mkFxRow), hasDot: true }
+      ];
+    } else {
+      const seen = [];
+      fxOpenL.forEach((x) => { if (seen.indexOf(x.f.campus) < 0) seen.push(x.f.campus); });
+      seen.sort();
+      fxGroups = seen.map((c) => ({ label: c, dot: 'transparent', hasDot: false, rows: fxOpenL.filter((x) => x.f.campus === c).sort(errFirst).map(mkFxRow) }));
+    }
+    fxGroups = fxGroups.filter((g) => g.rows.length).map((g) => ({ ...g, count: g.rows.length + ' open' }));
+    const fxTierParts = [];
+    if (fxErrN) fxTierParts.push({ dot: '#FE4F32', label: fxErrN + (fxErrN > 1 ? ' errors' : ' error') });
+    if (fxConsN) fxTierParts.push({ dot: '#C7B5F1', label: fxConsN + ' conservative' });
 
     // ---- API
     const tokenRows = s.tokens.length
@@ -2033,6 +2388,12 @@ class Component extends DCLogic {
       cwHairline2: cw.hairline2 ?? '#F0F3E3', cwStrong: cw.strong ?? '#C9D3B4', cwMid: cw.mid ?? '#D9E2C4',
       cwInkMuted: cw.inkMuted ?? '#52664F', cwInkSubtle: cw.inkSubtle ?? '#7E8F76', cwInkFaint: cw.inkFaint ?? '#93A18B', cwInkSoft: cw.inkSoft ?? '#33452F',
       tasksTabs, taskStats, boardCols, listRows,
+      apBars, apYieldParts,
+      apPeople: (apCur.by || []).map((p) => ({ init: p[0], name: p[1], n: String(p[2]) })),
+      apCount: String(apCur.count),
+      apHasAudits: apCur.count > 0,
+      apQuiet: apCur.count === 0,
+      apHasYield: apCur.count > 0 && apYieldParts.length > 0,
       boardView: s.tasksTab === 'board',
       listView: s.tasksTab !== 'board',
       allView: s.tasksTab === 'all',
@@ -2090,6 +2451,24 @@ class Component extends DCLogic {
       vfNewItem: s.vfNewItem, onVfNewItem: (e) => this.setState({ vfNewItem: e.target.value }),
       onVfNewKey: (e) => { if (e.key === 'Enter') this.vfAddItem(); },
       vfAdd: () => this.vfAddItem(),
+      fxModalOpen: s.fxOpen,
+      closeFx: () => this.setState({ fxOpen: false }),
+      fxTitle: fxT ? fxT.title : '', onFxTitle: (e) => this.fxSetTask({ title: e.target.value }),
+      fxDesc: fxT ? (fxT.desc || '') : '', onFxDesc: (e) => this.fxSetTask({ desc: e.target.value }),
+      fxStatusLabel: fxT ? (fxT.status === 'done' ? 'Done' : fxT.status === 'inprogress' ? 'In progress' : 'To do') : '',
+      fxSubLabel: 'Audit Fixes · ' + (fxOpenL.length ? fxOpenL.length + ' open' : 'inbox clear'),
+      fxCountLabel: fxOpenL.length ? fxOpenL.length + ' open ' + (fxOpenL.length > 1 ? 'fixes' : 'fix') : 'Nothing open right now',
+      fxHasOpen: fxOpenL.length > 0,
+      fxAllClear: !!fxT && fxOpenL.length === 0,
+      fxTierParts, fxGroups,
+      fxSeg: this.seg([['campus', 'By campus'], ['tier', 'By tier']], s.fxGroup, (k) => this.setState({ fxGroup: k })),
+      fxResolvedRows: fxResL.map(mkFxRow),
+      fxHasResolved: fxResL.length > 0,
+      fxResolvedCount: String(fxResL.length),
+      fxShowResolved: s.fxShowResolved,
+      toggleFxResolved: () => this.setState({ fxShowResolved: !s.fxShowResolved }),
+      fxResToggleLabel: s.fxShowResolved ? 'Hide' : 'Show',
+      fxCloseTask: () => { this.fxSetTask({ status: 'done' }); this.setState({ fxOpen: false }); },
       stageNote: s.stageNote, onStageNote: (e) => this.setState({ stageNote: e.target.value }),
       onSaveNote: () => {
         if (!s.stageNote.trim()) return;

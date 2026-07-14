@@ -36,7 +36,7 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
     >
       <div className='flex flex-wrap items-center gap-1.5 mb-2'>
         <Badge variant={taskTypeBadgeVariant(task.task_type)}>{taskTypeLabel(task.task_type)}</Badge>
-        {isDone && <Badge variant='success'>{task.task_type === 'data_verification' ? 'Done' : 'Approved'}</Badge>}
+        {isDone && <Badge variant='success'>{task.task_type === 'porting' ? 'Approved' : 'Done'}</Badge>}
       </div>
 
       <p className={`text-body-strong leading-snug break-words ${isDone ? 'text-ink-muted line-through decoration-ink-subtle/60' : ''}`}>
@@ -44,24 +44,50 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
       </p>
 
       <div className='mt-2.5 flex items-center gap-2'>
-        <div className='flex items-center'>
-          {stages.map((stage, i) => (
-            <React.Fragment key={stage.key}>
-              <span
-                title={stage.label}
-                className={`w-3 h-3 rounded-pill box-border shrink-0 ${
-                  isStageComplete(task, stage.key)
-                    ? 'bg-primary border-2 border-primary'
-                    : i === upNextIndex
-                      ? 'bg-surface border-2 border-accent'
-                      : 'bg-surface border-2 border-border-strong'
-                }`}
-              />
-              {i < stages.length - 1 && <span className='w-[9px] h-[1.5px] bg-border-strong/60 shrink-0' />}
-            </React.Fragment>
-          ))}
-        </div>
-        <span className='ml-auto text-tag text-ink-subtle whitespace-nowrap tabular'>{doneN} of {stages.length}</span>
+        {task.task_type === 'audit_fix' ? (
+          // A collection, not a pipeline: tier-colored dots, no connectors,
+          // and the count reads as open fixes rather than progress-to-done.
+          <>
+            <div className='flex items-center gap-[5px] flex-wrap'>
+              {stages.map((stage) => {
+                const item = (task.checklist_items || []).find((i) => i.key === stage.key)
+                const tier = item?.tier || (/— conservative$/.test(stage.label) ? 'conservative' : 'error')
+                const done = isStageComplete(task, stage.key)
+                return (
+                  <span key={stage.key} title={stage.label}
+                    className={`w-3 h-3 rounded-pill box-border shrink-0 ${done ? 'bg-surface-sunken' : ''}`}
+                    style={done ? undefined : {
+                      backgroundColor: tier === 'error' ? 'var(--color-danger-bright)' : 'var(--color-conservative-fill)',
+                    }} />
+                )
+              })}
+            </div>
+            <span className='ml-auto text-tag text-ink-subtle whitespace-nowrap tabular'>
+              {stages.length - doneN} open
+            </span>
+          </>
+        ) : (
+          <>
+            <div className='flex items-center'>
+              {stages.map((stage, i) => (
+                <React.Fragment key={stage.key}>
+                  <span
+                    title={stage.label}
+                    className={`w-3 h-3 rounded-pill box-border shrink-0 ${
+                      isStageComplete(task, stage.key)
+                        ? 'bg-primary border-2 border-primary'
+                        : i === upNextIndex
+                          ? 'bg-surface border-2 border-accent'
+                          : 'bg-surface border-2 border-border-strong'
+                    }`}
+                  />
+                  {i < stages.length - 1 && <span className='w-[9px] h-[1.5px] bg-border-strong/60 shrink-0' />}
+                </React.Fragment>
+              ))}
+            </div>
+            <span className='ml-auto text-tag text-ink-subtle whitespace-nowrap tabular'>{doneN} of {stages.length}</span>
+          </>
+        )}
       </div>
       {!isDone && nextLine && <p className='text-tag text-ink-subtle mt-1.5 truncate'>{nextLine}</p>}
 

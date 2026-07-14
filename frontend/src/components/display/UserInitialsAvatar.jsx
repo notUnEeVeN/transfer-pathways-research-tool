@@ -21,14 +21,15 @@ function initialsFromEmail(email = '') {
 
 /**
  * UserInitialsAvatar — a rounded-pill avatar showing initials derived from an
- * email. Soft brand tint, brand ink. `sm` (~30px) for list rows, `md` (~52px)
- * for the resolved-user header. Token classes only.
+ * email. Forest fill with lime initials, matching the task-card treatment in
+ * the handoff design. `sm` (~30px) is for list rows and `md` (~52px) for the
+ * resolved-user header. Token classes only.
  */
 export default function UserInitialsAvatar({ email, size = 'sm', className = '' }) {
   return (
     <span
       aria-hidden='true'
-      className={`inline-flex items-center justify-center shrink-0 rounded-pill bg-primary-soft text-primary font-medium ${
+      className={`inline-flex items-center justify-center shrink-0 rounded-pill bg-on-accent text-accent font-medium ${
         sizes[size] || sizes.sm
       } ${className}`}
     >

@@ -8,6 +8,7 @@ import {
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import PortingWorkflow from './PortingWorkflow'
 import VerificationChecklist from './VerificationChecklist'
+import AuditFixInbox from './AuditFixInbox'
 import {
   CREATABLE_TASK_TYPES, PORTING_STAGES, TASK_TYPE_OPTIONS, isChecklistTask,
   taskTypeBadgeVariant, taskTypeLabel,
@@ -229,7 +230,10 @@ export default function TaskModal({
           </div>
 
           <div className='min-w-0 lg:border-l lg:border-border lg:pl-6'>
-            {isChecklistTask(task) ? (
+            {task.task_type === 'audit_fix' ? (
+              <AuditFixInbox task={task} me={me}
+                onCompleteStage={onCompleteStage} onReopenStage={onReopenStage} />
+            ) : isChecklistTask(task) ? (
               <VerificationChecklist task={task} me={me} roster={roster}
                 onCompleteStage={onCompleteStage} onReopenStage={onReopenStage}
                 onAddStageNote={onAddStageNote} onDeleteStageNote={onDeleteStageNote}

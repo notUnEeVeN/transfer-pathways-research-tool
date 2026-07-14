@@ -16,6 +16,50 @@ const { listDisplayNames, setDisplayName } = require('../services/displayNames')
 const {
   listMembers, grantMember, revokeMember,
 } = require('../services/teamMembers');
+const { AUDIT_RESULTS } = require('../services/audit/filters');
+
+// Audit pulse — read-only auditing activity for the admin page. Deliberately
+// no totals or targets (the template pool is effectively unbounded): the last
+// 10 Monday-start weeks of verdict volume, this week's per-person split, and
+// what the week's audits caught. Counts reflect each doc's LATEST verdict
+// date (re-verdicts move a doc's row) — the right shape for "what happened
+// lately".
+exports.getAuditPulse = asyncHandler(async (req, res) => {
+  const auditDb = req.app.locals.auditDb || req.app.locals.db;
+  const WEEKS = 10;
+  const WEEK_MS = 7 * 24 * 3600 * 1000;
+  const monday = new Date();
+  monday.setHours(0, 0, 0, 0);
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+  const start = new Date(monday.getTime() - (WEEKS - 1) * WEEK_MS);
+
+  const rows = await auditDb.collection(AUDIT_RESULTS).find(
+    { verified_at: { $gte: start } },
+    { projection: { verified_at: 1, verifier_uid: 1, result: 1 } }
+  ).toArray();
+
+  const weeks = Array.from({ length: WEEKS }, (_, i) => ({
+    week_start: new Date(start.getTime() + i * WEEK_MS),
+    count: 0, errors: 0, conservative: 0,
+  }));
+  const peopleThisWeek = new Map();
+  for (const row of rows) {
+    const index = Math.floor((new Date(row.verified_at) - start) / WEEK_MS);
+    if (index < 0 || index >= WEEKS) continue;
+    weeks[index].count += 1;
+    if (row.result === 'error') weeks[index].errors += 1;
+    if (row.result === 'conservative') weeks[index].conservative += 1;
+    if (index === WEEKS - 1) {
+      const uid = row.verifier_uid ?? 'unknown';
+      peopleThisWeek.set(uid, (peopleThisWeek.get(uid) || 0) + 1);
+    }
+  }
+  const names = await listDisplayNames(auditDb);
+  const people = [...peopleThisWeek.entries()]
+    .map(([uid, count]) => ({ uid, label: names.get(uid) || null, count }))
+    .sort((a, b) => b.count - a.count);
+  res.json({ weeks, people, this_week: weeks.at(-1) });
+});
 
 // Team roster with editable display names. Everyone who can be an assignee —
 // env admins + granted partners — with the name the admin has set (or the
