@@ -5,7 +5,6 @@ import CompletionCheck from '@/components/ui/display/CompletionCheck'
 import SectionCard from '@/components/ui/display/SectionCard'
 import { isReceiverCompleted, isCourseCompleted, isGroupCompleted, getGroupDisplayStat } from '../../lib/eligibility'
 import {
-  NO_CC_NOTE,
   notArticulatedCopy,
   unitText,
   sectionRule,
@@ -434,7 +433,6 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
         </span>
       ) : null}
       headerMark={done ? <CompletionCheck /> : null}
-      footer={greyed ? <p className='px-5 py-2.5 text-sm text-ink-subtle bg-surface border-t border-border/40'>{NO_CC_NOTE}</p> : null}
     >
       {receivers.map((r, i) => (
         <ReceiverRow key={i} receiver={r} ctx={ctx} rowKey={`${groupIdx}-${sectionIdx}-${i}`} />

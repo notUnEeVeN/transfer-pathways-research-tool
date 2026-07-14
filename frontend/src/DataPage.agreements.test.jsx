@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 
 // Same mocking approach as DataApiDocs.test.jsx: replace the data hooks
 // DataPage.jsx imports so AgreementsBrowser/CoursesBrowser render without
 // react-query / auth wiring. `useColleges` carries two real region/district
 // rows (rather than an empty list) so the Courses-tab geo filter has real
 // options to pick from in the geo-reset test below — this doesn't change the
-// AgreementsBrowser college table, which filters every row out regardless of
-// college count (no coverage rows are ever mocked in).
+// AgreementsBrowser setup; the focused detail test below supplies one covered
+// college while the geo tests continue to exercise two distinct locations.
 vi.mock('@frontend/query/hooks/useData', () => ({
   useDataSummary: () => ({
     data: {
@@ -27,13 +27,85 @@ vi.mock('@frontend/query/hooks/useData', () => ({
     ],
     isLoading: false,
   }),
-  useCoverage: () => ({ data: { rows: [] }, isLoading: false }),
+  useCoverage: (options = {}) => ({
+    data: { rows: options.requirements === 'paper' ? [
+      {
+        school_id: 79, community_college_id: 101,
+        pct_articulated: 100, fully_articulated: true,
+      },
+    ] : [
+      {
+        school_id: 79, community_college_id: 101,
+        major: 'Electrical Engineering & Computer Sciences, B.S.',
+        pct_articulated: 100, fully_articulated: true,
+      },
+    ] },
+    isLoading: false,
+  }),
+  useAgreementsBatch: () => ({
+    data: [{
+      school_id: 79,
+      agreements: [{
+        _id: 'agreement-1', major: 'Electrical Engineering & Computer Sciences, B.S.',
+      }],
+    }],
+    isLoading: false,
+  }),
+  useRawAssist: () => ({ data: { source: 'ASSIST' }, isLoading: false, isError: false }),
+  useRequirementComparison: () => ({
+    data: {
+      website_requirements: [], assist_extra_groups: [],
+      website: { pct: 100, articulated: 4, required: 4, fully: true },
+      assist: { pct: 100, articulated: 9, required: 9, fully: true },
+      net_courses: 5,
+    },
+    isLoading: false,
+    isError: false,
+  }),
+  useDegreeEvaluation: () => ({
+    data: {
+      completion: {
+        pct: 47, covered: 14, total: 30,
+        by_tier: {
+          transferable: { covered: 10, total: 14 },
+          breadth: { covered: 4, total: 4 },
+          nontransferable: { covered: 0, total: 12 },
+        },
+      },
+      requirement_groups: [], courses: [], university_courses_by_id: {},
+    },
+    isLoading: false,
+    isError: false,
+  }),
   useSchools: () => ({ data: { uc: [] }, isLoading: false }),
   useCcCourses: () => ({ data: [], isLoading: false }),
   useUniversityCourses: () => ({ data: [], isLoading: false }),
   useDegreeRequirements: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
   useDegreeRequirementDocuments: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
+  useSaveDegreeRequirement: () => ({ mutateAsync: async () => ({}), isPending: false }),
 }))
+
+vi.mock('@frontend/query/hooks/useAudit', () => ({
+  useAuditDoc: () => ({
+    data: {
+      doc: {
+        _id: 'agreement-1', community_college: 'Diablo Valley College',
+        uc_school: 'UC Berkeley', major: 'Electrical Engineering & Computer Sciences, B.S.',
+        requirement_groups: [], course_names: [],
+      },
+      assist_url: 'https://assist.org/agreement-1',
+      university_courses: [],
+    },
+    isLoading: false,
+    isError: false,
+  }),
+}))
+
+vi.mock('./pages/Audit/hooks/useCourseList', () => ({ useCourseList: () => [] }))
+
+// CampusDegreeTemplate stamps verification notes with the signed-in user —
+// stub the auth hook so the pane renders without the AuthProvider.
+vi.mock('@frontend/hooks/useAuth', () => ({ useAuth: () => ({ user: null }) }))
 
 // The minimums/template panes pull in DataReferences' CampusMinimums and the
 // degree template editor, both of which need their own (unrelated) data
@@ -87,11 +159,11 @@ describe('DataPage SubNav route chip', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Agreements' }))
     expect(screen.getByText('GET /api/assist/coverage')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Min requirements' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Transfer requirements' }))
     expect(screen.getByText('GET /api/curated/requirements?kind=transfer_minimum')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'All colleges' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Degree template' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Graduation requirements' }))
     expect(screen.getByText('GET /api/curated/degrees')).toBeInTheDocument()
 
     // A stale drilled-in route must never survive a top-level tab switch —
@@ -99,6 +171,72 @@ describe('DataPage SubNav route chip', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Overview' }))
     expect(screen.getByText('GET /api/data/summary')).toBeInTheDocument()
     expect(screen.queryByText('GET /api/curated/degrees')).not.toBeInTheDocument()
+  })
+
+  it('returns to the base agreements page when the active Agreements tab is clicked again', () => {
+    render(<DataPage />)
+    const agreementsTab = screen.getByRole('tab', { name: 'Agreements' })
+    fireEvent.click(agreementsTab)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Transfer requirements' }))
+    expect(screen.getByText('GET /api/curated/requirements?kind=transfer_minimum')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'All colleges' })).toBeInTheDocument()
+
+    fireEvent.click(agreementsTab)
+    expect(screen.getByText('GET /api/assist/coverage')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'All colleges' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Transfer requirements' })).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Graduation requirements' }))
+    expect(screen.getByText('GET /api/curated/degrees')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'All colleges' })).toBeInTheDocument()
+
+    fireEvent.click(agreementsTab)
+    expect(screen.getByText('GET /api/assist/coverage')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'All colleges' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Graduation requirements' })).toBeInTheDocument()
+  })
+
+  it('uses one top route, a universal hero, and balanced degree coverage stats', async () => {
+    render(<DataPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Agreements' }))
+
+    const collegeName = screen.getByText('Diablo Valley College')
+    fireEvent.click(collegeName.closest('[class*="cursor-pointer"]'))
+
+    expect(await screen.findByText('School pair')).toBeInTheDocument()
+    expect(screen.getAllByText('UC Berkeley')).toHaveLength(2)
+    expect(screen.getByText('Electrical Engineering & Computer Sciences, B.S.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Open ASSIST' })).toBeInTheDocument()
+    expect(screen.queryByText('Last verified')).not.toBeInTheDocument()
+    expect(screen.queryByText('ASSIST agreement')).not.toBeInTheDocument()
+    expect(screen.getAllByText('API route')).toHaveLength(1)
+    await waitFor(() => expect(screen.getByRole('button', {
+      name: 'GET /api/audit/doc/agreement-1?system=uc',
+    })).toBeInTheDocument())
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Raw ASSIST API' }))
+    expect(screen.getByRole('button', { name: 'GET /api/data/raw-assist/agreement-1' })).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Min comparison' }))
+    const comparisonRoute = screen.getByRole('button', {
+      name: /GET \/api\/curated\/requirement-comparison\?school_id=79/,
+    })
+    expect(comparisonRoute).toHaveTextContent(
+      'GET /api/curated/requirement-comparison?school_id=79&major=Electrical%20Engineering%20%26%20Computer%20Sciences%2C%20B.S.&community_college_id=101'
+    )
+    expect(screen.getAllByText('API route')).toHaveLength(1)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Degree coverage' }))
+    expect(screen.getByRole('button', {
+      name: 'GET /api/curated/degree-evaluation?school_id=79&community_college_id=101',
+    })).toBeInTheDocument()
+
+    const summary = screen.getByRole('region', { name: 'Degree coverage summary' })
+    expect(within(summary).getByText('14 of 30 graduation requirements')).toBeInTheDocument()
+    expect(within(summary).getByText('4 remaining')).toBeInTheDocument()
+    expect(within(summary).getByText('Fully transferable')).toBeInTheDocument()
+    expect(within(summary).getByText('University-only requirements')).toBeInTheDocument()
   })
 })
 

@@ -6,7 +6,7 @@
  * docs/figures/degree-coverage-sources.md.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses } = require('../services/degreeSlots');
+const { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, computeUnitBudget } = require('../services/degreeSlots');
 const { evaluateDegreeAtCollege } = require('../services/degreeCoverage');
 
 const COLLECTION = 'curated_requirements';
@@ -27,6 +27,8 @@ exports.list = asyncHandler(async (req, res) => {
       program: doc.program,
       total_units: doc.total_units ?? null,
       source_url: doc.source_url || null,
+      verification_notes: doc.verification_notes || [],
+      units_summary: computeUnitBudget(doc.requirement_groups),
       updated_at: doc.updated_at || null,
       total,
       requirement_groups: ledger.requirement_groups,

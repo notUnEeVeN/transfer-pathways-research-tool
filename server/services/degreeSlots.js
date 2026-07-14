@@ -299,4 +299,29 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
   return { requirement_groups: groups, courses: [...usedCourses.values()] };
 }
 
-module.exports = { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, loadCollegeGeAreas };
+// The unit budget behind a template: every slot counts a flat ~4 units unless
+// the section carries an authored `unit_advisement` (a stated unit rule like
+// Berkeley's 20-unit upper-division block). Computed from the stored doc so
+// the page's numbers move with the data, never a hand-kept figure.
+const ASSUMED_UNITS_PER_COURSE = 4;
+
+function computeUnitBudget(requirementGroups) {
+  const perTier = { transferable: 0, breadth: 0, nontransferable: 0 };
+  for (const g of requirementGroups || []) {
+    for (const s of g.sections || []) {
+      const slots = Number(s.section_advisement) || (s.receivers || []).length || 0;
+      const units = s.unit_advisement != null
+        ? Number(s.unit_advisement)
+        : slots * ASSUMED_UNITS_PER_COURSE;
+      const tier = TIERS.includes(s.tier || g.tier) ? (s.tier || g.tier) : 'transferable';
+      perTier[tier] += units;
+    }
+  }
+  return {
+    modeled_units: perTier.transferable + perTier.breadth + perTier.nontransferable,
+    per_tier: perTier,
+    assumed_units_per_course: ASSUMED_UNITS_PER_COURSE,
+  };
+}
+
+module.exports = { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, loadCollegeGeAreas, computeUnitBudget };

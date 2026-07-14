@@ -27,9 +27,6 @@ export const NOT_ARTICULATED_REASON = {
   no_course_articulated: 'No course articulates — you can transfer without it'
 }
 
-// Footnote on a section where nothing articulates at a community college.
-export const NO_CC_NOTE = 'Requirements with no community-college equivalent are completed at the university.'
-
 // Row copy for a receiver with no usable CC path. `notArt` is the caller's
 // `articulation_status === 'not_articulated'`; rows that merely lack options
 // fall back to the no-course-articulated phrasing, and unknown reason codes

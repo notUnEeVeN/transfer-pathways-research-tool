@@ -3,14 +3,14 @@ import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon, ArrowRightIcon,
   ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, LoadingLogo } from './components/ui'
+import { Button, Alert, Spinner, EmptyState, Stack, StatStrip, Tabs, Input, Textarea, LoadingLogo } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
-import RouteHint from './components/RouteHint'
 import SubNav from './components/SubNav'
 import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
 import { matchesGeo } from './shared/lib/collegeGeo'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
+import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
 import { fmtDate as fmtGalleryDate } from './shared/fmtDate'
 import { useAccessMe } from '@frontend/query/hooks/useAccess'
@@ -23,7 +23,9 @@ import {
   useRawAssist, useDataSummary, useCoverage, useRequirementComparison,
   useFigures, useDeleteFigure, useEditFigure, downloadFigure,
   useDegreeRequirements, useDegreeRequirementDocuments, useDegreeEvaluation,
+  useSaveDegreeRequirement,
 } from '@frontend/query/hooks/useData'
+import { useAuth } from '@frontend/hooks/useAuth'
 
 /**
  * Data explorer — the partners' access point into the research database.
@@ -55,12 +57,19 @@ const DATA_TAB_ROUTES = {
 export default function DataPage({ onNavigate = () => {} }) {
   const [tab, setTab] = useState('overview')
   const [route, setRoute] = useState(DATA_TAB_ROUTES.overview)
+  const [agreementsHomeRequest, setAgreementsHomeRequest] = useState(0)
 
   // Switching top-level tabs always snaps the chip back to that tab's base
   // route first — otherwise a drilled-in agreements/courses route would
   // survive into a tab that never reports its own (overview, districts), or
   // flash stale until the newly-mounted pane's own effect catches up.
   const changeTab = (next) => {
+    // Re-selecting Agreements is its "home" action. The browser stays mounted
+    // when its active tab is clicked, so explicitly ask it to leave any college
+    // or requirement drill-in while preserving the selected campus.
+    if (next === 'agreements' && tab === 'agreements') {
+      setAgreementsHomeRequest((current) => current + 1)
+    }
     setTab(next)
     setRoute(DATA_TAB_ROUTES[next])
   }
@@ -89,7 +98,9 @@ export default function DataPage({ onNavigate = () => {} }) {
           ? 'max-w-[1240px] mx-auto px-[22px] pt-[26px] pb-12 w-full'
           : 'max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12 w-full'}>
           {tab === 'overview' && <DatasetSummaryPanel />}
-          {tab === 'agreements' && <AgreementsBrowser onRoute={reportRoute} />}
+          {tab === 'agreements' && (
+            <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
+          )}
           {tab === 'courses' && <CoursesBrowser onRoute={reportRoute} />}
           {tab === 'districts' && <DistrictsTab />}
         </div>
@@ -105,13 +116,18 @@ export default function DataPage({ onNavigate = () => {} }) {
 // working major selected for that campus in Admin; opening a college goes
 // straight to its agreement with no program-selection step.
 
-export function AgreementsBrowser({ onRoute = () => {} }) {
+export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
   const summary = useDataSummary()
   const coverage = useCoverage()
   const websiteCoverage = useCoverage({ requirements: 'paper' })
   const [campus, setCampus] = useState(null) // { school_id, school }
   const [collegeId, setCollegeId] = useState(null)
   const [campusView, setCampusView] = useState(null) // null | 'template' | 'minimums'
+
+  useEffect(() => {
+    setCollegeId(null)
+    setCampusView(null)
+  }, [homeRequest])
 
   const schools = summary.data?.schools || []
   // Alphabetical: this is now the chip row's own display + default-pick
@@ -159,10 +175,9 @@ export function AgreementsBrowser({ onRoute = () => {} }) {
 
   // The route fetching whatever the right-hand pane currently shows — the
   // pre-SubNav `paneRoute` local, now reported up so the shared chip can show
-  // it. A college's own AgreementDetail renders its own accurate RouteHint
-  // next to its view tabs, so an open college still just reports the list
-  // route here (must run unconditionally, above every early return below, or
-  // hook order breaks across renders).
+  // it. A college detail reports its active agreement view directly to the
+  // shared top-right route chip; until its batch loads, this list route remains
+  // the safe fallback (this hook must stay above every early return below).
   const paneRoute = !campus ? '/api/data/summary'
     : campusView === 'template' ? '/api/curated/degrees'
     : campusView === 'minimums' ? '/api/curated/requirements?kind=transfer_minimum'
@@ -202,35 +217,41 @@ export function AgreementsBrowser({ onRoute = () => {} }) {
         </Stack>
       ) : collegeId != null ? (
         <CampusAgreements campus={campus} collegeId={collegeId}
-          coverageRows={coverageByCc.get(Number(collegeId)) || []}
-          webRow={websiteByCc.get(Number(collegeId)) || null}
-          lastVerifiedAt={summary.data?.last_data_refresh_at || null}
-          onBack={() => setCollegeId(null)} />
+          onRoute={onRoute} onBack={() => setCollegeId(null)} />
       ) : (
         <Stack gap='comfortable'>
-          <div className='flex items-end gap-3.5 flex-wrap'>
-            <div className='flex flex-col'>
-              <span className='text-label'>Receiving campus</span>
-              <div className='mt-2 flex items-center gap-1.5 flex-wrap'>
-                {campuses.map((c) => {
-                  const active = Number(c.id) === Number(campus.school_id)
-                  return (
-                    <button key={c.id} type='button' onClick={() => selectCampus(c.id)}
-                      className={`px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
-                        active
-                          ? 'bg-primary text-on-primary border-primary font-[650]'
-                          : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
-                      }`}>
-                      {c.name.replace('UC ', '')}
-                    </button>
-                  )
-                })}
+          <div className='min-w-0'>
+            <span className='text-label'>Receiving campus</span>
+            <div className='mt-2 flex items-center gap-1.5 flex-wrap'>
+              {campuses.map((c) => {
+                const active = Number(c.id) === Number(campus.school_id)
+                return (
+                  <button key={c.id} type='button' onClick={() => selectCampus(c.id)}
+                    className={`px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
+                      active
+                        ? 'bg-primary text-on-primary border-primary font-[650]'
+                        : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
+                    }`}>
+                    {c.name.replace('UC ', '')}
+                  </button>
+                )
+              })}
+              <div className='ml-auto pl-3 border-l border-border flex shrink-0 items-center gap-2.5'>
+                <span className='text-label'>Requirements</span>
+                <div className='inline-flex overflow-hidden rounded-pill border border-border-strong bg-surface'>
+                  <button type='button' aria-label='Transfer requirements'
+                    onClick={() => setCampusView('minimums')}
+                    className='h-8 px-3 text-button text-ink-muted hover:bg-primary-soft hover:text-ink transition-colors'>
+                    Transfer
+                  </button>
+                  <button type='button' aria-label='Graduation requirements'
+                    onClick={() => setCampusView('template')}
+                    className='h-8 px-3 text-button text-ink-muted border-l border-border-strong hover:bg-primary-soft hover:text-ink transition-colors'>
+                    Graduation
+                  </button>
+                </div>
               </div>
             </div>
-            <span className='ml-auto self-end flex gap-2'>
-              <Button variant='secondary' onClick={() => setCampusView('minimums')}>Min requirements</Button>
-              <Button variant='secondary' onClick={() => setCampusView('template')}>Degree template</Button>
-            </span>
           </div>
           <CampusColleges campus={campus} coverageByCc={coverageByCc} websiteByCc={websiteByCc}
             coverageLoading={coverage.isLoading || websiteCoverage.isLoading} onPick={setCollegeId} />
@@ -376,25 +397,33 @@ function CoverageBar({ pct, full, width = 'w-[110px]' }) {
   )
 }
 
-const normalizeMajor = (major) => String(major || '').trim().toLocaleLowerCase()
-
 // One campus × college batch can contain several majors. Show every visible
 // agreement in a stable order, with its own ledger and supporting data views.
-function CampusAgreements({ campus, collegeId, coverageRows, webRow = null, lastVerifiedAt = null, onBack }) {
+function CampusAgreements({ campus, collegeId, onRoute, onBack }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
   const agreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
     return (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
   }, [batch.data, campus.school_id])
-  const coverageByMajor = useMemo(
-    () => new Map(coverageRows.map((row) => [normalizeMajor(row.major), row])),
-    [coverageRows]
-  )
+  const defaultAgreementId = agreements[0]?._id
+
+  // A college can contain multiple major agreements. The first agreement owns
+  // the initial global route; after that, whichever card's tab the user clicks
+  // becomes the active route. This avoids mount-order races between cards.
+  useEffect(() => {
+    if (!defaultAgreementId) return
+    onRoute({ path: `/api/audit/doc/${defaultAgreementId}?system=uc` })
+  }, [defaultAgreementId, onRoute])
+
+  const backToColleges = () => {
+    onRoute({ path: '/api/assist/coverage' })
+    onBack()
+  }
 
   return (
     <Stack gap='cozy'>
       <div className='flex items-center gap-2'>
-        <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
+        <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={backToColleges}>All colleges</Button>
         <span className='text-border-strong'>·</span>
         <span className='text-[13px] text-ink-subtle'>{campus.school}</span>
       </div>
@@ -406,8 +435,7 @@ function CampusAgreements({ campus, collegeId, coverageRows, webRow = null, last
         <Stack gap='section'>
           {agreements.map((agreement) => (
             <AgreementDetail key={agreement._id} agreementId={agreement._id}
-              cov={coverageByMajor.get(normalizeMajor(agreement.major)) || null}
-              webRow={webRow} lastVerifiedAt={lastVerifiedAt}
+              onRoute={onRoute}
               compareFor={{ schoolId: campus.school_id, major: agreement.major, communityCollegeId: collegeId }} />
           ))}
         </Stack>
@@ -421,6 +449,8 @@ function CampusAgreements({ campus, collegeId, coverageRows, webRow = null, last
 function CampusDegreeTemplate({ schoolId, school, onBack }) {
   const q = useDegreeRequirements()
   const raw = useDegreeRequirementDocuments()
+  const save = useSaveDegreeRequirement()
+  const { user } = useAuth()
   const [editing, setEditing] = useState(false)
   const doc = useMemo(
     () => (q.data?.rows || []).find((r) => Number(r.school_id) === Number(schoolId)) || null,
@@ -429,6 +459,13 @@ function CampusDegreeTemplate({ schoolId, school, onBack }) {
   const rawDoc = useMemo(
     () => (raw.data?.rows || []).find((r) => Number(r.school_id) === Number(schoolId)) || null,
     [raw.data, schoolId]
+  )
+  // Notes ride on the stored degree doc (PUT replaces the whole row, so the
+  // raw doc is spread back in full); the importer $sets its own fields only,
+  // so notes survive re-imports.
+  const saveNotes = useCallback(
+    (nextNotes) => save.mutateAsync({ ...rawDoc, verification_notes: nextNotes }),
+    [rawDoc, save]
   )
 
   return (
@@ -439,13 +476,15 @@ function CampusDegreeTemplate({ schoolId, school, onBack }) {
       {q.isLoading || raw.isLoading ? (
         <div className='flex justify-center py-10'><Spinner /></div>
       ) : q.isError || raw.isError ? (
-        <Alert type='error'>Failed to load the degree template.</Alert>
+        <Alert type='error'>Failed to load the graduation requirements.</Alert>
       ) : !doc ? (
-        <EmptyState title='No degree template'
-          description='No hand-curated degree requirements have been added for this campus.'
-          action={<Button leadingIcon={PencilSquareIcon} onClick={() => setEditing(true)}>Create template</Button>} />
+        <EmptyState title='No graduation requirements'
+          description='No hand-curated four-year graduation requirements have been added for this campus.'
+          action={<Button leadingIcon={PencilSquareIcon} onClick={() => setEditing(true)}>Create requirements</Button>} />
       ) : (
-        <DegreeRequirementsDetail doc={doc} onEdit={() => setEditing(true)} />
+        <DegreeRequirementsDetail doc={doc} onEdit={() => setEditing(true)}
+          onSaveNotes={rawDoc ? saveNotes : null} savingNotes={save.isPending}
+          noteAuthor={{ uid: user?.uid || null, label: user?.displayName || user?.email || null }} />
       )}
       <DegreeTemplateEditor open={editing} onClose={() => setEditing(false)}
         initialDocument={rawDoc} schoolId={schoolId} school={school || doc?.school}
@@ -610,29 +649,16 @@ function JsonPanel({ data, filename }) {
   )
 }
 
-// The header card's pct-based tile pair (Hand-curated / ASSIST agreement):
-// value + a tiny proportion bar. Success-toned regardless of completeness —
-// by the time a reader is this deep, the framing is "how much is covered,"
-// not the list view's complete/partial/none distinction.
-function DetailTile({ label, pct }) {
-  const has = pct != null && Number.isFinite(Number(pct))
-  const v = has ? Math.max(0, Math.min(100, Number(pct))) : null
-  return (
-    <div className='px-6 py-3.5 border-l border-border/60 first:border-l-0'>
-      <p className='text-label'>{label}</p>
-      <div className='mt-1 flex items-center gap-2'>
-        <span className={`text-[18px] font-[650] ${has ? 'text-success' : 'text-ink-subtle'}`}>{has ? `${v}%` : '—'}</span>
-        {has && (
-          <span className='inline-block w-[44px] h-[5px] rounded-pill bg-success-soft overflow-hidden'>
-            <span className='block h-full rounded-pill bg-success' style={{ width: `${v}%` }} />
-          </span>
-        )}
-      </div>
-    </div>
-  )
-}
+const routeForAgreementView = (view, agreementId, compareFor) => (
+  view === 'raw' ? `/api/data/raw-assist/${agreementId}`
+  : view === 'comparison' && compareFor
+    ? `/api/curated/requirement-comparison?school_id=${compareFor.schoolId}&major=${encodeURIComponent(compareFor.major)}&community_college_id=${compareFor.communityCollegeId}`
+  : view === 'degree' && compareFor
+    ? `/api/curated/degree-evaluation?school_id=${compareFor.schoolId}&community_college_id=${compareFor.communityCollegeId}`
+  : `/api/audit/doc/${agreementId}?system=uc`
+)
 
-function AgreementDetail({ agreementId, cov = null, webRow = null, lastVerifiedAt = null, compareFor = null }) {
+function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw | comparison | degree
   const docQ = useAuditDoc(agreementId, 'uc')
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
@@ -644,23 +670,17 @@ function AgreementDetail({ agreementId, cov = null, webRow = null, lastVerifiedA
   if (!doc) return null
 
   const slug = `${doc.uc_school}-${doc.community_college}-${doc.major}`.replace(/[^a-z0-9]+/gi, '_')
-  const requirementsCount = Array.isArray(doc.requirement_groups) ? doc.requirement_groups.length : null
-
-  // The route fetching the active view's data — swaps with the tab.
-  const viewRoute =
-    view === 'raw' ? `/api/data/raw-assist/${agreementId}`
-    : view === 'comparison' && compareFor
-      ? `/api/curated/requirement-comparison?school_id=${compareFor.schoolId}&major=${encodeURIComponent(compareFor.major)}&community_college_id=${compareFor.communityCollegeId}`
-    : view === 'degree' && compareFor
-      ? `/api/curated/degree-evaluation?school_id=${compareFor.schoolId}&community_college_id=${compareFor.communityCollegeId}`
-    : `/api/audit/doc/${agreementId}?system=uc`
+  const changeView = (next) => {
+    setView(next)
+    onRoute({ path: routeForAgreementView(next, agreementId, compareFor) })
+  }
 
   return (
     <Stack gap='cozy'>
       <div className='surface-card overflow-hidden'>
         <div className='px-6 py-5 flex flex-wrap items-start gap-3.5'>
           <div className='min-w-0'>
-            <p className='text-label text-[12px]'>Agreement</p>
+            <p className='text-label text-[12px]'>School pair</p>
             <p className='mt-1.5 flex items-center gap-2.5 flex-wrap text-[19px] tracking-[-.01em]'>
               <span className='font-[650] break-words'>{doc.community_college}</span>
               <ArrowRightIcon className='w-[17px] h-[17px] text-ink-subtle shrink-0' />
@@ -673,30 +693,15 @@ function AgreementDetail({ agreementId, cov = null, webRow = null, lastVerifiedA
               onClick={() => openAssist(docQ.data.assist_url)}>Open ASSIST</Button>
           )}
         </div>
-        <div className='grid grid-cols-4 border-t border-border/60'>
-          <DetailTile label='Hand-curated' pct={webRow?.pct_articulated} />
-          <DetailTile label='ASSIST agreement' pct={cov?.pct_articulated} />
-          <div className='px-6 py-3.5 border-l border-border/60'>
-            <p className='text-label'>Requirements</p>
-            <p className='mt-1 text-[18px] font-[650]'>{requirementsCount ?? '—'}</p>
-          </div>
-          <div className='px-6 py-3.5 border-l border-border/60'>
-            <p className='text-label'>Last verified</p>
-            <p className='mt-1 text-[18px] font-[650]'>{lastVerifiedAt ? fmtGalleryDate(lastVerifiedAt) : '—'}</p>
-          </div>
-        </div>
       </div>
-      <div className='flex flex-wrap items-center gap-3'>
-        <Tabs value={view} onChange={setView}
-          options={[
-            { value: 'ledger', label: 'Agreement' },
-            { value: 'stored', label: 'DB document' },
-            { value: 'raw',    label: 'Raw ASSIST API' },
-            ...(compareFor ? [{ value: 'comparison', label: 'Min comparison' }] : []),
-            ...(compareFor ? [{ value: 'degree', label: 'Degree coverage' }] : []),
-          ]} />
-        <span className='ml-auto'><RouteHint path={viewRoute} /></span>
-      </div>
+      <Tabs value={view} onChange={changeView}
+        options={[
+          { value: 'ledger', label: 'Agreement' },
+          { value: 'stored', label: 'DB document' },
+          { value: 'raw',    label: 'Raw ASSIST API' },
+          ...(compareFor ? [{ value: 'comparison', label: 'Min comparison' }] : []),
+          ...(compareFor ? [{ value: 'degree', label: 'Degree coverage' }] : []),
+        ]} />
       {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
       {view === 'degree' && compareFor && (
         <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
@@ -1043,35 +1048,128 @@ function UniversityCoursesBrowser({ onRoute }) {
 // same ASSIST requirement shape as agreements — so both views below are plain
 // RequirementsLedger renders. See docs/figures/degree-coverage-sources.md.
 
+// Jotted decisions/findings about a campus's degree data — stored on the
+// degree doc itself (`verification_notes`) so the whole team sees them next
+// to the sources they annotate.
+function DegreeVerificationNotes({ notes, onSave, saving, author }) {
+  const [text, setText] = useState('')
+  const [error, setError] = useState(null)
+  const canEdit = typeof onSave === 'function'
+  if (!canEdit && notes.length === 0) return null
+
+  const run = async (nextNotes) => {
+    setError(null)
+    try { await onSave(nextNotes) } catch { setError('Could not save the note.') }
+  }
+  const add = async () => {
+    const t = text.trim()
+    if (!t) return
+    await run([...notes, {
+      id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : String(Math.random()),
+      text: t,
+      author_uid: author?.uid || null,
+      author_label: author?.label || null,
+      created_at: new Date().toISOString(),
+    }])
+    setText('')
+  }
+  const remove = async (idx) => {
+    if (!window.confirm('Delete this note?')) return
+    await run(notes.filter((_, i) => i !== idx))
+  }
+
+  return (
+    <div className='mt-3 pt-3 border-t border-border'>
+      <p className='text-label text-[12px]'>Notes — decisions & findings</p>
+      {notes.length > 0 && (
+        <ul className='mt-2 flex flex-col gap-2'>
+          {notes.map((n, idx) => (
+            <li key={n.id || idx} className='flex items-start gap-2 min-w-0'>
+              <div className='min-w-0 flex-1'>
+                <p className='text-[13px] whitespace-pre-wrap break-words'>{n.text}</p>
+                <p className='text-caption text-ink-subtle mt-0.5'>
+                  {n.author_label || shortAuthorUid(n.author_uid)}
+                  {n.created_at ? ` · ${fmtGalleryDate(n.created_at)}` : ''}
+                </p>
+              </div>
+              {canEdit && (
+                <Button variant='ghost' leadingIcon={TrashIcon} disabled={saving}
+                  onClick={() => remove(idx)} />
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+      {canEdit && (
+        <div className='mt-2.5 flex flex-col gap-2'>
+          <Textarea rows={2} value={text} onChange={(e) => setText(e.target.value)}
+            placeholder='e.g. Berkeley CoE requires ≥2 of the 6 H/SS upper-division, so only 2 breadth slots count as CC-satisfiable' />
+          <div className='flex items-center gap-2'>
+            <Button variant='secondary' onClick={add} disabled={saving || !text.trim()}>
+              {saving ? 'Saving…' : 'Add note'}
+            </Button>
+            {error && <span className='text-caption text-danger'>{error}</span>}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // The stored template: what the campus requires to graduate, no college context.
-export function DegreeRequirementsDetail({ doc, onEdit = null }) {
+export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = null, savingNotes = false, noteAuthor = null }) {
   // Defensive: a persisted (IndexedDB) response from an earlier endpoint shape
   // may lack `requirement_groups` — never crash the tab; the refetch replaces it.
   const groups = Array.isArray(doc.requirement_groups) ? doc.requirement_groups : []
+  const sources = degreeSourcesFor(doc)
   return (
     <Stack gap='cozy'>
-      <div className='surface-card px-[22px] py-[18px] flex flex-wrap items-start gap-3'>
-        <div className='min-w-0'>
-          <p className='text-label text-[12px]'>4-year degree requirements</p>
-          <p className='mt-1.5 text-[19px] font-[650] tracking-[-.01em] break-words'>
+      <div className='surface-card px-[22px] py-[18px]'>
+        <p className='text-label text-[12px]'>Hand-curated four-year graduation requirements</p>
+        <div className='mt-1.5 flex items-center gap-4'>
+          <p className='min-w-0 flex-1 text-[19px] font-[650] tracking-[-.01em] break-words'>
             {doc.school} <span className='text-ink-subtle'>·</span> {doc.program}
           </p>
-          <p className='text-caption text-ink-muted mt-1'>
-            The full four-year requirement set behind the degree-coverage numbers
-            {doc.total_units != null ? ` · ${doc.total_units} units` : ''} · {doc.total} requirements
-            {doc.source_url && <> · <a className='text-primary hover:underline' href={doc.source_url} target='_blank' rel='noreferrer'>source</a></>}
-          </p>
+          {onEdit && (
+            <Button className='shrink-0' variant='secondary' leadingIcon={PencilSquareIcon} onClick={onEdit}>
+              Edit template
+            </Button>
+          )}
         </div>
-        {onEdit && (
-          <Button className='ml-auto' variant='secondary' leadingIcon={PencilSquareIcon} onClick={onEdit}>
-            Edit template
-          </Button>
-        )}
+        <p className='text-caption text-ink-muted mt-1'>
+          The full bachelor’s degree requirement set—including major preparation, breadth, and university-only work—behind the graduation-coverage numbers
+          {doc.total_units != null ? ` · ${doc.total_units} units` : ''} · {doc.total} requirements
+        </p>
       </div>
       <div className='uui-scope'>
         <RequirementsLedger major={{ requirement_groups: groups }}
           universityCoursesById={doc.university_courses_by_id || null} preserveOrder showCompletion={false} />
       </div>
+      {sources.length > 0 && (
+        <div className='surface-card px-[22px] py-[18px]'>
+          <p className='text-label text-[12px]'>Verify these requirements</p>
+          <p className='text-caption text-ink-muted mt-1'>
+            Walk the official pages in order — each covers a distinct slice of the template.
+          </p>
+          <ol className='mt-2.5 flex flex-col gap-2.5'>
+            {sources.map((s, i) => (
+              <li key={s.url} className='flex items-start gap-2 min-w-0'>
+                <span className='text-[12px] font-[650] text-ink-subtle tabular-nums mt-[2px] shrink-0'>{i + 1}.</span>
+                <div className='min-w-0'>
+                  <a className='text-[13px] text-primary hover:underline break-words inline-flex items-center gap-1'
+                    href={s.url} target='_blank' rel='noreferrer'>
+                    {s.label}
+                    <ArrowTopRightOnSquareIcon className='w-3.5 h-3.5 shrink-0' />
+                  </a>
+                  {s.note && <p className='text-caption text-ink-muted mt-0.5'>{s.note}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+          <DegreeVerificationNotes notes={Array.isArray(doc.verification_notes) ? doc.verification_notes : []}
+            onSave={onSaveNotes} saving={savingNotes} author={noteAuthor} />
+        </div>
+      )}
     </Stack>
   )
 }
@@ -1089,15 +1187,34 @@ function DegreeCompletionView({ schoolId, collegeId }) {
   const c = d.completion
   const tier = (k) => c.by_tier?.[k] || { total: 0, covered: 0 }
   const tt = tier('transferable'); const tb = tier('breadth')
+  const tu = tier('nontransferable')
+  const remaining = (bucket) => Math.max(0, bucket.total - bucket.covered)
+  const coverageSub = (bucket) => bucket.total === 0
+    ? 'No requirements'
+    : remaining(bucket) === 0 ? 'Fully transferable' : `${remaining(bucket)} remaining`
   return (
     <Stack gap='cozy'>
-      <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
-        <StatTile label='4-year degree transferable' value={c.pct != null ? `${c.pct}%` : '—'}
-          sub={`${c.covered} / ${c.total} requirements`} />
-        <StatTile label='Major prep' value={`${tt.covered}/${tt.total}`} full={tt.covered === tt.total} />
-        <StatTile label='Breadth' value={`${tb.covered}/${tb.total}`} full={tb.covered === tb.total} />
-        <StatTile label='At the university' value={`${tier('nontransferable').total}`} />
-      </div>
+      <section aria-label='Degree coverage summary'>
+        <StatStrip tiles={[
+          {
+            label: 'Degree transferable', value: c.pct != null ? `${c.pct}%` : '—',
+            sub: `${c.covered} of ${c.total} graduation requirements`,
+            accent: c.total > 0 && c.covered === c.total,
+          },
+          {
+            label: 'Major preparation', value: `${tt.covered} / ${tt.total}`,
+            sub: coverageSub(tt), accent: tt.total > 0 && remaining(tt) === 0,
+          },
+          {
+            label: 'Breadth', value: `${tb.covered} / ${tb.total}`,
+            sub: coverageSub(tb), accent: tb.total > 0 && remaining(tb) === 0,
+          },
+          {
+            label: 'At the university', value: `${tu.total}`,
+            sub: 'University-only requirements',
+          },
+        ]} />
+      </section>
       <div className='uui-scope'>
         <RequirementsLedger major={{ requirement_groups: d.requirement_groups }} courses={d.courses}
           universityCoursesById={d.university_courses_by_id} preserveOrder showCompletion={false} />

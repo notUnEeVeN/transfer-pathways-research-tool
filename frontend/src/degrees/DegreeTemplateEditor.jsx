@@ -200,8 +200,13 @@ function SectionEditorModal({ editing, tier, courses, coursesLoading, onClose, o
           )}
 
           {form.type === 'university' && (
-            <Textarea label='Requirement description' rows={3} value={form.description}
-              onChange={(event) => set('description', event.target.value)} />
+            <>
+              <Textarea label='Requirement description' rows={3} value={form.description}
+                onChange={(event) => set('description', event.target.value)} />
+              <Input label='Stated units for the whole block (optional — otherwise counted at ~4u per course)'
+                type='number' min='1' value={form.units}
+                onChange={(event) => set('units', event.target.value === '' ? '' : Number(event.target.value))} />
+            </>
           )}
         </Stack>
       )}

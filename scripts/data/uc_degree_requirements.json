@@ -13,7 +13,8 @@
           "tier": "transferable | breadth | nontransferable",
           "requirements[]": {
             "select": "N — the choose-N count (section_advisement)",
-            "from": "one of: [course codes] (explicit courses, resolved to parent_id) | {departments:[...], max_number:N} (proxy list: all lower-div courses in these depts) | null (non-transferable slots — never satisfiable by any CC)"
+            "from": "one of: [course codes] (explicit courses, resolved to parent_id) | {departments:[...], max_number:N} (proxy list: all lower-div courses in these depts) | null (non-transferable slots — never satisfiable by any CC)",
+            "units": "optional, from:null rows only — the block's stated total units (e.g. Berkeley's 20-unit UD rule), stored as unit_advisement; the page's unit-budget check otherwise assumes a flat ~4u/course"
           }
         }
       }
@@ -170,20 +171,30 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "Humanities & Social Sciences breadth — lower-division",
         "tier": "breadth",
         "requirements": [
           {
-            "select": 4,
+            "select": 2,
             "from": {
               "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "label": "Lower-division H/SS — 2 courses (IGETC Areas 3 + 4)",
               "ge_areas": [
                 "3A",
                 "3B",
                 "4"
               ]
             }
+          }
+        ]
+      },
+      {
+        "title": "Humanities & Social Sciences breadth — upper-division",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 2,
+            "from": null
           }
         ]
       },
@@ -207,7 +218,8 @@
         "requirements": [
           {
             "select": 5,
-            "from": null
+            "from": null,
+            "units": 20
           }
         ]
       },
@@ -226,7 +238,7 @@
         "tier": "nontransferable",
         "requirements": [
           {
-            "select": 3,
+            "select": 4,
             "from": null
           }
         ]

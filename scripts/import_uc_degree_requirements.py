@@ -170,6 +170,11 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
 
     if frm is None:
         # Non-transferable: `select` named slots, never satisfiable by any CC.
+        # Optional authored "units" (the block's total, e.g. Berkeley's
+        # 20-unit upper-division rule) overrides the flat ~4u/course
+        # assumption in the unit budget shown on the template page.
+        if req.get("units") is not None:
+            section["unit_advisement"] = int(req["units"])
         section["receivers"] = [requirement_receiver(tier, title, seq()) for _ in range(select)]
         report["nontransferable_slots"] += select
 

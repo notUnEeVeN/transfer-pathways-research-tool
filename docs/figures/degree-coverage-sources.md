@@ -58,6 +58,21 @@ recorded as secondary context.
 Source: [Berkeley Academic Guide — EECS](https://guide.berkeley.edu/undergraduate/degree-programs/electrical-engineering-computer-sciences/)
 · [College of Engineering EECS major page](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/major-programs/electrical-engineering-computer-sciences/)
 
+> **Verifying today (2026-07):** Berkeley's new catalog consolidates all EECS
+> major coursework (lower-div, upper-div 20-unit + design rule, ethics, natural
+> science) on one page:
+> [undergraduate.catalog.berkeley.edu — EECS B.S. requirements](https://undergraduate.catalog.berkeley.edu/programs/16306U/requirements-krhha)
+> (successor to guide.berkeley.edu, where this data was originally gathered).
+> Full hand-verification = that page + the
+> [CoE degree requirements](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/)
+> (H/SS breadth, 120 units) + the
+> [CoE H/SS details](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/humanities-and-social-sciences/)
+> (2 R&C + ≥2 upper-division of the 6) + the
+> [IGETC campus guidance](https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/preparing-to-transfer/general-education-igetc/campus-guidance.html),
+> plus the "Modeling decisions" section below for the derived items (free
+> electives, AH&I). The in-app "Verify these requirements" card
+> (`frontend/src/degrees/degreeSources.js`) mirrors this path per campus.
+
 ### Transferable — lower-division major prep (13 slots)
 
 | Requirement | Course(s) | `parent_id` | Source |
@@ -73,25 +88,38 @@ Source: [Berkeley Academic Guide — EECS](https://guide.berkeley.edu/undergradu
 | Physics (7-series) | PHYSICS 7A, 7B | 245412, 275225 | same |
 | Natural science elective (select 1) | ASTRON 7A/7B, BIO 1A/1B, CHEM 1A/1B/3A/3B, MCB 32, PHYS 7C | 10 options | [EECS lower-div reqs, note 1](https://eecs.berkeley.edu/resources/undergrads/eecs-2/degree-reqs-lowerdiv-2/) |
 
-### Breadth — Humanities/Social Sciences (6 slots, split into R&C + breadth)
+### Breadth — Humanities/Social Sciences (6 slots: R&C + lower-div + upper-div)
 
 The College of Engineering requires **"at least six courses that satisfy the
 Humanities and Social Sciences (H/SS) breadth requirement,"** of which **2 must
-be Reading & Composition (English, parts A + B)** and 4 are breadth.
+be Reading & Composition (English, parts A + B)** and — per the College's H/SS
+rules — **at least 2 of the 6 must be upper-division (courses numbered
+100–196)**. Since both R&C courses are lower-division, the four additional
+courses split into at most 2 lower-division (CC-satisfiable, with ESS-adviser
+sign-off) + at least 2 upper-division (never CC-satisfiable).
 Source: [College of Engineering general degree requirements](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/)
+· [CoE Humanities & Social Sciences requirement](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/humanities-and-social-sciences/)
+("At least 2 of the 6 H/SS courses must be upper-division (courses numbered 100-196)")
 · [EECS major page](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/major-programs/electrical-engineering-computer-sciences/)
 · [Berkeley Engineering transfer FAQ](https://engineering.berkeley.edu/admissions/undergraduate-admissions/prospective-junior-transfer-faqs/)
-(satisfied via courses in the assist.org GE/Breadth categories).
+
+> **Corrected 2026-07-14.** The template originally scored all 4 non-R&C H/SS
+> courses as CC-satisfiable, missing the upper-division rule. The 2
+> upper-division slots now sit in the non-transferable tier. Together with the
+> same-day free-electives recount (3 → 4, see the non-transferable table),
+> Evergreen Valley verification moved 16/29 (55%) → 14/30 (47%).
 
 **Evaluated from each college's own course GE-area tags, not major-prep
 articulation.** ASSIST's CS/EECS agreements never carry English or H/SS, but
-every CC course in our `courses` collection records its `igetc_area`, so breadth
-is satisfiable directly:
+every CC course in our `courses` collection records its `igetc_area`, so the
+lower-division portion is satisfiable directly:
 - **Reading & Composition (English)** — R1A ↔ **IGETC 1A** (English Composition),
   R1B ↔ **IGETC 1B** (Critical Thinking-Composition). Covered when the college
   has a course tagged that area (e.g. Evergreen's `ENGL C1000` / `C1001`).
-- **H/SS breadth** — *select 4* from the college's **IGETC Area 3 (Arts &
-  Humanities) + Area 4 (Social & Behavioral Sciences)** courses.
+- **Lower-division H/SS breadth** — *select 2* from the college's **IGETC Area 3
+  (Arts & Humanities) + Area 4 (Social & Behavioral Sciences)** courses.
+- **Upper-division H/SS** — *2 slots, non-transferable* (CoE: ≥2 of the 6 must
+  be numbered 100–196; CCs teach no upper-division courses).
 - **American History & Institutions** — no clean IGETC area, so **assumed
   satisfiable** at every college (UC-required; a qualifying U.S. history/gov
   course exists everywhere). Flagged as an assumption in the data.
@@ -100,19 +128,26 @@ is satisfiable directly:
 
 The IGETC-area mapping above is the part most worth a human accuracy check.
 
-**Denominator = 29 slots**: 14 transferable (13 major-prep + AH&I) + 6 breadth
-(2 R&C + 4 H/SS) + 9 non-transferable.
+**Denominator = 30 slots**: 14 transferable (13 major-prep + AH&I) + 4 breadth
+(2 R&C + 2 lower-div H/SS) + 12 non-transferable (incl. 2 upper-div H/SS and
+4 derived free electives).
 
-### Non-transferable — completed at Berkeley (9 slots)
+### Non-transferable — completed at Berkeley (11 slots)
 
 | Requirement | Slots | Basis | Source |
 |---|---|---|---|
-| Upper-division EECS technical electives (incl. 1 design course) | 5 | 20 units ÷ 4 | [EECS upper-div reqs](https://eecs.berkeley.edu/resources/undergrads/eecs-2/degree-reqs-upperdiv-2/) |
+| Upper-division EECS technical electives (incl. 1 design course) | 5 | 20 units ÷ 4 (authored `units: 20` in the data) | [EECS upper-div reqs](https://eecs.berkeley.edu/resources/undergrads/eecs-2/degree-reqs-upperdiv-2/) |
+| Upper-division H/SS breadth | 2 | ≥2 of the 6 H/SS must be numbered 100–196 | [CoE H/SS requirement](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/humanities-and-social-sciences/) |
 | Ethics / social implications of technology | 1 | 1 course | same / [College page](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/major-programs/electrical-engineering-computer-sciences/) |
-| Free electives | 3 | ~12 units ÷ 4 to reach 120 | [College page](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/major-programs/electrical-engineering-computer-sciences/) |
+| Free electives | 4 | 120u ÷ 4u = 30 slots − 26 modeled slots (team decision 2026-07-14: flat ~4u/course average; was 3, an unsupported "~12 units" guess) | [College page](https://engineering.berkeley.edu/students/undergraduate-guide/degree-requirements/major-programs/electrical-engineering-computer-sciences/) |
 
-**Denominator = 28 slots** (13 transferable + 6 breadth + 9 non-transferable). A
-CC that articulates every lower-division course tops out near **19/28 ≈ 68%**.
+**Denominator = 30 slots** (14 transferable + 4 breadth + 12 non-transferable). A
+CC that articulates every lower-division course tops out near **18/30 = 60%**.
+The unit budget shown on the template page is computed from the stored data:
+flat ~4u per slot unless a section carries an authored `unit_advisement`
+(Berkeley's 20-unit UD block) — 56u + 16u + 48u = 120u ✓. Real per-course units
+vary (CHEM 1A / BIO 1A are 3u; H/SS minimum is 3u), so the flat average is a
+deliberate simplification, not gathered data.
 
 ---
 
@@ -134,11 +169,16 @@ CC that articulates every lower-division course tops out near **19/28 ≈ 68%**.
 
 ## Modeling decisions (v1 — revisit if numbers warrant)
 
-- **Slots, not units.** The engine counts course-slots. Unit→slot conversions use
-  4 units/course for the non-transferable tiers.
+- **Slots, not units.** The engine counts course-slots. Unit→slot conversions
+  assume a flat **~4 units/course average** (team decision 2026-07-14) —
+  authored `units` on a requirement (e.g. Berkeley's 20-unit UD block) override
+  it in the page's unit-budget check. Berkeley's free electives are derived
+  from this budget: 120u/4 = 30 slots − 26 modeled = 4.
 - **Free electives = non-transferable.** Conservative; a transfer student may in
   practice fill these with transferable units.
-- **Breadth = single select-6 proxy.** Not yet split R&C (2) / breadth (4).
+- **Breadth split (Berkeley): R&C (2) + lower-div H/SS (2) + upper-div H/SS
+  (2, non-transferable).** The upper-division pair reflects CoE's ≥2-upper-div
+  rule (corrected 2026-07-14; previously modeled as a CC-satisfiable select-4).
 
 ---
 
@@ -204,7 +244,7 @@ normalization (by units, or excluding free electives) is left to you.
 
 | Campus | % | covered/total | major-prep | breadth | non-transf |
 |---|---|---|---|---|---|
-| UC Berkeley *(sem)* | 55% | 16/29 | 10/14 | 6/6 | 9 |
+| UC Berkeley *(sem)* | 47% | 14/30 | 10/14 | 4/4 | 12 |
 | UC Merced *(sem)* | 65% | 20/31 | 14/16 | 6/6 | 9 |
 | UC San Diego | 42% | 15/36 | 9/12 | 6/6 | 18 |
 | UC Riverside | 46% | 18/39 | 12/14 | 6/6 | 19 |
@@ -213,6 +253,14 @@ normalization (by units, or excluding free electives) is left to you.
 | UC Irvine | 45% | 17/38 | 11/15 | 6/6 | 17 |
 | UC Santa Barbara | 46% | 16/35 | 10/12 | 6/6 | 17 |
 | UC Santa Cruz | 54% | 15/28 | 9/10 | 6/6 | 12 |
+
+*Berkeley re-verified 2026-07-14 after the upper-division H/SS correction
+(2 breadth slots moved to non-transferable). Per the
+[UC IGETC campus guidance](https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/preparing-to-transfer/general-education-igetc/campus-guidance.html),
+Berkeley Engineering is the only outright "not accepted"; the other eight
+accept IGETC/Cal-GETC (several discourage it in favor of major prep), so their
+uniform 6-slot breadth model stands. UCLA Samueli's wording ("not
+required/encouraged") is the one most worth a follow-up check.*
 
 ## Per-campus specifics + sources
 

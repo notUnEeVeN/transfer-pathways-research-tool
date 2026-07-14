@@ -64,11 +64,11 @@ export function createSectionDraft(tier = 'transferable') {
   return tier === 'nontransferable'
     ? {
         type: 'university', required: 1, courseIds: [], code: '',
-        description: '', geAreas: '',
+        description: '', geAreas: '', units: '',
       }
     : {
         type: 'courses', required: 1, courseIds: [], code: '',
-        description: '', geAreas: '',
+        description: '', geAreas: '', units: '',
       }
 }
 
@@ -101,6 +101,7 @@ export function sectionToDraft(section = {}, tier = 'transferable') {
     code: first.receiving?.code || '',
     description: first.receiving?.name || (type === 'university' ? first.receiving?.name : '') || '',
     geAreas: areaValues.join(', '),
+    units: section.unit_advisement ?? '',
     tier,
   }
 }
@@ -163,10 +164,15 @@ export function sectionFromDraft(form, { original = {}, tier = 'transferable', c
     })
   }
 
+  // Authored units (a stated unit rule like a 20-unit upper-division block)
+  // survive edits; for at-the-university sections the field is editable.
+  const draftUnits = Number(form.units)
   const section = {
     ...original,
     section_advisement: required,
-    unit_advisement: null,
+    unit_advisement: type === 'university'
+      ? (Number.isFinite(draftUnits) && draftUnits > 0 ? draftUnits : null)
+      : original.unit_advisement ?? null,
     tier,
     receivers,
   }
