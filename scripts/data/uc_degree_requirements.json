@@ -578,6 +578,7 @@
             "select": 1,
             "from": [
               "MAT 022A",
+              "MAT 027A",
               "MAT 067"
             ]
           }
@@ -610,7 +611,7 @@
         ]
       },
       {
-        "title": "Natural science (choose three)",
+        "title": "Natural science (choose three; BIO 1/2/3 omitted — not in ASSIST yet)",
         "tier": "transferable",
         "requirements": [
           {
@@ -621,7 +622,13 @@
               "PHY 009C",
               "CHE 002A",
               "CHE 002B",
-              "BIS 002A"
+              "CHE 002C",
+              "CHE 004A",
+              "CHE 004B",
+              "CHE 004C",
+              "BIS 002A",
+              "BIS 002B",
+              "BIS 002C"
             ]
           }
         ]

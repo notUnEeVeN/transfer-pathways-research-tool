@@ -277,9 +277,18 @@ Source: https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf
 
 ### UC Davis — Computer Science, B.S., catalog 2026-27 (College of Engineering)
 Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/ · checklist https://cs.ucdavis.edu/sites/g/files/dgvnsk8441/files/media/documents/CS%20Major%20Checklist_0.pdf
-- Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-067 (lin alg); ECS 020 (discrete), ECS 036A/036B/036C (prog series; renumbered from ECS 030/040/060 in F2020), ECS 050 (org); 3 sciences chosen from PHY 009A/009B/009C, CHE 002A/002B, BIS 002A.
+- Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-027A-or-067 (lin alg); ECS 020 (discrete), ECS 036A/036B/036C (prog series; renumbered from ECS 030/040/060 in F2020), ECS 050 (org); 3 sciences chosen from PHY 009A/B/C, CHE 002A/B/C, CHE 004A/B/C, BIS 002A/B/C.
 - Non-transferable: 16.
 - Notes: CS moved L&S → CoE effective Fall 2024 (courses identical, GE wrapper differs). Current catalog uses "choose 3 sciences" (older years hard-required PHY 9A + CHE 2A).
+- **Catalog-vs-ASSIST vintage (verified 2026-07-14):** the source is the
+  2026-27 catalog while ASSIST's agreements lag it. The original gathering
+  under-listed the choose-N pools — MAT 027A, CHE 002C, CHE 004A/B/C, and
+  BIS 002B/C all exist in ASSIST and are now included. The catalog's new
+  **BIO 001/001L, 002/002L, 003 series is NOT in ASSIST yet and is omitted**
+  (a CC course can never articulate to it in our data) — re-add when ASSIST
+  publishes 2026-27 agreements. This lag applies to every campus sourced
+  from a newer catalog than ASSIST's year: options absent from ASSIST are
+  omitted rather than modeled as unsatisfiable.
 
 ### UCLA — Computer Science, B.S., catalog 2024-25 (Samueli/Engineering)
 Source: https://www.seasoasa.ucla.edu/curric-24-25/44-compsci-ugstd-24.html
