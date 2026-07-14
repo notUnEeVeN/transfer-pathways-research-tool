@@ -60,76 +60,53 @@ function ProductionBanner() {
   )
 }
 
-// Audit pulse — read-only auditing activity, admin-only for now so the team
-// never reads it as a quota. Volume + who's auditing + what it caught; by
-// design there are no totals, targets, or percent-complete framings (the
-// template pool is effectively unbounded, so activity is the signal).
+// Audit pulse — read-only auditing activity, admin-only so the team never
+// reads it as a quota. A plain all-time counts table: who's audited how much
+// and what it caught. No targets or completion framing by design.
 function AuditPulsePanel() {
   const q = useAuditPulse()
   if (q.isLoading || q.isError) return null
-  const weeks = q.data?.weeks || []
   const people = q.data?.people || []
   const totals = q.data?.totals || { count: 0, errors: 0, conservative: 0 }
-  const max = Math.max(1, ...weeks.map((w) => w.count))
-  const fmtWeek = (value) => new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-  const yieldParts = [
-    { n: totals.errors, label: `${totals.errors} error${totals.errors === 1 ? '' : 's'}`, dot: 'var(--color-danger-bright)' },
-    { n: totals.conservative, label: `${totals.conservative} conservative`, dot: 'var(--color-conservative-fill)' },
-  ].filter((part) => part.n > 0)
 
   return (
     <Stack gap='comfortable'>
       <div>
         <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Audit pulse</h2>
         <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
-          Read-only auditing activity — volume, who's auditing, and what it caught. No targets
-          or totals: the template pool is effectively unbounded, so activity is the signal,
-          not completion.
+          All-time audit counts per auditor, and what those audits caught.
         </p>
       </div>
-      <div className='bg-surface-sunken rounded-[18px] px-[22px] py-4 flex items-center gap-6 flex-wrap'>
-        <div className='shrink-0 min-w-[96px]'>
-          <p className='text-label text-[10.5px]'>All time</p>
-          {totals.count > 0 ? (
-            <p className='mt-1 text-[22px] font-[600] tracking-[-.01em] leading-none'>
-              {totals.count} <span className='text-[12px] font-[400] text-ink-subtle'>audits</span>
-            </p>
-          ) : (
-            <p className='mt-1.5 text-caption text-ink-subtle'>No audits yet</p>
-          )}
-        </div>
-        <div className='flex-1 min-w-[160px] flex items-end gap-[3px] h-[38px]'>
-          {weeks.map((w, i) => (
-            <span key={w.week_start}
-              title={`Week of ${fmtWeek(w.week_start)} · ${w.count} audit${w.count === 1 ? '' : 's'}${
-                w.errors || w.conservative ? ` · caught ${w.errors} error${w.errors === 1 ? '' : 's'}, ${w.conservative} conservative` : ''}`}
-              className={`flex-1 rounded-t-[3px] rounded-b-[1.5px] ${i === weeks.length - 1 ? 'bg-primary' : 'bg-border-strong'}`}
-              style={{ height: w.count ? `${Math.max(14, (w.count / max) * 100)}%` : '3px' }} />
-          ))}
-        </div>
-        <div className='shrink-0 flex flex-col items-end gap-2'>
-          <div className='flex items-center gap-2.5 min-h-[18px]'>
-            {people.map((person) => (
-              <span key={person.uid} title={person.label || person.uid} className='inline-flex items-center gap-1.5'>
-                <UserInitialsAvatar email={person.label || person.uid} size='sm' className='!w-[18px] !h-[18px]' />
-                <span className='text-tag font-[600]'>{person.count}</span>
-              </span>
-            ))}
-            {people.length === 0 && <span className='text-tag text-ink-subtle'>—</span>}
+      {totals.count === 0 ? (
+        <p className='text-caption text-ink-subtle'>No audits yet.</p>
+      ) : (
+        <div className='surface-card overflow-hidden max-w-[560px]'>
+          <div className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 border-b border-border/60'>
+            <span className='text-label text-[10.5px]'>Auditor</span>
+            <span className='text-label text-[10.5px] text-right'>Audits</span>
+            <span className='text-label text-[10.5px] text-right'>Errors</span>
+            <span className='text-label text-[10.5px] text-right'>Conservative</span>
           </div>
-          {yieldParts.length > 0 && (
-            <div className='flex items-center gap-2.5'>
-              {yieldParts.map((part) => (
-                <span key={part.label} className='inline-flex items-center gap-1.5'>
-                  <span className='w-[7px] h-[7px] rounded-pill' style={{ backgroundColor: part.dot }} />
-                  <span className='text-tag text-ink-muted'>{part.label}</span>
-                </span>
-              ))}
-              <span className='text-tag text-ink-subtle'>caught</span>
+          {people.map((person) => (
+            <div key={person.uid}
+              className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 border-b border-border/40 items-center'>
+              <span className='flex items-center gap-2 min-w-0'>
+                <UserInitialsAvatar email={person.label || person.uid} size='sm' className='!w-[20px] !h-[20px]' />
+                <span className='text-[13px] font-[550] truncate'>{person.label || person.uid}</span>
+              </span>
+              <span className='text-[13px] text-right tabular'>{person.count}</span>
+              <span className='text-[13px] text-right tabular'>{person.errors}</span>
+              <span className='text-[13px] text-right tabular'>{person.conservative}</span>
             </div>
-          )}
+          ))}
+          <div className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 bg-surface-sunken/60 items-center'>
+            <span className='text-[13px] font-[650]'>Total</span>
+            <span className='text-[13px] font-[650] text-right tabular'>{totals.count}</span>
+            <span className='text-[13px] font-[650] text-right tabular'>{totals.errors}</span>
+            <span className='text-[13px] font-[650] text-right tabular'>{totals.conservative}</span>
+          </div>
         </div>
-      </div>
+      )}
     </Stack>
   )
 }

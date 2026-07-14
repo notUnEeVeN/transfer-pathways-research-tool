@@ -49,17 +49,19 @@ exports.getAuditPulse = asyncHandler(async (req, res) => {
     if (index < 0 || index >= weekCount) continue;
     weeks[index].count += 1;
     totals.count += 1;
-    if (row.result === 'error') { weeks[index].errors += 1; totals.errors += 1; }
-    if (row.result === 'conservative') { weeks[index].conservative += 1; totals.conservative += 1; }
     const uid = row.verifier_uid ?? 'unknown';
-    people.set(uid, (people.get(uid) || 0) + 1);
+    if (!people.has(uid)) people.set(uid, { count: 0, errors: 0, conservative: 0 });
+    const person = people.get(uid);
+    person.count += 1;
+    if (row.result === 'error') { weeks[index].errors += 1; totals.errors += 1; person.errors += 1; }
+    if (row.result === 'conservative') { weeks[index].conservative += 1; totals.conservative += 1; person.conservative += 1; }
   }
   const names = await listDisplayNames(auditDb);
   res.json({
     weeks,
     totals,
     people: [...people.entries()]
-      .map(([uid, count]) => ({ uid, label: names.get(uid) || null, count }))
+      .map(([uid, tallies]) => ({ uid, label: names.get(uid) || null, ...tallies }))
       .sort((a, b) => b.count - a.count),
   });
 });
