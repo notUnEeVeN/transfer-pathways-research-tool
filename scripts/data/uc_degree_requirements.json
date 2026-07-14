@@ -650,98 +650,16 @@
         ]
       },
       {
-        "title": "General education — Cal-GETC pattern (completing IGETC/Cal-GETC exempts ALL Davis GE; math and one science area come from the major)",
+        "title": "General education — Cal-GETC certification (accepted as ALL of Davis GE)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
+            "units": 40,
             "from": {
-              "code": "GE-1A",
-              "label": "English Composition (Cal-GETC 1A)",
-              "ge_areas": [
-                "1A"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "GE-1B",
-              "label": "Critical Thinking & Composition (Cal-GETC 1B)",
-              "ge_areas": [
-                "1B"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "GE-1C",
-              "label": "Oral Communication (Cal-GETC 1C)",
-              "ge_areas": [
-                "1C"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "GE-3A",
-              "label": "Arts (Cal-GETC 3A)",
-              "ge_areas": [
-                "3A"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "GE-3B",
-              "label": "Humanities (Cal-GETC 3B)",
-              "ge_areas": [
-                "3B"
-              ]
-            }
-          },
-          {
-            "select": 2,
-            "from": {
-              "code": "GE-4",
-              "label": "Social & Behavioral Sciences — 2 courses (Cal-GETC 4)",
-              "ge_areas": [
-                "4",
-                "4A",
-                "4B",
-                "4C",
-                "4D",
-                "4E",
-                "4F",
-                "4G",
-                "4H",
-                "4I",
-                "4J"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "GE-5",
-              "label": "Science — the area the major series didn't cover (Cal-GETC 5A physical / 5B biological)",
-              "ge_areas": [
-                "5A",
-                "5B"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "GE-7",
-              "label": "Ethnic Studies (Cal-GETC 7)",
-              "ge_areas": [
-                "7"
-              ]
+              "code": "Cal-GETC",
+              "label": "Cal-GETC certification — Davis exempts ALL GE for transfer students who complete it; every California community college offers the full pattern. 11 courses / 34 semester units (≈51 quarter); ≈40 quarter units here after the major's math + one science overlap",
+              "assume": true
             }
           }
         ]

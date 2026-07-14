@@ -65,7 +65,17 @@ const DEGREE_SOURCES = {
     {
       label: 'UC Davis CS Department — major checklist (PDF)',
       url: 'https://cs.ucdavis.edu/sites/g/files/dgvnsk8441/files/media/documents/CS%20Major%20Checklist_0.pdf',
-      note: 'The department’s own checklist — cross-check for the catalog.',
+      note: 'The department’s own checklist — the series rules (ECS 36 in its entirety) and the 7-core + 7-elective upper division.',
+    },
+    {
+      label: 'UC Davis Catalog — General Education requirements',
+      url: 'https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/general-education-ge-requirements/',
+      note: 'States transfer students who complete IGETC/Cal-GETC are exempt from ALL GE — why GE is modeled as one Cal-GETC row.',
+    },
+    {
+      label: 'UC Davis Catalog — American History & Institutions',
+      url: 'https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/american-history-institutions-requirement/',
+      note: 'UC-wide graduation rule, separate from GE — satisfiable with high-school U.S. history, which is why it is assumed satisfiable.',
     },
   ],
   // UCLA — Computer Science B.S.
