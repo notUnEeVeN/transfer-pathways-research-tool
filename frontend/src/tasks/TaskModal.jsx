@@ -9,7 +9,8 @@ import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import PortingWorkflow from './PortingWorkflow'
 import VerificationChecklist from './VerificationChecklist'
 import {
-  PORTING_STAGES, TASK_TYPE_OPTIONS, isChecklistTask, taskTypeBadgeVariant, taskTypeLabel,
+  CREATABLE_TASK_TYPES, PORTING_STAGES, TASK_TYPE_OPTIONS, isChecklistTask,
+  taskTypeBadgeVariant, taskTypeLabel,
 } from './taskWorkflow'
 import { useSchools } from '@frontend/query/hooks/useData'
 
@@ -120,10 +121,11 @@ export default function TaskModal({
           <p className='field-label'>Task type</p>
           {editing ? (
             <Select value={draft.task_type} onChange={(value) => set({ task_type: value })}
-              options={TASK_TYPE_OPTIONS} disabled={(task?.progress || 0) > 0} />
+              options={TASK_TYPE_OPTIONS}
+              disabled={(task?.progress || 0) > 0 || task?.task_type === 'audit_fix'} />
           ) : (
             <div className='flex items-stretch gap-0.5 bg-surface-sunken rounded-pill p-[3px]'>
-              {TASK_TYPE_OPTIONS.map((option) => {
+              {CREATABLE_TASK_TYPES.map((option) => {
                 const active = draft.task_type === option.value
                 return (
                   <button key={option.value} type='button'

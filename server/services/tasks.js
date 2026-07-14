@@ -26,14 +26,14 @@ const { getDisplayName, listDisplayNames } = require('./displayNames');
 const COLLECTION = 'tasks';
 
 const STATUSES = ['backlog', 'todo', 'in_progress', 'done'];
-const TASK_TYPES = ['porting', 'data_verification'];
+const TASK_TYPES = ['porting', 'data_verification', 'audit_fix'];
 const DEFAULT_TASK_TYPE = 'porting';
 
-// Checklist-shaped types: the workflow points are user-authored per task
-// (stored on the doc as `checklist_items`), completable in any order, with
-// no peer gate. 'data_verification' is the first; future checklist types
-// just join this set.
-const CHECKLIST_TASK_TYPES = new Set(['data_verification']);
+// Checklist-shaped types: the workflow points live on the doc as
+// `checklist_items`, completable in any order, with no peer gate.
+// 'data_verification' items are user-authored; 'audit_fix' items are
+// machine-appended by audit verdicts (one standing task accumulates them).
+const CHECKLIST_TASK_TYPES = new Set(['data_verification', 'audit_fix']);
 const isChecklistType = (taskType) => CHECKLIST_TASK_TYPES.has(taskType);
 const MAX_CHECKLIST_ITEMS = 100;
 
@@ -694,6 +694,92 @@ async function resolveTaskLogNote(auditDb, id, logId, body = {}, uid) {
   return normalizeTask(updated);
 }
 
+// ── audit-fix aggregation ──
+// Audit verdicts feed one standing 'audit_fix' task in To do: an error or
+// conservative verdict appends a checklist item for that doc (deduped by a
+// stable doc key, verdict notes ride along as stage notes); a later
+// 'correct' re-audit auto-completes the doc's open item. Best-effort by
+// contract — callers must never fail a verdict over task bookkeeping.
+const AUDIT_FIX_TITLE = 'Audit fixes';
+
+async function recordAuditVerdictFix(auditDb, { docId, result, label, note }, uid) {
+  const isFix = result === 'error' || result === 'conservative';
+  if (!isFix && result !== 'correct') return null;
+  const itemKey = `doc_${String(docId)}`;
+
+  let existing = await auditDb.collection(COLLECTION)
+    .find({ task_type: 'audit_fix', status: { $ne: 'done' }, archived: { $ne: true } })
+    .sort({ created_at: 1 }).limit(1).next();
+
+  // A 'correct' verdict only ever resolves; it never creates the task.
+  if (!existing) {
+    if (!isFix) return null;
+    const created = await createTask(auditDb, null, {
+      title: AUDIT_FIX_TITLE,
+      description: 'Parser/articulation fixes surfaced by audit verdicts. Items are appended automatically when a doc is judged error or conservative, and check themselves off when a re-audit comes back correct.',
+      task_type: 'audit_fix',
+      checklist_items: [{ key: itemKey, label }],
+      notes: [],
+    }, uid);
+    if (!note) return normalizeTask(created);
+    return addTaskStageNote(auditDb, created._id, itemKey, { note }, uid);
+  }
+
+  const task = normalizeTask(existing);
+  const items = task.checklist_items || [];
+  const known = items.some((item) => item.key === itemKey);
+  const now = new Date();
+  const actorLabel = await getDisplayName(auditDb, uid);
+  const $set = { updated_by: uid ?? null, updated_at: now };
+  const log = [...task.workflow_log];
+  let workflowStages = task.workflow_stages;
+
+  if (isFix) {
+    if (!known) $set.checklist_items = [...items, { key: itemKey, label }];
+    if (known && isStageDone(task.workflow_stages[itemKey])) {
+      // The doc regressed after being fixed — reopen its item.
+      workflowStages = { ...workflowStages };
+      delete workflowStages[itemKey];
+      log.push({
+        _id: `tl-${crypto.randomBytes(5).toString('hex')}`,
+        stage: itemKey, action: 'reopened', affected_stages: [itemKey],
+        note: `Re-audited ${result}.`, by: uid ?? null, by_label: actorLabel, at: now,
+      });
+    }
+    if (note) {
+      log.push({
+        _id: `tl-${crypto.randomBytes(5).toString('hex')}`,
+        stage: itemKey, action: 'noted', note, by: uid ?? null, by_label: actorLabel, at: now,
+      });
+    }
+  } else {
+    // 'correct': complete the doc's item if it exists and is still open.
+    if (!known || isStageDone(task.workflow_stages[itemKey])) return task;
+    const eventId = `tl-${crypto.randomBytes(5).toString('hex')}`;
+    workflowStages = {
+      ...workflowStages,
+      [itemKey]: {
+        completed: true, completed_at: now, completed_by: uid ?? null,
+        completed_by_label: actorLabel, note: 'Re-audited correct.', event_id: eventId,
+      },
+    };
+    log.push({
+      _id: eventId, stage: itemKey, action: 'completed',
+      note: 'Re-audited correct.', by: uid ?? null, by_label: actorLabel, at: now,
+    });
+  }
+
+  const nextItems = $set.checklist_items || items;
+  $set.workflow_stages = workflowStages;
+  $set.workflow_log = log;
+  $set.workflow_revision = task.workflow_revision + 1;
+  $set.progress = progressForStages({ ...task, checklist_items: nextItems }, workflowStages);
+  const updated = await auditDb.collection(COLLECTION).findOneAndUpdate(
+    workflowRevisionFilter(existing), { $set }, { returnDocument: 'after' }
+  );
+  return updated ? normalizeTask(updated) : null;
+}
+
 async function deleteTask(auditDb, id) {
   const { deletedCount } = await auditDb.collection(COLLECTION).deleteOne({ _id: id });
   return deletedCount;
@@ -767,7 +853,7 @@ module.exports = {
   ValidationError,
   normalizeTask, progressForStages, stagesForTask,
   listTasks, createTask, updateTask, addTaskStageNote, completeTaskStage, reopenTaskStage,
-  deleteTaskLogNote, resolveTaskLogNote,
+  deleteTaskLogNote, resolveTaskLogNote, recordAuditVerdictFix,
   deleteTask, listRoster,
   migrateLegacyTasks, ensureTaskIndexes,
 };

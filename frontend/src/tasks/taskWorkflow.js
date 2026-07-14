@@ -1,12 +1,17 @@
 export const TASK_TYPE_OPTIONS = [
   { value: 'porting', label: 'Porting' },
   { value: 'data_verification', label: 'Data Verification' },
+  // Machine-made: audit verdicts feed one standing task (no manual creation).
+  { value: 'audit_fix', label: 'Audit Fix' },
 ]
+export const CREATABLE_TASK_TYPES = TASK_TYPE_OPTIONS.filter((option) => option.value !== 'audit_fix')
 
-// Checklist-shaped types: workflow points are user-authored per task
-// (task.checklist_items), completable in any order, no peer gate. Mirrors
-// the server's CHECKLIST_TASK_TYPES.
-export const isChecklistTask = (task) => task?.task_type === 'data_verification'
+// Checklist-shaped types: workflow points live on task.checklist_items,
+// completable in any order, no peer gate. Mirrors the server's
+// CHECKLIST_TASK_TYPES.
+export const isChecklistTask = (task) => (
+  task?.task_type === 'data_verification' || task?.task_type === 'audit_fix'
+)
 
 export const PORTING_STAGES = [
   {
@@ -126,15 +131,20 @@ export const taskTypeLabel = (taskType) => (
   TASK_TYPE_OPTIONS.find((option) => option.value === taskType)?.label || taskType || 'Porting'
 )
 
-// Type chip tone: porting reads lavender, verification reads mint/success.
+// Type chip tone: porting lavender, verification mint/success, audit fixes accent.
 export const taskTypeBadgeVariant = (taskType) => (
-  taskType === 'data_verification' ? 'verify' : 'conservative'
+  taskType === 'data_verification' ? 'verify'
+    : taskType === 'audit_fix' ? 'accent'
+      : 'conservative'
 )
 
-// Card copy under the dot strip. Checklist items are "verified", stages are
-// worked; a fully-verified checklist says so instead of naming a next step.
+// Card copy under the dot strip. Checklist items are "verified"/"fixed",
+// stages are worked; a finished checklist says so instead of a next step.
 export const nextStepLabel = (task) => {
   const upcoming = nextStage(task)
+  if (task?.task_type === 'audit_fix') {
+    return upcoming ? `Next: fix ${upcoming.label}` : 'All audit fixes resolved'
+  }
   if (isChecklistTask(task)) {
     return upcoming ? `Next: verify ${upcoming.label}` : 'All checkpoints verified'
   }

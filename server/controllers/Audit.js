@@ -44,6 +44,7 @@ const {
   _countReceivers,
 } = require('../services/audit/filters');
 const { _partitionLiveStale } = require('../services/audit/staleness');
+const { recordAuditVerdictFix } = require('../services/tasks');
 const {
   _courseMap,
   _universityCoursesMap,
@@ -228,6 +229,18 @@ exports.postVerify = async (req, res) => {
     const auditDb = req.app.locals.auditDb || db;
     await auditDb.collection(AUDIT_RESULTS).updateOne({ doc_id: oid }, update, { upsert: true });
     cache.clear();
+    // Verdicts feed the standing "Audit fixes" task: error/conservative
+    // appends the doc as a fix item (verdict notes ride along); a correct
+    // re-audit checks its item off. Best-effort — never fails the verdict.
+    recordAuditVerdictFix(auditDb, {
+      docId: oid,
+      result,
+      label: [ref[sysEntry.nameField], ref.community_college, ref.major]
+        .filter(Boolean).join(' · ')
+        .concat(` — ${result}`)
+        .slice(0, 200),
+      note: String(notes || '').trim() || null,
+    }, req.user?.uid).catch((e) => console.warn('[tasks] audit-fix bookkeeping failed:', e.message));
     res.json({ ok: true });
   } catch (err) {
     console.error('audit.postVerify:', err);

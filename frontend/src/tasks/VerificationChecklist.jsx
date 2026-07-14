@@ -74,6 +74,24 @@ export default function VerificationChecklist({
   const doneCount = stages.filter((stage) => isStageComplete(task, stage.key)).length
   const allDone = stages.length > 0 && doneCount === stages.length
   const pct = Math.max(0, Math.min(100, task.progress || 0))
+  // Same checklist mechanics, different vocabulary: audit-fix items are
+  // machine-appended docs to FIX; verification checkpoints are claims to VERIFY.
+  const isAuditFix = task.task_type === 'audit_fix'
+  const copy = isAuditFix
+    ? {
+        title: 'Audit fixes',
+        count: `${doneCount} of ${stages.length} fixes resolved`,
+        verb: 'Fixed',
+        banner: 'Every audit fix is resolved — this task is ready to close (new verdicts will reopen it).',
+        addPlaceholder: 'Add a fix by hand — a doc, campus, or parser case…',
+      }
+    : {
+        title: 'Verification checkpoints',
+        count: `${doneCount} of ${stages.length} checkpoints verified`,
+        verb: 'Verify',
+        banner: 'Every checkpoint is verified — this task is ready to close.',
+        addPlaceholder: 'Add a checkpoint — a campus, dataset, or spot-check…',
+      }
 
   const names = useMemo(() => new Map(roster.map((person) => [person.uid, person.label])), [roster])
   const actorLabel = (uid, storedLabel) => storedLabel || names.get(uid) || uid || 'Unknown teammate'
@@ -158,8 +176,8 @@ export default function VerificationChecklist({
     <div>
       <div className='flex flex-wrap items-end gap-3'>
         <div>
-          <h3 className='text-heading'>Verification checkpoints</h3>
-          <p className='text-caption text-ink-subtle mt-0.5'>{doneCount} of {stages.length} checkpoints verified</p>
+          <h3 className='text-heading'>{copy.title}</h3>
+          <p className='text-caption text-ink-subtle mt-0.5'>{copy.count}</p>
         </div>
         <span className='ml-auto text-[22px] font-[650] tracking-[-.01em] leading-none text-success'>{pct}%</span>
       </div>
@@ -179,7 +197,7 @@ export default function VerificationChecklist({
           <span className='shrink-0 grid place-items-center w-[26px] h-[26px] rounded-pill bg-primary'>
             <CheckIcon className='w-3.5 h-3.5 text-accent' strokeWidth={2.5} />
           </span>
-          <span className='text-[13px] font-[600] min-w-0'>Every checkpoint is verified — this task is ready to close.</span>
+          <span className='text-[13px] font-[600] min-w-0'>{copy.banner}</span>
           <Button className='ml-auto shrink-0' size='sm' loading={busy === 'mark-done'} onClick={markDone}>
             Mark task done
           </Button>
@@ -244,7 +262,7 @@ export default function VerificationChecklist({
                         {canVerify && (
                           <Button size='sm' variant={isNext ? 'primary' : 'secondary'} leadingIcon={CheckIcon}
                             loading={busy === `verify:${stage.key}`} disabled={Boolean(busy) && busy !== `verify:${stage.key}`}
-                            onClick={() => verify(stage)}>Verify</Button>
+                            onClick={() => verify(stage)}>{copy.verb}</Button>
                         )}
                       </>
                     )}
@@ -291,7 +309,7 @@ export default function VerificationChecklist({
               value={newItem}
               onChange={(event) => setNewItem(event.target.value)}
               onKeyDown={(event) => { if (event.key === 'Enter') addItem() }}
-              placeholder='Add a checkpoint — a campus, dataset, or spot-check…'
+              placeholder={copy.addPlaceholder}
               className='w-full bg-surface border border-border rounded-pill px-4 py-[9px] text-[13px] outline-none placeholder:text-ink-subtle focus:border-primary'
             />
           </div>

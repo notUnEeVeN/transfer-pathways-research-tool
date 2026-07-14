@@ -343,7 +343,7 @@ describe('ensureTaskIndexes', () => {
 describe('constants', () => {
   it('exports the status whitelist the client mirrors', () => {
     expect(STATUSES).toEqual(['backlog', 'todo', 'in_progress', 'done']);
-    expect(TASK_TYPES).toEqual(['porting', 'data_verification']);
+    expect(TASK_TYPES).toEqual(['porting', 'data_verification', 'audit_fix']);
     expect(PORTING_STAGES.reduce((sum, stage) => sum + stage.weight, 0)).toBe(100);
   });
 });
