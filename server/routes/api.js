@@ -123,6 +123,10 @@ router.post('/tasks',          jsonBody, tasksController.create);
 router.post('/tasks/:id/stages/:stage/notes',    jsonBody, tasksController.addStageNote);
 router.post('/tasks/:id/stages/:stage/complete', jsonBody, tasksController.completeStage);
 router.post('/tasks/:id/stages/:stage/reopen',   jsonBody, tasksController.reopenStage);
+// Stage-note management (log-only): registered before the '/tasks/:id' verbs so
+// the longer '/tasks/:id/log/:logId' paths win the match.
+router.delete('/tasks/:id/log/:logId',           tasksController.deleteLogNote);
+router.post('/tasks/:id/log/:logId/resolve',     jsonBody, tasksController.resolveLogNote);
 router.put('/tasks/:id',       jsonBody, tasksController.update);
 router.delete('/tasks/:id',    tasksController.remove);
 

@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon,
-  ChartBarIcon, TrashIcon, PencilSquareIcon,
+  MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon, ArrowRightIcon,
+  ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
 import { Button, Alert, Spinner, EmptyState, Stack, Tabs, Input, LoadingLogo } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import RouteHint from './components/RouteHint'
+import SubNav from './components/SubNav'
 import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
 import { matchesGeo } from './shared/lib/collegeGeo'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
@@ -37,26 +38,59 @@ import {
  *
  * Every requirement view renders through the shared RequirementsLedger
  * (completion checks off — there's no student here), and every view surfaces
- * the API route that fetches what's on screen (RouteHint).
+ * the API route that fetches what's on screen (RouteHint) — now shown once,
+ * up in the SubNav bar, rather than repeated inside each pane.
  */
+// Per-tab *base* route shown in the SubNav bar — what's shown before (or
+// absent) any drill-in. Overview/districts have no finer-grained view, so
+// this is also their only value. Agreements/courses report a more specific
+// route once their pane actually changes (`onRoute`, below).
+const DATA_TAB_ROUTES = {
+  overview: { path: '/api/data/summary' },
+  agreements: { path: '/api/assist/coverage' },
+  courses: { path: '/api/assist/courses' },
+  districts: { path: '/api/assist/institutions?kind=community_college' },
+}
+
 export default function DataPage({ onNavigate = () => {} }) {
   const [tab, setTab] = useState('overview')
+  const [route, setRoute] = useState(DATA_TAB_ROUTES.overview)
+
+  // Switching top-level tabs always snaps the chip back to that tab's base
+  // route first — otherwise a drilled-in agreements/courses route would
+  // survive into a tab that never reports its own (overview, districts), or
+  // flash stale until the newly-mounted pane's own effect catches up.
+  const changeTab = (next) => {
+    setTab(next)
+    setRoute(DATA_TAB_ROUTES[next])
+  }
+
+  // Passed to AgreementsBrowser/CoursesBrowser as `onRoute`: they report
+  // `{ path }` whenever their own drilled-in pane changes. Only commits when
+  // the path actually differs, so a child effect re-reporting the same value
+  // (e.g. its own prop identity churning) never triggers another render.
+  const reportRoute = useCallback((next) => {
+    setRoute((prev) => (next?.path && next.path !== prev?.path ? next : prev))
+  }, [])
+
   return (
     <div className='h-full flex flex-col'>
-      <div className='shrink-0 flex items-center px-4 h-11 border-b border-border'>
-        <Tabs value={tab} onChange={setTab}
-          options={[
-            { value: 'overview',   label: 'Overview' },
-            { value: 'agreements', label: 'Agreements' },
-            { value: 'courses',    label: 'Courses' },
-            { value: 'districts',  label: 'Districts' },
-          ]} />
-      </div>
+      <SubNav tabs={{
+        value: tab, onChange: changeTab,
+        options: [
+          { value: 'overview',   label: 'Overview' },
+          { value: 'agreements', label: 'Agreements' },
+          { value: 'courses',    label: 'Courses' },
+          { value: 'districts',  label: 'Districts' },
+        ],
+      }} route={route} />
       <div className='flex-1 min-h-0 overflow-auto'>
-        <div className='mx-auto max-w-screen-2xl px-6 py-6'>
+        <div className={tab === 'agreements'
+          ? 'max-w-[1240px] mx-auto px-[22px] pt-[26px] pb-12 w-full'
+          : 'max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12 w-full'}>
           {tab === 'overview' && <DatasetSummaryPanel />}
-          {tab === 'agreements' && <AgreementsBrowser />}
-          {tab === 'courses' && <CoursesBrowser />}
+          {tab === 'agreements' && <AgreementsBrowser onRoute={reportRoute} />}
+          {tab === 'courses' && <CoursesBrowser onRoute={reportRoute} />}
           {tab === 'districts' && <DistrictsTab />}
         </div>
       </div>
@@ -66,11 +100,12 @@ export default function DataPage({ onNavigate = () => {} }) {
 
 // ───────── agreements (campus-first) ─────────
 //
-// Campus selection uses the same rail as the UC course catalog. Colleges and
-// coverage follow the working major selected for that campus in Admin; opening
-// a college goes straight to its agreement with no program-selection step.
+// Campus selection is a chip row (its own picker — the UC course catalog
+// still uses the shared InstitutionRail). Colleges and coverage follow the
+// working major selected for that campus in Admin; opening a college goes
+// straight to its agreement with no program-selection step.
 
-function AgreementsBrowser() {
+export function AgreementsBrowser({ onRoute = () => {} }) {
   const summary = useDataSummary()
   const coverage = useCoverage()
   const websiteCoverage = useCoverage({ requirements: 'paper' })
@@ -79,10 +114,13 @@ function AgreementsBrowser() {
   const [campusView, setCampusView] = useState(null) // null | 'template' | 'minimums'
 
   const schools = summary.data?.schools || []
+  // Alphabetical: this is now the chip row's own display + default-pick
+  // order (InstitutionRail used to sort for display; nothing else did).
   const campuses = useMemo(
     () => schools
       .filter((g) => g.majors.length)
-      .map((g) => ({ id: g.school_id, name: g.school })),
+      .map((g) => ({ id: g.school_id, name: g.school }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
     [schools]
   )
 
@@ -119,6 +157,21 @@ function AgreementsBrowser() {
     return m
   }, [websiteCoverage.data, campus])
 
+  // The route fetching whatever the right-hand pane currently shows — the
+  // pre-SubNav `paneRoute` local, now reported up so the shared chip can show
+  // it. A college's own AgreementDetail renders its own accurate RouteHint
+  // next to its view tabs, so an open college still just reports the list
+  // route here (must run unconditionally, above every early return below, or
+  // hook order breaks across renders).
+  const paneRoute = !campus ? '/api/data/summary'
+    : campusView === 'template' ? '/api/curated/degrees'
+    : campusView === 'minimums' ? '/api/curated/requirements?kind=transfer_minimum'
+    : '/api/assist/coverage'
+
+  useEffect(() => {
+    onRoute({ path: paneRoute })
+  }, [paneRoute, onRoute])
+
   if (summary.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (summary.isError) return <Alert type='error'>Failed to load your dataset summary.</Alert>
   if (!campuses.length) {
@@ -126,57 +179,63 @@ function AgreementsBrowser() {
       description='The dataset has no UC campuses at the moment.' />
   }
 
-  if (!campus && campuses.length === 1) {
+  // The campus chips are always-on segmented navigation (like the mockup's
+  // "one active pill" chip row), so a campus is always selected — the first
+  // alphabetically picks itself the first time through, same as the old
+  // single-campus auto-pick but generalized to every campus count.
+  if (!campus) {
     selectCampus(campuses[0].id)
     return null
   }
 
-  // The route fetching whatever the right-hand pane currently shows. Inside an
-  // agreement, AgreementDetail renders its own per-tab hint instead.
-  const paneRoute = !campus ? '/api/data/summary'
-    : campusView === 'template' ? '/api/curated/degrees'
-    : campusView === 'minimums' ? '/api/curated/requirements?kind=transfer_minimum'
-    : collegeId == null ? '/api/assist/coverage'
-    : null
-
   return (
     <Stack gap='cozy'>
-      {paneRoute && (
-        <div className='flex justify-end'>
-          <RouteHint path={paneRoute} />
-        </div>
-      )}
-      <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
-      <InstitutionRail items={campuses} selectedId={campus?.school_id}
-        onSelect={selectCampus} title='UC campuses' searchable={false} />
-
-      {/* College coverage list → agreement detail (or a campus-level view:
-          degree template / hand-curated minimum) */}
-      <Stack gap='cozy'>
-        {!campus ? (
-          <EmptyState title='Choose a campus'
-            description='Pick a UC campus on the left to browse all of its agreements.' />
-        ) : campusView === 'template' ? (
-          <CampusDegreeTemplate schoolId={campus.school_id} school={campus.school}
-            onBack={() => setCampusView(null)} />
-        ) : campusView === 'minimums' ? (
-          <Stack gap='cozy'>
-            <div className='flex items-center'>
-              <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={() => setCampusView(null)}>All colleges</Button>
+      {campusView === 'template' ? (
+        <CampusDegreeTemplate schoolId={campus.school_id} school={campus.school}
+          onBack={() => setCampusView(null)} />
+      ) : campusView === 'minimums' ? (
+        <Stack gap='cozy'>
+          <div className='flex items-center'>
+            <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={() => setCampusView(null)}>All colleges</Button>
+          </div>
+          <CampusMinimums schoolId={campus.school_id} />
+        </Stack>
+      ) : collegeId != null ? (
+        <CampusAgreements campus={campus} collegeId={collegeId}
+          coverageRows={coverageByCc.get(Number(collegeId)) || []}
+          webRow={websiteByCc.get(Number(collegeId)) || null}
+          lastVerifiedAt={summary.data?.last_data_refresh_at || null}
+          onBack={() => setCollegeId(null)} />
+      ) : (
+        <Stack gap='comfortable'>
+          <div className='flex items-end gap-3.5 flex-wrap'>
+            <div className='flex flex-col'>
+              <span className='text-label'>Receiving campus</span>
+              <div className='mt-2 flex items-center gap-1.5 flex-wrap'>
+                {campuses.map((c) => {
+                  const active = Number(c.id) === Number(campus.school_id)
+                  return (
+                    <button key={c.id} type='button' onClick={() => selectCampus(c.id)}
+                      className={`px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
+                        active
+                          ? 'bg-primary text-on-primary border-primary font-[650]'
+                          : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
+                      }`}>
+                      {c.name.replace('UC ', '')}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-            <CampusMinimums schoolId={campus.school_id} />
-          </Stack>
-        ) : collegeId == null ? (
+            <span className='ml-auto self-end flex gap-2'>
+              <Button variant='secondary' onClick={() => setCampusView('minimums')}>Min requirements</Button>
+              <Button variant='secondary' onClick={() => setCampusView('template')}>Degree template</Button>
+            </span>
+          </div>
           <CampusColleges campus={campus} coverageByCc={coverageByCc} websiteByCc={websiteByCc}
-            coverageLoading={coverage.isLoading || websiteCoverage.isLoading} onPick={setCollegeId}
-            onCampusView={setCampusView} />
-        ) : (
-          <CampusAgreements campus={campus} collegeId={collegeId}
-            coverageRows={coverageByCc.get(Number(collegeId)) || []}
-            onBack={() => setCollegeId(null)} />
-        )}
-      </Stack>
-      </div>
+            coverageLoading={coverage.isLoading || websiteCoverage.isLoading} onPick={setCollegeId} />
+        </Stack>
+      )}
     </Stack>
   )
 }
@@ -196,9 +255,13 @@ export function summarizeCoverageRows(rows = []) {
   }
 }
 
+// The college table's grid columns — shared by the header row and every
+// data row so the two can never drift out of alignment.
+const COLLEGE_TABLE_COLS = 'grid grid-cols-[minmax(0,1fr)_220px_220px_76px] gap-3.5'
+
 // Each college's campus-wide coverage, with all visible ASSIST agreements
 // summarized into one row alongside the hand-curated hard minimum.
-function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, onPick, onCampusView }) {
+function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, onPick }) {
   const colleges = useColleges()
   const [q, setQ] = useState('')
   const [geo, setGeo] = useState(EMPTY_GEO)
@@ -220,75 +283,78 @@ function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, on
   const withAgreement = rows.filter((r) => r.assistRows.length).length
 
   return (
-    <Stack gap='cozy'>
-      <div className='flex flex-wrap items-start gap-3'>
-        <div>
-          <p className='text-body-strong'>{campus.school}</p>
-          <p className='text-caption text-ink-muted'>{withAgreement} colleges with agreements</p>
-        </div>
-        <span className='ml-auto flex items-center gap-2'>
-          <Button variant='secondary' onClick={() => onCampusView('minimums')}>Min requirements</Button>
-          <Button variant='secondary' onClick={() => onCampusView('template')}>Degree template</Button>
-        </span>
+    <Stack gap='comfortable'>
+      <div className='flex items-center gap-2.5'>
+        <label className='flex-1 flex items-center gap-3 bg-surface border-[1.5px] border-border-strong rounded-pill px-[22px] py-[13px]'>
+          <MagnifyingGlassIcon className='w-[17px] h-[17px] text-ink-muted shrink-0' />
+          <input value={q} onChange={(e) => setQ(e.target.value)} aria-label='Search colleges'
+            placeholder={`Search ${rows.length} colleges — name, district, or county…`}
+            className='flex-1 bg-transparent outline-none border-none text-[15px] text-ink placeholder:text-ink-subtle' />
+        </label>
+        <CollegeGeoFilters colleges={colleges.data || []} value={geo} onChange={setGeo} />
       </div>
-      <CollegeGeoFilters colleges={colleges.data || []} value={geo} onChange={setGeo} />
-      <div className='flex flex-wrap items-center gap-3'>
-        <Input className='w-72' value={q} onChange={(e) => setQ(e.target.value)}
-          placeholder='Find a college…' leadingIcon={MagnifyingGlassIcon} />
-          <span className='inline-flex items-center gap-3 text-caption text-ink-subtle'>
-          <span className='inline-flex items-center gap-1.5'>
-            <span className='inline-block w-2.5 h-2.5 rounded-full' style={{ backgroundColor: 'var(--color-success, #16a34a)' }} /> complete
-          </span>
-          <span className='inline-flex items-center gap-1.5'>
-            <span className='inline-block w-2.5 h-2.5 rounded-full' style={{ backgroundColor: 'var(--color-primary, #3366ef)' }} /> partial coverage
-          </span>
-          <span className='inline-flex items-center gap-1.5'>
-            <span className='inline-block w-2.5 h-2.5 rounded-full bg-surface-muted border border-border' /> no agreement
-          </span>
+      <div className='flex items-center gap-4'>
+        <span className='text-[13px] text-ink-subtle'>
+          <strong className='text-ink font-semibold'>{campus.school}</strong> · {withAgreement} colleges with agreements
         </span>
+        <div className='ml-auto flex items-center gap-4 text-[13px] text-ink-muted'>
+          <span className='flex items-center gap-1.5 whitespace-nowrap'>
+            <span className='inline-block w-[9px] h-[9px] rounded-pill bg-success' /> complete
+          </span>
+          <span className='flex items-center gap-1.5 whitespace-nowrap'>
+            <span className='inline-block w-[9px] h-[9px] rounded-pill bg-primary' /> partial coverage
+          </span>
+          <span className='flex items-center gap-1.5 whitespace-nowrap'>
+            <span className='inline-block w-[9px] h-[9px] rounded-pill border-[1.5px] border-border-strong bg-surface' /> no agreement
+          </span>
+        </div>
       </div>
       {colleges.isLoading || coverageLoading ? (
         <div className='flex justify-center py-8'><Spinner /></div>
       ) : (
         <div className='surface-card overflow-auto max-h-[65vh]'>
-          <table className='w-full text-left'>
-            <thead className='sticky top-0 bg-surface border-b border-border'>
-              <tr>
-                <th className='px-3 py-2 text-label'>Community college</th>
-                <th className='px-3 py-2 text-label whitespace-nowrap'>Hand curated</th>
-                <th className='px-3 py-2 text-label whitespace-nowrap'>ASSIST agreement</th>
-                <th className='px-3 py-2 text-label' />
-              </tr>
-            </thead>
-            <tbody className='divide-y divide-border/60'>
-              {rows.map((c) => (
-                <tr key={c.id}
-                  className={c.assistRows.length ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-60'}
-                  onClick={() => c.assistRows.length && onPick(Number(c.id))}>
-                  <td className='px-3 py-1.5 text-body'>
-                    {c.name}
-                    {c.district && <span className='block text-caption text-ink-subtle'>{c.district}</span>}
-                  </td>
-                  <td className='px-3 py-1.5'>
-                    {c.web ? <CoverageBar pct={c.web.pct_articulated} full={c.web.fully_articulated} width='w-20' /> :
-                      <span className='text-caption text-ink-subtle'>—</span>}
-                  </td>
-                  <td className='px-3 py-1.5'>
-                    {c.assistRows.length ? (
-                      <span className='inline-flex flex-col gap-0.5'>
-                        <CoverageBar pct={c.assist.average} full={c.assist.fullyArticulated} width='w-20' />
-                        {c.assist.count > 1 && (
-                          <span className='text-caption text-ink-subtle'>average across {c.assist.count} legacy agreements</span>
-                        )}
-                      </span>
-                    ) :
-                      <span className='text-caption text-ink-subtle'>no agreement</span>}
-                  </td>
-                  <td className='px-3 py-1.5 text-caption text-ink-subtle text-right'>{c.assistRows.length ? 'view →' : ''}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className={`${COLLEGE_TABLE_COLS} px-[22px] py-3 border-b border-border/60 sticky top-0 bg-surface`}>
+            <span className='text-label'>Community college</span>
+            <span className='text-label whitespace-nowrap'>Hand curated</span>
+            <span className='text-label whitespace-nowrap'>ASSIST agreement</span>
+            <span className='text-label' />
+          </div>
+          {rows.map((c) => {
+            const hasAgreement = c.assistRows.length > 0
+            return (
+              <div key={c.id}
+                className={`${COLLEGE_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border/40 last:border-0 ${
+                  hasAgreement ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-60'}`}
+                onClick={() => hasAgreement && onPick(Number(c.id))}>
+                <div className='min-w-0'>
+                  <p className='text-[14.5px] font-semibold truncate'>{c.name}</p>
+                  {c.district && <p className='text-[12.5px] text-ink-subtle truncate'>{c.district}</p>}
+                </div>
+                <div>
+                  {c.web ? <CoverageBar pct={c.web.pct_articulated} full={c.web.fully_articulated} /> :
+                    <span className='text-caption text-ink-subtle'>—</span>}
+                </div>
+                <div>
+                  {hasAgreement ? (
+                    <span className='inline-flex flex-col gap-0.5'>
+                      <CoverageBar pct={c.assist.average} full={c.assist.fullyArticulated} />
+                      {c.assist.count > 1 && (
+                        <span className='text-caption text-ink-subtle'>average across {c.assist.count} legacy agreements</span>
+                      )}
+                    </span>
+                  ) :
+                    <span className='text-caption text-ink-subtle'>no agreement</span>}
+                </div>
+                <div>
+                  {hasAgreement && (
+                    <span className='flex items-center gap-1 text-[13px] font-[550] text-success'>
+                      view <ArrowRightIcon className='w-[13px] h-[13px]' />
+                    </span>
+                  )}
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
     </Stack>
@@ -297,15 +363,15 @@ function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, on
 
 // Fill colors are inline: utility classes like bg-primary/60 resolve to the
 // UUI theme's WHITE surface token here, which made the bars invisible.
-function CoverageBar({ pct, full, width = 'w-24' }) {
+function CoverageBar({ pct, full, width = 'w-[110px]' }) {
   const v = Math.max(0, Math.min(100, pct ?? 0))
   return (
-    <span className='inline-flex items-center gap-2'>
-      <span className={`inline-block ${width} h-2 rounded-pill bg-surface-muted border border-border overflow-hidden`}>
+    <span className='inline-flex items-center gap-2.5'>
+      <span className={`inline-block ${width} h-1.5 rounded-pill bg-surface-sunken overflow-hidden`}>
         <span className='block h-full rounded-pill'
-          style={{ width: `${v}%`, backgroundColor: full ? 'var(--color-success, #16a34a)' : 'var(--color-primary, #3366ef)' }} />
+          style={{ width: `${v}%`, backgroundColor: full ? 'var(--color-success, #17855A)' : 'var(--color-primary, #193018)' }} />
       </span>
-      <span className='text-caption font-mono tabular-nums text-ink'>{pct != null ? `${pct}%` : '—'}</span>
+      <span className='text-[13px] font-[550] text-ink'>{pct != null ? `${pct}%` : '—'}</span>
     </span>
   )
 }
@@ -314,7 +380,7 @@ const normalizeMajor = (major) => String(major || '').trim().toLocaleLowerCase()
 
 // One campus × college batch can contain several majors. Show every visible
 // agreement in a stable order, with its own ledger and supporting data views.
-function CampusAgreements({ campus, collegeId, coverageRows, onBack }) {
+function CampusAgreements({ campus, collegeId, coverageRows, webRow = null, lastVerifiedAt = null, onBack }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
   const agreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
@@ -327,8 +393,10 @@ function CampusAgreements({ campus, collegeId, coverageRows, onBack }) {
 
   return (
     <Stack gap='cozy'>
-      <div className='flex items-center'>
+      <div className='flex items-center gap-2'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
+        <span className='text-border-strong'>·</span>
+        <span className='text-[13px] text-ink-subtle'>{campus.school}</span>
       </div>
       {batch.isLoading ? (
         <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
@@ -339,6 +407,7 @@ function CampusAgreements({ campus, collegeId, coverageRows, onBack }) {
           {agreements.map((agreement) => (
             <AgreementDetail key={agreement._id} agreementId={agreement._id}
               cov={coverageByMajor.get(normalizeMajor(agreement.major)) || null}
+              webRow={webRow} lastVerifiedAt={lastVerifiedAt}
               compareFor={{ schoolId: campus.school_id, major: agreement.major, communityCollegeId: collegeId }} />
           ))}
         </Stack>
@@ -541,7 +610,29 @@ function JsonPanel({ data, filename }) {
   )
 }
 
-function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
+// The header card's pct-based tile pair (Hand-curated / ASSIST agreement):
+// value + a tiny proportion bar. Success-toned regardless of completeness —
+// by the time a reader is this deep, the framing is "how much is covered,"
+// not the list view's complete/partial/none distinction.
+function DetailTile({ label, pct }) {
+  const has = pct != null && Number.isFinite(Number(pct))
+  const v = has ? Math.max(0, Math.min(100, Number(pct))) : null
+  return (
+    <div className='px-6 py-3.5 border-l border-border/60 first:border-l-0'>
+      <p className='text-label'>{label}</p>
+      <div className='mt-1 flex items-center gap-2'>
+        <span className={`text-[18px] font-[650] ${has ? 'text-success' : 'text-ink-subtle'}`}>{has ? `${v}%` : '—'}</span>
+        {has && (
+          <span className='inline-block w-[44px] h-[5px] rounded-pill bg-success-soft overflow-hidden'>
+            <span className='block h-full rounded-pill bg-success' style={{ width: `${v}%` }} />
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function AgreementDetail({ agreementId, cov = null, webRow = null, lastVerifiedAt = null, compareFor = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw | comparison | degree
   const docQ = useAuditDoc(agreementId, 'uc')
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
@@ -553,6 +644,7 @@ function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
   if (!doc) return null
 
   const slug = `${doc.uc_school}-${doc.community_college}-${doc.major}`.replace(/[^a-z0-9]+/gi, '_')
+  const requirementsCount = Array.isArray(doc.requirement_groups) ? doc.requirement_groups.length : null
 
   // The route fetching the active view's data — swaps with the tab.
   const viewRoute =
@@ -565,18 +657,33 @@ function AgreementDetail({ agreementId, cov = null, compareFor = null }) {
 
   return (
     <Stack gap='cozy'>
-      {/* Header: route title on the left, Open ASSIST on the right */}
-      <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
-        <div className='min-w-0'>
-          <p className='text-body-strong break-words'>
-            {doc.community_college} <span className='text-ink-subtle'>→</span> {doc.uc_school}
-            <span className='text-ink-subtle'> · </span>{doc.major}
-          </p>
-        </div>
-        <div className='ml-auto flex items-center gap-4 shrink-0'>
+      <div className='surface-card overflow-hidden'>
+        <div className='px-6 py-5 flex flex-wrap items-start gap-3.5'>
+          <div className='min-w-0'>
+            <p className='text-label text-[12px]'>Agreement</p>
+            <p className='mt-1.5 flex items-center gap-2.5 flex-wrap text-[19px] tracking-[-.01em]'>
+              <span className='font-[650] break-words'>{doc.community_college}</span>
+              <ArrowRightIcon className='w-[17px] h-[17px] text-ink-subtle shrink-0' />
+              <span className='font-[650] break-words'>{doc.uc_school}</span>
+            </p>
+            <p className='mt-1 text-body text-ink-muted'>{doc.major}</p>
+          </div>
           {docQ.data?.assist_url && (
-            <Button variant='secondary' onClick={() => openAssist(docQ.data.assist_url)}>Open ASSIST</Button>
+            <Button className='ml-auto shrink-0' variant='secondary' trailingIcon={ArrowTopRightOnSquareIcon}
+              onClick={() => openAssist(docQ.data.assist_url)}>Open ASSIST</Button>
           )}
+        </div>
+        <div className='grid grid-cols-4 border-t border-border/60'>
+          <DetailTile label='Hand-curated' pct={webRow?.pct_articulated} />
+          <DetailTile label='ASSIST agreement' pct={cov?.pct_articulated} />
+          <div className='px-6 py-3.5 border-l border-border/60'>
+            <p className='text-label'>Requirements</p>
+            <p className='mt-1 text-[18px] font-[650]'>{requirementsCount ?? '—'}</p>
+          </div>
+          <div className='px-6 py-3.5 border-l border-border/60'>
+            <p className='text-label'>Last verified</p>
+            <p className='mt-1 text-[18px] font-[650]'>{lastVerifiedAt ? fmtGalleryDate(lastVerifiedAt) : '—'}</p>
+          </div>
         </div>
       </div>
       <div className='flex flex-wrap items-center gap-3'>
@@ -702,40 +809,73 @@ function StatTile({ label, value, sub = null, full }) {
 // ───────── course catalogs ─────────
 
 // One tab for both catalogs: pick the institution side, then drill into a
-// specific school's courses.
-function CoursesBrowser() {
+// specific school's courses. `colleges`/`geo` are lifted up here (rather than
+// living inside CcCoursesBrowser) so the geo filter pills can sit in the same
+// header row as the system Tabs, to the right (mockup v2:327-338).
+export function CoursesBrowser({ onRoute = () => {} }) {
   const [kind, setKind] = useState('cc')
+  const colleges = useColleges()
+  const [geo, setGeo] = useState(EMPTY_GEO)
+  const allColleges = colleges.data || []
+
+  // `geo` used to live inside CcCoursesBrowser, so flipping to UC campuses
+  // and back unmounted/remounted it and the filter reset for free. Now that
+  // it's lifted up here (so the pills can share the header row with the
+  // system Tabs), the tab switch has to reset it explicitly.
+  const changeKind = (next) => {
+    setKind(next)
+    setGeo(EMPTY_GEO)
+  }
+
   return (
     <Stack gap='cozy'>
-      <Tabs value={kind} onChange={setKind}
-        options={[
-          { value: 'cc', label: 'Community colleges' },
-          { value: 'uc', label: 'UC campuses' },
-        ]} />
-      {kind === 'cc' ? <CcCoursesBrowser /> : <UniversityCoursesBrowser />}
+      <div className='flex items-center gap-4'>
+        <Tabs value={kind} onChange={changeKind}
+          options={[
+            { value: 'cc', label: 'Community colleges' },
+            { value: 'uc', label: 'UC campuses' },
+          ]} />
+        {kind === 'cc' && (
+          <CollegeGeoFilters className='ml-auto' colleges={allColleges} value={geo} onChange={setGeo} />
+        )}
+      </div>
+      {kind === 'cc'
+        ? <CcCoursesBrowser colleges={allColleges} geo={geo} onRoute={onRoute} />
+        : <UniversityCoursesBrowser onRoute={onRoute} />}
     </Stack>
   )
 }
 
+// Column variants — the three cell treatments the hairline course table uses
+// (mockup v2:373-386): a bold tabular code, a muted truncating title, and a
+// muted tabular number (units / ids), independent of each column's width.
+const COURSE_CELL_CLASS = {
+  code: 'text-[13.5px] font-bold tabular tracking-[.01em] text-ink',
+  title: 'text-[13.5px] text-ink-muted truncate min-w-0',
+  num: 'text-[13px] tabular text-ink-muted',
+}
+
 function CourseTable({ rows, columns }) {
+  const gridStyle = { gridTemplateColumns: columns.map((c) => c.width || 'minmax(0,1fr)').join(' ') }
   return (
-    <div className='surface-card overflow-auto max-h-[70vh]'>
-      <table className='w-full text-left'>
-        <thead className='sticky top-0 bg-surface border-b border-border'>
-          <tr>{columns.map((c) => <th key={c.key} className='px-3 py-2 text-label whitespace-nowrap'>{c.label}</th>)}</tr>
-        </thead>
-        <tbody className='divide-y divide-border/60'>
-          {rows.map((r, i) => (
-            <tr key={r._id || i} className='hover:bg-surface-hover'>
-              {columns.map((c) => (
-                <td key={c.key} className='px-3 py-1.5 text-caption text-ink-muted align-top'>
-                  {c.render ? c.render(r) : (r[c.key] ?? '—')}
-                </td>
-              ))}
-            </tr>
+    <div className='surface-card overflow-hidden'>
+      <div className='overflow-auto max-h-[70vh]'>
+        <div className='grid gap-3.5 px-[22px] py-3 border-b border-border/60 sticky top-0 bg-surface' style={gridStyle}>
+          {columns.map((c) => (
+            <span key={c.key} className={`text-label whitespace-nowrap ${c.align === 'right' ? 'text-right' : ''}`}>{c.label}</span>
           ))}
-        </tbody>
-      </table>
+        </div>
+        {rows.map((r, i) => (
+          <div key={r._id || i} style={gridStyle}
+            className='grid gap-3.5 items-center px-[22px] py-[10.5px] border-b border-border/40 last:border-0 hover:bg-surface-hover'>
+            {columns.map((c) => (
+              <span key={c.key} className={`${COURSE_CELL_CLASS[c.variant] || COURSE_CELL_CLASS.title} ${c.align === 'right' ? 'text-right' : ''}`}>
+                {c.render ? c.render(r) : (r[c.key] ?? '—')}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -765,26 +905,30 @@ export function InstitutionRail({
   }, [query, sortedItems])
 
   return (
-    <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
-      <p className='text-label mb-2'>{title} · {sortedItems.length}</p>
+    <div className='surface-card p-2.5 lg:max-h-[75vh] overflow-auto'>
+      <p className='px-3 pt-2.5 pb-2 flex items-baseline gap-2 text-label'>{title} · {sortedItems.length}</p>
       {searchable && (
-        <div className='mb-3'>
-          <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder='Find…'
-            leadingIcon={MagnifyingGlassIcon} />
+        <div className='flex items-center gap-2 bg-canvas border border-border rounded-pill px-3 py-[7px] mx-1 mb-2'>
+          <MagnifyingGlassIcon className='w-3.5 h-3.5 text-ink-subtle shrink-0' />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder='Find…'
+            className='flex-1 min-w-0 bg-transparent outline-none border-none text-[13px] text-ink placeholder:text-ink-subtle' />
         </div>
       )}
-      <div className='space-y-1'>
+      <div className='flex flex-col gap-0.5'>
         {visibleItems.map((item) => {
           const active = String(item.id) === String(selectedId)
           const subtitle = itemSubtitle?.(item)
           return (
             <button key={item.id} type='button' onClick={() => onSelect(item.id)}
-              className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors ${
-                active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
-              <span className='text-body leading-snug break-words'>{item.name}</span>
-              {subtitle && (
-                <span className='block text-caption text-ink-subtle leading-snug mt-0.5'>{subtitle}</span>
-              )}
+              className={`w-full flex items-start gap-2.5 rounded-[10px] px-3 py-[9px] text-left transition-colors ${
+                active ? 'bg-primary-soft font-[650]' : 'hover:bg-surface-hover'}`}>
+              <span className={`w-[3px] h-3.5 rounded-pill mt-0.5 shrink-0 ${active ? 'bg-accent' : 'bg-transparent'}`} />
+              <span className='min-w-0'>
+                <span className='block text-[13.5px] text-ink truncate'>{item.name}</span>
+                {subtitle && (
+                  <span className='block text-[11.5px] text-ink-subtle truncate mt-px'>{subtitle}</span>
+                )}
+              </span>
             </button>
           )
         })}
@@ -794,12 +938,23 @@ export function InstitutionRail({
 }
 
 // Rail of institutions (buttons) → the picked one's course catalog. Shared by
-// the CC and University course browsers. The route label updates as you drill
-// in: the list route while browsing, the item route once one is picked.
-function CatalogBrowser({ items, useCourses, columns, searchFields, railTitle, pickText, listRoute, itemRoute, railSearch = true, toolbar = null, itemSubtitle = null }) {
+// the CC and University course browsers. The route now surfaces one level up
+// (DataPage's SubNav), so this only owns the rail + course list layout.
+function CatalogBrowser({
+  items, useCourses, columns, searchFields, railTitle, pickText, railSearch = true, itemSubtitle = null,
+  listRoute, itemRoute, onRoute = () => {},
+}) {
   const [selectedId, setSelectedId] = useState(null)
   const [courseQ, setCourseQ] = useState('')
   const coursesQ = useCourses(selectedId)
+
+  // The route fetching the picked institution's catalog once one is chosen,
+  // else the bare list route — reported up so DataPage's SubNav chip can show
+  // it (this pane no longer renders its own RouteHint).
+  const route = selectedId != null ? itemRoute(selectedId) : listRoute
+  useEffect(() => {
+    onRoute({ path: route })
+  }, [route, onRoute])
 
   const rows = useMemo(
     () => courseSearch(coursesQ.data || [], courseQ, searchFields)
@@ -808,62 +963,57 @@ function CatalogBrowser({ items, useCourses, columns, searchFields, railTitle, p
   )
 
   return (
-    <Stack gap='cozy'>
-      <div className='flex justify-end'>
-        <RouteHint path={selectedId != null ? itemRoute(selectedId) : listRoute} />
-      </div>
-      {toolbar}
-      <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-4 items-start'>
-        <InstitutionRail items={items || []} selectedId={selectedId} title={railTitle}
-          searchable={railSearch} itemSubtitle={itemSubtitle}
-          onSelect={(id) => { setSelectedId(id); setCourseQ('') }} />
+    <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-5 items-start'>
+      <InstitutionRail items={items || []} selectedId={selectedId} title={railTitle}
+        searchable={railSearch} itemSubtitle={itemSubtitle}
+        onSelect={(id) => { setSelectedId(id); setCourseQ('') }} />
 
-        {selectedId == null ? (
-          <EmptyState title={pickText} description='Pick one from the list to browse its catalog.' />
-        ) : (
-          <Stack gap='cozy'>
-            <div className='flex flex-wrap items-center gap-3'>
-              <Input className='w-64' value={courseQ} onChange={(e) => setCourseQ(e.target.value)}
-                placeholder='Search prefix / number / title…' leadingIcon={MagnifyingGlassIcon} />
-              {!coursesQ.isLoading && <span className='text-caption text-ink-subtle'>{rows.length} courses</span>}
-            </div>
-            {coursesQ.isLoading ? <div className='flex justify-center py-8'><Spinner /></div>
-              : rows.length ? <CourseTable rows={rows} columns={columns} />
-              : <EmptyState title='No courses' description='No catalog rows here.' />}
-          </Stack>
-        )}
-      </div>
-    </Stack>
+      {selectedId == null ? (
+        <EmptyState title={pickText} description='Pick one from the list to browse its catalog.' />
+      ) : (
+        <Stack gap='cozy'>
+          <div className='flex flex-wrap items-center gap-3.5'>
+            <label className='flex-none w-[340px] flex items-center gap-2 bg-surface border border-border rounded-pill px-[15px] py-[9px]'>
+              <MagnifyingGlassIcon className='w-[14px] h-[14px] text-ink-subtle shrink-0' />
+              <input value={courseQ} onChange={(e) => setCourseQ(e.target.value)} aria-label='Search courses'
+                placeholder='Search prefix / number / title…'
+                className='flex-1 min-w-0 bg-transparent outline-none border-none text-[13.5px] text-ink placeholder:text-ink-subtle' />
+            </label>
+            {!coursesQ.isLoading && <span className='text-caption text-ink-subtle'>{rows.length} courses</span>}
+          </div>
+          {coursesQ.isLoading ? <div className='flex justify-center py-8'><Spinner /></div>
+            : rows.length ? <CourseTable rows={rows} columns={columns} />
+            : <EmptyState title='No courses' description='No catalog rows here.' />}
+        </Stack>
+      )}
+    </div>
   )
 }
 
-function CcCoursesBrowser() {
-  const colleges = useColleges()
-  const [geo, setGeo] = useState(EMPTY_GEO)
-  const all = colleges.data || []
-  const filtered = useMemo(() => all.filter((c) => matchesGeo(c, geo)), [all, geo])
+function CcCoursesBrowser({ colleges, geo, onRoute }) {
+  const filtered = useMemo(() => colleges.filter((c) => matchesGeo(c, geo)), [colleges, geo])
   return (
     <CatalogBrowser
       items={filtered}
       useCourses={useCcCourses}
       railTitle='Community colleges'
-      toolbar={<CollegeGeoFilters colleges={all} value={geo} onChange={setGeo} />}
       itemSubtitle={(it) => it.district || null}
       pickText='Choose a college'
-      listRoute='/api/assist/institutions?kind=community_college'
+      listRoute='/api/assist/courses'
       itemRoute={(id) => `/api/assist/courses?institution_id=cc:${id}`}
+      onRoute={onRoute}
       searchFields={['prefix', 'number', 'title']}
       columns={[
-        { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
-        { key: 'title', label: 'Title' },
-        { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.units ?? '—'}</span> },
-        { key: 'course_id', label: 'course_id', render: (r) => <span className='font-mono'>{r.course_id}</span> },
+        { key: 'course', label: 'Course', width: '140px', variant: 'code', render: (r) => `${r.prefix} ${r.number}` },
+        { key: 'title', label: 'Title', variant: 'title' },
+        { key: 'units', label: 'Units', width: '80px', align: 'right', variant: 'num', render: (r) => r.units ?? '—' },
+        { key: 'course_id', label: 'Course_ID', width: '110px', align: 'right', variant: 'num', render: (r) => r.course_id },
       ]}
     />
   )
 }
 
-function UniversityCoursesBrowser() {
+function UniversityCoursesBrowser({ onRoute }) {
   const schools = useSchools()
   return (
     <CatalogBrowser
@@ -872,15 +1022,16 @@ function UniversityCoursesBrowser() {
       railTitle='UC campuses'
       railSearch={false}
       pickText='Choose a campus'
-      listRoute='/api/assist/institutions?kind=university'
+      listRoute='/api/assist/courses'
       itemRoute={(id) => `/api/assist/courses?institution_id=uc:${id}`}
+      onRoute={onRoute}
       searchFields={['prefix', 'number', 'title', 'department']}
       columns={[
-        { key: 'course', label: 'Course', render: (r) => <span className='font-mono text-ink'>{r.prefix} {r.number}</span> },
-        { key: 'title', label: 'Title' },
-        { key: 'units', label: 'Units', render: (r) => <span className='font-mono tabular-nums'>{r.min_units ?? '—'}{r.max_units != null && r.max_units !== r.min_units ? `–${r.max_units}` : ''}</span> },
-        { key: 'department', label: 'Department' },
-        { key: 'parent_id', label: 'parent_id', render: (r) => <span className='font-mono'>{r.parent_id}</span> },
+        { key: 'course', label: 'Course', width: '140px', variant: 'code', render: (r) => `${r.prefix} ${r.number}` },
+        { key: 'title', label: 'Title', variant: 'title' },
+        { key: 'units', label: 'Units', width: '90px', align: 'right', variant: 'num', render: (r) => `${r.min_units ?? '—'}${r.max_units != null && r.max_units !== r.min_units ? `–${r.max_units}` : ''}` },
+        { key: 'department', label: 'Department', width: '160px', variant: 'title' },
+        { key: 'parent_id', label: 'parent_id', width: '110px', align: 'right', variant: 'num', render: (r) => r.parent_id },
       ]}
     />
   )
@@ -899,11 +1050,15 @@ export function DegreeRequirementsDetail({ doc, onEdit = null }) {
   const groups = Array.isArray(doc.requirement_groups) ? doc.requirement_groups : []
   return (
     <Stack gap='cozy'>
-      <div className='surface-card p-4 flex flex-wrap items-start gap-3'>
+      <div className='surface-card px-[22px] py-[18px] flex flex-wrap items-start gap-3'>
         <div className='min-w-0'>
-          <p className='text-body-strong break-words'>{doc.school} <span className='text-ink-subtle'>·</span> {doc.program}</p>
-          <p className='text-caption text-ink-muted mt-0.5'>
-            {doc.total_units != null ? `${doc.total_units} units · ` : ''}{doc.total} requirements
+          <p className='text-label text-[12px]'>4-year degree requirements</p>
+          <p className='mt-1.5 text-[19px] font-[650] tracking-[-.01em] break-words'>
+            {doc.school} <span className='text-ink-subtle'>·</span> {doc.program}
+          </p>
+          <p className='text-caption text-ink-muted mt-1'>
+            The full four-year requirement set behind the degree-coverage numbers
+            {doc.total_units != null ? ` · ${doc.total_units} units` : ''} · {doc.total} requirements
             {doc.source_url && <> · <a className='text-primary hover:underline' href={doc.source_url} target='_blank' rel='noreferrer'>source</a></>}
           </p>
         </div>

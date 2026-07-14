@@ -45,6 +45,13 @@ import {
 // default), so behavior there is unchanged — no checkbox.
 const ToggleCourseCtx = React.createContext(null)
 
+// Opt-in row marking (audit Judge tool): when the parent passes both
+// `markedRows` (a Set of `${groupIdx}-${sectionIdx}-${rowIdx}` keys) and
+// `onMarkRow(rowKey)`, every requirement row becomes a click target that
+// toggles an "in error" mark. null by default (website + reference views), so
+// rows render exactly as before — no click target, no chip, no wash.
+const MarkRowCtx = React.createContext(null)
+
 function CourseItem({ code, title, units, done, mark = false }) {
   return (
     <div className='min-w-0'>
@@ -58,14 +65,14 @@ function CourseItem({ code, title, units, done, mark = false }) {
         {/* The course code is a label, not a figure — let the warm grotesque carry
             it. Weight (not a clinical mono) marks it as the identifier; done tints
             it to the success ink. */}
-        <span className={`text-sm font-medium text-primary tracking-tight shrink-0 ${done ? 'text-success-primary' : 'text-primary'}`}>{code}</span>
+        <span className={`text-[14px] font-bold tabular tracking-[.01em] shrink-0 ${done ? 'text-success' : 'text-ink'}`}>{code}</span>
         {units && (
-          <span className='inline-flex items-center h-5 px-1.5 rounded-sm bg-tertiary text-tertiary text-xs font-medium text-primary tabular-nums shrink-0'>
+          <span className='inline-flex items-center px-1.5 py-px rounded-[6px] bg-surface-sunken text-ink-muted text-[11px] font-[650] shrink-0'>
             {units}
           </span>
         )}
       </div>
-      {title && <p className='text-sm text-tertiary mt-0.5'>{title}</p>}
+      {title && <p className='text-[13px] text-ink-muted mt-0.5'>{title}</p>}
     </div>
   )
 }
@@ -89,10 +96,10 @@ function Bracket({ conj, children }) {
                 reads as structure, not decoration. */}
             <span
               aria-hidden
-              className='absolute left-1/2 -translate-x-1/2 top-1.5 bottom-1.5 w-2 border-y-2 border-l-2 border-primary rounded-l-md'
+              className='absolute left-1/2 -translate-x-1/2 top-1.5 bottom-1.5 w-2 border-y-2 border-l-2 border-border-strong/60 rounded-l-md'
             />
             {/* badge masks the line at its midpoint, like ASSIST */}
-            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center h-4 px-1.5 rounded-sm bg-primary border border-primary text-tertiary text-xs font-medium text-primary'>
+            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center h-4 px-1.5 rounded-[6px] bg-surface border border-border-strong/60 text-ink-muted text-xs font-medium'>
               {word}
             </span>
           </>
@@ -175,7 +182,10 @@ function CcCourse({ id, courses, userCourses, mark }) {
   // course. The checkbox is pinned to the RIGHT so it never shifts the course
   // code/prefix off the shared left alignment that non-interactive rows use.
   return (
-    <label className='flex items-start gap-2 cursor-pointer'>
+    // stopPropagation: when the row is a mark target (audit Judge), a click
+    // anywhere in this label — checkbox included — simulates the plan, never
+    // marks the row in error.
+    <label className='flex items-start gap-2 cursor-pointer' onClick={(e) => e.stopPropagation()}>
       <div className='min-w-0 flex-1'>{item}</div>
       <input
         type='checkbox'
@@ -270,20 +280,20 @@ function CategoryMatch({ match }) {
   if (match.assumed) {
     return (
       <div className='min-w-0'>
-        <p className='text-sm font-medium text-primary'>Qualifying community-college course</p>
-        <p className='text-sm text-tertiary mt-0.5'>Available across community colleges; verify the approved local course.</p>
+        <p className='text-[14px] font-semibold text-ink'>Qualifying community-college course</p>
+        <p className='text-[13px] text-ink-muted mt-0.5'>Available across community colleges; verify the approved local course.</p>
       </div>
     )
   }
 
   return (
     <div className='min-w-0'>
-      <p className='text-sm font-medium text-primary'>
+      <p className='text-[14px] font-semibold text-ink'>
         {match.qualifying_count == null
           ? 'Eligible course category'
           : `${match.qualifying_count} qualifying ${match.qualifying_count === 1 ? 'course' : 'courses'}`}
       </p>
-      <p className='text-sm text-tertiary mt-0.5'>
+      <p className='text-[13px] text-ink-muted mt-0.5'>
         {areas ? `UC-transferable courses tagged for IGETC ${areas}` : 'Approved UC-transferable breadth courses'}
       </p>
     </div>
@@ -294,7 +304,7 @@ function CategoryMatch({ match }) {
 // Receiver row — requirement  ←  satisfied by
 // ---------------------------------------------------------------------------
 
-function ReceiverRow({ receiver, ctx }) {
+function ReceiverRow({ receiver, ctx, rowKey }) {
   const { courses, userCourses, crossCc, universityCoursesById } = ctx
   const completed = ctx.showCompletion && isReceiverCompleted(receiver, userCourses, crossCc)
   const notArt = receiver.articulation_status === 'not_articulated'
@@ -305,13 +315,44 @@ function ReceiverRow({ receiver, ctx }) {
   // rather than claiming "no course articulates".
   const unstamped = receiver.articulation_status == null && !hasOptions
 
+  // Opt-in row marking (audit Judge). When absent (the default everywhere else),
+  // `mark` is null and the row renders byte-identically to before: same wrapper
+  // class, no onClick, no wash, no chip.
+  const mark = React.useContext(MarkRowCtx)
+  const marked = !!mark && mark.markedRows.has(rowKey)
+  const baseRowClass = 'grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-5 py-3.5'
+  const rowProps = mark
+    ? {
+        className: `${baseRowClass} cursor-pointer`,
+        onClick: () => mark.onMarkRow(rowKey),
+        ...(marked ? { style: { background: 'var(--color-danger-soft)', boxShadow: 'inset 3px 0 0 var(--color-danger-bright)' } } : {}),
+      }
+    : { className: baseRowClass }
+  // The left (university requirement) cell, optionally footnoted with the
+  // MARKED IN ERROR chip. Unmarked (or ctx-absent) → the bare ReceivingSide, so
+  // no wrapper is introduced on the default path.
+  const leftCell = (done) => {
+    const receiving = (
+      <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={done} />
+    )
+    if (!marked) return receiving
+    return (
+      <div className='min-w-0 flex flex-col'>
+        {receiving}
+        <span className='inline-block mt-1.5 self-start text-[10.5px] font-bold tracking-[.05em] uppercase text-danger bg-danger-soft rounded-pill px-2.5 py-[2.5px]'>
+          Marked in error
+        </span>
+      </div>
+    )
+  }
+
   // Category requirements stand for an entire catalog subset, not a short OR
   // list. Show the category and its full qualifying count on the sending side.
   if (receiver.category_match) {
     return (
-      <div className='grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-4 py-3'>
-        <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={false} />
-        <div className='flex justify-center'><ArrowNarrowLeft className='w-5 h-5 text-quaternary' /></div>
+      <div {...rowProps}>
+        {leftCell(false)}
+        <div className='flex justify-center'><ArrowNarrowLeft className='w-5 h-5 text-ink-subtle' /></div>
         <CategoryMatch match={receiver.category_match} />
       </div>
     )
@@ -319,8 +360,8 @@ function ReceiverRow({ receiver, ctx }) {
 
   if (unstamped) {
     return (
-      <div className='grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-4 py-3'>
-        <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={false} />
+      <div {...rowProps}>
+        {leftCell(false)}
         <span aria-hidden />
         <span aria-hidden />
       </div>
@@ -328,19 +369,19 @@ function ReceiverRow({ receiver, ctx }) {
   }
 
   return (
-    <div className='grid grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] gap-2 items-center px-4 py-3'>
-      <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={completed} />
+    <div {...rowProps}>
+      {leftCell(completed)}
       <div className='flex justify-center'>
         {completed ? (
           <CompletionCheck label='Requirement satisfied' />
         ) : (
-          <ArrowNarrowLeft className='w-5 h-5 text-quaternary' />
+          <ArrowNarrowLeft className='w-5 h-5 text-ink-subtle' />
         )}
       </div>
       {unavailable ? (
         // Advisory, not a course path — italic + subtle ink sets it apart from
         // the satisfied-by codes so "take at the university" reads as a note.
-        <span className='text-sm italic text-quaternary'>{notArticulatedCopy(receiver, notArt)}</span>
+        <span className='text-sm italic text-ink-subtle'>{notArticulatedCopy(receiver, notArt)}</span>
       ) : (
         <SendingSide
           receiver={receiver}
@@ -358,7 +399,7 @@ function ReceiverRow({ receiver, ctx }) {
 // ---------------------------------------------------------------------------
 // Section/group rule + status text live in ledgerText.js (pure, golden-locked).
 
-function RequirementSection({ section, group, ctx, soleStat, pooled, groupComplete }) {
+function RequirementSection({ section, group, ctx, soleStat, pooled, groupComplete, groupIdx, sectionIdx }) {
   const { userCourses, crossCc } = ctx
   const receivers = section.receivers || []
   // Once the whole group is satisfied, every section in it reads as done — even
@@ -388,21 +429,21 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
       tone={done ? 'success' : greyed ? 'muted' : 'primary'}
       header={section.title || rule ? (
         <span className='flex flex-1 flex-wrap items-center gap-x-4 gap-y-1 min-w-0'>
-          {section.title && <span className='text-sm font-semibold text-primary'>{section.title}</span>}
-          {rule && <span className={`text-sm font-medium text-primary ${section.title ? 'ml-auto' : ''}`}>{rule}</span>}
+          {section.title && <span className='text-[13px] font-[650]'>{section.title}</span>}
+          {rule && <span className={`text-[13px] font-[650] ${section.title ? 'ml-auto' : ''}`}>{rule}</span>}
         </span>
       ) : null}
       headerMark={done ? <CompletionCheck /> : null}
-      footer={greyed ? <p className='px-4 py-2.5 text-sm text-quaternary bg-primary border-t border-secondary'>{NO_CC_NOTE}</p> : null}
+      footer={greyed ? <p className='px-5 py-2.5 text-sm text-ink-subtle bg-surface border-t border-border/40'>{NO_CC_NOTE}</p> : null}
     >
       {receivers.map((r, i) => (
-        <ReceiverRow key={i} receiver={r} ctx={ctx} />
+        <ReceiverRow key={i} receiver={r} ctx={ctx} rowKey={`${groupIdx}-${sectionIdx}-${i}`} />
       ))}
     </SectionCard>
   )
 }
 
-function Group({ group, ctx, showMissing }) {
+function Group({ group, ctx, showMissing, groupIdx }) {
   const { userCourses, crossCc } = ctx
   const groupComplete = ctx.showCompletion && isGroupCompleted(group, userCourses, crossCc)
   const sections = group.sections || []
@@ -426,13 +467,13 @@ function Group({ group, ctx, showMissing }) {
   // Group spine: the inner Bracket's shape one weight rank up — a closed "["
   // running the group's full height, so header + sections read as one
   // bracketed unit. The tone restates the heading word — success-green once
-  // satisfied (matching the completion check), brand for required, stone for
-  // recommended — it never replaces it.
+  // satisfied (matching the completion check), a strong stone hairline for
+  // required, a soft hairline for recommended — it never replaces it.
   const spineTone = groupComplete
     ? 'border-success/40'
     : group.is_required
-      ? 'border-primary/35'
-      : 'border-primary'
+      ? 'border-border-strong/60'
+      : 'border-border'
 
   return (
     <section className='flex'>
@@ -446,10 +487,10 @@ function Group({ group, ctx, showMissing }) {
             {/* A group `title` (degree/comparison views) replaces the generic
                 Required/Recommended heading; agreements have no title so they
                 keep the original wording. */}
-            <h3 className='text-xl font-semibold text-primary tracking-tight'>{group.title || (group.is_required ? 'Required' : 'Recommended')}</h3>
+            <h3 className='text-[21px] font-[650] tracking-[-.01em] text-ink'>{group.title || (group.is_required ? 'Required' : 'Recommended')}</h3>
             {groupComplete && <CompletionCheck />}
           </div>
-          {ruleLine && <p className='text-lg font-semibold text-tertiary'>{ruleLine}</p>}
+          {ruleLine && <p className='text-[13px] text-ink-subtle font-medium'>{ruleLine}</p>}
         </Stack>
         <div className='flex flex-col gap-3'>
           {visible.map(({ section, index }) => (
@@ -461,6 +502,8 @@ function Group({ group, ctx, showMissing }) {
               soleStat={sections.length === 1 ? stat : null}
               pooled={pooled}
               groupComplete={groupComplete}
+              groupIdx={groupIdx}
+              sectionIdx={index}
             />
           ))}
         </div>
@@ -482,6 +525,11 @@ export default function RequirementsLedger({
   showMissing = false,
   preserveOrder = false,
   onToggleCourse = null,
+  // Audit row-marking (Judge). Both must be present to arm it: `markedRows` is
+  // a Set of `${groupIdx}-${sectionIdx}-${rowIdx}` keys, `onMarkRow(key)`
+  // toggles one. Absent on the website and reference views — rows stay inert.
+  markedRows = null,
+  onMarkRow = null,
   // Completion affordances (green checks, success tint) come from the PMT
   // eligibility engine, which treats requirements nothing articulates as
   // vacuously satisfied. Right for a student plan; misleading in reference
@@ -499,16 +547,22 @@ export default function RequirementsLedger({
 
   const cards = groups
     .filter((g) => !(showMissing && (!g.is_required || isGroupCompleted(g, userCourses, crossCc))))
-    .map((group, i) => <Group key={i} group={group} ctx={ctx} showMissing={showMissing} />)
+    .map((group, i) => <Group key={i} group={group} ctx={ctx} showMissing={showMissing} groupIdx={i} />)
     .filter(Boolean)
 
   if (cards.length === 0) {
-    return <p className='text-sm text-tertiary'>Nothing left — every required group is satisfied.</p>
+    return <p className='text-sm text-ink-muted'>Nothing left — every required group is satisfied.</p>
   }
 
+  // Arm row-marking only when the caller wires up BOTH halves; otherwise the
+  // context stays null and ReceiverRow renders inert (default everywhere else).
+  const markRowValue = markedRows && onMarkRow ? { markedRows, onMarkRow } : null
+
   return (
-    <ToggleCourseCtx.Provider value={onToggleCourse}>
-      <Stack gap='section'>{cards}</Stack>
-    </ToggleCourseCtx.Provider>
+    <MarkRowCtx.Provider value={markRowValue}>
+      <ToggleCourseCtx.Provider value={onToggleCourse}>
+        <Stack gap='section'>{cards}</Stack>
+      </ToggleCourseCtx.Provider>
+    </MarkRowCtx.Provider>
   )
 }

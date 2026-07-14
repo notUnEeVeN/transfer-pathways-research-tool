@@ -5,7 +5,7 @@ function Row({ k, v }) {
   return (
     <div className='flex items-baseline justify-between gap-3 text-caption'>
       <span className='text-ink-muted'>{k}</span>
-      <span className='text-body-strong font-mono'>{v}</span>
+      <span className='text-body-strong'>{v}</span>
     </div>
   )
 }
@@ -33,13 +33,13 @@ export default function CoverageMeter({ stats, fill = false }) {
         <p className='text-label'>Template coverage</p>
 
         <div className='flex items-baseline gap-2 flex-wrap'>
-          <span className='text-stat font-mono text-success'>{tplPct}%</span>
+          <span className='text-stat-lg text-success'>{tplPct}%</span>
           <span className='text-caption'>
-            of templates audited — <span className='text-ink font-mono'>{int(tplAud)} / {compactNum(tplTot)}</span>
+            of templates audited — <span className='text-ink'>{int(tplAud)} / {compactNum(tplTot)}</span>
           </span>
         </div>
-        <div className='h-2.5 rounded-md bg-surface-muted border border-border overflow-hidden'>
-          <div className='h-full bg-success/60' style={{ width: `${Math.min(100, tplPct)}%` }} />
+        <div className='h-2 rounded-pill bg-surface-sunken overflow-hidden'>
+          <div className='h-full rounded-pill bg-success' style={{ width: `${Math.min(100, tplPct)}%` }} />
         </div>
 
         <Stack gap='tight'>
@@ -52,8 +52,8 @@ export default function CoverageMeter({ stats, fill = false }) {
 
         <div className='hairline-t pt-3'>
           <Row k='Random coverage' v={`${int(directN)} / ${compactNum(total)} · ${directPct}%`} />
-          <div className='h-1.5 rounded-pill bg-surface-muted border border-border overflow-hidden mt-1.5'>
-            <div className='h-full bg-ink-subtle' style={{ width: `${Math.min(100, Math.max(directPct, 0.4))}%` }} />
+          <div className='h-1.5 rounded-pill bg-surface-sunken overflow-hidden mt-1.5'>
+            <div className='h-full rounded-pill bg-ink-subtle' style={{ width: `${Math.min(100, Math.max(directPct, 0.4))}%` }} />
           </div>
         </div>
       </Stack>

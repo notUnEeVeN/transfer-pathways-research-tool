@@ -26,7 +26,7 @@ function MetricRow({ label, value, sub, tone }) {
       <span className='text-body text-ink-muted'>{label}</span>
       <span className='flex items-baseline gap-2 shrink-0 text-right'>
         {sub && <span className='text-caption text-ink-subtle'>{sub}</span>}
-        <span className={`text-body-strong font-mono tabular-nums ${TONE[tone] || 'text-ink'}`}>{value}</span>
+        <span className={`text-body-strong tabular ${TONE[tone] || 'text-ink'}`}>{value}</span>
       </span>
     </div>
   )
@@ -38,7 +38,7 @@ function MetricGroup({ title, rows }) {
   return (
     <Stack gap='tight'>
       <p className='text-label'>{title}</p>
-      <div className='divide-y divide-border'>
+      <div className='divide-y divide-border/40'>
         {visible.map((r) => (
           <MetricRow key={r.label} {...r} />
         ))}

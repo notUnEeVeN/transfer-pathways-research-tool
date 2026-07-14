@@ -52,7 +52,7 @@ export default function FullScreenPanel({
               <div className='flex items-start sm:items-center gap-3 min-w-0'>
                 {leading && <div className='shrink-0'>{leading}</div>}
                 <div className='min-w-0'>
-                  {title && <h2 className='text-heading-lg sm:truncate'>{title}</h2>}
+                  {title && <h2 className='text-heading sm:truncate'>{title}</h2>}
                   {subtitle && <div className='text-caption mt-0.5'>{subtitle}</div>}
                 </div>
               </div>

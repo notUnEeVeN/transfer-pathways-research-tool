@@ -1,6 +1,5 @@
 import React from 'react'
-import { Alert, Spinner, Stack } from './ui'
-import RouteHint from './RouteHint'
+import { Alert, Spinner, Stack, StatStrip } from './ui'
 import { useDataSummary, useCoverage } from '@frontend/query/hooks/useData'
 
 /**
@@ -9,7 +8,8 @@ import { useDataSummary, useCoverage } from '@frontend/query/hooks/useData'
  * hand-curated hard minimum and the full ASSIST-stated minimum — the same two
  * the Agreements tab compares per college). Server-scoped: every number reflects
  * the caller's granted subset. `compact` renders only the chip strip (used atop
- * the audit Stats page).
+ * the audit Stats page). The `/api/data/summary` route itself now shows once,
+ * in DataPage's SubNav bar, rather than repeated here.
  */
 export default function DatasetSummaryPanel({ compact = false }) {
   const q = useDataSummary()
@@ -41,12 +41,17 @@ export default function DatasetSummaryPanel({ compact = false }) {
 
   if (compact) return statBar
 
+  // Same 7 counts as the compact bar, in the shared StatStrip tile shell
+  // (mockup v2:115-122). The refreshed date keeps plain figures — it has a
+  // "/" in it — every other tile is a pure-digit count, so gets `tabular`.
+  const tiles = stats.map(([label, value], i) => ({
+    label,
+    value: i === 0 ? value : <span className='tabular'>{value}</span>,
+  }))
+
   return (
     <Stack gap='comfortable'>
-      <div className='flex justify-end'>
-        <RouteHint path='/api/data/summary' />
-      </div>
-      {statBar}
+      <StatStrip tiles={tiles} />
       <CampusTable schools={schools} />
     </Stack>
   )
@@ -68,6 +73,10 @@ function meanBySchoolOf(data) {
 }
 
 // Campus | Majors | Agreements | Mean hand-curated coverage | Mean ASSIST coverage.
+// Hairline div-grid table (mockup v2:124-151) — shares its column template
+// between the header row and every data row so the two can't drift apart.
+const CAMPUS_TABLE_COLS = 'grid grid-cols-[2.2fr_1fr_1fr_2.6fr_2.6fr] gap-3.5'
+
 function CampusTable({ schools }) {
   const assistCoverage = useCoverage()
   const websiteCoverage = useCoverage({ requirements: 'paper' })
@@ -78,44 +87,46 @@ function CampusTable({ schools }) {
     return <p className='text-caption text-ink-subtle'>No majors in the dataset yet.</p>
   }
 
-  const pctCell = (value, loading) => (
-    loading ? <span className='text-caption text-ink-subtle'>…</span>
-      : value == null ? <span className='text-caption text-ink-subtle'>—</span>
-      : <span className='text-ink'>{value}%</span>
-  )
-
   return (
-    <div className='surface-card overflow-x-auto'>
-      <div className='px-4 pt-3 pb-1 flex items-baseline gap-2'>
+    <div className='surface-card overflow-hidden'>
+      <div className='px-[22px] pt-[18px] pb-1.5 flex items-baseline gap-2.5'>
         <p className='text-label'>Majors tracked per receiving campus</p>
-        <span className='text-caption text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
+        <span className='text-[12.5px] text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
       </div>
-      <table className='w-full text-left'>
-        <thead>
-          <tr className='border-b border-border'>
-            <th className='px-4 py-2 text-label'>Campus</th>
-            <th className='px-4 py-2 text-label whitespace-nowrap'>Majors</th>
-            <th className='px-4 py-2 text-label whitespace-nowrap'>Agreements</th>
-            <th className='px-4 py-2 text-label whitespace-nowrap'>Mean hand-curated coverage</th>
-            <th className='px-4 py-2 text-label whitespace-nowrap'>Mean ASSIST coverage</th>
-          </tr>
-        </thead>
-        <tbody className='divide-y divide-border/60'>
-          {schools.map((s) => (
-            <tr key={s.school_id}>
-              <td className='px-4 py-2 text-body'>{s.school}</td>
-              <td className='px-4 py-2 text-caption font-mono tabular-nums'>{s.majors.length}</td>
-              <td className='px-4 py-2 text-caption font-mono tabular-nums'>{s.n_agreements}</td>
-              <td className='px-4 py-2 text-caption font-mono tabular-nums'>
-                {pctCell(meanWebsite.get(s.school_id), websiteCoverage.isLoading)}
-              </td>
-              <td className='px-4 py-2 text-caption font-mono tabular-nums'>
-                {pctCell(meanAssist.get(s.school_id), assistCoverage.isLoading)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className={`${CAMPUS_TABLE_COLS} px-[22px] py-2.5 border-b border-border/60`}>
+        <span className='text-label'>Campus</span>
+        <span className='text-label'>Majors</span>
+        <span className='text-label'>Agreements</span>
+        <span className='text-label'>Mean hand-curated coverage</span>
+        <span className='text-label'>Mean ASSIST coverage</span>
+      </div>
+      {schools.map((s) => (
+        <div key={s.school_id}
+          className={`${CAMPUS_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border/40 last:border-0 hover:bg-surface-hover`}>
+          <p className='text-[14px] font-semibold truncate min-w-0'>{s.school}</p>
+          <p className='text-[13.5px] tabular text-ink-muted'>{s.majors.length}</p>
+          <p className='text-[13.5px] tabular text-ink-muted'>{s.n_agreements}</p>
+          <CampusCoverageCell pct={meanWebsite.get(s.school_id)} loading={websiteCoverage.isLoading} />
+          <CampusCoverageCell pct={meanAssist.get(s.school_id)} loading={assistCoverage.isLoading} />
+        </div>
+      ))}
     </div>
+  )
+}
+
+// One coverage bar + value: success fill at/above the "essentially complete"
+// threshold, primary fill below it — mirrors AgreementsBrowser's per-college
+// coverage bars, just with its own ≥90 threshold (mockup v2:141-148).
+function CampusCoverageCell({ pct, loading }) {
+  if (loading) return <span className='text-caption text-ink-subtle'>…</span>
+  if (pct == null) return <span className='text-caption text-ink-subtle'>—</span>
+  const v = Math.max(0, Math.min(100, pct))
+  return (
+    <span className='inline-flex items-center gap-2.5'>
+      <span className='inline-block w-[110px] h-1.5 rounded-pill bg-surface-sunken overflow-hidden'>
+        <span className={`block h-full rounded-pill ${v >= 90 ? 'bg-success' : 'bg-primary'}`} style={{ width: `${v}%` }} />
+      </span>
+      <span className='text-[13.5px] font-[550] text-ink'>{pct}%</span>
+    </span>
   )
 }

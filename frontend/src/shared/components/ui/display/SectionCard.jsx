@@ -1,15 +1,16 @@
 import React from 'react'
 
-// Status tones map a state to the three surfaces that carry it: the left accent
-// rail, the header strip, and the card border. Shared by the requirements ledger
-// and the Cal-GETC / UC-7 pattern modal.
+// Status tones map a state to the two surfaces that still carry it after the T23
+// re-skin: the slim left notch rail and the header band. The card border is now
+// uniform (border-border) like the mockup's agreement/judge cards. Shared by the
+// requirements ledger and the Cal-GETC / UC-7 pattern modal.
 const tones = {
-  // Done — soft green rail + header, success ink, green hairline border.
-  success: { rail: 'bg-success-primary/60', header: 'bg-success-primary/60 text-success-primary', border: 'border-success/30' },
-  // Active / still-needed — the brand soft tint.
-  primary: { rail: 'bg-brand-primary', header: 'bg-brand-primary', border: 'border-secondary' },
-  // Nothing actionable here — greyed out.
-  muted: { rail: 'bg-secondary', header: 'bg-secondary', border: 'border-secondary' }
+  // Done — green notch + soft-green band, success ink (mirrors CompletionCheck).
+  success: { rail: 'bg-success', header: 'bg-success-soft text-success' },
+  // Active / still-needed — mint band, no notch (matches the mockup header).
+  primary: { rail: 'bg-transparent', header: 'bg-primary-soft text-ink' },
+  // Nothing actionable here — muted band + notch, muted ink.
+  muted: { rail: 'bg-surface-muted', header: 'bg-surface-muted text-ink-muted' }
 }
 
 /**
@@ -40,16 +41,16 @@ export default function SectionCard({
   const t = tones[tone] || tones.primary
   const showHeader = Boolean(header || headerMark)
   return (
-    <div className={`flex rounded-xl border overflow-hidden ${t.border} ${className}`}>
-      <div className={`w-1.5 shrink-0 ${t.rail}`} aria-hidden />
+    <div className={`flex bg-surface border border-border rounded-[14px] overflow-hidden ${className}`}>
+      <div className={`w-[3px] shrink-0 ${t.rail}`} aria-hidden />
       <div className='flex-1 min-w-0'>
         {showHeader && (
-          <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2.5 ${t.header}`}>
+          <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-2.5 text-[13px] font-[650] ${t.header}`}>
             {header}
             {headerMark && <span className='ml-auto'>{headerMark}</span>}
           </div>
         )}
-        <div className={`bg-primary${divide ? ' divide-y divide-border-secondary' : ''}`}>{children}</div>
+        <div className={`bg-surface${divide ? ' divide-y divide-border/40' : ''}`}>{children}</div>
         {footer}
       </div>
     </div>

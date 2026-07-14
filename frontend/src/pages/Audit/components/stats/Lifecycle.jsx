@@ -16,7 +16,7 @@ export default function Lifecycle({ stats, compact = false }) {
   const anyErrors = open + resolved > 0
   // Opt-in smaller stat numbers (desktop tool, to trim dead space). Default
   // keeps the website's larger treatment unchanged.
-  const statCls = compact ? 'text-body-strong font-mono' : 'text-stat font-mono'
+  const statCls = compact ? 'text-body-strong' : 'text-stat'
 
   return (
     <div className='surface-card p-5'>
@@ -27,8 +27,8 @@ export default function Lifecycle({ stats, compact = false }) {
           <div className='flex items-baseline justify-between gap-3'>
             <span className='text-caption text-ink-muted'>Errors found</span>
             <span className='text-caption'>
-              <span className='text-danger font-mono'>{int(open)}</span> open ·{' '}
-              <span className='text-success font-mono'>{int(resolved)}</span> resolved
+              <span className='text-danger tabular'>{int(open)}</span> open ·{' '}
+              <span className='text-success tabular'>{int(resolved)}</span> resolved
             </span>
           </div>
           <div className='flex gap-[3px] h-3'>
@@ -54,16 +54,16 @@ export default function Lifecycle({ stats, compact = false }) {
         {/* Stale / flagged are surfaced in the top counts strip in compact mode,
             so the card is just the open/resolved error bar. */}
         {!compact && (
-          <div className='grid grid-cols-2 divide-x divide-border hairline-t pt-3'>
+          <div className='grid grid-cols-2 divide-x divide-border/40 border-t border-border/40 pt-3'>
             <div className='pr-4'>
               <Stack gap='tight'>
-                <span className={`${statCls} text-conservative`}>{int(stale)}</span>
+                <span className={`${statCls} text-conservative tabular`}>{int(stale)}</span>
                 <span className='text-label'>Stale</span>
               </Stack>
             </div>
             <div className='px-4'>
               <Stack gap='tight'>
-                <span className={`${statCls} text-ink-subtle`}>{int(flagged)}</span>
+                <span className={`${statCls} text-ink-subtle tabular`}>{int(flagged)}</span>
                 <span className='text-label'>Flagged</span>
               </Stack>
             </div>

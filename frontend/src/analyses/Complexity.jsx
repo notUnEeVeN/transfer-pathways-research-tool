@@ -99,7 +99,7 @@ export default function Complexity() {
   if (query.isError) return <Alert type='error'>Could not load the complexity data.</Alert>
 
   const controls = (
-    <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+    <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
       <Input
         label='Major filter'
         value={majorFilter}
@@ -133,7 +133,7 @@ export default function Complexity() {
       >
         Refresh
       </Button>
-      <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle'>
+      <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
         <span className='font-mono tabular-nums'>{datasetVersion}</span>
         <span>{query.isFetching ? 'Updating' : 'Live endpoint'}</span>
       </div>

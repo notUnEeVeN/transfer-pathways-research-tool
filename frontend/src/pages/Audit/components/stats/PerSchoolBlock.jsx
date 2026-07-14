@@ -27,25 +27,25 @@ export default function PerSchoolBlock({ filter }) {
             <div className='overflow-x-auto'>
               <table className='w-full text-caption'>
                 <thead>
-                  <tr className='text-ink-subtle text-left'>
-                    <th className='py-1 pr-3'>School</th>
-                    <th className='py-1 pr-3 text-right'>Total</th>
-                    <th className='py-1 pr-3 text-right'>Audited</th>
-                    <th className='py-1 pr-3 text-right'>Correct</th>
-                    <th className='py-1 pr-3 text-right'>Cons.</th>
-                    <th className='py-1 pr-3 text-right'>Errors</th>
-                    <th className='py-1 text-right'>Err %</th>
+                  <tr className='text-left'>
+                    <th className='py-1 pr-3 text-label'>School</th>
+                    <th className='py-1 pr-3 text-right text-label'>Total</th>
+                    <th className='py-1 pr-3 text-right text-label'>Audited</th>
+                    <th className='py-1 pr-3 text-right text-label'>Correct</th>
+                    <th className='py-1 pr-3 text-right text-label'>Cons.</th>
+                    <th className='py-1 pr-3 text-right text-label'>Errors</th>
+                    <th className='py-1 text-right text-label'>Err %</th>
                   </tr>
                 </thead>
                 <tbody>
                   {(perSchool.data || []).map((r) => (
-                    <tr key={`${r.system}|${r.school_id}`} className='hairline-t'>
+                    <tr key={`${r.system}|${r.school_id}`} className='border-t border-border/40'>
                       <td className='py-1 pr-3'>{r.school}</td>
-                      <td className='py-1 pr-3 text-right'>{r.total}</td>
-                      <td className='py-1 pr-3 text-right'>{r.audited}</td>
-                      <td className='py-1 pr-3 text-right'>{r.correct}</td>
-                      <td className='py-1 pr-3 text-right'>{r.conservative ?? 0}</td>
-                      <td className='py-1 pr-3 text-right'>{r.errors}</td>
+                      <td className='py-1 pr-3 text-right tabular'>{r.total}</td>
+                      <td className='py-1 pr-3 text-right tabular'>{r.audited}</td>
+                      <td className='py-1 pr-3 text-right tabular'>{r.correct}</td>
+                      <td className='py-1 pr-3 text-right tabular'>{r.conservative ?? 0}</td>
+                      <td className='py-1 pr-3 text-right tabular'>{r.errors}</td>
                       <td className='py-1 text-right'>{r.error_rate_pct != null ? `${r.error_rate_pct}%` : '—'}</td>
                     </tr>
                   ))}

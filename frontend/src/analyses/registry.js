@@ -55,8 +55,8 @@ export const ANALYSES = [
   },
   {
     id: 'coverage-heatmap',
-    title: 'Articulation coverage heatmap',
-    description: 'Community college x campus-program percentage of required receivers articulated',
+    title: 'Graduation requirement coverage heatmap',
+    description: 'Community college x UC program share of four-year graduation requirements with an equivalent',
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:05:00',
     Component: CoverageHeatmap,

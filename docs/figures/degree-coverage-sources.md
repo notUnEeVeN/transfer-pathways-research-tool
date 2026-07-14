@@ -16,8 +16,9 @@ and loaded by [`scripts/import_uc_degree_requirements.py`](../../scripts/import_
 
 ## The short version
 
-- The old coverage heatmap measures the wrong thing for this figure: it scores the
-  **transfer minimums** (a small math+CS set), which naturally sit near 100%.
+- The coverage heatmap now defaults to `requirements=degree`, which reads these
+  editable templates live. Its **ASSIST minimums** and **Hand-curated minimums**
+  modes preserve the earlier transfer-minimum measures for comparison.
 - This figure measures the **whole degree** — all four years, including
   upper-division courses a CC can never provide — so a community college that
   perfectly articulates every lower-division course still lands well below 100%.

@@ -84,7 +84,10 @@ beforeAll(async () => {
     { course_id: 'cs1b', units: 3, community_college_id: 10, side: 'sending' },
     { course_id: 'calcB', units: 4, community_college_id: 20, side: 'sending' },
     { course_id: 'ds1', units: 4, community_college_id: 10, side: 'sending' },
-    { course_id: 'ge1', units: 3, community_college_id: 10, side: 'sending' },
+    {
+      course_id: 'ge1', units: 3, community_college_id: 10, side: 'sending',
+      uc_transferable: true, igetc_area: ['1A'], prefix: 'ENGL', number: '1A',
+    },
     { course_id: 'calcG', units: 4, community_college_id: 30, side: 'sending' },
   ]);
 
@@ -117,6 +120,52 @@ beforeAll(async () => {
       _id: 'transfer_minimum:uco-alt-b', kind: 'transfer_minimum', school_id: 2, school: 'UC Other', uc_code: 'UCO',
       group_id: 'Either', set_id: 'B', source_order: 1,
       receiving_code: 'DS', parent_ids: [104], matched: true,
+    },
+    {
+      _id: 'degree:1', kind: 'degree', school_id: 1, school: 'UC Test',
+      program: 'Computer Science B.S.', total_units: 120,
+      requirement_groups: [
+        {
+          title: 'Lower-division major preparation', tier: 'transferable',
+          sections: [{
+            section_advisement: 2,
+            receivers: [
+              { receiving: { kind: 'course', parent_id: 101 } },
+              { receiving: { kind: 'course', parent_id: 102 } },
+            ],
+          }],
+        },
+        {
+          title: 'Reading & Composition', tier: 'breadth',
+          sections: [{
+            section_advisement: 1, ge_areas: ['1A'],
+            receivers: [{
+              receiving: { kind: 'ge_area', code: 'R1A', name: 'Reading & Composition A' },
+              ge_areas: ['1A'],
+            }],
+          }],
+        },
+        {
+          title: 'American History & Institutions', tier: 'transferable',
+          sections: [{
+            section_advisement: 1,
+            receivers: [{
+              receiving: { kind: 'ge_area', code: 'AHI', name: 'American History & Institutions' },
+              assume_satisfiable: true,
+            }],
+          }],
+        },
+        {
+          title: 'Upper-division coursework', tier: 'nontransferable',
+          sections: [{
+            section_advisement: 2,
+            receivers: [
+              { receiving: { kind: 'requirement', name: 'Upper-division slot 1' } },
+              { receiving: { kind: 'requirement', name: 'Upper-division slot 2' } },
+            ],
+          }],
+        },
+      ],
     },
   ]);
   await db.collection('curated_prerequisites').insertMany([
@@ -185,6 +234,43 @@ describe('coverageData', () => {
     expect(alphaOther.requirement_groups_required).toBe(1);
     expect(alphaOther.requirement_groups_satisfied).toBe(1);
     expect(alphaOther.fully_articulated).toBe(true); // alternative set B is satisfied.
+  });
+
+  it('measures live four-year degree slots, including breadth and university-only coursework', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'degree' });
+
+    // Degree mode is a complete matrix, including a college with no agreement
+    // for this campus. Its universally satisfiable AHI slot still counts.
+    expect(rows).toHaveLength(3);
+    const alpha = rows.find((r) => r.community_college_id === 10);
+    expect(alpha).toMatchObject({
+      requirements: 'degree',
+      requirements_source: 'curated_requirements.degree',
+      degree_requirements_total: 6,
+      degree_requirements_with_equivalent: 4,
+      receivers_required: 6,
+      receivers_articulated: 4,
+      pct_degree_requirements: 66.7,
+      pct_articulated: 66.7,
+      fully_articulated: false,
+    });
+    expect(alpha.degree_requirements_by_tier).toMatchObject({
+      transferable: { total: 3, covered: 3 },
+      breadth: { total: 1, covered: 1 },
+      nontransferable: { total: 2, covered: 0 },
+    });
+
+    const beta = rows.find((r) => r.community_college_id === 20);
+    expect(beta).toMatchObject({ receivers_required: 6, receivers_articulated: 2, pct_articulated: 33.3 });
+    const gamma = rows.find((r) => r.community_college_id === 30);
+    expect(gamma).toMatchObject({ receivers_required: 6, receivers_articulated: 1, pct_articulated: 16.7 });
+  });
+
+  it('pools degree equivalencies across colleges for district rows', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'degree', groupBy: 'district' });
+    const north = rows.find((r) => r.row_group_label === 'North');
+    expect(north.community_college_ids).toEqual([10, 20]);
+    expect(north).toMatchObject({ receivers_required: 6, receivers_articulated: 4, pct_articulated: 66.7 });
   });
 });
 

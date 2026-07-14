@@ -69,8 +69,16 @@ describe('minimumsToLedger', () => {
       title: 'Computer Science',
       group_conjunction: 'And',
     })
-    expect(ledger.requirement_groups[0].sections.map((section) => section.title))
-      .toEqual(['Calc 1', 'Discrete Math'])
+    // Calc 1 and Discrete Math are both plain take-this-one-course
+    // requirements, so they fold into one combined "Complete all of:" card.
+    expect(ledger.requirement_groups[0].sections).toHaveLength(1)
+    expect(ledger.requirement_groups[0].sections[0]).toMatchObject({
+      title: null,
+      section_advisement: 2,
+    })
+    expect(ledger.requirement_groups[0].sections[0].receivers).toHaveLength(2)
+    // Intro carries real alternatives so it keeps its named card; the lone
+    // plain Data Structures requirement has nothing to merge with.
     expect(ledger.requirement_groups[1].sections.map((section) => section.title))
       .toEqual(['Intro', 'Data Structures'])
     expect(ledger.requirement_groups[1].sections[0]).toMatchObject({
@@ -85,13 +93,35 @@ describe('minimumsToLedger', () => {
     )
     expect(container.textContent).toContain('Mathematics')
     expect(container.textContent).toContain('Computer Science')
-    expect(container.textContent).toContain('Calc 1')
+    expect(container.textContent).toContain('MATH 20A')
+    expect(container.textContent).toContain('CSE 20')
+    expect(container.textContent).toContain('Complete all of:')
     expect(container.textContent).toContain('Complete 1 of:')
     expect(container.textContent).toContain('CSE 8B')
     expect(container.textContent).toContain('CSE 11')
   })
 
-  it('uses the curated count for same-set requirements and cross-set choices', () => {
+  it('folds plain single-course requirements into one combined card per subject', () => {
+    const ledger = minimumsToLedger(
+      [['Calc1', 'MATH 51'], ['Calc2', 'MATH 52'], ['MultivariableCalc', 'MATH 53'], ['LinearAlgebra', 'MATH 54']]
+        .map(([group, code], index) => ({
+          _id: `ucb:${group}`,
+          group_id: group,
+          set_id: 'A',
+          source_order: index,
+          receiving_code: code,
+        }))
+    )
+    const [math] = ledger.requirement_groups
+    expect(math.title).toBe('Mathematics')
+    expect(math.sections).toHaveLength(1)
+    expect(math.sections[0].title).toBe(null)
+    expect(math.sections[0].section_advisement).toBe(4)
+    expect(math.sections[0].receivers).toHaveLength(4)
+    expect(math.sections[0].receivers.every((r) => r.receiving.kind === 'course')).toBe(true)
+  })
+
+  it('renders a single-set multi-course group as one combined series row', () => {
     const ledger = minimumsToLedger([
       ...['31', '32', '33'].map((number, index) => ({
         _id: `uci:intro:${number}`,
@@ -111,8 +141,29 @@ describe('minimumsToLedger', () => {
       })),
     ])
     const sections = ledger.requirement_groups[0].sections
-    expect(sections.find((section) => section.title === 'Intro').section_advisement).toBe(3)
-    expect(sections.find((section) => section.title === 'Programming').section_advisement).toBe(1)
+
+    // One set holding several courses is a series — take all of them together,
+    // shown as ONE combined row, not a row per course.
+    const intro = sections.find((section) => section.title === 'Intro')
+    expect(intro.section_advisement).toBe(1)
+    expect(intro.receivers).toHaveLength(1)
+    expect(intro.receivers[0].receiving).toMatchObject({ kind: 'series', conjunction: 'and' })
+    expect(intro.receivers[0].receiving.parent_ids).toHaveLength(3)
+
+    // Several single-course sets stay separate rows — pick one alternative.
+    const programming = sections.find((section) => section.title === 'Programming')
+    expect(programming.section_advisement).toBe(1)
+    expect(programming.receivers).toHaveLength(2)
+    expect(programming.receivers.every((r) => r.receiving.kind === 'course')).toBe(true)
+
+    const { container } = render(
+      <RequirementsLedger major={{ requirement_groups: ledger.requirement_groups }}
+        universityCoursesById={ledger.universityCoursesById}
+        preserveOrder showCompletion={false} />
+    )
+    expect(container.textContent).toContain('I&C SCI 31')
+    expect(container.textContent).toContain('I&C SCI 32')
+    expect(container.textContent).toContain('I&C SCI 33')
   })
 })
 

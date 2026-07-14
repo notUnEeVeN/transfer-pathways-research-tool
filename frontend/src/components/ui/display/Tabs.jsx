@@ -17,7 +17,7 @@ export default function Tabs({ value, onChange, options, multiple = false, class
     <div
       // w-fit: a flex-column parent (Stack) would otherwise stretch the pill
       // to the container's full width.
-      className={`inline-flex items-center gap-1 p-1 rounded-lg surface-sunken shrink-0 w-fit ${className}`}
+      className={`inline-flex items-center gap-0.5 p-[3px] rounded-pill surface-sunken shrink-0 w-fit ${className}`}
       role={multiple ? 'group' : 'tablist'}
     >
       {options.map((opt) => {
@@ -30,11 +30,16 @@ export default function Tabs({ value, onChange, options, multiple = false, class
             aria-selected={multiple ? undefined : active}
             aria-pressed={multiple ? active : undefined}
             onClick={() => onChange(opt.value)}
-            className={`inline-flex items-center justify-center whitespace-nowrap px-4 h-8 rounded-md text-button transition-[background-color,color] duration-150 ${
-              active ? 'bg-primary text-on-primary hover:bg-primary-hover' : 'text-ink-muted hover:text-ink hover:bg-surface-hover'
+            className={`inline-flex items-center justify-center whitespace-nowrap px-[15px] h-auto py-[6.5px] rounded-pill text-[13px] transition-[background-color,color] duration-150 ${
+              active ? 'bg-primary text-on-primary font-[650] hover:bg-primary-hover' : 'text-ink-muted font-medium hover:text-ink hover:bg-surface-hover'
             }`}
           >
-            {opt.label}
+            {/* A bold invisible twin reserves the active (650-weight) width so
+                the pill row never shifts when the selection moves. */}
+            <span className='grid'>
+              <span aria-hidden='true' className='invisible font-[650] col-start-1 row-start-1'>{opt.label}</span>
+              <span className='col-start-1 row-start-1'>{opt.label}</span>
+            </span>
           </button>
         )
       })}

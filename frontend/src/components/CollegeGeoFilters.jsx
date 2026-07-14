@@ -32,7 +32,7 @@ export default function CollegeGeoFilters({ colleges = [], value, onChange, clas
         ['district', 'districts', options.districts],
         ['county', 'counties', options.counties],
       ].map(([key, noun, list]) => (
-        <Select key={key} className='min-w-[8.5rem] flex-1' value={value[key]} onChange={set(key)}
+        <Select key={key} pill className='min-w-[8.5rem] flex-1' value={value[key]} onChange={set(key)}
           options={asOpts(noun, list)} placeholder={`All ${noun}`} />
       ))}
       {hasActiveGeo(value) && (

@@ -90,7 +90,7 @@ export function useCoverage(params = {}, options = {}) {
   const { user } = useAuth()
   const majorContains = String(params.majorContains || '').trim()
   const groupBy = ['college', 'district', 'county'].includes(params.groupBy) ? params.groupBy : 'college'
-  const requirements = ['assist', 'paper'].includes(params.requirements) ? params.requirements : 'assist'
+  const requirements = ['degree', 'assist', 'paper'].includes(params.requirements) ? params.requirements : 'assist'
   const pin = ['paper', 'settings'].includes(params.pin) ? params.pin : null
   const { enabled = true, ...queryOptions } = options
   return useQuery({
@@ -521,6 +521,26 @@ export function useReopenTaskStage() {
   return useMutation({
     mutationFn: ({ id, stage, note }) =>
       apiClient.post(`/tasks/${id}/stages/${stage}/reopen`, { note }).then((response) => response.data),
+    onSuccess: (task) => putTaskInCache(qc, task),
+  })
+}
+
+// Stage-note management (log-only). The author may delete their own review note;
+// the task owner or author may mark one resolved. Both return the updated task.
+export function useDeleteTaskStageNote() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, logId }) =>
+      apiClient.delete(`/tasks/${id}/log/${logId}`).then((response) => response.data),
+    onSuccess: (task) => putTaskInCache(qc, task),
+  })
+}
+
+export function useResolveTaskStageNote() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, logId, resolved }) =>
+      apiClient.post(`/tasks/${id}/log/${logId}/resolve`, { resolved }).then((response) => response.data),
     onSuccess: (task) => putTaskInCache(qc, task),
   })
 }

@@ -1,18 +1,17 @@
 import React, { useMemo, useState } from 'react'
-import {
-  ArrowDownTrayIcon, ClipboardDocumentListIcon, PlusIcon, SparklesIcon,
-} from '@heroicons/react/24/outline'
+import { ClipboardDocumentListIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Button, EmptyState, Spinner, Stack, StatStrip, SwitchField, Tabs, useToast } from '../components/ui'
 import { useAuth } from '../shared/hooks/useAuth'
 import {
-  useAddTaskStageNote, useCompleteTaskStage, useCreateTask, useDeleteTask, useReopenTaskStage,
+  useAddTaskStageNote, useCompleteTaskStage, useCreateTask, useDeleteTask,
+  useDeleteTaskStageNote, useReopenTaskStage, useResolveTaskStageNote,
   useTaskRoster, useTasks, useUpdateTask,
 } from '../shared/query/hooks/useData'
 import { SEED_TASKS } from './seedTasks'
 import TaskBoard from './TaskBoard'
 import TaskList from './TaskList'
 import TaskModal from './TaskModal'
-import { buildTaskHistoryAiBriefing, buildTaskHistoryMarkdown } from './taskHistory'
+import { withBoardAssignment } from './taskWorkflow'
 
 const VIEWS = [
   { value: 'board', label: 'Board' },
@@ -35,6 +34,8 @@ export default function TasksPage() {
   const addTaskStageNote = useAddTaskStageNote()
   const completeTaskStage = useCompleteTaskStage()
   const reopenTaskStage = useReopenTaskStage()
+  const deleteTaskStageNote = useDeleteTaskStageNote()
+  const resolveTaskStageNote = useResolveTaskStageNote()
   const deleteTask = useDeleteTask()
 
   const tasks = tasksQ.data?.rows || []
@@ -45,7 +46,9 @@ export default function TasksPage() {
 
   const stats = useMemo(() => {
     const active = tasks.filter((t) => !t.archived)
-    const open = active.filter((t) => t.status === 'backlog' || t.status === 'todo').length
+    // Legacy 'backlog' docs read as 'todo' server-side, so counting todo covers
+    // them too.
+    const open = active.filter((t) => t.status === 'todo').length
     const doing = active.filter((t) => t.status === 'in_progress').length
     const doneWeek = active.filter((t) => t.status === 'done' && t.completed_at
       && Date.now() - new Date(t.completed_at).getTime() < WEEK_MS).length
@@ -53,6 +56,12 @@ export default function TasksPage() {
   }, [tasks])
 
   const onMove = (task, patch) => {
+    // Verification is derived, not a drop target — a task reaches it by finishing
+    // the Self-verify stage, so reject drops onto that column.
+    if (patch.status === 'verification') {
+      toast.error('Tasks reach Verification by completing the Self-verify stage.')
+      return
+    }
     if (patch.status === 'done' && (task.progress || 0) < 100) {
       toast.error('Complete team approval before moving this task to Done.')
       setModal({ task })
@@ -63,7 +72,8 @@ export default function TasksPage() {
       setModal({ task })
       return
     }
-    updateTask.mutate({ id: task._id, patch }, {
+    const movePatch = withBoardAssignment(task, patch, user, rosterQ.data?.rows || [])
+    updateTask.mutate({ id: task._id, patch: movePatch }, {
       onError: (error) => toast.error(error?.response?.data?.error || 'Could not move the task.'),
     })
   }
@@ -71,28 +81,6 @@ export default function TasksPage() {
     onSuccess: () => toast.success('Task deleted'),
     onError: () => toast.error('Could not delete the task.'),
   })
-
-  const copyForAi = async (historyTasks, successMessage) => {
-    try {
-      await navigator.clipboard.writeText(buildTaskHistoryAiBriefing(historyTasks))
-      toast.success(successMessage)
-    } catch {
-      toast.error('Could not copy the task history.')
-    }
-  }
-
-  const exportHistory = (historyTasks, filename, successMessage) => {
-    const report = buildTaskHistoryMarkdown(historyTasks)
-    const url = URL.createObjectURL(new Blob([report], { type: 'text/markdown;charset=utf-8' }))
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `${filename}-${new Date().toISOString().slice(0, 10)}.md`
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-    URL.revokeObjectURL(url)
-    toast.success(successMessage)
-  }
 
   // Sweep the Done column into the archive — off the board, still in the All
   // list behind the "Show archived" switch. Reversible per task from its modal.
@@ -127,27 +115,15 @@ export default function TasksPage() {
   const modalTask = modal?.task
     ? (tasks.find((task) => task._id === modal.task._id) || modal.task)
     : null
-  const taskFilename = modalTask?.title
-    ? `task-history-${modalTask.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)}`
-    : 'task-history'
 
   return (
-    <Stack gap='section'>
+    // App owns the page's outer scroll — this wrapper only normalizes the
+    // inner rhythm to the console mockup's 18px page gap (v2:789), which
+    // doesn't match any of Stack's named gaps.
+    <div className='flex flex-col gap-[18px]'>
       <div className='flex flex-wrap items-center gap-3'>
         <Tabs value={view} onChange={setView} options={VIEWS} />
         <span className='ml-auto flex flex-wrap items-center justify-end gap-1'>
-          {tasks.length > 0 && (
-            <>
-              <Button size='sm' variant='ghost' leadingIcon={SparklesIcon}
-                onClick={() => copyForAi(tasks, 'Complete task history copied for AI')}>
-                Copy all for AI
-              </Button>
-              <Button size='sm' variant='ghost' leadingIcon={ArrowDownTrayIcon}
-                onClick={() => exportHistory(tasks, 'research-task-history', 'Complete task history exported')}>
-                Export all
-              </Button>
-            </>
-          )}
           <Button leadingIcon={PlusIcon} onClick={() => setModal({ initialStatus: 'todo' })}>New task</Button>
         </span>
       </div>
@@ -212,11 +188,11 @@ export default function TasksPage() {
           onAddStageNote={(id, stage, note) => addTaskStageNote.mutateAsync({ id, stage, note })}
           onCompleteStage={(id, stage) => completeTaskStage.mutateAsync({ id, stage })}
           onReopenStage={(id, stage, note) => reopenTaskStage.mutateAsync({ id, stage, note })}
-          onCopyHistory={() => copyForAi([modalTask], 'Task history copied for AI')}
-          onExportHistory={() => exportHistory([modalTask], taskFilename, 'Task history exported')}
+          onDeleteStageNote={(id, logId) => deleteTaskStageNote.mutateAsync({ id, logId })}
+          onResolveStageNote={(id, logId, resolved) => resolveTaskStageNote.mutateAsync({ id, logId, resolved })}
           onDelete={onDelete}
         />
       )}
-    </Stack>
+    </div>
   )
 }

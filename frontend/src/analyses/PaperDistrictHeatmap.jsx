@@ -384,7 +384,7 @@ export default function PaperDistrictHeatmap() {
   return (
     <Stack gap='section'>
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
-      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+      <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
         <div className='flex flex-col'>
           <span className='field-label'>Version</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -418,7 +418,7 @@ export default function PaperDistrictHeatmap() {
         >
           Refresh
         </Button>
-        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle'>
+        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           <span className='font-mono tabular-nums'>{datasetVersion}</span>
           <span>{coverage.isFetching ? 'Updating…' : 'Refresh to update'}</span>
         </div>

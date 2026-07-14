@@ -7,6 +7,7 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const {
   listTasks, createTask, updateTask, addTaskStageNote, completeTaskStage, reopenTaskStage,
+  deleteTaskLogNote, resolveTaskLogNote,
   deleteTask, listRoster, TASK_TYPES, PORTING_STAGES, ValidationError,
 } = require('../services/tasks');
 
@@ -64,6 +65,22 @@ exports.reopenStage = handler(async (req, res) => {
   const doc = await reopenTaskStage(
     tasksDb(req), req.params.id, req.params.stage,
     req.body || {}, req.user?.uid ?? null
+  );
+  if (!doc) return res.status(404).json({ error: 'no such task' });
+  res.json(doc);
+});
+
+exports.deleteLogNote = handler(async (req, res) => {
+  const doc = await deleteTaskLogNote(
+    tasksDb(req), req.params.id, req.params.logId, req.user?.uid ?? null
+  );
+  if (!doc) return res.status(404).json({ error: 'no such task' });
+  res.json(doc);
+});
+
+exports.resolveLogNote = handler(async (req, res) => {
+  const doc = await resolveTaskLogNote(
+    tasksDb(req), req.params.id, req.params.logId, req.body || {}, req.user?.uid ?? null
   );
   if (!doc) return res.status(404).json({ error: 'no such task' });
   res.json(doc);

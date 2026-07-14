@@ -152,13 +152,13 @@ export const ENDPOINT_GROUPS = [
     endpoints: [
       {
         method: 'GET',
-        path: '/analysis/coverage?majorContains=Computer%20Science',
-        title: 'Articulation coverage',
-        plain: 'Required receivers, articulated receivers, and completion percentage for each visible agreement or geography rollup.',
+        path: '/analysis/coverage?requirements=degree&majorContains=Computer%20Science',
+        title: 'Requirement coverage',
+        plain: 'Coverage for each college/campus pair or geography rollup. Degree mode reads the editable four-year graduation templates live; assist and paper retain the two transfer-minimum measures.',
         returns: '{ params, n, rows: [coverage records] }',
         fields: [
           ['groupBy', 'Optional query value: college, district, or county.'],
-          ['requirements', 'Optional query value: assist or paper.'],
+          ['requirements', 'Optional query value: degree, assist, or paper. Degree measures graduation-requirement slots with a community-college equivalent.'],
         ],
       },
       {

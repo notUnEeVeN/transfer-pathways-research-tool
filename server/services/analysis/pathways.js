@@ -13,6 +13,7 @@
 const { manyToOneCount } = require('./optionSolver');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
 const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
+const { buildDegreeGroups } = require('../degreeSlots');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
@@ -128,6 +129,7 @@ async function loadRefs(db) {
   const universities = institutions.filter((row) => row.kind === 'university');
   const colleges = institutions.filter((row) => row.kind === 'community_college');
   return {
+    communityColleges: colleges,
     calendarByUniversity: new Map(universities.map((r) => [Number(r.source_id), r.academic_calendar])),
     tuitionByUniversity: new Map(universities
       .filter((r) => r.tuition_per_credit_usd != null)
@@ -528,8 +530,224 @@ async function hardRequirementCoverageData(db, auditDb, { majorContains = '', vi
   });
 }
 
+function degreeParentIds(degrees) {
+  const ids = new Set();
+  for (const degree of degrees) {
+    for (const group of degree.requirement_groups || []) {
+      for (const section of group.sections || []) {
+        for (const receiver of section.receivers || []) {
+          for (const parentId of receiverParentIds(receiver)) ids.add(parentId);
+        }
+      }
+    }
+  }
+  return [...ids];
+}
+
+function degreeRowGroups(colleges, refs, mode) {
+  const groups = new Map();
+  for (const college of colleges) {
+    const doc = {
+      community_college_id: Number(college.source_id),
+      community_college: college.name,
+    };
+    for (const membership of membershipsFor(doc, refs, mode)) {
+      if (!groups.has(membership.key)) {
+        groups.set(membership.key, {
+          kind: membership.kind,
+          key: membership.key,
+          label: membership.label,
+          communityCollegeIds: new Set(),
+          communityColleges: new Set(),
+          districts: new Set(),
+          regions: new Set(),
+          counties: new Set(),
+        });
+      }
+      const group = groups.get(membership.key);
+      group.communityCollegeIds.add(Number(college.source_id));
+      group.communityColleges.add(college.name);
+      if (membership.district) group.districts.add(membership.district);
+      if (membership.region) group.regions.add(membership.region);
+      for (const county of membership.counties_served || []) group.counties.add(county);
+    }
+  }
+  return [...groups.values()];
+}
+
+function mergeGeAreas(communityCollegeIds, geAreasByCollege) {
+  const merged = new Map();
+  for (const collegeId of communityCollegeIds) {
+    for (const [area, courses] of geAreasByCollege.get(Number(collegeId)) || []) {
+      if (!merged.has(area)) merged.set(area, []);
+      merged.get(area).push(...courses);
+    }
+  }
+  return merged;
+}
+
+/**
+ * Full-degree coverage, matching Figure 1 of the Massachusetts paper: each
+ * cell is the percentage of a four-year degree's required course slots for
+ * which the row's college(s) have an equivalent. The editable `kind: degree`
+ * templates are the denominator; ASSIST agreements and CC GE tags supply the
+ * equivalencies. University-only slots remain in the denominator at zero.
+ */
+async function degreeRequirementCoverageData(db, {
+  majorContains = '', visiblePairs = null, groupBy = 'college', pin = null,
+} = {}, refs) {
+  const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
+  const degreeFilter = { kind: 'degree' };
+
+  // Pinned aggregate figures are admin-defined and visibility-independent, as
+  // in the other coverage modes. Normal partner views remain campus-scoped.
+  if (!pin && visiblePairs != null) {
+    const schoolIds = [...new Set(visiblePairs.map((pair) => Number(pair.school_id)).filter(Number.isFinite))];
+    if (!schoolIds.length) return [];
+    degreeFilter.school_id = { $in: schoolIds };
+  }
+  if (!pin && majorContains) {
+    degreeFilter.program = { $regex: escapeRegex(majorContains), $options: 'i' };
+  }
+
+  const degrees = await db.collection('curated_requirements')
+    .find(degreeFilter)
+    .sort({ school_id: 1 })
+    .toArray();
+  if (!degrees.length) return [];
+
+  const schoolIds = [...new Set(degrees.map((degree) => Number(degree.school_id)).filter(Number.isFinite))];
+  const parentIds = degreeParentIds(degrees);
+
+  // Return one compact row per campus-college pair. Doing this reduction in
+  // Mongo avoids shipping every full agreement tree for a live heatmap refresh.
+  const articulationPipeline = [
+    { $match: { uc_school_id: { $in: schoolIds } } },
+    { $unwind: '$requirement_groups' },
+    { $unwind: '$requirement_groups.sections' },
+    { $unwind: '$requirement_groups.sections.receivers' },
+    { $replaceWith: {
+      uc_school_id: '$uc_school_id',
+      community_college_id: '$community_college_id',
+      receiver: '$requirement_groups.sections.receivers',
+    } },
+    { $match: { 'receiver.articulation_status': 'articulated' } },
+    { $project: {
+      uc_school_id: 1,
+      community_college_id: 1,
+      parent_ids: {
+        $cond: [
+          { $eq: ['$receiver.receiving.kind', 'series'] },
+          { $ifNull: ['$receiver.receiving.parent_ids', []] },
+          ['$receiver.receiving.parent_id'],
+        ],
+      },
+    } },
+    { $unwind: '$parent_ids' },
+    { $match: { parent_ids: { $in: parentIds } } },
+    { $group: {
+      _id: { school_id: '$uc_school_id', community_college_id: '$community_college_id' },
+      parent_ids: { $addToSet: '$parent_ids' },
+    } },
+  ];
+
+  // GE/breadth requirements use the college catalog rather than major-prep
+  // agreements. Only IDs are needed because slot coverage depends on the count.
+  const gePipeline = [
+    { $match: { side: 'sending', uc_transferable: true } },
+    { $unwind: '$igetc_area' },
+    { $group: {
+      _id: { community_college_id: '$community_college_id', area: '$igetc_area' },
+      course_ids: { $addToSet: '$course_id' },
+    } },
+  ];
+
+  const [articulationRows, geRows] = await Promise.all([
+    db.collection('assist_agreements').aggregate(articulationPipeline).toArray(),
+    db.collection('assist_courses').aggregate(gePipeline).toArray(),
+  ]);
+
+  const articulatedByPair = new Map();
+  for (const row of articulationRows) {
+    articulatedByPair.set(
+      `${Number(row._id.school_id)}|${Number(row._id.community_college_id)}`,
+      new Set((row.parent_ids || []).map(Number))
+    );
+  }
+  const geAreasByCollege = new Map();
+  for (const row of geRows) {
+    const collegeId = Number(row._id.community_college_id);
+    if (!geAreasByCollege.has(collegeId)) geAreasByCollege.set(collegeId, new Map());
+    geAreasByCollege.get(collegeId).set(
+      row._id.area,
+      (row.course_ids || []).map((courseId) => ({ course_id: courseId }))
+    );
+  }
+
+  const rowGroups = degreeRowGroups(refs.communityColleges, refs, mode);
+  const rows = [];
+  for (const degree of degrees) {
+    const schoolId = Number(degree.school_id);
+    for (const rowGroup of rowGroups) {
+      const collegeIds = [...rowGroup.communityCollegeIds].sort((a, b) => a - b);
+      const articulated = new Set();
+      for (const collegeId of collegeIds) {
+        for (const parentId of articulatedByPair.get(`${schoolId}|${collegeId}`) || []) {
+          articulated.add(parentId);
+        }
+      }
+      const ccGeAreas = mergeGeAreas(collegeIds, geAreasByCollege);
+      const evaluated = buildDegreeGroups(degree.requirement_groups, { articulated, ccGeAreas });
+      const pctArticulated = evaluated.total
+        ? +((evaluated.covered / evaluated.total) * 100).toFixed(1)
+        : null;
+      const collegeNames = [...rowGroup.communityColleges].sort();
+      const districts = [...rowGroup.districts].sort();
+      const regions = [...rowGroup.regions].sort();
+      const counties = [...rowGroup.counties].sort();
+
+      rows.push({
+        system: 'uc',
+        school_id: schoolId,
+        school: degree.school,
+        community_college_id: rowGroup.kind === 'college' ? collegeIds[0] : null,
+        community_college: rowGroup.kind === 'college' ? collegeNames[0] : null,
+        community_college_ids: collegeIds,
+        community_colleges: collegeNames,
+        community_college_district: districts[0] ?? null,
+        community_college_region: regions.length === 1 ? regions[0] : null,
+        community_college_counties: counties,
+        county: rowGroup.kind === 'county' ? rowGroup.label : null,
+        major: degree.program,
+        row_group_kind: rowGroup.kind,
+        row_group_key: rowGroup.key,
+        row_group_label: rowGroup.label,
+        requirements: 'degree',
+        requirements_source: 'curated_requirements.degree',
+        degree_template_id: String(degree._id),
+        degree_template_updated_at: degree.updated_at ?? null,
+        degree_total_units: degree.total_units ?? null,
+        degree_requirements_total: evaluated.total,
+        degree_requirements_with_equivalent: evaluated.covered,
+        degree_requirements_by_tier: evaluated.by_tier,
+        pct_degree_requirements: pctArticulated,
+        // Generic aliases keep the shared heatmap model compatible with all
+        // three requirement bases.
+        receivers_required: evaluated.total,
+        receivers_articulated: evaluated.covered,
+        pct_articulated: pctArticulated,
+        fully_articulated: evaluated.total > 0 && evaluated.covered === evaluated.total,
+      });
+    }
+  }
+  return rows;
+}
+
 async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', requirements = 'assist', pin = null } = {}) {
   const refs = await loadRefs(db);
+  if (requirements === 'degree') {
+    return degreeRequirementCoverageData(db, { majorContains, visiblePairs, groupBy, pin }, refs);
+  }
   if (requirements === 'paper') {
     return hardRequirementCoverageData(db, auditDb, { majorContains, visiblePairs, groupBy, pin }, refs);
   }

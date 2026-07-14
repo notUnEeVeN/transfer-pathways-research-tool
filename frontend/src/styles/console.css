@@ -21,6 +21,23 @@
    the overrides so the equal-specificity bg-primary rule wins by source order. */
 .uui-scope .bg-primary { background-color: var(--background-color-primary); }
 .uui-scope .text-primary { color: var(--text-color-primary); }
+.uui-scope .border-primary { border-color: var(--border-color-primary); }
+
+/* T23 (deep ledger re-skin) RETIRED the former `.uui-scope { --color-text-* /
+   --color-bg-* / --color-border-* }` middle-layer override block that used to
+   re-map UUI utilities (text-primary/-tertiary/-quaternary, bg-primary/
+   -secondary/-tertiary/-brand-primary/-success-primary/-success-solid,
+   border-primary/-secondary) to brand tokens inside the ledger. The ledger
+   trio — RequirementsLedger, SectionCard, CompletionCheck — now sets app-native
+   tokens directly (text-ink/-muted/-subtle, text-success, bg-surface/-muted/
+   -sunken, bg-primary-soft, bg-success/-soft, border-border/-strong), so no
+   utility inside .uui-scope chains through those vars any longer, and every
+   .uui-scope wrapper contains only the ledger. The three
+   .uui-scope .bg-primary / .text-primary / .border-primary mirror rules above
+   are KEPT: they still re-assert the Untitled UI defaults (against the global
+   collision-fix rules) for any UUI-classed content that might yet render in the
+   scope. Dark mode is handled by the tokens themselves, which flip under
+   html[data-theme='dark']. */
 
 /* Analysis cards (Data → Analysis). Each analysis is wrapped in a surface-card
    (see analyses/AnalysisCard). The analyses render their own inner surface-card

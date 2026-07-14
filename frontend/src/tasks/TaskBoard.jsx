@@ -2,14 +2,24 @@ import React, { useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { PlusIcon, ChevronDownIcon, ChevronRightIcon, ArchiveBoxArrowDownIcon } from '@heroicons/react/24/outline'
 import TaskCard from './TaskCard'
+import { isAwaitingVerification } from './taskWorkflow'
 import { usePersistedState } from '../shared/hooks/usePersistedState'
 
+// Verification is a DERIVED column, not a stored status: a task lands there when
+// it is in_progress and its only remaining stage is peer approval (see
+// isAwaitingVerification). Backlog was removed; legacy 'backlog' docs read as
+// 'todo' server-side, so they never reach the board.
 export const COLUMNS = [
-  { status: 'backlog',     label: 'Backlog' },
-  { status: 'todo',        label: 'To do' },
-  { status: 'in_progress', label: 'In progress' },
-  { status: 'done',        label: 'Done' },
+  { status: 'todo',         label: 'To do' },
+  { status: 'in_progress',  label: 'In progress' },
+  { status: 'verification', label: 'Verification' },
+  { status: 'done',         label: 'Done' },
 ]
+
+// Which board column a task is drawn in. Everything is keyed on the stored
+// status except the derived Verification bucket, which pulls self-verified
+// in_progress tasks out of In progress.
+const columnFor = (task) => (isAwaitingVerification(task) ? 'verification' : task.status)
 
 // Fractional index between two neighbors for drag-drop reordering — the moved
 // card takes the midpoint, so a reorder writes one doc instead of renumbering
@@ -44,8 +54,11 @@ function dropSlot(columnEl, draggedId, pointY) {
  * optimistically by useUpdateTask so the board never flickers.
  *
  * Columns collapse to a slim header bar (chevron; sessionStorage-persisted) —
- * an empty Backlog or a swollen Done folds out of the way but stays a valid
- * drop target (drops append to the column's end). A long column scrolls
+ * an empty To do or a swollen Done folds out of the way but stays a valid
+ * drop target (drops append to the column's end). Verification is derived, not
+ * a drop target: cards enter it by completing Self-verify and leave via peer
+ * approval or a stage reopen, so its cards don't drag and it takes no drops.
+ * A long column scrolls
  * within a bounded height rather than growing the page; while a drag is in
  * flight every column switches to overflow-visible so the dragged card isn't
  * clipped crossing between columns. The Done column offers an archive sweep
@@ -61,7 +74,11 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
 
   const byColumn = useMemo(() => {
     const m = Object.fromEntries(COLUMNS.map((c) => [c.status, []]))
-    for (const t of tasks) if (!t.archived && m[t.status]) m[t.status].push(t)
+    for (const t of tasks) {
+      if (t.archived) continue
+      const col = columnFor(t)
+      if (m[col]) m[col].push(t)
+    }
     for (const k of Object.keys(m)) m[k].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
     return m
   }, [tasks])
@@ -109,7 +126,7 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
           <div
             key={status}
             ref={(el) => { el ? columnRefs.current.set(status, el) : columnRefs.current.delete(status) }}
-            className={`surface-sunken rounded-xl p-2 transition-shadow ${
+            className={`bg-surface-muted rounded-2xl p-3 transition-shadow ${
               folded ? 'xl:w-44 xl:flex-none' : 'flex-1 min-w-0'} ${
               hoverCol === status && dragging ? 'ring-2 ring-primary/40' : ''}`}
           >
@@ -122,7 +139,7 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
                   : <ChevronDownIcon className='w-3.5 h-3.5' />}
                 <span className='text-label'>{label}</span>
               </button>
-              <span className='chip'>{col.length}</span>
+              <span className='chip bg-surface'>{col.length}</span>
               {!folded && (
                 <span className='ml-auto inline-flex items-center gap-0.5'>
                   {status === 'done' && col.length > 0 && (
@@ -132,7 +149,7 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
                       <ArchiveBoxArrowDownIcon className='w-4 h-4' />
                     </button>
                   )}
-                  {status !== 'done' && (
+                  {status !== 'done' && status !== 'verification' && (
                     <button type='button' onClick={() => onNewIn(status)} aria-label={`New task in ${label}`}
                       className='text-ink-subtle hover:text-ink rounded-md p-0.5'>
                       <PlusIcon className='w-4 h-4' />
@@ -149,27 +166,38 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
               <div className={`mt-1 space-y-2 min-h-[3rem] max-h-[70vh] pr-0.5 ${
                 dragging ? 'overflow-visible' : 'overflow-y-auto'}`}>
                 {col.length === 0 && (
-                  <p className='text-tag text-ink-subtle px-1 py-2'>Drop a task here</p>
+                  status === 'verification' ? (
+                    <p className='rounded-xl px-3 py-[22px] text-center text-[12.5px] text-ink-subtle'>
+                      Nothing awaiting verification
+                    </p>
+                  ) : (
+                    <p className='border-[1.5px] border-dashed border-border-strong rounded-xl px-3 py-[22px] text-center text-[12.5px] text-ink-subtle'>
+                      Drop a task here
+                    </p>
+                  )
                 )}
+                {/* Match the transformed wrapper to TaskCard's radius; the
+                    rounded child owns the shadow so no square drag layer shows. */}
                 {col.map((task) => (
                   <motion.div
                     key={task._id}
                     data-task-id={task._id}
                     layout='position'
-                    drag
+                    drag={status !== 'verification'}
                     dragSnapToOrigin
                     dragElastic={0.15}
-                    whileDrag={{ scale: 1.03, zIndex: 40, boxShadow: 'var(--shadow-lg)', cursor: 'grabbing' }}
+                    whileDrag={{ scale: 1.03, zIndex: 40, cursor: 'grabbing' }}
                     onDragStart={() => { setDragging(task._id); didDrag.current = true }}
                     onDrag={(_, info) => {
                       const c = columnAt(info.point)
                       if (c !== hoverCol) setHoverCol(c)
                     }}
                     onDragEnd={(_, info) => handleDragEnd(task, info)}
-                    className='relative'
+                    className='relative rounded-xl isolate'
                   >
                     <TaskCard
                       task={task}
+                      dragging={dragging === task._id}
                       onOpen={() => {
                         // a real drag ends with a click on the same element — swallow it
                         if (didDrag.current) { didDrag.current = false; return }

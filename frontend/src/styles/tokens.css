@@ -1,150 +1,168 @@
+/* ============================================================================
+   Transfer Pathways Research — brand tokens
+   Drop-in replacement for frontend/src/styles/tokens.css  (Tailwind v4 syntax)
 
-/* Hanken Grotesk — self-hosted variable font (weights 400–600), served
-   same-origin with font-display: swap. Two faces so accented (latin-ext)
-   glyphs only download when used. */
+   Palette = the approved "crisp" colorway: white canvas, green-tinted
+   hairlines, darker muted inks (chosen for readability), with the brand's
+   forest #193018 / lime #96F060 pair. Alternates (meadow, paper) at bottom.
+   Rationale + per-surface usage: see REVAMP-HANDOFF.md.
+   ========================================================================== */
+
+/* ---------- Fonts ----------------------------------------------------------
+   Schibsted Grotesk — self-hosted variable font (weights 400–900), served
+   same-origin with font-display: swap. Two faces (normal/italic), each split
+   into latin/latin-ext so accented glyphs only download when used.
+   NOTE: in Schibsted Grotesk, tabular figures give punctuation full digit
+   width ("1 , 035"). Apply .tabular ONLY to pure-digit columns. */
 @font-face {
-  font-family: 'Hanken Grotesk';
+  font-family: 'Schibsted Grotesk';
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('../assets/fonts/hanken-grotesk-latin-wght-normal.woff2') format('woff2-variations');
+  src: url('../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2') format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Hanken Grotesk';
+  font-family: 'Schibsted Grotesk';
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('../assets/fonts/hanken-grotesk-latin-ext-wght-normal.woff2') format('woff2-variations');
+  src: url('../assets/fonts/schibsted-grotesk-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('../assets/fonts/schibsted-grotesk-latin-wght-italic.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('../assets/fonts/schibsted-grotesk-latin-ext-wght-italic.woff2') format('woff2-variations');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
     U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
     U+2C60-2C7F, U+A720-A7FF;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   PLAN MY TRANSFER — DESIGN TOKENS
-
-   The world: a California community-college student finding their way to a UC.
-   The feel: a counselor laid your whole transfer on one page — calm, simple,
-   forward-moving, the opposite of ASSIST.org.
-
-   Clean and light: the CHROME (sidebar + page header + app background) is a soft
-   cool-neutral grey `canvas`; the page content is a white `surface` panel
-   slapped over it (a rounded inside corner where they meet). Flat by default —
-   content cards are border-only (no drop shadow); only true floating overlays
-   (modals, popovers, menus, toasts) lift. Color is restrained — royal blue is
-   the brand, teal = done/eligible, rose = danger; that's it. Light is default;
-   dark swaps only the variables, so every utility keeps working. All fill/text
-   pairings clear WCAG-AA.
-
-   Type — six core treatments (text-display · text-heading · text-body ·
-   text-body-strong · text-caption · text-label), plus marketing (-lg) and
-   numeric (text-stat) variants. Never set raw font-size / font-weight.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
+/* ---------- Light theme (default) ---------- */
 @theme {
-  /* Brand — vivid royal blue. White text (--color-on-primary) clears AA; the
-     soft tint and ring carry the brand presence. */
-  --color-primary: #3366ef;
-  --color-primary-hover: #2a55d8;
-  --color-primary-soft: rgba(51, 102, 239, 0.1);
-  --color-primary-ring: rgba(51, 102, 239, 0.38);
-  --color-on-primary: #ffffff;
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-sans); /* no separate mono face; see .tabular note */
 
-  /* Surfaces — a clean, light, cool-neutral ladder (no brown). The CHROME
-     (sidebar + page header + app background) uses `canvas`; the page content
-     sits over it on white `surface`; recessed wells use a soft light grey.
-     (WCAG-AA verified.) */
-  --color-canvas: #f6f7fa;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f3f4f7;
-  --color-surface-sunken: #eaecf0;
-  --color-surface-hover: #f4f5f8;
+  /* Brand */
+  --color-primary: #193018;            /* forest — fills, selected states */
+  --color-primary-hover: #234424;
+  --color-primary-soft: #EFF8E5;       /* selected-row / icon-chip tint */
+  --color-primary-ring: #96F060;       /* selection rings (verdict buttons) */
+  --color-on-primary: #F0FFE7;
 
-  /* Borders — light cool-grey hairlines */
-  --color-border: #e5e7ec;
-  --color-border-strong: #d4d7de;
+  /* Accent — NEW pair: the lime CTA color (hero CTAs, iconCircle, active
+     nav pill on the forest bar, live-dot, selection highlight) */
+  --color-accent: #96F060;
+  --color-accent-hover: #89E453;
+  --color-on-accent: #193018;
 
-  /* Ink — near-black, faintly cool (headings → body → secondary) */
-  --color-ink: #1b1c1f;
-  --color-ink-muted: #585a61;
-  --color-ink-subtle: #6d6f77;
+  /* Surfaces — cards separate via borders, not tone (flat brand) */
+  --color-canvas: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F6F8F1;
+  --color-surface-sunken: #F1F3EB;     /* segmented tracks, chips, code blocks */
+  --color-surface-hover: #F6F8F1;
 
-  /* Semantic — teal = success, rose = danger. Deep enough for white text on the
-     fill and AA as foreground; the brighter literal lives in the soft tint. */
-  --color-success: #0d7964;
-  --color-success-soft: rgba(34, 197, 170, 0.14);
-  --color-danger: #cb1d51;
-  --color-danger-soft: rgba(244, 63, 107, 0.12);
-  /* Conservative — amber/gold for the over-prepared verdict tier + caution/warn
-     states (health "warn", large-delta). An internal-tool semantic the audit +
-     pipeline depend on; the marketing rehaul intentionally omits amber. */
-  --color-conservative: #b3801f;
-  --color-conservative-soft: rgba(179, 128, 31, 0.15);
+  /* Borders */
+  --color-border: #DFE3D8;
+  --color-border-strong: #B9C0AC;      /* secondary buttons, checkboxes, dashed zones */
 
-  /* Elevation — soft, diffuse, faintly warm. Reserved for FLOATING overlays
-     (modals, popovers, menus, toasts) and a whisper on controls/buttons —
-     content cards stay flat. Names xs/sm/md/lg are referenced inline across
-     components — keep them. */
-  --shadow-xs: 0 1px 2px rgba(18, 22, 33, 0.05);
-  --shadow-sm: 0 1px 2px rgba(18, 22, 33, 0.06), 0 2px 4px rgba(18, 22, 33, 0.04);
-  --shadow-md: 0 2px 4px rgba(18, 22, 33, 0.05), 0 8px 20px -4px rgba(18, 22, 33, 0.1);
-  --shadow-lg: 0 4px 8px rgba(18, 22, 33, 0.06), 0 20px 44px -8px rgba(18, 22, 33, 0.16);
+  /* Ink */
+  --color-ink: #193018;                /* forest doubles as ink */
+  --color-ink-muted: #3F4840;
+  --color-ink-subtle: #5F6A60;
 
-  /* Type */
-  --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: var(--font-sans);
+  /* Semantic — keep the three roles visually distinct (brief Rule 4) */
+  --color-success: #17855A;            /* complete / eligible / done */
+  --color-success-soft: #DFF4E7;
+  --color-danger: #D22F14;             /* AA text/fill */
+  --color-danger-hover: #B52610;
+  --color-danger-bright: #FE4F32;      /* brand coral — large fills/washes only */
+  --color-danger-soft: #FFE9E3;
+  --color-conservative: #6C4FD0;       /* text/border form of soft lavender */
+  --color-conservative-fill: #C7B5F1;  /* button fill — pair with forest text */
+  --color-conservative-hover: #B49FE8;
+  --color-conservative-soft: #F0EAFC;
 
-  /* Geometry — a warmer, more confident radius scale than a data tool's. Cards
-     read soft; controls stay crisp; pills stay fully round. */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  /* Scrim — overlay backdrop tint (modals, sheets, popovers) */
+  --color-scrim: rgba(25, 48, 24, .45);
+
+  /* Geometry — softer, pill-forward */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-2xl: 22px;
-  --radius-pill: 9999px;
+  --radius-pill: 999px;
+
+  /* Elevation — content flat; only true overlays lift */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: 0 16px 48px rgba(25, 48, 24, .24);  /* floating dock */
+  --shadow-lg: 0 24px 64px rgba(25, 48, 24, .30);  /* modals */
 
   /* Motion */
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
 }
 
-/* Dark theme — a near-black neutral ladder + LIGHTER brand / semantic fills that
-   carry dark ink (--color-on-primary), so the same hues read as legible fills AND
-   foreground on the dark canvas. AA both ways. */
+/* ---------- Dark theme ---------- */
 html[data-theme='dark'] {
-  --color-canvas: #0c0d10;
-  --color-surface: #17181b;
-  --color-surface-muted: #121317;
-  --color-surface-sunken: #0e0f12;
-  --color-surface-hover: #1f2125;
-  --color-border: #292b31;
-  --color-border-strong: #3a3d44;
-  --color-ink: #f0f1f3;
-  --color-ink-muted: #a6a8af;
-  --color-ink-subtle: #7e818a;
+  --color-primary: #96F060;            /* lime becomes the fill on dark */
+  --color-primary-hover: #A8F47C;
+  --color-primary-soft: rgba(150, 240, 96, .12);
+  --color-primary-ring: #96F060;
+  --color-on-primary: #142811;
 
-  --color-primary: #6f8cff;
-  --color-primary-hover: #88a0ff;
-  --color-on-primary: #06101f;
-  --color-primary-soft: rgba(111, 140, 255, 0.18);
-  --color-primary-ring: rgba(111, 140, 255, 0.45);
+  --color-accent: #96F060;
+  --color-accent-hover: #A8F47C;
+  --color-on-accent: #142811;
 
-  --color-success: #2ed3b7;
-  --color-success-soft: rgba(46, 211, 183, 0.2);
-  --color-danger: #ff6088;
-  --color-danger-soft: rgba(255, 96, 136, 0.2);
-  --color-conservative: #e0b34d;
-  --color-conservative-soft: rgba(224, 179, 77, 0.18);
+  --color-canvas: #0D170C;
+  --color-surface: #142312;
+  --color-surface-muted: #1A2B18;
+  --color-surface-sunken: #101D0F;
+  --color-surface-hover: #1C2E1A;
 
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --color-border: #2A3D27;
+  --color-border-strong: #3A5136;
+
+  --color-ink: #EAF5E1;
+  --color-ink-muted: #B7C7AD;
+  --color-ink-subtle: #8CA083;
+
+  --color-success: #4FC98F;
+  --color-success-soft: rgba(79, 201, 143, .16);
+  --color-danger: #FF8266;
+  --color-danger-hover: #E4674E;
+  --color-danger-bright: #FE4F32;
+  --color-danger-soft: rgba(254, 79, 50, .16);
+  --color-conservative: #C7B5F1;
+  --color-conservative-fill: #C7B5F1;
+  --color-conservative-hover: #D5C8F6;
+  --color-conservative-soft: rgba(199, 181, 241, .15);
+
+  /* Scrim — darker for AA on the dark canvas */
+  --color-scrim: rgba(0, 0, 0, .6);
 }
 
+/* ---------- Base layer ---------- */
 @layer base {
   *,
   *::before,
@@ -177,8 +195,8 @@ html[data-theme='dark'] {
   }
 
   ::selection {
-    background: var(--color-primary-soft);
-    color: var(--color-ink);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
   }
 
   /* One focus treatment, app-wide: a crisp brand outline that hugs the element's
@@ -198,8 +216,11 @@ html[data-theme='dark'] {
     margin: 0;
   }
   a {
-    color: inherit;
+    color: var(--color-success);
     text-decoration: none;
+  }
+  a:hover {
+    color: color-mix(in oklab, var(--color-success), black 18%);
   }
   button {
     appearance: none;
@@ -215,34 +236,6 @@ html[data-theme='dark'] {
     border: 0;
     border-top: 1px solid var(--color-border);
     margin: 0;
-  }
-
-  /* Hero majors panel — unblurs into place once its bitmap has decoded (plain CSS
-     so framer-motion stays off the landing's first-paint path). Hero adds
-     .hero-panel-in after decode() resolves. */
-  .hero-panel {
-    opacity: 0;
-    filter: blur(16px);
-    transform: translateY(14px) scale(0.99);
-    transition:
-      opacity 0.9s var(--ease-out),
-      filter 0.9s var(--ease-out),
-      transform 0.9s var(--ease-out);
-    will-change: opacity, filter, transform;
-  }
-  .hero-panel-in {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-panel,
-    .hero-panel-in {
-      opacity: 1;
-      filter: none;
-      transform: none;
-      transition: none;
-    }
   }
 
   ::-webkit-scrollbar {
@@ -307,6 +300,12 @@ html[data-theme='dark'] {
     to {
       transform: rotate(360deg);
     }
+  }
+
+  /* Live-dot pulse (Admin production banner). */
+  @keyframes pmt-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(150, 240, 96, .55); }
+    50%      { box-shadow: 0 0 0 8px rgba(150, 240, 96, 0); }
   }
 }
 
@@ -430,173 +429,60 @@ html[data-theme='dark'] {
   90.9090909091% { transform: translate(-26px, 0); }
   100% { transform: translate(0px, 0); }
 }
-/* Production target banner — dot pulse for the live/active prod indicator. */
-@keyframes pmt-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .35; }
-}
 
-/* ─────────────────────────────────────────────────────────────────────────
-   TYPE — the only text treatments. Color, weight, size, tracking baked in.
-   Confident but never heavy: display & stats step up to weight 500 with tight
-   tracking. Never set raw font-size / font-weight / text-[Npx] elsewhere.
-   ───────────────────────────────────────────────────────────────────────── */
+/* ---------- Type system (closed — never set raw sizes on markup) ---------- */
+@utility text-display     { font-size: 30px; line-height: 1.15; font-weight: 650; letter-spacing: -.02em; }
+@utility text-display-lg  { font-size: 44px; line-height: 1.08; font-weight: 650; letter-spacing: -.022em; } /* sign-in hero */
+@utility text-heading     { font-size: 20px; line-height: 1.3;  font-weight: 650; letter-spacing: -.01em; }
+@utility text-body        { font-size: 14px; line-height: 1.5;  font-weight: 400; }
+@utility text-body-strong { font-size: 14px; line-height: 1.5;  font-weight: 600; }
+@utility text-caption     { font-size: 13px; line-height: 1.45; color: var(--color-ink-subtle); }
+@utility text-label       { font-size: 11px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; color: var(--color-ink-subtle); }
+@utility text-stat        { font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+@utility text-stat-lg     { font-size: 29px; font-weight: 650; letter-spacing: -.015em; }
+@utility text-button      { font-size: 13px; font-weight: 600; }
+@utility text-tag         { font-size: 11.5px; font-weight: 600; }
+/* Pure-digit columns ONLY (units, ids, counts) — never on values with , . % / */
+@utility tabular          { font-variant-numeric: tabular-nums; }
 
-/* Marketing + hero headline — the same calm style as text-heading-lg, a step
-   bigger. Used for the hero and every marketing section heading; the feature
-   copy stays on text-heading-lg, one step down. */
-@utility text-display-lg {
-  font-size: clamp(24px, 2.4vw, 30px);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+/* ---------- Surface system (flat) ---------- */
+@utility surface-card     { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+@utility surface-raised   { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+@utility surface-sunken   { background: var(--color-surface-sunken); border-radius: var(--radius-pill); }
+@utility surface-elevated { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); box-shadow: var(--shadow-lg); }
+
+/* ---------- Shared field / pill vocab ---------- */
+@utility input-field {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 9px 13px;
+  font-size: 13.5px;
   color: var(--color-ink);
+  transition:
+    border-color 120ms var(--ease-out),
+    box-shadow 120ms var(--ease-out);
 }
-
-/* In-app page titles + dashboard greeting. */
-@utility text-display {
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
+@utility input-field-focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  outline: none;
 }
-
-/* Mid-marketing headings + large blockquotes. */
-@utility text-heading-lg {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: -0.014em;
-  color: var(--color-ink);
-}
-
-/* Section headings, modal titles, card titles. */
-@utility text-heading {
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: -0.008em;
-  color: var(--color-ink);
-}
-
-/* Larger body for marketing prose. */
-@utility text-body-lg {
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.55;
-  color: var(--color-ink);
-}
-
-@utility text-body {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--color-ink);
-}
-
-@utility text-body-strong {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--color-ink);
-}
-
-@utility text-caption {
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.4;
+@utility field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--color-ink-muted);
 }
-
-/* Interactive controls (buttons, tabs, chips). */
-@utility text-button {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--color-ink);
-}
-
-/* Tiny uppercase tracking — eyebrows, form labels, card overlines. */
-@utility text-label {
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-ink-subtle);
-}
-
-/* Inline pill / badge label — text-label size, no uppercase or tracking. */
-@utility text-tag {
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--color-ink);
-}
-
-/* Numeric display — MetricCard / readiness / bento counters. Confident,
-   tabular, tightly tracked. */
-@utility text-stat {
-  font-size: 30px;
-  font-weight: 500;
-  letter-spacing: -0.028em;
-  line-height: 1.05;
-  font-feature-settings: 'tnum', 'zero';
-  color: var(--color-ink);
-}
-
-@utility text-stat-lg {
-  font-size: clamp(40px, 5vw, 60px);
-  font-weight: 500;
-  letter-spacing: -0.034em;
-  line-height: 1;
-  font-feature-settings: 'tnum', 'zero';
-  color: var(--color-ink);
-}
-
-/* Tabular numerals; family resolves to --font-mono (== --font-sans). */
-@utility font-mono {
-  font-family: var(--font-mono);
-  font-feature-settings: 'tnum', 'zero';
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   SURFACES & lines — one depth strategy (border + soft layered shadow) at
-   graded intensity. Dense lists stay flat (surface-card); cards that should
-   carry presence lift (surface-raised); overlays float (surface-elevated).
-   ───────────────────────────────────────────────────────────────────────── */
-
-/* Flat, calm — the default for dense in-app lists & rows. Border only. */
-@utility surface-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-/* Content cards — flat, calm. Same depth strategy as surface-card (border
-   only, no drop shadow); the name signals "a card with presence" by tone/role
-   rather than elevation. */
-@utility surface-raised {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-/* Floating — modals, popovers, menus. The only surfaces that lift off the page;
-   callers add the lg shadow inline. */
-@utility surface-elevated {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Recessed well — segmented controls, inset tracks, empty drop zones. */
-@utility surface-sunken {
+@utility chip {
   background: var(--color-surface-sunken);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-ink-muted);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -629,62 +515,12 @@ html[data-theme='dark'] {
   border-right: 1px solid var(--color-border);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   FORM FIELDS — shared by Input, Select, Combobox, MonthPicker, Textarea.
-   ───────────────────────────────────────────────────────────────────────── */
+/* ============================================================================
+   Alternate light colorways (demoed via the mockups' Colorway tweak).
+   To adopt one, swap the surface/border/ink values in @theme above.
 
-@utility input-field {
-  width: 100%;
-  height: 38px;
-  padding: 0 12px;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  transition:
-    border-color 120ms var(--ease-out),
-    box-shadow 120ms var(--ease-out);
-}
-
-@utility input-field-focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-ring);
-  outline: none;
-}
-
-@utility field-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-ink-muted);
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   CHIP — tags, counts, status pills. One vocabulary, app-wide.
-   ───────────────────────────────────────────────────────────────────────── */
-
-@utility chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 9px;
-  border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 500;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-ink-muted);
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   SPACING — the rhythm system (full reference: .interface-design/system.md).
-   Base unit 4px. Half-steps (6/10px) are inline/control only, never stacked
-   rhythm. Stacked rhythm is owned by <Stack>; the page frame by <PageContainer>.
-
-     tight  gap-2 8px · cozy gap-3 12px · comfortable gap-4 16px · section gap-6 24px
-     inline gap-1.5 6px (icon↔label) · gap-2 8px (control clusters)
-     card padding p-5 20px (content) · px-4 py-2.5 (dense row)
-   ───────────────────────────────────────────────────────────────────────── */
+   meadow (green-tinted):  canvas #F8FAEC · sunken #EFF5DE · soft #F0FFE7
+     border #E3E9D2 / strong #C9D3B4 · ink-muted #52664F · ink-subtle #7E8F76
+   paper (warm neutral):   canvas #F6F5EF · sunken #ECEBE0 · soft #EDEFE1
+     border #E1E0D3 / strong #C2C0AC · ink-muted #4E554B · ink-subtle #747B70
+   ========================================================================== */

@@ -12,6 +12,9 @@ export default function Select({
   placeholder = 'Select…',
   className = '',
   disabled = false,
+  // Pill trigger (command-bar filters) instead of the rectangular input-field
+  // look (forms). Opt-in so every other Select consumer is unaffected.
+  pill = false,
   ...rest
 }) {
   const [open, setOpen] = useState(false)
@@ -125,6 +128,10 @@ export default function Select({
     </div>
   )
 
+  const triggerClass = pill
+    ? `bg-surface border border-border rounded-pill pl-4 pr-7 py-[11px] text-[13px] text-ink-muted hover:border-border-strong whitespace-nowrap w-full text-left flex items-center transition-colors focus:input-field-focus ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`
+    : `input-field pr-8 w-full text-left flex items-center cursor-pointer focus:input-field-focus ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`
+
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
       <button
@@ -135,14 +142,16 @@ export default function Select({
         disabled={disabled}
         aria-haspopup='listbox'
         aria-expanded={open}
-        className={`input-field pr-8 w-full text-left flex items-center cursor-pointer focus:input-field-focus ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={triggerClass}
         {...rest}
       >
-        <span className={`flex-1 truncate ${selected ? 'text-ink' : 'text-ink-subtle'}`}>
+        <span className={`flex-1 truncate ${pill ? '' : (selected ? 'text-ink' : 'text-ink-subtle')}`}>
           {selected ? selected.label : placeholder}
         </span>
       </button>
-      <ChevronUpDownIcon className='w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-ink-subtle' />
+      <ChevronUpDownIcon className={pill
+        ? 'w-3 h-3 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-ink-subtle'
+        : 'w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-ink-subtle'} />
       {typeof document !== 'undefined' && popup ? createPortal(popup, document.body) : null}
     </div>
   )

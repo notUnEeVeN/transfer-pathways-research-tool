@@ -346,11 +346,6 @@
   90.9090909091% { transform: translate(-26px, 0); }
   100% { transform: translate(0px, 0); }
 }
-/* Production target banner — dot pulse for the live/active prod indicator. */
-@keyframes pmt-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .35; }
-}
 
 /* ─────────────────────────────────────────────────────────────────────────
    TYPE — the only text treatments. Color, weight, size, tracking baked in.

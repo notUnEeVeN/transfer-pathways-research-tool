@@ -22,8 +22,9 @@ import {
  */
 export default function AdminPage() {
   return (
-    <div className='mx-auto max-w-screen-lg px-8 py-8'>
+    <div className='max-w-[1000px] mx-auto px-[22px] pt-[30px] pb-14'>
       <Stack gap='section'>
+        <ProductionBanner />
         <SignInRequestsPanel />
         <BlockedAccountsPanel />
         <TeamNamesPanel />
@@ -32,6 +33,27 @@ export default function AdminPage() {
         <DatasetPanel />
         <AccessPanel />
       </Stack>
+    </div>
+  )
+}
+
+// Theme-independent brand chrome (forest card, like the top bar) — a standing
+// reminder that this console writes to the live research database, not a
+// sandbox. Values are hardcoded (not theme tokens) since this banner never
+// inverts with the light/dark toggle.
+function ProductionBanner() {
+  return (
+    <div className='rounded-[18px] px-[22px] py-4 flex items-center gap-3.5' style={{ background: '#193018' }}>
+      <span aria-hidden='true' className='w-[9px] h-[9px] rounded-pill shrink-0' style={{ background: '#96F060', animation: 'pmt-pulse 2.2s ease-out infinite' }} />
+      <div>
+        <p className='text-[13.5px] font-[650] text-[#F0FFE7]'>Production target</p>
+        <p className='mt-px text-[12.5px] text-[rgba(240,255,231,.62)]'>
+          transfer-pathways-tool.up.railway.app · live research database — changes apply immediately
+        </p>
+      </div>
+      <span className='ml-auto text-[11.5px] font-semibold rounded-pill px-[11px] py-1' style={{ background: '#96F060', color: '#193018' }}>
+        live
+      </span>
     </div>
   )
 }
@@ -53,8 +75,8 @@ function SignInRequestsPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Sign-in requests</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Sign-in requests</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           These accounts signed in with Google but aren't approved yet. Grant
           gives them the partner role on the spot — their waiting screen unlocks
           within seconds. Reject blocks the account: it's removed here, any
@@ -62,43 +84,41 @@ function SignInRequestsPanel() {
           un-block it below.
         </p>
       </div>
-      <div className='surface-card p-5'>
-        {list.isError ? (
-          <Alert type='error'>Failed to load sign-in requests.</Alert>
-        ) : (
-          <div className='divide-y divide-border/60'>
-            {requests.map((r) => (
-              <div key={r.uid} className='py-2.5 flex items-center gap-3 flex-wrap'>
-                <div className='min-w-0'>
-                  <p className='text-body-strong break-words'>{r.email || r.name || r.uid}</p>
-                  <p className='text-caption text-ink-subtle break-words'>
-                    {r.name && r.email ? `${r.name} · ` : ''}
-                    <span className='font-mono'>{r.uid}</span>
-                    {r.last_seen ? ` · last attempt ${new Date(r.last_seen).toLocaleString()}` : ''}
-                    {r.attempts > 1 ? ` · ${r.attempts} attempts` : ''}
-                  </p>
-                </div>
-                <div className='ml-auto flex items-center gap-2 shrink-0'>
-                  <Button leadingIcon={CheckIcon} disabled={grant.isPending || block.isPending}
-                    onClick={() => grant.mutate({ uid: r.uid, email: r.email || '', note: '' })}>
-                    Grant access
-                  </Button>
-                  <Button variant='danger' leadingIcon={NoSymbolIcon} disabled={grant.isPending || block.isPending}
-                    onClick={() => block.mutate({ uid: r.uid, email: r.email || '', name: r.name || '' })}>
-                    Reject
-                  </Button>
-                </div>
+      {list.isError ? (
+        <Alert type='error'>Failed to load sign-in requests.</Alert>
+      ) : (
+        <Stack gap='cozy'>
+          {requests.map((r) => (
+            <div key={r.uid} className='surface-card px-[22px] py-4 flex items-center gap-3'>
+              <div className='min-w-0'>
+                <p className='text-[14px] font-semibold break-words'>{r.email || r.name || r.uid}</p>
+                <p className='text-[12.5px] text-ink-subtle mt-0.5 break-words'>
+                  {r.name && r.email ? `${r.name} · ` : ''}
+                  <span className='font-mono'>{r.uid}</span>
+                  {r.last_seen ? ` · last attempt ${new Date(r.last_seen).toLocaleString()}` : ''}
+                  {r.attempts > 1 ? ` · ${r.attempts} attempts` : ''}
+                </p>
               </div>
-            ))}
-          </div>
-        )}
-        {grant.isError && (
-          <Alert type='error' className='mt-3'>{grant.error?.response?.data?.error || 'Grant failed.'}</Alert>
-        )}
-        {block.isError && (
-          <Alert type='error' className='mt-3'>{block.error?.response?.data?.error || 'Reject failed.'}</Alert>
-        )}
-      </div>
+              <div className='ml-auto flex items-center gap-2 shrink-0'>
+                <Button leadingIcon={CheckIcon} disabled={grant.isPending || block.isPending}
+                  onClick={() => grant.mutate({ uid: r.uid, email: r.email || '', note: '' })}>
+                  Grant access
+                </Button>
+                <Button variant='ghost' className='hover:bg-danger-soft! hover:text-danger!' leadingIcon={NoSymbolIcon} disabled={grant.isPending || block.isPending}
+                  onClick={() => block.mutate({ uid: r.uid, email: r.email || '', name: r.name || '' })}>
+                  Reject
+                </Button>
+              </div>
+            </div>
+          ))}
+        </Stack>
+      )}
+      {grant.isError && (
+        <Alert type='error'>{grant.error?.response?.data?.error || 'Grant failed.'}</Alert>
+      )}
+      {block.isError && (
+        <Alert type='error'>{block.error?.response?.data?.error || 'Reject failed.'}</Alert>
+      )}
     </Stack>
   )
 }
@@ -115,40 +135,38 @@ function BlockedAccountsPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Blocked accounts</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Blocked accounts</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           Rejected accounts. They can't request access or sign in to the console.
           Un-block to let them request again (you still approve the request).
         </p>
       </div>
-      <div className='surface-card p-5'>
-        {list.isError ? (
-          <Alert type='error'>Failed to load blocked accounts.</Alert>
-        ) : (
-          <div className='divide-y divide-border/60'>
-            {blocked.map((b) => (
-              <div key={b.uid} className='py-2.5 flex items-center gap-3 flex-wrap'>
-                <div className='min-w-0'>
-                  <p className='text-body-strong break-words'>{b.email || b.name || b.uid}</p>
-                  <p className='text-caption text-ink-subtle break-words'>
-                    {b.name && b.email ? `${b.name} · ` : ''}
-                    <span className='font-mono'>{b.uid}</span>
-                    {b.blocked_at ? ` · blocked ${new Date(b.blocked_at).toLocaleString()}` : ''}
-                  </p>
-                </div>
-                <Button variant='ghost' className='ml-auto' leadingIcon={ArrowUturnLeftIcon}
-                  disabled={unblock.isPending}
-                  onClick={() => unblock.mutate(b.uid)}>
-                  Un-block
-                </Button>
+      {list.isError ? (
+        <Alert type='error'>Failed to load blocked accounts.</Alert>
+      ) : (
+        <Stack gap='cozy'>
+          {blocked.map((b) => (
+            <div key={b.uid} className='surface-card px-[22px] py-4 flex items-center gap-3'>
+              <div className='min-w-0'>
+                <p className='text-[14px] font-semibold break-words'>{b.email || b.name || b.uid}</p>
+                <p className='text-[12.5px] text-ink-subtle mt-0.5 break-words'>
+                  {b.name && b.email ? `${b.name} · ` : ''}
+                  <span className='font-mono'>{b.uid}</span>
+                  {b.blocked_at ? ` · blocked ${new Date(b.blocked_at).toLocaleString()}` : ''}
+                </p>
               </div>
-            ))}
-          </div>
-        )}
-        {unblock.isError && (
-          <Alert type='error' className='mt-3'>{unblock.error?.response?.data?.error || 'Un-block failed.'}</Alert>
-        )}
-      </div>
+              <Button variant='ghost' className='ml-auto' leadingIcon={ArrowUturnLeftIcon}
+                disabled={unblock.isPending}
+                onClick={() => unblock.mutate(b.uid)}>
+                Un-block
+              </Button>
+            </div>
+          ))}
+        </Stack>
+      )}
+      {unblock.isError && (
+        <Alert type='error'>{unblock.error?.response?.data?.error || 'Un-block failed.'}</Alert>
+      )}
     </Stack>
   )
 }
@@ -203,8 +221,8 @@ function MajorAccessPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Working major by campus</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Working major by campus</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           Choose one major for each UC included in the working dataset. The
           selection scopes browsing, audits, analyses, and visuals for everyone;
           the full ported dataset remains available in the admin inventory below.
@@ -229,7 +247,7 @@ function MajorAccessPanel() {
             const value = selected.get(schoolId) || ''
             const options = s.majors.map((major) => ({ value: major, label: major }))
             return (
-              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,28rem)] gap-3 items-center border-b border-border pb-4'>
+              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,28rem)] gap-3 items-center border-b border-border/40 pb-4'>
                 <div className='min-w-0'>
                   <p className='text-body-strong'>{s.school}</p>
                   <p className='text-caption text-ink-subtle'>{s.majors.length} available {s.majors.length === 1 ? 'major' : 'majors'}</p>
@@ -279,8 +297,8 @@ function VisualSettingsPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Built-in visuals</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Built-in visuals</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           Available controls your admin Visuals gallery. Published controls the
           team gallery; hidden visuals remain unpublished until they are made
           available again.
@@ -292,7 +310,7 @@ function VisualSettingsPanel() {
         ) : settings.isError ? (
           <Alert type='error'>Failed to load visual settings.</Alert>
         ) : (
-          <div className='divide-y divide-border/60'>
+          <div className='divide-y divide-border/40'>
             {ANALYSES.map((analysis) => {
               const isHidden = hidden.has(analysis.id)
               const isPublished = published.has(analysis.id)
@@ -343,8 +361,8 @@ function DatasetPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Dataset</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Dataset</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           Updated {meta.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}
           {' '}· ported with <span className='font-mono'>scripts/port.py</span> from the admin machine
         </p>
@@ -378,13 +396,13 @@ function TeamNameRow({ member, onSave, saving }) {
   useEffect(() => { setName(member.name || '') }, [member.name])
   const dirty = name.trim() !== (member.name || '')
   return (
-    <div className='py-2 flex items-center gap-3'>
-      <div className='min-w-0 w-56 shrink-0'>
-        <p className='text-body break-words'>{member.email || <span className='font-mono text-caption'>{member.uid}</span>}</p>
-        <p className='text-tag text-ink-subtle'>{member.is_admin ? 'admin' : 'partner'}{member.email ? ` · ${member.uid.slice(0, 10)}…` : ''}</p>
+    <div className='grid grid-cols-[minmax(0,1fr)_240px_70px] gap-[18px] items-center px-[22px] py-[13px] border-b border-border/40 last:border-0'>
+      <div className='min-w-0'>
+        <p className='text-[13.5px] font-semibold truncate'>{member.email || <span className='font-mono'>{member.uid}</span>}</p>
+        <p className='text-[12px] text-ink-subtle'>{member.is_admin ? 'admin' : 'partner'}{member.email ? ` · ${member.uid.slice(0, 10)}…` : ''}</p>
       </div>
-      <Input className='flex-1' value={name} onChange={(e) => setName(e.target.value)} placeholder='Display name' />
-      <Button variant={dirty ? 'primary' : 'ghost'} disabled={!dirty || saving}
+      <Input value={name} onChange={(e) => setName(e.target.value)} placeholder='Display name' />
+      <Button variant={dirty ? 'primary' : 'ghost'} className='justify-self-end' disabled={!dirty || saving}
         onClick={() => onSave(member.uid, name.trim())}>Save</Button>
     </div>
   )
@@ -393,31 +411,32 @@ function TeamNameRow({ member, onSave, saving }) {
 function TeamNamesPanel() {
   const team = useTeam()
   const setName = useSetTeamName()
+  const rows = team.data?.rows || []
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Team names</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Team names</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           Give each account a display name. It's what shows for task assignees
           and figure authors everywhere in the console — instead of the mix of
           emails and UIDs. Clear a name to fall back to the email/UID.
         </p>
       </div>
-      <div className='surface-card p-5'>
-        {team.isLoading ? <Spinner /> : team.isError ? (
-          <Alert type='error'>Failed to load the team.</Alert>
-        ) : !(team.data?.rows || []).length ? (
-          <p className='text-caption text-ink-subtle'>No accounts yet — grant a partner or set ADMIN_UIDS.</p>
+      <div className='surface-card overflow-hidden'>
+        {team.isLoading ? (
+          <div className='p-5'><Spinner /></div>
+        ) : team.isError ? (
+          <div className='p-5'><Alert type='error'>Failed to load the team.</Alert></div>
+        ) : !rows.length ? (
+          <p className='p-5 text-caption text-ink-subtle'>No accounts yet — grant a partner or set ADMIN_UIDS.</p>
         ) : (
-          <div className='divide-y divide-border/60'>
-            {team.data.rows.map((m) => (
-              <TeamNameRow key={m.uid} member={m} saving={setName.isPending}
-                onSave={(uid, name) => setName.mutate({ uid, name })} />
-            ))}
-          </div>
+          rows.map((m) => (
+            <TeamNameRow key={m.uid} member={m} saving={setName.isPending}
+              onSave={(uid, name) => setName.mutate({ uid, name })} />
+          ))
         )}
-        {setName.isError && <Alert type='error' className='mt-3'>Could not save the name.</Alert>}
       </div>
+      {setName.isError && <Alert type='error'>Could not save the name.</Alert>}
     </Stack>
   )
 }
@@ -440,8 +459,8 @@ function AccessPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-heading'>Partner access</h2>
-        <p className='text-caption text-ink-muted mt-1'>
+        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Partner access</h2>
+        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
           Granted accounts can audit and browse the research dataset. Normally
           you'll approve people from Sign-in requests (they appear there the
           moment they try to sign in); this form pre-grants a Firebase UID
@@ -467,7 +486,7 @@ function AccessPanel() {
         ) : !(list.data?.partners || []).length ? (
           <p className='text-caption text-ink-subtle'>No partners granted yet.</p>
         ) : (
-          <div className='divide-y divide-border/60'>
+          <div className='divide-y divide-border/40'>
             {list.data.partners.map((p) => (
               <div key={p.uid} className='py-2 flex items-center gap-3'>
                 <div className='min-w-0'>

@@ -34,18 +34,18 @@ export default function MismatchGauge({ stats }) {
       <Stack gap='comfortable'>
         <div className='flex items-baseline justify-between gap-3 flex-wrap'>
           <p className='text-label'>Strict mismatch · 95% Wilson upper bound</p>
-          <span className='text-caption text-ink-subtle'>any deviation from ASSIST — error, over-ask, or flagged</span>
+          <span className='text-[12.5px] text-ink-subtle'>any deviation from ASSIST — error, over-ask, or flagged</span>
         </div>
 
         <div className='flex items-start justify-between gap-6 flex-wrap'>
           <div className='min-w-0'>
-            <div className='text-stat-lg font-mono text-ink'>
+            <div className='text-stat-lg text-ink'>
               <span className='text-ink-subtle' style={{ fontSize: '0.6em' }}>≤ </span>
               {hasSample ? `${ceiling.toFixed(1)}%` : '—'}
             </div>
-            <p className='text-caption mt-2'>
+            <p className='text-[12.5px] text-ink-subtle mt-2'>
               {hasSample ? (
-                <>observed <span className='text-ink font-mono'>{observed}%</span> · {int(k)}/{int(n)} templates</>
+                <>observed <span className='text-ink'>{observed}%</span> · {int(k)}/{int(n)} templates</>
               ) : (
                 <>No random sample yet.</>
               )}
@@ -53,22 +53,22 @@ export default function MismatchGauge({ stats }) {
           </div>
           {hasSample && estMax != null && (
             <div className='text-right'>
-              <div className='text-stat font-mono text-ink'>≤ {int(estMax)}</div>
-              <p className='text-caption mt-1'>docs may deviate of {int(total)}</p>
+              <div className='text-stat text-ink'>≤ {int(estMax)}</div>
+              <p className='text-[12.5px] text-ink-subtle mt-1'>docs may deviate of {int(total)}</p>
             </div>
           )}
         </div>
 
         {hasSample && (
           <div>
-            <div className='relative h-2.5 rounded-md bg-surface-muted border border-border'>
+            <div className='relative h-2.5 rounded-pill bg-surface-sunken'>
               <div
-                className='absolute top-0 bottom-0 left-0 rounded-md bg-primary-soft'
+                className='absolute top-0 bottom-0 left-0 rounded-pill bg-success-soft'
                 style={{ width: pos(ceiling), transition: 'width .5s var(--ease-out)' }}
               />
-              <div className='absolute -top-1.5 -bottom-1.5 w-0.5 bg-primary' style={{ left: pos(ceiling) }} />
+              <div className='absolute -top-1.5 -bottom-1.5 w-0.5 bg-success' style={{ left: pos(ceiling) }} />
               <div
-                className='absolute top-1/2 w-3 h-3 rounded-full border-2 border-surface bg-primary -translate-x-1/2 -translate-y-1/2'
+                className='absolute top-1/2 w-3 h-3 rounded-full border-2 border-surface bg-success -translate-x-1/2 -translate-y-1/2'
                 style={{ left: pos(observed) }}
               />
             </div>

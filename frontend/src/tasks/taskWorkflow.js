@@ -28,7 +28,7 @@ export const PORTING_STAGES = [
     key: 'visualization',
     label: 'Develop visualization',
     description: 'Implement and validate the visual against the source graph and research question.',
-    weight: 30,
+    weight: 25,
     notePrompt: 'What did you build, validate, and decide?',
   },
   {
@@ -37,6 +37,13 @@ export const PORTING_STAGES = [
     description: 'Publish the finished visual and record where the team can review it.',
     weight: 10,
     notePrompt: 'Where was the visual published?',
+  },
+  {
+    key: 'self_verify',
+    label: 'Self-verify',
+    description: 'Re-check the published output and the underlying data yourself before handing it to a teammate.',
+    weight: 5,
+    notePrompt: 'What did you re-check, and what still worries you?',
   },
   {
     key: 'approval',
@@ -70,6 +77,30 @@ export const nextStage = (task) => {
   const stages = stagesForTask(task)
   const index = currentStageIndex(task)
   return index === -1 ? null : stages[index]
+}
+
+// Derived board membership for the Verification column: an in-progress task
+// whose only remaining stage is the peer-review (requiresPeer) step — i.e.
+// everything through self-verify is complete. The stored status stays
+// 'in_progress'; the board and list surface these separately so reviewers can
+// find work that is ready for a second pair of eyes.
+export const isAwaitingVerification = (task) =>
+  task?.status === 'in_progress' && Boolean(nextStage(task)?.requiresPeer)
+
+// Board ownership follows active work: pulling a To do card into In progress
+// claims it for the person making the move; returning it releases the task.
+// Reorders and every other status transition leave the assignee untouched.
+export const withBoardAssignment = (task, patch, user, roster = []) => {
+  const next = { ...patch }
+  if (task?.status === 'todo' && patch?.status === 'in_progress' && user?.uid) {
+    const rosterLabel = roster.find((person) => person.uid === user.uid)?.label
+    next.assignee_uid = user.uid
+    next.assignee_label = rosterLabel || user.displayName || user.email || user.uid
+  } else if (task?.status === 'in_progress' && patch?.status === 'todo') {
+    next.assignee_uid = null
+    next.assignee_label = null
+  }
+  return next
 }
 
 export const taskTypeLabel = (taskType) => (

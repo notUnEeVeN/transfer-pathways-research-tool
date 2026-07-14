@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import {
-  ArrowDownTrayIcon, ArrowPathIcon, CheckIcon, ClockIcon, LockClosedIcon,
-  PencilSquareIcon, SparklesIcon,
+  ArrowPathIcon, CheckIcon, ClockIcon, LockClosedIcon, PencilSquareIcon, TrashIcon,
 } from '@heroicons/react/24/outline'
-import { Badge, Button, CompletionCheck, Textarea } from '../components/ui'
+import { Badge, Button, IconButton, Textarea } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import {
   currentStageIndex, isStageComplete, stagesForTask,
@@ -66,7 +65,7 @@ const eventAction = (event) => {
 
 export default function PortingWorkflow({
   task, me, roster = [], onAddStageNote, onCompleteStage, onReopenStage,
-  onCopyHistory, onExportHistory,
+  onDeleteStageNote, onResolveStageNote,
 }) {
   const stages = stagesForTask(task)
   const activeIndex = currentStageIndex(task)
@@ -76,11 +75,22 @@ export default function PortingWorkflow({
   const [noteStage, setNoteStage] = useState(null)
   const [reopening, setReopening] = useState(null)
   const [busyAction, setBusyAction] = useState(null)
+  const [busyNote, setBusyNote] = useState(null)
   const [error, setError] = useState(null)
+  // The task owner (assignee or creator) may resolve any review note; the author
+  // may resolve or delete their own.
+  const isOwner = me?.uid === task.assignee_uid || me?.uid === task.created_by
 
   const names = useMemo(() => new Map(roster.map((person) => [person.uid, person.label])), [roster])
   const creatorLabel = task.created_by_label || names.get(task.created_by) || 'The task creator'
+  const assigneeLabel = task.assignee_label || names.get(task.assignee_uid) || 'the assignee'
   const actorLabel = (uid, storedLabel) => storedLabel || names.get(uid) || uid || 'Unknown teammate'
+  // Only the assignee may complete non-peer stages (an unassigned task has no
+  // such signal, so anyone may — otherwise a task nobody claimed could never
+  // move). The peer approval stage is the opposite: it must come from someone
+  // who did NOT do the work, so both the creator and the assignee are excluded.
+  const isCreator = me?.uid === task.created_by
+  const isAssignee = me?.uid === task.assignee_uid
   const setDraft = (key, value) => setDrafts((current) => ({ ...current, [key]: value }))
 
   const saveNote = async (stage, active) => {
@@ -142,6 +152,30 @@ export default function PortingWorkflow({
     }
   }
 
+  const removeNote = async (entry) => {
+    setBusyNote(`delete:${entry._id}`)
+    setError(null)
+    try {
+      await onDeleteStageNote(task._id, entry._id)
+    } catch (err) {
+      setError({ stage: entry.stage, message: err?.response?.data?.error || 'Could not delete this note.' })
+    } finally {
+      setBusyNote(null)
+    }
+  }
+
+  const toggleResolve = async (entry, resolved) => {
+    setBusyNote(`resolve:${entry._id}`)
+    setError(null)
+    try {
+      await onResolveStageNote(task._id, entry._id, resolved)
+    } catch (err) {
+      setError({ stage: entry.stage, message: err?.response?.data?.error || 'Could not update this note.' })
+    } finally {
+      setBusyNote(null)
+    }
+  }
+
   const log = task.workflow_log || []
   const logWeeks = groupEventsByWeek(log, task.created_at, { descending: true })
 
@@ -153,13 +187,7 @@ export default function PortingWorkflow({
           <p className='text-caption text-ink-subtle mt-0.5'>{completedCount} of {stages.length} stages complete</p>
         </div>
         <div className='flex flex-wrap items-center justify-end gap-1'>
-          {onCopyHistory && (
-            <Button size='sm' variant='ghost' leadingIcon={SparklesIcon} onClick={onCopyHistory}>Copy for AI</Button>
-          )}
-          {onExportHistory && (
-            <Button size='sm' variant='ghost' leadingIcon={ArrowDownTrayIcon} onClick={onExportHistory}>Export</Button>
-          )}
-          <span className='text-heading text-primary tabular-nums ml-2'>{progress}%</span>
+          <span className='text-heading text-success ml-2'>{progress}%</span>
         </div>
       </div>
       <div className='mt-3 h-2 rounded-full bg-surface-sunken overflow-hidden' role='progressbar'
@@ -174,7 +202,10 @@ export default function PortingWorkflow({
           const completeStage = isStageComplete(task, stage.key)
           const active = index === activeIndex
           const locked = activeIndex !== -1 && index > activeIndex
-          const peerBlocked = active && stage.requiresPeer && me?.uid === task.created_by
+          const peerBlocked = active && stage.requiresPeer && (isCreator || isAssignee)
+          const canComplete = stage.requiresPeer
+            ? !isCreator && !isAssignee
+            : (task.assignee_uid ? isAssignee : true)
           const completedAfter = stages.slice(index + 1).filter((later) => isStageComplete(task, later.key)).length
           const stageNotes = logNotesForStage(task, stage.key, state)
           const savedNotes = currentCycleNotes(task, stage.key)
@@ -186,12 +217,17 @@ export default function PortingWorkflow({
               )}
               <div className='relative z-1 pt-0.5'>
                 {completeStage ? (
-                  <CompletionCheck label={`${stage.label} complete`} />
+                  <span role='img' aria-label={`${stage.label} complete`}
+                    className='mx-auto grid place-items-center w-6 h-6 rounded-pill bg-success border-[1.5px] border-success box-border'>
+                    <CheckIcon className='w-3 h-3 text-on-primary' strokeWidth={2.5} aria-hidden='true' />
+                  </span>
                 ) : (
-                  <span className={`grid place-items-center w-8 h-8 rounded-full border text-tag tabular-nums ${
-                    active ? 'border-primary bg-primary-soft text-primary' : 'border-border bg-surface-muted text-ink-subtle'
+                  <span className={`mx-auto grid place-items-center w-6 h-6 rounded-pill border-[1.5px] box-border ${
+                    active ? 'bg-surface border-border-strong text-ink-muted' : 'bg-surface-muted border-border text-ink-subtle'
                   }`}>
-                    {locked ? <LockClosedIcon className='w-3.5 h-3.5' /> : index + 1}
+                    {locked
+                      ? <LockClosedIcon className='w-3 h-3' />
+                      : <span className='text-[11.5px] font-[650] tabular'>{index + 1}</span>}
                   </span>
                 )}
               </div>
@@ -208,18 +244,43 @@ export default function PortingWorkflow({
 
                 {stageNotes.length > 0 && (
                   <div className={`mt-3 pl-3 border-l-2 space-y-3 ${completeStage ? 'border-success/30' : 'border-primary/25'}`}>
-                    {stageNotes.map((entry) => (
-                      <div key={entry._id}>
-                        <p className='text-body whitespace-pre-wrap break-words'>{entry.note}</p>
-                        <div className='mt-1 flex items-center gap-1.5'>
-                          <UserInitialsAvatar email={actorLabel(entry.by, entry.by_label)} size='sm'
-                            className='!w-[20px] !h-[20px]' />
-                          <span className='text-tag text-ink-subtle'>
-                            {actorLabel(entry.by, entry.by_label)} · {fmtWhen(entry.at)}
-                          </span>
+                    {stageNotes.map((entry) => {
+                      // Only iterative review notes ('noted') are deletable/resolvable —
+                      // completion notes are part of the immutable stage record.
+                      const manageable = entry.action === 'noted'
+                      const canDelete = manageable && Boolean(onDeleteStageNote) && me?.uid === entry.by
+                      const canResolve = manageable && Boolean(onResolveStageNote) && (isOwner || me?.uid === entry.by)
+                      const resolved = Boolean(entry.resolved)
+                      return (
+                        <div key={entry._id}>
+                          <p className={`text-body whitespace-pre-wrap break-words ${resolved ? 'opacity-60' : ''}`}>{entry.note}</p>
+                          <div className='mt-1 flex items-center gap-1.5'>
+                            <UserInitialsAvatar email={actorLabel(entry.by, entry.by_label)} size='sm'
+                              className='!w-[20px] !h-[20px]' />
+                            <span className='text-tag text-ink-subtle'>
+                              {actorLabel(entry.by, entry.by_label)} · {fmtWhen(entry.at)}
+                            </span>
+                            {resolved && <Badge variant='success'>Resolved</Badge>}
+                            {(canResolve || canDelete) && (
+                              <span className='ml-auto inline-flex items-center gap-1'>
+                                {canResolve && (
+                                  <Button size='sm' variant='ghost' leadingIcon={CheckIcon}
+                                    loading={busyNote === `resolve:${entry._id}`}
+                                    onClick={() => toggleResolve(entry, !resolved)}>
+                                    {resolved ? 'Resolved ✓' : 'Resolve'}
+                                  </Button>
+                                )}
+                                {canDelete && (
+                                  <IconButton icon={TrashIcon} label='Delete note' size='sm' variant='danger'
+                                    disabled={busyNote === `delete:${entry._id}`}
+                                    onClick={() => removeNote(entry)} />
+                                )}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 )}
 
@@ -274,13 +335,16 @@ export default function PortingWorkflow({
                         loading={busyAction === `note:${stage.key}`}
                         disabled={Boolean(busyAction) && busyAction !== `note:${stage.key}`}
                         onClick={() => saveNote(stage, active)}>Save note</Button>
-                      {active && !peerBlocked && (
+                      {active && canComplete && (
                         <Button size='sm' leadingIcon={CheckIcon}
                           loading={busyAction === `complete:${stage.key}`}
                           disabled={Boolean(busyAction) && busyAction !== `complete:${stage.key}`}
                           onClick={() => complete(stage, savedNotes)}>
                           {stage.requiresPeer ? 'Approve task' : 'Complete stage'}
                         </Button>
+                      )}
+                      {active && !canComplete && !stage.requiresPeer && (
+                        <span className='text-[12.5px] text-ink-subtle'>Only {assigneeLabel} can complete this stage.</span>
                       )}
                     </div>
                   </div>
@@ -297,7 +361,11 @@ export default function PortingWorkflow({
                 {peerBlocked && (
                   <div className='mt-3 rounded-md bg-surface-muted px-3 py-2.5 flex items-start gap-2'>
                     <ClockIcon className='w-4 h-4 text-ink-subtle mt-0.5 shrink-0' />
-                    <p className='text-caption text-ink-muted'>Waiting for another teammate. {creatorLabel} cannot approve their own task.</p>
+                    <p className='text-caption text-ink-muted'>
+                      Waiting for another teammate. {isCreator
+                        ? `${creatorLabel} cannot approve their own task.`
+                        : "A teammate who didn't do the work approves this stage."}
+                    </p>
                   </div>
                 )}
               </div>
@@ -311,7 +379,7 @@ export default function PortingWorkflow({
           <div className='flex items-center gap-2'>
             <ClockIcon className='w-4 h-4 text-ink-subtle' />
             <h4 className='text-body-strong'>Workflow log</h4>
-            <Badge>{log.length}</Badge>
+            <Badge className='tabular'>{log.length}</Badge>
           </div>
           <div className='mt-3 max-h-64 overflow-y-auto'>
             {logWeeks.map(({ week, events }) => (

@@ -81,7 +81,7 @@ describe('published interactive visual', () => {
   it('uses the exact built-in component and preserves its interactions', () => {
     expect(getAnalysisById('paper-credit-loss')?.Component).toBe(ANALYSES[0].Component)
 
-    render(<InteractiveFigureCard fig={interactive} canModify={false}
+    const { container } = render(<InteractiveFigureCard fig={interactive} canModify={false}
       onDelete={vi.fn()} deleting={false} onSave={vi.fn()} saving={false} />)
 
     expect(screen.getByRole('img').getAttribute('viewBox')).toBe('0 0 1990.3 1190.3')
@@ -91,6 +91,10 @@ describe('published interactive visual', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Hand-curated minimums' }))
     expect(differences).not.toBeDisabled()
     fireEvent.click(differences)
+    const increases = [...container.querySelectorAll('[data-difference="increase"]')]
+    expect(increases.length).toBeGreaterThan(1)
+    expect(increases.every((region) => region.getAttribute('stroke') === '#ffffff')).toBe(true)
+    expect(increases.every((region) => region.getAttribute('vector-effect') === 'non-scaling-stroke')).toBe(true)
     expect(screen.getByText(/More details.*every difference as a matrix/)).toBeTruthy()
   })
 

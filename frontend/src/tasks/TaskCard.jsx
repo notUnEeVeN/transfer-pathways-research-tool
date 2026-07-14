@@ -2,26 +2,32 @@ import React from 'react'
 import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import { Badge } from '../components/ui'
-import { nextStage, taskTypeLabel } from './taskWorkflow'
+import { currentStageIndex, nextStage, stagesForTask, taskTypeLabel } from './taskWorkflow'
 
 /**
  * TaskCard — one task on the board. Workflow stage progress is server-derived;
  * drag chrome lives in TaskBoard.
  */
-export default function TaskCard({ task, onOpen }) {
+export default function TaskCard({ task, onOpen, dragging = false }) {
   const notes = task.notes || []
   const workflowNotes = (task.workflow_log || []).filter((entry) => entry.note)
-  const progress = Math.max(0, Math.min(100, task.progress || 0))
   const isDone = task.status === 'done'
   const upcoming = nextStage(task)
+
+  const stages = stagesForTask(task)
+  const cur = currentStageIndex(task)
+  const doneN = cur === -1 ? stages.length : cur
 
   return (
     <div
       role='button'
       tabIndex={0}
+      data-task-drag-surface
+      data-dragging={dragging || undefined}
       onClick={onOpen}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen?.() } }}
-      className='w-full text-left surface-card p-3 cursor-pointer transition-colors hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-primary/40 outline-none'
+      style={dragging ? { boxShadow: 'var(--shadow-lg)' } : undefined}
+      className={`w-full overflow-hidden text-left surface-card p-3 outline-none transition-[background-color,border-color,box-shadow] hover:bg-surface-hover hover:border-border-strong focus-visible:ring-2 focus-visible:ring-primary/40 ${dragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
     >
       <div className='flex flex-wrap items-center gap-1.5 mb-2'>
         <Badge variant='accent'>{taskTypeLabel(task.task_type)}</Badge>
@@ -32,17 +38,27 @@ export default function TaskCard({ task, onOpen }) {
         {task.title}
       </p>
 
-      {!isDone && (
-        <div className='mt-2.5'>
-          <div className='flex items-center gap-2'>
-            <span className='flex-1 h-1.5 rounded-full bg-surface-sunken overflow-hidden'>
-              <span className='block h-full rounded-full bg-primary transition-[width] duration-300' style={{ width: `${progress}%` }} />
-            </span>
-            <span className='text-tag text-ink-subtle tabular-nums'>{progress}%</span>
-          </div>
-          {upcoming && <p className='text-tag text-ink-subtle mt-1.5 truncate'>Next: {upcoming.label}</p>}
+      <div className='mt-2.5 flex items-center gap-2'>
+        <div className='flex items-center'>
+          {stages.map((stage, i) => (
+            <React.Fragment key={stage.key}>
+              <span
+                title={stage.label}
+                className={`w-3 h-3 rounded-pill box-border shrink-0 ${
+                  i < doneN
+                    ? 'bg-primary border-2 border-primary'
+                    : i === doneN
+                      ? 'bg-surface border-2 border-accent'
+                      : 'bg-surface border-2 border-border-strong'
+                }`}
+              />
+              {i < stages.length - 1 && <span className='w-[9px] h-[1.5px] bg-border-strong/60 shrink-0' />}
+            </React.Fragment>
+          ))}
         </div>
-      )}
+        <span className='ml-auto text-tag text-ink-subtle whitespace-nowrap tabular'>{doneN} of {stages.length}</span>
+      </div>
+      {!isDone && upcoming && <p className='text-tag text-ink-subtle mt-1.5 truncate'>Next: {upcoming.label}</p>}
 
       <div className='mt-2.5 flex items-center gap-2 min-h-[1.25rem]'>
         {task.assignee_uid ? (

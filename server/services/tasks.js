@@ -53,13 +53,23 @@ const PORTING_STAGES = Object.freeze([
     key: 'visualization',
     label: 'Develop visualization',
     description: 'Implement and validate the visual against the source graph and research question.',
-    weight: 30,
+    weight: 25,
   },
   {
     key: 'publish',
     label: 'Publish',
     description: 'Publish the finished visual and record where the team can review it.',
     weight: 10,
+  },
+  {
+    // A published visual is a draft the porter checks themselves — seeing how it
+    // looks is not the same as vouching for the data. This gate sits between
+    // publish and peer approval so a task only reaches team review once the
+    // porter has re-verified their own work.
+    key: 'self_verify',
+    label: 'Self-verify',
+    description: 'Re-check the published output and the underlying data yourself before handing it to a teammate.',
+    weight: 5,
   },
   {
     key: 'approval',
@@ -131,16 +141,48 @@ function legacyCompletedStages(doc) {
   }]));
 }
 
+// Tasks completed under the six-stage workflow (before self_verify was
+// inserted between publish and approval) have real, non-migrated stage
+// entries for approval but no self_verify key at all — unlike the fully
+// legacy case above, workflow_stages does exist here. Left alone, a done
+// task like that derives 95% and the modal shows self_verify as an active,
+// incomplete stage under a completed approval. Backfill it the same way:
+// a migrated stage entry, stamped from the approval entry that closed out
+// the old workflow (falling back to the task's own completion stamps).
+// Only done tasks are touched — an in-flight task still owes a real self-verify.
+function backfillSelfVerifyStage(doc, workflowStages) {
+  if (doc.status !== 'done') return workflowStages;
+  if (isStageDone(workflowStages.self_verify)) return workflowStages;
+  const approval = workflowStages.approval;
+  if (!isStageDone(approval)) return workflowStages;
+  return {
+    ...workflowStages,
+    self_verify: {
+      completed: true,
+      completed_at: approval.completed_at || doc.completed_at || null,
+      completed_by: approval.completed_by || doc.completed_by || null,
+      completed_by_label: approval.completed_by_label || doc.completed_by_label || null,
+      note: 'Completed before self-verify was introduced as a stage.',
+      migrated: true,
+    },
+  };
+}
+
 function normalizeTask(doc) {
   if (!doc) return doc;
   const { dataset_version_created, dataset_version_completed, ...cleanDoc } = doc;
   const taskType = TASK_TYPES.includes(doc.task_type) ? doc.task_type : DEFAULT_TASK_TYPE;
   const hasWorkflow = isRecord(doc.workflow_stages);
-  const workflowStages = hasWorkflow
+  const baseStages = hasWorkflow
     ? doc.workflow_stages
     : (doc.status === 'done' ? legacyCompletedStages(doc) : {});
+  const workflowStages = backfillSelfVerifyStage(doc, baseStages);
   return {
     ...cleanDoc,
+    // The board dropped its Backlog column; legacy docs stored 'backlog' surface
+    // as 'todo' on read. 'backlog' stays in the STATUSES write allowlist for
+    // back-compat, but the client no longer sends it and reads never expose it.
+    status: doc.status === 'backlog' ? 'todo' : doc.status,
     task_type: taskType,
     workflow_stages: workflowStages,
     workflow_log: Array.isArray(doc.workflow_log) ? doc.workflow_log : [],
@@ -349,8 +391,20 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
   if (isStageDone(task.workflow_stages[stage.key])) fail(`${stage.label} is already complete`);
   const missingPrior = workflow.slice(0, index).find((prior) => !isStageDone(task.workflow_stages[prior.key]));
   if (missingPrior) fail(`complete ${missingPrior.label} first`);
-  if (stage.requires_peer && uid === task.created_by) {
-    fail('team approval must be completed by someone other than the task creator');
+  // Everyone-equal, narrowed: an assigned task's non-peer stages are the
+  // assignee's to complete (an unassigned task has no such signal, so anyone
+  // may — otherwise a task nobody claimed could never move). The peer
+  // approval stage is the opposite: it must come from someone who did NOT do
+  // the work, so both the creator and the assignee are excluded from it.
+  if (stage.requires_peer) {
+    if (uid === task.created_by) {
+      fail('team approval must be completed by someone other than the task creator');
+    }
+    if (uid === task.assignee_uid) {
+      fail("approval must come from a teammate who didn't do the work");
+    }
+  } else if (task.assignee_uid && uid !== task.assignee_uid) {
+    fail('only the assignee can complete stages');
   }
   if (!note && savedNotes.length === 0) {
     fail(`add a note to ${stage.label} before completing it`);
@@ -467,6 +521,79 @@ async function reopenTaskStage(auditDb, id, stageKey, body = {}, uid) {
   return normalizeTask(updated);
 }
 
+// ── stage-note management ──
+// Stage notes are the iterative { action:'noted' } workflow_log rows. They are
+// almost always an error a reviewer spotted, so the note's author may retract
+// their own note, and the task owner (assignee/creator) or the author may mark
+// one resolved. Only 'noted' rows are touchable — completion/reopen events are
+// the immutable audit trail. These are log-only mutations: they bump updated_at
+// but not workflow_revision (no stage state changes, so no CAS race to guard).
+
+function notedLogEntry(existing, logId, verb) {
+  const entry = (existing.workflow_log || []).find((event) => event._id === logId);
+  if (!entry) fail('no such note');
+  if (entry.action !== 'noted') fail(`only stage notes can be ${verb}`);
+  return entry;
+}
+
+async function deleteTaskLogNote(auditDb, id, logId, uid) {
+  const existing = await auditDb.collection(COLLECTION).findOne({ _id: id });
+  if (!existing) return null;
+  const actor = uid ?? null;
+  const entry = notedLogEntry(existing, logId, 'deleted');
+  if (entry.by !== actor) fail('only the author can delete a note');
+
+  const updated = await auditDb.collection(COLLECTION).findOneAndUpdate(
+    { _id: id },
+    {
+      $pull: { workflow_log: { _id: logId } },
+      $set: { updated_by: actor, updated_at: new Date() },
+    },
+    { returnDocument: 'after' }
+  );
+  return normalizeTask(updated);
+}
+
+async function resolveTaskLogNote(auditDb, id, logId, body = {}, uid) {
+  const existing = await auditDb.collection(COLLECTION).findOne({ _id: id });
+  if (!existing) return null;
+  const resolved = cleanBool('resolved', body.resolved);
+  const actor = uid ?? null;
+  const entry = notedLogEntry(existing, logId, 'resolved');
+  const allowed = actor === existing.assignee_uid || actor === existing.created_by || actor === entry.by;
+  if (!allowed) fail('only the task owner or the note author can resolve a note');
+
+  const now = new Date();
+  // Toggling off returns the note to its pristine noted shape ($unset all four
+  // fields) rather than leaving a dangling resolved:false with stale metadata.
+  const update = resolved
+    ? {
+        $set: {
+          'workflow_log.$[note].resolved': true,
+          'workflow_log.$[note].resolved_by': actor,
+          'workflow_log.$[note].resolved_by_label': await getDisplayName(auditDb, uid),
+          'workflow_log.$[note].resolved_at': now,
+          updated_by: actor,
+          updated_at: now,
+        },
+      }
+    : {
+        $unset: {
+          'workflow_log.$[note].resolved': '',
+          'workflow_log.$[note].resolved_by': '',
+          'workflow_log.$[note].resolved_by_label': '',
+          'workflow_log.$[note].resolved_at': '',
+        },
+        $set: { updated_by: actor, updated_at: now },
+      };
+  const updated = await auditDb.collection(COLLECTION).findOneAndUpdate(
+    { _id: id },
+    update,
+    { arrayFilters: [{ 'note._id': logId }], returnDocument: 'after' }
+  );
+  return normalizeTask(updated);
+}
+
 async function deleteTask(auditDb, id) {
   const { deletedCount } = await auditDb.collection(COLLECTION).deleteOne({ _id: id });
   return deletedCount;
@@ -540,6 +667,7 @@ module.exports = {
   ValidationError,
   normalizeTask, progressForStages,
   listTasks, createTask, updateTask, addTaskStageNote, completeTaskStage, reopenTaskStage,
+  deleteTaskLogNote, resolveTaskLogNote,
   deleteTask, listRoster,
   migrateLegacyTasks, ensureTaskIndexes,
 };

@@ -39,7 +39,7 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     expect(paths).toContain('/data/summary')
     expect(paths).toContain('/assist/institutions?kind=community_college')
     expect(paths).toContain('/curated/requirements?kind=transfer_minimum')
-    expect(paths).toContain('/analysis/coverage?majorContains=Computer%20Science')
+    expect(paths).toContain('/analysis/coverage?requirements=degree&majorContains=Computer%20Science')
     expect(paths).toContain('/analysis/credit-loss?majorContains=Computer%20Science')
     expect(paths).toContain('/exports/receivers')
     expect(paths).toContain('/audit/doc/:agreementId')

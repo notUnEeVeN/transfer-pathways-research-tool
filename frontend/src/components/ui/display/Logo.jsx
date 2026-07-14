@@ -1,30 +1,58 @@
-import React from 'react'
+import { useId } from 'react';
 
 /**
- * Logo — the Plan My Transfer brand mark, inlined as SVG so it inherits the
- * live theme through `currentColor`. Defaults to the brand primary, which swaps
- * automatically between light (`#3366ef`) and dark (`#6f8cff`) via the
- * `--color-primary` token. Pass a `text-*` color in `className` only if you
- * deliberately want to override the brand color. Decorative by default
- * (aria-hidden); pass a `title` for an accessible name when it stands alone.
+ * Transfer Pathways Research — logomark.
+ * Drop-in replacement for frontend/src/components/ui/display/Logo.jsx.
+ *
+ * Five identical "petal" shapes rotated about a shared center (per the brand
+ * deck's construction). Fills with currentColor so it themes automatically:
+ *   - forest top bar: color = var(--color-accent)  (lime)
+ *   - light surfaces: color = var(--color-primary) (forest)
+ *
+ * Mark aspect ratio is 352 : 215 (w : h).
  */
-export default function Logo({ className = '', title }) {
-  // Default to the brand color, but step aside if the caller passes their own
-  // `text-*` color (e.g. `text-on-primary` on a brand surface). Both classes
-  // would otherwise apply and `.text-primary`, defined later in the stylesheet,
-  // would win the tie — so only emit it when no override is present.
-  const hasColor = /(?:^|\s)!?text-/.test(className)
+export function Logo({ size = 22, title = 'Transfer Pathways Research', className, ...props }) {
+  const petalId = useId(); // collision-safe when several logos render on one page
+  const width = Math.round((size * 352) / 215);
   return (
     <svg
-      viewBox='0 0 196.02 228.69'
-      fill='currentColor'
-      role={title ? 'img' : undefined}
-      aria-hidden={title ? undefined : 'true'}
+      width={width}
+      height={size}
+      viewBox="-176 -176 352 215"
+      fill="currentColor"
+      role="img"
       aria-label={title}
-      className={`${hasColor ? '' : 'text-primary'} ${className}`}
+      className={className}
+      {...props}
     >
-      <path d='M130.68,65.34v57.21c0,4.49-3.64,8.14-8.14,8.14h-57.21L2.33,193.69c-1.49,1.49-2.33,3.52-2.33,5.63v29.37h65.34v-32.67h62.04c2.11,0,4.14-.84,5.63-2.33l60.67-60.67c1.49-1.49,2.33-3.52,2.33-5.63v-62.04h-65.34Z' />
-      <path d='M130.68,65.34V0h-62.04c-2.11,0-4.14.84-5.63,2.33L2.33,63.01c-1.49,1.49-2.33,3.52-2.33,5.63v62.04h65.34v-57.21c0-4.49,3.64-8.14,8.14-8.14h57.21Z' />
+      <path
+        id={petalId}
+        d="M -36 -106 L -36 -171 Q -36 -173 -32 -173 A 43.6 43.6 0 0 0 32 -173 Q 36 -173 36 -171 L 36 -106 A 36 36 0 0 1 -36 -106 Z"
+      />
+      <use href={`#${petalId}`} transform="rotate(45)" />
+      <use href={`#${petalId}`} transform="rotate(-45)" />
+      <use href={`#${petalId}`} transform="rotate(90)" />
+      <use href={`#${petalId}`} transform="rotate(-90)" />
     </svg>
-  )
+  );
 }
+
+/**
+ * Full lockup for the top bar: mark + two-line lowercase wordmark.
+ * Wordmark: "transfer" (400) over "pathways" (700), 12px / 1.06.
+ * On the forest bar wrap with: color: var(--color-accent) for the mark and
+ * var(--color-on-primary) for the wordmark text.
+ */
+export function LogoLockup({ markSize = 21 }) {
+  return (
+    <span style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+      <Logo size={markSize} />
+      <span style={{ display: 'flex', flexDirection: 'column', fontSize: 12, lineHeight: 1.06, letterSpacing: '.01em' }}>
+        <span style={{ fontWeight: 400 }}>transfer</span>
+        <span style={{ fontWeight: 700 }}>pathways</span>
+      </span>
+    </span>
+  );
+}
+
+export default Logo;

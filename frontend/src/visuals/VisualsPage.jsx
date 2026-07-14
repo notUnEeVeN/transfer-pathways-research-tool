@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { PencilSquareIcon, TrashIcon, ChartBarIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, SwitchField } from '../components/ui'
+import { Alert, Badge, Button, EmptyState, Input, Spinner, SwitchField } from '../components/ui'
 import AnalysisCard from '../analyses/AnalysisCard'
 import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
@@ -96,17 +96,17 @@ function blobAsDataUrl(blob) {
 
 function SelectControl({ control, active, variants, controls, onSelect }) {
   return (
-    <div className='flex flex-col gap-1'>
-      <span className='field-label'>{control.label}</span>
-      <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+    <div className='flex flex-col gap-1.5'>
+      <span className='text-[12px] text-ink-subtle'>{control.label}</span>
+      <div className='inline-flex items-center gap-0.5 p-[3px] rounded-pill bg-surface-sunken'>
         {control.options.map((option) => {
           const candidate = variantForChange(variants, controls, active, control.key, option.value, true)
           const selected = active?.state?.[control.key] === option.value
           return (
             <button key={option.value} type='button' disabled={!candidate}
               aria-pressed={selected} onClick={() => candidate && onSelect(candidate.key)}
-              className={`px-3 text-button border-r border-border last:border-r-0 disabled:opacity-40 disabled:cursor-not-allowed ${
-                selected ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+              className={`px-[13px] py-1.5 rounded-pill text-[12.5px] whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed ${
+                selected ? 'bg-primary text-on-primary font-[650]' : 'text-ink-muted font-medium hover:text-ink'
               }`}>
               {option.label}
             </button>
@@ -120,7 +120,9 @@ function SelectControl({ control, active, variants, controls, onSelect }) {
 export function VariantControls({ controls, variants, active, onSelect }) {
   if (!controls.length || !active) return null
   return (
-    <div className='mb-4 pb-4 border-b border-border flex flex-wrap items-end gap-4' data-export-exclude>
+    // AnalysisCard's shell now spaces direct children with gap-[18px], so this
+    // row no longer needs its own margin/divider (v2:683 shows a plain row).
+    <div className='flex flex-wrap items-end gap-4' data-export-exclude>
       {controls.map((control) => {
         if (control.type === 'toggle') {
           const next = variantForToggle(variants, controls, active, control.key)
@@ -191,7 +193,7 @@ function PublicationCard({
       exportName={exportName || fig.slug}
       downloadFormats={downloadFormats} onDownload={onDownload}>
       {editing && (
-        <div className='mb-4 pb-4 border-b border-border flex flex-col gap-2' data-export-exclude>
+        <div className='flex flex-col gap-2' data-export-exclude>
           <Input value={title} onChange={(event) => setTitle(event.target.value)} placeholder='Title' />
           <Input value={caption} onChange={(event) => setCaption(event.target.value)} placeholder='Caption (optional)' />
           <Input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} placeholder='Source URL (optional)' />
@@ -202,8 +204,8 @@ function PublicationCard({
         </div>
       )}
       {children}
-      {showFooter && fig.caption && <p className='text-body text-ink-muted mt-3 max-w-prose'>{fig.caption}</p>}
-      {showFooter && <p className='text-caption text-ink-subtle font-mono mt-2' data-export-exclude>{fig.slug}</p>}
+      {showFooter && fig.caption && <p className='text-caption text-ink-muted max-w-prose'>{fig.caption}</p>}
+      {showFooter && <p className='text-caption text-ink-subtle font-mono' data-export-exclude>{fig.slug}</p>}
     </AnalysisCard>
   )
 }
@@ -311,7 +313,11 @@ export default function VisualsPage({ onNavigate = () => {} }) {
   const failed = figuresQuery.isError || visualSettings.isError
 
   return (
-    <Stack gap='section'>
+    // App.jsx already wraps every tab in a max-w-screen-2xl px-6 py-6 shell, so
+    // this only narrows to the console mockup's 1180px reading column (v2:668)
+    // and sets the vertical rhythm between cards. The pb-6 on the bottom edge
+    // stacks with App.jsx's 24px to reach 48px total bottom padding per spec.
+    <div className='max-w-[1180px] mx-auto flex flex-col gap-5 pb-6'>
       {figuresQuery.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
       {visualSettings.isError && <Alert type='error'>Failed to load built-in visual settings.</Alert>}
       {loading && !gallery.length && <div className='flex justify-center py-10'><Spinner /></div>}
@@ -349,6 +355,6 @@ export default function VisualsPage({ onNavigate = () => {} }) {
           </AnalysisCard>
         )
       })}
-    </Stack>
+    </div>
   )
 }

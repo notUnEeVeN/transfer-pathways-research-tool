@@ -10,7 +10,6 @@ import PortingWorkflow from './PortingWorkflow'
 import { PORTING_STAGES, TASK_TYPE_OPTIONS, taskTypeLabel } from './taskWorkflow'
 
 const OPEN_STATUS_OPTIONS = [
-  { value: 'backlog', label: 'Backlog' },
   { value: 'todo', label: 'To do' },
   { value: 'in_progress', label: 'In progress' },
 ]
@@ -24,7 +23,7 @@ const fmtWhen = (value) => (value
 export default function TaskModal({
   open, onClose, task = null, initialStatus = 'todo', roster = [],
   onCreate, onPatch, onAddStageNote, onCompleteStage, onReopenStage,
-  onCopyHistory, onExportHistory, onDelete, me,
+  onDeleteStageNote, onResolveStageNote, onDelete, me,
 }) {
   const editing = Boolean(task)
   const safeInitialStatus = initialStatus === 'done' ? 'todo' : initialStatus
@@ -189,8 +188,8 @@ export default function TaskModal({
           <div className='min-w-0 lg:border-l lg:border-border lg:pl-6'>
             <PortingWorkflow task={task} me={me} roster={roster}
               onAddStageNote={onAddStageNote} onCompleteStage={onCompleteStage}
-              onReopenStage={onReopenStage} onCopyHistory={onCopyHistory}
-              onExportHistory={onExportHistory} />
+              onReopenStage={onReopenStage} onDeleteStageNote={onDeleteStageNote}
+              onResolveStageNote={onResolveStageNote} />
           </div>
         </div>
       ) : (
@@ -201,11 +200,11 @@ export default function TaskModal({
               <h3 className='text-body-strong'>Porting stages</h3>
               <span className='text-tag text-ink-subtle'>{PORTING_STAGES.length} stages</span>
             </div>
-            <ol className='mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-5'>
+            <ol className='mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6'>
               {PORTING_STAGES.map((stage, index) => (
-                <li key={stage.key} className='flex items-center gap-2 py-2 border-t border-border first:border-t-0 sm:[&:nth-child(2)]:border-t-0'>
-                  <span className='grid place-items-center w-5 h-5 rounded-full bg-surface-muted text-tag text-ink-subtle shrink-0'>{index + 1}</span>
-                  <span className='text-caption text-ink-muted min-w-0 flex-1'>{stage.label}</span>
+                <li key={stage.key} className='flex items-center gap-2.5 py-[9px] border-b border-border/40'>
+                  <span className='grid place-items-center w-[22px] h-[22px] rounded-pill bg-surface-sunken text-[11px] font-[650] text-ink-muted shrink-0'>{index + 1}</span>
+                  <span className='text-[13.5px] text-ink-muted min-w-0 flex-1'>{stage.label}</span>
                 </li>
               ))}
             </ol>

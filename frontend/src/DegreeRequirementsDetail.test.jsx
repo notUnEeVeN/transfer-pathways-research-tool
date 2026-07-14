@@ -7,6 +7,9 @@ describe('DegreeRequirementsDetail (ledger-rendered template)', () => {
   it('renders the current endpoint shape through the shared ledger', () => {
     const { container } = render(<DegreeRequirementsDetail doc={tmpl} />)
     expect(container.textContent).toContain('requirements')
+    // header identifies what this view is (eyebrow + clarifying caption)
+    expect(container.textContent).toContain('4-year degree requirements')
+    expect(container.textContent).toContain('The full four-year requirement set behind the degree-coverage numbers')
     expect(container.textContent).toContain('Lower-division mathematics')
     expect(container.textContent).toContain('MATH 51')
     // template rows have no college context: no articulation claims, and the

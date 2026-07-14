@@ -8,7 +8,7 @@
  *   scope=all|uc|csu           (default all)
  *   majorContains=<substring>  (case-insensitive; usually the whole point)
  *   groupBy=college|district|county  (coverage only; default college)
- *   requirements=assist|paper        (coverage only; default assist)
+ *   requirements=degree|assist|paper (coverage only; default assist)
  * choice-cost additionally takes schoolIds=1,2,3 — an ORDERED list.
  *
  * Results are cached briefly per (endpoint × params); curation edits or a
@@ -54,7 +54,7 @@ async function parseParams(req) {
     groupBy: ['college', 'district', 'county'].includes(req.query.groupBy)
       ? req.query.groupBy
       : 'college',
-    requirements: ['assist', 'paper'].includes(req.query.requirements)
+    requirements: ['degree', 'assist', 'paper'].includes(req.query.requirements)
       ? req.query.requirements
       : 'assist',
     // pin=paper: the paper-port figures' fixed major set (pathways.js
@@ -89,7 +89,13 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
     const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
-    const rows = await cached(key, () => computeFn(db, auditDb, params));
+    // Degree templates are editable in the Data tab. The frontend invalidates
+    // its query after a save; bypassing the short analysis cache here makes the
+    // next request reflect that edit immediately.
+    const liveDegreeCoverage = name === 'coverage' && params.requirements === 'degree';
+    const rows = liveDegreeCoverage
+      ? await computeFn(db, auditDb, params)
+      : await cached(key, () => computeFn(db, auditDb, params));
     if (req.query.format === 'csv') {
       res.setHeader('Content-Type', 'text/csv; charset=utf-8');
       res.setHeader(

@@ -222,11 +222,15 @@ describe('porting workflow', () => {
     const visual = await completeTaskStage(
       db, db, task._id, 'visualization', { note: 'Matched source values and checked labels.' }, 'author'
     );
-    expect(visual.progress).toBe(80);
+    expect(visual.progress).toBe(75);
     const published = await completeTaskStage(
       db, db, task._id, 'publish', { note: 'Published as district-coverage-v1.' }, 'author'
     );
-    expect(published.progress).toBe(90);
+    expect(published.progress).toBe(85);
+    const selfVerified = await completeTaskStage(
+      db, db, task._id, 'self_verify', { note: 'Re-checked the published output against the data.' }, 'author'
+    );
+    expect(selfVerified.progress).toBe(90);
 
     await expect(completeTaskStage(
       db, db, task._id, 'approval', { note: 'Looks good.' }, 'author'
@@ -245,7 +249,7 @@ describe('porting workflow', () => {
     expect(approved.completed_by_label).toBe('Bea');
     expect(approved.completed_at).toBeInstanceOf(Date);
     expect(approved).not.toHaveProperty('dataset_version_completed');
-    expect(approved.workflow_log).toHaveLength(8);
+    expect(approved.workflow_log).toHaveLength(9);
   });
 
   it('reopens a stage and every downstream stage while retaining the log', async () => {

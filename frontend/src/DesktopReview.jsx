@@ -123,7 +123,7 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
   const actionButtons = (
     <div data-testid='verdict-actions' className='flex flex-wrap items-center gap-2'>
       <Button onClick={() => submit('correct')} disabled={verify.isPending || !selected || docDeleted}>Correct</Button>
-      <Button variant='warning' onClick={() => submit('conservative')} disabled={verify.isPending || !selected || docDeleted}>Conservative</Button>
+      <Button variant='conservative' onClick={() => submit('conservative')} disabled={verify.isPending || !selected || docDeleted}>Conservative</Button>
       <Button variant='danger' onClick={() => submit('error')} disabled={verify.isPending || !selected || docDeleted}>Error</Button>
       <Button variant='secondary' leadingIcon={FlagIcon} onClick={() => submit('flagged')} disabled={verify.isPending || !selected || docDeleted}>Flag</Button>
     </div>
@@ -135,7 +135,7 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
         Cells in error
         <Input type='number' min={0} step={1} value={cellsInError}
           onChange={(e) => setCellsInError(e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value, 10) || 0))}
-          className='w-14 font-mono tabular-nums text-right' />
+          className='w-14 tabular text-right' />
       </label>
       <Textarea data-review-notes value={notes} onChange={(e) => setNotes(e.target.value)}
         placeholder='Notes (required when flagging)…' rows={3} />
@@ -160,7 +160,7 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
   // ── Browse layout: three columns, full window ──
   return (
     <div className='h-full overflow-hidden flex flex-col'>
-      <div className='shrink-0 border-b border-border px-4 py-2.5 flex items-center gap-3'>
+      <div className='shrink-0 border-b border-border px-[22px] py-2.5 flex items-center gap-3'>
         <Tabs value={tier} onChange={(v) => { setTier(v); setSelectedId(null) }} options={TIERS} />
         <Input value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder='Search major / school / college…'
@@ -171,7 +171,7 @@ export default function ReviewTab({ filter = DEFAULT_FILTER, setFilter }) {
         <div className='h-full overflow-auto border-r border-border p-3'>
           <ResultList query={activeQuery} rows={filtered} selectedId={selectedId} onSelect={setSelectedId} tier={tier} />
         </div>
-        <div className='h-full overflow-auto px-4 py-4'>{docPreview}</div>
+        <div className='h-full overflow-auto p-5'>{docPreview}</div>
         <div className='h-full overflow-auto border-l border-border p-4'>
           <Stack gap='comfortable'>
             <p className='text-label'>Set verdict</p>
@@ -212,16 +212,22 @@ function ResultList({ query, rows, selectedId, onSelect, tier }) {
   return (
     <Stack gap='tight'>
       <p className='text-label'>{rows.length}{capHint}</p>
-      <div className='flex flex-col gap-1'>
-        {rows.map((r) => (
-          <button key={r.id} type='button' onClick={() => onSelect(r.id)}
-            className={`text-left px-3 py-2 rounded-md border transition-colors ${
-              r.id === selectedId ? 'border-primary bg-primary-soft hover:bg-primary-soft' : 'border-border hover:bg-surface-hover'}`}>
-            <div className='text-body-strong break-words leading-snug'>{r.major}</div>
-            <div className='text-caption break-words leading-snug'>{schoolNameOf(r)} ← {r.community_college || '—'}</div>
-            {r.notes ? <div className='text-caption text-ink-subtle break-words mt-1'>{r.notes}</div> : null}
-          </button>
-        ))}
+      <div className='flex flex-col gap-0.5'>
+        {rows.map((r) => {
+          const active = r.id === selectedId
+          return (
+            <button key={r.id} type='button' onClick={() => onSelect(r.id)}
+              className={`w-full flex items-start gap-2.5 rounded-[10px] px-3 py-[9px] text-left transition-colors ${
+                active ? 'bg-primary-soft font-[650]' : 'hover:bg-surface-hover'}`}>
+              <span className={`w-[3px] h-3.5 rounded-pill mt-0.5 shrink-0 ${active ? 'bg-accent' : 'bg-transparent'}`} />
+              <span className='min-w-0 flex-1'>
+                <div className='text-body-strong break-words leading-snug'>{r.major}</div>
+                <div className='text-caption break-words leading-snug'>{schoolNameOf(r)} ← {r.community_college || '—'}</div>
+                {r.notes ? <div className='text-caption text-ink-subtle break-words mt-1'>{r.notes}</div> : null}
+              </span>
+            </button>
+          )
+        })}
       </div>
     </Stack>
   )

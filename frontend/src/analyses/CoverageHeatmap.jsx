@@ -1,6 +1,6 @@
 import React, { useDeferredValue, useMemo, useState } from 'react'
 import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, Spinner, Stack, StatStrip } from '../components/ui'
+import { Alert, Button, EmptyState, Input, Select, Spinner, Stack, StatStrip } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 
 const DEFAULT_MAJOR_FILTER = 'computer science'
@@ -10,16 +10,29 @@ const ROW_MODES = [
   { value: 'county', label: 'County', noun: 'counties', header: 'County served' },
 ]
 
-// Which minimums the coverage % is measured against. 'assist' = ASSIST-stated
-// required groups (engine, choose-N correct); 'paper' = the hand-curated
-// minimums (curated transfer-minimum requirements, the paper's set-based rule).
+// The denominator for each heatmap cell. Full-degree coverage follows MA Fig. 1
+// and reads the editable four-year templates; the two prior minimums views stay
+// available for direct comparison.
 const REQ_MODES = [
+  { value: 'degree', label: '4-year graduation requirements' },
   { value: 'assist', label: 'ASSIST minimums' },
   { value: 'paper', label: 'Hand-curated minimums' },
 ]
 
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+const COLOR_STOPS = [
+  { at: 0, rgb: [142, 24, 48] },
+  { at: 0.25, rgb: [211, 69, 65] },
+  { at: 0.5, rgb: [242, 201, 76] },
+  { at: 0.75, rgb: [63, 153, 137] },
+  { at: 1, rgb: [0, 91, 75] },
+]
+const COLOR_GRADIENT = `linear-gradient(90deg, ${COLOR_STOPS
+  .map((stop) => `rgb(${stop.rgb.join(' ')}) ${stop.at * 100}%`)
+  .join(', ')})`
+const DEFAULT_COLOR_SCALE = { min: 0, mid: 50, max: 100 }
+const MIN_COLOR_SPAN = 20
 
 const pct = (value) => (Number.isFinite(value) ? `${pctFmt.format(value)}%` : '-')
 
@@ -41,7 +54,38 @@ function sortByName(a, b) {
   return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
 }
 
-function makeCellColor(value) {
+function quantile(sorted, q) {
+  if (!sorted.length) return null
+  const position = (sorted.length - 1) * q
+  const lower = Math.floor(position)
+  const fraction = position - lower
+  const upper = sorted[lower + 1]
+  return upper == null ? sorted[lower] : sorted[lower] + fraction * (upper - sorted[lower])
+}
+
+// A fixed 0-100 domain hides meaningful variation when most cells occupy a
+// narrow band. Trim only the extreme 2% at either end, round to readable 5-point
+// bounds, and retain at least a 20-point domain so small noise is not overstated.
+export function createCoverageColorScale(values) {
+  const sorted = values.filter(Number.isFinite).sort((a, b) => a - b)
+  if (!sorted.length) return DEFAULT_COLOR_SCALE
+
+  const low = quantile(sorted, 0.02)
+  const high = quantile(sorted, 0.98)
+  let min = Math.max(0, Math.floor(low / 5) * 5)
+  let max = Math.min(100, Math.ceil(high / 5) * 5)
+
+  if (max - min < MIN_COLOR_SPAN) {
+    const center = (low + high) / 2
+    min = Math.round((center - MIN_COLOR_SPAN / 2) / 5) * 5
+    min = Math.max(0, Math.min(100 - MIN_COLOR_SPAN, min))
+    max = min + MIN_COLOR_SPAN
+  }
+
+  return { min, mid: (min + max) / 2, max }
+}
+
+export function makeCellColor(value, scale = DEFAULT_COLOR_SCALE) {
   if (!Number.isFinite(value)) {
     return {
       backgroundColor: 'var(--color-surface-muted)',
@@ -49,15 +93,12 @@ function makeCellColor(value) {
     }
   }
 
-  const clamped = Math.max(0, Math.min(100, value))
-  const stops = [
-    { at: 0, rgb: [190, 28, 50] },
-    { at: 50, rgb: [224, 173, 42] },
-    { at: 100, rgb: [13, 121, 100] },
-  ]
-  const lo = clamped <= 50 ? stops[0] : stops[1]
-  const hi = clamped <= 50 ? stops[1] : stops[2]
-  const t = (clamped - lo.at) / (hi.at - lo.at)
+  const span = Math.max(1, scale.max - scale.min)
+  const normalized = Math.max(0, Math.min(1, (value - scale.min) / span))
+  const stopIndex = Math.min(COLOR_STOPS.length - 2, Math.floor(normalized * (COLOR_STOPS.length - 1)))
+  const lo = COLOR_STOPS[stopIndex]
+  const hi = COLOR_STOPS[stopIndex + 1]
+  const t = (normalized - lo.at) / (hi.at - lo.at)
   const rgb = lo.rgb.map((v, i) => Math.round(v + (hi.rgb[i] - v) * t))
   const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255
 
@@ -143,13 +184,14 @@ function buildHeatmap(rows) {
     columns,
     columnMeans,
     cellMap,
+    colorScale: createCoverageColorScale(values),
     fullCount,
     valueCount: values.length,
     overallMean: average(values),
   }
 }
 
-function cellTitle(row, col, cell, value) {
+function cellTitle(row, col, cell, value, reqMode) {
   const bits = [
     row.name,
     col.school,
@@ -157,12 +199,14 @@ function cellTitle(row, col, cell, value) {
     `Coverage: ${pct(value)}`,
   ]
   if (cell) {
-    bits.push(`${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} required receivers articulated`)
+    bits.push(reqMode === 'degree'
+      ? `${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} four-year graduation requirements have a community-college equivalent`
+      : `${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} required receivers articulated`)
   }
   return bits.join('\n')
 }
 
-function HeatmapTable({ model, rowMode }) {
+function HeatmapTable({ model, rowMode, reqMode }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -204,10 +248,10 @@ function HeatmapTable({ model, rowMode }) {
                 return (
                   <td
                     key={col.key}
-                    title={cellTitle(row, col, cell, value)}
-                    aria-label={cellTitle(row, col, cell, value)}
+                    title={cellTitle(row, col, cell, value, reqMode)}
+                    aria-label={cellTitle(row, col, cell, value, reqMode)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                    style={makeCellColor(value)}
+                    style={makeCellColor(value, model.colorScale)}
                   >
                     {pct(value)}
                   </td>
@@ -228,7 +272,7 @@ function HeatmapTable({ model, rowMode }) {
               <td
                 key={col.key}
                 className='sticky bottom-0 z-20 border-t border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                style={makeCellColor(model.columnMeans[i])}
+                style={makeCellColor(model.columnMeans[i], model.colorScale)}
               >
                 {pct(model.columnMeans[i])}
               </td>
@@ -243,17 +287,23 @@ function HeatmapTable({ model, rowMode }) {
   )
 }
 
-function Legend() {
+function Legend({ reqMode, scale }) {
   return (
     <div className='flex flex-wrap items-center gap-3 text-caption text-ink-subtle'>
-      <span className='text-label'>Coverage</span>
-      <div
-        className='w-48 h-2 rounded-pill border border-border'
-        style={{ background: 'linear-gradient(90deg, rgb(190 28 50), rgb(224 173 42), rgb(13 121 100))' }}
-      />
-      <span className='font-mono tabular-nums'>0%</span>
-      <span className='font-mono tabular-nums'>50%</span>
-      <span className='font-mono tabular-nums'>100%</span>
+      <span className='text-label'>
+        {reqMode === 'degree' ? 'Four-year degree coverage' : 'Coverage'}
+      </span>
+      <div className='w-64 max-w-full' aria-label={`Coverage color scale from ${pct(scale.min)} to ${pct(scale.max)}`}>
+        <div
+          className='h-2 rounded-pill border border-border'
+          style={{ background: COLOR_GRADIENT }}
+        />
+        <div className='mt-1 flex justify-between font-mono tabular-nums'>
+          <span>&le;{pct(scale.min)}</span>
+          <span>{pct(scale.mid)}</span>
+          <span>&ge;{pct(scale.max)}</span>
+        </div>
+      </div>
     </div>
   )
 }
@@ -261,10 +311,11 @@ function Legend() {
 export default function CoverageHeatmap() {
   const [majorFilter, setMajorFilter] = useState(DEFAULT_MAJOR_FILTER)
   const [rowModeValue, setRowModeValue] = useState('college')
-  const [reqMode, setReqMode] = useState('assist')
+  const [reqMode, setReqMode] = useState('degree')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   const deferredMajorFilter = useDeferredValue(majorFilter)
-  // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on demand.
+  // Fetch on mount with no polling; template saves invalidate this query and
+  // Refresh remains available for externally edited data.
   const coverage = useCoverage(
     { majorContains: deferredMajorFilter, groupBy: rowMode.value, requirements: reqMode },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
@@ -287,7 +338,7 @@ export default function CoverageHeatmap() {
       <Stack gap='section'>
         <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
           <Input
-            label='Major filter'
+            label={reqMode === 'degree' ? 'Degree program filter' : 'Major filter'}
             value={majorFilter}
             onChange={(e) => setMajorFilter(e.target.value)}
             placeholder='computer science'
@@ -311,6 +362,10 @@ export default function CoverageHeatmap() {
               ))}
             </div>
           </div>
+          <div className='flex flex-col min-w-64'>
+            <span className='field-label'>Requirement basis</span>
+            <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
+          </div>
           <Button variant='secondary' leadingIcon={ArrowPathIcon} onClick={() => coverage.refetch()}>
             Refresh
           </Button>
@@ -322,9 +377,9 @@ export default function CoverageHeatmap() {
 
   return (
     <Stack gap='section'>
-      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+      <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
         <Input
-          label='Major filter'
+          label={reqMode === 'degree' ? 'Degree program filter' : 'Major filter'}
           value={majorFilter}
           onChange={(e) => setMajorFilter(e.target.value)}
           placeholder='computer science'
@@ -348,22 +403,9 @@ export default function CoverageHeatmap() {
             ))}
           </div>
         </div>
-        <div className='flex flex-col'>
-          <span className='field-label'>Minimums</span>
-          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {REQ_MODES.map((mode) => (
-              <button
-                key={mode.value}
-                type='button'
-                onClick={() => setReqMode(mode.value)}
-                className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  reqMode === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
-                }`}
-              >
-                {mode.label}
-              </button>
-            ))}
-          </div>
+        <div className='flex flex-col min-w-64'>
+          <span className='field-label'>Requirement basis</span>
+          <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
         </div>
         <Button
           variant='secondary'
@@ -373,7 +415,7 @@ export default function CoverageHeatmap() {
         >
           Refresh
         </Button>
-        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle'>
+        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           <span className='font-mono tabular-nums'>{datasetVersion}</span>
           <span>{coverage.isFetching ? 'Updating' : 'Live endpoint'}</span>
         </div>
@@ -383,16 +425,16 @@ export default function CoverageHeatmap() {
       <div data-export-exclude>
         <StatStrip
           tiles={[
-            { label: 'Coverage rows', value: intFmt.format(coverage.data?.n ?? rows.length), sub: 'from /analysis/coverage' },
+            { label: 'Coverage cells', value: intFmt.format(coverage.data?.n ?? rows.length), sub: 'from /analysis/coverage' },
             { label: 'Programs', value: intFmt.format(model.columns.length), sub: `${intFmt.format(model.rows.length)} ${rowMode.noun}` },
-            { label: 'Mean articulated', value: pct(model.overallMean), accent: true },
-            { label: 'Fully articulated', value: pct(fullPct), sub: `${intFmt.format(model.fullCount)} cells` },
+            { label: reqMode === 'degree' ? 'Mean degree coverage' : 'Mean articulated', value: pct(model.overallMean), accent: true },
+            { label: reqMode === 'degree' ? '100% covered' : 'Fully articulated', value: pct(fullPct), sub: `${intFmt.format(model.fullCount)} cells` },
           ]}
         />
       </div>
 
-      <HeatmapTable model={model} rowMode={rowMode} />
-      <Legend />
+      <HeatmapTable model={model} rowMode={rowMode} reqMode={reqMode} />
+      <Legend reqMode={reqMode} scale={model.colorScale} />
     </Stack>
   )
 }

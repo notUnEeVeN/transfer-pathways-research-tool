@@ -181,8 +181,19 @@ export function FigureSVG({ bars, ghost = null, labelMode }) {
     return (
       <g key={key}>
         {d > 0 && (
-          // courses ADDED vs the ghost: the top segment of our bar, in red
-          <rect x={x} y={yPx(ourTop)} width={barWpx} height={yPx(ghostTop) - yPx(ourTop)} fill={LOSS} />
+          // The white outline stays a constant screen width and keeps adjacent
+          // positive-difference segments legible when their bar edges touch.
+          <rect
+            data-difference='increase'
+            x={x}
+            y={yPx(ourTop)}
+            width={barWpx}
+            height={yPx(ghostTop) - yPx(ourTop)}
+            fill={LOSS}
+            stroke='#ffffff'
+            strokeWidth={1.5}
+            vectorEffect='non-scaling-stroke'
+          />
         )}
         {d < 0 && (
           // courses NO LONGER needed: the now-empty region up to the ghost level
@@ -446,7 +457,7 @@ export default function PaperCreditLoss() {
   return (
     <Stack gap='section'>
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
-      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+      <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
         <div className='flex flex-col'>
           <span className='field-label'>Version</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -472,7 +483,7 @@ export default function PaperCreditLoss() {
             disabled={version === 'paper'}
           />
         </div>
-        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle'>
+        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           {view === 'paper'
             ? <span>Paper baseline — transcribed from the 2026 optimal set-cover CSVs</span>
             : (

@@ -43,13 +43,14 @@ export default function Modal({
     <div
       ref={overlayRef}
       onMouseDown={onBackdrop}
-      className='fixed inset-0 z-100 grid place-items-center p-4 bg-ink/40 backdrop-blur-sm motion-safe:animate-[overlayIn_120ms_var(--ease-out)]'
+      style={{ background: 'var(--color-scrim)' }}
+      className='fixed inset-0 z-100 grid place-items-center p-4 motion-safe:animate-[overlayIn_120ms_var(--ease-out)]'
       role='dialog'
       aria-modal='true'
       aria-labelledby={title ? 'modal-title' : undefined}
     >
       <div
-        className={`surface-elevated rounded-xl w-full ${widthClass[size] || widthClass.md} flex flex-col max-h-[85vh] overflow-hidden motion-safe:animate-[modalIn_180ms_var(--ease-out)]`}
+        className={`surface-elevated w-full ${widthClass[size] || widthClass.md} flex flex-col max-h-[85vh] overflow-hidden motion-safe:animate-[modalIn_180ms_var(--ease-out)]`}
         style={{ boxShadow: 'var(--shadow-lg)' }}
       >
         {showHeader && (

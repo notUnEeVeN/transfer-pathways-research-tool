@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, EmptyState, Input, Spinner, Stack, Tabs } from './components/ui'
+import { Alert, Badge, Button, EmptyState, IconButton, Spinner, Stack, Tabs } from './components/ui'
 import { useRefTable, useDeleteRefRow } from './shared/query/hooks/useData'
 import { refTableByKey, UC_SCHOOLS } from './references/refTablesRegistry'
 import RefRowModal from './references/RefRowModal'
-import RouteHint from './components/RouteHint'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 
 /**
@@ -154,13 +153,14 @@ export function minimumsToLedger(inputRows = []) {
       let receivers
       let sectionAdvisement
 
-      if (sets.length === 1 || sets.every(([, setRows]) => setRows.length === 1)) {
+      if (sets.every(([, setRows]) => setRows.length === 1)) {
+        // Every set is a single course: the sets are the alternatives.
         receivers = groupRows.map(courseReceiver)
-        const fallback = sets.length === 1 ? groupRows.length : 1
-        sectionAdvisement = Math.min(declaredAsk || fallback, receivers.length)
+        sectionAdvisement = Math.min(declaredAsk || 1, receivers.length)
       } else {
-        // A multi-course alternative is one series receiver, preserving
-        // OR-of-AND semantics if future curated rows introduce such a set.
+        // A set holding several courses is taken together — one series
+        // receiver per set (one combined row), preserving OR-of-AND
+        // semantics between sets.
         receivers = sets.map(([, setRows]) => ({
           receiving: {
             kind: 'series',
@@ -187,17 +187,41 @@ export function minimumsToLedger(inputRows = []) {
       }
     })
 
+  // A "plain" requirement is take-this-one-course — no alternatives, no
+  // series. Two or more of them inside a subject read as one combined
+  // "Complete all of:" card; named cards stay only where the name carries
+  // choice or series semantics (or a plain course has nothing to merge with).
+  const isPlainCourse = (item) =>
+    item.section.receivers.length === 1 &&
+    item.section.receivers[0].receiving?.kind === 'course'
+
   const requirement_groups = [...groupBy(atomicSections, (item) => item.category.key)]
-    .map(([, items]) => ({
-      title: items[0].category.title,
-      categoryOrder: MINIMUM_CATEGORIES.findIndex((category) => category.key === items[0].category.key),
-      is_required: true,
-      group_conjunction: 'And',
-      sections: items
+    .map(([, items]) => {
+      const ordered = items
         .slice()
         .sort((a, b) => a.rank - b.rank || a.section.title.localeCompare(b.section.title))
-        .map((item) => item.section),
-    }))
+      const plain = ordered.filter(isPlainCourse)
+      const entries = plain.length >= 2
+        ? [
+            ...ordered.filter((item) => !isPlainCourse(item)),
+            {
+              rank: plain[0].rank,
+              section: {
+                title: null,
+                section_advisement: plain.length,
+                receivers: plain.map((item) => item.section.receivers[0]),
+              },
+            },
+          ].sort((a, b) => a.rank - b.rank)
+        : ordered
+      return {
+        title: items[0].category.title,
+        categoryOrder: MINIMUM_CATEGORIES.findIndex((category) => category.key === items[0].category.key),
+        is_required: true,
+        group_conjunction: 'And',
+        sections: entries.map((item) => item.section),
+      }
+    })
     .sort((a, b) => {
       const aOrder = a.categoryOrder < 0 ? MINIMUM_CATEGORIES.length : a.categoryOrder
       const bOrder = b.categoryOrder < 0 ? MINIMUM_CATEGORIES.length : b.categoryOrder
@@ -217,25 +241,27 @@ function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, onDelete
         <thead>
           <tr>
             {columns.map((col) => (
-              <th key={col.key} className={`sticky top-0 bg-surface border-b border-border px-3 py-2 text-label ${col.className || ''}`}>
+              <th key={col.key} className={`sticky top-0 bg-surface border-b border-border/60 px-[22px] py-3 text-label ${col.className || ''}`}>
                 {col.label}
               </th>
             ))}
-            {showActions && <th className='sticky top-0 bg-surface border-b border-border px-2 py-2 text-label text-right'>edit</th>}
+            {showActions && <th className='sticky top-0 bg-surface border-b border-border/60 px-[22px] py-3 text-label text-right'>edit</th>}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={row._id || row.key || i} className='hover:bg-surface-hover'>
               {columns.map((col) => (
-                <td key={col.key} className={`border-b border-border px-3 py-1.5 text-caption align-top ${col.cellClassName || 'text-ink-muted'}`}>
+                <td key={col.key} className={`border-b border-border/40 px-[22px] py-[13px] text-caption align-top ${col.cellClassName || 'text-ink-muted'}`}>
                   {col.render ? col.render(row) : (row[col.key] ?? '-')}
                 </td>
               ))}
               {showActions && (
-                <td className='border-b border-border px-2 py-1 text-right whitespace-nowrap'>
-                  {onEdit && <Button variant='ghost' leadingIcon={PencilSquareIcon} onClick={() => onEdit(row)} />}
-                  {onDelete && <Button variant='ghost' leadingIcon={TrashIcon} disabled={deleting} onClick={() => onDelete(row)} />}
+                <td className='border-b border-border/40 px-[22px] py-[13px] text-right whitespace-nowrap'>
+                  <span className='inline-flex items-center gap-1'>
+                    {onEdit && <IconButton variant='ghost' icon={PencilSquareIcon} label='Edit row' onClick={() => onEdit(row)} />}
+                    {onDelete && <IconButton variant='danger' icon={TrashIcon} label='Delete row' disabled={deleting} onClick={() => onDelete(row)} />}
+                  </span>
                 </td>
               )}
             </tr>
@@ -246,24 +272,30 @@ function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, onDelete
   )
 }
 
+// Same rail vocabulary as DataPage's InstitutionRail (notch + bg-primary-soft
+// active state) — this one keeps its own active-key comparison and its
+// caller-supplied `renderRow` for the row body, since districts show a
+// two-line count/region caption that colleges' plain subtitle doesn't.
 function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, query, onQuery, placeholder, search = true }) {
   return (
-    <div className='surface-card p-3 lg:max-h-[75vh] overflow-auto'>
-      <p className='text-label mb-2'>{title} · {intFmt.format(count)}</p>
+    <div className='surface-card p-2.5 lg:max-h-[75vh] overflow-auto'>
+      <p className='px-3 pt-2.5 pb-2 flex items-baseline gap-2 text-label'>{title} · {intFmt.format(count)}</p>
       {search && (
-        <div className='mb-3'>
-          <Input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder}
-            leadingIcon={MagnifyingGlassIcon} />
+        <div className='flex items-center gap-2 bg-canvas border border-border rounded-pill px-3 py-[7px] mx-1 mb-2'>
+          <MagnifyingGlassIcon className='w-3.5 h-3.5 text-ink-subtle shrink-0' />
+          <input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder}
+            className='flex-1 min-w-0 bg-transparent outline-none border-none text-[13px] text-ink placeholder:text-ink-subtle' />
         </div>
       )}
-      <div className='space-y-1'>
+      <div className='flex flex-col gap-0.5'>
         {rows.map((row) => {
           const active = String(row.key) === String(selectedKey)
           return (
             <button key={row.key} type='button' onClick={() => onSelect(row.key)}
-              className={`w-full text-left px-2.5 py-1.5 rounded-md border transition-colors ${
-                active ? 'border-primary bg-primary-soft' : 'border-transparent hover:bg-surface-hover'}`}>
-              {renderRow(row)}
+              className={`w-full flex items-start gap-2.5 rounded-[10px] px-3 py-[9px] text-left transition-colors ${
+                active ? 'bg-primary-soft font-[650]' : 'hover:bg-surface-hover'}`}>
+              <span className={`w-[3px] h-3.5 rounded-pill mt-0.5 shrink-0 ${active ? 'bg-accent' : 'bg-transparent'}`} />
+              <span className='min-w-0 flex-1'>{renderRow(row)}</span>
             </button>
           )
         })}
@@ -328,24 +360,23 @@ function DistrictLookup({ rows }) {
   return (
     <Stack gap='cozy'>
       <div className='flex flex-wrap items-center gap-3'>
-        <span className='text-caption text-ink-subtle'>
+        <span className='text-[13px] text-ink-subtle'>
           {intFmt.format(rows.length)} colleges mapped to {intFmt.format(districts.length)} districts
         </span>
-        <RouteHint path='/api/assist/institutions?kind=community_college' />
         <Button className='ml-auto' leadingIcon={PlusIcon}
           onClick={() => ed.openAdd(selected ? { district: selected.name, region: selected.region } : {})}>
           Add college
         </Button>
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-4 items-start'>
+      <div className='grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-5 items-start'>
         <ReferenceRail title='Districts' count={districts.length} rows={railRows}
           selectedKey={selected?.key} onSelect={setSelectedKey} query={query} onQuery={setQuery}
           placeholder='Find district, county, college…'
           renderRow={(row) => (
             <>
-              <p className='text-body leading-snug'>{row.name}</p>
-              <p className='text-caption text-ink-subtle mt-0.5'>{row.colleges.length} colleges · {row.region}</p>
+              <span className='block text-[13.5px] text-ink truncate'>{row.name}</span>
+              <span className='block text-[11.5px] text-ink-subtle truncate mt-px'>{row.colleges.length} colleges · {row.region}</span>
             </>
           )} />
 
@@ -353,11 +384,11 @@ function DistrictLookup({ rows }) {
           <EmptyState title='No reference rows' description='The district reference table is empty.' />
         ) : (
           <Stack gap='cozy'>
-            <div className='surface-card p-4'>
-              <p className='text-body-strong'>{selected.name}</p>
-              <p className='text-caption text-ink-muted mt-1'>{selected.region} · {selected.colleges.length} colleges</p>
-              <div className='mt-3 flex flex-wrap gap-2'>
-                {selected.counties.map((county) => <Badge key={county}>{county}</Badge>)}
+            <div className='surface-card px-[22px] py-[18px] flex flex-col gap-2.5'>
+              <p className='text-[16px] font-[650] tracking-[-.01em]'>{selected.name}</p>
+              <p className='text-[13px] text-ink-subtle'>{selected.region} · {selected.colleges.length} colleges</p>
+              <div className='flex flex-wrap gap-2'>
+                {selected.counties.map((county) => <span key={county} className='chip'>{county}</span>)}
               </div>
             </div>
 
@@ -413,27 +444,24 @@ export function CampusMinimums({ schoolId }) {
 
   return (
     <Stack gap='cozy'>
-      <div className='surface-card p-4 flex flex-wrap items-start gap-4'>
+      <div className='surface-card px-[22px] py-[18px] flex flex-wrap items-start gap-4'>
         <div className='min-w-0'>
           <p className='text-body-strong'>{schoolName || 'No minimums for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}</p>
           <p className='text-caption text-ink-muted mt-0.5'>Hand-curated hard minimum · {rows.length} course entries</p>
         </div>
         <div className='ml-auto flex flex-wrap items-center gap-2 shrink-0'>
           {unmatched > 0 && <Badge variant='conservative'>{unmatched} not matched</Badge>}
+          {/* Nothing else lives in this cluster — mounting controls beside the
+              Tabs on toggle used to shove the pill sideways. */}
           <Tabs value={view} onChange={setView} options={[
             { value: 'preview', label: 'Rendered' },
             { value: 'edit', label: 'Edit rows' },
           ]} />
-          {view === 'edit' && (
-            <Button leadingIcon={PlusIcon} onClick={() => ed.openAdd(ucCode ? { uc_code: ucCode } : {})}>
-              Add requirement
-            </Button>
-          )}
         </div>
       </div>
 
       {view === 'preview' && rows.length > 0 && (
-        <div className='uui-scope'>
+        <div className='uui-scope motion-safe:animate-[riseIn_200ms_var(--ease-out)]'>
           <RequirementsLedger major={{ requirement_groups: ledger.requirement_groups }}
             universityCoursesById={ledger.universityCoursesById}
             preserveOrder showCompletion={false} />
@@ -441,11 +469,23 @@ export function CampusMinimums({ schoolId }) {
       )}
 
       {view === 'preview' && rows.length === 0 && (
-        <EmptyState title='No minimum requirements'
-          description='This campus does not have a hand-curated minimum yet. Open Edit rows to add its first requirement.' />
+        <div className='motion-safe:animate-[riseIn_200ms_var(--ease-out)]'>
+          <EmptyState title='No minimum requirements'
+            description='This campus does not have a hand-curated minimum yet. Open Edit rows to add its first requirement.' />
+        </div>
+      )}
+
+      {view === 'edit' && (
+        <div className='flex flex-wrap items-center gap-2 motion-safe:animate-[riseIn_200ms_var(--ease-out)]'>
+          <span className='text-caption'>Each row is one required course — group alternatives with a shared Group and distinct Sets.</span>
+          <Button className='ml-auto' leadingIcon={PlusIcon} onClick={() => ed.openAdd(ucCode ? { uc_code: ucCode } : {})}>
+            Add requirement
+          </Button>
+        </div>
       )}
 
       {view === 'edit' && rows.length > 0 && (
+        <div className='motion-safe:animate-[riseIn_200ms_var(--ease-out)]'>
         <DataTable
           rows={rows}
           onEdit={ed.openEdit} onDelete={ed.remove} deleting={ed.deleting}
@@ -480,6 +520,7 @@ export function CampusMinimums({ schoolId }) {
               },
             },
           ]} />
+        </div>
       )}
 
       <RefRowModal config={ed.config} editing={ed.editing} onClose={ed.close} />

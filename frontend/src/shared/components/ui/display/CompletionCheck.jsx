@@ -20,7 +20,7 @@ export default function CompletionCheck({ size = 'md', className = '', label = '
     <span
       role='img'
       aria-label={label}
-      className={`grid place-items-center rounded-full bg-success-solid shrink-0 ${s.box} ${className}`}
+      className={`grid place-items-center rounded-full bg-success shrink-0 ${s.box} ${className}`}
     >
       <Check className={`text-white ${s.icon}`} strokeWidth={3} />
     </span>

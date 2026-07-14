@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { signOut } from 'firebase/auth'
-import { FlagIcon, ArrowsRightLeftIcon, CheckBadgeIcon, LockClosedIcon } from '@heroicons/react/24/outline'
-import { Button, Spinner, Alert, EmptyState, StatStrip, Stack, LoadingLogo, Tabs, Input, Textarea } from './components/ui'
+import { FlagIcon, CheckBadgeIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import { Button, Spinner, Alert, EmptyState, StatStrip, Stack, LoadingLogo, Tabs, Logo } from './components/ui'
 import { auth } from '@frontend/lib/firebase'
 import { useAuth } from '@frontend/hooks/useAuth'
 import { useAccessMe, useRequestAccess } from '@frontend/query/hooks/useAccess'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
+import SubNav from './components/SubNav'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import DataPage from './DataPage'
@@ -53,7 +54,7 @@ export default function App() {
 
 function Centered({ children }) {
   return (
-    <div className='h-screen bg-surface text-ink flex items-center justify-center'>
+    <div className='h-screen bg-canvas text-ink flex items-center justify-center'>
       <div className='flex items-center gap-3'>{children}</div>
     </div>
   )
@@ -78,7 +79,7 @@ function AccessRequestedScreen({ email }) {
   const blocked = requestAccess.data?.blocked
 
   return (
-    <div className='h-screen bg-surface text-ink flex items-center justify-center px-6'>
+    <div className='h-screen bg-canvas text-ink flex items-center justify-center px-6'>
       <Stack gap='comfortable' className='items-center'>
         {blocked ? (
           <EmptyState icon={LockClosedIcon} title='Access declined'
@@ -105,7 +106,7 @@ function AccessCheckFailedScreen({ error, onRetry }) {
     : 'The access check could not reach the API.'
 
   return (
-    <div className='h-screen bg-surface text-ink flex items-center justify-center px-6'>
+    <div className='h-screen bg-canvas text-ink flex items-center justify-center px-6'>
       <div className='w-full max-w-md'>
         <Stack gap='comfortable'>
           <EmptyState icon={LockClosedIcon} title='Could not check access'
@@ -164,23 +165,8 @@ function Console({ role, user }) {
   }, [view, auditTab])
 
   return (
-      <div className='h-screen flex flex-col bg-surface text-ink'>
-        <div className='shrink-0 flex items-center gap-3 px-4 h-12 border-b border-border'>
-          <span className='text-label'>Transfer Pathways Research</span>
-          <div className='ml-auto flex items-center gap-3'>
-            <Tabs value={view} onChange={setView}
-              options={[
-                { value: 'data',    label: 'Data' },
-                { value: 'visuals', label: 'Visuals' },
-                { value: 'audit',   label: 'Audit' },
-                { value: 'tasks',   label: 'Tasks' },
-                { value: 'api',     label: 'API' },
-                ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
-              ]} />
-            <span className='text-caption text-ink-subtle hidden sm:block'>{user.email}</span>
-            <Button variant='ghost' onClick={() => signOut(auth)}>Sign out</Button>
-          </div>
-        </div>
+      <div className='h-screen flex flex-col bg-canvas text-ink min-w-[1180px]'>
+        <TopBar view={view} setView={setView} role={role} user={user} />
         <div className='flex-1 min-h-0 relative'>
           {view === 'audit' && (
             <AuditWorkspace
@@ -198,7 +184,7 @@ function Console({ role, user }) {
           )}
           {view === 'tasks' && (
             <div className='h-full overflow-auto'>
-              <div className='mx-auto max-w-screen-2xl px-6 py-6'>
+              <div className='mx-auto max-w-[1400px] w-full px-[22px] pt-[26px] pb-12'>
                 <TasksPage />
               </div>
             </div>
@@ -210,25 +196,92 @@ function Console({ role, user }) {
   )
 }
 
+// Forest top bar — theme-independent brand chrome (v2:30-53). Hardcodes the
+// forest/lime/mint values (rather than riding --color-primary/--color-accent)
+// because this bar must look identical in light and dark theme; every other
+// surface in the console uses the token system. The nav is a bespoke
+// translucent pill track (NOT the Tabs primitive) so it can carry those
+// fixed colors without fighting Tabs' token-based active/inactive styling.
+function TopBar({ view, setView, role, user }) {
+  const tabs = [
+    { value: 'data', label: 'Data' },
+    { value: 'visuals', label: 'Visuals' },
+    { value: 'audit', label: 'Audit' },
+    { value: 'tasks', label: 'Tasks' },
+    { value: 'api', label: 'API' },
+    ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
+  ]
+  return (
+    <div className='shrink-0 flex items-center gap-5 h-[62px] px-[22px]' style={{ background: '#193018' }}>
+      <button type='button' onClick={() => setView('data')}
+        className='flex items-center gap-[11px] bg-transparent border-0 p-0 cursor-pointer'>
+        <span style={{ color: '#96F060' }}><Logo size={21} /></span>
+        <span style={{ color: '#F0FFE7' }} className='flex flex-col text-[12px] leading-[1.06] tracking-[.01em]'>
+          <span className='font-normal'>transfer</span>
+          <span className='font-bold'>pathways</span>
+        </span>
+      </button>
+
+      <div className='w-px h-[22px] bg-[rgba(240,255,231,.22)]' />
+
+      <div className='uppercase text-[10.5px] font-[650] tracking-[.12em] text-[rgba(240,255,231,.62)]'>
+        Research console
+      </div>
+
+      <nav className='ml-auto flex items-center gap-0.5 rounded-pill p-[3px]' style={{ background: 'rgba(240,255,231,.09)' }} role='tablist'>
+        {tabs.map((t) => {
+          const active = t.value === view
+          return (
+            <button key={t.value} type='button' onClick={() => setView(t.value)}
+              className='px-[15px] py-[7px] rounded-pill text-[13px] tracking-[.005em]' role='tab' aria-selected={active}
+              style={active
+                ? { background: '#96F060', color: '#193018', fontWeight: 650 }
+                : { color: 'rgba(240,255,231,.78)', fontWeight: 500 }}>
+              {t.label}
+            </button>
+          )
+        })}
+      </nav>
+
+      <div className='flex items-center gap-3'>
+        <span className='text-[12.5px] whitespace-nowrap text-[rgba(240,255,231,.6)]'>{user.email}</span>
+        <button type='button' onClick={() => signOut(auth)}
+          className='border border-[rgba(240,255,231,.3)] text-[#F0FFE7] text-[12.5px] font-[550] rounded-pill px-3.5 py-1.5 hover:bg-[rgba(240,255,231,.12)] whitespace-nowrap'>
+          Sign out
+        </button>
+      </div>
+    </div>
+  )
+}
+
 /**
  * AuditWorkspace — Judge (cockpit) · Review (queue re-judge) · Stats (full
  * dashboard) under one sub-tab bar. Sub-views stay mounted (hidden) so warm
  * state survives a sub-tab switch.
  */
 function AuditWorkspace({ auditTab, setAuditTab, filter, setFilter, statsSeen, reviewSeen }) {
+  // Judge's random-template/random-doc mode is lifted up here (rather than
+  // living inside JudgeTab) purely so AuditWorkspace can read it to compute
+  // the Judge route hint below — JudgeTab's own behavior is unchanged.
+  const [judgeMode, setJudgeMode] = useState('template')
+  const auditRoute =
+    auditTab === 'judge' ? { path: '/api/audit/next' }
+    : auditTab === 'review' ? { path: '/api/audit/errors' }
+    : { path: '/api/audit/bootstrap' }
+
   return (
     <div className='h-full flex flex-col'>
-      <div className='shrink-0 flex items-center px-4 h-11 border-b border-border'>
-        <Tabs value={auditTab} onChange={setAuditTab}
-          options={[
-            { value: 'judge',  label: 'Judge' },
-            { value: 'review', label: 'Review' },
-            { value: 'stats',  label: 'Stats' },
-          ]} />
-      </div>
+      <SubNav tabs={{
+        value: auditTab, onChange: setAuditTab,
+        options: [
+          { value: 'judge', label: 'Judge' },
+          { value: 'review', label: 'Review' },
+          { value: 'stats', label: 'Stats' },
+        ],
+      }} route={auditRoute} />
       <div className='flex-1 min-h-0 relative'>
         <div className={`h-full ${auditTab === 'judge' ? '' : 'hidden'}`}>
-          <JudgeTab filter={filter} setFilter={setFilter} />
+          <JudgeTab filter={filter} setFilter={setFilter} mode={judgeMode} setMode={setJudgeMode} active={auditTab === 'judge'} />
         </div>
         {reviewSeen && (
           <div className={`h-full ${auditTab === 'review' ? '' : 'hidden'}`}>
@@ -257,7 +310,7 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
   if ((stats.n_audited ?? 0) === 0) {
     return (
       <div className='h-full overflow-auto'>
-        <div className='mx-auto max-w-screen-2xl px-8 py-8'>
+        <div className='max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12'>
           <Stack gap='section'>
             <div className='flex justify-center pt-8'>
               <EmptyState icon={CheckBadgeIcon} title='No verdicts yet'
@@ -271,7 +324,7 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
 
   return (
     <div className='h-full overflow-auto'>
-      <div className='mx-auto max-w-screen-2xl px-8 py-8'>
+      <div className='max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12'>
         <Stack gap='section'>
           <ScopeLine stats={stats} />
           <StatStrip tiles={buildStrip(stats)} />
@@ -300,10 +353,10 @@ function InterpretationBanner({ stats: s }) {
   const tplPct = tplTot ? +(((s.n_templates_audited ?? 0) / tplTot) * 100).toFixed(1) : 0
   const mismatches = (s.n_errors ?? 0) + (s.n_conservative ?? 0) + (s.n_flagged ?? 0)
   const hasSample = ceiling != null && n > 0
-  const Em = ({ children }) => <span className='text-body-strong font-mono text-ink'>{children}</span>
+  const Em = ({ children }) => <span className='text-ink font-semibold'>{children}</span>
   return (
-    <div className='surface-card p-5 border-l-2 border-primary'>
-      <p className='text-body text-ink-muted leading-relaxed'>
+    <div className='surface-card px-[22px] py-4 border-l-[3px] border-l-accent'>
+      <p className='text-body text-ink-muted leading-[1.55]'>
         {hasSample ? (
           <>
             You’ve audited <Em>{int(s.n_audited ?? 0)}</Em> agreements
@@ -326,11 +379,8 @@ function InterpretationBanner({ stats: s }) {
 // (admins: everything ported; partners: the admin-selected majors).
 function ScopeLine({ stats }) {
   return (
-    <p className='text-caption'>
-      Dataset ·{' '}
-      <span className='text-ink-muted font-mono'>{int(stats.total_docs)}</span> docs ·{' '}
-      <span className='text-ink-muted font-mono'>{int(stats.n_templates)}</span> templates ·{' '}
-      <span className='text-ink-muted font-mono'>{int(stats.n_majors)}</span> majors
+    <p className='text-[13px] text-ink-subtle'>
+      Dataset · {int(stats.total_docs)} docs · {int(stats.n_templates)} templates · {int(stats.n_majors)} majors
     </p>
   )
 }
@@ -349,7 +399,7 @@ function buildStrip(s) {
   return [
     { label: 'Audited', value: int(nAudited), sub: sourceSub, accent: true },
     { label: 'Templates audited', value: int(tplAud), sub: `of ${compactNum(tplTot)} · ${tplPct}%` },
-    { label: 'Errors', value: int(s.n_errors ?? 0), sub: `of ${int(nAudited)} audited` },
+    { label: 'Errors', value: int(s.n_errors ?? 0), sub: `of ${int(nAudited)} audited`, tone: 'danger' },
     { label: 'Flagged', value: int(s.n_flagged ?? 0) }
   ]
 }
@@ -361,7 +411,9 @@ function CellsCard({ stats: s }) {
   const cov = s.cell_coverage_pct ?? 0
   const rows = [
     { k: 'Total cells', v: s.n_cells_total != null ? compactNum(s.n_cells_total) : null },
-    { k: 'In error', v: s.n_cells_in_error != null ? int(s.n_cells_in_error) : null },
+    // The only row guaranteed digit-only (a raw int() count, never % / · ≤) —
+    // the rest carry a unit or punctuation, so they stay proportional.
+    { k: 'In error', v: s.n_cells_in_error != null ? int(s.n_cells_in_error) : null, tabular: true },
     { k: 'Observed error', v: pct(s.cell_observed_pct) },
     { k: 'Per-cell ceiling (95%)', v: pct(s.ci_upper_cell_pct) },
     { k: 'Max cell errors', v: s.estimated_max_cell_errors != null ? `≤ ${int(s.estimated_max_cell_errors)}` : null }
@@ -370,17 +422,17 @@ function CellsCard({ stats: s }) {
     <div className='surface-card p-5 h-full flex flex-col'>
       <p className='text-label mb-3'>Cells</p>
       <div className='flex items-baseline gap-2 flex-wrap'>
-        <span className='text-stat font-mono text-success'>{cov}%</span>
-        <span className='text-caption'>audited — <span className='text-ink font-mono'>{compactNum(s.n_cells_audited)} / {compactNum(s.n_cells_total)}</span></span>
+        <span className='text-stat text-success'>{cov}%</span>
+        <span className='text-caption'>audited — <span className='text-ink'>{compactNum(s.n_cells_audited)} / {compactNum(s.n_cells_total)}</span></span>
       </div>
-      <div className='h-2.5 rounded-md bg-surface-muted border border-border overflow-hidden mt-3'>
-        <div className='h-full bg-success/60' style={{ width: `${Math.min(100, cov)}%` }} />
+      <div className='h-2 rounded-pill bg-surface-sunken overflow-hidden mt-3'>
+        <div className='h-full rounded-pill bg-success' style={{ width: `${Math.min(100, cov)}%` }} />
       </div>
       <div className='flex-1 flex flex-col justify-between mt-3'>
         {rows.map((r) => (
-          <div key={r.k} className='flex items-baseline justify-between gap-3 py-1.5 border-b border-border/60 last:border-0'>
+          <div key={r.k} className='flex items-baseline justify-between gap-3 py-1.5 border-b border-border/40 last:border-0'>
             <span className='text-caption text-ink-muted'>{r.k}</span>
-            <span className='text-body-strong font-mono tabular-nums text-ink'>{r.v}</span>
+            <span className={`text-body-strong text-ink ${r.tabular ? 'tabular' : ''}`}>{r.v}</span>
           </div>
         ))}
       </div>
@@ -388,18 +440,70 @@ function CellsCard({ stats: s }) {
   )
 }
 
+const VERDICT_TONES = {
+  correct: {
+    button: 'border-primary bg-primary text-on-primary hover:bg-primary-hover hover:border-primary-hover',
+    shortcut: 'bg-on-primary/20 text-on-primary group-hover/verdict:bg-on-primary/30',
+  },
+  conservative: {
+    button: 'border-conservative-fill bg-conservative-fill text-on-accent hover:bg-conservative-hover hover:border-conservative',
+    shortcut: 'bg-on-accent/10 text-on-accent group-hover/verdict:bg-on-accent/20',
+  },
+  error: {
+    button: 'border-danger bg-danger text-white hover:bg-danger-hover hover:border-danger-hover',
+    shortcut: 'bg-white/25 text-white group-hover/verdict:bg-white/35',
+  },
+  flagged: {
+    button: 'border-border-strong bg-surface text-ink hover:bg-primary-soft hover:border-primary hover:text-primary',
+    shortcut: 'bg-surface-sunken text-ink-muted group-hover/verdict:bg-primary group-hover/verdict:text-on-primary',
+  },
+}
+
+function VerdictButton({ verdict, shortcut, icon: Icon = null, children, className = '', ...props }) {
+  const tone = VERDICT_TONES[verdict] || VERDICT_TONES.flagged
+  return (
+    <button
+      type='button'
+      data-verdict={verdict}
+      aria-keyshortcuts={shortcut.toLowerCase()}
+      className={`group/verdict inline-flex h-10 items-center justify-center gap-2 rounded-pill border px-4 text-[13.5px] font-[650] whitespace-nowrap cursor-pointer transition-[background-color,border-color,color,filter,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface active:translate-y-px disabled:pointer-events-none disabled:opacity-50 disabled:active:translate-y-0 ${tone.button} ${className}`}
+      {...props}
+    >
+      {Icon && <Icon className='h-3.5 w-3.5 shrink-0' aria-hidden='true' />}
+      {children}
+      <span
+        aria-hidden='true'
+        className={`inline-grid h-5 min-w-5 place-items-center rounded-md px-1 text-[10px] font-bold transition-colors duration-150 ${tone.shortcut}`}
+      >
+        {shortcut}
+      </span>
+    </button>
+  )
+}
+
 // The Judge cockpit. Same sampling mechanics as the desktop tool; ASSIST opens
 // in a managed popup (DocHead's button) instead of a docked native webview.
-export function JudgeTab({ filter = DEFAULT_FILTER, setFilter }) {
+export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'template', setMode = () => {}, active = true }) {
   const { user } = useAuth()
   const qc = useQueryClient()
   const verify = useVerifyDoc()
 
-  const [mode, setMode] = useState('template') // 'template' | 'random'
   const [notes, setNotes] = useState('')
-  const [cellsInError, setCellsInError] = useState(0)
+  // Cells the auditor has clicked to mark in error — a Set of ledger row keys.
+  // Its size is the `cells_in_error` the verdict reports (replaces the old
+  // manual number field).
+  const [errRows, setErrRows] = useState(() => new Set())
+  const markRow = useCallback((k) => setErrRows((prev) => {
+    const next = new Set(prev)
+    if (next.has(k)) next.delete(k)
+    else next.add(k)
+    return next
+  }), [])
   const [skipIds, setSkipIds] = useState([])
   const [rerolling, setRerolling] = useState(false)
+  // The verdict currently being submitted — the pill that owns the pending
+  // selection ring. Set at submit start, cleared when the mutation settles.
+  const [pendingVerdict, setPendingVerdict] = useState(null)
   // Eligibility simulation: CC course_ids the auditor has checked off to mimic
   // a student plan. Feeds RequirementsLedger as `userCourses`.
   const [taken, setTaken] = useState([])
@@ -451,13 +555,22 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter }) {
   const erroredDoc = isTemplate ? (variants.isError || tplDoc.isError) : next.isError
   const done = isTemplate ? tplKey === '__none__' : next.data?.done
   const loadingDoc = isTemplate ? (variants.isLoading || (pinnedDoc && tplDoc.isLoading)) : next.isLoading
-  const templatesLeft = (variants.data || []).filter((t) => !t.result).length
+  // Count only templates that actually cover docs so this shares sessionTotal's
+  // population below — otherwise sessionDone (= total − left) can go negative.
+  const templatesLeft = (variants.data || []).filter((t) => (t.n_docs || 0) > 0 && !t.result).length
+
+  // Session strip (template mode only): audited-of-total, driving the progress
+  // fill. Total counts only templates that actually cover docs; guard the divide.
+  const sessionTotal = (variants.data || []).filter((t) => (t.n_docs || 0) > 0).length
+  const sessionLeft = templatesLeft
+  const sessionDone = sessionTotal - sessionLeft
+  const sessionPct = sessionTotal > 0 ? (sessionDone / sessionTotal) * 100 : 0
 
   // Follow the active doc in the ASSIST popup if the auditor has one open.
   useEffect(() => { if (assistUrl) openAssist(assistUrl, { onlyIfOpen: true }) }, [assistUrl])
 
-  // Reset the simulated plan when the doc changes.
-  useEffect(() => { setTaken([]) }, [docId])
+  // Reset the simulated plan + error marks when the doc changes.
+  useEffect(() => { setTaken([]); setErrRows(new Set()) }, [docId])
 
   const reroll = async () => {
     if (!doc?._id || rerolling) return
@@ -479,57 +592,79 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter }) {
   const submit = async (result) => {
     if (!docId) return
     if (result === 'flagged' && !notes.trim()) { document.querySelector('[data-flag-notes]')?.focus(); return }
-    await verify.mutateAsync({
-      doc_id: docId,
-      result,
-      notes: notes.trim(),
-      source: isTemplate ? 'random_template_weighted' : 'verify',
-      system,
-      cells_in_error: Number(cellsInError) || 0,
-      scope: { groupingId: filter.groupingId, schoolIds: filter.schoolIds, majorContains: filter.majorContains }
-    })
-    setNotes('')
-    setCellsInError(0)
-    if (isTemplate) { auditedKeys.current.add(tplKey); pickRandomTemplate() }
-    else setSkipIds([])
+    setPendingVerdict(result)
+    try {
+      await verify.mutateAsync({
+        doc_id: docId,
+        result,
+        notes: notes.trim(),
+        source: isTemplate ? 'random_template_weighted' : 'verify',
+        system,
+        cells_in_error: errRows.size,
+        scope: { groupingId: filter.groupingId, schoolIds: filter.schoolIds, majorContains: filter.majorContains }
+      })
+      setNotes('')
+      setErrRows(new Set())
+      if (isTemplate) { auditedKeys.current.add(tplKey); pickRandomTemplate() }
+      else setSkipIds([])
+    } finally {
+      setPendingVerdict(null)
+    }
   }
 
+  const submitDisabled = verify.isPending || !doc
+  const nextDisabled = rerolling || verify.isPending
+
+  // Keyboard shortcuts: c/v/e verdicts, f flag, n next. A ref carries the latest
+  // handlers + guards so the one stable document listener never fires against a
+  // stale doc id / notes value, never double-submits while a verdict is already
+  // in flight (mirrors the dock's disabled state), and never fires at all while
+  // this sub-tab is hidden. Ignored while typing in a field or with a modifier held.
+  const kbRef = useRef({})
+  kbRef.current = { submit, onNext, active, submitDisabled, nextDisabled }
+  useEffect(() => {
+    const handler = (e) => {
+      if (!kbRef.current.active) return
+      const t = e.target && e.target.tagName
+      if (t === 'INPUT' || t === 'TEXTAREA') return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const k = e.key.toLowerCase()
+      if (k === 'n') { if (!kbRef.current.nextDisabled) kbRef.current.onNext(); return }
+      if (kbRef.current.submitDisabled) return
+      if (k === 'c') kbRef.current.submit('correct')
+      else if (k === 'v') kbRef.current.submit('conservative')
+      else if (k === 'e') kbRef.current.submit('error')
+      else if (k === 'f') kbRef.current.submit('flagged')
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
+
+  // Pending selection ring — the verdict mid-flight gets a lime ring (mockup v2).
+  const ringStyle = (result) =>
+    verify.isPending && pendingVerdict === result
+      ? { boxShadow: '0 0 0 2px var(--color-surface), 0 0 0 4.5px var(--color-primary-ring)' }
+      : undefined
+
   return (
-    <div className='h-full flex flex-col'>
-      <header className='shrink-0 border-b border-border'>
-        <div className='px-4 pt-3 flex items-center gap-3'>
+    <div className='h-full overflow-auto'>
+      <div className='max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-24 flex flex-col gap-4'>
+        {/* Header: mode tabs + (template mode) the session progress strip. */}
+        <div className='flex items-center gap-3.5'>
           <Tabs value={mode} onChange={setMode}
             options={[{ value: 'template', label: 'Random template' }, { value: 'random', label: 'Random doc' }]} />
-          {isTemplate && <span className='text-caption text-ink-subtle'>{templatesLeft} templates left</span>}
+          {isTemplate && (
+            <div className='ml-auto flex items-center gap-2.5'>
+              <span className='text-[13px] text-ink-subtle whitespace-nowrap'>
+                Doc {sessionDone} of {sessionTotal} · {sessionLeft} left
+              </span>
+              <div className='w-[150px] h-1.5 rounded-pill bg-surface-sunken overflow-hidden'>
+                <div className='h-full rounded-pill bg-accent' style={{ width: `${sessionPct}%` }} />
+              </div>
+            </div>
+          )}
         </div>
-        {doc && (
-          <div className='px-4 pt-2'>
-            <DocHead doc={doc} assistUrl={assistUrl} />
-          </div>
-        )}
-        <div className='px-4 py-2.5 flex flex-wrap items-center gap-2'>
-          <Button onClick={() => submit('correct')} disabled={verify.isPending || !doc}>Correct</Button>
-          <Button variant='warning' onClick={() => submit('conservative')} disabled={verify.isPending || !doc}
-            title='pmt asks for MORE than ASSIST — an over-ask, never an under-ask.'>Conservative</Button>
-          <Button variant='danger' onClick={() => submit('error')} disabled={verify.isPending || !doc}>Error</Button>
-          <Button variant='secondary' leadingIcon={FlagIcon} onClick={() => submit('flagged')} disabled={verify.isPending || !doc}
-            title='Visually wrong / worth reviewing later. Notes required.'>Flag</Button>
-          <Button variant='ghost' leadingIcon={ArrowsRightLeftIcon} onClick={onNext} disabled={rerolling || verify.isPending}>
-            {rerolling ? 'Next…' : 'Next'}
-          </Button>
-          <label className='ml-auto flex items-center gap-1.5 text-caption text-ink-subtle'>
-            Cells in error
-            <Input type='number' min={0} step={1} value={cellsInError}
-              onChange={(e) => setCellsInError(e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value, 10) || 0))}
-              className='w-14 font-mono tabular-nums text-right' />
-          </label>
-        </div>
-        <div className='px-4 pb-2.5'>
-          <Textarea data-flag-notes value={notes} onChange={(e) => setNotes(e.target.value)}
-            placeholder='Notes (optional; required when flagging)…' rows={2} />
-        </div>
-      </header>
-      <div className='flex-1 overflow-auto px-4 py-4'>
+
         {erroredDoc
           ? <Alert type='error'>Failed to load.</Alert>
           : done
@@ -538,29 +673,70 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter }) {
               ? <div className='flex items-center justify-center py-8'><LoadingLogo size={48} /></div>
               : (
                 <>
-                  <div className='flex items-center justify-between mb-3'>
-                    <span className='text-caption text-ink-subtle'>
-                      {taken.length
-                        ? `Simulating ${taken.length} CC course${taken.length === 1 ? '' : 's'} taken`
-                        : 'Tick CC courses to simulate a student plan'}
-                    </span>
-                    {taken.length > 0 && (
-                      <button type='button' onClick={() => setTaken([])} className='text-caption text-primary hover:underline'>Clear</button>
-                    )}
+                  <DocHead doc={doc} assistUrl={assistUrl} />
+                  <div className='flex items-baseline gap-3'>
+                    <h3 className='text-[21px] font-[650] tracking-[-.01em]'>Required</h3>
+                    <div className='text-[13px] text-ink-subtle'>
+                      Click a row to mark it in error — the count updates itself. Tick the box on the right to simulate a student plan.
+                      {taken.length > 0 && (
+                        <>
+                          {' · '}Simulating {taken.length} CC course{taken.length === 1 ? '' : 's'}{' '}
+                          <button type='button' onClick={() => setTaken([])} className='text-primary hover:underline'>Clear</button>
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className='uui-scope'>
-                  <RequirementsLedger
-                    major={doc}
-                    courses={courses}
-                    universityCoursesById={universityCoursesById}
-                    userCourses={userCourses}
-                    interactive
-                    onToggleCourse={onToggleCourse}
-                    preserveOrder
-                  />
+                    <RequirementsLedger
+                      major={doc}
+                      courses={courses}
+                      universityCoursesById={universityCoursesById}
+                      userCourses={userCourses}
+                      interactive
+                      onToggleCourse={onToggleCourse}
+                      markedRows={errRows}
+                      onMarkRow={markRow}
+                      preserveOrder
+                    />
                   </div>
                 </>
               )}
+      </div>
+
+      {/* Sticky verdict dock — one click submits the verdict (payload/scope
+          unchanged); kbd chips mirror the c/v/e/f/n shortcuts. */}
+      <div className='fixed left-1/2 bottom-5 -translate-x-1/2 z-40 flex items-center gap-2 bg-surface border border-border-strong rounded-pill px-3 py-2.5'
+        style={{ boxShadow: 'var(--shadow-md)', maxWidth: 'min(1120px, calc(100vw - 48px))' }}>
+        <VerdictButton verdict='correct' shortcut='C' onClick={() => submit('correct')}
+          disabled={submitDisabled} style={ringStyle('correct')}>
+          Correct
+        </VerdictButton>
+        <VerdictButton verdict='conservative' shortcut='V' onClick={() => submit('conservative')}
+          disabled={submitDisabled} style={ringStyle('conservative')}
+          title='pmt asks for MORE than ASSIST — an over-ask, never an under-ask.'>
+          Conservative
+        </VerdictButton>
+        <VerdictButton verdict='error' shortcut='E' onClick={() => submit('error')}
+          disabled={submitDisabled} style={ringStyle('error')}>
+          Error
+        </VerdictButton>
+        <VerdictButton verdict='flagged' shortcut='F' icon={FlagIcon} onClick={() => submit('flagged')}
+          disabled={submitDisabled} style={ringStyle('flagged')}
+          title='Visually wrong / worth reviewing later. Notes required.'>
+          Flag
+        </VerdictButton>
+        <div className='w-px h-[26px] bg-border shrink-0' />
+        <span className={`flex items-center gap-1.5 text-[13px] font-semibold rounded-pill px-3.5 py-2 whitespace-nowrap ${errRows.size > 0 ? 'bg-danger-soft text-danger' : 'bg-surface-sunken text-ink-muted'}`}>
+          {errRows.size} cells in error
+        </span>
+        <input data-flag-notes value={notes} onChange={(e) => setNotes(e.target.value)}
+          placeholder='Notes (required when flagging)…'
+          className='flex-1 min-w-[150px] bg-transparent outline-none border-none text-[13px] text-ink px-1 placeholder:text-ink-subtle' />
+        <button type='button' onClick={onNext} disabled={nextDisabled}
+          className='flex items-center gap-2 rounded-pill px-3.5 py-[9px] text-[13.5px] font-[550] text-ink hover:bg-primary-soft whitespace-nowrap cursor-pointer disabled:opacity-50'>
+          {rerolling ? 'Next…' : 'Next'}<span className='text-[10px] font-bold rounded-[5px] px-1.5 py-0.5 bg-surface-sunken text-ink-muted'>N</span>
+          <svg width='13' height='13' viewBox='0 0 14 14' fill='none' stroke='currentColor' strokeWidth='1.7'><path d='M2 7 L11.5 7 M7.5 3 L11.5 7 L7.5 11' /></svg>
+        </button>
       </div>
     </div>
   )
