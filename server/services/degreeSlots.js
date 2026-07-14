@@ -21,6 +21,19 @@ const TIERS = ['transferable', 'breadth', 'nontransferable'];
 
 const codeOf = (c) => `${c.prefix} ${c.number}`.trim();
 
+// A receiver's university parent_ids: one for a course, several for a series
+// ("A and B and C" taken in its entirety). A series is articulated only when
+// EVERY course in it articulates.
+const receiverPids = (rec) => (
+  rec?.kind === 'series'
+    ? (rec.parent_ids || []).map(Number)
+    : rec?.parent_id != null ? [Number(rec.parent_id)] : []
+);
+const receiverArticulated = (rec, articulated) => {
+  const pids = receiverPids(rec);
+  return pids.length > 0 && pids.every((pid) => articulated.has(pid));
+};
+
 function ccCodes(options, coursesById) {
   const codes = [];
   for (const o of options || []) {
@@ -53,7 +66,7 @@ async function loadUniversityCourses(db, requirementGroups) {
   for (const g of requirementGroups || []) {
     for (const s of g.sections || []) {
       for (const r of s.receivers || []) {
-        if (r.receiving?.kind === 'course' && r.receiving.parent_id != null) parentIds.add(Number(r.receiving.parent_id));
+        for (const pid of receiverPids(r.receiving)) parentIds.add(pid);
       }
     }
   }
@@ -124,20 +137,25 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       if (recvs.length === ask) {
         // Distinct required courses (or non-transferable slots) — one line each.
         for (const r of recvs) {
-          if (r.receiving?.kind === 'course') {
-            const pid = Number(r.receiving.parent_id);
-            let isCovered = evaluated && articulated.has(pid);
-            let cc = isCovered ? ccCodes(optionsByParent.get(pid) || r.options || [], coursesById) : [];
+          if (r.receiving?.kind === 'course' || r.receiving?.kind === 'series') {
+            const pids = receiverPids(r.receiving);
+            let isCovered = evaluated && receiverArticulated(r.receiving, articulated);
+            let cc = isCovered
+              ? pids.flatMap((pid) => ccCodes(optionsByParent.get(pid) || r.options || [], coursesById))
+              : [];
             // GE fallback (R&C R1A/R1B → IGETC 1A/1B) when major-prep articulation is absent.
             if (evaluated && !isCovered && Array.isArray(r.ge_areas) && r.ge_areas.length) {
               const geHits = geCoverCourses(r.ge_areas, ccGeAreas);
               if (geHits.length) { isCovered = true; cc = geHits.slice(0, 3).map(codeOf); }
             }
             if (isCovered) gCovered += 1;
-            const uc = universityCoursesById[pid];
+            const codes = pids.map((pid) => {
+              const uc = universityCoursesById[pid];
+              return uc ? codeOf(uc) : `#${pid}`;
+            });
             lines.push({
-              code: uc ? codeOf(uc) : `#${pid}`,
-              title: uc?.title || null,
+              code: codes.join(' + '),
+              title: pids.length === 1 ? (universityCoursesById[pids[0]]?.title || null) : null,
               covered: evaluated ? (isCovered ? 1 : 0) : null,
               cc,
               status: !evaluated ? 'template' : isCovered ? 'covered' : 'missing',
@@ -151,12 +169,14 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
           }
         }
       } else {
-        // Choose `ask` of many (e.g. the natural-science elective, 1 of 10).
-        const artRecvs = evaluated ? recvs.filter((r) => articulated.has(Number(r.receiving?.parent_id))) : [];
+        // Choose `ask` of many (e.g. the natural-science elective, 1 of 10;
+        // or "pick one series in its entirety" where each option is a series).
+        const artRecvs = evaluated ? recvs.filter((r) => receiverArticulated(r.receiving, articulated)) : [];
         const cov = Math.min(artRecvs.length, ask);
         gCovered += cov;
         const cc = artRecvs.slice(0, ask).flatMap((r) =>
-          ccCodes(optionsByParent.get(Number(r.receiving?.parent_id)) || r.options || [], coursesById));
+          receiverPids(r.receiving).flatMap((pid) =>
+            ccCodes(optionsByParent.get(pid) || r.options || [], coursesById)));
         lines.push({
           title: g.title,
           detail: `choose ${ask} of ${recvs.length}`,
@@ -240,15 +260,18 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
           },
         };
       }
-      if (rec.kind === 'course') {
+      if (rec.kind === 'course' || rec.kind === 'series') {
         return { ...r, articulation_status: null, not_articulated_reason: null, options: [] };
       }
       return { ...r, articulation_status: 'not_articulated', not_articulated_reason: 'must_take_at_university', options: [] };
     }
-    if (rec.kind === 'course') {
-      const pid = Number(rec.parent_id);
-      let isArt = articulated.has(pid);
-      let opts = isArt ? (optionsByParent.get(pid) || r.options || []) : [];
+    if (rec.kind === 'course' || rec.kind === 'series') {
+      // A series articulates only when every course in it does.
+      let isArt = receiverArticulated(rec, articulated);
+      let opts = isArt
+        ? receiverPids(rec).flatMap((pid) => optionsByParent.get(pid) || [])
+        : [];
+      if (isArt && !opts.length) opts = r.options || [];
       if (!isArt && Array.isArray(r.ge_areas) && r.ge_areas.length) {
         const g2 = geOptions(r.ge_areas); // R&C R1A/R1B fallback via IGETC 1A/1B
         if (g2.length) { isArt = true; opts = g2; }

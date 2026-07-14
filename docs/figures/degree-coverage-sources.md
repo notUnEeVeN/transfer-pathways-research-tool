@@ -248,7 +248,7 @@ normalization (by units, or excluding free electives) is left to you.
 | UC Merced *(sem)* | 65% | 20/31 | 14/16 | 6/6 | 9 |
 | UC San Diego | 42% | 15/36 | 9/12 | 6/6 | 18 |
 | UC Riverside | 46% | 18/39 | 12/14 | 6/6 | 19 |
-| UC Davis | 49% | 17/35 | 11/13 | 6/6 | 16 |
+| UC Davis | 52% | 16/31 | 10/11 | 6/6 | 14 |
 | UCLA | 49% | 21/43 | 15/17 | 6/6 | 20 |
 | UC Irvine | 45% | 17/38 | 11/15 | 6/6 | 17 |
 | UC Santa Barbara | 46% | 16/35 | 10/12 | 6/6 | 17 |
@@ -277,8 +277,8 @@ Source: https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf
 
 ### UC Davis — Computer Science, B.S., catalog 2026-27 (College of Engineering)
 Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/ · checklist https://cs.ucdavis.edu/sites/g/files/dgvnsk8441/files/media/documents/CS%20Major%20Checklist_0.pdf
-- Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-027A-or-067 (lin alg); ECS 020 (discrete), ECS 036A/036B/036C (prog series; renumbered from ECS 030/040/060 in F2020), ECS 050 (org); 3 sciences chosen from PHY 009A/B/C, CHE 002A/B/C, CHE 004A/B/C, BIS 002A/B/C.
-- Non-transferable: 16.
+- Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-027A-or-067 (lin alg); ECS 020 (discrete); programming = **one series in its entirety, no mixing** (checklist rule): ECS 036A/B/C **or** ECS 032A/B/C+034 — modeled as a select-1 of `series` receivers (articulated only when every course in the series articulates), 12 authored units; ECS 050 (org); 3 sciences chosen from PHY 009A/B/C, CHE 002A/B/C, CHE 004A/B/C, BIS 002A/B/C — per the checklist, science courses "can be from any combination of subjects", so the flat choose-3 is correct (no series lock).
+- Non-transferable: 14 (checklist-verified 2026-07-14: 7 upper-division core — ECS 122A, one theory, 140A, 150, 154A, one probability, one composition — + 7 CS electives; was 16, an overcount).
 - Notes: CS moved L&S → CoE effective Fall 2024 (courses identical, GE wrapper differs). Current catalog uses "choose 3 sciences" (older years hard-required PHY 9A + CHE 2A).
 - **Catalog-vs-ASSIST vintage (verified 2026-07-14):** the source is the
   2026-27 catalog while ASSIST's agreements lag it. The original gathering

@@ -13,8 +13,8 @@
           "tier": "transferable | breadth | nontransferable",
           "requirements[]": {
             "select": "N — the choose-N count (section_advisement)",
-            "from": "one of: [course codes] (explicit courses, resolved to parent_id) | {departments:[...], max_number:N} (proxy list: all lower-div courses in these depts) | null (non-transferable slots — never satisfiable by any CC)",
-            "units": "optional, from:null rows only — the block's stated total units (e.g. Berkeley's 20-unit UD rule), stored as unit_advisement; the page's unit-budget check otherwise assumes a flat ~4u/course"
+            "from": "one of: [course codes] (explicit courses, resolved to parent_id) | {series: [[codes...], ...]} (choose `select` complete series — 'in its entirety, no mixing'; a series articulates only when every course in it does) | {departments:[...], max_number:N} (proxy list: all lower-div courses in these depts) | null (non-transferable slots — never satisfiable by any CC)",
+            "units": "optional — the block's stated total units (e.g. Berkeley's 20-unit UD rule, a 12-unit series), stored as unit_advisement; the page's unit-budget check otherwise assumes a flat ~4u/course"
           }
         }
       }
@@ -585,7 +585,7 @@
         ]
       },
       {
-        "title": "Lower-division computer science",
+        "title": "Lower-division computer science (programming: one series in its entirety — no mixing)",
         "tier": "transferable",
         "requirements": [
           {
@@ -595,12 +595,14 @@
             ]
           },
           {
-            "select": 3,
-            "from": [
-              "ECS 036A",
-              "ECS 036B",
-              "ECS 036C"
-            ]
+            "select": 1,
+            "units": 12,
+            "from": {
+              "series": [
+                ["ECS 036A", "ECS 036B", "ECS 036C"],
+                ["ECS 032A", "ECS 032B", "ECS 032C", "ECS 034"]
+              ]
+            }
           },
           {
             "select": 1,
@@ -611,7 +613,7 @@
         ]
       },
       {
-        "title": "Natural science (choose three; BIO 1/2/3 omitted — not in ASSIST yet)",
+        "title": "Lower-division science (choose three — any combination of subjects; BIO 1/2/3 omitted, not in ASSIST yet)",
         "tier": "transferable",
         "requirements": [
           {
@@ -692,11 +694,11 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 16 courses",
+        "title": "Upper-division major coursework — 7 core + 7 electives",
         "tier": "nontransferable",
         "requirements": [
           {
-            "select": 16,
+            "select": 14,
             "from": null
           }
         ]

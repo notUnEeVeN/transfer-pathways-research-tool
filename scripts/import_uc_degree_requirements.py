@@ -145,6 +145,22 @@ def requirement_receiver(tier, name, seq):
     }
 
 
+def series_receiver(parent_ids, tier, seq):
+    # A complete course sequence taken as one unit ("mixing of courses between
+    # series is not allowed") — articulated only when EVERY course in the
+    # series articulates. Same `kind: "series"` shape real ASSIST agreements
+    # use, so the shared ledger renders it bracketed ("A and B and C").
+    return {
+        "receiving": {"kind": "series", "parent_ids": parent_ids, "conjunction": "and", "parent_id": None, "units": None},
+        "articulation_status": None,
+        "not_articulated_reason": None,
+        "options": [],
+        "options_conjunction": "or",
+        "hash_id": _hash("series", "-".join(str(p) for p in parent_ids), seq),
+        "tier": tier,
+    }
+
+
 def ge_area_receiver(code, name, seq, ge_areas=None, assume=False):
     return {
         "receiving": {"kind": "ge_area", "code": code, "name": name, "parent_id": None, "units": None},
@@ -167,14 +183,14 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
     frm = req.get("from")
     ge_area = req.get("ge_area")  # single IGETC area a specific course also satisfies
     section = {"section_advisement": select, "unit_advisement": None, "tier": tier, "receivers": []}
+    # Optional authored "units" (the block's stated total, e.g. Berkeley's
+    # 20-unit upper-division rule or a 12-unit series) overrides the flat
+    # ~4u/course assumption in the unit budget shown on the template page.
+    if req.get("units") is not None:
+        section["unit_advisement"] = int(req["units"])
 
     if frm is None:
         # Non-transferable: `select` named slots, never satisfiable by any CC.
-        # Optional authored "units" (the block's total, e.g. Berkeley's
-        # 20-unit upper-division rule) overrides the flat ~4u/course
-        # assumption in the unit budget shown on the template page.
-        if req.get("units") is not None:
-            section["unit_advisement"] = int(req["units"])
         section["receivers"] = [requirement_receiver(tier, title, seq()) for _ in range(select)]
         report["nontransferable_slots"] += select
 
@@ -194,6 +210,24 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
                 report["resolved"].append((code, norm, info["parent_id"]))
             else:
                 report["unresolved"].append((code, norm))
+
+    elif isinstance(frm, dict) and "series" in frm:
+        # Choose `select` complete series ("in its entirety — mixing of
+        # courses between series is not allowed"). One receiver per series;
+        # a series with any unresolvable course is dropped with a report line.
+        for series_codes in frm["series"]:
+            pids = []
+            ok = True
+            for code in series_codes:
+                info, norm = resolve_code(code, by_code)
+                if info:
+                    pids.append(info["parent_id"])
+                    report["resolved"].append((code, norm, info["parent_id"]))
+                else:
+                    ok = False
+                    report["unresolved"].append((code, norm))
+            if ok and pids:
+                section["receivers"].append(series_receiver(pids, tier, seq()))
 
     elif isinstance(frm, dict) and "ge_areas" in frm:
         # Breadth by GE area: coverage comes from the CC's course igetc_area tags.
