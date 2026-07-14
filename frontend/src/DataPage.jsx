@@ -1116,6 +1116,39 @@ function DegreeVerificationNotes({ notes, onSave, saving, author }) {
   )
 }
 
+// Degree requirement groups rendered in three labeled sections — what a
+// community college can supply (major prep, then GE/breadth) before what must
+// happen at the university — instead of one undifferentiated list. Groups
+// keep their authored order within each section.
+const DEGREE_TIER_SECTIONS = [
+  { tier: 'transferable', label: 'Lower division · major preparation', sub: 'Transferable from a community college' },
+  { tier: 'breadth', label: 'General education & breadth', sub: 'Satisfiable through community-college coursework' },
+  { tier: 'nontransferable', label: 'Upper division · at the university', sub: 'Completed after transfer' },
+]
+
+function TieredDegreeLedger({ groups, ...ledgerProps }) {
+  const buckets = DEGREE_TIER_SECTIONS.map((section) => ({
+    ...section,
+    groups: groups.filter((g) => (g.tier || 'transferable') === section.tier),
+  })).filter((section) => section.groups.length > 0)
+  return (
+    <Stack gap='cozy'>
+      {buckets.map((section) => (
+        <section key={section.tier} aria-label={section.label}>
+          <div className='flex items-baseline gap-2.5 mb-2.5 mt-1'>
+            <h4 className='text-label text-[11.5px]'>{section.label}</h4>
+            <span className='text-tag text-ink-subtle'>{section.sub}</span>
+          </div>
+          <div className='uui-scope'>
+            <RequirementsLedger major={{ requirement_groups: section.groups }}
+              preserveOrder showCompletion={false} {...ledgerProps} />
+          </div>
+        </section>
+      ))}
+    </Stack>
+  )
+}
+
 // The stored template: what the campus requires to graduate, no college context.
 export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = null, savingNotes = false, noteAuthor = null }) {
   // Defensive: a persisted (IndexedDB) response from an earlier endpoint shape
@@ -1141,10 +1174,8 @@ export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = nul
           {doc.total_units != null ? ` · ${doc.total_units} units` : ''} · {doc.total} requirements
         </p>
       </div>
-      <div className='uui-scope'>
-        <RequirementsLedger major={{ requirement_groups: groups }}
-          universityCoursesById={doc.university_courses_by_id || null} preserveOrder showCompletion={false} />
-      </div>
+      <TieredDegreeLedger groups={groups}
+        universityCoursesById={doc.university_courses_by_id || null} />
       {sources.length > 0 && (
         <div className='surface-card px-[22px] py-[18px]'>
           <p className='text-label text-[12px]'>Verify these requirements</p>
@@ -1222,10 +1253,8 @@ function DegreeCompletionView({ schoolId, collegeId }) {
           },
         ]} />
       </section>
-      <div className='uui-scope'>
-        <RequirementsLedger major={{ requirement_groups: d.requirement_groups }} courses={d.courses}
-          universityCoursesById={d.university_courses_by_id} preserveOrder showCompletion={false} />
-      </div>
+      <TieredDegreeLedger groups={d.requirement_groups} courses={d.courses}
+        universityCoursesById={d.university_courses_by_id} />
     </Stack>
   )
 }

@@ -616,7 +616,7 @@
         ]
       },
       {
-        "title": "Lower-division science — one three-course series (BIO variants omitted, not in ASSIST yet)",
+        "title": "Lower-division science — one complete series",
         "tier": "transferable",
         "requirements": [
           {
@@ -650,7 +650,7 @@
         ]
       },
       {
-        "title": "General education — Cal-GETC certification (exempts all lower-division-satisfiable GE)",
+        "title": "General education — Cal-GETC",
         "tier": "breadth",
         "requirements": [
           {
@@ -658,7 +658,7 @@
             "units": 40,
             "from": {
               "code": "Cal-GETC",
-              "label": "Cal-GETC certification — Davis exempts all GE that may be met with lower-division courses, and every California community college offers the full pattern (11 courses / 34 semester units ≈ 51 quarter; ≈40 quarter authored after the major covers math + one science). The one upper-division GE remainder (CoE upper-division composition) is already counted in the upper-division core.",
+              "label": "Cal-GETC certification — accepted as all lower-division GE; every California community college offers the full pattern (11 courses / ≈51 quarter units)",
               "assume": true
             }
           }
@@ -679,7 +679,7 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 7 core (incl. upper-division composition, the sole GE piece Cal-GETC cannot cover) + 7 electives",
+        "title": "Upper-division major coursework — 7 core + 7 electives",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -689,7 +689,7 @@
         ]
       },
       {
-        "title": "Additional upper-division units — Davis requires 64 UD units; the 14 major courses cover ~56",
+        "title": "Additional upper-division units — to Davis’s 64-unit minimum",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -700,7 +700,7 @@
         ]
       },
       {
-        "title": "Unrestricted electives — CC-transferable (fills to UC's 105-quarter-unit transfer-credit cap)",
+        "title": "Unrestricted electives — CC-transferable (within the 105-unit cap)",
         "tier": "breadth",
         "requirements": [
           {
@@ -708,14 +708,14 @@
             "units": 14,
             "from": {
               "code": "ELECTIVE",
-              "label": "Unrestricted electives — any UC-transferable CC coursework counts; 91u of modeled CC work leaves exactly 14u of room under the 105-quarter-unit cap",
+              "label": "Unrestricted electives — any UC-transferable CC coursework (14u of room under the 105-unit cap)",
               "assume": true
             }
           }
         ]
       },
       {
-        "title": "Unrestricted electives — beyond the CC credit cap (any level, at Davis)",
+        "title": "Unrestricted electives — at Davis (beyond the CC cap)",
         "tier": "nontransferable",
         "requirements": [
           {
