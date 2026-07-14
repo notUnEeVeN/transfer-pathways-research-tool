@@ -153,38 +153,40 @@ export default function Complexity() {
     <Stack gap='section'>
       {controls}
 
-      {noPrereqData && (
+      <div data-export-root className='flex flex-col gap-6'>
+        {noPrereqData && (
+          <div>
+            <Alert type='warning'>
+              No prerequisite data has been curated yet, so
+              every course scores delay 1 and blocking 0 — complexity currently equals
+              the pathway's course count. Import or curate CC prerequisite chains to
+              make these scores meaningful.
+            </Alert>
+          </div>
+        )}
+
         <div data-export-exclude>
-          <Alert type='warning'>
-            No prerequisite data has been curated yet, so
-            every course scores delay 1 and blocking 0 — complexity currently equals
-            the pathway's course count. Import or curate CC prerequisite chains to
-            make these scores meaningful.
-          </Alert>
+          <StatStrip
+            tiles={[
+              { label: 'Agreements', value: intFmt.format(rows.length), sub: 'from /analysis/complexity' },
+              { label: 'Mean complexity', value: numFmt.format(meanOf((r) => r.complexity)), accent: true },
+              { label: 'Mean max delay', value: numFmt.format(meanOf((r) => r.max_delay)), sub: 'longest prereq chain' },
+              { label: 'Prereq data coverage', value: Number.isFinite(prereqCoverage) ? `${pctFmt.format(prereqCoverage)}%` : '0%', sub: 'of pathway courses with curated prereqs' },
+            ]}
+          />
         </div>
-      )}
 
-      <div data-export-exclude>
-        <StatStrip
-          tiles={[
-            { label: 'Agreements', value: intFmt.format(rows.length), sub: 'from /analysis/complexity' },
-            { label: 'Mean complexity', value: numFmt.format(meanOf((r) => r.complexity)), accent: true },
-            { label: 'Mean max delay', value: numFmt.format(meanOf((r) => r.max_delay)), sub: 'longest prereq chain' },
-            { label: 'Prereq data coverage', value: Number.isFinite(prereqCoverage) ? `${pctFmt.format(prereqCoverage)}%` : '0%', sub: 'of pathway courses with curated prereqs' },
-          ]}
-        />
-      </div>
-
-      <div className='surface-card p-4'>
-        <p className='text-caption text-ink-subtle mb-3'>
-          Agreements by pathway {metric.unit}, per campus
-          {model.binStep > 1 && <span className='font-mono'> (bins of {model.binStep})</span>}
-        </p>
-        <HistogramRows
-          rows={model.groups}
-          slots={model.slots}
-          slotLabel={(i) => intFmt.format(Math.round(i * model.binStep))}
-        />
+        <div className='surface-card p-4'>
+          <p className='text-caption text-ink-subtle mb-3'>
+            Agreements by pathway {metric.unit}, per campus
+            {model.binStep > 1 && <span className='font-mono'> (bins of {model.binStep})</span>}
+          </p>
+          <HistogramRows
+            rows={model.groups}
+            slots={model.slots}
+            slotLabel={(i) => intFmt.format(Math.round(i * model.binStep))}
+          />
+        </div>
       </div>
     </Stack>
   )

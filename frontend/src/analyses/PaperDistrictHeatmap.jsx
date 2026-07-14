@@ -221,21 +221,19 @@ function PaperMatrix({ liveModel, view, labelMode, reqMode }) {
         }}
       >
         <div className='grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 w-full'>
-        {/* Axis titles stay out of exports — the exported file is the bare
-            matrix; the paper supplies its own titles/caption. */}
-        <div
-          className='font-normal text-black'
-          data-export-exclude
-          style={{
-            writingMode: 'vertical-rl',
-            transform: 'rotate(180deg)',
-            fontFamily: 'Arial, sans-serif',
-            fontSize: 'var(--paper-axis)',
-          }}
-        >
-          UC Campus
-        </div>
-        <div className='min-w-0'>
+          {/* Axis titles are part of the figure and remain in PNG/PDF exports. */}
+          <div
+            className='font-normal text-black'
+            style={{
+              writingMode: 'vertical-rl',
+              transform: 'rotate(180deg)',
+              fontFamily: 'Arial, sans-serif',
+              fontSize: 'var(--paper-axis)',
+            }}
+          >
+            UC Campus
+          </div>
+          <div className='min-w-0'>
           <table
             className='border-collapse'
             style={{ fontFamily: 'Arial, sans-serif' }}
@@ -311,14 +309,13 @@ function PaperMatrix({ liveModel, view, labelMode, reqMode }) {
           </table>
           <div
             className='text-center font-normal text-black mt-1'
-            data-export-exclude
             style={{ fontFamily: 'Arial, sans-serif', fontSize: 'var(--paper-axis)' }}
           >
             Community College District
           </div>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }
@@ -384,7 +381,7 @@ export default function PaperDistrictHeatmap() {
   return (
     <Stack gap='section'>
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
-      <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
+      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
         <div className='flex flex-col'>
           <span className='field-label'>Version</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -418,7 +415,7 @@ export default function PaperDistrictHeatmap() {
         >
           Refresh
         </Button>
-        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
+        <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           <span className='font-mono tabular-nums'>{datasetVersion}</span>
           <span>{coverage.isFetching ? 'Updating…' : 'Refresh to update'}</span>
         </div>
@@ -436,18 +433,24 @@ export default function PaperDistrictHeatmap() {
         />
       </div>
 
-      <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />
-      <div className='flex flex-wrap items-center gap-4' data-export-exclude>
-        {view === 'diff' && <DifferenceLegend />}
-        {/* Deliberately quiet: label naming is a reading preference, not an
-            analysis control, so it lives under the matrix as plain text. */}
-        <button
-          type='button'
-          onClick={() => setLabelMode(labelMode === 'paper' ? 'names' : 'paper')}
-          className='ml-auto text-tag font-mono text-ink-subtle hover:text-ink underline underline-offset-2'
+      <div data-export-root className='flex flex-col gap-4'>
+        <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />
+        <div
+          className='flex flex-wrap items-center gap-4'
+          data-export-exclude={view === 'diff' ? undefined : 'controls-only'}
         >
-          {labelMode === 'paper' ? 'show campus names' : 'show UC1–9 ids'}
-        </button>
+          {view === 'diff' && <DifferenceLegend />}
+          {/* Deliberately quiet: label naming is a reading preference, not an
+              analysis control, so it lives under the matrix as plain text. */}
+          <button
+            type='button'
+            data-export-exclude
+            onClick={() => setLabelMode(labelMode === 'paper' ? 'names' : 'paper')}
+            className='ml-auto text-tag font-mono text-ink-subtle hover:text-ink underline underline-offset-2'
+          >
+            {labelMode === 'paper' ? 'show campus names' : 'show UC1–9 ids'}
+          </button>
+        </div>
       </div>
     </Stack>
   )

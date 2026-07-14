@@ -95,6 +95,9 @@ describe('published interactive visual', () => {
     expect(increases.length).toBeGreaterThan(1)
     expect(increases.every((region) => region.getAttribute('stroke') === '#ffffff')).toBe(true)
     expect(increases.every((region) => region.getAttribute('vector-effect') === 'non-scaling-stroke')).toBe(true)
+    const exportRoot = container.querySelector('[data-export-root]')
+    expect(exportRoot.querySelector('[data-export-width]').getAttribute('data-export-width')).toBe('1990.3')
+    expect(exportRoot.textContent).toContain('Difference marks vs paper')
     expect(screen.getByText(/More details.*every difference as a matrix/)).toBeTruthy()
   })
 

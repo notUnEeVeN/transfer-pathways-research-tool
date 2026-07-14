@@ -35,12 +35,14 @@ describe('CoverageHeatmap requirement basis', () => {
   })
 
   it('defaults to live four-year graduation requirements and uses degree-specific language', () => {
-    render(<CoverageHeatmap />)
+    const { container } = render(<CoverageHeatmap />)
 
     expect(useCoverage).toHaveBeenCalledWith(
-      expect.objectContaining({ requirements: 'degree' }),
+      expect.objectContaining({ majorContains: 'computer science', requirements: 'degree' }),
       expect.any(Object)
     )
+    expect(screen.queryByRole('textbox', { name: 'Degree program filter' })).toBeNull()
+    expect(container.querySelector('[data-export-root]')).toBeTruthy()
     expect(screen.getByRole('button', { name: '4-year graduation requirements' })).toBeTruthy()
     expect(screen.getByText('Mean degree coverage')).toBeTruthy()
     expect(screen.getByText('Four-year degree coverage')).toBeTruthy()

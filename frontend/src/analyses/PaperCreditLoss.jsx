@@ -143,6 +143,26 @@ function LegendBox() {
   )
 }
 
+function DifferenceLegend({ comparisonLabel }) {
+  return (
+    <div className='flex flex-wrap items-center gap-x-4 gap-y-2 text-caption text-ink-subtle'>
+      <span className='text-label'>Difference marks vs {comparisonLabel}</span>
+      <span className='inline-flex items-center gap-1.5'>
+        <i className='inline-block w-4 h-3 border border-white' style={{ background: LOSS }} />
+        more courses
+      </span>
+      <span className='inline-flex items-center gap-1.5'>
+        <i className='inline-block w-4 h-3 border border-dashed' style={{ background: 'rgba(13, 121, 100, 0.25)', borderColor: GAIN }} />
+        fewer courses
+      </span>
+      <span className='inline-flex items-center gap-1.5'>
+        <i className='inline-block w-4 h-px bg-black' />
+        comparison value
+      </span>
+    </div>
+  )
+}
+
 /**
  * The figure. `bars` drives the filled bars; `ghost` (diff view) marks each
  * bar's difference against a second dataset: the delta REGION is shaded
@@ -226,6 +246,7 @@ export function FigureSVG({ bars, ghost = null, labelMode }) {
 
   return (
     <svg
+      data-export-width={VB.w}
       viewBox={`0 0 ${VB.w} ${VB.h}`}
       role='img'
       aria-label='Grouped bar chart: per UC campus, the CS/Math transfer requirement (gold) and the average CCC courses needed at 1st through 4th choice (blues)'
@@ -457,7 +478,7 @@ export default function PaperCreditLoss() {
   return (
     <Stack gap='section'>
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
-      <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
+      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
         <div className='flex flex-col'>
           <span className='field-label'>Version</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -483,7 +504,7 @@ export default function PaperCreditLoss() {
             disabled={version === 'paper'}
           />
         </div>
-        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
+        <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           {view === 'paper'
             ? <span>Paper baseline — transcribed from the 2026 optimal set-cover CSVs</span>
             : (
@@ -509,8 +530,11 @@ export default function PaperCreditLoss() {
         </div>
       )}
 
-      <div className='surface-card p-3' style={{ background: '#ffffff' }}>
-        <FigureSVG bars={bars} ghost={ghost} labelMode={labelMode} />
+      <div data-export-root className='flex flex-col gap-4'>
+        <div className='surface-card p-3' style={{ background: '#ffffff' }}>
+          <FigureSVG bars={bars} ghost={ghost} labelMode={labelMode} />
+        </div>
+        {view === 'diff' && <DifferenceLegend comparisonLabel={comparisonLabel} />}
       </div>
 
       {view === 'diff' && (

@@ -1,9 +1,9 @@
-import React, { useDeferredValue, useMemo, useState } from 'react'
-import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, Select, Spinner, Stack, StatStrip } from '../components/ui'
+import React, { useMemo, useState } from 'react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import { Alert, Button, EmptyState, Select, Spinner, Stack, StatStrip } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 
-const DEFAULT_MAJOR_FILTER = 'computer science'
+const MAJOR_FILTER = 'computer science'
 const ROW_MODES = [
   { value: 'college', label: 'College', noun: 'colleges', header: 'Community college' },
   { value: 'district', label: 'District', noun: 'districts', header: 'Community college district' },
@@ -309,15 +309,13 @@ function Legend({ reqMode, scale }) {
 }
 
 export default function CoverageHeatmap() {
-  const [majorFilter, setMajorFilter] = useState(DEFAULT_MAJOR_FILTER)
   const [rowModeValue, setRowModeValue] = useState('college')
   const [reqMode, setReqMode] = useState('degree')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
-  const deferredMajorFilter = useDeferredValue(majorFilter)
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
   const coverage = useCoverage(
-    { majorContains: deferredMajorFilter, groupBy: rowMode.value, requirements: reqMode },
+    { majorContains: MAJOR_FILTER, groupBy: rowMode.value, requirements: reqMode },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
@@ -337,14 +335,6 @@ export default function CoverageHeatmap() {
     return (
       <Stack gap='section'>
         <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-          <Input
-            label={reqMode === 'degree' ? 'Degree program filter' : 'Major filter'}
-            value={majorFilter}
-            onChange={(e) => setMajorFilter(e.target.value)}
-            placeholder='computer science'
-            leadingIcon={MagnifyingGlassIcon}
-            className='w-80 max-w-full'
-          />
           <div className='flex flex-col'>
             <span className='field-label'>Rows</span>
             <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -370,22 +360,14 @@ export default function CoverageHeatmap() {
             Refresh
           </Button>
         </div>
-        <EmptyState card title='No coverage rows' description='Try a broader major filter.' className='p-8' />
+        <EmptyState card title='No coverage rows' description='No coverage data is available for the selected row and requirement settings.' className='p-8' />
       </Stack>
     )
   }
 
   return (
     <Stack gap='section'>
-      <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-        <Input
-          label={reqMode === 'degree' ? 'Degree program filter' : 'Major filter'}
-          value={majorFilter}
-          onChange={(e) => setMajorFilter(e.target.value)}
-          placeholder='computer science'
-          leadingIcon={MagnifyingGlassIcon}
-          className='w-80 max-w-full'
-        />
+      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
         <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -415,7 +397,7 @@ export default function CoverageHeatmap() {
         >
           Refresh
         </Button>
-        <div className='ml-auto flex flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
+        <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           <span className='font-mono tabular-nums'>{datasetVersion}</span>
           <span>{coverage.isFetching ? 'Updating' : 'Live endpoint'}</span>
         </div>
@@ -433,8 +415,10 @@ export default function CoverageHeatmap() {
         />
       </div>
 
-      <HeatmapTable model={model} rowMode={rowMode} reqMode={reqMode} />
-      <Legend reqMode={reqMode} scale={model.colorScale} />
+      <div data-export-root className='flex flex-col gap-6'>
+        <HeatmapTable model={model} rowMode={rowMode} reqMode={reqMode} />
+        <Legend reqMode={reqMode} scale={model.colorScale} />
+      </div>
     </Stack>
   )
 }

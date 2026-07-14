@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { PencilSquareIcon, TrashIcon, ChartBarIcon } from '@heroicons/react/24/outline'
 import { Alert, Badge, Button, EmptyState, Input, Spinner, SwitchField } from '../components/ui'
 import AnalysisCard from '../analyses/AnalysisCard'
+import { downloadBlob } from '../analyses/exportCard'
 import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
 import { fmtDate } from '../shared/fmtDate'
@@ -77,12 +78,7 @@ async function downloadFigure(slug, format, variantKey = null) {
   const disposition = response.headers['content-disposition'] || ''
   const fallback = `${slug}${variantKey ? `-${variantKey}` : ''}.${format}`
   const filename = /filename="([^"]+)"/.exec(disposition)?.[1] || fallback
-  const url = URL.createObjectURL(response.data)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  link.click()
-  URL.revokeObjectURL(url)
+  downloadBlob(response.data, filename)
 }
 
 function blobAsDataUrl(blob) {

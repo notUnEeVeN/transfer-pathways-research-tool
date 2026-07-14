@@ -25,6 +25,18 @@ describe('RouteHint', () => {
     expect(screen.getByRole('button', { name: 'GET /api/assist/coverage' })).toBeInTheDocument()
   })
 
+  it('shows a long query route in full and keeps it copyable', () => {
+    const path = '/api/curated/requirement-comparison?school_id=79&major=Computer%20Science&community_college_id=110'
+    render(<RouteHint path={path} />)
+
+    const button = screen.getByRole('button', { name: `GET ${path}` })
+    expect(button).toHaveTextContent(`GET ${path}`)
+    fireEvent.click(button)
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'pmt.get("curated/requirement-comparison", school_id="79", major="Computer Science", community_college_id="110")'
+    )
+  })
+
   it('copies a bare pmt.get(...) snippet when the path has no query string', () => {
     render(<RouteHint path='/api/assist/coverage' />)
     fireEvent.click(screen.getByRole('button'))

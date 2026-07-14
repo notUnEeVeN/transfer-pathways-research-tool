@@ -97,7 +97,7 @@ export default function TimeToDegree() {
         />
       </div>
 
-      <div className='surface-card p-4'>
+      <div className='surface-card p-4' data-export-root>
         <p className='text-caption text-ink-subtle mb-3'>
           Share of associate-degree units counting toward the agreement's cheapest path — lowest first
         </p>

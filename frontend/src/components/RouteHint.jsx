@@ -26,7 +26,7 @@ function buildPmtSnippet(path) {
 // the method + path for whatever the user is currently viewing. Clicking
 // copies a ready-to-run snippet for the researcher starter.py client (GET
 // only; other methods copy as plain "METHOD path" text).
-export default function RouteHint({ method = 'GET', path }) {
+export default function RouteHint({ method = 'GET', path, className = '' }) {
   const [copied, setCopied] = useState(false)
   const timeoutRef = useRef(null)
 
@@ -44,13 +44,15 @@ export default function RouteHint({ method = 'GET', path }) {
   }
 
   const tooltipText = method === 'GET' ? 'Copy pmt.get(…) snippet' : 'Copy route'
+  const fullLabel = `${method} ${path}`
 
   return (
-    <span className='inline-flex items-center gap-2'>
-      <span className='text-caption text-ink-subtle'>API route</span>
-      <button type='button' onClick={handleClick} title={tooltipText}
-        className='text-[12px] font-semibold text-ink bg-surface border border-border rounded-[8px] px-2.5 py-[4.5px] whitespace-nowrap cursor-pointer hover:border-border-strong transition-colors'>
-        {copied ? 'Copied!' : `${method} ${path}`}
+    <span className={`inline-flex min-w-0 max-w-full items-center gap-2 ${className}`}>
+      <span className='text-caption text-ink-subtle shrink-0'>API route</span>
+      <button type='button' onClick={handleClick} title={`${tooltipText}\n${fullLabel}`}
+        aria-label={fullLabel}
+        className='min-w-0 max-w-full truncate text-[12px] font-semibold text-ink bg-surface border border-border rounded-[8px] px-2.5 py-[4.5px] whitespace-nowrap cursor-pointer hover:border-border-strong transition-colors'>
+        {copied ? 'Copied!' : fullLabel}
       </button>
     </span>
   )

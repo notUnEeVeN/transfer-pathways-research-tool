@@ -1,8 +1,15 @@
-import { describe, expect, it } from 'vitest'
-import { render } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
-import { minimumsToLedger } from './DataReferences'
+import { CampusMinimums, minimumsToLedger } from './DataReferences'
 import { refTableByKey } from './references/refTablesRegistry'
+
+vi.mock('./shared/query/hooks/useData', () => ({
+  useRefTable: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
+  useDeleteRefRow: () => ({ mutate: vi.fn(), isPending: false }),
+  useSaveRefRow: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  useUniversityCourses: () => ({ data: [], isLoading: false }),
+}))
 
 const rows = [
   {
@@ -164,6 +171,15 @@ describe('minimumsToLedger', () => {
     expect(container.textContent).toContain('I&C SCI 31')
     expect(container.textContent).toContain('I&C SCI 32')
     expect(container.textContent).toContain('I&C SCI 33')
+  })
+})
+
+describe('CampusMinimums heading', () => {
+  it('explains the narrow hand-curated transfer requirement scope', () => {
+    render(<CampusMinimums schoolId={7} />)
+
+    expect(screen.getByText('Hand-curated minimum transfer requirements')).toBeInTheDocument()
+    expect(screen.getByText(/Computer science and mathematics courses only—not the full degree/)).toBeInTheDocument()
   })
 })
 

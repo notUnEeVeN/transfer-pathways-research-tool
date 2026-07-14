@@ -163,7 +163,7 @@ export default function CreditLoss() {
         />
       </div>
 
-      <div className='surface-card p-4'>
+      <div className='surface-card p-4' data-export-root>
         <p className='text-caption text-ink-subtle mb-3'>
           Agreements by cheapest-path {metric.unit} required, per campus
         </p>

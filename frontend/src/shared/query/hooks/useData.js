@@ -525,8 +525,9 @@ export function useReopenTaskStage() {
   })
 }
 
-// Stage-note management (log-only). The author may delete their own review note;
-// the task owner or author may mark one resolved. Both return the updated task.
+// Stage-note management (log-only). Authors may delete their own review notes.
+// Owners resolve somebody else's note; authors may resolve their own only on a
+// task they do not own. Both mutations return the updated task.
 export function useDeleteTaskStageNote() {
   const qc = useQueryClient()
   return useMutation({

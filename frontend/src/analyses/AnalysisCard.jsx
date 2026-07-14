@@ -18,7 +18,7 @@ import { exportAnalysisCard } from './exportCard'
  *
  * Two export modes:
  *   - Live analyses (default): PDF + high-res PNG captured from the DOM (skips
- *     data-export-exclude nodes; LaTeX-native PDF).
+ *     data-export-exclude nodes; figure-sized single-page PDF).
  *   - Published figures: pass downloadFormats + onDownload to serve the STORED
  *     svg/png/pdf instead of re-capturing.
  */
@@ -55,7 +55,10 @@ export default function AnalysisCard({
       await exportAnalysisCard(cardRef.current, { name: exportName || 'analysis', format })
     } catch (e) {
       console.error('analysis export failed:', e)
-      setExportError('Export failed — try again, or use a wider window.')
+      const local = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+      setExportError(local
+        ? 'Export failed locally — restart the frontend with “npm run dev -- --force” and try again.'
+        : 'Export failed — reload the page and try again.')
     } finally {
       setExporting(null)
     }

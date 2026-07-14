@@ -16,7 +16,7 @@ export default function SubNav({ tabs, route, children }) {
   return (
     <div className='flex items-center gap-4 h-[54px] px-[22px] border-b border-border/60'>
       <Tabs {...tabs} />
-      {rightSlot && <div className='ml-auto'>{rightSlot}</div>}
+      {rightSlot && <div className='ml-auto min-w-0 flex-1 flex justify-end'>{rightSlot}</div>}
     </div>
   )
 }

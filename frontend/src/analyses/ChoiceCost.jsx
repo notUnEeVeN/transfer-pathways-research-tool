@@ -182,64 +182,66 @@ export default function ChoiceCost() {
         />
       </div>
 
-      <div className='surface-card p-4'>
-        <p className='text-caption text-ink-subtle mb-3'>Mean additional CC courses per added campus</p>
-        <div className='flex items-end gap-6 h-40 max-w-xl'>
-          {steps.map((step, i) => {
-            const label = shortenSchool(nameById.get(step.schoolId) || `School ${step.schoolId}`)
-            const title = `${ORDINALS[i]} choice — ${label}\nMean additional courses: ${step.mean == null ? '-' : numFmt.format(step.mean)}\n${intFmt.format(step.n)} colleges with an agreement${step.missing ? `, ${intFmt.format(step.missing)} without` : ''}`
-            return (
-              <div key={step.schoolId} className='flex-1 h-full flex flex-col items-center justify-end gap-1'>
-                <span className='text-caption font-mono text-ink'>{step.mean == null ? '-' : numFmt.format(step.mean)}</span>
-                <div
-                  title={title}
-                  aria-label={title}
-                  className='w-full max-w-16 rounded-t-sm transition-opacity hover:opacity-75'
-                  style={{ height: `${step.mean == null ? 2 : Math.max((step.mean / maxStepMean) * 100, 2)}%`, backgroundColor: STEP_COLORS[i] }}
-                />
-                <span className='text-label text-ink-subtle text-center leading-tight'>{ORDINALS[i]}<br />{label}</span>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className='surface-card p-4'>
-        <div className='flex flex-wrap items-center justify-between gap-2 mb-3'>
-          <p className='text-caption text-ink-subtle'>Per college: cheapest-path courses, stacked by addition order</p>
-          {legend}
-        </div>
-        <div className='max-h-[26rem] overflow-y-auto pr-1'>
-          {sortedRows.map((r) => {
-            let cumulative = 0
-            return (
-              <div key={r.community_college_id} className='flex items-center gap-3 py-0.5'>
-                <span className='w-44 shrink-0 truncate text-caption text-ink' title={r.community_college}>
-                  {r.community_college}
-                </span>
-                <div className='flex-1 flex items-center h-4'>
-                  {(r.steps || []).map((step, i) => {
-                    if (!step.has_agreement || !step.additional_courses) return null
-                    cumulative += step.additional_courses
-                    const label = shortenSchool(nameById.get(step.school_id) || `School ${step.school_id}`)
-                    const title = `${r.community_college}\n${ORDINALS[i]} choice — ${label}: +${intFmt.format(step.additional_courses)} courses (running total ${intFmt.format(cumulative)})`
-                    return (
-                      <div
-                        key={step.school_id}
-                        title={title}
-                        aria-label={title}
-                        className='h-full first:rounded-l-sm last:rounded-r-sm mr-0.5 last:mr-0 transition-opacity hover:opacity-75'
-                        style={{ width: `${(step.additional_courses / maxTotal) * 100}%`, backgroundColor: STEP_COLORS[i] }}
-                      />
-                    )
-                  })}
+      <div data-export-root className='flex flex-col gap-6'>
+        <div className='surface-card p-4'>
+          <p className='text-caption text-ink-subtle mb-3'>Mean additional CC courses per added campus</p>
+          <div className='flex items-end gap-6 h-40 max-w-xl'>
+            {steps.map((step, i) => {
+              const label = shortenSchool(nameById.get(step.schoolId) || `School ${step.schoolId}`)
+              const title = `${ORDINALS[i]} choice — ${label}\nMean additional courses: ${step.mean == null ? '-' : numFmt.format(step.mean)}\n${intFmt.format(step.n)} colleges with an agreement${step.missing ? `, ${intFmt.format(step.missing)} without` : ''}`
+              return (
+                <div key={step.schoolId} className='flex-1 h-full flex flex-col items-center justify-end gap-1'>
+                  <span className='text-caption font-mono text-ink'>{step.mean == null ? '-' : numFmt.format(step.mean)}</span>
+                  <div
+                    title={title}
+                    aria-label={title}
+                    className='w-full max-w-16 rounded-t-sm transition-opacity hover:opacity-75'
+                    style={{ height: `${step.mean == null ? 2 : Math.max((step.mean / maxStepMean) * 100, 2)}%`, backgroundColor: STEP_COLORS[i] }}
+                  />
+                  <span className='text-label text-ink-subtle text-center leading-tight'>{ORDINALS[i]}<br />{label}</span>
                 </div>
-                <span className='w-10 shrink-0 text-right text-caption font-mono tabular-nums text-ink'>
-                  {intFmt.format(r.total_courses)}
-                </span>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
+        </div>
+
+        <div className='surface-card p-4'>
+          <div className='flex flex-wrap items-center justify-between gap-2 mb-3'>
+            <p className='text-caption text-ink-subtle'>Per college: cheapest-path courses, stacked by addition order</p>
+            {legend}
+          </div>
+          <div className='max-h-[26rem] overflow-y-auto pr-1'>
+            {sortedRows.map((r) => {
+              let cumulative = 0
+              return (
+                <div key={r.community_college_id} className='flex items-center gap-3 py-0.5'>
+                  <span className='w-44 shrink-0 truncate text-caption text-ink' title={r.community_college}>
+                    {r.community_college}
+                  </span>
+                  <div className='flex-1 flex items-center h-4'>
+                    {(r.steps || []).map((step, i) => {
+                      if (!step.has_agreement || !step.additional_courses) return null
+                      cumulative += step.additional_courses
+                      const label = shortenSchool(nameById.get(step.school_id) || `School ${step.school_id}`)
+                      const title = `${r.community_college}\n${ORDINALS[i]} choice — ${label}: +${intFmt.format(step.additional_courses)} courses (running total ${intFmt.format(cumulative)})`
+                      return (
+                        <div
+                          key={step.school_id}
+                          title={title}
+                          aria-label={title}
+                          className='h-full first:rounded-l-sm last:rounded-r-sm mr-0.5 last:mr-0 transition-opacity hover:opacity-75'
+                          style={{ width: `${(step.additional_courses / maxTotal) * 100}%`, backgroundColor: STEP_COLORS[i] }}
+                        />
+                      )
+                    })}
+                  </div>
+                  <span className='w-10 shrink-0 text-right text-caption font-mono tabular-nums text-ink'>
+                    {intFmt.format(r.total_courses)}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </Stack>

@@ -17,6 +17,10 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, 'src/shared/serverShared'),
     },
   },
+  // Export libraries are loaded only when a user clicks PDF/PNG. Pre-bundle
+  // them at dev-server startup so the first local export cannot hit Vite's
+  // stale on-demand optimized-dependency URL (504 Outdated Optimize Dep).
+  optimizeDeps: { include: ['html-to-image', 'jspdf'] },
   server: { port: 5173 },
   test: {
     environment: 'jsdom',

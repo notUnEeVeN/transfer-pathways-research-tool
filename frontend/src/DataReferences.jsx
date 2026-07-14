@@ -409,7 +409,7 @@ function DistrictLookup({ rows }) {
   )
 }
 
-// ── one campus's hand-curated UC hard minimum (Agreements → Min requirements) ──
+// ── one campus's hand-curated UC hard minimum (Agreements → Transfer requirements) ──
 export function CampusMinimums({ schoolId }) {
   const minimums = useRefTable('transfer_minimums')
   const ed = useRowEditing('transfer_minimums')
@@ -432,7 +432,7 @@ export function CampusMinimums({ schoolId }) {
   }, [rows])
 
   if (minimums.isLoading) return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
-  if (minimums.isError) return <Alert type='error'>Failed to load the UC minimums table.</Alert>
+  if (minimums.isError) return <Alert type='error'>Failed to load the transfer requirements.</Alert>
 
   const school = rows[0]?.school || null
   const campusEntry = Object.entries(UC_SCHOOLS)
@@ -446,8 +446,13 @@ export function CampusMinimums({ schoolId }) {
     <Stack gap='cozy'>
       <div className='surface-card px-[22px] py-[18px] flex flex-wrap items-start gap-4'>
         <div className='min-w-0'>
-          <p className='text-body-strong'>{schoolName || 'No minimums for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}</p>
-          <p className='text-caption text-ink-muted mt-0.5'>Hand-curated hard minimum · {rows.length} course entries</p>
+          <p className='text-label text-[12px]'>Hand-curated minimum transfer requirements</p>
+          <p className='mt-1.5 text-[19px] font-[650] tracking-[-.01em] break-words'>
+            {schoolName || 'No requirements for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}
+          </p>
+          <p className='text-caption text-ink-muted mt-1'>
+            Computer science and mathematics courses only—not the full degree · {rows.length} course entries
+          </p>
         </div>
         <div className='ml-auto flex flex-wrap items-center gap-2 shrink-0'>
           {unmatched > 0 && <Badge variant='conservative'>{unmatched} not matched</Badge>}
@@ -470,8 +475,8 @@ export function CampusMinimums({ schoolId }) {
 
       {view === 'preview' && rows.length === 0 && (
         <div className='motion-safe:animate-[riseIn_200ms_var(--ease-out)]'>
-          <EmptyState title='No minimum requirements'
-            description='This campus does not have a hand-curated minimum yet. Open Edit rows to add its first requirement.' />
+          <EmptyState title='No transfer requirements'
+            description='No hand-curated minimum transfer requirements have been added for this campus. Open Edit rows to add the first requirement.' />
         </div>
       )}
 
