@@ -1196,7 +1196,14 @@ function DegreeCompletionView({ schoolId, collegeId }) {
     <Stack gap='cozy'>
       <section aria-label='Degree coverage summary'>
         <StatStrip tiles={[
-          {
+          // Units are the headline — graduation is units completed / units
+          // required. The slot count rides in the sub-line; templates without
+          // verified unit data fall back to the slot percent.
+          c.units?.pct != null ? {
+            label: 'Degree transferable', value: `${c.units.pct}%`,
+            sub: `${c.units.covered} of ${c.units.total} units · ${c.covered} of ${c.total} requirements`,
+            accent: c.units.covered === c.units.total,
+          } : {
             label: 'Degree transferable', value: c.pct != null ? `${c.pct}%` : '—',
             sub: `${c.covered} of ${c.total} graduation requirements`,
             accent: c.total > 0 && c.covered === c.total,

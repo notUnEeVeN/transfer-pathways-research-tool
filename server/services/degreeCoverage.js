@@ -55,7 +55,7 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
   // that ASSIST's major-prep agreements never carry.
   const ccGeAreas = await loadCollegeGeAreas(db, community_college_id);
 
-  const { total, covered, by_tier } = buildDegreeGroups(degree.requirement_groups, {
+  const { total, covered, by_tier, units } = buildDegreeGroups(degree.requirement_groups, {
     articulated, optionsByParent, universityCoursesById, coursesById, ccGeAreas,
   });
   // Merged agreement-shaped groups so the frontend renders this tab through the
@@ -69,7 +69,19 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
     total_units: degree.total_units ?? null,
     community_college_id,
     n_agreements: agreements.length,
-    completion: { total, covered, pct: total ? Math.round((100 * covered) / total) : null, by_tier },
+    completion: {
+      total, covered, pct: total ? Math.round((100 * covered) / total) : null, by_tier,
+      // Unit-weighted coverage — the real graduation measure (units completed
+      // / units required). Denominator prefers the campus's stated minimum.
+      units: (() => {
+        const unitsTotal = degree.total_units ?? units.total;
+        return {
+          total: unitsTotal,
+          covered: units.covered,
+          pct: unitsTotal ? Math.round((100 * units.covered) / unitsTotal) : null,
+        };
+      })(),
+    },
     requirement_groups: ledger.requirement_groups,
     courses: ledger.courses,
     university_courses_by_id: universityCoursesById,

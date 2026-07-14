@@ -249,7 +249,7 @@ normalization (by units, or excluding free electives) is left to you.
 | UC Merced *(sem)* | 65% | 20/31 | 14/16 | 6/6 | 9 |
 | UC San Diego | 42% | 15/36 | 9/12 | 6/6 | 18 |
 | UC Riverside | 46% | 18/39 | 12/14 | 6/6 | 19 |
-| UC Davis | 38% | 9/24 | 8/9 | 1/1 | 14 |
+| UC Davis | **54% by units** (97/180u; slots 12/31 = 39%) | 12/31 | 8/9 | 4/4 | 18 |
 | UCLA | 49% | 21/43 | 15/17 | 6/6 | 20 |
 | UC Irvine | 45% | 17/38 | 11/15 | 6/6 | 17 |
 | UC Santa Barbara | 46% | 16/35 | 10/12 | 6/6 | 17 |
@@ -295,7 +295,19 @@ Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-scienc
   assumed slot — the UC-wide graduation rule, separate from GE, satisfiable with
   high-school U.S. history
   (https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/american-history-institutions-requirement/).
-- Non-transferable: 14 (checklist-verified 2026-07-14: 7 upper-division core — ECS 122A, one theory, 140A, 150, 154A, one probability, one composition — + 7 CS electives; was 16, an overcount).
+- Non-transferable: 14 checklist-verified upper-division core+electives (7 + 7; was
+  16, an overcount) **plus the unit-gap allocation** (2026-07-14): Davis requires
+  180 total / 64 upper-division units
+  (https://registrar.ucdavis.edu/registration/plan/bach-reqs); the modeled blocks
+  sum to 151u, and the 29u remainder decomposes exactly — **8u more upper-division**
+  (64 − 56 modeled), **14u CC-transferable electives** (91u of modeled CC work +
+  14u = UC's 105-quarter-unit transfer-credit cap, to the unit), and **7u any-level
+  at Davis** (beyond the cap). Template = 180u exactly.
+- **Unit-weighted coverage is Davis's headline** (team decision 2026-07-14):
+  "units completed / units required" is the real graduation measure, so the
+  evaluation now reports units coverable ÷ 180 alongside slot counts (sections use
+  authored units where stated, flat ~4u otherwise). Evergreen: 97/180u = 54%
+  (slots 12/31 = 39%). Campuses without verified unit data still headline slots.
 - Notes: CS moved L&S → CoE effective Fall 2024 (courses identical, GE wrapper differs). Current catalog uses "choose 3 sciences" (older years hard-required PHY 9A + CHE 2A).
 - **Catalog-vs-ASSIST vintage (verified 2026-07-14):** the source is the
   2026-27 catalog while ASSIST's agreements lag it. The original gathering

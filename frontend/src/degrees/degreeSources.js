@@ -77,6 +77,11 @@ const DEGREE_SOURCES = {
       url: 'https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/american-history-institutions-requirement/',
       note: 'UC-wide graduation rule, separate from GE — satisfiable with high-school U.S. history, which is why it is assumed satisfiable.',
     },
+    {
+      label: 'UC Davis Registrar — bachelor’s degree requirements',
+      url: 'https://registrar.ucdavis.edu/registration/plan/bach-reqs',
+      note: '180 total units with 64 upper-division — the rule behind the elective split: 8u forced upper-division, 14u CC-transferable (to the 105-quarter-unit cap), 7u any-level at Davis.',
+    },
   ],
   // UCLA — Computer Science B.S.
   117: [

@@ -687,6 +687,43 @@
             "from": null
           }
         ]
+      },
+      {
+        "title": "Additional upper-division units — Davis requires 64 UD units; the 14 major courses cover ~56",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 2,
+            "units": 8,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Unrestricted electives — CC-transferable (fills to UC's 105-quarter-unit transfer-credit cap)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 3,
+            "units": 14,
+            "from": {
+              "code": "ELECTIVE",
+              "label": "Unrestricted electives — any UC-transferable CC coursework counts; 91u of modeled CC work leaves exactly 14u of room under the 105-quarter-unit cap",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Unrestricted electives — beyond the CC credit cap (any level, at Davis)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 2,
+            "units": 7,
+            "from": null
+          }
+        ]
       }
     ]
   },

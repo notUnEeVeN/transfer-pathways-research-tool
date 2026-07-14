@@ -92,6 +92,12 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   for (const t of TIERS) byTier[t] = { total: 0, covered: 0 };
   let total = 0;
   let covered = 0;
+  // Unit-weighted coverage alongside the slot counts — "units completed /
+  // units required" is the real graduation measure. Sections carry authored
+  // unit_advisement (stated unit rules, series, GE blocks) or the flat
+  // ~4u/course assumption; covered units scale by the slot fraction covered.
+  let unitsTotal = 0;
+  let unitsCovered = 0;
 
   const groups = (requirementGroups || []).map((g) => {
     const tier = g.tier || 'transferable';
@@ -104,14 +110,18 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       const recvs = s.receivers || [];
       const kind = recvs[0]?.receiving?.kind;
       gTotal += ask;
+      const sectionCoveredBefore = gCovered;
+      const sectionUnits = s.unit_advisement != null ? Number(s.unit_advisement) : ask * 4;
+      unitsTotal += sectionUnits;
 
-      // American History & Institutions — assumed satisfiable at every college.
+      // Assumed satisfiable at every college (AH&I, Cal-GETC, capped electives).
       if (recvs[0]?.assume_satisfiable) {
         const cov = evaluated ? ask : 0;
         gCovered += cov;
+        if (evaluated) unitsCovered += sectionUnits;
         lines.push({
           title: recvs[0].receiving?.name || g.title,
-          detail: 'assumed — UC-required, universal at CCs',
+          detail: 'assumed — satisfiable at every CC',
           need: ask, covered: evaluated ? cov : null,
           status: !evaluated ? 'template' : 'covered',
         });
@@ -124,6 +134,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         const hits = evaluated ? geCoverCourses(s.ge_areas, ccGeAreas) : [];
         const cov = Math.min(hits.length, ask);
         gCovered += cov;
+        if (evaluated) unitsCovered += sectionUnits * (cov / ask);
         lines.push({
           title: recvs[0].receiving?.name || g.title,
           detail: `${ask} from IGETC ${s.ge_areas.join(' / ')}`,
@@ -184,6 +195,9 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
           status: !evaluated ? 'template' : cov >= ask ? 'covered' : cov > 0 ? 'partial' : 'missing',
         });
       }
+      // Unit credit for the two fall-through branches (distinct / choose-N);
+      // the assume/ge_area branches accumulate before their `continue`.
+      if (evaluated) unitsCovered += sectionUnits * ((gCovered - sectionCoveredBefore) / ask);
     }
 
     total += gTotal;
@@ -196,6 +210,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     total,
     covered: evaluated ? covered : null,
     by_tier: evaluated ? byTier : Object.fromEntries(TIERS.map((t) => [t, { total: byTier[t].total, covered: null }])),
+    units: { total: unitsTotal, covered: evaluated ? Math.round(unitsCovered) : null },
     groups,
   };
 }
