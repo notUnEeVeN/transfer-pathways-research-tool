@@ -280,13 +280,20 @@ Source: https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf
 Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/ · checklist https://cs.ucdavis.edu/sites/g/files/dgvnsk8441/files/media/documents/CS%20Major%20Checklist_0.pdf
 - Major-prep (zero-padded codes): MAT 021A/021B/021C, MAT 022A-or-027A-or-067 (lin alg); ECS 020 (discrete); programming = the **ECS 036A/B/C series in its entirety** (checklist: "mixing of courses between series is not allowed"; the ECS 032/034 alternative is for non-majors switching in, deliberately not modeled — team decision 2026-07-14); ECS 050 (org); science = **one complete three-course series** (team decision 2026-07-14, reading the checklist's series structure with chained prerequisites): BIS 002A/B/C, CHE 002A/B/C, CHE 004A/B/C, or PHY 009A/B/C (BIO variants omitted — not in ASSIST yet). Series receivers articulate only when every course in the series does; authored units 12 (programming) / 15 (science).
 - **GE modeled per Davis, not the uniform proxy** (team decision 2026-07-14): the
-  catalog states IGETC/Cal-GETC completion **exempts ALL Davis GE**
+  catalog exempts Cal-GETC/IGETC completers from **all GE that may be met with
+  lower-division courses**
   (https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/general-education-ge-requirements/),
   and every California community college offers the full Cal-GETC pattern — so GE is
   **one assumed-satisfiable row**: "Cal-GETC certification" (11 courses / 34 semester
   units ≈ 51 quarter; authored 40 quarter units after the major's math + one-science
-  overlap). AH&I stays its own assumed slot — it is the UC-wide graduation rule,
-  separate from GE, satisfiable with high-school U.S. history
+  overlap). **Upper-division GE remainder audit (2026-07-14):** every GE component
+  (topical breadth, writing experience, oral, visual, civic/cultural, quantitative,
+  scientific) has lower-division-certified courses → exempt; the ONE component that
+  demands upper division — the College of Engineering's English Composition rule
+  (UWP 101/102/104 or the UD Composition Exam) — is already counted inside the
+  14-slot upper-division core (the checklist lists it there). AH&I stays its own
+  assumed slot — the UC-wide graduation rule, separate from GE, satisfiable with
+  high-school U.S. history
   (https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/american-history-institutions-requirement/).
 - Non-transferable: 14 (checklist-verified 2026-07-14: 7 upper-division core — ECS 122A, one theory, 140A, 150, 154A, one probability, one composition — + 7 CS electives; was 16, an overcount).
 - Notes: CS moved L&S → CoE effective Fall 2024 (courses identical, GE wrapper differs). Current catalog uses "choose 3 sciences" (older years hard-required PHY 9A + CHE 2A).

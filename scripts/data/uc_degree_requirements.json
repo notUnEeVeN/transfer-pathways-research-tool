@@ -650,7 +650,7 @@
         ]
       },
       {
-        "title": "General education — Cal-GETC certification (accepted as ALL of Davis GE)",
+        "title": "General education — Cal-GETC certification (exempts all lower-division-satisfiable GE)",
         "tier": "breadth",
         "requirements": [
           {
@@ -658,7 +658,7 @@
             "units": 40,
             "from": {
               "code": "Cal-GETC",
-              "label": "Cal-GETC certification — Davis exempts ALL GE for transfer students who complete it; every California community college offers the full pattern. 11 courses / 34 semester units (≈51 quarter); ≈40 quarter units here after the major's math + one science overlap",
+              "label": "Cal-GETC certification — Davis exempts all GE that may be met with lower-division courses, and every California community college offers the full pattern (11 courses / 34 semester units ≈ 51 quarter; ≈40 quarter authored after the major covers math + one science). The one upper-division GE remainder (CoE upper-division composition) is already counted in the upper-division core.",
               "assume": true
             }
           }
@@ -679,7 +679,7 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 7 core + 7 electives",
+        "title": "Upper-division major coursework — 7 core (incl. upper-division composition, the sole GE piece Cal-GETC cannot cover) + 7 electives",
         "tier": "nontransferable",
         "requirements": [
           {
