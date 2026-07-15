@@ -13,6 +13,12 @@
    - bg-primary uses :not(:hover) so the hover-darken (bg-primary-hover) survives.
    - text-primary is unconditional — soft buttons keep blue text in every state. */
 .bg-primary:not(:hover) { background-color: var(--color-primary); }
+/* Elements with NO hover:bg-* class must keep the brand fill on hover too —
+   without this, hovering a plain bg-primary element (e.g. the active campus
+   chip) fell through to the shared UUI .bg-primary, which is white. Elements
+   that opt into a hover fill (hover:bg-primary-hover) are excluded so their
+   darken still wins. */
+.bg-primary:hover:not([class*='hover:bg']) { background-color: var(--color-primary); }
 .text-primary { color: var(--color-primary); }
 
 /* RequirementsLedger is the shared Untitled UI component, where bg-primary =

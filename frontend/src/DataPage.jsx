@@ -229,7 +229,7 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
                   <button key={c.id} type='button' onClick={() => selectCampus(c.id)}
                     className={`px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
                       active
-                        ? 'bg-primary text-on-primary border-primary font-[650]'
+                        ? 'bg-primary hover:bg-primary-hover text-on-primary border-primary font-[650]'
                         : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
                     }`}>
                     {c.name.replace('UC ', '')}
