@@ -263,7 +263,9 @@ function AuditWorkspace({ auditTab, setAuditTab, filter, setFilter, statsSeen, r
   // Judge's random-template/random-doc mode is lifted up here (rather than
   // living inside JudgeTab) purely so AuditWorkspace can read it to compute
   // the Judge route hint below — JudgeTab's own behavior is unchanged.
-  const [judgeMode, setJudgeMode] = useState('template')
+  // Defaults to random-doc: every template cluster has been audited
+  // (2026-07-14), so fresh sessions go straight to corpus sampling.
+  const [judgeMode, setJudgeMode] = useState('random')
   const auditRoute =
     auditTab === 'judge' ? { path: '/api/audit/next' }
     : auditTab === 'review' ? { path: '/api/audit/errors' }
@@ -483,7 +485,7 @@ function VerdictButton({ verdict, shortcut, icon: Icon = null, children, classNa
 
 // The Judge cockpit. Same sampling mechanics as the desktop tool; ASSIST opens
 // in a managed popup (DocHead's button) instead of a docked native webview.
-export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'template', setMode = () => {}, active = true }) {
+export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'random', setMode = () => {}, active = true }) {
   const { user } = useAuth()
   const qc = useQueryClient()
   const verify = useVerifyDoc()
