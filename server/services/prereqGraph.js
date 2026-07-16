@@ -26,7 +26,9 @@ async function loadConceptRows(db) {
 // Map<'cc:<course_id>', ['cc:<course_id>', …]> with an entry per examined
 // course — the same Map contract complexityData used for curated_prerequisites.
 function projectEdges(conceptRows, courseRows) {
-  const requires = new Map(conceptRows.map((c) => [String(c.slug), (c.requires || []).map(String)]));
+  // A `requires` entry is either a slug string (an AND requirement) or an array
+  // of slugs (an OR-group — any one alternative satisfies it).
+  const requires = new Map(conceptRows.map((c) => [String(c.slug), c.requires || []]));
   // Combined-course concepts (e.g. linear_alg_diff_eq) list the concepts they
   // stand in for via `satisfies`; their courses register locally under those
   // slugs too, so downstream requirements find them.
@@ -49,23 +51,35 @@ function projectEdges(conceptRows, courseRows) {
         localBySlug.get(slug).push(courseKeyOf(row));
       }
     }
-    // Required concepts with no local course fall through to their own
-    // requirements (validated acyclic, so this terminates).
-    const resolve = (slug, seen) => {
+    // A single required concept resolves to the college's courses for it, or
+    // falls through to that concept's own prerequisites when the college offers
+    // none (validated acyclic, so this terminates).
+    const resolveReq = (req, seen) => {
+      if (seen.has(req)) return [];
+      const local = localBySlug.get(req);
+      if (local && local.length) return local;
+      return resolveList(requires.get(req) || [], new Set([...seen, req]));
+    };
+    // An OR-group is satisfied by the first listed alternative the college can
+    // resolve; a plain entry is an AND requirement.
+    const resolveList = (reqList, seen) => {
       const out = [];
-      for (const req of requires.get(slug) || []) {
-        if (seen.has(req)) continue;
-        seen.add(req);
-        const local = localBySlug.get(req);
-        if (local && local.length) out.push(...local);
-        else out.push(...resolve(req, seen));
+      for (const entry of reqList) {
+        if (Array.isArray(entry)) {
+          for (const alt of entry) {
+            const got = resolveReq(String(alt), seen);
+            if (got.length) { out.push(...got); break; }
+          }
+        } else {
+          out.push(...resolveReq(String(entry), seen));
+        }
       }
       return out;
     };
     for (const row of rows) {
       const key = courseKeyOf(row);
       if (!row.concept) { edges.set(key, []); continue; }
-      const prereqs = [...new Set(resolve(row.concept, new Set([row.concept])))]
+      const prereqs = [...new Set(resolveList(requires.get(row.concept) || [], new Set([row.concept])))]
         .filter((k) => k !== key);
       edges.set(key, prereqs);
     }
@@ -108,11 +122,24 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   const conceptRows = await loadConceptRows(db);
   const concepts = conceptRows.map((c) => ({
     slug: String(c.slug), name: c.name || c.slug, discipline: c.discipline || 'other',
-    requires: (c.requires || []).map(String),
+    requires: c.requires || [],
     satisfies: (c.satisfies || []).map(String),
     note: c.note || '',
   }));
-  const rules = concepts.flatMap((c) => c.requires.map((from) => ({ from, to: c.slug })));
+  // Expand OR-groups into per-alternative edges tagged with a shared group id
+  // and option:true, so the graph can draw them as alternatives (dashed).
+  let orSeq = 0;
+  const rules = [];
+  for (const c of concepts) {
+    for (const entry of c.requires) {
+      if (Array.isArray(entry)) {
+        const group = `or:${c.slug}:${orSeq++}`;
+        for (const alt of entry) rules.push({ from: String(alt), to: c.slug, option: true, group });
+      } else {
+        rules.push({ from: String(entry), to: c.slug });
+      }
+    }
+  }
   const inScope = await inScopeCourseIds(db, collegeKey);
 
   if (!collegeKey) {

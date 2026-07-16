@@ -50,6 +50,14 @@ def load_json(path):
         sys.exit(f"Bad JSON in {Path(path).name}: {e}")
 
 
+def flatten_requires(reqs):
+    """A requires entry is a slug (AND) or a list of slugs (OR-group)."""
+    out = []
+    for e in reqs or []:
+        out.extend(str(x) for x in e) if isinstance(e, list) else out.append(str(e))
+    return out
+
+
 def validate_concepts(concepts):
     slugs = [c.get("slug") for c in concepts]
     if len(slugs) != len(set(slugs)):
@@ -61,7 +69,10 @@ def validate_concepts(concepts):
             sys.exit(f"bad slug: {slug!r}")
         if c.get("discipline") not in DISCIPLINES:
             sys.exit(f"{slug}: discipline must be one of {sorted(DISCIPLINES)}")
-        graph[slug] = [str(r) for r in (c.get("requires") or [])]
+        for e in c.get("requires") or []:
+            if isinstance(e, list) and not (e and all(isinstance(x, str) for x in e)):
+                sys.exit(f"{slug}: an OR-group must be a non-empty list of slugs")
+        graph[slug] = flatten_requires(c.get("requires"))
     for slug, reqs in graph.items():
         for r in reqs:
             if r not in graph:
@@ -114,7 +125,10 @@ def build_concept_rows(concepts, now, source):
         "slug": c["slug"],
         "name": c.get("name") or c["slug"],
         "discipline": c["discipline"],
-        "requires": [str(r) for r in (c.get("requires") or [])],
+        "requires": [
+            [str(x) for x in e] if isinstance(e, list) else str(e)
+            for e in (c.get("requires") or [])
+        ],
         "satisfies": [str(s) for s in (c.get("satisfies") or [])],
         "note": c.get("note") or "",
         "source": source,

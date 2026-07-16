@@ -54,6 +54,24 @@ describe('projectEdges', () => {
     expect(edges.get('cc:21')).toEqual([]);
   });
 
+  it('resolves an OR-group to whichever alternative the college offers', () => {
+    const concepts = [
+      { slug: 'calc_1', name: 'Calc I', discipline: 'math', requires: [] },
+      { slug: 'bus_calc_1', name: 'Business Calc I', discipline: 'math', requires: [] },
+      { slug: 'discrete', name: 'Discrete', discipline: 'math', requires: [['calc_1', 'bus_calc_1']] },
+    ];
+    // College 10 offers calc_1 → discrete links to it.
+    expect(projectEdges(concepts, [course(1, 10, 'calc_1'), course(2, 10, 'discrete')]).get('cc:2'))
+      .toEqual(['cc:1']);
+    // College 20 offers only business calc → discrete links to that.
+    expect(projectEdges(concepts, [course(3, 20, 'bus_calc_1'), course(4, 20, 'discrete')]).get('cc:4'))
+      .toEqual(['cc:3']);
+    // College 30 offers both → the first listed alternative (calc_1) wins.
+    expect(projectEdges(concepts, [
+      course(5, 30, 'calc_1'), course(6, 30, 'bus_calc_1'), course(7, 30, 'discrete'),
+    ]).get('cc:7')).toEqual(['cc:5']);
+  });
+
   it('registers combined-course concepts under everything they satisfy', () => {
     const withCombined = [...CONCEPTS, {
       slug: 'linear_alg_diff_eq', name: 'Linear Algebra + Differential Equations',

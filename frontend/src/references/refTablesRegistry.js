@@ -152,7 +152,8 @@ export const REFERENCE_TABLES = [
         options: ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'stats', 'other']
           .map((value) => ({ value, label: value })),
       },
-      { key: 'requires', label: 'Requires (concept slugs)', type: 'tags' },
+      { key: 'requires', label: 'Requires', type: 'or-tags',
+        placeholder: 'calc_1, phys_em  ·  use | for options: calc_1 | bus_calc_1' },
       { key: 'satisfies', label: 'Satisfies (for combined courses, e.g. linear_alg_diff_eq)', type: 'tags' },
       { key: 'note', label: 'Note', type: 'text', placeholder: 'e.g. conservative: calc_3 required statewide' },
     ],

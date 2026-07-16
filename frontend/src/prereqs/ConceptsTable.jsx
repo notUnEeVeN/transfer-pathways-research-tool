@@ -44,9 +44,14 @@ export default function ConceptsTable() {
             { key: 'discipline', label: 'Discipline' },
             {
               key: 'requires', label: 'Requires',
+              // An entry that's an array is an OR-group, shown as "a or b".
               render: (r) => (r.requires || []).length
                 ? <span className='inline-flex flex-wrap gap-1.5'>
-                    {(r.requires || []).map((s) => <span key={s} className='chip font-mono'>{s}</span>)}
+                    {(r.requires || []).map((e, i) => (
+                      <span key={i} className='chip font-mono'>
+                        {Array.isArray(e) ? e.join(' or ') : e}
+                      </span>
+                    ))}
                   </span>
                 : '-',
             },

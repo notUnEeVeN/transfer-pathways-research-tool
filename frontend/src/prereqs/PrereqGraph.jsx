@@ -50,7 +50,10 @@ const V = {
    ~5-column graph leaves on the right, shows fuller course names, and gives the
    edge gutters more space. Taller row pitch keeps dense lanes (e.g. Gen Ed with
    5 roots at depth 0) from crowding. */
-const RAIL = 96, COL_W = 250, NODE_W = 210, HEAD = 26;
+/* Lane labels sit in a header strip at the TOP of each lane (LANE_HEAD) rather
+   than in a left rail, so they cost vertical, not horizontal, space — the graph
+   starts near the left edge and needs far less horizontal scroll. */
+const RAIL = 18, COL_W = 250, NODE_W = 210, HEAD = 26, LANE_HEAD = 22;
 
 export function computePrereqLayout(nodes, reqEdges, { compact }) {
   const M = compact ? { nodeH: 34, pitch: 46, lanePad: 9 } : { nodeH: 40, pitch: 56, lanePad: 13 };
@@ -117,17 +120,17 @@ export function computePrereqLayout(nodes, reqEdges, { compact }) {
     }
     if (!placed) { const r = laneRows.get(lane); laneRows.set(lane, r + 1); occ.add(`${lane}:${r}:0`); cellNode.set(`${lane}:${r}:0`, n.slug); n.row = r; n.depth = 0; n.unlinked = true; }
   }
-  /* geometry */
+  /* geometry — each lane reserves a LANE_HEAD strip at the top for its label */
   let y = HEAD; const laneMeta = [];
   for (const lane of lanes) {
     const rows = laneRows.get(lane);
-    const h = M.lanePad * 2 + (rows - 1) * M.pitch + M.nodeH;
+    const h = LANE_HEAD + M.lanePad * 2 + (rows - 1) * M.pitch + M.nodeH;
     laneMeta.push({ lane, top: y, h, rows }); y += h;
   }
   const laneTop = new Map(laneMeta.map(l => [l.lane, l]));
   nodes.forEach(n => {
     const lm = laneTop.get(n.discipline);
-    n.x = RAIL + n.depth * COL_W; n.y = lm.top + M.lanePad + n.row * M.pitch;
+    n.x = RAIL + n.depth * COL_W; n.y = lm.top + LANE_HEAD + M.lanePad + n.row * M.pitch;
     n.cx = n.x + NODE_W / 2; n.cy = n.y + M.nodeH / 2; n.laneIdx = lanes.indexOf(n.discipline);
   });
   return { nodes, byId, parents, children, lanes, laneMeta, maxCol, width: RAIL + (maxCol + 1) * COL_W + 10, height: y + 8, M, cellNode };
@@ -242,8 +245,11 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
       return { nodes, req: (edges || []).map(e => ({ from: e.from, to: e.to })), sat: [] };
     }
     const cs = concepts || [];
-    const req = rules ? rules.map(e => ({ from: e.from, to: e.to }))
-      : cs.flatMap(c => (c.requires || []).map(r => ({ from: r, to: c.slug })));
+    // Edges carry `option` (a member of an OR-group) so they render dashed.
+    const req = rules
+      ? rules.map(e => ({ from: e.from, to: e.to, option: !!e.option }))
+      : cs.flatMap(c => (c.requires || []).flatMap(entry =>
+        (Array.isArray(entry) ? entry : [entry]).map(r => ({ from: r, to: c.slug, option: Array.isArray(entry) }))));
     const sat = cs.flatMap(c => (c.satisfies || []).map(s => ({ from: c.slug, to: s })));
     return { nodes: cs.map(c => ({ slug: c.slug, name: c.name, discipline: c.discipline, satisfies: c.satisfies })), req, sat };
   }, [mode, concepts, rules, courses, edges, conceptIndex]);
@@ -280,18 +286,18 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
           still surfaces the click-to-trace affordance. */}
       <div style={{ overflowX: 'auto', border: `1px solid ${'var(--color-border, #DFE3D8)'}`, borderRadius: 14, background: V.surface }}>
         <svg width={layout.width} height={layout.height} role="group" aria-label="Prerequisite graph: disciplines as rows, prerequisite depth as columns" style={{ display: 'block' }} onClick={clear}>
-          {/* lane bands */}
+          {/* lane bands — label in a horizontal header strip at the lane's top */}
           {layout.laneMeta.map((lm, i) => (
             <g key={lm.lane}>
               <rect x="0" y={lm.top} width={layout.width} height={lm.h} fill={DISC[lm.lane] || DISC.other} fillOpacity="0.038" />
               {i > 0 && <line x1="0" y1={lm.top} x2={layout.width} y2={lm.top} stroke={V.border} strokeWidth="1" strokeOpacity="0.7" />}
-              <circle cx={16} cy={lm.top + lm.h / 2 - (lm.h > 60 ? 7 : 0)} r="3.6" fill={DISC[lm.lane] || DISC.other} />
-              <text x={26} y={lm.top + lm.h / 2 - (lm.h > 60 ? 3.5 : -3.5)} fontSize="10" fontWeight="700" letterSpacing="0.07em" fill={V.inkMuted} style={{ textTransform: 'uppercase' }}>{(LANE_LABEL[lm.lane] || lm.lane).toUpperCase()}</text>
-              {lm.h > 60 && <text x={26} y={lm.top + lm.h / 2 + 10} fontSize="10.5" fill={V.inkSubtle}>{layout.nodes.filter(n => n.discipline === lm.lane).length} concepts</text>}
+              <circle cx={RAIL + 4} cy={lm.top + 13} r="3.6" fill={DISC[lm.lane] || DISC.other} />
+              <text x={RAIL + 14} y={lm.top + 16.5} fontSize="10" fontWeight="700" letterSpacing="0.07em" fill={V.inkMuted} style={{ textTransform: 'uppercase' }}>{(LANE_LABEL[lm.lane] || lm.lane).toUpperCase()}</text>
+              <text x={RAIL + 14 + (LANE_LABEL[lm.lane] || lm.lane).length * 6.6 + 12} y={lm.top + 16.5} fontSize="10.5" fill={V.inkSubtle}>{layout.nodes.filter(n => n.discipline === lm.lane).length} {mode === 'college' ? 'courses' : 'concepts'}</text>
             </g>
           ))}
           {/* depth header */}
-          <text x={RAIL - 6} y={17} fontSize="10" fontWeight="650" letterSpacing="0.06em" fill={V.inkSubtle} textAnchor="end">DEPTH →</text>
+          <text x={2} y={17} fontSize="10" fontWeight="650" letterSpacing="0.06em" fill={V.inkSubtle} textAnchor="start">DEPTH →</text>
           {Array.from({ length: layout.maxCol + 1 }, (_, c) => (
             <text key={c} x={RAIL + c * COL_W + NODE_W / 2} y={17} fontSize="10.5" fontWeight="650" fill={V.inkSubtle} textAnchor="middle">{c}</text>
           ))}
@@ -301,6 +307,7 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
             const inChain = chain && chain.set.has(r.e.from) && chain.set.has(r.e.to);
             const hovered = !chain && hover && (r.e.from === hover || r.e.to === hover);
             const sat = r.kind === 'sat';
+            const option = !sat && r.e.option; // one alternative of an OR requirement
             const color = sat ? V.inkSubtle : (DISC[r.s.discipline] || DISC.other);
             const op = chain ? (inChain ? 0.95 : 0.06) : hovered ? 0.95 : sat ? 0.55 : 0.5;
             const w = (inChain || hovered) ? 2.1 : 1.4;
@@ -308,8 +315,9 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
             const horiz = r.pts.length > 1 && Math.abs(end[1] - r.pts[r.pts.length - 2][1]) < 0.5;
             return (
               <g key={i} opacity={op} style={{ transition: 'opacity .18s' }}>
-                <title>{sat ? `${r.s.name} satisfies ${r.t.name}` : `${r.t.code || r.t.name} requires ${r.s.code || r.s.name}`}</title>
-                <path d={roundedPath(r.pts)} fill="none" stroke={color} strokeWidth={w} strokeDasharray={sat ? '4 3' : 'none'} />
+                <title>{sat ? `${r.s.name} satisfies ${r.t.name}`
+                  : `${r.t.code || r.t.name} requires ${r.s.code || r.s.name}${option ? ' (one option)' : ''}`}</title>
+                <path d={roundedPath(r.pts)} fill="none" stroke={color} strokeWidth={w} strokeDasharray={sat ? '4 3' : option ? '2 3' : 'none'} />
                 {sat
                   ? <circle cx={end[0]} cy={end[1]} r="2.7" fill={V.surface} stroke={color} strokeWidth="1.4" />
                   : horiz
@@ -368,7 +376,7 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
             <button onClick={clear} style={{ cursor: 'pointer', fontFamily: 'inherit', fontSize: 11.5, fontWeight: 600, color: V.inkMuted, background: V.sunken, border: 'none', borderRadius: 999, padding: '4px 12px' }}>Clear ⎋</button>
           </React.Fragment>
         ) : (
-          <span style={{ color: V.inkSubtle }}>{layout.nodes.length} {mode === 'college' ? 'courses' : 'concepts'} · {data.req.length} prerequisite rules{data.sat.length ? ` · ${data.sat.length} equivalences` : ''} — click a node to trace its chain, Esc clears</span>
+          <span style={{ color: V.inkSubtle }}>Click a node to trace its chain · Esc clears</span>
         )}
       </div>
     </div>

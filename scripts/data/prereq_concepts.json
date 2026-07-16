@@ -121,9 +121,12 @@
    "name": "Discrete Mathematics / Discrete Structures",
    "discipline": "math",
    "requires": [
-    "calc_1"
+    [
+     "calc_1",
+     "bus_calc_1"
+    ]
    ],
-   "note": "One concept for Discrete Math / Discrete Structures, whether the math or CS department teaches it. We require Calc 1 as a readiness gate — some colleges gate on precalc (out of scope) or treat calculus as a co-req, but Calc-1-completed is the conservative call. CS-flavored versions that require programming still map here.",
+   "note": "One concept for Discrete Math / Discrete Structures, whether the math or CS department teaches it. We require Calc 1 OR Applied/Business Calc 1 as a readiness gate — either satisfies it. Some colleges gate on precalc (out of scope) or treat calculus as a co-req, but a completed calculus course is the conservative call.",
    "uc_anchors": [
     "MATH 61 @ UCLA",
     "CSE 20 @ UCSD",

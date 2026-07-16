@@ -64,6 +64,18 @@ function Field({ field, value, draft, onChange }) {
     return <Input value={(Array.isArray(value) ? value : []).join(', ')} placeholder={field.placeholder}
       onChange={(e) => set(e.target.value.split(',').map((s) => s.trim()).filter(Boolean))} />
   }
+  // Like tags, but an entry may be an OR-group written with '|'. Comma
+  // separates AND requirements; 'calc_1 | bus_calc_1' is one OR-group stored
+  // as an array. Round-trips array entries back to pipe text for editing.
+  if (field.type === 'or-tags') {
+    const toText = (Array.isArray(value) ? value : [])
+      .map((e) => (Array.isArray(e) ? e.join(' | ') : e)).join(', ')
+    const parse = (text) => text.split(',').map((s) => s.trim()).filter(Boolean).map((tok) => {
+      const alts = tok.split('|').map((a) => a.trim()).filter(Boolean)
+      return alts.length > 1 ? alts : alts[0]
+    }).filter(Boolean)
+    return <Input value={toText} placeholder={field.placeholder} onChange={(e) => set(parse(e.target.value))} />
+  }
   if (field.type === 'matched-course') {
     return <MatchedCourseField value={Array.isArray(value) ? value : []}
       schoolId={UC_SCHOOLS[draft.uc_code]?.school_id ?? draft.school_id ?? null} onChange={(v) => set(v)} />

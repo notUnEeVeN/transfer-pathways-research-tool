@@ -52,16 +52,24 @@ async function validatePrereqConcept(db, canonical) {
   if (!CONCEPT_DISCIPLINES.includes(canonical.discipline)) {
     return `discipline must be one of ${CONCEPT_DISCIPLINES.join(', ')}`;
   }
+  // A requires entry is a slug (AND) or a non-empty array of slugs (OR-group).
   const requires = canonical.requires;
-  if (!Array.isArray(requires) || requires.some((r) => typeof r !== 'string')) {
-    return 'requires must be an array of concept slugs';
+  if (!Array.isArray(requires)) return 'requires must be an array';
+  const flat = [];
+  for (const entry of requires) {
+    if (typeof entry === 'string') flat.push(entry);
+    else if (Array.isArray(entry) && entry.length && entry.every((a) => typeof a === 'string')) flat.push(...entry);
+    else return 'each requires entry must be a concept slug or a non-empty array of slugs (an OR-group)';
   }
+  const flatten = (reqs) => (reqs || []).flatMap((e) => (Array.isArray(e) ? e : [e])).map(String);
   const rows = await db.collection(COLLECTIONS.requirements)
     .find({ kind: 'prereq_concept' }, { projection: { slug: 1, requires: 1 } })
     .toArray();
-  const graph = new Map(rows.map((r) => [String(r.slug), (r.requires || []).map(String)]));
-  graph.set(slug, requires.map(String));
-  for (const r of requires) {
+  // Cycle/existence checks flatten OR-groups: an alternative that could close a
+  // cycle is rejected, keeping the graph acyclic however the OR resolves.
+  const graph = new Map(rows.map((r) => [String(r.slug), flatten(r.requires)]));
+  graph.set(slug, flat.map(String));
+  for (const r of flat) {
     if (!graph.has(String(r))) return `requires references unknown concept: ${r}`;
   }
   const state = new Map(); // 'visiting' | 'done'
@@ -205,8 +213,23 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     updated_at: new Date(),
   };
   if (kind === 'prereq_concept') {
+    // Dedupe within each OR-group and across top-level entries, without
+    // flattening groups (an entry may be a slug or an array of slugs). A
+    // single-alternative group collapses back to a plain slug.
     if (Array.isArray(canonical.requires)) {
-      canonical.requires = [...new Set(canonical.requires.map(String))];
+      const seen = new Set();
+      canonical.requires = canonical.requires.map((e) => {
+        if (Array.isArray(e)) {
+          const alts = [...new Set(e.map(String))];
+          return alts.length === 1 ? alts[0] : alts;
+        }
+        return String(e);
+      }).filter((e) => {
+        const key = Array.isArray(e) ? `|${e.join('|')}` : e;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
     }
     const invalid = await validatePrereqConcept(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });

@@ -117,6 +117,21 @@ describe('prereq_concept kind', () => {
     expect(res.body.error).toMatch(/cycle/);
   });
 
+  it('accepts an OR-group in requires and rejects a group with an unknown slug', async () => {
+    await put(concept('calc_1'));
+    await put(concept('bus_calc_1'));
+    const ok = await put(concept('discrete', [['calc_1', 'bus_calc_1']]));
+    expect(ok.statusCode).toBe(200);
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'prereq_concept:discrete' });
+    expect(stored.requires).toEqual([['calc_1', 'bus_calc_1']]);
+    const bad = await put(concept('discrete2', [['calc_1', 'ghost']]));
+    expect(bad.statusCode).toBe(400);
+    expect(bad.body.error).toMatch(/unknown concept: ghost/);
+    const empty = await put(concept('discrete3', [[]]));
+    expect(empty.statusCode).toBe(400);
+    expect(empty.body.error).toMatch(/OR-group/);
+  });
+
   it('accepts satisfies naming known concepts and rejects unknown or self', async () => {
     await put(concept('linear_alg'));
     await put(concept('diff_eq'));
