@@ -242,7 +242,7 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
         slug: c.key, code: `${c.prefix} ${c.number}`, name: c.title,
         discipline: (ci[c.concept] && ci[c.concept].discipline) || 'other', college: true,
       }));
-      return { nodes, req: (edges || []).map(e => ({ from: e.from, to: e.to })), sat: [] };
+      return { nodes, req: (edges || []).map(e => ({ from: e.from, to: e.to, option: !!e.option })), sat: [] };
     }
     const cs = concepts || [];
     // Edges carry `option` (a member of an OR-group) so they render dashed.

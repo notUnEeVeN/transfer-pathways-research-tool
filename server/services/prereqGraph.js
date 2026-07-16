@@ -185,6 +185,19 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   const edges = [];
   for (const [to, froms] of edgeMap) for (const from of froms) edges.push({ from, to });
 
+  // Several courses mapped to the same concept are interchangeable — a course
+  // requiring that concept needs only ONE of them. Mark such fan-ins (same
+  // target, same source-concept) as options so the graph draws them as
+  // alternatives, not parallel requirements. (The complexity metric is already
+  // correct: it scores the min-set pathway, which picks a single course.)
+  const conceptOfKey = new Map(rows.map((r) => [courseKeyOf(r), r.concept ?? null]));
+  const groupSize = new Map();
+  const groupKey = (e) => `${e.to} ${conceptOfKey.get(e.from) ?? ''}`;
+  for (const e of edges) groupSize.set(groupKey(e), (groupSize.get(groupKey(e)) || 0) + 1);
+  for (const e of edges) {
+    if (groupSize.get(groupKey(e)) > 1) { e.option = true; e.group = groupKey(e); }
+  }
+
   const courses = rows.map((row) => ({
     key: courseKeyOf(row),
     prefix: row.prefix ?? null, number: row.number ?? null, title: row.title ?? null,
