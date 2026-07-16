@@ -1,0 +1,7 @@
+{
+  "meta": { "purpose": "Sample rows for --dry-run validation only." },
+  "rows": [
+    { "course_id": 303691, "institution_id": "cc:4", "concept": "calc_1", "confidence": 1.0, "title_seen": "Calculus I" },
+    { "course_id": 303705, "institution_id": "cc:4", "concept": null, "confidence": 1.0, "title_seen": "College Study Skills" }
+  ]
+}
