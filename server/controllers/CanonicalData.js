@@ -78,6 +78,18 @@ async function validatePrereqConcept(db, canonical) {
   };
   const cycle = visit(slug, []);
   if (cycle) return `requires would create a cycle: ${cycle.join(' → ')}`;
+  // satisfies: combined-course concepts stand in for these slugs during
+  // projection (optional; must name other existing concepts).
+  const sat = canonical.satisfies;
+  if (sat !== undefined) {
+    if (!Array.isArray(sat) || sat.some((s) => typeof s !== 'string')) {
+      return 'satisfies must be an array of concept slugs';
+    }
+    for (const s of sat) {
+      if (s === slug) return 'satisfies must not reference the concept itself';
+      if (!graph.has(String(s))) return `satisfies references unknown concept: ${s}`;
+    }
+  }
   return null;
 }
 

@@ -27,6 +27,10 @@ async function loadConceptRows(db) {
 // course — the same Map contract complexityData used for curated_prerequisites.
 function projectEdges(conceptRows, courseRows) {
   const requires = new Map(conceptRows.map((c) => [String(c.slug), (c.requires || []).map(String)]));
+  // Combined-course concepts (e.g. linear_alg_diff_eq) list the concepts they
+  // stand in for via `satisfies`; their courses register locally under those
+  // slugs too, so downstream requirements find them.
+  const satisfies = new Map(conceptRows.map((c) => [String(c.slug), (c.satisfies || []).map(String)]));
   const byCollege = new Map();
   for (const row of courseRows) {
     if (row.concept_source === undefined) continue;
@@ -40,8 +44,10 @@ function projectEdges(conceptRows, courseRows) {
     const localBySlug = new Map();
     for (const row of rows) {
       if (!row.concept) continue;
-      if (!localBySlug.has(row.concept)) localBySlug.set(row.concept, []);
-      localBySlug.get(row.concept).push(courseKeyOf(row));
+      for (const slug of [row.concept, ...(satisfies.get(row.concept) || [])]) {
+        if (!localBySlug.has(slug)) localBySlug.set(slug, []);
+        localBySlug.get(slug).push(courseKeyOf(row));
+      }
     }
     // Required concepts with no local course fall through to their own
     // requirements (validated acyclic, so this terminates).
@@ -102,7 +108,9 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   const conceptRows = await loadConceptRows(db);
   const concepts = conceptRows.map((c) => ({
     slug: String(c.slug), name: c.name || c.slug, discipline: c.discipline || 'other',
-    requires: (c.requires || []).map(String), note: c.note || '',
+    requires: (c.requires || []).map(String),
+    satisfies: (c.satisfies || []).map(String),
+    note: c.note || '',
   }));
   const rules = concepts.flatMap((c) => c.requires.map((from) => ({ from, to: c.slug })));
   const inScope = await inScopeCourseIds(db, collegeKey);

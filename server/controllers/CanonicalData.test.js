@@ -117,6 +117,19 @@ describe('prereq_concept kind', () => {
     expect(res.body.error).toMatch(/cycle/);
   });
 
+  it('accepts satisfies naming known concepts and rejects unknown or self', async () => {
+    await put(concept('linear_alg'));
+    await put(concept('diff_eq'));
+    const ok = await put(concept('linear_alg_diff_eq', [], { satisfies: ['linear_alg', 'diff_eq'] }));
+    expect(ok.statusCode).toBe(200);
+    const unknown = await put(concept('combo_2', [], { satisfies: ['ghost'] }));
+    expect(unknown.statusCode).toBe(400);
+    expect(unknown.body.error).toMatch(/unknown concept: ghost/);
+    const self = await put(concept('combo_3', [], { satisfies: ['combo_3'] }));
+    expect(self.statusCode).toBe(400);
+    expect(self.body.error).toMatch(/itself/);
+  });
+
   it('stamps hand_curated source when none is given', async () => {
     await put(concept('calc_1'));
     const stored = await db.collection('curated_requirements').findOne({ _id: 'prereq_concept:calc_1' });

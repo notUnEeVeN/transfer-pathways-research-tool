@@ -54,6 +54,21 @@ describe('projectEdges', () => {
     expect(edges.get('cc:21')).toEqual([]);
   });
 
+  it('registers combined-course concepts under everything they satisfy', () => {
+    const withCombined = [...CONCEPTS, {
+      slug: 'linear_alg_diff_eq', name: 'Linear Algebra + Differential Equations',
+      discipline: 'math', requires: ['calc_3'], satisfies: ['linear_alg', 'diff_eq'],
+    }, {
+      slug: 'engr_circuits', name: 'Circuits', discipline: 'engr', requires: ['diff_eq'],
+    }];
+    // College 30 offers calc_3, a combined LA+DE course, and circuits.
+    const edges = projectEdges(withCombined, [
+      course(31, 30, 'calc_3'), course(32, 30, 'linear_alg_diff_eq'), course(33, 30, 'engr_circuits'),
+    ]);
+    expect(edges.get('cc:32')).toEqual(['cc:31']);   // combined ← calc_3
+    expect(edges.get('cc:33')).toEqual(['cc:32']);   // circuits finds diff_eq via satisfies
+  });
+
   it('gives examined-not-relevant courses an empty entry and skips unexamined ones', () => {
     const edges = projectEdges(CONCEPTS, [
       course(5, 10, null),          // examined, no concept

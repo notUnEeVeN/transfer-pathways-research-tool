@@ -153,10 +153,11 @@ export const REFERENCE_TABLES = [
           .map((value) => ({ value, label: value })),
       },
       { key: 'requires', label: 'Requires (concept slugs)', type: 'tags' },
+      { key: 'satisfies', label: 'Satisfies (for combined courses, e.g. linear_alg_diff_eq)', type: 'tags' },
       { key: 'note', label: 'Note', type: 'text', placeholder: 'e.g. conservative: calc_3 required statewide' },
     ],
     makeId: (row) => row.slug,
-    newRow: () => ({ slug: '', name: '', discipline: 'math', requires: [], note: '' }),
+    newRow: () => ({ slug: '', name: '', discipline: 'math', requires: [], satisfies: [], note: '' }),
     searchText: (r) => `${r.slug} ${r.name} ${r.discipline} ${(r.requires || []).join(' ')}`,
   },
 ]

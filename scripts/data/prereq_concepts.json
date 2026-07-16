@@ -791,6 +791,28 @@
     "World Literature II: Seventeenth Century Through the Present",
     "Contemporary World Literature"
    ]
+  },
+  {
+   "slug": "linear_alg_diff_eq",
+   "name": "Linear Algebra + Differential Equations (combined)",
+   "discipline": "math",
+   "requires": [
+    "calc_3"
+   ],
+   "satisfies": [
+    "linear_alg",
+    "diff_eq"
+   ],
+   "note": "Single-course packaging of linear_alg + diff_eq (~20 colleges, e.g. MATH 216 @ College of Marin, anchored by MATH 54 @ UC Berkeley / MATH 024 @ UC Merced). satisfies makes its courses stand in for both constituent concepts during projection. Added 2026-07-16 per Tybalt, replacing the deepest-constituent fold for LA+DE combos.",
+   "uc_anchors": [
+    "MATH 54 @ UC Berkeley",
+    "MATH 024 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Linear Algebra and Differential Equations",
+    "Differential Equations and Linear Algebra",
+    "Introduction to Linear Algebra and Differential Equations"
+   ]
   }
  ]
 }

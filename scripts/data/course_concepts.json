@@ -3,7 +3,7 @@
   "purpose": "Course→concept mapping over the in-scope inventory (spec §1B). Applied by scripts/import_course_concepts.py.",
   "authored": "2026-07-16",
   "session": "in-session multi-agent classification (Claude Code)",
-  "vote_protocol": "2 independent votes per course (sonnet), third-vote tiebreak on disagreement; unanimous=1.0, 2-of-3=0.67; disputes whose tiebreak was cut short by a session token limit carry flag needs_review with concept null (67 rows) — resolve manually in the console Mapping tab",
+  "vote_protocol": "2 independent votes per course (sonnet), third-vote tiebreak on disagreement; unanimous=1.0, 2-of-3=0.67; disputes whose tiebreak was cut short by a session token limit carry flag needs_review with concept null (67 rows) — resolve manually in the console Mapping tab; 71 unresolved disputes settled 2026-07-16 by a constrained haiku tiebreak (flag cheap_tiebreak, confidence 0.5)",
   "vocabulary": "scripts/data/prereq_concepts.json (locked 2026-07-15, 40 concepts)",
   "agreement": {
    "unanimous": 4627,
@@ -12,18 +12,19 @@
    "needs_review": 67
   },
   "sample_error_rate": null,
-  "sample_note": "G4 random-sample review pending: Tybalt reviews via the console; error rate to be recorded here afterward"
+  "sample_note": "G4 random-sample review pending: Tybalt reviews via the console; error rate to be recorded here afterward",
+  "combined_la_de": "25 combined LA+DE courses remapped to linear_alg_diff_eq (satisfies both constituents)"
  },
  "rows": [
   {
    "course_id": 4336,
    "institution_id": "cc:114",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "Calculus Supplement for Physics 120",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -228,23 +229,23 @@
   {
    "course_id": 36335,
    "institution_id": "cc:54",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "General Physics Laboratory - I",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 36370,
    "institution_id": "cc:54",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "General Physics Laboratory - II",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -548,12 +549,12 @@
   {
    "course_id": 55165,
    "institution_id": "cc:114",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "Calculus Supplement for Physics 121",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -599,12 +600,12 @@
   {
    "course_id": 57196,
    "institution_id": "cc:45",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "General Physics Laboratory II",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -630,34 +631,34 @@
   {
    "course_id": 57591,
    "institution_id": "cc:45",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "General Physics Laboratory I",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 61557,
    "institution_id": "cc:93",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "Principles of Physics Laboratory: Electricity and Magnetism",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 61935,
    "institution_id": "cc:66",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "Introductory Physics I-Calculus",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -673,12 +674,12 @@
   {
    "course_id": 62394,
    "institution_id": "cc:93",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "Principles of Physics Laboratory: Mechanics",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -1453,11 +1454,11 @@
    "course_id": 139949,
    "institution_id": "cc:121",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -2132,11 +2133,11 @@
   {
    "course_id": 153085,
    "institution_id": "cc:32",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Introduction to C Programming",
    "flags": [
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -2385,11 +2386,11 @@
    "course_id": 156456,
    "institution_id": "cc:70",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking and Argumentation",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -3626,11 +3627,11 @@
    "course_id": 166906,
    "institution_id": "cc:93",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Introduction to Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -3661,11 +3662,11 @@
    "course_id": 167125,
    "institution_id": "cc:17",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -3766,11 +3767,11 @@
    "course_id": 167832,
    "institution_id": "cc:104",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Philosophical Reasoning: Critical Thinking in Philosophy",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -3825,11 +3826,11 @@
    "course_id": 167910,
    "institution_id": "cc:49",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Introduction to Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -4189,12 +4190,12 @@
   {
    "course_id": 174068,
    "institution_id": "cc:47",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Programming in Visual Basic",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -4259,11 +4260,11 @@
    "course_id": 174757,
    "institution_id": "cc:19",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Introduction to Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -4592,11 +4593,11 @@
   {
    "course_id": 179244,
    "institution_id": "cc:25",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Programming in C#",
    "flags": [
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -6377,12 +6378,12 @@
   {
    "course_id": 197054,
    "institution_id": "cc:68",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Introduction to Computer Science",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -6413,11 +6414,11 @@
    "course_id": 197292,
    "institution_id": "cc:110",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -6577,12 +6578,12 @@
   {
    "course_id": 198441,
    "institution_id": "cc:3",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Programming Logic and Design (Introduction to Programming)",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -6951,11 +6952,11 @@
    "course_id": 201147,
    "institution_id": "cc:56",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -7476,11 +7477,11 @@
    "course_id": 203806,
    "institution_id": "cc:133",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Introduction to Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -7842,11 +7843,11 @@
   {
    "course_id": 205417,
    "institution_id": "cc:44",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Programming in C#",
    "flags": [
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -8274,11 +8275,11 @@
    "course_id": 208836,
    "institution_id": "cc:94",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking: The Philosophic Grounds of Literacy",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -8421,11 +8422,11 @@
    "course_id": 209726,
    "institution_id": "cc:64",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -8818,12 +8819,12 @@
   {
    "course_id": 213280,
    "institution_id": "cc:130",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Programming in Visual Basic",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -8932,12 +8933,12 @@
   {
    "course_id": 213982,
    "institution_id": "cc:137",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Visual BASIC Programming",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -9988,12 +9989,12 @@
   {
    "course_id": 226018,
    "institution_id": "cc:130",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Introduction to Computer Science",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -11249,11 +11250,11 @@
    "course_id": 238249,
    "institution_id": "cc:64",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking Honors",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -11556,12 +11557,12 @@
   {
    "course_id": 246013,
    "institution_id": "cc:19",
-   "concept": null,
-   "confidence": 0,
+   "concept": "engl_comp_2",
+   "confidence": 0.5,
    "title_seen": "Composition and Literature",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -11635,7 +11636,7 @@
   {
    "course_id": 246487,
    "institution_id": "cc:105",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Introduction to Linear Algebra and Differential Equations",
    "flags": [
@@ -11885,7 +11886,7 @@
   {
    "course_id": 247888,
    "institution_id": "cc:104",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra and Differential Equations",
    "flags": [
@@ -11921,7 +11922,7 @@
   {
    "course_id": 248017,
    "institution_id": "cc:103",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations with Linear Algebra",
    "flags": [
@@ -12517,12 +12518,12 @@
   {
    "course_id": 253182,
    "institution_id": "cc:43",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Introduction to Algorithms",
    "flags": [
     "ambiguous",
-    "no_majority"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -12568,13 +12569,13 @@
   {
    "course_id": 253427,
    "institution_id": "cc:52",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_waves_thermo",
+   "confidence": 0.5,
    "title_seen": "Mechanics, Heat, & Waves",
    "flags": [
     "ambiguous",
     "combined_course",
-    "no_majority"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -13718,12 +13719,12 @@
   {
    "course_id": 255947,
    "institution_id": "cc:131",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Introduction to Visual BASIC.NET",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -14430,11 +14431,11 @@
    "course_id": 262421,
    "institution_id": "cc:62",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Engineering Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -15394,7 +15395,7 @@
   {
    "course_id": 270415,
    "institution_id": "cc:74",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Introduction to Linear Algebra and Differential Equations",
    "flags": [
@@ -15610,13 +15611,13 @@
   {
    "course_id": 271842,
    "institution_id": "cc:92",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_gen_1",
+   "confidence": 0.5,
    "title_seen": "Introductory Physics",
    "flags": [
     "ambiguous",
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -16000,12 +16001,12 @@
   {
    "course_id": 273645,
    "institution_id": "cc:41",
-   "concept": null,
-   "confidence": 0,
+   "concept": "engr_programming",
+   "confidence": 0.5,
    "title_seen": "Introduction to C/C++ Programming Using Microcontrollers",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -16087,12 +16088,12 @@
   {
    "course_id": 273933,
    "institution_id": "cc:121",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_gen_1",
+   "confidence": 0.5,
    "title_seen": "General Physics",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -16912,7 +16913,7 @@
   {
    "course_id": 278544,
    "institution_id": "cc:55",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Introduction to Linear Algebra and Differential Equations",
    "flags": [
@@ -17512,12 +17513,12 @@
   {
    "course_id": 280473,
    "institution_id": "cc:113",
-   "concept": null,
-   "confidence": 0,
+   "concept": "engl_comp_2",
+   "confidence": 0.5,
    "title_seen": "Argumentation: Analysis of Oral and Written Communication",
    "flags": [
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -18031,7 +18032,7 @@
   {
    "course_id": 281069,
    "institution_id": "cc:110",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra/Differential Equations",
    "flags": [
@@ -18505,12 +18506,12 @@
   {
    "course_id": 281469,
    "institution_id": "cc:28",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_waves_thermo",
+   "confidence": 0.5,
    "title_seen": "General Physics III",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -19586,7 +19587,7 @@
   {
    "course_id": 283575,
    "institution_id": "cc:135",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Intro to Differential Equations and Linear Algebra",
    "flags": [
@@ -19838,7 +19839,7 @@
   {
    "course_id": 284683,
    "institution_id": "cc:74",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Introduction to Linear Algebra and Differential Equations Honors",
    "flags": [
@@ -19880,12 +19881,12 @@
   {
    "course_id": 284955,
    "institution_id": "cc:56",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "Fundamentals of Physics",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -20122,7 +20123,7 @@
   {
    "course_id": 285340,
    "institution_id": "cc:16",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Ordinary Differential Equations and Linear Algebra",
    "flags": [
@@ -20394,7 +20395,7 @@
   {
    "course_id": 286514,
    "institution_id": "cc:66",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Introduction to Linear Algebra and Differential Equations",
    "flags": [
@@ -20465,11 +20466,11 @@
    "course_id": 286633,
    "institution_id": "cc:66",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -20739,13 +20740,13 @@
   {
    "course_id": 287803,
    "institution_id": "cc:52",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_modern",
+   "confidence": 0.5,
    "title_seen": "Electricity, Magnetism, Optics, Atomic and Nuclear Structure",
    "flags": [
     "ambiguous",
     "combined_course",
-    "no_majority"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -21114,11 +21115,11 @@
    "course_id": 288995,
    "institution_id": "cc:14",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -21613,7 +21614,7 @@
   {
    "course_id": 290253,
    "institution_id": "cc:93",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra",
    "flags": [
@@ -22368,7 +22369,7 @@
   {
    "course_id": 294770,
    "institution_id": "cc:134",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra and Differential Equations",
    "flags": [
@@ -22466,12 +22467,12 @@
   {
    "course_id": 295217,
    "institution_id": "cc:38",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_1",
+   "confidence": 0.5,
    "title_seen": "Introduction to Computer Science",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -22934,7 +22935,7 @@
   {
    "course_id": 297855,
    "institution_id": "cc:71",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra and Differential Equations",
    "flags": [
@@ -23751,11 +23752,11 @@
    "course_id": 301630,
    "institution_id": "cc:66",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Honors Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -25253,13 +25254,13 @@
   {
    "course_id": 303267,
    "institution_id": "cc:92",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_gen_2",
+   "confidence": 0.5,
    "title_seen": "Introductory Physics",
    "flags": [
     "ambiguous",
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -25501,12 +25502,12 @@
   {
    "course_id": 303789,
    "institution_id": "cc:56",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "Fundamentals of Physics",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -25610,12 +25611,12 @@
   {
    "course_id": 303979,
    "institution_id": "cc:126",
-   "concept": null,
-   "confidence": 0,
+   "concept": "engl_comp_2",
+   "confidence": 0.5,
    "title_seen": "Honors College Composition and Research",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -25797,13 +25798,13 @@
   {
    "course_id": 304408,
    "institution_id": "cc:121",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_modern",
+   "confidence": 0.5,
    "title_seen": "General Physics",
    "flags": [
     "ambiguous",
     "combined_course",
-    "no_majority"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -28274,7 +28275,7 @@
   {
    "course_id": 309225,
    "institution_id": "cc:14",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Introduction to Linear Algebra and Differential Equations",
    "flags": [
@@ -28629,23 +28630,23 @@
   {
    "course_id": 316580,
    "institution_id": "cc:93",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_waves_thermo",
+   "confidence": 0.5,
    "title_seen": "Principles of Physics Laboratory: Heat, Waves and Modern Physics",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 316627,
    "institution_id": "cc:66",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "Introductory Physics II-Calculus",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -29824,11 +29825,11 @@
    "course_id": 338261,
    "institution_id": "cc:6",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -31196,10 +31197,10 @@
    "course_id": 350642,
    "institution_id": "cc:114",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking in Visual Studies",
    "flags": [
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -31372,12 +31373,12 @@
   {
    "course_id": 353044,
    "institution_id": "cc:101",
-   "concept": null,
-   "confidence": 0,
+   "concept": "bio_cell_molec",
+   "confidence": 0.5,
    "title_seen": "General Biology - Lecture and Laboratory",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -32415,12 +32416,12 @@
   {
    "course_id": 356211,
    "institution_id": "cc:99",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_2_oop",
+   "confidence": 0.5,
    "title_seen": "Intermediate Java Programming and Fundamental Data Structures",
    "flags": [
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -32434,12 +32435,12 @@
   {
    "course_id": 356356,
    "institution_id": "cc:99",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_2_oop",
+   "confidence": 0.5,
    "title_seen": "Intermediate C++ Programming and Fundamental Data Structures",
    "flags": [
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -32513,11 +32514,11 @@
    "course_id": 356664,
    "institution_id": "cc:14",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Honors Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -33081,7 +33082,7 @@
   {
    "course_id": 358875,
    "institution_id": "cc:33",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra and Differential Equations",
    "flags": [
@@ -33381,7 +33382,7 @@
   {
    "course_id": 359035,
    "institution_id": "cc:62",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra and Differential Equations",
    "flags": [
@@ -34180,7 +34181,7 @@
   {
    "course_id": 360031,
    "institution_id": "cc:36",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra",
    "flags": [
@@ -34240,7 +34241,7 @@
   {
    "course_id": 360085,
    "institution_id": "cc:150",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra",
    "flags": [
@@ -34584,23 +34585,23 @@
   {
    "course_id": 363590,
    "institution_id": "cc:113",
-   "concept": null,
-   "confidence": 0,
+   "concept": "engl_comp_2",
+   "confidence": 0.5,
    "title_seen": "Argumentation: Analysis of Oral and Written Communication - HONORS",
    "flags": [
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 363970,
    "institution_id": "cc:49",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Honors Critical Thinking ",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -34654,43 +34655,43 @@
   {
    "course_id": 364462,
    "institution_id": "cc:138",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_gen_1",
+   "confidence": 0.5,
    "title_seen": "Fundamentals of Physics I",
    "flags": [
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 364463,
    "institution_id": "cc:138",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "Fundamentals of Physics Laboratory I",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 364464,
    "institution_id": "cc:138",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_gen_2",
+   "confidence": 0.5,
    "title_seen": "Fundamentals of Physics II",
    "flags": [
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 364465,
    "institution_id": "cc:138",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "Fundamentals of Physics Laboratory II",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -35636,11 +35637,11 @@
    "course_id": 369849,
    "institution_id": "cc:20",
    "concept": null,
-   "confidence": 0,
+   "confidence": 0.5,
    "title_seen": "Critical Thinking",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -35678,12 +35679,12 @@
   {
    "course_id": 370079,
    "institution_id": "cc:28",
-   "concept": null,
-   "confidence": 0,
+   "concept": "c_systems_programming",
+   "confidence": 0.5,
    "title_seen": "Advanced Programming with C and C++",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -35931,12 +35932,12 @@
   {
    "course_id": 371861,
    "institution_id": "cc:153",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_modern",
+   "confidence": 0.5,
    "title_seen": "Optics and Modern Physics",
    "flags": [
     "combined_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -35958,7 +35959,7 @@
   {
    "course_id": 371969,
    "institution_id": "cc:153",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations with Linear Algebra",
    "flags": [
@@ -36294,23 +36295,23 @@
   {
    "course_id": 372556,
    "institution_id": "cc:101",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_mech",
+   "confidence": 0.5,
    "title_seen": "General Physics Laboratory I",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
    "course_id": 372557,
    "institution_id": "cc:101",
-   "concept": null,
-   "confidence": 0,
+   "concept": "phys_em",
+   "confidence": 0.5,
    "title_seen": "General Physics Laboratory II",
    "flags": [
     "partial_course",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -36367,7 +36368,7 @@
   {
    "course_id": 373197,
    "institution_id": "cc:35",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra",
    "flags": [
@@ -36631,12 +36632,12 @@
   {
    "course_id": 375159,
    "institution_id": "cc:5",
-   "concept": null,
-   "confidence": 0,
+   "concept": "cs_2_oop",
+   "confidence": 0.5,
    "title_seen": "Applied Python Programming",
    "flags": [
     "ambiguous",
-    "needs_review"
+    "cheap_tiebreak"
    ]
   },
   {
@@ -36920,7 +36921,7 @@
   {
    "course_id": 376757,
    "institution_id": "cc:62",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra for Engineers",
    "flags": [
@@ -37320,7 +37321,7 @@
   {
    "course_id": 377292,
    "institution_id": "cc:200",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra",
    "flags": [
@@ -37434,7 +37435,7 @@
   {
    "course_id": 377917,
    "institution_id": "cc:64",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Linear Algebra and Differential Equations",
    "flags": [
@@ -37806,7 +37807,7 @@
   {
    "course_id": 381479,
    "institution_id": "cc:17",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations with Linear Algebra",
    "flags": [
@@ -39033,7 +39034,7 @@
   {
    "course_id": 411007,
    "institution_id": "cc:4",
-   "concept": "diff_eq",
+   "concept": "linear_alg_diff_eq",
    "confidence": 1.0,
    "title_seen": "Differential Equations and Linear Algebra",
    "flags": [

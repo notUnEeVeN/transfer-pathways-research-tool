@@ -31,12 +31,22 @@ describe('ConceptMappingTable', () => {
     expect(screen.getByText('none (examined)')).toBeInTheDocument()
   })
 
-  it('hides mapped rows when the unmapped-only switch is on', () => {
+  it('hides mapped rows under the Unmapped-only filter', () => {
     render(<ConceptMappingTable initialCollegeId={4} />)
     expect(screen.getByText(/MATH 3A/)).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('switch'))
+    fireEvent.click(screen.getByText('All courses'))          // open the filter Select
+    fireEvent.click(screen.getByText('Unmapped only'))        // pick the option
     expect(screen.queryByText(/MATH 3A/)).not.toBeInTheDocument()
     expect(screen.getByText(/CS 10/)).toBeInTheDocument()
     expect(screen.getByText(/ART 1/)).toBeInTheDocument()
+  })
+
+  it('shows only note-carrying machine rows under the Flagged filter', () => {
+    render(<ConceptMappingTable initialCollegeId={4} />)
+    fireEvent.click(screen.getByText('All courses'))
+    fireEvent.click(screen.getByText('Flagged only'))
+    expect(screen.getByText(/MATH 3A/)).toBeInTheDocument()   // has concept_note
+    expect(screen.queryByText(/CS 10/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/ART 1/)).not.toBeInTheDocument()
   })
 })

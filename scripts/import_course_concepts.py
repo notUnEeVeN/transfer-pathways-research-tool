@@ -66,6 +66,13 @@ def validate_concepts(concepts):
         for r in reqs:
             if r not in graph:
                 sys.exit(f"{slug}: requires unknown concept {r!r}")
+    for c in concepts:
+        slug = str(c.get("slug") or "")
+        for s in c.get("satisfies") or []:
+            if s == slug:
+                sys.exit(f"{slug}: satisfies must not reference itself")
+            if s not in graph:
+                sys.exit(f"{slug}: satisfies unknown concept {s!r}")
     state = {}
     def visit(node, path):
         if state.get(node) == "done":
@@ -108,6 +115,7 @@ def build_concept_rows(concepts, now, source):
         "name": c.get("name") or c["slug"],
         "discipline": c["discipline"],
         "requires": [str(r) for r in (c.get("requires") or [])],
+        "satisfies": [str(s) for s in (c.get("satisfies") or [])],
         "note": c.get("note") or "",
         "source": source,
         "updated_at": now,
@@ -205,12 +213,15 @@ def main():
         if row.get("title_seen") and live.get("title") and row["title_seen"] != live["title"]:
             drifted += 1
             print(f"  title drift {cid}: classified {row['title_seen']!r}, live {live['title']!r}")
+        # Flags ride in concept_note so the console can surface/filter them
+        # (e.g. "combined_course", "needs_review"); an explicit note comes first.
+        note_parts = [p for p in [row.get("note"), ", ".join(row.get("flags") or [])] if p]
         ops.append(UpdateOne({"_id": cid}, {"$set": {
             "concept": row.get("concept"),
             "concept_source": MACHINE_SOURCE,
             "concept_confidence": float(row["confidence"]),
             "concept_title_seen": row.get("title_seen"),
-            "concept_note": row.get("note") or "",
+            "concept_note": "; ".join(note_parts),
         }}, upsert=False))
     if ops:
         db["assist_courses"].bulk_write(ops, ordered=False)

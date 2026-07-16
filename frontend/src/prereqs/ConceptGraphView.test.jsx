@@ -23,16 +23,18 @@ vi.mock('../shared/query/hooks/useData', () => ({
 }))
 
 describe('ConceptGraphView (college mode)', () => {
-  it('renders mapped course nodes, hollow missing-concept nodes, and the college stat tiles', () => {
+  it('renders mapped courses and concept gaps as chips, plus the college stat tiles', () => {
     render(<ConceptGraphView initialCollegeId={4} />)
 
-    // Mapped course renders as a solid node labeled with its code.
+    // The mapped course has no local edges → it renders in the
+    // "Mapped, no local edges" chip section, labeled with its code.
     expect(screen.getByText('MATH 3A')).toBeInTheDocument()
+    expect(screen.getByText('Mapped, no local edges')).toBeInTheDocument()
 
-    // calc_2 has no course at this college → hollow node with the gap callout.
-    // ('Calculus II' also appears in the rules table below the SVG.)
+    // calc_2 has no course at this college → "No course here" chip.
+    // ('Calculus II' also appears in the rules table below.)
     expect(screen.getAllByText('Calculus II').length).toBeGreaterThan(0)
-    expect(screen.getByText('no course here')).toBeInTheDocument()
+    expect(screen.getByText('No course here')).toBeInTheDocument()
 
     // College-mode StatStrip: examined 1 of 1 → 100%.
     expect(screen.getByText('100%')).toBeInTheDocument()

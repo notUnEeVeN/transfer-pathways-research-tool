@@ -1,9 +1,18 @@
 import React, { useMemo, useState } from 'react'
-import { Alert, Badge, Button, Combobox, Input, Modal, Select, Spinner, Stack, Switch } from '../components/ui'
+import { Alert, Badge, Button, Combobox, Input, Modal, Select, Spinner, Stack } from '../components/ui'
 import { useColleges, usePrereqGraph, useSaveCourseConcept } from '../shared/query/hooks/useData'
 import { DataTable } from '../DataReferences'
 
 const pct = (v) => (v == null ? '—' : `${Math.round(v * 100)}%`)
+
+// Import-time flags (needs_review, combined_course, …) ride in concept_note;
+// the Flagged filter keys on any note being present on a machine-sourced row.
+const FILTER_OPTIONS = [
+  { value: 'all', label: 'All courses' },
+  { value: 'unmapped', label: 'Unmapped only' },
+  { value: 'flagged', label: 'Flagged only' },
+]
+const isFlagged = (r) => Boolean(r.concept_note) && r.concept_source === 'llm_session_v1'
 
 // Data → Prerequisites → Mapping: which concept each in-scope course carries.
 // Rows come from the graph endpoint (it knows the in-scope set); edits go
@@ -14,7 +23,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
   const graph = usePrereqGraph(collegeId)
   const save = useSaveCourseConcept()
   const [query, setQuery] = useState('')
-  const [unmappedOnly, setUnmappedOnly] = useState(false)
+  const [filter, setFilter] = useState('all')
   const [editing, setEditing] = useState(null) // { key, label, concept, note }
   const [saveError, setSaveError] = useState(null)
 
@@ -31,11 +40,12 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
     const all = graph.data?.courses || []
     const needle = query.trim().toLowerCase()
     return all.filter((r) => {
-      if (unmappedOnly && r.concept) return false
+      if (filter === 'unmapped' && r.concept) return false
+      if (filter === 'flagged' && !isFlagged(r)) return false
       if (!needle) return true
-      return `${r.prefix} ${r.number} ${r.title} ${r.concept || ''}`.toLowerCase().includes(needle)
+      return `${r.prefix} ${r.number} ${r.title} ${r.concept || ''} ${r.concept_note || ''}`.toLowerCase().includes(needle)
     })
-  }, [graph.data, query, unmappedOnly])
+  }, [graph.data, query, filter])
 
   const commit = async () => {
     setSaveError(null)
@@ -57,9 +67,9 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Find course…'
           aria-label='Find course'
           className='bg-canvas border border-border rounded-pill px-3 py-[7px] text-[13px] text-ink placeholder:text-ink-subtle outline-none' />
-        <label className='ml-auto inline-flex items-center gap-2 text-caption text-ink-muted'>
-          <Switch checked={unmappedOnly} onChange={() => setUnmappedOnly((s) => !s)} /> unmapped only
-        </label>
+        <div className='ml-auto w-44'>
+          <Select value={filter} options={FILTER_OPTIONS} onChange={setFilter} aria-label='Filter rows' />
+        </div>
       </div>
 
       {collegeId == null && <Alert type='info'>Pick a college to review its in-scope courses.</Alert>}
@@ -93,6 +103,12 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
                   : <Badge variant='neutral'>Not examined</Badge>,
             },
             { key: 'concept_confidence', label: 'Confidence', render: (r) => pct(r.concept_confidence) },
+            {
+              key: 'concept_note', label: 'Flags / note',
+              render: (r) => r.concept_note
+                ? <span className='text-tag text-ink-subtle'>{r.concept_note}</span>
+                : '-',
+            },
             { key: 'concept_source', label: 'Source', render: (r) => r.concept_source ?? '-' },
             {
               key: 'in_scope', label: 'In scope',
