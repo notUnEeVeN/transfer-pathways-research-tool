@@ -133,4 +133,26 @@ describe('canonical schema migration', () => {
     const untouched = model.collections.assist_courses.find((row) => row._id !== canonicalId);
     expect(untouched.concept).toBeUndefined();
   });
+
+  it('carries concept fields forward on the receiving side too', async () => {
+    // Same shape as the sending-side test, but stamping the seeded legacy
+    // university course's canonical row — concept_confidence: 0 keeps a
+    // falsy-but-valid value in play.
+    const legacy = await db.collection('university_courses').findOne({});
+    const canonicalId = `university:${legacy.parent_id}`;
+    await db.collection('assist_courses').updateOne(
+      { _id: canonicalId },
+      { $set: {
+        _id: canonicalId, side: 'receiving', source_id: legacy.parent_id,
+        institution_id: `uc:${legacy.university_id}`,
+        concept: 'calc_1', concept_source: 'llm_session_v1', concept_confidence: 0,
+      } },
+      { upsert: true }
+    );
+    const model = await buildModel(db);
+    const rebuilt = model.collections.assist_courses.find((row) => row._id === canonicalId);
+    expect(rebuilt).toMatchObject({
+      concept: 'calc_1', concept_source: 'llm_session_v1', concept_confidence: 0,
+    });
+  });
 });
