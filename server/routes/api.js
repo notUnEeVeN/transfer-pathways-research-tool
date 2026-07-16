@@ -24,6 +24,7 @@ router.get('/assist/institutions', ...guarded, canonicalDataController.listInsti
 router.put('/assist/institutions/:id', ...guarded, jsonBody, canonicalDataController.putInstitutionProfile);
 router.delete('/assist/institutions/:id/profile', ...guarded, canonicalDataController.deleteInstitutionProfile);
 router.get('/assist/courses',      ...guarded, canonicalDataController.listCourses);
+router.put('/assist/courses/:id/concept', ...guarded, jsonBody, canonicalDataController.putCourseConcept);
 router.get('/assist/agreements',   ...guarded, canonicalDataController.listAgreements);
 router.get('/assist/coverage',     ...guarded, analysisController.coverage);
 router.get('/admissions',          ...guarded, canonicalDataController.listAdmissions);

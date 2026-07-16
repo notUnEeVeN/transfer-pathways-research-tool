@@ -293,6 +293,36 @@ exports.deleteInstitutionProfile = asyncHandler(async (req, res) => {
   res.json({ ok: true });
 });
 
+// Course→concept mapping: enrichment fields on the sending-course doc (the
+// spec's §1B). Human console edits only — imports use scripts/import_course_concepts.py.
+exports.putCourseConcept = asyncHandler(async (req, res) => {
+  const db = req.app.locals.db;
+  const id = decodeURIComponent(String(req.params.id || ''));
+  if (!/^cc:.+$/.test(id)) return res.status(400).json({ error: 'course id must be cc:<course_id>' });
+  const { concept = null, note = '' } = req.body || {};
+  if (concept != null) {
+    const known = await db.collection(COLLECTIONS.requirements)
+      .findOne({ _id: `prereq_concept:${concept}` }, { projection: { _id: 1 } });
+    if (!known) return res.status(400).json({ error: `unknown concept slug: ${concept}` });
+  }
+  const course = await db.collection(COLLECTIONS.courses)
+    .findOne({ _id: id, side: 'sending' }, { projection: { title: 1 } });
+  if (!course) return res.status(404).json({ error: 'no such sending course' });
+  await db.collection(COLLECTIONS.courses).updateOne(
+    { _id: id },
+    { $set: {
+      concept: concept ?? null,
+      concept_source: 'console_edit',
+      concept_confidence: 1,
+      concept_title_seen: course.title ?? null,
+      concept_note: String(note || ''),
+      concept_curated_by: req.user?.uid ?? null,
+      concept_curated_at: new Date(),
+    } }
+  );
+  res.json({ ok: true, id });
+});
+
 exports.COLLECTIONS = COLLECTIONS;
 exports.REQUIREMENT_KINDS = REQUIREMENT_KINDS;
 exports.parseInstitutionId = parseInstitutionId;

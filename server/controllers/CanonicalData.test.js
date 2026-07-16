@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { listRequirements, putRequirement, putPrerequisite, deleteRequirement } = cjs('./CanonicalData');
+const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept } = cjs('./CanonicalData');
 
 let mongo;
 let db;
@@ -140,5 +140,52 @@ describe('prereq_concept kind', () => {
     await put(concept('calc_1'));
     const res = await del('prereq_concept:calc_1');
     expect(res.body).toEqual({ ok: true });
+  });
+});
+
+describe('putCourseConcept', () => {
+  beforeEach(async () => {
+    await db.collection('curated_requirements').insertOne({
+      _id: 'prereq_concept:calc_1', kind: 'prereq_concept', legacy_id: 'calc_1',
+      slug: 'calc_1', name: 'Calculus I', discipline: 'math', requires: [],
+    });
+    await db.collection('assist_courses').insertMany([
+      { _id: 'cc:42', side: 'sending', course_id: 42, institution_id: 'cc:10', title: 'Calculus I' },
+      { _id: 'university:9', side: 'receiving', parent_id: 9, institution_id: 'uc:1', title: 'Math 1A' },
+    ]);
+  });
+
+  const putConcept = (id, body) =>
+    run(putCourseConcept, request({ params: { id }, body }));
+
+  it('stamps the mapping fields on a sending course', async () => {
+    const res = await putConcept('cc:42', { concept: 'calc_1', note: 'obvious' });
+    expect(res.body).toEqual({ ok: true, id: 'cc:42' });
+    const stored = await db.collection('assist_courses').findOne({ _id: 'cc:42' });
+    expect(stored).toMatchObject({
+      concept: 'calc_1', concept_source: 'console_edit', concept_confidence: 1,
+      concept_title_seen: 'Calculus I', concept_note: 'obvious', concept_curated_by: 'curator-1',
+    });
+    expect(stored.concept_curated_at).toBeInstanceOf(Date);
+  });
+
+  it('clears to examined-not-relevant with concept null', async () => {
+    await putConcept('cc:42', { concept: 'calc_1' });
+    const res = await putConcept('cc:42', { concept: null });
+    expect(res.statusCode).toBe(200);
+    const stored = await db.collection('assist_courses').findOne({ _id: 'cc:42' });
+    expect(stored.concept).toBeNull();
+    expect(stored.concept_source).toBe('console_edit');
+  });
+
+  it('400s an unknown concept slug', async () => {
+    const res = await putConcept('cc:42', { concept: 'underwater_calc' });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/unknown concept slug/);
+  });
+
+  it('404s a missing course and 400s a non-cc id', async () => {
+    expect((await putConcept('cc:999', { concept: 'calc_1' })).statusCode).toBe(404);
+    expect((await putConcept('university:9', { concept: 'calc_1' })).statusCode).toBe(400);
   });
 });
