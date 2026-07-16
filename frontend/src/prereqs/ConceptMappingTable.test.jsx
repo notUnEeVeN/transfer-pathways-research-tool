@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import ConceptMappingTable from './ConceptMappingTable'
 
 vi.mock('../shared/query/hooks/useData', () => ({
@@ -8,10 +8,11 @@ vi.mock('../shared/query/hooks/useData', () => ({
     data: {
       concepts: [{ slug: 'calc_1', name: 'Calculus I', discipline: 'math', requires: [] }],
       rules: [],
-      stats: { in_scope: 2, examined: 1, mapped: 1, edges: 0, phantom_course_ids: [] },
+      stats: { in_scope: 3, examined: 2, mapped: 1, edges: 0, phantom_course_ids: [] },
       courses: [
         { key: 'cc:1', prefix: 'MATH', number: '3A', title: 'Calculus I', units: 5, concept: 'calc_1', concept_source: 'llm_session_v1', concept_confidence: 1, in_scope: true },
         { key: 'cc:2', prefix: 'CS', number: '10', title: 'Intro CS', units: 4, concept: null, concept_source: null, concept_confidence: null, in_scope: true },
+        { key: 'cc:3', prefix: 'ART', number: '1', title: 'Art History', units: 3, concept: null, concept_source: 'llm_session_v1', concept_confidence: null, in_scope: true },
       ],
       edges: [],
       legacy: null,
@@ -27,5 +28,15 @@ describe('ConceptMappingTable', () => {
     expect(screen.getByText(/MATH 3A/)).toBeInTheDocument()
     expect(screen.getByText('calc_1')).toBeInTheDocument()
     expect(screen.getByText('Not examined')).toBeInTheDocument()
+    expect(screen.getByText('none (examined)')).toBeInTheDocument()
+  })
+
+  it('hides mapped rows when the unmapped-only switch is on', () => {
+    render(<ConceptMappingTable initialCollegeId={4} />)
+    expect(screen.getByText(/MATH 3A/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('switch'))
+    expect(screen.queryByText(/MATH 3A/)).not.toBeInTheDocument()
+    expect(screen.getByText(/CS 10/)).toBeInTheDocument()
+    expect(screen.getByText(/ART 1/)).toBeInTheDocument()
   })
 })

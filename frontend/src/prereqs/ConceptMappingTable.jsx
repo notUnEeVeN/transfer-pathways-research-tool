@@ -16,6 +16,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
   const [query, setQuery] = useState('')
   const [unmappedOnly, setUnmappedOnly] = useState(false)
   const [editing, setEditing] = useState(null) // { key, label, concept, note }
+  const [saveError, setSaveError] = useState(null)
 
   const collegeOptions = useMemo(
     () => (colleges.data || []).map((c) => ({ value: c.source_id, label: c.name })),
@@ -37,8 +38,13 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
   }, [graph.data, query, unmappedOnly])
 
   const commit = async () => {
-    await save.mutateAsync({ id: editing.key, concept: editing.concept || null, note: editing.note })
-    setEditing(null)
+    setSaveError(null)
+    try {
+      await save.mutateAsync({ id: editing.key, concept: editing.concept || null, note: editing.note })
+      setEditing(null)
+    } catch (err) {
+      setSaveError(err?.response?.data?.error || 'Failed to save.')
+    }
   }
 
   return (
@@ -49,9 +55,10 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
             placeholder='Pick a community college…' />
         </div>
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Find course…'
+          aria-label='Find course'
           className='bg-canvas border border-border rounded-pill px-3 py-[7px] text-[13px] text-ink placeholder:text-ink-subtle outline-none' />
         <label className='ml-auto inline-flex items-center gap-2 text-caption text-ink-muted'>
-          <Switch checked={unmappedOnly} onChange={setUnmappedOnly} /> unmapped only
+          <Switch checked={unmappedOnly} onChange={() => setUnmappedOnly((s) => !s)} /> unmapped only
         </label>
       </div>
 
@@ -63,10 +70,13 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
       {collegeId != null && graph.data && (
         <DataTable
           rows={rows}
-          onEdit={(r) => setEditing({
-            key: r.key, label: `${r.prefix} ${r.number} — ${r.title}`,
-            concept: r.concept || '', note: '',
-          })}
+          onEdit={(r) => {
+            setSaveError(null)
+            setEditing({
+              key: r.key, label: `${r.prefix} ${r.number} — ${r.title}`,
+              concept: r.concept || '', note: '',
+            })
+          }}
           columns={[
             {
               key: 'code', label: 'Course', cellClassName: 'text-ink',
@@ -80,7 +90,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
                 ? <span className='chip font-mono'>{r.concept}</span>
                 : r.concept_source
                   ? <span className='text-ink-subtle'>none (examined)</span>
-                  : <Badge tone='warning'>Not examined</Badge>,
+                  : <Badge variant='neutral'>Not examined</Badge>,
             },
             { key: 'concept_confidence', label: 'Confidence', render: (r) => pct(r.concept_confidence) },
             { key: 'concept_source', label: 'Source', render: (r) => r.concept_source ?? '-' },
@@ -94,6 +104,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
       <Modal open={!!editing} onClose={() => setEditing(null)} title={editing?.label || ''}>
         {editing && (
           <Stack gap='cozy'>
+            {saveError && <Alert type='error'>{saveError}</Alert>}
             <div>
               <p className='field-label'>Concept</p>
               <Select value={editing.concept} options={conceptOptions}
