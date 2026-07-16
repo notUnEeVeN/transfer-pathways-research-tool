@@ -108,4 +108,29 @@ describe('canonical schema migration', () => {
     expect(model.collections.team_members.find((row) => row._id === 'user-1').display_name).toBe('Ada');
     expect(model.collections.published_figures.map((row) => row._id)).toContain('figure-a');
   });
+
+  it('carries concept fields forward when rebuilding courses from legacy', async () => {
+    // The beforeEach seeds a legacy CC course; stamp concept fields on its
+    // current canonical row and rebuild.
+    const legacy = await db.collection('courses').findOne({});
+    const canonicalId = `cc:${legacy.course_id}`;
+    await db.collection('assist_courses').updateOne(
+      { _id: canonicalId },
+      { $set: {
+        _id: canonicalId, side: 'sending', source_id: legacy.course_id,
+        institution_id: `cc:${legacy.community_college_id}`,
+        concept: 'calc_1', concept_source: 'console_edit', concept_confidence: 1,
+        concept_title_seen: 'Calculus I', concept_note: '',
+        concept_curated_by: 'user-1', concept_curated_at: new Date(),
+      } },
+      { upsert: true }
+    );
+    const model = await buildModel(db);
+    const rebuilt = model.collections.assist_courses.find((row) => row._id === canonicalId);
+    expect(rebuilt).toMatchObject({
+      concept: 'calc_1', concept_source: 'console_edit', concept_curated_by: 'user-1',
+    });
+    const untouched = model.collections.assist_courses.find((row) => row._id !== canonicalId);
+    expect(untouched.concept).toBeUndefined();
+  });
 });
