@@ -14,6 +14,7 @@ const { manyToOneCount } = require('./optionSolver');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
 const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
 const { buildDegreeGroups } = require('../degreeSlots');
+const { projectPrereqEdges } = require('../prereqGraph');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
@@ -1222,21 +1223,18 @@ async function categoryGapsData(db, auditDb, { majorContains = '', visiblePairs 
 }
 
 /**
- * Curricular complexity (Curricular Analytics-style) over the curated
- * prerequisite graph, for the min-set pathway of each agreement.
+ * Curricular complexity (Curricular Analytics-style) over the projected
+ * prerequisite concept graph, for the min-set pathway of each agreement.
  *   delay factor    — longest prereq chain through the course
  *   blocking factor — number of courses this course unlocks (descendants)
  *   complexity      — per-course delay + blocking, summed per pathway
- * Only CC-side courses (`cc:<course_id>` keys in curated_prerequisites) are in
- * scope for v1 — that's the pathway the transfer student actually schedules.
+ * Edges come from services/prereqGraph (concept rules × course concept tags);
+ * coverage counts pathway courses that have been examined (concept_source set).
  */
 async function complexityData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
   const curation = await loadCuration(auditDb);
   const isExcluded = makeIsExcluded(curation);
-  const prereqDocs = await auditDb.collection('curated_prerequisites').find().toArray();
-  const prereqsByKey = new Map(prereqDocs.map((d) => [
-    String(d._id), (d.prerequisite_ids || d.prereqs || []).map(String),
-  ]));
+  const prereqsByKey = await projectPrereqEdges(db);
   const coursesById = await loadCoursesById(db);
 
   const rows = [];
