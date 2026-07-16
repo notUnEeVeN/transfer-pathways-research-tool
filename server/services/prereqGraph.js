@@ -44,34 +44,46 @@ function projectEdges(conceptRows, courseRows) {
   const edges = new Map();
   for (const rows of byCollege.values()) {
     const localBySlug = new Map();
+    const langOf = new Map();
     for (const row of rows) {
       if (!row.concept) continue;
+      if (row.language) langOf.set(courseKeyOf(row), String(row.language));
       for (const slug of [row.concept, ...(satisfies.get(row.concept) || [])]) {
         if (!localBySlug.has(slug)) localBySlug.set(slug, []);
         localBySlug.get(slug).push(courseKeyOf(row));
       }
     }
+    // Language-aware pick: a language-tagged course (e.g. Advanced Java) takes
+    // only same-language or untagged prerequisites, so Intro Java feeds it but
+    // Intro Python doesn't. Falls back to all candidates if none match, so a
+    // tagged course is never left without a prerequisite it clearly needs.
+    const pickLocal = (req, lang) => {
+      const all = localBySlug.get(req) || [];
+      if (!lang) return all;
+      const same = all.filter((k) => !langOf.get(k) || langOf.get(k) === lang);
+      return same.length ? same : all;
+    };
     // A single required concept resolves to the college's courses for it, or
     // falls through to that concept's own prerequisites when the college offers
     // none (validated acyclic, so this terminates).
-    const resolveReq = (req, seen) => {
+    const resolveReq = (req, seen, lang) => {
       if (seen.has(req)) return [];
-      const local = localBySlug.get(req);
-      if (local && local.length) return local;
-      return resolveList(requires.get(req) || [], new Set([...seen, req]));
+      const local = pickLocal(req, lang);
+      if (local.length) return local;
+      return resolveList(requires.get(req) || [], new Set([...seen, req]), lang);
     };
     // An OR-group is satisfied by the first listed alternative the college can
     // resolve; a plain entry is an AND requirement.
-    const resolveList = (reqList, seen) => {
+    const resolveList = (reqList, seen, lang) => {
       const out = [];
       for (const entry of reqList) {
         if (Array.isArray(entry)) {
           for (const alt of entry) {
-            const got = resolveReq(String(alt), seen);
+            const got = resolveReq(String(alt), seen, lang);
             if (got.length) { out.push(...got); break; }
           }
         } else {
-          out.push(...resolveReq(String(entry), seen));
+          out.push(...resolveReq(String(entry), seen, lang));
         }
       }
       return out;
@@ -79,8 +91,9 @@ function projectEdges(conceptRows, courseRows) {
     for (const row of rows) {
       const key = courseKeyOf(row);
       if (!row.concept) { edges.set(key, []); continue; }
-      const prereqs = [...new Set(resolveList(requires.get(row.concept) || [], new Set([row.concept])))]
-        .filter((k) => k !== key);
+      const prereqs = [...new Set(
+        resolveList(requires.get(row.concept) || [], new Set([row.concept]), row.language || null),
+      )].filter((k) => k !== key);
       edges.set(key, prereqs);
     }
   }
@@ -93,7 +106,7 @@ async function loadExaminedCourses(db, collegeKey = null) {
   return db.collection('assist_courses').find(filter, {
     projection: {
       course_id: 1, institution_id: 1, community_college_id: 1, prefix: 1, number: 1,
-      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1,
+      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1, language: 1,
     },
   }).toArray();
 }
@@ -160,7 +173,7 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
     { side: 'sending', institution_id: collegeKey },
     { projection: {
       course_id: 1, institution_id: 1, community_college_id: 1, prefix: 1, number: 1,
-      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1,
+      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1, language: 1,
     } }
   ).toArray();
   const byNumericId = new Map(catalog.map((row) => [Number(row.course_id), row]));
@@ -180,6 +193,7 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
     concept_source: row.concept_source ?? null,
     concept_confidence: row.concept_confidence ?? null,
     concept_note: row.concept_note ?? null,
+    language: row.language ?? null,
     in_scope: inScope.has(Number(row.course_id)),
   })).sort((a, b) => String(a.prefix).localeCompare(String(b.prefix))
     || String(a.number).localeCompare(String(b.number)));

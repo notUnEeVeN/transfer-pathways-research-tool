@@ -608,9 +608,12 @@
    "discipline": "engr",
    "requires": [
     "phys_em",
-    "diff_eq"
+    [
+     "linear_alg_diff_eq",
+     "diff_eq"
+    ]
    ],
-   "note": "The main engineering transfer course statewide (~50 colleges): intro circuit analysis. We require Differential Equations completed (most colleges allow it as a co-req; we take the stricter call) plus calculus-based E&M. Lecture+lab pairs and titles like 'Network Analysis' or 'Intro to Electrical Engineering' fold in.",
+   "note": "The main engineering transfer course statewide (~50 colleges): intro circuit analysis. Requires calculus-based physics (E&M) plus differential equations — either the standalone Diff Eq course, or a combined Linear Algebra + Diff Eq course. The combined course is the shorter route (one course instead of linear algebra then diff eq), so students who take it reach circuits with less prerequisite depth. Lecture+lab pairs and titles like 'Network Analysis' fold in.",
    "uc_anchors": [
     "ENGR 065 @ UC Merced",
     "ENG 017 @ UC Davis",

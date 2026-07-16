@@ -72,6 +72,27 @@ describe('projectEdges', () => {
     ]).get('cc:7')).toEqual(['cc:5']);
   });
 
+  it('links intro→advanced only within a programming language', () => {
+    const concepts = [
+      { slug: 'cs_1', name: 'CS1', discipline: 'cs', requires: [] },
+      { slug: 'cs_2', name: 'CS2', discipline: 'cs', requires: ['cs_1'] },
+      { slug: 'cs_3', name: 'Data Structures', discipline: 'cs', requires: ['cs_2'] },
+    ];
+    const lang = (id, college, concept, language) =>
+      course(id, college, concept, language ? { language } : {});
+    // College 10: intro java/cpp/python, advanced java/cpp, data structures.
+    const edges = projectEdges(concepts, [
+      lang(1, 10, 'cs_1', 'java'), lang(2, 10, 'cs_1', 'cpp'), lang(3, 10, 'cs_1', 'python'),
+      lang(4, 10, 'cs_2', 'java'), lang(5, 10, 'cs_2', 'cpp'),
+      lang(6, 10, 'cs_3', null),
+    ]);
+    expect(edges.get('cc:4')).toEqual(['cc:1']);            // adv java ← intro java only
+    expect(edges.get('cc:5')).toEqual(['cc:2']);            // adv c++ ← intro c++ only
+    expect(new Set(edges.get('cc:6'))).toEqual(new Set(['cc:4', 'cc:5'])); // DS ← both advanced
+    // Intro python is required by nothing → terminal (no course lists it).
+    for (const [, froms] of edges) expect(froms).not.toContain('cc:3');
+  });
+
   it('registers combined-course concepts under everything they satisfy', () => {
     const withCombined = [...CONCEPTS, {
       slug: 'linear_alg_diff_eq', name: 'Linear Algebra + Differential Equations',

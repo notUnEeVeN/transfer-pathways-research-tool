@@ -236,6 +236,9 @@ def main():
             "concept_confidence": float(row["confidence"]),
             "concept_title_seen": row.get("title_seen"),
             "concept_note": "; ".join(note_parts),
+            # Programming-language tag (CS courses); drives same-language
+            # intro->advanced linking in the projection. null when not tagged.
+            "language": row.get("language"),
         }}, upsert=False))
     if ops:
         db["assist_courses"].bulk_write(ops, ordered=False)

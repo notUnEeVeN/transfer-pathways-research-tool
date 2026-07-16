@@ -354,8 +354,8 @@ export function usePrereqGraph(collegeId) {
 export function useSaveCourseConcept() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, concept, note }) => apiClient
-      .put(`/assist/courses/${encodeURIComponent(id)}/concept`, { concept, note })
+    mutationFn: ({ id, concept, note, language }) => apiClient
+      .put(`/assist/courses/${encodeURIComponent(id)}/concept`, { concept, note, language })
       .then((r) => r.data),
     onSuccess: () => Promise.all([
       qc.invalidateQueries({ queryKey: ['prereq-graph'] }),

@@ -349,9 +349,12 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const id = decodeURIComponent(String(req.params.id || ''));
   if (!/^cc:.+$/.test(id)) return res.status(400).json({ error: 'course id must be cc:<course_id>' });
-  const { concept = null, note = '' } = req.body || {};
+  const { concept = null, note = '', language = null } = req.body || {};
   if (concept != null && typeof concept !== 'string') {
     return res.status(400).json({ error: 'concept must be a string slug or null' });
+  }
+  if (language != null && typeof language !== 'string') {
+    return res.status(400).json({ error: 'language must be a string or null' });
   }
   if (concept != null) {
     const known = await db.collection(COLLECTIONS.requirements)
@@ -369,6 +372,7 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
       concept_confidence: 1,
       concept_title_seen: course.title ?? null,
       concept_note: String(note || ''),
+      language: language ? String(language) : null,
       concept_curated_by: req.user?.uid ?? null,
       concept_curated_at: new Date(),
     } }

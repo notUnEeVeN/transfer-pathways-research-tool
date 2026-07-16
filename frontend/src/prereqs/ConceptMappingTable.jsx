@@ -14,6 +14,13 @@ const FILTER_OPTIONS = [
 ]
 const isFlagged = (r) => Boolean(r.concept_note) && r.concept_source === 'llm_session_v1'
 
+// Programming-language tag for CS courses (drives same-language intro→advanced
+// linking). Blank = untagged (links to any).
+const LANGUAGE_OPTIONS = [
+  { value: '', label: '—' },
+  ...['java', 'cpp', 'python', 'c', 'csharp', 'javascript'].map((v) => ({ value: v, label: v })),
+]
+
 // Data → Prerequisites → Mapping: which concept each in-scope course carries.
 // Rows come from the graph endpoint (it knows the in-scope set); edits go
 // through PUT /assist/courses/:id/concept.
@@ -50,7 +57,10 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
   const commit = async () => {
     setSaveError(null)
     try {
-      await save.mutateAsync({ id: editing.key, concept: editing.concept || null, note: editing.note })
+      await save.mutateAsync({
+        id: editing.key, concept: editing.concept || null,
+        note: editing.note, language: editing.language || null,
+      })
       setEditing(null)
     } catch (err) {
       setSaveError(err?.response?.data?.error || 'Failed to save.')
@@ -84,7 +94,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
             setSaveError(null)
             setEditing({
               key: r.key, label: `${r.prefix} ${r.number} — ${r.title}`,
-              concept: r.concept || '', note: r.concept_note || '',
+              concept: r.concept || '', note: r.concept_note || '', language: r.language || '',
             })
           }}
           columns={[
@@ -101,6 +111,10 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
                 : r.concept_source
                   ? <span className='text-ink-subtle'>none (examined)</span>
                   : <Badge variant='neutral'>Not examined</Badge>,
+            },
+            {
+              key: 'language', label: 'Lang',
+              render: (r) => (r.language ? <span className='text-tag font-mono text-ink-muted'>{r.language}</span> : '-'),
             },
             { key: 'concept_confidence', label: 'Confidence', render: (r) => pct(r.concept_confidence) },
             {
@@ -125,6 +139,11 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
               <p className='field-label'>Concept</p>
               <Select value={editing.concept} options={conceptOptions}
                 onChange={(v) => setEditing({ ...editing, concept: v })} />
+            </div>
+            <div>
+              <p className='field-label'>Language <span className='text-tag text-ink-subtle'>(CS courses — same-language intro→advanced linking)</span></p>
+              <Select value={editing.language} options={LANGUAGE_OPTIONS}
+                onChange={(v) => setEditing({ ...editing, language: v })} />
             </div>
             <div>
               <p className='field-label'>Note</p>

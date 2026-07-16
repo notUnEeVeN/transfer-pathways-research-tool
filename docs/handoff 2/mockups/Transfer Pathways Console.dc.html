@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #F8FAEC; }
+    a { color: #17855A; }
+    a:hover { color: #0F6B45; }
+    ::selection { background: #96F060; color: #193018; }
+    *:focus-visible { outline: 2px solid #193018; outline-offset: 2px; }
+    input::placeholder, textarea::placeholder { color: var(--cw-ink-faint,#93A18B); opacity: 1; }
+    @keyframes pmtPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(150,240,96,.55); } 50% { box-shadow: 0 0 0 8px rgba(150,240,96,0); } }
+  </style>
+</helmet>
+<div style="--cw-canvas:{{ cwCanvas }};--cw-mint:{{ cwMint }};--cw-sunken:{{ cwSunken }};--cw-sunken2:{{ cwSunken2 }};--cw-hover:{{ cwHover }};--cw-hover2:{{ cwHover2 }};--cw-border:{{ cwBorder }};--cw-hairline:{{ cwHairline }};--cw-hairline2:{{ cwHairline2 }};--cw-strong:{{ cwStrong }};--cw-mid:{{ cwMid }};--cw-ink-muted:{{ cwInkMuted }};--cw-ink-subtle:{{ cwInkSubtle }};--cw-ink-faint:{{ cwInkFaint }};--cw-ink-soft:{{ cwInkSoft }};min-height:100vh;min-width:1180px;background:var(--cw-canvas,#F8FAEC);color:#193018;font-family:'Schibsted Grotesk',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45">
+
+  <!-- ============ APP ============ -->
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+    <div>
+
+      <!-- ===== Top bar · forest ===== -->
+      <sc-if value="{{ barForest }}" hint-placeholder-val="{{ true }}">
+        <header style="display:flex;align-items:center;gap:20px;height:62px;padding:0 22px;background:#193018">
+          <div style="display:flex;align-items:center;gap:11px;cursor:pointer" onClick="{{ goHome }}">
+            <svg width="34" height="21" viewBox="-176 -176 352 215" fill="#96F060" aria-label="Transfer Pathways Research">
+              <path id="pmtPetalA" d="M -36 -106 L -36 -171 Q -36 -173 -32 -173 A 43.6 43.6 0 0 0 32 -173 Q 36 -173 36 -171 L 36 -106 A 36 36 0 0 1 -36 -106 Z"></path>
+              <use href="#pmtPetalA" transform="rotate(45)"></use>
+              <use href="#pmtPetalA" transform="rotate(-45)"></use>
+              <use href="#pmtPetalA" transform="rotate(90)"></use>
+              <use href="#pmtPetalA" transform="rotate(-90)"></use>
+            </svg>
+            <div style="display:flex;flex-direction:column;color:#F0FFE7;font-size:12px;line-height:1.06;letter-spacing:.01em">
+              <span style="font-weight:400">transfer</span>
+              <span style="font-weight:700">pathways</span>
+            </div>
+          </div>
+          <div style="width:1px;height:22px;background:rgba(240,255,231,.22)"></div>
+          <div style="font-size:10.5px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,255,231,.62)">Research console</div>
+
+          <nav style="margin-left:auto;display:flex;align-items:center;gap:2px;background:rgba(240,255,231,.09);border-radius:999px;padding:3px">
+            <sc-for list="{{ topTabs }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:7px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }};letter-spacing:.005em">{{ t.label }}</button>
+            </sc-for>
+          </nav>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:12.5px;white-space:nowrap;color:rgba(240,255,231,.6)">tybalt.mallet@gmail.com</span>
+            <button onClick="{{ signOut }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;white-space:nowrap;color:#F0FFE7;background:transparent;border:1px solid rgba(240,255,231,.3);border-radius:999px;padding:6px 14px" style-hover="background:rgba(240,255,231,.12)">Sign out</button>
+          </div>
+        </header>
+      </sc-if>
+
+      <!-- ===== Top bar · ivory ===== -->
+      <sc-if value="{{ barIvory }}" hint-placeholder-val="{{ false }}">
+        <header style="display:flex;align-items:center;gap:20px;height:62px;padding:0 22px;background:#FEFFF5;border-bottom:1px solid var(--cw-border,#E3E9D2)">
+          <div style="display:flex;align-items:center;gap:11px;cursor:pointer" onClick="{{ goHome }}">
+            <svg width="34" height="21" viewBox="-176 -176 352 215" fill="#96F060" aria-label="Transfer Pathways Research">
+              <path id="pmtPetalB" d="M -36 -106 L -36 -171 Q -36 -173 -32 -173 A 43.6 43.6 0 0 0 32 -173 Q 36 -173 36 -171 L 36 -106 A 36 36 0 0 1 -36 -106 Z"></path>
+              <use href="#pmtPetalB" transform="rotate(45)"></use>
+              <use href="#pmtPetalB" transform="rotate(-45)"></use>
+              <use href="#pmtPetalB" transform="rotate(90)"></use>
+              <use href="#pmtPetalB" transform="rotate(-90)"></use>
+            </svg>
+            <div style="display:flex;flex-direction:column;color:#193018;font-size:12px;line-height:1.06;letter-spacing:.01em">
+              <span style="font-weight:400">transfer</span>
+              <span style="font-weight:700">pathways</span>
+            </div>
+          </div>
+          <div style="width:1px;height:22px;background:var(--cw-border,#E3E9D2)"></div>
+          <div style="font-size:10.5px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Research console</div>
+
+          <nav style="margin-left:auto;display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+            <sc-for list="{{ topTabs }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:7px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }};letter-spacing:.005em">{{ t.label }}</button>
+            </sc-for>
+          </nav>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:12.5px;white-space:nowrap;color:var(--cw-ink-subtle,#7E8F76)">tybalt.mallet@gmail.com</span>
+            <button onClick="{{ signOut }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;white-space:nowrap;color:#193018;background:transparent;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:6px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">Sign out</button>
+          </div>
+        </header>
+      </sc-if>
+
+      <!-- ===== Sub-navigation ===== -->
+      <sc-if value="{{ hasSubnav }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:16px;height:54px;padding:0 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+          <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+            <sc-for list="{{ subTabs }}" as="t" hint-placeholder-count="4">
+              <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:6.5px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ hasRoute }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+              <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">API route</span>
+              <span style="font-size:12px;font-weight:600;color:#193018;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:8px;padding:4.5px 10px">{{ routeLabel }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ================= DATA · OVERVIEW ================= -->
+      <sc-if value="{{ showOverview }}" hint-placeholder-val="{{ true }}">
+        <main data-screen-label="Data · Overview" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:18px">
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;display:flex;align-items:stretch;padding:6px 0">
+            <sc-for list="{{ overviewStats }}" as="st" hint-placeholder-count="7">
+              <div style="flex:1;padding:16px 22px;border-left:{{ st.bl }}">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
+                <div style="margin-top:6px;font-size:25px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+            <div style="display:flex;align-items:baseline;gap:10px;padding:18px 22px 6px">
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Majors tracked per receiving campus</div>
+              <div style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">9 campuses</div>
+            </div>
+            <div style="display:grid;grid-template-columns:2.2fr 1fr 1fr 2.6fr 2.6fr;column-gap:14px;padding:10px 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Campus</div>
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Majors</div>
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Agreements</div>
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Mean hand-curated coverage</div>
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Mean ASSIST coverage</div>
+            </div>
+            <sc-for list="{{ campusRows }}" as="r" hint-placeholder-count="9">
+              <div style="display:grid;grid-template-columns:2.2fr 1fr 1fr 2.6fr 2.6fr;column-gap:14px;align-items:center;padding:13px 22px;border-bottom:{{ r.bb }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                <div style="font-size:14px;font-weight:600">{{ r.name }}</div>
+                <div style="font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--cw-ink-muted,#52664F)">1</div>
+                <div style="font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--cw-ink-muted,#52664F)">115</div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:110px;height:6px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:{{ r.handW }};background:{{ r.handC }}"></div></div>
+                  <span style="font-size:13.5px;font-weight:550">{{ r.hand }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:110px;height:6px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:{{ r.assistW }};background:{{ r.assistC }}"></div></div>
+                  <span style="font-size:13.5px;font-weight:550">{{ r.assist }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ================= DATA · AGREEMENTS (list) ================= -->
+      <sc-if value="{{ showAgList }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Data · Agreements" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start">
+
+          <aside style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:10px;position:sticky;top:20px">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:10px 12px 8px">
+              <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">UC campuses</span>
+              <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">9</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ campusItems }}" as="c" hint-placeholder-count="9">
+                <button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:10px;border:none;cursor:pointer;font-family:inherit;text-align:left;font-size:13.5px;font-weight:{{ c.w }};color:#193018;background:{{ c.bg }};border-radius:10px;padding:9px 12px" style-hover="background:var(--cw-hover2,#F5FAE8)">
+                  <span style="width:3px;height:14px;border-radius:999px;background:{{ c.notch }}"></span>
+                  <span>{{ c.name }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </aside>
+
+          <section style="display:flex;flex-direction:column;gap:16px;min-width:0">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div>
+                <div style="font-size:20px;font-weight:650;letter-spacing:-.01em">{{ campusName }}</div>
+                <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">115 colleges with agreements</div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:8px">
+                <button style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Min requirements</button>
+                <button style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Degree template</button>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:10px 14px;font-size:13.5px;color:var(--cw-ink-muted,#52664F);cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>All regions</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:10px 14px;font-size:13.5px;color:var(--cw-ink-muted,#52664F);cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>All districts</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:10px 14px;font-size:13.5px;color:var(--cw-ink-muted,#52664F);cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>All counties</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:18px">
+              <label style="flex:0 0 340px;display:flex;align-items:center;gap:9px;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:9px 15px">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><circle cx="6" cy="6" r="4.4"></circle><path d="M9.4 9.4 L12.6 12.6"></path></svg>
+                <input value="{{ collegeQ }}" onChange="{{ onCollegeQ }}" placeholder="Find a college…" style="border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:#193018;width:100%">
+              </label>
+              <div style="display:flex;align-items:center;gap:16px;font-size:13px;color:var(--cw-ink-muted,#52664F)">
+                <span style="display:flex;align-items:center;gap:6px;white-space:nowrap"><span style="width:9px;height:9px;border-radius:999px;background:#17855A"></span>complete</span>
+                <span style="display:flex;align-items:center;gap:6px;white-space:nowrap"><span style="width:9px;height:9px;border-radius:999px;background:#193018"></span>partial coverage</span>
+                <span style="display:flex;align-items:center;gap:6px;white-space:nowrap"><span style="width:9px;height:9px;border-radius:999px;border:1.5px solid var(--cw-strong,#C9D3B4);background:#FFFFFF"></span>no agreement</span>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:1fr 220px 220px 76px;gap:14px;padding:12px 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Community college</div>
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Hand curated</div>
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">ASSIST agreement</div>
+                <div></div>
+              </div>
+              <sc-for list="{{ collegeRows }}" as="col" hint-placeholder-count="8">
+                <div onClick="{{ col.onOpen }}" style="display:grid;grid-template-columns:1fr 220px 220px 76px;gap:14px;align-items:center;padding:13px 22px;border-bottom:{{ col.bb }};cursor:pointer" style-hover="background:var(--cw-hover,#F9FBEF)">
+                  <div style="min-width:0">
+                    <div style="font-size:14.5px;font-weight:600">{{ col.name }}</div>
+                    <div style="margin-top:1px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ col.district }}</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:110px;height:6px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:100%;background:#17855A"></div></div>
+                    <span style="font-size:13px;font-weight:550">100%</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:110px;height:6px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:100%;background:#17855A"></div></div>
+                    <span style="font-size:13px;font-weight:550">100%</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:550;color:#17855A">view <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 7 L11.5 7 M7.5 3 L11.5 7 L7.5 11"></path></svg></div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </main>
+      </sc-if>
+
+      <!-- ================= DATA · AGREEMENT DETAIL ================= -->
+      <sc-if value="{{ showAgDetail }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Agreement detail" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start">
+
+          <aside style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:10px;position:sticky;top:20px">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:10px 12px 8px">
+              <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">UC campuses</span>
+              <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">9</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ campusItems }}" as="c" hint-placeholder-count="9">
+                <button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:10px;border:none;cursor:pointer;font-family:inherit;text-align:left;font-size:13.5px;font-weight:{{ c.w }};color:#193018;background:{{ c.bg }};border-radius:10px;padding:9px 12px" style-hover="background:var(--cw-hover2,#F5FAE8)">
+                  <span style="width:3px;height:14px;border-radius:999px;background:{{ c.notch }}"></span>
+                  <span>{{ c.name }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </aside>
+
+          <section style="display:flex;flex-direction:column;gap:16px;min-width:0">
+            <button onClick="{{ backToList }}" style="align-self:flex-start;display:flex;align-items:center;gap:7px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border-radius:999px;padding:6px 10px 6px 6px" style-hover="background:var(--cw-mint,#F0FFE7)">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 7 L2.5 7 M6.5 3 L2.5 7 L6.5 11"></path></svg>
+              All colleges
+            </button>
+
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:18px 22px;display:flex;align-items:center;gap:14px">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:15.5px">
+                <span style="font-weight:650">Allan Hancock College</span>
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2 7 L11.5 7 M7.5 3 L11.5 7 L7.5 11"></path></svg>
+                <span style="font-weight:650">UC Berkeley</span>
+                <span style="color:var(--cw-strong,#C9D3B4)">·</span>
+                <span style="color:var(--cw-ink-muted,#52664F)">Electrical Engineering &amp; Computer Sciences, B.S.</span>
+              </div>
+              <button style="margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px;white-space:nowrap" style-hover="background:var(--cw-mint,#F0FFE7)">
+                Open ASSIST
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2.5 L2.5 2.5 L2.5 9.5 L9.5 9.5 L9.5 7"></path><path d="M7 2 L10 2 L10 5 M10 2 L5.5 6.5"></path></svg>
+              </button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px;align-self:flex-start">
+              <sc-for list="{{ detailTabs }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:6.5px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ detailIsAgreement }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="font-size:21px;font-weight:650;letter-spacing:-.01em;margin-top:4px">Required</div>
+                <sc-for list="{{ detailGroups }}" as="g" hint-placeholder-count="3">
+                  <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:14px;overflow:hidden">
+                    <div style="padding:10px 20px;background:var(--cw-mint,#F0FFE7);font-size:13px;font-weight:650;color:#193018">{{ g.title }}</div>
+                    <sc-for list="{{ g.rows }}" as="row" hint-placeholder-count="4">
+                      <div style="display:grid;grid-template-columns:1fr 44px 1fr;align-items:center;gap:8px;padding:14px 20px;border-bottom:{{ row.bb }}">
+                        <div>
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ row.ccCode }}</span>
+                            <sc-if value="{{ row.ccUnits }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:6px;padding:1.5px 6px">{{ row.ccUnits }}</span></sc-if>
+                          </div>
+                          <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ row.ccTitle }}</div>
+                        </div>
+                        <div style="display:flex;justify-content:center"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M12 7 L2.5 7 M6.5 3 L2.5 7 L6.5 11"></path></svg></div>
+                        <sc-if value="{{ row.none }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:13.5px;font-style:italic;color:var(--cw-ink-subtle,#7E8F76)">No course articulates — you can transfer without it</div>
+                        </sc-if>
+                        <sc-if value="{{ row.hasUc }}" hint-placeholder-val="{{ true }}">
+                          <div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                              <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ row.ucCode }}</span>
+                              <span style="font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:6px;padding:1.5px 6px">{{ row.ucUnits }}</span>
+                            </div>
+                            <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ row.ucTitle }}</div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ detailIsStub }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+                <div style="width:44px;height:44px;border-radius:14px;background:var(--cw-mint,#F0FFE7);display:grid;place-items:center"><span style="width:16px;height:16px;border:2px solid #193018;border-radius:5px"></span></div>
+                <div style="font-size:15.5px;font-weight:650">{{ detailStubTitle }}</div>
+                <div style="max-width:46ch;font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">This representation re-skins from the same tokens and table vocabulary — it is not mocked separately in this prototype.</div>
+              </div>
+            </sc-if>
+          </section>
+        </main>
+      </sc-if>
+
+      <!-- ================= DATA · COURSES ================= -->
+      <sc-if value="{{ showCourses }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Data · Courses" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:16px">
+
+          <div style="display:flex;align-items:center;gap:16px">
+            <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+              <sc-for list="{{ courseSysTabs }}" as="t" hint-placeholder-count="2">
+                <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:6.5px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1;max-width:720px;margin-left:auto">
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--cw-ink-muted,#52664F);cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>All regions</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--cw-ink-muted,#52664F);cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>All districts</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--cw-ink-muted,#52664F);cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>All counties</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start">
+            <aside style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:10px;position:sticky;top:20px">
+              <div style="display:flex;align-items:baseline;gap:8px;padding:10px 12px 8px">
+                <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Community colleges</span>
+                <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">115</span>
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;background:var(--cw-canvas,#F8FAEC);border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:7px 12px;margin:0 4px 8px">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><circle cx="6" cy="6" r="4.4"></circle><path d="M9.4 9.4 L12.6 12.6"></path></svg>
+                <input value="{{ railQ }}" onChange="{{ onRailQ }}" placeholder="Find…" style="border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:#193018;width:100%">
+              </label>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ railItems }}" as="c" hint-placeholder-count="8">
+                  <button onClick="{{ c.onClick }}" style="display:flex;align-items:flex-start;gap:10px;border:none;cursor:pointer;font-family:inherit;text-align:left;background:{{ c.bg }};border-radius:10px;padding:9px 12px;width:100%" style-hover="background:var(--cw-hover2,#F5FAE8)">
+                    <span style="width:3px;height:14px;border-radius:999px;background:{{ c.notch }};margin-top:2px;flex:none"></span>
+                    <span style="min-width:0">
+                      <span style="display:block;font-size:13.5px;font-weight:{{ c.w }};color:#193018">{{ c.name }}</span>
+                      <span style="display:block;margin-top:1px;font-size:11.5px;color:var(--cw-ink-faint,#93A18B)">{{ c.district }}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+            </aside>
+
+            <section style="display:flex;flex-direction:column;gap:14px;min-width:0">
+              <div style="display:flex;align-items:center;gap:14px">
+                <label style="flex:0 0 340px;display:flex;align-items:center;gap:9px;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:9px 15px">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><circle cx="6" cy="6" r="4.4"></circle><path d="M9.4 9.4 L12.6 12.6"></path></svg>
+                  <input value="{{ courseQ }}" onChange="{{ onCourseQ }}" placeholder="Search prefix / number / title…" style="border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:#193018;width:100%">
+                </label>
+                <span style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">{{ courseCount }} courses</span>
+              </div>
+
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:140px 1fr 80px 110px;gap:14px;padding:12px 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Course</div>
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Title</div>
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76);text-align:right">Units</div>
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76);text-align:right">Course_ID</div>
+                </div>
+                <sc-for list="{{ courseRows }}" as="cr" hint-placeholder-count="12">
+                  <div style="display:grid;grid-template-columns:140px 1fr 80px 110px;gap:14px;align-items:center;padding:10.5px 22px;border-bottom:{{ cr.bb }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                    <div style="font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ cr.code }}</div>
+                    <div style="font-size:13.5px;color:var(--cw-ink-soft,#33452F);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ cr.title }}</div>
+                    <div style="font-size:13px;font-variant-numeric:tabular-nums;color:var(--cw-ink-muted,#52664F);text-align:right">{{ cr.units }}</div>
+                    <div style="font-size:13px;font-variant-numeric:tabular-nums;color:var(--cw-ink-muted,#52664F);text-align:right">{{ cr.id }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ================= DATA · DISTRICTS ================= -->
+      <sc-if value="{{ showDistricts }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Data · Districts" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:14px">
+            <span style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">115 colleges mapped to 72 districts</span>
+            <button style="margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:9px 18px" style-hover="background:#234424">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1.5 L6 10.5 M1.5 6 L10.5 6"></path></svg>
+              Add college
+            </button>
+          </div>
+          <div style="display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start">
+            <aside style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:10px;position:sticky;top:20px">
+              <div style="display:flex;align-items:baseline;gap:8px;padding:10px 12px 8px">
+                <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Districts</span>
+                <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">72</span>
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;background:var(--cw-canvas,#F8FAEC);border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:7px 12px;margin:0 4px 8px">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><circle cx="6" cy="6" r="4.4"></circle><path d="M9.4 9.4 L12.6 12.6"></path></svg>
+                <input value="{{ districtQ }}" onChange="{{ onDistrictQ }}" placeholder="Find district, county, college…" style="border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:#193018;width:100%">
+              </label>
+              <div style="display:flex;flex-direction:column;gap:2px;max-height:560px;overflow-y:auto">
+                <sc-for list="{{ districtItems }}" as="d" hint-placeholder-count="8">
+                  <button onClick="{{ d.onClick }}" style="display:flex;align-items:flex-start;gap:10px;border:none;cursor:pointer;font-family:inherit;text-align:left;background:{{ d.bg }};border-radius:10px;padding:9px 12px;width:100%" style-hover="background:var(--cw-hover2,#F5FAE8)">
+                    <span style="width:3px;height:14px;border-radius:999px;background:{{ d.notch }};margin-top:2px;flex:none"></span>
+                    <span style="min-width:0">
+                      <span style="display:block;font-size:13.5px;font-weight:{{ d.w }};color:#193018">{{ d.name }}</span>
+                      <span style="display:block;margin-top:1px;font-size:11.5px;color:var(--cw-ink-faint,#93A18B)">{{ d.meta }}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+            </aside>
+            <section style="display:flex;flex-direction:column;gap:16px;min-width:0">
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:18px 22px;display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">{{ districtName }}</div>
+                <div style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">{{ districtMeta }}</div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <sc-for list="{{ countyChips }}" as="ch" hint-placeholder-count="3">
+                    <span style="font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:4.5px 12px">{{ ch.name }}</span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:1fr 1.4fr 90px 90px;column-gap:14px;padding:12px 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Community college</div>
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Counties served</div>
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76);text-align:right">CC ID</div>
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76);text-align:right">Edit</div>
+                </div>
+                <sc-for list="{{ districtColleges }}" as="dc" hint-placeholder-count="2">
+                  <div style="display:grid;grid-template-columns:1fr 1.4fr 90px 90px;column-gap:14px;align-items:center;padding:13px 22px;border-bottom:{{ dc.bb }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                    <div style="font-size:14px;font-weight:600">{{ dc.name }}</div>
+                    <div style="font-size:13.5px;color:var(--cw-ink-muted,#52664F)">{{ dc.counties }}</div>
+                    <div style="font-size:13px;font-variant-numeric:tabular-nums;color:var(--cw-ink-muted,#52664F);text-align:right">{{ dc.id }}</div>
+                    <div style="display:flex;justify-content:flex-end;gap:4px">
+                      <button style="width:28px;height:28px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2 L12 4 L5.5 10.5 L3 11 L3.5 8.5 Z"></path></svg></button>
+                      <button style="width:28px;height:28px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:#FFE9E3"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 4 L11.5 4 M5.5 4 L5.5 2.5 L8.5 2.5 L8.5 4 M4 4 L4.5 11.5 L9.5 11.5 L10 4 M6 6 L6 9.5 M8 6 L8 9.5"></path></svg></button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ================= AUDIT · JUDGE ================= -->
+      <sc-if value="{{ showJudge }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Audit · Judge" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:16px">
+
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+              <sc-for list="{{ judgeModeTabs }}" as="t" hint-placeholder-count="2">
+                <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:6.5px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <span style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">{{ templatesLeft }} templates left</span>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:20px 22px;display:flex;align-items:flex-start;gap:14px">
+            <div>
+              <div style="font-size:22px;font-weight:650;letter-spacing:-.012em">Electrical Engineering &amp; Computer Sciences, B.S.</div>
+              <div style="margin-top:4px;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--cw-ink-muted,#52664F)">
+                <span style="font-weight:600;color:#193018">UC Berkeley</span>
+                <span style="color:var(--cw-strong,#C9D3B4)">·</span>
+                <span style="font-style:italic">Santa Ana College</span>
+              </div>
+            </div>
+            <button style="margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px;white-space:nowrap" style-hover="background:var(--cw-mint,#F0FFE7)">
+              ASSIST.org
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2.5 L2.5 2.5 L2.5 9.5 L9.5 9.5 L9.5 7"></path><path d="M7 2 L10 2 L10 5 M10 2 L5.5 6.5"></path></svg>
+            </button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ verdictBtns }}" as="v" hint-placeholder-count="3">
+              <button onClick="{{ v.onClick }}" style="cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:650;color:{{ v.fg }};background:{{ v.bg }};border:none;border-radius:999px;padding:10px 22px;box-shadow:{{ v.ring }}">{{ v.label }}</button>
+            </sc-for>
+            <button onClick="{{ onFlag }}" style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:9px 18px;box-shadow:{{ flagRing }}" style-hover="background:var(--cw-mint,#F0FFE7)">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 13 L3 1.5 M3 2 L11 2 L9 5 L11 8 L3 8"></path></svg>
+              Flag
+            </button>
+            <button onClick="{{ onNext }}" style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:9px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.5 4 L9.5 4 M6.5 1.5 L9.5 4 L6.5 6.5 M12.5 10 L4.5 10 M7.5 7.5 L4.5 10 L7.5 12.5"></path></svg>
+              Next
+            </button>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+              <span style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">Cells in error</span>
+              <div style="display:flex;align-items:center;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:3px">
+                <button onClick="{{ onCellsMinus }}" style="width:26px;height:26px;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F);font-size:15px;font-family:inherit;display:grid;place-items:center" style-hover="background:var(--cw-mint,#F0FFE7)">−</button>
+                <span style="min-width:28px;text-align:center;font-size:14px;font-weight:650;font-variant-numeric:tabular-nums">{{ cellsErr }}</span>
+                <button onClick="{{ onCellsPlus }}" style="width:26px;height:26px;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F);font-size:15px;font-family:inherit;display:grid;place-items:center" style-hover="background:var(--cw-mint,#F0FFE7)">+</button>
+              </div>
+            </div>
+          </div>
+
+          <textarea value="{{ notes }}" onChange="{{ onNotes }}" placeholder="Notes (optional; required when flagging)…" style="width:100%;box-sizing:border-box;min-height:76px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:14px;padding:13px 16px;font-family:inherit;font-size:13.5px;color:#193018;outline:none"></textarea>
+
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <div style="font-size:21px;font-weight:650;letter-spacing:-.01em">Required</div>
+            <div style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">Tick CC courses to simulate a student plan</div>
+          </div>
+
+          <sc-for list="{{ judgeGroups }}" as="g" hint-placeholder-count="2">
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:14px;overflow:hidden">
+              <div style="padding:10px 20px;background:var(--cw-mint,#F0FFE7);font-size:13px;font-weight:650;color:#193018">{{ g.title }}</div>
+              <sc-for list="{{ g.rows }}" as="row" hint-placeholder-count="4">
+                <div onClick="{{ row.onTick }}" style="display:grid;grid-template-columns:1fr 44px 1fr 52px;align-items:center;gap:8px;padding:14px 20px;border-bottom:{{ row.bb }};cursor:pointer;background:{{ row.rowBg }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                  <div>
+                    <sc-if value="{{ row.isReq }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:14px;font-weight:600">Requirement</div>
+                      <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ row.ccTitle }}</div>
+                    </sc-if>
+                    <sc-if value="{{ row.isCourse }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ row.ccCode }}</span>
+                        <span style="font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:6px;padding:1.5px 6px">{{ row.ccUnits }}</span>
+                      </div>
+                      <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ row.ccTitle }}</div>
+                    </sc-if>
+                  </div>
+                  <div style="display:flex;justify-content:center"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M12 7 L2.5 7 M6.5 3 L2.5 7 L6.5 11"></path></svg></div>
+                  <sc-if value="{{ row.hasOr }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;gap:12px">
+                      <span style="font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px 8px">OR</span>
+                      <div style="display:flex;flex-direction:column;gap:10px;border-left:1.5px solid var(--cw-mid,#D9E2C4);padding-left:12px">
+                        <sc-for list="{{ row.orOptions }}" as="opt" hint-placeholder-count="2">
+                          <div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                              <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ opt.code }}</span>
+                              <span style="font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:6px;padding:1.5px 6px">{{ opt.units }}</span>
+                            </div>
+                            <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ opt.title }}</div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ row.hasUc }}" hint-placeholder-val="{{ true }}">
+                    <div>
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ row.ucCode }}</span>
+                        <span style="font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:6px;padding:1.5px 6px">{{ row.ucUnits }}</span>
+                      </div>
+                      <div style="margin-top:2px;font-size:13px;color:var(--cw-ink-muted,#52664F)">{{ row.ucTitle }}</div>
+                    </div>
+                  </sc-if>
+                  <div style="display:flex;justify-content:flex-end">
+                    <span style="width:22px;height:22px;border-radius:7px;border:1.5px solid {{ row.boxBorder }};background:{{ row.boxBg }};display:grid;place-items:center">
+                      <sc-if value="{{ row.ticked }}" hint-placeholder-val="{{ false }}">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg>
+                      </sc-if>
+                    </span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </main>
+      </sc-if>
+
+      <!-- ================= AUDIT · REVIEW (stub) ================= -->
+      <sc-if value="{{ showReview }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Audit · Review" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px">
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:72px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+            <div style="width:44px;height:44px;border-radius:14px;background:var(--cw-mint,#F0FFE7);display:grid;place-items:center"><span style="width:16px;height:16px;border:2px solid #193018;border-radius:999px"></span></div>
+            <div style="font-size:15.5px;font-weight:650">Review</div>
+            <div style="max-width:52ch;font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">Same verdict + queue vocabulary as Judge — inherits the system and is not mocked separately.</div>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ================= AUDIT · STATS ================= -->
+      <sc-if value="{{ showStats }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Audit · Stats" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:16px">
+
+          <div style="font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">All campuses · hand-curated templates · refreshed 7/11/2026</div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;display:flex;align-items:stretch;padding:6px 0">
+            <sc-for list="{{ auditStats }}" as="st" hint-placeholder-count="4">
+              <div style="flex:1;padding:16px 22px;border-left:{{ st.bl }}">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
+                <div style="margin-top:6px;font-size:25px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-left:3px solid #96F060;border-radius:18px;padding:16px 22px;font-size:14px;color:var(--cw-ink-soft,#33452F);line-height:1.55">
+            Auditors agree with the hand-curated matrix on <strong style="color:#193018">94.4% of judged documents</strong>. Errors concentrate in three campuses, and most stem from missing honors-course articulations rather than wrong mappings.
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Mismatch gauge</div>
+              <div style="display:flex;justify-content:center">
+                <svg width="196" height="112" viewBox="0 0 196 112">
+                  <path d="M 14 104 A 84 84 0 0 1 182 104" fill="none" stroke="#EFF5DE" stroke-width="15" stroke-linecap="round"></path>
+                  <path d="M 14 104 A 84 84 0 0 1 182 104" fill="none" stroke="#17855A" stroke-width="15" stroke-linecap="round" stroke-dasharray="{{ gaugeDash }}" ></path>
+                  <text x="98" y="86" text-anchor="middle" style="font-family:inherit;font-size:27px;font-weight:650;fill:#193018">5.6%</text>
+                  <text x="98" y="104" text-anchor="middle" style="font-family:inherit;font-size:11px;fill:#7E8F76">mismatch rate</text>
+                </svg>
+              </div>
+              <div style="text-align:center;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">94.4% of verdicts agree with the matrix</div>
+            </div>
+
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+              <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Verdicts</div>
+              <div style="display:flex;height:14px;border-radius:999px;overflow:hidden">
+                <sc-for list="{{ verdictSegs }}" as="seg" hint-placeholder-count="3">
+                  <div style="width:{{ seg.w }};background:{{ seg.color }}"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ verdictSegs }}" as="seg" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+                    <span style="width:9px;height:9px;border-radius:999px;background:{{ seg.color }}"></span>
+                    <span style="color:var(--cw-ink-soft,#33452F)">{{ seg.label }}</span>
+                    <span style="margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums">{{ seg.count }}</span>
+                    <span style="color:var(--cw-ink-faint,#93A18B);width:44px;text-align:right">{{ seg.pct }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:10px;flex:1">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Coverage meter</div>
+                <div style="font-size:29px;font-weight:650;letter-spacing:-.015em">87.6%</div>
+                <div style="height:8px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;width:87.6%;border-radius:999px;background:#17855A"></div></div>
+                <div style="font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">mean hand-curated coverage across audited docs</div>
+              </div>
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:6px;flex:1">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Cells in error</div>
+                <div style="font-size:29px;font-weight:650;letter-spacing:-.015em;color:#D22F14">41</div>
+                <div style="font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">of 3,210 cells checked · 1.3%</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+            <div style="padding:18px 22px 8px;font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Campus coverage</div>
+            <sc-for list="{{ campusCov }}" as="r" hint-placeholder-count="9">
+              <div style="display:grid;grid-template-columns:180px 1fr 64px;align-items:center;gap:16px;padding:11px 22px;border-bottom:{{ r.bb }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                <div style="font-size:13.5px;font-weight:550">{{ r.name }}</div>
+                <div style="height:6px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:{{ r.handW }};background:{{ r.handC }}"></div></div>
+                <div style="font-size:13px;font-weight:550;text-align:right">{{ r.hand }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ================= VISUALS ================= -->
+      <sc-if value="{{ showVisuals }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Visuals" style="max-width:1180px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:20px">
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div>
+                <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">Paper-style district transfer heatmap</div>
+                <div style="margin-top:3px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">Tybalt Mallet · Jul 3, 2026</div>
+              </div>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+                <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>PDF</button>
+                <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>PNG</button>
+                <span style="font-size:11.5px;font-weight:600;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:4px 10px">Admin only</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">Version</span>
+                <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+                  <sc-for list="{{ v1Tabs }}" as="t" hint-placeholder-count="3">
+                    <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:{{ t.w }};padding:6px 13px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;margin-top:18px">
+                <span style="font-size:13px;color:var(--cw-ink-soft,#33452F)">Show differences</span>
+                <button onClick="{{ toggleDiff }}" style="width:40px;height:22px;border-radius:999px;border:none;cursor:pointer;background:{{ diffTrack }};position:relative;transition:background .15s ease">
+                  <span style="position:absolute;top:2px;left:{{ diffKnob }};width:18px;height:18px;border-radius:999px;background:#FFFFFF;transition:left .15s ease"></span>
+                </button>
+              </div>
+              <button style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px;margin-top:14px" style-hover="background:var(--cw-mint,#F0FFE7)">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 7 A 5 5 0 1 1 9.5 2.7 M9.5 0.8 L9.8 3 L7.6 3.3"></path></svg>
+                Refresh
+              </button>
+              <span style="margin-left:auto;margin-top:14px;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">unversioned · refresh to update</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+              <sc-for list="{{ v1Stats }}" as="st" hint-placeholder-count="4">
+                <div style="background:var(--cw-hover,#F9FBEF);border:1px solid var(--cw-hairline,#E9EEDA);border-radius:12px;padding:14px 16px">
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
+                  <div style="margin-top:5px;font-size:23px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+                  <div style="margin-top:2px;font-size:11.5px;color:var(--cw-ink-faint,#93A18B)">{{ st.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="height:300px;border:1.5px dashed var(--cw-strong,#C9D3B4);border-radius:12px;background:repeating-linear-gradient(45deg,#F4F8E8 0 14px,#FBFDF3 14px 28px);display:grid;place-items:center">
+              <div style="text-align:center;display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:600;color:var(--cw-ink-muted,#52664F)">frozen research figure</span>
+                <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--cw-ink-faint,#93A18B)">district transfer heatmap · unchanged by re-skin</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+              <div>
+                <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">Articulation coverage heatmap</div>
+                <div style="margin-top:3px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">Tybalt Mallet · Jul 3, 2026</div>
+              </div>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+                <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>PDF</button>
+                <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>PNG</button>
+                <span style="font-size:11.5px;font-weight:600;color:var(--cw-ink-muted,#52664F);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:4px 10px">Admin only</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">Major filter</span>
+                <label style="display:flex;align-items:center;gap:9px;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:999px;padding:8px 14px;width:220px">
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#7E8F76" stroke-width="1.6"><circle cx="6" cy="6" r="4.4"></circle><path d="M9.4 9.4 L12.6 12.6"></path></svg>
+                  <input value="computer science" readOnly style="border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:#193018;width:100%">
+                </label>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">Rows</span>
+                <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+                  <sc-for list="{{ v2RowTabs }}" as="t" hint-placeholder-count="3">
+                    <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:{{ t.w }};padding:6px 13px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">Minimums</span>
+                <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+                  <sc-for list="{{ v2MinTabs }}" as="t" hint-placeholder-count="2">
+                    <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:{{ t.w }};padding:6px 13px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <button style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 7 A 5 5 0 1 1 9.5 2.7 M9.5 0.8 L9.8 3 L7.6 3.3"></path></svg>
+                Refresh
+              </button>
+              <span style="margin-left:auto;font-size:12.5px;color:var(--cw-ink-faint,#93A18B);padding-bottom:9px">unversioned · live endpoint</span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+              <sc-for list="{{ v2Stats }}" as="st" hint-placeholder-count="4">
+                <div style="background:var(--cw-hover,#F9FBEF);border:1px solid var(--cw-hairline,#E9EEDA);border-radius:12px;padding:14px 16px">
+                  <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
+                  <div style="margin-top:5px;font-size:23px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+                  <div style="margin-top:2px;font-size:11.5px;color:var(--cw-ink-faint,#93A18B)">{{ st.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="height:260px;border:1.5px dashed var(--cw-strong,#C9D3B4);border-radius:12px;background:repeating-linear-gradient(45deg,#F4F8E8 0 14px,#FBFDF3 14px 28px);display:grid;place-items:center">
+              <div style="text-align:center;display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:600;color:var(--cw-ink-muted,#52664F)">frozen research figure</span>
+                <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--cw-ink-faint,#93A18B)">articulation coverage heatmap · unchanged by re-skin</span>
+              </div>
+            </div>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ================= TASKS / API / ADMIN stubs ================= -->
+      <sc-if value="{{ showTasks }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Tasks" style="max-width:1400px;margin:0 auto;padding:26px 22px 48px;display:flex;flex-direction:column;gap:18px">
+
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="display:flex;align-items:center;gap:2px;background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:3px">
+              <sc-for list="{{ tasksTabs }}" as="t" hint-placeholder-count="3">
+                <button onClick="{{ t.onClick }}" style="border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:{{ t.w }};padding:6.5px 15px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+              <button style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:8px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="#193018"><path d="M7 1 L8.3 5.7 L13 7 L8.3 8.3 L7 13 L5.7 8.3 L1 7 L5.7 5.7 Z"></path></svg>
+                Copy all for AI
+              </button>
+              <button style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:8px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">
+                <svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>
+                Export all
+              </button>
+              <button onClick="{{ openNewTask }}" style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:9px 18px" style-hover="background:#234424">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1.5 L6 10.5 M1.5 6 L10.5 6"></path></svg>
+                New task
+              </button>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;display:flex;align-items:stretch;padding:6px 0">
+            <sc-for list="{{ taskStats }}" as="st" hint-placeholder-count="3">
+              <div style="flex:1;padding:16px 22px;border-left:{{ st.bl }}">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ st.label }}</div>
+                <div style="margin-top:6px;font-size:25px;font-weight:600;letter-spacing:-.01em;color:{{ st.fg }}">{{ st.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ boardView }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start">
+              <sc-for list="{{ boardCols }}" as="col" hint-placeholder-count="4">
+                <div style="background:var(--cw-sunken2,#F1F6E1);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px">
+                  <div style="display:flex;align-items:center;gap:8px;padding:2px 4px">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg>
+                    <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-muted,#52664F)">{{ col.label }}</span>
+                    <span style="font-size:11.5px;font-weight:600;color:var(--cw-ink-muted,#52664F);background:#FFFFFF;border-radius:999px;padding:1.5px 8px">{{ col.count }}</span>
+                    <button style="margin-left:auto;width:24px;height:24px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:#FFFFFF"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 1.5 L6 10.5 M1.5 6 L10.5 6"></path></svg></button>
+                  </div>
+                  <sc-if value="{{ col.empty }}" hint-placeholder-val="{{ false }}">
+                    <div style="border:1.5px dashed var(--cw-strong,#C9D3B4);border-radius:12px;padding:22px 12px;text-align:center;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">Drop a task here</div>
+                  </sc-if>
+                  <div style="display:flex;flex-direction:column;gap:10px;max-height:620px;overflow-y:auto">
+                    <sc-for list="{{ col.cards }}" as="card" hint-placeholder-count="2">
+                      <div onClick="{{ card.onOpen }}" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)">
+                        <span style="align-self:flex-start;font-size:11.5px;font-weight:600;color:#6C4FD0;background:#F0EAFC;border-radius:999px;padding:3px 10px">Porting</span>
+                        <div style="font-size:13.5px;font-weight:600;line-height:1.35">{{ card.title }}</div>
+                        <div style="display:flex;align-items:center;gap:8px">
+                          <div style="flex:1;height:5px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:{{ card.pctW }};background:#193018"></div></div>
+                          <span style="font-size:11.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ card.pct }}</span>
+                        </div>
+                        <div style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">{{ card.next }}</div>
+                        <div style="display:flex;align-items:center;gap:7px">
+                          <sc-if value="{{ card.hasAssignee }}" hint-placeholder-val="{{ false }}">
+                            <span style="width:20px;height:20px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8.5px;font-weight:700">TY</span>
+                            <span style="font-size:12.5px;color:var(--cw-ink-soft,#33452F)">{{ card.assignee }}</span>
+                          </sc-if>
+                          <sc-if value="{{ card.unassigned }}" hint-placeholder-val="{{ true }}">
+                            <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">unassigned</span>
+                          </sc-if>
+                          <sc-if value="{{ card.hasComments }}" hint-placeholder-val="{{ false }}">
+                            <span style="margin-left:auto;display:flex;align-items:center;gap:4px;font-size:12px;color:var(--cw-ink-subtle,#7E8F76)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2.5 L12 2.5 L12 9.5 L6 9.5 L3.5 12 L3.5 9.5 L2 9.5 Z"></path></svg>{{ card.comments }}</span>
+                          </sc-if>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ listView }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-if value="{{ allView }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;justify-content:flex-end;gap:9px">
+                  <span style="font-size:13px;color:var(--cw-ink-soft,#33452F)">Show archived</span>
+                  <button onClick="{{ toggleArchived }}" style="width:40px;height:22px;border-radius:999px;border:none;cursor:pointer;background:{{ archTrack }};position:relative;transition:background .15s ease">
+                    <span style="position:absolute;top:2px;left:{{ archKnob }};width:18px;height:18px;border-radius:999px;background:#FFFFFF;transition:left .15s ease"></span>
+                  </button>
+                </div>
+              </sc-if>
+              <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+                <sc-for list="{{ listRows }}" as="row" hint-placeholder-count="6">
+                  <div onClick="{{ row.onOpen }}" style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:{{ row.bb }};cursor:pointer" style-hover="background:var(--cw-hover,#F9FBEF)">
+                    <span style="flex:none;font-size:11.5px;font-weight:600;color:{{ row.statusFg }};background:{{ row.statusBg }};border-radius:999px;padding:3px 10px">{{ row.statusLabel }}</span>
+                    <span style="flex:none;font-size:11.5px;font-weight:600;color:#6C4FD0;background:#F0EAFC;border-radius:999px;padding:3px 10px">Porting</span>
+                    <span style="font-size:13.5px;font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.title }}</span>
+                    <span style="margin-left:auto;flex:none;display:flex;align-items:center;gap:8px">
+                      <span style="width:80px;height:5px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden;display:inline-block"><span style="display:block;height:100%;border-radius:999px;width:{{ row.pctW }};background:#193018"></span></span>
+                      <span style="font-size:11.5px;color:var(--cw-ink-subtle,#7E8F76);width:32px">{{ row.pct }}</span>
+                    </span>
+                    <sc-if value="{{ row.hasAssignee }}" hint-placeholder-val="{{ false }}">
+                      <span style="flex:none;display:flex;align-items:center;gap:6px"><span style="width:20px;height:20px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8.5px;font-weight:700">TY</span><span style="font-size:12.5px;color:var(--cw-ink-soft,#33452F)">{{ row.assignee }}</span></span>
+                    </sc-if>
+                    <sc-if value="{{ row.unassigned }}" hint-placeholder-val="{{ true }}">
+                      <span style="flex:none;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">unassigned</span>
+                    </sc-if>
+                    <span style="flex:none;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76);width:44px;text-align:right">{{ row.date }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </main>
+      </sc-if>
+      <sc-if value="{{ showApi }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="API" style="max-width:880px;margin:0 auto;padding:30px 22px 56px;display:flex;flex-direction:column;gap:18px">
+
+          <sc-if value="{{ apiTokens }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Personal API tokens</div>
+              <div style="max-width:68ch;font-size:13.5px;line-height:1.6;color:var(--cw-ink-muted,#52664F)">A token lets scripts and notebooks call the API. Send it on every request as <strong style="color:#193018;font-weight:600">Authorization: Bearer pmtr_…</strong>. Treat it like a password; revoke it here if it leaks.</div>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <input value="{{ tokenLabel }}" onChange="{{ onTokenLabel }}" placeholder="Label (e.g. &quot;analysis notebook&quot;)" style="flex:0 0 300px;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 13px;font-family:inherit;font-size:13.5px;color:#193018;outline:none">
+                <button onClick="{{ genToken }}" style="display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:9px 18px" style-hover="background:#234424">
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="3"></circle><path d="M7.2 7.2 L12 12 M10 10 L11.5 8.5"></path></svg>
+                  Generate token
+                </button>
+              </div>
+              <div style="display:flex;flex-direction:column">
+                <sc-for list="{{ tokenRows }}" as="tk" hint-placeholder-count="1">
+                  <div style="display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:{{ tk.bb }}">
+                    <div>
+                      <div style="font-size:14px;font-weight:600">{{ tk.label }}</div>
+                      <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ tk.meta }}</div>
+                    </div>
+                    <button onClick="{{ tk.onRevoke }}" style="margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:#FFE9E3;color:#D22F14">
+                      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 4 L11.5 4 M5.5 4 L5.5 2.5 L8.5 2.5 L8.5 4 M4 4 L4.5 11.5 L9.5 11.5 L10 4 M6 6 L6 9.5 M8 6 L8 9.5"></path></svg>
+                      Revoke
+                    </button>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ apiStarter }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Starter code</div>
+              <div style="max-width:64ch;font-size:13.5px;line-height:1.6;color:var(--cw-ink-muted,#52664F)">One local helper: get() reads shared data and publish() renders one figure or named static states locally before sharing the finished files.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:6px">
+              <sc-for list="{{ starterSteps }}" as="st" hint-placeholder-count="5">
+                <div style="display:flex;align-items:flex-start;gap:14px">
+                  <span style="flex:none;width:26px;height:26px;border-radius:999px;border:1px solid var(--cw-strong,#C9D3B4);background:#FFFFFF;display:grid;place-items:center;font-size:12.5px;font-weight:650;color:var(--cw-ink-muted,#52664F)">{{ st.num }}</span>
+                  <div>
+                    <div style="font-size:14px;font-weight:600">{{ st.title }}</div>
+                    <div style="margin-top:3px;max-width:62ch;font-size:13px;line-height:1.55;color:var(--cw-ink-muted,#52664F)">{{ st.body }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden;margin-top:6px">
+              <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+                <span style="font-size:13.5px;font-weight:650">starter.py</span>
+                <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">preconfigured for this API</span>
+                <div style="margin-left:auto;display:flex;gap:6px">
+                  <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="4.5" width="7" height="7" rx="1.5"></rect><path d="M9.5 4.5 L9.5 2.5 L2.5 2.5 L2.5 9.5 L4.5 9.5"></path></svg>Copy</button>
+                  <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>Download</button>
+                </div>
+              </div>
+              <pre style="margin:0;padding:18px 20px;background:var(--cw-sunken2,#F1F6E1);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.65;color:var(--cw-ink-soft,#33452F);overflow-x:auto">"""Transfer Pathways research client.
+
+  get(path, **params)                -&gt; pandas DataFrame or JSON
+  publish(fig, slug=..., title=...)  -&gt; publish one finished figure
+  publish(variants=[...], ...)       -&gt; publish named static states
+
+Set TOKEN below (or the PMT_TOKEN environment variable). Figure rendering
+happens on this machine; the server receives only SVG, PNG, and PDF output.
+"""
+import base64
+import io
+import os
+
+import pandas as pd
+import requests
+
+TOKEN = os.environ.get("PMT_TOKEN", "")
+BASE = "https://transfer-pathways-tool.up.railway.app/api"</pre>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ apiEndpoints }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:18px 22px;display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:13.5px;color:var(--cw-ink-muted,#52664F)">Base URL <strong style="color:#193018;font-weight:600">https://transfer-pathways-tool.up.railway.app/api</strong></div>
+              <div style="font-size:13.5px;color:var(--cw-ink-muted,#52664F)">Every request <strong style="color:#193018;font-weight:600">Authorization: Bearer &lt;your pmtr_… token&gt;</strong></div>
+              <div style="font-size:13.5px;color:var(--cw-ink-muted,#52664F)">Use <strong style="color:#193018;font-weight:600">?format=csv</strong> on bulk exports. Pass any path below to get() from the Starter tab.</div>
+            </div>
+            <sc-for list="{{ apiSections }}" as="sec" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+                <div>
+                  <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">{{ sec.heading }}</div>
+                  <sc-if value="{{ sec.hasSub }}" hint-placeholder-val="{{ false }}"><div style="margin-top:3px;font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">{{ sec.sub }}</div></sc-if>
+                </div>
+                <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+                  <sc-for list="{{ sec.entries }}" as="e" hint-placeholder-count="2">
+                    <div style="padding:16px 22px;border-bottom:{{ e.bb }};display:flex;flex-direction:column;gap:5px">
+                      <div style="display:flex;align-items:baseline;gap:8px">
+                        <span style="font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--cw-ink-subtle,#7E8F76)">GET</span>
+                        <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:600;color:#193018">{{ e.path }}</span>
+                      </div>
+                      <div style="font-size:14px;font-weight:600">{{ e.name }}</div>
+                      <div style="max-width:64ch;font-size:13px;line-height:1.55;color:var(--cw-ink-muted,#52664F)">{{ e.desc }}</div>
+                      <button style="align-self:flex-start;display:flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#17855A;background:transparent;border:none;padding:3px 0" style-hover="color:#0F6B45">
+                        <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><path d="M2.5 1.5 L8 5 L2.5 8.5 Z"></path></svg>
+                        Details
+                      </button>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <sc-if value="{{ apiGuide }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:18px 22px;display:flex;align-items:center;gap:16px">
+              <div>
+                <div style="font-size:14px;font-weight:650">How to read this dataset</div>
+                <div style="margin-top:4px;max-width:60ch;font-size:13px;line-height:1.55;color:var(--cw-ink-muted,#52664F)">The copy button turns this guide + the endpoint reference into one markdown block for an AI assistant — paste it with a token and ask for analysis scripts.</div>
+              </div>
+              <button style="margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:9px 18px;white-space:nowrap" style-hover="background:#234424">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="#F0FFE7"><path d="M7 1 L8.3 5.7 L13 7 L8.3 8.3 L7 13 L5.7 8.3 L1 7 L5.7 5.7 Z"></path></svg>
+                Copy for AI
+              </button>
+            </div>
+
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em;margin-top:8px">The dataset</div>
+            <div style="max-width:66ch;font-size:13.5px;line-height:1.65;color:var(--cw-ink-soft,#33452F)">The database contains complete CC and UC course catalogs for every included school. Agreement selection is narrower: one document per ported college, UC campus, and major.</div>
+            <div style="max-width:66ch;font-size:13.5px;line-height:1.65;color:var(--cw-ink-soft,#33452F)">ASSIST-derived records use the assist_* collections and /assist routes. Human-gathered records use curated_* collections and /curated routes. Refresh time and source URLs provide provenance; there is no dataset-version field.</div>
+
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em;margin-top:8px">Agreement shape</div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+              <div style="display:flex;align-items:center;padding:10px 20px 0">
+                <button style="margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:6px 12px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="4.5" width="7" height="7" rx="1.5"></rect><path d="M9.5 4.5 L9.5 2.5 L2.5 2.5 L2.5 9.5 L4.5 9.5"></path></svg>Copy</button>
+              </div>
+              <pre style="margin:0;padding:4px 22px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.7;color:var(--cw-ink-soft,#33452F)">agreement
+└── requirement_groups[]
+    └── sections[]
+        └── receivers[]
+            └── options[]</pre>
+            </div>
+            <div style="max-width:66ch;font-size:13.5px;line-height:1.65;color:var(--cw-ink-soft,#33452F)">A receiver is one UC-side requirement. Its options are the CC course combinations that satisfy it. The receivers export flattens these leaves while retaining group and section logic.</div>
+
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em;margin-top:8px">Requirement logic</div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+              <div style="display:grid;grid-template-columns:240px 1fr;column-gap:14px;padding:12px 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Field</div>
+                <div style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">Meaning</div>
+              </div>
+              <sc-for list="{{ guideRows }}" as="gr" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:240px 1fr;column-gap:14px;align-items:center;padding:12px 22px;border-bottom:{{ gr.bb }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                  <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;font-weight:600;color:#193018">{{ gr.field }}</div>
+                  <div style="font-size:13.5px;color:var(--cw-ink-soft,#33452F)">{{ gr.meaning }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </main>
+      </sc-if>
+      <sc-if value="{{ showAdmin }}" hint-placeholder-val="{{ false }}">
+        <main data-screen-label="Admin" style="max-width:1000px;margin:0 auto;padding:30px 22px 56px;display:flex;flex-direction:column;gap:26px">
+
+          <div style="background:#193018;border-radius:18px;padding:16px 22px;display:flex;align-items:center;gap:14px">
+            <span style="width:9px;height:9px;border-radius:999px;background:#96F060;animation:pmtPulse 2.2s ease-out infinite"></span>
+            <div>
+              <div style="font-size:13.5px;font-weight:650;color:#F0FFE7">Production target</div>
+              <div style="margin-top:1px;font-size:12.5px;color:rgba(240,255,231,.62)">transfer-pathways-tool.up.railway.app · live research database — changes apply immediately</div>
+            </div>
+            <span style="margin-left:auto;font-size:11.5px;font-weight:600;color:#193018;background:#96F060;border-radius:999px;padding:4px 11px">live</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Sign-in requests</div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:20px 22px;font-size:13px;color:var(--cw-ink-subtle,#7E8F76)">No pending requests. Approved accounts appear under Team names.</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Blocked accounts</div>
+            <div style="max-width:76ch;font-size:13px;line-height:1.55;color:var(--cw-ink-subtle,#7E8F76)">Rejected accounts. They can't request access or sign in to the console. Un-block to let them request again (you still approve the request).</div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;padding:16px 22px;display:flex;align-items:center;gap:12px">
+              <div>
+                <div style="font-size:14px;font-weight:600">settlemangeorge@gmail.com</div>
+                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">George Settleman · 2DdJGsxs3TOQCTVrfrcUxLeQbEU2 · blocked 7/9/2026, 6:58:56 PM</div>
+              </div>
+              <button style="margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:8px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5 L9 5.5 A2.75 2.75 0 1 1 9 11 L5 11 M3 5.5 L5.8 2.7 M3 5.5 L5.8 8.3"></path></svg>
+                Un-block
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Team names</div>
+            <div style="max-width:76ch;font-size:13px;line-height:1.55;color:var(--cw-ink-subtle,#7E8F76)">Give each account a display name. It's what shows for task assignees and figure authors everywhere in the console — instead of the mix of emails and UIDs. Clear a name to fall back to the email/UID.</div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+              <sc-for list="{{ teamRows }}" as="tm" hint-placeholder-count="5">
+                <div style="display:grid;grid-template-columns:1fr 240px 70px;column-gap:18px;align-items:center;padding:13px 22px;border-bottom:{{ tm.bb }}">
+                  <div style="min-width:0">
+                    <div style="font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ tm.email }}</div>
+                    <div style="margin-top:1px;font-size:12px;color:var(--cw-ink-faint,#93A18B)">{{ tm.meta }}</div>
+                  </div>
+                  <input value="{{ tm.val }}" onChange="{{ tm.onVal }}" placeholder="Display name" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:8px 12px;font-family:inherit;font-size:13.5px;color:#193018;outline:none">
+                  <button style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:7px 12px;justify-self:end" style-hover="background:var(--cw-mint,#F0FFE7);color:#193018">Save</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-size:16px;font-weight:650;letter-spacing:-.01em">Partner major access</div>
+            <div style="max-width:78ch;font-size:13px;line-height:1.55;color:var(--cw-ink-subtle,#7E8F76)">Partners can only see (audit, browse, analyze) the checked campus programs — their stats pages cover exactly this selection. Grants are per school + major, so checking UCSD's "Computer Science B.S." does not grant another campus's program with the same name. You always see everything.</div>
+            <div style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:18px;overflow:hidden">
+              <div style="display:flex;align-items:center;gap:8px;padding:14px 22px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+                <span style="font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--cw-ink-subtle,#7E8F76)">{{ grantCount }} of 21 programs visible to partners</span>
+                <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+                  <button style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:6px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">All</button>
+                  <button style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:6px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">None</button>
+                  <span style="font-size:12.5px;font-weight:550;color:var(--cw-ink-faint,#93A18B);background:var(--cw-sunken,#EFF5DE);border-radius:999px;padding:7px 14px">Saved</span>
+                </div>
+              </div>
+              <div style="padding:14px 22px;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:14px;font-weight:600">UC Berkeley</span>
+                  <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">{{ berkVis }} / 2 visible</span>
+                  <div style="margin-left:auto;display:flex;gap:12px">
+                    <button onClick="{{ berkAll }}" style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#17855A;background:transparent;border:none;padding:2px 0" style-hover="color:#0F6B45">All</button>
+                    <button onClick="{{ berkNone }}" style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#17855A;background:transparent;border:none;padding:2px 0" style-hover="color:#0F6B45">None</button>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:9px;margin-top:11px;padding-left:4px">
+                  <div onClick="{{ toggleBerkEECS }}" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+                    <span style="width:20px;height:20px;border-radius:6px;border:1.5px solid {{ berkEECSBorder }};background:{{ berkEECSBg }};display:grid;place-items:center"><sc-if value="{{ berkEECS }}" hint-placeholder-val="{{ true }}"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></sc-if></span>
+                    <span style="font-size:13.5px;color:var(--cw-ink-soft,#33452F)">Electrical Engineering &amp; Computer Sciences, B.S.</span>
+                  </div>
+                  <div onClick="{{ toggleBerkCS }}" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+                    <span style="width:20px;height:20px;border-radius:6px;border:1.5px solid {{ berkCSBorder }};background:{{ berkCSBg }};display:grid;place-items:center"><sc-if value="{{ berkCS }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#96F060" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></sc-if></span>
+                    <span style="font-size:13.5px;color:var(--cw-ink-soft,#33452F)">Computer Science, B.A.</span>
+                  </div>
+                </div>
+              </div>
+              <sc-for list="{{ partnerRows }}" as="pr" hint-placeholder-count="8">
+                <div style="display:flex;align-items:center;gap:10px;padding:13px 22px;border-bottom:{{ pr.bb }}" style-hover="background:var(--cw-hover,#F9FBEF)">
+                  <span style="font-size:14px;font-weight:600">{{ pr.name }}</span>
+                  <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">{{ pr.meta }}</span>
+                  <div style="margin-left:auto;display:flex;gap:12px">
+                    <button style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#17855A;background:transparent;border:none;padding:2px 0" style-hover="color:#0F6B45">All</button>
+                    <button style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#17855A;background:transparent;border:none;padding:2px 0" style-hover="color:#0F6B45">None</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </main>
+      </sc-if>
+
+      <!-- ===== New task modal ===== -->
+      <sc-if value="{{ newTaskOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeNewTask }}" style="position:fixed;inset:0;background:rgba(25,48,24,.45);z-index:60;display:grid;place-items:center;padding:24px">
+          <div onClick="{{ eatClick }}" data-screen-label="New task modal" style="background:#FFFFFF;border-radius:22px;box-shadow:0 24px 64px rgba(25,48,24,.3);width:640px;max-width:94vw;max-height:88vh;overflow-y:auto">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:22px 26px 0">
+              <div>
+                <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">New task</div>
+                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">Porting</div>
+              </div>
+              <button onClick="{{ closeNewTask }}" style="margin-left:auto;width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
+            </div>
+            <div style="padding:20px 26px 24px;display:flex;flex-direction:column;gap:15px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Title</span>
+                <input value="{{ newTitle }}" onChange="{{ onNewTitle }}" placeholder="e.g. Recreate MA Fig 3 — transfer credit rate" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-family:inherit;font-size:13.5px;color:#193018;outline:none;width:100%;box-sizing:border-box">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Description</span>
+                <textarea value="{{ newDesc }}" onChange="{{ onNewDesc }}" placeholder="What does done look like?" style="min-height:88px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-family:inherit;font-size:13.5px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Task type</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-size:13.5px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>Porting</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Assignee</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-size:13.5px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>Unassigned</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Status</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-size:13.5px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>To do</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:2px">
+                <button onClick="{{ closeNewTask }}" style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:9px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Cancel</button>
+                <button onClick="{{ createTask }}" style="cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:9px 20px" style-hover="background:#234424">Create task</button>
+              </div>
+              <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);margin-top:6px;padding-top:18px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:baseline;gap:10px">
+                  <span style="font-size:14px;font-weight:650">Porting stages</span>
+                  <span style="margin-left:auto;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">6 stages</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:24px">
+                  <sc-for list="{{ portingStages }}" as="ps" hint-placeholder-count="6">
+                    <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cw-hairline2,#F0F3E3)">
+                      <span style="flex:none;width:22px;height:22px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);display:grid;place-items:center;font-size:11px;font-weight:650;color:var(--cw-ink-muted,#52664F)">{{ ps.num }}</span>
+                      <span style="font-size:13.5px;color:var(--cw-ink-soft,#33452F)">{{ ps.name }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== Task workflow modal ===== -->
+      <sc-if value="{{ wfOpen }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ closeWf }}" style="position:fixed;inset:0;background:rgba(25,48,24,.45);z-index:60;display:grid;place-items:center;padding:24px">
+          <div onClick="{{ eatClick }}" data-screen-label="Task workflow modal" style="background:#FFFFFF;border-radius:22px;box-shadow:0 24px 64px rgba(25,48,24,.3);width:980px;max-width:96vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:20px 26px;border-bottom:1px solid var(--cw-hairline,#E9EEDA)">
+              <div>
+                <div style="font-size:17px;font-weight:650;letter-spacing:-.01em">Task workflow</div>
+                <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">Porting · {{ wfPct }}% complete</div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:4px">
+                <button style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2.5" width="10" height="3" rx="0.8"></rect><path d="M3 5.5 L3 11.5 L11 11.5 L11 5.5 M5.8 8 L8.2 8"></path></svg></button>
+                <button style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:#FFE9E3;color:#D22F14"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 4 L11.5 4 M5.5 4 L5.5 2.5 L8.5 2.5 L8.5 4 M4 4 L4.5 11.5 L9.5 11.5 L10 4 M6 6 L6 9.5 M8 6 L8 9.5"></path></svg></button>
+                <button onClick="{{ closeWf }}" style="width:30px;height:30px;display:grid;place-items:center;border:none;border-radius:999px;cursor:pointer;background:transparent;color:var(--cw-ink-muted,#52664F)" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3 L11 11 M11 3 L3 11"></path></svg></button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:340px 1fr;overflow-y:auto">
+              <div style="padding:22px 24px;border-right:1px solid var(--cw-hairline,#E9EEDA);display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-size:14px;font-weight:650">Task details</span>
+                  <span style="margin-left:auto;font-size:11.5px;font-weight:600;color:#6C4FD0;background:#F0EAFC;border-radius:999px;padding:3px 10px">Porting</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Title</span>
+                  <input value="{{ wfTitle }}" onChange="{{ onWfTitle }}" style="background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box">
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Description</span>
+                  <textarea value="{{ wfDesc }}" onChange="{{ onWfDesc }}" style="min-height:96px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Task type</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--cw-canvas,#F8FAEC);border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--cw-ink-faint,#93A18B)"><span>Porting</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#AEB6A0" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Assignee</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>{{ wfAssignee }}</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Status</span>
+                  <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-size:13px;color:#193018;cursor:pointer" style-hover="border-color:var(--cw-strong,#C9D3B4)"><span>{{ wfStatus }}</span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#7E8F76" stroke-width="1.6"><path d="M2.5 4.5 L6 8 L9.5 4.5"></path></svg></div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:8px">
+                  <button onClick="{{ closeWf }}" style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:8px 14px" style-hover="background:var(--cw-mint,#F0FFE7)">Cancel</button>
+                  <button style="cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:8px 16px" style-hover="background:#234424">Save details</button>
+                </div>
+                <div style="border-top:1px solid var(--cw-hairline,#E9EEDA);padding-top:16px;display:flex;flex-direction:column;gap:10px">
+                  <span style="font-size:13.5px;font-weight:650">General notes</span>
+                  <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">No general notes yet.</span>
+                  <textarea placeholder="Add a general note…" style="min-height:64px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                  <button style="align-self:flex-end;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:7px 16px" style-hover="background:var(--cw-mint,#F0FFE7)">Post</button>
+                  <span style="font-size:12px;color:var(--cw-ink-faint,#93A18B)">Created Jul 9, 5:01 PM</span>
+                </div>
+              </div>
+
+              <div style="padding:22px 26px;display:flex;flex-direction:column;gap:14px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div>
+                    <div style="font-size:15px;font-weight:650">Porting workflow</div>
+                    <div style="margin-top:2px;font-size:12.5px;color:var(--cw-ink-subtle,#7E8F76)">{{ wfDoneLabel }}</div>
+                  </div>
+                  <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+                    <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 11px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 14 14" fill="#193018"><path d="M7 1 L8.3 5.7 L13 7 L8.3 8.3 L7 13 L5.7 8.3 L1 7 L5.7 5.7 Z"></path></svg>Copy for AI</button>
+                    <button style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:transparent;border:none;border-radius:999px;padding:7px 11px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1.5 L6 8 M3.5 5.5 L6 8 L8.5 5.5 M2 10.5 L10 10.5"></path></svg>Export</button>
+                    <span style="font-size:14.5px;font-weight:650;color:#17855A">{{ wfPct }}%</span>
+                  </div>
+                </div>
+                <div style="height:7px;border-radius:999px;background:var(--cw-sunken,#EFF5DE);overflow:hidden"><div style="height:100%;border-radius:999px;width:{{ wfPctW }};background:#193018;transition:width .25s ease"></div></div>
+
+                <div style="display:flex;flex-direction:column">
+                  <sc-for list="{{ wfStages }}" as="stg" hint-placeholder-count="6">
+                    <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:{{ stg.bb }}">
+                      <span style="flex:none;width:24px;height:24px;border-radius:999px;background:{{ stg.dotBg }};border:1.5px solid {{ stg.dotBorder }};display:grid;place-items:center;box-sizing:border-box">
+                        <sc-if value="{{ stg.done }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg></sc-if>
+                        <sc-if value="{{ stg.active }}" hint-placeholder-val="{{ false }}"><span style="font-size:11.5px;font-weight:650;color:var(--cw-ink-muted,#52664F)">{{ stg.num }}</span></sc-if>
+                        <sc-if value="{{ stg.locked }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#93A18B" stroke-width="1.4"><rect x="2.5" y="5.5" width="7" height="5" rx="1"></rect><path d="M4 5.5 L4 4 A2 2 0 0 1 8 4 L8 5.5"></path></svg></sc-if>
+                      </span>
+                      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:7px">
+                        <div style="display:flex;align-items:baseline;gap:10px">
+                          <span style="font-size:14px;font-weight:600">{{ stg.title }}</span>
+                          <span style="margin-left:auto;font-size:12px;color:var(--cw-ink-faint,#93A18B)">{{ stg.noteCount }}</span>
+                        </div>
+                        <div style="font-size:13px;line-height:1.55;color:var(--cw-ink-muted,#52664F)">{{ stg.desc }}</div>
+                        <sc-for list="{{ stg.notes }}" as="nt" hint-placeholder-count="0">
+                          <div style="border-left:2px solid var(--cw-mid,#D9E2C4);padding-left:12px;display:flex;flex-direction:column;gap:6px;margin-top:2px">
+                            <div style="font-size:13px;line-height:1.55;color:var(--cw-ink-soft,#33452F)">{{ nt.text }}</div>
+                            <div style="display:flex;align-items:center;gap:7px">
+                              <span style="width:18px;height:18px;border-radius:999px;background:#193018;color:#96F060;display:grid;place-items:center;font-size:8px;font-weight:700">TY</span>
+                              <span style="font-size:12px;color:var(--cw-ink-subtle,#7E8F76)">{{ nt.meta }}</span>
+                            </div>
+                          </div>
+                        </sc-for>
+                        <sc-if value="{{ stg.done }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                            <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">{{ stg.completedBy }}</span>
+                            <div style="margin-left:auto;display:flex;gap:6px">
+                              <button style="display:flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:6px 10px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2 L12 4 L5.5 10.5 L3 11 L3.5 8.5 Z"></path></svg>Add note</button>
+                              <button onClick="{{ stg.onReopen }}" style="display:flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:6px 10px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5.5 L9 5.5 A2.75 2.75 0 1 1 9 11 L5 11 M3 5.5 L5.8 2.7 M3 5.5 L5.8 8.3"></path></svg>Reopen</button>
+                            </div>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ stg.active }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;flex-direction:column;gap:8px;margin-top:2px">
+                            <span style="font-size:12.5px;font-weight:600;color:var(--cw-ink-soft,#33452F)">Stage note</span>
+                            <textarea value="{{ stageNote }}" onChange="{{ onStageNote }}" placeholder="What did you find, add, or determine is still missing?" style="min-height:72px;resize:vertical;background:#FFFFFF;border:1px solid var(--cw-border,#E3E9D2);border-radius:10px;padding:10px 13px;font-family:inherit;font-size:13px;color:#193018;outline:none;width:100%;box-sizing:border-box"></textarea>
+                            <div style="display:flex;justify-content:flex-end;gap:8px">
+                              <button onClick="{{ onSaveNote }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:#193018;background:#FFFFFF;border:1px solid var(--cw-strong,#C9D3B4);border-radius:999px;padding:8px 15px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2 L12 4 L5.5 10.5 L3 11 L3.5 8.5 Z"></path></svg>Save note</button>
+                              <button onClick="{{ onCompleteStage }}" style="display:flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;color:#F0FFE7;background:#193018;border:none;border-radius:999px;padding:8px 17px" style-hover="background:#234424"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.2 L4.8 9 L10 3.5"></path></svg>Complete stage</button>
+                            </div>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ stg.locked }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                            <span style="font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">Complete the previous stage before completing this one.</span>
+                            <button style="margin-left:auto;display:flex;align-items:center;gap:5px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:550;color:var(--cw-ink-muted,#52664F);background:transparent;border:none;border-radius:999px;padding:6px 10px" style-hover="background:var(--cw-mint,#F0FFE7)"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2 L12 4 L5.5 10.5 L3 11 L3.5 8.5 Z"></path></svg>Add note</button>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <!-- ============ SIGN-IN ============ -->
+  <sc-if value="{{ isSignin }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Sign in" style="min-height:100vh;background:#FEFFF5;position:relative;overflow:hidden;display:grid;place-items:center">
+      <svg width="760" height="470" viewBox="-176 -176 352 215" fill="#96F060" style="position:absolute;left:-190px;bottom:-150px;opacity:.16;pointer-events:none">
+        <path id="pmtPetalBg" d="M -36 -106 L -36 -171 Q -36 -173 -32 -173 A 43.6 43.6 0 0 0 32 -173 Q 36 -173 36 -171 L 36 -106 A 36 36 0 0 1 -36 -106 Z"></path>
+        <use href="#pmtPetalBg" transform="rotate(45)"></use>
+        <use href="#pmtPetalBg" transform="rotate(-45)"></use>
+        <use href="#pmtPetalBg" transform="rotate(90)"></use>
+        <use href="#pmtPetalBg" transform="rotate(-90)"></use>
+      </svg>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;padding:40px 24px;max-width:620px">
+        <svg width="88" height="54" viewBox="-176 -176 352 215" fill="#96F060">
+          <path id="pmtPetalS" d="M -36 -106 L -36 -171 Q -36 -173 -32 -173 A 43.6 43.6 0 0 0 32 -173 Q 36 -173 36 -171 L 36 -106 A 36 36 0 0 1 -36 -106 Z"></path>
+          <use href="#pmtPetalS" transform="rotate(45)"></use>
+          <use href="#pmtPetalS" transform="rotate(-45)"></use>
+          <use href="#pmtPetalS" transform="rotate(90)"></use>
+          <use href="#pmtPetalS" transform="rotate(-90)"></use>
+        </svg>
+        <div style="margin-top:26px;font-size:12px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;color:var(--cw-ink-muted,#52664F)">Transfer Pathways · Research</div>
+        <h1 style="margin:14px 0 0;font-size:44px;line-height:1.08;font-weight:650;letter-spacing:-.022em;color:#193018">Transfer Pathways<br>Research Console</h1>
+        <p style="margin:18px 0 0;max-width:44ch;font-size:15px;line-height:1.6;color:var(--cw-ink-muted,#52664F)">Transfer-pathway auditing and analysis. Access is limited to project members — sign in with the Google account your admin granted.</p>
+
+        <button onClick="{{ signIn }}" style="margin-top:30px;display:flex;align-items:center;gap:14px;cursor:pointer;font-family:inherit;background:#96F060;color:#193018;border:none;border-radius:999px;padding:8px 26px 8px 8px" style-hover="background:#89E453">
+          <span style="width:40px;height:40px;border-radius:999px;background:#193018;display:grid;place-items:center">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#96F060" stroke-width="1.8"><path d="M4 12 L12 4 M5.5 4 L12 4 L12 10.5"></path></svg>
+          </span>
+          <span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.15">
+            <span style="font-size:15px;font-weight:650">Sign in with Google</span>
+            <span style="font-size:12px;font-weight:500;color:rgba(25,48,24,.72)">tybalt.mallet@gmail.com</span>
+          </span>
+        </button>
+
+        <div style="margin-top:14px;font-size:12.5px;color:var(--cw-ink-faint,#93A18B)">Access is allowlisted per project. Wrong account? Ask your admin.</div>
+      </div>
+
+      <div style="position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:12px;color:var(--cw-ink-faint,#93A18B)">© 2026 Transfer Pathways Research</div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;colorway&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;meadow&quot;, &quot;paper&quot;, &quot;crisp&quot;], &quot;default&quot;: &quot;meadow&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Colorway&quot;, &quot;description&quot;: &quot;Page palette: meadow = current green-tinted, paper = warm neutral (less green), crisp = white canvas + darker text for max readability&quot; },
+  &quot;topbar&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;forest&quot;, &quot;ivory&quot;], &quot;default&quot;: &quot;forest&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Chrome&quot;, &quot;description&quot;: &quot;Top bar treatment: dark forest brand bar or light ivory hairline bar&quot; },
+  &quot;conservative&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;lavender&quot;, &quot;amber&quot;], &quot;default&quot;: &quot;lavender&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Semantic colors&quot;, &quot;description&quot;: &quot;Hue for the Conservative verdict tier&quot; },
+  &quot;routeHints&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Chrome&quot;, &quot;description&quot;: &quot;Show the API-route chip in the sub-navigation&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    screen: 'app', tab: 'data', dataTab: 'overview',
+    agView: 'list', detailTab: 'agreement',
+    campus: 'UC Berkeley', college: 'Allan Hancock College',
+    collegeQ: '', courseQ: '', railQ: '', courseSys: 'cc',
+    judgeMode: 'template', verdict: null, notes: '', cellsErr: 0, ticked: {}, left: 21,
+    v1: 'hand', diff: false, v2rows: 'college', v2min: 'assist',
+    tasksTab: 'board', archived: false,
+    tasks: [
+      { title: 'CA Fig. 4 — Articulation coverage across California', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'CA Fig. 3 — How many UCs each district fully articulates to', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 10' },
+      { title: 'CA Fig. 5 — Which requirements block transfer at each campus', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'MA Fig. 2 — Articulated courses by category', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'MA Fig. 3 — Transfer credit rate', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'MA Fig. 4 — Extra credit hours a transfer student needs', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'MA Fig. 5 — Extra cost of transferring', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'MA Fig. 6 — Curricular complexity — transfer vs resident', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: 'MA Fig. 7 — Per-campus transfer outcomes summary', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 9' },
+      { title: "MA Fig. 1 — Share of each UC's requirements met at every CC", status: 'inprogress', pct: 15, next: 'Research missing data', assignee: 'Tybalt Mallet', comments: 2, date: 'Jul 11' }
+    ],
+    newTaskOpen: false, newTitle: '', newDesc: '',
+    wfOpen: false, wfTitle: '', wfDesc: '', wfStatus: 'In progress', wfAssignee: 'Tybalt Mallet',
+    wfDone: 1, wfNotes: {}, stageNote: '',
+    apiTab: 'tokens', tokenLabel: '',
+    tokens: [{ label: 'unlabeled token', created: '7/9/2026', last: '7/9/2026, 5:38:27 PM' }],
+    district: 'Allan Hancock Joint Community College District', districtQ: '',
+    berkEECS: true, berkCS: false,
+    names: {
+      'l7hong@ucsd.edu': 'Lucky Hong',
+      'rmm003@ucsd.edu': 'Roy Martinez',
+      'thebestkrul49@gmail.com': '',
+      'tmallet@ucsd.edu': '',
+      'bgD1vYo0WFYmFxhnzihG4CoMrGu2': 'Tybalt Mallet'
+    }
+  };
+
+  CAMPUSES = ['UC Berkeley','UC Davis','UC Irvine','UC Los Angeles','UC Merced','UC Riverside','UC San Diego','UC Santa Barbara','UC Santa Cruz'];
+
+  CAMPUS_ROWS = [
+    ['UC Berkeley', 98.3, 98.7], ['UC Davis', 78.7, 80.1], ['UC Irvine', 75.5, 82.5],
+    ['UC Los Angeles', 93.0, 75.7], ['UC Merced', 94.6, 96.4], ['UC Riverside', 92.9, 93.2],
+    ['UC San Diego', 83.1, 66.1], ['UC Santa Barbara', 91.3, 91.3], ['UC Santa Cruz', 83.3, 83.3]
+  ];
+
+  COLLEGES = [
+    ['Allan Hancock College','Allan Hancock Joint Community College District'],
+    ['American River College','Los Rios Community College District'],
+    ['Antelope Valley College','Antelope Valley Community College District'],
+    ['Bakersfield College','Kern Community College District'],
+    ['Barstow Community College','Barstow Community College District'],
+    ['Berkeley City College','Peralta Community College District'],
+    ['Butte College','Butte-Glenn Community College District'],
+    ['Cabrillo College','Cabrillo Community College District'],
+    ['Canada College','San Mateo County Community College District'],
+    ['Cerritos College','Cerritos Community College District'],
+    ['Cerro Coso Community College','Kern Community College District'],
+    ['Chabot College','Chabot-Las Positas Community College District'],
+    ['Chaffey College','Chaffey Community College District'],
+    ['Citrus College','Citrus Community College District']
+  ];
+
+  COURSES = [
+    ['AB 117','Print Reading & Interpretation',3,268161],
+    ['ACCT 105','Introduction to Accounting',3,372962],
+    ['ACCT 131','Financial Accounting 1',3,372957],
+    ['ACCT 132','Financial Accounting 2',3,372958],
+    ['ACCT 140','Managerial Accounting',3,345789],
+    ['ACCT 150','Introduction to Accounting Information Systems',3,345790],
+    ['ACCT 160','Introduction to Financial Statement Analysis',3,241691],
+    ['ACCT 170','Introduction to Tax Accounting',3,241692],
+    ['AG 100','Introduction to Agricultural Studies and Careers',1,370579],
+    ['AG 116','Introduction to Precision Agriculture',3,387930],
+    ['AG 125','Soils and Plant Nutrition',4,266654],
+    ['AG 126','Fertilizers & Plant Nutrition',4,387180],
+    ['AG 130','Integrated Pest Management',4,296174],
+    ['AG 134','Internship Seminar',1,66839],
+    ['AG 149','Work Experience Education',1,88074],
+    ['AG 150','Introduction to Agribusiness',3,267344],
+    ['AG 152','Introduction to Animal Science',3,348991],
+    ['AG 153','Introduction to Sustainable Agriculture',3,348992],
+    ['AG 154','Introduction to Fruit Science',3,231485],
+    ['AG 155','Introduction to Mechanized Agriculture',3,259343],
+    ['AG 156','Introduction to Environmental Horticulture',3,267345],
+    ['AG 157','Agricultural Sales, Communication and Leadership',3,267346],
+    ['AG 158','Agricultural Economics',3,234181],
+    ['AG 160','Plant Propagation/Production',3,361605]
+  ];
+
+  DETAIL_GROUPS = [
+    { title: 'Complete all of:', rows: [
+      { cc: ['MATH 51','4u','Calculus I'], uc: ['MATH 181','4u','Calculus 1'] },
+      { cc: ['MATH 52','4u','Calculus II'], uc: ['MATH 182','4u','Calculus 2'] },
+      { cc: ['MATH 53','4u','Multivariable Calculus'], uc: ['MATH 183','4u','Multivariable Calculus'] },
+      { cc: ['MATH 54','4u','Linear Algebra and Differential Equations'], uc: ['MATH 184','5u','Linear Algebra/Differential Equations'] },
+      { cc: ['PHYSICS 7A','4u','Physics for Scientists and Engineers'], uc: ['PHYS 161','4u','Engineering Physics 1'] },
+      { cc: ['PHYSICS 7B','4u','Physics for Scientists and Engineers'], uc: ['PHYS 163','4u','Engineering Physics 3'] }
+    ]},
+    { title: 'Complete all of:', rows: [
+      { req: 'Courses that satisfy Reading & Composition A', uc: ['ENGL C1000','4u','Academic Reading and Writing'] },
+      { req: 'Courses that satisfy Reading & Composition B', uc: ['ENGL 102','3u','Freshman Composition Literature'] }
+    ]},
+    { title: 'Complete 1 of:', rows: [
+      { cc: ['ASTRON 7A','4u','Introduction to Astrophysics'], none: true },
+      { cc: ['ASTRON 7B','4u','Introduction to Astrophysics'], none: true }
+    ]}
+  ];
+
+  JUDGE_GROUPS = [
+    { title: 'Complete all of:', rows: [
+      { cc: ['MATH 51','4u','Calculus I'], uc: ['MATH 180','4u','Single Variable Calculus I'] },
+      { cc: ['MATH 52','4u','Calculus II'], uc: ['MATH 185','4u','Single Variable Calculus II'] },
+      { cc: ['MATH 53','4u','Multivariable Calculus'], uc: ['MATH 280','4u','Intermediate Calculus'] },
+      { cc: ['MATH 54','4u','Linear Algebra and Differential Equations'], uc: ['MATH 287','5u','Introduction to Linear Algebra and Differential Equations'] },
+      { cc: ['PHYSICS 7A','4u','Physics for Scientists and Engineers'], uc: ['PHYS 217','4u','Engineering Physics I'] },
+      { cc: ['PHYSICS 7B','4u','Physics for Scientists and Engineers'], uc: ['PHYS 227','4u','Engineering Physics II'] }
+    ]},
+    { title: 'Complete all of:', rows: [
+      { req: 'Courses that satisfy Reading & Composition A', or: [ ['ENGL C1000','4u','Academic Reading and Writing'], ['ENGL C1000H','4u','Academic Reading and Writing - Honors'] ] },
+      { req: 'Courses that satisfy Reading & Composition B', uc: ['ENGL 102','3u','Freshman Composition Literature'] }
+    ]}
+  ];
+
+  STAGES = [
+    ['Read & understand', 'Read the source graph and document its measure, population, encodings, and assumptions.'],
+    ['Research missing data', 'Identify and gather missing sources, then record coverage gaps and caveats.'],
+    ['Data & endpoints', 'Confirm the existing data access is sufficient or create the endpoint(s) the visual needs.'],
+    ['Develop visualization', 'Implement and validate the visual against the source graph and research question.'],
+    ['Publish', 'Publish the finished visual and record where the team can review it.'],
+    ['Team approval', 'A second teammate reviews the data and approach and approves the figure.']
+  ];
+
+  MA1 = {
+    desc: "MA paper Fig 1, on CA data: percent of each campus's CS requirements with an articulated equivalent at every community college.",
+    notes: {
+      0: [{ text: 'Mistook the interpretation, should instead be percent of the total 4 year graduation requirements that are able to be completed at each community college. This can be done with just the 4 years minimum requirements, and the course to course equivalencies for each CC', by: 'Tybalt Mallet', at: 'Jul 11, 11:37 AM' }],
+      1: [{ text: 'Gathering the 4 year requirements graduation requirements from each UC school, organizing them into the same data structure as our agreements, so we can re use the eligibility logic to calculate percentage completion.', by: 'Tybalt Mallet', at: 'Jul 11, 11:52 AM' }]
+    }
+  };
+
+  TEAM = [
+    ['l7hong@ucsd.edu', 'partner · yDj5BT8Z6k…'],
+    ['rmm003@ucsd.edu', 'partner · srMV5kgJYC…'],
+    ['thebestkrul49@gmail.com', 'partner · HKC2wF7hnP…'],
+    ['tmallet@ucsd.edu', 'partner · uGjilz7cGQ…'],
+    ['bgD1vYo0WFYmFxhnzihG4CoMrGu2', 'admin']
+  ];
+
+  DISTRICTS = [
+    { name: 'Allan Hancock Joint Community College District', region: 'South Central', counties: ['San Luis Obispo', 'Santa Barbara', 'Ventura'], colleges: [{ n: 'Allan Hancock College', c: 'San Luis Obispo, Santa Barbara, Ventura', id: 110 }] },
+    { name: 'Antelope Valley Community College District', region: 'South Central', counties: ['Los Angeles', 'Kern'], colleges: [{ n: 'Antelope Valley College', c: 'Los Angeles, Kern', id: 111 }] },
+    { name: 'Barstow Community College District', region: 'Inland Empire', counties: ['San Bernardino'], colleges: [{ n: 'Barstow Community College', c: 'San Bernardino', id: 112 }] },
+    { name: 'Butte-Glenn Community College District', region: 'Northern', counties: ['Butte', 'Glenn'], colleges: [{ n: 'Butte College', c: 'Butte, Glenn', id: 113 }] },
+    { name: 'Cabrillo Community College District', region: 'Bay Area', counties: ['Santa Cruz', 'Monterey'], colleges: [{ n: 'Cabrillo College', c: 'Santa Cruz, Monterey', id: 114 }] },
+    { name: 'Cerritos Community College District', region: 'Southern', counties: ['Los Angeles'], colleges: [{ n: 'Cerritos College', c: 'Los Angeles', id: 115 }] },
+    { name: 'Chabot-Las Positas Community College District', region: 'Bay Area', counties: ['Alameda'], colleges: [{ n: 'Chabot College', c: 'Alameda', id: 116 }, { n: 'Las Positas College', c: 'Alameda', id: 117 }] },
+    { name: 'Chaffey Community College District', region: 'Southern', counties: ['San Bernardino'], colleges: [{ n: 'Chaffey College', c: 'San Bernardino', id: 118 }] },
+    { name: 'Citrus Community College District', region: 'Southern', counties: ['Los Angeles'], colleges: [{ n: 'Citrus College', c: 'Los Angeles', id: 119 }] },
+    { name: 'Kern Community College District', region: 'South Central', counties: ['Kern'], colleges: [{ n: 'Bakersfield College', c: 'Kern', id: 120 }, { n: 'Cerro Coso Community College', c: 'Kern', id: 121 }] }
+  ];
+
+  API_SECTIONS = [
+    { heading: 'Orientation', sub: '', entries: [
+      { path: '/data/summary', name: 'Dataset summary', desc: 'Current refresh time, visible campus programs, and scoped document counts.' },
+      { path: '/assist/institutions?kind=community_college', name: 'Institutions', desc: 'Community colleges or universities. Omit kind for both.' }
+    ] },
+    { heading: 'ASSIST data', sub: 'Source-derived institutions, complete course catalogs, agreements, and admissions.', entries: [
+      { path: '/assist/courses?institution_id=cc:113', name: 'One institution catalog', desc: 'Every course for one community college or UC campus. Use institution_id=uc:<id> for receiving courses.' },
+      { path: '/assist/courses?ids=cc:123,university:456', name: 'Multiple catalogs', desc: 'Batch fetch of several institution catalogs by comma-separated ids.' },
+      { path: '/assist/agreements?college=cc:110&campus=uc:1', name: 'Agreements', desc: 'Articulation agreements for a college → campus pair, one document per major.' }
+    ] },
+    { heading: 'Exports', sub: 'Bulk, analysis-ready flattenings of the curated dataset.', entries: [
+      { path: '/exports/receivers', name: 'Flattened receivers', desc: 'Every UC-side requirement with its CC options flattened; retains group and section logic. ?format=csv supported.' },
+      { path: '/analysis/coverage', name: 'Coverage rows', desc: 'Per college × program articulation coverage, the source for the Visuals heatmaps.' }
+    ] }
+  ];
+
+  STARTER_STEPS = [
+    ['Create a token', 'Generate a personal token in the Tokens tab. Keep it out of shared notebooks.'],
+    ['Get starter.py', 'Download the file below and keep it beside your notebook or analysis script.'],
+    ['Set the token', 'Set PMT_TOKEN in your shell, or place the token in TOKEN at the top of your local starter.py.'],
+    ['Read data', 'Call pmt.get("exports/receivers") or another path from the Endpoints tab. It returns a pandas DataFrame when the response contains rows.'],
+    ['Publish a figure', 'Pass one completed Figure to pmt.publish(fig, …), or pass named variants for controls such as ASSIST vs hand-curated. Your machine creates every SVG, PNG, and PDF; only those files are uploaded.']
+  ];
+
+  GUIDE_ROWS = [
+    ['is_required = false', 'Recommended group; exclude from strict minimum calculations.'],
+    ['group_conjunction = Or', 'One section/group branch can satisfy the requirement.'],
+    ['section_conjunction = And', 'Every receiver in the section must be satisfied for the branch to count.']
+  ];
+
+  PCT_TABLE = [0, 15, 33, 50, 67, 83, 100];
+
+  openWf(t) {
+    const rich = t.status === 'inprogress';
+    this.setState({
+      wfOpen: true,
+      wfTitle: t.title,
+      wfDesc: rich ? this.MA1.desc : '',
+      wfDone: rich ? 1 : 0,
+      wfNotes: rich ? { ...this.MA1.notes } : {},
+      wfStatus: rich ? 'In progress' : 'To do',
+      wfAssignee: t.assignee || 'Unassigned',
+      stageNote: ''
+    });
+  }
+
+  CWMAP = {
+    paper: { canvas: '#F6F5EF', mint: '#EDEFE1', sunken: '#ECEBE0', sunken2: '#F0EFE7', hover: '#F5F4ED', hover2: '#F2F1E9', border: '#E1E0D3', hairline: '#E9E8DC', hairline2: '#F0EFE4', strong: '#C2C0AC', mid: '#D7D5C3', inkMuted: '#4E554B', inkSubtle: '#747B70', inkFaint: '#92978C', inkSoft: '#353D32' },
+    crisp: { canvas: '#FFFFFF', mint: '#EFF8E5', sunken: '#F1F3EB', sunken2: '#F5F6F0', hover: '#F6F8F1', hover2: '#F3F5EE', border: '#DFE3D8', hairline: '#E9EDE2', hairline2: '#F1F3EA', strong: '#B9C0AC', mid: '#D3D8C7', inkMuted: '#3F4840', inkSubtle: '#5F6A60', inkFaint: '#828B81', inkSoft: '#28332B' }
+  };
+
+  extraVals(s) {
+    const hairline = (i, arr) => i === arr.length - 1 ? 'none' : '1px solid var(--cw-hairline2,#F0F3E3)';
+    const cw = this.CWMAP[this.props.colorway] || {};
+
+    // ---- Tasks
+    const tasksTabs = this.seg([['board', 'Board'], ['my', 'My tasks'], ['all', 'All tasks']], s.tasksTab, (k) => this.setState({ tasksTab: k }));
+    const mkCard = (t, i, arr) => ({
+      title: t.title,
+      pct: t.pct + '%', pctW: t.pct + '%',
+      next: 'Next: ' + t.next,
+      hasAssignee: !!t.assignee, unassigned: !t.assignee, assignee: t.assignee || '',
+      hasComments: !!t.comments, comments: t.comments || 0,
+      statusLabel: t.status === 'inprogress' ? 'In progress' : 'To do',
+      statusBg: t.status === 'inprogress' ? '#DFF4E7' : 'var(--cw-sunken,#EFF5DE)',
+      statusFg: t.status === 'inprogress' ? '#0F6B45' : 'var(--cw-ink-muted,#52664F)',
+      date: t.date,
+      bb: arr ? hairline(i, arr) : 'none',
+      onOpen: () => this.openWf(t)
+    });
+    const todo = s.tasks.filter((t) => t.status === 'todo');
+    const inprog = s.tasks.filter((t) => t.status === 'inprogress');
+    const boardCols = [
+      { label: 'Backlog', count: 0, empty: true, cards: [] },
+      { label: 'To do', count: todo.length, empty: todo.length === 0, cards: todo.map((t) => mkCard(t)) },
+      { label: 'In progress', count: inprog.length, empty: inprog.length === 0, cards: inprog.map((t) => mkCard(t)) },
+      { label: 'Done', count: 0, empty: true, cards: [] }
+    ];
+    const myList = inprog.filter((t) => t.assignee === 'Tybalt Mallet');
+    const allList = todo.concat(inprog);
+    const listSrc = s.tasksTab === 'my' ? myList : allList;
+    const listRows = listSrc.map((t, i) => mkCard(t, i, listSrc));
+    const taskStats = [
+      { label: 'Open', value: String(todo.length), fg: '#193018', bl: 'none' },
+      { label: 'In progress', value: String(inprog.length), fg: '#17855A', bl: '1px solid var(--cw-hairline,#E9EEDA)' },
+      { label: 'Done this week', value: '0', fg: '#193018', bl: '1px solid var(--cw-hairline,#E9EEDA)' }
+    ];
+
+    // ---- Workflow modal
+    const wfStages = this.STAGES.map(([title, desc], i, arr) => {
+      const done = i < s.wfDone;
+      const active = i === s.wfDone;
+      const locked = i > s.wfDone;
+      const notes = s.wfNotes[i] || [];
+      return {
+        title, desc, num: String(i + 1),
+        done, active, locked,
+        dotBg: done ? '#17855A' : (locked ? 'var(--cw-sunken2,#F1F6E1)' : '#FFFFFF'),
+        dotBorder: done ? '#17855A' : (active ? 'var(--cw-strong,#C9D3B4)' : 'var(--cw-border,#E3E9D2)'),
+        notes: notes.map((n) => ({ text: n.text, meta: n.by + ' · ' + n.at })),
+        noteCount: notes.length ? (notes.length + (notes.length > 1 ? ' notes' : ' note')) : '',
+        completedBy: 'Completed by Tybalt Mallet · Jul 11, 11:37 AM',
+        onReopen: () => this.setState({ wfDone: i }),
+        bb: hairline(i, arr)
+      };
+    });
+    const wfPct = this.PCT_TABLE[Math.min(6, s.wfDone)];
+
+    // ---- API
+    const tokenRows = s.tokens.length
+      ? s.tokens.map((t, i) => ({
+          label: t.label,
+          meta: 'created ' + t.created + ' · last used ' + t.last,
+          bb: hairline(i, s.tokens),
+          onRevoke: () => {
+            const next = s.tokens.slice();
+            next.splice(i, 1);
+            this.setState({ tokens: next });
+          }
+        }))
+      : [];
+    const apiSections = this.API_SECTIONS.map((sec) => ({
+      heading: sec.heading, sub: sec.sub, hasSub: !!sec.sub,
+      entries: sec.entries.map((e, i) => ({ ...e, bb: hairline(i, sec.entries) }))
+    }));
+    const starterSteps = this.STARTER_STEPS.map(([title, body], i) => ({ num: String(i + 1), title, body }));
+    const guideRows = this.GUIDE_ROWS.map(([field, meaning], i, arr) => ({ field, meaning, bb: hairline(i, arr) }));
+
+    // ---- Admin
+    const teamRows = this.TEAM.map(([email, meta], i, arr) => ({
+      email, meta,
+      val: s.names[email] || '',
+      onVal: (e) => this.setState({ names: { ...s.names, [email]: e.target.value } }),
+      bb: hairline(i, arr)
+    }));
+    const berkVis = (s.berkEECS ? 1 : 0) + (s.berkCS ? 1 : 0);
+    const others = [['UC Davis', 1, 3], ['UC Irvine', 1, 2], ['UC Los Angeles', 1, 2], ['UC Merced', 1, 2], ['UC Riverside', 1, 2], ['UC San Diego', 1, 3], ['UC Santa Barbara', 1, 2], ['UC Santa Cruz', 1, 3]];
+    const grantCount = berkVis + others.reduce((a, o) => a + o[1], 0);
+    const partnerRows = others.map((o, i, arr) => ({ name: o[0], meta: o[1] + ' / ' + o[2] + ' visible', bb: hairline(i, arr) }));
+
+    // ---- Districts
+    const dq = s.districtQ.trim().toLowerCase();
+    const dList = this.DISTRICTS.filter((d) => !dq || d.name.toLowerCase().includes(dq) || d.region.toLowerCase().includes(dq) || d.colleges.some((c) => c.n.toLowerCase().includes(dq)));
+    const districtItems = dList.map((d) => {
+      const active = d.name === s.district;
+      return {
+        name: d.name,
+        meta: d.colleges.length + (d.colleges.length === 1 ? ' college' : ' colleges') + ' · ' + d.region,
+        onClick: () => this.setState({ district: d.name }),
+        bg: active ? 'var(--cw-mint,#F0FFE7)' : 'transparent',
+        notch: active ? '#96F060' : 'transparent',
+        w: active ? 650 : 500
+      };
+    });
+    const dsel = this.DISTRICTS.find((d) => d.name === s.district) || this.DISTRICTS[0];
+    const districtColleges = dsel.colleges.map((c, i, arr) => ({ name: c.n, counties: c.c, id: String(c.id), bb: hairline(i, arr) }));
+
+    return {
+      cwCanvas: cw.canvas ?? '#F8FAEC', cwMint: cw.mint ?? '#F0FFE7', cwSunken: cw.sunken ?? '#EFF5DE', cwSunken2: cw.sunken2 ?? '#F1F6E1',
+      cwHover: cw.hover ?? '#F9FBEF', cwHover2: cw.hover2 ?? '#F5FAE8', cwBorder: cw.border ?? '#E3E9D2', cwHairline: cw.hairline ?? '#E9EEDA',
+      cwHairline2: cw.hairline2 ?? '#F0F3E3', cwStrong: cw.strong ?? '#C9D3B4', cwMid: cw.mid ?? '#D9E2C4',
+      cwInkMuted: cw.inkMuted ?? '#52664F', cwInkSubtle: cw.inkSubtle ?? '#7E8F76', cwInkFaint: cw.inkFaint ?? '#93A18B', cwInkSoft: cw.inkSoft ?? '#33452F',
+      tasksTabs, taskStats, boardCols, listRows,
+      boardView: s.tasksTab === 'board',
+      listView: s.tasksTab !== 'board',
+      allView: s.tasksTab === 'all',
+      archived: s.archived,
+      toggleArchived: () => this.setState({ archived: !s.archived }),
+      archTrack: s.archived ? '#193018' : 'var(--cw-mid,#D9E2C4)',
+      archKnob: s.archived ? '20px' : '2px',
+
+      newTaskOpen: s.newTaskOpen,
+      openNewTask: () => this.setState({ newTaskOpen: true, newTitle: '', newDesc: '' }),
+      closeNewTask: () => this.setState({ newTaskOpen: false }),
+      eatClick: (e) => e.stopPropagation(),
+      newTitle: s.newTitle, onNewTitle: (e) => this.setState({ newTitle: e.target.value }),
+      newDesc: s.newDesc, onNewDesc: (e) => this.setState({ newDesc: e.target.value }),
+      createTask: () => {
+        const t = { title: s.newTitle.trim() || 'Untitled porting task', status: 'todo', pct: 0, next: 'Read & understand', assignee: null, date: 'Jul 13' };
+        this.setState({ tasks: [t].concat(s.tasks), newTaskOpen: false, newTitle: '', newDesc: '' });
+      },
+      portingStages: this.STAGES.map(([name], i) => ({ num: String(i + 1), name })),
+
+      wfOpen: s.wfOpen,
+      closeWf: () => this.setState({ wfOpen: false }),
+      wfTitle: s.wfTitle, onWfTitle: (e) => this.setState({ wfTitle: e.target.value }),
+      wfDesc: s.wfDesc, onWfDesc: (e) => this.setState({ wfDesc: e.target.value }),
+      wfStatus: s.wfStatus, wfAssignee: s.wfAssignee,
+      wfStages, wfPct, wfPctW: wfPct + '%',
+      wfDoneLabel: s.wfDone + ' of 6 stages complete',
+      stageNote: s.stageNote, onStageNote: (e) => this.setState({ stageNote: e.target.value }),
+      onSaveNote: () => {
+        if (!s.stageNote.trim()) return;
+        const n = { ...s.wfNotes };
+        n[s.wfDone] = (n[s.wfDone] || []).concat([{ text: s.stageNote.trim(), by: 'Tybalt Mallet', at: 'Jul 13, 9:41 AM' }]);
+        this.setState({ wfNotes: n, stageNote: '' });
+      },
+      onCompleteStage: () => {
+        const n = { ...s.wfNotes };
+        if (s.stageNote.trim()) n[s.wfDone] = (n[s.wfDone] || []).concat([{ text: s.stageNote.trim(), by: 'Tybalt Mallet', at: 'Jul 13, 9:41 AM' }]);
+        this.setState({ wfDone: Math.min(6, s.wfDone + 1), wfNotes: n, stageNote: '' });
+      },
+
+      apiTokens: s.apiTab === 'tokens',
+      apiStarter: s.apiTab === 'starter',
+      apiEndpoints: s.apiTab === 'endpoints',
+      apiGuide: s.apiTab === 'guide',
+      tokenLabel: s.tokenLabel, onTokenLabel: (e) => this.setState({ tokenLabel: e.target.value }),
+      genToken: () => {
+        const t = { label: s.tokenLabel.trim() || 'unlabeled token', created: '7/13/2026', last: 'never' };
+        this.setState({ tokens: s.tokens.concat([t]), tokenLabel: '' });
+      },
+      tokenRows, apiSections, starterSteps, guideRows,
+
+      teamRows, grantCount, partnerRows, berkVis,
+      berkEECS: s.berkEECS, berkCS: s.berkCS,
+      toggleBerkEECS: () => this.setState({ berkEECS: !s.berkEECS }),
+      toggleBerkCS: () => this.setState({ berkCS: !s.berkCS }),
+      berkAll: () => this.setState({ berkEECS: true, berkCS: true }),
+      berkNone: () => this.setState({ berkEECS: false, berkCS: false }),
+      berkEECSBorder: s.berkEECS ? '#193018' : 'var(--cw-strong,#C9D3B4)',
+      berkEECSBg: s.berkEECS ? '#193018' : '#FFFFFF',
+      berkCSBorder: s.berkCS ? '#193018' : 'var(--cw-strong,#C9D3B4)',
+      berkCSBg: s.berkCS ? '#193018' : '#FFFFFF',
+
+      districtQ: s.districtQ, onDistrictQ: (e) => this.setState({ districtQ: e.target.value }),
+      districtItems,
+      districtName: dsel.name,
+      districtMeta: dsel.region + ' · ' + dsel.colleges.length + (dsel.colleges.length === 1 ? ' college' : ' colleges'),
+      countyChips: dsel.counties.map((name) => ({ name })),
+      districtColleges
+    };
+  }
+
+  seg(list, activeKey, onPick, activeBg, activeFg, idleFg) {
+    return list.map(([key, label]) => {
+      const active = key === activeKey;
+      return {
+        label,
+        onClick: () => onPick(key),
+        bg: active ? (activeBg || '#193018') : 'transparent',
+        fg: active ? (activeFg || 'var(--cw-mint,#F0FFE7)') : (idleFg || 'var(--cw-ink-muted,#52664F)'),
+        w: active ? 650 : 500
+      };
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const barMode = this.props.topbar ?? 'forest';
+    const consMode = this.props.conservative ?? 'lavender';
+    const routeOn = this.props.routeHints ?? true;
+    const consFill = consMode === 'amber' ? '#EFB63C' : '#C7B5F1';
+
+    const isApp = s.screen === 'app';
+    const topTabs = ['Data','Visuals','Audit','Tasks','API','Admin'].map((t) => {
+      const key = t.toLowerCase();
+      const active = s.tab === key;
+      const forest = barMode === 'forest';
+      return {
+        label: t,
+        onClick: () => this.setState({ tab: key }),
+        bg: active ? (forest ? '#96F060' : '#193018') : 'transparent',
+        fg: active ? (forest ? '#193018' : 'var(--cw-mint,#F0FFE7)') : (forest ? 'rgba(240,255,231,.78)' : 'var(--cw-ink-muted,#52664F)'),
+        w: active ? 650 : 500
+      };
+    });
+
+    const hasSubnav = s.tab === 'data' || s.tab === 'audit' || s.tab === 'api';
+    const auditTab = s.auditTab || 'judge';
+    const subTabsFinal = s.tab === 'data'
+      ? this.seg([['overview','Overview'],['agreements','Agreements'],['courses','Courses'],['districts','Districts']], s.dataTab, (k) => this.setState({ dataTab: k, agView: 'list' }))
+      : s.tab === 'audit'
+      ? this.seg([['judge','Judge'],['review','Review'],['stats','Stats']], auditTab, (k) => this.setState({ auditTab: k }))
+      : this.seg([['tokens','Tokens'],['starter','Starter'],['endpoints','Endpoints'],['guide','Data guide']], s.apiTab, (k) => this.setState({ apiTab: k }));
+
+    let routeLabel = '';
+    if (s.tab === 'data') {
+      routeLabel = s.dataTab === 'overview' ? 'GET /api/data/summary'
+        : s.dataTab === 'agreements' ? (s.agView === 'list' ? 'GET /api/assist/coverage' : 'GET /api/audit/doc/6a20bb71ab5af349b0b00ad5?system=uc')
+        : s.dataTab === 'courses' ? 'GET /api/assist/courses?institution_id=cc:110'
+        : 'GET /api/assist/institutions?kind=community_college';
+    } else if (s.tab === 'audit') {
+      routeLabel = auditTab === 'judge' ? ('GET /api/audit/next?mode=' + s.judgeMode)
+        : auditTab === 'stats' ? 'GET /api/audit/stats' : 'GET /api/audit/queue';
+    }
+
+    const showOverview = isApp && s.tab === 'data' && s.dataTab === 'overview';
+    const showAgList = isApp && s.tab === 'data' && s.dataTab === 'agreements' && s.agView === 'list';
+    const showAgDetail = isApp && s.tab === 'data' && s.dataTab === 'agreements' && s.agView === 'detail';
+    const showCourses = isApp && s.tab === 'data' && s.dataTab === 'courses';
+    const showDistricts = isApp && s.tab === 'data' && s.dataTab === 'districts';
+    const showJudge = isApp && s.tab === 'audit' && auditTab === 'judge';
+    const showReview = isApp && s.tab === 'audit' && auditTab === 'review';
+    const showStats = isApp && s.tab === 'audit' && auditTab === 'stats';
+
+    const overviewStats = [
+      { label: 'Refreshed', value: '7/11/2026' }, { label: 'Agreements', value: '1,035' },
+      { label: 'Majors', value: '9' }, { label: 'Campuses', value: '9' }, { label: 'Colleges', value: '115' },
+      { label: 'CC courses', value: '3,992' }, { label: 'UC courses', value: '184' }
+    ].map((t, i) => ({ ...t, bl: i === 0 ? 'none' : '1px solid var(--cw-hairline,#E9EEDA)', fg: i === 1 ? '#193018' : '#193018' }));
+
+    const barColor = (v) => v >= 90 ? '#17855A' : '#193018';
+    const campusRows = this.CAMPUS_ROWS.map(([name, hand, assist], i) => ({
+      name,
+      hand: hand + '%', handW: hand + '%', handC: barColor(hand),
+      assist: assist + '%', assistW: assist + '%', assistC: barColor(assist),
+      bb: i === this.CAMPUS_ROWS.length - 1 ? 'none' : '1px solid var(--cw-hairline2,#F0F3E3)'
+    }));
+
+    const campusItems = this.CAMPUSES.map((name) => {
+      const active = name === s.campus;
+      return {
+        name, active,
+        onClick: () => this.setState({ campus: name }),
+        bg: active ? 'var(--cw-mint,#F0FFE7)' : 'transparent',
+        notch: active ? '#96F060' : 'transparent',
+        w: active ? 650 : 480
+      };
+    });
+
+    const q = s.collegeQ.trim().toLowerCase();
+    const collegeRows = this.COLLEGES
+      .filter(([n, d]) => !q || n.toLowerCase().includes(q) || d.toLowerCase().includes(q))
+      .map(([name, district], i, arr) => ({
+        name, district,
+        onOpen: () => this.setState({ agView: 'detail', detailTab: 'agreement' }),
+        bb: i === arr.length - 1 ? 'none' : '1px solid var(--cw-hairline2,#F0F3E3)'
+      }));
+
+    const detailTabs = this.seg(
+      [['agreement','Agreement'],['db','DB document'],['raw','Raw ASSIST API'],['min','Min comparison'],['deg','Degree coverage']],
+      s.detailTab, (k) => this.setState({ detailTab: k })
+    );
+    const detailStubTitles = { db: 'DB document', raw: 'Raw ASSIST API', min: 'Min comparison', deg: 'Degree coverage' };
+
+    const hairline = (i, arr) => i === arr.length - 1 ? 'none' : '1px solid var(--cw-hairline2,#F0F3E3)';
+    const detailGroups = this.DETAIL_GROUPS.map((g) => ({
+      title: g.title,
+      rows: g.rows.map((r, i, arr) => ({
+        ccCode: r.req ? 'Requirement' : (r.cc ? r.cc[0] : ''),
+        ccUnits: r.req ? '' : (r.cc ? r.cc[1] : ''),
+        ccTitle: r.req ? r.req : (r.cc ? r.cc[2] : ''),
+        hasUc: !!r.uc, none: !!r.none,
+        ucCode: r.uc ? r.uc[0] : '', ucUnits: r.uc ? r.uc[1] : '', ucTitle: r.uc ? r.uc[2] : '',
+        bb: hairline(i, arr)
+      }))
+    }));
+
+    const railQ = s.railQ.trim().toLowerCase();
+    const railItems = this.COLLEGES
+      .filter(([n]) => !railQ || n.toLowerCase().includes(railQ))
+      .map(([name, district]) => {
+        const active = name === s.college;
+        return {
+          name, district,
+          onClick: () => this.setState({ college: name }),
+          bg: active ? 'var(--cw-mint,#F0FFE7)' : 'transparent',
+          notch: active ? '#96F060' : 'transparent',
+          w: active ? 650 : 500
+        };
+      });
+
+    const cq = s.courseQ.trim().toLowerCase();
+    const filteredCourses = this.COURSES.filter(([c, t]) => !cq || c.toLowerCase().includes(cq) || t.toLowerCase().includes(cq));
+    const courseRows = filteredCourses.map(([code, title, units, id], i, arr) => ({
+      code, title, units, id, bb: hairline(i, arr)
+    }));
+    const courseSysTabs = this.seg([['cc','Community colleges'],['uc','UC campuses']], s.courseSys, (k) => this.setState({ courseSys: k }));
+
+    const judgeModeTabs = this.seg([['template','Random template'],['doc','Random doc']], s.judgeMode, (k) => this.setState({ judgeMode: k }));
+    const ringFor = (label) => s.verdict === label ? '0 0 0 2px #F8FAEC, 0 0 0 4.5px #96F060' : 'none';
+    const verdictBtns = [
+      { label: 'Correct', bg: '#193018', fg: 'var(--cw-mint,#F0FFE7)' },
+      { label: 'Conservative', bg: consFill, fg: '#193018' },
+      { label: 'Error', bg: '#D22F14', fg: '#FFFFFF' }
+    ].map((b) => ({ ...b, ring: ringFor(b.label), onClick: () => this.setState({ verdict: s.verdict === b.label ? null : b.label }) }));
+    const flagRing = s.verdict === 'Flag' ? '0 0 0 2px #F8FAEC, 0 0 0 4.5px #96F060' : 'none';
+
+    const judgeGroups = this.JUDGE_GROUPS.map((g, gi) => ({
+      title: g.title,
+      rows: g.rows.map((r, i, arr) => {
+        const id = gi + '-' + i;
+        const ticked = !!s.ticked[id];
+        return {
+          isReq: !!r.req, isCourse: !r.req,
+          ccCode: r.cc ? r.cc[0] : '', ccUnits: r.cc ? r.cc[1] : '', ccTitle: r.req ? r.req : (r.cc ? r.cc[2] : ''),
+          hasUc: !!r.uc, hasOr: !!r.or,
+          ucCode: r.uc ? r.uc[0] : '', ucUnits: r.uc ? r.uc[1] : '', ucTitle: r.uc ? r.uc[2] : '',
+          orOptions: (r.or || []).map(([code, units, title]) => ({ code, units, title })),
+          ticked,
+          onTick: () => {
+            const next = { ...this.state.ticked };
+            if (next[id]) delete next[id]; else next[id] = true;
+            this.setState({ ticked: next });
+          },
+          rowBg: ticked ? '#F7FCEC' : 'transparent',
+          boxBorder: ticked ? '#193018' : 'var(--cw-strong,#C9D3B4)',
+          boxBg: ticked ? '#193018' : '#FFFFFF',
+          bb: hairline(i, arr)
+        };
+      })
+    }));
+
+    const consSeg = consMode === 'amber' ? '#EFB63C' : '#C7B5F1';
+    const verdictSegs = [
+      { label: 'Correct', count: 182, color: '#193018' },
+      { label: 'Conservative', count: 20, color: consSeg },
+      { label: 'Error', count: 12, color: '#D22F14' }
+    ].map((v) => ({ ...v, w: (v.count / 214 * 100).toFixed(1) + '%', pct: (v.count / 214 * 100).toFixed(1) + '%' }));
+
+    const auditStats = [
+      { label: 'Audited', value: '214' }, { label: 'Templates', value: '9 of 30' },
+      { label: 'Errors', value: '12' }, { label: 'Flagged', value: '7' }
+    ].map((t, i) => ({ ...t, bl: i === 0 ? 'none' : '1px solid var(--cw-hairline,#E9EEDA)', fg: t.label === 'Errors' ? '#D22F14' : '#193018' }));
+
+    // gauge: semicircle r=84, arc length = PI*84 ≈ 263.9 ; fill 94.4%
+    const arcLen = Math.PI * 84;
+    const gaugeDash = (arcLen * 0.944).toFixed(1) + ' ' + arcLen.toFixed(1);
+
+    const campusCov = this.CAMPUS_ROWS.map(([name, hand], i) => ({
+      name, hand: hand + '%', handW: hand + '%', handC: barColor(hand),
+      bb: i === this.CAMPUS_ROWS.length - 1 ? 'none' : '1px solid var(--cw-hairline2,#F0F3E3)'
+    }));
+
+    const v1Tabs = this.seg([['paper','Paper baseline'],['hand','Hand-curated minimums'],['assist','ASSIST minimums']], s.v1, (k) => this.setState({ v1: k }));
+    const v1Stats = [
+      { label: 'Our complete cells', value: '440', sub: 'per hand-curated minimums', fg: '#17855A' },
+      { label: 'Paper complete cells', value: '437', sub: 'baseline · hand-curated minimums', fg: '#193018' },
+      { label: 'Net vs paper', value: '+3', sub: '3 changed cells', fg: '#193018' },
+      { label: 'Matrix agreement', value: '99.5%', sub: '3 gained · 0 lost', fg: '#193018' }
+    ];
+    const v2RowTabs = this.seg([['college','College'],['district','District'],['county','County']], s.v2rows, (k) => this.setState({ v2rows: k }));
+    const v2MinTabs = this.seg([['assist','ASSIST minimums'],['hand','Hand-curated minimums']], s.v2min, (k) => this.setState({ v2min: k }));
+    const v2Stats = [
+      { label: 'Coverage rows', value: '1,035', sub: 'from /analysis/coverage', fg: '#17855A' },
+      { label: 'Programs', value: '9', sub: '115 colleges', fg: '#193018' },
+      { label: 'Mean articulated', value: '85.3%', sub: 'per ASSIST minimums', fg: '#193018' },
+      { label: 'Fully articulated', value: '51.4%', sub: '532 cells', fg: '#193018' }
+    ];
+
+    const extra = this.extraVals(s);
+
+    return {
+      ...extra,
+      isApp, isSignin: s.screen === 'signin',
+      barForest: barMode === 'forest', barIvory: barMode === 'ivory',
+      topTabs, hasSubnav, subTabs: subTabsFinal,
+      hasRoute: routeOn && hasSubnav && !!routeLabel, routeLabel,
+      goHome: () => this.setState({ tab: 'data', dataTab: 'overview', agView: 'list' }),
+      signOut: () => this.setState({ screen: 'signin' }),
+      signIn: () => this.setState({ screen: 'app', tab: 'data', dataTab: 'overview', agView: 'list' }),
+
+      showOverview, showAgList, showAgDetail, showCourses, showDistricts,
+      showJudge, showReview, showStats,
+      showVisuals: isApp && s.tab === 'visuals',
+      showTasks: isApp && s.tab === 'tasks',
+      showApi: isApp && s.tab === 'api',
+      showAdmin: isApp && s.tab === 'admin',
+
+      overviewStats, campusRows,
+      campusItems, campusName: s.campus,
+      collegeQ: s.collegeQ, onCollegeQ: (e) => this.setState({ collegeQ: e.target.value }),
+      collegeRows,
+      backToList: () => this.setState({ agView: 'list' }),
+      detailTabs, detailIsAgreement: s.detailTab === 'agreement', detailIsStub: s.detailTab !== 'agreement',
+      detailStubTitle: detailStubTitles[s.detailTab] || '',
+      detailGroups,
+
+      railQ: s.railQ, onRailQ: (e) => this.setState({ railQ: e.target.value }),
+      railItems,
+      courseQ: s.courseQ, onCourseQ: (e) => this.setState({ courseQ: e.target.value }),
+      courseRows, courseCount: cq ? filteredCourses.length : 927,
+      courseSysTabs,
+
+      judgeModeTabs, templatesLeft: s.left,
+      verdictBtns, flagRing,
+      onFlag: () => this.setState({ verdict: s.verdict === 'Flag' ? null : 'Flag' }),
+      onNext: () => this.setState({ verdict: null, notes: '', cellsErr: 0, ticked: {}, left: Math.max(0, s.left - 1) }),
+      cellsErr: s.cellsErr,
+      onCellsMinus: () => this.setState({ cellsErr: Math.max(0, s.cellsErr - 1) }),
+      onCellsPlus: () => this.setState({ cellsErr: s.cellsErr + 1 }),
+      notes: s.notes, onNotes: (e) => this.setState({ notes: e.target.value }),
+      judgeGroups,
+
+      auditStats, verdictSegs, gaugeDash, campusCov,
+
+      v1Tabs, v1Stats, v2RowTabs, v2MinTabs, v2Stats,
+      toggleDiff: () => this.setState({ diff: !s.diff }),
+      diffTrack: s.diff ? '#193018' : 'var(--cw-mid,#D9E2C4)',
+      diffKnob: s.diff ? '20px' : '2px'
+    };
+  }
+}
+</script>
+</body>
+</html>

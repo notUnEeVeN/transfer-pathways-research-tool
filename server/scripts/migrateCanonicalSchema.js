@@ -239,7 +239,7 @@ async function buildModel(db) {
   // console edits die with every port.
   const CONCEPT_FIELDS = [
     'concept', 'concept_source', 'concept_confidence', 'concept_title_seen',
-    'concept_note', 'concept_curated_by', 'concept_curated_at',
+    'concept_note', 'concept_curated_by', 'concept_curated_at', 'language',
   ];
   const conceptCarry = new Map();
   for (const row of existingCourses) {

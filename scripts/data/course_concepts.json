@@ -13,7 +13,8 @@
   },
   "sample_error_rate": null,
   "sample_note": "G4 random-sample review pending: Tybalt reviews via the console; error rate to be recorded here afterward",
-  "combined_la_de": "25 combined LA+DE courses remapped to linear_alg_diff_eq (satisfies both constituents)"
+  "combined_la_de": "25 combined LA+DE courses remapped to linear_alg_diff_eq (satisfies both constituents)",
+  "language_tags": "332 CS intro/advanced courses tagged with a programming language (regex on title); the projection links intro->advanced only within a language, so Python intros stay terminal"
  },
  "rows": [
   {
@@ -35,7 +36,8 @@
    "title_seen": "Advanced C++ Programming Laboratory",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 5796,
@@ -45,7 +47,8 @@
    "title_seen": "Programming in Java Laboratory",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 7744,
@@ -55,7 +58,8 @@
    "title_seen": "Programming in C++ Laboratory",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 28128,
@@ -426,7 +430,8 @@
    "title_seen": "Introduction to Programming Concepts and Methodologies using Python",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 45293,
@@ -1030,7 +1035,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 120112,
@@ -1038,7 +1044,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 120515,
@@ -1134,7 +1141,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Algorithms and Programming/JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 129122,
@@ -1280,7 +1288,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Computer Science-C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 138356,
@@ -1573,7 +1582,8 @@
    "title_seen": "Programming in C/C++",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 142674,
@@ -1989,7 +1999,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 151217,
@@ -2138,7 +2149,8 @@
    "title_seen": "Introduction to C Programming",
    "flags": [
     "cheap_tiebreak"
-   ]
+   ],
+   "language": "c"
   },
   {
    "course_id": 153235,
@@ -2946,7 +2958,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 162004,
@@ -4185,7 +4198,8 @@
    "title_seen": "Introduction to C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 174068,
@@ -4238,7 +4252,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Computer Programming I (C++ Programming)",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 174693,
@@ -4246,7 +4261,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Methods II: JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 174698,
@@ -4397,7 +4413,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming II",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 177457,
@@ -4465,7 +4482,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming - Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 177824,
@@ -4505,7 +4523,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 178264,
@@ -4548,7 +4567,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 178828,
@@ -4598,7 +4618,8 @@
    "title_seen": "Programming in C#",
    "flags": [
     "cheap_tiebreak"
-   ]
+   ],
+   "language": "csharp"
   },
   {
    "course_id": 179513,
@@ -4750,7 +4771,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming I",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 181409,
@@ -4808,7 +4830,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming and Algorithms in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 182708,
@@ -4888,7 +4911,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 183930,
@@ -4914,7 +4938,8 @@
    "title_seen": "Introduction to Object-Oriented Programming: C++",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 184029,
@@ -4962,7 +4987,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ and Object-Oriented Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 184565,
@@ -4978,7 +5004,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming I",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 184782,
@@ -5090,7 +5117,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Programming Using Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 186116,
@@ -5242,7 +5270,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "JAVA Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 188396,
@@ -5568,7 +5597,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 191756,
@@ -5638,7 +5668,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 192340,
@@ -5678,7 +5709,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Beginning C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 192576,
@@ -5763,7 +5795,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology II: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 193036,
@@ -5771,7 +5804,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology II: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 193043,
@@ -5835,7 +5869,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming - Level 2",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 193517,
@@ -5889,7 +5924,8 @@
    "title_seen": "Introduction to Object Oriented Programming: C++",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 193898,
@@ -5897,7 +5933,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming - Level 1",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 193918,
@@ -5953,7 +5990,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 194161,
@@ -6069,7 +6107,8 @@
    "title_seen": "Java Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 195098,
@@ -6133,7 +6172,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 195672,
@@ -6341,7 +6381,8 @@
    "title_seen": "Java Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 196968,
@@ -6400,7 +6441,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming In C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 197283,
@@ -6592,7 +6634,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 198454,
@@ -6600,7 +6643,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 198493,
@@ -6762,7 +6806,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Beginning Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 199587,
@@ -6813,7 +6858,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology I: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 199898,
@@ -6821,7 +6867,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology I: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 199954,
@@ -7023,7 +7070,8 @@
    "title_seen": "Introduction to Object-Oriented Programming: Java      ",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 201785,
@@ -7602,7 +7650,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 204362,
@@ -7666,7 +7715,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 204687,
@@ -7722,7 +7772,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science II: Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 204812,
@@ -7848,7 +7899,8 @@
    "title_seen": "Programming in C#",
    "flags": [
     "cheap_tiebreak"
-   ]
+   ],
+   "language": "csharp"
   },
   {
    "course_id": 205497,
@@ -8094,7 +8146,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Programming Using C/C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 206700,
@@ -8269,7 +8322,8 @@
    "title_seen": "Programming Fundamentals: C++",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 208836,
@@ -8435,7 +8489,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 209798,
@@ -8443,7 +8498,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 209849,
@@ -8519,7 +8575,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 210775,
@@ -8841,7 +8898,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 213461,
@@ -9003,7 +9061,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 214590,
@@ -9011,7 +9070,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "JAVA Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 214717,
@@ -9079,7 +9139,8 @@
    "title_seen": "Advanced Programming and Algorithms in Java",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 215065,
@@ -9279,7 +9340,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 216465,
@@ -9319,7 +9381,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 216958,
@@ -9337,7 +9400,8 @@
    "title_seen": "Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 217299,
@@ -9387,7 +9451,8 @@
    "title_seen": "JAVA Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 217589,
@@ -9395,7 +9460,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 217931,
@@ -9411,7 +9477,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 218143,
@@ -9435,7 +9502,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Language and Object Development",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 219250,
@@ -9461,7 +9529,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 219721,
@@ -9477,7 +9546,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming with Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 219973,
@@ -9567,7 +9637,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 221730,
@@ -9663,7 +9734,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 222845,
@@ -9695,7 +9767,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodologies I: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 223004,
@@ -9743,7 +9816,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming - Level 1",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 223708,
@@ -9799,7 +9873,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 223994,
@@ -9807,7 +9882,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 223996,
@@ -9815,7 +9891,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 224026,
@@ -9842,7 +9919,8 @@
    "flags": [
     "ambiguous",
     "split_vote"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 224080,
@@ -9850,7 +9928,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming I",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 224146,
@@ -9900,7 +9979,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Language Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 225203,
@@ -10006,7 +10086,8 @@
    "flags": [
     "ambiguous",
     "split_vote"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 226049,
@@ -10014,7 +10095,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming: Objects",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 226101,
@@ -10022,7 +10104,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 226116,
@@ -10046,7 +10129,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 226286,
@@ -10062,7 +10146,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 226306,
@@ -10110,7 +10195,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 226568,
@@ -10158,7 +10244,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 226796,
@@ -10176,7 +10263,8 @@
    "title_seen": "Advanced C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 226879,
@@ -10184,7 +10272,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming - Level 2",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 226881,
@@ -10252,7 +10341,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Using Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 227819,
@@ -10326,7 +10416,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 228468,
@@ -10366,7 +10457,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to JAVA for Computer Science",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 229246,
@@ -10374,7 +10466,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Fundamentals: Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 229421,
@@ -10408,7 +10501,8 @@
    "title_seen": "Introduction to Object Oriented Programming-Java",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 229738,
@@ -10440,7 +10534,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming I",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 230709,
@@ -10491,7 +10586,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 231488,
@@ -10579,7 +10675,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Python ",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 231967,
@@ -10603,7 +10700,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Fundamentals: Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 232010,
@@ -10663,7 +10761,8 @@
    "title_seen": "JAVA Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 232274,
@@ -10679,7 +10778,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 232311,
@@ -10738,7 +10838,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 232819,
@@ -10796,7 +10897,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 233447,
@@ -10812,7 +10914,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 233610,
@@ -10820,7 +10923,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science II (C++)",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 233634,
@@ -10844,7 +10948,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Fundamentals: Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 233747,
@@ -10966,7 +11071,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming I",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 235217,
@@ -10982,7 +11088,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Object Oriented Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 235302,
@@ -10990,7 +11097,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 235362,
@@ -10998,7 +11106,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming II",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 235695,
@@ -11048,7 +11157,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced JAVA Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 235983,
@@ -11228,7 +11338,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Topics in JAVA for Computer Science",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 238111,
@@ -11279,7 +11390,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Software Development in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 238330,
@@ -11395,7 +11507,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Beginning JAVA Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 241142,
@@ -11499,7 +11612,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Python Programming - Level 2",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 244471,
@@ -11649,7 +11763,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science I: Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 246821,
@@ -11849,7 +11964,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Concepts and Methodology, C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 247560,
@@ -12123,7 +12239,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 248920,
@@ -12181,7 +12298,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 249121,
@@ -12213,7 +12331,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Beginning C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 249544,
@@ -12277,7 +12396,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 250602,
@@ -12287,7 +12407,8 @@
    "title_seen": "JAVA",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 250786,
@@ -12295,7 +12416,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C/C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 250814,
@@ -12497,7 +12619,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming - Level 1",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 253129,
@@ -12893,7 +13016,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ and Advanced Topics",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 253863,
@@ -13148,7 +13272,8 @@
    "flags": [
     "ambiguous",
     "split_vote"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 254223,
@@ -13156,7 +13281,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming: Objects",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 254643,
@@ -13877,7 +14003,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 257540,
@@ -13901,7 +14028,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming 1",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 257623,
@@ -14131,7 +14259,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology II (Python)",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 259593,
@@ -14175,7 +14304,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 259889,
@@ -14257,7 +14387,8 @@
    "title_seen": "Java Programming ",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 261019,
@@ -14265,7 +14396,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "JAVA Programming Language I",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 261461,
@@ -14281,7 +14413,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 261670,
@@ -14460,7 +14593,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodologies II: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 262604,
@@ -14468,7 +14602,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 262672,
@@ -14500,7 +14635,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 262726,
@@ -14524,7 +14660,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology II: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 262949,
@@ -14532,7 +14669,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology II: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 262970,
@@ -14991,7 +15129,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 266825,
@@ -15001,7 +15140,8 @@
    "title_seen": "Advanced C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 267347,
@@ -15099,7 +15239,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 268611,
@@ -15147,7 +15288,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming Language I",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 268898,
@@ -15179,7 +15321,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 268914,
@@ -15187,7 +15330,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 269008,
@@ -15286,7 +15430,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming 1",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 269781,
@@ -15310,7 +15455,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 270036,
@@ -15374,7 +15520,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming Language 1",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 270394,
@@ -15426,7 +15573,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming Language 2",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 270451,
@@ -15642,7 +15790,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science-C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 271992,
@@ -15678,7 +15827,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 272025,
@@ -15776,7 +15926,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming II",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 272605,
@@ -15824,7 +15975,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Computer Programming I (JAVA)",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 272851,
@@ -15988,7 +16140,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science-Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 273480,
@@ -15996,7 +16149,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 273645,
@@ -16228,7 +16382,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 274729,
@@ -16268,7 +16423,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Introduction to Object Oriented Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 275045,
@@ -16292,7 +16448,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 275482,
@@ -16326,7 +16483,8 @@
    "title_seen": "Java Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 275586,
@@ -16352,7 +16510,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Beginning Programming Methodologies in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 275615,
@@ -16368,7 +16527,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 275646,
@@ -16992,7 +17152,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 278759,
@@ -17322,7 +17483,8 @@
    "title_seen": "Programming in C++ for C/Java Programmers",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 279954,
@@ -17394,7 +17556,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming 2",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 280079,
@@ -18485,7 +18648,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 281459,
@@ -19302,7 +19466,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 282993,
@@ -19518,7 +19683,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Methods I: JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 283325,
@@ -19766,7 +19932,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Structured Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 284493,
@@ -19810,7 +19977,8 @@
    "title_seen": "C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 284592,
@@ -20535,7 +20703,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Methodologies in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 287042,
@@ -21701,7 +21870,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 290441,
@@ -22138,7 +22308,8 @@
    "title_seen": "Programming with Java",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 292640,
@@ -22162,7 +22333,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming 2",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 293202,
@@ -22188,7 +22360,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Methods in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 293233,
@@ -22196,7 +22369,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Concepts and Methodology, Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 293290,
@@ -22244,7 +22418,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Problem Solving and Program Design Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 293365,
@@ -22278,7 +22453,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Orientated Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 294090,
@@ -22288,7 +22464,8 @@
    "title_seen": "Programming Concepts (Java)",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 294101,
@@ -22306,7 +22483,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 294142,
@@ -22316,7 +22494,8 @@
    "title_seen": "Introduction to C#.NET Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "csharp"
   },
   {
    "course_id": 294157,
@@ -22356,7 +22535,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to JAVA Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 294756,
@@ -22364,7 +22544,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Concepts in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 294770,
@@ -22390,7 +22571,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 294851,
@@ -22422,7 +22604,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 294877,
@@ -22438,7 +22621,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 295112,
@@ -22497,7 +22681,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "(CS1) Programming Methods: Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 295319,
@@ -22618,7 +22803,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 296132,
@@ -22660,7 +22846,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming 1",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 296444,
@@ -22684,7 +22871,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 296491,
@@ -22700,7 +22888,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 296498,
@@ -22708,7 +22897,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 296654,
@@ -22776,7 +22966,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 296943,
@@ -22836,7 +23027,8 @@
    "title_seen": "Java Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 297191,
@@ -22844,7 +23036,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "ADVANCED PROGRAMMING IN JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 297224,
@@ -22870,7 +23063,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Language and Object Oriented Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 297429,
@@ -22878,7 +23072,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 297532,
@@ -22948,7 +23143,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Concepts in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 297898,
@@ -23088,7 +23284,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 298463,
@@ -23112,7 +23309,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Software Development with Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 298570,
@@ -23147,7 +23345,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Java Programming Language II",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 298706,
@@ -23197,7 +23396,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming, Advanced",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 298990,
@@ -23237,7 +23437,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 299117,
@@ -23261,7 +23462,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology I: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 299141,
@@ -23269,7 +23471,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology I: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 299263,
@@ -23285,7 +23488,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Fundamentals of Computer Science II (C++)",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 299370,
@@ -23301,7 +23505,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming I  ",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 299424,
@@ -23548,7 +23753,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming with Python ",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 300378,
@@ -23558,7 +23764,8 @@
    "title_seen": "Python Programming for Everyone",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 300385,
@@ -23614,7 +23821,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 300657,
@@ -23648,7 +23856,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Programming Using Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 300749,
@@ -23656,7 +23865,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Problem Solving in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 300758,
@@ -23664,7 +23874,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Programming Methodologies in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 300769,
@@ -23672,7 +23883,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Programming Methodologies in C++ - HONORS",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 300770,
@@ -23746,7 +23958,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 301630,
@@ -24104,7 +24317,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science I (C++)",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 302318,
@@ -24190,7 +24404,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 302489,
@@ -25343,7 +25558,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Software Design in JAVA",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 303404,
@@ -25590,7 +25806,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Fundamentals of Computer Science (JAVA)",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 303946,
@@ -25885,7 +26102,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming Language II",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 304594,
@@ -25925,7 +26143,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology I (Python)",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 304714,
@@ -26557,7 +26776,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 306398,
@@ -26567,7 +26787,8 @@
    "title_seen": "Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 306521,
@@ -27928,7 +28149,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Methodologies in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 308494,
@@ -27936,7 +28158,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Software Design in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 308502,
@@ -28482,7 +28705,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Methodologies in PYTHON",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 309481,
@@ -28541,7 +28765,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Software Design in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 309621,
@@ -28779,7 +29004,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "(CS1) Programming Methods: C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 333563,
@@ -28835,7 +29061,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 335012,
@@ -29587,7 +29814,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 337611,
@@ -29707,7 +29935,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming In C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 337931,
@@ -29882,7 +30111,8 @@
    "title_seen": "C/C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 338440,
@@ -30108,7 +30338,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 339242,
@@ -30474,7 +30705,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 341682,
@@ -30498,7 +30730,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 342356,
@@ -30532,7 +30765,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming II",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 342865,
@@ -30591,7 +30825,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "JAVA Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 343025,
@@ -30599,7 +30834,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++  ",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 343162,
@@ -30649,7 +30885,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 343756,
@@ -30745,7 +30982,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Using Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 344920,
@@ -30933,7 +31171,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "C++ Programming: Advanced Objects",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 347948,
@@ -31037,7 +31276,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 349402,
@@ -31053,7 +31293,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology Using C++ II",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 349472,
@@ -31253,7 +31494,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 352958,
@@ -31627,7 +31869,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to C++ Programming",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 353246,
@@ -31863,7 +32106,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 353448,
@@ -32305,7 +32549,8 @@
    "title_seen": "Programming with Java",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 355222,
@@ -32363,7 +32608,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 355789,
@@ -32371,7 +32617,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 355790,
@@ -32422,7 +32669,8 @@
    "flags": [
     "combined_course",
     "cheap_tiebreak"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 356306,
@@ -32430,7 +32678,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming with Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 356356,
@@ -32441,7 +32690,8 @@
    "flags": [
     "combined_course",
     "cheap_tiebreak"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 356417,
@@ -32527,7 +32777,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Programming Using Java ",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 356716,
@@ -32593,7 +32844,8 @@
    "title_seen": "Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 356980,
@@ -32729,7 +32981,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 357550,
@@ -32819,7 +33072,8 @@
    "title_seen": "Advanced C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 357748,
@@ -32827,7 +33081,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Fundamentals of Computer Science (Python)",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 357749,
@@ -32939,7 +33194,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 357943,
@@ -34344,7 +34600,8 @@
    "title_seen": "Programming in Python ",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 361151,
@@ -34380,7 +34637,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming I",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 361768,
@@ -34388,7 +34646,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Python Programming II",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 361889,
@@ -34420,7 +34679,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 362355,
@@ -34492,7 +34752,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming with Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 362722,
@@ -34618,7 +34879,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Programming Using Python Language ",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 364429,
@@ -34626,7 +34888,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "PROGRAMMING IN PYTHON",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 364451,
@@ -34878,7 +35141,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 365936,
@@ -34926,7 +35190,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 365981,
@@ -34936,7 +35201,8 @@
    "title_seen": "Advanced Python",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 366063,
@@ -34944,7 +35210,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 366066,
@@ -34970,7 +35237,8 @@
    "title_seen": "Introduction to Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 366197,
@@ -34986,7 +35254,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming I",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 366372,
@@ -34994,7 +35263,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Python Programming II",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 366377,
@@ -35014,7 +35284,8 @@
    "title_seen": "Introduction to Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 366487,
@@ -35191,7 +35462,8 @@
    "title_seen": "Introduction to Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 368022,
@@ -35253,7 +35525,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 368208,
@@ -35399,7 +35672,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Essentials in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 368771,
@@ -35467,7 +35741,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Using Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 369252,
@@ -35483,7 +35758,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 369373,
@@ -35491,7 +35767,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 369419,
@@ -35693,7 +35970,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 370081,
@@ -35717,7 +35995,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming: Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 370311,
@@ -35765,7 +36044,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts & Methodology I Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 370471,
@@ -35847,7 +36127,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming with Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 371393,
@@ -36154,7 +36435,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 372248,
@@ -36381,7 +36663,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming and Algorithms in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 373351,
@@ -36389,7 +36672,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 373353,
@@ -36423,7 +36707,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 373518,
@@ -36431,7 +36716,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 373537,
@@ -36463,7 +36749,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology I (Java)",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 373618,
@@ -36471,7 +36758,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Programming Concepts and Methodology II (Java)",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 373628,
@@ -36547,7 +36835,8 @@
    "title_seen": "Introduction to Python Programming ",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 374523,
@@ -36579,7 +36868,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Computer Science-Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 374858,
@@ -36595,7 +36885,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 374963,
@@ -36638,7 +36929,8 @@
    "flags": [
     "ambiguous",
     "cheap_tiebreak"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 375199,
@@ -36664,7 +36956,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Python Programming and Abstractions",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 375470,
@@ -36698,7 +36991,8 @@
    "title_seen": "Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 375855,
@@ -36708,7 +37002,8 @@
    "title_seen": "Advanced Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 375940,
@@ -36838,7 +37133,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming with Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 376516,
@@ -36846,7 +37142,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 376607,
@@ -36976,7 +37273,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Using Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 376876,
@@ -37072,7 +37370,8 @@
    "title_seen": "Java Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 377063,
@@ -37358,7 +37657,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Introductory Programming Concepts and Methodology",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 377703,
@@ -37366,7 +37666,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Problem Solving and Program Design Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 377704,
@@ -37382,7 +37683,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Computer Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 377754,
@@ -37458,7 +37760,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming: Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 378564,
@@ -37502,7 +37805,8 @@
    "title_seen": "Advanced Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 378973,
@@ -37530,7 +37834,8 @@
    "title_seen": "Programming Essentials in Python",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 379137,
@@ -37546,7 +37851,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 379399,
@@ -37696,7 +38002,8 @@
    "title_seen": "C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 381020,
@@ -37736,7 +38043,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 381431,
@@ -37802,7 +38110,8 @@
    "title_seen": "Programming with Python",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 381479,
@@ -37836,7 +38145,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 381545,
@@ -37912,7 +38222,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 382129,
@@ -37920,7 +38231,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 382136,
@@ -38032,7 +38344,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Computer Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 382620,
@@ -38056,7 +38369,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 383099,
@@ -38146,7 +38460,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Introduction to Programming Using Java",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 383869,
@@ -38226,7 +38541,8 @@
    "title_seen": "Advanced C++ Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 384485,
@@ -38244,7 +38560,8 @@
    "title_seen": "Advanced Python Programming",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 384523,
@@ -38262,7 +38579,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming and Algorithms in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 384530,
@@ -38286,7 +38604,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object Oriented Programming using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 384547,
@@ -38296,7 +38615,8 @@
    "title_seen": "Advanced Programming and Algorithms in C++",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 384550,
@@ -38320,7 +38640,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Programming with Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 384854,
@@ -38483,7 +38804,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Honors Problem Solving and Program Design Using C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 386089,
@@ -38541,7 +38863,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 386383,
@@ -38847,7 +39170,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Advanced Python Programming",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 388898,
@@ -38855,7 +39179,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Intermediate Java Programming",
-   "flags": []
+   "flags": [],
+   "language": "java"
   },
   {
    "course_id": 388899,
@@ -38881,7 +39206,8 @@
    "title_seen": "Python Programming with App",
    "flags": [
     "ambiguous"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 389629,
@@ -38907,7 +39233,8 @@
    "title_seen": "Fundamentals of Computer Science II (C++) Lab",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "cpp"
   },
   {
    "course_id": 399852,
@@ -38917,7 +39244,8 @@
    "title_seen": "Fundamentals of Computer Science (JAVA) Lab",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "java"
   },
   {
    "course_id": 399853,
@@ -38927,7 +39255,8 @@
    "title_seen": "Fundamentals of Computer Science (Python) Lab",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "python"
   },
   {
    "course_id": 399854,
@@ -39087,7 +39416,8 @@
    "concept": "cs_2_oop",
    "confidence": 1.0,
    "title_seen": "Object-Oriented Programming in C++",
-   "flags": []
+   "flags": [],
+   "language": "cpp"
   },
   {
    "course_id": 412148,
@@ -39247,7 +39577,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 413415,
@@ -39311,7 +39642,8 @@
    "concept": "cs_1",
    "confidence": 1.0,
    "title_seen": "Programming in Python",
-   "flags": []
+   "flags": [],
+   "language": "python"
   },
   {
    "course_id": 418171,
@@ -39321,7 +39653,8 @@
    "title_seen": "Programming in Python Laboratory",
    "flags": [
     "partial_course"
-   ]
+   ],
+   "language": "python"
   }
  ]
 }
