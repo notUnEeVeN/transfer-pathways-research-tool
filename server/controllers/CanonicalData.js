@@ -17,6 +17,7 @@ const REQUIREMENT_PREFIX = Object.freeze({
   ge_pattern: 'ge_pattern',
   igetc: 'igetc',
   associate_degree: 'associate_degree',
+  prereq_concept: 'prereq_concept',
 });
 const REQUIREMENT_KINDS = Object.keys(REQUIREMENT_PREFIX);
 
@@ -33,6 +34,49 @@ function parseInstitutionId(value, expectedKind = null) {
     const prefix = expectedKind === 'community_college' ? 'cc' : 'uc';
     return { key: `${prefix}:${raw}`, sourceId: Number(raw), kind: expectedKind };
   }
+  return null;
+}
+
+// ── prereq_concept validation ──
+// The concept vocabulary is the normative prerequisite model (see
+// docs/superpowers/specs/2026-07-15-prerequisite-concept-graph-design.md);
+// writes must keep the rule graph acyclic and self-consistent.
+const CONCEPT_SLUG_RE = /^[a-z0-9_]+$/;
+const CONCEPT_DISCIPLINES = ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'stats', 'other'];
+
+async function validatePrereqConcept(db, canonical) {
+  const slug = String(canonical.slug || '');
+  if (!CONCEPT_SLUG_RE.test(slug)) return 'slug must match ^[a-z0-9_]+$';
+  if (slug !== String(canonical.legacy_id)) return 'slug must equal the row id';
+  if (!CONCEPT_DISCIPLINES.includes(canonical.discipline)) {
+    return `discipline must be one of ${CONCEPT_DISCIPLINES.join(', ')}`;
+  }
+  const requires = canonical.requires;
+  if (!Array.isArray(requires) || requires.some((r) => typeof r !== 'string')) {
+    return 'requires must be an array of concept slugs';
+  }
+  const rows = await db.collection(COLLECTIONS.requirements)
+    .find({ kind: 'prereq_concept' }, { projection: { slug: 1, requires: 1 } })
+    .toArray();
+  const graph = new Map(rows.map((r) => [String(r.slug), (r.requires || []).map(String)]));
+  graph.set(slug, requires.map(String));
+  for (const r of requires) {
+    if (!graph.has(String(r))) return `requires references unknown concept: ${r}`;
+  }
+  const state = new Map(); // 'visiting' | 'done'
+  const visit = (node, path) => {
+    if (state.get(node) === 'done') return null;
+    if (state.get(node) === 'visiting') return [...path, node];
+    state.set(node, 'visiting');
+    for (const next of graph.get(node) || []) {
+      const cycle = visit(next, [...path, node]);
+      if (cycle) return cycle;
+    }
+    state.set(node, 'done');
+    return null;
+  };
+  const cycle = visit(slug, []);
+  if (cycle) return `requires would create a cycle: ${cycle.join(' → ')}`;
   return null;
 }
 
@@ -147,6 +191,10 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     curated_at: new Date(),
     updated_at: new Date(),
   };
+  if (kind === 'prereq_concept') {
+    const invalid = await validatePrereqConcept(db, canonical);
+    if (invalid) return res.status(400).json({ error: invalid });
+  }
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
   );
@@ -161,6 +209,20 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   const prefix = `${REQUIREMENT_PREFIX[kind]}:`;
   const rawId = decodeURIComponent(String(req.params.id));
   const canonicalId = rawId.startsWith(prefix) ? rawId : `${prefix}${rawId}`;
+  if (kind === 'prereq_concept') {
+    const slug = canonicalId.slice(prefix.length);
+    const [dependents, mapped] = await Promise.all([
+      req.app.locals.db.collection(COLLECTIONS.requirements)
+        .countDocuments({ kind: 'prereq_concept', requires: slug }),
+      req.app.locals.db.collection(COLLECTIONS.courses)
+        .countDocuments({ concept: slug }),
+    ]);
+    if (dependents || mapped) {
+      return res.status(400).json({
+        error: `concept is referenced by ${dependents} concept(s) and ${mapped} course(s); reassign them first`,
+      });
+    }
+  }
   const result = await req.app.locals.db.collection(COLLECTIONS.requirements)
     .deleteOne({ _id: canonicalId });
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
