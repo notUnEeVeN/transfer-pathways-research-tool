@@ -63,9 +63,11 @@ function DagSvg({ nodes, edges, hollowIds = new Set() }) {
   )
 }
 
-export default function ConceptGraphView() {
+// initialCollegeId seeds the college selection for tests (same pattern as
+// ConceptMappingTable) — jsdom can't drive the portal-based Combobox.
+export default function ConceptGraphView({ initialCollegeId = null }) {
   const colleges = useColleges()
-  const [collegeId, setCollegeId] = useState(null)
+  const [collegeId, setCollegeId] = useState(initialCollegeId)
   const graph = usePrereqGraph(collegeId)
 
   const collegeOptions = useMemo(() => [
