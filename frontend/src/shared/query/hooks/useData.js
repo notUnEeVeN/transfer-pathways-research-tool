@@ -191,6 +191,7 @@ const REQUIREMENT_KIND = {
   transfer_minimums: 'transfer_minimum',
   ge_patterns: 'ge_pattern',
   igetc_areas: 'igetc',
+  prereq_concepts: 'prereq_concept',
 }
 
 export function useRefTable(table) {
@@ -294,6 +295,7 @@ export function useDegreeEvaluation(schoolId, collegeId, options = {}) {
 
 const invalidateCuratedData = (qc, safeTable) => Promise.all([
   qc.invalidateQueries({ queryKey: ['ref-table', safeTable] }),
+  qc.invalidateQueries({ queryKey: ['prereq-graph'] }),
   qc.invalidateQueries({
     predicate: (query) => String(query.queryKey[0] || '').startsWith('analysis-'),
   }),
@@ -332,6 +334,36 @@ export function useDeleteRefRow(table) {
       return apiClient.delete(`/curated/requirements/${kind}/${encodeURIComponent(id)}`).then((r) => r.data)
     },
     onSuccess: () => invalidateCuratedData(qc, safeTable),
+  })
+}
+
+export function usePrereqGraph(collegeId) {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['prereq-graph', user?.uid, collegeId ?? 'all'],
+    queryFn: () => apiClient
+      .get('/curated/prerequisite-graph', {
+        params: collegeId != null ? { college_id: `cc:${collegeId}` } : {},
+      })
+      .then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
+export function useSaveCourseConcept() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, concept, note }) => apiClient
+      .put(`/assist/courses/${encodeURIComponent(id)}/concept`, { concept, note })
+      .then((r) => r.data),
+    onSuccess: () => Promise.all([
+      qc.invalidateQueries({ queryKey: ['prereq-graph'] }),
+      qc.invalidateQueries({ queryKey: ['cc-courses'] }),
+      qc.invalidateQueries({
+        predicate: (query) => String(query.queryKey[0] || '').startsWith('analysis-'),
+      }),
+    ]),
   })
 }
 
