@@ -74,7 +74,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
             setSaveError(null)
             setEditing({
               key: r.key, label: `${r.prefix} ${r.number} — ${r.title}`,
-              concept: r.concept || '', note: '',
+              concept: r.concept || '', note: r.concept_note || '',
             })
           }}
           columns={[

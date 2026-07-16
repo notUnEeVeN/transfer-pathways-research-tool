@@ -77,7 +77,7 @@ describe('prerequisiteGraphData', () => {
       _id: `prereq_concept:${c.slug}`, kind: 'prereq_concept', legacy_id: c.slug, ...c,
     })));
     await db.collection('assist_courses').insertMany([
-      course(1, 10, 'calc_1'), course(2, 10, 'calc_2'), course(6, 10, undefined),
+      course(1, 10, 'calc_1', { concept_note: 'obvious fit' }), course(2, 10, 'calc_2'), course(6, 10, undefined),
     ]);
     await db.collection('assist_agreements').insertOne({
       college_id: 'cc:10', university_id: 'uc:1', major: 'CS',
@@ -106,6 +106,7 @@ describe('prerequisiteGraphData', () => {
     const keys = data.courses.map((c) => c.key).sort();
     expect(keys).toEqual(['cc:1', 'cc:2', 'cc:6']);       // in-scope ∪ examined
     expect(data.courses.find((c) => c.key === 'cc:6').in_scope).toBe(true);
+    expect(data.courses.find((c) => c.key === 'cc:1').concept_note).toBe('obvious fit');
     expect(data.edges).toContainEqual({ from: 'cc:1', to: 'cc:2' });
     expect(data.stats.phantom_course_ids).toEqual([999]);
     expect(data.stats.in_scope).toBe(3);

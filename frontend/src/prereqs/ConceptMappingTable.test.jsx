@@ -10,7 +10,7 @@ vi.mock('../shared/query/hooks/useData', () => ({
       rules: [],
       stats: { in_scope: 3, examined: 2, mapped: 1, edges: 0, phantom_course_ids: [] },
       courses: [
-        { key: 'cc:1', prefix: 'MATH', number: '3A', title: 'Calculus I', units: 5, concept: 'calc_1', concept_source: 'llm_session_v1', concept_confidence: 1, in_scope: true },
+        { key: 'cc:1', prefix: 'MATH', number: '3A', title: 'Calculus I', units: 5, concept: 'calc_1', concept_source: 'llm_session_v1', concept_confidence: 1, concept_note: 'obvious fit', in_scope: true },
         { key: 'cc:2', prefix: 'CS', number: '10', title: 'Intro CS', units: 4, concept: null, concept_source: null, concept_confidence: null, in_scope: true },
         { key: 'cc:3', prefix: 'ART', number: '1', title: 'Art History', units: 3, concept: null, concept_source: 'llm_session_v1', concept_confidence: null, in_scope: true },
       ],

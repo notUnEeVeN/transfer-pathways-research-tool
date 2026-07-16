@@ -27,6 +27,7 @@ export default function ConceptsTable() {
     <Stack gap='cozy'>
       <div className='flex flex-wrap items-center gap-3'>
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Find concept…'
+          aria-label='Find concept'
           className='bg-canvas border border-border rounded-pill px-3 py-[7px] text-[13px] text-ink placeholder:text-ink-subtle outline-none' />
         <Button className='ml-auto' leadingIcon={PlusIcon} onClick={() => ed.openAdd()}>Add concept</Button>
       </div>

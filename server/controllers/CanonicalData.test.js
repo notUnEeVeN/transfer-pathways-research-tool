@@ -117,6 +117,25 @@ describe('prereq_concept kind', () => {
     expect(res.body.error).toMatch(/cycle/);
   });
 
+  it('stamps hand_curated source when none is given', async () => {
+    await put(concept('calc_1'));
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'prereq_concept:calc_1' });
+    expect(stored.source).toBe('hand_curated');
+  });
+
+  it('preserves an explicit source', async () => {
+    await put(concept('calc_1', [], { source: 'llm_session_v1' }));
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'prereq_concept:calc_1' });
+    expect(stored.source).toBe('llm_session_v1');
+  });
+
+  it('dedupes duplicate slugs in requires', async () => {
+    await put(concept('calc_1'));
+    await put(concept('calc_2', ['calc_1', 'calc_1']));
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'prereq_concept:calc_2' });
+    expect(stored.requires).toEqual(['calc_1']);
+  });
+
   it('rejects deleting a concept other concepts require', async () => {
     await put(concept('calc_1'));
     await put(concept('calc_2', ['calc_1']));
@@ -182,6 +201,12 @@ describe('putCourseConcept', () => {
     const res = await putConcept('cc:42', { concept: 'underwater_calc' });
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toMatch(/unknown concept slug/);
+  });
+
+  it('400s a non-string concept', async () => {
+    const res = await putConcept('cc:42', { concept: ['calc_1'] });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe('concept must be a string slug or null');
   });
 
   it('404s a missing course and 400s a non-cc id', async () => {

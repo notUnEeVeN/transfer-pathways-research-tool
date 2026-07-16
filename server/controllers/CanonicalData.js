@@ -193,8 +193,12 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     updated_at: new Date(),
   };
   if (kind === 'prereq_concept') {
+    if (Array.isArray(canonical.requires)) {
+      canonical.requires = [...new Set(canonical.requires.map(String))];
+    }
     const invalid = await validatePrereqConcept(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
+    canonical.source = canonical.source || 'hand_curated';
   }
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
@@ -311,6 +315,9 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
   const id = decodeURIComponent(String(req.params.id || ''));
   if (!/^cc:.+$/.test(id)) return res.status(400).json({ error: 'course id must be cc:<course_id>' });
   const { concept = null, note = '' } = req.body || {};
+  if (concept != null && typeof concept !== 'string') {
+    return res.status(400).json({ error: 'concept must be a string slug or null' });
+  }
   if (concept != null) {
     const known = await db.collection(COLLECTIONS.requirements)
       .findOne({ _id: `prereq_concept:${concept}` }, { projection: { _id: 1 } });

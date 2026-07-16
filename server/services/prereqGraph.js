@@ -73,7 +73,7 @@ async function loadExaminedCourses(db, collegeKey = null) {
   return db.collection('assist_courses').find(filter, {
     projection: {
       course_id: 1, institution_id: 1, community_college_id: 1, prefix: 1, number: 1,
-      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1,
+      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1,
     },
   }).toArray();
 }
@@ -125,7 +125,7 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
     { side: 'sending', institution_id: collegeKey },
     { projection: {
       course_id: 1, institution_id: 1, community_college_id: 1, prefix: 1, number: 1,
-      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1,
+      title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1,
     } }
   ).toArray();
   const byNumericId = new Map(catalog.map((row) => [Number(row.course_id), row]));
@@ -144,6 +144,7 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
     concept: row.concept ?? null,
     concept_source: row.concept_source ?? null,
     concept_confidence: row.concept_confidence ?? null,
+    concept_note: row.concept_note ?? null,
     in_scope: inScope.has(Number(row.course_id)),
   })).sort((a, b) => String(a.prefix).localeCompare(String(b.prefix))
     || String(a.number).localeCompare(String(b.number)));

@@ -114,6 +114,31 @@ def build_concept_rows(concepts, now, source):
     } for c in concepts]
 
 
+def warn_same_as_mismatches(db, ids):
+    """Cross-listed peers classified with differing concepts are flagged here,
+    not just in QA (spec §2: 'peers with differing concepts are flagged...
+    at import time')."""
+    docs = list(db["assist_courses"].find({"_id": {"$in": ids}}, {"same_as_keys": 1, "concept": 1}))
+    concept_of = {d["_id"]: d.get("concept") for d in docs}
+    peer_ids = {p for d in docs for p in (d.get("same_as_keys") or []) if p not in concept_of}
+    if peer_ids:
+        concept_of.update({
+            d["_id"]: d.get("concept")
+            for d in db["assist_courses"].find({"_id": {"$in": list(peer_ids)}}, {"concept": 1})
+        })
+    mismatches = 0
+    for d in docs:
+        concept = concept_of.get(d["_id"])
+        if concept is None:
+            continue
+        for peer in d.get("same_as_keys") or []:
+            peer_concept = concept_of.get(peer)
+            if peer_concept is not None and peer_concept != concept:
+                print(f"  same_as mismatch: {d['_id']} ({concept}) vs {peer} ({peer_concept})")
+                mismatches += 1
+    print(f"same_as check: {mismatches} mismatch(es) found.")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--concepts-json", default=str(DEFAULT_CONCEPTS))
@@ -147,15 +172,17 @@ def main():
 
     if args.dry_run:
         print("Dry run only; no DB writes.")
+        print("same_as check runs on live imports only.")
         return
 
     from pymongo import MongoClient, UpdateOne
     uri = _env("TARGET_MONGO_URI", required=True)
     db = MongoClient(uri)[_env("TARGET_DB_NAME", "pmt_research")]
 
-    db["curated_requirements"].bulk_write([
-        UpdateOne({"_id": row["_id"]}, {"$set": row}, upsert=True) for row in concept_rows
-    ], ordered=False)
+    if concept_rows:
+        db["curated_requirements"].bulk_write([
+            UpdateOne({"_id": row["_id"]}, {"$set": row}, upsert=True) for row in concept_rows
+        ], ordered=False)
     print(f"curated_requirements updated ({len(concept_rows)} concept rows).")
 
     ids = [f"cc:{int(r['course_id'])}" for r in rows]
@@ -191,6 +218,7 @@ def main():
         f"assist_courses updated ({len(ops)} rows; {skipped_curated} human-curated preserved; "
         f"{missing} not in catalog; {drifted} title drifts)."
     )
+    warn_same_as_mismatches(db, ids)
 
 
 if __name__ == "__main__":
