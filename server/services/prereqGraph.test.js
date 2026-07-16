@@ -170,6 +170,28 @@ describe('prerequisiteGraphData', () => {
       courses_compared: 1, legacy_edges: 2, projected_edges: 1, shared_edges: 1,
     });
   });
+
+  it('marks interchangeable same-concept fan-ins as options', async () => {
+    await db.dropDatabase();
+    await db.collection('curated_requirements').insertMany([
+      { _id: 'prereq_concept:cs_1', kind: 'prereq_concept', legacy_id: 'cs_1', slug: 'cs_1', name: 'CS1', discipline: 'cs', requires: [] },
+      { _id: 'prereq_concept:comp_arch', kind: 'prereq_concept', legacy_id: 'comp_arch', slug: 'comp_arch', name: 'Assembly', discipline: 'cs', requires: ['cs_1'] },
+    ]);
+    // Three interchangeable intro courses (all cs_1) + one assembly course.
+    await db.collection('assist_courses').insertMany([
+      course(1, 10, 'cs_1'), course(2, 10, 'cs_1'), course(3, 10, 'cs_1'),
+      course(4, 10, 'comp_arch'),
+    ]);
+    await db.collection('assist_agreements').insertOne({
+      college_id: 'cc:10', university_id: 'uc:1', major: 'CS',
+      requirement_groups: [{ sections: [{ receivers: [{ options: [{ course_ids: [1, 2, 3, 4] }] }] }] }],
+    });
+    const data = await prerequisiteGraphData(db, { collegeKey: 'cc:10' });
+    const intoAssembly = data.edges.filter((e) => e.to === 'cc:4');
+    expect(intoAssembly).toHaveLength(3);
+    expect(intoAssembly.every((e) => e.option === true)).toBe(true);
+    expect(new Set(intoAssembly.map((e) => e.group)).size).toBe(1); // one alternatives group
+  });
 });
 
 describe('projectPrereqEdges', () => {
