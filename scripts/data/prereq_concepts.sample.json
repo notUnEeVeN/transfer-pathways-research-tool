@@ -1,0 +1,7 @@
+{
+  "_meta": { "purpose": "Sample for import_course_concepts.py --dry-run; the real vocabulary is prereq_concepts.json (generated in the classification session)." },
+  "concepts": [
+    { "slug": "calc_1", "name": "Calculus I", "discipline": "math", "requires": [], "note": "" },
+    { "slug": "calc_2", "name": "Calculus II", "discipline": "math", "requires": ["calc_1"], "note": "" }
+  ]
+}

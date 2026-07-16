@@ -1,0 +1,824 @@
+{
+ "_meta": {
+  "purpose": "DRAFT prerequisite concept vocabulary + rules (spec docs/superpowers/specs/2026-07-15-prerequisite-concept-graph-design.md §1A). Pending Tybalt's exhaustive review — rename to prereq_concepts.json only after approval. Consumed by scripts/import_course_concepts.py.",
+  "status": "locked",
+  "authored": "2026-07-15",
+  "method": "in-session multi-agent draft: 7 discipline-family proposers over the full in-scope inventory (4,730 CC courses, 230 UC receiving) -> synthesis -> 2 adversarial verifiers (coverage, rules); review doc at docs/prereq-concepts-review.md",
+  "conventions": [
+   "Lab-only UC asks (e.g. PHYSICS 4AL, CHEM 1AL) are covered by their lecture concept; labs do not get separate concepts.",
+   "Corequisites are not encoded; where a relationship is commonly concurrent, encoding it as a completed prerequisite is a per-concept normative call recorded in that concept's note.",
+   "Combined courses (e.g. 'Linear Algebra and Differential Equations') map to BOTH constituent concepts.",
+   "Courses with no concept stay unmapped by design; concepts exist only for recurring pathway courses anchored by UC asks."
+  ],
+  "review": "Approved 2026-07-15 by Tybalt ('that's fine, proceed'): decisions 1-5 stand as drafted (linear_alg<-calc_3 and diff_eq<-linear_alg are his stated normative calls; consequences accepted as documented); decision 6: software-tools cluster left unmapped for v1; decision 7: intro_stats/engl_comp_2 kept as CC-side concepts; decision 8: variance notes added post-approval. Combined-course convention for classification: a course spanning multiple concepts maps to the DEEPEST constituent in the partial order, flagged 'combined_course' (single-concept schema, v1); listed in QA for manual override."
+ },
+ "concepts": [
+  {
+   "slug": "calc_1",
+   "name": "Calculus I (single-variable, differential)",
+   "discipline": "math",
+   "requires": [],
+   "note": "The start of the STEM math track. Honors, 'with support', and early/late-transcendentals sections all count. There's no precalc or trig concept because those courses never appear in the agreements. A course that combines Calc 1 and 2 counts as both.",
+   "uc_anchors": [
+    "MATH 31A @ UCLA",
+    "MATH 20A @ UCSD",
+    "MAT 021A @ UC Davis",
+    "MATH 021 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Analytic Geometry and Calculus I",
+    "Single Variable Calculus I - Early Transcendentals",
+    "Calculus I",
+    "Calculus with Analytic Geometry, First Course"
+   ]
+  },
+  {
+   "slug": "calc_2",
+   "name": "Calculus II (integration, series)",
+   "discipline": "math",
+   "requires": [
+    "calc_1"
+   ],
+   "note": "Standard second-semester calculus. Honors and support versions count too.",
+   "uc_anchors": [
+    "MATH 31B @ UCLA",
+    "MATH 20B @ UCSD",
+    "MAT 021B @ UC Davis",
+    "MATH 19B @ UCSC"
+   ],
+   "example_cc_titles": [
+    "Calculus II",
+    "Analytic Geometry and Calculus II",
+    "Single Variable Calculus II - Late Transcendentals",
+    "Calculus, Second Course"
+   ]
+  },
+  {
+   "slug": "calc_3",
+   "name": "Calculus III (multivariable / vector calculus)",
+   "discipline": "math",
+   "requires": [
+    "calc_2"
+   ],
+   "note": "Covers all of multivariable and vector calculus in one concept. Quarter-system schools that split it into a fourth course map those here — there's no Calc 4. It also stands in for the separate vector-calculus courses a few UCs ask for.",
+   "uc_anchors": [
+    "MATH 32A @ UCLA",
+    "MATH 20C @ UCSD",
+    "MAT 021C @ UC Davis",
+    "MATH 53 @ UC Berkeley"
+   ],
+   "example_cc_titles": [
+    "Multivariable Calculus",
+    "Calculus III",
+    "Analytic Geometry and Calculus III",
+    "Multivariable and Vector Calculus"
+   ]
+  },
+  {
+   "slug": "linear_alg",
+   "name": "Linear Algebra",
+   "discipline": "math",
+   "requires": [
+    "calc_3"
+   ],
+   "note": "We require Calc 3 before Linear Algebra everywhere, even though many colleges only require Calc 2 or let you take them together. It's the deliberately conservative choice. Courses that teach Linear Algebra and Differential Equations together use the combined concept instead.",
+   "uc_anchors": [
+    "MATH 33A @ UCLA",
+    "MATH 18 @ UCSD",
+    "MAT 022A @ UC Davis",
+    "MATH 3A @ UCI"
+   ],
+   "example_cc_titles": [
+    "Linear Algebra",
+    "Introduction to Linear Algebra",
+    "Linear Algebra and Applications",
+    "Elementary Linear Algebra"
+   ]
+  },
+  {
+   "slug": "diff_eq",
+   "name": "Ordinary Differential Equations",
+   "discipline": "math",
+   "requires": [
+    "linear_alg"
+   ],
+   "note": "We require Linear Algebra before Differential Equations so there's always a defined order — even though most colleges only ask for Calc 2 or 3, with linear algebra at most a co-requisite. Calc 3 comes through linear algebra. Combined LA+DE courses use the combined concept.",
+   "uc_anchors": [
+    "MATH 33B @ UCLA",
+    "MATH 20D @ UCSD",
+    "MAT 022B @ UC Davis",
+    "MATH 4B @ UCSB"
+   ],
+   "example_cc_titles": [
+    "Differential Equations",
+    "Ordinary Differential Equations",
+    "Elementary Differential Equations",
+    "Introduction to Differential Equations"
+   ]
+  },
+  {
+   "slug": "discrete_math",
+   "name": "Discrete Mathematics / Discrete Structures",
+   "discipline": "math",
+   "requires": [
+    [
+     "calc_1",
+     "bus_calc_1"
+    ]
+   ],
+   "note": "One concept for Discrete Math / Discrete Structures, whether the math or CS department teaches it. We require Calc 1 OR Applied/Business Calc 1 as a readiness gate — either satisfies it. Some colleges gate on precalc (out of scope) or treat calculus as a co-req, but a completed calculus course is the conservative call.",
+   "uc_anchors": [
+    "MATH 61 @ UCLA",
+    "CSE 20 @ UCSD",
+    "ECS 020 @ UC Davis",
+    "COMPSCI 70 @ UC Berkeley",
+    "I&C SCI 6D @ UCI"
+   ],
+   "example_cc_titles": [
+    "Discrete Mathematics",
+    "Discrete Structures for Computer Science",
+    "Discrete Structures",
+    "Methods of Discrete Mathematics"
+   ]
+  },
+  {
+   "slug": "bus_calc_1",
+   "name": "Applied/Business Calculus I",
+   "discipline": "math",
+   "requires": [],
+   "note": "The applied/business calculus track — business, social-science, and 'calculus for biology and medicine' versions all fold in. It's a separate on-ramp: it does not count as regular Calc 1 and doesn't feed the STEM chain.",
+   "uc_anchors": [
+    "MATH 11A @ UCSC"
+   ],
+   "example_cc_titles": [
+    "Calculus for Business and Social Sciences",
+    "Basic Techniques of Applied Calculus I",
+    "Calculus for Biology and Medicine I",
+    "Short Calculus I"
+   ]
+  },
+  {
+   "slug": "bus_calc_2",
+   "name": "Applied/Business Calculus II",
+   "discipline": "math",
+   "requires": [
+    "bus_calc_1"
+   ],
+   "note": "Second course of the applied/business calculus track. Some colleges only offer the first course.",
+   "uc_anchors": [
+    "MATH 11B @ UCSC"
+   ],
+   "example_cc_titles": [
+    "Business Calculus II",
+    "Applied Calculus II",
+    "Basic Techniques of Calculus II",
+    "Calculus for Biology and Medicine II"
+   ]
+  },
+  {
+   "slug": "stats_calc",
+   "name": "Calculus-Based Probability & Statistics for STEM",
+   "discipline": "stats",
+   "requires": [
+    "calc_2"
+   ],
+   "note": "Calculus-based probability and statistics for STEM and engineering. We require Calc 2 as the floor (colleges vary from Calc 1 up to multivariable). Plain, non-calculus intro statistics is a separate concept.",
+   "uc_anchors": [
+    "PSTAT 120A @ UCSB",
+    "MATH 70 @ UCLA",
+    "STATS 67 @ UCI",
+    "MATH 032 @ UC Merced",
+    "ENGR 080 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Statistics for STEM",
+    "Probability and Statistics for STEM",
+    "Engineering Probability and Statistics",
+    "Statistics for Data Science"
+   ]
+  },
+  {
+   "slug": "intro_stats",
+   "name": "Introductory Statistics (algebra-based)",
+   "discipline": "stats",
+   "requires": [],
+   "note": "Standard algebra-based intro statistics (~110 colleges, sometimes under a PSYC or BUS prefix). No transfer-level prerequisite — the algebra gate is pre-transfer. Distinct from the calculus-based STEM statistics.",
+   "uc_anchors": [
+    "STATS 67 @ UCI",
+    "MATH 032 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Introduction to Statistics",
+    "Elementary Statistics",
+    "Introduction to Probability and Statistics"
+   ]
+  },
+  {
+   "slug": "phys_mech",
+   "name": "Calculus-Based Physics: Mechanics",
+   "discipline": "physics",
+   "requires": [
+    "calc_1"
+   ],
+   "note": "First course of the calculus-based physics sequence for scientists and engineers. We require Calc 1 completed, though many colleges let you take it alongside. Honors versions, attached labs, and 'mechanics + waves' packagings all fold in.",
+   "uc_anchors": [
+    "PHYSICS 1A @ UCLA",
+    "PHYSICS 7A @ UC Berkeley",
+    "PHY 009A @ UC Davis",
+    "PHYS 2A @ UCSD",
+    "PHYS 40A @ UC Riverside"
+   ],
+   "example_cc_titles": [
+    "Physics for Scientists and Engineers: Mechanics",
+    "Engineering Physics - Mechanics",
+    "Mechanics of Solids and Fluids",
+    "Classical Mechanics for Scientists and Engineers"
+   ]
+  },
+  {
+   "slug": "phys_em",
+   "name": "Calculus-Based Physics: Electricity & Magnetism",
+   "discipline": "physics",
+   "requires": [
+    "phys_mech",
+    "calc_2"
+   ],
+   "note": "Second calculus-based physics course (electricity and magnetism). We require Calc 2. Some colleges also want Calc 3 alongside, but we don't encode that to avoid overstating the requirement.",
+   "uc_anchors": [
+    "PHYS 2B @ UCSD",
+    "PHY 009C @ UC Davis",
+    "PHYSICS 7B @ UC Berkeley",
+    "PHYSICS 7D @ UC Irvine"
+   ],
+   "example_cc_titles": [
+    "Electricity and Magnetism",
+    "Physics for Scientists and Engineers: Electricity and Magnetism",
+    "Electromagnetism for Scientists and Engineers",
+    "Engineering Physics - Electricity and Magnetism"
+   ]
+  },
+  {
+   "slug": "phys_waves_thermo",
+   "name": "Calculus-Based Physics: Waves, Thermodynamics & Optics",
+   "discipline": "physics",
+   "requires": [
+    "phys_em"
+   ],
+   "note": "Third calculus-based physics course (waves, thermodynamics, optics). We require E&M first to keep one consistent statewide order, even though some colleges allow it right after mechanics.",
+   "uc_anchors": [
+    "PHYS 4B @ UCSD",
+    "PHY 009B @ UC Davis",
+    "PHYSICS 7C @ UC Berkeley",
+    "PHYS 40C @ UC Riverside"
+   ],
+   "example_cc_titles": [
+    "Waves, Optics and Modern Physics",
+    "Heat, Light and Waves",
+    "Physics for Scientists and Engineers: Fluids, Waves, Optics and Thermodynamics",
+    "Heat, Waves, Light and Modern Physics"
+   ]
+  },
+  {
+   "slug": "phys_modern",
+   "name": "Calculus-Based Physics: Modern Physics",
+   "discipline": "physics",
+   "requires": [
+    "phys_waves_thermo"
+   ],
+   "note": "A fourth physics course at schools that have one (modern physics). At three-course schools this content lives inside the waves/thermo course and nothing maps here — that gap is intentional.",
+   "uc_anchors": [
+    "PHY 009D @ UC Davis",
+    "PHYS 7D @ UCSB"
+   ],
+   "example_cc_titles": [
+    "Modern Physics",
+    "Modern Physics for Scientists and Engineers",
+    "Physics for Scientists and Engineers: Modern Physics",
+    "Modern Physics with Lab"
+   ]
+  },
+  {
+   "slug": "phys_gen_1",
+   "name": "General Physics I (Algebra/Trig-Based)",
+   "discipline": "physics",
+   "requires": [],
+   "note": "First semester of the algebra-based physics sequence for life-science majors. No prerequisite in scope (the usual precalc/trig gate isn't in our data). Lecture and its separate 1-unit lab count together.",
+   "uc_anchors": [
+    "PHYS 6A @ UCSB"
+   ],
+   "example_cc_titles": [
+    "General Physics I",
+    "Algebra/Trigonometry-Based Physics I",
+    "Algebra-Based Physics 1: Mechanics with Lab",
+    "Physics for Life Sciences I"
+   ]
+  },
+  {
+   "slug": "phys_gen_2",
+   "name": "General Physics II (Algebra/Trig-Based)",
+   "discipline": "physics",
+   "requires": [
+    "phys_gen_1"
+   ],
+   "note": "Second semester of the algebra-based physics sequence. The community-college side is two semesters, so there's no third algebra-based concept.",
+   "uc_anchors": [
+    "PHYS 6B @ UCSB",
+    "PHYS 6C @ UCSB"
+   ],
+   "example_cc_titles": [
+    "General Physics II",
+    "Algebra/Trigonometry-Based Physics II",
+    "Algebra-Based Physics 2: Electricity/Magnetism with Lab",
+    "General Physics - Electricity, Magnetism and Optics"
+   ]
+  },
+  {
+   "slug": "gen_chem_1",
+   "name": "General Chemistry I",
+   "discipline": "chem",
+   "requires": [],
+   "note": "Start of the chemistry chain (General Chemistry 1). No math prerequisite in our model — the real gate is algebra readiness, which is pre-transfer. Lecture/lab split offerings and honors versions all count together.",
+   "uc_anchors": [
+    "CHEM 1A @ UC Berkeley",
+    "CHEM 6A @ UCSD",
+    "CHE 002A @ UC Davis",
+    "CHEM 1A @ UCSB",
+    "CHEM 002 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "General Chemistry I",
+    "General College Chemistry I",
+    "General Chemistry and Chemical Analysis I",
+    "General Chemistry I - Lecture"
+   ]
+  },
+  {
+   "slug": "gen_chem_2",
+   "name": "General Chemistry II",
+   "discipline": "chem",
+   "requires": [
+    "gen_chem_1"
+   ],
+   "note": "Completes the full-year general chemistry sequence. A quarter-system school's third-quarter course folds in here — there's no separate Gen Chem 3.",
+   "uc_anchors": [
+    "CHEM 1B @ UC Berkeley",
+    "CHEM 6B @ UCSD",
+    "CHE 002B @ UC Davis",
+    "CHEM 1C @ UCSB"
+   ],
+   "example_cc_titles": [
+    "General Chemistry II",
+    "General Chemistry and Qualitative Analysis",
+    "General College Chemistry II",
+    "General Chemistry II - Lecture"
+   ]
+  },
+  {
+   "slug": "organic_chem_1",
+   "name": "Organic Chemistry I",
+   "discipline": "chem",
+   "requires": [
+    "gen_chem_2"
+   ],
+   "note": "Organic Chemistry 1. We require the full year of general chemistry first — a few schools admit after one semester, but the full-year gate is the common pattern and the conservative choice.",
+   "uc_anchors": [
+    "CHEM 3A @ UC Berkeley",
+    "CHEM 3AL @ UC Berkeley",
+    "CHEM 41A @ UCSD"
+   ],
+   "example_cc_titles": [
+    "Organic Chemistry I",
+    "Organic Chemistry for Science Majors I",
+    "First Semester Organic Chemistry Lecture",
+    "Structure and Reactivity: Organic Chemistry 1"
+   ]
+  },
+  {
+   "slug": "organic_chem_2",
+   "name": "Organic Chemistry II",
+   "discipline": "chem",
+   "requires": [
+    "organic_chem_1"
+   ],
+   "note": "Completes the organic chemistry sequence; third-quarter organic at quarter-system schools folds in here.",
+   "uc_anchors": [
+    "CHEM 3B @ UC Berkeley",
+    "CHEM 3BL @ UC Berkeley"
+   ],
+   "example_cc_titles": [
+    "Organic Chemistry II",
+    "Organic Chemistry for Science Majors II",
+    "Organic Chemistry II - Lecture",
+    "Second Semester Organic Chemistry Lecture"
+   ]
+  },
+  {
+   "slug": "cs_1",
+   "name": "Programming Fundamentals (CS1)",
+   "discipline": "cs",
+   "requires": [],
+   "note": "Intro programming (CS1). Python, Java, C++, and C first courses all count, since UCs treat them interchangeably. Computer-literacy or survey courses do not. Honors versions and two-course CS1 splits fold in.",
+   "uc_anchors": [
+    "COM SCI 31 @ UCLA",
+    "I&C SCI 31 @ UCI",
+    "COMPSCI 61A @ UC Berkeley",
+    "ECS 036A @ UC Davis",
+    "CSE 11 @ UCSD"
+   ],
+   "example_cc_titles": [
+    "Programming Concepts and Methodology I: C++",
+    "Introduction to Structured Programming",
+    "Programming Fundamentals: Java",
+    "Structure and Interpretation of Computer Programs"
+   ]
+  },
+  {
+   "slug": "cs_2_oop",
+   "name": "Intermediate / Object-Oriented Programming (CS2)",
+   "discipline": "cs",
+   "requires": [
+    "cs_1"
+   ],
+   "note": "The intermediate / object-oriented programming course between CS1 and data structures. The typical California sequence is three courses, and several UCs ask for a distinct OOP course before data structures. Language-agnostic.",
+   "uc_anchors": [
+    "I&C SCI 32 @ UCI",
+    "I&C SCI 33 @ UCI",
+    "ECS 036B @ UC Davis",
+    "CSE 024 @ UC Merced",
+    "CMPSC 32 @ UCSB"
+   ],
+   "example_cc_titles": [
+    "Programming Concepts and Methodology II: C++",
+    "Intermediate Programming Methodologies in C++",
+    "Object Oriented Programming with C++",
+    "Intermediate Java Programming"
+   ]
+  },
+  {
+   "slug": "cs_3_data_structures",
+   "name": "Data Structures & Algorithms (CS3)",
+   "discipline": "cs",
+   "requires": [
+    "cs_2_oop"
+   ],
+   "note": "Data Structures and Algorithms. We require the OOP course first everywhere, even though a minority of colleges go straight from CS1 — same conservative approach as Linear Algebra requiring Calc 3.",
+   "uc_anchors": [
+    "COMPSCI 61B @ UC Berkeley",
+    "ECS 036C @ UC Davis",
+    "I&C SCI 46 @ UCI",
+    "CMPSC 24 @ UCSB",
+    "CSE 12 @ UCSD",
+    "CSE 030 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Data Abstraction and Structures",
+    "Data Structures",
+    "C++ Programming: Data Structures",
+    "Data Structures and Algorithms: C++"
+   ]
+  },
+  {
+   "slug": "comp_arch_assembly",
+   "name": "Computer Organization & Assembly Language",
+   "discipline": "cs",
+   "requires": [
+    "cs_1"
+   ],
+   "note": "Computer Organization and Assembly Language. We require only CS1, the common sending-side prerequisite, even though several UC equivalents sit after data structures — we sequence by what community colleges actually require.",
+   "uc_anchors": [
+    "COM SCI 33 @ UCLA",
+    "COMPSCI 61C @ UC Berkeley",
+    "ECS 050 @ UC Davis",
+    "CSE 031 @ UC Merced",
+    "CSE 30 @ UCSD"
+   ],
+   "example_cc_titles": [
+    "Computer Architecture and Organization: Assembly",
+    "Computer Organization and Assembly Language",
+    "Assembly Language Programming on Microcomputers",
+    "Computer Architecture and Organization"
+   ]
+  },
+  {
+   "slug": "c_systems_programming",
+   "name": "C / Systems Programming (second language)",
+   "discipline": "cs",
+   "requires": [
+    "cs_1"
+   ],
+   "note": "A C or systems-programming course taken after a first programming language (four UCs ask for one). A C course that's a college's first programming course maps to CS1 instead. Requires CS1.",
+   "uc_anchors": [
+    "I&C SCI 45C @ UCI",
+    "CSE 13S @ UCSC",
+    "CSE 29 @ UCSD",
+    "ECS 034 @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "C as a Second Programming Language",
+    "Computer Systems and C Programming",
+    "System Programming with C",
+    "Programming Methods 1.5 - C and C++"
+   ]
+  },
+  {
+   "slug": "digital_logic",
+   "name": "Digital Logic Design",
+   "discipline": "engr",
+   "requires": [
+    "cs_1"
+   ],
+   "note": "Digital Logic Design. UC versions straddle CS and EE departments, so it's one concept. Prerequisites range from none to a first programming course; we conservatively require CS1.",
+   "uc_anchors": [
+    "COM SCI M51A @ UCLA",
+    "EC ENGR M16 @ UCLA",
+    "EECS 31 @ UCI",
+    "ECE 15A @ UCSB",
+    "EE 060 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Digital Logic Design",
+    "Introduction to Logic Design",
+    "Boolean Algebra and Logic",
+    "Introduction to Digital Systems"
+   ]
+  },
+  {
+   "slug": "bio_cell_molec",
+   "name": "Cell and Molecular Biology (Majors)",
+   "discipline": "bio",
+   "requires": [],
+   "note": "First course of the majors biology sequence (cell and molecular). No chemistry prerequisite encoded — most colleges treat General Chemistry as a recommended co-req, not a completed requirement. The integrated lab satisfies the UC's intro-bio-lab ask.",
+   "uc_anchors": [
+    "BILD 1 @ UCSD",
+    "MCDB 1A @ UCSB",
+    "BIOLOGY 1A @ UC Berkeley",
+    "BIS 002A @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "Cell and Molecular Biology",
+    "Principles of Biology - Molecular and Cellular",
+    "Molecular and Cellular Biology",
+    "General Biology: Cells"
+   ]
+  },
+  {
+   "slug": "bio_organismal",
+   "name": "Organismal, Evolutionary and Ecological Biology (Majors)",
+   "discipline": "bio",
+   "requires": [
+    "bio_cell_molec"
+   ],
+   "note": "Second majors-biology course — one concept covering organismal, evolution, ecology, and biodiversity however a college packages it (a single course, a botany+zoology pair, or a three-course split). We require cell and molecular biology first, taking the stricter cell-first order.",
+   "uc_anchors": [
+    "BILD 2 @ UCSD",
+    "BILD 3 @ UCSD",
+    "BIOLOGY 1B @ UC Berkeley",
+    "BIS 002B @ UC Davis",
+    "MCDB 1B @ UCSB"
+   ],
+   "example_cc_titles": [
+    "Organismal Biology",
+    "Evolution, Ecology & Biodiversity",
+    "Organismal Biology and Biodiversity",
+    "General Zoology"
+   ]
+  },
+  {
+   "slug": "human_physiology",
+   "name": "Human Physiology",
+   "discipline": "bio",
+   "requires": [
+    "bio_cell_molec",
+    "gen_chem_1"
+   ],
+   "note": "A dedicated Human Physiology course (majors / pre-professional). We require both cell and molecular biology and General Chemistry 1 — the conservative call. Multi-semester anatomy and physiology sequences do not map here.",
+   "uc_anchors": [
+    "MCELLBI 32 @ UC Berkeley"
+   ],
+   "example_cc_titles": [
+    "Human Physiology",
+    "General Human Physiology",
+    "Principles of Human Physiology",
+    "Introductory Physiology"
+   ]
+  },
+  {
+   "slug": "engr_circuits",
+   "name": "Introductory Circuit Analysis for Engineers",
+   "discipline": "engr",
+   "requires": [
+    "phys_em",
+    [
+     "linear_alg_diff_eq",
+     "diff_eq"
+    ]
+   ],
+   "note": "The main engineering transfer course statewide (~50 colleges): intro circuit analysis. Requires calculus-based physics (E&M) plus differential equations — either the standalone Diff Eq course, or a combined Linear Algebra + Diff Eq course. The combined course is the shorter route (one course instead of linear algebra then diff eq), so students who take it reach circuits with less prerequisite depth. Lecture+lab pairs and titles like 'Network Analysis' fold in.",
+   "uc_anchors": [
+    "ENGR 065 @ UC Merced",
+    "ENG 017 @ UC Davis",
+    "EECS 70A @ UCI",
+    "EC ENGR 3 @ UCLA"
+   ],
+   "example_cc_titles": [
+    "Introduction to Circuit Analysis",
+    "Electric Circuits & Devices",
+    "Network Analysis",
+    "Circuit Analysis with Lab"
+   ]
+  },
+  {
+   "slug": "engr_programming",
+   "name": "Programming and Computational Methods for Engineers",
+   "discipline": "engr",
+   "requires": [
+    "calc_1"
+   ],
+   "note": "Programming and computational methods for engineers — covers both the MATLAB flavor and the C/C++/Python-for-engineers flavor. We require Calc 1 completed. A course that's really just a generic CS1 under an ENGR prefix maps to CS1 instead.",
+   "uc_anchors": [
+    "EE 20B @ UC Riverside"
+   ],
+   "example_cc_titles": [
+    "Programming and Problem-Solving in MATLAB",
+    "Computational Methods for Engineers and Scientists",
+    "Introduction to Programming Concepts and Methodologies for Engineers",
+    "C++ Programming for Engineers & Scientists"
+   ]
+  },
+  {
+   "slug": "engl_comp_1",
+   "name": "English Composition 1 (Academic Reading & Writing)",
+   "discipline": "other",
+   "requires": [],
+   "note": "First-semester college composition — the most standardized course in the state (~110 colleges). Honors, stretch/extended-support, and multilingual/ESL versions all count. No transfer-level prerequisite (placement is pre-transfer).",
+   "uc_anchors": [
+    "ENGCOMP 3 @ UCLA",
+    "UWP 001 @ UC Davis",
+    "WRI 001 @ UC Merced",
+    "WRI 010 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "ENGL C1000 Academic Reading and Writing",
+    "ENGL C1000E Academic Reading and Writing (extended)",
+    "College Reading and Composition I Plus Lab",
+    "ESL 110 College Composition for Non-Native Speakers"
+   ]
+  },
+  {
+   "slug": "engl_comp_2",
+   "name": "English Composition 2 (Critical Thinking & Composition)",
+   "discipline": "other",
+   "requires": [
+    "engl_comp_1"
+   ],
+   "note": "Second-semester composition / critical thinking and writing. Includes literature-based versions and philosophy 'Critical Thinking and Writing' courses, since they fill the same slot. Pure logic courses with no writing component stay unmapped.",
+   "uc_anchors": [],
+   "example_cc_titles": [
+    "ENGL C1001 Critical Thinking and Writing",
+    "Critical Thinking and Writing about Literature",
+    "PHIL 105 Critical Thinking and Writing",
+    "Argumentative Writing and Critical Thinking Through Literature"
+   ]
+  },
+  {
+   "slug": "public_speaking",
+   "name": "Public Speaking (Oral Communication)",
+   "discipline": "other",
+   "requires": [],
+   "note": "First-course public speaking / oral communication (~110 colleges). Argumentation, debate, persuasion, and advanced public speaking do not map here.",
+   "uc_anchors": [
+    "CMN 001 @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "COMM C1000 Introduction to Public Speaking",
+    "Introduction to Public Speaking - Honors",
+    "COMSTD 2 Introduction to Public Speaking"
+   ]
+  },
+  {
+   "slug": "econ_micro",
+   "name": "Principles of Microeconomics",
+   "discipline": "other",
+   "requires": [],
+   "note": "Principles of Microeconomics (~110 colleges). No ordering edge between micro and macro — colleges disagree on which comes first, so forcing one would be wrong. No math gate (the usual algebra prerequisite is pre-transfer).",
+   "uc_anchors": [
+    "ECON 3 @ UC Riverside"
+   ],
+   "example_cc_titles": [
+    "Principles of Microeconomics",
+    "ECON 1B Principles of Microeconomics",
+    "BUSC 1B Principles of Microeconomics",
+    "ECO 8 Principles of Microeconomics"
+   ]
+  },
+  {
+   "slug": "econ_macro",
+   "name": "Principles of Macroeconomics",
+   "discipline": "other",
+   "requires": [],
+   "note": "Principles of Macroeconomics (~110 colleges). Same as micro: no micro/macro ordering and no math gate. One-course 'Intro to Economics' surveys stay unmapped.",
+   "uc_anchors": [
+    "ECON 2 @ UC Riverside"
+   ],
+   "example_cc_titles": [
+    "Principles of Macroeconomics",
+    "ECON 1A Principles of Macroeconomics",
+    "BUS 106 Principles of Economics - Macro",
+    "ECO 7 Principles of Macroeconomics"
+   ]
+  },
+  {
+   "slug": "acct_financial",
+   "name": "Financial Accounting",
+   "discipline": "other",
+   "requires": [],
+   "note": "Financial Accounting — the biggest single cluster (~120 colleges). Managerial accounting isn't in our data, and vocational bookkeeping stays unmapped.",
+   "uc_anchors": [
+    "BUS 20 @ UC Riverside"
+   ],
+   "example_cc_titles": [
+    "ACCT 1A Financial Accounting",
+    "ACCTG 001 Introductory Accounting I",
+    "BUS 1A Financial Accounting",
+    "ACCT 116A Financial Accounting"
+   ]
+  },
+  {
+   "slug": "intro_lit",
+   "name": "Introduction to Literature",
+   "discipline": "other",
+   "requires": [
+    "engl_comp_1"
+   ],
+   "note": "Introduction to Literature and genre-survey courses (~40 colleges). Requires first-semester composition, which nearly every college requires. Composition-2-through-literature courses map to the comp-2 concept instead.",
+   "uc_anchors": [
+    "ENL 003 @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "Introduction to Literature",
+    "Approaches to Literature",
+    "Survey of Literary Genres"
+   ]
+  },
+  {
+   "slug": "world_lit_1",
+   "name": "World Literature I (Antiquity to ~1650)",
+   "discipline": "other",
+   "requires": [
+    "engl_comp_1"
+   ],
+   "note": "World Literature I (antiquity to ~1650), ~30 colleges. No ordering edge to World Lit II — the two halves are parallel, not sequential, at almost every college. Requires first-semester composition (the gate varies a little; we take the conservative call).",
+   "uc_anchors": [
+    "COM 001 @ UC Davis",
+    "COM 002 @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "World Literature I",
+    "Masterpieces of World Literature I: 1500 BCE - 1600 CE",
+    "World Literature to 1650",
+    "Survey of World Literature to the Mid-Seventeenth Century"
+   ]
+  },
+  {
+   "slug": "world_lit_2",
+   "name": "World Literature II (~1650 to Present)",
+   "discipline": "other",
+   "requires": [
+    "engl_comp_1"
+   ],
+   "note": "World Literature II (~1650 to present), ~30 colleges. Contemporary-world-literature versions fold in here. Requires first-semester composition (conservative call, same as the other literature concepts).",
+   "uc_anchors": [
+    "COM 003 @ UC Davis",
+    "COM 004 @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "World Literature II",
+    "Masterpieces of World Literature II: 1600 - Present",
+    "World Literature II: Seventeenth Century Through the Present",
+    "Contemporary World Literature"
+   ]
+  },
+  {
+   "slug": "linear_alg_diff_eq",
+   "name": "Linear Algebra + Differential Equations (combined)",
+   "discipline": "math",
+   "requires": [
+    "calc_3"
+   ],
+   "satisfies": [
+    "linear_alg",
+    "diff_eq"
+   ],
+   "note": "For schools that teach Linear Algebra and Differential Equations as one combined course (~20 colleges, e.g. MATH 216 at College of Marin). It requires Calc 3, and its 'satisfies' link lets the single course stand in for both Linear Algebra and Differential Equations wherever those are needed downstream.",
+   "uc_anchors": [
+    "MATH 54 @ UC Berkeley",
+    "MATH 024 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Linear Algebra and Differential Equations",
+    "Differential Equations and Linear Algebra",
+    "Introduction to Linear Algebra and Differential Equations"
+   ]
+  }
+ ]
+}

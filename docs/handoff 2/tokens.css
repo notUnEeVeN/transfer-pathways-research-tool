@@ -1,0 +1,202 @@
+/* ============================================================================
+   Transfer Pathways Research — brand tokens
+   Drop-in replacement for frontend/src/styles/tokens.css  (Tailwind v4 syntax)
+
+   Palette = the approved "crisp" colorway: white canvas, green-tinted
+   hairlines, darker muted inks (chosen for readability), with the brand's
+   forest #193018 / lime #96F060 pair. Alternates (meadow, paper) at bottom.
+   Rationale + per-surface usage: see REVAMP-HANDOFF.md.
+   ========================================================================== */
+
+/* ---------- Fonts ----------------------------------------------------------
+   Option A (licensed): Haffer SQ — self-host woff2 in assets/fonts/, swap the
+   family name below and in --font-sans.
+   Option B (free stand-in, used by the approved mockups): Schibsted Grotesk.
+   NOTE: in Schibsted Grotesk, tabular figures give punctuation full digit
+   width ("1 , 035"). Apply .tabular ONLY to pure-digit columns. */
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  src: url('../assets/fonts/SchibstedGrotesk-Variable.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  src: url('../assets/fonts/SchibstedGrotesk-Italic-Variable.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---------- Light theme (default) ---------- */
+@theme {
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-sans); /* no separate mono face; see .tabular note */
+
+  /* Brand */
+  --color-primary: #193018;            /* forest — fills, selected states */
+  --color-primary-hover: #234424;
+  --color-primary-soft: #EFF8E5;       /* selected-row / icon-chip tint */
+  --color-primary-ring: #96F060;       /* selection rings (verdict buttons) */
+  --color-on-primary: #F0FFE7;
+
+  /* Accent — NEW pair: the lime CTA color (hero CTAs, iconCircle, active
+     nav pill on the forest bar, live-dot, selection highlight) */
+  --color-accent: #96F060;
+  --color-accent-hover: #89E453;
+  --color-on-accent: #193018;
+
+  /* Surfaces — cards separate via borders, not tone (flat brand) */
+  --color-canvas: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F6F8F1;
+  --color-surface-sunken: #F1F3EB;     /* segmented tracks, chips, code blocks */
+  --color-surface-hover: #F6F8F1;
+
+  /* Borders */
+  --color-border: #DFE3D8;
+  --color-border-strong: #B9C0AC;      /* secondary buttons, checkboxes, dashed zones */
+
+  /* Ink */
+  --color-ink: #193018;                /* forest doubles as ink */
+  --color-ink-muted: #3F4840;
+  --color-ink-subtle: #5F6A60;
+
+  /* Semantic — keep the three roles visually distinct (brief Rule 4) */
+  --color-success: #17855A;            /* complete / eligible / done */
+  --color-success-soft: #DFF4E7;
+  --color-danger: #D22F14;             /* AA text/fill */
+  --color-danger-bright: #FE4F32;      /* brand coral — large fills/washes only */
+  --color-danger-soft: #FFE9E3;
+  --color-conservative: #6C4FD0;       /* text/border form of soft lavender */
+  --color-conservative-fill: #C7B5F1;  /* button fill — pair with forest text */
+  --color-conservative-soft: #F0EAFC;
+
+  /* Geometry — softer, pill-forward */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+  --radius-pill: 999px;
+
+  /* Elevation — content flat; only true overlays lift */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: 0 16px 48px rgba(25, 48, 24, .24);  /* floating dock */
+  --shadow-lg: 0 24px 64px rgba(25, 48, 24, .30);  /* modals */
+
+  /* Motion */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+}
+
+/* ---------- Dark theme ---------- */
+html[data-theme='dark'] {
+  --color-primary: #96F060;            /* lime becomes the fill on dark */
+  --color-primary-hover: #A8F47C;
+  --color-primary-soft: rgba(150, 240, 96, .12);
+  --color-primary-ring: #96F060;
+  --color-on-primary: #142811;
+
+  --color-accent: #96F060;
+  --color-accent-hover: #A8F47C;
+  --color-on-accent: #142811;
+
+  --color-canvas: #0D170C;
+  --color-surface: #142312;
+  --color-surface-muted: #1A2B18;
+  --color-surface-sunken: #101D0F;
+  --color-surface-hover: #1C2E1A;
+
+  --color-border: #2A3D27;
+  --color-border-strong: #3A5136;
+
+  --color-ink: #EAF5E1;
+  --color-ink-muted: #B7C7AD;
+  --color-ink-subtle: #8CA083;
+
+  --color-success: #4FC98F;
+  --color-success-soft: rgba(79, 201, 143, .16);
+  --color-danger: #FF8266;
+  --color-danger-bright: #FE4F32;
+  --color-danger-soft: rgba(254, 79, 50, .16);
+  --color-conservative: #C7B5F1;
+  --color-conservative-fill: #C7B5F1;
+  --color-conservative-soft: rgba(199, 181, 241, .15);
+}
+
+/* ---------- Base layer ---------- */
+@layer base {
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--color-accent); color: var(--color-on-accent); }
+  :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  a { color: var(--color-success); }
+  a:hover { color: color-mix(in oklab, var(--color-success), black 18%); }
+
+  /* Live-dot pulse (Admin production banner) */
+  @keyframes pmt-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(150, 240, 96, .55); }
+    50%      { box-shadow: 0 0 0 8px rgba(150, 240, 96, 0); }
+  }
+  /* keep existing overlayIn / modalIn / toastIn / riseIn keyframes */
+}
+
+/* ---------- Type system (closed — never set raw sizes on markup) ---------- */
+@utility text-display     { font-size: 30px; line-height: 1.15; font-weight: 650; letter-spacing: -.02em; }
+@utility text-display-lg  { font-size: 44px; line-height: 1.08; font-weight: 650; letter-spacing: -.022em; } /* sign-in hero */
+@utility text-heading     { font-size: 20px; line-height: 1.3;  font-weight: 650; letter-spacing: -.01em; }
+@utility text-body        { font-size: 14px; line-height: 1.5;  font-weight: 400; }
+@utility text-body-strong { font-size: 14px; line-height: 1.5;  font-weight: 600; }
+@utility text-caption     { font-size: 13px; line-height: 1.45; color: var(--color-ink-subtle); }
+@utility text-label       { font-size: 11px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; color: var(--color-ink-subtle); }
+@utility text-stat        { font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+@utility text-stat-lg     { font-size: 29px; font-weight: 650; letter-spacing: -.015em; }
+@utility text-button      { font-size: 13px; font-weight: 600; }
+@utility text-tag         { font-size: 11.5px; font-weight: 600; }
+/* Pure-digit columns ONLY (units, ids, counts) — never on values with , . % / */
+@utility tabular          { font-variant-numeric: tabular-nums; }
+
+/* ---------- Surface system (flat) ---------- */
+@utility surface-card     { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+@utility surface-raised   { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+@utility surface-sunken   { background: var(--color-surface-sunken); border-radius: var(--radius-pill); }
+@utility surface-elevated { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); box-shadow: var(--shadow-lg); }
+
+/* ---------- Shared field / pill vocab ---------- */
+@utility input-field {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 9px 13px;
+  font-size: 13.5px;
+  color: var(--color-ink);
+}
+@utility field-label { font-size: 12.5px; font-weight: 600; color: var(--color-ink-muted); }
+@utility chip {
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+/* console-terminal + console-* : LEAVE the existing dark log-pane rules as-is. */
+
+/* ============================================================================
+   Alternate light colorways (demoed via the mockups' Colorway tweak).
+   To adopt one, swap the surface/border/ink values in @theme above.
+
+   meadow (green-tinted):  canvas #F8FAEC · sunken #EFF5DE · soft #F0FFE7
+     border #E3E9D2 / strong #C9D3B4 · ink-muted #52664F · ink-subtle #7E8F76
+   paper (warm neutral):   canvas #F6F5EF · sunken #ECEBE0 · soft #EDEFE1
+     border #E1E0D3 / strong #C2C0AC · ink-muted #4E554B · ink-subtle #747B70
+   ========================================================================== */

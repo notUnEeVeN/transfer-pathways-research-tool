@@ -1,6 +1,7 @@
 /** Canonical research-data API over the permanent compact schema. */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { majorScope, pairClause } = require('../services/majorVisibility');
+const { prerequisiteGraphData } = require('../services/prereqGraph');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -17,6 +18,7 @@ const REQUIREMENT_PREFIX = Object.freeze({
   ge_pattern: 'ge_pattern',
   igetc: 'igetc',
   associate_degree: 'associate_degree',
+  prereq_concept: 'prereq_concept',
 });
 const REQUIREMENT_KINDS = Object.keys(REQUIREMENT_PREFIX);
 
@@ -32,6 +34,69 @@ function parseInstitutionId(value, expectedKind = null) {
   if (/^\d+$/.test(raw) && expectedKind) {
     const prefix = expectedKind === 'community_college' ? 'cc' : 'uc';
     return { key: `${prefix}:${raw}`, sourceId: Number(raw), kind: expectedKind };
+  }
+  return null;
+}
+
+// ── prereq_concept validation ──
+// The concept vocabulary is the normative prerequisite model (see
+// docs/superpowers/specs/2026-07-15-prerequisite-concept-graph-design.md);
+// writes must keep the rule graph acyclic and self-consistent.
+const CONCEPT_SLUG_RE = /^[a-z0-9_]+$/;
+const CONCEPT_DISCIPLINES = ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'stats', 'other'];
+
+async function validatePrereqConcept(db, canonical) {
+  const slug = String(canonical.slug || '');
+  if (!CONCEPT_SLUG_RE.test(slug)) return 'slug must match ^[a-z0-9_]+$';
+  if (slug !== String(canonical.legacy_id)) return 'slug must equal the row id';
+  if (!CONCEPT_DISCIPLINES.includes(canonical.discipline)) {
+    return `discipline must be one of ${CONCEPT_DISCIPLINES.join(', ')}`;
+  }
+  // A requires entry is a slug (AND) or a non-empty array of slugs (OR-group).
+  const requires = canonical.requires;
+  if (!Array.isArray(requires)) return 'requires must be an array';
+  const flat = [];
+  for (const entry of requires) {
+    if (typeof entry === 'string') flat.push(entry);
+    else if (Array.isArray(entry) && entry.length && entry.every((a) => typeof a === 'string')) flat.push(...entry);
+    else return 'each requires entry must be a concept slug or a non-empty array of slugs (an OR-group)';
+  }
+  const flatten = (reqs) => (reqs || []).flatMap((e) => (Array.isArray(e) ? e : [e])).map(String);
+  const rows = await db.collection(COLLECTIONS.requirements)
+    .find({ kind: 'prereq_concept' }, { projection: { slug: 1, requires: 1 } })
+    .toArray();
+  // Cycle/existence checks flatten OR-groups: an alternative that could close a
+  // cycle is rejected, keeping the graph acyclic however the OR resolves.
+  const graph = new Map(rows.map((r) => [String(r.slug), flatten(r.requires)]));
+  graph.set(slug, flat.map(String));
+  for (const r of flat) {
+    if (!graph.has(String(r))) return `requires references unknown concept: ${r}`;
+  }
+  const state = new Map(); // 'visiting' | 'done'
+  const visit = (node, path) => {
+    if (state.get(node) === 'done') return null;
+    if (state.get(node) === 'visiting') return [...path, node];
+    state.set(node, 'visiting');
+    for (const next of graph.get(node) || []) {
+      const cycle = visit(next, [...path, node]);
+      if (cycle) return cycle;
+    }
+    state.set(node, 'done');
+    return null;
+  };
+  const cycle = visit(slug, []);
+  if (cycle) return `requires would create a cycle: ${cycle.join(' → ')}`;
+  // satisfies: combined-course concepts stand in for these slugs during
+  // projection (optional; must name other existing concepts).
+  const sat = canonical.satisfies;
+  if (sat !== undefined) {
+    if (!Array.isArray(sat) || sat.some((s) => typeof s !== 'string')) {
+      return 'satisfies must be an array of concept slugs';
+    }
+    for (const s of sat) {
+      if (s === slug) return 'satisfies must not reference the concept itself';
+      if (!graph.has(String(s))) return `satisfies references unknown concept: ${s}`;
+    }
   }
   return null;
 }
@@ -147,6 +212,29 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     curated_at: new Date(),
     updated_at: new Date(),
   };
+  if (kind === 'prereq_concept') {
+    // Dedupe within each OR-group and across top-level entries, without
+    // flattening groups (an entry may be a slug or an array of slugs). A
+    // single-alternative group collapses back to a plain slug.
+    if (Array.isArray(canonical.requires)) {
+      const seen = new Set();
+      canonical.requires = canonical.requires.map((e) => {
+        if (Array.isArray(e)) {
+          const alts = [...new Set(e.map(String))];
+          return alts.length === 1 ? alts[0] : alts;
+        }
+        return String(e);
+      }).filter((e) => {
+        const key = Array.isArray(e) ? `|${e.join('|')}` : e;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+    const invalid = await validatePrereqConcept(db, canonical);
+    if (invalid) return res.status(400).json({ error: invalid });
+    canonical.source = canonical.source || 'hand_curated';
+  }
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
   );
@@ -161,6 +249,20 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   const prefix = `${REQUIREMENT_PREFIX[kind]}:`;
   const rawId = decodeURIComponent(String(req.params.id));
   const canonicalId = rawId.startsWith(prefix) ? rawId : `${prefix}${rawId}`;
+  if (kind === 'prereq_concept') {
+    const slug = canonicalId.slice(prefix.length);
+    const [dependents, mapped] = await Promise.all([
+      req.app.locals.db.collection(COLLECTIONS.requirements)
+        .countDocuments({ kind: 'prereq_concept', requires: slug }),
+      req.app.locals.db.collection(COLLECTIONS.courses)
+        .countDocuments({ concept: slug }),
+    ]);
+    if (dependents || mapped) {
+      return res.status(400).json({
+        error: `concept is referenced by ${dependents} concept(s) and ${mapped} course(s); reassign them first`,
+      });
+    }
+  }
   const result = await req.app.locals.db.collection(COLLECTIONS.requirements)
     .deleteOne({ _id: canonicalId });
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
@@ -196,6 +298,16 @@ exports.deletePrerequisite = asyncHandler(async (req, res) => {
   res.json({ ok: true });
 });
 
+// Computed view over the concept vocabulary + course mapping (like
+// /curated/degree-evaluation: a view over curated tables, so it lives here).
+exports.prerequisiteGraph = asyncHandler(async (req, res) => {
+  const requested = String(req.query.college_id || '').trim();
+  const parsed = requested ? parseInstitutionId(requested, 'community_college') : null;
+  if (requested && !parsed) return res.status(400).json({ error: 'college_id must be cc:<id>' });
+  const data = await prerequisiteGraphData(req.app.locals.db, { collegeKey: parsed?.key ?? null });
+  res.json(data);
+});
+
 exports.putInstitutionProfile = asyncHandler(async (req, res) => {
   const parsed = parseInstitutionId(req.params.id, 'community_college');
   if (!parsed) return res.status(400).json({ error: 'institution id must be cc:<id>' });
@@ -229,6 +341,43 @@ exports.deleteInstitutionProfile = asyncHandler(async (req, res) => {
   );
   if (!result.matchedCount) return res.status(404).json({ error: 'no such institution' });
   res.json({ ok: true });
+});
+
+// Course→concept mapping: enrichment fields on the sending-course doc (the
+// spec's §1B). Human console edits only — imports use scripts/import_course_concepts.py.
+exports.putCourseConcept = asyncHandler(async (req, res) => {
+  const db = req.app.locals.db;
+  const id = decodeURIComponent(String(req.params.id || ''));
+  if (!/^cc:.+$/.test(id)) return res.status(400).json({ error: 'course id must be cc:<course_id>' });
+  const { concept = null, note = '', language = null } = req.body || {};
+  if (concept != null && typeof concept !== 'string') {
+    return res.status(400).json({ error: 'concept must be a string slug or null' });
+  }
+  if (language != null && typeof language !== 'string') {
+    return res.status(400).json({ error: 'language must be a string or null' });
+  }
+  if (concept != null) {
+    const known = await db.collection(COLLECTIONS.requirements)
+      .findOne({ _id: `prereq_concept:${concept}` }, { projection: { _id: 1 } });
+    if (!known) return res.status(400).json({ error: `unknown concept slug: ${concept}` });
+  }
+  const course = await db.collection(COLLECTIONS.courses)
+    .findOne({ _id: id, side: 'sending' }, { projection: { title: 1 } });
+  if (!course) return res.status(404).json({ error: 'no such sending course' });
+  await db.collection(COLLECTIONS.courses).updateOne(
+    { _id: id },
+    { $set: {
+      concept: concept ?? null,
+      concept_source: 'console_edit',
+      concept_confidence: 1,
+      concept_title_seen: course.title ?? null,
+      concept_note: String(note || ''),
+      language: language ? String(language) : null,
+      concept_curated_by: req.user?.uid ?? null,
+      concept_curated_at: new Date(),
+    } }
+  );
+  res.json({ ok: true, id });
 });
 
 exports.COLLECTIONS = COLLECTIONS;

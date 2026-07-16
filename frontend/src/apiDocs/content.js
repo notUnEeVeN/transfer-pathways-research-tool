@@ -111,9 +111,21 @@ export const ENDPOINT_GROUPS = [
       {
         method: 'GET',
         path: '/curated/prerequisites',
-        title: 'Course prerequisites',
-        plain: 'Resolved course-id edges plus rows marked needs_review when source text could not be mapped safely.',
+        title: 'Course prerequisites (legacy)',
+        plain: 'The prior group\'s hand-gathered prerequisite edges for 16 colleges. Kept for reference; the prerequisite-graph endpoint below is the current statewide source.',
         returns: '{ rows: [ { course_id, prerequisite_ids, unresolved_prerequisites, status, ... } ] }',
+      },
+      {
+        method: 'GET',
+        path: '/curated/prerequisite-graph?college_id=cc:113',
+        title: 'Prerequisite concept graph',
+        plain: 'The concept vocabulary and its prerequisite rules. Add college_id=cc:<id> for that college\'s courses, projected course-to-course prerequisite edges, and coverage stats; omit it for the canonical concept model. This is the full 115-college prerequisite source.',
+        returns: '{ concepts, rules, stats, courses?, edges?, legacy? }',
+        fields: [
+          ['concepts', 'Each: slug, name, discipline, requires (a slug or an OR-group array = any one of), satisfies (combined-course equivalences), note.'],
+          ['edges (with college_id)', 'Projected prerequisites { from: cc:<id>, to: cc:<id> }, assuming the student takes the cheapest prerequisite chain.'],
+          ['stats', 'in_scope, examined, mapped, edges, and legacy-agreement overlap where the prior group had data.'],
+        ],
       },
       {
         method: 'GET',
@@ -193,7 +205,7 @@ export const ENDPOINT_GROUPS = [
         method: 'GET',
         path: '/analysis/complexity?majorContains=Computer%20Science',
         title: 'Pathway complexity',
-        plain: 'Calculates delay and blocking complexity for each minimal pathway over the curated prerequisite graph.',
+        plain: 'Calculates delay and blocking complexity for each minimal pathway over the projected prerequisite concept graph (concept rules applied to each college\'s own courses).',
         returns: '{ params, n, rows: [complexity records] }',
       },
       {
@@ -313,6 +325,32 @@ export const GUIDE_SECTIONS = [
           ['options_conjunction', 'How alternative options combine.'],
           ['course_conjunction', 'Whether course ids inside one option are AND or OR.'],
         ],
+      },
+    ],
+  },
+  {
+    id: 'prereq-concepts',
+    title: 'Prerequisite concept graph',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Prerequisites are modeled as a small set of canonical course concepts (calc_1, cs_2_oop, gen_chem_1, ...) with prerequisite rules between them. Each community-college course carries a concept tag; per-college prerequisite edges are projected at read time from the rules applied to whatever courses a college actually offers.',
+      },
+      {
+        type: 'p',
+        text: 'A requires entry is a concept slug, or an array of slugs meaning "any one of these" (an OR-group). A satisfies list marks combined courses (one Linear Algebra + Differential Equations course counts as both). CS courses may carry a language so an intro links only to same-language advanced courses. The projection assumes the student takes the cheapest prerequisite chain.',
+      },
+      {
+        type: 'table',
+        head: ['from', 'to'],
+        rows: [
+          ['assist_courses.concept', 'curated_requirements.slug (kind prereq_concept)'],
+          ['prerequisite-graph edges[].from / to', 'assist_courses._id (cc:<course_id>)'],
+        ],
+      },
+      {
+        type: 'p',
+        text: 'This is a defensible statewide approximation, not hand-verified per college, and is built to be corrected in place: fixing a mapping re-flows into every derived figure with no pipeline re-run. It powers /analysis/complexity.',
       },
     ],
   },

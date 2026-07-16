@@ -233,6 +233,23 @@ async function buildModel(db) {
     };
   });
 
+  // Concept-mapping enrichment (spec 2026-07-15-prerequisite-concept-graph):
+  // these fields exist only on canonical rows (stamped by the importer or the
+  // console), so a rebuild from legacy sources must carry them forward or
+  // console edits die with every port.
+  const CONCEPT_FIELDS = [
+    'concept', 'concept_source', 'concept_confidence', 'concept_title_seen',
+    'concept_note', 'concept_curated_by', 'concept_curated_at', 'language',
+  ];
+  const conceptCarry = new Map();
+  for (const row of existingCourses) {
+    const carried = {};
+    for (const field of CONCEPT_FIELDS) {
+      if (row[field] !== undefined) carried[field] = row[field];
+    }
+    if (Object.keys(carried).length) conceptCarry.set(String(row._id), carried);
+  }
+
   const importedCourses = [
     ...ccCourses.map((row) => ({
       ...withoutId(row),
@@ -244,6 +261,7 @@ async function buildModel(db) {
       min_units: Number(row.units) || 0,
       max_units: Number(row.units) || 0,
       same_as_keys: (row.same_as || []).map((id) => `cc:${id}`),
+      ...(conceptCarry.get(`cc:${row.course_id}`) || {}),
     })),
     ...universityCourses.map((row) => ({
       ...withoutId(row),
@@ -252,6 +270,7 @@ async function buildModel(db) {
       source_id: row.parent_id,
       institution_id: `uc:${row.university_id}`,
       side: 'receiving',
+      ...(conceptCarry.get(`university:${row.parent_id}`) || {}),
     })),
   ];
   const courses = importedCourses.length ? importedCourses : existingCourses;

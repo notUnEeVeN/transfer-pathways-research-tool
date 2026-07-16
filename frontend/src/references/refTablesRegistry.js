@@ -138,6 +138,29 @@ export const REFERENCE_TABLES = [
     newRow: () => ({ area_code: '', area_name: '', sub_area: '', sub_name: '', required_courses: 1, required_units: 3, note: '' }),
     searchText: (r) => `${r.area_code} ${r.area_name} ${r.sub_area} ${r.sub_name}`,
   },
+  {
+    key: 'prereq_concepts',
+    label: 'Course concepts',
+    description:
+      'Canonical pathway concepts and their prerequisite rules — the normative statewide model courses map onto.',
+    columns: ['slug', 'name', 'discipline', 'requires'],
+    fields: [
+      { key: 'slug', label: 'Slug', type: 'text', idOnCreate: true, placeholder: 'calc_2' },
+      { key: 'name', label: 'Name', type: 'text', placeholder: 'Calculus II' },
+      {
+        key: 'discipline', label: 'Discipline', type: 'select',
+        options: ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'stats', 'other']
+          .map((value) => ({ value, label: value })),
+      },
+      { key: 'requires', label: 'Requires', type: 'or-tags',
+        placeholder: 'calc_1, phys_em  ·  use | for options: calc_1 | bus_calc_1' },
+      { key: 'satisfies', label: 'Satisfies (for combined courses, e.g. linear_alg_diff_eq)', type: 'tags' },
+      { key: 'note', label: 'Note', type: 'text', placeholder: 'e.g. conservative: calc_3 required statewide' },
+    ],
+    makeId: (row) => row.slug,
+    newRow: () => ({ slug: '', name: '', discipline: 'math', requires: [], satisfies: [], note: '' }),
+    searchText: (r) => `${r.slug} ${r.name} ${r.discipline} ${(r.requires || []).join(' ')}`,
+  },
 ]
 
 export function refTableByKey(key) {

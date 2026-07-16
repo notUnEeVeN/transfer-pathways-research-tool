@@ -24,6 +24,7 @@ router.get('/assist/institutions', ...guarded, canonicalDataController.listInsti
 router.put('/assist/institutions/:id', ...guarded, jsonBody, canonicalDataController.putInstitutionProfile);
 router.delete('/assist/institutions/:id/profile', ...guarded, canonicalDataController.deleteInstitutionProfile);
 router.get('/assist/courses',      ...guarded, canonicalDataController.listCourses);
+router.put('/assist/courses/:id/concept', ...guarded, jsonBody, canonicalDataController.putCourseConcept);
 router.get('/assist/agreements',   ...guarded, canonicalDataController.listAgreements);
 router.get('/assist/coverage',     ...guarded, analysisController.coverage);
 router.get('/admissions',          ...guarded, canonicalDataController.listAdmissions);
@@ -34,6 +35,7 @@ router.delete('/curated/requirements/:kind/:id', ...guarded, canonicalDataContro
 router.get('/curated/prerequisites', ...guarded, canonicalDataController.listPrerequisites);
 router.put('/curated/prerequisites', ...guarded, jsonBody, canonicalDataController.putPrerequisite);
 router.delete('/curated/prerequisites/:id', ...guarded, canonicalDataController.deletePrerequisite);
+router.get('/curated/prerequisite-graph', ...guarded, canonicalDataController.prerequisiteGraph);
 router.get('/curated/course-categories', ...guarded, curationController.listCategories);
 router.put('/curated/course-categories/:parentId', ...guarded, jsonBody, curationController.putCategory);
 router.get('/curated/receiver-overrides', ...guarded, curationController.listOverrides);

@@ -9,6 +9,7 @@ import SubNav from './components/SubNav'
 import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
 import { matchesGeo } from './shared/lib/collegeGeo'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
+import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
 import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -36,6 +37,7 @@ import { useAuth } from '@frontend/hooks/useAuth'
  *                 ASSIST / min comparison / degree coverage), plus each
  *                 campus's degree template and hand-curated hard minimum
  *   Courses     — the CC and UC course catalogs, searchable per institution
+ *   Prerequisites — the concept DAG, its editors, and per-college coverage
  *   Districts   — community-college district geography (editable)
  *
  * Every requirement view renders through the shared RequirementsLedger
@@ -51,6 +53,7 @@ const DATA_TAB_ROUTES = {
   overview: { path: '/api/data/summary' },
   agreements: { path: '/api/assist/coverage' },
   courses: { path: '/api/assist/courses' },
+  prerequisites: { path: '/api/curated/prerequisite-graph' },
   districts: { path: '/api/assist/institutions?kind=community_college' },
 }
 
@@ -87,10 +90,11 @@ export default function DataPage({ onNavigate = () => {} }) {
       <SubNav tabs={{
         value: tab, onChange: changeTab,
         options: [
-          { value: 'overview',   label: 'Overview' },
-          { value: 'agreements', label: 'Agreements' },
-          { value: 'courses',    label: 'Courses' },
-          { value: 'districts',  label: 'Districts' },
+          { value: 'overview',      label: 'Overview' },
+          { value: 'agreements',    label: 'Agreements' },
+          { value: 'courses',       label: 'Courses' },
+          { value: 'prerequisites', label: 'Prerequisites' },
+          { value: 'districts',     label: 'Districts' },
         ],
       }} route={route} />
       <div className='flex-1 min-h-0 overflow-auto'>
@@ -102,6 +106,7 @@ export default function DataPage({ onNavigate = () => {} }) {
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
           )}
           {tab === 'courses' && <CoursesBrowser onRoute={reportRoute} />}
+          {tab === 'prerequisites' && <PrerequisitesTab />}
           {tab === 'districts' && <DistrictsTab />}
         </div>
       </div>

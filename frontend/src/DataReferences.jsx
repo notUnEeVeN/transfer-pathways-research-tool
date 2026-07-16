@@ -233,7 +233,7 @@ export function minimumsToLedger(inputRows = []) {
 }
 
 // ── shared table with optional per-row edit/delete ──
-function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, onDelete, deleting }) {
+export function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, onDelete, deleting }) {
   const showActions = !!(onEdit || onDelete)
   return (
     <div className={`surface-card overflow-auto ${maxHeight}`}>
@@ -305,7 +305,7 @@ function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, q
 }
 
 // ── hook: shared edit/delete/add wiring for a reference table ──
-function useRowEditing(tableKey) {
+export function useRowEditing(tableKey) {
   const config = refTableByKey(tableKey)
   const del = useDeleteRefRow(tableKey)
   const [editing, setEditing] = useState(null)

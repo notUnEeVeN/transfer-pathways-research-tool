@@ -80,8 +80,10 @@ beforeAll(async () => {
   ]);
   await db.collection('assist_courses').insertMany([
     { course_id: 'calcA', units: 5, community_college_id: 10, side: 'sending' },
-    { course_id: 'cs1a', units: 3, community_college_id: 10, side: 'sending' },
-    { course_id: 'cs1b', units: 3, community_college_id: 10, side: 'sending' },
+    { course_id: 'cs1a', units: 3, community_college_id: 10, side: 'sending',
+      concept: 'prog_1', concept_source: 'llm_session_v1', concept_confidence: 1 },
+    { course_id: 'cs1b', units: 3, community_college_id: 10, side: 'sending',
+      concept: 'prog_2', concept_source: 'llm_session_v1', concept_confidence: 1 },
     { course_id: 'calcB', units: 4, community_college_id: 20, side: 'sending' },
     { course_id: 'ds1', units: 4, community_college_id: 10, side: 'sending' },
     {
@@ -167,10 +169,10 @@ beforeAll(async () => {
         },
       ],
     },
-  ]);
-  await db.collection('curated_prerequisites').insertMany([
-    { _id: 'cc:cs1b', course_id: 'cc:cs1b', prerequisite_ids: ['cc:cs1a'], status: 'resolved' },
-    { _id: 'cc:cs1a', course_id: 'cc:cs1a', prerequisite_ids: [], status: 'resolved' },
+    { _id: 'prereq_concept:prog_1', kind: 'prereq_concept', legacy_id: 'prog_1',
+      slug: 'prog_1', name: 'Programming I', discipline: 'cs', requires: [] },
+    { _id: 'prereq_concept:prog_2', kind: 'prereq_concept', legacy_id: 'prog_2',
+      slug: 'prog_2', name: 'Programming II', discipline: 'cs', requires: ['prog_1'] },
   ]);
   await db.collection('curated_requirements').insertMany([
     {
