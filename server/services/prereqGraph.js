@@ -108,9 +108,16 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   const inScope = await inScopeCourseIds(db, collegeKey);
 
   if (!collegeKey) {
-    const examined = await db.collection('assist_courses')
-      .countDocuments({ side: 'sending', concept_source: { $exists: true } });
-    return { concepts, rules, stats: { in_scope: inScope.size, examined } };
+    // in_scope counts agreement-referenced courses present in the catalog (phantoms excluded)
+    const [examined, inCatalog] = await Promise.all([
+      db.collection('assist_courses')
+        .countDocuments({ side: 'sending', concept_source: { $exists: true } }),
+      inScope.size
+        ? db.collection('assist_courses')
+          .countDocuments({ side: 'sending', course_id: { $in: [...inScope] } })
+        : Promise.resolve(0),
+    ]);
+    return { concepts, rules, stats: { in_scope: inCatalog, examined } };
   }
 
   // College view: every course that is in scope OR already examined.
@@ -144,6 +151,7 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   const examined = rows.filter((r) => r.concept_source !== undefined).length;
   const mapped = rows.filter((r) => r.concept).length;
   const stats = {
+    // in_scope counts agreement-referenced courses present in the catalog (phantoms excluded)
     in_scope: inScope.size - phantom.length, examined, mapped,
     edges: edges.length, phantom_course_ids: phantom,
   };

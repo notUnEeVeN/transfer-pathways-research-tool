@@ -97,6 +97,8 @@ describe('prerequisiteGraphData', () => {
     expect(data.rules).toContainEqual({ from: 'calc_1', to: 'calc_2' });
     expect(data.courses).toBeUndefined();
     expect(data.stats.examined).toBe(2);
+    // agreement references ids 1, 2, 6, 999 but only 1, 2, 6 exist in the catalog
+    expect(data.stats.in_scope).toBe(3);
   });
 
   it('returns courses, edges, phantom ids, and legacy overlap for a college', async () => {
