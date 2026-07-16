@@ -46,10 +46,14 @@ const V = {
 };
 
 /* ---- layout -------------------------------------------------------------- */
-const RAIL = 92, COL_W = 206, NODE_W = 168, HEAD = 26;
+/* Wider columns/nodes than the handoff defaults: fills the horizontal room a
+   ~5-column graph leaves on the right, shows fuller course names, and gives the
+   edge gutters more space. Taller row pitch keeps dense lanes (e.g. Gen Ed with
+   5 roots at depth 0) from crowding. */
+const RAIL = 96, COL_W = 250, NODE_W = 210, HEAD = 26;
 
 export function computePrereqLayout(nodes, reqEdges, { compact }) {
-  const M = compact ? { nodeH: 31, pitch: 38, lanePad: 7 } : { nodeH: 36, pitch: 44, lanePad: 8 };
+  const M = compact ? { nodeH: 34, pitch: 46, lanePad: 9 } : { nodeH: 40, pitch: 56, lanePad: 13 };
   const byId = new Map(nodes.map((n, i) => [n.slug, Object.assign(n, { idx: i })]));
   const parents = new Map(nodes.map(n => [n.slug, []]));
   const children = new Map(nodes.map(n => [n.slug, []]));
@@ -265,30 +269,15 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
 
   const clear = useCallback(() => setFocus(null), []);
   const focusName = focus && layout.byId.get(focus) ? layout.byId.get(focus).name : '';
-  const present = layout.lanes;
   const nf1 = compact ? 11.4 : 12.2, nf2 = compact ? 10.6 : 11.4;
-  const nameMax = compact ? 22 : 20;
+  const nameMax = compact ? 30 : 28;
 
   return (
     <div onKeyDown={e => { if (e.key === 'Escape') clear(); }}
       style={{ display: 'flex', flexDirection: 'column', gap: 10, fontFamily: 'inherit' }}>
-      {/* legend */}
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 14, fontSize: 11.5, color: V.inkMuted, fontWeight: 550 }}>
-        {present.map(d => (
-          <span key={d} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 99, background: DISC[d] || DISC.other, flex: 'none' }}></span>{LANE_LABEL[d] || d}
-          </span>
-        ))}
-        <span style={{ width: 1, height: 14, background: V.border }}></span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: V.inkSubtle }}>
-          <span style={{ width: 16, height: 11, borderRadius: 4, border: `1.3px dashed ${'var(--color-border-strong, #B9C0AC)'}` }}></span>no links yet
-        </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: V.inkSubtle }}>
-          <svg width="22" height="8" style={{ display: 'block' }}><line x1="1" y1="4" x2="17" y2="4" stroke={V.inkSubtle} strokeWidth="1.4" strokeDasharray="4 3" /><circle cx="19" cy="4" r="2.4" fill={V.surface} stroke={V.inkSubtle} strokeWidth="1.3" /></svg>≡ combined course (satisfies)
-        </span>
-        <span style={{ marginLeft: 'auto', color: V.inkSubtle, fontWeight: 450 }}>Click a node to trace its chain · Esc clears</span>
-      </div>
-
+      {/* Legend removed: lane labels on the left already name + color each
+          discipline, so the top strip was redundant. The focus caption below
+          still surfaces the click-to-trace affordance. */}
       <div style={{ overflowX: 'auto', border: `1px solid ${'var(--color-border, #DFE3D8)'}`, borderRadius: 14, background: V.surface }}>
         <svg width={layout.width} height={layout.height} role="group" aria-label="Prerequisite graph: disciplines as rows, prerequisite depth as columns" style={{ display: 'block' }} onClick={clear}>
           {/* lane bands */}
@@ -379,7 +368,7 @@ export default function PrereqGraph({ mode = 'canonical', concepts, rules, cours
             <button onClick={clear} style={{ cursor: 'pointer', fontFamily: 'inherit', fontSize: 11.5, fontWeight: 600, color: V.inkMuted, background: V.sunken, border: 'none', borderRadius: 999, padding: '4px 12px' }}>Clear ⎋</button>
           </React.Fragment>
         ) : (
-          <span style={{ color: V.inkSubtle }}>{layout.nodes.length} {mode === 'college' ? 'courses' : 'concepts'} · {data.req.length} prerequisite rules{data.sat.length ? ` · ${data.sat.length} equivalences` : ''} — full rule list in the table below</span>
+          <span style={{ color: V.inkSubtle }}>{layout.nodes.length} {mode === 'college' ? 'courses' : 'concepts'} · {data.req.length} prerequisite rules{data.sat.length ? ` · ${data.sat.length} equivalences` : ''} — click a node to trace its chain, Esc clears</span>
         )}
       </div>
     </div>

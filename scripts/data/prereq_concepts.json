@@ -18,7 +18,7 @@
    "name": "Calculus I (single-variable, differential)",
    "discipline": "math",
    "requires": [],
-   "note": "Entry point of the STEM chain; no precalc/trig concept exists because no such courses are in scope. Early/late-transcendentals, honors, and 'with Support' sections all fold in; split half-courses and combined Calc 1+2 packagings map jointly/multiply rather than earning new slugs.",
+   "note": "The start of the STEM math track. Honors, 'with support', and early/late-transcendentals sections all count. There's no precalc or trig concept because those courses never appear in the agreements. A course that combines Calc 1 and 2 counts as both.",
    "uc_anchors": [
     "MATH 31A @ UCLA",
     "MATH 20A @ UCSD",
@@ -39,7 +39,7 @@
    "requires": [
     "calc_1"
    ],
-   "note": "Standard second course; no contested calls. Honors/support variants fold in.",
+   "note": "Standard second-semester calculus. Honors and support versions count too.",
    "uc_anchors": [
     "MATH 31B @ UCLA",
     "MATH 20B @ UCSD",
@@ -60,7 +60,7 @@
    "requires": [
     "calc_2"
    ],
-   "note": "NORMATIVE FOLD: one concept covers the whole multivariable+vector span; quarter-system 4th-course splits map jointly here (no calc_4). Also answers the separate vector-calculus asks (MATH 20E @ UCSD, MATH 6A @ UCSB) that semester CCs deliver inside one course.",
+   "note": "Covers all of multivariable and vector calculus in one concept. Quarter-system schools that split it into a fourth course map those here — there's no Calc 4. It also stands in for the separate vector-calculus courses a few UCs ask for.",
    "uc_anchors": [
     "MATH 32A @ UCLA",
     "MATH 20C @ UCSD",
@@ -81,7 +81,7 @@
    "requires": [
     "calc_3"
    ],
-   "note": "NORMATIVE: requires calc_3 statewide even though many colleges gate on calc_2 or allow calc_3 concurrently — conservative upper bound per house rule. Combined 'Linear Algebra and Differential Equations' courses (~20 colleges) map to BOTH linear_alg and diff_eq, not a combined slug (anchored by MATH 54 @ UC Berkeley, MATH 024 @ UC Merced).",
+   "note": "We require Calc 3 before Linear Algebra everywhere, even though many colleges only require Calc 2 or let you take them together. It's the deliberately conservative choice. Courses that teach Linear Algebra and Differential Equations together use the combined concept instead.",
    "uc_anchors": [
     "MATH 33A @ UCLA",
     "MATH 18 @ UCSD",
@@ -102,7 +102,7 @@
    "requires": [
     "linear_alg"
    ],
-   "note": "NORMATIVE: requires linear_alg (house call) even though most colleges gate ODE on calc_2/calc_3 with linear algebra at most a co-req; matches UCD MAT 022A->022B ordering and prevalence of combined LA+DE courses. calc_3 is inherited transitively; combined LA+DE courses map to both slugs.",
+   "note": "We require Linear Algebra before Differential Equations so there's always a defined order — even though most colleges only ask for Calc 2 or 3, with linear algebra at most a co-requisite. Calc 3 comes through linear algebra. Combined LA+DE courses use the combined concept.",
    "uc_anchors": [
     "MATH 33B @ UCLA",
     "MATH 20D @ UCSD",
@@ -123,7 +123,7 @@
    "requires": [
     "calc_1"
    ],
-   "note": "MERGE of the math 'discrete_math' and cs 'discrete_math_cs' proposals into one concept (both are the C-ID COMP 152 / MATH idea; UC asks span MATH 61 @ UCLA and COMPSCI 70 @ Berkeley). NORMATIVE: requires calc_1 statewide for math-readiness; dropped the CS proposal's cs_1 edge because math-department discrete courses do not gate on programming, though CS-flavored 'Discrete Structures' variants that do gate on cs_1 still map here. Two-course discrete splits map jointly. Gating varies: many colleges gate discrete on precalc (out of scope -> source node) or list calc_1 as coreq/advisory; calc_1-completed is the conservative statewide call.",
+   "note": "One concept for Discrete Math / Discrete Structures, whether the math or CS department teaches it. We require Calc 1 as a readiness gate — some colleges gate on precalc (out of scope) or treat calculus as a co-req, but Calc-1-completed is the conservative call. CS-flavored versions that require programming still map here.",
    "uc_anchors": [
     "MATH 61 @ UCLA",
     "CSE 20 @ UCSD",
@@ -143,7 +143,7 @@
    "name": "Applied/Business Calculus I",
    "discipline": "math",
    "requires": [],
-   "note": "NORMATIVE FOLD: one track covers business, social-science, and life-science ('Calculus for Biology and Medicine') applied-calc variants; CC titles blend these audiences and the only distinct applied-calc UC ask is UCSC MATH 11A/11B. Does NOT satisfy calc_1 and does not feed the STEM chain; second entry point of the math graph.",
+   "note": "The applied/business calculus track — business, social-science, and 'calculus for biology and medicine' versions all fold in. It's a separate on-ramp: it does not count as regular Calc 1 and doesn't feed the STEM chain.",
    "uc_anchors": [
     "MATH 11A @ UCSC"
    ],
@@ -161,7 +161,7 @@
    "requires": [
     "bus_calc_1"
    ],
-   "note": "Second course of the applied track (San Diego 121/122, Peralta 16A/16B, Los Rios 355/356, etc.). Some colleges offer only the first course; life-science II variants fold in per the bus_calc_1 fold.",
+   "note": "Second course of the applied/business calculus track. Some colleges only offer the first course.",
    "uc_anchors": [
     "MATH 11B @ UCSC"
    ],
@@ -179,7 +179,7 @@
    "requires": [
     "calc_2"
    ],
-   "note": "MERGE of math 'stats_calc' and other 'prob_stats_calc' (same calc-based STEM/engineering prob-stats course). NORMATIVE: requires calc_2 as the defensible statewide floor — CC gates vary from calc_1 (UCM MATH 032) up to multivariable (PSTAT 120A). BOUNDARY: covers only calc-based courses; non-calc intro statistics is intro_stats.",
+   "note": "Calculus-based probability and statistics for STEM and engineering. We require Calc 2 as the floor (colleges vary from Calc 1 up to multivariable). Plain, non-calculus intro statistics is a separate concept.",
    "uc_anchors": [
     "PSTAT 120A @ UCSB",
     "MATH 70 @ UCLA",
@@ -199,7 +199,7 @@
    "name": "Introductory Statistics (algebra-based)",
    "discipline": "stats",
    "requires": [],
-   "note": "C-ID MATH 110 / CCN STAT C1000 cluster (plus PSYC/BUS-prefixed equivalents), ~110 colleges. Distinct from stats_calc. No transfer-level requires (intermediate-algebra gate is pre-transfer). Answers stats asks at campuses that accept elementary stats in articulation.",
+   "note": "Standard algebra-based intro statistics (~110 colleges, sometimes under a PSYC or BUS prefix). No transfer-level prerequisite — the algebra gate is pre-transfer. Distinct from the calculus-based STEM statistics.",
    "uc_anchors": [
     "STATS 67 @ UCI",
     "MATH 032 @ UC Merced"
@@ -217,7 +217,7 @@
    "requires": [
     "calc_1"
    ],
-   "note": "First course of the calc-based scientists-and-engineers sequence. NORMATIVE: requires calc_1 COMPLETED even though many colleges allow concurrent enrollment (corequisites are not encoded). Honors variants, attached labs, and combined 'Mechanics and Wave Motion' packagings all fold in.",
+   "note": "First course of the calculus-based physics sequence for scientists and engineers. We require Calc 1 completed, though many colleges let you take it alongside. Honors versions, attached labs, and 'mechanics + waves' packagings all fold in.",
    "uc_anchors": [
     "PHYSICS 1A @ UCLA",
     "PHYSICS 7A @ UC Berkeley",
@@ -240,7 +240,7 @@
     "phys_mech",
     "calc_2"
    ],
-   "note": "NORMATIVE: requires calc_2 completed; a large minority also require calc_3 concurrently, deliberately NOT encoded to avoid overstating the floor and double-counting the math chain. Treated as second-in-sequence statewide even where a campus folds E&M elsewhere in its quarter packaging (UCB 7B, UCI 7D).",
+   "note": "Second calculus-based physics course (electricity and magnetism). We require Calc 2. Some colleges also want Calc 3 alongside, but we don't encode that to avoid overstating the requirement.",
    "uc_anchors": [
     "PHYS 2B @ UCSD",
     "PHY 009C @ UC Davis",
@@ -261,7 +261,7 @@
    "requires": [
     "phys_em"
    ],
-   "note": "Third course (fluids/waves/heat/optics; at 3-course colleges also absorbs modern-physics content). NORMATIVE serialization: requires phys_em even though several colleges allow it directly after mechanics — one defensible statewide total order is preferred. Anchors are sequence-positional, not content-exact, since campus packaging varies.",
+   "note": "Third calculus-based physics course (waves, thermodynamics, optics). We require E&M first to keep one consistent statewide order, even though some colleges allow it right after mechanics.",
    "uc_anchors": [
     "PHYS 4B @ UCSD",
     "PHY 009B @ UC Davis",
@@ -282,7 +282,7 @@
    "requires": [
     "phys_waves_thermo"
    ],
-   "note": "Fourth course at 4-course colleges. NORMATIVE: requires phys_waves_thermo (conservative — some colleges gate on E&M only). At 3-course colleges modern-physics content lives inside phys_waves_thermo and no local course maps here; that asymmetry is intentional.",
+   "note": "A fourth physics course at schools that have one (modern physics). At three-course schools this content lives inside the waves/thermo course and nothing maps here — that gap is intentional.",
    "uc_anchors": [
     "PHY 009D @ UC Davis",
     "PHYS 7D @ UCSB"
@@ -299,7 +299,7 @@
    "name": "General Physics I (Algebra/Trig-Based)",
    "discipline": "physics",
    "requires": [],
-   "note": "First semester of the non-calculus sequence for life-science majors. EDGE DROPPED: the proposal's requires 'precalc' has no concept in scope (no precalc/trig courses in the inventory), so this is a source node. Lecture + separate 1u lab pairs map jointly.",
+   "note": "First semester of the algebra-based physics sequence for life-science majors. No prerequisite in scope (the usual precalc/trig gate isn't in our data). Lecture and its separate 1-unit lab count together.",
    "uc_anchors": [
     "PHYS 6A @ UCSB"
    ],
@@ -317,7 +317,7 @@
    "requires": [
     "phys_gen_1"
    ],
-   "note": "Second semester (E&M, optics, modern). NORMATIVE: the CC side is a 2-semester sequence answering UCSB's 3-quarter 6A-6C ask, so no third algebra-based concept; rare 'General Physics III' offerings map here or stay unmapped.",
+   "note": "Second semester of the algebra-based physics sequence. The community-college side is two semesters, so there's no third algebra-based concept.",
    "uc_anchors": [
     "PHYS 6B @ UCSB",
     "PHYS 6C @ UCSB"
@@ -334,7 +334,7 @@
    "name": "General Chemistry I",
    "discipline": "chem",
    "requires": [],
-   "note": "Entry point of the chem chain. NORMATIVE: no in-vocabulary math prerequisite — the standard gate is intermediate-algebra/quant-reasoning readiness (pre-transfer, no concept); minority precalc/prep-chem gates deliberately not modeled. Lecture/lab split offerings map jointly onto this single lecture+lab concept; honors variants map identically.",
+   "note": "Start of the chemistry chain (General Chemistry 1). No math prerequisite in our model — the real gate is algebra readiness, which is pre-transfer. Lecture/lab split offerings and honors versions all count together.",
    "uc_anchors": [
     "CHEM 1A @ UC Berkeley",
     "CHEM 6A @ UCSD",
@@ -356,7 +356,7 @@
    "requires": [
     "gen_chem_1"
    ],
-   "note": "Completes the full-year sequence that quarter UCs express as A/B/C. NORMATIVE: no distinct gen_chem_3 — third-quarter courses at the few quarter-calendar CCs fold in here as the terminal element. 'General Chemistry and Qualitative Analysis' titles are ordinary second-semester courses and map here.",
+   "note": "Completes the full-year general chemistry sequence. A quarter-system school's third-quarter course folds in here — there's no separate Gen Chem 3.",
    "uc_anchors": [
     "CHEM 1B @ UC Berkeley",
     "CHEM 6B @ UCSD",
@@ -377,7 +377,7 @@
    "requires": [
     "gen_chem_2"
    ],
-   "note": "NORMATIVE: gated on the FULL YEAR of general chemistry (gen_chem_2) statewide even though some receiving courses (UCB CHEM 3A needs only 1A) and a few CCs admit after Gen Chem I — the full-year gate is the dominant CC pattern and the conservative choice. Lecture/lab splits map jointly.",
+   "note": "Organic Chemistry 1. We require the full year of general chemistry first — a few schools admit after one semester, but the full-year gate is the common pattern and the conservative choice.",
    "uc_anchors": [
     "CHEM 3A @ UC Berkeley",
     "CHEM 3AL @ UC Berkeley",
@@ -397,7 +397,7 @@
    "requires": [
     "organic_chem_1"
    ],
-   "note": "Completes the full-year organic sequence. NORMATIVE: no distinct organic_chem_3 — third-quarter organic at quarter-calendar CCs folds in here as the terminal element. Lecture/lab splits map jointly.",
+   "note": "Completes the organic chemistry sequence; third-quarter organic at quarter-system schools folds in here.",
    "uc_anchors": [
     "CHEM 3B @ UC Berkeley",
     "CHEM 3BL @ UC Berkeley"
@@ -414,7 +414,7 @@
    "name": "Programming Fundamentals (CS1)",
    "discipline": "cs",
    "requires": [],
-   "note": "NORMATIVE: one language-agnostic CS1 concept — Python, Java, C++, and C intro courses all map here (UCs articulate them interchangeably). CS0 survey/computer-literacy courses do NOT map here. Honors variants and co-listed labs map with the parent; two-course CS1 splits map jointly.",
+   "note": "Intro programming (CS1). Python, Java, C++, and C first courses all count, since UCs treat them interchangeably. Computer-literacy or survey courses do not. Honors versions and two-course CS1 splits fold in.",
    "uc_anchors": [
     "COM SCI 31 @ UCLA",
     "I&C SCI 31 @ UCI",
@@ -436,7 +436,7 @@
    "requires": [
     "cs_1"
    ],
-   "note": "NORMATIVE: three-link programming chain (cs_1 -> cs_2_oop -> cs_3_data_structures) because the modal CA sequence is three courses; UCI/Davis/Merced/UCSB each ask for a distinct intermediate/OOP course BEFORE data structures. Language-agnostic; 'Advanced Objects', 'Intermediate Java', 'C++ Programming 2' map here.",
+   "note": "The intermediate / object-oriented programming course between CS1 and data structures. The typical California sequence is three courses, and several UCs ask for a distinct OOP course before data structures. Language-agnostic.",
    "uc_anchors": [
     "I&C SCI 32 @ UCI",
     "I&C SCI 33 @ UCI",
@@ -458,7 +458,7 @@
    "requires": [
     "cs_2_oop"
    ],
-   "note": "NORMATIVE/CONSERVATIVE: requires cs_2_oop statewide even though a minority articulate CS1 -> DS directly (same philosophy as linear_alg requiring calc_3); such DS courses still map here and inherit the longer chain. UCLA COM SCI 32 is answered by cs_2_oop + cs_3_data_structures together; separate 'Advanced Data Structures' add-ons stay unmapped.",
+   "note": "Data Structures and Algorithms. We require the OOP course first everywhere, even though a minority of colleges go straight from CS1 — same conservative approach as Linear Algebra requiring Calc 3.",
    "uc_anchors": [
     "COMPSCI 61B @ UC Berkeley",
     "ECS 036C @ UC Davis",
@@ -481,7 +481,7 @@
    "requires": [
     "cs_1"
    ],
-   "note": "NORMATIVE: requires only cs_1, the dominant sending-side prereq for C-ID COMP 142-style courses, even though several UC counterparts sit AFTER data structures (COMPSCI 61C, UCSD CSE 30, COM SCI 33) — we sequence by CC prereqs, not UC placement. Deliberately the looser variant here because the looser prereq is modal (recorded). Two-course assembly splits map jointly.",
+   "note": "Computer Organization and Assembly Language. We require only CS1, the common sending-side prerequisite, even though several UC equivalents sit after data structures — we sequence by what community colleges actually require.",
    "uc_anchors": [
     "COM SCI 33 @ UCLA",
     "COMPSCI 61C @ UC Berkeley",
@@ -503,7 +503,7 @@
    "requires": [
     "cs_1"
    ],
-   "note": "NORMATIVE: kept because four campuses ask for a distinct 'C after a first language' or systems-in-C course (UCI, UCSC, UCSD, Davis). A C course that is a college's FIRST programming course maps to cs_1, not here; this slug is only for second-language/systems C presuming prior programming. Requires cs_1 (modal CC prereq).",
+   "note": "A C or systems-programming course taken after a first programming language (four UCs ask for one). A C course that's a college's first programming course maps to CS1 instead. Requires CS1.",
    "uc_anchors": [
     "I&C SCI 45C @ UCI",
     "CSE 13S @ UCSC",
@@ -524,7 +524,7 @@
    "requires": [
     "cs_1"
    ],
-   "note": "MERGE of the cs and engr 'digital_logic' proposals into one slug (UC asks straddle CS and EE departments; UCLA COM SCI M51A is cross-listed EC ENGR M16). NORMATIVE: college prereqs vary from none (UCI EECS 31, UCSB ECE 15A are open freshman courses) to a first programming course (UCLA CS M51A); we conservatively gate on cs_1 statewide per house doctrine. OR-edges (accepting engr_programming as the qualifying course) are not expressible, so the edge is cs_1 only.",
+   "note": "Digital Logic Design. UC versions straddle CS and EE departments, so it's one concept. Prerequisites range from none to a first programming course; we conservatively require CS1.",
    "uc_anchors": [
     "COM SCI M51A @ UCLA",
     "EC ENGR M16 @ UCLA",
@@ -544,7 +544,7 @@
    "name": "Cell and Molecular Biology (Majors)",
    "discipline": "bio",
    "requires": [],
-   "note": "Canonical FIRST course of the majors biology sequence. NORMATIVE: no requires-edge to gen_chem_1 even though general chemistry commonly appears on the prereq line — most colleges treat CHEM 1A as coreq/recommended-concurrent, not a completed predecessor. Integrated lecture+lab courses satisfy the UC's separate intro-bio-lab ask; no standalone majors-bio-lab concept exists in scope.",
+   "note": "First course of the majors biology sequence (cell and molecular). No chemistry prerequisite encoded — most colleges treat General Chemistry as a recommended co-req, not a completed requirement. The integrated lab satisfies the UC's intro-bio-lab ask.",
    "uc_anchors": [
     "BILD 1 @ UCSD",
     "MCDB 1A @ UCSB",
@@ -565,7 +565,7 @@
    "requires": [
     "bio_cell_molec"
    ],
-   "note": "SECOND course of the majors sequence, deliberately ONE node absorbing organismal + evolution + ecology + biodiversity + form/function/physiology however colleges package it (single course, Botany+Zoology pair, or 3-course split whose 2nd/3rd both map here). NORMATIVE: requires bio_cell_molec — cell-first is dominant and we take the stricter edge per house policy even though some colleges allow either order.",
+   "note": "Second majors-biology course — one concept covering organismal, evolution, ecology, and biodiversity however a college packages it (a single course, a botany+zoology pair, or a three-course split). We require cell and molecular biology first, taking the stricter cell-first order.",
    "uc_anchors": [
     "BILD 2 @ UCSD",
     "BILD 3 @ UCSD",
@@ -588,7 +588,7 @@
     "bio_cell_molec",
     "gen_chem_1"
    ],
-   "note": "Dedicated single-term Human Physiology (majors/pre-professional, anchoring UCB MCELLBI 32). NORMATIVE: requires bio_cell_molec AND gen_chem_1 — physiology builds on completed biology plus chemistry; conservative call requires full general chemistry and the majors cell/molecular course even though some allied-health sections accept lighter prereqs. Multi-semester A&P sequences are NOT mapped here.",
+   "note": "A dedicated Human Physiology course (majors / pre-professional). We require both cell and molecular biology and General Chemistry 1 — the conservative call. Multi-semester anatomy and physiology sequences do not map here.",
    "uc_anchors": [
     "MCELLBI 32 @ UC Berkeley"
    ],
@@ -607,7 +607,7 @@
     "phys_em",
     "diff_eq"
    ],
-   "note": "The single dominant engr transfer course statewide (~50 colleges). NORMATIVE: most colleges allow diff_eq as a COREQUISITE (a minority gate only on calc_2) but we conservatively require diff_eq COMPLETED; calc-based E&M (phys_em) is required and the calc chain underneath is inherited, not duplicated. Lecture+lab pairs map to this ONE concept; 'Network Analysis', 'Circuits and Devices', 'Introduction to Electrical Engineering' titles fold in.",
+   "note": "The main engineering transfer course statewide (~50 colleges): intro circuit analysis. We require Differential Equations completed (most colleges allow it as a co-req; we take the stricter call) plus calculus-based E&M. Lecture+lab pairs and titles like 'Network Analysis' or 'Intro to Electrical Engineering' fold in.",
    "uc_anchors": [
     "ENGR 065 @ UC Merced",
     "ENG 017 @ UC Davis",
@@ -628,7 +628,7 @@
    "requires": [
     "calc_1"
    ],
-   "note": "One concept covering the MATLAB flavor and the C/C++/Python-for-engineers flavor. NORMATIVE: requires calc_1 COMPLETED even though many colleges list it as coreq/advisory (conservative gate). Courses that are plainly a generic CS1 in an ENGR prefix map to cs_1 instead; this slug is reserved for the engineering-applications flavor. Only pure engr-side UC ask is UCR EE 20B.",
+   "note": "Programming and computational methods for engineers — covers both the MATLAB flavor and the C/C++/Python-for-engineers flavor. We require Calc 1 completed. A course that's really just a generic CS1 under an ENGR prefix maps to CS1 instead.",
    "uc_anchors": [
     "EE 20B @ UC Riverside"
    ],
@@ -644,7 +644,7 @@
    "name": "English Composition 1 (Academic Reading & Writing)",
    "discipline": "other",
    "requires": [],
-   "note": "CCN ENGL C1000 / Cal-GETC 1A — the most standardized course in the state (~110 colleges). NORMATIVE: all first-composition variants map here — honors, stretch/extended-support, and ESL/multilingual equivalents. No transfer-level prerequisite encoded (placement gates are pre-transfer).",
+   "note": "First-semester college composition — the most standardized course in the state (~110 colleges). Honors, stretch/extended-support, and multilingual/ESL versions all count. No transfer-level prerequisite (placement is pre-transfer).",
    "uc_anchors": [
     "ENGCOMP 3 @ UCLA",
     "UWP 001 @ UC Davis",
@@ -665,7 +665,7 @@
    "requires": [
     "engl_comp_1"
    ],
-   "note": "CCN ENGL C1001 / Cal-GETC 1B. NORMATIVE: ONE concept covers every comp-2 flavor — ENGL C1001, literature-based critical-thinking comp, and PHIL 'Critical Thinking and Writing' — because they fill the same 1B slot. Pure logic/argumentation without a composition component stays unmapped. Anchor is the systemwide Cal-GETC 1B ask plus its role as gate into the literature concepts.",
+   "note": "Second-semester composition / critical thinking and writing. Includes literature-based versions and philosophy 'Critical Thinking and Writing' courses, since they fill the same slot. Pure logic courses with no writing component stay unmapped.",
    "uc_anchors": [],
    "example_cc_titles": [
     "ENGL C1001 Critical Thinking and Writing",
@@ -679,7 +679,7 @@
    "name": "Public Speaking (Oral Communication)",
    "discipline": "other",
    "requires": [],
-   "note": "CCN COMM C1000 / Cal-GETC 1C; ~110 colleges. Only explicit receiving anchor is Davis CMN 001, but 1C makes it a de facto statewide ask. NORMATIVE: argumentation/debate, persuasion, rhetorical criticism, and advanced public speaking do NOT map here — first-course public speaking only.",
+   "note": "First-course public speaking / oral communication (~110 colleges). Argumentation, debate, persuasion, and advanced public speaking do not map here.",
    "uc_anchors": [
     "CMN 001 @ UC Davis"
    ],
@@ -694,7 +694,7 @@
    "name": "Principles of Microeconomics",
    "discipline": "other",
    "requires": [],
-   "note": "C-ID ECON 201 family, ~110 colleges. NORMATIVE: no requires edge between micro and macro in either direction — colleges disagree on 1A/1B ordering, so encoding one would be indefensible. No math gate encoded (typical prereqs are pre-transfer algebra).",
+   "note": "Principles of Microeconomics (~110 colleges). No ordering edge between micro and macro — colleges disagree on which comes first, so forcing one would be wrong. No math gate (the usual algebra prerequisite is pre-transfer).",
    "uc_anchors": [
     "ECON 3 @ UC Riverside"
    ],
@@ -710,7 +710,7 @@
    "name": "Principles of Macroeconomics",
    "discipline": "other",
    "requires": [],
-   "note": "C-ID ECON 202 family, ~110 colleges. Same normative calls as econ_micro: no micro<->macro ordering, no math gate. Combined one-course 'Introduction to Economics' surveys stay unmapped rather than force-fit.",
+   "note": "Principles of Macroeconomics (~110 colleges). Same as micro: no micro/macro ordering and no math gate. One-course 'Intro to Economics' surveys stay unmapped.",
    "uc_anchors": [
     "ECON 2 @ UC Riverside"
    ],
@@ -726,7 +726,7 @@
    "name": "Financial Accounting",
    "discipline": "other",
    "requires": [],
-   "note": "Largest single cluster (~120 colleges, C-ID ACCT 110) and the direct sending counterpart of UCR BUS 20. Managerial accounting does not appear in the inventory and is not minted; vocational Bookkeeping I/II stays unmapped.",
+   "note": "Financial Accounting — the biggest single cluster (~120 colleges). Managerial accounting isn't in our data, and vocational bookkeeping stays unmapped.",
    "uc_anchors": [
     "BUS 20 @ UC Riverside"
    ],
@@ -744,7 +744,7 @@
    "requires": [
     "engl_comp_1"
    ],
-   "note": "~40 colleges; direct sending counterpart of Davis ENL 003. Covers 'Introduction to Literature', 'Approaches to Literature', and genre-survey courses. Requires engl_comp_1 per the near-universal college prereq. Comp-2-through-literature courses carrying the 1B function map to engl_comp_2 instead.",
+   "note": "Introduction to Literature and genre-survey courses (~40 colleges). Requires first-semester composition, which nearly every college requires. Composition-2-through-literature courses map to the comp-2 concept instead.",
    "uc_anchors": [
     "ENL 003 @ UC Davis"
    ],
@@ -761,7 +761,7 @@
    "requires": [
     "engl_comp_1"
    ],
-   "note": "~30 colleges. Answers Davis COM 001/COM 002; era mapping is approximate (one CC course may articulate to one or both). No ordering edge to world_lit_2: the halves are parallel, not sequential, at nearly all colleges. Comp-1 gate varies (some colleges use comp-2 or placement eligibility); comp-1-completed is the conservative call, matching intro_lit.",
+   "note": "World Literature I (antiquity to ~1650), ~30 colleges. No ordering edge to World Lit II — the two halves are parallel, not sequential, at almost every college. Requires first-semester composition (the gate varies a little; we take the conservative call).",
    "uc_anchors": [
     "COM 001 @ UC Davis",
     "COM 002 @ UC Davis"
@@ -780,7 +780,7 @@
    "requires": [
     "engl_comp_1"
    ],
-   "note": "~30 colleges. Answers Davis COM 003/COM 004; contemporary-world-literature variants fold in here as the closest COM 004 counterparts rather than getting their own slug. Comp-1 gate varies (some colleges use comp-2 or placement eligibility); comp-1-completed is the conservative call, matching intro_lit.",
+   "note": "World Literature II (~1650 to present), ~30 colleges. Contemporary-world-literature versions fold in here. Requires first-semester composition (conservative call, same as the other literature concepts).",
    "uc_anchors": [
     "COM 003 @ UC Davis",
     "COM 004 @ UC Davis"
@@ -803,7 +803,7 @@
     "linear_alg",
     "diff_eq"
    ],
-   "note": "Single-course packaging of linear_alg + diff_eq (~20 colleges, e.g. MATH 216 @ College of Marin, anchored by MATH 54 @ UC Berkeley / MATH 024 @ UC Merced). satisfies makes its courses stand in for both constituent concepts during projection. Added 2026-07-16 per Tybalt, replacing the deepest-constituent fold for LA+DE combos.",
+   "note": "For schools that teach Linear Algebra and Differential Equations as one combined course (~20 colleges, e.g. MATH 216 at College of Marin). It requires Calc 3, and its 'satisfies' link lets the single course stand in for both Linear Algebra and Differential Equations wherever those are needed downstream.",
    "uc_anchors": [
     "MATH 54 @ UC Berkeley",
     "MATH 024 @ UC Merced"

@@ -66,7 +66,13 @@ export default function ConceptGraphView({ initialCollegeId = null }) {
       { label: 'Examined', value: s.examined, accent: s.examined >= s.in_scope && s.in_scope > 0 },
     ]
     : [
-      { label: 'In-scope courses', value: s.in_scope },
+      {
+        label: 'In-scope courses', value: s.in_scope,
+        // Reconciles with the graph: only mapped courses are drawn, so a
+        // college can have examined-but-unmapped courses (GE, one-offs) that
+        // don't appear as nodes.
+        sub: `${s.mapped} drawn · ${s.examined - s.mapped} examined, no concept`,
+      },
       {
         label: 'Examined', value: s.in_scope ? `${Math.round((s.examined / s.in_scope) * 100)}%` : '—',
         sub: `${s.examined} of ${s.in_scope}`, accent: s.examined === s.in_scope && s.in_scope > 0,
@@ -79,7 +85,7 @@ export default function ConceptGraphView({ initialCollegeId = null }) {
             : '—',
           sub: `${d.legacy.shared_edges} of ${d.legacy.legacy_edges} legacy edges reproduced`,
         }
-        : { label: 'Legacy rows', value: 'none', sub: 'previous group had no data here' },
+        : { label: 'Legacy data', value: 'none', sub: 'not among the 16 colleges the prior group covered' },
     ]
 
   return (
@@ -93,25 +99,6 @@ export default function ConceptGraphView({ initialCollegeId = null }) {
       <StatStrip tiles={tiles} />
       {graphEl}
       {gapChips}
-      <div className='surface-card px-[22px] py-[18px]'>
-        <p className='text-label mb-2.5'>Rules</p>
-        <table className='min-w-full text-left'>
-          <thead><tr>
-            <th className='text-label pb-2 pr-6'>Concept</th>
-            <th className='text-label pb-2 pr-6'>Requires</th>
-            <th className='text-label pb-2'>Satisfies</th>
-          </tr></thead>
-          <tbody>
-            {d.concepts.map((c) => (
-              <tr key={c.slug} className='border-t border-border/40'>
-                <td className='py-2 pr-6 text-caption text-ink'>{c.name} <span className='font-mono text-ink-subtle'>({c.slug})</span></td>
-                <td className='py-2 pr-6 text-caption text-ink-muted font-mono'>{c.requires.join(', ') || '—'}</td>
-                <td className='py-2 text-caption text-ink-muted font-mono'>{(c.satisfies || []).join(', ') || '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </Stack>
   )
 }
