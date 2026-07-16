@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept } = cjs('./CanonicalData');
+const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept, prerequisiteGraph } = cjs('./CanonicalData');
 
 let mongo;
 let db;
@@ -187,5 +187,31 @@ describe('putCourseConcept', () => {
   it('404s a missing course and 400s a non-cc id', async () => {
     expect((await putConcept('cc:999', { concept: 'calc_1' })).statusCode).toBe(404);
     expect((await putConcept('university:9', { concept: 'calc_1' })).statusCode).toBe(400);
+  });
+});
+
+describe('prerequisiteGraph endpoint', () => {
+  it('400s a malformed college_id', async () => {
+    const res = await run(prerequisiteGraph, request({ query: { college_id: 'nope' } }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/college_id must be cc:<id>/);
+  });
+
+  it('returns the concept DAG without a college and the full payload with one', async () => {
+    await db.collection('curated_requirements').insertOne({
+      _id: 'prereq_concept:calc_1', kind: 'prereq_concept', legacy_id: 'calc_1',
+      slug: 'calc_1', name: 'Calculus I', discipline: 'math', requires: [],
+    });
+    await db.collection('assist_courses').insertOne({
+      _id: 'cc:1', side: 'sending', course_id: 1, institution_id: 'cc:10',
+      title: 'Calc I', concept: 'calc_1', concept_source: 'llm_session_v1',
+    });
+    const bare = await run(prerequisiteGraph, request({ query: {} }));
+    expect(bare.body.concepts).toHaveLength(1);
+    expect(bare.body.courses).toBeUndefined();
+
+    const scoped = await run(prerequisiteGraph, request({ query: { college_id: 'cc:10' } }));
+    expect(scoped.body.courses).toHaveLength(1);
+    expect(scoped.body.courses[0].key).toBe('cc:1');
   });
 });

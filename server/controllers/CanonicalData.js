@@ -1,6 +1,7 @@
 /** Canonical research-data API over the permanent compact schema. */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { majorScope, pairClause } = require('../services/majorVisibility');
+const { prerequisiteGraphData } = require('../services/prereqGraph');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -256,6 +257,16 @@ exports.deletePrerequisite = asyncHandler(async (req, res) => {
   const result = await req.app.locals.db.collection(COLLECTIONS.prerequisites).deleteOne({ _id: id });
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
   res.json({ ok: true });
+});
+
+// Computed view over the concept vocabulary + course mapping (like
+// /curated/degree-evaluation: a view over curated tables, so it lives here).
+exports.prerequisiteGraph = asyncHandler(async (req, res) => {
+  const requested = String(req.query.college_id || '').trim();
+  const parsed = requested ? parseInstitutionId(requested, 'community_college') : null;
+  if (requested && !parsed) return res.status(400).json({ error: 'college_id must be cc:<id>' });
+  const data = await prerequisiteGraphData(req.app.locals.db, { collegeKey: parsed?.key ?? null });
+  res.json(data);
 });
 
 exports.putInstitutionProfile = asyncHandler(async (req, res) => {

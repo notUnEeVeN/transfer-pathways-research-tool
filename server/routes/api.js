@@ -35,6 +35,7 @@ router.delete('/curated/requirements/:kind/:id', ...guarded, canonicalDataContro
 router.get('/curated/prerequisites', ...guarded, canonicalDataController.listPrerequisites);
 router.put('/curated/prerequisites', ...guarded, jsonBody, canonicalDataController.putPrerequisite);
 router.delete('/curated/prerequisites/:id', ...guarded, canonicalDataController.deletePrerequisite);
+router.get('/curated/prerequisite-graph', ...guarded, canonicalDataController.prerequisiteGraph);
 router.get('/curated/course-categories', ...guarded, curationController.listCategories);
 router.put('/curated/course-categories/:parentId', ...guarded, jsonBody, curationController.putCategory);
 router.get('/curated/receiver-overrides', ...guarded, curationController.listOverrides);
