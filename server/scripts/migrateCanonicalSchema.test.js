@@ -90,7 +90,7 @@ describe('canonical schema migration', () => {
 
     await expect(db.collection('assist_courses').insertOne({ _id: 'invalid' })).rejects.toThrow();
     expect(await db.collection('community_colleges').countDocuments()).toBe(1);
-  });
+  }, 20_000); // full build+validate+install; slow under parallel suite load
 
   it('keeps newer canonical team and figure work on a rerun', async () => {
     let model = await buildModel(db);

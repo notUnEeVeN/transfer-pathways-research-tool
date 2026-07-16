@@ -23,13 +23,11 @@ vi.mock('../shared/query/hooks/useData', () => ({
 }))
 
 describe('ConceptGraphView (college mode)', () => {
-  it('renders mapped courses and concept gaps as chips, plus the college stat tiles', () => {
+  it('renders the swim-lane graph, concept-gap chips, and the college stat tiles', () => {
     render(<ConceptGraphView initialCollegeId={4} />)
 
-    // The mapped course has no local edges → it renders in the
-    // "Mapped, no local edges" chip section, labeled with its code.
+    // The mapped course renders inside the swim-lane graph, labeled by code.
     expect(screen.getByText('MATH 3A')).toBeInTheDocument()
-    expect(screen.getByText('Mapped, no local edges')).toBeInTheDocument()
 
     // calc_2 has no course at this college → "No course here" chip.
     // ('Calculus II' also appears in the rules table below.)
