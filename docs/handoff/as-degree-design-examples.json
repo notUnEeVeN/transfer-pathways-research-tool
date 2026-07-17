@@ -1,5 +1,5 @@
 {
- "_note": "REAL /api/curated/as-degrees?college_id=cc:<n> output for 3 colleges (from the local dev DB, 2026-07-17), for the AS Degrees design session. Cabrillo cc:41 = one clean local CS A.S.; Santa Ana cc:14 = a college with all THREE degree types (shows the multi-degree-per-college case); De Anza cc:113 = quarter-system (90-unit) with an AS-T + a local A.A. Concept-coverage (`covered_concepts`/`missing_core_concepts`/`coverage_pct`) is now real, computed at import time from each degree's courses against the statewide template's required concepts. KNOWN LIMITATION: the `units_mismatch` flag can still be naive where a school's catalog folds GE units into the major total without a separately captured GE line.",
+ "_note": "REAL /api/curated/as-degrees?college_id=cc:<n> output for 3 colleges (local dev DB, 2026-07-17), for the AS Degrees design session. Cabrillo cc:41 = one clean local CS A.S.; Santa Ana cc:14 = all THREE degree types (multi-degree-per-college case); De Anza cc:113 = quarter-system (90u), AS-T + local A.A. Each degree carries concept-coverage (coverage_pct + missing_core_concepts + covered_concepts) computed slot-based (choose-one satisfied by any option). local_computing has no template so coverage_pct is null.",
  "examples": {
   "cc:41": {
    "college_name": "Cabrillo College",
@@ -978,7 +978,7 @@
      "missing_core_concepts": [
       "cs_1"
      ],
-     "coverage_pct": 88,
+     "coverage_pct": 83,
      "degree_type": "local_cs_as"
     }
    ]
@@ -1593,11 +1593,8 @@
       "cs_3_data_structures",
       "discrete_math"
      ],
-     "missing_core_concepts": [
-      "cs_2_oop",
-      "linear_alg"
-     ],
-     "coverage_pct": 75,
+     "missing_core_concepts": [],
+     "coverage_pct": 100,
      "degree_type": "local_cs_as"
     },
     {
@@ -1881,12 +1878,8 @@
       "phys_em",
       "phys_mech"
      ],
-     "missing_core_concepts": [
-      "cs_2_oop",
-      "bio_cell_molec",
-      "gen_chem_1"
-     ],
-     "coverage_pct": 73,
+     "missing_core_concepts": [],
+     "coverage_pct": 100,
      "degree_type": "ast"
     },
     {
@@ -2872,11 +2865,8 @@
       "phys_em",
       "phys_mech"
      ],
-     "missing_core_concepts": [
-      "bio_cell_molec",
-      "gen_chem_1"
-     ],
-     "coverage_pct": 82,
+     "missing_core_concepts": [],
+     "coverage_pct": 100,
      "degree_type": "ast"
     },
     {
