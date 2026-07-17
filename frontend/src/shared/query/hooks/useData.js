@@ -367,6 +367,41 @@ export function useSaveCourseConcept() {
   })
 }
 
+// Data → AS Degrees: bulk QA over the per-college local CS AS degree docs
+// extracted from catalog PDFs (Task 4's curator endpoints).
+export function useAsDegrees() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['as-degrees', user?.uid],
+    queryFn: () => apiClient.get('/curated/as-degrees').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
+export function useAsDegreeDetail(collegeId) {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['as-degree-detail', user?.uid, collegeId],
+    queryFn: () => apiClient
+      .get('/curated/as-degrees', { params: { college_id: collegeId } })
+      .then((r) => r.data),
+    enabled: !!user?.uid && !!collegeId,
+    staleTime: 60 * 1000,
+  })
+}
+
+export function useSaveAsDegree() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (doc) => apiClient.put('/curated/requirements/as_degree', doc).then((r) => r.data),
+    onSuccess: () => Promise.all([
+      qc.invalidateQueries({ queryKey: ['as-degrees'] }),
+      qc.invalidateQueries({ queryKey: ['as-degree-detail'] }),
+    ]),
+  })
+}
+
 // ── personal API tokens (programmatic access) ──
 
 export function useApiTokens() {

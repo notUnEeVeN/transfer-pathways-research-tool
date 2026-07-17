@@ -10,6 +10,7 @@ import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
 import { matchesGeo } from './shared/lib/collegeGeo'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
+import AsDegreeSchoolView from './asdegrees/AsDegreeSchoolView'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
 import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -660,6 +661,8 @@ const routeForAgreementView = (view, agreementId, compareFor) => (
     ? `/api/curated/requirement-comparison?school_id=${compareFor.schoolId}&major=${encodeURIComponent(compareFor.major)}&community_college_id=${compareFor.communityCollegeId}`
   : view === 'degree' && compareFor
     ? `/api/curated/degree-evaluation?school_id=${compareFor.schoolId}&community_college_id=${compareFor.communityCollegeId}`
+  : view === 'asdegrees' && compareFor
+    ? `/api/curated/as-degrees?college_id=cc:${compareFor.communityCollegeId}`
   : `/api/audit/doc/${agreementId}?system=uc`
 )
 
@@ -706,10 +709,14 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
           { value: 'raw',    label: 'Raw ASSIST API' },
           ...(compareFor ? [{ value: 'comparison', label: 'Min comparison' }] : []),
           ...(compareFor ? [{ value: 'degree', label: 'Degree coverage' }] : []),
+          ...(compareFor ? [{ value: 'asdegrees', label: 'AS Degrees' }] : []),
         ]} />
       {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
       {view === 'degree' && compareFor && (
         <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+      )}
+      {view === 'asdegrees' && compareFor && (
+        <AsDegreeSchoolView collegeId={compareFor.communityCollegeId} />
       )}
       {view === 'ledger' && (
         <div className='uui-scope'>
