@@ -22,28 +22,46 @@ const conceptName = (slug) => CONCEPT_LABEL[slug] || slug.replace(/_/g, ' ')
 
 const TYPE_TAB = { local_cs_as: 'Local A.S.', ast: 'Transfer (ADT)', local_computing: 'Applied' }
 
-// Drop the catalog's parenthetical unit boilerplate from a group heading.
-const cleanLabel = (s) => (s || 'Requirements').replace(/\s*\([^)]*\b(?:credit|unit|complete)[^)]*\)\s*$/i, '').trim() || 'Requirements'
+// A short rule phrase derived from a section's advisement.
+const ruleFor = (s) => s.section_advisement != null
+  ? (s.section_advisement === 1 ? 'Choose one' : `Choose ${s.section_advisement}`)
+  : s.unit_advisement != null ? `${s.unit_advisement} units` : null
+
+// Catalog group headings are inconsistent — some are topics ("Programming core"),
+// some are bare instructions ("Take ALL of the following courses"). Strip the
+// parenthetical/instructional boilerplate; if nothing meaningful is left, fall
+// back to the rule so the heading stays short and clean.
+const RULE_ONLY = /^(take|select|complete|choose)\b|following/i
+const cleanLabel = (raw, section) => {
+  let t = (raw || '').replace(/\([^)]*\)/g, ' ')
+    .replace(/\s[—–]\s.*$/, '')                                            // drop "— descriptive clause"
+    .replace(/\s*[-—–:]\s*(complete|select|choose|take|units?|any|plus)\b.*$/i, '') // drop instructional tail
+    .replace(/[:,.\s]+$/, '').replace(/\s{2,}/g, ' ').trim()
+  if (!t || t.length < 3 || RULE_ONLY.test(t)) return ruleFor(section) || 'Required'
+  if (t.length > 46) t = `${t.slice(0, 43).replace(/\s\S*$/, '')}…`
+  return t
+}
 
 // One requirement group → a heading, a short rule, and its courses.
 function GroupBlock({ group, coursesById }) {
   if (group.units_fill) return null // electives-to-total: no course list to read
   const section = (group.sections || [])[0] || {}
-  const rule = section.section_advisement != null ? `Choose ${section.section_advisement}`
-    : section.unit_advisement != null ? `${section.unit_advisement} units`
-    : null
 
-  // GE area group: a single line, no course enumeration.
+  // GE area group: a single consistent line, no course enumeration.
   if (group.ge_area) {
     return (
       <section>
-        <h4 className='text-label text-[11.5px]'>{cleanLabel(group.label_seen)}</h4>
-        <p className='text-caption text-ink-muted mt-1'>
-          General education{section.unit_advisement != null ? ` · ${section.unit_advisement} units` : ''}
-        </p>
+        <div className='flex items-baseline gap-2.5 mt-1'>
+          <h4 className='text-label text-[11.5px]'>General education</h4>
+          {section.unit_advisement != null && <span className='text-tag text-ink-subtle'>{section.unit_advisement} units</span>}
+        </div>
       </section>
     )
   }
+
+  const heading = cleanLabel(group.label_seen, section)
+  const ruleText = ruleFor(section)
+  const rule = heading === ruleText ? null : ruleText // avoid "Choose one · Choose one"
 
   const rows = []
   for (const r of section.receivers || []) {
@@ -57,7 +75,7 @@ function GroupBlock({ group, coursesById }) {
   return (
     <section>
       <div className='flex items-baseline gap-2.5 mb-2 mt-1'>
-        <h4 className='text-label text-[11.5px]'>{cleanLabel(group.label_seen)}</h4>
+        <h4 className='text-label text-[11.5px]'>{heading}</h4>
         {rule && <span className='text-tag text-ink-subtle'>{rule}</span>}
       </div>
       <div className='surface-card divide-y divide-border/50'>
@@ -90,7 +108,7 @@ function GroupBlock({ group, coursesById }) {
   )
 }
 
-function DegreePanel({ degree }) {
+export function DegreePanel({ degree }) {
   const { doc, courses_by_id: coursesById, coverage_pct: coverage, missing_core_concepts: missing } = degree
   const units = doc.unit_system === 'quarter' ? 'quarter units' : 'semester units'
 
