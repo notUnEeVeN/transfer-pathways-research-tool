@@ -78,7 +78,7 @@ more courses taken together).
   total_units: 60,
   verification: { verified: false, verified_by: null, verified_at: null,
                   notes: null },
-  groups: [
+  requirement_groups: [
     {
       // structural fields (shared with our transfer-agreement data)
       is_required: true,
@@ -88,7 +88,8 @@ more courses taken together).
           unit_advisement: null,          // N → "choose N units from these"
           receivers: [
             { receiving: null,            // always null for local degrees
-              options: [{ course_ids: ['cc:12345'], course_conjunction: 'and' }],
+              options: [{ course_ids: [12345], course_conjunction: 'and',
+                          course_keys: ['cc:12345'] }],
               options_conjunction: 'and' },
           ],
         },
@@ -112,7 +113,8 @@ more courses taken together).
                                           // visibly unlinked courses
     },
   ],
-  // Resolved course details for every course id referenced above:
+  // Resolved course details for every course referenced above, keyed by the
+  // course_keys form:
   courses_by_id: {
     'cc:12345': { code: 'CIS 22A', title: 'Beginning Programming', units: 4.5,
                   concept: 'cs_1' },      // concept may be null (unmapped course)

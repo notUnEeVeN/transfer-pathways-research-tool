@@ -67,7 +67,9 @@ the pilot (§2) and locks only at the G2 gate.
   total_units_min: 60,              // semester units; quarter colleges ≈ 90
   // Structurally the ASSIST agreement skeleton (groups → sections → slots),
   // with concept slugs where per-school docs have course_ids — so template
-  // and per-school groups align field-for-field.
+  // and per-school groups align field-for-field. Deliberately named `groups`
+  // (not `requirement_groups`): the template holds concept slots, not
+  // receivers, and must never be mistaken for engine-consumable input.
   groups: [
     {
       group_id: 'core_programming',  // stable key; per-school docs align to it
@@ -150,12 +152,12 @@ different structure.
 
 ```js
 {
-  _id: 'as_degree:<college_id>:cs',
+  _id: 'as_degree:<n>:cs',          // <n> = assist_institutions.source_id (Number)
   kind: 'as_degree',
-  legacy_id: '<college_id>:cs',
-  college_id: <number>,             // bare ASSIST institution id, as in
-                                    // assist_institutions._id — load-bearing
-                                    // (embedded in _id/legacy_id)
+  legacy_id: '<n>:cs',
+  community_college_id: <n>,        // Number — the field agreements are queried by
+  college_id: 'cc:<n>',             // canonical string id, mirroring agreements'
+                                    // dual-id convention
   major_slug: 'cs',
   template_ref: 'as_degree_template:cs',
 
@@ -166,13 +168,19 @@ different structure.
   unit_system: 'semester' | 'quarter',
   total_units: 60,                               // native units, school's own figure
 
-  // Requirement body: the ASSIST agreement skeleton, field-for-field, so the
-  // golden engines (eligibility, min-courses, credit-loss overlap) can later
-  // evaluate an AS degree with no translation layer.
-  groups: [
+  // Requirement body: the ASSIST agreement skeleton, field-for-field
+  // (verified against live assist_agreements docs), so the golden engines
+  // (eligibility, min-courses, credit-loss overlap) can later evaluate an AS
+  // degree with no translation layer. Note the field is requirement_groups —
+  // the name isMajorArticulable() reads — and course_ids are Numbers with
+  // 'cc:<n>' string mirrors in course_keys, exactly as agreements store them.
+  requirement_groups: [
     {
       // — agreement-standard fields, same names and semantics —
       is_required: true,
+      group_conjunction: 'And',
+      group_advisement: null,
+      group_unit_advisement: null,
       group_min_distinct_sections: null,
       group_max_distinct_sections: null,
       group_section_min_courses: null,
@@ -186,9 +194,12 @@ different structure.
                                       // course; the requirement IS the CC
                                       // course(s) in the options
               articulation_status: 'articulated',   // constant on this kind
-              options: [{ course_ids: ['cc:12345'],
-                          course_conjunction: 'and' }],
+              not_articulated_reason: null,
+              options: [{ course_ids: [195603],     // Numbers (= assist_courses.course_id)
+                          course_conjunction: 'and',
+                          course_keys: ['cc:195603'] }],
               options_conjunction: 'and',
+              hash_id: null,          // no cross-CC identity for local degrees
             },
           ],
         },
@@ -241,19 +252,25 @@ Semantics that matter:
   `status: 'none_found'` doc — distinct from having no doc at all
   (unexamined). This is the tri-state discipline applied at document level.
 - **`template_default` groups are visibly not real data.** When extraction
-  fails or multi-vote confidence falls below threshold for a group, the
-  template's group is copied in, stamped `source: 'template_default'`, and the
-  doc is flagged. Aggregate consumers can include or exclude these explicitly.
+  fails or multi-vote confidence falls below threshold for a group, the doc
+  stores a **stub** — `{group_id, template_group, source: 'template_default'}`
+  with no sections — and the doc is flagged. Consumers render the template's
+  group in its place by joining `template_ref` at read time (never a stored
+  copy, which would go stale when the template is edited). Aggregate
+  consumers can include or exclude these explicitly.
 - **Native units only.** Foothill/De Anza store quarter units and
   `unit_system: 'quarter'`; any semester conversion is an analysis-time
   concern (the hardcoded ÷1.5 elsewhere in the codebase is a known trap and
   must not leak into storage).
-- **Course references are canonical, not embedded.** `course_ids` reference
-  `assist_courses` in the same id space agreements use, so titles, units,
-  `same_as` cross-listings, and the existing concept mapping all come by
-  join — no duplicated copies on the degree doc. Catalog citations that
-  don't resolve to an assist course land in `unresolved_courses_seen` and
-  flag the group.
+- **Course references are canonical, not embedded.** `course_ids` are the
+  same numeric `assist_courses.course_id` values agreements use (with
+  `course_keys` `'cc:<n>'` mirrors), so titles, units, `same_as`
+  cross-listings, and the existing concept mapping all come by join — no
+  duplicated copies on the degree doc. Same-as resolution must go through
+  the `same_as` objects' numeric `course_id` (the stored `same_as_keys`
+  field is corrupted — every value is `'cc:[object Object]'` — and must not
+  be relied on). Catalog citations that don't resolve to an assist course
+  land in `unresolved_courses_seen` and flag the group.
 - **Referenced courses may lack concepts.** AS degrees cite courses outside
   the 4,730-course concept-examined agreement inventory (4,509 actually
   mapped) — especially GE. That's valid; backfilling those mappings is
@@ -310,13 +327,15 @@ Local AS-T/ADT programs are **excluded** — this dataset is specifically local
      `putRequirement` auto-stamps on every console save carries no meaning
      here.
    - Stamps `extraction` on every import.
-3. Bulk table for `as_degree`: a `refTablesRegistry` entry provides the raw
-   CRUD plumbing, but the QA surface itself is a **bespoke table modeled on
-   `frontend/src/prereqs/ConceptMappingTable.jsx`** (which is where the
-   flagged-row filter, confidence display, and badge patterns actually live —
-   the generic registry tables have none of that): one row per college,
-   columns for status, confidence, source mix, flagged filter, inline edits
-   stamping group-level `curated_by`.
+3. Bulk table for `as_degree`: server-side CRUD comes free from kind
+   registration (the generic `/api/curated/requirements/:kind` routes); no
+   `refTablesRegistry` entry is used, since the registry's flat field-schema
+   modal cannot edit nested degree docs. The QA surface is a **bespoke table
+   modeled on `frontend/src/prereqs/ConceptMappingTable.jsx`** (which is
+   where the flagged-row filter, confidence display, and badge patterns
+   actually live): one row per college, columns for status, confidence,
+   source mix, flagged filter, and a triage-grade detail modal (mark-group-
+   reviewed, status, total units) stamping group-level `curated_by`.
 4. **QA report:** confidence distribution, `template_default` rate,
    `none_found`/`ambiguous` lists, per-group flag rates — so we know what the
    sweep actually produced before anyone consumes it.
@@ -377,8 +396,11 @@ precisely so all of the above can bolt on later without re-extraction.
   `as_degree` group body is accepted by the agreement predicates
   (`isOptionCompleted`/`sectionContribution`) unchanged, which is the whole
   point of the shared skeleton.
-- Importer tests: curated-row protection (a `curated` group survives
-  re-import), `none_found` upsert, `verification` never touched.
+- Importer verification (this repo's Python scripts have no unit-test
+  convention — the discipline is `--dry-run` on committed `*.sample.json`
+  fixtures plus scripted live checks): curated-row protection (a `curated`
+  group survives re-import), verified docs skipped entirely, `none_found`
+  upsert, `verification` never touched.
 - Read-time diff tests: template-aligned, extra-group, and
   `template_default` cases.
 - References-table wiring test mirroring the concept-mapping table's.
