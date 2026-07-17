@@ -67,12 +67,12 @@ Each row is one object from the endpoint's `rows` array:
   confidence_min: 0.62,                 // lowest extracted-group confidence; null if none extracted
   confidence_mean: 0.88,                // null if none extracted
   unresolved_count: 1,                  // catalog courses we couldn't match to the course DB
-  coverage_pct: 62,                     // % of the statewide template's required concepts
-                                         // (programming, calculus, discrete, architecture,
-                                         // physics, science) this degree's courses cover;
+  coverage_pct: 62,                     // % of the template's required components (each a
+                                         // course requirement, where a choose-one counts as
+                                         // satisfied by any option) this degree's courses cover;
                                          // null when the degree_type has no template
                                          // (local_computing) or the template has no required
-                                         // concepts
+                                         // components
   missing_core_count: 2,                // how many required concepts this degree is missing
   flags: ['template_default_groups', 'low_confidence', 'unresolved_courses'],
   verified: false,

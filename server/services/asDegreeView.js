@@ -54,45 +54,71 @@ function groupUnits(group, unitsByCourseId) {
   return total;
 }
 
-// The set of concept slugs the template treats as core: every concept slug
-// appearing in an is_required group's sections[].slots[].concepts, with
-// OR-slots (a slot's alternative concepts) flattened to their union. Groups
-// that aren't is_required (e.g. the optional science group) and groups with
-// no slots (GE blocks, units_fill electives) contribute nothing.
-function templateRequiredConcepts(template) {
-  const concepts = new Set();
+// The template's required units, as SLOTS rather than a flat concept set.
+// Each slot in an is_required group's sections[].slots[] is ONE requirement;
+// slot.concepts lists its acceptable alternatives (a slot with >1 concept is
+// an OR / choose-one — e.g. the cs_ast "List B science" slot
+// ['bio_cell_molec', 'gen_chem_1', 'phys_em'], satisfied by any one of the
+// three). Groups that aren't is_required (e.g. the optional science group)
+// and sections with no slots (GE blocks, units_fill electives) contribute
+// nothing. Identical slots (same concept set, order-insensitive) are deduped
+// across groups/sections so two groups requiring the same single concept
+// count as one requirement.
+function templateRequiredSlots(template) {
+  const bySlotKey = new Map();
   for (const g of (template && template.groups) || []) {
     if (g.is_required !== true) continue;
     for (const s of g.sections || []) {
       for (const slot of s.slots || []) {
-        for (const c of slot.concepts || []) concepts.add(c);
+        const concepts = slot.concepts || [];
+        if (!concepts.length) continue;
+        const key = [...concepts].sort().join(' ');
+        if (!bySlotKey.has(key)) bySlotKey.set(key, { concepts });
       }
     }
   }
-  return concepts;
+  return [...bySlotKey.values()];
 }
 
 // Concept-level template comparison (replaces the old group-id deviation
 // diff, which was meaningless while every extracted group carried
 // template_group: null — see spec). Compares the degree's covered_concepts
 // (computed at import time — scripts/import_as_degrees.py) against the
-// template's required-concept set.
+// template's required slots: a slot is satisfied if the degree covers ANY
+// one of its alternative concepts, so a choose-one slot isn't penalized for
+// the alternatives the degree didn't take.
 function computeConceptCoverage(doc, template) {
   const covered = new Set(doc.covered_concepts || []);
-  const required = templateRequiredConcepts(template);
-  if (!required.size) {
+  const slots = templateRequiredSlots(template);
+  if (!slots.length) {
     return { covered_concepts: doc.covered_concepts || [], missing_core_concepts: [], coverage_pct: null };
   }
+  const coveredSlotConcepts = new Set();
+  const uncoveredSlots = [];
+  for (const slot of slots) {
+    if (slot.concepts.some((c) => covered.has(c))) {
+      for (const c of slot.concepts) coveredSlotConcepts.add(c);
+    } else {
+      uncoveredSlots.push(slot);
+    }
+  }
+  // Flatten uncovered slots' alternatives into missing_core_concepts,
+  // deduplicated — but never list a concept that's satisfied elsewhere via a
+  // covered slot (e.g. it also appears as an alternative in a satisfied
+  // choose-one).
   const missing = [];
-  let overlap = 0;
-  for (const c of required) {
-    if (covered.has(c)) overlap += 1;
-    else missing.push(c);
+  const seenMissing = new Set();
+  for (const slot of uncoveredSlots) {
+    for (const c of slot.concepts) {
+      if (coveredSlotConcepts.has(c) || seenMissing.has(c)) continue;
+      seenMissing.add(c);
+      missing.push(c);
+    }
   }
   return {
     covered_concepts: doc.covered_concepts || [],
     missing_core_concepts: missing,
-    coverage_pct: Math.round((overlap / required.size) * 100),
+    coverage_pct: Math.round(((slots.length - uncoveredSlots.length) / slots.length) * 100),
   };
 }
 
@@ -207,4 +233,4 @@ async function asDegreeDetail(db, collegeId) {
   };
 }
 
-module.exports = { asDegreeOverview, asDegreeDetail, templateRequiredConcepts };
+module.exports = { asDegreeOverview, asDegreeDetail, templateRequiredSlots };
