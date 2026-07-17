@@ -2,6 +2,7 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { majorScope, pairClause } = require('../services/majorVisibility');
 const { prerequisiteGraphData } = require('../services/prereqGraph');
+const asDegreeView = require('../services/asDegreeView');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -609,6 +610,19 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
     } }
   );
   res.json({ ok: true, id });
+});
+
+// Read-time computed view: college joins, provenance/confidence rollups, and
+// a template-deviation diff over as_degree docs (server/services/asDegreeView.js).
+exports.asDegrees = asyncHandler(async (req, res) => {
+  const db = req.app.locals.db;
+  const collegeId = String(req.query.college_id || '').trim();
+  if (collegeId) {
+    const detail = await asDegreeView.asDegreeDetail(db, collegeId);
+    if (!detail) return res.status(404).json({ error: 'no as_degree row for that college' });
+    return res.json(detail);
+  }
+  res.json(await asDegreeView.asDegreeOverview(db));
 });
 
 exports.COLLECTIONS = COLLECTIONS;

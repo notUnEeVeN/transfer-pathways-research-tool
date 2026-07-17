@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept, prerequisiteGraph } = cjs('./CanonicalData');
+const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept, prerequisiteGraph, asDegrees } = cjs('./CanonicalData');
 
 let mongo;
 let db;
@@ -560,5 +560,15 @@ describe('as_degree delete guards', () => {
       { _id: 'as_degree_template:old', kind: 'as_degree_template', slug: 'old' });
     const res = await run(deleteRequirement, request({ params: { kind: 'as_degree_template', id: 'old' } }));
     expect(res.statusCode).toBe(200);
+  });
+});
+
+describe('asDegrees endpoint', () => {
+  it('returns the overview and a 404 for an unknown college detail', async () => {
+    const overview = await run(asDegrees, request({ query: {} }));
+    expect(overview.statusCode).toBe(200);
+    expect(overview.body).toHaveProperty('rows');
+    const missing = await run(asDegrees, request({ query: { college_id: 'cc:424242' } }));
+    expect(missing.statusCode).toBe(404);
   });
 });
