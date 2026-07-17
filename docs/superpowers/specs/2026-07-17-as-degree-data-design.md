@@ -35,7 +35,7 @@ pilot.
 | Template role | Extraction schema, comparability structure, and stamped fallback fill — never silently authoritative |
 | Storage | Two new `curated_requirements` kinds: `as_degree_template`, `as_degree` |
 | Legacy `associate_degree` kind | Untouched and empty — `timeToDegreeData` listens for it with old semantics and must stay dormant |
-| Requirement expressiveness | Unit-weighted groups first-class: `all`, `choose_courses`, `choose_units`, `ge_area`, `units_fill` |
+| Requirement expressiveness | Per-school requirement body reuses the ASSIST agreement skeleton **verbatim** (groups → sections → receivers → options → course_ids, same field names/semantics incl. `section_advisement`/`unit_advisement`), plus two extensions with no agreement analog (`ge_area`, `units_fill`) and additive provenance fields |
 | GE modeling | Title 5 §55063 local-GE areas (not IGETC) with per-area unit minimums |
 | Units | Stored in the college's native system with `unit_system: 'semester'\|'quarter'`; no conversion at storage time |
 | Extraction pipeline | In-session Claude Code agent runs → git-committed JSON artifact with `meta` methodology block → importer; no LLM SDK/API key in the repo (same discipline as course-concept mapping) |
@@ -65,32 +65,43 @@ the pilot (§2) and locks only at the G2 gate.
   slug: 'cs',
   name: 'Associate of Science — Computer Science (statewide template)',
   total_units_min: 60,              // semester units; quarter colleges ≈ 90
+  // Structurally the ASSIST agreement skeleton (groups → sections → slots),
+  // with concept slugs where per-school docs have course_ids — so template
+  // and per-school groups align field-for-field.
   groups: [
     {
       group_id: 'core_programming',  // stable key; per-school docs align to it
       label: 'Programming core',
-      type: 'all',                   // every entry required
-      concepts: ['cs_1', 'cs_2_oop', 'cs_3_data_structures'],
-    },
-    {
-      group_id: 'core_math',
-      label: 'Required mathematics',
-      type: 'all',
-      concepts: ['calc_1', 'calc_2'],
+      is_required: true,
+      sections: [{
+        section_advisement: null,    // null → every slot required
+        unit_advisement: null,
+        slots: [                     // concept slots in receiver position
+          { concepts: ['cs_1'] },
+          { concepts: ['cs_2_oop'] },
+          { concepts: ['cs_3_data_structures'] },
+        ],
+      }],
     },
     {
       group_id: 'core_systems',
       label: 'Systems requirement',
-      type: 'choose_courses',
-      choose_n: 1,
-      concepts: ['comp_arch_assembly', 'c_systems_programming', 'digital_logic'],
+      is_required: true,
+      sections: [{
+        section_advisement: 1,       // "select 1 of the following"
+        slots: [
+          { concepts: ['comp_arch_assembly'] },
+          { concepts: ['c_systems_programming'] },
+          { concepts: ['digital_logic'] },
+        ],
+      }],
     },
     {
       group_id: 'ge_natural_sciences',
       label: 'GE: Natural Sciences',
-      type: 'ge_area',
       ge_area: 'natural_sciences',   // Title 5 local-GE area, not IGETC
-      units_min: 3,
+      is_required: true,
+      sections: [{ unit_advisement: 3, slots: [] }],  // open-ended area
     },
     // ... remaining Title 5 areas: social_behavioral, humanities,
     //     language_rationality (English comp + comm/analytical thinking),
@@ -98,24 +109,23 @@ the pilot (§2) and locks only at the G2 gate.
     {
       group_id: 'electives',
       label: 'Electives to total',
-      type: 'units_fill',            // degree-applicable units up to total
+      units_fill: true,              // degree-applicable units up to total
     },
   ],
   note: '…normative calls recorded here, prereq_concepts style…',
 }
 ```
 
-Group semantics:
+Semantics come from the agreement fields, not a bespoke type vocabulary:
+no advisement → all slots required; `section_advisement: N` → choose N
+courses; `unit_advisement: N` → choose N units. Only two constructs have no
+agreement analog and are extensions: `ge_area` (an open-ended Title 5 area —
+its unit ask lives in `unit_advisement`, its slots may be empty or a sample)
+and `units_fill` (unnamed degree-applicable units to reach the total).
 
-- `all` — every listed entry is required.
-- `choose_courses` — pick `choose_n` from the list.
-- `choose_units` — pick `units_min` units from the list.
-- `ge_area` — pick `units_min` units satisfying a Title 5 local-GE area.
-- `units_fill` — unnamed degree-applicable units to reach `total_units_min`.
-
-`concepts` entries reference the existing 41-concept vocabulary
-(`prereq_concept` kind) and may contain nested arrays as OR-groups, exactly
-like `prereq_concept.requires`. **The template is a new kind with its own
+A slot's `concepts` array references the existing 41-concept vocabulary
+(`prereq_concept` kind); more than one entry means an OR-group, in the spirit
+of `prereq_concept.requires`. **The template is a new kind with its own
 validation** — it must not reuse `prereq_concept.requires`, whose cycle checks
 and delete guards assume prerequisite (ordering) semantics, not membership.
 The `prereq_concept` delete guard gains one check: a concept referenced by any
@@ -129,6 +139,14 @@ deletable, leaving dangling refs).
 One doc per college × major. **Single source of truth for that school.** The
 template never overrides it; a "deviates from template" diff is computed at
 read time for display, never stored.
+
+The requirement body deliberately reuses the ASSIST agreement skeleton
+rather than a bespoke shape: every analysis this data exists for ("does the
+AS meet transfer requirements", overlap/credit loss, min-course sets) runs
+through the golden engines, which speak that shape natively — a bespoke
+shape would put a translation layer exactly where correctness matters most.
+Readability comes from the additive label/provenance fields, not from a
+different structure.
 
 ```js
 {
@@ -148,15 +166,42 @@ read time for display, never stored.
   unit_system: 'semester' | 'quarter',
   total_units: 60,                               // native units, school's own figure
 
+  // Requirement body: the ASSIST agreement skeleton, field-for-field, so the
+  // golden engines (eligibility, min-courses, credit-loss overlap) can later
+  // evaluate an AS degree with no translation layer.
   groups: [
     {
+      // — agreement-standard fields, same names and semantics —
+      is_required: true,
+      group_min_distinct_sections: null,
+      group_max_distinct_sections: null,
+      group_section_min_courses: null,
+      sections: [
+        {
+          section_advisement: null,   // choose-N courses; null → all required
+          unit_advisement: null,      // choose-N units ("9 units from …")
+          receivers: [
+            {
+              receiving: null,        // a local degree has no UC receiving
+                                      // course; the requirement IS the CC
+                                      // course(s) in the options
+              articulation_status: 'articulated',   // constant on this kind
+              options: [{ course_ids: ['cc:12345'],
+                          course_conjunction: 'and' }],
+              options_conjunction: 'and',
+            },
+          ],
+        },
+      ],
+
+      // — as_degree extensions (additive; agreement consumers ignore them) —
       group_id: 'core_programming',   // stable key within this doc
       template_group: 'core_programming' | null,
                                       // aligned groups: template_group ===
                                       // group_id; school-specific extra
                                       // groups: template_group: null with a
                                       // school-chosen group_id slug
-      label_seen: 'Required Core',
+      label_seen: 'Required Core',    // the catalog's own heading
       source: 'extracted' | 'template_default' | 'curated',
       confidence: 0.0–1.0 | null,     // multi-vote agreement; null unless
                                       // source is 'extracted'
@@ -165,15 +210,15 @@ read time for display, never stored.
                                       // doc-level curated_by that
                                       // putRequirement auto-stamps on every
                                       // console save)
-      type: 'all' | 'choose_courses' | 'choose_units' | 'ge_area' | 'units_fill',
-      choose_n: …, units_min: …,      // as the catalog states them
-      courses: [
-        { course_code_seen: 'CIS 22A',   // exactly as the catalog prints it
-          title_seen: '…', units: 4.5,
-          assist_course_id: 'cc:<id>' | null,  // link into assist_courses
-                                               // when resolvable
-          concept: 'cs_1' | null },
-      ],
+      ge_area: null | 'natural_sciences',
+                                      // open-ended Title 5 area group: unit
+                                      // ask in unit_advisement; receivers may
+                                      // be a sample or empty
+      units_fill: false,              // true → electives-to-total; no receivers
+      unresolved_courses_seen: [      // catalog citations that didn't resolve
+        { course_code_seen: 'CS 22A', title_seen: '…', units_seen: 4.5 },
+      ],                              // to an assist course id; non-empty ⇒
+                                      // group is flagged
     },
   ],
 
@@ -203,9 +248,15 @@ Semantics that matter:
   `unit_system: 'quarter'`; any semester conversion is an analysis-time
   concern (the hardcoded ÷1.5 elsewhere in the codebase is a known trap and
   must not leak into storage).
-- **Courses may lack concepts.** AS degrees cite courses outside the
-  4,730-course concept-examined agreement inventory (4,509 actually mapped) —
-  especially GE. `concept: null` is valid; backfilling those mappings is
+- **Course references are canonical, not embedded.** `course_ids` reference
+  `assist_courses` in the same id space agreements use, so titles, units,
+  `same_as` cross-listings, and the existing concept mapping all come by
+  join — no duplicated copies on the degree doc. Catalog citations that
+  don't resolve to an assist course land in `unresolved_courses_seen` and
+  flag the group.
+- **Referenced courses may lack concepts.** AS degrees cite courses outside
+  the 4,730-course concept-examined agreement inventory (4,509 actually
+  mapped) — especially GE. That's valid; backfilling those mappings is
   future work, not a blocker.
 
 ### 1C. What "the CS AS" means (degree matching)
@@ -320,9 +371,12 @@ precisely so all of the above can bolt on later without re-extraction.
 
 ## 7 · Testing
 
-- Kind validation unit tests (shape, group types, OR-group nesting, native
-  units, tri-state source values) alongside the existing
-  `curated_requirements` kind tests.
+- Kind validation unit tests (agreement-skeleton fields, extension fields,
+  concept OR-group nesting, native units, tri-state source values) alongside
+  the existing `curated_requirements` kind tests — including a test that an
+  `as_degree` group body is accepted by the agreement predicates
+  (`isOptionCompleted`/`sectionContribution`) unchanged, which is the whole
+  point of the shared skeleton.
 - Importer tests: curated-row protection (a `curated` group survives
   re-import), `none_found` upsert, `verification` never touched.
 - Read-time diff tests: template-aligned, extra-group, and

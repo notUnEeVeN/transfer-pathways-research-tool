@@ -9,9 +9,12 @@ alongside it if you have them; that helps a lot.
 > real extracted documents from `scripts/data/as_degrees_cs.json` — ideally
 > one clean template match, one deviation-heavy school, and one
 > low-confidence school with `template_default` groups. Real docs match the
-> data shape below (they may carry extra bookkeeping fields — `_id`, `kind`,
-> `extraction` — which the design can ignore). Until then, that section holds
-> prose descriptions of three representative schools, not actual documents.
+> data shape below except `college_name`, `courses_by_id`, and `deviations`,
+> which are server-joined — build those three by hand for the pasted schools
+> (course details come from the References course table). Extra bookkeeping
+> fields on real docs (`_id`, `kind`, `extraction`) can be ignored. Until
+> then, the section holds prose descriptions of three representative
+> schools, not actual documents.
 
 ---
 
@@ -53,9 +56,15 @@ which parts of a page are verified vs machine-extracted vs placeholder.
 
 ## The data shape
 
-The component receives one college's document plus two server-provided
-extras: a display `college_name` (joined from the institutions table) and a
-computed `deviations` summary.
+The component receives one college's document plus server-provided extras: a
+display `college_name`, resolved course details (`courses_by_id` — the stored
+doc only holds course ids), and a computed `deviations` summary.
+
+The requirement body reuses our transfer-agreement skeleton (groups →
+sections → receivers → options), because the same engines will analyze both.
+For display you mostly flatten it: each **receiver** is one requirement slot;
+its `options` are alternative ways to fill the slot (each option = one or
+more courses taken together).
 
 ```js
 {
@@ -71,6 +80,20 @@ computed `deviations` summary.
                   notes: null },
   groups: [
     {
+      // structural fields (shared with our transfer-agreement data)
+      is_required: true,
+      sections: [
+        {
+          section_advisement: null,       // N → "choose N courses"; null → all required
+          unit_advisement: null,          // N → "choose N units from these"
+          receivers: [
+            { receiving: null,            // always null for local degrees
+              options: [{ course_ids: ['cc:12345'], course_conjunction: 'and' }],
+              options_conjunction: 'and' },
+          ],
+        },
+      ],
+      // display/provenance fields
       group_id: 'core_programming',
       template_group: 'core_programming', // === group_id when aligned to the
                                           // statewide template; null → this is
@@ -78,30 +101,34 @@ computed `deviations` summary.
       label_seen: 'Required Core',        // the catalog's own heading
       source: 'extracted' | 'template_default' | 'curated',
       confidence: 0.93,                   // null unless source is 'extracted'
-      type: 'all' | 'choose_courses' | 'choose_units' | 'ge_area' | 'units_fill',
-      choose_n: 1,                        // only for choose_courses
-      units_min: 3,                       // only for choose_units / ge_area
-      ge_area: 'natural_sciences',        // only for ge_area groups
-      courses: [
-        { course_code_seen: 'CIS 22A',    // as the catalog prints it
-          title_seen: 'Beginning Programming', units: 4.5,
-          assist_course_id: 'cc:12345',   // link to the statewide course db; may be null
-          concept: 'cs_1' },              // concept may be null (unmapped course)
-      ],
+      ge_area: null,                      // set (e.g. 'natural_sciences') for
+                                          // open-ended GE-area groups; unit ask
+                                          // in unit_advisement; receivers may be
+                                          // a sample or empty
+      units_fill: false,                  // true → electives-to-total; no receivers
+      unresolved_courses_seen: [],        // catalog citations we couldn't match
+                                          // to the course db: {course_code_seen,
+                                          // title_seen, units_seen} — render as
+                                          // visibly unlinked courses
     },
   ],
+  // Resolved course details for every course id referenced above:
+  courses_by_id: {
+    'cc:12345': { code: 'CIS 22A', title: 'Beginning Programming', units: 4.5,
+                  concept: 'cs_1' },      // concept may be null (unmapped course)
+  },
   // Computed server-side and passed in: which template groups are missing at
   // this school, and which groups are school-specific extras.
   deviations: { missing_groups: ['core_systems'], extra_groups: ['ethics'] },
 }
 ```
 
-Group semantics: `all` = every course required · `choose_courses` = pick
-`choose_n` from the list · `choose_units` = pick `units_min` units from the
-list · `ge_area` = `units_min` units from a general-education area (courses
-list may be a sample or empty) · `units_fill` = degree-applicable elective
-units up to the degree total (not just any units — degree-applicability is a
-regulatory constraint).
+Reading the structure into the five display flavors: no advisement = every
+receiver required · `section_advisement: N` = pick N of the receivers ·
+`unit_advisement: N` = pick N units' worth · `ge_area` set = N units from a
+general-education area (receiver list may be a sample or empty) ·
+`units_fill: true` = degree-applicable elective units up to the degree total
+(not just any units — degree-applicability is a regulatory constraint).
 
 ## REPLACE AT HANDOFF TIME — representative documents
 
