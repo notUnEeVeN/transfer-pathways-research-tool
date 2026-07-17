@@ -19,6 +19,8 @@ const REQUIREMENT_PREFIX = Object.freeze({
   igetc: 'igetc',
   associate_degree: 'associate_degree',
   prereq_concept: 'prereq_concept',
+  as_degree_template: 'as_degree_template',
+  as_degree: 'as_degree',
 });
 const REQUIREMENT_KINDS = Object.keys(REQUIREMENT_PREFIX);
 
@@ -44,6 +46,9 @@ function parseInstitutionId(value, expectedKind = null) {
 // writes must keep the rule graph acyclic and self-consistent.
 const CONCEPT_SLUG_RE = /^[a-z0-9_]+$/;
 const CONCEPT_DISCIPLINES = ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'stats', 'other'];
+
+// Title 5 §55063 local-GE areas for associate degrees (spec §1A).
+const GE_AREAS = ['natural_sciences', 'social_behavioral', 'humanities', 'language_rationality', 'math_competency'];
 
 async function validatePrereqConcept(db, canonical) {
   const slug = String(canonical.slug || '');
@@ -96,6 +101,64 @@ async function validatePrereqConcept(db, canonical) {
     for (const s of sat) {
       if (s === slug) return 'satisfies must not reference the concept itself';
       if (!graph.has(String(s))) return `satisfies references unknown concept: ${s}`;
+    }
+  }
+  return null;
+}
+
+// as_degree_template: statewide concept-slotted degree template (spec §1A).
+// Groups mirror the agreement skeleton but hold concept slots, not receivers.
+async function validateAsDegreeTemplate(db, canonical) {
+  const slug = String(canonical.slug || '');
+  if (!CONCEPT_SLUG_RE.test(slug)) return 'slug must match ^[a-z0-9_]+$';
+  if (slug !== String(canonical.legacy_id)) return 'slug must equal the row id';
+  if (typeof canonical.name !== 'string' || !canonical.name.trim()) return 'name is required';
+  if (!Number.isFinite(canonical.total_units_min) || canonical.total_units_min <= 0) {
+    return 'total_units_min must be a positive number';
+  }
+  if (!Array.isArray(canonical.groups) || canonical.groups.length === 0) {
+    return 'groups must be a non-empty array';
+  }
+  const conceptRows = await db.collection(COLLECTIONS.requirements)
+    .find({ kind: 'prereq_concept' }, { projection: { slug: 1 } })
+    .toArray();
+  const known = new Set(conceptRows.map((r) => String(r.slug)));
+  const seenIds = new Set();
+  for (const g of canonical.groups) {
+    const gid = String(g.group_id || '');
+    if (!CONCEPT_SLUG_RE.test(gid)) return 'each group needs a group_id matching ^[a-z0-9_]+$';
+    if (seenIds.has(gid)) return `duplicate group_id: ${gid}`;
+    seenIds.add(gid);
+    if (typeof g.label !== 'string' || !g.label.trim()) return `group ${gid}: label is required`;
+    if (g.ge_area != null && !GE_AREAS.includes(g.ge_area)) {
+      return `group ${gid}: ge_area must be one of ${GE_AREAS.join(', ')}`;
+    }
+    if (g.units_fill === true) {
+      if (g.sections != null) return `group ${gid}: a units_fill group must not have sections`;
+      continue;
+    }
+    if (!Array.isArray(g.sections) || g.sections.length === 0) {
+      return `group ${gid}: sections must be a non-empty array`;
+    }
+    for (const s of g.sections) {
+      for (const key of ['section_advisement', 'unit_advisement']) {
+        if (s[key] != null && (!Number.isFinite(s[key]) || s[key] <= 0)) {
+          return `group ${gid}: ${key} must be null or a positive number`;
+        }
+      }
+      if (!Array.isArray(s.slots)) return `group ${gid}: each section needs a slots array`;
+      if (g.ge_area == null && s.slots.length === 0) {
+        return `group ${gid}: a non-ge_area section must list at least one slot`;
+      }
+      for (const slot of s.slots) {
+        const alts = slot && slot.concepts;
+        if (!Array.isArray(alts) || alts.length === 0 || alts.some((c) => typeof c !== 'string')) {
+          return `group ${gid}: each slot needs a non-empty concepts array of slugs`;
+        }
+        for (const c of alts) {
+          if (!known.has(c)) return `group ${gid}: slot references unknown concept: ${c}`;
+        }
+      }
     }
   }
   return null;
@@ -234,6 +297,10 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     const invalid = await validatePrereqConcept(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
     canonical.source = canonical.source || 'hand_curated';
+  }
+  if (kind === 'as_degree_template') {
+    const invalid = await validateAsDegreeTemplate(db, canonical);
+    if (invalid) return res.status(400).json({ error: invalid });
   }
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }

@@ -243,6 +243,77 @@ describe('putCourseConcept', () => {
   });
 });
 
+describe('as_degree_template kind', () => {
+  const seedConcepts = () => db.collection('curated_requirements').insertMany([
+    { _id: 'prereq_concept:cs_1', kind: 'prereq_concept', slug: 'cs_1', requires: [] },
+    { _id: 'prereq_concept:cs_2_oop', kind: 'prereq_concept', slug: 'cs_2_oop', requires: ['cs_1'] },
+    { _id: 'prereq_concept:calc_1', kind: 'prereq_concept', slug: 'calc_1', requires: [] },
+  ]);
+
+  const template = () => ({
+    _id: 'as_degree_template:cs',
+    slug: 'cs',
+    name: 'AS in Computer Science (statewide template)',
+    total_units_min: 60,
+    groups: [
+      {
+        group_id: 'core_programming', label: 'Programming core', is_required: true,
+        sections: [{ section_advisement: null, unit_advisement: null,
+          slots: [{ concepts: ['cs_1'] }, { concepts: ['cs_2_oop'] }] }],
+      },
+      {
+        group_id: 'ge_natural_sciences', label: 'GE: Natural Sciences', is_required: true,
+        ge_area: 'natural_sciences',
+        sections: [{ section_advisement: null, unit_advisement: 3, slots: [] }],
+      },
+      { group_id: 'electives', label: 'Electives to total', units_fill: true },
+    ],
+  });
+
+  it('accepts a well-formed template and stamps curated_by', async () => {
+    await seedConcepts();
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: template() }));
+    expect(res.statusCode).toBe(200);
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree_template:cs' });
+    expect(stored).toMatchObject({ kind: 'as_degree_template', legacy_id: 'cs', curated_by: 'curator-1' });
+  });
+
+  it('rejects a slot referencing an unknown concept', async () => {
+    await seedConcepts();
+    const body = template();
+    body.groups[0].sections[0].slots.push({ concepts: ['quantum_basket_weaving'] });
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/unknown concept: quantum_basket_weaving/);
+  });
+
+  it('rejects a bad ge_area, a duplicate group_id, and sections on a units_fill group', async () => {
+    await seedConcepts();
+    const badArea = template();
+    badArea.groups[1].ge_area = 'underwater_arts';
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: badArea }))).statusCode).toBe(400);
+
+    const dup = template();
+    dup.groups[1].group_id = 'core_programming';
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: dup }))).statusCode).toBe(400);
+
+    const filled = template();
+    filled.groups[2].sections = [{ slots: [] }];
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: filled }))).statusCode).toBe(400);
+  });
+
+  it('rejects a non-ge_area section with no slots and a non-positive advisement', async () => {
+    await seedConcepts();
+    const empty = template();
+    empty.groups[0].sections[0].slots = [];
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: empty }))).statusCode).toBe(400);
+
+    const negative = template();
+    negative.groups[0].sections[0].section_advisement = 0;
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: negative }))).statusCode).toBe(400);
+  });
+});
+
 describe('prerequisiteGraph endpoint', () => {
   it('400s a malformed college_id', async () => {
     const res = await run(prerequisiteGraph, request({ query: { college_id: 'nope' } }));
