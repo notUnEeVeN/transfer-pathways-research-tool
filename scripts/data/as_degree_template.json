@@ -1,0 +1,159 @@
+{
+ "_meta": {
+  "purpose": "Statewide CS associate-degree templates (spec docs/superpowers/specs/2026-07-17-as-degree-data-design.md §1A). Two templates: cs_local (fitted from 45 local CS A.S. degrees) and cs_ast (the CS Transfer Model Curriculum). Concept slots reference the prereq_concept vocabulary. Imported by scripts/import_as_degrees.py.",
+  "authored": "2026-07-17",
+  "method": "Fitted from the statewide extraction (scripts/data/as_degrees_cs_extraction.json) by concept frequency, mapping courses to concepts BY TITLE (not prefix — some colleges teach CS under MATH/other prefixes). Thresholds: >=70% of degrees -> required core; 40-70% -> common (choose/optional); <40% -> optional, noted only. Local-GE modeled as Title 5 areas; AS-T GE is the Cal-GETC pattern.",
+  "status": "locked",
+  "review": "Approved by Tybalt at the G2 gate (2026-07-17, 'looks fine, proceed') covering docs/as-degree-template-review.md — the two-template approach and the fitted concept slots below.",
+  "concept_frequencies": {
+   "cs_local_n45": {"cs_1": 0.97, "comp_arch_assembly": 0.86, "discrete_math": 0.73, "cs_3_data_structures": 0.62, "calc_1": 0.62, "cs_2_oop": 0.48, "calc_2": 0.46, "phys_mech": 0.31, "linear_alg": 0.24},
+   "cs_ast_n70": {"calc_1": 0.98, "discrete_math": 0.98, "comp_arch_assembly": 0.95, "calc_2": 0.88, "cs_1": 0.87, "phys_mech": 0.78, "cs_3_data_structures": 0.51, "bio_cell_molec": 0.50, "gen_chem_1": 0.38, "cs_2_oop": 0.28, "phys_em": 0.22}
+  }
+ },
+ "templates": [
+  {
+   "slug": "cs_local",
+   "name": "Associate of Science — Computer Science (statewide local template)",
+   "degree_type": "local_cs_as",
+   "total_units_min": 60,
+   "note": "Fitted from 45 local CS A.S. degrees. Looser than the AS-T: a stable programming+architecture+discrete core with variable math depth and mostly-optional science. GE is the local Title 5 pattern, not IGETC.",
+   "groups": [
+    {
+     "group_id": "core_programming",
+     "label": "Programming core",
+     "is_required": true,
+     "note": "cs_1 at 97%. A second programming/OOP or data-structures course is common (cs_2_oop 48%, cs_3_data_structures 62%) — modeled as a required intro plus a choose-one advanced slot.",
+     "sections": [
+      {"section_advisement": null, "unit_advisement": null,
+       "slots": [{"concepts": ["cs_1"]}]},
+      {"section_advisement": 1, "unit_advisement": null,
+       "slots": [{"concepts": ["cs_2_oop", "cs_3_data_structures"]}]}
+     ]
+    },
+    {
+     "group_id": "core_architecture",
+     "label": "Computer organization / architecture",
+     "is_required": true,
+     "note": "comp_arch_assembly at 86%.",
+     "sections": [{"section_advisement": null, "unit_advisement": null,
+      "slots": [{"concepts": ["comp_arch_assembly"]}]}]
+    },
+    {
+     "group_id": "core_discrete",
+     "label": "Discrete mathematics / structures",
+     "is_required": true,
+     "note": "discrete_math at 73%.",
+     "sections": [{"section_advisement": null, "unit_advisement": null,
+      "slots": [{"concepts": ["discrete_math"]}]}]
+    },
+    {
+     "group_id": "core_mathematics",
+     "label": "Calculus",
+     "is_required": true,
+     "note": "calc_1 62%, calc_2 46%. Calc I required; Calc II common (choose-to-depth).",
+     "sections": [
+      {"section_advisement": null, "unit_advisement": null,
+       "slots": [{"concepts": ["calc_1"]}]},
+      {"section_advisement": 1, "unit_advisement": null,
+       "slots": [{"concepts": ["calc_2", "linear_alg"]}]}
+     ]
+    },
+    {
+     "group_id": "science_option",
+     "label": "Science (optional at most colleges)",
+     "is_required": false,
+     "note": "phys_mech 31%, gen_chem_1 13% — present at a minority; modeled as an optional choose-one.",
+     "sections": [{"section_advisement": 1, "unit_advisement": null,
+      "slots": [{"concepts": ["phys_mech", "gen_chem_1", "bio_cell_molec"]}]}]
+    },
+    {
+     "group_id": "ge_local",
+     "label": "General education (local Title 5 pattern)",
+     "ge_area": "local_pattern",
+     "is_required": true,
+     "note": "Local associate-degree GE (natural sciences, social/behavioral, humanities, language & rationality, math competency); not enumerated per college.",
+     "sections": [{"section_advisement": null, "unit_advisement": 18, "slots": []}]
+    },
+    {
+     "group_id": "electives",
+     "label": "Electives to total",
+     "units_fill": true
+    }
+   ]
+  },
+  {
+   "slug": "cs_ast",
+   "name": "Associate in Science in Computer Science for Transfer (TMC)",
+   "degree_type": "ast",
+   "total_units_min": 60,
+   "note": "The statewide CS Transfer Model Curriculum. Tight and uniform across colleges. Required core = programming + discrete + architecture + Calc I/II + calculus-based physics; plus one List-B science (biology / chemistry / physics E&M). GE is the Cal-GETC pattern.",
+   "groups": [
+    {
+     "group_id": "core_programming",
+     "label": "Programming sequence",
+     "is_required": true,
+     "note": "cs_1 87%; a second programming/data-structures course is part of the TMC sequence (cs_2_oop 28% + cs_3_data_structures 51% — same slot, classifier split).",
+     "sections": [
+      {"section_advisement": null, "unit_advisement": null,
+       "slots": [{"concepts": ["cs_1"]}]},
+      {"section_advisement": 1, "unit_advisement": null,
+       "slots": [{"concepts": ["cs_2_oop", "cs_3_data_structures"]}]}
+     ]
+    },
+    {
+     "group_id": "core_discrete",
+     "label": "Discrete structures",
+     "is_required": true,
+     "note": "discrete_math at 98%.",
+     "sections": [{"section_advisement": null, "unit_advisement": null,
+      "slots": [{"concepts": ["discrete_math"]}]}]
+    },
+    {
+     "group_id": "core_architecture",
+     "label": "Computer organization / architecture",
+     "is_required": true,
+     "note": "comp_arch_assembly at 95%.",
+     "sections": [{"section_advisement": null, "unit_advisement": null,
+      "slots": [{"concepts": ["comp_arch_assembly"]}]}]
+    },
+    {
+     "group_id": "core_mathematics",
+     "label": "Calculus I and II",
+     "is_required": true,
+     "note": "calc_1 98%, calc_2 88% — both required in the TMC.",
+     "sections": [{"section_advisement": null, "unit_advisement": null,
+      "slots": [{"concepts": ["calc_1"]}, {"concepts": ["calc_2"]}]}]
+    },
+    {
+     "group_id": "core_physics",
+     "label": "Calculus-based physics",
+     "is_required": true,
+     "note": "phys_mech at 78%.",
+     "sections": [{"section_advisement": null, "unit_advisement": null,
+      "slots": [{"concepts": ["phys_mech"]}]}]
+    },
+    {
+     "group_id": "science_elective",
+     "label": "List B science (choose one)",
+     "is_required": true,
+     "note": "TMC List B: one additional science — biology (50%), chemistry (38%), or physics E&M (22%).",
+     "sections": [{"section_advisement": 1, "unit_advisement": null,
+      "slots": [{"concepts": ["bio_cell_molec", "gen_chem_1", "phys_em"]}]}]
+    },
+    {
+     "group_id": "ge_calgetc",
+     "label": "General education (Cal-GETC)",
+     "ge_area": "calgetc",
+     "is_required": true,
+     "note": "AS-T degrees complete Cal-GETC; not enumerated.",
+     "sections": [{"section_advisement": null, "unit_advisement": 34, "slots": []}]
+    },
+    {
+     "group_id": "electives",
+     "label": "Transferable electives to total",
+     "units_fill": true
+    }
+   ]
+  }
+ ]
+}
