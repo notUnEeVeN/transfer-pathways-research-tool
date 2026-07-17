@@ -35,6 +35,13 @@ Transformation (extraction major_group -> as_degree requirement_group):
 Course resolution: an index built once from assist_courses (side='sending')
 keyed by (community_college_id, prefix.upper().strip(), norm_number(number)),
 with a prefix-internal-spaces-removed fallback (e.g. "C S" -> "CS").
+norm_number strips leading/trailing non-alphanumeric artifacts (dashes,
+dots, stray spaces — e.g. Merced's "MATH -06") before the zero-stripping
+regex, applied identically on both sides of the index. A course that still
+fails number resolution (typically a catalog renumbered under California
+Common Course Numbering, e.g. "MATH C2210" vs assist_courses' old "MATH
+30") gets one conservative title-based fallback attempt within the same
+college (see resolve_by_title) before being marked unresolved.
 
 Merge semantics on re-import (spec §3.2): a doc whose verification.verified
 is true is skipped entirely; otherwise any existing group with
@@ -77,6 +84,26 @@ WOODLAND_CC_ID = 147
 
 SLUG_RE = re.compile(r"^[a-z0-9_]+$")
 NUMBER_RE = re.compile(r"^0*([0-9]+)([A-Z]*)$")
+NUMBER_EDGE_RE = re.compile(r"^[^A-Za-z0-9]+|[^A-Za-z0-9]+$")
+
+# Title-fallback normalization (see normalize_title_tokens / resolve_by_title).
+TITLE_STOPWORDS = {"the", "a", "an", "of", "for", "and", "with", "to", "in"}
+TITLE_QUALIFIER_PHRASES = [
+    "early transcendentals",
+    "with support",
+    "honors",
+    "lecture",
+    "laboratory",
+]
+# The individual words making up TITLE_QUALIFIER_PHRASES (minus stopwords
+# like "with"). Used to tell a genuine qualifier variant (same course, e.g.
+# '... with Support') apart from a genuine subject/track difference (e.g.
+# 'Business Calculus I' vs 'Analytic Geometry and Calculus I') when breaking
+# ties in resolve_by_title.
+TITLE_QUALIFIER_WORDS = {"early", "transcendentals", "support", "honors", "lecture", "laboratory"}
+TITLE_PAREN_RE = re.compile(r"\([^)]*\)")
+TITLE_NONWORD_RE = re.compile(r"[^a-z0-9\s]")
+TITLE_WS_RE = re.compile(r"\s+")
 
 # Mirrors server/controllers/CanonicalData.js exactly — keep in sync.
 GE_AREAS = [
@@ -123,8 +150,14 @@ def make_group_id(label_seen, idx, used):
 
 def norm_number(raw):
     """Uppercase, strip spaces, strip leading zeros, keep any letter suffix.
-    '007A'->'7A', '044'->'44', '1A'->'1A'."""
+    '007A'->'7A', '044'->'44', '1A'->'1A'. Also strips leading/trailing
+    non-alphanumeric artifacts (dashes, dots, stray spaces) BEFORE the
+    zero-stripping regex runs, so malformed assist_courses numbers like
+    '-06' or ' 007A ' normalize the same as clean extracted numbers ('6',
+    '7A'). Applied identically to both the assist_courses index keys and
+    the extracted course numbers so they meet in the middle."""
     s = str(raw or "").strip().upper().replace(" ", "")
+    s = NUMBER_EDGE_RE.sub("", s)
     m = NUMBER_RE.match(s)
     if not m:
         return s
@@ -145,25 +178,87 @@ def normalize_ge_area(raw):
     return "local_pattern"
 
 
+def _title_tokens(raw, strip_qualifiers):
+    """Lowercase, drop parentheticals (e.g. '(formerly MATH-04A)'), strip
+    punctuation, collapse whitespace, drop stopwords. When strip_qualifiers
+    is True, also drop trailing-qualifier phrases (early transcendentals,
+    with support, honors, lecture, laboratory) so e.g. 'Calculus I: Early
+    Transcendentals' compares equal to 'Calculus I'."""
+    s = (raw or "").lower()
+    s = TITLE_PAREN_RE.sub(" ", s)
+    s = TITLE_NONWORD_RE.sub(" ", s)
+    s = TITLE_WS_RE.sub(" ", s).strip()
+    if strip_qualifiers:
+        for phrase in TITLE_QUALIFIER_PHRASES:
+            s = re.sub(r"\b" + re.escape(phrase) + r"\b", " ", s)
+        s = TITLE_WS_RE.sub(" ", s).strip()
+    return [t for t in s.split() if t and t not in TITLE_STOPWORDS]
+
+
+def normalize_title_tokens(raw):
+    """Tokens used for the primary strong-match test (qualifiers dropped)."""
+    return _title_tokens(raw, strip_qualifiers=True)
+
+
+def normalize_title_tokens_raw(raw):
+    """Tokens with qualifier phrases (support/honors/etc) kept — used only to
+    break ties between candidates that collapse to the same qualifier-
+    stripped tokens (e.g. a course and its 'with Support' co-requisite
+    variant), by preferring whichever candidate is literally closer to the
+    extracted title."""
+    return _title_tokens(raw, strip_qualifiers=False)
+
+
+def is_strong_title_match(extracted_tokens, candidate_tokens):
+    """Conservative strong-match test: token-set Jaccard >= 0.6, OR one
+    token set is a superset of the other (e.g. extracted 'Calculus I' ⊆
+    assist 'Analytic Geometry and Calculus I'). A single shared token is
+    never enough UNLESS the two titles are otherwise identical — this is
+    what keeps a lone generic word like 'programming' from linking two
+    unrelated courses."""
+    e, c = set(extracted_tokens), set(candidate_tokens)
+    if not e or not c:
+        return False
+    inter = e & c
+    if not inter:
+        return False
+    if len(inter) == 1 and e != c:
+        return False
+    union = e | c
+    jaccard = len(inter) / len(union)
+    superset = e.issubset(c) or c.issubset(e)
+    return jaccard >= 0.6 or superset
+
+
 # ── course resolution ───────────────────────────────────────────────────────
 
 def build_course_index(db, cc_ids):
+    """Builds the (cc_id, prefix, norm_number) -> course_id index (sending
+    side) plus a per-college title index used by the title fallback:
+    {cc_id: [{course_id, prefix, number, title, tokens}]}."""
     cursor = db["assist_courses"].find(
         {"side": "sending", "community_college_id": {"$in": list(cc_ids)}},
-        {"community_college_id": 1, "course_id": 1, "prefix": 1, "number": 1},
+        {"community_college_id": 1, "course_id": 1, "prefix": 1, "number": 1, "title": 1},
     )
-    index, collisions = {}, 0
+    index, title_index, collisions = {}, {}, 0
     for row in cursor:
-        key = (
-            row.get("community_college_id"),
-            str(row.get("prefix") or "").strip().upper(),
-            norm_number(row.get("number")),
-        )
-        if key in index and index[key] != row.get("course_id"):
+        cc_id = row.get("community_college_id")
+        prefix = str(row.get("prefix") or "").strip().upper()
+        course_id = row.get("course_id")
+        key = (cc_id, prefix, norm_number(row.get("number")))
+        if key in index and index[key] != course_id:
             collisions += 1
-            continue
-        index.setdefault(key, row.get("course_id"))
-    return index, collisions
+        else:
+            index.setdefault(key, course_id)
+        title = row.get("title")
+        if title:
+            title_index.setdefault(cc_id, []).append({
+                "course_id": course_id,
+                "prefix": prefix,
+                "title": title,
+                "tokens": normalize_title_tokens(title),
+            })
+    return index, title_index, collisions
 
 
 def resolve_course(index, cc_id, prefix, number):
@@ -180,15 +275,104 @@ def resolve_course(index, cc_id, prefix, number):
     return None
 
 
+def _strong_title_candidates(pool, e_tokens):
+    return [entry for entry in pool if is_strong_title_match(e_tokens, entry["tokens"])]
+
+
+def resolve_by_title(title_index, cc_id, prefix, title):
+    """Conservative title-based fallback for a course whose number didn't
+    resolve (e.g. catalog uses California Common Course Numbering — 'MATH
+    C2210' — while assist_courses still has the old number 'MATH 30').
+    Prefers same-prefix candidates, falling back to any prefix in the
+    college (calculus is often cross-listed). Returns
+    (course_id_or_None, matched_title_or_None); None means either no strong
+    match or a genuine, unresolved ambiguity between >=2 distinct courses —
+    both are intentionally left UNRESOLVED rather than guessed."""
+    entries = title_index.get(cc_id) or []
+    if not entries:
+        return None, None
+    e_tokens = normalize_title_tokens(title)
+    if not e_tokens:
+        return None, None
+    prefix = str(prefix or "").strip().upper()
+
+    same_prefix_pool = [entry for entry in entries if entry["prefix"] == prefix]
+    candidates = _strong_title_candidates(same_prefix_pool, e_tokens) if same_prefix_pool else []
+    if not candidates:
+        candidates = _strong_title_candidates(entries, e_tokens)
+    if not candidates:
+        return None, None
+
+    by_course_id = {}
+    for entry in candidates:
+        by_course_id.setdefault(entry["course_id"], entry)
+    if len(by_course_id) == 1:
+        (entry,) = by_course_id.values()
+        return entry["course_id"], entry["title"]
+
+    # Multiple distinct courses matched strongly. This happens two ways:
+    #  (a) a coarse (jaccard>=0.6) tie between adjacent sequence courses
+    #      whose only difference is a level/roman-numeral — e.g. extracted
+    #      'Java Programming - Level 1' also weakly overlaps '... Level 2'
+    #      (jaccard exactly 0.6). If exactly one tied candidate is a literal
+    #      EXACT match (identical qualifier-preserving raw tokens), that one
+    #      is unambiguously right regardless of what else weakly matched —
+    #      resolve to it immediately.
+    e_raw = set(normalize_title_tokens_raw(title))
+    exact = [entry for entry in by_course_id.values() if set(normalize_title_tokens_raw(entry["title"])) == e_raw]
+    if len(exact) == 1:
+        return exact[0]["course_id"], exact[0]["title"]
+    if len(exact) > 1:
+        return None, None  # duplicate identical titles under different course_ids — genuinely ambiguous
+
+    #  (b) a college has both a base course and a qualifier variant (e.g.
+    #      'Analytic Geometry and Calculus I' and '... with Support') that
+    #      collapse to the same qualifier-stripped tokens. This is safe to
+    #      break a tie on ONLY when every tied candidate is the same
+    #      underlying course modulo a recognized qualifier — same CORE
+    #      (qualifier words removed) tokens. If the tied candidates' cores
+    #      differ at all — e.g. 'Business Calculus I' vs 'Analytic Geometry
+    #      and Calculus I', both of which are (wrongly) a superset of bare
+    #      extracted tokens {calculus, i} — that's a genuine subject/track
+    #      difference, not a qualifier variant, and guessing between them
+    #      risks linking the wrong course. Stay unresolved in that case.
+    cores = {}
+    for entry in by_course_id.values():
+        c_raw = set(normalize_title_tokens_raw(entry["title"]))
+        core = frozenset(c_raw - TITLE_QUALIFIER_WORDS)
+        cores.setdefault(core, []).append(entry)
+    if len(cores) != 1:
+        return None, None
+
+    # All tied candidates share one core — the only disagreement is which
+    # qualifier words (support/honors/lecture/laboratory/early
+    # transcendentals) they carry. Pick whichever is literally closest to
+    # the extracted title's own qualifier signal (smallest symmetric token
+    # difference against qualifier-preserving tokens on both sides).
+    # Resolve only if exactly one candidate is a strict closest match; a
+    # real tie stays unresolved.
+    scored = []
+    for entry in by_course_id.values():
+        c_raw = set(normalize_title_tokens_raw(entry["title"]))
+        distance = len(c_raw - e_raw) + len(e_raw - c_raw)
+        scored.append((distance, entry))
+    scored.sort(key=lambda pair: pair[0])
+    if len(scored) >= 2 and scored[0][0] == scored[1][0]:
+        return None, None
+    best = scored[0][1]
+    return best["course_id"], best["title"]
+
+
 # ── group transform ─────────────────────────────────────────────────────────
 
-def transform_group(mg, cc_id, index, confidence, used_gids, idx):
-    """Returns (group_doc_or_None, considered, resolved, unresolved_entries).
-    considered/resolved are course-resolution counts (0 for ge_area/electives,
-    which never attempt resolution). group_doc is None when a non-ge_area,
-    non-electives group ends with zero receivers (dropped rather than emitted
-    invalid); unresolved_entries is still returned so the caller can report
-    it even though it isn't embedded in any emitted group."""
+def transform_group(mg, cc_id, index, title_index, confidence, used_gids, idx):
+    """Returns (group_doc_or_None, considered, resolved_by_number,
+    resolved_by_title, unresolved_entries, title_match_samples).
+    considered/resolved counts are 0 for ge_area/electives, which never
+    attempt resolution. group_doc is None when a non-ge_area, non-electives
+    group ends with zero receivers (dropped rather than emitted invalid);
+    unresolved_entries is still returned so the caller can report it even
+    though it isn't embedded in any emitted group."""
     label_seen = mg.get("label_seen") or ""
     rule = mg.get("rule")
     if rule not in MAJOR_GROUP_RULES:
@@ -212,21 +396,33 @@ def transform_group(mg, cc_id, index, confidence, used_gids, idx):
             "unit_advisement": mg.get("units_min"),
             "receivers": [],
         }]
-        return group, 0, 0, []
+        return group, 0, 0, 0, [], []
 
     if rule == "electives":
         group = dict(common)
         group["units_fill"] = True
-        return group, 0, 0, []
+        return group, 0, 0, 0, [], []
 
     courses = mg.get("courses") or []
-    receivers, unresolved_entries, resolved = [], [], 0
+    receivers, unresolved_entries, title_match_samples = [], [], []
+    resolved_by_number = resolved_by_title = 0
     for c in courses:
-        cid = resolve_course(index, cc_id, c.get("prefix"), c.get("number"))
+        prefix, number, title_seen = c.get("prefix"), c.get("number"), c.get("title_seen")
+        cid = resolve_course(index, cc_id, prefix, number)
+        matched_by_title = False
+        if cid is None:
+            cid, matched_title = resolve_by_title(title_index, cc_id, prefix, title_seen)
+            if cid is not None:
+                matched_by_title = True
+                title_match_samples.append({
+                    "extracted": title_seen,
+                    "matched": matched_title,
+                    "course_id": cid,
+                })
         if cid is None:
             entry = {
-                "course_code_seen": f"{(c.get('prefix') or '').strip()} {(c.get('number') or '').strip()}".strip(),
-                "title_seen": c.get("title_seen"),
+                "course_code_seen": f"{(prefix or '').strip()} {(number or '').strip()}".strip(),
+                "title_seen": title_seen,
                 "units_seen": c.get("units_seen"),
             }
             common["unresolved_courses_seen"].append(entry)
@@ -244,11 +440,14 @@ def transform_group(mg, cc_id, index, confidence, used_gids, idx):
             "options_conjunction": "and",
             "hash_id": None,
         })
-        resolved += 1
+        if matched_by_title:
+            resolved_by_title += 1
+        else:
+            resolved_by_number += 1
 
     considered = len(courses)
     if not receivers:
-        return None, considered, resolved, unresolved_entries
+        return None, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples
 
     if rule == "all":
         section = {"section_advisement": None, "unit_advisement": None, "receivers": receivers}
@@ -259,7 +458,7 @@ def transform_group(mg, cc_id, index, confidence, used_gids, idx):
 
     group = dict(common)
     group["sections"] = [section]
-    return group, considered, resolved, unresolved_entries
+    return group, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples
 
 
 # ── internal shape assertions (mirror validateAsDegree/validateAsDegreeTemplate) ──
@@ -519,16 +718,19 @@ def build_template_rows(templates, source, now, known_concepts):
 
 # ── degree transform (whole extraction) ─────────────────────────────────────
 
-def transform_all(extraction, course_index, source, now, ref_by_degree_type, known_college_ids, known_template_ids):
+def transform_all(extraction, course_index, title_index, source, now, ref_by_degree_type, known_college_ids, known_template_ids):
     docs = []
     stats = {
         "by_type": Counter(),
         "examined_by_type": Counter(),
         "resolved": 0,
+        "resolved_by_number": 0,
+        "resolved_by_title": 0,
         "considered": 0,
         "unresolved_samples": [],       # [(college_name, cc_id, degree_type, [entries])]
         "flagged_heavy": [],            # [{college_name, cc_id, degree_type, unresolved, considered}]
         "skipped_zero_groups": [],      # [(college_name, cc_id, degree_type)]
+        "title_match_samples": [],      # [{college_name, cc_id, extracted, matched, course_id}]
     }
     for college in extraction:
         cc_id = college["community_college_id"]
@@ -551,15 +753,23 @@ def transform_all(extraction, course_index, source, now, ref_by_degree_type, kno
             degree_unresolved_samples = []
 
             for idx, mg in enumerate(deg.get("major_groups") or []):
-                group_doc, considered, resolved, unresolved_entries = transform_group(
-                    mg, cc_id, course_index, confidence, used_gids, idx
+                group_doc, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples = transform_group(
+                    mg, cc_id, course_index, title_index, confidence, used_gids, idx
                 )
                 degree_considered += considered
-                degree_resolved += resolved
+                degree_resolved += resolved_by_number + resolved_by_title
                 stats["considered"] += considered
-                stats["resolved"] += resolved
+                stats["resolved"] += resolved_by_number + resolved_by_title
+                stats["resolved_by_number"] += resolved_by_number
+                stats["resolved_by_title"] += resolved_by_title
                 if unresolved_entries:
                     degree_unresolved_samples.extend(unresolved_entries)
+                for sample in title_match_samples:
+                    stats["title_match_samples"].append({
+                        "college_name": college_name, "cc_id": cc_id, "degree_type": degree_type,
+                        "extracted": sample["extracted"], "matched": sample["matched"],
+                        "course_id": sample["course_id"],
+                    })
                 if group_doc is not None:
                     requirement_groups.append(group_doc)
 
@@ -655,9 +865,24 @@ def print_report(template_rows, docs, stats, dry_run):
             print(f"    {name} ({cc_id}) {dtype}")
 
     considered, resolved = stats["considered"], stats["resolved"]
+    resolved_by_number, resolved_by_title = stats["resolved_by_number"], stats["resolved_by_title"]
     unresolved = considered - resolved
     rate = (resolved / considered * 100) if considered else 100.0
     print(f"Courses: {resolved} resolved / {unresolved} unresolved of {considered} considered ({rate:.1f}% resolved)")
+    print(f"  resolved by number: {resolved_by_number}")
+    print(f"  resolved by title fallback: {resolved_by_title}")
+    print(f"  still unresolved: {unresolved}")
+
+    if stats["title_match_samples"]:
+        samples = stats["title_match_samples"]
+        cap = 20
+        print(f"Title-match sample ({len(samples)} total title resolutions, showing up to {cap}):")
+        for s in samples[:cap]:
+            print(f"  {s['college_name']} ({s['cc_id']}) {s['degree_type']}: "
+                  f"extracted \"{s['extracted']}\" -> assist \"{s['matched']}\" (course_id {s['course_id']})")
+        if len(samples) > cap:
+            print(f"  ... and {len(samples) - cap} more title matches")
+
     if stats["unresolved_samples"]:
         cap_colleges, cap_courses = 5, 5
         shown = stats["unresolved_samples"][:cap_colleges]
@@ -734,9 +959,9 @@ def main():
     else:
         print("TARGET_MONGO_URI not set; skipping course index build (dry run, no resolution).")
 
-    course_index, known_concepts, known_college_ids = {}, None, None
+    course_index, title_index, known_concepts, known_college_ids = {}, {}, None, None
     if db is not None:
-        course_index, collisions = build_course_index(db, cc_ids_in_extraction)
+        course_index, title_index, collisions = build_course_index(db, cc_ids_in_extraction)
         print(f"Course index: {len(course_index)} sending-side keys across {len(cc_ids_in_extraction)} colleges"
               f"{f' ({collisions} key collisions kept first-seen)' if collisions else ''}.")
         known_concepts = {
@@ -755,7 +980,7 @@ def main():
     known_template_ids = {r["_id"] for r in template_rows}
 
     docs, stats = transform_all(
-        extraction, course_index, extraction_source, now, ref_by_degree_type,
+        extraction, course_index, title_index, extraction_source, now, ref_by_degree_type,
         known_college_ids, known_template_ids,
     )
 
