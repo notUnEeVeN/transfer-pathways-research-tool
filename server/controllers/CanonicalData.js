@@ -125,6 +125,7 @@ async function validateAsDegreeTemplate(db, canonical) {
   const known = new Set(conceptRows.map((r) => String(r.slug)));
   const seenIds = new Set();
   for (const g of canonical.groups) {
+    if (!g || typeof g !== 'object') return 'each group must be an object';
     const gid = String(g.group_id || '');
     if (!CONCEPT_SLUG_RE.test(gid)) return 'each group needs a group_id matching ^[a-z0-9_]+$';
     if (seenIds.has(gid)) return `duplicate group_id: ${gid}`;
@@ -141,6 +142,7 @@ async function validateAsDegreeTemplate(db, canonical) {
       return `group ${gid}: sections must be a non-empty array`;
     }
     for (const s of g.sections) {
+      if (!s || typeof s !== 'object') return `group ${gid}: each section must be an object`;
       for (const key of ['section_advisement', 'unit_advisement']) {
         if (s[key] != null && (!Number.isFinite(s[key]) || s[key] <= 0)) {
           return `group ${gid}: ${key} must be null or a positive number`;

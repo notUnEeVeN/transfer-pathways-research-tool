@@ -312,6 +312,24 @@ describe('as_degree_template kind', () => {
     negative.groups[0].sections[0].section_advisement = 0;
     expect((await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body: negative }))).statusCode).toBe(400);
   });
+
+  it('400s (not 500s) a null entry in groups', async () => {
+    await seedConcepts();
+    const body = template();
+    body.groups.push(null);
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/each group must be an object/);
+  });
+
+  it('400s (not 500s) a null entry in a group\'s sections', async () => {
+    await seedConcepts();
+    const body = template();
+    body.groups[0].sections.push(null);
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/each section must be an object/);
+  });
 });
 
 describe('prerequisiteGraph endpoint', () => {
