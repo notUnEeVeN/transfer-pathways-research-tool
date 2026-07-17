@@ -95,6 +95,8 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
     community_college_id: doc.community_college_id,
     college_id: doc.college_id,
     college_name: collegeName || null,
+    degree_type: doc.degree_type ?? null,
+    major_slug: doc.major_slug ?? null,
     status: doc.status,
     degree_title_seen: doc.degree_title_seen || null,
     catalog_url: doc.catalog_url || null,
@@ -133,27 +135,33 @@ async function asDegreeOverview(db) {
 }
 
 async function asDegreeDetail(db, collegeId) {
-  const doc = await db.collection('curated_requirements')
-    .findOne({ kind: 'as_degree', college_id: String(collegeId) });
-  if (!doc) return null;
-  const [template, inst, courses] = await Promise.all([
-    db.collection('curated_requirements')
-      .findOne({ _id: doc.template_ref || TEMPLATE_FALLBACK_ID }),
-    db.collection('assist_institutions')
-      .findOne({ _id: doc.college_id }, { projection: { name: 1 } }),
-    loadCourses(db, [doc]),
-  ]);
-  const coursesById = Object.fromEntries(courses.map((c) => [`cc:${c.course_id}`, {
-    code: `${c.prefix} ${c.number}`,
-    title: c.title ?? null,
-    units: c.units ?? null,
-    concept: c.concept ?? null,
-  }]));
+  const docs = await db.collection('curated_requirements')
+    .find({ kind: 'as_degree', college_id: String(collegeId) }).toArray();
+  if (!docs.length) return null;
+  const inst = await db.collection('assist_institutions')
+    .findOne({ _id: String(collegeId) }, { projection: { name: 1 } });
+  const degrees = await Promise.all(docs.map(async (doc) => {
+    const [template, courses] = await Promise.all([
+      db.collection('curated_requirements')
+        .findOne({ _id: doc.template_ref || TEMPLATE_FALLBACK_ID }),
+      loadCourses(db, [doc]),
+    ]);
+    const coursesById = Object.fromEntries(courses.map((c) => [`cc:${c.course_id}`, {
+      code: `${c.prefix} ${c.number}`,
+      title: c.title ?? null,
+      units: c.units ?? null,
+      concept: c.concept ?? null,
+    }]));
+    return {
+      doc,
+      courses_by_id: coursesById,
+      deviations: computeDeviations(doc, template),
+      degree_type: doc.degree_type ?? null,
+    };
+  }));
   return {
-    doc,
     college_name: inst ? inst.name : null,
-    courses_by_id: coursesById,
-    deviations: computeDeviations(doc, template),
+    degrees,
   };
 }
 

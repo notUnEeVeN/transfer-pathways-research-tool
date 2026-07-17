@@ -48,13 +48,22 @@ function parseInstitutionId(value, expectedKind = null) {
 const CONCEPT_SLUG_RE = /^[a-z0-9_]+$/;
 const CONCEPT_DISCIPLINES = ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'stats', 'other'];
 
-// Title 5 §55063 local-GE areas for associate degrees (spec §1A).
-const GE_AREAS = ['natural_sciences', 'social_behavioral', 'humanities', 'language_rationality', 'math_competency'];
+// Title 5 §55063 local-GE areas for associate degrees, plus pattern-level GE
+// identifiers used when a requirement is satisfied by a whole GE pattern
+// (e.g. CalGETC, IGETC, CSU GE) rather than one Title 5 area (spec §1A).
+const GE_AREAS = [
+  'natural_sciences', 'social_behavioral', 'humanities', 'language_rationality', 'math_competency',
+  'local_pattern', 'calgetc', 'igetc', 'csu_ge',
+];
 
 // as_degree: status/source/unit-system vocab (spec §1B).
 const AS_DEGREE_STATUSES = ['found', 'none_found', 'ambiguous'];
 const AS_DEGREE_SOURCES = ['extracted', 'template_default', 'curated'];
 const UNIT_SYSTEMS = ['semester', 'quarter'];
+// as_degree: a college may hold up to one row per degree type; the row id's
+// slug segment is the degree_type (as_degree:<cc>:<degree_type>), decoupled
+// from major_slug (which stays 'cs' for all v1 docs and is used for grouping).
+const AS_DEGREE_TYPES = ['local_cs_as', 'local_computing', 'ast'];
 
 async function validatePrereqConcept(db, canonical) {
   const slug = String(canonical.slug || '');
@@ -177,13 +186,19 @@ async function validateAsDegreeTemplate(db, canonical) {
 // engines can evaluate the doc with no translation layer.
 async function validateAsDegree(db, canonical) {
   const idMatch = /^(\d+):([a-z0-9_]+)$/.exec(String(canonical.legacy_id || ''));
-  if (!idMatch) return 'row id must look like <community_college_id>:<major_slug>, e.g. 110:cs';
+  if (!idMatch) return 'row id must look like <community_college_id>:<degree_type>, e.g. 110:local_cs_as';
   const ccId = Number(idMatch[1]);
   if (canonical.community_college_id !== ccId) {
     return 'community_college_id must match the numeric part of the row id';
   }
   if (canonical.college_id !== `cc:${ccId}`) return `college_id must be 'cc:${ccId}'`;
-  if (canonical.major_slug !== idMatch[2]) return 'major_slug must match the slug part of the row id';
+  if (!AS_DEGREE_TYPES.includes(canonical.degree_type)) {
+    return `degree_type must be one of ${AS_DEGREE_TYPES.join(', ')}`;
+  }
+  if (canonical.degree_type !== idMatch[2]) return 'degree_type must match the slug part of the row id';
+  if (typeof canonical.major_slug !== 'string' || !CONCEPT_SLUG_RE.test(canonical.major_slug)) {
+    return 'major_slug must be a non-empty slug matching ^[a-z0-9_]+$';
+  }
   const inst = await db.collection(COLLECTIONS.institutions)
     .findOne({ _id: `cc:${ccId}` }, { projection: { kind: 1 } });
   if (!inst || inst.kind !== 'community_college') return `no community college with id cc:${ccId}`;

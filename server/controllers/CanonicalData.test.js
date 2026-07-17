@@ -330,6 +330,14 @@ describe('as_degree_template kind', () => {
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toMatch(/each section must be an object/);
   });
+
+  it('accepts a pattern-level ge_area like calgetc', async () => {
+    await seedConcepts();
+    const body = template();
+    body.groups[1].ge_area = 'calgetc';
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree_template' }, body }));
+    expect(res.statusCode).toBe(200);
+  });
 });
 
 describe('as_degree kind', () => {
@@ -343,9 +351,10 @@ describe('as_degree kind', () => {
   };
 
   const degreeDoc = () => ({
-    _id: 'as_degree:110:cs',
+    _id: 'as_degree:110:local_cs_as',
     community_college_id: 110,
     college_id: 'cc:110',
+    degree_type: 'local_cs_as',
     major_slug: 'cs',
     template_ref: 'as_degree_template:cs',
     status: 'found',
@@ -385,7 +394,7 @@ describe('as_degree kind', () => {
     await seedForDegree();
     const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: degreeDoc() }));
     expect(res.statusCode).toBe(200);
-    expect(res.body.id).toBe('as_degree:110:cs');
+    expect(res.body.id).toBe('as_degree:110:local_cs_as');
   });
 
   it('stamps group-level curated_by on curated groups only', async () => {
@@ -394,10 +403,51 @@ describe('as_degree kind', () => {
     body.requirement_groups[0].source = 'curated';
     body.requirement_groups[0].confidence = null;
     await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
-    const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:cs' });
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:local_cs_as' });
     expect(stored.requirement_groups[0].curated_by).toBe('curator-1');
     expect(stored.requirement_groups[0].curated_at).toBeInstanceOf(Date);
     expect(stored.requirement_groups[1].curated_by).toBe(null);
+  });
+
+  it('allows two degrees to coexist for the same college', async () => {
+    await seedForDegree();
+    const first = degreeDoc();
+    const second = { ...degreeDoc(), _id: 'as_degree:110:ast', degree_type: 'ast' };
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: first }))).statusCode).toBe(200);
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: second }))).statusCode).toBe(200);
+    const rows = await db.collection('curated_requirements')
+      .find({ kind: 'as_degree', college_id: 'cc:110' }).toArray();
+    expect(rows).toHaveLength(2);
+    expect(rows.map((r) => r.degree_type).sort()).toEqual(['ast', 'local_cs_as']);
+  });
+
+  it('rejects a degree_type that does not match the id slug', async () => {
+    await seedForDegree();
+    const body = degreeDoc();
+    body.degree_type = 'ast'; // id slug is still local_cs_as
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/degree_type must match the slug part of the row id/);
+  });
+
+  it('rejects an unknown degree_type', async () => {
+    await seedForDegree();
+    const body = degreeDoc();
+    body._id = 'as_degree:110:bogus_type';
+    body.degree_type = 'bogus_type';
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/degree_type must be one of/);
+  });
+
+  it('accepts a major_slug that differs from the id slug', async () => {
+    await seedForDegree();
+    const body = { ...degreeDoc(), _id: 'as_degree:110:ast', degree_type: 'ast', major_slug: 'cs' };
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
+    expect(res.statusCode).toBe(200);
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:ast' });
+    expect(stored.major_slug).toBe('cs');
+    expect(stored.degree_type).toBe('ast');
   });
 
   it('rejects mismatched ids, unknown college, string course_ids, and bad mirrors', async () => {
@@ -407,7 +457,7 @@ describe('as_degree kind', () => {
     expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: wrongCc }))).statusCode).toBe(400);
 
     const noCollege = degreeDoc();
-    noCollege._id = 'as_degree:999:cs';
+    noCollege._id = 'as_degree:999:local_cs_as';
     noCollege.community_college_id = 999;
     noCollege.college_id = 'cc:999';
     expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: noCollege }))).statusCode).toBe(400);
@@ -435,8 +485,8 @@ describe('as_degree kind', () => {
   it('accepts none_found rows without a body and rejects them with one', async () => {
     await seedForDegree();
     const none = {
-      _id: 'as_degree:110:cs', community_college_id: 110, college_id: 'cc:110',
-      major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
+      _id: 'as_degree:110:local_cs_as', community_college_id: 110, college_id: 'cc:110',
+      degree_type: 'local_cs_as', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
       catalog_url: 'https://catalog.hancockcollege.edu/programs',
       catalog_year: '2025-2026',
     };
@@ -454,8 +504,8 @@ describe('as_degree kind', () => {
     // and `7 || []` both evaluate to the truthy non-iterable value itself.
     await seedForDegree();
     const base = {
-      _id: 'as_degree:110:cs', community_college_id: 110, college_id: 'cc:110',
-      major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
+      _id: 'as_degree:110:local_cs_as', community_college_id: 110, college_id: 'cc:110',
+      degree_type: 'local_cs_as', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
       catalog_url: 'https://catalog.hancockcollege.edu/programs',
       catalog_year: '2025-2026',
     };
