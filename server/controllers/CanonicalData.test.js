@@ -332,6 +332,147 @@ describe('as_degree_template kind', () => {
   });
 });
 
+describe('as_degree kind', () => {
+  const seedForDegree = async () => {
+    await db.collection('assist_institutions').insertOne({
+      _id: 'cc:110', kind: 'community_college', source_id: 110, name: 'Allan Hancock College',
+    });
+    await db.collection('curated_requirements').insertOne({
+      _id: 'as_degree_template:cs', kind: 'as_degree_template', slug: 'cs', groups: [],
+    });
+  };
+
+  const degreeDoc = () => ({
+    _id: 'as_degree:110:cs',
+    community_college_id: 110,
+    college_id: 'cc:110',
+    major_slug: 'cs',
+    template_ref: 'as_degree_template:cs',
+    status: 'found',
+    degree_title_seen: 'Computer Science, A.S.',
+    catalog_url: 'https://catalog.hancockcollege.edu/cs-as',
+    catalog_year: '2025-2026',
+    unit_system: 'semester',
+    total_units: 60,
+    verification: { verified: false, verified_by: null, verified_at: null, notes: null },
+    requirement_groups: [
+      {
+        is_required: true, group_conjunction: 'And',
+        group_advisement: null, group_unit_advisement: null,
+        group_min_distinct_sections: null, group_max_distinct_sections: null,
+        group_section_min_courses: null,
+        sections: [{
+          section_advisement: null, unit_advisement: null,
+          receivers: [
+            { receiving: null, articulation_status: 'articulated', not_articulated_reason: null,
+              options: [{ course_ids: [101], course_conjunction: 'and', course_keys: ['cc:101'] }],
+              options_conjunction: 'and', hash_id: null },
+            { receiving: null, articulation_status: 'articulated', not_articulated_reason: null,
+              options: [{ course_ids: [102], course_conjunction: 'and', course_keys: ['cc:102'] }],
+              options_conjunction: 'and', hash_id: null },
+          ],
+        }],
+        group_id: 'core_programming', template_group: 'core_programming',
+        label_seen: 'Required Core', source: 'extracted', confidence: 0.93,
+        curated_by: null, ge_area: null, units_fill: false, unresolved_courses_seen: [],
+      },
+      { group_id: 'ge_humanities', template_group: 'ge_humanities',
+        source: 'template_default', confidence: null, curated_by: null },
+    ],
+  });
+
+  it('accepts a well-formed found doc', async () => {
+    await seedForDegree();
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: degreeDoc() }));
+    expect(res.statusCode).toBe(200);
+    expect(res.body.id).toBe('as_degree:110:cs');
+  });
+
+  it('stamps group-level curated_by on curated groups only', async () => {
+    await seedForDegree();
+    const body = degreeDoc();
+    body.requirement_groups[0].source = 'curated';
+    body.requirement_groups[0].confidence = null;
+    await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:cs' });
+    expect(stored.requirement_groups[0].curated_by).toBe('curator-1');
+    expect(stored.requirement_groups[0].curated_at).toBeInstanceOf(Date);
+    expect(stored.requirement_groups[1].curated_by).toBe(null);
+  });
+
+  it('rejects mismatched ids, unknown college, string course_ids, and bad mirrors', async () => {
+    await seedForDegree();
+    const wrongCc = degreeDoc();
+    wrongCc.community_college_id = 111;
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: wrongCc }))).statusCode).toBe(400);
+
+    const noCollege = degreeDoc();
+    noCollege._id = 'as_degree:999:cs';
+    noCollege.community_college_id = 999;
+    noCollege.college_id = 'cc:999';
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: noCollege }))).statusCode).toBe(400);
+
+    const stringIds = degreeDoc();
+    stringIds.requirement_groups[0].sections[0].receivers[0].options[0].course_ids = ['cc:101'];
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: stringIds }))).statusCode).toBe(400);
+
+    const badMirror = degreeDoc();
+    badMirror.requirement_groups[0].sections[0].receivers[0].options[0].course_keys = ['cc:999'];
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: badMirror }))).statusCode).toBe(400);
+  });
+
+  it('rejects confidence on non-extracted groups and sections on template_default stubs', async () => {
+    await seedForDegree();
+    const conf = degreeDoc();
+    conf.requirement_groups[1].confidence = 0.5;
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: conf }))).statusCode).toBe(400);
+
+    const stub = degreeDoc();
+    stub.requirement_groups[1].sections = [{ receivers: [] }];
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: stub }))).statusCode).toBe(400);
+  });
+
+  it('accepts none_found rows without a body and rejects them with one', async () => {
+    await seedForDegree();
+    const none = {
+      _id: 'as_degree:110:cs', community_college_id: 110, college_id: 'cc:110',
+      major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
+      catalog_url: 'https://catalog.hancockcollege.edu/programs',
+      catalog_year: '2025-2026',
+    };
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: none }))).statusCode).toBe(200);
+    const withBody = { ...none, requirement_groups: [{ group_id: 'x' }] };
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: withBody }))).statusCode).toBe(400);
+  });
+
+  it('400s (not 500s) a null entry in requirement_groups, sections, receivers, and options', async () => {
+    await seedForDegree();
+    const nullGroup = degreeDoc();
+    nullGroup.requirement_groups.push(null);
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullGroup }))).statusCode).toBe(400);
+
+    const nullSection = degreeDoc();
+    nullSection.requirement_groups[0].sections.push(null);
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullSection }))).statusCode).toBe(400);
+
+    const nullReceiver = degreeDoc();
+    nullReceiver.requirement_groups[0].sections[0].receivers.push(null);
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullReceiver }))).statusCode).toBe(400);
+
+    const nullOption = degreeDoc();
+    nullOption.requirement_groups[0].sections[0].receivers[0].options.push(null);
+    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullOption }))).statusCode).toBe(400);
+  });
+
+  it('produces a body the golden eligibility engine evaluates unchanged', async () => {
+    // The point of the shared skeleton (spec §7): no translation layer.
+    const { isMajorArticulable } = cjs('../services/analysis/eligibility');
+    const m = { requirement_groups: degreeDoc().requirement_groups.filter((g) => g.sections) };
+    expect(isMajorArticulable(m, true)).toBe(true);
+    expect(isMajorArticulable(m, false)).toBe(true);
+  });
+});
+
 describe('prerequisiteGraph endpoint', () => {
   it('400s a malformed college_id', async () => {
     const res = await run(prerequisiteGraph, request({ query: { college_id: 'nope' } }));

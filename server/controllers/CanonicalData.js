@@ -50,6 +50,11 @@ const CONCEPT_DISCIPLINES = ['math', 'physics', 'chem', 'cs', 'bio', 'engr', 'st
 // Title 5 §55063 local-GE areas for associate degrees (spec §1A).
 const GE_AREAS = ['natural_sciences', 'social_behavioral', 'humanities', 'language_rationality', 'math_competency'];
 
+// as_degree: status/source/unit-system vocab (spec §1B).
+const AS_DEGREE_STATUSES = ['found', 'none_found', 'ambiguous'];
+const AS_DEGREE_SOURCES = ['extracted', 'template_default', 'curated'];
+const UNIT_SYSTEMS = ['semester', 'quarter'];
+
 async function validatePrereqConcept(db, canonical) {
   const slug = String(canonical.slug || '');
   if (!CONCEPT_SLUG_RE.test(slug)) return 'slug must match ^[a-z0-9_]+$';
@@ -161,6 +166,140 @@ async function validateAsDegreeTemplate(db, canonical) {
           if (!known.has(c)) return `group ${gid}: slot references unknown concept: ${c}`;
         }
       }
+    }
+  }
+  return null;
+}
+
+// as_degree: one college's local AS degree in the agreement skeleton
+// (spec §1B). Body fields mirror assist_agreements exactly so the golden
+// engines can evaluate the doc with no translation layer.
+async function validateAsDegree(db, canonical) {
+  const idMatch = /^(\d+):([a-z0-9_]+)$/.exec(String(canonical.legacy_id || ''));
+  if (!idMatch) return 'row id must look like <community_college_id>:<major_slug>, e.g. 110:cs';
+  const ccId = Number(idMatch[1]);
+  if (canonical.community_college_id !== ccId) {
+    return 'community_college_id must match the numeric part of the row id';
+  }
+  if (canonical.college_id !== `cc:${ccId}`) return `college_id must be 'cc:${ccId}'`;
+  if (canonical.major_slug !== idMatch[2]) return 'major_slug must match the slug part of the row id';
+  const inst = await db.collection(COLLECTIONS.institutions)
+    .findOne({ _id: `cc:${ccId}` }, { projection: { kind: 1 } });
+  if (!inst || inst.kind !== 'community_college') return `no community college with id cc:${ccId}`;
+  if (canonical.template_ref != null) {
+    const tpl = await db.collection(COLLECTIONS.requirements)
+      .findOne({ _id: canonical.template_ref, kind: 'as_degree_template' }, { projection: { _id: 1 } });
+    if (!tpl) return `template_ref not found: ${canonical.template_ref}`;
+  }
+  if (!AS_DEGREE_STATUSES.includes(canonical.status)) {
+    return `status must be one of ${AS_DEGREE_STATUSES.join(', ')}`;
+  }
+  if (canonical.verification != null && typeof canonical.verification !== 'object') {
+    return 'verification must be an object';
+  }
+  if (canonical.status !== 'found') {
+    if (canonical.requirement_groups != null
+        && (!Array.isArray(canonical.requirement_groups) || canonical.requirement_groups.length)) {
+      return `a ${canonical.status} row must not carry requirement_groups`;
+    }
+    return null;
+  }
+  if (typeof canonical.degree_title_seen !== 'string' || !canonical.degree_title_seen.trim()) {
+    return 'degree_title_seen is required on a found row';
+  }
+  if (typeof canonical.catalog_url !== 'string' || !/^https?:\/\//.test(canonical.catalog_url)) {
+    return 'catalog_url must be an http(s) URL';
+  }
+  if (typeof canonical.catalog_year !== 'string' || !canonical.catalog_year.trim()) {
+    return 'catalog_year is required on a found row';
+  }
+  if (!UNIT_SYSTEMS.includes(canonical.unit_system)) {
+    return `unit_system must be one of ${UNIT_SYSTEMS.join(', ')}`;
+  }
+  if (!Number.isFinite(canonical.total_units) || canonical.total_units <= 0) {
+    return 'total_units must be a positive number';
+  }
+  if (!Array.isArray(canonical.requirement_groups) || !canonical.requirement_groups.length) {
+    return 'requirement_groups must be a non-empty array on a found row';
+  }
+  const seenIds = new Set();
+  for (const g of canonical.requirement_groups) {
+    if (!g || typeof g !== 'object') return 'each group must be an object';
+    const gid = String(g.group_id || '');
+    if (!CONCEPT_SLUG_RE.test(gid)) return 'each group needs a group_id matching ^[a-z0-9_]+$';
+    if (seenIds.has(gid)) return `duplicate group_id: ${gid}`;
+    seenIds.add(gid);
+    if (g.template_group != null && g.template_group !== gid) {
+      return `group ${gid}: template_group must equal group_id or be null`;
+    }
+    if (!AS_DEGREE_SOURCES.includes(g.source)) {
+      return `group ${gid}: source must be one of ${AS_DEGREE_SOURCES.join(', ')}`;
+    }
+    if (g.source === 'extracted') {
+      if (!Number.isFinite(g.confidence) || g.confidence < 0 || g.confidence > 1) {
+        return `group ${gid}: an extracted group needs confidence in [0,1]`;
+      }
+    } else if (g.confidence != null) {
+      return `group ${gid}: confidence must be null unless source is extracted`;
+    }
+    if (g.ge_area != null && !GE_AREAS.includes(g.ge_area)) {
+      return `group ${gid}: ge_area must be one of ${GE_AREAS.join(', ')}`;
+    }
+    if (g.source === 'template_default') {
+      // A stub: the template's group renders in its place at read time.
+      if (g.template_group == null) return `group ${gid}: a template_default group needs template_group`;
+      if (Array.isArray(g.sections) && g.sections.length) {
+        return `group ${gid}: a template_default stub must not carry sections`;
+      }
+      continue;
+    }
+    if (g.units_fill === true) {
+      if (Array.isArray(g.sections) && g.sections.length) {
+        return `group ${gid}: a units_fill group must not have sections`;
+      }
+      continue;
+    }
+    if (!Array.isArray(g.sections) || !g.sections.length) {
+      return `group ${gid}: sections must be a non-empty array`;
+    }
+    for (const s of g.sections) {
+      if (!s || typeof s !== 'object') return `group ${gid}: each section must be an object`;
+      for (const key of ['section_advisement', 'unit_advisement']) {
+        if (s[key] != null && (!Number.isFinite(s[key]) || s[key] <= 0)) {
+          return `group ${gid}: ${key} must be null or a positive number`;
+        }
+      }
+      if (!Array.isArray(s.receivers)) return `group ${gid}: each section needs a receivers array`;
+      if (g.ge_area == null && !s.receivers.length) {
+        return `group ${gid}: a non-ge_area section must list at least one receiver`;
+      }
+      for (const r of s.receivers) {
+        if (!r || typeof r !== 'object') return `group ${gid}: each receiver must be an object`;
+        if (r.receiving != null) return `group ${gid}: receiving must be null on as_degree receivers`;
+        if (r.articulation_status !== 'articulated') {
+          return `group ${gid}: articulation_status must be 'articulated'`;
+        }
+        if (!Array.isArray(r.options) || !r.options.length) {
+          return `group ${gid}: each receiver needs at least one option`;
+        }
+        for (const o of r.options) {
+          if (!o || typeof o !== 'object') return `group ${gid}: each option must be an object`;
+          if (!Array.isArray(o.course_ids) || !o.course_ids.length
+              || o.course_ids.some((id) => !Number.isInteger(id))) {
+            return `group ${gid}: option course_ids must be a non-empty array of Numbers`;
+          }
+          const keys = o.course_keys;
+          if (!Array.isArray(keys) || keys.length !== o.course_ids.length
+              || keys.some((k, i) => k !== `cc:${o.course_ids[i]}`)) {
+            return `group ${gid}: course_keys must mirror course_ids as 'cc:<n>'`;
+          }
+        }
+      }
+    }
+    const unresolved = g.unresolved_courses_seen;
+    if (unresolved != null && (!Array.isArray(unresolved)
+        || unresolved.some((u) => typeof (u && u.course_code_seen) !== 'string'))) {
+      return `group ${gid}: unresolved_courses_seen must be an array of {course_code_seen, ...}`;
     }
   }
   return null;
@@ -303,6 +442,18 @@ exports.putRequirement = asyncHandler(async (req, res) => {
   if (kind === 'as_degree_template') {
     const invalid = await validateAsDegreeTemplate(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
+  }
+  if (kind === 'as_degree') {
+    const invalid = await validateAsDegree(db, canonical);
+    if (invalid) return res.status(400).json({ error: invalid });
+    // Group-level curation stamp: the doc-level curated_by above records who
+    // last saved; group-level curated_by records who confirmed THIS group.
+    for (const g of canonical.requirement_groups || []) {
+      if (g.source === 'curated' && !g.curated_by) {
+        g.curated_by = req.user?.uid ?? null;
+        g.curated_at = new Date();
+      }
+    }
   }
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
