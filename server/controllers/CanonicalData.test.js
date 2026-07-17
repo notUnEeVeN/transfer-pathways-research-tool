@@ -532,3 +532,33 @@ describe('prerequisiteGraph endpoint', () => {
     expect(scoped.body.courses[0].key).toBe('cc:1');
   });
 });
+
+describe('as_degree delete guards', () => {
+  it('blocks deleting a template that as_degree rows reference', async () => {
+    await db.collection('curated_requirements').insertMany([
+      { _id: 'as_degree_template:cs', kind: 'as_degree_template', slug: 'cs' },
+      { _id: 'as_degree:110:cs', kind: 'as_degree', template_ref: 'as_degree_template:cs' },
+    ]);
+    const res = await run(deleteRequirement, request({ params: { kind: 'as_degree_template', id: 'cs' } }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/referenced by 1 as_degree/);
+  });
+
+  it('blocks deleting a concept referenced by a template slot', async () => {
+    await db.collection('curated_requirements').insertMany([
+      { _id: 'prereq_concept:cs_1', kind: 'prereq_concept', slug: 'cs_1', requires: [] },
+      { _id: 'as_degree_template:cs', kind: 'as_degree_template', slug: 'cs',
+        groups: [{ group_id: 'core', sections: [{ slots: [{ concepts: ['cs_1'] }] }] }] },
+    ]);
+    const res = await run(deleteRequirement, request({ params: { kind: 'prereq_concept', id: 'cs_1' } }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/template/);
+  });
+
+  it('allows deleting an unreferenced template', async () => {
+    await db.collection('curated_requirements').insertOne(
+      { _id: 'as_degree_template:old', kind: 'as_degree_template', slug: 'old' });
+    const res = await run(deleteRequirement, request({ params: { kind: 'as_degree_template', id: 'old' } }));
+    expect(res.statusCode).toBe(200);
+  });
+});

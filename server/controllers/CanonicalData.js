@@ -471,15 +471,26 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   const canonicalId = rawId.startsWith(prefix) ? rawId : `${prefix}${rawId}`;
   if (kind === 'prereq_concept') {
     const slug = canonicalId.slice(prefix.length);
-    const [dependents, mapped] = await Promise.all([
+    const [dependents, mapped, templated] = await Promise.all([
       req.app.locals.db.collection(COLLECTIONS.requirements)
         .countDocuments({ kind: 'prereq_concept', requires: slug }),
       req.app.locals.db.collection(COLLECTIONS.courses)
         .countDocuments({ concept: slug }),
+      req.app.locals.db.collection(COLLECTIONS.requirements)
+        .countDocuments({ kind: 'as_degree_template', 'groups.sections.slots.concepts': slug }),
     ]);
-    if (dependents || mapped) {
+    if (dependents || mapped || templated) {
       return res.status(400).json({
-        error: `concept is referenced by ${dependents} concept(s) and ${mapped} course(s); reassign them first`,
+        error: `concept is referenced by ${dependents} concept(s), ${mapped} course(s), and ${templated} degree template(s); reassign them first`,
+      });
+    }
+  }
+  if (kind === 'as_degree_template') {
+    const referencing = await req.app.locals.db.collection(COLLECTIONS.requirements)
+      .countDocuments({ kind: 'as_degree', template_ref: canonicalId });
+    if (referencing) {
+      return res.status(400).json({
+        error: `template is referenced by ${referencing} as_degree row(s); delete or repoint them first`,
       });
     }
   }
