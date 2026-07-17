@@ -445,23 +445,57 @@ describe('as_degree kind', () => {
     expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: withBody }))).statusCode).toBe(400);
   });
 
+  it('400s (not 500s) a truthy non-array requirement_groups on a none_found/ambiguous row', async () => {
+    // Regression guard: a naive `Array.isArray(x) && x.length` check lets a
+    // truthy non-array (e.g. {} or a number) sail through validation as
+    // "empty", and the dispatch's stamping loop
+    // `for (const g of canonical.requirement_groups || [])` then throws
+    // `TypeError: ... is not iterable` (an uncaught 500), since `{} || []`
+    // and `7 || []` both evaluate to the truthy non-iterable value itself.
+    await seedForDegree();
+    const base = {
+      _id: 'as_degree:110:cs', community_college_id: 110, college_id: 'cc:110',
+      major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
+      catalog_url: 'https://catalog.hancockcollege.edu/programs',
+      catalog_year: '2025-2026',
+    };
+
+    const objectShape = { ...base, requirement_groups: {} };
+    const resObject = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: objectShape }));
+    expect(resObject.statusCode).toBe(400);
+    expect(resObject.body.error).toMatch(/a none_found row must not carry requirement_groups/);
+
+    const scalarShape = { ...base, status: 'ambiguous', requirement_groups: 7 };
+    const resScalar = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: scalarShape }));
+    expect(resScalar.statusCode).toBe(400);
+    expect(resScalar.body.error).toMatch(/a ambiguous row must not carry requirement_groups/);
+  });
+
   it('400s (not 500s) a null entry in requirement_groups, sections, receivers, and options', async () => {
     await seedForDegree();
     const nullGroup = degreeDoc();
     nullGroup.requirement_groups.push(null);
-    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullGroup }))).statusCode).toBe(400);
+    const resGroup = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullGroup }));
+    expect(resGroup.statusCode).toBe(400);
+    expect(resGroup.body.error).toMatch(/each group must be an object/);
 
     const nullSection = degreeDoc();
     nullSection.requirement_groups[0].sections.push(null);
-    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullSection }))).statusCode).toBe(400);
+    const resSection = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullSection }));
+    expect(resSection.statusCode).toBe(400);
+    expect(resSection.body.error).toMatch(/each section must be an object/);
 
     const nullReceiver = degreeDoc();
     nullReceiver.requirement_groups[0].sections[0].receivers.push(null);
-    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullReceiver }))).statusCode).toBe(400);
+    const resReceiver = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullReceiver }));
+    expect(resReceiver.statusCode).toBe(400);
+    expect(resReceiver.body.error).toMatch(/each receiver must be an object/);
 
     const nullOption = degreeDoc();
     nullOption.requirement_groups[0].sections[0].receivers[0].options.push(null);
-    expect((await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullOption }))).statusCode).toBe(400);
+    const resOption = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: nullOption }));
+    expect(resOption.statusCode).toBe(400);
+    expect(resOption.body.error).toMatch(/each option must be an object/);
   });
 
   it('produces a body the golden eligibility engine evaluates unchanged', async () => {
