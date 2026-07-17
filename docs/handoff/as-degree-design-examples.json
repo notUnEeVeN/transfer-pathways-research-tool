@@ -1,5 +1,5 @@
 {
- "_note": "REAL /api/curated/as-degrees?college_id=cc:<n> output for 3 colleges (from the local dev DB, 2026-07-17), for the AS Degrees design session. Cabrillo cc:41 = one clean local CS A.S.; Santa Ana cc:14 = a college with all THREE degree types (shows the multi-degree-per-college case); De Anza cc:113 = quarter-system (90-unit) with an AS-T + a local A.A. KNOWN LIMITATION: the `deviations` field (missing_groups/extra_groups) is currently NAIVE \u2014 extracted groups are not yet concept-aligned to the statewide template, so it reports all template groups missing + all local groups extra. Design the deviation UI to the field's INTENT (see the prompt); real values will be sparse (1-3 missing/extra) once alignment lands. Same caveat applies to the `units_mismatch` flag where GE units weren't captured.",
+ "_note": "REAL /api/curated/as-degrees?college_id=cc:<n> output for 3 colleges (from the local dev DB, 2026-07-17), for the AS Degrees design session. Cabrillo cc:41 = one clean local CS A.S.; Santa Ana cc:14 = a college with all THREE degree types (shows the multi-degree-per-college case); De Anza cc:113 = quarter-system (90-unit) with an AS-T + a local A.A. Concept-coverage (`covered_concepts`/`missing_core_concepts`/`coverage_pct`) is now real, computed at import time from each degree's courses against the statewide template's required concepts. KNOWN LIMITATION: the `units_mismatch` flag can still be naive where a school's catalog folds GE units into the major total without a separately captured GE line.",
  "examples": {
   "cc:41": {
    "college_name": "Cabrillo College",
@@ -454,7 +454,7 @@
         "source": "extracted",
         "confidence": 0.95,
         "curated_by": null,
-        "label_seen": "Computer Engineering Pathway (Complete the following number of credits: 30) \u2014 alternative 30-unit major track, plus general electives (any transferable or degree applicable course)",
+        "label_seen": "Computer Engineering Pathway (Complete the following number of credits: 30) — alternative 30-unit major track, plus general electives (any transferable or degree applicable course)",
         "unresolved_courses_seen": [],
         "sections": [
          {
@@ -808,6 +808,24 @@
         ]
        }
       ],
+      "covered_concepts": [
+       "bio_cell_molec",
+       "bio_organismal",
+       "calc_1",
+       "calc_2",
+       "calc_3",
+       "comp_arch_assembly",
+       "cs_2_oop",
+       "cs_3_data_structures",
+       "diff_eq",
+       "discrete_math",
+       "gen_chem_1",
+       "gen_chem_2",
+       "linear_alg",
+       "phys_em",
+       "phys_mech",
+       "phys_waves_thermo"
+      ],
       "verification": {
        "verified": false,
        "verified_by": null,
@@ -818,10 +836,10 @@
        "artifact": "scripts/data/as_degrees_cs_extraction.json",
        "confidence": 0.95,
        "needs_browser": false,
-       "notes": "Source is the official Cabrillo College eLumen catalog, 2025-2026 (cabrillo.elumenapp.com). The catalog is a JavaScript-only SPA \u2014 plain WebFetch returned only a \"Catalog\" shell, so I rendered it in the browser and transcribed the program page plus each individual course page for exact units. needs_browser=false because full extraction succeeded, but note the source cannot be scraped by a non-JS fetch pipeline.\n\nONE degree only: Cabrillo has exactly one associate degree literally named \"Computer Science\" \u2014 \"Computer Science - Associate in Science (A.S.)\" in the Computer Science (CS) department. The separate Computer and Information Systems (CIS) department offers \"Computer and Information Systems\" degrees (a different name), which I did NOT extract because the survey's \"closest local computing degree named Computer Science\" resolves to this same CS A.S. Therefore degree_type local_cs_as and local_computing point to the identical program; I report it once (as local_cs_as) rather than duplicating it.\n\nDegree total = 60 semester units: Cabrillo College General Education + at least 30 units in the major. GE follows the local \"Cabrillo College General Education\" pattern and is not enumerated (recorded as a ge_area group).\n\nThe 30-unit major is presented as TWO alternative pathways within the same degree:\n(1) Default CS pathway = four subgroups totaling 30 units: [Core 14 units, all required: CS21 + MATH5A + MATH5B] + [4 units, choose ONE programming language: CS19 C++ OR CS20J Java OR CS20P Python] + [4 units, choose ONE discrete math: CS23 OR MATH23 \u2014 these are cross-listed equivalents] + [8 units of Recommended Major Electives chosen from CHEM1A/1B, CS24, MATH5C/6/7, PHYS4A/4B/4C, BIO9A/9B].\n(2) \"Computer Engineering Pathway\" = 30 units chosen from a broader list (CS19, CS20J, CS20P, CS21, CS23/MATH23, CS24, MATH5A/5B/5C, MATH6, MATH7, CHEM1A/1B, PHYS4A/4B/4C, BIO9A/9B) plus \"General electives: any transferable or degree applicable course.\" I captured this as a choose_units(30) group labeled \"Computer Engineering Pathway\".\n\nOR options: CS19/CS20J/CS20P (pick one language); CS23/MATH23 (pick one, equivalent cross-listed Discrete Mathematics). Every per-course unit value was verified directly from that course's own 2025-2026 catalog page. Note MATH6 and MATH7 are 3.0 units (not 4). Degree contains genuine CS/programming courses (CS19/20J/20P/21/23/24), satisfying the CS-content sanity check."
+       "notes": "Source is the official Cabrillo College eLumen catalog, 2025-2026 (cabrillo.elumenapp.com). The catalog is a JavaScript-only SPA — plain WebFetch returned only a \"Catalog\" shell, so I rendered it in the browser and transcribed the program page plus each individual course page for exact units. needs_browser=false because full extraction succeeded, but note the source cannot be scraped by a non-JS fetch pipeline.\n\nONE degree only: Cabrillo has exactly one associate degree literally named \"Computer Science\" — \"Computer Science - Associate in Science (A.S.)\" in the Computer Science (CS) department. The separate Computer and Information Systems (CIS) department offers \"Computer and Information Systems\" degrees (a different name), which I did NOT extract because the survey's \"closest local computing degree named Computer Science\" resolves to this same CS A.S. Therefore degree_type local_cs_as and local_computing point to the identical program; I report it once (as local_cs_as) rather than duplicating it.\n\nDegree total = 60 semester units: Cabrillo College General Education + at least 30 units in the major. GE follows the local \"Cabrillo College General Education\" pattern and is not enumerated (recorded as a ge_area group).\n\nThe 30-unit major is presented as TWO alternative pathways within the same degree:\n(1) Default CS pathway = four subgroups totaling 30 units: [Core 14 units, all required: CS21 + MATH5A + MATH5B] + [4 units, choose ONE programming language: CS19 C++ OR CS20J Java OR CS20P Python] + [4 units, choose ONE discrete math: CS23 OR MATH23 — these are cross-listed equivalents] + [8 units of Recommended Major Electives chosen from CHEM1A/1B, CS24, MATH5C/6/7, PHYS4A/4B/4C, BIO9A/9B].\n(2) \"Computer Engineering Pathway\" = 30 units chosen from a broader list (CS19, CS20J, CS20P, CS21, CS23/MATH23, CS24, MATH5A/5B/5C, MATH6, MATH7, CHEM1A/1B, PHYS4A/4B/4C, BIO9A/9B) plus \"General electives: any transferable or degree applicable course.\" I captured this as a choose_units(30) group labeled \"Computer Engineering Pathway\".\n\nOR options: CS19/CS20J/CS20P (pick one language); CS23/MATH23 (pick one, equivalent cross-listed Discrete Mathematics). Every per-course unit value was verified directly from that course's own 2025-2026 catalog page. Note MATH6 and MATH7 are 3.0 units (not 4). Degree contains genuine CS/programming courses (CS19/20J/20P/21/23/24), satisfying the CS-content sanity check."
       },
       "source": "scripts/data/as_degrees_cs_extraction.json",
-      "updated_at": "2026-07-17T21:10:18.382Z"
+      "updated_at": "2026-07-17T21:31:24.217Z"
      },
      "courses_by_id": {
       "cc:199717": {
@@ -939,25 +957,28 @@
        "concept": "cs_2_oop"
       }
      },
-     "deviations": {
-      "missing_groups": [
-       "core_programming",
-       "core_architecture",
-       "core_discrete",
-       "core_mathematics",
-       "science_option",
-       "ge_local",
-       "electives"
-      ],
-      "extra_groups": [
-       "cabrillo_college_general_education",
-       "recommended_major_requirements_complete_the_following_number_of_credits_14",
-       "recommended_major_requirements_complete_the_following_number_of_credits_4",
-       "recommended_major_requirements_complete_the_following_number_of_credits_4_2",
-       "recommended_major_electives_complete_the_following_number_of_credits_8",
-       "computer_engineering_pathway_complete_the_following_number_of_credits_30_alternative_30_unit_major_track_plus_general_electives_any_transferable_or_degree_applicable_course"
-      ]
-     },
+     "covered_concepts": [
+      "bio_cell_molec",
+      "bio_organismal",
+      "calc_1",
+      "calc_2",
+      "calc_3",
+      "comp_arch_assembly",
+      "cs_2_oop",
+      "cs_3_data_structures",
+      "diff_eq",
+      "discrete_math",
+      "gen_chem_1",
+      "gen_chem_2",
+      "linear_alg",
+      "phys_em",
+      "phys_mech",
+      "phys_waves_thermo"
+     ],
+     "missing_core_concepts": [
+      "cs_1"
+     ],
+     "coverage_pct": 88,
      "degree_type": "local_cs_as"
     }
    ]
@@ -1437,6 +1458,14 @@
         ]
        }
       ],
+      "covered_concepts": [
+       "calc_1",
+       "calc_2",
+       "comp_arch_assembly",
+       "cs_1",
+       "cs_3_data_structures",
+       "discrete_math"
+      ],
       "verification": {
        "verified": false,
        "verified_by": null,
@@ -1447,10 +1476,10 @@
        "artifact": "scripts/data/as_degrees_cs_extraction.json",
        "confidence": 0.95,
        "needs_browser": false,
-       "notes": "Source: Santa Ana College 2025-2026 Catalog PDF (https://sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf), catalog pages 119-121 (Computer Science section). The main catalog PDF is compressed and unreadable via WebFetch; extracted successfully with pdftotext -layout. Unit system = semester. The catalog uses a two-column layout.\n\nDEGREE IDENTITIES: SAC offers a degree literally named \"Computer Science\" both as a local A.S. and as an AS-T. Therefore local_cs_as and local_computing map to the SAME degree (Computer Science: A.S. Degree, Program Code SAC.CMPR.AS, PCN 04197) \u2014 I entered it under both degree_type values as instructed (\"extract each that exists\"); they are identical, not two separate programs. The AS-T is Computer Science: A.S.-T Degree for Transfer (SAC.CMPR.AST, PCN 32396).\n\nTOTAL UNITS: total_units is reported as 60 (the CA associate-degree / ADT minimum degree total incl. GE + electives). The catalog's printed \"Total\" figures are MAJOR-only: AS-T major = 29.0 units; local A.S. major = 25.0-27.0 units. AS-T explicitly requires 60 CSU-transferable semester units.\n\nAS-T (SAC.CMPR.AST) \u2014 major is all 8 courses required (no choose-one options): CMPR 121 (3.0), CMPR 131 (3.0), CMPR 129 (4.0), CMPR 140 (3.0), MATH 180 (4.0), MATH 185 (4.0), PHYS 217 (4.0), PHYS 227 (4.0) = 29.0. GE = Cal-GETC (CSU GE or IGETC may be used in some cases); min 2.0 GPA; grade C/P in each major course; min 18 units in major.\n\nLOCAL A.S. (SAC.CMPR.AS) \u2014 3 major groups: (1) \"Take ALL\" core 16.0 units: CMPR 100, 120, 121, 129, 131; (2) \"Select ONE\" 3.0 units: CMPR 112 / CMPR 205 / CMPR 213; (3) \"Select an additional SIX units\" 6.0-8.0: choose from a 17-course CMPR/MATH list. Note CMPR 112, 205, 213 appear in BOTH group 2 and group 3 in the catalog (a course used to satisfy the choose-one cannot double-count). GE follows SAC local associate-degree GE pattern (Plan A/B/C) plus competency/electives to reach the 60-unit minimum.\n\nBoth degrees contain genuine CMPR programming courses (Programming Concepts, Data Structures, etc.), confirming these are the correct Computer Science programs and not a math/physics-only mis-grab. Not to be confused with the separate Computer Information Systems: A.S. (SAC.CIS.AS) or the Computer Science: Certificate of Achievement (SAC.CMPR.CA), which are different programs on adjacent pages."
+       "notes": "Source: Santa Ana College 2025-2026 Catalog PDF (https://sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf), catalog pages 119-121 (Computer Science section). The main catalog PDF is compressed and unreadable via WebFetch; extracted successfully with pdftotext -layout. Unit system = semester. The catalog uses a two-column layout.\n\nDEGREE IDENTITIES: SAC offers a degree literally named \"Computer Science\" both as a local A.S. and as an AS-T. Therefore local_cs_as and local_computing map to the SAME degree (Computer Science: A.S. Degree, Program Code SAC.CMPR.AS, PCN 04197) — I entered it under both degree_type values as instructed (\"extract each that exists\"); they are identical, not two separate programs. The AS-T is Computer Science: A.S.-T Degree for Transfer (SAC.CMPR.AST, PCN 32396).\n\nTOTAL UNITS: total_units is reported as 60 (the CA associate-degree / ADT minimum degree total incl. GE + electives). The catalog's printed \"Total\" figures are MAJOR-only: AS-T major = 29.0 units; local A.S. major = 25.0-27.0 units. AS-T explicitly requires 60 CSU-transferable semester units.\n\nAS-T (SAC.CMPR.AST) — major is all 8 courses required (no choose-one options): CMPR 121 (3.0), CMPR 131 (3.0), CMPR 129 (4.0), CMPR 140 (3.0), MATH 180 (4.0), MATH 185 (4.0), PHYS 217 (4.0), PHYS 227 (4.0) = 29.0. GE = Cal-GETC (CSU GE or IGETC may be used in some cases); min 2.0 GPA; grade C/P in each major course; min 18 units in major.\n\nLOCAL A.S. (SAC.CMPR.AS) — 3 major groups: (1) \"Take ALL\" core 16.0 units: CMPR 100, 120, 121, 129, 131; (2) \"Select ONE\" 3.0 units: CMPR 112 / CMPR 205 / CMPR 213; (3) \"Select an additional SIX units\" 6.0-8.0: choose from a 17-course CMPR/MATH list. Note CMPR 112, 205, 213 appear in BOTH group 2 and group 3 in the catalog (a course used to satisfy the choose-one cannot double-count). GE follows SAC local associate-degree GE pattern (Plan A/B/C) plus competency/electives to reach the 60-unit minimum.\n\nBoth degrees contain genuine CMPR programming courses (Programming Concepts, Data Structures, etc.), confirming these are the correct Computer Science programs and not a math/physics-only mis-grab. Not to be confused with the separate Computer Information Systems: A.S. (SAC.CIS.AS) or the Computer Science: Certificate of Achievement (SAC.CMPR.CA), which are different programs on adjacent pages."
       },
       "source": "scripts/data/as_degrees_cs_extraction.json",
-      "updated_at": "2026-07-17T21:10:18.382Z"
+      "updated_at": "2026-07-17T21:31:24.217Z"
      },
      "courses_by_id": {
       "cc:138026": {
@@ -1556,23 +1585,19 @@
        "concept": null
       }
      },
-     "deviations": {
-      "missing_groups": [
-       "core_programming",
-       "core_architecture",
-       "core_discrete",
-       "core_mathematics",
-       "science_option",
-       "ge_local",
-       "electives"
-      ],
-      "extra_groups": [
-       "take_all_of_the_following_courses_units_16_0",
-       "select_one_course_from_the_following_units_3_0",
-       "select_an_additional_six_units_from_the_following_units_6_0_8_0",
-       "general_education_local_sac_associate_degree_ge_pattern_electives_to_reach_60_unit_minimum"
-      ]
-     },
+     "covered_concepts": [
+      "calc_1",
+      "calc_2",
+      "comp_arch_assembly",
+      "cs_1",
+      "cs_3_data_structures",
+      "discrete_math"
+     ],
+     "missing_core_concepts": [
+      "cs_2_oop",
+      "linear_alg"
+     ],
+     "coverage_pct": 75,
      "degree_type": "local_cs_as"
     },
     {
@@ -1771,6 +1796,16 @@
         ]
        }
       ],
+      "covered_concepts": [
+       "calc_1",
+       "calc_2",
+       "comp_arch_assembly",
+       "cs_1",
+       "cs_3_data_structures",
+       "discrete_math",
+       "phys_em",
+       "phys_mech"
+      ],
       "verification": {
        "verified": false,
        "verified_by": null,
@@ -1781,10 +1816,10 @@
        "artifact": "scripts/data/as_degrees_cs_extraction.json",
        "confidence": 0.95,
        "needs_browser": false,
-       "notes": "Source: Santa Ana College 2025-2026 Catalog PDF (https://sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf), catalog pages 119-121 (Computer Science section). The main catalog PDF is compressed and unreadable via WebFetch; extracted successfully with pdftotext -layout. Unit system = semester. The catalog uses a two-column layout.\n\nDEGREE IDENTITIES: SAC offers a degree literally named \"Computer Science\" both as a local A.S. and as an AS-T. Therefore local_cs_as and local_computing map to the SAME degree (Computer Science: A.S. Degree, Program Code SAC.CMPR.AS, PCN 04197) \u2014 I entered it under both degree_type values as instructed (\"extract each that exists\"); they are identical, not two separate programs. The AS-T is Computer Science: A.S.-T Degree for Transfer (SAC.CMPR.AST, PCN 32396).\n\nTOTAL UNITS: total_units is reported as 60 (the CA associate-degree / ADT minimum degree total incl. GE + electives). The catalog's printed \"Total\" figures are MAJOR-only: AS-T major = 29.0 units; local A.S. major = 25.0-27.0 units. AS-T explicitly requires 60 CSU-transferable semester units.\n\nAS-T (SAC.CMPR.AST) \u2014 major is all 8 courses required (no choose-one options): CMPR 121 (3.0), CMPR 131 (3.0), CMPR 129 (4.0), CMPR 140 (3.0), MATH 180 (4.0), MATH 185 (4.0), PHYS 217 (4.0), PHYS 227 (4.0) = 29.0. GE = Cal-GETC (CSU GE or IGETC may be used in some cases); min 2.0 GPA; grade C/P in each major course; min 18 units in major.\n\nLOCAL A.S. (SAC.CMPR.AS) \u2014 3 major groups: (1) \"Take ALL\" core 16.0 units: CMPR 100, 120, 121, 129, 131; (2) \"Select ONE\" 3.0 units: CMPR 112 / CMPR 205 / CMPR 213; (3) \"Select an additional SIX units\" 6.0-8.0: choose from a 17-course CMPR/MATH list. Note CMPR 112, 205, 213 appear in BOTH group 2 and group 3 in the catalog (a course used to satisfy the choose-one cannot double-count). GE follows SAC local associate-degree GE pattern (Plan A/B/C) plus competency/electives to reach the 60-unit minimum.\n\nBoth degrees contain genuine CMPR programming courses (Programming Concepts, Data Structures, etc.), confirming these are the correct Computer Science programs and not a math/physics-only mis-grab. Not to be confused with the separate Computer Information Systems: A.S. (SAC.CIS.AS) or the Computer Science: Certificate of Achievement (SAC.CMPR.CA), which are different programs on adjacent pages."
+       "notes": "Source: Santa Ana College 2025-2026 Catalog PDF (https://sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf), catalog pages 119-121 (Computer Science section). The main catalog PDF is compressed and unreadable via WebFetch; extracted successfully with pdftotext -layout. Unit system = semester. The catalog uses a two-column layout.\n\nDEGREE IDENTITIES: SAC offers a degree literally named \"Computer Science\" both as a local A.S. and as an AS-T. Therefore local_cs_as and local_computing map to the SAME degree (Computer Science: A.S. Degree, Program Code SAC.CMPR.AS, PCN 04197) — I entered it under both degree_type values as instructed (\"extract each that exists\"); they are identical, not two separate programs. The AS-T is Computer Science: A.S.-T Degree for Transfer (SAC.CMPR.AST, PCN 32396).\n\nTOTAL UNITS: total_units is reported as 60 (the CA associate-degree / ADT minimum degree total incl. GE + electives). The catalog's printed \"Total\" figures are MAJOR-only: AS-T major = 29.0 units; local A.S. major = 25.0-27.0 units. AS-T explicitly requires 60 CSU-transferable semester units.\n\nAS-T (SAC.CMPR.AST) — major is all 8 courses required (no choose-one options): CMPR 121 (3.0), CMPR 131 (3.0), CMPR 129 (4.0), CMPR 140 (3.0), MATH 180 (4.0), MATH 185 (4.0), PHYS 217 (4.0), PHYS 227 (4.0) = 29.0. GE = Cal-GETC (CSU GE or IGETC may be used in some cases); min 2.0 GPA; grade C/P in each major course; min 18 units in major.\n\nLOCAL A.S. (SAC.CMPR.AS) — 3 major groups: (1) \"Take ALL\" core 16.0 units: CMPR 100, 120, 121, 129, 131; (2) \"Select ONE\" 3.0 units: CMPR 112 / CMPR 205 / CMPR 213; (3) \"Select an additional SIX units\" 6.0-8.0: choose from a 17-course CMPR/MATH list. Note CMPR 112, 205, 213 appear in BOTH group 2 and group 3 in the catalog (a course used to satisfy the choose-one cannot double-count). GE follows SAC local associate-degree GE pattern (Plan A/B/C) plus competency/electives to reach the 60-unit minimum.\n\nBoth degrees contain genuine CMPR programming courses (Programming Concepts, Data Structures, etc.), confirming these are the correct Computer Science programs and not a math/physics-only mis-grab. Not to be confused with the separate Computer Information Systems: A.S. (SAC.CIS.AS) or the Computer Science: Certificate of Achievement (SAC.CMPR.CA), which are different programs on adjacent pages."
       },
       "source": "scripts/data/as_degrees_cs_extraction.json",
-      "updated_at": "2026-07-17T21:10:18.382Z"
+      "updated_at": "2026-07-17T21:31:24.217Z"
      },
      "courses_by_id": {
       "cc:138510": {
@@ -1836,22 +1871,22 @@
        "concept": "phys_em"
       }
      },
-     "deviations": {
-      "missing_groups": [
-       "core_programming",
-       "core_discrete",
-       "core_architecture",
-       "core_mathematics",
-       "core_physics",
-       "science_elective",
-       "ge_calgetc",
-       "electives"
-      ],
-      "extra_groups": [
-       "computer_science_a_s_t_required_major_courses_total_29_0",
-       "requirements_for_all_associate_degrees_for_transfer_california_general_education_transfer_curriculum_cal_getc"
-      ]
-     },
+     "covered_concepts": [
+      "calc_1",
+      "calc_2",
+      "comp_arch_assembly",
+      "cs_1",
+      "cs_3_data_structures",
+      "discrete_math",
+      "phys_em",
+      "phys_mech"
+     ],
+     "missing_core_concepts": [
+      "cs_2_oop",
+      "bio_cell_molec",
+      "gen_chem_1"
+     ],
+     "coverage_pct": 73,
      "degree_type": "ast"
     },
     {
@@ -2309,6 +2344,14 @@
         ]
        }
       ],
+      "covered_concepts": [
+       "calc_1",
+       "calc_2",
+       "comp_arch_assembly",
+       "cs_1",
+       "cs_3_data_structures",
+       "discrete_math"
+      ],
       "verification": {
        "verified": false,
        "verified_by": null,
@@ -2319,10 +2362,10 @@
        "artifact": "scripts/data/as_degrees_cs_extraction.json",
        "confidence": 0.9,
        "needs_browser": false,
-       "notes": "Source: Santa Ana College 2025-2026 Catalog PDF (https://sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf), catalog pages 119-121 (Computer Science section). The main catalog PDF is compressed and unreadable via WebFetch; extracted successfully with pdftotext -layout. Unit system = semester. The catalog uses a two-column layout.\n\nDEGREE IDENTITIES: SAC offers a degree literally named \"Computer Science\" both as a local A.S. and as an AS-T. Therefore local_cs_as and local_computing map to the SAME degree (Computer Science: A.S. Degree, Program Code SAC.CMPR.AS, PCN 04197) \u2014 I entered it under both degree_type values as instructed (\"extract each that exists\"); they are identical, not two separate programs. The AS-T is Computer Science: A.S.-T Degree for Transfer (SAC.CMPR.AST, PCN 32396).\n\nTOTAL UNITS: total_units is reported as 60 (the CA associate-degree / ADT minimum degree total incl. GE + electives). The catalog's printed \"Total\" figures are MAJOR-only: AS-T major = 29.0 units; local A.S. major = 25.0-27.0 units. AS-T explicitly requires 60 CSU-transferable semester units.\n\nAS-T (SAC.CMPR.AST) \u2014 major is all 8 courses required (no choose-one options): CMPR 121 (3.0), CMPR 131 (3.0), CMPR 129 (4.0), CMPR 140 (3.0), MATH 180 (4.0), MATH 185 (4.0), PHYS 217 (4.0), PHYS 227 (4.0) = 29.0. GE = Cal-GETC (CSU GE or IGETC may be used in some cases); min 2.0 GPA; grade C/P in each major course; min 18 units in major.\n\nLOCAL A.S. (SAC.CMPR.AS) \u2014 3 major groups: (1) \"Take ALL\" core 16.0 units: CMPR 100, 120, 121, 129, 131; (2) \"Select ONE\" 3.0 units: CMPR 112 / CMPR 205 / CMPR 213; (3) \"Select an additional SIX units\" 6.0-8.0: choose from a 17-course CMPR/MATH list. Note CMPR 112, 205, 213 appear in BOTH group 2 and group 3 in the catalog (a course used to satisfy the choose-one cannot double-count). GE follows SAC local associate-degree GE pattern (Plan A/B/C) plus competency/electives to reach the 60-unit minimum.\n\nBoth degrees contain genuine CMPR programming courses (Programming Concepts, Data Structures, etc.), confirming these are the correct Computer Science programs and not a math/physics-only mis-grab. Not to be confused with the separate Computer Information Systems: A.S. (SAC.CIS.AS) or the Computer Science: Certificate of Achievement (SAC.CMPR.CA), which are different programs on adjacent pages."
+       "notes": "Source: Santa Ana College 2025-2026 Catalog PDF (https://sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf), catalog pages 119-121 (Computer Science section). The main catalog PDF is compressed and unreadable via WebFetch; extracted successfully with pdftotext -layout. Unit system = semester. The catalog uses a two-column layout.\n\nDEGREE IDENTITIES: SAC offers a degree literally named \"Computer Science\" both as a local A.S. and as an AS-T. Therefore local_cs_as and local_computing map to the SAME degree (Computer Science: A.S. Degree, Program Code SAC.CMPR.AS, PCN 04197) — I entered it under both degree_type values as instructed (\"extract each that exists\"); they are identical, not two separate programs. The AS-T is Computer Science: A.S.-T Degree for Transfer (SAC.CMPR.AST, PCN 32396).\n\nTOTAL UNITS: total_units is reported as 60 (the CA associate-degree / ADT minimum degree total incl. GE + electives). The catalog's printed \"Total\" figures are MAJOR-only: AS-T major = 29.0 units; local A.S. major = 25.0-27.0 units. AS-T explicitly requires 60 CSU-transferable semester units.\n\nAS-T (SAC.CMPR.AST) — major is all 8 courses required (no choose-one options): CMPR 121 (3.0), CMPR 131 (3.0), CMPR 129 (4.0), CMPR 140 (3.0), MATH 180 (4.0), MATH 185 (4.0), PHYS 217 (4.0), PHYS 227 (4.0) = 29.0. GE = Cal-GETC (CSU GE or IGETC may be used in some cases); min 2.0 GPA; grade C/P in each major course; min 18 units in major.\n\nLOCAL A.S. (SAC.CMPR.AS) — 3 major groups: (1) \"Take ALL\" core 16.0 units: CMPR 100, 120, 121, 129, 131; (2) \"Select ONE\" 3.0 units: CMPR 112 / CMPR 205 / CMPR 213; (3) \"Select an additional SIX units\" 6.0-8.0: choose from a 17-course CMPR/MATH list. Note CMPR 112, 205, 213 appear in BOTH group 2 and group 3 in the catalog (a course used to satisfy the choose-one cannot double-count). GE follows SAC local associate-degree GE pattern (Plan A/B/C) plus competency/electives to reach the 60-unit minimum.\n\nBoth degrees contain genuine CMPR programming courses (Programming Concepts, Data Structures, etc.), confirming these are the correct Computer Science programs and not a math/physics-only mis-grab. Not to be confused with the separate Computer Information Systems: A.S. (SAC.CIS.AS) or the Computer Science: Certificate of Achievement (SAC.CMPR.CA), which are different programs on adjacent pages."
       },
       "source": "scripts/data/as_degrees_cs_extraction.json",
-      "updated_at": "2026-07-17T21:10:18.382Z"
+      "updated_at": "2026-07-17T21:31:24.217Z"
      },
      "courses_by_id": {
       "cc:138026": {
@@ -2428,14 +2471,16 @@
        "concept": null
       }
      },
-     "deviations": {
-      "missing_groups": [],
-      "extra_groups": [
-       "take_all_of_the_following_courses_units_16_0",
-       "select_one_course_from_the_following_units_3_0",
-       "select_an_additional_six_units_from_the_following_units_6_0_8_0"
-      ]
-     },
+     "covered_concepts": [
+      "calc_1",
+      "calc_2",
+      "comp_arch_assembly",
+      "cs_1",
+      "cs_3_data_structures",
+      "discrete_math"
+     ],
+     "missing_core_concepts": [],
+     "coverage_pct": null,
      "degree_type": "local_computing"
     }
    ]
@@ -2454,7 +2499,7 @@
       "degree_type": "ast",
       "template_ref": "as_degree_template:cs_ast",
       "status": "found",
-      "degree_title_seen": "Computer Science for Transfer \u2014 Associate in Science for Transfer (A.S.-T.) Degree",
+      "degree_title_seen": "Computer Science for Transfer — Associate in Science for Transfer (A.S.-T.) Degree",
       "catalog_url": "https://deanza.elumenapp.com/catalog/2025-2026/program/computer-science-for-transfer-fall-2025",
       "catalog_year": "2025-2026",
       "unit_system": "quarter",
@@ -2720,6 +2765,18 @@
         "units_fill": true
        }
       ],
+      "covered_concepts": [
+       "calc_1",
+       "calc_2",
+       "calc_3",
+       "comp_arch_assembly",
+       "cs_1",
+       "cs_2_oop",
+       "cs_3_data_structures",
+       "discrete_math",
+       "phys_em",
+       "phys_mech"
+      ],
       "verification": {
        "verified": false,
        "verified_by": null,
@@ -2733,7 +2790,7 @@
        "notes": "SOURCE ACCESS: De Anza's official catalog is the eLumen SPA at deanza.elumenapp.com (current published year = 2025-2026). Plain WebFetch and curl to deanza.edu are Cloudflare-blocked (HTTP 403) and the eLumen catalog is JavaScript-only, so I used the browser pane to render and transcribe both program pages. Data is COMPLETE and read directly from the current official catalog, so needs_browser is set false; but note that any non-browser fetcher will be blocked. The stale PDF at deanza.edu/counseling/pdf/degrees/transfer_computer_science.pdf is the 2016-2017 sheet and was NOT used. Unit system is QUARTER (Foothill-De Anza district); both degrees total 90 quarter units (= 60 semester), meeting the CA associate minimum.\n\nCS AS-T (degree_type ast): pulled from https://deanza.elumenapp.com/catalog/2025-2026/program/computer-science-for-transfer-fall-2025 . Contains real CS/programming courses (CIS 21JA assembly, plus CIS 22A/22B/22C or CIS 22C/35A), so it is the correct CS program, not a math/physics-only mis-grab. Two groups: (1) Required Core 36.5 units, all required; (2) 'Required Core - Programming - Complete one option' 9-13.5 units. The programming group is an EITHER/OR of two fixed options, which I modeled as choose_units (units_min 9) over the deduped union of the four courses. Exact options: Option 1 (13.5 u) = CIS 22A + CIS 22B/22BH + CIS 22C/22CH; Option 2 (9 u) = CIS 22C/22CH + CIS 35A. CIS 22C appears in both options but is listed once (deduped). Major total 45.5-50 units. GE follows the Cal-GETC pattern; electives added as needed to reach 90. Many core courses have honors alternates printed as 'X / XH' (MATH 1A/1AH, 1B/1BH, 1C/1CH, 22/22H; CIS 22B/22BH, 22C/22CH) - credit for only one version.\n\nSystems Programming A.A. (degree_type local_computing): pulled from https://deanza.elumenapp.com/catalog/2025-2026/program/systems-programming-fall-2025v2 (this is the A.A. Degree; a separate COA-A version exists at systems-programming-fall-2025). This is the closest LOCAL computing associate degree (De Anza offers no local CS A.S.; the CIS A.A. degrees are Business Programming, Cybersecurity, Database Development Practitioner, Network Administration, Network Programming, and Systems Programming). Three groups: Required Core 32 units (all); List A 4-5 units (choose one course); List B 4.5 units (choose one course). Major total 40.5-41.5 units. GE = De Anza GE or Cal-GETC pattern; must also complete ENGL C1000/C1000H or ESL 5 with C or higher; electives to reach 90. Honors alternates: CIS 22B/22BH, 26B/26BH, 22C/22CH. Both program pages carry a footnote 'Revised on Oct. 1, 2025, to align with current requirements.'"
       },
       "source": "scripts/data/as_degrees_cs_extraction.json",
-      "updated_at": "2026-07-17T21:10:18.382Z"
+      "updated_at": "2026-07-17T21:31:24.217Z"
      },
      "courses_by_id": {
       "cc:275526": {
@@ -2803,24 +2860,23 @@
        "concept": "discrete_math"
       }
      },
-     "deviations": {
-      "missing_groups": [
-       "core_programming",
-       "core_discrete",
-       "core_architecture",
-       "core_mathematics",
-       "core_physics",
-       "science_elective",
-       "ge_calgetc",
-       "electives"
-      ],
-      "extra_groups": [
-       "required_core_36_5_units",
-       "required_core_programming_complete_one_option_9_13_5_units",
-       "general_education_cal_getc_pattern",
-       "additional_cal_getc_and_csu_transferable_electives_as_needed_to_reach_at_least_90_units"
-      ]
-     },
+     "covered_concepts": [
+      "calc_1",
+      "calc_2",
+      "calc_3",
+      "comp_arch_assembly",
+      "cs_1",
+      "cs_2_oop",
+      "cs_3_data_structures",
+      "discrete_math",
+      "phys_em",
+      "phys_mech"
+     ],
+     "missing_core_concepts": [
+      "bio_cell_molec",
+      "gen_chem_1"
+     ],
+     "coverage_pct": 82,
      "degree_type": "ast"
     },
     {
@@ -2834,7 +2890,7 @@
       "degree_type": "local_computing",
       "template_ref": null,
       "status": "found",
-      "degree_title_seen": "Systems Programming \u2014 Associate in Arts (A.A.) Degree",
+      "degree_title_seen": "Systems Programming — Associate in Arts (A.A.) Degree",
       "catalog_url": "https://deanza.elumenapp.com/catalog/2025-2026/program/systems-programming-fall-2025v2",
       "catalog_year": "2025-2026",
       "unit_system": "quarter",
@@ -3189,6 +3245,13 @@
         "units_fill": true
        }
       ],
+      "covered_concepts": [
+       "c_systems_programming",
+       "comp_arch_assembly",
+       "cs_1",
+       "cs_2_oop",
+       "cs_3_data_structures"
+      ],
       "verification": {
        "verified": false,
        "verified_by": null,
@@ -3202,7 +3265,7 @@
        "notes": "SOURCE ACCESS: De Anza's official catalog is the eLumen SPA at deanza.elumenapp.com (current published year = 2025-2026). Plain WebFetch and curl to deanza.edu are Cloudflare-blocked (HTTP 403) and the eLumen catalog is JavaScript-only, so I used the browser pane to render and transcribe both program pages. Data is COMPLETE and read directly from the current official catalog, so needs_browser is set false; but note that any non-browser fetcher will be blocked. The stale PDF at deanza.edu/counseling/pdf/degrees/transfer_computer_science.pdf is the 2016-2017 sheet and was NOT used. Unit system is QUARTER (Foothill-De Anza district); both degrees total 90 quarter units (= 60 semester), meeting the CA associate minimum.\n\nCS AS-T (degree_type ast): pulled from https://deanza.elumenapp.com/catalog/2025-2026/program/computer-science-for-transfer-fall-2025 . Contains real CS/programming courses (CIS 21JA assembly, plus CIS 22A/22B/22C or CIS 22C/35A), so it is the correct CS program, not a math/physics-only mis-grab. Two groups: (1) Required Core 36.5 units, all required; (2) 'Required Core - Programming - Complete one option' 9-13.5 units. The programming group is an EITHER/OR of two fixed options, which I modeled as choose_units (units_min 9) over the deduped union of the four courses. Exact options: Option 1 (13.5 u) = CIS 22A + CIS 22B/22BH + CIS 22C/22CH; Option 2 (9 u) = CIS 22C/22CH + CIS 35A. CIS 22C appears in both options but is listed once (deduped). Major total 45.5-50 units. GE follows the Cal-GETC pattern; electives added as needed to reach 90. Many core courses have honors alternates printed as 'X / XH' (MATH 1A/1AH, 1B/1BH, 1C/1CH, 22/22H; CIS 22B/22BH, 22C/22CH) - credit for only one version.\n\nSystems Programming A.A. (degree_type local_computing): pulled from https://deanza.elumenapp.com/catalog/2025-2026/program/systems-programming-fall-2025v2 (this is the A.A. Degree; a separate COA-A version exists at systems-programming-fall-2025). This is the closest LOCAL computing associate degree (De Anza offers no local CS A.S.; the CIS A.A. degrees are Business Programming, Cybersecurity, Database Development Practitioner, Network Administration, Network Programming, and Systems Programming). Three groups: Required Core 32 units (all); List A 4-5 units (choose one course); List B 4.5 units (choose one course). Major total 40.5-41.5 units. GE = De Anza GE or Cal-GETC pattern; must also complete ENGL C1000/C1000H or ESL 5 with C or higher; electives to reach 90. Honors alternates: CIS 22B/22BH, 26B/26BH, 22C/22CH. Both program pages carry a footnote 'Revised on Oct. 1, 2025, to align with current requirements.'"
       },
       "source": "scripts/data/as_degrees_cs_extraction.json",
-      "updated_at": "2026-07-17T21:10:18.382Z"
+      "updated_at": "2026-07-17T21:31:24.217Z"
      },
      "courses_by_id": {
       "cc:257263": {
@@ -3296,16 +3359,15 @@
        "concept": "c_systems_programming"
       }
      },
-     "deviations": {
-      "missing_groups": [],
-      "extra_groups": [
-       "required_core_32_units",
-       "list_a_4_5_units",
-       "list_b_4_5_units",
-       "general_education_de_anza_ge_or_cal_getc_pattern_incl_engl_c1000_c1000h_or_esl_5",
-       "electives_as_needed_to_reach_at_least_90_units"
-      ]
-     },
+     "covered_concepts": [
+      "c_systems_programming",
+      "comp_arch_assembly",
+      "cs_1",
+      "cs_2_oop",
+      "cs_3_data_structures"
+     ],
+     "missing_core_concepts": [],
+     "coverage_pct": null,
      "degree_type": "local_computing"
     }
    ]

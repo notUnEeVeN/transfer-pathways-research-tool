@@ -213,6 +213,12 @@ async function validateAsDegree(db, canonical) {
   if (canonical.verification != null && typeof canonical.verification !== 'object') {
     return 'verification must be an object';
   }
+  if (canonical.covered_concepts != null) {
+    if (!Array.isArray(canonical.covered_concepts)
+        || canonical.covered_concepts.some((c) => typeof c !== 'string')) {
+      return 'covered_concepts must be an array of strings';
+    }
+  }
   if (canonical.status !== 'found') {
     if (canonical.requirement_groups != null
         && (!Array.isArray(canonical.requirement_groups) || canonical.requirement_groups.length)) {

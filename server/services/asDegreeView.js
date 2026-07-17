@@ -4,7 +4,6 @@
 // is never mutated; template_default stubs are resolved by the CONSUMER
 // joining `template`, not by copying template content into docs.
 
-const TEMPLATE_FALLBACK_ID = 'as_degree_template:cs';
 const LOW_CONFIDENCE = 0.7;
 
 function collectCourseIds(docs) {
@@ -55,15 +54,45 @@ function groupUnits(group, unitsByCourseId) {
   return total;
 }
 
-function computeDeviations(doc, template) {
-  const docIds = new Set((doc.requirement_groups || []).map((g) => g.group_id));
+// The set of concept slugs the template treats as core: every concept slug
+// appearing in an is_required group's sections[].slots[].concepts, with
+// OR-slots (a slot's alternative concepts) flattened to their union. Groups
+// that aren't is_required (e.g. the optional science group) and groups with
+// no slots (GE blocks, units_fill electives) contribute nothing.
+function templateRequiredConcepts(template) {
+  const concepts = new Set();
+  for (const g of (template && template.groups) || []) {
+    if (g.is_required !== true) continue;
+    for (const s of g.sections || []) {
+      for (const slot of s.slots || []) {
+        for (const c of slot.concepts || []) concepts.add(c);
+      }
+    }
+  }
+  return concepts;
+}
+
+// Concept-level template comparison (replaces the old group-id deviation
+// diff, which was meaningless while every extracted group carried
+// template_group: null — see spec). Compares the degree's covered_concepts
+// (computed at import time — scripts/import_as_degrees.py) against the
+// template's required-concept set.
+function computeConceptCoverage(doc, template) {
+  const covered = new Set(doc.covered_concepts || []);
+  const required = templateRequiredConcepts(template);
+  if (!required.size) {
+    return { covered_concepts: doc.covered_concepts || [], missing_core_concepts: [], coverage_pct: null };
+  }
+  const missing = [];
+  let overlap = 0;
+  for (const c of required) {
+    if (covered.has(c)) overlap += 1;
+    else missing.push(c);
+  }
   return {
-    missing_groups: (template && template.groups ? template.groups : [])
-      .map((g) => g.group_id)
-      .filter((id) => !docIds.has(id)),
-    extra_groups: (doc.requirement_groups || [])
-      .filter((g) => g.template_group == null)
-      .map((g) => g.group_id),
+    covered_concepts: doc.covered_concepts || [],
+    missing_core_concepts: missing,
+    coverage_pct: Math.round((overlap / required.size) * 100),
   };
 }
 
@@ -79,7 +108,7 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
   }
   const unitsAccounted = Math.round(
     groups.reduce((sum, g) => sum + groupUnits(g, unitsByCourseId), 0) * 10) / 10;
-  const deviations = computeDeviations(doc, template);
+  const coverage = computeConceptCoverage(doc, template);
   const flags = [];
   if (doc.status === 'ambiguous') flags.push('ambiguous');
   if (sourceCounts.template_default > 0) flags.push('template_default_groups');
@@ -111,7 +140,8 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
       : null,
     unresolved_count: unresolved,
     units_accounted: unitsAccounted,
-    deviations,
+    coverage_pct: coverage.coverage_pct,
+    missing_core_count: coverage.missing_core_concepts.length,
     flags,
     verified: !!(doc.verification && doc.verification.verified),
     updated_at: doc.updated_at ?? null,
@@ -119,19 +149,24 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
 }
 
 async function asDegreeOverview(db) {
-  const [template, docs, institutions] = await Promise.all([
-    db.collection('curated_requirements').findOne({ kind: 'as_degree_template' }),
+  // There are now two statewide templates (cs_local / cs_ast — one per
+  // degree_type); coverage_pct only means anything if each row is compared
+  // against ITS OWN template_ref, not one arbitrary template for every row.
+  const [templates, docs, institutions] = await Promise.all([
+    db.collection('curated_requirements').find({ kind: 'as_degree_template' }).toArray(),
     db.collection('curated_requirements').find({ kind: 'as_degree' }).toArray(),
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1 } }).toArray(),
   ]);
+  const templatesById = new Map(templates.map((t) => [t._id, t]));
   const nameById = new Map(institutions.map((i) => [i._id, i.name]));
   const courses = await loadCourses(db, docs);
   const unitsByCourseId = new Map(courses.map((c) => [c.course_id, c.units || 0]));
   const rows = docs
-    .map((d) => summarizeDoc(d, template, nameById.get(d.college_id), unitsByCourseId))
+    .map((d) => summarizeDoc(
+      d, templatesById.get(d.template_ref) || null, nameById.get(d.college_id), unitsByCourseId))
     .sort((a, b) => String(a.college_name).localeCompare(String(b.college_name)));
-  return { template, rows };
+  return { template: templates[0] || null, rows };
 }
 
 async function asDegreeDetail(db, collegeId) {
@@ -141,9 +176,13 @@ async function asDegreeDetail(db, collegeId) {
   const inst = await db.collection('assist_institutions')
     .findOne({ _id: String(collegeId) }, { projection: { name: 1 } });
   const degrees = await Promise.all(docs.map(async (doc) => {
+    // template_ref is intentionally null for a degree_type with no statewide
+    // template (e.g. local_computing) — no fallback; that degree simply has
+    // no template to compare against (coverage_pct null, see below).
     const [template, courses] = await Promise.all([
-      db.collection('curated_requirements')
-        .findOne({ _id: doc.template_ref || TEMPLATE_FALLBACK_ID }),
+      doc.template_ref
+        ? db.collection('curated_requirements').findOne({ _id: doc.template_ref })
+        : Promise.resolve(null),
       loadCourses(db, [doc]),
     ]);
     const coursesById = Object.fromEntries(courses.map((c) => [`cc:${c.course_id}`, {
@@ -152,10 +191,13 @@ async function asDegreeDetail(db, collegeId) {
       units: c.units ?? null,
       concept: c.concept ?? null,
     }]));
+    const coverage = computeConceptCoverage(doc, template);
     return {
       doc,
       courses_by_id: coursesById,
-      deviations: computeDeviations(doc, template),
+      covered_concepts: coverage.covered_concepts,
+      missing_core_concepts: coverage.missing_core_concepts,
+      coverage_pct: coverage.coverage_pct,
       degree_type: doc.degree_type ?? null,
     };
   }));
@@ -165,4 +207,4 @@ async function asDegreeDetail(db, collegeId) {
   };
 }
 
-module.exports = { asDegreeOverview, asDegreeDetail };
+module.exports = { asDegreeOverview, asDegreeDetail, templateRequiredConcepts };

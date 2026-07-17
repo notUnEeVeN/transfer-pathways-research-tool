@@ -397,6 +397,34 @@ describe('as_degree kind', () => {
     expect(res.body.id).toBe('as_degree:110:local_cs_as');
   });
 
+  it('accepts a doc with covered_concepts as an array of strings', async () => {
+    await seedForDegree();
+    const body = { ...degreeDoc(), covered_concepts: ['cs_1', 'discrete_math'] };
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
+    expect(res.statusCode).toBe(200);
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:local_cs_as' });
+    expect(stored.covered_concepts).toEqual(['cs_1', 'discrete_math']);
+  });
+
+  it('does not require covered_concepts', async () => {
+    await seedForDegree();
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: degreeDoc() }));
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('rejects covered_concepts that is not an array of strings', async () => {
+    await seedForDegree();
+    const notArray = { ...degreeDoc(), covered_concepts: 'cs_1' };
+    const resNotArray = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: notArray }));
+    expect(resNotArray.statusCode).toBe(400);
+    expect(resNotArray.body.error).toMatch(/covered_concepts must be an array of strings/);
+
+    const badElement = { ...degreeDoc(), covered_concepts: ['cs_1', 42] };
+    const resBadElement = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: badElement }));
+    expect(resBadElement.statusCode).toBe(400);
+    expect(resBadElement.body.error).toMatch(/covered_concepts must be an array of strings/);
+  });
+
   it('stamps group-level curated_by on curated groups only', async () => {
     await seedForDegree();
     const body = degreeDoc();

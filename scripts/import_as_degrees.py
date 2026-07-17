@@ -165,6 +165,32 @@ def norm_number(raw):
     return f"{digits}{suffix}"
 
 
+def concept_from_title(title):
+    """Classify a course by its catalog title into a prereq_concept slug.
+    Used to compute covered_concepts (spec: concept-coverage template
+    comparison) whenever a course either didn't resolve to an assist_courses
+    id, or resolved but that doc's own `concept` field is null. Title beats
+    prefix because courses are often cross-listed under non-CS prefixes
+    (e.g. a "Programming I" course taught under MATH or ENGR)."""
+    t = (title or '').lower()
+    if re.search(r'data struct', t): return 'cs_3_data_structures'
+    if re.search(r'discrete', t): return 'discrete_math'
+    if re.search(r'comput(er)? (org|architecture)|assembly|organization', t): return 'comp_arch_assembly'
+    if re.search(r'object.orient|\boop\b|advanced (java|c\+\+|programming)|program(ming)? (ii|2)|intermediate (java|c\+\+|programming)|programming concepts (ii|2)', t): return 'cs_2_oop'
+    if re.search(r'calculus ii|calculus 2|calc ii\b|analytic geometry.*ii', t): return 'calc_2'
+    if re.search(r'calculus iii|calculus 3|multivariable|calculus.*iii', t): return 'calc_3'
+    if re.search(r'linear algebra', t): return 'linear_alg'
+    if re.search(r'differential equations', t): return 'diff_eq'
+    if re.search(r'calculus|analytic geometry', t): return 'calc_1'
+    if re.search(r'mechanic|physics.*i\b|general physics.*i|physics for scien.*i', t): return 'phys_mech'
+    if re.search(r'electricity|magnetism|physics.*ii|e&m|physics for scien.*ii', t): return 'phys_em'
+    if re.search(r'introduction to (computer )?program|programming (fundamentals|i|concepts (i|methodology i)|1)|intro.*programming|problem solv|program structures|computer science i\b|cs 1\b', t): return 'cs_1'
+    if re.search(r'program|java|c\+\+|python|software', t): return 'cs_1'
+    if re.search(r'general chem|chemistry', t): return 'gen_chem_1'
+    if re.search(r'biolog|cell', t): return 'bio_cell_molec'
+    return None
+
+
 def normalize_ge_area(raw):
     s = (raw or "").lower()
     if "cal-getc" in s or "calgetc" in s:
@@ -235,12 +261,14 @@ def is_strong_title_match(extracted_tokens, candidate_tokens):
 def build_course_index(db, cc_ids):
     """Builds the (cc_id, prefix, norm_number) -> course_id index (sending
     side) plus a per-college title index used by the title fallback:
-    {cc_id: [{course_id, prefix, number, title, tokens}]}."""
+    {cc_id: [{course_id, prefix, number, title, tokens}]}, plus a
+    course_id -> concept map (the authoritative source for covered_concepts
+    when non-null) built off the same single query, batched."""
     cursor = db["assist_courses"].find(
         {"side": "sending", "community_college_id": {"$in": list(cc_ids)}},
-        {"community_college_id": 1, "course_id": 1, "prefix": 1, "number": 1, "title": 1},
+        {"community_college_id": 1, "course_id": 1, "prefix": 1, "number": 1, "title": 1, "concept": 1},
     )
-    index, title_index, collisions = {}, {}, 0
+    index, title_index, concept_by_course_id, collisions = {}, {}, {}, 0
     for row in cursor:
         cc_id = row.get("community_college_id")
         prefix = str(row.get("prefix") or "").strip().upper()
@@ -258,7 +286,9 @@ def build_course_index(db, cc_ids):
                 "title": title,
                 "tokens": normalize_title_tokens(title),
             })
-    return index, title_index, collisions
+        if course_id is not None:
+            concept_by_course_id[course_id] = row.get("concept")
+    return index, title_index, concept_by_course_id, collisions
 
 
 def resolve_course(index, cc_id, prefix, number):
@@ -365,14 +395,17 @@ def resolve_by_title(title_index, cc_id, prefix, title):
 
 # ── group transform ─────────────────────────────────────────────────────────
 
-def transform_group(mg, cc_id, index, title_index, confidence, used_gids, idx):
+def transform_group(mg, cc_id, index, title_index, concept_by_course_id, confidence, used_gids, idx):
     """Returns (group_doc_or_None, considered, resolved_by_number,
-    resolved_by_title, unresolved_entries, title_match_samples).
-    considered/resolved counts are 0 for ge_area/electives, which never
-    attempt resolution. group_doc is None when a non-ge_area, non-electives
-    group ends with zero receivers (dropped rather than emitted invalid);
-    unresolved_entries is still returned so the caller can report it even
-    though it isn't embedded in any emitted group."""
+    resolved_by_title, unresolved_entries, title_match_samples,
+    covered_concepts). considered/resolved counts are 0 for ge_area/electives,
+    which never attempt resolution or contribute to covered_concepts.
+    group_doc is None when a non-ge_area, non-electives group ends with zero
+    receivers (dropped rather than emitted invalid); unresolved_entries is
+    still returned so the caller can report it even though it isn't embedded
+    in any emitted group — and its courses still contribute to
+    covered_concepts (title-classified), since the concept coverage question
+    is about what the degree teaches, not what we managed to link."""
     label_seen = mg.get("label_seen") or ""
     rule = mg.get("rule")
     if rule not in MAJOR_GROUP_RULES:
@@ -396,16 +429,17 @@ def transform_group(mg, cc_id, index, title_index, confidence, used_gids, idx):
             "unit_advisement": mg.get("units_min"),
             "receivers": [],
         }]
-        return group, 0, 0, 0, [], []
+        return group, 0, 0, 0, [], [], set()
 
     if rule == "electives":
         group = dict(common)
         group["units_fill"] = True
-        return group, 0, 0, 0, [], []
+        return group, 0, 0, 0, [], [], set()
 
     courses = mg.get("courses") or []
     receivers, unresolved_entries, title_match_samples = [], [], []
     resolved_by_number = resolved_by_title = 0
+    covered_concepts = set()
     for c in courses:
         prefix, number, title_seen = c.get("prefix"), c.get("number"), c.get("title_seen")
         cid = resolve_course(index, cc_id, prefix, number)
@@ -419,6 +453,11 @@ def transform_group(mg, cc_id, index, title_index, confidence, used_gids, idx):
                     "matched": matched_title,
                     "course_id": cid,
                 })
+        concept = concept_by_course_id.get(int(cid)) if cid is not None else None
+        if not concept:
+            concept = concept_from_title(title_seen)
+        if concept:
+            covered_concepts.add(concept)
         if cid is None:
             entry = {
                 "course_code_seen": f"{(prefix or '').strip()} {(number or '').strip()}".strip(),
@@ -447,7 +486,7 @@ def transform_group(mg, cc_id, index, title_index, confidence, used_gids, idx):
 
     considered = len(courses)
     if not receivers:
-        return None, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples
+        return None, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples, covered_concepts
 
     if rule == "all":
         section = {"section_advisement": None, "unit_advisement": None, "receivers": receivers}
@@ -458,7 +497,7 @@ def transform_group(mg, cc_id, index, title_index, confidence, used_gids, idx):
 
     group = dict(common)
     group["sections"] = [section]
-    return group, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples
+    return group, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples, covered_concepts
 
 
 # ── internal shape assertions (mirror validateAsDegree/validateAsDegreeTemplate) ──
@@ -718,7 +757,7 @@ def build_template_rows(templates, source, now, known_concepts):
 
 # ── degree transform (whole extraction) ─────────────────────────────────────
 
-def transform_all(extraction, course_index, title_index, source, now, ref_by_degree_type, known_college_ids, known_template_ids):
+def transform_all(extraction, course_index, title_index, concept_by_course_id, source, now, ref_by_degree_type, known_college_ids, known_template_ids):
     docs = []
     stats = {
         "by_type": Counter(),
@@ -731,6 +770,7 @@ def transform_all(extraction, course_index, title_index, source, now, ref_by_deg
         "flagged_heavy": [],            # [{college_name, cc_id, degree_type, unresolved, considered}]
         "skipped_zero_groups": [],      # [(college_name, cc_id, degree_type)]
         "title_match_samples": [],      # [{college_name, cc_id, extracted, matched, course_id}]
+        "covered_concepts_histogram": Counter(),  # {covered_concept_count: num_degrees}
     }
     for college in extraction:
         cc_id = college["community_college_id"]
@@ -751,13 +791,15 @@ def transform_all(extraction, course_index, title_index, source, now, ref_by_deg
             requirement_groups = []
             degree_considered = degree_resolved = 0
             degree_unresolved_samples = []
+            degree_covered_concepts = set()
 
             for idx, mg in enumerate(deg.get("major_groups") or []):
-                group_doc, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples = transform_group(
-                    mg, cc_id, course_index, title_index, confidence, used_gids, idx
+                group_doc, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples, group_covered_concepts = transform_group(
+                    mg, cc_id, course_index, title_index, concept_by_course_id, confidence, used_gids, idx
                 )
                 degree_considered += considered
                 degree_resolved += resolved_by_number + resolved_by_title
+                degree_covered_concepts |= group_covered_concepts
                 stats["considered"] += considered
                 stats["resolved"] += resolved_by_number + resolved_by_title
                 stats["resolved_by_number"] += resolved_by_number
@@ -791,6 +833,7 @@ def transform_all(extraction, course_index, title_index, source, now, ref_by_deg
                 stats["unresolved_samples"].append((college_name, cc_id, degree_type, degree_unresolved_samples))
 
             stats["by_type"][degree_type] += 1
+            stats["covered_concepts_histogram"][len(degree_covered_concepts)] += 1
             doc = {
                 "_id": f"as_degree:{cc_id}:{degree_type}",
                 "legacy_id": f"{cc_id}:{degree_type}",
@@ -807,6 +850,7 @@ def transform_all(extraction, course_index, title_index, source, now, ref_by_deg
                 "unit_system": deg.get("unit_system"),
                 "total_units": deg.get("total_units"),
                 "requirement_groups": requirement_groups,
+                "covered_concepts": sorted(degree_covered_concepts),
                 "verification": {"verified": False, "verified_by": None, "verified_at": None, "notes": None},
                 "extraction": {
                     "artifact": source,
@@ -903,6 +947,13 @@ def print_report(template_rows, docs, stats, dry_run):
     else:
         print("Flagged (>50% unresolved): none")
 
+    hist = stats["covered_concepts_histogram"]
+    if hist:
+        total_degrees = sum(hist.values())
+        print(f"covered_concepts distribution ({total_degrees} degrees):")
+        for n in sorted(hist):
+            print(f"  {n} concept(s): {hist[n]} degree(s)")
+
     if docs:
         sample = {k: v for k, v in docs[0].items() if k != "updated_at"}
         print("Doc sample:", json.dumps(sample, ensure_ascii=False)[:800], "...")
@@ -959,9 +1010,9 @@ def main():
     else:
         print("TARGET_MONGO_URI not set; skipping course index build (dry run, no resolution).")
 
-    course_index, title_index, known_concepts, known_college_ids = {}, {}, None, None
+    course_index, title_index, concept_by_course_id, known_concepts, known_college_ids = {}, {}, {}, None, None
     if db is not None:
-        course_index, title_index, collisions = build_course_index(db, cc_ids_in_extraction)
+        course_index, title_index, concept_by_course_id, collisions = build_course_index(db, cc_ids_in_extraction)
         print(f"Course index: {len(course_index)} sending-side keys across {len(cc_ids_in_extraction)} colleges"
               f"{f' ({collisions} key collisions kept first-seen)' if collisions else ''}.")
         known_concepts = {
@@ -980,7 +1031,7 @@ def main():
     known_template_ids = {r["_id"] for r in template_rows}
 
     docs, stats = transform_all(
-        extraction, course_index, title_index, extraction_source, now, ref_by_degree_type,
+        extraction, course_index, title_index, concept_by_course_id, extraction_source, now, ref_by_degree_type,
         known_college_ids, known_template_ids,
     )
 

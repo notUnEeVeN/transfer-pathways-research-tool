@@ -12,10 +12,10 @@ sub-tab) alongside it if you have them; that helps a lot.
 > 90-unit, AS-T + local A.A.). Wire the components to those real documents. The
 > data shapes below are the actual endpoint contract; the server computes the
 > derived fields (flags, rollups, joined course details), so just render them.
-> **One caveat:** the `deviations` field and the `units_mismatch` flag are
-> currently naive (see the file's `_note`) — design their UI to the field's
-> intent described below; real values will be sparse once concept-alignment
-> lands.
+> **One caveat:** the `units_mismatch` flag can be naive where a school's
+> catalog folds GE units into the major total without a separately captured
+> GE line (see the file's `_note`) — design its UI to the field's intent
+> described below.
 
 ---
 
@@ -67,7 +67,13 @@ Each row is one object from the endpoint's `rows` array:
   confidence_min: 0.62,                 // lowest extracted-group confidence; null if none extracted
   confidence_mean: 0.88,                // null if none extracted
   unresolved_count: 1,                  // catalog courses we couldn't match to the course DB
-  deviations: { missing_groups: ['core_systems'], extra_groups: ['ethics'] },
+  coverage_pct: 62,                     // % of the statewide template's required concepts
+                                         // (programming, calculus, discrete, architecture,
+                                         // physics, science) this degree's courses cover;
+                                         // null when the degree_type has no template
+                                         // (local_computing) or the template has no required
+                                         // concepts
+  missing_core_count: 2,                // how many required concepts this degree is missing
   flags: ['template_default_groups', 'low_confidence', 'unresolved_courses'],
   verified: false,
 }
@@ -109,7 +115,11 @@ Real distributions for the table: statuses are almost all `found` (one
 flags are `units_mismatch` and `unresolved_courses`; `ambiguous` is rare.
 `template_default` groups do **not** occur in the current data (extraction
 succeeded everywhere) — but design for them anyway (the field exists for future
-low-confidence sweeps).
+low-confidence sweeps). `coverage_pct` (`local_cs_as` + `ast` rows only —
+114 of 199 degrees; `local_computing` is always null) ranges 13–100%, mean
+~75%; most degrees land in the 60–90% band, and a coverage_pct in the teens
+is a real triage signal (a degree whose catalog courses barely overlap the
+statewide core, worth a closer look).
 
 ## Surface B — the per-college detail view (opened from a table row)
 
@@ -182,8 +192,13 @@ The detail endpoint returns one college's document plus server-joined extras:
     'cc:12345': { code: 'CIS 22A', title: 'Beginning Programming', units: 4.5,
                   concept: 'cs_1' },        // concept may be null (unmapped course)
   },
-  // Computed server-side: how this school differs from the statewide template.
-  deviations: { missing_groups: ['core_systems'], extra_groups: ['ethics'] },
+  // Computed server-side: which of the statewide template's required CS
+  // concepts (programming, calculus, discrete, architecture, physics,
+  // science) this degree's courses cover, and what's missing.
+  covered_concepts: ['cs_1', 'cs_3_data_structures', 'comp_arch_assembly', 'calc_1'],
+  missing_core_concepts: ['discrete_math', 'calc_2'],
+  coverage_pct: 67,                    // null when degree_type has no template (local_computing)
+                                        // or the template has no required concepts
 }
 ```
 
@@ -205,9 +220,9 @@ What Surface B must do:
   `curated`/verified reads as settled; `confidence` as a compact per-group
   signal, not a wall of numbers. Provenance must not be color-only (text /
   icon / pattern too).
-- **Deviation highlighting**: `deviations.missing_groups` and
-  `.extra_groups` answered in seconds ("how does this school differ from the
-  norm?").
+- **Concept-coverage**: which standard CS components (programming, calculus,
+  discrete, architecture, physics, science) the degree covers vs lacks, and a
+  coverage %.
 - **Verification workflow**: the catalog link + year prominent for
   side-by-side checking; a per-group "mark reviewed" affordance (flips
   `source` to `curated` on save); a free-text verification-notes field
