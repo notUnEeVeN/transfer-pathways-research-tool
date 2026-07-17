@@ -5,15 +5,17 @@ Claude Code with design skills). It is self-contained — no repo access needed.
 Paste screenshots of the current console (References tables / Prerequisites
 sub-tab) alongside it if you have them; that helps a lot.
 
-> **Before using:** the "REPRESENTATIVE DATA" sections hold prose descriptions
-> of sample colleges. Once real data has been extracted, replace them with 2–3
-> real documents from the `/api/curated/as-degrees` endpoint output — ideally
-> one clean high-confidence school, one deviation-heavy school, and one
-> low-confidence school with `template_default` groups — plus a handful of real
-> overview rows for the table. The data shapes below are the actual endpoint
-> contract; the server already computes every derived field shown (flags,
-> rollups, deviations, joined course details), so you do not need to compute
-> them in the component — just render them.
+> **Real data is attached:** `docs/handoff/as-degree-design-examples.json`
+> holds the actual `/api/curated/as-degrees?college_id=cc:<n>` output for three
+> real colleges — Cabrillo (one clean local CS A.S.), Santa Ana (a college with
+> all three degree types — the multi-degree case), and De Anza (quarter-system,
+> 90-unit, AS-T + local A.A.). Wire the components to those real documents. The
+> data shapes below are the actual endpoint contract; the server computes the
+> derived fields (flags, rollups, joined course details), so just render them.
+> **One caveat:** the `deviations` field and the `units_mismatch` flag are
+> currently naive (see the file's `_note`) — design their UI to the field's
+> intent described below; real values will be sparse once concept-alignment
+> lands.
 
 ---
 
@@ -91,12 +93,23 @@ quarter schools without implying ~90 is "incomplete"); a source-mix read
 (the extracted/template-default/curated split); a link out to the catalog;
 and a click-to-open into Surface B.
 
-### REPRESENTATIVE DATA — table rows (swap for real rows when available)
-- **Row 1 (clean):** De Anza College, `found`, "Computer Science, A.S.", quarter, 90 units, units_accounted 90, 7 groups all `extracted` conf ≥ 0.9, confidence_min 0.91, no flags, verified false.
-- **Row 2 (deviation-heavy):** Santa Monica College, `found`, "Computer Science, A.S.", semester, 61 units, units_accounted 61, an extra `ethics` group and a missing `core_systems` group, one `unresolved_courses` flag, 2 curated groups, verified true.
-- **Row 3 (low-confidence):** Redwoods, `found`, semester, 60 units, units_accounted 54, 3 of 7 groups `template_default`, confidence_min 0.55, flags `template_default_groups`+`low_confidence`+`units_mismatch`, verified false. This row should read as visibly less trustworthy than the others.
-- **Row 4 (none_found):** Butte College, `none_found`, everything null/empty, no flags.
-- **Row 5 (ambiguous):** Cabrillo College, `ambiguous`, degree_title_seen "Computer Science A.S. OR Computer Programming A.S.", flag `ambiguous`.
+### REPRESENTATIVE DATA — table rows (real, from the current dataset)
+The real dataset is **199 degrees across 114 colleges** (a college contributes
+one row per degree it offers). Real rows to design against — types are
+`local_cs_as` / `ast` / `local_computing`, and a `degree_type` column is
+needed since a college appears on multiple rows:
+- **Cabrillo College** · `local_cs_as` · found · "Computer Science, A.S." · semester 60u · units_accounted 60 · confidence_min 0.95 · no flags · unverified.
+- **Santa Ana College** · `local_cs_as` · found · semester 60u · units_accounted 25 · 5 unresolved courses · flags `unresolved_courses` + `units_mismatch` · unverified. *(Santa Ana also appears as `ast` and `local_computing` rows — same college, three rows.)*
+- **De Anza College** · `ast` · found · **quarter 90u** · units_accounted 45.5 · confidence_min 0.97 · unverified. *(Also an `Systems Programming` `local_computing` row.)*
+- **Bakersfield College** · `ast` · found · semester 60u · confidence_min 0.95 · flag `units_mismatch` (GE units not captured) · unverified.
+- **Woodland Community College** · `none_found` — a real research finding (offers no CS-related associate degree); null degree fields, no flags. (One such row statewide.)
+
+Real distributions for the table: statuses are almost all `found` (one
+`none_found`); confidence clusters high (96% of degrees ≥ 0.85); the common
+flags are `units_mismatch` and `unresolved_courses`; `ambiguous` is rare.
+`template_default` groups do **not** occur in the current data (extraction
+succeeded everywhere) — but design for them anyway (the field exists for future
+low-confidence sweeps).
 
 ## Surface B — the per-college detail view (opened from a table row)
 
@@ -204,10 +217,26 @@ What Surface B must do:
   finding), `ambiguous` (multiple candidate programs — show the raw title(s)),
   and the three-placeholder-groups look of a low-confidence school.
 
-### REPRESENTATIVE DATA — detail documents (swap for real docs when available)
-- **School A (clean, semester):** 7 groups, all `extracted` conf ≥ 0.9, aligned 1:1 to the template, units sum to exactly 60, not verified.
-- **School B (deviation-heavy):** an extra `ethics` group ("Computer Ethics, 3 units", `template_group: null`), the template's `core_systems` group missing, one course with `concept: null`, one entry in `unresolved_courses_seen`, total 61, two groups already `curated`, a verification note present, verified true.
-- **School C (low-confidence, quarter):** `unit_system: 'quarter'`, total 90, three of seven groups are `template_default` stubs (confidence null), the rest `extracted` at 0.55–0.7, not verified — should look visibly less trustworthy than A and B.
+### REPRESENTATIVE DATA — detail documents (real, in `docs/handoff/as-degree-design-examples.json`)
+Use the three real documents in that file — they cover the design's hard cases:
+- **Cabrillo (cc:41), `local_cs_as` — the clean case.** One local CS A.S., 6
+  groups with real headings ("Recommended Major Requirements", choose-N credit
+  groups, a "Computer Engineering Pathway" alternative track), 19 resolved
+  courses with concepts, semester 60u, all `extracted` at high confidence,
+  unverified. Good for the default reading experience.
+- **Santa Ana (cc:14) — the multi-degree case.** THREE degrees on one college
+  (`local_cs_as`, `ast`, `local_computing`), with `Take ALL` / `Select ONE` /
+  `Select an additional SIX units` groups, 5 unresolved courses on the
+  `local_cs_as` (render as unlinked citations), and `units_mismatch`. Shows how
+  the detail view handles a college with several degrees and imperfect data.
+- **De Anza (cc:113), `ast` + `local_computing` — the quarter case.**
+  `unit_system: 'quarter'`, 90-unit totals, "Complete one option" programming
+  groups, Cal-GETC GE blocks. Must not imply 90u ≠ complete.
+
+None of the real docs currently has `template_default` groups (extraction
+succeeded everywhere) or a populated `verification.notes` — design those states
+from the field descriptions above (they matter for future sweeps and the
+verification workflow).
 
 ## What exists around these views (context, not redesign)
 
