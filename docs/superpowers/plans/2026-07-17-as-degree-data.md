@@ -1000,7 +1000,21 @@ git commit -m "feat: as-degree computed view service + /curated/as-degrees endpo
 
 ### Task 5: Frontend — Data → AS Degrees sub-tab with the QA table
 
-**Files:**
+> **⚠️ REDIRECTED (user directive 2026-07-17): do NOT hand-build this task.**
+> The entire AS Degrees frontend — both the bulk QA table AND the per-college
+> view — goes through **Claude design** first, not the JSX below. The
+> comprehensive design prompt is `docs/as-degree-view-design-prompt.md` (now
+> covers both surfaces, grounded in Task 4's real endpoint contract).
+> Frontend implementation is deferred to a post-design phase that will be
+> planned from the returned design. This supersedes spec §5's "no design
+> pass" note for the QA table. The hooks/components below are retained only
+> as a reference for what data the designed components will consume — the
+> three `useData.js` hooks (`useAsDegrees`, `useAsDegreeDetail`,
+> `useSaveAsDegree`) and the tab registration in `DataPage.jsx` are still the
+> plumbing the eventual implementation uses, but write them against the
+> RETURNED design, not this scaffold.
+
+**Files (reference only — build from the returned design instead):**
 - Create: `frontend/src/asdegrees/AsDegreesTab.jsx`, `frontend/src/asdegrees/AsDegreeQaTable.jsx`, `frontend/src/asdegrees/AsDegreeDetailModal.jsx`
 - Test: `frontend/src/asdegrees/AsDegreeQaTable.test.jsx`
 - Modify: `frontend/src/shared/query/hooks/useData.js` (three new hooks), `frontend/src/DataPage.jsx` (three registration spots + import)

@@ -353,8 +353,13 @@ Local AS-T/ADT programs are **excluded** — this dataset is specifically local
 
 ## 5 · Frontend + design-handoff pause point
 
-**Built in Phase 2 (standard plumbing, no design pass):** the References
-table.
+**Superseded (user directive 2026-07-17):** the whole AS Degrees frontend —
+the bulk QA table *and* the per-college view — goes through Claude design;
+neither is hand-built. The earlier "standard plumbing, no design pass" plan
+for the bulk table no longer holds. The comprehensive design prompt
+(`docs/as-degree-view-design-prompt.md`) covers both surfaces, grounded in
+the built `/api/curated/as-degrees` contract. Frontend build happens in a
+post-design phase.
 
 **⏸ Pause point — after Phase 2's QA report is accepted** (data imported,
 References table live, sweep quality known): stop feature work. Tybalt runs
