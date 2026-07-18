@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import DatasetSummaryPanel from './DatasetSummaryPanel'
 
@@ -25,8 +25,8 @@ const summary = {
   counts: { agreements: 170, majors: 2, courses: 500, university_courses: 60, community_colleges: 115 },
 }
 
-// One college per landscape segment: both, A.S.-T only, local only, neither
-// (the neither college offers another computing degree).
+// One college per landscape segment: both, A.S.-T only, local only, other
+// computing only, and no degree record.
 const offered = (ast, local, computing = false) => ({
   types: {
     ast: { inventory_offered: ast, status: ast ? 'available' : 'confirmed_none' },
@@ -35,7 +35,31 @@ const offered = (ast, local, computing = false) => ({
   },
 })
 const availability = {
-  rows: [offered(true, true), offered(true, false), offered(false, true), offered(false, false, true)],
+  rows: [
+    offered(true, true),
+    offered(true, false),
+    offered(false, true),
+    offered(false, false, true),
+    offered(false, false),
+    // Inventory alone must not count as an analyzable A.S.-T record. This
+    // college instead belongs in "other computing only".
+    {
+      types: {
+        ast: { inventory_offered: true, status: 'data_gap' },
+        local_cs_as: { inventory_offered: false, status: 'confirmed_none' },
+        local_computing: { inventory_offered: true, status: 'available' },
+      },
+    },
+    // Duplicate candidates are not distinct degrees, so this college belongs
+    // in "no degree record".
+    {
+      types: {
+        ast: { inventory_offered: false, status: 'confirmed_none' },
+        local_cs_as: { inventory_offered: false, status: 'confirmed_none' },
+        local_computing: { inventory_offered: true, status: 'duplicate_candidate' },
+      },
+    },
+  ],
 }
 
 const wire = () => {
@@ -52,16 +76,22 @@ const wire = () => {
 }
 
 describe('DatasetSummaryPanel', () => {
-  it('breaks the CS-degree landscape into the four offering segments', () => {
+  it('leads with inclusive degree totals and separately explains their overlap', () => {
     wire()
     render(<DatasetSummaryPanel />)
     expect(screen.getByText('CS associate-degree landscape')).toBeInTheDocument()
-    expect(screen.getByText('across 4 colleges')).toBeInTheDocument()
-    expect(screen.getByText('CS A.S.-T only')).toBeInTheDocument()
-    expect(screen.getByText('Local CS A.S. only')).toBeInTheDocument()
-    expect(screen.getByText('Both CS degrees')).toBeInTheDocument()
-    expect(screen.getByText('Neither CS degree')).toBeInTheDocument()
-    expect(screen.getByText('1 offer another computing degree')).toBeInTheDocument()
+    expect(screen.getByText('7 colleges · totals may overlap')).toBeInTheDocument()
+    const valueFor = (label) => within(screen.getByText(label).parentElement).getByText(/^\d+$/)
+    expect(valueFor('Schools with CS A.S.-T')).toHaveTextContent('2')
+    expect(valueFor('Schools with local CS A.S.')).toHaveTextContent('2')
+    expect(valueFor('Schools with another computing degree')).toHaveTextContent('2')
+
+    const breakdown = screen.getByText('One-school-per-group breakdown').parentElement
+    expect(within(breakdown).getByText('A.S.-T only').parentElement).toHaveTextContent('1 A.S.-T only')
+    expect(within(breakdown).getByText('local A.S. only').parentElement).toHaveTextContent('1 local A.S. only')
+    expect(within(breakdown).getByText('both CS degrees').parentElement).toHaveTextContent('1 both CS degrees')
+    expect(within(breakdown).getByText('other computing only').parentElement).toHaveTextContent('2 other computing only')
+    expect(within(breakdown).getByText('no degree record').parentElement).toHaveTextContent('2 no degree record')
   })
 
   it('marks a campus template Verified when it carries notes, Imported otherwise', () => {
@@ -85,14 +115,14 @@ describe('DatasetSummaryPanel', () => {
     wire()
     const onNavigate = vi.fn()
     const { unmount } = render(<DatasetSummaryPanel onNavigate={onNavigate} />)
-    fireEvent.click(screen.getByRole('button', { name: /Open Pathways/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open Community Colleges/ }))
     expect(onNavigate).toHaveBeenCalledWith('articulation')
-    fireEvent.click(screen.getByRole('button', { name: /Open Institutions/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open UC Campuses/ }))
     expect(onNavigate).toHaveBeenCalledWith('institutions')
     unmount()
 
     render(<DatasetSummaryPanel />)
-    expect(screen.queryByRole('button', { name: /Open Pathways/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Open Community Colleges/ })).not.toBeInTheDocument()
   })
 
   it('compact mode stays the plain chip strip with no landscape section', () => {

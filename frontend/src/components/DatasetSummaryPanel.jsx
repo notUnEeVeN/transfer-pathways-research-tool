@@ -81,57 +81,71 @@ function SectionHeader({ title, sub = null, hub = null, hubLabel = null, onNavig
   )
 }
 
-// The statewide CS-degree landscape, from the availability survey's
-// catalog-inventory evidence (what each college OFFERS, independent of whether
-// the requirement record extracted cleanly): the four mutually exclusive
-// segments of the college population — A.S.-T only, local A.S. only, both, or
-// neither of the two CS degrees.
+// The statewide CS-degree landscape, using distinct requirement records that
+// are available for analysis. Headline figures are inclusive totals; the
+// compact row below them is the mutually exclusive, one-college-per-group
+// breakdown. Catalog-only data gaps and duplicate candidates stay out so the
+// Overview agrees with the degree detail and export views.
 function CsDegreeLandscapePanel({ onNavigate }) {
   const availability = useAsDegreeAvailability()
-  if (availability.isError) return null // the Pathways hub reports the failure
+  if (availability.isError) return null // the Community Colleges hub reports the failure
   const rows = availability.data?.rows || []
-  const seg = { both: 0, astOnly: 0, localOnly: 0, neither: 0, neitherWithComputing: 0 }
+  const seg = { both: 0, astOnly: 0, localOnly: 0, otherOnly: 0, none: 0 }
+  const totals = { ast: 0, local: 0, other: 0 }
   for (const row of rows) {
-    const ast = !!row.types?.ast?.inventory_offered
-    const local = !!row.types?.local_cs_as?.inventory_offered
+    const ast = row.types?.ast?.status === 'available'
+    const local = row.types?.local_cs_as?.status === 'available'
+    const other = row.types?.local_computing?.status === 'available'
+    if (ast) totals.ast += 1
+    if (local) totals.local += 1
+    if (other) totals.other += 1
     if (ast && local) seg.both += 1
     else if (ast) seg.astOnly += 1
     else if (local) seg.localOnly += 1
-    else {
-      seg.neither += 1
-      if (row.types?.local_computing?.inventory_offered) seg.neitherWithComputing += 1
-    }
+    else if (other) seg.otherOnly += 1
+    else seg.none += 1
   }
-  const loading = !rows.length
+  const loading = availability.isLoading
   const n = (v) => (loading ? '—' : <span className='tabular'>{v}</span>)
+  const breakdown = [
+    [seg.astOnly, 'A.S.-T only'],
+    [seg.localOnly, 'local A.S. only'],
+    [seg.both, 'both CS degrees'],
+    [seg.otherOnly, 'other computing only'],
+    [seg.none, 'no degree record'],
+  ]
   return (
     <section aria-label='CS associate-degree landscape'>
       <SectionHeader title='CS associate-degree landscape'
-        sub={loading ? null : `across ${rows.length} colleges`}
-        hub='articulation' hubLabel='Open Pathways' onNavigate={onNavigate} />
-      <StatStrip tiles={[
-        {
-          label: 'CS A.S.-T only',
-          value: n(seg.astOnly),
-          sub: 'transfer degree, no local A.S.',
-          accent: true,
-        },
-        {
-          label: 'Local CS A.S. only',
-          value: n(seg.localOnly),
-          sub: 'local degree, no A.S.-T',
-        },
-        {
-          label: 'Both CS degrees',
-          value: n(seg.both),
-          sub: 'local A.S. and A.S.-T',
-        },
-        {
-          label: 'Neither CS degree',
-          value: n(seg.neither),
-          sub: loading ? null : `${seg.neitherWithComputing} offer another computing degree`,
-        },
-      ]} />
+        sub={loading ? null : `${rows.length} colleges · totals may overlap`}
+        hub='articulation' hubLabel='Open Community Colleges' onNavigate={onNavigate} />
+      <div className='surface-card overflow-hidden'>
+        <StatStrip bare tiles={[
+          {
+            label: 'Schools with CS A.S.-T',
+            value: n(totals.ast),
+            accent: true,
+          },
+          {
+            label: 'Schools with local CS A.S.',
+            value: n(totals.local),
+          },
+          {
+            label: 'Schools with another computing degree',
+            value: n(totals.other),
+          },
+        ]} />
+        <div className='border-t border-border/60 px-[22px] py-3.5'>
+          <p className='text-label'>One-school-per-group breakdown</p>
+          <div className='mt-2 flex flex-wrap gap-x-5 gap-y-1.5'>
+            {breakdown.map(([value, label]) => (
+              <span key={label} className='text-caption whitespace-nowrap'>
+                <strong className='font-semibold tabular text-ink'>{loading ? '—' : value}</strong> {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
@@ -179,7 +193,7 @@ function CampusTable({ schools, onNavigate = null }) {
         <span className='text-[12.5px] text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
         {onNavigate && (
           <Button variant='ghost' className='ml-auto' trailingIcon={ArrowRightIcon}
-            onClick={() => onNavigate('institutions')}>Open Institutions</Button>
+            onClick={() => onNavigate('institutions')}>Open UC Campuses</Button>
         )}
       </div>
       <div className={`${CAMPUS_TABLE_COLS} px-[22px] py-2.5 border-b border-border/60`}>

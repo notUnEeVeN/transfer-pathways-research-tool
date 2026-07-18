@@ -33,10 +33,10 @@ import { useAuth } from '@frontend/hooks/useAuth'
  * Everything shown is server-scoped to the caller's granted subset.
  *
  *   Overview               — counts, refresh time, and majors per school
- *   Institutions           — UC-campus hub: majors tracked, the four-year
+ *   UC Campuses            — UC-campus hub: majors tracked, the four-year
  *                             graduation-requirements template, the
  *                             hand-curated transfer minimum, and UC courses
- *   Pathways               — campus → college → agreements (ASSIST transfer
+ *   Community Colleges     — campus → college → agreements (ASSIST transfer
  *                             requirements / DB document / raw ASSIST /
  *                             curated-minimum comparison / graduation-
  *                             requirements coverage), with CS A.S.-T status,
@@ -71,7 +71,7 @@ export default function DataPage({ onNavigate = () => {} }) {
   // into a tab that never reports its own (overview, districts, the two
   // hubs), or flash stale until the newly-mounted pane's own effect catches up.
   const changeTab = (next) => {
-    // Re-selecting Pathways is its "home" action. The browser stays mounted
+    // Re-selecting Community Colleges is its "home" action. The browser stays mounted
     // when its active tab is clicked, so explicitly ask it to leave any college
     // or requirement drill-in while preserving the selected campus.
     if (next === 'articulation' && tab === 'articulation') {
@@ -95,8 +95,8 @@ export default function DataPage({ onNavigate = () => {} }) {
         value: tab, onChange: changeTab,
         options: [
           { value: 'overview',      label: 'Overview' },
-          { value: 'articulation',  label: 'Pathways' },
-          { value: 'institutions',  label: 'Institutions' },
+          { value: 'articulation',  label: 'Community Colleges' },
+          { value: 'institutions',  label: 'UC Campuses' },
           { value: 'prerequisites', label: 'Prerequisites' },
           { value: 'districts',     label: 'Districts' },
         ],
@@ -486,7 +486,7 @@ function CampusAgreements({
 // rendered through the same ledger as every other requirements view. `onBack`
 // is optional — the Universities of California hub mounts this with no
 // enclosing "all colleges" list to return to, so the back button only
-// renders when a caller supplies one (Pathways no longer does).
+// renders when a caller supplies one (Community Colleges no longer does).
 function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const q = useDegreeRequirements()
   const raw = useDegreeRequirementDocuments()
@@ -994,7 +994,7 @@ function CourseList({ institutionId, useCourses, columns, searchFields }) {
   )
 }
 
-// The CC/UC course-table column defs shared by the Pathways college detail and
+// The CC/UC course-table column defs shared by the Community Colleges detail and
 // the Universities of California institution catalog.
 const CC_COURSE_COLUMNS = [
   { key: 'course', label: 'Course', width: '140px', variant: 'code', render: (r) => `${r.prefix} ${r.number}` },
@@ -1011,10 +1011,10 @@ const UC_COURSE_COLUMNS = [
   { key: 'parent_id', label: 'parent_id', width: '110px', align: 'right', variant: 'num', render: (r) => r.parent_id },
 ]
 
-// ───────── Institutions (UC campuses) ─────────
+// ───────── UC campuses ─────────
 //
 // Community-college courses, degrees, and prerequisites now live beside each
-// college's transfer articulation in Pathways. Institutions is therefore the
+// college's transfer articulation under Community Colleges. UC Campuses is the
 // focused UC-campus catalog: graduation requirements, minimums, and courses.
 
 function InstitutionsTab({ onRoute = () => {} }) {

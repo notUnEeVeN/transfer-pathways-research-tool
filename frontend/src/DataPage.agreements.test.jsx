@@ -220,14 +220,14 @@ describe('AgreementsBrowser', () => {
 describe('DataPage SubNav route chip', () => {
   it('shows the coverage route once the articulation tab is active', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Pathways' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
 
     expect(screen.getByText('GET /api/assist/coverage')).toBeInTheDocument()
   })
 
-  it('resets a college drill-in when the active Pathways tab is clicked again', () => {
+  it('resets a college drill-in when the active Community Colleges tab is clicked again', () => {
     render(<DataPage />)
-    const articulationTab = screen.getByRole('tab', { name: 'Pathways' })
+    const articulationTab = screen.getByRole('tab', { name: 'Community Colleges' })
     fireEvent.click(articulationTab)
     expect(screen.getByPlaceholderText(/Search colleges/)).toBeInTheDocument()
 
@@ -237,7 +237,7 @@ describe('DataPage SubNav route chip', () => {
     expect(screen.getByRole('button', { name: 'All colleges' })).toBeInTheDocument()
     expect(screen.queryByPlaceholderText(/Search colleges/)).not.toBeInTheDocument()
 
-    // Re-selecting Pathways (its "home" action) leaves the drill-in and
+    // Re-selecting Community Colleges (its "home" action) leaves the drill-in and
     // returns to the college list, without losing the selected campus.
     fireEvent.click(articulationTab)
     expect(screen.queryByRole('button', { name: 'All colleges' })).not.toBeInTheDocument()
@@ -246,7 +246,7 @@ describe('DataPage SubNav route chip', () => {
 
   it('uses one top route, a universal hero, and balanced degree coverage stats', async () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Pathways' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
 
     const collegeName = screen.getByText('Diablo Valley College')
     fireEvent.click(collegeName.closest('[class*="cursor-pointer"]'))
@@ -327,10 +327,10 @@ describe('DataPage SubNav route chip', () => {
   })
 })
 
-describe('Institutions tab', () => {
+describe('UC Campuses tab', () => {
   it('opens directly on UC campuses, then shows requirements and course tabs', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Institutions' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'UC Campuses' }))
 
     expect(screen.getByText('GET /api/assist/institutions?kind=university')).toBeInTheDocument()
     expect(screen.queryByRole('tab', { name: 'Community colleges' })).not.toBeInTheDocument()
@@ -354,10 +354,10 @@ describe('Institutions tab', () => {
   })
 })
 
-describe('Pathways degree integration', () => {
+describe('Community Colleges degree integration', () => {
   it('uses only district and CS A.S.-T filters and removes the standalone degree page', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Pathways' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
 
     expect(screen.queryByRole('tab', { name: 'Associate Degrees' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter by district' })).toBeInTheDocument()
@@ -386,7 +386,7 @@ describe('Pathways degree integration', () => {
 
   it('opens degree information even when a college has no ASSIST agreement', async () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Pathways' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
     fireEvent.click(screen.getByText('Santa Monica College').closest('[class*="cursor-pointer"]'))
 
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
@@ -408,7 +408,7 @@ describe('Pathways degree integration', () => {
 
   it('opens a local CS A.S. when a college has no A.S.-T and excludes duplicate computing records', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Pathways' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
     fireEvent.click(screen.getByText('College of Marin').closest('[class*="cursor-pointer"]'))
 
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
