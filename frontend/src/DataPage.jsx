@@ -220,12 +220,14 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
         <Stack gap='comfortable'>
           <div className='min-w-0'>
             <span className='text-label'>Receiving campus</span>
+            {/* The pills share the row's full width — each grows equally so the
+                strip spans the pane instead of huddling left. */}
             <div className='mt-2 flex items-center gap-1.5 flex-wrap'>
               {campuses.map((c) => {
                 const active = Number(c.id) === Number(campus.school_id)
                 return (
                   <button key={c.id} type='button' onClick={() => selectCampus(c.id)}
-                    className={`px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
+                    className={`flex-1 text-center px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
                       active
                         ? 'bg-primary hover:bg-primary-hover text-on-primary border-primary font-[650]'
                         : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
@@ -284,8 +286,6 @@ function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, on
     return all.filter((c) => c.name.toLowerCase().includes(s))
   }, [colleges.data, coverageByCc, websiteByCc, q, geo])
 
-  const withAgreement = rows.filter((r) => r.assistRows.length).length
-
   return (
     <Stack gap='comfortable'>
       <div className='flex items-center gap-2.5'>
@@ -296,22 +296,6 @@ function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, on
             className='flex-1 bg-transparent outline-none border-none text-[15px] text-ink placeholder:text-ink-subtle' />
         </label>
         <CollegeGeoFilters colleges={colleges.data || []} value={geo} onChange={setGeo} />
-      </div>
-      <div className='flex items-center gap-4'>
-        <span className='text-[13px] text-ink-subtle'>
-          <strong className='text-ink font-semibold'>{campus.school}</strong> · {withAgreement} colleges with agreements
-        </span>
-        <div className='ml-auto flex items-center gap-4 text-[13px] text-ink-muted'>
-          <span className='flex items-center gap-1.5 whitespace-nowrap'>
-            <span className='inline-block w-[9px] h-[9px] rounded-pill bg-success' /> complete
-          </span>
-          <span className='flex items-center gap-1.5 whitespace-nowrap'>
-            <span className='inline-block w-[9px] h-[9px] rounded-pill bg-primary' /> partial coverage
-          </span>
-          <span className='flex items-center gap-1.5 whitespace-nowrap'>
-            <span className='inline-block w-[9px] h-[9px] rounded-pill border-[1.5px] border-border-strong bg-surface' /> no agreement
-          </span>
-        </div>
       </div>
       {colleges.isLoading || coverageLoading ? (
         <div className='flex justify-center py-8'><Spinner /></div>
@@ -405,10 +389,8 @@ function CampusAgreements({ campus, collegeId, onRoute, onBack }) {
 
   return (
     <Stack gap='cozy'>
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={backToColleges}>All colleges</Button>
-        <span className='text-border-strong'>·</span>
-        <span className='text-[13px] text-ink-subtle'>{campus.school}</span>
       </div>
       {batch.isLoading ? (
         <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
@@ -1000,7 +982,7 @@ function CommunityCollegesPane() {
             // ConceptGraphView only reads `initialCollegeId` on first mount
             // (it owns its own combobox after that, for tests and for the
             // canonical-concepts / cross-college switch it still offers).
-            <ConceptGraphView key={selectedCollegeId} initialCollegeId={selectedCollegeId} />
+            <ConceptGraphView key={selectedCollegeId} initialCollegeId={selectedCollegeId} lockCollege />
           )}
         </Stack>
       )}
@@ -1011,7 +993,7 @@ function CommunityCollegesPane() {
 function UniversitiesPane() {
   const summary = useDataSummary()
   const [selectedSchoolId, setSelectedSchoolId] = useState(null)
-  const [subTab, setSubTab] = useState('requirements')
+  const [subTab, setSubTab] = useState('courses')
 
   const schools = summary.data?.schools || []
   const items = useMemo(() => schools.map((s) => ({ id: s.school_id, name: s.school })), [schools])
@@ -1035,9 +1017,9 @@ function UniversitiesPane() {
         <Stack gap='cozy'>
           <Tabs value={subTab} onChange={setSubTab}
             options={[
+              { value: 'courses', label: 'Courses' },
               { value: 'requirements', label: 'Graduation Requirements' },
               { value: 'minimums', label: 'Transfer Minimums' },
-              { value: 'courses', label: 'Courses' },
             ]} />
           {subTab === 'requirements' && (
             <CampusDegreeTemplate schoolId={selectedCampus.school_id} school={selectedCampus.school} />

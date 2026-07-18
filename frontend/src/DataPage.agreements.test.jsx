@@ -135,13 +135,12 @@ describe('AgreementsBrowser', () => {
     expect(berkeley.className).not.toContain('bg-primary')
   })
 
-  it('shows the coverage legend and a college search matching the mockup copy', () => {
+  it('shows the college search without the old legend/summary row (removed as repeat info)', () => {
     render(<AgreementsBrowser />)
 
-    expect(screen.getByText('complete')).toBeInTheDocument()
-    expect(screen.getByText('partial coverage')).toBeInTheDocument()
-    expect(screen.getByText('no agreement')).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/Search .* colleges/)).toBeInTheDocument()
+    expect(screen.queryByText('partial coverage')).not.toBeInTheDocument()
+    expect(screen.queryByText(/colleges with agreements/)).not.toBeInTheDocument()
   })
 })
 
@@ -180,7 +179,9 @@ describe('DataPage SubNav route chip', () => {
     fireEvent.click(collegeName.closest('[class*="cursor-pointer"]'))
 
     expect(await screen.findByText('School pair')).toBeInTheDocument()
-    expect(screen.getAllByText('UC Berkeley')).toHaveLength(2)
+    // Once, in the School pair header — the copy beside the back button was
+    // removed as repeat information.
+    expect(screen.getAllByText('UC Berkeley')).toHaveLength(1)
     expect(screen.getByText('Electrical Engineering & Computer Sciences, B.S.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Open ASSIST' })).toBeInTheDocument()
     expect(screen.queryByText('Last verified')).not.toBeInTheDocument()

@@ -19,9 +19,11 @@ function ConceptChips({ heading, sub, items }) {
   )
 }
 
-export default function ConceptGraphView({ initialCollegeId = null }) {
+export default function ConceptGraphView({ initialCollegeId = null, lockCollege = false }) {
   // initialCollegeId exists so tests can render college mode without driving
   // the portal-based Combobox in jsdom; the app mounts this with no props.
+  // lockCollege hides the college Combobox — the Institutions pane already
+  // owns the selection via its rail, so a second picker here is noise.
   const colleges = useColleges()
   const [collegeId, setCollegeId] = useState(initialCollegeId)
   const graph = usePrereqGraph(collegeId)
@@ -90,12 +92,14 @@ export default function ConceptGraphView({ initialCollegeId = null }) {
 
   return (
     <Stack gap='cozy'>
-      <div className='flex items-center gap-3'>
-        <div className='w-80'>
-          <Combobox value={collegeId} onChange={setCollegeId} options={collegeOptions}
-            placeholder='Canonical concepts (no college)' />
+      {!lockCollege && (
+        <div className='flex items-center gap-3'>
+          <div className='w-80'>
+            <Combobox value={collegeId} onChange={setCollegeId} options={collegeOptions}
+              placeholder='Canonical concepts (no college)' />
+          </div>
         </div>
-      </div>
+      )}
       <StatStrip tiles={tiles} />
       {graphEl}
       {gapChips}
