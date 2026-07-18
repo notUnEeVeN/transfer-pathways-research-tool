@@ -57,9 +57,17 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('4u')).toBeInTheDocument()
     expect(screen.getByText('Complete all of:')).toBeInTheDocument()
     expect(screen.getByText(/2025-2026 catalog/)).toBeInTheDocument()
-    // GE stays a one-line note; a units_fill electives group renders nothing
-    expect(screen.getByText('General education')).toBeInTheDocument()
-    expect(screen.queryByText('Electives')).not.toBeInTheDocument()
+    expect(screen.queryByText(/not hand-verified/)).not.toBeInTheDocument()
+    // GE renders through the ledger too: its own group heading, the unit rule,
+    // and the synthetic pattern row.
+    expect(screen.getByRole('heading', { name: 'General education' })).toBeInTheDocument()
+    expect(screen.getByText('Complete 18 units of:')).toBeInTheDocument()
+    expect(screen.getByText('Approved courses from the college GE pattern')).toBeInTheDocument()
+    // Unit composition meter: direct-labeled segments, never color alone.
+    expect(screen.getByText('Unit composition')).toBeInTheDocument()
+    expect(screen.getByText('Major courses')).toBeInTheDocument()
+    expect(screen.getByText('9')).toBeInTheDocument()   // 4u + 5u of major courses
+    expect(screen.getByText('33')).toBeInTheDocument()  // 60 − 9 − 18 electives
   })
 
   it('calls the detail hook with the cc: prefixed id', () => {
@@ -82,7 +90,10 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('Local CS A.S.')).toBeInTheDocument()
     fireEvent.click(screen.getAllByText('Transfer (ADT)')[0])
     expect(screen.getByText('CS for Transfer')).toBeInTheDocument()
-    expect(screen.getByText('100%')).toBeInTheDocument()
+    // An AS-T IS the standardized TMC — coverage against the template is
+    // noise there, so the tile only shows for local CS degrees.
+    expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
+    expect(screen.queryByText('100%')).not.toBeInTheDocument()
   })
 
   it('omits the coverage tile for local_computing (no template)', () => {
