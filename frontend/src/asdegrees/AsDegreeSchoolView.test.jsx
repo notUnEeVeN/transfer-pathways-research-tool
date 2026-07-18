@@ -13,10 +13,20 @@ const receiver = (id) => ({
   options_conjunction: 'and', hash_id: null,
 })
 
+const LOCAL_GE_BREAKDOWN = {
+  pattern: 'local_pattern', assumed: true,
+  areas: [
+    { code: 'NS', name: 'Natural Sciences', qualifying_count: null },
+    { code: 'SB', name: 'Social & Behavioral Sciences', qualifying_count: null },
+    { code: 'H', name: 'Humanities', qualifying_count: null },
+    { code: 'LR', name: 'Language & Rationality', qualifying_count: null },
+    { code: 'M', name: 'Mathematics Competency', qualifying_count: null },
+  ],
+}
+
 const degree = (over = {}) => ({
   degree_type: 'local_cs_as',
-  coverage_pct: 83,
-  missing_core_concepts: ['phys_mech'],
+  ge_breakdowns: { local_pattern: LOCAL_GE_BREAKDOWN },
   courses_by_id: {
     'cc:1': { course_id: 1, prefix: 'CS', number: '21', code: 'CS 21',
       title: 'Programming Concepts', units: 4, concept: 'cs_1' },
@@ -46,9 +56,8 @@ describe('AsDegreeSchoolView', () => {
   it('renders coverage, units, courses, and the catalog source', () => {
     mockDetail.mockReturnValue({ data: { college_name: 'Cabrillo', degrees: [degree()] }, isLoading: false, isError: false })
     render(<AsDegreeSchoolView collegeId={41} />)
-    expect(screen.getByText('83%')).toBeInTheDocument()
-    expect(screen.getByText(/Missing physics/i)).toBeInTheDocument()
     expect(screen.getByText('60')).toBeInTheDocument()
+    expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
     // Courses render through the shared RequirementsLedger: cleaned group
     // title, course code + title, and the ledger's unit chip.
     expect(screen.getByRole('heading', { name: 'Required Major' })).toBeInTheDocument()
@@ -58,16 +67,15 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('Complete all of:')).toBeInTheDocument()
     expect(screen.getByText(/2025-2026 catalog/)).toBeInTheDocument()
     expect(screen.queryByText(/not hand-verified/)).not.toBeInTheDocument()
-    // GE renders through the ledger too: its own group heading, the unit rule,
-    // and the synthetic pattern row.
+    // GE renders through the ledger with one row per pattern AREA — the same
+    // "qualifying courses" treatment as Graduation Requirements Coverage.
     expect(screen.getByRole('heading', { name: 'General education' })).toBeInTheDocument()
     expect(screen.getByText('Complete 18 units of:')).toBeInTheDocument()
     expect(screen.getByText('Approved courses from the college GE pattern')).toBeInTheDocument()
-    // Unit composition meter: direct-labeled segments, never color alone.
-    expect(screen.getByText('Unit composition')).toBeInTheDocument()
-    expect(screen.getByText('Major courses')).toBeInTheDocument()
-    expect(screen.getByText('9')).toBeInTheDocument()   // 4u + 5u of major courses
-    expect(screen.getByText('33')).toBeInTheDocument()  // 60 − 9 − 18 electives
+    expect(screen.getByText('Natural Sciences')).toBeInTheDocument()
+    expect(screen.getByText('Language & Rationality')).toBeInTheDocument()
+    // Local patterns have no course tags -> the assumed category variant.
+    expect(screen.getAllByText('Qualifying community-college course')).toHaveLength(5)
   })
 
   it('calls the detail hook with the cc: prefixed id', () => {
@@ -90,10 +98,7 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('Local CS A.S.')).toBeInTheDocument()
     fireEvent.click(screen.getAllByText('Transfer (ADT)')[0])
     expect(screen.getByText('CS for Transfer')).toBeInTheDocument()
-    // An AS-T IS the standardized TMC — coverage against the template is
-    // noise there, so the tile only shows for local CS degrees.
     expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
-    expect(screen.queryByText('100%')).not.toBeInTheDocument()
   })
 
   it('omits the coverage tile for local_computing (no template)', () => {

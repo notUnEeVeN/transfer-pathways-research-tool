@@ -6,6 +6,94 @@
 
 const LOW_CONFIDENCE = 0.7;
 
+// ── GE pattern areas ─────────────────────────────────────────────────────────
+// Display definitions for each GE pattern an as_degree GE group can reference,
+// plus per-college qualifying-course counts from the catalog's area tags —
+// the same "N qualifying courses" treatment degreeSlots gives graduation
+// coverage. Local associate-degree patterns (Title 5 §55063) have no course
+// tags in the dataset, so their areas render as assumed (verify locally).
+const GE_PATTERN_AREAS = {
+  calgetc: [
+    ['1A', 'English Composition'], ['1B', 'Critical Thinking & Composition'],
+    ['1C', 'Oral Communication'], ['2', 'Mathematical Concepts & Quantitative Reasoning'],
+    ['3A', 'Arts'], ['3B', 'Humanities'], ['4', 'Social & Behavioral Sciences'],
+    ['5A', 'Physical Science'], ['5B', 'Biological Science'], ['5C', 'Laboratory Activity'],
+    ['6', 'Ethnic Studies'],
+  ],
+  igetc: [
+    ['1A', 'English Composition'], ['1B', 'Critical Thinking'], ['1C', 'Oral Communication'],
+    ['2', 'Mathematical Concepts'], ['3A', 'Arts'], ['3B', 'Humanities'],
+    ['4', 'Social & Behavioral Sciences'], ['5A', 'Physical Science'],
+    ['5B', 'Biological Science'], ['5C', 'Laboratory'], ['6', 'Language Other Than English'],
+    ['7', 'Ethnic Studies'],
+  ],
+  csu_ge: [
+    ['A1', 'Oral Communication'], ['A2', 'Written Communication'], ['A3', 'Critical Thinking'],
+    ['B1', 'Physical Science'], ['B2', 'Life Science'], ['B3', 'Laboratory Activity'],
+    ['B4', 'Mathematics / Quantitative Reasoning'], ['C1', 'Arts'], ['C2', 'Humanities'],
+    ['D', 'Social Sciences'], ['E', 'Lifelong Learning & Self-Development'], ['F', 'Ethnic Studies'],
+  ],
+  local_pattern: [
+    ['NS', 'Natural Sciences'], ['SB', 'Social & Behavioral Sciences'], ['H', 'Humanities'],
+    ['LR', 'Language & Rationality'], ['M', 'Mathematics Competency'],
+  ],
+};
+const GE_TAG_FIELD = { calgetc: 'calgetc_area', igetc: 'igetc_area', csu_ge: 'csu_ge_area' };
+// Cal-GETC/IGETC are transfer patterns — count UC-transferable courses only
+// (matching degreeSlots' population); CSU GE membership is independent of UC
+// transferability.
+const GE_UC_ONLY = { calgetc: true, igetc: true, csu_ge: false };
+
+// Collapse legacy sub-area tags to the display areas above.
+function normalizeGeTag(pattern, tag) {
+  if (pattern === 'igetc') {
+    if (tag === '2A') return '2';
+    if (tag && tag.startsWith('4') && tag.length > 1) return '4';
+    if (tag === '6A') return '6';
+    return tag;
+  }
+  if (pattern === 'csu_ge' && tag && tag.startsWith('D') && tag.length > 1) return 'D';
+  return tag;
+}
+
+function gePatternsOf(doc) {
+  return [...new Set((doc.requirement_groups || []).map((g) => g.ge_area).filter(Boolean))];
+}
+
+async function loadGeAreaCounts(db, communityCollegeId, patterns) {
+  const tagged = patterns.filter((p) => GE_TAG_FIELD[p]);
+  if (!tagged.length) return {};
+  const projection = { _id: 0, uc_transferable: 1 };
+  for (const p of tagged) projection[GE_TAG_FIELD[p]] = 1;
+  const rows = await db.collection('assist_courses')
+    .find({ side: 'sending', community_college_id: Number(communityCollegeId) }, { projection })
+    .toArray();
+  const counts = {};
+  for (const p of tagged) {
+    const field = GE_TAG_FIELD[p];
+    const m = new Map();
+    for (const r of rows) {
+      if (GE_UC_ONLY[p] && !r.uc_transferable) continue;
+      for (const t of r[field] || []) {
+        const code = normalizeGeTag(p, t);
+        m.set(code, (m.get(code) || 0) + 1);
+      }
+    }
+    counts[p] = m;
+  }
+  return counts;
+}
+
+function geBreakdownFor(pattern, counts) {
+  const defs = GE_PATTERN_AREAS[pattern];
+  if (!defs) return null;
+  if (!GE_TAG_FIELD[pattern]) {
+    return { pattern, assumed: true, areas: defs.map(([code, name]) => ({ code, name, qualifying_count: null })) };
+  }
+  const m = counts[pattern] || new Map();
+  return { pattern, assumed: false, areas: defs.map(([code, name]) => ({ code, name, qualifying_count: m.get(code) || 0 })) };
+}
+
 function collectCourseIds(docs) {
   const ids = new Set();
   for (const doc of docs) {
@@ -224,12 +312,24 @@ async function asDegreeDetail(db, collegeId) {
       concept: c.concept ?? null,
     }]));
     const coverage = computeConceptCoverage(doc, template);
+    // Per-pattern GE area breakdown ("N qualifying courses" per area) for the
+    // GE groups this degree carries.
+    const patterns = gePatternsOf(doc);
+    const geCounts = patterns.length
+      ? await loadGeAreaCounts(db, doc.community_college_id, patterns)
+      : {};
+    const geBreakdowns = {};
+    for (const p of patterns) {
+      const b = geBreakdownFor(p, geCounts);
+      if (b) geBreakdowns[p] = b;
+    }
     return {
       doc,
       courses_by_id: coursesById,
       covered_concepts: coverage.covered_concepts,
       missing_core_concepts: coverage.missing_core_concepts,
       coverage_pct: coverage.coverage_pct,
+      ge_breakdowns: geBreakdowns,
       degree_type: doc.degree_type ?? null,
     };
   }));

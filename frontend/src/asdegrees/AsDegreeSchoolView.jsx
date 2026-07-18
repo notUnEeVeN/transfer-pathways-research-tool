@@ -12,17 +12,6 @@ import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 // translation (receivers just have no university side). GE-pattern and
 // electives groups carry no course structure, so they stay one-line notes.
 
-// Short, readable names for the concept slugs used in the coverage tile.
-const CONCEPT_LABEL = {
-  cs_1: 'Programming', cs_2_oop: 'OOP', cs_3_data_structures: 'Data structures',
-  comp_arch_assembly: 'Computer architecture', discrete_math: 'Discrete math',
-  calc_1: 'Calculus I', calc_2: 'Calculus II', calc_3: 'Calculus III',
-  linear_alg: 'Linear algebra', diff_eq: 'Differential equations',
-  phys_mech: 'Physics', phys_em: 'Physics (E&M)',
-  gen_chem_1: 'Chemistry', bio_cell_molec: 'Biology',
-}
-const conceptName = (slug) => CONCEPT_LABEL[slug] || slug.replace(/_/g, ' ')
-
 const TYPE_TAB = { local_cs_as: 'Local A.S.', ast: 'Transfer (ADT)', local_computing: 'Applied' }
 
 // GE pattern identifiers → the section title shown on the pattern's card.
@@ -33,71 +22,29 @@ const GE_PATTERN_NAME = {
   local_pattern: 'Approved courses from the college GE pattern',
 }
 
-// How the degree's units split across major coursework, general education,
-// and electives-to-total. Advisement-aware: a choose-N-units group counts its
-// unit ask; an all/choose-N-courses group counts (a proportional share of)
-// its resolved course units. Display-level only.
-function degreeComposition(groups, coursesById, totalUnits) {
-  if (!Number.isFinite(totalUnits) || totalUnits <= 0) return null
-  let major = 0
-  let ge = 0
-  for (const g of groups) {
-    if (g.units_fill) continue
-    const s = (g.sections || [])[0] || {}
-    if (g.ge_area) { ge += s.unit_advisement || 0; continue }
-    if (s.unit_advisement != null) { major += s.unit_advisement; continue }
-    const perReceiver = (s.receivers || []).map((r) => {
-      const opt = (r.options || [])[0]
-      if (!opt) return 0
-      return (opt.course_keys || []).reduce((n, k) => n + (coursesById?.[k]?.units || 0), 0)
-    })
-    const sum = perReceiver.reduce((a, b) => a + b, 0)
-    major += s.section_advisement != null && perReceiver.length && s.section_advisement < perReceiver.length
-      ? s.section_advisement * (sum / perReceiver.length)
-      : sum
-  }
-  if (major <= 0 && ge <= 0) return null
-  const electives = Math.max(0, totalUnits - major - ge)
-  const round = (v) => Math.round(v * 10) / 10
-  return { major: round(major), ge: round(ge), electives: round(electives), total: totalUnits }
-}
-
-// A single part-to-whole meter: Major · General education · Electives.
-// Identity is carried by the direct labels beneath (never color alone), the
-// segments keep 2px surface gaps, and the hues are the console's own
-// restrained tokens (forest / lime / stone) rather than an imported
-// categorical palette — a deliberate trade for the site's minimal look.
-const COMPOSITION_SEGMENTS = [
-  { key: 'major', label: 'Major courses', color: 'var(--color-primary, #193018)' },
-  { key: 'ge', label: 'General education', color: 'var(--color-accent, #96F060)' },
-  { key: 'electives', label: 'Electives', color: 'var(--color-border-strong, #C9C9BD)' },
-]
-
-function UnitCompositionBar({ major, ge, electives, total, unitWord }) {
-  const values = { major, ge, electives }
-  const segments = COMPOSITION_SEGMENTS.filter((s) => values[s.key] > 0)
-  if (segments.length < 2) return null
-  return (
-    <div className='surface-card px-[22px] py-4'>
-      <p className='text-label'>Unit composition</p>
-      <div className='mt-2.5 flex h-2 rounded-pill overflow-hidden gap-[2px]' aria-hidden>
-        {segments.map((s) => (
-          <span key={s.key} className='h-full rounded-pill'
-            style={{ width: `${(values[s.key] / total) * 100}%`, backgroundColor: s.color }} />
-        ))}
-      </div>
-      <div className='mt-2.5 flex items-center gap-5 flex-wrap'>
-        {segments.map((s) => (
-          <span key={s.key} className='inline-flex items-center gap-1.5 text-caption'>
-            <span className='inline-block w-[9px] h-[9px] rounded-pill shrink-0' style={{ backgroundColor: s.color }} />
-            <span className='text-ink-muted'>{s.label}</span>
-            <span className='font-[600] text-ink tabular'>{values[s.key]}</span>
-          </span>
-        ))}
-        <span className='ml-auto text-caption text-ink-subtle'>{total} {unitWord}</span>
-      </div>
-    </div>
-  )
+// Build the GE group's ledger rows from the server's per-area breakdown: one
+// receiver per GE area (receiving side = the area), with a category_match so
+// the sending side reads "N qualifying courses" — the same treatment the
+// Graduation Requirements Coverage tab gives GE/breadth slots. Local
+// associate-degree patterns have no course tags in the dataset, so their
+// areas render as the assumed variant (verify the college's approved list).
+function geAreaReceivers(breakdown) {
+  if (!breakdown || !Array.isArray(breakdown.areas)) return []
+  return breakdown.areas.map((a) => ({
+    receiving: { kind: 'ge_area', code: a.code, name: a.name },
+    articulation_status: 'articulated',
+    not_articulated_reason: null,
+    options: [],
+    options_conjunction: 'and',
+    hash_id: null,
+    category_match: {
+      kind: 'ge_area',
+      areas: [],
+      required_count: null,
+      qualifying_count: breakdown.assumed ? null : a.qualifying_count,
+      assumed: !!breakdown.assumed,
+    },
+  }))
 }
 
 // Catalog group headings mix topics ("Required Core") with bare instructions
@@ -116,16 +63,16 @@ const ledgerTitle = (raw) => {
 }
 
 export function DegreePanel({ degree }) {
-  const { doc, courses_by_id: coursesById, coverage_pct: coverage, missing_core_concepts: missing } = degree
+  const { doc, courses_by_id: coursesById, ge_breakdowns: geBreakdowns } = degree
   const units = doc.unit_system === 'quarter' ? 'quarter units' : 'semester units'
   const groups = doc.requirement_groups || []
 
   // Every group renders through the shared RequirementsLedger, in catalog
-  // order. Course groups pass through as stored; a GE-pattern group has no
-  // enumerable courses, so it becomes a title-only section — the same
-  // SectionCard chrome, headed by the pattern name and its own
-  // "Complete N units of:" rule, with no course rows. Electives-to-total
-  // groups carry nothing to render.
+  // order. Course groups pass through as stored. A GE-pattern group has no
+  // enumerable courses of its own, so its rows are the pattern's AREAS —
+  // each with the college's qualifying-course count, exactly like the
+  // Graduation Requirements Coverage treatment. Electives-to-total groups
+  // carry nothing to render.
   const ledgerMajor = useMemo(() => ({
     requirement_groups: groups
       .filter((g) => !g.units_fill
@@ -135,47 +82,35 @@ export function DegreePanel({ degree }) {
           return { ...g, title: ledgerTitle(g.label_seen) || undefined }
         }
         const section = (g.sections || [])[0] || {}
+        const areaReceivers = geAreaReceivers(geBreakdowns?.[g.ge_area])
         return {
           ...g,
           title: 'General education',
           sections: [{
             title: GE_PATTERN_NAME[g.ge_area] || 'General-education pattern',
-            section_advisement: null,
+            // Every area of a GE pattern is required — state the full count
+            // (a null advisement means "any one satisfies" in this skeleton).
+            // A stated unit ask wins the rule line either way.
+            section_advisement: areaReceivers.length || null,
             unit_advisement: section.unit_advisement ?? null,
-            receivers: [],
+            receivers: areaReceivers,
           }],
         }
       }),
-  }), [groups])
+  }), [groups, geBreakdowns])
   const ledgerCourses = useMemo(
     () => Object.values(coursesById || {}).filter((c) => c && c.course_id != null),
     [coursesById]
   )
 
   const unresolved = groups.flatMap((g) => g.unresolved_courses_seen || [])
-  const composition = useMemo(() => degreeComposition(groups, coursesById, doc.total_units), [groups, coursesById, doc.total_units])
-
-  const tiles = []
-  // Coverage against the statewide template is only informative for a LOCAL
-  // CS degree (how much of the standard core the college's own design has).
-  // An AS-T is the standardized TMC itself, so its coverage is ~always 100%
-  // and reads as noise; local_computing has no template at all.
-  if (coverage != null && degree.degree_type === 'local_cs_as') {
-    tiles.push({
-      label: 'Template coverage', value: `${coverage}%`,
-      sub: missing?.length ? `Missing ${missing.map(conceptName).join(', ').toLowerCase()}` : 'Full standard core',
-      accent: coverage >= 100,
-    })
-  }
-  tiles.push({ label: 'Total units', value: doc.total_units ?? '—', sub: units })
 
   return (
     <Stack gap='cozy'>
       <p className='text-body text-ink-muted'>{doc.degree_title_seen}</p>
-      {tiles.length > 0 && (
-        <section aria-label='Degree summary'><StatStrip tiles={tiles} /></section>
-      )}
-      {composition && <UnitCompositionBar {...composition} unitWord={units} />}
+      <section aria-label='Degree summary'>
+        <StatStrip tiles={[{ label: 'Total units', value: doc.total_units ?? '—', sub: units }]} />
+      </section>
       {ledgerMajor.requirement_groups.length > 0 && (
         <div className='uui-scope'>
           <RequirementsLedger major={ledgerMajor} courses={ledgerCourses}

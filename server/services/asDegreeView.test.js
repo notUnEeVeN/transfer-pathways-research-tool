@@ -272,3 +272,49 @@ describe('templateRequiredSlots', () => {
     expect(templateRequiredSlots(template)).toHaveLength(2);
   });
 });
+
+describe('GE area breakdowns', () => {
+  it('counts qualifying courses per Cal-GETC area; local patterns render assumed', async () => {
+    await db.collection('assist_institutions').insertOne(
+      { _id: 'cc:9', kind: 'community_college', source_id: 9, name: 'Cerro Coso Community College' });
+    await db.collection('assist_courses').insertMany([
+      { _id: 'cc:901', course_id: 901, side: 'sending', community_college_id: 9, prefix: 'ENGL', number: '1A',
+        title: 'Composition', units: 4, uc_transferable: true, calgetc_area: ['1A'] },
+      { _id: 'cc:902', course_id: 902, side: 'sending', community_college_id: 9, prefix: 'HIST', number: '10',
+        title: 'World History', units: 3, uc_transferable: true, calgetc_area: ['3B', '4'] },
+      { _id: 'cc:903', course_id: 903, side: 'sending', community_college_id: 9, prefix: 'PHIL', number: '2',
+        title: 'Intro to Philosophy', units: 3, uc_transferable: true, calgetc_area: ['3B'] },
+      // Not UC-transferable: excluded from the Cal-GETC counts.
+      { _id: 'cc:904', course_id: 904, side: 'sending', community_college_id: 9, prefix: 'BUS', number: '50',
+        title: 'Bookkeeping', units: 3, uc_transferable: false, calgetc_area: ['3B'] },
+    ]);
+    await db.collection('curated_requirements').insertOne(
+      { _id: 'as_degree:9:local_cs_as', kind: 'as_degree', community_college_id: 9, college_id: 'cc:9',
+        degree_type: 'local_cs_as', major_slug: 'cs', template_ref: null, status: 'found',
+        degree_title_seen: 'Computer Science, A.S.', catalog_url: 'https://q', catalog_year: '2025-2026',
+        unit_system: 'semester', total_units: 60,
+        verification: { verified: false }, covered_concepts: [],
+        requirement_groups: [
+          { group_id: 'ge_calgetc', template_group: null, source: 'extracted', confidence: 1,
+            label_seen: 'General Education (Cal-GETC)', is_required: true, ge_area: 'calgetc',
+            sections: [{ section_advisement: null, unit_advisement: 34, receivers: [] }] },
+          { group_id: 'ge_local', template_group: null, source: 'extracted', confidence: 1,
+            label_seen: 'Local GE', is_required: true, ge_area: 'local_pattern',
+            sections: [{ section_advisement: null, unit_advisement: 18, receivers: [] }] },
+        ] });
+
+    const detail = await asDegreeDetail(db, 'cc:9');
+    const deg = detail.degrees[0];
+    const cal = deg.ge_breakdowns.calgetc;
+    expect(cal.assumed).toBe(false);
+    const byCode = Object.fromEntries(cal.areas.map((a) => [a.code, a.qualifying_count]));
+    expect(byCode['1A']).toBe(1);
+    expect(byCode['3B']).toBe(2);   // BUS 50 excluded (not UC-transferable)
+    expect(byCode['4']).toBe(1);
+    expect(byCode['1B']).toBe(0);
+    const local = deg.ge_breakdowns.local_pattern;
+    expect(local.assumed).toBe(true);
+    expect(local.areas.map((a) => a.code)).toEqual(['NS', 'SB', 'H', 'LR', 'M']);
+    expect(local.areas.every((a) => a.qualifying_count === null)).toBe(true);
+  });
+});
