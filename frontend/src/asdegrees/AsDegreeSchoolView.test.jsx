@@ -56,8 +56,10 @@ describe('AsDegreeSchoolView', () => {
   it('renders coverage, units, courses, and the catalog source', () => {
     mockDetail.mockReturnValue({ data: { college_name: 'Cabrillo', degrees: [degree()] }, isLoading: false, isError: false })
     render(<AsDegreeSchoolView collegeId={41} />)
-    expect(screen.getByText('60')).toBeInTheDocument()
+    // No summary tiles: coverage % and total units (a statutory constant —
+    // 60 semester / 90 quarter) are deliberately not shown.
     expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
+    expect(screen.queryByText('Total units')).not.toBeInTheDocument()
     // Courses render through the shared RequirementsLedger: cleaned group
     // title, course code + title, and the ledger's unit chip.
     expect(screen.getByRole('heading', { name: 'Required Major' })).toBeInTheDocument()
@@ -101,13 +103,14 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
   })
 
-  it('omits the coverage tile for local_computing (no template)', () => {
+  it('renders a local_computing degree with no summary tiles', () => {
     mockDetail.mockReturnValue({
       data: { degrees: [degree({ degree_type: 'local_computing', coverage_pct: null, missing_core_concepts: [] })] },
       isLoading: false, isError: false,
     })
     render(<AsDegreeSchoolView collegeId={5} />)
-    expect(screen.getByText('Total units')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science - Associate in Science (A.S.)')).toBeInTheDocument()
+    expect(screen.queryByText('Total units')).not.toBeInTheDocument()
     expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
   })
 

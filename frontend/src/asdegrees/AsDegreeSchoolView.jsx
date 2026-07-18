@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
-import { Stack, Tabs, StatStrip, Spinner, EmptyState } from '../components/ui'
+import { Stack, Tabs, Spinner, EmptyState } from '../components/ui'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 
@@ -64,7 +64,6 @@ const ledgerTitle = (raw) => {
 
 export function DegreePanel({ degree }) {
   const { doc, courses_by_id: coursesById, ge_breakdowns: geBreakdowns } = degree
-  const units = doc.unit_system === 'quarter' ? 'quarter units' : 'semester units'
   const groups = doc.requirement_groups || []
 
   // Every group renders through the shared RequirementsLedger, in catalog
@@ -108,9 +107,6 @@ export function DegreePanel({ degree }) {
   return (
     <Stack gap='cozy'>
       <p className='text-body text-ink-muted'>{doc.degree_title_seen}</p>
-      <section aria-label='Degree summary'>
-        <StatStrip tiles={[{ label: 'Total units', value: doc.total_units ?? '—', sub: units }]} />
-      </section>
       {ledgerMajor.requirement_groups.length > 0 && (
         <div className='uui-scope'>
           <RequirementsLedger major={ledgerMajor} courses={ledgerCourses}
