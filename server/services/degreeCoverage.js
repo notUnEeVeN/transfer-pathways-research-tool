@@ -46,7 +46,7 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
   const coursesById = new Map();
   if (usedCourseIds.size) {
     const rows = await db.collection('assist_courses')
-      .find({ side: 'sending', course_id: { $in: [...usedCourseIds] } }, { projection: { course_id: 1, prefix: 1, number: 1, _id: 0 } })
+      .find({ side: 'sending', course_id: { $in: [...usedCourseIds] } }, { projection: { course_id: 1, prefix: 1, number: 1, title: 1, units: 1, _id: 0 } })
       .toArray();
     for (const c of rows) coursesById.set(Number(c.course_id), c);
   }

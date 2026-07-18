@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { ClipboardDocumentListIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Button, EmptyState, Spinner, Stack, StatStrip, SwitchField, Tabs, useToast } from '../components/ui'
 import { useAuth } from '../shared/hooks/useAuth'
+import { useAccessMe } from '../shared/query/hooks/useAccess'
 import {
   useAddTaskStageNote, useCompleteTaskStage, useCreateTask, useDeleteTask,
   useDeleteTaskStageNote, useReopenTaskStage, useResolveTaskStageNote,
@@ -26,6 +27,9 @@ const WEEK_MS = 7 * 24 * 60 * 60 * 1000
  */
 export default function TasksPage() {
   const { user } = useAuth()
+  // Admins may force-approve their own task; the server enforces the same rule.
+  const access = useAccessMe()
+  const isAdminUser = access.data?.role === 'admin'
   const toast = useToast()
   const tasksQ = useTasks()
   const rosterQ = useTaskRoster()
@@ -57,9 +61,10 @@ export default function TasksPage() {
 
   const onMove = (task, patch) => {
     // Verification is derived, not a drop target — a task reaches it by finishing
-    // the Self-verify stage, so reject drops onto that column.
+    // the Publish stage (Self-verify and peer approval both live there), so
+    // reject drops onto that column.
     if (patch.status === 'verification') {
-      toast.error('Tasks reach Verification by completing the Self-verify stage.')
+      toast.error('Tasks reach Verification by completing the Publish stage.')
       return
     }
     if (patch.status === 'done' && (task.progress || 0) < 100) {
@@ -183,6 +188,7 @@ export default function TasksPage() {
           initialStatus={modal.initialStatus || 'todo'}
           roster={rosterQ.data?.rows || []}
           me={user}
+          admin={isAdminUser}
           onCreate={(body) => createTask.mutateAsync(body)}
           onPatch={(id, patch) => updateTask.mutateAsync({ id, patch })}
           onAddStageNote={(id, stage, note) => addTaskStageNote.mutateAsync({ id, stage, note })}

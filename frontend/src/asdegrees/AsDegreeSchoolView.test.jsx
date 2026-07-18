@@ -80,6 +80,48 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getAllByText('Qualifying community-college course')).toHaveLength(5)
   })
 
+  it('clusters statewide GE areas into one card per parent area', () => {
+    const CALGETC_BREAKDOWN = {
+      pattern: 'calgetc', assumed: false,
+      areas: [
+        { code: '1A', name: 'English Composition', qualifying_count: 12 },
+        { code: '1B', name: 'Critical Thinking & Composition', qualifying_count: 8 },
+        { code: '1C', name: 'Oral Communication', qualifying_count: 5 },
+        { code: '2', name: 'Mathematical Concepts & Quantitative Reasoning', qualifying_count: 14 },
+        { code: '3A', name: 'Arts', qualifying_count: 20 },
+        { code: '3B', name: 'Humanities', qualifying_count: 22 },
+        { code: '4', name: 'Social & Behavioral Sciences', qualifying_count: 30 },
+        { code: '5A', name: 'Physical Science', qualifying_count: 9 },
+        { code: '5B', name: 'Biological Science', qualifying_count: 7 },
+        { code: '5C', name: 'Laboratory Activity', qualifying_count: 6 },
+        { code: '6', name: 'Ethnic Studies', qualifying_count: 3 },
+      ],
+    }
+    mockDetail.mockReturnValue({
+      data: { degrees: [degree({
+        ge_breakdowns: { calgetc: CALGETC_BREAKDOWN },
+        doc: { ...degree().doc, requirement_groups: [
+          { group_id: 'ge', label_seen: 'General Education', ge_area: 'calgetc', units_fill: false,
+            sections: [{ section_advisement: null, unit_advisement: 34, receivers: [] }],
+            unresolved_courses_seen: [] },
+        ] },
+      })] }, isLoading: false, isError: false,
+    })
+    render(<AsDegreeSchoolView collegeId={41} />)
+    expect(screen.getByRole('heading', { name: 'General education — Cal-GETC' })).toBeInTheDocument()
+    // Sibling sub-areas share one card; standalone areas get their own.
+    expect(screen.getByText('Area 1 · English Communication')).toBeInTheDocument()
+    expect(screen.getByText('Area 2 · Mathematical Concepts & Quantitative Reasoning')).toBeInTheDocument()
+    expect(screen.getByText('Area 5 · Physical & Biological Sciences')).toBeInTheDocument()
+    expect(screen.getByText('GE 1A')).toBeInTheDocument()
+    expect(screen.getByText('GE 1B')).toBeInTheDocument()
+    expect(screen.getByText('GE 5C')).toBeInTheDocument()
+    // The pattern-level unit ask reads once, as the group rule.
+    expect(screen.getByText('Complete 34 units across the sections below.')).toBeInTheDocument()
+    // Qualifying counts still ride each area row.
+    expect(screen.getByText('12 qualifying courses')).toBeInTheDocument()
+  })
+
   it('calls the detail hook with the cc: prefixed id', () => {
     mockDetail.mockReturnValue({ data: { degrees: [degree()] }, isLoading: false, isError: false })
     render(<AsDegreeSchoolView collegeId={41} />)
@@ -95,12 +137,43 @@ describe('AsDegreeSchoolView', () => {
       ] }, isLoading: false, isError: false,
     })
     render(<AsDegreeSchoolView collegeId={14} />)
-    expect(screen.getAllByText('Local A.S.').length).toBeGreaterThan(0)
-    expect(screen.getAllByText('Transfer (ADT)').length).toBeGreaterThan(0)
-    expect(screen.getByText('Local CS A.S.')).toBeInTheDocument()
-    fireEvent.click(screen.getAllByText('Transfer (ADT)')[0])
+    expect(screen.getByRole('tab', { name: 'Local CS A.S.' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'CS A.S.-T' })).toBeInTheDocument()
+    expect(screen.getByText('Local CS A.S.', { selector: 'p' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('tab', { name: 'CS A.S.-T' }))
     expect(screen.getByText('CS for Transfer')).toBeInTheDocument()
     expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
+  })
+
+  it('opens the requested degree type when reached from a statewide record', () => {
+    mockDetail.mockReturnValue({
+      data: { degrees: [
+        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'ast', doc: { ...degree().doc, degree_title_seen: 'CS A.S.-T detail' } }),
+      ] },
+      isLoading: false,
+      isError: false,
+    })
+    render(<AsDegreeSchoolView collegeId={14} initialDegreeType='ast' />)
+    expect(screen.getByText('CS A.S.-T detail')).toBeInTheDocument()
+    expect(screen.queryByText('Local CS A.S.', { selector: 'p' })).not.toBeInTheDocument()
+  })
+
+  it('can isolate one degree type and suppress its repeated title', () => {
+    mockDetail.mockReturnValue({
+      data: { degrees: [
+        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'ast', doc: { ...degree().doc, degree_title_seen: 'CS A.S.-T detail' } }),
+      ] },
+      isLoading: false,
+      isError: false,
+    })
+    render(<AsDegreeSchoolView collegeId={14} onlyDegreeType='ast' showDegreeTitle={false} />)
+    expect(screen.queryByRole('tab', { name: 'Local CS A.S.' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('tab', { name: 'CS A.S.-T' })).not.toBeInTheDocument()
+    expect(screen.queryByText('Local CS A.S.')).not.toBeInTheDocument()
+    expect(screen.queryByText('CS A.S.-T detail')).not.toBeInTheDocument()
+    expect(screen.getByText('CS 21')).toBeInTheDocument()
   })
 
   it('renders a local_computing degree with no summary tiles', () => {

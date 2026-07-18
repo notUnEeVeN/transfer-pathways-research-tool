@@ -12,7 +12,11 @@ import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 // translation (receivers just have no university side). GE-pattern and
 // electives groups carry no course structure, so they stay one-line notes.
 
-const TYPE_TAB = { local_cs_as: 'Local A.S.', ast: 'Transfer (ADT)', local_computing: 'Applied' }
+const TYPE_TAB = {
+  ast: 'CS A.S.-T',
+  local_cs_as: 'Local CS A.S.',
+  local_computing: 'Other computing',
+}
 
 // GE pattern identifiers → the section title shown on the pattern's card.
 const GE_PATTERN_NAME = {
@@ -20,6 +24,59 @@ const GE_PATTERN_NAME = {
   igetc: 'Approved courses from the IGETC pattern',
   csu_ge: 'Approved courses from the CSU GE pattern',
   local_pattern: 'Approved courses from the college GE pattern',
+}
+
+// Parent-area clusters for the statewide patterns: one ledger section per
+// top-level area, so sibling sub-areas (1A/1B/1C) read as one card and
+// standalone areas (2, 4…) stand alone. Keys are area-code prefixes; the
+// college's local pattern has no sub-area structure, so it stays one card.
+const GE_PATTERN_SHORT = { calgetc: 'Cal-GETC', igetc: 'IGETC', csu_ge: 'CSU GE' }
+const GE_AREA_CLUSTERS = {
+  calgetc: [
+    ['1', 'English Communication'],
+    ['2', 'Mathematical Concepts & Quantitative Reasoning'],
+    ['3', 'Arts & Humanities'],
+    ['4', 'Social & Behavioral Sciences'],
+    ['5', 'Physical & Biological Sciences'],
+    ['6', 'Ethnic Studies'],
+  ],
+  igetc: [
+    ['1', 'English Communication'],
+    ['2', 'Mathematical Concepts & Quantitative Reasoning'],
+    ['3', 'Arts & Humanities'],
+    ['4', 'Social & Behavioral Sciences'],
+    ['5', 'Physical & Biological Sciences'],
+    ['6', 'Language Other Than English'],
+    ['7', 'Ethnic Studies'],
+  ],
+  csu_ge: [
+    ['A', 'English Language Communication & Critical Thinking'],
+    ['B', 'Scientific Inquiry & Quantitative Reasoning'],
+    ['C', 'Arts & Humanities'],
+    ['D', 'Social Sciences'],
+    ['E', 'Lifelong Learning & Self-Development'],
+    ['F', 'Ethnic Studies'],
+  ],
+}
+
+// Split a pattern's area receivers into one section per parent-area cluster.
+// An area whose code matches no cluster (unexpected data) gets its own card
+// rather than disappearing.
+function geClusterSections(pattern, areaReceivers) {
+  const clusters = GE_AREA_CLUSTERS[pattern]
+  // No cluster map (local pattern) or no breakdown to cluster (a stale cached
+  // payload) — callers fall back to the flat single-card render.
+  if (!clusters || !areaReceivers.length) return null
+  const inCluster = (code, key) => String(code || '').startsWith(key)
+  const sections = clusters
+    .map(([key, name]) => ({
+      title: `Area ${key} · ${name}`,
+      receivers: areaReceivers.filter((r) => inCluster(r.receiving.code, key)),
+    }))
+    .filter((s) => s.receivers.length)
+  const orphans = areaReceivers.filter((r) => !clusters.some(([key]) => inCluster(r.receiving.code, key)))
+  for (const r of orphans) sections.push({ title: r.receiving.name || `Area ${r.receiving.code}`, receivers: [r] })
+  return sections.map((s) => ({ ...s, section_advisement: s.receivers.length, unit_advisement: null }))
 }
 
 // Build the GE group's ledger rows from the server's per-area breakdown: one
@@ -62,7 +119,7 @@ const ledgerTitle = (raw) => {
   return t
 }
 
-export function DegreePanel({ degree }) {
+export function DegreePanel({ degree, showDegreeTitle = true }) {
   const { doc, courses_by_id: coursesById, ge_breakdowns: geBreakdowns } = degree
   const groups = doc.requirement_groups || []
 
@@ -82,6 +139,17 @@ export function DegreePanel({ degree }) {
         }
         const section = (g.sections || [])[0] || {}
         const areaReceivers = geAreaReceivers(geBreakdowns?.[g.ge_area])
+        const clusterSections = geClusterSections(g.ge_area, areaReceivers)
+        if (clusterSections) {
+          return {
+            ...g,
+            title: `General education — ${GE_PATTERN_SHORT[g.ge_area] || 'pattern'}`,
+            // A stated unit ask spans the whole pattern, so it reads as the
+            // group rule ("Complete N units across the sections below").
+            group_unit_advisement: section.unit_advisement ?? null,
+            sections: clusterSections,
+          }
+        }
         return {
           ...g,
           title: 'General education',
@@ -106,7 +174,7 @@ export function DegreePanel({ degree }) {
 
   return (
     <Stack gap='cozy'>
-      <p className='text-body text-ink-muted'>{doc.degree_title_seen}</p>
+      {showDegreeTitle && <p className='text-body text-ink-muted'>{doc.degree_title_seen}</p>}
       {ledgerMajor.requirement_groups.length > 0 && (
         <div className='uui-scope'>
           <RequirementsLedger major={ledgerMajor} courses={ledgerCourses}
@@ -139,26 +207,38 @@ export function DegreePanel({ degree }) {
   )
 }
 
-export default function AsDegreeSchoolView({ collegeId }) {
+export default function AsDegreeSchoolView({
+  collegeId,
+  initialDegreeType = null,
+  onlyDegreeType = null,
+  showDegreeTitle = true,
+}) {
   const q = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
-  const degrees = q.data?.degrees || []
-  const [pick, setPick] = useState(0)
-  useEffect(() => { setPick(0) }, [collegeId])
+  const allDegrees = q.data?.degrees || []
+  const degrees = onlyDegreeType
+    ? allDegrees.filter((degree) => degree.degree_type === onlyDegreeType)
+    : allDegrees
+  const requestedType = onlyDegreeType || initialDegreeType
+  const [selectedType, setSelectedType] = useState(requestedType)
+  useEffect(() => { setSelectedType(requestedType) }, [collegeId, requestedType])
 
   if (q.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (q.isError || !degrees.length) {
     return <EmptyState title='No associate-degree data'
       description='This college has no local computer-science associate degree on file yet.' />
   }
-  const active = degrees[Math.min(pick, degrees.length - 1)]
+  const active = degrees.find((degree) => degree.degree_type === selectedType) || degrees[0]
 
   return (
     <Stack gap='cozy'>
       {degrees.length > 1 && (
-        <Tabs value={String(pick)} onChange={(v) => setPick(Number(v))}
-          options={degrees.map((d, i) => ({ value: String(i), label: TYPE_TAB[d.degree_type] || 'Degree' }))} />
+        <Tabs value={active.degree_type} onChange={setSelectedType}
+          options={degrees.map((degree) => ({
+            value: degree.degree_type,
+            label: TYPE_TAB[degree.degree_type] || 'Degree',
+          }))} />
       )}
-      <DegreePanel degree={active} />
+      <DegreePanel degree={active} showDegreeTitle={showDegreeTitle} />
     </Stack>
   )
 }

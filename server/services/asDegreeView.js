@@ -4,7 +4,10 @@
 // is never mutated; template_default stubs are resolved by the CONSUMER
 // joining `template`, not by copying template content into docs.
 
+const DEFAULT_INVENTORY = require('../../scripts/data/as_degrees_cs_extraction.json').survey;
+
 const LOW_CONFIDENCE = 0.7;
+const DEGREE_TYPES = ['ast', 'local_cs_as', 'local_computing'];
 
 // ── GE pattern areas ─────────────────────────────────────────────────────────
 // Display definitions for each GE pattern an as_degree GE group can reference,
@@ -110,6 +113,38 @@ function collectCourseIds(docs) {
   return [...ids];
 }
 
+function courseSetKey(doc) {
+  return collectCourseIds([doc]).sort((a, b) => Number(a) - Number(b)).join(',');
+}
+
+function normalizedDegreeTitle(doc) {
+  return String(doc.degree_title_seen || '')
+    .replace(/\s*\[same program as local_cs_as[^\]]*\]\s*/i, '')
+    .trim()
+    .toLowerCase();
+}
+
+// The statewide extraction currently contains a small set of rows where the
+// same local CS A.S. was emitted once as local_cs_as and again as
+// local_computing. Surface these as QA candidates; never silently hide them.
+function duplicateLocalComputingIds(docs) {
+  const bySchoolAndType = new Map(docs.map((doc) => [
+    `${doc.community_college_id}:${doc.degree_type}`,
+    doc,
+  ]));
+  const duplicates = new Set();
+  for (const computing of docs.filter((doc) => doc.degree_type === 'local_computing')) {
+    const localCs = bySchoolAndType.get(`${computing.community_college_id}:local_cs_as`);
+    if (!localCs) continue;
+    const courses = courseSetKey(computing);
+    if (courses && courses === courseSetKey(localCs)
+        && normalizedDegreeTitle(computing) === normalizedDegreeTitle(localCs)) {
+      duplicates.add(computing._id);
+    }
+  }
+  return duplicates;
+}
+
 async function loadCourses(db, docs) {
   const ids = collectCourseIds(docs);
   if (!ids.length) return [];
@@ -210,7 +245,7 @@ function computeConceptCoverage(doc, template) {
   };
 }
 
-function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
+function summarizeDoc(doc, template, collegeName, unitsByCourseId, duplicateIds = new Set()) {
   const groups = doc.requirement_groups || [];
   const sourceCounts = { extracted: 0, template_default: 0, curated: 0 };
   const confidences = [];
@@ -228,6 +263,7 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
   if (sourceCounts.template_default > 0) flags.push('template_default_groups');
   if (confidences.some((c) => c < LOW_CONFIDENCE)) flags.push('low_confidence');
   if (unresolved > 0) flags.push('unresolved_courses');
+  if (duplicateIds.has(doc._id)) flags.push('duplicate_candidate');
   const hasFill = groups.some((g) => g.units_fill);
   if (doc.status === 'found' && !hasFill && Number.isFinite(doc.total_units)
       && Math.abs(unitsAccounted - doc.total_units) > 1) {
@@ -262,25 +298,145 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId) {
   };
 }
 
-async function asDegreeOverview(db) {
+async function asDegreeOverview(db, { degreeType = null } = {}) {
   // There are now two statewide templates (cs_local / cs_ast — one per
   // degree_type); coverage_pct only means anything if each row is compared
   // against ITS OWN template_ref, not one arbitrary template for every row.
-  const [templates, docs, institutions] = await Promise.all([
+  const [templates, allDocs, institutions] = await Promise.all([
     db.collection('curated_requirements').find({ kind: 'as_degree_template' }).toArray(),
     db.collection('curated_requirements').find({ kind: 'as_degree' }).toArray(),
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1 } }).toArray(),
   ]);
+  const docs = degreeType ? allDocs.filter((doc) => doc.degree_type === degreeType) : allDocs;
+  const duplicateIds = duplicateLocalComputingIds(allDocs);
   const templatesById = new Map(templates.map((t) => [t._id, t]));
   const nameById = new Map(institutions.map((i) => [i._id, i.name]));
   const courses = await loadCourses(db, docs);
   const unitsByCourseId = new Map(courses.map((c) => [c.course_id, c.units || 0]));
   const rows = docs
     .map((d) => summarizeDoc(
-      d, templatesById.get(d.template_ref) || null, nameById.get(d.college_id), unitsByCourseId))
+      d, templatesById.get(d.template_ref) || null, nameById.get(d.college_id), unitsByCourseId,
+      duplicateIds))
     .sort((a, b) => String(a.college_name).localeCompare(String(b.college_name)));
-  return { template: templates[0] || null, rows };
+  const template = degreeType
+    ? templates.find((row) => row.degree_type === degreeType) || null
+    : templates[0] || null;
+  return { params: { degree_type: degreeType }, template, n: rows.length, rows };
+}
+
+function inventoryOffers(survey, type) {
+  if (type === 'ast') return !!survey.ast_cs_exists;
+  if (type === 'local_cs_as') return !!survey.local_cs_as_exists;
+  return (survey.local_computing_degrees || []).length > 0;
+}
+
+function availabilityFor(survey, type, doc, duplicateIds) {
+  const offered = inventoryOffers(survey, type);
+  let status;
+  if (doc?.status === 'found' && duplicateIds.has(doc._id)) status = 'duplicate_candidate';
+  else if (doc?.status === 'found') status = 'available';
+  else if (offered) status = 'data_gap';
+  else status = 'confirmed_none';
+  return {
+    status,
+    inventory_offered: offered,
+    record_id: doc?._id || null,
+    degree_title_seen: doc?.degree_title_seen || null,
+    catalog_url: doc?.catalog_url || null,
+    catalog_year: doc?.catalog_year || null,
+    verified: !!doc?.verification?.verified,
+    inventory_titles: type === 'local_computing'
+      ? (survey.local_computing_degrees || []).map((degree) => ({
+        name: degree.name || null,
+        award: degree.award || null,
+      }))
+      : [],
+  };
+}
+
+// One row per surveyed college, including explicit negative findings. This is
+// separate from the record overview because an absent as_degree row cannot by
+// itself distinguish "confirmed not offered" from "offered, extraction gap".
+async function asDegreeAvailability(db, inventory = DEFAULT_INVENTORY) {
+  const [docs, institutions] = await Promise.all([
+    db.collection('curated_requirements').find({ kind: 'as_degree' }).toArray(),
+    db.collection('assist_institutions')
+      .find({ kind: 'community_college' }, { projection: { name: 1, district: 1, region: 1, source_id: 1 } })
+      .toArray(),
+  ]);
+  const docBySchoolAndType = new Map(docs.map((doc) => [
+    `${doc.community_college_id}:${doc.degree_type}`,
+    doc,
+  ]));
+  const institutionBySourceId = new Map(institutions.map((row) => [row.source_id, row]));
+  const duplicateIds = duplicateLocalComputingIds(docs);
+  const rows = inventory.map((survey) => {
+    const institution = institutionBySourceId.get(Number(survey.community_college_id));
+    const types = Object.fromEntries(DEGREE_TYPES.map((type) => [
+      type,
+      availabilityFor(
+        survey,
+        type,
+        docBySchoolAndType.get(`${survey.community_college_id}:${type}`),
+        duplicateIds,
+      ),
+    ]));
+    return {
+      college_id: `cc:${survey.community_college_id}`,
+      community_college_id: Number(survey.community_college_id),
+      college_name: institution?.name || survey.college_name,
+      district: institution?.district || null,
+      region: institution?.region || null,
+      inventory_source_url: survey.source_url || null,
+      survey_confidence: survey.confidence ?? null,
+      types,
+    };
+  }).sort((a, b) => String(a.college_name).localeCompare(String(b.college_name)));
+
+  const counts = { total_colleges: rows.length };
+  for (const type of DEGREE_TYPES) {
+    counts[type] = { available: 0, data_gap: 0, confirmed_none: 0, duplicate_candidate: 0 };
+    for (const row of rows) counts[type][row.types[type].status] += 1;
+  }
+  return { counts, rows };
+}
+
+function courseView(course) {
+  return {
+    course_id: course.course_id,
+    prefix: course.prefix ?? null,
+    number: course.number ?? null,
+    code: `${course.prefix} ${course.number}`,
+    title: course.title ?? null,
+    units: course.units ?? null,
+    concept: course.concept ?? null,
+  };
+}
+
+// Full nested degree documents for notebook/visualization work. Unlike the QA
+// overview, this preserves requirement logic and includes a joined course map
+// so an analysis needs one request rather than 69 per-college detail calls.
+async function asDegreesExportData(db, { degreeType = 'ast' } = {}) {
+  const [docs, institutions] = await Promise.all([
+    db.collection('curated_requirements')
+      .find({ kind: 'as_degree', degree_type: degreeType, status: 'found' })
+      .sort({ community_college_id: 1 })
+      .toArray(),
+    db.collection('assist_institutions')
+      .find({ kind: 'community_college' }, { projection: { name: 1 } }).toArray(),
+  ]);
+  const courses = await loadCourses(db, docs);
+  const courseById = new Map(courses.map((course) => [course.course_id, course]));
+  const nameById = new Map(institutions.map((row) => [row._id, row.name]));
+  return docs.map((doc) => {
+    const coursesById = {};
+    for (const id of collectCourseIds([doc])) {
+      const course = courseById.get(id);
+      if (course) coursesById[`cc:${id}`] = courseView(course);
+    }
+    return { ...doc, college_name: nameById.get(doc.college_id) || null, courses_by_id: coursesById };
+  });
 }
 
 async function asDegreeDetail(db, collegeId) {
@@ -299,18 +455,7 @@ async function asDegreeDetail(db, collegeId) {
         : Promise.resolve(null),
       loadCourses(db, [doc]),
     ]);
-    const coursesById = Object.fromEntries(courses.map((c) => [`cc:${c.course_id}`, {
-      // course_id/prefix/number let the shared RequirementsLedger consume this
-      // map directly (it matches sending courses by numeric course_id); `code`
-      // stays for lighter consumers.
-      course_id: c.course_id,
-      prefix: c.prefix ?? null,
-      number: c.number ?? null,
-      code: `${c.prefix} ${c.number}`,
-      title: c.title ?? null,
-      units: c.units ?? null,
-      concept: c.concept ?? null,
-    }]));
+    const coursesById = Object.fromEntries(courses.map((c) => [`cc:${c.course_id}`, courseView(c)]));
     const coverage = computeConceptCoverage(doc, template);
     // Per-pattern GE area breakdown ("N qualifying courses" per area) for the
     // GE groups this degree carries.
@@ -339,4 +484,11 @@ async function asDegreeDetail(db, collegeId) {
   };
 }
 
-module.exports = { asDegreeOverview, asDegreeDetail, templateRequiredSlots };
+module.exports = {
+  asDegreeOverview,
+  asDegreeAvailability,
+  asDegreesExportData,
+  asDegreeDetail,
+  duplicateLocalComputingIds,
+  templateRequiredSlots,
+};

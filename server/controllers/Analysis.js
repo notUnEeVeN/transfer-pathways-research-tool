@@ -15,6 +15,7 @@
  * re-port show up within a minute without a restart.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
+const { asDegreesExportData } = require('../services/asDegreeView');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
 const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
 const {
@@ -80,7 +81,7 @@ function toCsv(rows) {
   return [cols.join(','), ...rows.map((r) => cols.map((c) => cell(r[c])).join(','))].join('\n');
 }
 
-function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
+function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams = null } = {}) {
   return asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const auditDb = req.app.locals.auditDb || db;
@@ -104,7 +105,7 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false } = {}) {
       );
       return res.send(toCsv(rows));
     }
-    res.json({ params, n: rows.length, rows });
+    res.json({ params: responseParams ? { ...params, ...responseParams } : params, n: rows.length, rows });
   });
 }
 
@@ -138,5 +139,12 @@ exports.exportAgreements = makeEndpoint('agreements', agreementsExportData);
 exports.exportReceivers = makeEndpoint('receivers', receiversExportData);
 exports.exportCourses = makeEndpoint('courses', coursesExportData);
 exports.exportUniversityCourses = makeEndpoint('university-courses', universityCoursesExportData);
+// Deliberately fixed to Computer Science A.S.-T: this is the stable cohort for
+// the transfer-credit visualizations, with full nested requirements + courses.
+exports.exportCsAstDegrees = makeEndpoint(
+  'cs-ast-degrees',
+  (db) => asDegreesExportData(db, { degreeType: 'ast' }),
+  { responseParams: { degree_type: 'ast' } },
+);
 
 exports._toCsv = toCsv;

@@ -3,7 +3,10 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { asDegreeOverview, asDegreeDetail, templateRequiredSlots } = cjs('./asDegreeView');
+const {
+  asDegreeOverview, asDegreeAvailability, asDegreesExportData,
+  asDegreeDetail, duplicateLocalComputingIds, templateRequiredSlots,
+} = cjs('./asDegreeView');
 
 let mongo; let db;
 
@@ -192,6 +195,59 @@ describe('asDegreeOverview', () => {
     expect(ast.degree_title_seen).toBe('Computer Science for Transfer, A.S.-T.');
     // covers only 1 of 5 required slots
     expect(ast.coverage_pct).toBe(20);
+  });
+
+  it('filters the overview to one stable degree_type cohort', async () => {
+    await seed();
+    const result = await asDegreeOverview(db, { degreeType: 'ast' });
+    expect(result.params).toEqual({ degree_type: 'ast' });
+    expect(result.n).toBe(1);
+    expect(result.rows.map((row) => row.degree_type)).toEqual(['ast']);
+  });
+});
+
+describe('asDegreeAvailability', () => {
+  it('distinguishes available, confirmed-none, and offered-but-missing records', async () => {
+    await seed();
+    const inventory = [
+      { community_college_id: 110, college_name: 'Allan Hancock College',
+        local_cs_as_exists: true, ast_cs_exists: true,
+        local_computing_degrees: [{ name: 'Computer Information Systems', award: 'A.S.' }] },
+      { community_college_id: 2, college_name: 'Evergreen Valley College',
+        local_cs_as_exists: false, ast_cs_exists: true, local_computing_degrees: [] },
+    ];
+    const result = await asDegreeAvailability(db, inventory);
+    const hancock = result.rows.find((row) => row.college_id === 'cc:110');
+    const evergreen = result.rows.find((row) => row.college_id === 'cc:2');
+    expect(hancock.types.ast.status).toBe('available');
+    expect(hancock.types.local_cs_as.status).toBe('available');
+    expect(evergreen.types.ast.status).toBe('data_gap');
+    expect(evergreen.types.local_cs_as.status).toBe('confirmed_none');
+    expect(result.counts.ast).toMatchObject({ available: 1, data_gap: 1, confirmed_none: 0 });
+  });
+});
+
+describe('asDegreesExportData', () => {
+  it('returns only found CS A.S.-T documents with joined college/course data', async () => {
+    await seed();
+    const rows = await asDegreesExportData(db);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      _id: 'as_degree:110:ast', degree_type: 'ast', college_name: 'Allan Hancock College',
+    });
+    expect(rows[0].courses_by_id['cc:101']).toMatchObject({ code: 'CS 111', units: 4 });
+  });
+});
+
+describe('duplicateLocalComputingIds', () => {
+  it('flags only same-title, same-course local-computing duplicates', () => {
+    const local = { _id: 'as_degree:1:local_cs_as', community_college_id: 1,
+      degree_type: 'local_cs_as', degree_title_seen: 'Computer Science, A.S.',
+      requirement_groups: [{ sections: [{ receivers: [receiver(101)] }] }] };
+    const duplicate = { ...local, _id: 'as_degree:1:local_computing', degree_type: 'local_computing' };
+    const distinct = { ...local, _id: 'as_degree:2:local_computing', community_college_id: 2,
+      degree_type: 'local_computing', degree_title_seen: 'Computer Information Systems, A.S.' };
+    expect([...duplicateLocalComputingIds([local, duplicate, distinct])]).toEqual([duplicate._id]);
   });
 });
 

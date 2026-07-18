@@ -188,6 +188,34 @@ describe('PortingWorkflow assignee-gated completion (T22)', () => {
     expect(screen.queryByRole('button', { name: 'Approve task' })).not.toBeInTheDocument()
   })
 
+  it('lets an admin force-approve their own task, labelled as an override', async () => {
+    const workflowStages = Object.fromEntries(PORTING_STAGES.slice(0, -1).map((stage) => [
+      stage.key,
+      {
+        completed: true,
+        completed_at: '2026-07-11T10:00:00Z',
+        completed_by: 'assignee',
+        completed_by_label: 'Cy',
+        note: `Finished ${stage.label}`,
+      },
+    ]))
+    const onCompleteStage = vi.fn().mockResolvedValue({})
+    render(
+      <PortingWorkflow
+        task={{ ...assignedTask, status: 'in_progress', progress: 90, workflow_stages: workflowStages }}
+        me={{ uid: 'assignee' }} admin onAddStageNote={vi.fn()}
+        onCompleteStage={onCompleteStage} onReopenStage={vi.fn()}
+      />
+    )
+
+    // No peer-blocked notice — the admin gets the composer with a Force approve
+    // button and an override caution instead.
+    expect(screen.queryByText(/Waiting for another teammate/)).not.toBeInTheDocument()
+    expect(screen.getByText(/Admin override/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Force approve' }))
+    await waitFor(() => expect(onCompleteStage).toHaveBeenCalledWith('tp-test0001', 'approval'))
+  })
+
   it('lets a third-party reviewer approve without writing a review note', async () => {
     const workflowStages = Object.fromEntries(PORTING_STAGES.slice(0, -1).map((stage) => [
       stage.key,

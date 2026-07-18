@@ -1,0 +1,65 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { createRequire } from 'node:module';
+
+const cjs = createRequire(import.meta.url);
+const { startInMemoryMongo } = cjs('../test/mongoHarness');
+const { exportCsAstDegrees } = cjs('./Analysis');
+
+let mongo;
+let db;
+
+beforeAll(async () => {
+  mongo = await startInMemoryMongo();
+  db = mongo.client.db('analysis_controller_test');
+}, 60_000);
+
+afterAll(async () => { await mongo.stop(); });
+
+function run(handler, query = {}) {
+  const req = {
+    query,
+    user: { uid: 'researcher-1' },
+    app: { locals: { db, auditDb: db } },
+  };
+  return new Promise((resolve, reject) => {
+    const res = {
+      statusCode: 200,
+      body: null,
+      headers: {},
+      status(code) { this.statusCode = code; return this; },
+      setHeader(name, value) { this.headers[name] = value; },
+      json(value) { this.body = value; resolve(this); return this; },
+      send(value) { this.body = value; resolve(this); return this; },
+    };
+    handler(req, res, (error) => error ? reject(error) : resolve(res));
+  });
+}
+
+describe('CS A.S.-T export', () => {
+  it('declares and returns only the fixed ast cohort', async () => {
+    await db.collection('assist_institutions').insertOne({
+      _id: 'cc:10', kind: 'community_college', source_id: 10, name: 'Example College',
+    });
+    await db.collection('assist_courses').insertOne({
+      _id: 'cc:100', course_id: 100, prefix: 'CS', number: '1', title: 'Programming', units: 4,
+    });
+    const shared = {
+      kind: 'as_degree', community_college_id: 10, college_id: 'cc:10', status: 'found',
+      requirement_groups: [{ sections: [{ receivers: [{ options: [{ course_ids: [100] }] }] }] }],
+    };
+    await db.collection('curated_requirements').insertMany([
+      { ...shared, _id: 'as_degree:10:ast', degree_type: 'ast', degree_title_seen: 'Computer Science A.S.-T' },
+      { ...shared, _id: 'as_degree:10:local', degree_type: 'local_cs_as', degree_title_seen: 'Computer Science A.S.' },
+    ]);
+
+    const response = await run(exportCsAstDegrees);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.params.degree_type).toBe('ast');
+    expect(response.body.n).toBe(1);
+    expect(response.body.rows[0]).toMatchObject({
+      _id: 'as_degree:10:ast', degree_type: 'ast', college_name: 'Example College',
+    });
+    expect(response.body.rows[0].courses_by_id['cc:100']).toMatchObject({ code: 'CS 1', units: 4 });
+  });
+});

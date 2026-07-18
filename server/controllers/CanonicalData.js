@@ -638,12 +638,23 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
 exports.asDegrees = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const collegeId = String(req.query.college_id || '').trim();
+  const degreeType = String(req.query.degree_type || '').trim() || null;
+  if (degreeType && !AS_DEGREE_TYPES.includes(degreeType)) {
+    return res.status(400).json({ error: `degree_type must be one of ${AS_DEGREE_TYPES.join(', ')}` });
+  }
   if (collegeId) {
     const detail = await asDegreeView.asDegreeDetail(db, collegeId);
     if (!detail) return res.status(404).json({ error: 'no as_degree row for that college' });
     return res.json(detail);
   }
-  res.json(await asDegreeView.asDegreeOverview(db));
+  res.json(await asDegreeView.asDegreeOverview(db, { degreeType }));
+});
+
+// One row per college with explicit available / confirmed-none / data-gap
+// states for each degree type. Absence from as_degree alone is not evidence of
+// absence from the catalog, so this joins the completed statewide inventory.
+exports.asDegreeAvailability = asyncHandler(async (req, res) => {
+  res.json(await asDegreeView.asDegreeAvailability(req.app.locals.db));
 });
 
 exports.COLLECTIONS = COLLECTIONS;

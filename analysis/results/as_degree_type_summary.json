@@ -1,0 +1,518 @@
+{
+  "generated_at": "2026-07-18T15:04:41.219Z",
+  "database": "pmt_research",
+  "inventory_schools": 115,
+  "total_stored_records": 199,
+  "total_distinct_records": 177,
+  "schools_with_analyzable_record": 114,
+  "inventory": {
+    "local_cs_as_schools": 45,
+    "ast_schools": 72,
+    "local_computing_schools": 107
+  },
+  "by_type": {
+    "local_cs_as": {
+      "label": "Local Computer Science A.S.",
+      "stored_records": 45,
+      "excluded_duplicate_records": 0,
+      "analyzable_records": 45,
+      "schools": 45,
+      "pct_of_115_schools": 39.1,
+      "confidence_mean": 0.91,
+      "confidence_median": 0.92,
+      "confidence_min": 0.6,
+      "semester_total_units_median": 60,
+      "semester_total_units_min": 60,
+      "semester_total_units_max": 60,
+      "quarter_records": 1,
+      "template_coverage_mean_pct": 80,
+      "template_coverage_median_pct": 83,
+      "template_coverage_min_pct": 17,
+      "resolved_course_references": 615,
+      "unresolved_course_references": 14,
+      "course_resolution_pct": 97.8,
+      "records_with_unresolved_courses": 8,
+      "verified_records": 0,
+      "flag_counts": {
+        "unresolved_courses": 8,
+        "units_mismatch": 34,
+        "low_confidence": 1
+      },
+      "top_concepts": [
+        {
+          "concept": "cs_1",
+          "records": 44,
+          "pct": 97.8
+        },
+        {
+          "concept": "comp_arch_assembly",
+          "records": 40,
+          "pct": 88.9
+        },
+        {
+          "concept": "cs_2_oop",
+          "records": 36,
+          "pct": 80
+        },
+        {
+          "concept": "discrete_math",
+          "records": 33,
+          "pct": 73.3
+        },
+        {
+          "concept": "calc_1",
+          "records": 30,
+          "pct": 66.7
+        },
+        {
+          "concept": "cs_3_data_structures",
+          "records": 30,
+          "pct": 66.7
+        },
+        {
+          "concept": "calc_2",
+          "records": 27,
+          "pct": 60
+        },
+        {
+          "concept": "phys_mech",
+          "records": 18,
+          "pct": 40
+        },
+        {
+          "concept": "phys_em",
+          "records": 13,
+          "pct": 28.9
+        },
+        {
+          "concept": "linear_alg",
+          "records": 11,
+          "pct": 24.4
+        },
+        {
+          "concept": "c_systems_programming",
+          "records": 8,
+          "pct": 17.8
+        },
+        {
+          "concept": "gen_chem_1",
+          "records": 6,
+          "pct": 13.3
+        }
+      ]
+    },
+    "ast": {
+      "label": "Computer Science A.S.-T",
+      "stored_records": 69,
+      "excluded_duplicate_records": 0,
+      "analyzable_records": 69,
+      "schools": 69,
+      "pct_of_115_schools": 60,
+      "confidence_mean": 0.942,
+      "confidence_median": 0.96,
+      "confidence_min": 0.8,
+      "semester_total_units_median": 60,
+      "semester_total_units_min": 60,
+      "semester_total_units_max": 61,
+      "quarter_records": 2,
+      "template_coverage_mean_pct": 98.1,
+      "template_coverage_median_pct": 100,
+      "template_coverage_min_pct": 88,
+      "resolved_course_references": 670,
+      "unresolved_course_references": 20,
+      "course_resolution_pct": 97.1,
+      "records_with_unresolved_courses": 10,
+      "verified_records": 0,
+      "flag_counts": {
+        "units_mismatch": 51,
+        "unresolved_courses": 10
+      },
+      "top_concepts": [
+        {
+          "concept": "calc_1",
+          "records": 69,
+          "pct": 100
+        },
+        {
+          "concept": "calc_2",
+          "records": 69,
+          "pct": 100
+        },
+        {
+          "concept": "comp_arch_assembly",
+          "records": 69,
+          "pct": 100
+        },
+        {
+          "concept": "discrete_math",
+          "records": 69,
+          "pct": 100
+        },
+        {
+          "concept": "phys_mech",
+          "records": 69,
+          "pct": 100
+        },
+        {
+          "concept": "cs_1",
+          "records": 62,
+          "pct": 89.9
+        },
+        {
+          "concept": "phys_em",
+          "records": 52,
+          "pct": 75.4
+        },
+        {
+          "concept": "cs_2_oop",
+          "records": 41,
+          "pct": 59.4
+        },
+        {
+          "concept": "cs_3_data_structures",
+          "records": 36,
+          "pct": 52.2
+        },
+        {
+          "concept": "bio_cell_molec",
+          "records": 34,
+          "pct": 49.3
+        },
+        {
+          "concept": "gen_chem_1",
+          "records": 27,
+          "pct": 39.1
+        },
+        {
+          "concept": "bio_organismal",
+          "records": 18,
+          "pct": 26.1
+        }
+      ]
+    },
+    "local_computing": {
+      "label": "Local computing associate degree",
+      "stored_records": 85,
+      "excluded_duplicate_records": 22,
+      "analyzable_records": 63,
+      "schools": 63,
+      "pct_of_115_schools": 54.8,
+      "confidence_mean": 0.91,
+      "confidence_median": 0.95,
+      "confidence_min": 0.3,
+      "semester_total_units_median": 60,
+      "semester_total_units_min": 60,
+      "semester_total_units_max": 66,
+      "quarter_records": 2,
+      "template_coverage_mean_pct": null,
+      "template_coverage_median_pct": null,
+      "template_coverage_min_pct": null,
+      "resolved_course_references": 919,
+      "unresolved_course_references": 99,
+      "course_resolution_pct": 90.3,
+      "records_with_unresolved_courses": 23,
+      "verified_records": 0,
+      "flag_counts": {
+        "units_mismatch": 44,
+        "unresolved_courses": 23,
+        "low_confidence": 2
+      },
+      "top_concepts": [
+        {
+          "concept": "cs_1",
+          "records": 55,
+          "pct": 87.3
+        },
+        {
+          "concept": "cs_2_oop",
+          "records": 26,
+          "pct": 41.3
+        },
+        {
+          "concept": "comp_arch_assembly",
+          "records": 23,
+          "pct": 36.5
+        },
+        {
+          "concept": "cs_3_data_structures",
+          "records": 21,
+          "pct": 33.3
+        },
+        {
+          "concept": "discrete_math",
+          "records": 11,
+          "pct": 17.5
+        },
+        {
+          "concept": "calc_1",
+          "records": 10,
+          "pct": 15.9
+        },
+        {
+          "concept": "acct_financial",
+          "records": 8,
+          "pct": 12.7
+        },
+        {
+          "concept": "c_systems_programming",
+          "records": 7,
+          "pct": 11.1
+        },
+        {
+          "concept": "calc_2",
+          "records": 5,
+          "pct": 7.9
+        },
+        {
+          "concept": "phys_mech",
+          "records": 5,
+          "pct": 7.9
+        },
+        {
+          "concept": "calc_3",
+          "records": 3,
+          "pct": 4.8
+        },
+        {
+          "concept": "econ_macro",
+          "records": 2,
+          "pct": 3.2
+        }
+      ]
+    }
+  },
+  "analyzable_school_mixes": {
+    "ast + local_computing": 40,
+    "local_cs_as": 22,
+    "local_cs_as + ast": 22,
+    "ast": 7,
+    "local_computing": 22,
+    "local_cs_as + local_computing": 1,
+    "none": 1
+  },
+  "duplicate_local_computing_records": [
+    {
+      "community_college_id": 121,
+      "college_name": "Antelope Valley College",
+      "degree_title": "A.S. Computer Science (Associate of Science in Computer Science)"
+    },
+    {
+      "community_college_id": 104,
+      "college_name": "Cerritos College",
+      "degree_title": "Computer and Information Sciences: Computer Science (A.S.)"
+    },
+    {
+      "community_college_id": 96,
+      "college_name": "Chabot College",
+      "degree_title": "Associate in Science - Computer Science"
+    },
+    {
+      "community_college_id": 4,
+      "college_name": "College of Marin",
+      "degree_title": "A.S. in Computer Science"
+    },
+    {
+      "community_college_id": 102,
+      "college_name": "College of the Siskiyous",
+      "degree_title": "Computer Science - AS (A.S. Degree Major)"
+    },
+    {
+      "community_college_id": 28,
+      "college_name": "Contra Costa College",
+      "degree_title": "Computer Science Associate in Science Degree (Credit)"
+    },
+    {
+      "community_college_id": 70,
+      "college_name": "Crafton Hills College",
+      "degree_title": "Computer Science - Associate of Science"
+    },
+    {
+      "community_college_id": 145,
+      "college_name": "Folsom Lake College",
+      "degree_title": "A.S. in Computer Science"
+    },
+    {
+      "community_college_id": 35,
+      "college_name": "Fresno City College",
+      "degree_title": "Computer Science, Associate of Science - Major #2790"
+    },
+    {
+      "community_college_id": 55,
+      "college_name": "Golden West College",
+      "degree_title": "Computer Science, Associate in Science Degree"
+    },
+    {
+      "community_college_id": 123,
+      "college_name": "Hartnell College",
+      "degree_title": "Computer Science and Information Systems—Computer Science Option"
+    },
+    {
+      "community_college_id": 44,
+      "college_name": "Los Angeles Valley College",
+      "degree_title": "Computer Science — Associate of Science Degree (AS) [same program as local_cs_as; closest local computing degree named Computer Science]"
+    },
+    {
+      "community_college_id": 74,
+      "college_name": "Orange Coast College",
+      "degree_title": "Computer Science, Associate in Science Degree"
+    },
+    {
+      "community_college_id": 56,
+      "college_name": "Palomar College",
+      "degree_title": "Computer Science (AS, CA)"
+    },
+    {
+      "community_college_id": 36,
+      "college_name": "Reedley College",
+      "degree_title": "Computer Science (Associate in Science Degree, R.6921.AS)"
+    },
+    {
+      "community_college_id": 126,
+      "college_name": "Sacramento City College",
+      "degree_title": "A.S. in Computer Science"
+    },
+    {
+      "community_college_id": 65,
+      "college_name": "Saddleback College",
+      "degree_title": "COMPUTER SCIENCE - A.S. Degree"
+    },
+    {
+      "community_college_id": 131,
+      "college_name": "San Bernardino Valley College",
+      "degree_title": "Computer Science Associate of Science Degree"
+    },
+    {
+      "community_college_id": 14,
+      "college_name": "Santa Ana College",
+      "degree_title": "Computer Science: A.S. Degree"
+    },
+    {
+      "community_college_id": 92,
+      "college_name": "Santa Barbara City College",
+      "degree_title": "Computer Science, Associate of Science (AS)"
+    },
+    {
+      "community_college_id": 137,
+      "college_name": "Santa Monica College",
+      "degree_title": "Computer Science, Associate Degree"
+    },
+    {
+      "community_college_id": 90,
+      "college_name": "Yuba College",
+      "degree_title": "Computer Science — Associate in Science"
+    }
+  ],
+  "paired_local_cs_as_and_ast": 22,
+  "credit_loss_role_counts": {
+    "primary_local_cs_as": 45,
+    "ast_benchmark_without_local_cs_as": 47,
+    "descriptive_local_computing_only": 22,
+    "no_degree": 1
+  },
+  "missing_ast_records": [
+    {
+      "community_college_id": 5,
+      "college_name": "College of San Mateo"
+    },
+    {
+      "community_college_id": 118,
+      "college_name": "East Los Angeles College"
+    },
+    {
+      "community_college_id": 47,
+      "college_name": "Los Angeles Mission College"
+    }
+  ],
+  "records_with_inventory_only_local_computing": [
+    {
+      "community_college_id": 27,
+      "college_name": "American River College"
+    },
+    {
+      "community_college_id": 8,
+      "college_name": "Butte College"
+    },
+    {
+      "community_college_id": 41,
+      "college_name": "Cabrillo College"
+    },
+    {
+      "community_college_id": 33,
+      "college_name": "City College of San Francisco"
+    },
+    {
+      "community_college_id": 150,
+      "college_name": "Clovis Community College"
+    },
+    {
+      "community_college_id": 140,
+      "college_name": "College of the Canyons"
+    },
+    {
+      "community_college_id": 142,
+      "college_name": "Cosumnes River College"
+    },
+    {
+      "community_college_id": 16,
+      "college_name": "Cuesta College"
+    },
+    {
+      "community_college_id": 114,
+      "college_name": "Diablo Valley College"
+    },
+    {
+      "community_college_id": 51,
+      "college_name": "Foothill College"
+    },
+    {
+      "community_college_id": 134,
+      "college_name": "Fullerton College"
+    },
+    {
+      "community_college_id": 43,
+      "college_name": "Glendale Community College"
+    },
+    {
+      "community_college_id": 124,
+      "college_name": "Irvine Valley College"
+    },
+    {
+      "community_college_id": 18,
+      "college_name": "Las Positas College"
+    },
+    {
+      "community_college_id": 135,
+      "college_name": "Long Beach City College"
+    },
+    {
+      "community_college_id": 200,
+      "college_name": "Madera Community College"
+    },
+    {
+      "community_college_id": 13,
+      "college_name": "Merritt College"
+    },
+    {
+      "community_college_id": 52,
+      "college_name": "Modesto Junior College"
+    },
+    {
+      "community_college_id": 109,
+      "college_name": "San Joaquin Delta College"
+    },
+    {
+      "community_college_id": 57,
+      "college_name": "Santa Rosa Junior College"
+    },
+    {
+      "community_college_id": 66,
+      "college_name": "Santiago Canyon College"
+    },
+    {
+      "community_college_id": 93,
+      "college_name": "Sierra College"
+    }
+  ],
+  "total_records_with_unresolved_courses": 41,
+  "total_unresolved_course_references": 133
+}

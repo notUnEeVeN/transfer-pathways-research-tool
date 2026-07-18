@@ -46,6 +46,7 @@ router.delete('/curated/associate-degrees/:id', ...guarded, curationController.d
 router.get('/curated/degrees', ...guarded, degreeRequirementsController.list);
 router.get('/curated/degree-evaluation', ...guarded, degreeRequirementsController.evaluate);
 router.get('/curated/as-degrees', ...guarded, canonicalDataController.asDegrees);
+router.get('/curated/as-degree-availability', ...guarded, canonicalDataController.asDegreeAvailability);
 
 // ───────── Built-in visual analyses (JSON or ?format=csv) ─────────
 // These routes compute from the same canonical collections as the data API.
@@ -113,6 +114,7 @@ router.get('/exports/agreements',         analysisController.exportAgreements);
 router.get('/exports/receivers',          analysisController.exportReceivers);
 router.get('/exports/courses',            analysisController.exportCourses);
 router.get('/exports/university-courses', analysisController.exportUniversityCourses);
+router.get('/exports/cs-ast-degrees',      analysisController.exportCsAstDegrees);
 
 // ───────── Tasks (typed research workflows + shared kanban) ─────────
 // Open to every console user — everyone may edit anything (3-person team

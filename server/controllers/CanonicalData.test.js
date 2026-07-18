@@ -649,4 +649,23 @@ describe('asDegrees endpoint', () => {
     const missing = await run(asDegrees, request({ query: { college_id: 'cc:424242' } }));
     expect(missing.statusCode).toBe(404);
   });
+
+  it('validates and applies a degree_type overview filter', async () => {
+    await db.collection('assist_institutions').insertOne(
+      { _id: 'cc:1', source_id: 1, kind: 'community_college', name: 'Test College' });
+    await db.collection('curated_requirements').insertMany([
+      { _id: 'as_degree:1:ast', kind: 'as_degree', college_id: 'cc:1', community_college_id: 1,
+        degree_type: 'ast', status: 'found', requirement_groups: [], verification: { verified: false } },
+      { _id: 'as_degree:1:local_cs_as', kind: 'as_degree', college_id: 'cc:1', community_college_id: 1,
+        degree_type: 'local_cs_as', status: 'found', requirement_groups: [], verification: { verified: false } },
+    ]);
+    const filtered = await run(asDegrees, request({ query: { degree_type: 'ast' } }));
+    expect(filtered.statusCode).toBe(200);
+    expect(filtered.body.rows).toHaveLength(1);
+    expect(filtered.body.rows[0].degree_type).toBe('ast');
+
+    const bad = await run(asDegrees, request({ query: { degree_type: 'made_up' } }));
+    expect(bad.statusCode).toBe(400);
+    expect(bad.body.error).toMatch(/degree_type/);
+  });
 });

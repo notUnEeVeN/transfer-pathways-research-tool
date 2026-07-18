@@ -220,13 +220,13 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
 async function loadCollegeGeAreas(db, communityCollegeId) {
   const rows = await db.collection('assist_courses')
     .find({ side: 'sending', community_college_id: Number(communityCollegeId), uc_transferable: true },
-      { projection: { course_id: 1, prefix: 1, number: 1, igetc_area: 1, _id: 0 } })
+      { projection: { course_id: 1, prefix: 1, number: 1, title: 1, units: 1, igetc_area: 1, _id: 0 } })
     .toArray();
   const map = new Map();
   for (const c of rows) {
     for (const a of c.igetc_area || []) {
       if (!map.has(a)) map.set(a, []);
-      map.get(a).push({ course_id: c.course_id, prefix: c.prefix, number: c.number });
+      map.get(a).push({ course_id: c.course_id, prefix: c.prefix, number: c.number, title: c.title, units: c.units });
     }
   }
   return map;
@@ -248,12 +248,12 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
   const addOptCourses = (opts) => {
     for (const o of opts) for (const cid of o.course_ids || []) {
       const c = coursesById.get(Number(cid));
-      if (c && !usedCourses.has(Number(cid))) usedCourses.set(Number(cid), { course_id: Number(cid), prefix: c.prefix, number: c.number });
+      if (c && !usedCourses.has(Number(cid))) usedCourses.set(Number(cid), { course_id: Number(cid), prefix: c.prefix, number: c.number, title: c.title, units: c.units });
     }
   };
   const geOptions = (areas) => {
     const hits = geCoverCourses(areas, ccGeAreas).slice(0, 3);
-    for (const h of hits) if (!usedCourses.has(h.course_id)) usedCourses.set(h.course_id, { course_id: h.course_id, prefix: h.prefix, number: h.number });
+    for (const h of hits) if (!usedCourses.has(h.course_id)) usedCourses.set(h.course_id, { course_id: h.course_id, prefix: h.prefix, number: h.number, title: h.title, units: h.units });
     return hits.map((h) => ({ course_ids: [h.course_id], course_conjunction: 'and' }));
   };
 

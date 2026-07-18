@@ -20,7 +20,7 @@
  * writes one doc, not the whole column.
  */
 const crypto = require('crypto');
-const { adminUids } = require('./access');
+const { adminUids, isAdmin } = require('./access');
 const { getDisplayName, listDisplayNames } = require('./displayNames');
 
 const COLLECTION = 'tasks';
@@ -487,14 +487,19 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
   // assignee's to complete (an unassigned task has no such signal, so anyone
   // may — otherwise a task nobody claimed could never move). The peer
   // approval stage is the opposite: it must come from someone who did NOT do
-  // the work, so both the creator and the assignee are excluded from it.
+  // the work, so both the creator and the assignee are excluded from it —
+  // except an admin, who may force-approve their own task; that completion is
+  // stamped `forced` so the log says what happened.
+  let forced = false;
   if (stage.requires_peer) {
-    if (uid === task.created_by) {
-      fail('team approval must be completed by someone other than the task creator');
-    }
-    if (uid === task.assignee_uid) {
+    const selfApproval = uid === task.created_by || uid === task.assignee_uid;
+    if (selfApproval && !isAdmin(uid)) {
+      if (uid === task.created_by) {
+        fail('team approval must be completed by someone other than the task creator');
+      }
       fail("approval must come from a teammate who didn't do the work");
     }
+    forced = selfApproval;
   } else if (task.assignee_uid && uid !== task.assignee_uid) {
     fail('only the assignee can complete stages');
   }
@@ -509,6 +514,7 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
     completed_by_label: actorLabel,
     event_id: eventId,
   };
+  if (forced) stageState.forced = true;
   if (latestNote) stageState.note = latestNote;
   const workflowStages = {
     ...task.workflow_stages,
@@ -530,6 +536,7 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
     by_label: actorLabel,
     at: now,
   };
+  if (forced) event.forced = true;
   if (note) event.note = note;
   const $set = {
     task_type: task.task_type,

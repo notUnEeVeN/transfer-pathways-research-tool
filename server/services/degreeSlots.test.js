@@ -41,4 +41,20 @@ describe('buildLedgerGroups GE categories', () => {
     expect(receiver.category_match.qualifying_count).toBe(5);
     expect(ledger.courses).toEqual([]);
   });
+
+  it('carries CC catalog title + units into the ledger course lookup', () => {
+    const groups = [{
+      title: 'Major preparation', tier: 'transferable',
+      sections: [{
+        section_advisement: 1,
+        receivers: [{ receiving: { kind: 'course', parent_id: 9 } }],
+      }],
+    }];
+    const optionsByParent = new Map([[9, [{ course_ids: [7], course_conjunction: 'and' }]]]);
+    const coursesById = new Map([[7, { course_id: 7, prefix: 'CS', number: '1', title: 'Intro to Computer Science', units: 4 }]]);
+    const ledger = buildLedgerGroups(groups, { articulated: new Set([9]), optionsByParent, coursesById });
+    expect(ledger.courses).toEqual([
+      { course_id: 7, prefix: 'CS', number: '1', title: 'Intro to Computer Science', units: 4 },
+    ]);
+  });
 });

@@ -995,18 +995,23 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   for (const r of websiteReqs) r.in_assist = r.parent_id != null && assistReceiverParents.has(Number(r.parent_id));
   const websiteOnly = websiteReqs.filter((r) => r.parent_id != null && !r.in_assist).length;
 
-  // Enrich every emitted row with authoritative UC codes + CC articulating courses.
+  // Enrich every emitted row with authoritative UC codes + CC articulating
+  // courses. Full catalog rows (title + units) ride along in university_courses
+  // / cc_courses so the ledger renders both sides exactly like the ASSIST tab.
   const enrichRows = [...websiteReqs, ...extraGroups.flatMap((g) => g.options)];
+  const universityCourses = {}; // parent_id -> { prefix, number, title, min_units, max_units }
   const pids = enrichRows.map((r) => r.parent_id).filter((p) => p != null);
   if (pids.length) {
     const ucRows = await db.collection('assist_courses')
-      .find({ side: 'receiving', parent_id: { $in: pids } }, { projection: { parent_id: 1, prefix: 1, number: 1 } }).toArray();
+      .find({ side: 'receiving', parent_id: { $in: pids } },
+        { projection: { parent_id: 1, prefix: 1, number: 1, title: 1, min_units: 1, max_units: 1, _id: 0 } }).toArray();
     const uniCode = new Map();
     for (const u of ucRows) {
       const pid = Number(u.parent_id);
       if (uniCode.has(pid)) continue;
       const code = [u.prefix, u.number].filter(Boolean).join(' ').trim();
       if (code) uniCode.set(pid, code);
+      universityCourses[pid] = u;
     }
     for (const r of enrichRows) {
       const code = r.parent_id != null && uniCode.get(Number(r.parent_id));
@@ -1015,12 +1020,17 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   }
   const ccIds = [...new Set([...ccByParent.values()].flat(2))];
   const ccCode = new Map();
+  const ccCourses = {}; // code -> { prefix, number, title, units }
   if (ccIds.length) {
     const ccRows = await db.collection('assist_courses')
-      .find({ side: 'sending', course_id: { $in: ccIds.map(Number) } }, { projection: { course_id: 1, prefix: 1, number: 1 } }).toArray();
+      .find({ side: 'sending', course_id: { $in: ccIds.map(Number) } },
+        { projection: { course_id: 1, prefix: 1, number: 1, title: 1, units: 1, _id: 0 } }).toArray();
     for (const c of ccRows) {
       const code = [c.prefix, c.number].filter(Boolean).join(' ').trim();
-      if (code) ccCode.set(String(c.course_id), code);
+      if (code) {
+        ccCode.set(String(c.course_id), code);
+        if (!ccCourses[code]) ccCourses[code] = { prefix: c.prefix, number: c.number, title: c.title, units: c.units };
+      }
     }
   }
   for (const r of enrichRows) {
@@ -1049,6 +1059,8 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
     net_courses: aReq - wReq,
     website_requirements: websiteReqs,
     assist_extra_groups: extraGroups,
+    university_courses: universityCourses,
+    cc_courses: ccCourses,
   };
 }
 

@@ -34,14 +34,15 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     }
   })
 
-  it('covers the teammate-facing source, curated, analysis, export, and spot-check surfaces', () => {
+  it('covers the teammate-facing source, curated, export, and spot-check surfaces', () => {
     const paths = allEndpoints.map((e) => e.path)
     expect(paths).toContain('/data/summary')
     expect(paths).toContain('/assist/institutions?kind=community_college')
     expect(paths).toContain('/curated/requirements?kind=transfer_minimum')
-    expect(paths).toContain('/analysis/coverage?requirements=degree&majorContains=Computer%20Science')
-    expect(paths).toContain('/analysis/credit-loss?majorContains=Computer%20Science')
+    expect(paths).toContain('/curated/as-degree-availability')
+    expect(paths).toContain('/curated/as-degrees?degree_type=ast')
     expect(paths).toContain('/exports/receivers')
+    expect(paths).toContain('/exports/cs-ast-degrees')
     expect(paths).toContain('/audit/doc/:agreementId')
     expect(paths.some((path) => path.startsWith('/tasks'))).toBe(false)
   })
@@ -49,7 +50,8 @@ describe('ENDPOINT_GROUPS content invariants', () => {
   it('publishes only the supported /api contract', () => {
     expect(PARTNER_ENDPOINT_GROUPS).toEqual(ENDPOINT_GROUPS)
     const paths = partnerEndpoints.map((e) => e.path)
-    expect(paths.some((path) => path.startsWith('/analysis/'))).toBe(true)
+    expect(ENDPOINT_GROUPS.some((group) => group.id === 'analysis')).toBe(false)
+    expect(paths.some((path) => path.startsWith('/analysis/'))).toBe(false)
     expect(paths.some((path) => path.startsWith('/analysis/raw'))).toBe(false)
     expect(paths.some((path) => path.startsWith('/analysis/releases'))).toBe(false)
     expect(paths.some((path) => path.startsWith('/figures'))).toBe(false)
@@ -132,8 +134,8 @@ describe('buildAiBriefing', () => {
     }
   })
 
-  it('includes analysis data without the retired runner or dataset-version contract', () => {
-    expect(md).toContain('/analysis/coverage')
+  it('omits built-in visual endpoints and the retired runner contract', () => {
+    expect(md).not.toContain('/analysis/coverage')
     expect(md).not.toContain('/figure-scripts')
     expect(md).not.toContain('dataset_version')
     expect(md).toContain('No Python code runs on the server')

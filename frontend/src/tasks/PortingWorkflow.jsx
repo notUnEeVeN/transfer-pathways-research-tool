@@ -43,13 +43,15 @@ const logNotesForStage = (task, stageKey, state) => {
 const eventAction = (event) => {
   if (event.action === 'noted') return 'added a note to'
   if (event.action === 'reopened') return 'reopened'
+  if (event.forced) return 'force-approved'
   return 'completed'
 }
 
 // Porting's ordered, code-defined stage timeline. Checklist-shaped tasks
-// render through VerificationChecklist instead.
+// render through VerificationChecklist instead. `admin` unlocks force-approval
+// of the viewer's own task (the server enforces the same rule).
 export default function PortingWorkflow({
-  task, me, roster = [], onAddStageNote, onCompleteStage, onReopenStage,
+  task, me, admin = false, roster = [], onAddStageNote, onCompleteStage, onReopenStage,
   onDeleteStageNote, onResolveStageNote,
 }) {
   const stages = stagesForTask(task)
@@ -180,9 +182,13 @@ export default function PortingWorkflow({
           const completeStage = isStageComplete(task, stage.key)
           const active = index === activeIndex
           const locked = activeIndex !== -1 && index > activeIndex
-          const peerBlocked = active && stage.requiresPeer && (isCreator || isAssignee)
+          // An admin may force-approve their own task; the completion is
+          // stamped as forced server-side so the log says what happened.
+          const selfApproval = stage.requiresPeer && (isCreator || isAssignee)
+          const forcing = selfApproval && admin
+          const peerBlocked = active && selfApproval && !admin
           const canComplete = stage.requiresPeer
-            ? !isCreator && !isAssignee
+            ? (!isCreator && !isAssignee) || admin
             : (task.assignee_uid ? isAssignee : true)
           const completedAfter = stages.slice(index + 1).filter((later) => isStageComplete(task, later.key)).length
           const stageNotes = logNotesForStage(task, stage.key, state)
@@ -268,6 +274,7 @@ export default function PortingWorkflow({
                     <span className='text-tag text-ink-subtle'>
                       Completed by {actorLabel(state.completed_by, state.completed_by_label)} · {fmtWhen(state.completed_at)}
                     </span>
+                    {state.forced && <Badge variant='conservative'>Admin override</Badge>}
                     <span className='ml-auto inline-flex items-center gap-1'>
                       {noteStage !== stage.key && (
                         <Button size='sm' variant='ghost' leadingIcon={PencilSquareIcon}
@@ -319,13 +326,18 @@ export default function PortingWorkflow({
                           loading={busyAction === `complete:${stage.key}`}
                           disabled={Boolean(busyAction) && busyAction !== `complete:${stage.key}`}
                           onClick={() => complete(stage)}>
-                          {stage.requiresPeer ? 'Approve task' : 'Complete stage'}
+                          {forcing ? 'Force approve' : stage.requiresPeer ? 'Approve task' : 'Complete stage'}
                         </Button>
                       )}
                       {active && !canComplete && !stage.requiresPeer && (
                         <span className='text-[12.5px] text-ink-subtle'>Only {assigneeLabel} can complete this stage.</span>
                       )}
                     </div>
+                    {active && forcing && (
+                      <p className='text-caption text-conservative'>
+                        Admin override — this approves your own work and is logged as a forced approval.
+                      </p>
+                    )}
                   </div>
                 )}
 

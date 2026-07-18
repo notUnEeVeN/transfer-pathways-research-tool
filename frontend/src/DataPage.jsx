@@ -3,11 +3,9 @@ import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon, ArrowRightIcon,
   ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, StatStrip, Tabs, Input, Textarea, LoadingLogo } from './components/ui'
+import { Button, Alert, Badge, Select, Spinner, EmptyState, Stack, StatStrip, Tabs, Input, Textarea, LoadingLogo } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SubNav from './components/SubNav'
-import CollegeGeoFilters, { EMPTY_GEO } from './components/CollegeGeoFilters'
-import { matchesGeo } from './shared/lib/collegeGeo'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
@@ -23,10 +21,10 @@ import { useCourseList } from './pages/Audit/hooks/useCourseList'
 import { useAuditDoc } from '@frontend/query/hooks/useAudit'
 import {
   useColleges, useCcCourses, useUniversityCourses, useAgreementsBatch,
-  useRawAssist, useDataSummary, useCoverage, useRequirementComparison,
+  useRawAssist, useDataSummary, useRequirementComparison,
   useFigures, useDeleteFigure, useEditFigure, downloadFigure,
   useDegreeRequirements, useDegreeRequirementDocuments, useDegreeEvaluation,
-  useSaveDegreeRequirement,
+  useSaveDegreeRequirement, useAsDegreeAvailability,
 } from '@frontend/query/hooks/useData'
 import { useAuth } from '@frontend/hooks/useAuth'
 
@@ -35,16 +33,15 @@ import { useAuth } from '@frontend/hooks/useAuth'
  * Everything shown is server-scoped to the caller's granted subset.
  *
  *   Overview               — counts, refresh time, and majors per school
- *   Community Colleges     — per-college hub: that college's CC courses, AS
- *                             degrees, and prerequisite graph (college mode)
- *   Universities of
- *   California             — per-campus hub: majors tracked, the four-year
+ *   Institutions           — UC-campus hub: majors tracked, the four-year
  *                             graduation-requirements template, the
  *                             hand-curated transfer minimum, and UC courses
- *   Articulation           — campus → college → agreements (ASSIST transfer
+ *   Pathways               — campus → college → agreements (ASSIST transfer
  *                             requirements / DB document / raw ASSIST /
  *                             curated-minimum comparison / graduation-
- *                             requirements coverage)
+ *                             requirements coverage), with CS A.S.-T status,
+ *                             degree requirements, courses, and prerequisites
+ *                             joined by community college
  *   Prerequisites          — the concept DAG, its editors, and per-college coverage
  *   Districts              — community-college district geography (editable)
  *
@@ -54,14 +51,12 @@ import { useAuth } from '@frontend/hooks/useAuth'
  * up in the SubNav bar, rather than repeated inside each pane.
  */
 // Per-tab *base* route shown in the SubNav bar — what's shown before (or
-// absent) any drill-in. Overview/Institutions/Districts have no finer-grained
-// view reported up (their drill-ins stay local to the pane), so this is also
-// their only value. Articulation reports a more specific route once its pane
-// actually changes (`onRoute`, below).
+// absent) any drill-in. Child panes report a more specific route when their
+// selected institution, degree view, or sub-tab changes (`onRoute`, below).
 const DATA_TAB_ROUTES = {
   overview: { path: '/api/data/summary' },
   articulation: { path: '/api/assist/coverage' },
-  institutions: { path: '/api/assist/institutions?kind=community_college' },
+  institutions: { path: '/api/assist/institutions?kind=university' },
   prerequisites: { path: '/api/curated/prerequisite-graph' },
   districts: { path: '/api/assist/institutions?kind=community_college' },
 }
@@ -76,7 +71,7 @@ export default function DataPage({ onNavigate = () => {} }) {
   // into a tab that never reports its own (overview, districts, the two
   // hubs), or flash stale until the newly-mounted pane's own effect catches up.
   const changeTab = (next) => {
-    // Re-selecting Articulation is its "home" action. The browser stays mounted
+    // Re-selecting Pathways is its "home" action. The browser stays mounted
     // when its active tab is clicked, so explicitly ask it to leave any college
     // or requirement drill-in while preserving the selected campus.
     if (next === 'articulation' && tab === 'articulation') {
@@ -100,7 +95,7 @@ export default function DataPage({ onNavigate = () => {} }) {
         value: tab, onChange: changeTab,
         options: [
           { value: 'overview',      label: 'Overview' },
-          { value: 'articulation',  label: 'Articulation' },
+          { value: 'articulation',  label: 'Pathways' },
           { value: 'institutions',  label: 'Institutions' },
           { value: 'prerequisites', label: 'Prerequisites' },
           { value: 'districts',     label: 'Districts' },
@@ -114,7 +109,7 @@ export default function DataPage({ onNavigate = () => {} }) {
           {tab === 'articulation' && (
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
           )}
-          {tab === 'institutions' && <InstitutionsTab />}
+          {tab === 'institutions' && <InstitutionsTab onRoute={reportRoute} />}
           {tab === 'prerequisites' && <PrerequisitesTab />}
           {tab === 'districts' && <DistrictsTab />}
         </div>
@@ -123,17 +118,15 @@ export default function DataPage({ onNavigate = () => {} }) {
   )
 }
 
-// ───────── agreements (campus-first) ─────────
+// ───────── pathways (college-first) ─────────
 //
-// Campus selection is a chip row (its own picker — the UC course catalog
-// still uses the shared InstitutionRail). Colleges and coverage follow the
-// working major selected for that campus in Admin; opening a college goes
-// straight to its agreement with no program-selection step.
+// The main list stays focused on community colleges and CS A.S.-T status.
+// Once a college is open, the Transfer articulation tab owns the receiving-
+// campus picker so campus changes keep the college context in place.
 
 export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
   const summary = useDataSummary()
-  const coverage = useCoverage()
-  const websiteCoverage = useCoverage({ requirements: 'paper' })
+  const degreeAvailability = useAsDegreeAvailability()
   const [campus, setCampus] = useState(null) // { school_id, school }
   const [collegeId, setCollegeId] = useState(null)
 
@@ -142,8 +135,8 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
   }, [homeRequest])
 
   const schools = summary.data?.schools || []
-  // Alphabetical: this is now the chip row's own display + default-pick
-  // order (InstitutionRail used to sort for display; nothing else did).
+  // Alphabetical for both the detail's receiving-campus bubbles and the
+  // default campus used when a college is first opened.
   const campuses = useMemo(
     () => schools
       .filter((g) => g.majors.length)
@@ -156,33 +149,17 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
     const selected = campuses.find((item) => Number(item.id) === Number(campusId))
     if (!selected) return
     setCampus({ school_id: selected.id, school: selected.name })
-    setCollegeId(null)
+    // Campus changes happen inside a college detail and deliberately preserve
+    // that selected college.
   }
 
-  // ASSIST remains major-specific in storage. Group by college here so legacy
-  // settings cannot break the campus-first presentation.
-  const coverageByCc = useMemo(() => {
-    const m = new Map()
-    if (!campus) return m
-    for (const r of coverage.data?.rows || []) {
-      if (Number(r.school_id) !== Number(campus.school_id)) continue
-      const id = Number(r.community_college_id)
-      if (!m.has(id)) m.set(id, [])
-      m.get(id).push(r)
-    }
-    return m
-  }, [coverage.data, campus])
-
-  // Website (curated hard-minimum) coverage is campus-level — one row per
-  // (school, college), identical across majors — so join by college only.
-  const websiteByCc = useMemo(() => {
-    const m = new Map()
-    if (!campus) return m
-    for (const r of websiteCoverage.data?.rows || []) {
-      if (Number(r.school_id) === Number(campus.school_id)) m.set(Number(r.community_college_id), r)
-    }
-    return m
-  }, [websiteCoverage.data, campus])
+  // Degree availability is college-level rather than campus-level.
+  const degreeAvailabilityByCc = useMemo(
+    () => new Map((degreeAvailability.data?.rows || []).map((row) => [
+      Number(row.community_college_id), row,
+    ])),
+    [degreeAvailability.data]
+  )
 
   // The route fetching whatever the right-hand pane currently shows — the
   // pre-SubNav `paneRoute` local, now reported up so the shared chip can show
@@ -202,10 +179,8 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
       description='The dataset has no UC campuses at the moment.' />
   }
 
-  // The campus chips are always-on segmented navigation (like the mockup's
-  // "one active pill" chip row), so a campus is always selected — the first
-  // alphabetically picks itself the first time through, same as the old
-  // single-campus auto-pick but generalized to every campus count.
+  // Keep a default receiving campus ready even though its bubbles only appear
+  // after a college is opened.
   if (!campus) {
     selectCampus(campuses[0].id)
     return null
@@ -214,33 +189,12 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
   return (
     <Stack gap='cozy'>
       {collegeId != null ? (
-        <CampusAgreements campus={campus} collegeId={collegeId}
-          onRoute={onRoute} onBack={() => setCollegeId(null)} />
+        <CampusAgreements campus={campus} campuses={campuses} collegeId={collegeId}
+          degreeAvailability={degreeAvailabilityByCc.get(Number(collegeId)) || null}
+          onCampusChange={selectCampus} onRoute={onRoute} onBack={() => setCollegeId(null)} />
       ) : (
-        <Stack gap='comfortable'>
-          <div className='min-w-0'>
-            <span className='text-label'>Receiving campus</span>
-            {/* The pills share the row's full width — each grows equally so the
-                strip spans the pane instead of huddling left. */}
-            <div className='mt-2 flex items-center gap-1.5 flex-wrap'>
-              {campuses.map((c) => {
-                const active = Number(c.id) === Number(campus.school_id)
-                return (
-                  <button key={c.id} type='button' onClick={() => selectCampus(c.id)}
-                    className={`flex-1 text-center px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
-                      active
-                        ? 'bg-primary hover:bg-primary-hover text-on-primary border-primary font-[650]'
-                        : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
-                    }`}>
-                    {c.name.replace('UC ', '')}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-          <CampusColleges campus={campus} coverageByCc={coverageByCc} websiteByCc={websiteByCc}
-            coverageLoading={coverage.isLoading || websiteCoverage.isLoading} onPick={setCollegeId} />
-        </Stack>
+        <CampusColleges degreeAvailabilityByCc={degreeAvailabilityByCc}
+          dataLoading={degreeAvailability.isLoading} onPick={setCollegeId} onRoute={onRoute} />
       )}
     </Stack>
   )
@@ -263,28 +217,60 @@ export function summarizeCoverageRows(rows = []) {
 
 // The college table's grid columns — shared by the header row and every
 // data row so the two can never drift out of alignment.
-const COLLEGE_TABLE_COLS = 'grid grid-cols-[minmax(0,1fr)_220px_220px_76px] gap-3.5'
+const COLLEGE_TABLE_COLS = 'grid grid-cols-[minmax(0,1fr)_180px_68px] gap-3.5'
 
-// Each college's campus-wide coverage, with all visible ASSIST agreements
-// summarized into one row alongside the hand-curated hard minimum.
-function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, onPick }) {
+const AST_STATUS_OPTIONS = [
+  { value: '', label: 'All A.S.-T statuses' },
+  { value: 'available', label: 'Has CS A.S.-T' },
+  { value: 'confirmed_none', label: 'Confirmed no CS A.S.-T' },
+  { value: 'data_gap', label: 'A.S.-T data gaps' },
+]
+
+const AST_STATUS_META = {
+  available: { label: 'CS A.S.-T', variant: 'success' },
+  confirmed_none: { label: 'No CS A.S.-T', variant: 'neutral' },
+  data_gap: { label: 'A.S.-T data gap', variant: 'conservative' },
+}
+
+function AstStatusBadge({ availability }) {
+  const status = availability?.types?.ast?.status
+  const meta = AST_STATUS_META[status] || { label: 'Not checked', variant: 'neutral' }
+  return <Badge variant={meta.variant}>{meta.label}</Badge>
+}
+
+function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }) {
   const colleges = useColleges()
   const [q, setQ] = useState('')
-  const [geo, setGeo] = useState(EMPTY_GEO)
+  const [district, setDistrict] = useState('')
+  const [astStatus, setAstStatus] = useState('')
+
+  const districtOptions = useMemo(() => [
+    { value: '', label: 'All districts' },
+    ...[...new Set((colleges.data || []).map((college) => college.district).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b))
+      .map((value) => ({ value, label: value })),
+  ], [colleges.data])
+
+  const changeAstStatus = (next) => {
+    setAstStatus(next)
+    onRoute({ path: next === 'available'
+      ? '/api/exports/cs-ast-degrees'
+      : next
+        ? '/api/curated/as-degree-availability'
+        : '/api/assist/coverage' })
+  }
 
   const rows = useMemo(() => {
     const all = (colleges.data || []).map((c) => {
-      const assistRows = coverageByCc.get(Number(c.id)) || []
-      const assist = summarizeCoverageRows(assistRows)
-      const web = websiteByCc.get(Number(c.id)) || null
-      return { ...c, assistRows, assist, web }
-    }).filter((c) => c.assistRows.length || c.web)
-      .filter((c) => matchesGeo(c, geo))
-      .sort((a, b) => (b.assist.average ?? -1) - (a.assist.average ?? -1) || a.name.localeCompare(b.name))
+      const degreeAvailability = degreeAvailabilityByCc.get(Number(c.id)) || null
+      return { ...c, degreeAvailability }
+    }).filter((c) => !district || c.district === district)
+      .filter((c) => !astStatus || c.degreeAvailability?.types?.ast?.status === astStatus)
+      .sort((a, b) => a.name.localeCompare(b.name))
     if (!q.trim()) return all
     const s = q.toLowerCase()
-    return all.filter((c) => c.name.toLowerCase().includes(s))
-  }, [colleges.data, coverageByCc, websiteByCc, q, geo])
+    return all.filter((c) => `${c.name} ${c.district || ''}`.toLowerCase().includes(s))
+  }, [astStatus, colleges.data, degreeAvailabilityByCc, district, q])
 
   return (
     <Stack gap='comfortable'>
@@ -292,99 +278,159 @@ function CampusColleges({ campus, coverageByCc, websiteByCc, coverageLoading, on
         <label className='flex-1 flex items-center gap-3 bg-surface border-[1.5px] border-border-strong rounded-pill px-[22px] py-[13px]'>
           <MagnifyingGlassIcon className='w-[17px] h-[17px] text-ink-muted shrink-0' />
           <input value={q} onChange={(e) => setQ(e.target.value)} aria-label='Search colleges'
-            placeholder={`Search ${rows.length} colleges — name, district, or county…`}
+            placeholder='Search colleges — name or district…'
             className='flex-1 bg-transparent outline-none border-none text-[15px] text-ink placeholder:text-ink-subtle' />
         </label>
-        <CollegeGeoFilters colleges={colleges.data || []} value={geo} onChange={setGeo} />
+        <Select pill className='w-[210px]' value={district} onChange={setDistrict}
+          options={districtOptions} aria-label='Filter by district' />
+        <Select pill className='w-[190px]' value={astStatus} onChange={changeAstStatus}
+          options={AST_STATUS_OPTIONS} aria-label='Filter by CS A.S.-T status' />
       </div>
-      {colleges.isLoading || coverageLoading ? (
+      {colleges.isLoading || dataLoading ? (
         <div className='flex justify-center py-8'><Spinner /></div>
       ) : (
         <div className='surface-card overflow-auto max-h-[65vh]'>
           <div className={`${COLLEGE_TABLE_COLS} px-[22px] py-3 border-b border-border/60 sticky top-0 bg-surface`}>
             <span className='text-label'>Community college</span>
-            <span className='text-label whitespace-nowrap'>Hand curated</span>
-            <span className='text-label whitespace-nowrap'>ASSIST agreement</span>
+            <span className='text-label whitespace-nowrap'>Associate degree</span>
             <span className='text-label' />
           </div>
-          {rows.map((c) => {
-            const hasAgreement = c.assistRows.length > 0
-            return (
-              <div key={c.id}
-                className={`${COLLEGE_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border/40 last:border-0 ${
-                  hasAgreement ? 'hover:bg-surface-hover cursor-pointer' : 'opacity-60'}`}
-                onClick={() => hasAgreement && onPick(Number(c.id))}>
-                <div className='min-w-0'>
-                  <p className='text-[14.5px] font-semibold truncate'>{c.name}</p>
-                  {c.district && <p className='text-[12.5px] text-ink-subtle truncate'>{c.district}</p>}
-                </div>
-                <div>
-                  {c.web ? <CoverageBar pct={c.web.pct_articulated} full={c.web.fully_articulated} /> :
-                    <span className='text-caption text-ink-subtle'>—</span>}
-                </div>
-                <div>
-                  {hasAgreement ? (
-                    <span className='inline-flex flex-col gap-0.5'>
-                      <CoverageBar pct={c.assist.average} full={c.assist.fullyArticulated} />
-                      {c.assist.count > 1 && (
-                        <span className='text-caption text-ink-subtle'>average across {c.assist.count} legacy agreements</span>
-                      )}
-                    </span>
-                  ) :
-                    <span className='text-caption text-ink-subtle'>no agreement</span>}
-                </div>
-                <div>
-                  {hasAgreement && (
-                    <span className='flex items-center gap-1 text-[13px] font-[550] text-success'>
-                      view <ArrowRightIcon className='w-[13px] h-[13px]' />
-                    </span>
-                  )}
-                </div>
+          {rows.map((c) => (
+            <div key={c.id}
+              className={`${COLLEGE_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border/40 last:border-0 hover:bg-surface-hover cursor-pointer`}
+              onClick={() => onPick(Number(c.id))}>
+              <div className='min-w-0'>
+                <p className='text-[14.5px] font-semibold truncate'>{c.name}</p>
+                {c.district && <p className='text-[12.5px] text-ink-subtle truncate'>{c.district}</p>}
               </div>
-            )
-          })}
+              <div><AstStatusBadge availability={c.degreeAvailability} /></div>
+              <div>
+                <span className='flex items-center gap-1 text-[13px] font-[550] text-success'>
+                  view <ArrowRightIcon className='w-[13px] h-[13px]' />
+                </span>
+              </div>
+            </div>
+          ))}
+          {!rows.length && (
+            <p className='px-[22px] py-8 text-body text-ink-muted text-center'>
+              No colleges match these filters.
+            </p>
+          )}
         </div>
       )}
     </Stack>
   )
 }
 
-// Fill colors are inline: utility classes like bg-primary/60 resolve to the
-// UUI theme's WHITE surface token here, which made the bars invisible.
-function CoverageBar({ pct, full, width = 'w-[110px]' }) {
-  const v = Math.max(0, Math.min(100, pct ?? 0))
+const AST_PROGRAM_STATUS = {
+  available: 'A.S.-T',
+  confirmed_none: 'No A.S.-T found',
+  data_gap: 'A.S.-T data gap',
+}
+
+function AssociateDegreeSection({ collegeId, availability }) {
+  const ast = availability?.types?.ast
+  const hasStoredDegree = Boolean(ast?.record_id)
+  const programLine = [
+    'Computer Science',
+    AST_PROGRAM_STATUS[ast?.status] || 'A.S.-T status unavailable',
+    ast?.catalog_year,
+  ].filter(Boolean).join(' · ')
   return (
-    <span className='inline-flex items-center gap-2.5'>
-      <span className={`inline-block ${width} h-1.5 rounded-pill bg-surface-sunken overflow-hidden`}>
-        <span className='block h-full rounded-pill'
-          style={{ width: `${v}%`, backgroundColor: full ? 'var(--color-success, #17855A)' : 'var(--color-primary, #193018)' }} />
-      </span>
-      <span className='text-[13px] font-[550] text-ink'>{pct != null ? `${pct}%` : '—'}</span>
-    </span>
+    <section aria-label='Associate degrees'>
+      <div className='surface-card px-6 py-5'>
+        <p className='text-label text-[12px]'>Associate degree</p>
+        <h2 className='mt-1.5 text-[19px] font-[650] tracking-[-.01em]'>
+          {availability?.college_name || 'Community college'}
+        </h2>
+        <p className='mt-1 text-body text-ink-muted'>{programLine}</p>
+      </div>
+      {hasStoredDegree && (
+        <div className='mt-4'>
+          <AsDegreeSchoolView collegeId={collegeId} initialDegreeType='ast'
+            onlyDegreeType='ast' showDegreeTitle={false} />
+        </div>
+      )}
+    </section>
   )
 }
 
-// One campus × college batch can contain several majors. Show every visible
-// agreement in a stable order, with its own ledger and supporting data views.
-function CampusAgreements({ campus, collegeId, onRoute, onBack }) {
+function ReceivingCampusPicker({ campuses, campusId, onSelect }) {
+  return (
+    <div className='min-w-0'>
+      <span className='text-label'>Receiving campus</span>
+      <div className='mt-2 flex items-center gap-1.5 flex-wrap'>
+        {campuses.map((candidate) => {
+          const active = Number(candidate.id) === Number(campusId)
+          return (
+            <button key={candidate.id} type='button' aria-pressed={active}
+              onClick={() => onSelect(candidate.id)}
+              className={`flex-1 text-center px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
+                active
+                  ? 'bg-primary hover:bg-primary-hover text-on-primary border-primary font-[650]'
+                  : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
+              }`}>
+              {candidate.name.replace('UC ', '')}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// One campus × college batch can contain several majors. Keep the college's
+// degree requirements and university articulation as peer views so neither
+// creates a long stacked page.
+function CampusAgreements({
+  campus,
+  campuses,
+  collegeId,
+  degreeAvailability,
+  onCampusChange,
+  onRoute,
+  onBack,
+}) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
+  const [selectedSection, setSelectedSection] = useState(null)
   const agreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
     return (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
   }, [batch.data, campus.school_id])
   const defaultAgreementId = agreements[0]?._id
+  // A college with no agreement opens on the useful degree finding. Otherwise
+  // transfer articulation remains the familiar default. An explicit user
+  // choice always wins after the batch resolves.
+  const section = selectedSection
+    || (!batch.isLoading && !agreements.length ? 'degrees' : 'articulation')
 
-  // A college can contain multiple major agreements. The first agreement owns
-  // the initial global route; after that, whichever card's tab the user clicks
-  // becomes the active route. This avoids mount-order races between cards.
+  // Keep the one shared route chip synchronized with the selected peer view.
+  // Once inside articulation, the active agreement card reports its finer
+  // ledger / comparison / raw route directly.
   useEffect(() => {
-    if (!defaultAgreementId) return
-    onRoute({ path: `/api/audit/doc/${defaultAgreementId}?system=uc` })
-  }, [defaultAgreementId, onRoute])
+    if (section === 'courses') {
+      onRoute({ path: `/api/assist/courses?institution_id=cc:${collegeId}` })
+    } else if (section === 'prerequisites') {
+      onRoute({ path: `/api/curated/prerequisite-graph?college_id=cc:${collegeId}` })
+    } else if (section === 'degrees') {
+      onRoute({ path: `/api/curated/as-degrees?college_id=cc:${collegeId}` })
+    } else if (defaultAgreementId) {
+      onRoute({ path: `/api/audit/doc/${defaultAgreementId}?system=uc` })
+    } else if (!batch.isLoading) {
+      onRoute({ path: `/api/assist/agreements?college_id=cc:${collegeId}&university_id=uc:${campus.school_id}` })
+    }
+  }, [batch.isLoading, campus.school_id, collegeId, defaultAgreementId, onRoute, section])
 
   const backToColleges = () => {
     onRoute({ path: '/api/assist/coverage' })
     onBack()
+  }
+
+  const changeCampus = (campusId) => {
+    // An explicit campus choice means the user is working in articulation,
+    // even when the newly selected campus has no agreement for this college.
+    setSelectedSection('articulation')
+    onCampusChange(campusId)
   }
 
   return (
@@ -392,17 +438,35 @@ function CampusAgreements({ campus, collegeId, onRoute, onBack }) {
       <div className='flex items-center'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={backToColleges}>All colleges</Button>
       </div>
-      {batch.isLoading ? (
-        <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
-      ) : !agreements.length ? (
-        <EmptyState title='No agreements' description='This college has no agreements for the selected campus.' />
+      <Tabs value={section} onChange={setSelectedSection} options={[
+        { value: 'articulation', label: 'Transfer articulation' },
+        { value: 'degrees', label: 'Associate degrees' },
+        { value: 'courses', label: 'Courses' },
+        { value: 'prerequisites', label: 'Prerequisites' },
+      ]} />
+      {section === 'courses' ? (
+        <CourseList institutionId={collegeId} useCourses={useCcCourses}
+          columns={CC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title']} />
+      ) : section === 'prerequisites' ? (
+        <ConceptGraphView key={collegeId} initialCollegeId={collegeId} lockCollege />
+      ) : section === 'degrees' ? (
+        <AssociateDegreeSection collegeId={collegeId} availability={degreeAvailability} />
       ) : (
-        <Stack gap='section'>
-          {agreements.map((agreement) => (
-            <AgreementDetail key={agreement._id} agreementId={agreement._id}
-              onRoute={onRoute}
-              compareFor={{ schoolId: campus.school_id, major: agreement.major, communityCollegeId: collegeId }} />
-          ))}
+        <Stack gap='comfortable'>
+          <ReceivingCampusPicker campuses={campuses} campusId={campus.school_id} onSelect={changeCampus} />
+          {batch.isLoading ? (
+            <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
+          ) : !agreements.length ? (
+            <EmptyState title='No agreements' description='This college has no agreements for the selected campus.' />
+          ) : (
+            <Stack gap='section'>
+              {agreements.map((agreement) => (
+                <AgreementDetail key={agreement._id} agreementId={agreement._id}
+                  onRoute={onRoute}
+                  compareFor={{ schoolId: campus.school_id, major: agreement.major, communityCollegeId: collegeId }} />
+              ))}
+            </Stack>
+          )}
         </Stack>
       )}
     </Stack>
@@ -413,7 +477,7 @@ function CampusAgreements({ campus, collegeId, onRoute, onBack }) {
 // rendered through the same ledger as every other requirements view. `onBack`
 // is optional — the Universities of California hub mounts this with no
 // enclosing "all colleges" list to return to, so the back button only
-// renders when a caller supplies one (Articulation no longer does).
+// renders when a caller supplies one (Pathways no longer does).
 function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const q = useDegreeRequirements()
   const raw = useDegreeRequirementDocuments()
@@ -702,15 +766,25 @@ function splitCode(code) {
 
 // Convert the minimums-comparison payload into the agreement `requirement_groups`
 // shape (+ course lookups) so it renders in the shared RequirementsLedger, matching
-// the Rendered and 4-year-degree tabs.
+// the Rendered and 4-year-degree tabs. The payload's university_courses /
+// cc_courses maps carry titles and units so rows read exactly like the ASSIST
+// tab; a cached pre-enrichment payload just falls back to bare codes.
 function comparisonToLedger(d) {
-  const courses = new Map()          // code -> { course_id: code, prefix, number }
-  const universityCoursesById = {}   // parent_id -> { prefix, number }
+  const ucCatalog = d.university_courses || {} // parent_id -> full receiving row
+  const ccCatalog = d.cc_courses || {}         // code -> full sending row
+  const courses = new Map()          // code -> { course_id: code, prefix, number, title?, units? }
+  const universityCoursesById = {}   // parent_id -> { prefix, number, title?, min_units?, max_units? }
   const toReceiver = (r) => {
-    if (r.parent_id != null) { const p = splitCode(r.uc_code); universityCoursesById[r.parent_id] = { prefix: p.prefix, number: p.number } }
+    if (r.parent_id != null) {
+      const p = splitCode(r.uc_code)
+      universityCoursesById[r.parent_id] = { prefix: p.prefix, number: p.number, ...(ucCatalog[r.parent_id] || {}) }
+    }
     const options = (r.cc_options || []).map((opt) => ({
       course_ids: (opt || []).map((code) => {
-        if (!courses.has(code)) { const p = splitCode(code); courses.set(code, { course_id: code, prefix: p.prefix, number: p.number }) }
+        if (!courses.has(code)) {
+          const p = splitCode(code)
+          courses.set(code, { course_id: code, prefix: p.prefix, number: p.number, ...(ccCatalog[code] || {}) })
+        }
         return code
       }),
       course_conjunction: 'and',
@@ -911,9 +985,8 @@ function CourseList({ institutionId, useCourses, columns, searchFields }) {
   )
 }
 
-// The CC/UC course-table column defs, lifted unchanged out of the former
-// CcCoursesBrowser/UniversityCoursesBrowser so the Community Colleges and
-// Universities of California hubs render identical tables.
+// The CC/UC course-table column defs shared by the Pathways college detail and
+// the Universities of California institution catalog.
 const CC_COURSE_COLUMNS = [
   { key: 'course', label: 'Course', width: '140px', variant: 'code', render: (r) => `${r.prefix} ${r.number}` },
   { key: 'title', label: 'Title', variant: 'title' },
@@ -929,68 +1002,17 @@ const UC_COURSE_COLUMNS = [
   { key: 'parent_id', label: 'parent_id', width: '110px', align: 'right', variant: 'num', render: (r) => r.parent_id },
 ]
 
-// ───────── Institutions (one catalog, two sides) ─────────
+// ───────── Institutions (UC campuses) ─────────
 //
-// Every per-institution fact lives here: pick a community college for its
-// courses / AS degrees / prerequisite graph, or flip to UC campuses for
-// graduation requirements / transfer minimums / courses. Cross-institution
-// comparisons stay in Articulation.
+// Community-college courses, degrees, and prerequisites now live beside each
+// college's transfer articulation in Pathways. Institutions is therefore the
+// focused UC-campus catalog: graduation requirements, minimums, and courses.
 
-function InstitutionsTab() {
-  const [kind, setKind] = useState('cc')
-  return (
-    <Stack gap='cozy'>
-      <Tabs value={kind} onChange={setKind}
-        options={[
-          { value: 'cc', label: 'Community colleges' },
-          { value: 'uc', label: 'UC campuses' },
-        ]} />
-      {kind === 'cc' ? <CommunityCollegesPane /> : <UniversitiesPane />}
-    </Stack>
-  )
+function InstitutionsTab({ onRoute = () => {} }) {
+  return <UniversitiesPane onRoute={onRoute} />
 }
 
-function CommunityCollegesPane() {
-  const colleges = useColleges()
-  const [selectedCollegeId, setSelectedCollegeId] = useState(null)
-  const [subTab, setSubTab] = useState('courses')
-
-  return (
-    <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-5 items-start'>
-      <InstitutionRail items={colleges.data || []} selectedId={selectedCollegeId} title='Community colleges'
-        itemSubtitle={(it) => it.district || null}
-        onSelect={setSelectedCollegeId} />
-
-      {selectedCollegeId == null ? (
-        <EmptyState title='Choose a college'
-          description='Pick one from the list to see its courses, AS degrees, and prerequisites.' />
-      ) : (
-        <Stack gap='cozy'>
-          <Tabs value={subTab} onChange={setSubTab}
-            options={[
-              { value: 'courses', label: 'Courses' },
-              { value: 'asdegrees', label: 'AS Degrees' },
-              { value: 'prerequisites', label: 'Prerequisites' },
-            ]} />
-          {subTab === 'courses' && (
-            <CourseList institutionId={selectedCollegeId} useCourses={useCcCourses}
-              columns={CC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title']} />
-          )}
-          {subTab === 'asdegrees' && <AsDegreeSchoolView collegeId={selectedCollegeId} />}
-          {subTab === 'prerequisites' && (
-            // `key` remounts the graph when the rail's selection changes:
-            // ConceptGraphView only reads `initialCollegeId` on first mount
-            // (it owns its own combobox after that, for tests and for the
-            // canonical-concepts / cross-college switch it still offers).
-            <ConceptGraphView key={selectedCollegeId} initialCollegeId={selectedCollegeId} lockCollege />
-          )}
-        </Stack>
-      )}
-    </div>
-  )
-}
-
-function UniversitiesPane() {
+function UniversitiesPane({ onRoute = () => {} }) {
   const summary = useDataSummary()
   const [selectedSchoolId, setSelectedSchoolId] = useState(null)
   const [subTab, setSubTab] = useState('courses')
@@ -1001,6 +1023,19 @@ function UniversitiesPane() {
     () => schools.find((s) => Number(s.school_id) === Number(selectedSchoolId)) || null,
     [schools, selectedSchoolId]
   )
+
+  useEffect(() => {
+    if (selectedSchoolId == null) {
+      onRoute({ path: '/api/assist/institutions?kind=university' })
+      return
+    }
+    const paths = {
+      courses: `/api/assist/courses?institution_id=uc:${selectedSchoolId}`,
+      requirements: '/api/curated/degrees',
+      minimums: '/api/curated/requirements?kind=transfer_minimum',
+    }
+    onRoute({ path: paths[subTab] })
+  }, [onRoute, selectedSchoolId, subTab])
 
   if (summary.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (summary.isError) return <Alert type='error'>Failed to load the UC campuses.</Alert>

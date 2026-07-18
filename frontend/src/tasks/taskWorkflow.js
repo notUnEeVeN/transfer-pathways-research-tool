@@ -55,6 +55,9 @@ export const PORTING_STAGES = [
     description: 'Re-check the published output and the underlying data yourself before handing it to a teammate.',
     weight: 5,
     notePrompt: 'What did you re-check, and what still worries you?',
+    // Part of the verification phase: the board's Verification column picks the
+    // task up here, alongside the peer-approval stage.
+    verification: true,
   },
   {
     key: 'approval',
@@ -104,12 +107,15 @@ export const nextStage = (task) => {
 }
 
 // Derived board membership for the Verification column: an in-progress task
-// whose only remaining stage is the peer-review (requiresPeer) step — i.e.
-// everything through self-verify is complete. The stored status stays
-// 'in_progress'; the board and list surface these separately so reviewers can
-// find work that is ready for a second pair of eyes.
-export const isAwaitingVerification = (task) =>
-  task?.status === 'in_progress' && Boolean(nextStage(task)?.requiresPeer)
+// whose next stage is part of the verification phase — Self-verify or the
+// peer-review (requiresPeer) step — i.e. everything through publish is
+// complete. The stored status stays 'in_progress'; the board and list surface
+// these separately so both self-checks and peer reviews live in one place.
+export const isAwaitingVerification = (task) => {
+  if (task?.status !== 'in_progress') return false
+  const upcoming = nextStage(task)
+  return Boolean(upcoming?.requiresPeer || upcoming?.verification)
+}
 
 // Board ownership follows active work: pulling a To do card into In progress
 // claims it for the person making the move; returning it releases the task.

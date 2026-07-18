@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Data page — 3 organization options</title>
+<style>
+  :root{
+    --canvas:#F6F6F1; --surface:#FFFFFF; --sunken:#EFEFE8;
+    --ink:#193018; --muted:#3F4840; --subtle:#5F6A60;
+    --border:#E3E3DA; --border-strong:#C9C9BD;
+    --primary:#193018; --accent:#96F060; --success:#17855A;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--canvas); color:var(--ink);
+    font-family:"Schibsted Grotesk", system-ui, -apple-system, sans-serif;
+    font-size:14px; line-height:1.45; padding:26px 22px 80px}
+  .wrap{max-width:1240px; margin:0 auto}
+  .label{font-size:11px; font-weight:650; letter-spacing:.07em; text-transform:uppercase; color:var(--subtle)}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px}
+  .pillrow{display:flex; gap:6px; flex-wrap:wrap; align-items:center}
+  .pill{padding:7px 15px; border-radius:999px; font-size:13px; border:1px solid var(--border-strong);
+    background:var(--surface); color:var(--muted); cursor:pointer; font-weight:500}
+  .pill.active{background:var(--primary); color:#fff; border-color:var(--primary); font-weight:650}
+  .subtabs{display:inline-flex; gap:2px; background:var(--sunken); border-radius:999px; padding:3px}
+  .subtab{padding:6px 14px; border-radius:999px; font-size:12.5px; color:var(--muted); cursor:pointer; border:none; background:transparent; font-weight:500; white-space:nowrap}
+  .subtab.active{background:var(--primary); color:#fff; font-weight:650}
+  .ph{border:1.5px dashed var(--border-strong); border-radius:12px; padding:14px 16px; color:var(--subtle); font-size:12.5px; background:var(--surface)}
+  .ph b{color:var(--muted); font-weight:650}
+  .foot{font-size:12.5px; color:var(--subtle); margin-top:10px}
+  .note{font-size:12.5px; color:var(--subtle)}
+  h1{font-size:20px; font-weight:650; letter-spacing:-.01em}
+  h2{font-size:15px; font-weight:650; letter-spacing:-.005em}
+  .switch{display:flex; gap:8px; margin:18px 0 26px}
+  .switch button{padding:10px 18px; border-radius:12px; border:1px solid var(--border-strong); background:var(--surface); cursor:pointer; text-align:left; flex:1}
+  .switch button.active{border-color:var(--primary); box-shadow:0 0 0 1px var(--primary) inset}
+  .switch .t{font-weight:650; font-size:13.5px; display:block}
+  .switch .d{font-size:12px; color:var(--subtle); display:block; margin-top:2px}
+  .mock{padding:20px; display:flex; flex-direction:column; gap:14px}
+  .rail{width:230px; flex:none}
+  .railitem{padding:8px 11px; border-radius:9px; font-size:13px; color:var(--muted); cursor:default}
+  .railitem.active{background:rgba(150,240,96,.18); font-weight:650; color:var(--ink)}
+  .cols{display:flex; gap:18px; align-items:flex-start}
+  .grow{flex:1; min-width:0; display:flex; flex-direction:column; gap:12px}
+  .rowtable{border:1px solid var(--border); border-radius:12px; overflow:hidden}
+  .rowtable .r{display:flex; justify-content:space-between; gap:12px; padding:9px 16px; border-bottom:1px solid var(--border); font-size:13px; color:var(--muted); background:var(--surface)}
+  .rowtable .r:last-child{border-bottom:none}
+  .rowtable .r .right{color:var(--subtle); font-size:12px}
+  .crumb{font-size:12.5px; color:var(--subtle)}
+  .crumb b{color:var(--ink)}
+  .selbox{display:flex; align-items:center; gap:8px; background:var(--surface); border:1.5px solid var(--border-strong); border-radius:999px; padding:9px 16px; font-size:13.5px; color:var(--muted); min-width:250px}
+  .selbox b{color:var(--ink); font-weight:650}
+  .x{margin-left:auto; color:var(--subtle); cursor:pointer; font-size:12px}
+  .tag{display:inline-block; font-size:11px; font-weight:650; letter-spacing:.04em; padding:2px 9px; border-radius:999px; background:var(--sunken); color:var(--subtle); text-transform:uppercase}
+  section.variant{display:none}
+  section.variant.on{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="label">Wireframes · not functional data</p>
+  <h1 style="margin-top:6px">Three organizations for the Data page</h1>
+  <p class="note" style="margin-top:4px">Same data everywhere, zero duplicated pickers in each. They differ only in how much lives under one roof. Click the sub-elements — each mock is lightly interactive.</p>
+
+  <div class="switch">
+    <button data-v="a" class="active"><span class="t">A · Explorer</span><span class="d">Most condensed — 3 tabs, one adaptive surface</span></button>
+    <button data-v="b"><span class="t">B · Pairs + Institutions</span><span class="d">Middle — the old Articulation flow kept, plus one catalog</span></button>
+    <button data-v="c"><span class="t">C · Index pages</span><span class="d">Most spread out — entity tabs, full-width, no side rails</span></button>
+  </div>
+
+  <!-- ══════════════ A ══════════════ -->
+  <section class="variant on" id="v-a">
+    <div class="card mock">
+      <div class="pillrow">
+        <span class="pill">Overview</span>
+        <span class="pill active">Explorer</span>
+        <span class="pill">Prerequisites</span>
+        <span class="note" style="margin-left:auto">3 top-level tabs · districts fold into the college filter</span>
+      </div>
+
+      <div style="display:flex; gap:10px; align-items:center">
+        <div class="selbox" id="a-college"><span class="label" style="font-size:10px">College</span> <b>De Anza College</b><span class="x" onclick="aSet('college',false)">clear ✕</span></div>
+        <div class="selbox" id="a-campus"><span class="label" style="font-size:10px">Campus</span> <b>UC San Diego</b><span class="x" onclick="aSet('campus',false)">clear ✕</span></div>
+        <span class="note">← pick either, or both</span>
+      </div>
+
+      <div id="a-both">
+        <span class="tag">College × Campus selected → the pair</span>
+        <div class="subtabs" style="margin-top:8px">
+          <button class="subtab active">ASSIST Transfer Requirements</button>
+          <button class="subtab">Curated Transfer Minimums</button>
+          <button class="subtab">Graduation Requirements Coverage</button>
+          <button class="subtab">DB document</button>
+          <button class="subtab">Raw ASSIST API</button>
+        </div>
+        <div class="ph" style="margin-top:10px"><b>Agreement ledger</b> — the CC → UC articulation for the working major, full width</div>
+      </div>
+
+      <div id="a-college-only" style="display:none">
+        <span class="tag">College only → everything about De Anza</span>
+        <div class="subtabs" style="margin-top:8px">
+          <button class="subtab active">Courses</button>
+          <button class="subtab">AS Degrees</button>
+          <button class="subtab">Prerequisite Graph</button>
+        </div>
+        <div class="ph" style="margin-top:10px"><b>De Anza catalog</b> — course table, full width</div>
+      </div>
+
+      <div id="a-campus-only" style="display:none">
+        <span class="tag">Campus only → everything about UC San Diego</span>
+        <div class="subtabs" style="margin-top:8px">
+          <button class="subtab active">Majors</button>
+          <button class="subtab">Graduation Requirements</button>
+          <button class="subtab">Transfer Minimums</button>
+          <button class="subtab">Courses</button>
+        </div>
+        <div class="ph" style="margin-top:10px"><b>UCSD graduation requirements</b> — the 4-year template, full width</div>
+      </div>
+
+      <div id="a-none" style="display:none">
+        <span class="tag">Nothing selected</span>
+        <div class="ph" style="margin-top:8px">Dataset overview stats + two prompts: choose a college, a campus, or both</div>
+      </div>
+    </div>
+    <p class="foot"><b>Where things live:</b> everything on one surface — the sub-tabs adapt to what is selected. One selector pair for the whole console; deepest content is 2 clicks away. <b>Risk:</b> the mode switch has to stay obvious.</p>
+  </section>
+
+  <!-- ══════════════ B ══════════════ -->
+  <section class="variant" id="v-b">
+    <div class="card mock">
+      <div class="pillrow">
+        <span class="pill">Overview</span>
+        <span class="pill" data-btab="art">Articulation</span>
+        <span class="pill active" data-btab="inst">Institutions</span>
+        <span class="pill">Prerequisites</span>
+        <span class="note" style="margin-left:auto">4 top-level tabs · districts fold into Institutions filters</span>
+      </div>
+
+      <div id="b-inst">
+        <div style="display:flex; align-items:center; gap:12px">
+          <div class="subtabs">
+            <button class="subtab active" onclick="bKind('cc')">Community colleges</button>
+            <button class="subtab" onclick="bKind('uc')">UC campuses</button>
+          </div>
+          <span class="note">one catalog, one picker — ALL data for the picked institution</span>
+        </div>
+        <div class="cols" style="margin-top:12px">
+          <div class="rail card" style="padding:10px">
+            <p class="label" style="padding:2px 6px 8px">Community colleges · 115</p>
+            <div class="railitem">Cabrillo College</div>
+            <div class="railitem active">De Anza College</div>
+            <div class="railitem">Diablo Valley College</div>
+            <div class="railitem">…</div>
+          </div>
+          <div class="grow" id="b-cc-pane">
+            <div class="subtabs"><button class="subtab active">Courses</button><button class="subtab">AS Degrees</button><button class="subtab">Prerequisite Graph</button></div>
+            <div class="ph"><b>De Anza courses</b> — catalog table</div>
+          </div>
+          <div class="grow" id="b-uc-pane" style="display:none">
+            <div class="subtabs"><button class="subtab active">Majors</button><button class="subtab">Graduation Requirements</button><button class="subtab">Transfer Minimums</button><button class="subtab">Courses</button></div>
+            <div class="ph"><b>UCSD graduation requirements</b> — 4-year template</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="b-art" style="display:none">
+        <div class="pillrow"><span class="pill active">San Diego</span><span class="pill">Berkeley</span><span class="pill">Davis</span><span class="pill">Irvine</span><span class="note">campus chips (unchanged from the version you liked)</span></div>
+        <div class="rowtable" style="margin-top:12px">
+          <div class="r"><span><b>De Anza College</b> · Foothill–De Anza CCD</span><span class="right">curated ▮▮▮▮▯ 84% · ASSIST ▮▮▮▮▮ 100% · view →</span></div>
+          <div class="r"><span>Diablo Valley College</span><span class="right">curated ▮▮▮▯▯ 63% · ASSIST ▮▮▮▮▯ 89% · view →</span></div>
+          <div class="r"><span>Santa Monica College</span><span class="right">curated ▮▮▮▮▯ 78% · ASSIST ▮▮▮▮▯ 91% · view →</span></div>
+        </div>
+        <div style="margin-top:12px" class="subtabs">
+          <button class="subtab active">ASSIST Transfer Requirements</button>
+          <button class="subtab">Curated Transfer Minimums</button>
+          <button class="subtab">Graduation Requirements Coverage</button>
+          <button class="subtab">DB document</button>
+          <button class="subtab">Raw ASSIST API</button>
+        </div>
+        <div class="ph" style="margin-top:10px"><b>Agreement ledger</b> for the opened college</div>
+      </div>
+    </div>
+    <p class="foot"><b>Where things live:</b> the CC×UC flow stays exactly as the version you called efficient; every per-institution fact (courses, AS degrees, prereq graph, majors, graduation requirements, transfer minimums) consolidates into one Institutions catalog with a CC/UC toggle. Two working surfaces, each with a single picker.</p>
+  </section>
+
+  <!-- ══════════════ C ══════════════ -->
+  <section class="variant" id="v-c">
+    <div class="card mock">
+      <div class="pillrow">
+        <span class="pill">Overview</span>
+        <span class="pill active" data-ctab="cc">Community Colleges</span>
+        <span class="pill" data-ctab="uc">Universities</span>
+        <span class="pill">Articulation</span>
+        <span class="pill">Prerequisites</span>
+        <span class="pill">Districts</span>
+        <span class="note" style="margin-left:auto">6 top-level tabs · full-width pages, no side rails</span>
+      </div>
+
+      <div id="c-cc-index">
+        <p class="crumb" style="margin-bottom:8px">Community Colleges</p>
+        <div class="rowtable">
+          <div class="r" style="cursor:pointer" onclick="cOpen()"><span><b>De Anza College</b> · Foothill–De Anza CCD</span><span class="right">1,912 courses · 2 AS degrees · quarter · open →</span></div>
+          <div class="r"><span>Cabrillo College · Cabrillo CCD</span><span class="right">1,204 courses · 1 AS degree · semester</span></div>
+          <div class="r"><span>Diablo Valley College · Contra Costa CCD</span><span class="right">1,533 courses · 2 AS degrees · semester</span></div>
+          <div class="r"><span>… 112 more (search + district filter up top)</span><span class="right"></span></div>
+        </div>
+        <p class="note" style="margin-top:8px">the index IS the picker — a full-width table with summary columns, like the coverage table you liked</p>
+      </div>
+
+      <div id="c-cc-detail" style="display:none">
+        <p class="crumb" style="margin-bottom:8px"><span style="cursor:pointer" onclick="cBack()">Community Colleges</span> / <b>De Anza College</b></p>
+        <div class="subtabs"><button class="subtab active">Courses</button><button class="subtab">AS Degrees</button><button class="subtab">Prerequisite Graph</button></div>
+        <div class="ph" style="margin-top:10px"><b>De Anza courses</b> — full page width, nothing squeezed beside a rail</div>
+      </div>
+
+      <div id="c-uc" style="display:none">
+        <p class="crumb" style="margin-bottom:8px">Universities</p>
+        <div class="rowtable">
+          <div class="r"><span><b>UC San Diego</b></span><span class="right">1 major · graduation reqs ✓ · minimums ✓ · open →</span></div>
+          <div class="r"><span>UC Berkeley</span><span class="right">1 major · graduation reqs ✓ · minimums ✓</span></div>
+          <div class="r"><span>… 7 more campuses</span><span class="right"></span></div>
+        </div>
+        <p class="note" style="margin-top:8px">campus page mirrors the college page: Majors · Graduation Requirements · Transfer Minimums · Courses</p>
+      </div>
+    </div>
+    <p class="foot"><b>Where things live:</b> one tab per entity, and each picker exists once as a full-width index page → click a row → full-width detail page with a breadcrumb back. Most tabs, but no cramped two-column layouts anywhere and nothing repeated.</p>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll('.switch button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.switch button').forEach(x => x.classList.toggle('active', x === b))
+    document.querySelectorAll('.variant').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v))
+  }))
+  // A: selector states
+  const aState = { college: true, campus: true }
+  function aSet(k, v) { aState[k] = v; aRender() }
+  function aRender() {
+    const both = aState.college && aState.campus
+    document.getElementById('a-both').style.display = both ? '' : 'none'
+    document.getElementById('a-college-only').style.display = (aState.college && !aState.campus) ? '' : 'none'
+    document.getElementById('a-campus-only').style.display = (!aState.college && aState.campus) ? '' : 'none'
+    document.getElementById('a-none').style.display = (!aState.college && !aState.campus) ? '' : 'none'
+    document.getElementById('a-college').style.opacity = aState.college ? 1 : .45
+    document.getElementById('a-campus').style.opacity = aState.campus ? 1 : .45
+    document.getElementById('a-college').querySelector('.x').textContent = aState.college ? 'clear ✕' : 'pick…'
+    document.getElementById('a-campus').querySelector('.x').textContent = aState.campus ? 'clear ✕' : 'pick…'
+    document.getElementById('a-college').querySelector('.x').onclick = () => aSet('college', !aState.college)
+    document.getElementById('a-campus').querySelector('.x').onclick = () => aSet('campus', !aState.campus)
+  }
+  aRender()
+  // B: top tab + kind toggles
+  document.querySelectorAll('[data-btab]').forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('[data-btab]').forEach(x => x.classList.toggle('active', x === p))
+    document.getElementById('b-inst').style.display = p.dataset.btab === 'inst' ? '' : 'none'
+    document.getElementById('b-art').style.display = p.dataset.btab === 'art' ? '' : 'none'
+  }))
+  function bKind(k) {
+    document.querySelectorAll('#b-inst .subtabs')[0].querySelectorAll('.subtab').forEach((t, i) =>
+      t.classList.toggle('active', (k === 'cc') === (i === 0)))
+    document.getElementById('b-cc-pane').style.display = k === 'cc' ? '' : 'none'
+    document.getElementById('b-uc-pane').style.display = k === 'uc' ? '' : 'none'
+  }
+  // C: index/detail + entity tabs
+  document.querySelectorAll('[data-ctab]').forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('[data-ctab]').forEach(x => x.classList.toggle('active', x === p))
+    document.getElementById('c-uc').style.display = p.dataset.ctab === 'uc' ? '' : 'none'
+    document.getElementById('c-cc-index').style.display = p.dataset.ctab === 'cc' ? '' : 'none'
+    document.getElementById('c-cc-detail').style.display = 'none'
+  }))
+  function cOpen() { document.getElementById('c-cc-index').style.display = 'none'; document.getElementById('c-cc-detail').style.display = '' }
+  function cBack() { document.getElementById('c-cc-detail').style.display = 'none'; document.getElementById('c-cc-index').style.display = '' }
+</script>
+</body>
+</html>

@@ -19,6 +19,10 @@ const awaitingTask = task({
   _id: 'tk-verify', title: 'Awaiting verification', progress: 90,
   workflow_stages: complete(preApprovalKeys),
 })
+const selfVerifyTask = task({
+  _id: 'tk-self', title: 'Awaiting self-verify', progress: 85, order: 1500,
+  workflow_stages: complete(['understand', 'research', 'data_access', 'visualization', 'publish']),
+})
 const midTask = task({
   _id: 'tk-mid', title: 'Mid flow', progress: 35, order: 2000,
   workflow_stages: complete(['understand', 'research']),
@@ -42,6 +46,13 @@ describe('TaskBoard Verification column', () => {
 
     expect(within(column('Verification')).getByText('Awaiting verification')).toBeInTheDocument()
     expect(within(column('In progress')).queryByText('Awaiting verification')).not.toBeInTheDocument()
+  })
+
+  it('routes a published task still pending self-verify into Verification too', () => {
+    renderBoard([selfVerifyTask, midTask, todoTask])
+
+    expect(within(column('Verification')).getByText('Awaiting self-verify')).toBeInTheDocument()
+    expect(within(column('In progress')).queryByText('Awaiting self-verify')).not.toBeInTheDocument()
   })
 
   it('keeps a mid-flow in_progress task in In progress', () => {

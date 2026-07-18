@@ -6,9 +6,9 @@ import { isAwaitingVerification } from './taskWorkflow'
 import { usePersistedState } from '../shared/hooks/usePersistedState'
 
 // Verification is a DERIVED column, not a stored status: a task lands there when
-// it is in_progress and its only remaining stage is peer approval (see
-// isAwaitingVerification). Backlog was removed; legacy 'backlog' docs read as
-// 'todo' server-side, so they never reach the board.
+// it is in_progress and its next stage is in the verification phase — Self-verify
+// or peer approval (see isAwaitingVerification). Backlog was removed; legacy
+// 'backlog' docs read as 'todo' server-side, so they never reach the board.
 export const COLUMNS = [
   { status: 'todo',         label: 'To do' },
   { status: 'in_progress',  label: 'In progress' },
@@ -56,8 +56,9 @@ function dropSlot(columnEl, draggedId, pointY) {
  * Columns collapse to a slim header bar (chevron; sessionStorage-persisted) —
  * an empty To do or a swollen Done folds out of the way but stays a valid
  * drop target (drops append to the column's end). Verification is derived, not
- * a drop target: cards enter it by completing Self-verify and leave via peer
- * approval or a stage reopen, so its cards don't drag and it takes no drops.
+ * a drop target: cards enter it by completing Publish (the verification phase
+ * is Self-verify + peer approval) and leave via approval or a stage reopen,
+ * so its cards don't drag and it takes no drops.
  * A long column scrolls
  * within a bounded height rather than growing the page; while a drag is in
  * flight every column switches to overflow-visible so the dragged card isn't

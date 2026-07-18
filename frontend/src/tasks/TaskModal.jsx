@@ -29,7 +29,7 @@ const fmtWhen = (value) => (value
 export default function TaskModal({
   open, onClose, task = null, initialStatus = 'todo', roster = [],
   onCreate, onPatch, onAddStageNote, onCompleteStage, onReopenStage,
-  onDeleteStageNote, onResolveStageNote, onDelete, me,
+  onDeleteStageNote, onResolveStageNote, onDelete, me, admin = false,
 }) {
   const editing = Boolean(task)
   const safeInitialStatus = initialStatus === 'done' ? 'todo' : initialStatus
@@ -239,7 +239,7 @@ export default function TaskModal({
                 onAddStageNote={onAddStageNote} onDeleteStageNote={onDeleteStageNote}
                 onPatch={onPatch} onClose={onClose} />
             ) : (
-              <PortingWorkflow task={task} me={me} roster={roster}
+              <PortingWorkflow task={task} me={me} admin={admin} roster={roster}
                 onAddStageNote={onAddStageNote} onCompleteStage={onCompleteStage}
                 onReopenStage={onReopenStage} onDeleteStageNote={onDeleteStageNote}
                 onResolveStageNote={onResolveStageNote} />

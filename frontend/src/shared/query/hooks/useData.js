@@ -367,13 +367,26 @@ export function useSaveCourseConcept() {
   })
 }
 
-// Data → AS Degrees: bulk QA over the per-college local CS AS degree docs
-// extracted from catalog PDFs (Task 4's curator endpoints).
-export function useAsDegrees() {
+// Data → Associate Degrees: statewide record QA, optionally isolated to one
+// stable category. The CS A.S.-T view uses the server filter so the response
+// itself — not just the rendered rows — is the analysis cohort.
+export function useAsDegrees(degreeType = null) {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['as-degrees', user?.uid],
-    queryFn: () => apiClient.get('/curated/as-degrees').then((r) => r.data),
+    queryKey: ['as-degrees', user?.uid, degreeType || 'all'],
+    queryFn: () => apiClient
+      .get('/curated/as-degrees', { params: degreeType ? { degree_type: degreeType } : {} })
+      .then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
+export function useAsDegreeAvailability() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['as-degree-availability', user?.uid],
+    queryFn: () => apiClient.get('/curated/as-degree-availability').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 60 * 1000,
   })
@@ -397,6 +410,7 @@ export function useSaveAsDegree() {
     mutationFn: (doc) => apiClient.put('/curated/requirements/as_degree', doc).then((r) => r.data),
     onSuccess: () => Promise.all([
       qc.invalidateQueries({ queryKey: ['as-degrees'] }),
+      qc.invalidateQueries({ queryKey: ['as-degree-availability'] }),
       qc.invalidateQueries({ queryKey: ['as-degree-detail'] }),
     ]),
   })

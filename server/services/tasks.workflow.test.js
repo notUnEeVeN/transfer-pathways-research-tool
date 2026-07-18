@@ -123,6 +123,39 @@ describe('assignee-gated stage completion (T22)', () => {
     expect(approved.progress).toBe(100);
   });
 
+  it('lets an admin force-approve their own task, stamping the completion as forced', async () => {
+    const prevAdmins = process.env.ADMIN_UIDS;
+    process.env.ADMIN_UIDS = 'assignee';
+    try {
+      const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
+      await completeThrough(task._id, 'self_verify', 'assignee');
+      const approved = await completeTaskStage(db, db, task._id, 'approval', {}, 'assignee');
+      expect(approved.status).toBe('done');
+      expect(approved.progress).toBe(100);
+      expect(approved.workflow_stages.approval.forced).toBe(true);
+      const event = approved.workflow_log.at(-1);
+      expect(event).toMatchObject({ stage: 'approval', action: 'completed', forced: true });
+    } finally {
+      if (prevAdmins === undefined) delete process.env.ADMIN_UIDS;
+      else process.env.ADMIN_UIDS = prevAdmins;
+    }
+  });
+
+  it('does not stamp forced on a normal third-party approval, admin or not', async () => {
+    const prevAdmins = process.env.ADMIN_UIDS;
+    process.env.ADMIN_UIDS = 'reviewer';
+    try {
+      const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
+      await completeThrough(task._id, 'self_verify', 'assignee');
+      const approved = await completeTaskStage(db, db, task._id, 'approval', {}, 'reviewer');
+      expect(approved.status).toBe('done');
+      expect(approved.workflow_stages.approval.forced).toBeUndefined();
+    } finally {
+      if (prevAdmins === undefined) delete process.env.ADMIN_UIDS;
+      else process.env.ADMIN_UIDS = prevAdmins;
+    }
+  });
+
   it('still lets a non-assignee reopen a completed stage', async () => {
     const task = await createTask(db, db, { title: 'Port the graph', assignee_uid: 'assignee' }, 'author');
     await completeTaskStage(db, db, task._id, 'understand', {}, 'assignee');

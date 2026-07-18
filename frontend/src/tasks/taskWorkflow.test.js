@@ -39,13 +39,13 @@ describe('Porting task workflow', () => {
       expect(isAwaitingVerification(task)).toBe(true)
     })
 
-    it('is false right after publish while self_verify is still pending', () => {
+    it('is true right after publish — self_verify is part of the verification phase', () => {
       const task = {
         task_type: 'porting', status: 'in_progress',
         workflow_stages: through(['understand', 'research', 'data_access', 'visualization', 'publish']),
       }
       expect(nextStage(task)?.key).toBe('self_verify')
-      expect(isAwaitingVerification(task)).toBe(false)
+      expect(isAwaitingVerification(task)).toBe(true)
     })
 
     it('is false for a mid-flow, a todo, and a done task', () => {

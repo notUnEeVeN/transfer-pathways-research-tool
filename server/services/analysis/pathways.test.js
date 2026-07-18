@@ -372,6 +372,42 @@ describe('requirementComparisonData', () => {
     expect(cmp.assist_extra_groups).toEqual([]);
   });
 
+  it('ships full catalog rows (title + units) for both sides of every emitted row', async () => {
+    await db.collection('assist_agreements').insertOne({
+      uc_school: 'UC Rich', uc_school_id: 7,
+      community_college: 'CC Zeta', community_college_id: 60,
+      major: 'Computer Science B.S.',
+      // Numeric course_id, as stored in the real catalog (the CC enrichment
+      // resolves ids via Number()).
+      requirement_groups: oneGroup([recv([opt([9001])], { hash: 'r-rich', parentId: 501 })]),
+    });
+    await db.collection('assist_courses').insertMany([
+      { course_id: 9001, units: 5, community_college_id: 60, side: 'sending',
+        prefix: 'MATH', number: '1A', title: 'Calculus I' },
+      { parent_id: 501, side: 'receiving', prefix: 'MATH', number: '16A',
+        title: 'Analytic Geometry and Calculus', min_units: 3, max_units: 3 },
+    ]);
+    await db.collection('curated_requirements').insertOne({
+      _id: 'transfer_minimum:ucr-a', kind: 'transfer_minimum', school_id: 7, school: 'UC Rich', uc_code: 'UCR',
+      group_id: 'G', set_id: 'A', source_order: 0, receiving_code: 'CALC', parent_ids: [501], matched: true,
+    });
+
+    const cmp = await requirementComparisonData(db, db, {
+      schoolId: 7, major: 'Computer Science B.S.', communityCollegeId: 60,
+    });
+    // The row's uc_code is upgraded to the authoritative catalog code, and the
+    // full receiving row rides in university_courses for the ledger to render.
+    expect(cmp.website_requirements[0].uc_code).toBe('MATH 16A');
+    expect(cmp.university_courses[501]).toMatchObject({
+      prefix: 'MATH', number: '16A', title: 'Analytic Geometry and Calculus', min_units: 3, max_units: 3,
+    });
+    // cc_options carries the code; cc_courses resolves it to title + units.
+    expect(cmp.website_requirements[0].cc_options).toEqual([['MATH 1A']]);
+    expect(cmp.cc_courses['MATH 1A']).toMatchObject({
+      prefix: 'MATH', number: '1A', title: 'Calculus I', units: 5,
+    });
+  });
+
   it('finds the agreement when the stored major has trailing whitespace', async () => {
     // Some ASSIST program names are stored with a trailing space (e.g. UC
     // Merced's CSE B.S.); the caller sends the trimmed name, so the lookup
