@@ -374,6 +374,11 @@ describe('Community Colleges degree integration', () => {
     expect(screen.getAllByText('No CS A.S.-T').length).toBeGreaterThan(0)
 
     fireEvent.click(screen.getByRole('button', { name: 'Filter by CS A.S.-T status' }))
+    expect(screen.getByRole('option', { name: 'All CS A.S.-T statuses' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'No CS A.S.-T' })).toBeInTheDocument()
+    expect(screen.getByRole('option', {
+      name: 'Has CS A.S.-T — requirements missing',
+    })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('option', { name: 'Has CS A.S.-T' }))
     expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
     expect(screen.queryByText('Santa Monica College')).not.toBeInTheDocument()
@@ -382,7 +387,7 @@ describe('Community Colleges degree integration', () => {
     })).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Filter by CS A.S.-T status' }))
-    fireEvent.click(screen.getByRole('option', { name: 'Confirmed no CS A.S.-T' }))
+    fireEvent.click(screen.getByRole('option', { name: 'No CS A.S.-T' }))
     expect(screen.queryByText('Diablo Valley College')).not.toBeInTheDocument()
     expect(screen.getByText('Santa Monica College')).toBeInTheDocument()
     expect(screen.getByRole('button', {

@@ -13,15 +13,15 @@ import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 // electives groups carry no course structure, so they stay one-line notes.
 
 const TYPE_TAB = {
-  ast: 'CS Transfer Degree',
-  local_cs_as: 'Local CS Degree',
-  local_computing: 'Other Computing Degree',
+  ast: 'CS A.S.-T',
+  local_cs_as: 'Local CS A.S.',
+  local_computing: 'Other computing',
 }
 
 const TYPE_DESCRIPTION = {
-  ast: 'Associate in Science for Transfer (A.S.-T)',
-  local_cs_as: 'College-specific Associate in Science (A.S.)',
-  local_computing: 'Another college-specific computing associate degree',
+  ast: 'Statewide transfer degree',
+  local_cs_as: 'College-defined CS degree',
+  local_computing: 'Other college-defined computing degree',
 }
 
 // GE pattern identifiers → the section title shown on the pattern's card.
@@ -246,7 +246,7 @@ export default function AsDegreeSchoolView({
     <Stack gap='cozy'>
       <div className='flex flex-wrap items-center gap-3'>
         <div className='min-w-[190px] flex-1'>
-          <p className='text-label text-[11px]'>Viewing degree</p>
+          <p className='text-label text-[11px]'>Degree type</p>
           <p className='mt-1 text-caption text-ink-muted'>
             {TYPE_DESCRIPTION[active.degree_type] || 'Associate degree'}
           </p>

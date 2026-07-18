@@ -220,10 +220,10 @@ export function summarizeCoverageRows(rows = []) {
 const COLLEGE_TABLE_COLS = 'grid grid-cols-[minmax(0,1fr)_180px_68px] gap-3.5'
 
 const AST_STATUS_OPTIONS = [
-  { value: '', label: 'All A.S.-T statuses' },
+  { value: '', label: 'All CS A.S.-T statuses' },
   { value: 'available', label: 'Has CS A.S.-T' },
-  { value: 'confirmed_none', label: 'Confirmed no CS A.S.-T' },
-  { value: 'data_gap', label: 'A.S.-T data gaps' },
+  { value: 'confirmed_none', label: 'No CS A.S.-T' },
+  { value: 'data_gap', label: 'Has CS A.S.-T — requirements missing' },
 ]
 
 const AST_STATUS_META = {
@@ -283,7 +283,7 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
         </label>
         <Select pill className='w-[210px]' value={district} onChange={setDistrict}
           options={districtOptions} aria-label='Filter by district' />
-        <Select pill className='w-[190px]' value={astStatus} onChange={changeAstStatus}
+        <Select pill className='w-[270px]' value={astStatus} onChange={changeAstStatus}
           options={AST_STATUS_OPTIONS} aria-label='Filter by CS A.S.-T status' />
       </div>
       {colleges.isLoading || dataLoading ? (
