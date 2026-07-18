@@ -23,7 +23,9 @@ Transformation (extraction major_group -> as_degree requirement_group):
   rule "ge_area"        -> ge_area set (normalized to GE_AREAS), one section
                            with unit_advisement=units_min, receivers: [].
   rule "electives"      -> units_fill: true group, no sections.
-  rule "all"             -> one section, all courses become receivers.
+  rule "all"             -> one section, all courses become receivers,
+                           section_advisement = receiver count (ASSIST
+                           semantics: null would mean "any one satisfies").
   rule "choose_courses"  -> one section, section_advisement=choose_n (or 1).
   rule "choose_units"    -> one section, unit_advisement=units_min.
   A course that fails resolution against assist_courses (sending side) is
@@ -489,7 +491,11 @@ def transform_group(mg, cc_id, index, title_index, concept_by_course_id, confide
         return None, considered, resolved_by_number, resolved_by_title, unresolved_entries, title_match_samples, covered_concepts
 
     if rule == "all":
-        section = {"section_advisement": None, "unit_advisement": None, "receivers": receivers}
+        # ASSIST-skeleton semantics: a null section_advisement means "any one
+        # receiver satisfies" (chooseNMinimum treats null as 1). An all-required
+        # group must therefore state the full count — complete N of N — or both
+        # the ledger and the eligibility engines would read it as choose-one.
+        section = {"section_advisement": len(receivers), "unit_advisement": None, "receivers": receivers}
     elif rule == "choose_courses":
         section = {"section_advisement": mg.get("choose_n") or 1, "unit_advisement": None, "receivers": receivers}
     else:  # choose_units

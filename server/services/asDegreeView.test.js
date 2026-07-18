@@ -204,7 +204,8 @@ describe('asDegreeDetail', () => {
     const localCsAs = detail.degrees.find((d) => d.degree_type === 'local_cs_as');
     expect(localCsAs.doc._id).toBe('as_degree:110:local_cs_as');
     expect(localCsAs.courses_by_id['cc:101']).toEqual(
-      { code: 'CS 111', title: 'Programming I', units: 4, concept: 'cs_1' });
+      { course_id: 101, prefix: 'CS', number: '111', code: 'CS 111',
+        title: 'Programming I', units: 4, concept: 'cs_1' });
     expect(localCsAs.covered_concepts).toEqual(['cs_1', 'comp_arch_assembly', 'discrete_math', 'calc_1']);
     expect(localCsAs.missing_core_concepts).toEqual(['calc_2', 'linear_alg']);
     expect(localCsAs.coverage_pct).toBe(80);

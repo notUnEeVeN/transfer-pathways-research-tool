@@ -7,13 +7,21 @@ vi.mock('../shared/query/hooks/useData', () => ({
   useAsDegreeDetail: (...args) => mockDetail(...args),
 }))
 
+const receiver = (id) => ({
+  receiving: null, articulation_status: 'articulated', not_articulated_reason: null,
+  options: [{ course_ids: [id], course_conjunction: 'and', course_keys: [`cc:${id}`] }],
+  options_conjunction: 'and', hash_id: null,
+})
+
 const degree = (over = {}) => ({
   degree_type: 'local_cs_as',
   coverage_pct: 83,
   missing_core_concepts: ['phys_mech'],
   courses_by_id: {
-    'cc:1': { code: 'CS 21', title: 'Programming Concepts', units: 4, concept: 'cs_1' },
-    'cc:2': { code: 'MATH 5A', title: 'Calculus I', units: 5, concept: 'calc_1' },
+    'cc:1': { course_id: 1, prefix: 'CS', number: '21', code: 'CS 21',
+      title: 'Programming Concepts', units: 4, concept: 'cs_1' },
+    'cc:2': { course_id: 2, prefix: 'MATH', number: '5A', code: 'MATH 5A',
+      title: 'Calculus I', units: 5, concept: 'calc_1' },
   },
   doc: {
     degree_title_seen: 'Computer Science - Associate in Science (A.S.)',
@@ -21,12 +29,9 @@ const degree = (over = {}) => ({
     catalog_url: 'https://cabrillo.example/cs', catalog_year: '2025-2026',
     requirement_groups: [
       { group_id: 'core', label_seen: 'Required Major (Complete the following credits: 14)',
-        ge_area: null, units_fill: false,
-        sections: [{ section_advisement: null, unit_advisement: null,
-          receivers: [
-            { options: [{ course_keys: ['cc:1'] }] },
-            { options: [{ course_keys: ['cc:2'] }] },
-          ] }],
+        is_required: true, ge_area: null, units_fill: false,
+        sections: [{ section_advisement: 2, unit_advisement: null,
+          receivers: [receiver(1), receiver(2)] }],
         unresolved_courses_seen: [] },
       { group_id: 'ge', label_seen: 'General Education', ge_area: 'local_pattern', units_fill: false,
         sections: [{ section_advisement: null, unit_advisement: 18, receivers: [] }],
@@ -44,10 +49,16 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('83%')).toBeInTheDocument()
     expect(screen.getByText(/Missing physics/i)).toBeInTheDocument()
     expect(screen.getByText('60')).toBeInTheDocument()
+    // Courses render through the shared RequirementsLedger: cleaned group
+    // title, course code + title, and the ledger's unit chip.
+    expect(screen.getByRole('heading', { name: 'Required Major' })).toBeInTheDocument()
     expect(screen.getByText('CS 21')).toBeInTheDocument()
     expect(screen.getByText('Programming Concepts')).toBeInTheDocument()
+    expect(screen.getByText('4u')).toBeInTheDocument()
+    expect(screen.getByText('Complete all of:')).toBeInTheDocument()
     expect(screen.getByText(/2025-2026 catalog/)).toBeInTheDocument()
-    // a units_fill electives group renders no course block
+    // GE stays a one-line note; a units_fill electives group renders nothing
+    expect(screen.getByText('General education')).toBeInTheDocument()
     expect(screen.queryByText('Electives')).not.toBeInTheDocument()
   })
 

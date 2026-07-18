@@ -212,6 +212,12 @@ async function asDegreeDetail(db, collegeId) {
       loadCourses(db, [doc]),
     ]);
     const coursesById = Object.fromEntries(courses.map((c) => [`cc:${c.course_id}`, {
+      // course_id/prefix/number let the shared RequirementsLedger consume this
+      // map directly (it matches sending courses by numeric course_id); `code`
+      // stays for lighter consumers.
+      course_id: c.course_id,
+      prefix: c.prefix ?? null,
+      number: c.number ?? null,
       code: `${c.prefix} ${c.number}`,
       title: c.title ?? null,
       units: c.units ?? null,

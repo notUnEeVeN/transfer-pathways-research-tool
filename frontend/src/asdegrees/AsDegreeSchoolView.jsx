@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { Stack, Tabs, StatStrip, Spinner, EmptyState } from '../components/ui'
+import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 
-// Per-college associate-degree view, shown as a tab beside "Degree coverage"
-// in an agreement pair. Deliberately minimal: the school's own local degree(s)
-// read against the statewide CS template, no QA chrome (that lives in the
-// Data → AS Degrees bulk table). Matches the DegreeCompletionView idiom —
-// a StatStrip headline over labelled requirement sections.
+// Per-college associate-degree view, shown as the AS Degrees sub-tab in the
+// Institutions catalog. The requirement groups render through the shared
+// RequirementsLedger — the same treatment as ASSIST Transfer Requirements,
+// Curated Transfer Minimums, and Graduation Requirements Coverage — which the
+// as_degree kind's agreement-skeleton storage makes possible with no
+// translation (receivers just have no university side). GE-pattern and
+// electives groups carry no course structure, so they stay one-line notes.
 
-// Short, readable names for the concept slugs used in coverage/missing lines.
+// Short, readable names for the concept slugs used in the coverage tile.
 const CONCEPT_LABEL = {
   cs_1: 'Programming', cs_2_oop: 'OOP', cs_3_data_structures: 'Data structures',
   comp_arch_assembly: 'Computer architecture', discrete_math: 'Discrete math',
@@ -22,95 +25,41 @@ const conceptName = (slug) => CONCEPT_LABEL[slug] || slug.replace(/_/g, ' ')
 
 const TYPE_TAB = { local_cs_as: 'Local A.S.', ast: 'Transfer (ADT)', local_computing: 'Applied' }
 
-// A short rule phrase derived from a section's advisement.
-const ruleFor = (s) => s.section_advisement != null
-  ? (s.section_advisement === 1 ? 'Choose one' : `Choose ${s.section_advisement}`)
-  : s.unit_advisement != null ? `${s.unit_advisement} units` : null
-
-// Catalog group headings are inconsistent — some are topics ("Programming core"),
-// some are bare instructions ("Take ALL of the following courses"). Strip the
-// parenthetical/instructional boilerplate; if nothing meaningful is left, fall
-// back to the rule so the heading stays short and clean.
+// Catalog group headings mix topics ("Required Core") with bare instructions
+// ("Take ALL of the following courses"). Keep a cleaned topic as the ledger
+// group title; drop instruction-only labels entirely — the ledger's own
+// Required/Recommended heading plus its section rule already carry that.
 const RULE_ONLY = /^(take|select|complete|choose)\b|following/i
-const cleanLabel = (raw, section) => {
+const ledgerTitle = (raw) => {
   let t = (raw || '').replace(/\([^)]*\)/g, ' ')
-    .replace(/\s[—–]\s.*$/, '')                                            // drop "— descriptive clause"
-    .replace(/\s*[-—–:]\s*(complete|select|choose|take|units?|any|plus)\b.*$/i, '') // drop instructional tail
+    .replace(/\s[—–]\s.*$/, '')
+    .replace(/\s*[-—–:]\s*(complete|select|choose|take|units?|any|plus)\b.*$/i, '')
     .replace(/[:,.\s]+$/, '').replace(/\s{2,}/g, ' ').trim()
-  if (!t || t.length < 3 || RULE_ONLY.test(t)) return ruleFor(section) || 'Required'
-  if (t.length > 46) t = `${t.slice(0, 43).replace(/\s\S*$/, '')}…`
+  if (!t || t.length < 3 || RULE_ONLY.test(t)) return null
+  if (t.length > 52) t = `${t.slice(0, 49).replace(/\s\S*$/, '')}…`
   return t
-}
-
-// One requirement group → a heading, a short rule, and its courses.
-function GroupBlock({ group, coursesById }) {
-  if (group.units_fill) return null // electives-to-total: no course list to read
-  const section = (group.sections || [])[0] || {}
-
-  // GE area group: a single consistent line, no course enumeration.
-  if (group.ge_area) {
-    return (
-      <section>
-        <div className='flex items-baseline gap-2.5 mt-1'>
-          <h4 className='text-label text-[11.5px]'>General education</h4>
-          {section.unit_advisement != null && <span className='text-tag text-ink-subtle'>{section.unit_advisement} units</span>}
-        </div>
-      </section>
-    )
-  }
-
-  const heading = cleanLabel(group.label_seen, section)
-  const ruleText = ruleFor(section)
-  const rule = heading === ruleText ? null : ruleText // avoid "Choose one · Choose one"
-
-  const rows = []
-  for (const r of section.receivers || []) {
-    for (const opt of r.options || []) {
-      const codes = (opt.course_keys || []).map((k) => coursesById[k]).filter(Boolean)
-      if (codes.length) rows.push(codes)
-    }
-  }
-  const unresolved = group.unresolved_courses_seen || []
-
-  return (
-    <section>
-      <div className='flex items-baseline gap-2.5 mb-2 mt-1'>
-        <h4 className='text-label text-[11.5px]'>{heading}</h4>
-        {rule && <span className='text-tag text-ink-subtle'>{rule}</span>}
-      </div>
-      <div className='surface-card divide-y divide-border/50'>
-        {rows.map((courses, i) => (
-          <div key={i} className='flex items-baseline gap-3 px-[18px] py-2.5'>
-            <span className='text-[12.5px] font-[600] text-ink tabular-nums shrink-0 w-[92px]'>
-              {courses.map((c) => c.code).join(' + ')}
-            </span>
-            <span className='text-body text-ink-muted min-w-0 flex-1 truncate'>
-              {courses.map((c) => c.title).filter(Boolean).join(' + ')}
-            </span>
-            <span className='text-caption text-ink-subtle tabular-nums shrink-0'>
-              {courses.reduce((n, c) => n + (c.units || 0), 0) || ''}
-            </span>
-          </div>
-        ))}
-        {unresolved.map((u, i) => (
-          <div key={`u${i}`} className='flex items-baseline gap-3 px-[18px] py-2.5'>
-            <span className='text-[12.5px] font-[600] text-ink-subtle tabular-nums shrink-0 w-[92px]'>
-              {u.course_code_seen}
-            </span>
-            <span className='text-body text-ink-subtle min-w-0 flex-1 truncate italic'>
-              {u.title_seen || 'Course not in the catalog database'}
-            </span>
-            <span className='text-caption text-ink-subtle tabular-nums shrink-0'>{u.units_seen || ''}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
 }
 
 export function DegreePanel({ degree }) {
   const { doc, courses_by_id: coursesById, coverage_pct: coverage, missing_core_concepts: missing } = degree
   const units = doc.unit_system === 'quarter' ? 'quarter units' : 'semester units'
+  const groups = doc.requirement_groups || []
+
+  // The ledger renders the groups that carry real course structure; its
+  // `courses` prop matches sending courses by numeric course_id.
+  const ledgerMajor = useMemo(() => ({
+    requirement_groups: groups
+      .filter((g) => !g.units_fill && !g.ge_area
+        && (g.sections || []).some((s) => (s.receivers || []).length))
+      .map((g) => ({ ...g, title: ledgerTitle(g.label_seen) || undefined })),
+  }), [groups])
+  const ledgerCourses = useMemo(
+    () => Object.values(coursesById || {}).filter((c) => c && c.course_id != null),
+    [coursesById]
+  )
+
+  const geGroups = groups.filter((g) => g.ge_area)
+  const unresolved = groups.flatMap((g) => g.unresolved_courses_seen || [])
 
   const tiles = []
   if (coverage != null) {
@@ -128,9 +77,35 @@ export function DegreePanel({ degree }) {
       {tiles.length > 0 && (
         <section aria-label='Degree summary'><StatStrip tiles={tiles} /></section>
       )}
-      {(doc.requirement_groups || []).map((g) => (
-        <GroupBlock key={g.group_id} group={g} coursesById={coursesById || {}} />
+      {ledgerMajor.requirement_groups.length > 0 && (
+        <div className='uui-scope'>
+          <RequirementsLedger major={ledgerMajor} courses={ledgerCourses}
+            preserveOrder showCompletion={false} />
+        </div>
+      )}
+      {geGroups.map((g) => (
+        <section key={g.group_id}>
+          <div className='flex items-baseline gap-2.5 mt-1'>
+            <h4 className='text-label text-[11.5px]'>General education</h4>
+            {(g.sections || [])[0]?.unit_advisement != null && (
+              <span className='text-tag text-ink-subtle'>{g.sections[0].unit_advisement} units</span>
+            )}
+          </div>
+        </section>
       ))}
+      {unresolved.length > 0 && (
+        <div className='surface-card px-[18px] py-3.5'>
+          <p className='text-label text-[11px]'>Cited in the catalog · not in the course database</p>
+          <div className='mt-1.5 flex flex-col gap-1'>
+            {unresolved.map((u, i) => (
+              <p key={i} className='text-caption text-ink-subtle'>
+                <span className='font-[600] text-ink-muted'>{u.course_code_seen}</span>
+                {u.title_seen ? ` — ${u.title_seen}` : ''}{u.units_seen ? ` (${u.units_seen}u)` : ''}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
       {doc.catalog_url && (
         <p className='text-caption text-ink-subtle'>
           AI-extracted from the{' '}

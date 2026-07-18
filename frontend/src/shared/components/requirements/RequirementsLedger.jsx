@@ -345,6 +345,31 @@ function ReceiverRow({ receiver, ctx, rowKey }) {
     )
   }
 
+  // A local (community-college) degree requirement has no university receiving
+  // side: `receiving` is null and the CC options ARE the requirement (the
+  // as_degree kind — spec 2026-07-17). Render the sending side across the full
+  // row: no arrow, no receiving column. Agreements and degree templates always
+  // carry a receiving object, so no existing data path reaches this branch.
+  if (receiver.receiving == null && hasOptions) {
+    const singleProps = mark
+      ? {
+          className: 'px-5 py-3.5 cursor-pointer',
+          onClick: () => mark.onMarkRow(rowKey),
+          ...(marked ? { style: { background: 'var(--color-danger-soft)', boxShadow: 'inset 3px 0 0 var(--color-danger-bright)' } } : {}),
+        }
+      : { className: 'px-5 py-3.5' }
+    return (
+      <div {...singleProps}>
+        <SendingSide
+          receiver={receiver}
+          courses={courses}
+          userCourses={userCourses}
+          mark={sendingCourseCount(receiver) > 1}
+        />
+      </div>
+    )
+  }
+
   // Category requirements stand for an entire catalog subset, not a short OR
   // list. Show the category and its full qualifying count on the sending side.
   if (receiver.category_match) {

@@ -153,7 +153,9 @@ The detail endpoint returns one college's document plus server-joined extras:
         is_required: true,
         sections: [
           {
-            section_advisement: null,   // N → "choose N courses"; null → all required
+            section_advisement: 3,      // complete N receivers; equal to the
+                                        // receiver count → all required; null
+                                        // means "any one satisfies" (ASSIST)
             unit_advisement: null,      // N → "choose N units from these"
             receivers: [
               { receiving: null,        // always null for a local degree

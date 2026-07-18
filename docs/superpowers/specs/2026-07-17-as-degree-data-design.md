@@ -186,7 +186,10 @@ different structure.
       group_section_min_courses: null,
       sections: [
         {
-          section_advisement: null,   // choose-N courses; null → all required
+          section_advisement: 3,      // complete N of the receivers. ASSIST
+                                      // semantics: null means "any ONE
+                                      // satisfies" — so an all-required group
+                                      // states the full receiver count (N of N)
           unit_advisement: null,      // choose-N units ("9 units from …")
           receivers: [
             {
