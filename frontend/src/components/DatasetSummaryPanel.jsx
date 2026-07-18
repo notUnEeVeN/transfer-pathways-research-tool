@@ -6,28 +6,25 @@ import {
 } from '@frontend/query/hooks/useData'
 
 /**
- * Dataset overview — the landing map over both halves of the dataset:
+ * Dataset overview — the landing map:
  *
  *   ported layer   — refresh chip strip (agreements / majors / campuses /
  *                    colleges / CC + UC courses)
- *   curated layer  — degree templates (with verification-note counts),
- *                    transfer minimums, AS-degree records, prereq concepts
- *   AS degrees     — the statewide availability headline (surveyed / A.S.-T
- *                    analyzable / data gaps / duplicate candidates)
- *   campus table   — majors · agreements · mean coverage under BOTH minimum
- *                    sources, plus each campus's graduation-template status
+ *   CS degrees     — the interesting statewide finding: which colleges offer a
+ *                    local CS A.S., a CS A.S.-T, both, or neither
+ *   campus table   — majors · agreements · graduation-template verification ·
+ *                    mean coverage under BOTH minimum sources
  *
- * Server-scoped: ported numbers reflect the caller's granted subset; the
- * curated layer is college/campus-side reference data every console user
- * already sees through its own tab. `compact` renders only the chip strip
- * (used atop the audit Stats page). `onNavigate(tab)` — DataPage's changeTab —
- * makes the section headers jump to their hub; absent, the buttons hide.
+ * Server-scoped: ported numbers reflect the caller's granted subset. `compact`
+ * renders only the chip strip (used atop the audit Stats page).
+ * `onNavigate(tab)` — DataPage's changeTab — makes the section headers jump to
+ * their hub; absent, the buttons hide.
  */
 export default function DatasetSummaryPanel({ compact = false, onNavigate = null }) {
   const q = useDataSummary()
   if (q.isLoading) return <div className='flex justify-center py-6'><Spinner /></div>
   if (q.isError) return <Alert type='error'>Failed to load the dataset summary.</Alert>
-  const { last_data_refresh_at, schools = [], counts = {}, curated = null } = q.data || {}
+  const { last_data_refresh_at, schools = [], counts = {} } = q.data || {}
 
   const stats = [
     ['Refreshed', last_data_refresh_at ? new Date(last_data_refresh_at).toLocaleDateString() : '—'],
@@ -64,8 +61,7 @@ export default function DatasetSummaryPanel({ compact = false, onNavigate = null
   return (
     <Stack gap='comfortable'>
       <StatStrip tiles={tiles} />
-      {curated && <CuratedLayerStrip curated={curated} />}
-      <AsDegreeAvailabilityPanel onNavigate={onNavigate} />
+      <CsDegreeLandscapePanel onNavigate={onNavigate} />
       <CampusTable schools={schools} onNavigate={onNavigate} />
     </Stack>
   )
@@ -85,71 +81,55 @@ function SectionHeader({ title, sub = null, hub = null, hubLabel = null, onNavig
   )
 }
 
-// The hand-gathered datasets beside the ASSIST port — the counts come back on
-// /data/summary (`curated`), one aggregation server-side.
-function CuratedLayerStrip({ curated }) {
-  const noteCount = curated.degree_templates_with_notes ?? 0
-  return (
-    <section aria-label='Hand-curated layer'>
-      <SectionHeader title='Hand-curated layer' />
-      <StatStrip tiles={[
-        {
-          label: 'Graduation templates',
-          value: <span className='tabular'>{curated.degree_templates ?? 0}</span>,
-          sub: `${noteCount} with verification notes`,
-          accent: noteCount > 0,
-        },
-        {
-          label: 'Transfer minimums',
-          value: <span className='tabular'>{curated.transfer_minimum_campuses ?? 0}</span>,
-          sub: 'campuses covered',
-        },
-        {
-          label: 'AS-degree records',
-          value: <span className='tabular'>{curated.as_degree_records ?? 0}</span>,
-          sub: `across ${curated.as_degree_colleges ?? 0} colleges`,
-        },
-        {
-          label: 'Prerequisite concepts',
-          value: <span className='tabular'>{curated.prereq_concepts ?? 0}</span>,
-          sub: 'concept graph nodes',
-        },
-      ]} />
-    </section>
-  )
-}
-
-// The statewide AS-degree availability headline — the same counts the
-// Associate Degrees hub leads with, so the overview doubles as the "what still
-// needs attention" signal (gaps + duplicate candidates).
-function AsDegreeAvailabilityPanel({ onNavigate }) {
+// The statewide CS-degree landscape, from the availability survey's
+// catalog-inventory evidence (what each college OFFERS, independent of whether
+// the requirement record extracted cleanly): the four mutually exclusive
+// segments of the college population — A.S.-T only, local A.S. only, both, or
+// neither of the two CS degrees.
+function CsDegreeLandscapePanel({ onNavigate }) {
   const availability = useAsDegreeAvailability()
-  if (availability.isError) return null // the hub itself reports the failure
-  const c = availability.data?.counts
-  const ast = c?.ast
-  const dup = c?.local_computing?.duplicate_candidate ?? 0
+  if (availability.isError) return null // the Pathways hub reports the failure
+  const rows = availability.data?.rows || []
+  const seg = { both: 0, astOnly: 0, localOnly: 0, neither: 0, neitherWithComputing: 0 }
+  for (const row of rows) {
+    const ast = !!row.types?.ast?.inventory_offered
+    const local = !!row.types?.local_cs_as?.inventory_offered
+    if (ast && local) seg.both += 1
+    else if (ast) seg.astOnly += 1
+    else if (local) seg.localOnly += 1
+    else {
+      seg.neither += 1
+      if (row.types?.local_computing?.inventory_offered) seg.neitherWithComputing += 1
+    }
+  }
+  const loading = !rows.length
+  const n = (v) => (loading ? '—' : <span className='tabular'>{v}</span>)
   return (
-    <section aria-label='Associate-degree availability'>
-      <SectionHeader title='Associate-degree availability'
-        hub='associate_degrees' hubLabel='Open Associate Degrees' onNavigate={onNavigate} />
+    <section aria-label='CS associate-degree landscape'>
+      <SectionHeader title='CS associate-degree landscape'
+        sub={loading ? null : `across ${rows.length} colleges`}
+        hub='articulation' hubLabel='Open Pathways' onNavigate={onNavigate} />
       <StatStrip tiles={[
-        { label: 'Colleges surveyed', value: <span className='tabular'>{c?.total_colleges ?? '—'}</span> },
         {
-          label: 'CS A.S.-T analyzable',
-          value: <span className='tabular'>{ast?.available ?? '—'}</span>,
+          label: 'CS A.S.-T only',
+          value: n(seg.astOnly),
+          sub: 'transfer degree, no local A.S.',
           accent: true,
         },
         {
-          label: 'CS A.S.-T data gaps',
-          value: <span className='tabular'>{ast?.data_gap ?? '—'}</span>,
-          sub: 'offered, requirements missing',
-          tone: ast?.data_gap ? 'danger' : undefined,
+          label: 'Local CS A.S. only',
+          value: n(seg.localOnly),
+          sub: 'local degree, no A.S.-T',
         },
         {
-          label: 'Duplicate candidates',
-          value: <span className='tabular'>{c ? dup : '—'}</span>,
-          sub: 'stored twice under two types',
-          tone: dup ? 'danger' : undefined,
+          label: 'Both CS degrees',
+          value: n(seg.both),
+          sub: 'local A.S. and A.S.-T',
+        },
+        {
+          label: 'Neither CS degree',
+          value: n(seg.neither),
+          sub: loading ? null : `${seg.neitherWithComputing} offer another computing degree`,
         },
       ]} />
     </section>
@@ -175,7 +155,7 @@ function meanBySchoolOf(data) {
 // coverage | Mean ASSIST coverage. Hairline div-grid table (mockup v2:124-151)
 // — shares its column template between the header row and every data row so
 // the two can't drift apart.
-const CAMPUS_TABLE_COLS = 'grid grid-cols-[2.2fr_1fr_1fr_1.5fr_2.4fr_2.4fr] gap-3.5'
+const CAMPUS_TABLE_COLS = 'grid grid-cols-[2.2fr_1fr_1fr_1.3fr_2.4fr_2.4fr] gap-3.5'
 
 function CampusTable({ schools, onNavigate = null }) {
   const assistCoverage = useCoverage()
@@ -199,7 +179,7 @@ function CampusTable({ schools, onNavigate = null }) {
         <span className='text-[12.5px] text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
         {onNavigate && (
           <Button variant='ghost' className='ml-auto' trailingIcon={ArrowRightIcon}
-            onClick={() => onNavigate('articulation')}>Open Articulation</Button>
+            onClick={() => onNavigate('institutions')}>Open Institutions</Button>
         )}
       </div>
       <div className={`${CAMPUS_TABLE_COLS} px-[22px] py-2.5 border-b border-border/60`}>
@@ -226,16 +206,15 @@ function CampusTable({ schools, onNavigate = null }) {
   )
 }
 
-// The campus's four-year-template status. There is no stored "verified" flag —
-// verification notes are the workflow's artifact (they're user-authored during
-// a verification pass), so the note count is the honest signal: none stored →
-// dash, imported but unreviewed → neutral, notes present → success + count.
+// The campus's four-year-template status. Verification notes are authored
+// only while walking the official pages, so notes present ⇒ the campus has
+// been verified: none stored → dash, imported but unreviewed → neutral,
+// notes present → Verified.
 function TemplateStatusCell({ row, loading }) {
   if (loading) return <span className='text-caption text-ink-subtle'>…</span>
   if (!row) return <span className='text-caption text-ink-subtle'>—</span>
-  const notes = (row.verification_notes || []).length
-  if (!notes) return <span><Badge>Imported</Badge></span>
-  return <span><Badge variant='success'>{notes} verification {notes === 1 ? 'note' : 'notes'}</Badge></span>
+  const verified = (row.verification_notes || []).length > 0
+  return <span><Badge variant={verified ? 'success' : 'neutral'}>{verified ? 'Verified' : 'Imported'}</Badge></span>
 }
 
 // One coverage bar + value: success fill at/above the "essentially complete"

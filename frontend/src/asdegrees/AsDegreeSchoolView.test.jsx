@@ -67,6 +67,9 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('Programming Concepts')).toBeInTheDocument()
     expect(screen.getByText('4u')).toBeInTheDocument()
     expect(screen.getByText('Complete all of:')).toBeInTheDocument()
+    expect(screen.getByText('Degree type')).toBeInTheDocument()
+    expect(screen.getByText('College-defined CS degree')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Local CS A.S.' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByText(/2025-2026 catalog/)).toBeInTheDocument()
     expect(screen.queryByText(/not hand-verified/)).not.toBeInTheDocument()
     // GE renders through the ledger with one row per pattern AREA — the same
@@ -170,10 +173,32 @@ describe('AsDegreeSchoolView', () => {
     })
     render(<AsDegreeSchoolView collegeId={14} onlyDegreeType='ast' showDegreeTitle={false} />)
     expect(screen.queryByRole('tab', { name: 'Local CS A.S.' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('tab', { name: 'CS A.S.-T' })).not.toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'CS A.S.-T' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Statewide transfer degree')).toBeInTheDocument()
     expect(screen.queryByText('Local CS A.S.')).not.toBeInTheDocument()
     expect(screen.queryByText('CS A.S.-T detail')).not.toBeInTheDocument()
     expect(screen.getByText('CS 21')).toBeInTheDocument()
+  })
+
+  it('shows every allowed overlapping degree type and clearly identifies the active kind', () => {
+    mockDetail.mockReturnValue({
+      data: { degrees: [
+        degree({ degree_type: 'ast', doc: { ...degree().doc, degree_title_seen: 'CS A.S.-T' } }),
+        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'local_computing', doc: { ...degree().doc, degree_title_seen: 'Distinct computing degree' } }),
+      ] },
+      isLoading: false,
+      isError: false,
+    })
+    render(<AsDegreeSchoolView collegeId={14} initialDegreeType='ast'
+      degreeTypes={['ast', 'local_cs_as', 'local_computing']} />)
+    expect(screen.getByRole('tab', { name: 'CS A.S.-T' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Local CS A.S.' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Other computing' })).toBeInTheDocument()
+    expect(screen.getByText('Statewide transfer degree')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('tab', { name: 'Other computing' }))
+    expect(screen.getByText('Other college-defined computing degree')).toBeInTheDocument()
+    expect(screen.getByText('Distinct computing degree')).toBeInTheDocument()
   })
 
   it('renders a local_computing degree with no summary tiles', () => {

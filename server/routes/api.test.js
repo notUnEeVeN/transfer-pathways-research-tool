@@ -15,6 +15,7 @@ describe('research API router', () => {
     expect(paths).toContain('/curated/as-degree-availability');
     expect(paths).toContain('/exports/courses');
     expect(paths).toContain('/exports/cs-ast-degrees');
+    expect(paths).toContain('/exports/local-cs-as-degrees');
     expect(paths).toContain('/tasks');
     expect(paths).toContain('/publish');
     expect(paths).toContain('/gallery');

@@ -221,6 +221,13 @@ export const ENDPOINT_GROUPS = [
         plain: 'The isolated statewide CS A.S.-T analysis cohort, with full nested degree requirements and referenced community-college course records; local and other computing degrees are excluded.',
         returns: '{ params: { degree_type: "ast", ... }, n, rows }',
       },
+      {
+        method: 'GET',
+        path: '/exports/local-cs-as-degrees',
+        title: 'All local Computer Science A.S. degrees',
+        plain: 'The college-defined local CS A.S. analysis cohort, with full nested requirements and referenced course records; A.S.-T and broader computing degrees are excluded.',
+        returns: '{ params: { degree_type: "local_cs_as", ... }, n, rows }',
+      },
     ],
   },
   {

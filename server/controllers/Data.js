@@ -44,7 +44,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
   if (hit && Date.now() - hit.at < TTL_MS) return res.json(hit.payload);
 
   const match = pairs != null ? pairClause(pairs, 'uc_school_id') : {};
-  const [groups, nColleges, settings, curatedKinds] = await Promise.all([
+  const [groups, nColleges, settings] = await Promise.all([
     db.collection('assist_agreements').aggregate([
       { $match: match },
       {
@@ -59,25 +59,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
     db.collection('assist_institutions').countDocuments({ kind: 'community_college' }),
     (req.app.locals.auditDb || db).collection('settings')
       .findOne({ _id: 'app' }, { projection: { last_data_refresh_at: 1 } }),
-    // The hand-curated layer, one pass: per-kind row counts plus the distinct
-    // campuses (transfer minimums), colleges (AS degrees), and how many degree
-    // templates carry verification notes. Every kind here is already visible
-    // to any console user through its own tab, so no per-partner scoping.
-    db.collection('curated_requirements').aggregate([
-      { $group: {
-        _id: '$kind',
-        n: { $sum: 1 },
-        schools: { $addToSet: '$school_id' },
-        colleges: { $addToSet: '$college_id' },
-        with_notes: { $sum: { $cond: [
-          { $gt: [{ $size: { $ifNull: ['$verification_notes', []] } }, 0] }, 1, 0,
-        ] } },
-      } },
-    ]).toArray(),
   ]);
-  const curatedByKind = new Map(curatedKinds.map((k) => [k._id, k]));
-  const kindStat = (kind) => curatedByKind.get(kind) || { n: 0, schools: [], colleges: [], with_notes: 0 };
-  const distinct = (values) => new Set((values || []).filter((v) => v != null)).size;
 
   // Courses in scope: whole collections for admins (that's exactly what was
   // ported); for partners, only what their visible agreements reference.
@@ -117,14 +99,6 @@ exports.getSummary = asyncHandler(async (req, res) => {
       courses: nCourses,
       university_courses: nUniversityCourses,
       community_colleges: nColleges,
-    },
-    curated: {
-      degree_templates: kindStat('degree').n,
-      degree_templates_with_notes: kindStat('degree').with_notes,
-      transfer_minimum_campuses: distinct(kindStat('transfer_minimum').schools),
-      prereq_concepts: kindStat('prereq_concept').n,
-      as_degree_records: kindStat('as_degree').n,
-      as_degree_colleges: distinct(kindStat('as_degree').colleges),
     },
   };
   summaryCache.set(tag, { at: Date.now(), payload });

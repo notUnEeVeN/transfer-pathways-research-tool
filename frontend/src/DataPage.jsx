@@ -322,33 +322,42 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
   )
 }
 
-const AST_PROGRAM_STATUS = {
-  available: 'A.S.-T',
-  confirmed_none: 'No A.S.-T found',
-  data_gap: 'A.S.-T data gap',
-}
+const CS_DEGREE_PROGRAMS = [
+  { type: 'ast', label: 'A.S.-T' },
+  { type: 'local_cs_as', label: 'Local A.S.' },
+  { type: 'local_computing', label: 'Other computing' },
+]
 
 function AssociateDegreeSection({ collegeId, availability }) {
-  const ast = availability?.types?.ast
-  const hasStoredDegree = Boolean(ast?.record_id)
-  const programLine = [
-    'Computer Science',
-    AST_PROGRAM_STATUS[ast?.status] || 'A.S.-T status unavailable',
-    ast?.catalog_year,
-  ].filter(Boolean).join(' · ')
+  const availablePrograms = CS_DEGREE_PROGRAMS.filter(({ type }) => (
+    availability?.types?.[type]?.status === 'available'
+      && availability.types[type].record_id
+  ))
+  const degreeTypes = availablePrograms.map(({ type }) => type)
+  const years = [...new Set(availablePrograms
+    .map(({ type }) => availability.types[type].catalog_year)
+    .filter(Boolean))]
+  const hasDataGap = CS_DEGREE_PROGRAMS.some(({ type }) => availability?.types?.[type]?.status === 'data_gap')
+  const programSummary = availablePrograms.length
+    ? availablePrograms.map(({ label }) => label).join(' + ')
+    : hasDataGap
+      ? 'Degree data gap'
+      : 'No associate degree found'
+  const programLine = ['Computer Science', programSummary, years.length === 1 ? years[0] : null]
+    .filter(Boolean).join(' · ')
   return (
     <section aria-label='Associate degrees'>
       <div className='surface-card px-6 py-5'>
-        <p className='text-label text-[12px]'>Associate degree</p>
+        <p className='text-label text-[12px]'>Associate degrees</p>
         <h2 className='mt-1.5 text-[19px] font-[650] tracking-[-.01em]'>
           {availability?.college_name || 'Community college'}
         </h2>
         <p className='mt-1 text-body text-ink-muted'>{programLine}</p>
       </div>
-      {hasStoredDegree && (
+      {degreeTypes.length > 0 && (
         <div className='mt-4'>
-          <AsDegreeSchoolView collegeId={collegeId} initialDegreeType='ast'
-            onlyDegreeType='ast' showDegreeTitle={false} />
+          <AsDegreeSchoolView collegeId={collegeId} initialDegreeType={degreeTypes[0]}
+            degreeTypes={degreeTypes} showDegreeTitle={false} />
         </div>
       )}
     </section>

@@ -146,5 +146,13 @@ exports.exportCsAstDegrees = makeEndpoint(
   (db) => asDegreesExportData(db, { degreeType: 'ast' }),
   { responseParams: { degree_type: 'ast' } },
 );
+// The college's own CS A.S. is a separate construct from the standardized
+// A.S.-T. Keep it in a sibling fixed-cohort export so analyses can compare the
+// two without mixing in CIS/IT/networking degrees from local_computing.
+exports.exportLocalCsAsDegrees = makeEndpoint(
+  'local-cs-as-degrees',
+  (db) => asDegreesExportData(db, { degreeType: 'local_cs_as' }),
+  { responseParams: { degree_type: 'local_cs_as' } },
+);
 
 exports._toCsv = toCsv;

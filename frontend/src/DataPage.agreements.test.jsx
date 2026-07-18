@@ -22,6 +22,7 @@ vi.mock('@frontend/query/hooks/useData', () => ({
   }),
   useColleges: () => ({
     data: [
+      { id: 4, name: 'College of Marin', district: 'Marin CCD', region: 'North', counties_served: ['Marin'] },
       { id: 101, name: 'Diablo Valley College', district: 'Contra Costa CCD', region: 'North', counties_served: ['Contra Costa'] },
       { id: 202, name: 'Santa Monica College', district: 'Santa Monica CCD', region: 'South', counties_served: ['Los Angeles'] },
     ],
@@ -101,11 +102,19 @@ vi.mock('@frontend/query/hooks/useData', () => ({
       },
       rows: [
         {
+          college_id: 'cc:4', community_college_id: 4, college_name: 'College of Marin',
+          types: {
+            ast: { status: 'confirmed_none', record_id: null },
+            local_cs_as: { status: 'available', record_id: 'as_degree:4:local_cs_as', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
+            local_computing: { status: 'duplicate_candidate', record_id: 'as_degree:4:local_computing', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
+          },
+        },
+        {
           college_id: 'cc:101', community_college_id: 101, college_name: 'Diablo Valley College',
           types: {
             ast: { status: 'available', record_id: 'as_degree:101:ast', degree_title_seen: 'Computer Science A.S.-T', catalog_year: '2025-2026' },
-            local_cs_as: { status: 'confirmed_none', record_id: null },
-            local_computing: { status: 'confirmed_none', record_id: null },
+            local_cs_as: { status: 'available', record_id: 'as_degree:101:local_cs_as', degree_title_seen: 'Computer Science A.S.', catalog_year: '2025-2026' },
+            local_computing: { status: 'data_gap', record_id: null },
           },
         },
         {
@@ -159,9 +168,9 @@ vi.mock('./DataReferences', () => ({
 }))
 vi.mock('./degrees/DegreeTemplateEditor', () => ({ default: () => null }))
 vi.mock('./asdegrees/AsDegreeSchoolView', () => ({
-  default: ({ collegeId, initialDegreeType, onlyDegreeType, showDegreeTitle }) => (
+  default: ({ collegeId, initialDegreeType, onlyDegreeType, degreeTypes, showDegreeTitle }) => (
     <div>
-      Associate degree detail {collegeId} {initialDegreeType} {onlyDegreeType} {showDegreeTitle ? 'title' : 'no-title'}
+      Associate degree detail {collegeId} {initialDegreeType} {onlyDegreeType || 'any'} {degreeTypes?.join(',') || 'all'} {showDegreeTitle ? 'title' : 'no-title'}
     </div>
   ),
 }))
@@ -261,9 +270,9 @@ describe('DataPage SubNav route chip', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
-    expect(screen.getByText('Associate degree detail 101 ast ast no-title')).toBeInTheDocument()
+    expect(screen.getByText('Associate degree detail 101 ast any ast,local_cs_as no-title')).toBeInTheDocument()
     expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · A.S.-T · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · A.S.-T + Local A.S. · 2025-2026')).toBeInTheDocument()
     expect(screen.queryByText(/complete CS A.S.-T requirement record/i)).not.toBeInTheDocument()
     expect(screen.queryByText('Receiving campus')).not.toBeInTheDocument()
     expect(screen.queryByText('School pair')).not.toBeInTheDocument()
@@ -356,7 +365,7 @@ describe('Pathways degree integration', () => {
     expect(screen.queryByText('All regions')).not.toBeInTheDocument()
     expect(screen.queryByText('All counties')).not.toBeInTheDocument()
     expect(screen.getByText('CS A.S.-T')).toBeInTheDocument()
-    expect(screen.getByText('No CS A.S.-T')).toBeInTheDocument()
+    expect(screen.getAllByText('No CS A.S.-T').length).toBeGreaterThan(0)
 
     fireEvent.click(screen.getByRole('button', { name: 'Filter by CS A.S.-T status' }))
     fireEvent.click(screen.getByRole('option', { name: 'Has CS A.S.-T' }))
@@ -382,7 +391,7 @@ describe('Pathways degree integration', () => {
 
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
     expect(screen.getByText('Santa Monica College')).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · No A.S.-T found')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · No associate degree found')).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Associate degrees' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.queryByText('No agreements')).not.toBeInTheDocument()
     await waitFor(() => expect(screen.getByRole('button', {
@@ -395,5 +404,15 @@ describe('Pathways degree integration', () => {
     expect(screen.getByRole('button', {
       name: 'GET /api/assist/agreements?college_id=cc:202&university_id=uc:79',
     })).toBeInTheDocument()
+  })
+
+  it('opens a local CS A.S. when a college has no A.S.-T and excludes duplicate computing records', () => {
+    render(<DataPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Pathways' }))
+    fireEvent.click(screen.getByText('College of Marin').closest('[class*="cursor-pointer"]'))
+
+    expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · Local A.S. · 2024-2025')).toBeInTheDocument()
+    expect(screen.getByText('Associate degree detail 4 local_cs_as any local_cs_as no-title')).toBeInTheDocument()
   })
 })

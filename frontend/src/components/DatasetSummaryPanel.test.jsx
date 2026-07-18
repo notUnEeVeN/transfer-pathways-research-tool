@@ -23,34 +23,27 @@ const summary = {
     { school_id: 2, school: 'UC Merced', majors: ['CSE'], n_agreements: 80 },
   ],
   counts: { agreements: 170, majors: 2, courses: 500, university_courses: 60, community_colleges: 115 },
-  curated: {
-    degree_templates: 9,
-    degree_templates_with_notes: 2,
-    transfer_minimum_campuses: 9,
-    prereq_concepts: 24,
-    as_degree_records: 177,
-    as_degree_colleges: 114,
-  },
 }
 
+// One college per landscape segment: both, A.S.-T only, local only, neither
+// (the neither college offers another computing degree).
+const offered = (ast, local, computing = false) => ({
+  types: {
+    ast: { inventory_offered: ast, status: ast ? 'available' : 'confirmed_none' },
+    local_cs_as: { inventory_offered: local, status: local ? 'available' : 'confirmed_none' },
+    local_computing: { inventory_offered: computing, status: computing ? 'available' : 'confirmed_none' },
+  },
+})
 const availability = {
-  counts: {
-    total_colleges: 115,
-    ast: { available: 72, data_gap: 3, confirmed_none: 40, duplicate_candidate: 0 },
-    local_cs_as: { available: 45, data_gap: 0, confirmed_none: 70, duplicate_candidate: 0 },
-    local_computing: { available: 100, data_gap: 2, confirmed_none: 8, duplicate_candidate: 5 },
-  },
+  rows: [offered(true, true), offered(true, false), offered(false, true), offered(false, false, true)],
 }
 
-const wire = ({ curated = true } = {}) => {
-  mocks.useDataSummary.mockReturnValue({
-    data: curated ? summary : { ...summary, curated: undefined },
-    isLoading: false, isError: false,
-  })
+const wire = () => {
+  mocks.useDataSummary.mockReturnValue({ data: summary, isLoading: false, isError: false })
   mocks.useCoverage.mockReturnValue({ data: { rows: [] }, isLoading: false })
   mocks.useDegreeRequirements.mockReturnValue({
     data: { rows: [
-      { school_id: 1, verification_notes: [{ text: 'a' }, { text: 'b' }] },
+      { school_id: 1, verification_notes: [{ text: 'walked the official pages' }] },
       { school_id: 2, verification_notes: [] },
     ] },
     isLoading: false,
@@ -59,61 +52,53 @@ const wire = ({ curated = true } = {}) => {
 }
 
 describe('DatasetSummaryPanel', () => {
-  it('renders the curated layer strip from the summary payload', () => {
+  it('breaks the CS-degree landscape into the four offering segments', () => {
     wire()
     render(<DatasetSummaryPanel />)
-    expect(screen.getByText('Hand-curated layer')).toBeInTheDocument()
-    expect(screen.getByText('Graduation templates')).toBeInTheDocument()
-    expect(screen.getByText('2 with verification notes')).toBeInTheDocument()
-    expect(screen.getByText('Transfer minimums')).toBeInTheDocument()
-    expect(screen.getByText('across 114 colleges')).toBeInTheDocument()
-    expect(screen.getByText('Prerequisite concepts')).toBeInTheDocument()
+    expect(screen.getByText('CS associate-degree landscape')).toBeInTheDocument()
+    expect(screen.getByText('across 4 colleges')).toBeInTheDocument()
+    expect(screen.getByText('CS A.S.-T only')).toBeInTheDocument()
+    expect(screen.getByText('Local CS A.S. only')).toBeInTheDocument()
+    expect(screen.getByText('Both CS degrees')).toBeInTheDocument()
+    expect(screen.getByText('Neither CS degree')).toBeInTheDocument()
+    expect(screen.getByText('1 offer another computing degree')).toBeInTheDocument()
   })
 
-  it('tolerates a cached summary payload without the curated block', () => {
-    wire({ curated: false })
-    render(<DatasetSummaryPanel />)
-    expect(screen.queryByText('Hand-curated layer')).not.toBeInTheDocument()
-    expect(screen.getAllByText('Agreements').length).toBeGreaterThan(0)
-  })
-
-  it('shows the AS-degree availability headline with QA tones', () => {
-    wire()
-    render(<DatasetSummaryPanel />)
-    expect(screen.getByText('Associate-degree availability')).toBeInTheDocument()
-    expect(screen.getByText('Colleges surveyed')).toBeInTheDocument()
-    expect(screen.getByText('CS A.S.-T analyzable')).toBeInTheDocument()
-    expect(screen.getByText('offered, requirements missing')).toBeInTheDocument()
-    expect(screen.getByText('stored twice under two types')).toBeInTheDocument()
-  })
-
-  it('shows each campus template status: note count when reviewed, Imported otherwise', () => {
+  it('marks a campus template Verified when it carries notes, Imported otherwise', () => {
     wire()
     render(<DatasetSummaryPanel />)
     expect(screen.getByText('Graduation template')).toBeInTheDocument()
-    expect(screen.getByText('2 verification notes')).toBeInTheDocument()
+    expect(screen.getByText('Verified')).toBeInTheDocument()
     expect(screen.getByText('Imported')).toBeInTheDocument()
+  })
+
+  it('carries no fixed-population counts: no curated strip, no colleges-surveyed tile', () => {
+    wire()
+    render(<DatasetSummaryPanel />)
+    expect(screen.queryByText('Hand-curated layer')).not.toBeInTheDocument()
+    expect(screen.queryByText('Graduation templates')).not.toBeInTheDocument()
+    expect(screen.queryByText('Transfer minimums')).not.toBeInTheDocument()
+    expect(screen.queryByText('Colleges surveyed')).not.toBeInTheDocument()
   })
 
   it('jumps to the hubs through onNavigate; buttons hide without it', () => {
     wire()
     const onNavigate = vi.fn()
     const { unmount } = render(<DatasetSummaryPanel onNavigate={onNavigate} />)
-    fireEvent.click(screen.getByRole('button', { name: /Open Associate Degrees/ }))
-    expect(onNavigate).toHaveBeenCalledWith('associate_degrees')
-    fireEvent.click(screen.getByRole('button', { name: /Open Articulation/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open Pathways/ }))
     expect(onNavigate).toHaveBeenCalledWith('articulation')
+    fireEvent.click(screen.getByRole('button', { name: /Open Institutions/ }))
+    expect(onNavigate).toHaveBeenCalledWith('institutions')
     unmount()
 
     render(<DatasetSummaryPanel />)
-    expect(screen.queryByRole('button', { name: /Open Associate Degrees/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Open Pathways/ })).not.toBeInTheDocument()
   })
 
-  it('compact mode stays the plain chip strip with no curated sections', () => {
+  it('compact mode stays the plain chip strip with no landscape section', () => {
     wire()
     render(<DatasetSummaryPanel compact />)
-    expect(screen.getByText('Agreements')).toBeInTheDocument()
-    expect(screen.queryByText('Hand-curated layer')).not.toBeInTheDocument()
-    expect(screen.queryByText('Associate-degree availability')).not.toBeInTheDocument()
+    expect(screen.getAllByText('Agreements').length).toBeGreaterThan(0)
+    expect(screen.queryByText('CS associate-degree landscape')).not.toBeInTheDocument()
   })
 })

@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { exportCsAstDegrees } = cjs('./Analysis');
+const { exportCsAstDegrees, exportLocalCsAsDegrees } = cjs('./Analysis');
 
 let mongo;
 let db;
@@ -59,6 +59,18 @@ describe('CS A.S.-T export', () => {
     expect(response.body.n).toBe(1);
     expect(response.body.rows[0]).toMatchObject({
       _id: 'as_degree:10:ast', degree_type: 'ast', college_name: 'Example College',
+    });
+    expect(response.body.rows[0].courses_by_id['cc:100']).toMatchObject({ code: 'CS 1', units: 4 });
+  });
+
+  it('provides the local CS A.S. as a separate fixed cohort', async () => {
+    const response = await run(exportLocalCsAsDegrees);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.params.degree_type).toBe('local_cs_as');
+    expect(response.body.n).toBe(1);
+    expect(response.body.rows[0]).toMatchObject({
+      _id: 'as_degree:10:local', degree_type: 'local_cs_as', college_name: 'Example College',
     });
     expect(response.body.rows[0].courses_by_id['cc:100']).toMatchObject({ code: 'CS 1', units: 4 });
   });

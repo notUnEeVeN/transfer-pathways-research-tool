@@ -115,6 +115,7 @@ router.get('/exports/receivers',          analysisController.exportReceivers);
 router.get('/exports/courses',            analysisController.exportCourses);
 router.get('/exports/university-courses', analysisController.exportUniversityCourses);
 router.get('/exports/cs-ast-degrees',      analysisController.exportCsAstDegrees);
+router.get('/exports/local-cs-as-degrees', analysisController.exportLocalCsAsDegrees);
 
 // ───────── Tasks (typed research workflows + shared kanban) ─────────
 // Open to every console user — everyone may edit anything (3-person team

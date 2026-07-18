@@ -43,6 +43,7 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     expect(paths).toContain('/curated/as-degrees?degree_type=ast')
     expect(paths).toContain('/exports/receivers')
     expect(paths).toContain('/exports/cs-ast-degrees')
+    expect(paths).toContain('/exports/local-cs-as-degrees')
     expect(paths).toContain('/audit/doc/:agreementId')
     expect(paths.some((path) => path.startsWith('/tasks'))).toBe(false)
   })

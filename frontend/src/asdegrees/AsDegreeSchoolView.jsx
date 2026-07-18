@@ -18,6 +18,12 @@ const TYPE_TAB = {
   local_computing: 'Other computing',
 }
 
+const TYPE_DESCRIPTION = {
+  ast: 'Statewide transfer degree',
+  local_cs_as: 'College-defined CS degree',
+  local_computing: 'Other college-defined computing degree',
+}
+
 // GE pattern identifiers → the section title shown on the pattern's card.
 const GE_PATTERN_NAME = {
   calgetc: 'Approved courses from the Cal-GETC pattern',
@@ -211,12 +217,14 @@ export default function AsDegreeSchoolView({
   collegeId,
   initialDegreeType = null,
   onlyDegreeType = null,
+  degreeTypes = null,
   showDegreeTitle = true,
 }) {
   const q = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
   const allDegrees = q.data?.degrees || []
-  const degrees = onlyDegreeType
-    ? allDegrees.filter((degree) => degree.degree_type === onlyDegreeType)
+  const allowedDegreeTypes = onlyDegreeType ? [onlyDegreeType] : degreeTypes
+  const degrees = allowedDegreeTypes
+    ? allowedDegreeTypes.flatMap((type) => allDegrees.filter((degree) => degree.degree_type === type))
     : allDegrees
   const requestedType = onlyDegreeType || initialDegreeType
   const [selectedType, setSelectedType] = useState(requestedType)
@@ -231,13 +239,19 @@ export default function AsDegreeSchoolView({
 
   return (
     <Stack gap='cozy'>
-      {degrees.length > 1 && (
+      <div className='flex flex-wrap items-center gap-3'>
+        <div className='min-w-[190px] flex-1'>
+          <p className='text-label text-[11px]'>Degree type</p>
+          <p className='mt-1 text-caption text-ink-muted'>
+            {TYPE_DESCRIPTION[active.degree_type] || 'Associate degree'}
+          </p>
+        </div>
         <Tabs value={active.degree_type} onChange={setSelectedType}
           options={degrees.map((degree) => ({
             value: degree.degree_type,
             label: TYPE_TAB[degree.degree_type] || 'Degree',
           }))} />
-      )}
+      </div>
       <DegreePanel degree={active} showDegreeTitle={showDegreeTitle} />
     </Stack>
   )
