@@ -4,8 +4,8 @@ import { Stack, Tabs, Spinner, EmptyState } from '../components/ui'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 
-// Per-college associate-degree view, shown as the AS Degrees sub-tab in the
-// Institutions catalog. The requirement groups render through the shared
+// Per-college associate-degree view, shown as the Associate degrees sub-tab in
+// the Community Colleges catalog. The requirement groups render through the shared
 // RequirementsLedger — the same treatment as ASSIST Transfer Requirements,
 // Curated Transfer Minimums, and Graduation Requirements Coverage — which the
 // as_degree kind's agreement-skeleton storage makes possible with no
@@ -219,6 +219,7 @@ export default function AsDegreeSchoolView({
   onlyDegreeType = null,
   degreeTypes = null,
   showDegreeTitle = true,
+  onDegreeTypeChange = null,
 }) {
   const q = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
   const allDegrees = q.data?.degrees || []
@@ -229,6 +230,10 @@ export default function AsDegreeSchoolView({
   const requestedType = onlyDegreeType || initialDegreeType
   const [selectedType, setSelectedType] = useState(requestedType)
   useEffect(() => { setSelectedType(requestedType) }, [collegeId, requestedType])
+  const changeSelectedType = (next) => {
+    setSelectedType(next)
+    onDegreeTypeChange?.(next)
+  }
 
   if (q.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (q.isError || !degrees.length) {
@@ -246,7 +251,7 @@ export default function AsDegreeSchoolView({
             {TYPE_DESCRIPTION[active.degree_type] || 'Associate degree'}
           </p>
         </div>
-        <Tabs value={active.degree_type} onChange={setSelectedType}
+        <Tabs value={active.degree_type} onChange={changeSelectedType}
           options={degrees.map((degree) => ({
             value: degree.degree_type,
             label: TYPE_TAB[degree.degree_type] || 'Degree',

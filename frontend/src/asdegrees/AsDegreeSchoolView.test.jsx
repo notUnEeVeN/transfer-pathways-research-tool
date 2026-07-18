@@ -132,6 +132,7 @@ describe('AsDegreeSchoolView', () => {
   })
 
   it('shows a degree selector and switches when a college has several degrees', () => {
+    const onDegreeTypeChange = vi.fn()
     mockDetail.mockReturnValue({
       data: { degrees: [
         degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
@@ -139,11 +140,12 @@ describe('AsDegreeSchoolView', () => {
           doc: { ...degree().doc, degree_title_seen: 'CS for Transfer' } }),
       ] }, isLoading: false, isError: false,
     })
-    render(<AsDegreeSchoolView collegeId={14} />)
+    render(<AsDegreeSchoolView collegeId={14} onDegreeTypeChange={onDegreeTypeChange} />)
     expect(screen.getByRole('tab', { name: 'Local CS A.S.' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'CS A.S.-T' })).toBeInTheDocument()
     expect(screen.getByText('Local CS A.S.', { selector: 'p' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('tab', { name: 'CS A.S.-T' }))
+    expect(onDegreeTypeChange).toHaveBeenCalledWith('ast')
     expect(screen.getByText('CS for Transfer')).toBeInTheDocument()
     expect(screen.queryByText('Template coverage')).not.toBeInTheDocument()
   })

@@ -168,9 +168,15 @@ vi.mock('./DataReferences', () => ({
 }))
 vi.mock('./degrees/DegreeTemplateEditor', () => ({ default: () => null }))
 vi.mock('./asdegrees/AsDegreeSchoolView', () => ({
-  default: ({ collegeId, initialDegreeType, onlyDegreeType, degreeTypes, showDegreeTitle }) => (
+  default: ({ collegeId, initialDegreeType, onlyDegreeType, degreeTypes, showDegreeTitle, onDegreeTypeChange }) => (
     <div>
       Associate degree detail {collegeId} {initialDegreeType} {onlyDegreeType || 'any'} {degreeTypes?.join(',') || 'all'} {showDegreeTitle ? 'title' : 'no-title'}
+      {degreeTypes?.includes('ast') && (
+        <button type='button' onClick={() => onDegreeTypeChange?.('ast')}>Select mock A.S.-T</button>
+      )}
+      {degreeTypes?.includes('local_cs_as') && (
+        <button type='button' onClick={() => onDegreeTypeChange?.('local_cs_as')}>Select mock local A.S.</button>
+      )}
     </div>
   ),
 }))
@@ -272,7 +278,7 @@ describe('DataPage SubNav route chip', () => {
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
     expect(screen.getByText('Associate degree detail 101 ast any ast,local_cs_as no-title')).toBeInTheDocument()
     expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · A.S.-T + Local A.S. · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · Associate in Science for Transfer · 2025-2026')).toBeInTheDocument()
     expect(screen.queryByText(/complete CS A.S.-T requirement record/i)).not.toBeInTheDocument()
     expect(screen.queryByText('Receiving campus')).not.toBeInTheDocument()
     expect(screen.queryByText('School pair')).not.toBeInTheDocument()
@@ -412,7 +418,18 @@ describe('Community Colleges degree integration', () => {
     fireEvent.click(screen.getByText('College of Marin').closest('[class*="cursor-pointer"]'))
 
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · Local A.S. · 2024-2025')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · Associate in Science · 2024-2025')).toBeInTheDocument()
     expect(screen.getByText('Associate degree detail 4 local_cs_as any local_cs_as no-title')).toBeInTheDocument()
+  })
+
+  it('updates the degree header when switching between transfer and local A.S. records', () => {
+    render(<DataPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+    fireEvent.click(screen.getByText('Diablo Valley College').closest('[class*="cursor-pointer"]'))
+    fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
+
+    expect(screen.getByText('Computer Science · Associate in Science for Transfer · 2025-2026')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Select mock local A.S.' }))
+    expect(screen.getByText('Computer Science · Associate in Science · 2025-2026')).toBeInTheDocument()
   })
 })

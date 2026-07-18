@@ -323,9 +323,9 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
 }
 
 const CS_DEGREE_PROGRAMS = [
-  { type: 'ast', label: 'A.S.-T' },
-  { type: 'local_cs_as', label: 'Local A.S.' },
-  { type: 'local_computing', label: 'Other computing' },
+  { type: 'ast', award: 'Associate in Science for Transfer' },
+  { type: 'local_cs_as', award: 'Associate in Science' },
+  { type: 'local_computing', award: null },
 ]
 
 function AssociateDegreeSection({ collegeId, availability }) {
@@ -334,16 +334,21 @@ function AssociateDegreeSection({ collegeId, availability }) {
       && availability.types[type].record_id
   ))
   const degreeTypes = availablePrograms.map(({ type }) => type)
-  const years = [...new Set(availablePrograms
-    .map(({ type }) => availability.types[type].catalog_year)
-    .filter(Boolean))]
+  const [selection, setSelection] = useState(null)
+  const selectedDegreeType = selection?.collegeId === collegeId && degreeTypes.includes(selection.degreeType)
+    ? selection.degreeType
+    : degreeTypes[0] || null
+  const selectedProgram = availablePrograms.find(({ type }) => type === selectedDegreeType) || null
+  const selectedRecord = selectedDegreeType ? availability?.types?.[selectedDegreeType] : null
   const hasDataGap = CS_DEGREE_PROGRAMS.some(({ type }) => availability?.types?.[type]?.status === 'data_gap')
-  const programSummary = availablePrograms.length
-    ? availablePrograms.map(({ label }) => label).join(' + ')
+  const programSummary = selectedProgram
+    ? selectedProgram.award || selectedRecord?.degree_title_seen || 'Other computing associate degree'
     : hasDataGap
       ? 'Degree data gap'
       : 'No associate degree found'
-  const programLine = ['Computer Science', programSummary, years.length === 1 ? years[0] : null]
+  const programLine = selectedDegreeType === 'local_computing'
+    ? [programSummary, selectedRecord?.catalog_year].filter(Boolean).join(' · ')
+    : ['Computer Science', programSummary, selectedRecord?.catalog_year]
     .filter(Boolean).join(' · ')
   return (
     <section aria-label='Associate degrees'>
@@ -356,8 +361,9 @@ function AssociateDegreeSection({ collegeId, availability }) {
       </div>
       {degreeTypes.length > 0 && (
         <div className='mt-4'>
-          <AsDegreeSchoolView collegeId={collegeId} initialDegreeType={degreeTypes[0]}
-            degreeTypes={degreeTypes} showDegreeTitle={false} />
+          <AsDegreeSchoolView collegeId={collegeId} initialDegreeType={selectedDegreeType}
+            degreeTypes={degreeTypes} showDegreeTitle={false}
+            onDegreeTypeChange={(degreeType) => setSelection({ collegeId, degreeType })} />
         </div>
       )}
     </section>
