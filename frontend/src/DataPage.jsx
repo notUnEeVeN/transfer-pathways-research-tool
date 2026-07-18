@@ -688,10 +688,10 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
       <Tabs value={view} onChange={changeView}
         options={[
           { value: 'ledger', label: 'ASSIST Transfer Requirements' },
+          ...(compareFor ? [{ value: 'comparison', label: 'Curated Transfer Minimums' }] : []),
+          ...(compareFor ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
           { value: 'stored', label: 'DB document' },
           { value: 'raw',    label: 'Raw ASSIST API' },
-          ...(compareFor ? [{ value: 'comparison', label: 'Curated Minimum' }] : []),
-          ...(compareFor ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
         ]} />
       {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
       {view === 'degree' && compareFor && (

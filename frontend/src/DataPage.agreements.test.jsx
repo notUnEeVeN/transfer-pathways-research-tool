@@ -193,7 +193,7 @@ describe('DataPage SubNav route chip', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Raw ASSIST API' }))
     expect(screen.getByRole('button', { name: 'GET /api/data/raw-assist/agreement-1' })).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('tab', { name: 'Curated Minimum' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Curated Transfer Minimums' }))
     const comparisonRoute = screen.getByRole('button', {
       name: /GET \/api\/curated\/requirement-comparison\?school_id=79/,
     })
