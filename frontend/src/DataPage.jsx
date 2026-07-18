@@ -54,15 +54,14 @@ import { useAuth } from '@frontend/hooks/useAuth'
  * up in the SubNav bar, rather than repeated inside each pane.
  */
 // Per-tab *base* route shown in the SubNav bar — what's shown before (or
-// absent) any drill-in. Overview/Community Colleges/Universities/Districts
-// have no finer-grained view reported up (their drill-ins stay local to the
-// hub), so this is also their only value. Articulation reports a more
-// specific route once its pane actually changes (`onRoute`, below).
+// absent) any drill-in. Overview/Institutions/Districts have no finer-grained
+// view reported up (their drill-ins stay local to the pane), so this is also
+// their only value. Articulation reports a more specific route once its pane
+// actually changes (`onRoute`, below).
 const DATA_TAB_ROUTES = {
   overview: { path: '/api/data/summary' },
-  communityColleges: { path: '/api/assist/institutions?kind=community_college' },
-  universities: { path: '/api/data/summary' },
   articulation: { path: '/api/assist/coverage' },
+  institutions: { path: '/api/assist/institutions?kind=community_college' },
   prerequisites: { path: '/api/curated/prerequisite-graph' },
   districts: { path: '/api/assist/institutions?kind=community_college' },
 }
@@ -100,12 +99,11 @@ export default function DataPage({ onNavigate = () => {} }) {
       <SubNav tabs={{
         value: tab, onChange: changeTab,
         options: [
-          { value: 'overview',          label: 'Overview' },
-          { value: 'communityColleges', label: 'Community Colleges' },
-          { value: 'universities',      label: 'Universities of California' },
-          { value: 'articulation',      label: 'Articulation' },
-          { value: 'prerequisites',     label: 'Prerequisites' },
-          { value: 'districts',         label: 'Districts' },
+          { value: 'overview',      label: 'Overview' },
+          { value: 'articulation',  label: 'Articulation' },
+          { value: 'institutions',  label: 'Institutions' },
+          { value: 'prerequisites', label: 'Prerequisites' },
+          { value: 'districts',     label: 'Districts' },
         ],
       }} route={route} />
       <div className='flex-1 min-h-0 overflow-auto'>
@@ -113,11 +111,10 @@ export default function DataPage({ onNavigate = () => {} }) {
           ? 'max-w-[1240px] mx-auto px-[22px] pt-[26px] pb-12 w-full'
           : 'max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12 w-full'}>
           {tab === 'overview' && <DatasetSummaryPanel />}
-          {tab === 'communityColleges' && <CommunityCollegesTab />}
-          {tab === 'universities' && <UniversitiesTab />}
           {tab === 'articulation' && (
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
           )}
+          {tab === 'institutions' && <InstitutionsTab />}
           {tab === 'prerequisites' && <PrerequisitesTab />}
           {tab === 'districts' && <DistrictsTab />}
         </div>
@@ -950,9 +947,28 @@ const UC_COURSE_COLUMNS = [
   { key: 'parent_id', label: 'parent_id', width: '110px', align: 'right', variant: 'num', render: (r) => r.parent_id },
 ]
 
-// ───────── Community Colleges hub (per-college: courses, AS degrees, prerequisites) ─────────
+// ───────── Institutions (one catalog, two sides) ─────────
+//
+// Every per-institution fact lives here: pick a community college for its
+// courses / AS degrees / prerequisite graph, or flip to UC campuses for
+// graduation requirements / transfer minimums / courses. Cross-institution
+// comparisons stay in Articulation.
 
-function CommunityCollegesTab() {
+function InstitutionsTab() {
+  const [kind, setKind] = useState('cc')
+  return (
+    <Stack gap='cozy'>
+      <Tabs value={kind} onChange={setKind}
+        options={[
+          { value: 'cc', label: 'Community colleges' },
+          { value: 'uc', label: 'UC campuses' },
+        ]} />
+      {kind === 'cc' ? <CommunityCollegesPane /> : <UniversitiesPane />}
+    </Stack>
+  )
+}
+
+function CommunityCollegesPane() {
   const colleges = useColleges()
   const [selectedCollegeId, setSelectedCollegeId] = useState(null)
   const [subTab, setSubTab] = useState('courses')
@@ -992,32 +1008,10 @@ function CommunityCollegesTab() {
   )
 }
 
-// ───────── Universities of California hub (per-campus: majors, requirements, minimums, courses) ─────────
-
-function CampusMajorsList({ campus }) {
-  const majors = campus.majors || []
-  return (
-    <Stack gap='cozy'>
-      <div className='surface-card px-[22px] py-[18px]'>
-        <p className='text-label text-[12px]'>Majors tracked at this campus</p>
-        <p className='mt-1.5 text-[19px] font-[650] tracking-[-.01em]'>{campus.school}</p>
-        <p className='text-caption text-ink-muted mt-1'>{majors.length} major{majors.length === 1 ? '' : 's'}</p>
-      </div>
-      {majors.length ? (
-        <div className='surface-card px-[22px] py-[18px] flex flex-wrap gap-2'>
-          {majors.map((m) => <span key={m} className='chip'>{m}</span>)}
-        </div>
-      ) : (
-        <EmptyState title='No majors tracked' description='No majors are tracked at this campus yet.' />
-      )}
-    </Stack>
-  )
-}
-
-function UniversitiesTab() {
+function UniversitiesPane() {
   const summary = useDataSummary()
   const [selectedSchoolId, setSelectedSchoolId] = useState(null)
-  const [subTab, setSubTab] = useState('majors')
+  const [subTab, setSubTab] = useState('requirements')
 
   const schools = summary.data?.schools || []
   const items = useMemo(() => schools.map((s) => ({ id: s.school_id, name: s.school })), [schools])
@@ -1036,17 +1030,15 @@ function UniversitiesTab() {
 
       {!selectedCampus ? (
         <EmptyState title='Choose a campus'
-          description='Pick one from the list to see its majors, requirements, and courses.' />
+          description='Pick one from the list to see its requirements and courses.' />
       ) : (
         <Stack gap='cozy'>
           <Tabs value={subTab} onChange={setSubTab}
             options={[
-              { value: 'majors', label: 'Majors' },
               { value: 'requirements', label: 'Graduation Requirements' },
               { value: 'minimums', label: 'Transfer Minimums' },
               { value: 'courses', label: 'Courses' },
             ]} />
-          {subTab === 'majors' && <CampusMajorsList campus={selectedCampus} />}
           {subTab === 'requirements' && (
             <CampusDegreeTemplate schoolId={selectedCampus.school_id} school={selectedCampus.school} />
           )}

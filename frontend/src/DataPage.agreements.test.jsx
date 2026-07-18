@@ -215,10 +215,10 @@ describe('DataPage SubNav route chip', () => {
   })
 })
 
-describe('Community Colleges hub', () => {
-  it('renders the college picker, the base route, and an empty state before a college is picked', () => {
+describe('Institutions tab', () => {
+  it('opens on the community-college side: picker, base route, empty state', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Institutions' }))
 
     expect(screen.getByText('GET /api/assist/institutions?kind=community_college')).toBeInTheDocument()
     expect(screen.getByText('Community colleges · 2')).toBeInTheDocument()
@@ -229,40 +229,33 @@ describe('Community Colleges hub', () => {
 
   it('shows the Courses / AS Degrees / Prerequisites sub-tabs once a college is picked', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Institutions' }))
     fireEvent.click(screen.getByRole('button', { name: /Diablo Valley College/ }))
 
-    // Two tablists are now on screen — the top-level SubNav and this hub's
-    // own sub-tab strip — so scope to the second (the sub-tab strip) rather
-    // than asserting by name alone (the top-level bar also has a
-    // "Prerequisites" tab).
-    const subTabs = within(screen.getAllByRole('tablist')[1])
+    // Three tablists are on screen — the top-level SubNav, the CC/UC toggle,
+    // and this pane's own sub-tab strip — so scope to the last (the sub-tab
+    // strip) rather than asserting by name alone (the top-level bar also has
+    // a "Prerequisites" tab).
+    const tablists = screen.getAllByRole('tablist')
+    const subTabs = within(tablists[tablists.length - 1])
     expect(subTabs.getByRole('tab', { name: 'Courses' })).toBeInTheDocument()
     expect(subTabs.getByRole('tab', { name: 'AS Degrees' })).toBeInTheDocument()
     expect(subTabs.getByRole('tab', { name: 'Prerequisites' })).toBeInTheDocument()
   })
-})
 
-describe('Universities of California hub', () => {
-  it('renders the campus picker, the base route, and an empty state before a campus is picked', () => {
+  it('flips to the UC side: picker, empty state, then requirements sub-tabs (no Majors)', () => {
     render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Universities of California' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Institutions' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'UC campuses' }))
 
-    expect(screen.getByText('GET /api/data/summary')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'UC Berkeley' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'UC San Diego' })).toBeInTheDocument()
     expect(screen.getByText('Choose a campus')).toBeInTheDocument()
-  })
 
-  it('shows the Majors / Graduation Requirements / Transfer Minimums / Courses sub-tabs, and its majors, once a campus is picked', () => {
-    render(<DataPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Universities of California' }))
     fireEvent.click(screen.getByRole('button', { name: 'UC Berkeley' }))
-
-    expect(screen.getByRole('tab', { name: 'Majors' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Graduation Requirements' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Transfer Minimums' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Courses' })).toBeInTheDocument()
-    expect(screen.getByText('EECS, B.S.')).toBeInTheDocument()
+    expect(screen.queryByRole('tab', { name: 'Majors' })).not.toBeInTheDocument()
   })
 })
