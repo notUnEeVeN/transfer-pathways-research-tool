@@ -105,7 +105,7 @@ export default function DataPage({ onNavigate = () => {} }) {
         <div className={tab === 'articulation'
           ? 'max-w-[1240px] mx-auto px-[22px] pt-[26px] pb-12 w-full'
           : 'max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12 w-full'}>
-          {tab === 'overview' && <DatasetSummaryPanel />}
+          {tab === 'overview' && <DatasetSummaryPanel onNavigate={changeTab} />}
           {tab === 'articulation' && (
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
           )}
