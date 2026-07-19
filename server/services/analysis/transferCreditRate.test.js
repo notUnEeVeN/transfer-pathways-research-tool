@@ -160,6 +160,32 @@ describe('transferCreditRateData', () => {
     expect(cell.prescribed_units).toBeNull();
   });
 
+  it('counts an unlabelled general-education unit block on the assumed basis', async () => {
+    // GE recognized only by its catalog label — no ge_area pattern tag.
+    await db.collection('curated_requirements').insertOne({
+      _id: 'asd:40', kind: 'as_degree', degree_type: 'local_cs_as', status: 'found',
+      community_college_id: 40, college_id: 'cc:40',
+      requirement_groups: [
+        { ge_area: null, units_fill: false, sections: [{ section_advisement: 1, receivers: [recv(null, [[5]])] }] },
+        { ge_area: null, units_fill: false, label_seen: 'General Education Requirements',
+          sections: [{ unit_advisement: 20, receivers: [] }] },
+      ],
+    });
+    await db.collection('assist_agreements').insertOne({
+      uc_school_id: 1, community_college_id: 40,
+      requirement_groups: [{ sections: [{ receivers: [recv(101, [[5]])] }] }],
+    });
+
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
+    const cell = rows.find((r) => r.community_college_id === 40 && r.school_id === 1);
+    expect(cell.ge_units).toBe(20);
+    expect(cell.ge_verified_units).toBe(0);
+    expect(cell.ge_assumed_units).toBe(20);
+    expect(cell.prescribed_units).toBe(24); // named 4u + unlabelled GE 20u
+    expect(cell.transferred_units).toBe(24);
+    expect(cell.rate).toBe(100);
+  });
+
   it('scopes to the requested degree type', async () => {
     const rows = await transferCreditRateData(db, null, { degreeType: 'ast' });
     expect(rows).toHaveLength(1);

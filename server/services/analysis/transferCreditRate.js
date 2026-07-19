@@ -68,17 +68,32 @@ function namedSections(doc) {
   return sections;
 }
 
-// The degree's GE blocks: stated units plus whether the pattern verifiably
-// satisfies UC breadth.
+// A GE block the extraction recognized by label but couldn't map to any
+// pattern — counts like a local pattern (assumed) so its units don't vanish.
+// Only pure unit blocks qualify: a group with named receivers already runs
+// through the course-articulation path.
+const GE_LABEL = /general\s*education|\bgen(?:eral)?[\s.]*ed\b/i;
+
+// The degree's GE blocks: stated units plus the basis on which they count —
+// verified (a UC transfer pattern) or assumed (everything else; the optimal
+// student fills these areas with the college's dual-qualifying courses).
 function geBlocks(doc) {
   const blocks = [];
   for (const group of doc.requirement_groups || []) {
-    if (!group.ge_area || group.units_fill) continue;
+    if (group.units_fill) continue;
+    const hasReceivers = (group.sections || []).some((section) => (section.receivers || []).length);
+    const labelledGe = !group.ge_area && !hasReceivers && GE_LABEL.test(group.label_seen || '');
+    if (!group.ge_area && !labelledGe) continue;
     const stated = (group.sections || [])[0]?.unit_advisement;
     const units = Number.isFinite(Number(stated)) && Number(stated) > 0
       ? Number(stated)
       : GE_DEFAULT_UNITS[group.ge_area] || 0;
-    blocks.push({ pattern: group.ge_area, units, verified: GE_UC_VERIFIED.has(group.ge_area) });
+    if (!units) continue; // no stated ask and no pattern default — nothing to count
+    blocks.push({
+      pattern: group.ge_area || 'unlabelled',
+      units,
+      verified: GE_UC_VERIFIED.has(group.ge_area),
+    });
   }
   return blocks;
 }
