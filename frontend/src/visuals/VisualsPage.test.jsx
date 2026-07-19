@@ -114,6 +114,7 @@ describe('built-in visual registry', () => {
       'paper-credit-loss',
       'paper-district-heatmap',
       'transfer-credit-rate',
+      'transfer-extra-units',
       'coverage-heatmap',
       'credit-loss',
       'choice-cost',

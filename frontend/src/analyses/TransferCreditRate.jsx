@@ -13,7 +13,7 @@ import { createCoverageColorScale } from './CoverageHeatmap'
  * primary credit-loss cohort (per the degree-type analysis); the A.S.-T view
  * is the standardized-transfer benchmark.
  */
-const DEGREE_MODES = [
+export const DEGREE_MODES = [
   { value: 'local_cs_as', label: 'Local CS A.S.' },
   { value: 'ast', label: 'CS A.S.-T' },
 ]
@@ -31,13 +31,15 @@ const PAPER_RED_STOPS = [
   [251, 106, 74], [239, 59, 44], [203, 24, 29], [165, 15, 21], [103, 0, 13],
 ]
 
-export function paperRedCellColor(value, scale) {
+export function paperRedCellColor(value, scale, darkHigh = false) {
   if (!Number.isFinite(value)) {
     return { backgroundColor: 'var(--color-surface)', color: 'var(--color-ink-subtle)' }
   }
   const span = Math.max(1, scale.max - scale.min)
-  // High value → light end (stop 0), low value → dark end (last stop).
-  const normalized = 1 - Math.max(0, Math.min(1, (value - scale.min) / span))
+  // Rate view: high value → light end (paper Fig. 3). Extra-units view
+  // passes darkHigh — more lost units → darker (paper Fig. 4).
+  const position01 = Math.max(0, Math.min(1, (value - scale.min) / span))
+  const normalized = darkHigh ? position01 : 1 - position01
   const position = normalized * (PAPER_RED_STOPS.length - 1)
   const index = Math.min(PAPER_RED_STOPS.length - 2, Math.floor(position))
   const t = position - index
@@ -51,7 +53,7 @@ export function paperRedCellColor(value, scale) {
   }
 }
 
-function shortenSchool(school) {
+export function shortenSchool(school) {
   return String(school || '')
     .replace(/^University of California,\s*/i, '')
     .replace(/^UC\s+/i, '')
@@ -64,7 +66,9 @@ function average(values) {
   return nums.reduce((sum, value) => sum + value, 0) / nums.length
 }
 
-export function buildRateMatrix(rows) {
+// Shared by the Fig. 3 (rate) and Fig. 4 (extra units) cards — `getValue`
+// picks the measure; `makeScale` its color domain.
+export function buildRateMatrix(rows, getValue = (r) => r.rate, makeScale = createCoverageColorScale) {
   const colMap = new Map()
   const rowMap = new Map()
   const cells = new Map()
@@ -74,28 +78,33 @@ export function buildRateMatrix(rows) {
     if (!rowMap.has(r.community_college_id)) {
       rowMap.set(r.community_college_id, { key: r.community_college_id, name: r.college_name })
     }
-    if (Number.isFinite(r.rate)) {
+    if (Number.isFinite(getValue(r))) {
       cells.set(`${r.community_college_id}|${r.school_id}`, r)
-      values.push(r.rate)
+      values.push(getValue(r))
     }
+  }
+  const cellValue = (rowKey, colKey) => {
+    const cell = cells.get(`${rowKey}|${colKey}`)
+    return cell ? getValue(cell) : null
   }
   const columns = [...colMap.values()].sort((a, b) => a.school.localeCompare(b.school))
   const tableRows = [...rowMap.values()]
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((row) => ({
       ...row,
-      mean: average(columns.map((col) => cells.get(`${row.key}|${col.key}`)?.rate ?? null)),
+      mean: average(columns.map((col) => cellValue(row.key, col.key))),
     }))
   const columnMeans = columns.map((col) =>
-    average(tableRows.map((row) => cells.get(`${row.key}|${col.key}`)?.rate ?? null)))
+    average(tableRows.map((row) => cellValue(row.key, col.key))))
   return {
     columns,
     rows: tableRows,
     cells,
+    cellValue,
     columnMeans,
     overallMean: average(values),
     valueCount: values.length,
-    colorScale: createCoverageColorScale(values),
+    colorScale: makeScale(values),
   }
 }
 

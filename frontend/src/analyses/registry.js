@@ -22,6 +22,7 @@
 
 import CoverageHeatmap from './CoverageHeatmap'
 import TransferCreditRate from './TransferCreditRate'
+import TransferExtraUnits from './TransferExtraUnits'
 import PaperCreditLoss from './PaperCreditLoss'
 import PaperDistrictHeatmap from './PaperDistrictHeatmap'
 import CreditLoss from './CreditLoss'
@@ -61,6 +62,14 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:00:00',
     Component: TransferCreditRate,
+  },
+  {
+    id: 'transfer-extra-units',
+    title: 'Additional units after transfer (MA paper Fig. 4)',
+    description: 'College x campus units of associate-degree work a transfer student must make up beyond the resident path, after elective-slack absorption',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-18T09:05:00',
+    Component: TransferExtraUnits,
   },
   {
     id: 'coverage-heatmap',
