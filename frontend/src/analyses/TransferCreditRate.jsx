@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack, StatStrip } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
-import { createCoverageColorScale, makeCellColor } from './CoverageHeatmap'
+import { createCoverageColorScale } from './CoverageHeatmap'
 
 /**
  * Transfer credit rate — the MA paper's Figure 3 construct on our CA data:
@@ -21,6 +21,35 @@ const DEGREE_MODES = [
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const pct = (value) => (Number.isFinite(value) ? `${pctFmt.format(value)}%` : '')
+
+// The MA paper's palette: matplotlib `Reds`, inverted — a LOW rate reads as
+// dark maroon, a high rate fades toward pale pink. Monochrome by design;
+// the domain still auto-fits the data (createCoverageColorScale) so the
+// band the cells actually occupy uses the full ramp.
+const PAPER_RED_STOPS = [
+  [255, 245, 240], [254, 224, 210], [252, 187, 161], [252, 146, 114],
+  [251, 106, 74], [239, 59, 44], [203, 24, 29], [165, 15, 21], [103, 0, 13],
+]
+
+export function paperRedCellColor(value, scale) {
+  if (!Number.isFinite(value)) {
+    return { backgroundColor: 'var(--color-surface)', color: 'var(--color-ink-subtle)' }
+  }
+  const span = Math.max(1, scale.max - scale.min)
+  // High value → light end (stop 0), low value → dark end (last stop).
+  const normalized = 1 - Math.max(0, Math.min(1, (value - scale.min) / span))
+  const position = normalized * (PAPER_RED_STOPS.length - 1)
+  const index = Math.min(PAPER_RED_STOPS.length - 2, Math.floor(position))
+  const t = position - index
+  const lo = PAPER_RED_STOPS[index]
+  const hi = PAPER_RED_STOPS[index + 1]
+  const rgb = lo.map((channel, i) => Math.round(channel + (hi[i] - channel) * t))
+  const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255
+  return {
+    backgroundColor: `rgb(${rgb.join(' ')})`,
+    color: luminance > 0.55 ? '#1a1a1a' : 'white',
+  }
+}
 
 function shortenSchool(school) {
   return String(school || '')
@@ -114,7 +143,7 @@ function RateTable({ model }) {
                     title={cellTitle(row, col, cell)}
                     aria-label={cellTitle(row, col, cell)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                    style={makeCellColor(cell?.rate ?? null, model.colorScale)}>
+                    style={paperRedCellColor(cell?.rate ?? null, model.colorScale)}>
                     {pct(cell?.rate ?? null)}
                   </td>
                 )
@@ -133,7 +162,7 @@ function RateTable({ model }) {
             {model.columns.map((col, i) => (
               <td key={col.key}
                 className='sticky bottom-0 z-20 border-t border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                style={makeCellColor(model.columnMeans[i], model.colorScale)}>
+                style={paperRedCellColor(model.columnMeans[i], model.colorScale)}>
                 {pct(model.columnMeans[i])}
               </td>
             ))}
@@ -216,7 +245,8 @@ export default function TransferCreditRate() {
           Percent of the degree&apos;s prescribed units (named courses + GE pattern; free electives excluded)
           that transfer toward the campus&apos;s graduation requirements. Cal-GETC/IGETC blocks count as
           UC-verified; local GE patterns count as prescribed but unverifiable. Blank cells have no ASSIST
-          agreement to verify against. After the MA paper&apos;s Figure 3 (transfer credit rate).
+          agreement to verify against. After the MA paper&apos;s Figure 3: darker red = less of the degree
+          transfers, fading to pale pink at full transfer (color range fitted to the data).
         </p>
       </div>
     </Stack>
