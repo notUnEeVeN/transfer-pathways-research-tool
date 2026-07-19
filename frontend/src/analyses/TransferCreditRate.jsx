@@ -241,13 +241,6 @@ export default function TransferCreditRate() {
       </div>
       <div data-export-root className='flex flex-col gap-3'>
         <RateTable model={model} />
-        <p className='text-caption text-ink-subtle'>
-          Percent of the degree&apos;s prescribed units (named courses + GE pattern; free electives excluded)
-          that transfer toward the campus&apos;s graduation requirements. Cal-GETC/IGETC blocks count as
-          UC-verified; local GE patterns count as prescribed but unverifiable. Blank cells have no ASSIST
-          agreement to verify against. After the MA paper&apos;s Figure 3: darker red = less of the degree
-          transfers, fading to pale pink at full transfer (color range fitted to the data).
-        </p>
       </div>
     </Stack>
   )
