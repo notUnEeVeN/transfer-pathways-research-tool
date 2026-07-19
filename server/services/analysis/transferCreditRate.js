@@ -34,21 +34,20 @@
  *     verify ≠ verified zero).
  *
  * The same rows also carry the MA paper's FIGURE 4 construct — extra units a
- * transfer student needs beyond the resident path:
+ * transfer student needs above the university's 120 baseline. The pathway is
+ * two years at the college (the AS total, statutory 60u) plus the remaining
+ * degree at the university (120 − credited units), so:
  *
- *   extra = max(0, AS total units − requirement-work units
- *                    − min(campus elective slack, leftover transferable units))
+ *   extra = max(0, AS total units − requirement-work units)
  *
- * Leftover transferable units (UC-transferable named courses that landed on
- * nothing, GE beyond the campus's ask, and the optimal student's free
- * electives) are absorbed by the campus's elective slack first — the paper's
- * "+0" cells, where under-100% transfer still costs no extra time. Slack =
- * template total units − its modeled requirement units, quarter→semester
- * normalized. Extra is expressed in the COLLEGE's unit system (as_unit_system
- * rides along; the handful of quarter colleges carry quarter units).
+ * — every AS unit that did no verified requirement work must be re-earned.
+ * Deliberately NO elective-slack absorption: our campus templates do not
+ * model the full 120 units, so any "free elective room" derived from them
+ * would be a data artifact, not a finding. A +0 cell therefore means the
+ * whole degree does requirement work. Extra is expressed in the COLLEGE's
+ * unit system (as_unit_system rides along; quarter colleges carry quarter
+ * units).
  */
-
-const { computeUnitBudget } = require('../degreeSlots');
 
 const GE_UC_VERIFIED = new Set(['calgetc', 'igetc']);
 // The statutory associate-degree size — the AS side of the Figure 4 baseline
@@ -175,13 +174,10 @@ function transferableCourseIds(pairAgreements, templatePids, degreeCourseSet) {
 // units count once (`counted` dedupes across rows); per requirement row the
 // chosen option, and per choose-N section the chosen rows, prefer
 // transferring picks first and lower units second.
-function namedUnitTotals(sections, transferable, unitsById, ucTransferableIds = new Set()) {
+function namedUnitTotals(sections, transferable, unitsById) {
   const counted = new Set();
   let total = 0;
   let transferred = 0;
-  // UC-transferable units that landed on no requirement — candidates for the
-  // campus's elective slack in the Figure 4 accounting.
-  let unappliedTransferable = 0;
 
   const optionScore = (ids) => {
     let optionTotal = 0;
@@ -211,25 +207,21 @@ function namedUnitTotals(sections, transferable, unitsById, ucTransferableIds = 
         const units = unitsById.get(id) || 0;
         total += units;
         if (transferable.has(id)) transferred += units;
-        else if (ucTransferableIds.has(id)) unappliedTransferable += units;
       }
     }
   }
-  return { total, transferred, unappliedTransferable };
+  return { total, transferred };
 }
 
 async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as' } = {}) {
   const type = DEGREE_TYPES.includes(degreeType) ? degreeType : 'local_cs_as';
-  const [degrees, templates, institutions, universities] = await Promise.all([
+  const [degrees, templates, institutions] = await Promise.all([
     db.collection('curated_requirements')
       .find({ kind: 'as_degree', degree_type: type, status: 'found' }).toArray(),
     db.collection('curated_requirements').find({ kind: 'degree' }).toArray(),
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1, source_id: 1 } }).toArray(),
-    db.collection('assist_institutions')
-      .find({ kind: 'university' }, { projection: { source_id: 1, academic_calendar: 1 } }).toArray(),
   ]);
-  const calendarBySchool = new Map(universities.map((u) => [Number(u.source_id), u.academic_calendar]));
 
   const campuses = templates
     .map((template) => {
@@ -241,21 +233,11 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
           }
         }
       }
-      // Elective slack: room in the campus's stated unit total that its
-      // modeled requirements don't fill — where leftover transferable AS
-      // credits land before anything counts as lost. Quarter-campus slack is
-      // converted to semester units to match the (mostly semester) AS side.
-      const totalUnits = Number(template.total_units) || null;
-      const modeledUnits = computeUnitBudget(template.requirement_groups).modeled_units;
-      const schoolId = Number(template.school_id);
-      const quarter = calendarBySchool.get(schoolId) === 'quarter';
-      const rawSlack = totalUnits != null ? Math.max(0, totalUnits - modeledUnits) : 0;
       return {
-        school_id: schoolId,
+        school_id: Number(template.school_id),
         school: template.school,
         pids,
         geDemand: geDemandUnits(template),
-        electiveSlack: quarter ? rawSlack * (2 / 3) : rawSlack,
       };
     })
     .sort((a, b) => String(a.school).localeCompare(String(b.school)));
@@ -286,16 +268,12 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
     return { doc, sections, courseSet, ge: geBlocks(doc), unresolved: unresolvedCount(doc) };
   });
   const unitsById = new Map();
-  const ucTransferableIds = new Set();
   if (allNamedIds.size) {
     const courseRows = await db.collection('assist_courses').find(
       { side: 'sending', course_id: { $in: [...allNamedIds] } },
-      { projection: { course_id: 1, units: 1, uc_transferable: 1, _id: 0 } }
+      { projection: { course_id: 1, units: 1, _id: 0 } }
     ).toArray();
-    for (const course of courseRows) {
-      unitsById.set(Number(course.course_id), Number(course.units) || 0);
-      if (course.uc_transferable) ucTransferableIds.add(Number(course.course_id));
-    }
+    for (const course of courseRows) unitsById.set(Number(course.course_id), Number(course.units) || 0);
   }
 
   const nameById = new Map(institutions.map((i) => [Number(i.source_id), i.name]));
@@ -333,18 +311,14 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
         };
       } else {
         const transferable = transferableCourseIds(pairAgreements, campus.pids, courseSet);
-        const named = namedUnitTotals(sections, transferable, unitsById, ucTransferableIds);
+        const named = namedUnitTotals(sections, transferable, unitsById);
         const prescribed = named.total + geUnits;
         const transferred = named.transferred + geCounted;
-        // Figure 4: AS units doing no requirement work, less what the
-        // campus's elective slack absorbs (leftover transferable named
-        // units, GE beyond the campus ask, and the optimal student's free
-        // electives — all UC-transferable under the same assumption).
+        // Figure 4: the two-year AS (statutory 60u) + the remaining degree at
+        // the university (120 − requirement-work credit) — so everything the
+        // AS spent without doing requirement work lands above the baseline.
         const asTotal = Number(doc.total_units) || AS_STATUTORY_TOTAL_UNITS;
-        const electiveUnits = Math.max(0, asTotal - prescribed);
-        const leftoverTransferable = named.unappliedTransferable + (geUnits - geCounted) + electiveUnits;
-        const absorbed = Math.min(campus.electiveSlack, leftoverTransferable);
-        const extra = Math.max(0, asTotal - transferred - absorbed);
+        const extra = Math.max(0, asTotal - transferred);
         row = {
           ...row,
           rate: prescribed > 0 ? +((100 * transferred) / prescribed).toFixed(1) : null,
@@ -354,8 +328,6 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
           named_transferred_units: named.transferred,
           as_total_units: asTotal,
           as_unit_system: doc.unit_system || 'semester',
-          elective_slack_units: +campus.electiveSlack.toFixed(1),
-          absorbed_units: +absorbed.toFixed(1),
           extra_units: +extra.toFixed(1),
         };
       }

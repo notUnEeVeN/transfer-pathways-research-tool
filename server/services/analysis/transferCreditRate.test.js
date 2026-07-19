@@ -22,8 +22,6 @@ beforeAll(async () => {
   // plus GE-satisfiable breadth: 2 H/SS courses + 2 R&C courses at the
   // assumed ~4u each → 16u of GE demand. The assume-satisfiable AHI slot
   // needs no coursework, so it adds none.
-  // total_units 40 vs 32 modeled (12u courses + 20u breadth slots at ~4u
-  // each) → 8u of elective slack for the Figure 4 absorption.
   await db.collection('curated_requirements').insertOne({
     _id: 'degree:1', kind: 'degree', school_id: 1, school: 'UC Test', total_units: 40,
     requirement_groups: [
@@ -208,17 +206,15 @@ describe('transferCreditRateData', () => {
     expect(cell.extra_units).toBeNull();
   });
 
-  it('derives Figure 4 extra units: AS total minus requirement work minus slack absorption', async () => {
+  it('derives Figure 4 extra units: AS total minus requirement work', async () => {
     const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
     const cell = rows.find((r) => r.community_college_id === 10 && r.school_id === 1);
-    // AS total defaults to the statutory 60u. Requirement work = 24u
-    // (8 named + 16 GE). Leftover transferable: blocked physA 4u + GE
-    // overflow 14u + free electives 18u = 36u, but the campus's elective
-    // slack absorbs only 8u. extra = 60 − 24 − 8 = 28.
+    // Two years at the college (statutory 60u) + the remainder at the
+    // university. Requirement work = 24u (8 named + 16 GE), so 36u of the
+    // degree must be re-earned above the 120 baseline. No elective-slack
+    // absorption — the templates don't model the full 120.
     expect(cell.as_total_units).toBe(60);
-    expect(cell.elective_slack_units).toBe(8);
-    expect(cell.absorbed_units).toBe(8);
-    expect(cell.extra_units).toBe(28);
+    expect(cell.extra_units).toBe(36);
   });
 
   it('counts an unlabelled general-education unit block on the assumed basis', async () => {

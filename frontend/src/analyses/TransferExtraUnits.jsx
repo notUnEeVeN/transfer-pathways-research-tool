@@ -8,11 +8,12 @@ import {
 
 /**
  * Additional units after transfer — the MA paper's Figure 4 construct on our
- * CA data: college × campus, the units of associate-degree work a transfer
- * student must make up beyond the resident path. Same rows as the transfer
- * credit rate card (one endpoint), opposite framing: absolute loss instead of
- * a rate, after the campus's elective slack absorbs leftover transferable
- * credit (the paper's "+0" cells). Darker = more lost units.
+ * CA data: college × campus, the units a transfer student needs above the
+ * 120 baseline — two years at the college (60u) + the remaining degree at
+ * the university, so every AS unit that did no requirement work must be
+ * re-earned. Same rows as the transfer credit rate card (one endpoint),
+ * opposite framing: absolute loss instead of a rate. A "+0" cell means the
+ * whole degree does requirement work. Darker = more lost units.
  */
 const intFmt = new Intl.NumberFormat()
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
@@ -28,7 +29,7 @@ function cellTitle(row, col, cell) {
     row.name,
     col.school,
     `Extra units after transfer: ${plus(cell.extra_units)}`,
-    `AS total ${cell.as_total_units}u − ${cell.transferred_units}u requirement work − ${cell.absorbed_units}u absorbed by elective slack (${cell.elective_slack_units}u available)`,
+    `AS total ${cell.as_total_units}u − ${cell.transferred_units}u doing requirement work = ${plus(cell.extra_units)} above the 120 baseline`,
     cell.as_unit_system === 'quarter' ? 'College is on the quarter system — units are quarter units' : null,
   ].filter(Boolean).join('\n')
 }
@@ -165,7 +166,7 @@ export default function TransferExtraUnits() {
           {
             label: '+0 cells',
             value: intFmt.format(zeroCells),
-            sub: 'loss fully absorbed by elective slack',
+            sub: 'the whole degree does requirement work',
             accent: zeroCells > 0,
           },
         ]} />

@@ -13,7 +13,6 @@ const row = (collegeId, name, schoolId, school, extra, over = {}) => ({
   school_id: schoolId, school,
   rate: 80, prescribed_units: 42, transferred_units: 24,
   as_total_units: 60, as_unit_system: 'semester',
-  elective_slack_units: 8, absorbed_units: 8,
   extra_units: extra,
   ...over,
 })
@@ -32,8 +31,8 @@ describe('TransferExtraUnits', () => {
     expect(screen.getAllByText('+28').length).toBeGreaterThan(0)
     expect(screen.getAllByText('+0').length).toBeGreaterThan(0)
     expect(screen.getByText('Mean extra units')).toBeInTheDocument()
-    // +0 cells stat counts the fully absorbed pair.
-    expect(screen.getByText('loss fully absorbed by elective slack')).toBeInTheDocument()
+    // +0 cells stat counts the pair whose whole degree does requirement work.
+    expect(screen.getByText('the whole degree does requirement work')).toBeInTheDocument()
   })
 
   it('switches degree cohorts through the shared modes', () => {
