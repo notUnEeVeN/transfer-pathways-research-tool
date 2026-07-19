@@ -131,23 +131,26 @@ describe('transferCreditRateData', () => {
     // guard), cs1-light 3u (lower-unit transferring pick beats the 4u one).
     expect(cell.named_units).toBe(12);
     expect(cell.named_transferred_units).toBe(8);
-    // GE: Cal-GETC stated 30u, verified. Electives group adds nothing.
+    // GE: Cal-GETC stated 30u, verified by design. Electives add nothing.
     expect(cell.ge_units).toBe(30);
     expect(cell.ge_verified_units).toBe(30);
+    expect(cell.ge_assumed_units).toBe(0);
     expect(cell.prescribed_units).toBe(42);
     expect(cell.transferred_units).toBe(38);
     expect(cell.rate).toBe(+((100 * 38) / 42).toFixed(1));
   });
 
-  it('keeps an unverifiable local GE pattern in the denominator only', async () => {
+  it('counts a local GE pattern as transferring on the ASSUMED basis', async () => {
     const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
     const cell = rows.find((r) => r.community_college_id === 20 && r.school_id === 1);
-    // Named 4u transfers; local GE 18u prescribed, none of it verified.
+    // Named 4u transfers; local GE 18u counts via the optimal student's
+    // dual-qualifying picks — assumed, not verified, and labeled as such.
     expect(cell.ge_units).toBe(18);
     expect(cell.ge_verified_units).toBe(0);
+    expect(cell.ge_assumed_units).toBe(18);
     expect(cell.prescribed_units).toBe(22);
-    expect(cell.transferred_units).toBe(4);
-    expect(cell.rate).toBe(+((100 * 4) / 22).toFixed(1));
+    expect(cell.transferred_units).toBe(22);
+    expect(cell.rate).toBe(100);
   });
 
   it('returns a null cell when the pair has no agreement (unverifiable, not zero)', async () => {

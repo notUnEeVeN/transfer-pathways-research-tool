@@ -99,6 +99,13 @@ export function buildRateMatrix(rows) {
   }
 }
 
+function geNote(cell) {
+  if (!cell.ge_units) return 'GE: none stored'
+  if (!cell.ge_assumed_units) return `GE: ${cell.ge_units}u (transfer pattern, verified by design)`
+  if (!cell.ge_verified_units) return `GE: ${cell.ge_units}u (local pattern, assumed via dual-qualifying courses)`
+  return `GE: ${cell.ge_units}u (${cell.ge_verified_units}u verified · ${cell.ge_assumed_units}u assumed)`
+}
+
 function cellTitle(row, col, cell) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
   return [
@@ -106,7 +113,7 @@ function cellTitle(row, col, cell) {
     col.school,
     `Transfer credit rate: ${pct(cell.rate)}`,
     `${cell.transferred_units} of ${cell.prescribed_units} prescribed units transfer`,
-    `Named courses: ${cell.named_transferred_units}/${cell.named_units}u · GE: ${cell.ge_verified_units}/${cell.ge_units}u verified`,
+    `Named courses: ${cell.named_transferred_units}/${cell.named_units}u · ${geNote(cell)}`,
   ].join('\n')
 }
 
