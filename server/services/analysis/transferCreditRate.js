@@ -19,13 +19,15 @@
  *     fills: requirements may double-count, credits never do.
  *   - Choice resolution is the optimal student with the LOWER unit count:
  *     transferring picks first, then fewer units (ties don't matter).
- *   - GE blocks all count as transferring, on two different bases surfaced in
- *     the payload: Cal-GETC / IGETC satisfy UC lower-division breadth BY
- *     DESIGN (verified); CSU GE and local patterns have no course-level UC
- *     pairing, but the optimal transfer-bound student fills them with the
- *     college's UC-transferable, IGETC-tagged courses — the same dual-
- *     qualifying pool the graduation-coverage view counts (e.g. 68 such
- *     courses at Yuba for Berkeley's H/SS areas) — so they count as ASSUMED.
+ *   - GE blocks count as transferring only UP TO the campus template's own
+ *     GE-satisfiable demand (its ge_area slots × ~4u, unit advisements
+ *     honored; assume-satisfiable slots like AHI excluded) — GE units beyond
+ *     what the campus's requirements can absorb do no requirement work and
+ *     are lost credit. Within the cap, two bases are surfaced in the
+ *     payload: Cal-GETC / IGETC satisfy UC breadth BY DESIGN (verified);
+ *     CSU GE / local / unlabelled patterns count because the optimal
+ *     transfer-bound student fills them with the college's dual-qualifying,
+ *     UC-transferable courses (assumed).
  *   - Courses the catalog cites but ASSIST can't resolve are ignored on both
  *     sides (97.8% resolution) and surfaced via `unresolved_count`.
  *   - A pair with no ASSIST agreement at all yields a null cell (cannot
@@ -34,8 +36,11 @@
 
 const GE_UC_VERIFIED = new Set(['calgetc', 'igetc']);
 // Stated pattern unit asks, used when the stored group carries no
-// unit_advisement of its own.
+// unit_advisement of its own. Local and unlabelled patterns fall back to the
+// Title 5 §55063 statutory minimum — every CA associate degree requires at
+// least 18 semester units of GE, so an unsized block is never zero.
 const GE_DEFAULT_UNITS = { calgetc: 34, igetc: 37, csu_ge: 39 };
+const GE_STATUTORY_MINIMUM_UNITS = 18;
 
 const DEGREE_TYPES = ['local_cs_as', 'ast'];
 
@@ -44,6 +49,28 @@ function receivingPids(receiving) {
   if (receiving.kind === 'series') return (receiving.parent_ids || []).map(Number).filter(Number.isFinite);
   if (receiving.kind === 'course' && receiving.parent_id != null) return [Number(receiving.parent_id)];
   return [];
+}
+
+// How many GE units the campus's graduation requirements can actually absorb:
+// the template's ge_area slots (breadth, R&C-style categories), at the stated
+// unit ask or ~4 semester units per asked course. Assume-satisfiable slots
+// (e.g. American History & Institutions) need no coursework, so they add no
+// demand. Everything beyond this cap is GE credit with nowhere to land.
+const ASSUMED_UNITS_PER_GE_COURSE = 4;
+function geDemandUnits(template) {
+  let demand = 0;
+  for (const group of template.requirement_groups || []) {
+    for (const section of group.sections || []) {
+      const geReceivers = (section.receivers || []).filter(
+        (receiver) => receiver.receiving?.kind === 'ge_area' && !receiver.assume_satisfiable
+      );
+      if (!geReceivers.length) continue;
+      const courses = section.section_advisement ?? geReceivers.length;
+      const stated = Number(section.unit_advisement);
+      demand += Number.isFinite(stated) && stated > 0 ? stated : courses * ASSUMED_UNITS_PER_GE_COURSE;
+    }
+  }
+  return demand;
 }
 
 // The degree's named-course structure: per section, the ask (choose-N or all)
@@ -87,8 +114,7 @@ function geBlocks(doc) {
     const stated = (group.sections || [])[0]?.unit_advisement;
     const units = Number.isFinite(Number(stated)) && Number(stated) > 0
       ? Number(stated)
-      : GE_DEFAULT_UNITS[group.ge_area] || 0;
-    if (!units) continue; // no stated ask and no pattern default — nothing to count
+      : GE_DEFAULT_UNITS[group.ge_area] || GE_STATUTORY_MINIMUM_UNITS;
     blocks.push({
       pattern: group.ge_area || 'unlabelled',
       units,
@@ -189,7 +215,12 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
           }
         }
       }
-      return { school_id: Number(template.school_id), school: template.school, pids };
+      return {
+        school_id: Number(template.school_id),
+        school: template.school,
+        pids,
+        geDemand: geDemandUnits(template),
+      };
     })
     .sort((a, b) => String(a.school).localeCompare(String(b.school)));
 
@@ -233,11 +264,12 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
     const collegeId = Number(doc.community_college_id);
     const geUnits = ge.reduce((sum, block) => sum + block.units, 0);
     const geVerifiedUnits = ge.reduce((sum, block) => sum + (block.verified ? block.units : 0), 0);
-    // Assumed = transferring via the optimal student's dual-qualifying picks
-    // rather than a pattern-level UC guarantee.
-    const geAssumedUnits = geUnits - geVerifiedUnits;
     for (const campus of campuses) {
       const pairAgreements = agreementsByPair.get(`${campus.school_id}:${collegeId}`) || [];
+      // GE credit is capped by what this campus's requirements can absorb;
+      // within the cap, verified pattern units are attributed before assumed.
+      const geCounted = Math.min(geUnits, campus.geDemand);
+      const geCountedVerified = Math.min(geVerifiedUnits, geCounted);
       let row = {
         community_college_id: collegeId,
         college_name: nameById.get(collegeId) || doc.college_name || `College ${collegeId}`,
@@ -246,8 +278,10 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
         degree_type: type,
         record_id: doc._id,
         ge_units: geUnits,
-        ge_verified_units: geVerifiedUnits,
-        ge_assumed_units: geAssumedUnits,
+        ge_demand_units: campus.geDemand,
+        ge_counted_units: geCounted,
+        ge_verified_units: geCountedVerified,
+        ge_assumed_units: geCounted - geCountedVerified,
         unresolved_count: unresolved,
       };
       if (!pairAgreements.length) {
@@ -257,8 +291,7 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
         const transferable = transferableCourseIds(pairAgreements, campus.pids, courseSet);
         const named = namedUnitTotals(sections, transferable, unitsById);
         const prescribed = named.total + geUnits;
-        // All GE counts: verified patterns by design, the rest assumed.
-        const transferred = named.transferred + geUnits;
+        const transferred = named.transferred + geCounted;
         row = {
           ...row,
           rate: prescribed > 0 ? +((100 * transferred) / prescribed).toFixed(1) : null,

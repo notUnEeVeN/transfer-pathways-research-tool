@@ -18,18 +18,30 @@ beforeAll(async () => {
   mongo = await startInMemoryMongo();
   db = mongo.client.db('transfer_credit_rate_test');
 
-  // Campus template requiring parents 101 (calc), 102 (physics), 103 (cs1).
+  // Campus template requiring parents 101 (calc), 102 (physics), 103 (cs1),
+  // plus GE-satisfiable breadth: 2 H/SS courses + 2 R&C courses at the
+  // assumed ~4u each → 16u of GE demand. The assume-satisfiable AHI slot
+  // needs no coursework, so it adds none.
   await db.collection('curated_requirements').insertOne({
     _id: 'degree:1', kind: 'degree', school_id: 1, school: 'UC Test',
-    requirement_groups: [{
-      sections: [{
-        receivers: [
-          { receiving: { kind: 'course', parent_id: 101 } },
-          { receiving: { kind: 'course', parent_id: 102 } },
-          { receiving: { kind: 'course', parent_id: 103 } },
+    requirement_groups: [
+      {
+        sections: [{
+          receivers: [
+            { receiving: { kind: 'course', parent_id: 101 } },
+            { receiving: { kind: 'course', parent_id: 102 } },
+            { receiving: { kind: 'course', parent_id: 103 } },
+          ],
+        }],
+      },
+      {
+        title: 'Breadth', sections: [
+          { section_advisement: 2, receivers: [{ receiving: { kind: 'ge_area', code: 'H/SS', name: 'H/SS breadth' } }] },
+          { section_advisement: 2, receivers: [{ receiving: { kind: 'ge_area', code: 'R&C', name: 'Reading & Composition' } }] },
+          { section_advisement: 1, receivers: [{ receiving: { kind: 'ge_area', code: 'AHI', name: 'American History & Institutions' }, assume_satisfiable: true }] },
         ],
-      }],
-    }],
+      },
+    ],
   });
 
   // College 10's local CS A.S.:
@@ -76,6 +88,17 @@ beforeAll(async () => {
     ],
   });
 
+  // College 50's local pattern states NO unit count (the Santiago case) —
+  // the Title 5 statutory 18u minimum stands in, so GE never drops to zero.
+  await db.collection('curated_requirements').insertOne({
+    _id: 'asd:50', kind: 'as_degree', degree_type: 'local_cs_as', status: 'found',
+    community_college_id: 50, college_id: 'cc:50',
+    requirement_groups: [
+      { ge_area: null, units_fill: false, sections: [{ section_advisement: 1, receivers: [recv(null, [[5]])] }] },
+      { ge_area: 'local_pattern', units_fill: false, sections: [{ unit_advisement: null, receivers: [] }] },
+    ],
+  });
+
   // An A.S.-T at college 10 so the other degree_type has its own cohort.
   await db.collection('curated_requirements').insertOne({
     _id: 'asd:10:ast', kind: 'as_degree', degree_type: 'ast', status: 'found',
@@ -101,6 +124,12 @@ beforeAll(async () => {
     },
     {
       uc_school_id: 1, community_college_id: 20,
+      requirement_groups: [{
+        sections: [{ receivers: [recv(101, [[5]])] }],
+      }],
+    },
+    {
+      uc_school_id: 1, community_college_id: 50,
       requirement_groups: [{
         sections: [{ receivers: [recv(101, [[5]])] }],
       }],
@@ -131,26 +160,41 @@ describe('transferCreditRateData', () => {
     // guard), cs1-light 3u (lower-unit transferring pick beats the 4u one).
     expect(cell.named_units).toBe(12);
     expect(cell.named_transferred_units).toBe(8);
-    // GE: Cal-GETC stated 30u, verified by design. Electives add nothing.
+    // GE: Cal-GETC states 30u, but the campus can only absorb its 16u of
+    // GE-satisfiable demand — the rest is lost credit. Electives add nothing.
     expect(cell.ge_units).toBe(30);
-    expect(cell.ge_verified_units).toBe(30);
+    expect(cell.ge_demand_units).toBe(16);
+    expect(cell.ge_counted_units).toBe(16);
+    expect(cell.ge_verified_units).toBe(16);
     expect(cell.ge_assumed_units).toBe(0);
     expect(cell.prescribed_units).toBe(42);
-    expect(cell.transferred_units).toBe(38);
-    expect(cell.rate).toBe(+((100 * 38) / 42).toFixed(1));
+    expect(cell.transferred_units).toBe(24);
+    expect(cell.rate).toBe(+((100 * 24) / 42).toFixed(1));
   });
 
-  it('counts a local GE pattern as transferring on the ASSUMED basis', async () => {
+  it('counts a local GE pattern on the ASSUMED basis, capped at campus demand', async () => {
     const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
     const cell = rows.find((r) => r.community_college_id === 20 && r.school_id === 1);
-    // Named 4u transfers; local GE 18u counts via the optimal student's
-    // dual-qualifying picks — assumed, not verified, and labeled as such.
+    // Named 4u transfers; of the 18u local GE, only the campus's 16u of
+    // GE-satisfiable demand counts — assumed basis, labeled as such.
     expect(cell.ge_units).toBe(18);
+    expect(cell.ge_counted_units).toBe(16);
     expect(cell.ge_verified_units).toBe(0);
-    expect(cell.ge_assumed_units).toBe(18);
+    expect(cell.ge_assumed_units).toBe(16);
     expect(cell.prescribed_units).toBe(22);
-    expect(cell.transferred_units).toBe(22);
-    expect(cell.rate).toBe(100);
+    expect(cell.transferred_units).toBe(20);
+    expect(cell.rate).toBe(+((100 * 20) / 22).toFixed(1));
+  });
+
+  it('defaults an unsized local GE block to the Title 5 statutory 18u minimum', async () => {
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
+    const cell = rows.find((r) => r.community_college_id === 50 && r.school_id === 1);
+    // No stated unit ask — the statutory minimum stands in instead of zero.
+    expect(cell.ge_units).toBe(18);
+    expect(cell.ge_counted_units).toBe(16);
+    expect(cell.prescribed_units).toBe(22);
+    expect(cell.transferred_units).toBe(20);
+    expect(cell.rate).toBe(+((100 * 20) / 22).toFixed(1));
   });
 
   it('returns a null cell when the pair has no agreement (unverifiable, not zero)', async () => {
@@ -179,11 +223,12 @@ describe('transferCreditRateData', () => {
     const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
     const cell = rows.find((r) => r.community_college_id === 40 && r.school_id === 1);
     expect(cell.ge_units).toBe(20);
+    expect(cell.ge_counted_units).toBe(16);
     expect(cell.ge_verified_units).toBe(0);
-    expect(cell.ge_assumed_units).toBe(20);
+    expect(cell.ge_assumed_units).toBe(16);
     expect(cell.prescribed_units).toBe(24); // named 4u + unlabelled GE 20u
-    expect(cell.transferred_units).toBe(24);
-    expect(cell.rate).toBe(100);
+    expect(cell.transferred_units).toBe(20);
+    expect(cell.rate).toBe(+((100 * 20) / 24).toFixed(1));
   });
 
   it('scopes to the requested degree type', async () => {
@@ -191,9 +236,9 @@ describe('transferCreditRateData', () => {
     expect(rows).toHaveLength(1);
     const cell = rows[0];
     expect(cell.record_id).toBe('asd:10:ast');
-    // calc 5u transfers + Cal-GETC 34u verified → 39/39.
+    // calc 5u transfers + Cal-GETC capped at the campus's 16u GE demand.
     expect(cell.prescribed_units).toBe(39);
-    expect(cell.transferred_units).toBe(39);
-    expect(cell.rate).toBe(100);
+    expect(cell.transferred_units).toBe(21);
+    expect(cell.rate).toBe(+((100 * 21) / 39).toFixed(1));
   });
 });

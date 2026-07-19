@@ -101,9 +101,13 @@ export function buildRateMatrix(rows) {
 
 function geNote(cell) {
   if (!cell.ge_units) return 'GE: none stored'
-  if (!cell.ge_assumed_units) return `GE: ${cell.ge_units}u (transfer pattern, verified by design)`
-  if (!cell.ge_verified_units) return `GE: ${cell.ge_units}u (local pattern, assumed via dual-qualifying courses)`
-  return `GE: ${cell.ge_units}u (${cell.ge_verified_units}u verified · ${cell.ge_assumed_units}u assumed)`
+  const counted = cell.ge_counted_units ?? 0
+  const basis = !cell.ge_assumed_units
+    ? 'verified by pattern'
+    : !cell.ge_verified_units
+      ? 'assumed via dual-qualifying courses'
+      : `${cell.ge_verified_units}u verified · ${cell.ge_assumed_units}u assumed`
+  return `GE: ${counted}/${cell.ge_units}u count (campus GE ask ${cell.ge_demand_units ?? 0}u; ${basis})`
 }
 
 function cellTitle(row, col, cell) {
