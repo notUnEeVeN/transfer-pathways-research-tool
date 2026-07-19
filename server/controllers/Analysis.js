@@ -23,6 +23,7 @@ const {
   categoryGapsData, complexityData, timeToDegreeData,
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
+const { transferCreditRateData } = require('../services/analysis/transferCreditRate');
 
 const TTL_MS = 60 * 1000;
 const cache = new Map(); // key → { at, rows }
@@ -126,6 +127,24 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   const key = `requirement-comparison|${schoolId}|${communityCollegeId}|${major}`;
   const data = await cached(key, () => requirementComparisonData(db, auditDb, { schoolId, major, communityCollegeId }));
   res.json(data);
+});
+
+// MA-paper Figure 3 on our data: per (college with a CS associate degree ×
+// campus), the share of the degree's prescribed units that transfer. Its one
+// param (degree_type) is outside parseParams, so it takes its own cache key.
+exports.transferCreditRate = asyncHandler(async (req, res) => {
+  const degreeType = ['ast', 'local_cs_as'].includes(req.query.degree_type)
+    ? req.query.degree_type
+    : 'local_cs_as';
+  const db = req.app.locals.db;
+  const rows = await cached(`transfer-credit-rate|${degreeType}`,
+    () => transferCreditRateData(db, null, { degreeType }));
+  if (req.query.format === 'csv') {
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="transfer-credit-rate.csv"');
+    return res.send(toCsv(rows));
+  }
+  res.json({ params: { degree_type: degreeType }, n: rows.length, rows });
 });
 
 exports.creditLoss = makeEndpoint('credit-loss', creditLossData);

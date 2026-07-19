@@ -113,6 +113,7 @@ describe('built-in visual registry', () => {
     expect(ANALYSES.map((analysis) => analysis.id)).toEqual([
       'paper-credit-loss',
       'paper-district-heatmap',
+      'transfer-credit-rate',
       'coverage-heatmap',
       'credit-loss',
       'choice-cost',

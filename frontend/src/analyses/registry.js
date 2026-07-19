@@ -21,6 +21,7 @@
  */
 
 import CoverageHeatmap from './CoverageHeatmap'
+import TransferCreditRate from './TransferCreditRate'
 import PaperCreditLoss from './PaperCreditLoss'
 import PaperDistrictHeatmap from './PaperDistrictHeatmap'
 import CreditLoss from './CreditLoss'
@@ -52,6 +53,14 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:00:00',
     Component: PaperDistrictHeatmap,
+  },
+  {
+    id: 'transfer-credit-rate',
+    title: 'Transfer credit rate (MA paper Fig. 3)',
+    description: 'College x campus % of the CS associate degree’s prescribed units that transfer toward the four-year graduation requirements',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-18T09:00:00',
+    Component: TransferCreditRate,
   },
   {
     id: 'coverage-heatmap',

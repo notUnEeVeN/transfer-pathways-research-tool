@@ -112,6 +112,25 @@ export function useCoverage(params = {}, options = {}) {
   })
 }
 
+// MA-paper Figure 3 on our data: per (college × campus), the share of the CS
+// associate degree's prescribed units that transfer toward the campus's
+// graduation requirements. degree_type: 'local_cs_as' | 'ast'.
+export function useTransferCreditRate(degreeType = 'local_cs_as', options = {}) {
+  const { user } = useAuth()
+  const type = ['ast', 'local_cs_as'].includes(degreeType) ? degreeType : 'local_cs_as'
+  const { enabled = true, ...queryOptions } = options
+  return useQuery({
+    queryKey: ['analysis-transfer-credit-rate', user?.uid, type],
+    queryFn: () =>
+      apiClient
+        .get('/analysis/transfer-credit-rate', { params: { degree_type: type } })
+        .then((r) => r.data),
+    enabled: !!user?.uid && enabled,
+    staleTime: 5 * 60 * 1000,
+    ...queryOptions,
+  })
+}
+
 // Per-college ASSIST-vs-hand-curated minimums comparison for one (campus, major,
 // college). Returns the unified per-requirement table + per-side summaries;
 // powers the Data tab's college comparison view (Level 2).

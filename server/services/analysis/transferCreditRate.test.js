@@ -1,0 +1,170 @@
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { createRequire } from 'node:module';
+
+const cjs = createRequire(import.meta.url);
+const { startInMemoryMongo } = cjs('../../test/mongoHarness');
+const { transferCreditRateData } = cjs('./transferCreditRate');
+
+let mongo;
+let db;
+
+const recv = (parentId, options, status = 'articulated') => ({
+  receiving: { kind: 'course', parent_id: parentId },
+  articulation_status: status,
+  options: options.map((ids) => ({ course_ids: ids, course_conjunction: 'and' })),
+});
+
+beforeAll(async () => {
+  mongo = await startInMemoryMongo();
+  db = mongo.client.db('transfer_credit_rate_test');
+
+  // Campus template requiring parents 101 (calc), 102 (physics), 103 (cs1).
+  await db.collection('curated_requirements').insertOne({
+    _id: 'degree:1', kind: 'degree', school_id: 1, school: 'UC Test',
+    requirement_groups: [{
+      sections: [{
+        receivers: [
+          { receiving: { kind: 'course', parent_id: 101 } },
+          { receiving: { kind: 'course', parent_id: 102 } },
+          { receiving: { kind: 'course', parent_id: 103 } },
+        ],
+      }],
+    }],
+  });
+
+  // College 10's local CS A.S.:
+  //   - calc (5u, transfers via parent 101)
+  //   - phys A only (4u) — the campus needs the FULL series [physA, physB],
+  //     so the series guard keeps it from transferring
+  //   - choose 1 of {cs1-heavy 4u, cs1-light 3u} — both transfer via 103, the
+  //     lower-unit pick must win
+  //   - Cal-GETC block, stated 30 units → verified
+  //   - electives-to-total group → excluded from both sides
+  await db.collection('curated_requirements').insertOne({
+    _id: 'asd:10', kind: 'as_degree', degree_type: 'local_cs_as', status: 'found',
+    community_college_id: 10, college_id: 'cc:10',
+    requirement_groups: [
+      {
+        ge_area: null, units_fill: false,
+        sections: [
+          { section_advisement: 2, receivers: [recv(null, [[1]]), recv(null, [[2]])] },
+          { section_advisement: 1, receivers: [recv(null, [[3]]), recv(null, [[4]])] },
+        ],
+      },
+      { ge_area: 'calgetc', units_fill: false, sections: [{ unit_advisement: 30, receivers: [] }] },
+      { ge_area: null, units_fill: true, sections: [] },
+    ],
+  });
+
+  // College 20's local CS A.S.: one 4-unit articulating course, local GE
+  // pattern (18u, unverifiable — denominator only).
+  await db.collection('curated_requirements').insertOne({
+    _id: 'asd:20', kind: 'as_degree', degree_type: 'local_cs_as', status: 'found',
+    community_college_id: 20, college_id: 'cc:20',
+    requirement_groups: [
+      { ge_area: null, units_fill: false, sections: [{ section_advisement: 1, receivers: [recv(null, [[5]])] }] },
+      { ge_area: 'local_pattern', units_fill: false, sections: [{ unit_advisement: 18, receivers: [] }] },
+    ],
+  });
+
+  // College 30's local CS A.S. has NO agreement with UC Test → null cell.
+  await db.collection('curated_requirements').insertOne({
+    _id: 'asd:30', kind: 'as_degree', degree_type: 'local_cs_as', status: 'found',
+    community_college_id: 30, college_id: 'cc:30',
+    requirement_groups: [
+      { ge_area: null, units_fill: false, sections: [{ section_advisement: 1, receivers: [recv(null, [[5]])] }] },
+    ],
+  });
+
+  // An A.S.-T at college 10 so the other degree_type has its own cohort.
+  await db.collection('curated_requirements').insertOne({
+    _id: 'asd:10:ast', kind: 'as_degree', degree_type: 'ast', status: 'found',
+    community_college_id: 10, college_id: 'cc:10',
+    requirement_groups: [
+      { ge_area: null, units_fill: false, sections: [{ section_advisement: 1, receivers: [recv(null, [[1]])] }] },
+      { ge_area: 'calgetc', units_fill: false, sections: [{ unit_advisement: 34, receivers: [] }] },
+    ],
+  });
+
+  await db.collection('assist_agreements').insertMany([
+    {
+      uc_school_id: 1, community_college_id: 10,
+      requirement_groups: [{
+        sections: [{
+          receivers: [
+            recv(101, [[1]]),          // calc articulates
+            recv(102, [[2, 9]]),       // physics needs course 9 too — degree lacks it
+            recv(103, [[3], [4]]),     // either cs1 variant articulates
+          ],
+        }],
+      }],
+    },
+    {
+      uc_school_id: 1, community_college_id: 20,
+      requirement_groups: [{
+        sections: [{ receivers: [recv(101, [[5]])] }],
+      }],
+    },
+  ]);
+
+  await db.collection('assist_courses').insertMany([
+    { side: 'sending', course_id: 1, units: 5 },
+    { side: 'sending', course_id: 2, units: 4 },
+    { side: 'sending', course_id: 3, units: 4 },
+    { side: 'sending', course_id: 4, units: 3 },
+    { side: 'sending', course_id: 5, units: 4 },
+    { side: 'sending', course_id: 9, units: 4 },
+  ]);
+  await db.collection('assist_institutions').insertMany([
+    { kind: 'community_college', source_id: 10, name: 'CC Alpha' },
+    { kind: 'community_college', source_id: 20, name: 'CC Beta' },
+  ]);
+}, 60_000);
+
+afterAll(async () => { await mongo.stop(); });
+
+describe('transferCreditRateData', () => {
+  it('applies the series guard, lower-unit choose-N, GE verification, and elective exclusion', async () => {
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
+    const cell = rows.find((r) => r.community_college_id === 10 && r.school_id === 1);
+    // Named picks: calc 5u (transfers), physA 4u (blocked by the series
+    // guard), cs1-light 3u (lower-unit transferring pick beats the 4u one).
+    expect(cell.named_units).toBe(12);
+    expect(cell.named_transferred_units).toBe(8);
+    // GE: Cal-GETC stated 30u, verified. Electives group adds nothing.
+    expect(cell.ge_units).toBe(30);
+    expect(cell.ge_verified_units).toBe(30);
+    expect(cell.prescribed_units).toBe(42);
+    expect(cell.transferred_units).toBe(38);
+    expect(cell.rate).toBe(+((100 * 38) / 42).toFixed(1));
+  });
+
+  it('keeps an unverifiable local GE pattern in the denominator only', async () => {
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
+    const cell = rows.find((r) => r.community_college_id === 20 && r.school_id === 1);
+    // Named 4u transfers; local GE 18u prescribed, none of it verified.
+    expect(cell.ge_units).toBe(18);
+    expect(cell.ge_verified_units).toBe(0);
+    expect(cell.prescribed_units).toBe(22);
+    expect(cell.transferred_units).toBe(4);
+    expect(cell.rate).toBe(+((100 * 4) / 22).toFixed(1));
+  });
+
+  it('returns a null cell when the pair has no agreement (unverifiable, not zero)', async () => {
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_cs_as' });
+    const cell = rows.find((r) => r.community_college_id === 30 && r.school_id === 1);
+    expect(cell.rate).toBeNull();
+    expect(cell.prescribed_units).toBeNull();
+  });
+
+  it('scopes to the requested degree type', async () => {
+    const rows = await transferCreditRateData(db, null, { degreeType: 'ast' });
+    expect(rows).toHaveLength(1);
+    const cell = rows[0];
+    expect(cell.record_id).toBe('asd:10:ast');
+    // calc 5u transfers + Cal-GETC 34u verified → 39/39.
+    expect(cell.prescribed_units).toBe(39);
+    expect(cell.transferred_units).toBe(39);
+    expect(cell.rate).toBe(100);
+  });
+});
