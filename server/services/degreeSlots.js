@@ -183,7 +183,18 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         // Choose `ask` of many (e.g. the natural-science elective, 1 of 10;
         // or "pick one series in its entirety" where each option is a series).
         const artRecvs = evaluated ? recvs.filter((r) => receiverArticulated(r.receiving, articulated)) : [];
-        const cov = Math.min(artRecvs.length, ask);
+        let cov = Math.min(artRecvs.length, ask);
+        // GE fallback, same semantic as the distinct-courses branch: an authored
+        // ge_area on the requirement means a CC course in that IGETC area fills
+        // the slot when major-prep articulation is absent (e.g. UCR's elective
+        // slots — CHEM/MATH options never appear in the CS major agreement).
+        if (evaluated && cov < ask) {
+          const areas = s.ge_areas || recvs.find((r) => Array.isArray(r.ge_areas) && r.ge_areas.length)?.ge_areas;
+          if (Array.isArray(areas) && areas.length) {
+            const geHits = geCoverCourses(areas, ccGeAreas);
+            cov = Math.min(ask, cov + geHits.length);
+          }
+        }
         gCovered += cov;
         const cc = artRecvs.slice(0, ask).flatMap((r) =>
           receiverPids(r.receiving).flatMap((pid) =>

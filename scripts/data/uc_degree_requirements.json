@@ -23,7 +23,8 @@
       "tier=transferable: real lower-division courses a CC can articulate (has a parent_id).",
       "tier=breadth: H/SS / natural-science that transfers near-universally via breadth articulation; modeled as select-N from a department proxy list (v1). Refinement TODO: split R&C (2) from breadth (4).",
       "tier=nontransferable: upper-division / residency / free electives — no CC equivalent by construction (ASSIST never articulates UC upper-division). Rendered as kind='requirement' receivers with no parent_id, so they always count against the denominator and are never satisfiable.",
-      "EECS<->ELENG alias: our scraped data still stores EECS 16A/16B; the current Berkeley catalog calls these ELENG 66/64. The importer aliases them, so codes may be authored either way."
+      "EECS<->ELENG alias: our scraped data still stores EECS 16A/16B; the current Berkeley catalog calls these ELENG 66/64. The importer aliases them, so codes may be authored either way.",
+      "Unresolved course codes in a from-list (honors variants, brand-new courses with no ASSIST receiving record) are KEPT by the importer as named never-satisfiable slots — author the full requirement as the catalog states it; articulability is the data's job, not the author's filter."
     ]
   },
   "UCB": {
@@ -130,7 +131,7 @@
         ]
       },
       {
-        "title": "Natural science elective (select one)",
+        "title": "Science — natural science elective (select one)",
         "tier": "transferable",
         "requirements": [
           {
@@ -151,7 +152,7 @@
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "GE: Reading & Composition — English R1A/R1B (2 courses)",
         "tier": "breadth",
         "requirements": [
           {
@@ -171,7 +172,7 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth — lower-division",
+        "title": "GE: Humanities & Social Sciences breadth — lower-division (2 courses)",
         "tier": "breadth",
         "requirements": [
           {
@@ -189,7 +190,7 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth — upper-division",
+        "title": "GE: Humanities & Social Sciences breadth — upper-division (2 courses, at Berkeley)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -213,7 +214,7 @@
         ]
       },
       {
-        "title": "Upper-division EECS technical electives (20 units incl. one design course)",
+        "title": "Upper-division major coursework — EECS technical electives (20 units incl. one design course, at Berkeley)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -224,7 +225,7 @@
         ]
       },
       {
-        "title": "Ethics / social implications of technology",
+        "title": "Ethics / social implications of technology (at Berkeley)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -234,7 +235,7 @@
         ]
       },
       {
-        "title": "Free electives (to reach the 120-unit minimum)",
+        "title": "Unrestricted electives — to reach the 120-unit minimum (at Berkeley)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -250,10 +251,10 @@
     "school": "UC San Diego",
     "program": "Computer Science, B.S. (CS26)",
     "total_units": 180,
-    "source_url": "https://cse.ucsd.edu/undergraduate/bs-computer-science",
+    "source_url": "https://drive.google.com/file/d/1hLg7rehInSV9pra_1RYuPq8Rsi4IEwXc/view",
     "groups": [
       {
-        "title": "Lower-division mathematics",
+        "title": "Lower-division mathematics — also satisfies Warren Formal Skills GE (MATH 20A/20B)",
         "tier": "transferable",
         "requirements": [
           {
@@ -261,19 +262,21 @@
             "from": [
               "MATH 20A",
               "MATH 20B",
-              "MATH 20C"
+              "MATH 20C",
+              "MATH 31BH"
             ]
           },
           {
             "select": 1,
             "from": [
-              "MATH 18"
+              "MATH 18",
+              "MATH 31AH"
             ]
           }
         ]
       },
       {
-        "title": "Lower-division computer science",
+        "title": "Lower-division computer science — also satisfies Warren Formal Skills GE (CSE 11)",
         "tier": "transferable",
         "requirements": [
           {
@@ -291,21 +294,26 @@
           {
             "select": 1,
             "from": [
-              "CSE 15L",
-              "CSE 29"
-            ]
-          },
-          {
-            "select": 1,
-            "from": [
               "CSE 20",
-              "MATH 15A"
+              "MATH 15A",
+              "MATH 31CH",
+              "MATH 109"
             ]
           },
           {
             "select": 1,
             "from": [
-              "CSE 21"
+              "CSE 21",
+              "MATH 154",
+              "MATH 158",
+              "MATH 184",
+              "MATH 188"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "CSE 29"
             ]
           },
           {
@@ -317,27 +325,54 @@
         ]
       },
       {
-        "title": "Natural science (select one)",
+        "title": "Lower-division elective — one course (checklist also allows any CSE upper-division course)",
         "tier": "transferable",
         "requirements": [
           {
             "select": 1,
             "from": [
-              "PHYS 2A",
-              "PHYS 4A"
+              "CSE 3",
+              "CSE 8A",
+              "MAE 8",
+              "COGS 9",
+              "COGS 10",
+              "COGS 18",
+              "ECE 15",
+              "NANO 15"
             ]
           }
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "Science — General Science requirement (1 course)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "ge_area": "5A",
+            "from": [
+              "PHYS 2A",
+              "PHYS 4A",
+              "PHYS 2B",
+              "PHYS 4B",
+              "CHEM 6A",
+              "CHEM 6B",
+              "BILD 1",
+              "BILD 2",
+              "BILD 3"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "GE: Warren Writing — 2 courses (satisfied by IGETC 1A/1B)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "code": "WARREN-W1",
+              "label": "Warren Writing, first course (IGETC Area 1A — English Composition; WCWP 10A equivalent under IGETC)",
               "ge_areas": [
                 "1A"
               ]
@@ -346,8 +381,8 @@
           {
             "select": 1,
             "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "code": "WARREN-W2",
+              "label": "Warren Writing, second course (IGETC Area 1B — Critical Thinking / Composition; WCWP 10B equivalent under IGETC)",
               "ge_areas": [
                 "1B"
               ]
@@ -356,18 +391,30 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "GE: Warren breadth — 6 courses (Area Studies equivalent, satisfied by IGETC)",
         "tier": "breadth",
         "requirements": [
           {
-            "select": 4,
+            "select": 6,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "WARREN-AS",
+              "label": "Six breadth courses spanning humanities/fine arts, social sciences, and natural sciences (IGETC Areas 3, 4, 5) — the engineering path's two Area Studies (3 courses each) fully waived by IGETC certification; Formal Skills overlaps major math/CS; Ethics & Society is a native-student requirement not asked of transfers",
               "ge_areas": [
                 "3A",
                 "3B",
-                "4"
+                "4",
+                "4A",
+                "4B",
+                "4C",
+                "4D",
+                "4E",
+                "4F",
+                "4G",
+                "4H",
+                "4I",
+                "4J",
+                "5A",
+                "5B"
               ]
             }
           }
@@ -388,11 +435,88 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 18 courses",
+        "title": "Unrestricted electives — 12 units to reach the 180-unit minimum (CC-transferable)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 3,
+            "units": 12,
+            "from": {
+              "code": "ELECTIVE",
+              "label": "Unrestricted electives — any UC-transferable coursework closes the 168→180 gap; CC units count (within the 105-quarter-unit transfer cap)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Statistics — upper-division options only (at UC San Diego)",
         "tier": "nontransferable",
         "requirements": [
           {
-            "select": 18,
+            "select": 1,
+            "label": "Statistics — MATH 181A / MATH 183 / ECON 120A / ECE 109 / CSE 103",
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "GE: Warren requirements after transfer — WCWP 100 + one upper-division course (at UC San Diego)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "label": "WCWP 100 — Warren College upper-division writing (letter grade, at UC San Diego)",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "One four-unit upper-division course non-contiguous to the major",
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 18 courses (72 units, at UC San Diego)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "label": "CSE 100 or CSE 100R — Advanced Data Structures",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CSE 101 — Design and Analysis of Algorithms",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CSE 110 — Software Engineering",
+            "from": null
+          },
+          {
+            "select": 3,
+            "units": 12,
+            "label": "Systems electives — 12 units",
+            "from": null
+          },
+          {
+            "select": 3,
+            "units": 12,
+            "label": "Theory/abstraction electives — 12 units",
+            "from": null
+          },
+          {
+            "select": 3,
+            "units": 12,
+            "label": "Applications of computing electives — 12 units",
+            "from": null
+          },
+          {
+            "select": 6,
+            "units": 24,
+            "label": "CSE electives — 24 units",
             "from": null
           }
         ]
@@ -404,43 +528,37 @@
     "school": "UC Riverside",
     "program": "Computer Science, B.S.",
     "total_units": 180,
-    "source_url": "https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf",
+    "source_url": "https://student.engr.ucr.edu/course-plans/2025/09/25/computer-science",
     "groups": [
       {
         "title": "Lower-division mathematics",
         "tier": "transferable",
         "requirements": [
           {
-            "select": 1,
+            "select": 3,
             "from": [
-              "MATH 5A",
-              "MATH 9A"
-            ]
-          },
-          {
-            "select": 1,
-            "from": [
-              "MATH 5B",
-              "MATH 9B"
-            ]
-          },
-          {
-            "select": 1,
-            "from": [
-              "MATH 5C",
+              "MATH 9A",
+              "MATH 9B",
               "MATH 9C"
             ]
           },
           {
             "select": 1,
             "from": [
-              "MATH 10A"
+              "CS 11"
             ]
           },
           {
             "select": 1,
             "from": [
-              "MATH 31"
+              "MATH 31",
+              "EE 20B"
+            ]
+          },
+          {
+            "select": 1,
+            "from": [
+              "MATH 10A"
             ]
           }
         ]
@@ -462,21 +580,16 @@
             "from": [
               "CS 61"
             ]
-          },
-          {
-            "select": 1,
-            "from": [
-              "CS 11"
-            ]
           }
         ]
       },
       {
-        "title": "Physics",
+        "title": "Physics — PHYS 40A/B/C (15 units)",
         "tier": "transferable",
         "requirements": [
           {
             "select": 3,
+            "units": 15,
             "from": [
               "PHYS 40A",
               "PHYS 40B",
@@ -486,14 +599,58 @@
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "Engineering depth elective — one lower-division course (IGETC 2A fallback)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "ge_area": "2A",
+            "from": [
+              "MATH 10B",
+              "MATH 46",
+              "EE 5",
+              "EE 16",
+              "EE 20A",
+              "ENSC 1",
+              "ENSC 2",
+              "ME 2",
+              "ME 9",
+              "ME 10",
+              "ME 18A",
+              "BIEN 10"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Engineering breadth elective — one lower-division course (IGETC 5A fallback)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "ge_area": "5A",
+            "from": [
+              "CHEM 1A",
+              "CHEM 1B",
+              "CHEM 1C",
+              "LING 20",
+              "STAT 10",
+              "ECON 5",
+              "ECON 60",
+              "LING 21"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "GE: English composition — first two of three quarters (ENGL 1A/1B)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "code": "ENGL-1A",
+              "label": "ENGL 001A Beginning Composition (IGETC Area 1A — English Composition)",
               "ge_areas": [
                 "1A"
               ]
@@ -502,8 +659,8 @@
           {
             "select": 1,
             "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "code": "ENGL-1B",
+              "label": "ENGL 001B Intermediate Composition (IGETC Area 1B — Critical Thinking / Composition)",
               "ge_areas": [
                 "1B"
               ]
@@ -512,18 +669,42 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "Science — Biological Sciences breadth (1 course)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "ge_area": "5B",
+            "from": [
+              "BIOL 3",
+              "BIOL 5A"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "GE: Humanities & Social Sciences breadth — lower-division (4 of 6 courses)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 4,
             "from": {
               "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "label": "Four of six BCOE breadth courses: World History, Fine Arts/Literature/Philosophy/Religious Studies, Human Perspective on Science & Technology, Economics-or-Political-Science, Anthropology/Psychology/Sociology, one more social science (IGETC Areas 3 & 4); the 4-unit Ethnicity course double/triple-counts within these",
               "ge_areas": [
                 "3A",
                 "3B",
-                "4"
+                "4",
+                "4A",
+                "4B",
+                "4C",
+                "4D",
+                "4E",
+                "4F",
+                "4G",
+                "4H",
+                "4I",
+                "4J"
               ]
             }
           }
@@ -544,11 +725,96 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 19 courses",
+        "title": "GE: Humanities & Social Sciences breadth — upper-division depth (2 courses — two must share a subject area, one upper-division; at UCR)",
         "tier": "nontransferable",
         "requirements": [
           {
-            "select": 19,
+            "select": 2,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "GE: English composition — third quarter, ENGR 180W Technical Communications (at UCR)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "ENGR 101I — Professional Development & Mentoring (1 unit; at UCR, junior/senior standing)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 18 courses (74 units, at UCR)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CS 100 — Software Construction (5 units)",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CS 111 — Discrete Structures",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CS 141 — Intermediate Data Structures & Algorithms",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CS 150 — Theory of Automata & Formal Languages",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CS 152 — Compiler Design",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CS 153 — Design of Operating Systems",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CS 161 — Design & Architecture of Computer Systems",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "EE/CS 120A — Logic Design (5 units)",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "STAT 155 — Probability & Statistics for Science & Engineering",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "Project in Computer Science — CS 178A or CS 179E–Z",
+            "from": null
+          },
+          {
+            "select": 8,
+            "units": 32,
+            "label": "Technical electives — 8 courses, at least 32 units (at least 4 from CS)",
             "from": null
           }
         ]
@@ -650,7 +916,7 @@
         ]
       },
       {
-        "title": "General education — Cal-GETC",
+        "title": "GE: Cal-GETC — all lower-division general education",
         "tier": "breadth",
         "requirements": [
           {
@@ -679,7 +945,7 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 7 core + 7 electives",
+        "title": "Upper-division major coursework — 7 core + 7 electives (at Davis)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -732,7 +998,7 @@
     "school": "UCLA",
     "program": "Computer Science, B.S.",
     "total_units": 180,
-    "source_url": "https://www.seasoasa.ucla.edu/curric-24-25/44-compsci-ugstd-24.html",
+    "source_url": "https://catalog.registrar.ucla.edu/major/2026/ComputerScienceBS",
     "groups": [
       {
         "title": "Lower-division mathematics",
@@ -773,7 +1039,8 @@
           {
             "select": 1,
             "from": [
-              "COM SCI M51A"
+              "COM SCI M51A",
+              "EC ENGR M16"
             ]
           }
         ]
@@ -800,44 +1067,85 @@
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "GE: Writing I — English Composition 3 (Samueli writing requirement, first course)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "code": "WRIT-I",
+              "label": "Writing I — English Composition 3 or equivalent at another institution (IGETC Area 1A)",
               "ge_areas": [
                 "1A"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
-              "ge_areas": [
-                "1B"
               ]
             }
           }
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "GE: Foundations of the Arts & Humanities (2 courses)",
         "tier": "breadth",
         "requirements": [
           {
-            "select": 4,
+            "select": 2,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "GE-AH",
+              "label": "Arts & Humanities — two 5-unit courses from two different subgroups (IGETC Area 3)",
               "ge_areas": [
                 "3A",
-                "3B",
-                "4"
+                "3B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Foundations of Society & Culture (2 courses)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-SC-HIST",
+              "label": "Historical Analysis — 1 course (IGETC 4F History; some colleges certify history under 3B)",
+              "ge_areas": [
+                "4F",
+                "3B"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-SC-SOC",
+              "label": "Social Analysis — 1 course (IGETC Area 4 social & behavioral sciences, excluding history)",
+              "ge_areas": [
+                "4",
+                "4A",
+                "4B",
+                "4C",
+                "4D",
+                "4E",
+                "4G",
+                "4H",
+                "4I",
+                "4J"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Science — GE Foundations of Scientific Inquiry: Life Sciences (1 course)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-SI-LS",
+              "label": "Life Sciences — 1 course, 4 units minimum (IGETC Area 5B Biological Sciences)",
+              "ge_areas": [
+                "5B"
               ]
             }
           }
@@ -858,7 +1166,28 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 20 courses",
+        "title": "COM SCI 1 — Freshman Computer Science Seminar (1 unit; no ASSIST articulation, completed at UCLA)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Engineering Writing + Ethics — one W/EW course covers both (at UCLA; Samueli discourages IGETC)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 20 courses (at UCLA)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -877,7 +1206,7 @@
     "source_url": "https://catalogue.uci.edu/donaldbrenschoolofinformationandcomputersciences/departmentofcomputerscience/computerscience_bs/",
     "groups": [
       {
-        "title": "Lower-division mathematics & statistics",
+        "title": "Lower-division mathematics & statistics — also satisfies GE category V (STATS 67 = Va; MATH 2A/2B = Vb)",
         "tier": "transferable",
         "requirements": [
           {
@@ -944,14 +1273,14 @@
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "GE: Writing (category Ia) — 2 lower-division courses",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "code": "GE-Ia-1",
+              "label": "Lower-division writing, first course (WRITING 45/50 tier; IGETC Area 1A — English Composition)",
               "ge_areas": [
                 "1A"
               ]
@@ -960,8 +1289,8 @@
           {
             "select": 1,
             "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "code": "GE-Ia-2",
+              "label": "Lower-division writing, second course (WRITING 60 tier; IGETC Area 1B — Critical Thinking / Composition)",
               "ge_areas": [
                 "1B"
               ]
@@ -970,18 +1299,66 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "Science — GE category II: Science & Technology (3 courses)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "from": {
+              "code": "GE-II",
+              "label": "Science & Technology — 3 courses (IGETC Area 5 Physical & Biological Sciences); the CS major's science rule (2 GE-II courses outside Engineering/ICS/Economics/Mathematics) sits inside these 3",
+              "ge_areas": [
+                "5A",
+                "5B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Social & Behavioral Sciences (category III) — 3 courses",
         "tier": "breadth",
         "requirements": [
           {
-            "select": 4,
+            "select": 3,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "GE-III",
+              "label": "Social & Behavioral Sciences — 3 courses (IGETC Area 4); GE VII Multicultural Studies (1 course) may double-count within these per the catalogue",
+              "ge_areas": [
+                "4"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Arts & Humanities (category IV) — 3 courses",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 3,
+            "from": {
+              "code": "GE-IV",
+              "label": "Arts & Humanities — 3 courses (IGETC Area 3); GE VIII International/Global Issues (1 course) may double-count within these per the catalogue",
               "ge_areas": [
                 "3A",
-                "3B",
-                "4"
+                "3B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Language Other Than English (category VI) — 1 course",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-VI",
+              "label": "Language Other Than English — coursework to third-quarter proficiency (IGETC Area 6A); also satisfiable by high-school work or exam",
+              "ge_areas": [
+                "6A"
               ]
             }
           }
@@ -1002,7 +1379,7 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 17 courses",
+        "title": "Upper-division major coursework — 17 courses (incl. I&C SCI 139W = GE Ib upper-division writing; at UC Irvine)",
         "tier": "nontransferable",
         "requirements": [
           {
@@ -1018,7 +1395,7 @@
     "school": "UC Santa Barbara",
     "program": "Computer Science, B.S.",
     "total_units": 180,
-    "source_url": "https://catalog.ucsb.edu/programs/BSCMPSC",
+    "source_url": "https://cs.ucsb.edu/education/undergraduate/current-students",
     "groups": [
       {
         "title": "Lower-division mathematics & statistics",
@@ -1043,11 +1420,12 @@
         ]
       },
       {
-        "title": "Lower-division computer science",
+        "title": "Lower-division computer science — 21 units",
         "tier": "transferable",
         "requirements": [
           {
             "select": 5,
+            "units": 21,
             "from": [
               "CMPSC 16",
               "CMPSC 24",
@@ -1059,14 +1437,51 @@
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "Science electives — List A (8 units)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 2,
+            "units": 8,
+            "from": {
+              "code": "SCI-A",
+              "label": "List A — 8 units from a broad science list (ASTRO, CHEM 1A–C, EARTH, ECON 1/2, EEMB, ENV S, GEOG, MCDB, PHYS 4/5, and more; IGETC Areas 5A/5B)",
+              "ge_areas": [
+                "5A",
+                "5B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Science electives — List B (12 units, at least one lab)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 3,
+            "units": 12,
+            "from": {
+              "code": "SCI-B",
+              "label": "List B — 12 units from PHYS 1–7 series, CHEM 1A–C + labs, or MCDB 1A/1B/1LL, including at least one lab; a course may count toward only one of List A / List B (IGETC 5A/5B/5C)",
+              "ge_areas": [
+                "5A",
+                "5B",
+                "5C"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Area A — English Reading & Composition (2 courses)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
+              "code": "GE-A1",
+              "label": "Area A-1 — Writing 2 or 2E (IGETC Area 1A — English Composition)",
               "ge_areas": [
                 "1A"
               ]
@@ -1075,8 +1490,8 @@
           {
             "select": 1,
             "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "code": "GE-A2",
+              "label": "Area A-2 — one course from Writing 50/50E/105xx/107xx/109xx (IGETC Area 1B — Critical Thinking / Composition)",
               "ge_areas": [
                 "1B"
               ]
@@ -1085,19 +1500,73 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "GE: Areas D/E/F/G — 6 courses (full IGETC substitutes for the entire pattern)",
         "tier": "breadth",
         "requirements": [
           {
-            "select": 4,
+            "select": 2,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "GE-D",
+              "label": "Area D Social Sciences — 2 courses (IGETC Area 4); special-subject requirements (writing-designated, ethnicity, European/world traditions) ride inside Areas D–G and are likewise covered by IGETC",
               "ge_areas": [
-                "3A",
-                "3B",
-                "4"
+                "4",
+                "4A",
+                "4B",
+                "4C",
+                "4D",
+                "4E",
+                "4F",
+                "4G",
+                "4H",
+                "4I",
+                "4J"
               ]
+            }
+          },
+          {
+            "select": 2,
+            "from": {
+              "code": "GE-E",
+              "label": "Area E Culture & Thought — 2 courses (IGETC 3B Humanities / 4F History)",
+              "ge_areas": [
+                "3B",
+                "4F"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-F",
+              "label": "Area F The Arts — 1 course (IGETC 3A Arts)",
+              "ge_areas": [
+                "3A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-G",
+              "label": "Area G Literature — 1 course (IGETC 3B Humanities)",
+              "ge_areas": [
+                "3B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Unrestricted electives — 12 units to reach the 180-unit minimum (CC-transferable)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 3,
+            "units": 12,
+            "from": {
+              "code": "ELECTIVE",
+              "label": "Unrestricted electives — any UC-transferable coursework closes the 168→180 gap; CC units count (within the 105-quarter-unit transfer cap)",
+              "assume": true
             }
           }
         ]
@@ -1110,18 +1579,36 @@
             "select": 1,
             "from": {
               "code": "AH&I",
-              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC). The one GE piece full IGETC does not satisfy at UCSB.",
               "assume": true
             }
           }
         ]
       },
       {
-        "title": "Upper-division major coursework — 17 courses",
+        "title": "Upper-division major coursework — 17 courses (67 units, at UCSB)",
         "tier": "nontransferable",
         "requirements": [
           {
-            "select": 17,
+            "select": 1,
+            "label": "CMPSC 130A — Data Structures and Algorithms I",
+            "from": null
+          },
+          {
+            "select": 1,
+            "label": "CMPSC 130B — Data Structures and Algorithms II",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 3,
+            "label": "ENGR 101 — Ethics in Engineering (3 units)",
+            "from": null
+          },
+          {
+            "select": 14,
+            "units": 56,
+            "label": "Major field electives — 14 courses, at least 7 CMPSC (56 units)",
             "from": null
           }
         ]
@@ -1133,88 +1620,120 @@
     "school": "UC Santa Cruz",
     "program": "Computer Science, B.S.",
     "total_units": 180,
-    "source_url": "https://catalog.ucsc.edu/en/current/general-catalog/academic-units/baskin-engineering/computer-science-and-engineering/computer-science-bs",
+    "source_url": "https://undergrad.engineering.ucsc.edu/files/2025/09/CS_BS_25-26.pdf",
     "groups": [
       {
-        "title": "Lower-division mathematics",
+        "title": "Lower-division mathematics — also satisfies GE MF (Mathematical & Formal Reasoning)",
         "tier": "transferable",
         "requirements": [
           {
-            "select": 2,
+            "select": 1,
+            "units": 5,
             "from": [
               "MATH 19A",
-              "MATH 19B"
+              "MATH 20A"
             ]
           },
           {
             "select": 1,
+            "units": 5,
             "from": [
+              "MATH 19B",
+              "MATH 20B"
+            ]
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": [
+              "AM 10",
               "MATH 21"
             ]
           },
           {
             "select": 1,
+            "units": 5,
             "from": [
+              "AM 30",
               "MATH 23A"
             ]
           }
         ]
       },
       {
-        "title": "Lower-division computer science",
+        "title": "Lower-division foundations — CSE 16, CSE 40, ECE 30 (chart's Math Courses block)",
         "tier": "transferable",
         "requirements": [
           {
-            "select": 5,
+            "select": 1,
+            "units": 5,
             "from": [
-              "CSE 12",
-              "CSE 13S",
-              "CSE 16",
-              "CSE 20",
-              "CSE 30"
+              "CSE 16"
+            ]
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": [
+              "CSE 40"
+            ]
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": [
+              "ECE 30"
             ]
           }
         ]
       },
       {
-        "title": "Reading & Composition (English)",
-        "tier": "breadth",
+        "title": "Lower-division programming — 26 units (CSE 30/12/13S are 7 units each)",
+        "tier": "transferable",
         "requirements": [
           {
             "select": 1,
-            "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
-              "ge_areas": [
-                "1A"
-              ]
-            }
+            "units": 5,
+            "from": [
+              "CSE 20"
+            ]
           },
           {
             "select": 1,
-            "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
-              "ge_areas": [
-                "1B"
-              ]
-            }
+            "units": 7,
+            "from": [
+              "CSE 30"
+            ]
+          },
+          {
+            "select": 1,
+            "units": 7,
+            "from": [
+              "CSE 12"
+            ]
+          },
+          {
+            "select": 1,
+            "units": 7,
+            "from": [
+              "CSE 13S"
+            ]
           }
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
-        "tier": "breadth",
+        "title": "Science — GE Scientific Inquiry (SI, 1 course; the only science demand in the major)",
+        "tier": "transferable",
         "requirements": [
           {
-            "select": 4,
+            "select": 1,
+            "units": 5,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "GE-SI",
+              "label": "Scientific Inquiry — 1 course (IGETC Area 5A/5B); full IGETC waives it, and the major itself requires no physics",
               "ge_areas": [
-                "3A",
-                "3B",
-                "4"
+                "5A",
+                "5B"
               ]
             }
           }
@@ -1235,11 +1754,182 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 12 courses",
+        "title": "GE: Composition (C) — 1 course",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 5,
+            "from": {
+              "code": "GE-C",
+              "label": "Composition — 1 course (IGETC Area 1A/1B); full IGETC waives all UCSC GE except the upper-division DC requirement",
+              "ge_areas": [
+                "1A",
+                "1B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: humanities, arts & social analysis — TA, IM, CC, ER, PE (5 courses)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 5,
+            "from": {
+              "code": "GE-TA",
+              "label": "Textual Analysis (TA) — IGETC 3B",
+              "ge_areas": [
+                "3B"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": {
+              "code": "GE-IM",
+              "label": "Interpreting Arts & Media (IM) — IGETC 3A",
+              "ge_areas": [
+                "3A"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": {
+              "code": "GE-CC",
+              "label": "Cross-Cultural Analysis (CC) — IGETC 3B / Area 4",
+              "ge_areas": [
+                "3B",
+                "4",
+                "4A",
+                "4E",
+                "4G"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": {
+              "code": "GE-ER",
+              "label": "Ethnicity & Race (ER) — IGETC Area 7 / 4C Ethnic Studies",
+              "ge_areas": [
+                "7",
+                "4C"
+              ]
+            }
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "from": {
+              "code": "GE-PE",
+              "label": "Perspectives (PE: Environmental / Human Behavior / Technology & Society) — IGETC Area 4 or 5",
+              "ge_areas": [
+                "4",
+                "4A",
+                "4B",
+                "4H",
+                "4I",
+                "4J",
+                "5A",
+                "5B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Practice (PR) — one 2-credit collaborative/creative/service course",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 2,
+            "from": {
+              "code": "GE-PR",
+              "label": "Practice (PR) — no IGETC analog course-for-course, but full IGETC certification satisfies it; assumed for the transfer lens",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Unrestricted electives — 18 units to reach the 180-unit minimum (CC-transferable)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 4,
+            "units": 18,
+            "from": {
+              "code": "ELECTIVE",
+              "label": "Unrestricted electives — any UC-transferable coursework closes the 162→180 gap; CC units count (within the 105-quarter-unit transfer cap)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
         "tier": "nontransferable",
         "requirements": [
           {
-            "select": 12,
+            "select": 1,
+            "units": 5,
+            "label": "CSE 101 — Introduction to Data Structures & Algorithms",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CSE 101M — Mathematical Thinking for Computer Science",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CSE 102 or CSE 103 — Analysis of Algorithms / Computational Models",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CSE 107 or STAT 131 — Probability and Statistics (also carries the SR GE)",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CSE 114A — Foundations of Programming Languages",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CSE 120 — Computer Architecture",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "CSE 130 — Principles of Computer Systems Design",
+            "from": null
+          },
+          {
+            "select": 4,
+            "units": 20,
+            "label": "Upper-division electives — 4 courses (CSE 100–189/195, CMPM, or up to 2 math electives; the Comprehensive-requirement capstone counts as one)",
+            "from": null
+          },
+          {
+            "select": 1,
+            "units": 5,
+            "label": "Disciplinary Communication (DC) — CSE 115A, CSE 185E/185S, or CSE 195 senior thesis; the one GE piece IGETC does not waive",
             "from": null
           }
         ]
@@ -1254,7 +1944,7 @@
     "source_url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4233",
     "groups": [
       {
-        "title": "Lower-division mathematics & statistics",
+        "title": "Lower-division mathematics & statistics — also satisfies GE Quantitative Reasoning (MATH 021)",
         "tier": "transferable",
         "requirements": [
           {
@@ -1262,7 +1952,8 @@
             "from": [
               "MATH 021",
               "MATH 022",
-              "MATH 023"
+              "MATH 023",
+              "MATH 023H"
             ]
           },
           {
@@ -1282,7 +1973,7 @@
         ]
       },
       {
-        "title": "Lower-division computer science & engineering",
+        "title": "Lower-division computer science & engineering — also satisfies the GE Language requirement (CSE 022)",
         "tier": "transferable",
         "requirements": [
           {
@@ -1298,45 +1989,52 @@
           {
             "select": 1,
             "from": [
-              "ENGR 065"
+              "ENGR 065",
+              "EE 060"
             ]
           }
         ]
       },
       {
-        "title": "Physics",
+        "title": "ENGR 091 — Professional Development (2 units)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 2,
+            "from": [
+              "ENGR 091"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Physics — 10 units (also satisfies GE Approaches to Knowledge A: Physical Science)",
         "tier": "transferable",
         "requirements": [
           {
             "select": 4,
+            "units": 10,
             "from": [
               "PHYS 008",
               "PHYS 008L",
               "PHYS 009",
-              "PHYS 009L"
+              "PHYS 009L",
+              "PHYS 008H",
+              "PHYS 009H"
             ]
           }
         ]
       },
       {
-        "title": "Reading & Composition (English)",
+        "title": "GE: Written Communication — WRI 010 (1 course)",
         "tier": "breadth",
         "requirements": [
           {
             "select": 1,
             "from": {
-              "code": "R&C-A",
-              "label": "Reading & Composition A (IGETC Area 1A — English Composition)",
-              "ge_areas": [
-                "1A"
-              ]
-            }
-          },
-          {
-            "select": 1,
-            "from": {
-              "code": "R&C-B",
-              "label": "Reading & Composition B (IGETC Area 1B — Critical Thinking / Composition)",
+              "code": "GE-WRI",
+              "label": "Written Communication (WRI 010) — per the GE transfer table, IGETC Area 1B: Critical Thinking / English Composition",
               "ge_areas": [
                 "1B"
               ]
@@ -1345,18 +2043,55 @@
         ]
       },
       {
-        "title": "Humanities & Social Sciences breadth",
+        "title": "Science — GE Approaches to Knowledge A: Life Science (1 course)",
+        "tier": "transferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": {
+              "code": "GE-ATK-LS",
+              "label": "Life Science — 1 course (IGETC Area 5B); the Physical Science half of Area A is completed by the major's physics; Global Awareness & Sustainability badges can double on this pick (e.g. BIO 043-type courses)",
+              "ge_areas": [
+                "5B"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "GE: Approaches to Knowledge B — 3 courses (Social Science + two more categories)",
         "tier": "breadth",
         "requirements": [
           {
-            "select": 4,
+            "select": 1,
             "from": {
-              "code": "H/SS",
-              "label": "Humanities & Social Sciences breadth — 4 courses (IGETC Area 3 Arts & Humanities + Area 4 Social & Behavioral Sciences)",
+              "code": "GE-ATK-SS",
+              "label": "Social Science — 1 course (IGETC Area 4); the Diversity & Identity badge can double here via an ethnic-studies pick (IGETC 4C / Area 7)",
+              "ge_areas": [
+                "4",
+                "4A",
+                "4B",
+                "4C",
+                "4D",
+                "4E",
+                "4F",
+                "4G",
+                "4H",
+                "4I",
+                "4J"
+              ]
+            }
+          },
+          {
+            "select": 2,
+            "from": {
+              "code": "GE-ATK-B2",
+              "label": "Two of: Literary & Textual Analysis (IGETC 3B), Media & Visual Analysis (IGETC 3A), Societies & Cultures of the Past (IGETC 4A/4F)",
               "ge_areas": [
                 "3A",
                 "3B",
-                "4"
+                "4A",
+                "4F"
               ]
             }
           }
@@ -1377,7 +2112,38 @@
         ]
       },
       {
-        "title": "Upper-division major coursework — 9 courses",
+        "title": "CSE 001 — Introduction to Computer Science (1 unit; no ASSIST articulation, completed at UC Merced)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "GE: Crossroads — upper-division (at UC Merced)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "GE: Writing in the Discipline — upper-division (CSE 155 / WRI 100 / ENGR 156, at UC Merced)",
+        "tier": "nontransferable",
+        "requirements": [
+          {
+            "select": 1,
+            "from": null
+          }
+        ]
+      },
+      {
+        "title": "Upper-division major coursework — 9 courses (36 units, at UC Merced; CSE 120 also satisfies GE Culminating Experience)",
         "tier": "nontransferable",
         "requirements": [
           {

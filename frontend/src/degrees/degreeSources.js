@@ -37,22 +37,22 @@ const DEGREE_SOURCES = {
   // UC San Diego — Computer Science B.S. (CS26)
   7: [
     {
-      label: 'UCSD General Catalog — CSE undergraduate program',
-      url: 'https://catalog.ucsd.edu/curric/CSE-ug.html',
-      note: 'All CSE major coursework: lower-division math / CSE series, natural science, and upper-division core + electives.',
+      label: 'UCSD CSE — B.S. Computer Science Major Checklist, Fall 2026 (CSE-BS-002)',
+      url: 'https://drive.google.com/file/d/1hLg7rehInSV9pra_1RYuPq8Rsi4IEwXc/view',
+      note: null,
     },
     {
-      label: 'UCSD CSE Department — B.S. Computer Science',
-      url: 'https://cse.ucsd.edu/undergraduate/bs-computer-science',
-      note: 'Department overview of the B.S. (CS26) — cross-check for the catalog.',
+      label: 'Warren College — General Education Requirements',
+      url: 'https://warren.ucsd.edu/academics/general-education/index.html',
+      note: null,
     },
   ],
   // UC Riverside — Computer Science B.S.
   46: [
     {
-      label: 'UCR General Catalog 2025–2026 (PDF)',
-      url: 'https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf',
-      note: 'All major coursework — find the Computer Science B.S. (BCOE) section: calculus sequences, CS 10A–C / 61 / 11, physics, and the upper-division core + electives.',
+      label: 'UCR BCOE — Computer Science Suggested Course Plan (catalog year 2025)',
+      url: 'https://student.engr.ucr.edu/course-plans/2025/09/25/computer-science',
+      note: null,
     },
   ],
   // UC Davis — Computer Science B.S.
@@ -86,9 +86,24 @@ const DEGREE_SOURCES = {
   // UCLA — Computer Science B.S.
   117: [
     {
-      label: 'UCLA Samueli OASA — CS curriculum 2024–25',
-      url: 'https://www.seasoasa.ucla.edu/curric-24-25/44-compsci-ugstd-24.html',
-      note: 'All major coursework: MATH 31–33 series + 61, COM SCI 31/32/33/35L/M51A, PHYSICS 1A–C + lab, and the upper-division program.',
+      label: 'UCLA Catalog — Computer Science B.S. (2026)',
+      url: 'https://catalog.registrar.ucla.edu/major/2026/ComputerScienceBS',
+      note: null,
+    },
+    {
+      label: 'UCLA Catalog — Samueli School Requirements: General Education',
+      url: 'https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/HenrySamueliSchoolofEngineeringandAppliedScience/School-Requirements/General-Education-Requirements',
+      note: null,
+    },
+    {
+      label: 'UCLA Catalog — Samueli School Requirements: Writing',
+      url: 'https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/HenrySamueliSchoolofEngineeringandAppliedScience/School-Requirements/Writing-Requirement',
+      note: null,
+    },
+    {
+      label: 'UCLA Catalog — Samueli School Requirements (units, ethics, residency)',
+      url: 'https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/HenrySamueliSchoolofEngineeringandAppliedScience/School-Requirements',
+      note: null,
     },
   ],
   // UC Irvine — Computer Science B.S.
@@ -98,29 +113,59 @@ const DEGREE_SOURCES = {
       url: 'https://catalogue.uci.edu/donaldbrenschoolofinformationandcomputersciences/departmentofcomputerscience/computerscience_bs/',
       note: 'All major coursework: MATH 2A/2B + linear algebra, STATS 67, the I&C SCI programming series, and upper-division requirements.',
     },
+    {
+      label: 'UCI Catalogue — General Education requirement',
+      url: 'https://catalogue.uci.edu/informationforadmittedstudents/requirementsforabachelorsdegree/#generaleducationrequirementtext',
+      note: null,
+    },
   ],
   // UC Santa Barbara — Computer Science B.S.
   128: [
     {
-      label: 'UCSB Catalog — Computer Science B.S.',
-      url: 'https://catalog.ucsb.edu/programs/BSCMPSC',
-      note: 'All major coursework: MATH 3A–6A, PSTAT 120A, the CMPSC lower-division series, and upper-division requirements.',
+      label: 'UCSB CS Department — Undergraduate Current Students (major requirements + science electives)',
+      url: 'https://cs.ucsb.edu/education/undergraduate/current-students',
+      note: null,
+    },
+    {
+      label: 'UCSB College of Engineering — Undergraduate Requirements',
+      url: 'https://engineering.ucsb.edu/undergraduate/academic-advising/undergraduate-requirements',
+      note: null,
+    },
+    {
+      label: 'UCSB College of Engineering — 2024–25 GEAR (PDF)',
+      url: 'https://engineering.ucsb.edu/sites/default/files/24-25_GEAR_DIGITAL.pdf',
+      note: null,
     },
   ],
   // UC Santa Cruz — Computer Science B.S.
   132: [
     {
-      label: 'UCSC Catalog — Computer Science B.S.',
-      url: 'https://catalog.ucsc.edu/en/current/general-catalog/academic-units/baskin-engineering/computer-science-and-engineering/computer-science-bs',
-      note: 'All major coursework: MATH 19A/19B/21/23A and the CSE lower-division series, plus upper-division requirements.',
+      label: 'UCSC Baskin Engineering — CS B.S. 2025–26 Curriculum Chart (PDF)',
+      url: 'https://undergrad.engineering.ucsc.edu/files/2025/09/CS_BS_25-26.pdf',
+      note: null,
+    },
+    {
+      label: 'UCSC Registrar — General Education Requirements',
+      url: 'https://registrar.ucsc.edu/enrollment/general-education-requirements.html',
+      note: null,
+    },
+    {
+      label: 'UCSC Catalog — IGETC (satisfies all GE except DC)',
+      url: 'https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/credit-for-transfer-students/intersegmental-general-education-transfer-curriculum-igetc/',
+      note: null,
     },
   ],
   // UC Merced — Computer Science and Engineering B.S.
   144: [
     {
-      label: 'UC Merced Catalog — Computer Science and Engineering B.S.',
+      label: 'UC Merced Catalog — Computer Science and Engineering B.S. (2026–27)',
       url: 'https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4233',
-      note: 'All major coursework: MATH 21–24/32, the CSE lower-division series, ENGR 65, physics + labs, and upper-division requirements.',
+      note: null,
+    },
+    {
+      label: 'UC Merced GE Office — Current GE Requirements (incl. CC transfer articulation table)',
+      url: 'https://ge.ucmerced.edu/students/ge-requirements/current-ge-requirements',
+      note: null,
     },
   ],
 }

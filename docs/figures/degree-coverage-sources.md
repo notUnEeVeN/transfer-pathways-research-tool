@@ -265,16 +265,23 @@ required/encouraged") is the one most worth a follow-up check.*
 
 ## Per-campus specifics + sources
 
-### UC San Diego — Computer Science, B.S. (CS26), catalog Fall 2026
-Source: https://cse.ucsd.edu/undergraduate/bs-computer-science · catalog https://catalog.ucsd.edu/curric/CSE-ug.html
-- Major-prep: MATH 20A/20B/20C, MATH 18 (lin alg, formerly 20F); CSE 11 (intro), CSE 12, CSE 15L-or-29, CSE 20-or-MATH-15A (discrete), CSE 21, CSE 30; 1 natural science (PHYS 2A or 4A).
-- Non-transferable: 18 (CSE 100/101/110 core + ~15 elective courses / 60 u).
-- Notes: college GE is college-specific (Warren/Revelle/etc.) — modeled via IGETC instead. Stats requirement is upper-division → folded into UD.
+### UC San Diego — Computer Science, B.S. (CS26 / CSE-BS-002), Fall 2026 checklist — reworked 2026-07-20
+Sources: CSE major checklist PDF (source of truth, Tybalt-supplied) https://drive.google.com/file/d/1hLg7rehInSV9pra_1RYuPq8Rsi4IEwXc/view · Warren College GE https://warren.ucsd.edu/academics/general-education/index.html (Warren = Tybalt's college, used as the engineering-college GE pattern)
+- Major-prep (52u LD block): MATH 20A/20B/20C + MATH 18 (honors variants 31AH/31BH/31CH skipped — unresolved in ASSIST); CSE 11 (sole intro path on this checklist; 8A appears only as an LD-elective option), CSE 12, CSE 20-or-MATH-15A (discrete; MATH 109 UD skipped), CSE 21 (MATH 154/158/184/188 UD alternates skipped), CSE 29 (replaces the old 15L-or-29 row — checklist lists 29 only), CSE 30; LD elective ×1 (CSE 3/8A, MAE 8, COGS 9/10/18, ECE 15, NANO 15 resolved; the list also allows any CSE UD course); General Science ×1 (PHYS 2A/4A/2B/4B, CHEM 6A/6B, BILD 1/2/3 + 5A fallback; UD options like BICD 100 skipped).
+- **Statistics options are all upper-division** (MATH 181A/183, ECON 120A, ECE 109, CSE 103) → named non-transferable slot, not CC-satisfiable.
+- Warren GE, IGETC-transfer lens (per Tybalt): IGETC certification satisfies everything except **WCWP 100** (UD writing) + **one 4-unit UD course non-contiguous to the major** → 2 named non-transferable slots. For the CC-side percentages, the completed-via-IGETC demand is modeled as 8 breadth slots: Warren Writing ×2 (1A/1B; WCWP 10A/10B equivalents) + 6 breadth courses (the engineering path's two Area Studies × 3 courses, spanning IGETC Areas 3/4/5). Formal Skills (2 courses) overlaps the major (MATH 20A/20B, CSE 11 are on its list) — no separate demand. Ethics & Society (PHIL/POLI 27+28) is asked of first-years, not transfers (absent from both transfer paths on the Warren page) — no demand.
+- Non-transferable: 21 = Statistics + WCWP 100 + UD non-contiguous GE + 18 UD major (CSE 100/100R, 101, 110 + Systems 12u + Theory/Abstraction 12u + Applications 12u + CSE electives 24u = 72u, itemized as named slots).
+- Unrestricted electives ×3 / 12u (Davis-convention assume block): specified work models to 168u vs the 180 graduation minimum — free-elective slack is CC-transferable, closing the budget to exactly 180.
 
-### UC Riverside — Computer Science, B.S., catalog 2025-26 (BCOE)
-Source: https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf
-- Major-prep: calc (MATH 5A/5B/5C **or** 9A/9B/9C) + MATH 10A (multivar) + MATH 31 (lin alg); CS 10A/10B/10C, CS 61, CS 11 (discrete); PHYS 40A/40B/40C.
-- Non-transferable: 19 (CS 100/111/120A/141/150/152/153/161/179 + STAT 155 + ENGR 180W + ~8 electives).
+### UC Riverside — Computer Science, B.S., catalog year 2025 (BCOE) — reworked 2026-07-20
+Single source of truth: the BCOE suggested course plan https://student.engr.ucr.edu/course-plans/2025/09/25/computer-science (links a Google Sheet with the full plan, the breadth checklist, and the technical/depth/breadth elective lists — it incorporates the GE requirements, so the majors page and breadth page are corroborating context only)
+- Major-prep: MATH 9A/9B/9C (5-series alternates dropped — the plan lists 9-series only) + MATH/CS 11 (discrete, stored as CS 11) + MATH 31-or-EE-20B (applied linear algebra) + MATH 10A (multivar); CS 10A/10B/10C + CS 61 (the majors page's CS 9-series change-of-major numbers are NOT in the plan and are excluded); PHYS 40A/40B/40C (15u authored).
+- Also lower-division & CC-articulable: Engineering **depth** elective ×1 (MATH 10B, MATH 46, EE 5/16/20A, ENSC 1/2, ME 2/9/10/18A) and Engineering **breadth** elective ×1 (CHEM 1A/1B/1C, LING 20, STAT 10; ECON 5/60, LING 21, BIEN 10 on the list but unresolved in ASSIST — omitted).
+- English composition is **three quarters**: ENGL 1A (IGETC 1A) + ENGL 1B (IGETC 1B) at CC, third quarter = ENGR 180W Technical Communications at UCR (non-transferable slot).
+- BCOE breadth (no IGETC pattern; per-course): Humanities 12u (World History; Fine Arts/Lit/Phil/Religious Studies; Human Perspective on Science & Technology) + Social Sciences 12u (Econ-or-PoliSci; Anthro/Psych/Soc; one more) = 6 courses, of which **at least 2 must be upper-division** (and 2 must share a subject area with ≥1 UD — majors-page rule) → modeled 4 LD CC-satisfiable (IGETC Areas 3+4 union) + 2 UD non-transferable. Ethnicity 4u course double/triple-counts inside these (no extra slot). Natural Sciences & Math 20u block: covered by major math/physics/CS except **Biological Sciences ×1** → modeled as BIOL 3 / BIOL 5A with IGETC 5B fallback.
+- ENGR 001I (1u, first-year) — **not required for transfer students** (course-plan note; omitted). ENGR 101I (1u, junior/senior) required → non-transferable 1u slot.
+- Non-transferable: 22 = 2 UD-breadth + ENGR 180W + ENGR 101I (1u) + 18 UD major (CS 100 [5u], 111, EE/CS 120A [5u], STAT 155, 141, 150, 152, 153, 161, project CS 178A-or-179E–Z + 8 technical electives ≥32u; authored 74u).
+- Notes: min 180 units / max 216; plan total 183.
 
 ### UC Davis — Computer Science, B.S., catalog 2026-27 (College of Engineering)
 Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/ · checklist https://cs.ucdavis.edu/sites/g/files/dgvnsk8441/files/media/documents/CS%20Major%20Checklist_0.pdf
@@ -319,33 +326,49 @@ Source: https://catalog.ucdavis.edu/departments-programs-degrees/computer-scienc
   from a newer catalog than ASSIST's year: options absent from ASSIST are
   omitted rather than modeled as unsatisfiable.
 
-### UCLA — Computer Science, B.S., catalog 2024-25 (Samueli/Engineering)
-Source: https://www.seasoasa.ucla.edu/curric-24-25/44-compsci-ugstd-24.html
-- Major-prep (subject code **COM SCI**): MATH 31A/31B/32A/32B/33A/33B, MATH 61 (discrete); COM SCI 31/32/33/35L, COM SCI M51A (logic; cross-listed EC ENGR M16); PHYSICS 1A/1B/1C + lab (4AL or 4BL).
-- Non-transferable: 20 (UD-heavy: 111/118/131/180/181 + arch + digital-lab + prob + capstone + 5 electives + science&tech 3 + technical breadth 3).
-- Notes: requires Differential Equations (MATH 33B) — atypical for CS. No chemistry.
+### UCLA — Computer Science, B.S., catalog 2026 (Samueli/Engineering)
+Source: https://catalog.registrar.ucla.edu/major/2026/ComputerScienceBS (curriculum version 2026.02R; the catalog is a Next.js app — the full structured curriculum tree is embedded in the page's `__NEXT_DATA__` JSON)
+GE/writing/school sources: https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/HenrySamueliSchoolofEngineeringandAppliedScience/School-Requirements (+ /General-Education-Requirements and /Writing-Requirement children)
+- Major-prep, "Complete 17 courses" (subject code **COM SCI**): MATH 31A/31B/32A/32B/33A/33B, MATH 61 (discrete); COM SCI 31/32/33/35L, (COM SCI M51A or EC ENGR M16 — cross-listed logic design); PHYSICS 1A/1B/1C + (4AL or 4BL); plus COM SCI 1 (1-unit freshman seminar — modeled non-transferable: no ASSIST articulation exists, completed at UCLA).
+- Samueli GE (reworked 2026-07-20), 5 courses / 24 units min, per-course model (school does **not** accept partial IGETC/Cal-GETC and discourages engineering transfers from completing them, so the no-IGETC student model applies): Arts & Humanities ×2 (two different subgroups → Areas 3A/3B); Society & Culture = Historical Analysis ×1 (→ 4F, with 3B fallback — 4 CCs certify history under humanities) + Social Analysis ×1 (→ 4 + subcodes except 4F); Scientific Inquiry ×1 Life Sciences (→ 5B). Writing I ×1 → Area 1A (catalog explicitly accepts an English Comp 3 equivalent from another institution).
+- Engineering Writing + Ethics: one approved W/EW course (ENGR 181W–188EW family) satisfies both school requirements (CS majors don't get the ENGR 2 ethics alternative); full IGETC/Cal-GETC would waive Engineering Writing but not ethics — modeled as 1 non-transferable slot.
+- Non-transferable: 22 = COM SCI 1 + EW/ethics + 20 UD (CS 111/131/180/181 + M151B-or-M116C + probability [MATH 170A/170E, STATS 100A, C&EE 110, EC ENGR 131A] + capstone [CS 130 or 152B] + 7 CS electives (28u) + 3 science&tech (12u) + 3 technical breadth (12u)).
+- Notes: requires Differential Equations (MATH 33B) — atypical for CS. No chemistry. School unit rule: 180–185 min / 213 max; total_units kept at 180.
 
 ### UC Irvine — Computer Science, B.S., catalog 2026-27 (ICS)
 Source: https://catalogue.uci.edu/donaldbrenschoolofinformationandcomputersciences/departmentofcomputerscience/computerscience_bs/
+GE source: https://catalogue.uci.edu/informationforadmittedstudents/requirementsforabachelorsdegree/#generaleducationrequirementtext
 - Major-prep: MATH 2A/2B, (I&C SCI 6N or MATH 3A) linear, STATS 67; I&C SCI 31/32/33 (prog series), 45C/46, 51/53, IN4MATX 43 (=SWE 43 in current catalog; our data stores IN4MATX 43), 6B/6D (discrete). **No physics** (science satisfied by GE Category II).
-- Non-transferable: 17 (COMPSCI 161 + ICS 139W + 4 flexible-core FA + 9 electives + 2 projects).
+- GE (categories I–VIII, reworked 2026-07-20): Ia writing ×2 → IGETC 1A + 1B; II Science & Technology ×3 → Areas 5A/5B (the major's 2-course non-ENGR/ICS/Econ/Math science rule sits inside these); III Social & Behavioral ×3 → Area 4; IV Arts & Humanities ×3 → Areas 3A/3B; VI Language Other Than English ×1 → Area 6A (all 115 CCs have 6A-tagged courses; also satisfiable by HS work/exam). 12 CC-satisfiable GE slots total.
+- GE categories carrying **no separate demand**: V Quantitative/Symbolic/Computational — completed by required major courses (STATS 67 = Va; MATH 2A/2B = Vb; catalogue: V courses "may also satisfy another GE category", and the CS sample program schedules no standalone V course); VII Multicultural and VIII International/Global — each 1 course that "may also satisfy another GE category" (sample program shows "GE III/VII" and "GE IV/VIII"), so they double-count inside III/IV; Ib upper-division writing — satisfied by ICS 139W inside the 17 upper-division courses (modeled there, not as an extra slot).
+- Non-transferable: 17 (COMPSCI 161 + ICS 139W (also = GE Ib writing) + 4 flexible-core FA + 9 electives + 2 projects).
 
-### UC Santa Barbara — Computer Science, B.S., catalog 2025-26 (CoE)
-Source: https://catalog.ucsb.edu/programs/BSCMPSC
-- Major-prep: MATH 3A/3B/4A/4B/6A, PSTAT 120A; CMPSC 16/24/32/40/64. **No physics** (a flexible 20-unit science-elective block with no fixed course — omitted).
-- Non-transferable: 17 (CMPSC 130A/130B + ENGR 101 ethics + 14 elective courses).
+### UC Santa Barbara — Computer Science, B.S., major catalog year 2024-25 (CoE) — reworked 2026-07-20
+Sources: https://cs.ucsb.edu/education/undergraduate/current-students (major + science-elective lists) · https://engineering.ucsb.edu/undergraduate/academic-advising/undergraduate-requirements · 2024-25 GEAR PDF https://engineering.ucsb.edu/sites/default/files/24-25_GEAR_DIGITAL.pdf (definitive requirement sheet)
+- Major-prep (45u): MATH 3A/3B/4A/4B/6A (20u), PSTAT 120A; CMPSC 16/24/32/40/64 (21u authored — CMPSC 40 is 5u).
+- **Science electives now modeled** (previously omitted): catalog year 2023-24+ moved physics out of prep into a 20-unit two-list block — List A 8u (broad science incl. ASTRO/CHEM/EARTH/ECON 1/2/EEMB/GEOG/MCDB/PHYS 4-5 → Areas 5A/5B, select 2) + List B 12u with ≥1 lab (PHYS 1–7 series, CHEM 1A–C + labs, MCDB 1A/1B/1LL → 5A/5B/5C, select 3); a course counts toward only one list. Modeled as GE-area proxies (the approved lists are huge and course-level ASSIST articulation for them isn't in the CS agreement).
+- Engineering GE (GEAR): 8 courses — Area A ×2 (Writing 2/2E → 1A; Writing 50/105/107/109 tier → 1B) + Area D Social Sciences ×2 (Area 4) + Area E Culture & Thought ×2 (3B/4F) + Area F Arts ×1 (3A) + Area G Literature ×1 (3B). Special subjects (4 writing-designated GE courses, ethnicity, European/world traditions) ride inside D–G. **GEAR states full IGETC "may be used to substitute for the entire UCSB College of Engineering General Education pattern"** — except AH&I, which stays as the assumed slot. All 8 GE slots CC-satisfiable.
+- Non-transferable: 17 itemized = CMPSC 130A, CMPSC 130B, ENGR 101 Ethics (3u) + Major Field Electives 14 courses / 56u (≥7 CMPSC; list includes CMPSC 110-190 range, ECE, MATH 108+, PSTAT 120B+). UD total 67u authored.
+- Unrestricted electives ×3 / 12u (Davis-convention assume block): specified work models to 168u vs the 180 graduation minimum — the 12u of free-elective slack is CC-transferable ("just about units", within the 105-quarter-unit cap), closing the budget to exactly 180.
 
-### UC Santa Cruz — Computer Science, B.S., current catalog (Baskin)
-Source: https://catalog.ucsc.edu/en/current/general-catalog/academic-units/baskin-engineering/computer-science-and-engineering/computer-science-bs
-- Major-prep: MATH 19A/19B (calc), MATH 21 (lin alg), MATH 23A (multivar); CSE 12/13S/16/20/30. **No physics; stats is upper-division.**
+### UC Santa Cruz — Computer Science, B.S., 2025-26 curriculum chart (Baskin) — reworked 2026-07-20
+Sources: official CS B.S. 2025-26 curriculum chart (found via williamsantosa/ucsc-cs GitHub guide, which pointed to Baskin's chart page) https://undergrad.engineering.ucsc.edu/files/2025/09/CS_BS_25-26.pdf · Registrar GE codes https://registrar.ucsc.edu/enrollment/general-education-requirements.html · IGETC policy https://catalog.ucsc.edu/.../intersegmental-general-education-transfer-curriculum-igetc/ (IGETC satisfies ALL UCSC GE except the upper-division DC requirement)
+- Major-prep (5u courses; CSE 30/12/13S are 7u): MATH 19A-or-20A, 19B-or-20B (20-series honors kept as named unarticulated alternates), AM 10-or-MATH 21 (linear), AM 30-or-MATH 23A (multivar); chart's "Math Courses" block also holds CSE 16, **CSE 40 (ML Basics), and ECE 30 (Engineering Principles of Electronics)** — the latter two are new 2025-26 requirements with no ASSIST articulation yet, kept as named never-satisfiable transferable-tier slots (importer keeps unresolved codes visible as of 2026-07-20). CSE 20/30/12/13S programming chain (26u authored). No physics in the major; stats (CSE 107/STAT 131) is upper-division.
+- GE (IGETC-transfer lens): 10 Registrar codes; MF rides major math and SR rides the in-major stats — no separate demand. Modeled CC-satisfiable: Composition ×1 (1A/1B), TA ×1 (3B), IM ×1 (3A), CC ×1 (3B/Area 4), ER ×1 (Area 7/4C), PE ×1 (Area 4/5), SI ×1 (5A/5B — the only science demand; tier transferable per science-above-AH&I ordering), PR ×1 (2u; no per-course IGETC analog but full IGETC certification satisfies it → assume). College core course is a first-year requirement, not asked of junior transfers.
+- Unrestricted electives ×4 / 18u (assume block): specified work models to 162u vs 180 — CC-transferable slack, closing the budget to exactly 180.
+- Non-transferable: 14 = CSE 40 + ECE 30 + 12 UD (itemized: CSE 101, 101M, 102-or-103, 107-or-STAT-131, 114A, 120, 130 + 4 UD electives [capstone/Comprehensive requirement counts as one; CSE 115A/185E/S excluded from electives] + DC slot [CSE 115A / 185E/185S / CSE 195 — the one GE piece IGETC does not waive]). UD 60u authored.
 - Non-transferable: 12.
 - Notes: dropped **CSE 40** (Machine Learning Basics — recent add, not in our data) and **ECE 30** (not in our data). AM 10/AM 30 alternatives (not in our data) replaced by their MATH equivalents (MATH 21/23A). CMPS/CMPE → CSE renumbering (~2019) noted.
 
 ### UC Merced — Computer Science and Engineering, B.S., catalog 2026-27 *(semester, 120 units)*
-Source: https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4233
-- Major-prep (zero-padded): MATH 021/022/023, MATH 024-or-041 (lin alg/diff eq), MATH 032-or-ENGR-080 (prob/stats); CSE 015 (discrete), CSE 022/024/030 (prog), CSE 031 (org), ENGR 065 (circuit theory); PHYS 008/008L/009/009L.
-- Non-transferable: 9 (CSE 100/120 core + 28 units ≈ 7 elective courses).
-- Notes: Merced's flagship CS degree is *Computer Science and Engineering*; semester system.
+Source: https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4233 (behind an AWS-WAF bot challenge — fetch with a real/headless browser, plain curl gets a challenge page)
+GE source: https://ge.ucmerced.edu/students/ge-requirements/current-ge-requirements (AY23-24+ rules; includes an explicit CC-transfer articulation table per GE component; also 403s bots — Wayback snapshot 2026-05-19 used)
+- Major-prep (zero-padded): MATH 021/022/023, MATH 024-or-041 (lin alg/diff eq), MATH 032-or-ENGR-080 (prob/stats); CSE 015 (discrete), CSE 022/024/030 (prog), CSE 031 (org), ENGR 065-or-EE-060 (circuits/digital); PHYS 008/008L/009/009L (10u, authored); ENGR 091 Professional Development (2u, in ASSIST as a receiving course — counted transferable, coverage data-driven); CSE 001 (1u intro seminar — **no ASSIST articulation**, modeled non-transferable at 1u).
+- GE (reworked 2026-07-20, per the GE office's transfer table): Written Communication (WRI 010) ×1 → IGETC **1B** (not 1A — per the table); AtK Area A = Life Science ×1 → 5B (Physical Science half completed by the major's physics); AtK Area B = Social Science ×1 → Area 4 + all subcodes, plus 2 of {Literary & Textual → 3B, Media & Visual → 3A, Societies & Cultures of the Past → 4A/4F}. 5 CC-satisfiable GE slots.
+- GE carrying **no separate demand**: Spark Seminar — waived for transfers (2+ semesters of college post-HS); Quantitative Reasoning — MATH 021 (and CSE 015) are on the QR course list; Language — CSE 022 is on the language coursework list (IGETC 6A / HS routes also exist); Intellectual Experience badges — per the CSE program-map badge table, Scientific Method / Quantitative & Numerical / Ethics are "completed with major requirements", Global Awareness + Sustainability double on the Life-Science pick, Diversity & Identity doubles on an ethnic-studies Social-Science pick, and the remaining analysis badges ride the AtK-B picks (max 2 badges/course respected).
+- Upper-division GE (non-transferable): Crossroads ×1; Writing in the Discipline ×1 (CSE 155 / WRI 100 / ENGR 156 recommended); Culminating Experience — satisfied by CSE 120 inside the major core (no extra slot).
+- Non-transferable: 12 = CSE 001 + Crossroads + WID + 9 (CSE 100/120 core [8u] + 28 units ≈ 7 elective courses).
+- Notes: Merced's flagship CS degree is *Computer Science and Engineering*; semester system. 2021-22 program map's Bio/ESS requirement no longer exists in the 2026-27 catalog (life science now arrives via GE AtK-A only).
 
 ## Data note
 The importer writes a temporary legacy-shaped row only as migration input, then

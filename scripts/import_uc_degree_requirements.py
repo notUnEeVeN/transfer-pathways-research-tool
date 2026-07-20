@@ -191,7 +191,10 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
 
     if frm is None:
         # Non-transferable: `select` named slots, never satisfiable by any CC.
-        section["receivers"] = [requirement_receiver(tier, title, seq()) for _ in range(select)]
+        # An authored "label" names the slot(s) (e.g. a specific upper-division
+        # course); otherwise the group title is the slot name.
+        slot_name = req.get("label") or title
+        section["receivers"] = [requirement_receiver(tier, slot_name, seq()) for _ in range(select)]
         report["nontransferable_slots"] += select
 
     elif isinstance(frm, list):
@@ -209,6 +212,11 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
                 section["receivers"].append(r)
                 report["resolved"].append((code, norm, info["parent_id"]))
             else:
+                # Real requirement with no ASSIST receiving record (honors
+                # variants, brand-new courses): keep it visible as a named
+                # slot that no CC can satisfy, rather than hiding it.
+                section["receivers"].append(
+                    requirement_receiver(tier, f"{code} (no ASSIST articulation)", seq()))
                 report["unresolved"].append((code, norm))
 
     elif isinstance(frm, dict) and "series" in frm:
@@ -321,7 +329,7 @@ def main():
             arrow = f" (via {norm})" if normalize_code(code) != norm else ""
             print(f"    {code:<16} -> parent_id {pid}{arrow}")
         if report["unresolved"]:
-            print(f"  !! UNRESOLVED codes ({len(report['unresolved'])}) — fix before trusting the figure:")
+            print(f"  !! UNRESOLVED codes ({len(report['unresolved'])}) — kept as named never-satisfiable slots; verify each is truly un-articulated:")
             for code, norm in report["unresolved"]:
                 print(f"    {code}  (normalized {norm})")
 
