@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildLedgerGroups } from './degreeSlots';
+import { buildDegreeGroups, buildLedgerGroups, degreeUnitSystem } from './degreeSlots';
 
 const breadthGroups = [{
   title: 'Humanities & Social Sciences breadth',
@@ -56,5 +56,36 @@ describe('buildLedgerGroups GE categories', () => {
     expect(ledger.courses).toEqual([
       { course_id: 7, prefix: 'CS', number: '1', title: 'Intro to Computer Science', units: 4 },
     ]);
+  });
+});
+
+describe('unit-weighted degree coverage', () => {
+  it('weights covered slots by the section unit budget and preserves fractional units', () => {
+    const groups = [{
+      title: 'Ten-unit sequence', tier: 'transferable',
+      sections: [{
+        section_advisement: 3,
+        unit_advisement: 10,
+        receivers: [
+          { receiving: { kind: 'course', parent_id: 1 } },
+          { receiving: { kind: 'course', parent_id: 2 } },
+          { receiving: { kind: 'course', parent_id: 3 } },
+        ],
+      }],
+    }];
+    const result = buildDegreeGroups(groups, { articulated: new Set([1]) });
+    expect(result).toMatchObject({
+      total: 3,
+      covered: 1,
+      units: { total: 10, covered: 3.3 },
+    });
+  });
+
+  it('uses stored or reference calendars before the unit-total fallback', () => {
+    expect(degreeUnitSystem({ unit_system: 'semester', total_units: 180 }, 'quarter')).toBe('semester');
+    expect(degreeUnitSystem({ total_units: 120 }, 'quarter')).toBe('quarter');
+    expect(degreeUnitSystem({ total_units: 180 })).toBe('quarter');
+    expect(degreeUnitSystem({ total_units: 120 })).toBe('semester');
+    expect(degreeUnitSystem({})).toBe(null);
   });
 });

@@ -161,6 +161,7 @@ beforeAll(async () => {
           title: 'Upper-division coursework', tier: 'nontransferable',
           sections: [{
             section_advisement: 2,
+            unit_advisement: 12,
             receivers: [
               { receiving: { kind: 'requirement', name: 'Upper-division slot 1' } },
               { receiving: { kind: 'requirement', name: 'Upper-division slot 2' } },
@@ -238,7 +239,7 @@ describe('coverageData', () => {
     expect(alphaOther.fully_articulated).toBe(true); // alternative set B is satisfied.
   });
 
-  it('measures live four-year degree slots, including breadth and university-only coursework', async () => {
+  it('uses modeled graduation units as primary coverage while retaining requirement slots', async () => {
     const rows = await coverageData(db, db, { ...P, requirements: 'degree' });
 
     // Degree mode is a complete matrix, including a college with no agreement
@@ -253,7 +254,15 @@ describe('coverageData', () => {
       receivers_required: 6,
       receivers_articulated: 4,
       pct_degree_requirements: 66.7,
-      pct_articulated: 66.7,
+      degree_requirement_slots_total: 6,
+      degree_requirement_slots_with_equivalent: 4,
+      pct_degree_requirement_slots: 66.7,
+      degree_unit_system: 'quarter',
+      degree_units_stated_minimum: 120,
+      degree_units_modeled_total: 28,
+      degree_units_with_equivalent: 16,
+      pct_degree_units: 57.1,
+      pct_articulated: 57.1,
       fully_articulated: false,
     });
     expect(alpha.degree_requirements_by_tier).toMatchObject({
@@ -263,16 +272,33 @@ describe('coverageData', () => {
     });
 
     const beta = rows.find((r) => r.community_college_id === 20);
-    expect(beta).toMatchObject({ receivers_required: 6, receivers_articulated: 2, pct_articulated: 33.3 });
+    expect(beta).toMatchObject({
+      receivers_required: 6,
+      receivers_articulated: 2,
+      pct_degree_requirement_slots: 33.3,
+      degree_units_with_equivalent: 8,
+      pct_articulated: 28.6,
+    });
     const gamma = rows.find((r) => r.community_college_id === 30);
-    expect(gamma).toMatchObject({ receivers_required: 6, receivers_articulated: 1, pct_articulated: 16.7 });
+    expect(gamma).toMatchObject({
+      receivers_required: 6,
+      receivers_articulated: 1,
+      pct_degree_requirement_slots: 16.7,
+      degree_units_with_equivalent: 4,
+      pct_articulated: 14.3,
+    });
   });
 
   it('pools degree equivalencies across colleges for district rows', async () => {
     const rows = await coverageData(db, db, { ...P, requirements: 'degree', groupBy: 'district' });
     const north = rows.find((r) => r.row_group_label === 'North');
     expect(north.community_college_ids).toEqual([10, 20]);
-    expect(north).toMatchObject({ receivers_required: 6, receivers_articulated: 4, pct_articulated: 66.7 });
+    expect(north).toMatchObject({
+      receivers_required: 6,
+      receivers_articulated: 4,
+      pct_degree_requirement_slots: 66.7,
+      pct_articulated: 57.1,
+    });
   });
 });
 

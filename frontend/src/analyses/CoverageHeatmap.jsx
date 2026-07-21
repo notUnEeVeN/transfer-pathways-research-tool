@@ -14,13 +14,14 @@ const ROW_MODES = [
 // and reads the editable four-year templates; the two prior minimums views stay
 // available for direct comparison.
 const REQ_MODES = [
-  { value: 'degree', label: '4-year graduation requirements' },
+  { value: 'degree', label: '4-year graduation plan (by units)' },
   { value: 'assist', label: 'ASSIST minimums' },
   { value: 'paper', label: 'Hand-curated minimums' },
 ]
 
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const COLOR_STOPS = [
   { at: 0, rgb: [142, 24, 48] },
   { at: 0.25, rgb: [211, 69, 65] },
@@ -114,17 +115,35 @@ function average(values) {
   return nums.reduce((sum, value) => sum + value, 0) / nums.length
 }
 
-function buildHeatmap(rows) {
+function numberOrNull(value) {
+  if (value == null || value === '') return null
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+function rowCoverageValue(row, reqMode) {
+  return reqMode === 'degree'
+    ? numberOrNull(row.pct_degree_units ?? row.pct_articulated)
+    : numberOrNull(row.pct_articulated)
+}
+
+function cellCoverageValue(cell, reqMode) {
+  if (!cell) return null
+  if (reqMode === 'degree' && cell.hasDegreeUnits && cell.degreeUnitsModeled > 0) {
+    return (cell.degreeUnitsCovered / cell.degreeUnitsModeled) * 100
+  }
+  return cell.n ? cell.sum / cell.n : null
+}
+
+function buildHeatmap(rows, reqMode) {
   const rowMap = new Map()
   const colMap = new Map()
   const cellMap = new Map()
-  const values = []
-  let fullCount = 0
 
   for (const r of rows) {
     const rowKey = String(r.row_group_key || r.community_college_id)
     const colKey = `${r.school_id}|${r.major}`
-    const value = Number(r.pct_articulated)
+    const value = rowCoverageValue(r, reqMode)
 
     if (!rowMap.has(rowKey)) {
       rowMap.set(rowKey, {
@@ -144,19 +163,29 @@ function buildHeatmap(rows) {
     }
 
     if (Number.isFinite(value)) {
-      values.push(value)
-      if (r.fully_articulated) fullCount += 1
       const cellKey = `${rowKey}|${colKey}`
       const cell = cellMap.get(cellKey) || {
         sum: 0,
         n: 0,
         receiversRequired: 0,
         receiversArticulated: 0,
+        degreeUnitsModeled: 0,
+        degreeUnitsCovered: 0,
+        hasDegreeUnits: false,
+        degreeUnitSystem: null,
       }
       cell.sum += value
       cell.n += 1
-      cell.receiversRequired += Number(r.receivers_required) || 0
-      cell.receiversArticulated += Number(r.receivers_articulated) || 0
+      cell.receiversRequired += numberOrNull(r.degree_requirements_total ?? r.receivers_required) || 0
+      cell.receiversArticulated += numberOrNull(r.degree_requirements_with_equivalent ?? r.receivers_articulated) || 0
+      const modeledUnits = numberOrNull(r.degree_units_modeled_total)
+      const coveredUnits = numberOrNull(r.degree_units_with_equivalent)
+      if (modeledUnits != null && coveredUnits != null) {
+        cell.degreeUnitsModeled += modeledUnits
+        cell.degreeUnitsCovered += coveredUnits
+        cell.hasDegreeUnits = true
+      }
+      if (r.degree_unit_system) cell.degreeUnitSystem = r.degree_unit_system
       cellMap.set(cellKey, cell)
     }
   }
@@ -168,16 +197,20 @@ function buildHeatmap(rows) {
   const tableRows = [...rowMap.values()].sort(sortByName).map((row) => {
     const rowValues = columns.map((col) => {
       const cell = cellMap.get(`${row.key}|${col.key}`)
-      return cell ? cell.sum / cell.n : null
+      return cellCoverageValue(cell, reqMode)
     })
     return { ...row, values: rowValues, mean: average(rowValues) }
   })
   const columnMeans = columns.map((col) =>
     average(tableRows.map((row) => {
       const cell = cellMap.get(`${row.key}|${col.key}`)
-      return cell ? cell.sum / cell.n : null
+      return cellCoverageValue(cell, reqMode)
     }))
   )
+  const values = [...cellMap.values()]
+    .map((cell) => cellCoverageValue(cell, reqMode))
+    .filter(Number.isFinite)
+  const fullCount = values.filter((value) => value >= 100).length
 
   return {
     rows: tableRows,
@@ -196,12 +229,20 @@ function cellTitle(row, col, cell, value, reqMode) {
     row.name,
     col.school,
     col.major,
-    `Coverage: ${pct(value)}`,
+    reqMode === 'degree'
+      ? `Potential graduation-unit coverage: ${pct(value)}`
+      : `Coverage: ${pct(value)}`,
   ]
   if (cell) {
-    bits.push(reqMode === 'degree'
-      ? `${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} four-year graduation requirements have a community-college equivalent`
-      : `${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} required receivers articulated`)
+    if (reqMode === 'degree') {
+      if (cell.hasDegreeUnits) {
+        const unitSystem = cell.degreeUnitSystem === 'quarter' ? 'quarter' : 'semester'
+        bits.push(`${unitFmt.format(cell.degreeUnitsCovered)} of ${unitFmt.format(cell.degreeUnitsModeled)} modeled ${unitSystem} units have a community-college equivalent`)
+      }
+      bits.push(`Secondary slot count: ${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} requirements have an equivalent`)
+    } else {
+      bits.push(`${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} required receivers articulated`)
+    }
   }
   return bits.join('\n')
 }
@@ -244,7 +285,7 @@ function HeatmapTable({ model, rowMode, reqMode }) {
               </th>
               {model.columns.map((col, i) => {
                 const cell = model.cellMap.get(`${row.key}|${col.key}`)
-                const value = cell ? cell.sum / cell.n : null
+                const value = cellCoverageValue(cell, reqMode)
                 return (
                   <td
                     key={col.key}
@@ -291,7 +332,7 @@ function Legend({ reqMode, scale }) {
   return (
     <div className='flex flex-wrap items-center gap-3 text-caption text-ink-subtle'>
       <span className='text-label'>
-        {reqMode === 'degree' ? 'Four-year degree coverage' : 'Coverage'}
+        {reqMode === 'degree' ? 'Potential graduation-unit coverage' : 'Coverage'}
       </span>
       <div className='w-64 max-w-full' aria-label={`Coverage color scale from ${pct(scale.min)} to ${pct(scale.max)}`}>
         <div
@@ -308,7 +349,12 @@ function Legend({ reqMode, scale }) {
   )
 }
 
-export default function CoverageHeatmap() {
+/**
+ * `presentation` locks the requirement basis to the four-year degree lens and
+ * hides its selector. The showcase uses it so a walkthrough cannot land on the
+ * minimums lenses, which answer a different question than the figure claims.
+ */
+export default function CoverageHeatmap({ presentation = false }) {
   const [rowModeValue, setRowModeValue] = useState('college')
   const [reqMode, setReqMode] = useState('degree')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
@@ -319,7 +365,7 @@ export default function CoverageHeatmap() {
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
-  const model = useMemo(() => buildHeatmap(rows), [rows])
+  const model = useMemo(() => buildHeatmap(rows, reqMode), [rows, reqMode])
   const fullPct = model.valueCount ? (model.fullCount / model.valueCount) * 100 : null
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
 
@@ -352,10 +398,12 @@ export default function CoverageHeatmap() {
               ))}
             </div>
           </div>
-          <div className='flex flex-col min-w-64'>
-            <span className='field-label'>Requirement basis</span>
-            <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
-          </div>
+          {!presentation && (
+            <div className='flex flex-col min-w-64'>
+              <span className='field-label'>Requirement basis</span>
+              <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
+            </div>
+          )}
           <Button variant='secondary' leadingIcon={ArrowPathIcon} onClick={() => coverage.refetch()}>
             Refresh
           </Button>
@@ -385,10 +433,12 @@ export default function CoverageHeatmap() {
             ))}
           </div>
         </div>
-        <div className='flex flex-col min-w-64'>
-          <span className='field-label'>Requirement basis</span>
-          <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
-        </div>
+        {!presentation && (
+          <div className='flex flex-col min-w-64'>
+            <span className='field-label'>Requirement basis</span>
+            <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
+          </div>
+        )}
         <Button
           variant='secondary'
           leadingIcon={ArrowPathIcon}
@@ -409,8 +459,8 @@ export default function CoverageHeatmap() {
           tiles={[
             { label: 'Coverage cells', value: intFmt.format(coverage.data?.n ?? rows.length), sub: 'from /analysis/coverage' },
             { label: 'Programs', value: intFmt.format(model.columns.length), sub: `${intFmt.format(model.rows.length)} ${rowMode.noun}` },
-            { label: reqMode === 'degree' ? 'Mean degree coverage' : 'Mean articulated', value: pct(model.overallMean), accent: true },
-            { label: reqMode === 'degree' ? '100% covered' : 'Fully articulated', value: pct(fullPct), sub: `${intFmt.format(model.fullCount)} cells` },
+            { label: reqMode === 'degree' ? 'Mean unit coverage' : 'Mean articulated', value: pct(model.overallMean), accent: true },
+            { label: reqMode === 'degree' ? '100% of modeled units' : 'Fully articulated', value: pct(fullPct), sub: `${intFmt.format(model.fullCount)} cells` },
           ]}
         />
       </div>
@@ -418,6 +468,11 @@ export default function CoverageHeatmap() {
       <div data-export-root className='flex flex-col gap-6'>
         <HeatmapTable model={model} rowMode={rowMode} reqMode={reqMode} />
         <Legend reqMode={reqMode} scale={model.colorScale} />
+        {reqMode === 'degree' && (
+          <p className='text-caption text-ink-subtle max-w-4xl'>
+            Percentage of modeled UC graduation units with a community-college equivalent. Each campus is calculated in its own native quarter or semester units. Requirement-slot counts remain available in each cell tooltip as secondary context.
+          </p>
+        )}
       </div>
     </Stack>
   )

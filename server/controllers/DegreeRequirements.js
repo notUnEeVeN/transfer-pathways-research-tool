@@ -6,7 +6,13 @@
  * docs/figures/degree-coverage-sources.md.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, computeUnitBudget } = require('../services/degreeSlots');
+const {
+  buildDegreeGroups,
+  buildLedgerGroups,
+  loadUniversityCourses,
+  computeUnitBudget,
+  degreeUnitSystem,
+} = require('../services/degreeSlots');
 const { evaluateDegreeAtCollege } = require('../services/degreeCoverage');
 
 const COLLECTION = 'curated_requirements';
@@ -14,6 +20,10 @@ const COLLECTION = 'curated_requirements';
 exports.list = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const docs = await db.collection(COLLECTION).find({ kind: 'degree' }).sort({ school_id: 1 }).toArray();
+  const calendars = await db.collection('assist_institutions')
+    .find({ kind: 'university' }, { projection: { source_id: 1, academic_calendar: 1, _id: 0 } })
+    .toArray();
+  const calendarBySchool = new Map(calendars.map((row) => [Number(row.source_id), row.academic_calendar]));
 
   const rows = [];
   for (const doc of docs) {
@@ -26,6 +36,7 @@ exports.list = asyncHandler(async (req, res) => {
       school: doc.school,
       program: doc.program,
       total_units: doc.total_units ?? null,
+      unit_system: degreeUnitSystem(doc, calendarBySchool.get(Number(doc.school_id))),
       source_url: doc.source_url || null,
       verification_notes: doc.verification_notes || [],
       units_summary: computeUnitBudget(doc.requirement_groups),

@@ -14,7 +14,9 @@
  *   - non-transferable (upper-division / residency) → never satisfiable.
  *
  * Counting mirrors the choose-N engine: a section asks for `section_advisement`
- * slots and a college covers min(available, ask) of them.
+ * slots and a college covers min(available, ask) of them. Coverage is also
+ * weighted by each section's authored unit total (or the documented four-unit
+ * estimate), which is the primary graduation-coverage measure.
  */
 
 const TIERS = ['transferable', 'breadth', 'nontransferable'];
@@ -221,7 +223,13 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     total,
     covered: evaluated ? covered : null,
     by_tier: evaluated ? byTier : Object.fromEntries(TIERS.map((t) => [t, { total: byTier[t].total, covered: null }])),
-    units: { total: unitsTotal, covered: evaluated ? Math.round(unitsCovered) : null },
+    units: {
+      total: unitsTotal,
+      // A partially covered authored block can produce fractional units (for
+      // example, one of three slots in a 10-unit block). Keep one decimal so
+      // the primary percentage is not distorted by whole-unit rounding.
+      covered: evaluated ? +(unitsCovered.toFixed(1)) : null,
+    },
     groups,
   };
 }
@@ -373,4 +381,21 @@ function computeUnitBudget(requirementGroups) {
   };
 }
 
-module.exports = { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, loadCollegeGeAreas, computeUnitBudget };
+function degreeUnitSystem(degree, fallback = null) {
+  const stored = String(degree?.unit_system || '').toLowerCase();
+  if (stored === 'quarter' || stored === 'semester') return stored;
+  const reference = String(fallback || '').toLowerCase();
+  if (reference === 'quarter' || reference === 'semester') return reference;
+  const statedUnits = Number(degree?.total_units);
+  if (Number.isFinite(statedUnits)) return statedUnits >= 150 ? 'quarter' : 'semester';
+  return null;
+}
+
+module.exports = {
+  buildDegreeGroups,
+  buildLedgerGroups,
+  loadUniversityCourses,
+  loadCollegeGeAreas,
+  computeUnitBudget,
+  degreeUnitSystem,
+};

@@ -11,28 +11,41 @@ vi.mock('../shared/query/hooks/useData', () => ({
 const row = (collegeId, name, schoolId, school, extra, over = {}) => ({
   community_college_id: collegeId, college_name: name,
   school_id: schoolId, school,
-  rate: 80, prescribed_units: 42, transferred_units: 24,
+  rate: 80, transferred_units: 40,
   as_total_units: 60, as_unit_system: 'semester',
   extra_units: extra,
+  extra_units_semester: extra,
+  method_status: 'ok',
   ...over,
 })
 
 const rows = [
-  row(10, 'CC Alpha', 1, 'UC Berkeley', 28),
+  row(10, 'CC Alpha', 1, 'UC Berkeley', 30, {
+    as_total_units: 90,
+    as_unit_system: 'quarter',
+    transferred_units: 60,
+    extra_units_semester: 20,
+  }),
   row(10, 'CC Alpha', 2, 'UC Merced', 0),
-  row(20, 'CC Beta', 1, 'UC Berkeley', null, { extra_units: null }),
+  row(20, 'CC Beta', 1, 'UC Berkeley', null, {
+    extra_units_semester: null,
+    method_status: 'unavailable',
+    method_warning: 'No verified articulation agreement for this pair.',
+  }),
 ]
 
 describe('TransferExtraUnits', () => {
-  it('renders extra units as +N with a null cell left blank', () => {
+  it('uses semester-equivalent units for the heatmap and keeps native units in the tooltip', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferExtraUnits />)
     expect(mockRate).toHaveBeenCalledWith('local_cs_as')
-    expect(screen.getAllByText('+28').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('+20').length).toBeGreaterThan(0)
     expect(screen.getAllByText('+0').length).toBeGreaterThan(0)
-    expect(screen.getByText('Mean extra units')).toBeInTheDocument()
-    // +0 cells stat counts the pair whose whole degree does requirement work.
-    expect(screen.getByText('the whole degree does requirement work')).toBeInTheDocument()
+    expect(screen.getByText('Mean replacement units')).toBeInTheDocument()
+    expect(screen.getByText('No replacement units')).toBeInTheDocument()
+    expect(screen.getByLabelText(/Modeled replacement coursework: \+20 semester-equivalent units/i))
+      .toHaveAttribute('aria-label', expect.stringMatching(/30 quarter units do not apply/i))
+    expect(screen.getByRole('note')).toHaveTextContent('modeled replacement units, not observed student outcomes')
   })
 
   it('switches degree cohorts through the shared modes', () => {

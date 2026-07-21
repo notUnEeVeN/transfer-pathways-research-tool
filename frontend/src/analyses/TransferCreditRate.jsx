@@ -5,13 +5,10 @@ import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import { createCoverageColorScale } from './CoverageHeatmap'
 
 /**
- * Transfer credit rate — the MA paper's Figure 3 construct on our CA data:
- * college × campus, the percent of the CS associate degree's PRESCRIBED units
- * (named courses + GE pattern; free electives excluded) that transfer toward
- * the campus's four-year graduation requirements. Live endpoint — the figure
- * follows every degree-record and articulation edit. The local CS A.S. is the
- * primary credit-loss cohort (per the degree-type analysis); the A.S.-T view
- * is the standardized-transfer benchmark.
+ * Degree credit toward graduation: for each college × campus pair, the share
+ * of the WHOLE associate degree that the curated four-year graduation model
+ * can apply. Each associate-degree unit is counted at most once across named
+ * course requirements, GE/breadth, and documented free-elective room.
  */
 export const DEGREE_MODES = [
   { value: 'local_cs_as', label: 'Local CS A.S.' },
@@ -20,7 +17,16 @@ export const DEGREE_MODES = [
 
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const pct = (value) => (Number.isFinite(value) ? `${pctFmt.format(value)}%` : '')
+
+export function unitSystemName(system) {
+  return system === 'quarter' ? 'quarter units' : 'semester units'
+}
+
+function units(value) {
+  return Number.isFinite(value) ? unitFmt.format(value) : '—'
+}
 
 // The MA paper's palette: matplotlib `Reds`, inverted — a LOW rate reads as
 // dark maroon, a high rate fades toward pale pink. Monochrome by design;
@@ -71,6 +77,7 @@ function average(values) {
 export function buildRateMatrix(rows, getValue = (r) => r.rate, makeScale = createCoverageColorScale) {
   const colMap = new Map()
   const rowMap = new Map()
+  const records = new Map()
   const cells = new Map()
   const values = []
   for (const r of rows) {
@@ -78,6 +85,7 @@ export function buildRateMatrix(rows, getValue = (r) => r.rate, makeScale = crea
     if (!rowMap.has(r.community_college_id)) {
       rowMap.set(r.community_college_id, { key: r.community_college_id, name: r.college_name })
     }
+    records.set(`${r.community_college_id}|${r.school_id}`, r)
     if (Number.isFinite(getValue(r))) {
       cells.set(`${r.community_college_id}|${r.school_id}`, r)
       values.push(getValue(r))
@@ -99,6 +107,7 @@ export function buildRateMatrix(rows, getValue = (r) => r.rate, makeScale = crea
   return {
     columns,
     rows: tableRows,
+    records,
     cells,
     cellValue,
     columnMeans,
@@ -108,26 +117,59 @@ export function buildRateMatrix(rows, getValue = (r) => r.rate, makeScale = crea
   }
 }
 
-function geNote(cell) {
-  if (!cell.ge_units) return 'GE: none stored'
-  const counted = cell.ge_counted_units ?? 0
-  const basis = !cell.ge_assumed_units
-    ? 'verified by pattern'
-    : !cell.ge_verified_units
-      ? 'assumed via dual-qualifying courses'
-      : `${cell.ge_verified_units}u verified · ${cell.ge_assumed_units}u assumed`
-  return `GE: ${counted}/${cell.ge_units}u count (campus GE ask ${cell.ge_demand_units ?? 0}u; ${basis})`
+export function methodDetail(cell) {
+  if (!cell) return null
+  if (cell.method_warning) return String(cell.method_warning)
+  const status = String(cell.method_status || '').trim()
+  if (!status || status.toLowerCase() === 'ok') return null
+  return `Method status: ${status.replaceAll('_', ' ')}`
+}
+
+export function methodWarningCount(rows) {
+  const warningStatuses = new Set(['warning', 'excluded', 'unavailable', 'unsupported'])
+  return rows.filter((row) => row.method_warning
+    || warningStatuses.has(String(row.method_status || '').toLowerCase())).length
+}
+
+function applicationNote(cell) {
+  const buckets = [
+    ['named requirements', cell.named_transferred_units],
+    ['GE and breadth', cell.ge_counted_units],
+    ['free electives', cell.elective_counted_units],
+  ].filter(([, value]) => Number.isFinite(value))
+  if (!buckets.length) return null
+  return `Applied once: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')} ${unitSystemName(cell.as_unit_system)}`
 }
 
 function cellTitle(row, col, cell) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
+  if (!Number.isFinite(cell.rate)) {
+    return [
+      row.name,
+      col.school,
+      methodDetail(cell) || 'Not enough curated information to model this pair',
+    ].join('\n')
+  }
   return [
     row.name,
     col.school,
-    `Transfer credit rate: ${pct(cell.rate)}`,
-    `${cell.transferred_units} of ${cell.prescribed_units} prescribed units transfer`,
-    `Named courses: ${cell.named_transferred_units}/${cell.named_units}u · ${geNote(cell)}`,
-  ].join('\n')
+    `Degree applied to graduation: ${pct(cell.rate)}`,
+    `${units(cell.transferred_units)} of ${units(cell.as_total_units)} ${unitSystemName(cell.as_unit_system)} apply`,
+    applicationNote(cell),
+    methodDetail(cell),
+  ].filter(Boolean).join('\n')
+}
+
+export function TransferMethodNote({ children, warningCount = 0 }) {
+  return (
+    <div role='note' className='surface-card px-4 py-3 text-caption text-ink-muted'>
+      <span className='font-semibold text-ink'>How this is modeled: </span>
+      {children}
+      {warningCount > 0 && (
+        <span className='text-ink-subtle'> {intFmt.format(warningCount)} {warningCount === 1 ? 'cell includes' : 'cells include'} a method warning; open the cell for details.</span>
+      )}
+    </div>
+  )
 }
 
 function RateTable({ model }) {
@@ -145,8 +187,8 @@ function RateTable({ model }) {
                 <span className='block text-tag text-ink leading-tight whitespace-normal'>{shortenSchool(col.school)}</span>
               </th>
             ))}
-            <th className='sticky top-0 right-0 z-30 bg-surface border-b border-l border-border px-3 py-2 text-right text-label min-w-20'>
-              Avg
+            <th className='sticky top-0 right-0 z-30 bg-surface border-b border-l border-border px-3 py-2 text-right text-label min-w-24'>
+              Average
             </th>
           </tr>
         </thead>
@@ -157,7 +199,7 @@ function RateTable({ model }) {
                 {row.name}
               </th>
               {model.columns.map((col) => {
-                const cell = model.cells.get(`${row.key}|${col.key}`)
+                const cell = model.records.get(`${row.key}|${col.key}`)
                 return (
                   <td key={col.key}
                     title={cellTitle(row, col, cell)}
@@ -202,6 +244,7 @@ export default function TransferCreditRate() {
   const query = useTransferCreditRate(degreeType)
   const rows = query.data?.rows || []
   const model = useMemo(() => buildRateMatrix(rows), [rows])
+  const warningCount = methodWarningCount(rows)
 
   if (query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -250,17 +293,20 @@ export default function TransferCreditRate() {
       {controls}
       <div data-export-exclude>
         <StatStrip tiles={[
-          { label: 'Mean transfer credit rate', value: pct(model.overallMean) || '—', accent: true },
-          { label: 'Colleges', value: intFmt.format(model.rows.length), sub: `${intFmt.format(model.valueCount)} computable cells` },
+          { label: 'Mean degree applied', value: pct(model.overallMean) || '—', accent: true },
+          { label: 'Colleges', value: intFmt.format(model.rows.length), sub: `${intFmt.format(model.valueCount)} modeled college and campus pairs` },
           {
-            label: 'Full-transfer cells',
+            label: 'Whole degree applies',
             value: intFmt.format([...model.cells.values()].filter((c) => c.rate === 100).length),
-            sub: 'every prescribed unit lands',
+            sub: 'college and campus pairs',
           },
         ]} />
       </div>
       <div data-export-root className='flex flex-col gap-3'>
         <RateTable model={model} />
+        <TransferMethodNote warningCount={warningCount}>
+          Each associate-degree unit is applied at most once to an articulated course requirement, general education or breadth, or documented free-elective room in the curated full graduation model. Blank cells lack enough curated information.
+        </TransferMethodNote>
       </div>
     </Stack>
   )

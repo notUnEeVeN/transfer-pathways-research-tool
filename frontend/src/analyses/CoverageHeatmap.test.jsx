@@ -18,7 +18,15 @@ const degreeRow = {
   row_group_label: 'Test College',
   receivers_required: 40,
   receivers_articulated: 16,
-  pct_articulated: 40,
+  degree_requirements_total: 40,
+  degree_requirements_with_equivalent: 16,
+  pct_degree_requirements: 40,
+  degree_units_modeled_total: 180,
+  degree_units_with_equivalent: 99,
+  pct_degree_units: 55,
+  degree_units_stated_minimum: 180,
+  degree_unit_system: 'quarter',
+  pct_articulated: 55,
   fully_articulated: false,
 }
 
@@ -43,17 +51,20 @@ describe('CoverageHeatmap requirement basis', () => {
     )
     expect(screen.queryByRole('textbox', { name: 'Degree program filter' })).toBeNull()
     expect(container.querySelector('[data-export-root]')).toBeTruthy()
-    expect(screen.getByRole('button', { name: '4-year graduation requirements' })).toBeTruthy()
-    expect(screen.getByText('Mean degree coverage')).toBeTruthy()
-    expect(screen.getByText('Four-year degree coverage')).toBeTruthy()
-    expect(screen.getByLabelText('Coverage color scale from 30% to 50%')).toBeTruthy()
-    expect(screen.getByLabelText(/16 of 40 four-year graduation requirements have a community-college equivalent/)).toBeTruthy()
+    expect(screen.getByRole('button', { name: '4-year graduation plan (by units)' })).toBeTruthy()
+    expect(screen.getByText('Mean unit coverage')).toBeTruthy()
+    expect(screen.getByText('Potential graduation-unit coverage')).toBeTruthy()
+    expect(screen.getByLabelText('Coverage color scale from 45% to 65%')).toBeTruthy()
+    expect(screen.getByLabelText(/Potential graduation-unit coverage: 55%/)).toBeTruthy()
+    expect(screen.getByLabelText(/99 of 180 modeled quarter units have a community-college equivalent/)).toBeTruthy()
+    expect(screen.getByLabelText(/Secondary slot count: 16 of 40 requirements have an equivalent/)).toBeTruthy()
+    expect(screen.getByText(/Each campus is calculated in its own native quarter or semester units/)).toBeTruthy()
   })
 
   it('keeps both existing minimums modes selectable', () => {
     render(<CoverageHeatmap />)
 
-    fireEvent.click(screen.getByRole('button', { name: '4-year graduation requirements' }))
+    fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
     expect(screen.getByRole('option', { name: 'ASSIST minimums' })).toBeTruthy()
     expect(screen.getByRole('option', { name: 'Hand-curated minimums' })).toBeTruthy()
 

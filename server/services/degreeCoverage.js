@@ -6,7 +6,13 @@
  * The college's articulations come from its real agreements with this UC; the
  * readable grouped view + the counting live in services/degreeSlots.js.
  */
-const { buildDegreeGroups, buildLedgerGroups, loadUniversityCourses, loadCollegeGeAreas } = require('./degreeSlots');
+const {
+  buildDegreeGroups,
+  buildLedgerGroups,
+  loadUniversityCourses,
+  loadCollegeGeAreas,
+  degreeUnitSystem,
+} = require('./degreeSlots');
 
 const COLLECTION = 'curated_requirements';
 
@@ -54,6 +60,10 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
   // The college's own course GE-area tags satisfy the R&C / H/SS breadth slots
   // that ASSIST's major-prep agreements never carry.
   const ccGeAreas = await loadCollegeGeAreas(db, community_college_id);
+  const university = await db.collection('assist_institutions').findOne(
+    { kind: 'university', source_id: school_id },
+    { projection: { academic_calendar: 1, _id: 0 } }
+  );
 
   const { total, covered, by_tier, units } = buildDegreeGroups(degree.requirement_groups, {
     articulated, optionsByParent, universityCoursesById, coursesById, ccGeAreas,
@@ -61,26 +71,32 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
   // Merged agreement-shaped groups so the frontend renders this tab through the
   // shared RequirementsLedger, matching the Rendered tab.
   const ledger = buildLedgerGroups(degree.requirement_groups, { articulated, optionsByParent, coursesById, ccGeAreas });
+  const unitSystem = degreeUnitSystem(degree, university?.academic_calendar);
+  const unitPct = units.total
+    ? Math.round((100 * units.covered) / units.total)
+    : null;
 
   return {
     school_id,
     school: degree.school,
     program: degree.program,
     total_units: degree.total_units ?? null,
+    unit_system: unitSystem,
+    modeled_total_units: units.total,
     community_college_id,
     n_agreements: agreements.length,
     completion: {
       total, covered, pct: total ? Math.round((100 * covered) / total) : null, by_tier,
-      // Unit-weighted coverage — the real graduation measure (units completed
-      // / units required). Denominator prefers the campus's stated minimum.
-      units: (() => {
-        const unitsTotal = degree.total_units ?? units.total;
-        return {
-          total: unitsTotal,
-          covered: units.covered,
-          pct: unitsTotal ? Math.round((100 * units.covered) / unitsTotal) : null,
-        };
-      })(),
+      // Unit-weighted coverage is primary. The denominator is the sum of the
+      // hand-authored requirement groups, which can legitimately exceed the
+      // university-wide minimum for a particular program.
+      units: {
+        total: units.total,
+        covered: units.covered,
+        pct: unitPct,
+        unit_system: unitSystem,
+        stated_minimum: degree.total_units ?? null,
+      },
     },
     requirement_groups: ledger.requirement_groups,
     courses: ledger.courses,

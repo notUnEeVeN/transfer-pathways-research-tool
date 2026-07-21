@@ -112,22 +112,26 @@ export function useCoverage(params = {}, options = {}) {
   })
 }
 
-// MA-paper Figure 3 on our data: per (college × campus), the share of the CS
-// associate degree's prescribed units that transfer toward the campus's
-// graduation requirements. degree_type: 'local_cs_as' | 'ast'.
+// Per college × campus, the share of the whole CS associate degree that applies
+// once toward the curated four-year graduation model. The result is edited
+// frequently, so a persisted response may paint immediately but every mount
+// must still fetch the current calculation. degree_type: 'local_cs_as' | 'ast'.
 export function useTransferCreditRate(degreeType = 'local_cs_as', options = {}) {
   const { user } = useAuth()
   const type = ['ast', 'local_cs_as'].includes(degreeType) ? degreeType : 'local_cs_as'
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: ['analysis-transfer-credit-rate', user?.uid, type],
+    // v2 prevents a persisted prescribed-units payload from rendering against
+    // the whole-degree field contract, even for the brief hydration paint.
+    queryKey: ['analysis-transfer-credit-rate', 'v2', user?.uid, type],
     queryFn: () =>
       apiClient
         .get('/analysis/transfer-credit-rate', { params: { degree_type: type } })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
-    staleTime: 5 * 60 * 1000,
     ...queryOptions,
+    staleTime: 0,
+    refetchOnMount: 'always',
   })
 }
 

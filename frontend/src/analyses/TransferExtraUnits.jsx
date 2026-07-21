@@ -3,17 +3,15 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack, StatStrip } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
-  DEGREE_MODES, buildRateMatrix, paperRedCellColor, shortenSchool,
+  DEGREE_MODES, TransferMethodNote, buildRateMatrix, methodDetail,
+  methodWarningCount, paperRedCellColor, shortenSchool, unitSystemName,
 } from './TransferCreditRate'
 
 /**
- * Additional units after transfer — the MA paper's Figure 4 construct on our
- * CA data: college × campus, the units a transfer student needs above the
- * 120 baseline — two years at the college (60u) + the remaining degree at
- * the university, so every AS unit that did no requirement work must be
- * re-earned. Same rows as the transfer credit rate card (one endpoint),
- * opposite framing: absolute loss instead of a rate. A "+0" cell means the
- * whole degree does requirement work. Darker = more lost units.
+ * Modeled replacement coursework: associate-degree units that the curated
+ * full graduation model cannot apply. The heatmap converts native
+ * semester/quarter values to semester-equivalent units so every college shares
+ * one comparable scale. This is modeled coursework, not an observed outcome.
  */
 const intFmt = new Intl.NumberFormat()
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
@@ -25,12 +23,23 @@ const extraScale = (values) => ({ min: 0, max: Math.max(1, ...values.filter(Numb
 
 function cellTitle(row, col, cell) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
+  if (!Number.isFinite(cell.extra_units_semester)) {
+    return [
+      row.name,
+      col.school,
+      methodDetail(cell) || 'Not enough curated information to model this pair',
+    ].join('\n')
+  }
+  const nativeUnits = unitSystemName(cell.as_unit_system)
+  const nativeExtra = Number.isFinite(cell.extra_units) ? unitFmt.format(cell.extra_units) : '—'
+  const applied = Number.isFinite(cell.transferred_units) ? unitFmt.format(cell.transferred_units) : '—'
+  const total = Number.isFinite(cell.as_total_units) ? unitFmt.format(cell.as_total_units) : '—'
   return [
     row.name,
     col.school,
-    `Extra units after transfer: ${plus(cell.extra_units)}`,
-    `AS total ${cell.as_total_units}u − ${cell.transferred_units}u doing requirement work = ${plus(cell.extra_units)} above the 120 baseline`,
-    cell.as_unit_system === 'quarter' ? 'College is on the quarter system — units are quarter units' : null,
+    `Modeled replacement coursework: ${plus(cell.extra_units_semester)} semester-equivalent units`,
+    `${nativeExtra} ${nativeUnits} do not apply after ${applied} of ${total} ${nativeUnits} apply`,
+    methodDetail(cell),
   ].filter(Boolean).join('\n')
 }
 
@@ -49,8 +58,8 @@ function ExtraTable({ model }) {
                 <span className='block text-tag text-ink leading-tight whitespace-normal'>{shortenSchool(col.school)}</span>
               </th>
             ))}
-            <th className='sticky top-0 right-0 z-30 bg-surface border-b border-l border-border px-3 py-2 text-right text-label min-w-20'>
-              Avg
+            <th className='sticky top-0 right-0 z-30 bg-surface border-b border-l border-border px-3 py-2 text-right text-label min-w-32'>
+              Average (semester equivalent)
             </th>
           </tr>
         </thead>
@@ -61,14 +70,14 @@ function ExtraTable({ model }) {
                 {row.name}
               </th>
               {model.columns.map((col) => {
-                const cell = model.cells.get(`${row.key}|${col.key}`)
+                const cell = model.records.get(`${row.key}|${col.key}`)
                 return (
                   <td key={col.key}
                     title={cellTitle(row, col, cell)}
                     aria-label={cellTitle(row, col, cell)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                    style={paperRedCellColor(cell?.extra_units ?? null, model.colorScale, true)}>
-                    {plus(cell?.extra_units ?? null)}
+                    style={paperRedCellColor(cell?.extra_units_semester ?? null, model.colorScale, true)}>
+                    {plus(cell?.extra_units_semester ?? null)}
                   </td>
                 )
               })}
@@ -105,9 +114,10 @@ export default function TransferExtraUnits() {
   const query = useTransferCreditRate(degreeType)
   const rows = query.data?.rows || []
   const model = useMemo(
-    () => buildRateMatrix(rows, (r) => r.extra_units, extraScale),
+    () => buildRateMatrix(rows, (r) => r.extra_units_semester, extraScale),
     [rows]
   )
+  const warningCount = methodWarningCount(rows)
 
   if (query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -116,7 +126,7 @@ export default function TransferExtraUnits() {
     return <Alert type='error'>Could not load the transfer credit data.</Alert>
   }
 
-  const zeroCells = [...model.cells.values()].filter((c) => c.extra_units === 0).length
+  const zeroCells = [...model.cells.values()].filter((c) => c.extra_units_semester === 0).length
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
       <div className='flex flex-col'>
@@ -158,21 +168,24 @@ export default function TransferExtraUnits() {
       <div data-export-exclude>
         <StatStrip tiles={[
           {
-            label: 'Mean extra units',
+            label: 'Mean replacement units',
             value: Number.isFinite(model.overallMean) ? plus(model.overallMean) : '—',
-            sub: 'beyond the resident path',
+            sub: 'semester-equivalent units',
           },
-          { label: 'Colleges', value: intFmt.format(model.rows.length), sub: `${intFmt.format(model.valueCount)} computable cells` },
+          { label: 'Colleges', value: intFmt.format(model.rows.length), sub: `${intFmt.format(model.valueCount)} modeled college and campus pairs` },
           {
-            label: '+0 cells',
+            label: 'No replacement units',
             value: intFmt.format(zeroCells),
-            sub: 'the whole degree does requirement work',
+            sub: 'college and campus pairs',
             accent: zeroCells > 0,
           },
         ]} />
       </div>
       <div data-export-root className='flex flex-col gap-3'>
         <ExtraTable model={model} />
+        <TransferMethodNote warningCount={warningCount}>
+          Each cell shows associate-degree units that do not apply through a named course, general education or breadth, or documented elective requirement in the curated graduation model. Quarter-unit results are converted to semester-equivalent units for comparison; these are modeled replacement units, not observed student outcomes.
+        </TransferMethodNote>
       </div>
     </Stack>
   )

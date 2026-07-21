@@ -1166,6 +1166,21 @@
         ]
       },
       {
+        "title": "Unrestricted elective — one 4-unit course (CC-transferable)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 4,
+            "from": {
+              "code": "ELECTIVE",
+              "label": "Unrestricted elective — one 4-unit UC-transferable course; CC units count within the 105-quarter-unit transfer cap",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
         "title": "COM SCI 1 — Freshman Computer Science Seminar (1 unit; no ASSIST articulation, completed at UCLA)",
         "tier": "nontransferable",
         "requirements": [
@@ -1373,6 +1388,21 @@
             "from": {
               "code": "AH&I",
               "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+              "assume": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Unrestricted elective — one 4-unit course (CC-transferable)",
+        "tier": "breadth",
+        "requirements": [
+          {
+            "select": 1,
+            "units": 4,
+            "from": {
+              "code": "ELECTIVE",
+              "label": "Unrestricted elective — one 4-unit UC-transferable course; CC units count within the 105-quarter-unit transfer cap",
               "assume": true
             }
           }

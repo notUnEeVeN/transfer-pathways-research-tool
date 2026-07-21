@@ -129,22 +129,23 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
-// MA-paper Figure 3 on our data: per (college with a CS associate degree ×
-// campus), the share of the degree's prescribed units that transfer. Its one
-// param (degree_type) is outside parseParams, so it takes its own cache key.
+// Whole-degree transfer-credit model: per (college with a CS associate degree ×
+// campus), the share of the associate degree that applies to the full, curated
+// graduation plan. Degree and associate-degree structures are editable in the
+// Data tab, so this endpoint deliberately bypasses the short analysis cache;
+// an explicit frontend refresh must never receive a pre-edit result.
 exports.transferCreditRate = asyncHandler(async (req, res) => {
   const degreeType = ['ast', 'local_cs_as'].includes(req.query.degree_type)
     ? req.query.degree_type
     : 'local_cs_as';
   const db = req.app.locals.db;
-  const rows = await cached(`transfer-credit-rate|${degreeType}`,
-    () => transferCreditRateData(db, null, { degreeType }));
+  const rows = await transferCreditRateData(db, null, { degreeType });
   if (req.query.format === 'csv') {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename="transfer-credit-rate.csv"');
     return res.send(toCsv(rows));
   }
-  res.json({ params: { degree_type: degreeType }, n: rows.length, rows });
+  res.json({ params: { degree_type: degreeType, method: 'full_degree_v2' }, n: rows.length, rows });
 });
 
 exports.creditLoss = makeEndpoint('credit-loss', creditLossData);

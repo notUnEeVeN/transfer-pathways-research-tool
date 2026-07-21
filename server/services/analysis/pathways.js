@@ -13,7 +13,7 @@
 const { manyToOneCount } = require('./optionSolver');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
 const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
-const { buildDegreeGroups } = require('../degreeSlots');
+const { buildDegreeGroups, degreeUnitSystem } = require('../degreeSlots');
 const { projectPrereqEdges } = require('../prereqGraph');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
@@ -589,10 +589,11 @@ function mergeGeAreas(communityCollegeIds, geAreasByCollege) {
 
 /**
  * Full-degree coverage, matching Figure 1 of the Massachusetts paper: each
- * cell is the percentage of a four-year degree's required course slots for
+ * cell's primary percentage is the share of the modeled graduation units for
  * which the row's college(s) have an equivalent. The editable `kind: degree`
  * templates are the denominator; ASSIST agreements and CC GE tags supply the
- * equivalencies. University-only slots remain in the denominator at zero.
+ * equivalencies. University-only units remain in the denominator at zero.
+ * Requirement-slot coverage is retained as a secondary structural measure.
  */
 async function degreeRequirementCoverageData(db, {
   majorContains = '', visiblePairs = null, groupBy = 'college', pin = null,
@@ -699,9 +700,13 @@ async function degreeRequirementCoverageData(db, {
       }
       const ccGeAreas = mergeGeAreas(collegeIds, geAreasByCollege);
       const evaluated = buildDegreeGroups(degree.requirement_groups, { articulated, ccGeAreas });
-      const pctArticulated = evaluated.total
+      const pctSlots = evaluated.total
         ? +((evaluated.covered / evaluated.total) * 100).toFixed(1)
         : null;
+      const pctUnits = evaluated.units.total
+        ? +((evaluated.units.covered / evaluated.units.total) * 100).toFixed(1)
+        : null;
+      const unitSystem = degreeUnitSystem(degree, refs.calendarByUniversity.get(schoolId));
       const collegeNames = [...rowGroup.communityColleges].sort();
       const districts = [...rowGroup.districts].sort();
       const regions = [...rowGroup.regions].sort();
@@ -727,17 +732,29 @@ async function degreeRequirementCoverageData(db, {
         requirements_source: 'curated_requirements.degree',
         degree_template_id: String(degree._id),
         degree_template_updated_at: degree.updated_at ?? null,
+        degree_unit_system: unitSystem,
+        degree_units_stated_minimum: degree.total_units ?? null,
+        degree_units_modeled_total: evaluated.units.total,
+        degree_units_with_equivalent: evaluated.units.covered,
+        pct_degree_units: pctUnits,
+        // Slot coverage remains available as a secondary description of the
+        // requirement structure. The legacy names are kept for compatibility.
         degree_total_units: degree.total_units ?? null,
         degree_requirements_total: evaluated.total,
         degree_requirements_with_equivalent: evaluated.covered,
         degree_requirements_by_tier: evaluated.by_tier,
-        pct_degree_requirements: pctArticulated,
+        pct_degree_requirements: pctSlots,
+        degree_requirement_slots_total: evaluated.total,
+        degree_requirement_slots_with_equivalent: evaluated.covered,
+        pct_degree_requirement_slots: pctSlots,
         // Generic aliases keep the shared heatmap model compatible with all
-        // three requirement bases.
+        // three requirement bases. Counts remain slots, but the generic percent
+        // now follows the primary unit-weighted degree measure.
         receivers_required: evaluated.total,
         receivers_articulated: evaluated.covered,
-        pct_articulated: pctArticulated,
-        fully_articulated: evaluated.total > 0 && evaluated.covered === evaluated.total,
+        pct_articulated: pctUnits,
+        fully_articulated: evaluated.units.total > 0
+          && evaluated.units.covered >= evaluated.units.total,
       });
     }
   }
