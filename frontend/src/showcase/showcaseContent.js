@@ -37,16 +37,16 @@ export const SHOWCASE_FINDINGS = [
   {
     id: 'transferable-coverage',
     analysisId: 'coverage-heatmap',
-    status: 'Working finding',
-    metric: '74.6%',
-    title: 'Community colleges cover three quarters of UC course requirements meant for transfer',
-    description: 'Community colleges cover 11,751 of 15,755 transferable course slots across the selected UC graduation plans. When breadth and university resident work are also counted, 47.1% of all modeled slots can be completed before transfer.',
-    question: 'How much of a UC computer science graduation plan is designed for course transfer, and how much of that work has a community college equivalent?',
+    status: 'Live measure',
+    metric: 'Unit weighted',
+    title: 'Potential graduation-unit coverage reflects the size of each requirement',
+    description: 'The live heatmap shows what share of each UC graduation plan’s modeled units has a community-college equivalent. It calculates quarter and semester programs in their own native units and keeps requirement-slot counts as secondary context.',
+    question: 'How many modeled UC graduation units have a community-college equivalent?',
     scope: '1,035 college and campus pairs',
-    method: 'Counts course requirements marked transferable separately from breadth and requirements that the UC model expects students to complete after transfer.',
+    method: 'Divides modeled graduation units with a community-college equivalent by all modeled graduation units for the receiving UC program.',
     preview: 'requirement-coverage',
-    actionLabel: 'Explore graduation coverage by college',
-    liveNote: 'The related live heatmap opens on all modeled graduation requirements. The 74.6% showcase value isolates course requirements meant for transfer.',
+    actionLabel: 'Explore graduation-unit coverage by college',
+    liveNote: 'This live unit-weighted measure replaces the incompatible frozen slot percentage. A replacement snapshot has not been frozen yet.',
   },
   {
     id: 'paired-degrees',
@@ -102,64 +102,73 @@ export const WEEKLY_REVIEW_QUESTIONS = [
 
 export const SHOWCASE_HERO = {
   eyebrow: 'California transfer pathways research',
-  title: 'Your figures, rebuilt on California data',
-  lede: 'We ported the Massachusetts transfer pathways analyses to California: 115 community colleges, nine UC computer science programs, current ASSIST agreements, and an audited requirement dataset behind every figure.',
+  title: 'Your three figures, rebuilt on California data',
+  lede: 'Same questions, same modelling choices, a different state: 115 community colleges, nine UC computer science programs, and current ASSIST agreements behind every cell.',
 }
 
+/**
+ * The Massachusetts ports, in the paper's own figure order.
+ *
+ * Only figures that reproduce the MA paper belong here. The district and
+ * credit-loss figures reproduce Jiang et al.'s California study and are
+ * presented separately as our own California work — see CALIFORNIA_WORK.
+ */
 export const FEATURED_FIGURES = [
   {
-    id: 'figure-district-coverage',
-    analysisId: 'paper-district-heatmap',
-    provenance: 'After the Massachusetts paper’s district coverage figure',
-    metric: '356 of 648',
-    metricLabel: 'district and campus paths are complete',
-    title: 'Which districts have a complete path to each UC campus',
-    question: 'Can a student in each community college district finish every required course group before transfer?',
-    scope: '72 districts and 9 selected programs',
-    method: 'Uses each program’s current required ASSIST groups and counts a district as complete when its member colleges collectively cover every group.',
-    actionLabel: 'Open the full district heatmap',
-    liveNote: 'The live heatmap reads current agreements and may move after the frozen snapshot.',
+    id: 'figure-coverage',
+    analysisId: 'coverage-heatmap',
+    figureLabel: 'Figure 1',
+    star: 'Live measure',
+    starLabel: 'unit-weighted coverage by college and UC program',
+    claim: 'Potential graduation-unit coverage reflects the size of each requirement.',
+    blurb: 'Each cell shows the share of a UC computer science graduation plan’s modeled units that has a community-college equivalent. Quarter and semester programs stay in their own native units; slot counts remain secondary detail.',
+    method: 'Divides modeled graduation units with a community-college equivalent by all modeled graduation units for the receiving UC program.',
+    actionLabel: 'Open the full coverage heatmap',
+    liveNote: 'The prior showcase percentage counted slots and is not comparable to this unit-weighted measure. No replacement percentage is frozen yet.',
   },
   {
     id: 'figure-credit-rate',
     analysisId: 'transfer-credit-rate',
-    provenance: 'After Figure 3 of the Massachusetts paper',
-    metric: '66.3%',
-    metricLabel: 'transfer degree credit counts toward graduation at matched colleges',
-    title: 'How much of an associate degree counts toward a UC degree',
-    question: 'What share of a computer science associate degree carries into each UC graduation plan?',
-    scope: '21 matched semester colleges and 9 UC campuses',
+    figureLabel: 'Figure 3',
+    star: '66.3%',
+    starLabel: 'of a transfer degree counts toward the UC degree',
+    claim: 'The transfer degree carries roughly ten points more credit than the local degree at the same colleges.',
+    blurb: 'Switch the degree type above the figure to compare them. Holding the colleges and the unit system fixed, the Associate Degree for Transfer reaches 66.3% against 56.8% for the local computer science degree.',
     method: 'Applies the same articulation and graduation requirement model to both degree types at the same colleges.',
     actionLabel: 'Open the full credit rate figure',
-    liveNote: 'The live figure shows the full local and transfer cohorts, not only the matched 21 college slice.',
+    liveNote: 'The live figure shows the full local and transfer cohorts, not only the matched college slice.',
   },
   {
     id: 'figure-extra-units',
     analysisId: 'transfer-extra-units',
-    provenance: 'After Figure 4 of the Massachusetts paper',
-    metric: '+16.6',
-    metricLabel: 'modeled extra semester units for transfer degree holders',
-    title: 'Additional coursework after transfer',
-    question: 'How many extra units may transfer students need compared with students who began at the university?',
-    scope: '21 matched semester colleges and 9 UC campuses',
-    method: 'Extra units are the associate degree total minus the requirement work it covers — a modeled burden, not observed time to degree.',
-    actionLabel: 'Open the full extra units figure',
+    figureLabel: 'Figure 4',
+    star: '+16.6',
+    starLabel: 'units of a transfer degree may need replacing after transfer',
+    claim: 'Even the better-aligned degree leaves about a semester of coursework that does not carry.',
+    blurb: 'The same comparison read as units rather than percentages. The local degree leaves 25.8 units to replace; the transfer degree leaves 16.6. Darker cells are the college and campus pairs where the most work is repeated.',
+    method: 'Replacement units are the associate degree total minus the units that apply to graduation — a modeled burden, not observed time to degree.',
+    actionLabel: 'Open the full replacement coursework figure',
     liveNote: 'The live figure reads the current working model and may move after the frozen snapshot.',
   },
-  {
-    id: 'figure-coverage',
-    analysisId: 'coverage-heatmap',
-    provenance: 'After the Massachusetts paper’s requirement coverage lens',
-    metric: '74.6%',
-    metricLabel: 'of transfer-designed course requirements have a community college equivalent',
-    title: 'Graduation requirement coverage before transfer',
-    question: 'How much of a UC graduation plan can be completed at each community college?',
-    scope: '1,035 college and campus pairs',
-    method: 'Counts course requirements marked transferable separately from breadth and work reserved for the university.',
-    actionLabel: 'Open the full coverage heatmap',
-    liveNote: 'The live heatmap opens on all modeled graduation requirements; the 74.6% value isolates requirements meant for transfer.',
-  },
 ]
+
+/**
+ * Our own California work, kept clearly separate from the MA ports. The
+ * district heatmap reproduces Jiang et al.'s California figure, so presenting
+ * it as one of "your figures" would misattribute it.
+ */
+export const CALIFORNIA_WORK = {
+  eyebrow: 'Our California work',
+  heading: 'The same machinery answers California’s own question',
+  star: '5 of 9',
+  starLabel: 'UC computer science programs a typical district can fully prepare for',
+  claim: 'Gaps in three course requirements close UCLA and UC San Diego to every district in the state.',
+  blurb: 'This figure follows the California study we started from, rebuilt on current ASSIST requirements rather than a scraped snapshot. A district counts as complete when its colleges collectively cover every required group.',
+  analysisId: 'paper-district-heatmap',
+  method: 'Uses each program’s current required ASSIST groups and counts a district as complete when its member colleges collectively cover every required group.',
+  actionLabel: 'Open the full district heatmap',
+  liveNote: 'The live heatmap reads current agreements and may move after the frozen snapshot.',
+}
 
 export const AUDIT_STORY = {
   intro: 'Every figure above rests on parsed ASSIST agreements. The audit measures how much that parse can be trusted, and publishes the bound instead of a promise.',

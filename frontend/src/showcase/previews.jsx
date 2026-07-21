@@ -65,39 +65,30 @@ function CompletePathsPreview() {
 }
 
 function RequirementCoveragePreview() {
-  const rows = [
-    { label: 'Course requirements designed to transfer', value: 74.6, count: '11,751 of 15,755 slots' },
-    { label: 'All modeled graduation requirements', value: 47.1, count: 'includes work reserved for the university' },
-  ]
   return (
     <div className='flex h-full flex-col justify-center rounded-2xl border border-border bg-surface px-8 py-7'
-      role='img' aria-label='Community colleges cover 74.6 percent of course requirements designed to transfer and 47.1 percent of all modeled graduation requirements'>
+      role='img' aria-label='Potential graduation-unit coverage divides modeled UC graduation units with a community-college equivalent by all modeled graduation units'>
       <div className='flex items-end justify-between gap-5'>
         <div>
-          <p className='text-body-strong'>Requirement coverage before transfer</p>
+          <p className='text-body-strong'>Potential graduation-unit coverage</p>
           <p className='mt-1 text-caption'>Across 115 colleges and nine selected UC programs.</p>
         </div>
-        <Badge variant='conservative'>Graduation model</Badge>
+        <Badge variant='conservative'>Live measure</Badge>
       </div>
-      <div className='mt-8 flex flex-col gap-7'>
-        {rows.map((row) => (
-          <div key={row.label}>
-            <div className='mb-2 flex items-end justify-between gap-4'>
-              <div>
-                <p className='text-body-strong'>{row.label}</p>
-                <p className='text-caption'>{row.count}</p>
-              </div>
-              <p className='text-stat-lg'>{row.value.toFixed(1)}%</p>
-            </div>
-            <div className='h-5 overflow-hidden rounded-pill bg-surface-sunken'>
-              <div className='h-full rounded-pill bg-primary' style={{ width: `${row.value}%` }} />
-            </div>
-          </div>
-        ))}
+      <div className='mt-8 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-4 text-center'>
+        <div className='rounded-2xl bg-primary-soft px-5 py-6'>
+          <p className='text-body-strong text-primary'>Modeled units with an equivalent</p>
+          <p className='mt-2 text-caption'>Courses available before transfer</p>
+        </div>
+        <div className='grid place-items-center text-display-lg text-ink-subtle'>÷</div>
+        <div className='rounded-2xl bg-surface-muted px-5 py-6'>
+          <p className='text-body-strong'>All modeled graduation units</p>
+          <p className='mt-2 text-caption'>The complete UC graduation plan</p>
+        </div>
       </div>
       <div className='mt-7 grid grid-cols-2 gap-3 border-t border-border pt-5 text-caption text-ink-muted'>
-        <p className='rounded-xl bg-success-soft p-4'>Transferable course slots ask whether an equivalent exists at the college.</p>
-        <p className='rounded-xl bg-surface-muted p-4'>The full plan also contains requirements expected after transfer.</p>
+        <p className='rounded-xl bg-success-soft p-4'>Each UC plan stays in its native quarter or semester units.</p>
+        <p className='rounded-xl bg-surface-muted p-4'>Requirement slots remain available as secondary context.</p>
       </div>
     </div>
   )

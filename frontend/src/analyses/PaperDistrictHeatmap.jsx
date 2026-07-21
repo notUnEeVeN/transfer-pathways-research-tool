@@ -335,8 +335,13 @@ function Chip({ color }) {
   return <span className='inline-block w-3 h-3 border border-black' style={{ background: color }} />
 }
 
-export default function PaperDistrictHeatmap() {
-  const [version, setVersion] = useState('website')  // 'paper' | 'website' | 'assist'
+/**
+ * `presentation` pins the figure to the ASSIST-minimums version and hides the
+ * version and difference controls. The showcase uses it so a walkthrough shows
+ * current California data rather than the reproduced paper baseline.
+ */
+export default function PaperDistrictHeatmap({ presentation = false }) {
+  const [version, setVersion] = useState(presentation ? 'assist' : 'website')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('names')
 
@@ -382,31 +387,35 @@ export default function PaperDistrictHeatmap() {
     <Stack gap='section'>
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-        <div className='flex flex-col'>
-          <span className='field-label'>Version</span>
-          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {VERSIONS.map((v) => (
-              <button
-                key={v.value}
-                type='button'
-                onClick={() => setVersion(v.value)}
-                className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  version === v.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
-                }`}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className='flex h-9 items-center'>
-          <SwitchField
-            label='Show differences'
-            checked={diffOn}
-            onChange={() => setShowDiff((s) => !s)}
-            disabled={version === 'paper'}
-          />
-        </div>
+        {!presentation && (
+          <>
+            <div className='flex flex-col'>
+              <span className='field-label'>Version</span>
+              <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+                {VERSIONS.map((v) => (
+                  <button
+                    key={v.value}
+                    type='button'
+                    onClick={() => setVersion(v.value)}
+                    className={`px-3 text-button border-r border-border last:border-r-0 ${
+                      version === v.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                    }`}
+                  >
+                    {v.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className='flex h-9 items-center'>
+              <SwitchField
+                label='Show differences'
+                checked={diffOn}
+                onChange={() => setShowDiff((s) => !s)}
+                disabled={version === 'paper'}
+              />
+            </div>
+          </>
+        )}
         <Button
           variant='secondary'
           leadingIcon={ArrowPathIcon}

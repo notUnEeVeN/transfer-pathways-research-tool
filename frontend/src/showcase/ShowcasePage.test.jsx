@@ -40,6 +40,7 @@ vi.mock('../shared/query/hooks/useData', () => ({
 }))
 
 import ShowcasePage from './ShowcasePage'
+import { FEATURED_FIGURES } from './showcaseContent'
 
 const originalScrollTo = window.scrollTo
 
@@ -58,17 +59,18 @@ afterAll(() => {
 })
 
 describe('research showcase', () => {
-  it('tells the five-act data-strength story in order, read only', () => {
+  it('tells the story in order, read only', () => {
     render(<ShowcasePage />)
-    expect(screen.getByRole('heading', { name: 'Your figures, rebuilt on California data' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Your three figures, rebuilt on California data' })).toBeInTheDocument()
 
     const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
     const order = [
       'Your analyses, run statewide in California',
+      'The same machinery answers California’s own question',
       'An audit with a published bound, not a promise',
-      'Confidence and caveats stay beside the findings.',
       'Beyond coverage: the prerequisite structure inside the pathway',
       'A living research instrument, not a one-off analysis',
+      'Confidence and caveats stay beside the findings.',
     ]
     const indexes = order.map((t) => headings.findIndex((h) => h === t))
     expect(indexes.every((i) => i >= 0)).toBe(true)
@@ -78,17 +80,21 @@ describe('research showcase', () => {
     expect(screen.queryByRole('button', { name: 'Publish' })).not.toBeInTheDocument()
   })
 
-  it('leads with the ported figures and embeds the live figure inline for admins', () => {
+  it('keeps the California figure out of the Massachusetts section', () => {
     render(<ShowcasePage />)
+    // Both are embedded, but the district heatmap sits under our own
+    // California heading rather than being credited to the MA paper.
+    expect(screen.getByText('Live coverage-heatmap visual')).toBeInTheDocument()
     expect(screen.getByText('Live paper-district-heatmap visual')).toBeInTheDocument()
-    expect(screen.getAllByText(/After the Massachusetts paper/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Massachusetts paper')).toHaveLength(3)
+    expect(screen.getAllByText('California study')).toHaveLength(1)
   })
 
-  it('falls back to frozen panels for accounts without the release', () => {
+  it('falls back to star numbers for accounts without the release', () => {
     visualAccess.role = 'partner'
     visualAccess.releasedIds = []
     render(<ShowcasePage />)
-    expect(screen.queryByText('Live paper-district-heatmap visual')).not.toBeInTheDocument()
+    expect(screen.queryByText('Live coverage-heatmap visual')).not.toBeInTheDocument()
     expect(screen.getAllByText(/not released for this account/i).length).toBeGreaterThan(0)
   })
 
@@ -98,15 +104,14 @@ describe('research showcase', () => {
     expect(screen.getByText(/frozen from the live audit/i)).toBeInTheDocument()
   })
 
-  it('opens a full live visual from the stage and returns cleanly', async () => {
+  it('opens a full live visual from a slide and returns cleanly', async () => {
     render(<ShowcasePage />)
+    const figure = FEATURED_FIGURES[0]
     fireEvent.click(screen.getByRole('button', {
-      name: 'Open the full district heatmap: Which districts have a complete path to each UC campus',
+      name: `${figure.actionLabel}: ${figure.claim}`,
     }))
-    const dialog = screen.getByRole('dialog', {
-      name: 'Which districts have a complete path to each UC campus full visual',
-    })
-    expect(within(dialog).getByText('Live paper-district-heatmap visual')).toBeInTheDocument()
+    const dialog = screen.getByRole('dialog', { name: `${figure.claim} full visual` })
+    expect(within(dialog).getByText('Live coverage-heatmap visual')).toBeInTheDocument()
     fireEvent.click(within(dialog).getByRole('button', { name: 'Close' }))
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
   })
@@ -116,6 +121,6 @@ describe('research showcase', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Present showcase' }))
     const dialog = screen.getByRole('dialog', { name: 'California transfer pathways' })
     expect(within(dialog).getByText('Presentation mode')).toBeInTheDocument()
-    expect(within(dialog).getByRole('heading', { name: 'Your figures, rebuilt on California data' })).toBeInTheDocument()
+    expect(within(dialog).getByRole('heading', { name: 'Your three figures, rebuilt on California data' })).toBeInTheDocument()
   })
 })

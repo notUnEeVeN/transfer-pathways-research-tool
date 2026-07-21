@@ -12,7 +12,8 @@ import { getAnalysisById } from '../analyses/registry'
 import { useAccessMe, useVisualSettings } from '../shared/query/hooks/useAccess'
 import { canViewBuiltInAnalysis } from '../visuals/analysisVisibility'
 import { EvidenceBadge } from './previews'
-import FigureStage, { STAGE_ENTRIES } from './FigureStage'
+import FigureSlides from './FigureSlides'
+import CaliforniaWork from './CaliforniaWork'
 import AuditStepper from './AuditStepper'
 import BeyondPaper from './BeyondPaper'
 import PlatformBand from './PlatformBand'
@@ -152,18 +153,16 @@ function MeetingQuestions() {
   )
 }
 
-function ShowcaseStory({
-  activeEntryId, onSelectEntry, onOpen, onPresent, canOpenAnalysis, presentation = false,
-}) {
+function ShowcaseStory({ onOpen, onPresent, canOpenAnalysis, presentation = false }) {
   return (
     <div className='bg-canvas text-ink'>
       <Hero onPresent={onPresent} presentation={presentation} />
-      <FigureStage activeId={activeEntryId} onSelect={onSelectEntry}
-        onOpen={onOpen} canOpenAnalysis={canOpenAnalysis} />
+      <FigureSlides onOpen={onOpen} canOpenAnalysis={canOpenAnalysis} />
+      <CaliforniaWork onOpen={onOpen} canOpenAnalysis={canOpenAnalysis} />
       <AuditStepper />
-      <MethodSection />
       <BeyondPaper />
       <PlatformBand />
+      <MethodSection />
       <MeetingQuestions />
     </div>
   )
@@ -171,7 +170,6 @@ function ShowcaseStory({
 
 export default function ShowcasePage() {
   const [presenting, setPresenting] = useState(false)
-  const [activeEntryId, setActiveEntryId] = useState(STAGE_ENTRIES[0].id)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const presentationScrollTop = useRef(0)
   const restorePresentationScroll = useRef(false)
@@ -213,35 +211,28 @@ export default function ShowcasePage() {
 
   return (
     <>
-      <ShowcaseStory activeEntryId={activeEntryId} onSelectEntry={setActiveEntryId}
-        onOpen={openAnalysis} canOpenAnalysis={canOpenAnalysis}
+      <ShowcaseStory onOpen={openAnalysis} canOpenAnalysis={canOpenAnalysis}
         onPresent={() => setPresenting(true)} />
 
       <FullScreenPanel open={presenting && !selectedEntry} onClose={() => setPresenting(false)}
         title='California transfer pathways' subtitle={`Research showcase, ${SHOWCASE_SNAPSHOT.label.toLowerCase()}, ${SHOWCASE_SNAPSHOT.compiledOn}`}
         actions={<Badge variant='accent'>Presentation mode</Badge>}>
-        <ShowcaseStory presentation activeEntryId={activeEntryId}
-          onSelectEntry={setActiveEntryId} onOpen={openAnalysis} canOpenAnalysis={canOpenAnalysis} />
+        <ShowcaseStory presentation onOpen={openAnalysis} canOpenAnalysis={canOpenAnalysis} />
       </FullScreenPanel>
 
       <FullScreenPanel open={!!selectedEntry} onClose={closeAnalysis}
-        title={selectedEntry?.title}
-        subtitle={selectedEntry
-          ? (selectedEntry.provenance || `${selectedEntry.status} finding, ${selectedEntry.scope}`)
-          : undefined}
-        ariaLabel={selectedEntry ? `${selectedEntry.title} full visual` : 'Full visual'}>
+        title={selectedEntry?.claim}
+        subtitle={selectedEntry?.figureLabel}
+        ariaLabel={selectedEntry ? `${selectedEntry.claim} full visual` : 'Full visual'}>
         {selectedEntry && (
           <div className='flex flex-col gap-5'>
             <Alert type='info'>
-              This is a related live, read only visual. {selectedEntry.liveNote} Its current values may also move after the narrative snapshot compiled on {SHOWCASE_SNAPSHOT.compiledOn}.
+              This is a live, read only visual. {selectedEntry.liveNote}
             </Alert>
             <div className='grid grid-cols-[300px_minmax(0,1fr)] items-start gap-8'>
               <aside className='rounded-2xl border border-border bg-surface-muted p-5'>
-                {selectedEntry.entryKind === 'figure'
-                  ? <Badge variant='accent'>Live visual</Badge>
-                  : <EvidenceBadge status={selectedEntry.status} />}
-                <p className='mt-4 text-label'>Research question</p>
-                <p className='mt-2 text-body text-ink-muted'>{selectedEntry.question}</p>
+                <p className='text-display-lg text-primary'>{selectedEntry.star}</p>
+                <p className='mt-3 text-body text-ink-muted'>{selectedEntry.starLabel}</p>
                 <p className='mt-5 text-label'>Method note</p>
                 <p className='mt-2 text-body text-ink-muted'>{selectedEntry.method}</p>
               </aside>

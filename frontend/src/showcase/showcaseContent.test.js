@@ -1,28 +1,48 @@
 import { describe, expect, it } from 'vitest'
 import {
   AUDIT_STORY,
+  CALIFORNIA_WORK,
   DEGREE_READINESS,
   FEATURED_FIGURES,
   PLATFORM_SURFACES,
   PREREQ_EXHIBIT,
-  SHOWCASE_FINDINGS,
   SHOWCASE_HERO,
 } from './showcaseContent'
 
 describe('showcase content module', () => {
-  it('features the four ported figures ahead of the three findings', () => {
+  it('attributes only the genuine Massachusetts ports to the Massachusetts paper', () => {
     expect(FEATURED_FIGURES.map((f) => f.analysisId)).toEqual([
-      'paper-district-heatmap',
+      'coverage-heatmap',
       'transfer-credit-rate',
       'transfer-extra-units',
-      'coverage-heatmap',
     ])
-    expect(SHOWCASE_FINDINGS).toHaveLength(3)
     for (const figure of FEATURED_FIGURES) {
-      expect(figure.provenance).toMatch(/Massachusetts/)
-      expect(figure.metric).toBeTruthy()
+      expect(figure.figureLabel).toMatch(/^Figure \d+$/)
+      expect(figure.star).toBeTruthy()
+      expect(figure.claim).toBeTruthy()
       expect(figure.liveNote).toBeTruthy()
     }
+    // The district heatmap reproduces the California study, so it is
+    // presented as our own work rather than as one of the MA figures.
+    expect(CALIFORNIA_WORK.analysisId).toBe('paper-district-heatmap')
+    expect(CALIFORNIA_WORK.star).toBeTruthy()
+  })
+
+  it('carries no scope minutiae on the presented figures', () => {
+    for (const figure of [...FEATURED_FIGURES, CALIFORNIA_WORK]) {
+      expect(figure.scope).toBeUndefined()
+    }
+  })
+
+  it('presents degree coverage as a live unit-weighted measure, not the retired slot percentage', () => {
+    const coverage = FEATURED_FIGURES.find((f) => f.analysisId === 'coverage-heatmap')
+
+    expect(coverage.star).toBe('Live measure')
+    expect(coverage.claim).toMatch(/graduation-unit coverage/i)
+    expect(coverage.blurb).toMatch(/native units/i)
+    expect(coverage.method).toMatch(/modeled graduation units/i)
+    expect(coverage.liveNote).toMatch(/prior.*counted slots/i)
+    expect(JSON.stringify(coverage)).not.toContain('74.6')
   })
 
   it('tells the audit story in four steps and never fabricates the bound', () => {
