@@ -196,6 +196,49 @@ export function useChoiceCost(params = {}, options = {}) {
   })
 }
 
+// Joint, order-independent preparation plan for one or more UC campuses.
+// Unlike choice-cost, `schoolIds` is a set: sorting it here keeps equivalent
+// selections on one cache entry. College mode stays disabled until a college
+// is selected, so opening the visual never sends an invalid request.
+export function useMultiCampusPathways(params = {}, options = {}) {
+  const { user } = useAuth()
+  const schoolIds = [...new Set((params.schoolIds || [])
+    .map(Number)
+    .filter((id) => Number.isFinite(id) && id > 0))]
+    .sort((a, b) => a - b)
+  const mode = params.mode === 'college' ? 'college' : 'average'
+  const communityCollegeId = Number(params.communityCollegeId)
+  const semesterLoad = Number(params.semesterLoad) || 15
+  const quarterLoad = Number(params.quarterLoad) || 15
+  const { enabled = true, ...queryOptions } = options
+  const hasCollege = Number.isFinite(communityCollegeId) && communityCollegeId > 0
+  const ready = schoolIds.length > 0
+    && (mode === 'average' || hasCollege)
+
+  return useQuery({
+    queryKey: [
+      'analysis-multi-campus-pathways', 'v1', user?.uid, mode,
+      schoolIds.join(','), mode === 'college' ? communityCollegeId : null,
+      semesterLoad, quarterLoad,
+    ],
+    queryFn: () => apiClient
+      .get('/analysis/multi-campus-pathways', {
+        params: {
+          schoolIds: schoolIds.join(','),
+          mode,
+          ...(mode === 'college' ? { communityCollegeId } : {}),
+          semesterLoad,
+          quarterLoad,
+        },
+      })
+      .then((r) => r.data),
+    enabled: !!user?.uid && enabled && ready,
+    staleTime: 0,
+    refetchOnMount: 'always',
+    ...queryOptions,
+  })
+}
+
 export function useCategoryGaps(params = {}, options = {}) {
   return useAnalysisEndpoint('analysis-category-gaps', '/analysis/category-gaps', params, options)
 }

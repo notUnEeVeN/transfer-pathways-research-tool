@@ -9,54 +9,23 @@
    ========================================================================== */
 
 /* ---------- Fonts ----------------------------------------------------------
-   Schibsted Grotesk — self-hosted variable font (weights 400–900), served
-   same-origin with font-display: swap. Two faces (normal/italic), each split
-   into latin/latin-ext so accented glyphs only download when used.
-   NOTE: in Schibsted Grotesk, tabular figures give punctuation full digit
-   width ("1 , 035"). Apply .tabular ONLY to pure-digit columns. */
-@font-face {
-  font-family: 'Schibsted Grotesk';
-  font-style: normal;
-  font-weight: 400 900;
-  font-display: swap;
-  src: url('../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
-    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Schibsted Grotesk';
-  font-style: normal;
-  font-weight: 400 900;
-  font-display: swap;
-  src: url('../assets/fonts/schibsted-grotesk-latin-ext-wght-normal.woff2') format('woff2-variations');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
-    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-    U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Schibsted Grotesk';
-  font-style: italic;
-  font-weight: 400 900;
-  font-display: swap;
-  src: url('../assets/fonts/schibsted-grotesk-latin-wght-italic.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
-    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Schibsted Grotesk';
-  font-style: italic;
-  font-weight: 400 900;
-  font-display: swap;
-  src: url('../assets/fonts/schibsted-grotesk-latin-ext-wght-italic.woff2') format('woff2-variations');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
-    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-    U+2C60-2C7F, U+A720-A7FF;
-}
+   Hanken Grotesk — the typeface Plan My Transfer uses, so the research console
+   and the student product read as one family. Served from the fontsource
+   variable package (weights 100–900, normal + italic), imported below.
+   NOTE: verify tabular figures before widening .tabular's remit — under
+   Schibsted, tabular gave punctuation full digit width ("1 , 035") and the
+   utility is restricted to pure-digit columns because of it. */
+@import '@fontsource-variable/hanken-grotesk';
 
 /* ---------- Light theme (default) ---------- */
 @theme {
-  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-sans); /* no separate mono face; see .tabular note */
+
+  /* Heading weight lives here so the typeface swap and the weight it implies
+     revert together. Schibsted needed 650; Hanken sets its heading colour at
+     600. */
+  --weight-heading: 600;
 
   /* Brand */
   --color-primary: #193018;            /* forest — fills, selected states */

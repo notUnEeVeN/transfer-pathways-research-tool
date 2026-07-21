@@ -40,6 +40,11 @@ export const MEASURES = {
     grain: 'One value per community college × UC program.',
     watchFor: 'The denominator is the whole modeled graduation plan and includes university-only work at zero coverage, so a cell cannot reach 100% unless the program reserves nothing for after transfer. Each campus stays in its own quarter or semester units and is never normalized, so an average across campuses mixes the two systems.',
   },
+  'multi-campus-pathways': {
+    expression: 'combined plan = the fewest distinct community college courses that jointly satisfy the required major preparation in every selected ASSIST agreement; modeled terms then pack those courses after their prerequisites within the chosen unit load',
+    grain: 'One value per community college × unordered set of selected UC computer science programs. Average mode summarizes those college-level values without mixing semester and quarter term counts.',
+    watchFor: 'This is an optimistic catalog plan, not observed student time. It assumes courses are offered every term without conflicts, and it excludes general education, associate-degree requirements, admission criteria, and all university coursework after transfer. A bounded schedule is shown as a range rather than an exact minimum.',
+  },
   'credit-loss': {
     expression: 'transfer coursework = the fewest community college courses the solver finds that satisfy every required receiver in one agreement',
     grain: 'One value per agreement — a community college × UC campus × major — binned per campus.',

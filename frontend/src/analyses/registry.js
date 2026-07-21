@@ -21,6 +21,7 @@
  */
 
 import CoverageHeatmap from './CoverageHeatmap'
+import MultiCampusPathways from './MultiCampusPathways'
 import TransferCreditRate from './TransferCreditRate'
 import TransferExtraUnits from './TransferExtraUnits'
 import PaperCreditLoss from './PaperCreditLoss'
@@ -78,6 +79,14 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:05:00',
     Component: CoverageHeatmap,
+  },
+  {
+    id: 'multi-campus-pathways',
+    title: 'Preparation planner for multiple campuses',
+    description: 'See how keeping several University of California computer science pathways open changes the community college coursework and time required.',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-21T09:00:00',
+    Component: MultiCampusPathways,
   },
   {
     id: 'credit-loss',

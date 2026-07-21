@@ -1,10 +1,11 @@
 @import 'tailwindcss';
 @import './theme.css';
 @import './typography.css';
-/* Untitled UI's default typeface (Inter), self-hosted via fontsource so it ships
-   same-origin and stays off the network critical path — no Google Fonts request,
-   prerender-safe. Registers the family "Inter Variable" (see --font-inter below). */
-@import '@fontsource-variable/inter';
+/* Hanken Grotesk — the Plan My Transfer typeface, self-hosted via fontsource so
+   it ships same-origin and stays off the network critical path. This layer used
+   to carry Untitled UI's default Inter; the student product moved to Hanken and
+   this vendored copy has been brought back in sync. */
+@import '@fontsource-variable/hanken-grotesk';
 
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-react-aria-components';
@@ -61,11 +62,12 @@
      values win for every component. Legacy `--radius-pill` is kept below since
      UUI has no equivalent (it uses `rounded-full` → --radius-full). */
 
-  /* Type — Untitled UI's default typeface (Inter), self-hosted as "Inter
-     Variable". --font-inter resolves UUI theme.css's `var(--font-inter, "Inter")`;
-     --font-sans keeps not-yet-migrated components on the same family. */
-  --font-inter: 'Inter Variable';
-  --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  /* Type — Hanken Grotesk, self-hosted as "Hanken Grotesk Variable".
+     --font-inter still resolves UUI theme.css's `var(--font-inter, "Inter")`, so
+     it is pointed at Hanken too rather than left to fall back to Inter; that
+     keeps any not-yet-migrated Untitled UI component on the one family. */
+  --font-inter: 'Hanken Grotesk Variable';
+  --font-sans: 'Hanken Grotesk Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-mono: var(--font-sans);
 
   /* Geometry — radius scale comes from UUI theme.css; only the legacy pill (no
