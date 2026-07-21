@@ -15,32 +15,14 @@ import React from 'react'
 import { ArrowsPointingOutIcon } from '@heroicons/react/24/outline'
 import { Badge, MarketingSection } from '../components/ui'
 import { getAnalysisById } from '../analyses/registry'
+import MeasurePanel from '../analyses/MeasurePanel'
+import { measureFor } from '../analyses/measures'
 import { FEATURED_FIGURES } from './showcaseContent'
 
 // One height for every embed so the slides read as a set rather than a
 // ransom note. Tall enough for a heatmap to show its shape, short enough that
 // the claim above it stays on screen while presenting.
 const EMBED_HEIGHT = 'h-[540px]'
-
-/**
- * The measurement panel exists so a collaborator can check, without opening
- * anything, whether we define the statistic the way they do. The expression
- * is deliberately words rather than symbols, and `watchFor` names the choice
- * most likely to differ between two teams — usually the denominator.
- */
-function MeasurePanel({ formula }) {
-  if (!formula) return null
-  return (
-    <div className='mt-6 rounded-2xl border border-border bg-surface-muted px-6 py-5'>
-      <div className='flex items-baseline justify-between gap-4'>
-        <p className='text-label'>How this is measured</p>
-        <p className='text-caption text-ink-subtle'>{formula.grain}</p>
-      </div>
-      <p className='mt-3 text-body-strong text-pretty'>{formula.expression}</p>
-      <p className='mt-3 text-caption text-ink-muted text-pretty'>{formula.watchFor}</p>
-    </div>
-  )
-}
 
 export function FigureSlide({ figure, canOpen, onOpen, eyebrow }) {
   const Live = canOpen ? getAnalysisById(figure.analysisId)?.Component : null
@@ -62,7 +44,7 @@ export function FigureSlide({ figure, canOpen, onOpen, eyebrow }) {
       </div>
 
       <div className='px-10 pb-10 pt-2'>
-        <MeasurePanel formula={figure.formula} />
+        <MeasurePanel measure={figure.formula || measureFor(figure.analysisId)} className='mt-6' />
         <div className='mt-8'>
           {Live ? (
             <div className={`${EMBED_HEIGHT} overflow-auto rounded-2xl border border-border bg-canvas p-4`}>

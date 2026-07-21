@@ -12,6 +12,8 @@ import apiClient from '../shared/api/apiClient'
 import { fmtDate } from '../shared/fmtDate'
 import { useAccessMe, useVisualSettings } from '../shared/query/hooks/useAccess'
 import { useDeleteFigure, useEditFigure, useFigures } from '../shared/query/hooks/useData'
+import MeasurePanel from '../analyses/MeasurePanel'
+import { measureFor } from '../analyses/measures'
 import { filterBuiltInAnalyses } from './analysisVisibility'
 
 export { filterBuiltInAnalyses } from './analysisVisibility'
@@ -484,6 +486,8 @@ export default function VisualsPage({ onNavigate = () => {} }) {
         exportName={analysis.id}
         badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
         <Component />
+        {/* Kept out of exports — a downloaded figure should read as a figure. */}
+        <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />
       </AnalysisCard>
     )
   }
