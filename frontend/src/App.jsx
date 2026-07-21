@@ -11,6 +11,8 @@ import SubNav from './components/SubNav'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import DataPage from './DataPage'
+import ShowcasePage from './showcase/ShowcasePage'
+import { SHOWCASE_ENABLED } from './showcase/showcaseVisibility'
 import VisualsPage from './visuals/VisualsPage'
 import ApiPage from './DataApiDocs'
 import TasksPage from './tasks/TasksPage'
@@ -175,6 +177,9 @@ function Console({ role, user }) {
               statsSeen={statsSeen} reviewSeen={reviewSeen} />
           )}
           {view === 'data' && <DataPage onNavigate={setView} />}
+          {SHOWCASE_ENABLED && view === 'showcase' && (
+            <div className='h-full overflow-auto'><ShowcasePage /></div>
+          )}
           {view === 'visuals' && (
             <div className='h-full overflow-auto'>
               <div className='mx-auto max-w-screen-2xl px-6 py-6'>
@@ -205,6 +210,7 @@ function Console({ role, user }) {
 function TopBar({ view, setView, role, user }) {
   const tabs = [
     { value: 'data', label: 'Data' },
+    ...(SHOWCASE_ENABLED ? [{ value: 'showcase', label: 'Showcase' }] : []),
     { value: 'visuals', label: 'Visuals' },
     { value: 'audit', label: 'Audit' },
     { value: 'tasks', label: 'Tasks' },

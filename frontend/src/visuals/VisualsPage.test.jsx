@@ -1,7 +1,9 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { FigureCard, InteractiveFigureCard, filterBuiltInAnalyses } from './VisualsPage'
+import {
+  FigureCard, InteractiveFigureCard, VisualThumbnailCard, filterBuiltInAnalyses,
+} from './VisualsPage'
 import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
 
@@ -124,6 +126,26 @@ describe('built-in visual registry', () => {
     ])
   })
 
+  it('uses clean, plain-language titles and descriptions in the gallery', () => {
+    expect(ANALYSES.map((analysis) => analysis.title)).toEqual([
+      'Credit loss by campus',
+      'Transfer coverage by district',
+      'Degree credit toward graduation',
+      'Additional coursework after transfer',
+      'Graduation requirement coverage',
+      'Minimum transfer coursework',
+      'Cost of applying to more campuses',
+      'Missing courses by subject',
+      'Transfer pathway complexity',
+      'Associate degree transfer credit',
+    ])
+    for (const analysis of ANALYSES) {
+      expect(`${analysis.title} ${analysis.description}`).not.toMatch(
+        /\b(?:CCC|CC|UC|Fig|prereq)\b|\svs\s|\sx\s|[+/%]|paper-style/i
+      )
+    }
+  })
+
   it('shows admins every available visual regardless of publication', () => {
     const visible = filterBuiltInAnalyses(ANALYSES, {
       isAdmin: true,
@@ -141,5 +163,33 @@ describe('built-in visual registry', () => {
       disabledIds: ['complexity'],
     })
     expect(visible.map((analysis) => analysis.id)).toEqual(['coverage-heatmap'])
+  })
+})
+
+describe('visual gallery thumbnails', () => {
+  it('shows compact metadata and opens the full visual from one accessible target', () => {
+    const onOpen = vi.fn()
+    const Preview = () => <div data-testid='live-preview'>Preview contents</div>
+    const item = {
+      kind: 'analysis',
+      key: 'analysis:sample',
+      analysis: {
+        id: 'sample',
+        title: 'Sample transfer visual',
+        description: 'A compact description for the visual library.',
+        author_label: 'Researcher',
+        published_at: '2026-07-18T09:00:00',
+        Component: Preview,
+      },
+    }
+
+    render(<VisualThumbnailCard item={item} isAdmin releasedSet={new Set(['sample'])}
+      onOpen={onOpen} />)
+
+    expect(screen.getByText('A compact description for the visual library.')).toBeTruthy()
+    expect(screen.getByText('Published')).toBeTruthy()
+    expect(screen.getByTestId('live-preview')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Open Sample transfer visual' }))
+    expect(onOpen).toHaveBeenCalledOnce()
   })
 })

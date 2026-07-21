@@ -31,6 +31,7 @@ vi.mock('@frontend/query/hooks/useAudit', () => ({
 }))
 
 vi.mock('./DataPage', () => ({ default: () => <div>Data page stub</div> }))
+vi.mock('./showcase/ShowcasePage', () => ({ default: () => <div>Showcase page stub</div> }))
 vi.mock('./visuals/VisualsPage', () => ({ default: () => <div>Visuals page stub</div> }))
 vi.mock('./DataApiDocs', () => ({ default: () => <div>API page stub</div> }))
 vi.mock('./tasks/TasksPage', () => ({ default: () => <div>Tasks page stub</div> }))
@@ -48,7 +49,7 @@ describe('App chrome', () => {
 
     // The top nav now carries proper tab semantics: each nav pill has
     // role="tab" and aria-selected (the accessibility fix).
-    for (const label of ['Data', 'Visuals', 'Audit', 'Tasks', 'API', 'Admin']) {
+    for (const label of ['Data', 'Showcase', 'Visuals', 'Audit', 'Tasks', 'API', 'Admin']) {
       expect(screen.getByRole('tab', { name: label })).toBeInTheDocument()
     }
 

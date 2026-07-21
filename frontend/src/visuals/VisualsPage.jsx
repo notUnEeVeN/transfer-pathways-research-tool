@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { PencilSquareIcon, TrashIcon, ChartBarIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, EmptyState, Input, Spinner, SwitchField } from '../components/ui'
+import {
+  ArrowsPointingOutIcon, ChartBarIcon, PencilSquareIcon, TrashIcon,
+} from '@heroicons/react/24/outline'
+import {
+  Alert, Badge, Button, EmptyState, FullScreenPanel, Input, Spinner, SwitchField,
+} from '../components/ui'
 import AnalysisCard from '../analyses/AnalysisCard'
 import { downloadBlob } from '../analyses/exportCard'
 import { ANALYSES, getAnalysisById } from '../analyses/registry'
@@ -8,18 +12,158 @@ import apiClient from '../shared/api/apiClient'
 import { fmtDate } from '../shared/fmtDate'
 import { useAccessMe, useVisualSettings } from '../shared/query/hooks/useAccess'
 import { useDeleteFigure, useEditFigure, useFigures } from '../shared/query/hooks/useData'
+import { filterBuiltInAnalyses } from './analysisVisibility'
+
+export { filterBuiltInAnalyses } from './analysisVisibility'
 
 const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
 
-export function filterBuiltInAnalyses(analyses, { isAdmin, releasedIds = [], disabledIds = [] }) {
-  const released = new Set(releasedIds)
-  const disabled = new Set(disabledIds)
-  return analyses.filter((analysis) =>
-    !disabled.has(analysis.id) && (isAdmin || released.has(analysis.id)))
-}
-
 function PublicationBadge({ published }) {
   return <Badge variant={published ? 'success' : 'neutral'}>{published ? 'Published' : 'Admin only'}</Badge>
+}
+
+function useDeferredPreview() {
+  const [node, setNode] = useState(null)
+  const [ready, setReady] = useState(() => typeof IntersectionObserver === 'undefined')
+
+  useEffect(() => {
+    if (!node || ready || typeof IntersectionObserver === 'undefined') return undefined
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return
+      setReady(true)
+      observer.disconnect()
+    }, { rootMargin: '280px' })
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [node, ready])
+
+  return { previewRef: setNode, ready }
+}
+
+function FigureThumbnail({ fig }) {
+  const variants = fig.variants?.length
+    ? fig.variants
+    : [{ key: null, svg: fig.svg }]
+  const active = variants.find((variant) => variant.key === fig.default_variant) || variants[0] || null
+  const inlineSrc = active?.svg ? `data:image/svg+xml;base64,${active.svg}` : null
+  const [imageSrc, setImageSrc] = useState(inlineSrc)
+  const [assetError, setAssetError] = useState(false)
+
+  useEffect(() => {
+    setImageSrc(inlineSrc)
+    setAssetError(false)
+    if (inlineSrc || !active) return undefined
+
+    let cancelled = false
+    apiClient.get(figureAssetPath(fig.slug, 'svg', active.key), { responseType: 'blob' })
+      .then((response) => blobAsDataUrl(response.data))
+      .then((src) => { if (!cancelled) setImageSrc(src) })
+      .catch(() => { if (!cancelled) setAssetError(true) })
+    return () => { cancelled = true }
+  }, [active?.key, fig.slug, fig.updated_at, inlineSrc])
+
+  if (assetError) {
+    return (
+      <div className='absolute inset-0 grid place-items-center text-caption'>
+        Preview unavailable
+      </div>
+    )
+  }
+  if (!imageSrc) return <div className='absolute inset-0 grid place-items-center'><Spinner /></div>
+  return (
+    <img src={imageSrc} alt='' className='absolute inset-0 h-full w-full object-contain p-3
+      transition-transform duration-300 ease-out group-hover:scale-[1.025]' />
+  )
+}
+
+function LiveThumbnail({ Component, publicationOptions }) {
+  if (!Component) {
+    return (
+      <div className='absolute inset-0 grid place-items-center px-6 text-center text-caption'>
+        Interactive preview unavailable
+      </div>
+    )
+  }
+  return (
+    // The live component is rendered at a useful desktop width, then reduced to
+    // one third. `inert` keeps its controls out of the tab order until the user
+    // opens the full visual.
+    <div className='absolute inset-0 overflow-hidden bg-surface' aria-hidden='true' inert={true}>
+      <div className='w-[300%] min-h-[300%] origin-top-left scale-[.333333] p-5
+        transition-transform duration-300 ease-out group-hover:scale-[.341666]'>
+        <Component publicationOptions={publicationOptions || {}} />
+      </div>
+    </div>
+  )
+}
+
+function itemDetails(item, { isAdmin, releasedSet }) {
+  if (item.kind === 'figure') {
+    const fig = item.figure
+    return {
+      title: fig.title,
+      description: fig.caption || 'A visual published by the research team.',
+      source: `${fig.author_label || shortAuthorUid(fig.author_uid)}${fig.updated_at ? ` · ${fmtDate(fig.updated_at)}` : ''}`,
+      badge: <Badge variant='accent'>{fig.publication_type === 'interactive' ? 'Interactive' : 'Published figure'}</Badge>,
+    }
+  }
+
+  const { analysis } = item
+  return {
+    title: analysis.title,
+    description: analysis.description,
+    source: `${analysis.author_label} · ${fmtDate(analysis.published_at)}`,
+    badge: isAdmin
+      ? <PublicationBadge published={releasedSet.has(analysis.id)} />
+      : <Badge variant='accent'>Interactive</Badge>,
+  }
+}
+
+export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new Set(), onOpen }) {
+  const { previewRef, ready } = useDeferredPreview()
+  const details = itemDetails(item, { isAdmin, releasedSet })
+  const figure = item.kind === 'figure' ? item.figure : null
+  const analysis = item.kind === 'analysis'
+    ? item.analysis
+    : getAnalysisById(figure?.visual?.id)
+  const Component = analysis?.Component || null
+
+  return (
+    <article className='group relative surface-card overflow-hidden transition-[border-color,transform]
+      duration-200 hover:-translate-y-0.5 hover:border-border-strong focus-within:border-primary'>
+      <div ref={previewRef} className='relative aspect-[16/10] overflow-hidden border-b border-border bg-surface-muted'>
+        {ready && (figure && figure.publication_type !== 'interactive'
+          ? <FigureThumbnail fig={figure} />
+          : <LiveThumbnail Component={Component} publicationOptions={figure?.visual?.options} />)}
+        {!ready && <div className='absolute inset-0 grid place-items-center'><Spinner /></div>}
+        <div className='absolute inset-0 z-10 grid place-items-center bg-primary/0 transition-colors
+          duration-200 group-hover:bg-primary/18 group-focus-within:bg-primary/18' aria-hidden='true'>
+          <span className='flex translate-y-1 items-center gap-2 rounded-pill bg-primary px-4 py-2
+            text-button text-on-primary opacity-0 transition-[opacity,transform] duration-200
+            group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0
+            group-focus-within:opacity-100'>
+            <ArrowsPointingOutIcon className='h-4 w-4' />
+            Open visual
+          </span>
+        </div>
+      </div>
+
+      <div className='flex min-h-[152px] flex-col gap-2 p-4'>
+        <div className='flex items-start gap-3'>
+          <h2 className='min-w-0 flex-1 text-body-strong leading-snug'>
+            {details.title}
+          </h2>
+          <div className='shrink-0'>{details.badge}</div>
+        </div>
+        <p className='line-clamp-2 text-caption text-ink-muted'>{details.description}</p>
+        <p className='mt-auto truncate text-caption'>{details.source}</p>
+      </div>
+
+      <button type='button' onClick={onOpen}
+        className='absolute inset-0 z-20 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+        aria-label={`Open ${details.title}`} title={`Open ${details.title}`} />
+    </article>
+  )
 }
 
 function stateMatches(variant, controls, desired) {
@@ -277,6 +421,7 @@ export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSa
 }
 
 export default function VisualsPage({ onNavigate = () => {} }) {
+  const [selectedKey, setSelectedKey] = useState(null)
   const me = useAccessMe()
   const isAdmin = me.data?.role === 'admin'
   const myUid = me.data?.uid || null
@@ -296,24 +441,66 @@ export default function VisualsPage({ onNavigate = () => {} }) {
   const figures = figuresQuery.data?.figures || []
   const gallery = useMemo(() => {
     const builtIns = visibleAnalyses.map((analysis) => ({
-      kind: 'analysis', key: analysis.id, at: analysis.published_at, analysis,
+      kind: 'analysis', key: `analysis:${analysis.id}`, at: analysis.published_at, analysis,
     }))
     const published = figures.map((figure) => ({
-      kind: 'figure', key: figure.slug, at: figure.updated_at, figure,
+      kind: 'figure', key: `figure:${figure.slug}`, at: figure.updated_at, figure,
     }))
     return [...builtIns, ...published]
       .sort((a, b) => new Date(a.at || 0) - new Date(b.at || 0))
   }, [figures, visibleAnalyses])
+  const selectedItem = gallery.find((item) => item.key === selectedKey) || null
+  const selectedDetails = selectedItem
+    ? itemDetails(selectedItem, { isAdmin, releasedSet })
+    : null
 
   const loading = figuresQuery.isLoading || visualSettings.isLoading
   const failed = figuresQuery.isError || visualSettings.isError
 
+  const renderDetail = (item) => {
+    if (item.kind === 'figure') {
+      const figure = item.figure
+      const PublishedCard = figure.publication_type === 'interactive'
+        ? InteractiveFigureCard
+        : FigureCard
+      return (
+        <PublishedCard fig={figure}
+          canModify={isAdmin || (!!myUid && figure.author_uid === myUid)}
+          onDelete={() => {
+            deleteFigure.mutate(figure.slug)
+            setSelectedKey(null)
+          }}
+          deleting={deleteFigure.isPending}
+          onSave={(fields) => editFigure.mutateAsync({ slug: figure.slug, fields })}
+          saving={editFigure.isPending} />
+      )
+    }
+
+    const { analysis } = item
+    const Component = analysis.Component
+    return (
+      <AnalysisCard title={analysis.title}
+        source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
+        exportName={analysis.id}
+        badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
+        <Component />
+      </AnalysisCard>
+    )
+  }
+
   return (
-    // App.jsx already wraps every tab in a max-w-screen-2xl px-6 py-6 shell, so
-    // this only narrows to the console mockup's 1180px reading column (v2:668)
-    // and sets the vertical rhythm between cards. The pb-6 on the bottom edge
-    // stacks with App.jsx's 24px to reach 48px total bottom padding per spec.
-    <div className='max-w-[1180px] mx-auto flex flex-col gap-5 pb-6'>
+    <div className='max-w-[1320px] mx-auto flex flex-col gap-5 pb-6'>
+      <div className='flex items-end justify-between gap-6'>
+        <div>
+          <h1 className='text-heading'>Visual library</h1>
+          <p className='mt-1 text-body text-ink-muted'>
+            Browse compact previews, then open a visual to explore, edit, or export it.
+          </p>
+        </div>
+        {!!gallery.length && (
+          <Badge variant='neutral'>{gallery.length} {gallery.length === 1 ? 'visual' : 'visuals'}</Badge>
+        )}
+      </div>
       {figuresQuery.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
       {visualSettings.isError && <Alert type='error'>Failed to load built-in visual settings.</Alert>}
       {loading && !gallery.length && <div className='flex justify-center py-10'><Spinner /></div>}
@@ -325,32 +512,20 @@ export default function VisualsPage({ onNavigate = () => {} }) {
             : 'Published visuals will appear here as the team finishes them.'}
           action={isAdmin ? <Button onClick={() => onNavigate('admin')}>Open visual settings</Button> : null} />
       )}
-      {gallery.map((item) => {
-        if (item.kind === 'figure') {
-          const figure = item.figure
-          const PublishedCard = figure.publication_type === 'interactive'
-            ? InteractiveFigureCard
-            : FigureCard
-          return (
-            <PublishedCard key={item.key} fig={figure}
-              canModify={isAdmin || (!!myUid && figure.author_uid === myUid)}
-              onDelete={() => deleteFigure.mutate(figure.slug)} deleting={deleteFigure.isPending}
-              onSave={(fields) => editFigure.mutateAsync({ slug: figure.slug, fields })}
-              saving={editFigure.isPending} />
-          )
-        }
+      {!!gallery.length && (
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
+          {gallery.map((item) => (
+            <VisualThumbnailCard key={item.key} item={item} isAdmin={isAdmin}
+              releasedSet={releasedSet} onOpen={() => setSelectedKey(item.key)} />
+          ))}
+        </div>
+      )}
 
-        const { analysis } = item
-        const Component = analysis.Component
-        return (
-          <AnalysisCard key={item.key} title={analysis.title}
-            source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
-            exportName={analysis.id}
-            badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
-            <Component />
-          </AnalysisCard>
-        )
-      })}
+      <FullScreenPanel open={!!selectedItem} onClose={() => setSelectedKey(null)}
+        title={selectedDetails?.title} subtitle={selectedDetails?.source}
+        ariaLabel={selectedDetails ? `${selectedDetails.title} visual detail` : 'Visual detail'}>
+        {selectedItem && renderDetail(selectedItem)}
+      </FullScreenPanel>
     </div>
   )
 }
