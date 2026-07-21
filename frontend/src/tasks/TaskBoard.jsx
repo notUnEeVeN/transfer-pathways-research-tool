@@ -168,11 +168,11 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
                 dragging ? 'overflow-visible' : 'overflow-y-auto'}`}>
                 {col.length === 0 && (
                   status === 'verification' ? (
-                    <p className='rounded-xl px-3 py-[22px] text-center text-[12.5px] text-ink-subtle'>
+                    <p className='rounded-xl px-3 py-[22px] text-center text-tag text-ink-subtle'>
                       Nothing awaiting verification
                     </p>
                   ) : (
-                    <p className='border-[1.5px] border-dashed border-border-strong rounded-xl px-3 py-[22px] text-center text-[12.5px] text-ink-subtle'>
+                    <p className='border-[1.5px] border-dashed border-border-strong rounded-xl px-3 py-[22px] text-center text-tag text-ink-subtle'>
                       Drop a task here
                     </p>
                   )

@@ -241,23 +241,23 @@ export function DataTable({ columns, rows, maxHeight = 'max-h-[68vh]', onEdit, o
         <thead>
           <tr>
             {columns.map((col) => (
-              <th key={col.key} className={`sticky top-0 bg-surface border-b border-border/60 px-[22px] py-3 text-label ${col.className || ''}`}>
+              <th key={col.key} className={`sticky top-0 bg-surface border-b border-border px-5 py-3 text-label ${col.className || ''}`}>
                 {col.label}
               </th>
             ))}
-            {showActions && <th className='sticky top-0 bg-surface border-b border-border/60 px-[22px] py-3 text-label text-right'>edit</th>}
+            {showActions && <th className='sticky top-0 bg-surface border-b border-border px-5 py-3 text-label text-right'>edit</th>}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={row._id || row.key || i} className='hover:bg-surface-hover'>
               {columns.map((col) => (
-                <td key={col.key} className={`border-b border-border/40 px-[22px] py-[13px] text-caption align-top ${col.cellClassName || 'text-ink-muted'}`}>
+                <td key={col.key} className={`border-b border-border px-5 py-3 text-caption align-top ${col.cellClassName || 'text-ink-muted'}`}>
                   {col.render ? col.render(row) : (row[col.key] ?? '-')}
                 </td>
               ))}
               {showActions && (
-                <td className='border-b border-border/40 px-[22px] py-[13px] text-right whitespace-nowrap'>
+                <td className='border-b border-border px-5 py-3 text-right whitespace-nowrap'>
                   <span className='inline-flex items-center gap-1'>
                     {onEdit && <IconButton variant='ghost' icon={PencilSquareIcon} label='Edit row' onClick={() => onEdit(row)} />}
                     {onDelete && <IconButton variant='danger' icon={TrashIcon} label='Delete row' disabled={deleting} onClick={() => onDelete(row)} />}
@@ -284,7 +284,7 @@ function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, q
         <div className='flex items-center gap-2 bg-canvas border border-border rounded-pill px-3 py-[7px] mx-1 mb-2'>
           <MagnifyingGlassIcon className='w-3.5 h-3.5 text-ink-subtle shrink-0' />
           <input value={query} onChange={(e) => onQuery(e.target.value)} placeholder={placeholder}
-            className='flex-1 min-w-0 bg-transparent outline-none border-none text-[13px] text-ink placeholder:text-ink-subtle' />
+            className='flex-1 min-w-0 bg-transparent outline-none border-none text-caption ink-default placeholder:text-ink-subtle' />
         </div>
       )}
       <div className='flex flex-col gap-0.5'>
@@ -292,7 +292,7 @@ function ReferenceRail({ title, count, rows, selectedKey, onSelect, renderRow, q
           const active = String(row.key) === String(selectedKey)
           return (
             <button key={row.key} type='button' onClick={() => onSelect(row.key)}
-              className={`w-full flex items-start gap-2.5 rounded-[10px] px-3 py-[9px] text-left transition-colors ${
+              className={`w-full flex items-start gap-2.5 rounded-md px-3 py-[9px] text-left transition-colors ${
                 active ? 'bg-primary-soft font-[650]' : 'hover:bg-surface-hover'}`}>
               <span className={`w-[3px] h-3.5 rounded-pill mt-0.5 shrink-0 ${active ? 'bg-accent' : 'bg-transparent'}`} />
               <span className='min-w-0 flex-1'>{renderRow(row)}</span>
@@ -360,7 +360,7 @@ function DistrictLookup({ rows }) {
   return (
     <Stack gap='cozy'>
       <div className='flex flex-wrap items-center gap-3'>
-        <span className='text-[13px] text-ink-subtle'>
+        <span className='text-caption ink-subtle'>
           {intFmt.format(rows.length)} colleges mapped to {intFmt.format(districts.length)} districts
         </span>
         <Button className='ml-auto' leadingIcon={PlusIcon}
@@ -375,8 +375,8 @@ function DistrictLookup({ rows }) {
           placeholder='Find district, county, college…'
           renderRow={(row) => (
             <>
-              <span className='block text-[13.5px] text-ink truncate'>{row.name}</span>
-              <span className='block text-[11.5px] text-ink-subtle truncate mt-px'>{row.colleges.length} colleges · {row.region}</span>
+              <span className='block text-caption ink-default truncate'>{row.name}</span>
+              <span className='block text-tag text-ink-subtle truncate mt-px'>{row.colleges.length} colleges · {row.region}</span>
             </>
           )} />
 
@@ -384,9 +384,9 @@ function DistrictLookup({ rows }) {
           <EmptyState title='No reference rows' description='The district reference table is empty.' />
         ) : (
           <Stack gap='cozy'>
-            <div className='surface-card px-[22px] py-[18px] flex flex-col gap-2.5'>
-              <p className='text-[16px] font-[650] tracking-[-.01em]'>{selected.name}</p>
-              <p className='text-[13px] text-ink-subtle'>{selected.region} · {selected.colleges.length} colleges</p>
+            <div className='surface-card px-5 py-[18px] flex flex-col gap-2.5'>
+              <p className='heading-card tracking-[-.01em]'>{selected.name}</p>
+              <p className='text-caption ink-subtle'>{selected.region} · {selected.colleges.length} colleges</p>
               <div className='flex flex-wrap gap-2'>
                 {selected.counties.map((county) => <span key={county} className='chip'>{county}</span>)}
               </div>
@@ -444,10 +444,10 @@ export function CampusMinimums({ schoolId }) {
 
   return (
     <Stack gap='cozy'>
-      <div className='surface-card px-[22px] py-[18px] flex flex-wrap items-start gap-4'>
+      <div className='surface-card px-5 py-[18px] flex flex-wrap items-start gap-4'>
         <div className='min-w-0'>
-          <p className='text-label text-[12px]'>Hand-curated minimum transfer requirements</p>
-          <p className='mt-1.5 text-[19px] font-[650] tracking-[-.01em] break-words'>
+          <p className='text-label'>Hand-curated minimum transfer requirements</p>
+          <p className='mt-1.5 heading-section tracking-[-.01em] break-words'>
             {schoolName || 'No requirements for this campus yet'}{ucCode ? <span className='text-ink-subtle'> · {ucCode}</span> : null}
           </p>
           <p className='text-caption text-ink-muted mt-1'>

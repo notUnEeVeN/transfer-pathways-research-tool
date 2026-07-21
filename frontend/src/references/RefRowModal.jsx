@@ -40,7 +40,7 @@ function MatchedCourseField({ value = [], schoolId, onChange }) {
       <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Search UC courses to link…' leadingIcon={MagnifyingGlassIcon} />
       {courses.isLoading && <div className='py-2'><Spinner /></div>}
       {!!results.length && (
-        <div className='surface-card mt-1 divide-y divide-border/60 max-h-56 overflow-auto'>
+        <div className='surface-card mt-1 divide-y divide-border max-h-56 overflow-auto'>
           {results.map((c) => (
             <button key={c.parent_id} type='button' onClick={() => pick(c)} className='w-full text-left px-3 py-1.5 hover:bg-surface-hover'>
               <span className='font-mono text-ink'>{c.prefix} {c.number}</span>

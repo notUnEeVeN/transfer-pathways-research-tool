@@ -14,7 +14,7 @@ import RouteHint from './RouteHint'
 export default function SubNav({ tabs, route, children }) {
   const rightSlot = route ? <RouteHint path={route.path} method={route.method} /> : children
   return (
-    <div className='flex items-center gap-4 h-[54px] px-[22px] border-b border-border/60'>
+    <div className='flex items-center gap-4 h-[54px] px-[22px] border-b border-border'>
       <Tabs {...tabs} />
       {rightSlot && <div className='ml-auto min-w-0 flex-1 flex justify-end'>{rightSlot}</div>}
     </div>

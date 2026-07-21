@@ -31,7 +31,7 @@ import { exportAnalysisCard } from './exportCard'
 function DownloadButton({ onClick, disabled, children }) {
   return (
     <button type='button' onClick={onClick} disabled={disabled}
-      className='flex items-center gap-1.5 rounded-pill px-3 py-[7px] text-[12.5px] font-[550] text-ink
+      className='flex items-center gap-1.5 rounded-pill px-3 py-[7px] text-tag text-ink
         hover:bg-primary-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed'>
       <ArrowDownTrayIcon className='w-3 h-3' aria-hidden='true' />
       {children}
@@ -70,7 +70,7 @@ export default function AnalysisCard({
           (LaTeX supplies the caption via \caption{}), not a screenshot. */}
       <div className='flex flex-wrap items-start gap-3' data-export-exclude>
         <div className='min-w-0'>
-          <h2 className='text-[17px] font-[650] tracking-[-.01em] break-words'>{title}</h2>
+          <h2 className='heading-card tracking-[-.01em] break-words'>{title}</h2>
           {source && <p className='mt-0.5 text-[12.5px] text-ink-subtle break-words'>{source}</p>}
         </div>
         <div className='ml-auto shrink-0 flex items-center gap-2'>

@@ -45,7 +45,7 @@ export default function AdminPage() {
 // inverts with the light/dark toggle.
 function ProductionBanner() {
   return (
-    <div className='rounded-[18px] px-[22px] py-4 flex items-center gap-3.5' style={{ background: '#193018' }}>
+    <div className='rounded-xl px-[22px] py-4 flex items-center gap-3.5' style={{ background: '#193018' }}>
       <span aria-hidden='true' className='w-[9px] h-[9px] rounded-pill shrink-0' style={{ background: '#96F060', animation: 'pmt-pulse 2.2s ease-out infinite' }} />
       <div>
         <p className='text-[13.5px] font-[650] text-[#F0FFE7]'>Production target</p>
@@ -53,7 +53,7 @@ function ProductionBanner() {
           transfer-pathways-tool.up.railway.app · live research database — changes apply immediately
         </p>
       </div>
-      <span className='ml-auto text-[11.5px] font-semibold rounded-pill px-[11px] py-1' style={{ background: '#96F060', color: '#193018' }}>
+      <span className='ml-auto text-tag font-semibold rounded-pill px-[11px] py-1' style={{ background: '#96F060', color: '#193018' }}>
         live
       </span>
     </div>
@@ -72,8 +72,8 @@ function AuditPulsePanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Audit pulse</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Audit pulse</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           All-time audit counts per auditor, and what those audits caught.
         </p>
       </div>
@@ -81,7 +81,7 @@ function AuditPulsePanel() {
         <p className='text-caption text-ink-subtle'>No audits yet.</p>
       ) : (
         <div className='surface-card overflow-hidden max-w-[560px]'>
-          <div className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 border-b border-border/60'>
+          <div className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 border-b border-border'>
             <span className='text-label text-[10.5px]'>Auditor</span>
             <span className='text-label text-[10.5px] text-right'>Audits</span>
             <span className='text-label text-[10.5px] text-right'>Errors</span>
@@ -89,21 +89,21 @@ function AuditPulsePanel() {
           </div>
           {people.map((person) => (
             <div key={person.uid}
-              className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 border-b border-border/40 items-center'>
+              className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 border-b border-border items-center'>
               <span className='flex items-center gap-2 min-w-0'>
                 <UserInitialsAvatar email={person.label || person.uid} size='sm' className='!w-[20px] !h-[20px]' />
-                <span className='text-[13px] font-[550] truncate'>{person.label || person.uid}</span>
+                <span className='text-caption ink-default font-[550] truncate'>{person.label || person.uid}</span>
               </span>
-              <span className='text-[13px] text-right tabular'>{person.count}</span>
-              <span className='text-[13px] text-right tabular'>{person.errors}</span>
-              <span className='text-[13px] text-right tabular'>{person.conservative}</span>
+              <span className='text-caption ink-default text-right tabular'>{person.count}</span>
+              <span className='text-caption ink-default text-right tabular'>{person.errors}</span>
+              <span className='text-caption ink-default text-right tabular'>{person.conservative}</span>
             </div>
           ))}
-          <div className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 bg-surface-sunken/60 items-center'>
-            <span className='text-[13px] font-[650]'>Total</span>
-            <span className='text-[13px] font-[650] text-right tabular'>{totals.count}</span>
-            <span className='text-[13px] font-[650] text-right tabular'>{totals.errors}</span>
-            <span className='text-[13px] font-[650] text-right tabular'>{totals.conservative}</span>
+          <div className='grid grid-cols-[minmax(0,1fr)_72px_72px_100px] gap-3 px-[18px] py-2.5 bg-surface-sunken items-center'>
+            <span className='text-caption ink-default font-[650]'>Total</span>
+            <span className='text-caption ink-default font-[650] text-right tabular'>{totals.count}</span>
+            <span className='text-caption ink-default font-[650] text-right tabular'>{totals.errors}</span>
+            <span className='text-caption ink-default font-[650] text-right tabular'>{totals.conservative}</span>
           </div>
         </div>
       )}
@@ -128,8 +128,8 @@ function SignInRequestsPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Sign-in requests</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Sign-in requests</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           These accounts signed in with Google but aren't approved yet. Grant
           gives them the partner role on the spot — their waiting screen unlocks
           within seconds. Reject blocks the account: it's removed here, any
@@ -144,8 +144,8 @@ function SignInRequestsPanel() {
           {requests.map((r) => (
             <div key={r.uid} className='surface-card px-[22px] py-4 flex items-center gap-3'>
               <div className='min-w-0'>
-                <p className='text-[14px] font-semibold break-words'>{r.email || r.name || r.uid}</p>
-                <p className='text-[12.5px] text-ink-subtle mt-0.5 break-words'>
+                <p className='text-body-strong break-words'>{r.email || r.name || r.uid}</p>
+                <p className='text-tag text-ink-subtle mt-0.5 break-words'>
                   {r.name && r.email ? `${r.name} · ` : ''}
                   <span className='font-mono'>{r.uid}</span>
                   {r.last_seen ? ` · last attempt ${new Date(r.last_seen).toLocaleString()}` : ''}
@@ -188,8 +188,8 @@ function BlockedAccountsPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Blocked accounts</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Blocked accounts</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Rejected accounts. They can't request access or sign in to the console.
           Un-block to let them request again (you still approve the request).
         </p>
@@ -201,8 +201,8 @@ function BlockedAccountsPanel() {
           {blocked.map((b) => (
             <div key={b.uid} className='surface-card px-[22px] py-4 flex items-center gap-3'>
               <div className='min-w-0'>
-                <p className='text-[14px] font-semibold break-words'>{b.email || b.name || b.uid}</p>
-                <p className='text-[12.5px] text-ink-subtle mt-0.5 break-words'>
+                <p className='text-body-strong break-words'>{b.email || b.name || b.uid}</p>
+                <p className='text-tag text-ink-subtle mt-0.5 break-words'>
                   {b.name && b.email ? `${b.name} · ` : ''}
                   <span className='font-mono'>{b.uid}</span>
                   {b.blocked_at ? ` · blocked ${new Date(b.blocked_at).toLocaleString()}` : ''}
@@ -274,8 +274,8 @@ function MajorAccessPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Working major by campus</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Working major by campus</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Choose one major for each UC included in the working dataset. The
           selection scopes browsing, audits, analyses, and visuals for everyone;
           the full ported dataset remains available in the admin inventory below.
@@ -300,7 +300,7 @@ function MajorAccessPanel() {
             const value = selected.get(schoolId) || ''
             const options = s.majors.map((major) => ({ value: major, label: major }))
             return (
-              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,28rem)] gap-3 items-center border-b border-border/40 pb-4'>
+              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,28rem)] gap-3 items-center border-b border-border pb-4'>
                 <div className='min-w-0'>
                   <p className='text-body-strong'>{s.school}</p>
                   <p className='text-caption text-ink-subtle'>{s.majors.length} available {s.majors.length === 1 ? 'major' : 'majors'}</p>
@@ -350,8 +350,8 @@ function VisualSettingsPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Built-in visuals</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Built-in visuals</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Available controls your admin Visuals gallery. Published controls the
           team gallery; hidden visuals remain unpublished until they are made
           available again.
@@ -363,7 +363,7 @@ function VisualSettingsPanel() {
         ) : settings.isError ? (
           <Alert type='error'>Failed to load visual settings.</Alert>
         ) : (
-          <div className='divide-y divide-border/40'>
+          <div className='divide-y divide-border'>
             {ANALYSES.map((analysis) => {
               const isHidden = hidden.has(analysis.id)
               const isPublished = published.has(analysis.id)
@@ -414,8 +414,8 @@ function DatasetPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Dataset</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Dataset</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Updated {meta.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}
           {' '}· ported with <span className='font-mono'>scripts/port.py</span> from the admin machine
         </p>
@@ -449,10 +449,10 @@ function TeamNameRow({ member, onSave, saving }) {
   useEffect(() => { setName(member.name || '') }, [member.name])
   const dirty = name.trim() !== (member.name || '')
   return (
-    <div className='grid grid-cols-[minmax(0,1fr)_240px_70px] gap-[18px] items-center px-[22px] py-[13px] border-b border-border/40 last:border-0'>
+    <div className='grid grid-cols-[minmax(0,1fr)_240px_70px] gap-[18px] items-center px-[22px] py-[13px] border-b border-border last:border-0'>
       <div className='min-w-0'>
-        <p className='text-[13.5px] font-semibold truncate'>{member.email || <span className='font-mono'>{member.uid}</span>}</p>
-        <p className='text-[12px] text-ink-subtle'>{member.is_admin ? 'admin' : 'partner'}{member.email ? ` · ${member.uid.slice(0, 10)}…` : ''}</p>
+        <p className='text-caption ink-default font-semibold truncate'>{member.email || <span className='font-mono'>{member.uid}</span>}</p>
+        <p className='text-tag text-ink-subtle'>{member.is_admin ? 'admin' : 'partner'}{member.email ? ` · ${member.uid.slice(0, 10)}…` : ''}</p>
       </div>
       <Input value={name} onChange={(e) => setName(e.target.value)} placeholder='Display name' />
       <Button variant={dirty ? 'primary' : 'ghost'} className='justify-self-end' disabled={!dirty || saving}
@@ -468,8 +468,8 @@ function TeamNamesPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Team names</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Team names</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Give each account a display name. It's what shows for task assignees
           and figure authors everywhere in the console — instead of the mix of
           emails and UIDs. Clear a name to fall back to the email/UID.
@@ -512,8 +512,8 @@ function AccessPanel() {
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='text-[16px] font-[650] tracking-[-.01em]'>Partner access</h2>
-        <p className='text-[13px] leading-[1.55] text-ink-subtle max-w-[76ch] mt-1'>
+        <h2 className='heading-card tracking-[-.01em]'>Partner access</h2>
+        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Granted accounts can audit and browse the research dataset. Normally
           you'll approve people from Sign-in requests (they appear there the
           moment they try to sign in); this form pre-grants a Firebase UID
@@ -539,7 +539,7 @@ function AccessPanel() {
         ) : !(list.data?.partners || []).length ? (
           <p className='text-caption text-ink-subtle'>No partners granted yet.</p>
         ) : (
-          <div className='divide-y divide-border/40'>
+          <div className='divide-y divide-border'>
             {list.data.partners.map((p) => (
               <div key={p.uid} className='py-2 flex items-center gap-3'>
                 <div className='min-w-0'>

@@ -20,20 +20,20 @@ export default function CampusCoverage({ filter }) {
   const rows = q.data?.rows || []
   return (
     <div className='surface-card overflow-hidden'>
-      <div className='px-[22px] pt-[18px] pb-1.5 flex items-baseline justify-between gap-3 flex-wrap'>
+      <div className='px-5 pt-[18px] pb-1.5 flex items-baseline justify-between gap-3 flex-wrap'>
         <p className='text-label'>Template verification by campus</p>
-        <span className='text-[12.5px] text-ink-subtle'>audited / total template clusters</span>
+        <span className='text-tag text-ink-subtle'>audited / total template clusters</span>
       </div>
       {q.isLoading ? (
-        <div className='flex items-center gap-2 text-caption px-[22px] pb-[18px]'>
+        <div className='flex items-center gap-2 text-caption px-5 pb-[18px]'>
           <Spinner /> Loading coverage…
         </div>
       ) : q.isError ? (
-        <div className='px-[22px] pb-[18px]'>
+        <div className='px-5 pb-[18px]'>
           <Alert type='error'>Failed to load campus verification progress.</Alert>
         </div>
       ) : !rows.length ? (
-        <p className='text-caption text-ink-subtle italic px-[22px] pb-[18px]'>No templates for this filter.</p>
+        <p className='text-caption text-ink-subtle italic px-5 pb-[18px]'>No templates for this filter.</p>
       ) : (
         rows.map((r) => {
           const errors = (r.cells || []).reduce((s, c) => s + (c.errors || 0), 0)
@@ -43,10 +43,10 @@ export default function CampusCoverage({ filter }) {
             (errors > 0 ? ` · ${int(errors)} error${errors === 1 ? '' : 's'}` : '')
           return (
             <div key={`${r.system}|${r.school_id}`} title={detail}
-              className='grid grid-cols-[180px_1fr_72px] items-center gap-4 px-[22px] py-[11px] border-b border-border/40 last:border-0 hover:bg-surface-hover'>
+              className='grid grid-cols-[180px_1fr_72px] items-center gap-4 px-5 py-[11px] border-b border-border last:border-0 hover:bg-surface-hover'>
               <div className='flex items-center'>
-                <span className='text-[13.5px] font-[550] truncate'>{r.campus}</span>
-                {errors > 0 && <span className='ml-2 text-[11.5px] font-semibold text-danger whitespace-nowrap'>{errors} err</span>}
+                <span className='text-caption font-[550] ink-default truncate'>{r.campus}</span>
+                {errors > 0 && <span className='ml-2 text-tag font-semibold text-danger whitespace-nowrap'>{errors} err</span>}
               </div>
               <span className='h-1.5 rounded-pill bg-surface-sunken overflow-hidden'>
                 {/* Solid inline fill — utility opacity classes resolve to the UUI white surface token here. */}
@@ -56,7 +56,7 @@ export default function CampusCoverage({ filter }) {
                 />
               </span>
               {/* The fraction (not a percent) so what's LEFT per campus is readable at a glance. */}
-              <span className='text-[13px] font-[550] text-right tabular whitespace-nowrap'>
+              <span className='text-caption font-[550] ink-default text-right tabular whitespace-nowrap'>
                 {int(r.templatesAudited)}/{int(r.templatesTotal)}
               </span>
             </div>

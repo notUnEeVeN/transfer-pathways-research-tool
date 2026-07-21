@@ -30,8 +30,8 @@ export default function Tabs({ value, onChange, options, multiple = false, class
             aria-selected={multiple ? undefined : active}
             aria-pressed={multiple ? active : undefined}
             onClick={() => onChange(opt.value)}
-            className={`inline-flex items-center justify-center whitespace-nowrap px-[15px] h-auto py-[6.5px] rounded-pill text-[13px] transition-[background-color,color] duration-150 ${
-              active ? 'bg-primary text-on-primary font-[650] hover:bg-primary-hover' : 'text-ink-muted font-medium hover:text-ink hover:bg-surface-hover'
+            className={`inline-flex items-center justify-center whitespace-nowrap px-[15px] h-auto py-[6.5px] rounded-pill text-caption transition-[background-color,color] duration-150 ${
+              active ? 'bg-primary ink-inverse font-[650] hover:bg-primary-hover' : 'ink-muted font-medium hover:text-ink hover:bg-surface-hover'
             }`}
           >
             {/* A bold invisible twin reserves the active (650-weight) width so

@@ -66,12 +66,12 @@ function CourseItem({ code, title, units, done, mark = false }) {
             it to the success ink. */}
         <span className={`text-[14px] font-bold tabular tracking-[.01em] shrink-0 ${done ? 'text-success' : 'text-ink'}`}>{code}</span>
         {units && (
-          <span className='inline-flex items-center px-1.5 py-px rounded-[6px] bg-surface-sunken text-ink-muted text-[11px] font-[650] shrink-0'>
+          <span className='inline-flex items-center px-1.5 py-px rounded-xs bg-surface-sunken text-ink-muted text-[11px] font-[650] shrink-0'>
             {units}
           </span>
         )}
       </div>
-      {title && <p className='text-[13px] text-ink-muted mt-0.5'>{title}</p>}
+      {title && <p className='text-caption ink-muted mt-0.5'>{title}</p>}
     </div>
   )
 }
@@ -98,7 +98,7 @@ function Bracket({ conj, children }) {
               className='absolute left-1/2 -translate-x-1/2 top-1.5 bottom-1.5 w-2 border-y-2 border-l-2 border-border-strong/60 rounded-l-md'
             />
             {/* badge masks the line at its midpoint, like ASSIST */}
-            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center h-4 px-1.5 rounded-[6px] bg-surface border border-border-strong/60 text-ink-muted text-xs font-medium'>
+            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 inline-flex items-center h-4 px-1.5 rounded-xs bg-surface border border-border-strong/60 text-ink-muted text-xs font-medium'>
               {word}
             </span>
           </>
@@ -279,20 +279,20 @@ function CategoryMatch({ match }) {
   if (match.assumed) {
     return (
       <div className='min-w-0'>
-        <p className='text-[14px] font-semibold text-ink'>Qualifying community-college course</p>
-        <p className='text-[13px] text-ink-muted mt-0.5'>Available across community colleges; verify the approved local course.</p>
+        <p className='text-body-strong text-ink'>Qualifying community-college course</p>
+        <p className='text-caption ink-muted mt-0.5'>Available across community colleges; verify the approved local course.</p>
       </div>
     )
   }
 
   return (
     <div className='min-w-0'>
-      <p className='text-[14px] font-semibold text-ink'>
+      <p className='text-body-strong text-ink'>
         {match.qualifying_count == null
           ? 'Eligible course category'
           : `${match.qualifying_count} qualifying ${match.qualifying_count === 1 ? 'course' : 'courses'}`}
       </p>
-      <p className='text-[13px] text-ink-muted mt-0.5'>
+      <p className='text-caption ink-muted mt-0.5'>
         {areas ? `UC-transferable courses tagged for IGETC ${areas}` : 'Approved UC-transferable breadth courses'}
       </p>
     </div>
@@ -513,7 +513,7 @@ function Group({ group, ctx, showMissing, groupIdx }) {
             <h3 className='text-[21px] font-[650] tracking-[-.01em] text-ink'>{group.title || (group.is_required ? 'Required' : 'Recommended')}</h3>
             {groupComplete && <CompletionCheck />}
           </div>
-          {ruleLine && <p className='text-[13px] text-ink-subtle font-medium'>{ruleLine}</p>}
+          {ruleLine && <p className='text-caption ink-subtle font-medium'>{ruleLine}</p>}
         </Stack>
         <div className='flex flex-col gap-3'>
           {visible.map(({ section, index }) => (

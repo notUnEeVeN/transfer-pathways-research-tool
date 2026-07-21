@@ -72,7 +72,7 @@ function SectionHeader({ title, sub = null, hub = null, hubLabel = null, onNavig
   return (
     <div className='flex flex-wrap items-baseline gap-2.5 mb-2.5'>
       <p className='text-label'>{title}</p>
-      {sub && <span className='text-[12.5px] text-ink-subtle'>{sub}</span>}
+      {sub && <span className='text-tag text-ink-subtle'>{sub}</span>}
       {onNavigate && hub && (
         <Button variant='ghost' className='ml-auto' trailingIcon={ArrowRightIcon}
           onClick={() => onNavigate(hub)}>{hubLabel}</Button>
@@ -135,7 +135,7 @@ function CsDegreeLandscapePanel({ onNavigate }) {
             value: n(totals.other),
           },
         ]} />
-        <div className='border-t border-border/60 px-[22px] py-3.5'>
+        <div className='border-t border-border px-[22px] py-3.5'>
           <p className='text-label'>One-school-per-group breakdown</p>
           <div className='mt-2 flex flex-wrap gap-x-5 gap-y-1.5'>
             {breakdown.map(([value, label]) => (
@@ -190,13 +190,13 @@ function CampusTable({ schools, onNavigate = null }) {
     <div className='surface-card overflow-hidden'>
       <div className='px-[22px] pt-[18px] pb-1.5 flex items-baseline gap-2.5'>
         <p className='text-label'>Majors tracked per receiving campus</p>
-        <span className='text-[12.5px] text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
+        <span className='text-tag text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
         {onNavigate && (
           <Button variant='ghost' className='ml-auto' trailingIcon={ArrowRightIcon}
             onClick={() => onNavigate('institutions')}>Open UC Campuses</Button>
         )}
       </div>
-      <div className={`${CAMPUS_TABLE_COLS} px-[22px] py-2.5 border-b border-border/60`}>
+      <div className={`${CAMPUS_TABLE_COLS} px-[22px] py-2.5 border-b border-border`}>
         <span className='text-label'>Campus</span>
         <span className='text-label'>Majors</span>
         <span className='text-label'>Agreements</span>
@@ -206,10 +206,10 @@ function CampusTable({ schools, onNavigate = null }) {
       </div>
       {schools.map((s) => (
         <div key={s.school_id}
-          className={`${CAMPUS_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border/40 last:border-0 hover:bg-surface-hover`}>
-          <p className='text-[14px] font-semibold truncate min-w-0'>{s.school}</p>
-          <p className='text-[13.5px] tabular text-ink-muted'>{s.majors.length}</p>
-          <p className='text-[13.5px] tabular text-ink-muted'>{s.n_agreements}</p>
+          className={`${CAMPUS_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border last:border-0 hover:bg-surface-hover`}>
+          <p className='text-body-strong truncate min-w-0'>{s.school}</p>
+          <p className='text-caption tabular ink-muted'>{s.majors.length}</p>
+          <p className='text-caption tabular ink-muted'>{s.n_agreements}</p>
           <TemplateStatusCell row={templateBySchool.get(Number(s.school_id))}
             loading={degreeTemplates.isLoading} />
           <CampusCoverageCell pct={meanWebsite.get(s.school_id)} loading={websiteCoverage.isLoading} />
@@ -243,7 +243,7 @@ function CampusCoverageCell({ pct, loading }) {
       <span className='inline-block w-[110px] h-1.5 rounded-pill bg-surface-sunken overflow-hidden'>
         <span className={`block h-full rounded-pill ${v >= 90 ? 'bg-success' : 'bg-primary'}`} style={{ width: `${v}%` }} />
       </span>
-      <span className='text-[13.5px] font-[550] text-ink'>{pct}%</span>
+      <span className='text-caption ink-default font-[550]'>{pct}%</span>
     </span>
   )
 }

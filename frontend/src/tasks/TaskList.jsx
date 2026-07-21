@@ -37,11 +37,11 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
           const displayStatus = isAwaitingVerification(t) ? 'verification' : t.status
           return (
           <button key={t._id} type='button' onClick={() => onOpen(t)}
-            className='w-full text-left px-5 py-3 border-b border-border/40 last:border-0 hover:bg-surface-hover cursor-pointer flex items-center gap-3 transition-colors'>
+            className='w-full text-left px-5 py-3 border-b border-border last:border-0 hover:bg-surface-hover cursor-pointer flex items-center gap-3 transition-colors'>
             <Badge variant={STATUS_TONE[displayStatus]}>{STATUS_LABEL[displayStatus] || displayStatus}</Badge>
             {t.archived && <Badge>archived</Badge>}
             <Badge variant={taskTypeBadgeVariant(t.task_type)} className='hidden md:inline-flex'>{taskTypeLabel(t.task_type)}</Badge>
-            <span className={`text-[13.5px] font-semibold flex-1 min-w-0 truncate ${t.status === 'done' || t.archived ? 'text-ink-muted' : ''}`}>{t.title}</span>
+            <span className={`text-caption font-semibold flex-1 min-w-0 truncate ${t.status === 'done' || t.archived ? 'ink-muted' : 'ink-default'}`}>{t.title}</span>
             {t.status !== 'done' && (t.task_type === 'audit_fix' ? (
               // The fix inbox has no progress framing — just how many are open.
               <Badge className='hidden lg:inline-flex tabular'>
@@ -52,7 +52,7 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
                 <span className='w-20 h-[5px] rounded-full bg-surface-sunken overflow-hidden shrink-0'>
                   <span className='block h-full rounded-full bg-primary' style={{ width: `${Math.max(0, Math.min(100, t.progress || 0))}%` }} />
                 </span>
-                <span className='text-[11.5px] text-ink-subtle w-8 text-right shrink-0'>{t.progress || 0}%</span>
+                <span className='text-tag text-ink-subtle w-8 text-right shrink-0'>{t.progress || 0}%</span>
               </span>
             ))}
             <span className='hidden sm:inline-flex items-center gap-1.5 w-40 shrink-0'>
@@ -61,7 +61,7 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
                     <span className='text-tag text-ink-subtle truncate'>{t.assignee_label || t.assignee_uid}</span></>)
                 : <span className='text-tag text-ink-subtle'>unassigned</span>}
             </span>
-            <span className='text-[12.5px] text-ink-subtle w-14 text-right shrink-0'>{fmtDay(t.updated_at)}</span>
+            <span className='text-tag text-ink-subtle w-14 text-right shrink-0'>{fmtDay(t.updated_at)}</span>
           </button>
           )
         })}

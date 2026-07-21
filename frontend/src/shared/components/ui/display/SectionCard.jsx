@@ -50,7 +50,7 @@ export default function SectionCard({
             {headerMark && <span className='ml-auto'>{headerMark}</span>}
           </div>
         )}
-        <div className={`bg-surface${divide ? ' divide-y divide-border/40' : ''}`}>{children}</div>
+        <div className={`bg-surface${divide ? ' divide-y divide-border' : ''}`}>{children}</div>
         {footer}
       </div>
     </div>

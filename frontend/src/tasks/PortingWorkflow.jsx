@@ -210,7 +210,7 @@ export default function PortingWorkflow({
                   }`}>
                     {locked
                       ? <LockClosedIcon className='w-3 h-3' />
-                      : <span className='text-[11.5px] font-[650] tabular'>{index + 1}</span>}
+                      : <span className='text-tag font-[650] tabular'>{index + 1}</span>}
                   </span>
                 )}
               </div>
@@ -330,7 +330,7 @@ export default function PortingWorkflow({
                         </Button>
                       )}
                       {active && !canComplete && !stage.requiresPeer && (
-                        <span className='text-[12.5px] text-ink-subtle'>Only {assigneeLabel} can complete this stage.</span>
+                        <span className='text-tag text-ink-subtle'>Only {assigneeLabel} can complete this stage.</span>
                       )}
                     </div>
                     {active && forcing && (

@@ -120,7 +120,7 @@ export default function AuditFixInbox({ task, me, onCompleteStage, onReopenStage
             <CheckIcon className='w-3.5 h-3.5 text-accent' strokeWidth={2.5} />
           </span>
           <div className='min-w-0'>
-            <p className='text-[13px] font-[600]'>Inbox clear — everything flagged is fixed or re-audited correct.</p>
+            <p className='text-caption ink-default font-semibold'>Inbox clear — everything flagged is fixed or re-audited correct.</p>
             <p className='text-tag text-ink-subtle mt-0.5'>
               {task.status === 'done'
                 ? 'This task closed itself; new verdicts start a fresh one.'
@@ -135,17 +135,17 @@ export default function AuditFixInbox({ task, me, onCompleteStage, onReopenStage
           <div key={group.tier} className='flex flex-col'>
             <div className='flex items-center gap-2.5 pt-5 pb-2'>
               <span className='w-2 h-2 rounded-pill' style={{ backgroundColor: TIER_DOT[group.tier] }} />
-              <span className='text-label text-[11px]'>{group.label}</span>
-              <span className='text-[11.5px] font-[600] text-ink-muted bg-surface-sunken rounded-pill px-2 py-px'>
+              <span className='text-label'>{group.label}</span>
+              <span className='text-tag font-semibold text-ink-muted bg-surface-sunken rounded-pill px-2 py-px'>
                 {group.rows.length} open
               </span>
             </div>
             {group.rows.map((item) => (
-              <div key={item.key} className='flex items-start gap-3 py-3.5 border-b border-border/40 last:border-0'>
+              <div key={item.key} className='flex items-start gap-3 py-3.5 border-b border-border last:border-0'>
                 <span className='shrink-0 w-2 h-2 rounded-pill mt-[7px]' style={{ backgroundColor: TIER_DOT[item.tier] }} />
                 <div className='flex-1 min-w-0 flex flex-col gap-1.5'>
                   <div className='flex flex-wrap items-center gap-2'>
-                    <span className='text-[13.5px] font-[600] break-words'>{item.label}</span>
+                    <span className='text-caption ink-default font-semibold break-words'>{item.label}</span>
                     <span className={`shrink-0 text-[10.5px] font-bold tracking-[.05em] uppercase rounded-pill px-2 py-[2px] ${TIER_CHIP[item.tier]}`}>
                       {item.tier}
                     </span>
@@ -174,15 +174,15 @@ export default function AuditFixInbox({ task, me, onCompleteStage, onReopenStage
         {resolved.length > 0 && (
           <div className='flex flex-col'>
             <div className='flex items-center gap-2.5 pt-5 pb-2'>
-              <span className='text-label text-[11px]'>Resolved</span>
-              <span className='text-[11.5px] font-[600] text-ink-muted bg-surface-sunken rounded-pill px-2 py-px'>{resolved.length}</span>
+              <span className='text-label'>Resolved</span>
+              <span className='text-tag font-semibold text-ink-muted bg-surface-sunken rounded-pill px-2 py-px'>{resolved.length}</span>
               <Button size='sm' variant='ghost' className='ml-auto'
                 onClick={() => setShowResolved((current) => !current)}>
                 {showResolved ? 'Hide' : 'Show'}
               </Button>
             </div>
             {showResolved && resolved.map((item) => (
-              <div key={item.key} className='flex items-center gap-3 py-3 border-b border-border/40 last:border-0'>
+              <div key={item.key} className='flex items-center gap-3 py-3 border-b border-border last:border-0'>
                 {item.auto ? (
                   <span title='Checked off automatically by a re-audit'
                     className='shrink-0 grid place-items-center w-[18px] h-[18px] rounded-pill bg-success-soft'>
@@ -194,7 +194,7 @@ export default function AuditFixInbox({ task, me, onCompleteStage, onReopenStage
                     <CheckIcon className='w-2.5 h-2.5 text-accent' strokeWidth={2.5} />
                   </span>
                 )}
-                <span className='text-[13px] font-[550] text-ink-muted min-w-0 truncate'>{item.label}</span>
+                <span className='text-caption font-[550] ink-muted min-w-0 truncate'>{item.label}</span>
                 <span className={`ml-auto shrink-0 text-tag ${item.auto ? 'text-success' : 'text-ink-subtle'}`}>
                   {item.auto
                     ? `Re-audited correct · ${fmtWhen(item.state?.completed_at)}`

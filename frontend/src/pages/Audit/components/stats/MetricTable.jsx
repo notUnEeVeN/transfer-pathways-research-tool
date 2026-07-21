@@ -38,7 +38,7 @@ function MetricGroup({ title, rows }) {
   return (
     <Stack gap='tight'>
       <p className='text-label'>{title}</p>
-      <div className='divide-y divide-border/40'>
+      <div className='divide-y divide-border'>
         {visible.map((r) => (
           <MetricRow key={r.label} {...r} />
         ))}

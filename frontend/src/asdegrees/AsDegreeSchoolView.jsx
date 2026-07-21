@@ -189,7 +189,7 @@ export function DegreePanel({ degree, showDegreeTitle = true }) {
       )}
       {unresolved.length > 0 && (
         <div className='surface-card px-[18px] py-3.5'>
-          <p className='text-label text-[11px]'>Cited in the catalog · not in the course database</p>
+          <p className='text-label'>Cited in the catalog · not in the course database</p>
           <div className='mt-1.5 flex flex-col gap-1'>
             {unresolved.map((u, i) => (
               <p key={i} className='text-caption text-ink-subtle'>
@@ -246,7 +246,7 @@ export default function AsDegreeSchoolView({
     <Stack gap='cozy'>
       <div className='flex flex-wrap items-center gap-3'>
         <div className='min-w-[190px] flex-1'>
-          <p className='text-label text-[11px]'>Degree type</p>
+          <p className='text-label'>Degree type</p>
           <p className='mt-1 text-caption text-ink-muted'>
             {TYPE_DESCRIPTION[active.degree_type] || 'Associate degree'}
           </p>

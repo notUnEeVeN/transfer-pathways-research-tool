@@ -39,7 +39,7 @@ export default function PerSchoolBlock({ filter }) {
                 </thead>
                 <tbody>
                   {(perSchool.data || []).map((r) => (
-                    <tr key={`${r.system}|${r.school_id}`} className='border-t border-border/40'>
+                    <tr key={`${r.system}|${r.school_id}`} className='border-t border-border'>
                       <td className='py-1 pr-3'>{r.school}</td>
                       <td className='py-1 pr-3 text-right tabular'>{r.total}</td>
                       <td className='py-1 pr-3 text-right tabular'>{r.audited}</td>

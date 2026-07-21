@@ -54,7 +54,7 @@ export default function Lifecycle({ stats, compact = false }) {
         {/* Stale / flagged are surfaced in the top counts strip in compact mode,
             so the card is just the open/resolved error bar. */}
         {!compact && (
-          <div className='grid grid-cols-2 divide-x divide-border/40 border-t border-border/40 pt-3'>
+          <div className='grid grid-cols-2 divide-x divide-border border-t border-border pt-3'>
             <div className='pr-4'>
               <Stack gap='tight'>
                 <span className={`${statCls} text-conservative tabular`}>{int(stale)}</span>

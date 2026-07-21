@@ -170,7 +170,7 @@ export default function VerificationChecklist({
           <h3 className='text-heading'>{copy.title}</h3>
           <p className='text-caption text-ink-subtle mt-0.5'>{copy.count}</p>
         </div>
-        <span className='ml-auto text-[22px] font-[650] tracking-[-.01em] leading-none text-success'>{pct}%</span>
+        <span className='ml-auto text-stat tracking-[-.01em] leading-none text-success'>{pct}%</span>
       </div>
 
       {/* Segmented progress: one pill per checkpoint. */}
@@ -188,7 +188,7 @@ export default function VerificationChecklist({
           <span className='shrink-0 grid place-items-center w-[26px] h-[26px] rounded-pill bg-primary'>
             <CheckIcon className='w-3.5 h-3.5 text-accent' strokeWidth={2.5} />
           </span>
-          <span className='text-[13px] font-[600] min-w-0'>{copy.banner}</span>
+          <span className='text-caption ink-default font-semibold min-w-0'>{copy.banner}</span>
           <Button className='ml-auto shrink-0' size='sm' loading={busy === 'mark-done'} onClick={markDone}>
             Mark task done
           </Button>
@@ -221,7 +221,7 @@ export default function VerificationChecklist({
                 >
                   {done
                     ? <CheckIcon className='w-3.5 h-3.5 text-accent' strokeWidth={2.5} aria-label={`${stage.label} verified`} />
-                    : <span className={`text-[11.5px] font-[650] ${isNext ? 'text-ink-muted' : 'text-ink-subtle'}`}>{index + 1}</span>}
+                    : <span className={`text-tag font-[650] ${isNext ? 'text-ink-muted' : 'text-ink-subtle'}`}>{index + 1}</span>}
                 </button>
                 <span className={`w-[2px] flex-1 min-h-[16px] rounded-[1px] mt-1 ${done ? 'bg-success/60' : 'bg-border'}`} aria-hidden />
               </div>
@@ -265,7 +265,7 @@ export default function VerificationChecklist({
 
                 {note && !noteOpen && (
                   <div className='border-l-2 border-border pl-3 flex flex-col gap-1.5'>
-                    <p className='text-[13px] leading-relaxed whitespace-pre-wrap break-words'>{note.note}</p>
+                    <p className='text-caption ink-default leading-relaxed whitespace-pre-wrap break-words'>{note.note}</p>
                     <span className='inline-flex items-center gap-1.5'>
                       <UserInitialsAvatar email={actorLabel(note.by, note.by_label)} size='sm' className='!w-[18px] !h-[18px]' />
                       <span className='text-tag text-ink-subtle'>{actorLabel(note.by, note.by_label)} · {fmtWhen(note.at)}</span>
@@ -301,7 +301,7 @@ export default function VerificationChecklist({
               onChange={(event) => setNewItem(event.target.value)}
               onKeyDown={(event) => { if (event.key === 'Enter') addItem() }}
               placeholder={copy.addPlaceholder}
-              className='w-full bg-surface border border-border rounded-pill px-4 py-[9px] text-[13px] outline-none placeholder:text-ink-subtle focus:border-primary'
+              className='w-full bg-surface border border-border rounded-pill px-4 py-[9px] text-caption ink-default outline-none placeholder:text-ink-subtle focus:border-primary'
             />
           </div>
           <Button size='sm' variant='secondary' loading={busy === 'add-item'}

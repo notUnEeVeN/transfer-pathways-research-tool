@@ -131,8 +131,8 @@ export default function TaskModal({
                 return (
                   <button key={option.value} type='button'
                     onClick={() => set({ task_type: option.value })}
-                    className={`flex-1 rounded-pill px-2.5 py-2 text-[12.5px] whitespace-nowrap cursor-pointer transition-colors ${
-                      active ? 'bg-surface font-[650] shadow-xs' : 'font-[500] text-ink-muted hover:text-ink'
+                    className={`flex-1 rounded-pill px-2.5 py-2 text-tag whitespace-nowrap cursor-pointer transition-colors ${
+                      active ? 'bg-surface font-[650] shadow-xs' : 'text-ink-muted hover:text-ink'
                     }`}>
                     {option.label}
                   </button>
@@ -273,9 +273,9 @@ export default function TaskModal({
             {newItems.length > 0 && (
               <ol className='mt-2'>
                 {newItems.map((name, index) => (
-                  <li key={`${name}-${index}`} className='flex items-center gap-2.5 py-[6.5px] border-b border-border/40'>
+                  <li key={`${name}-${index}`} className='flex items-center gap-2.5 py-[6.5px] border-b border-border'>
                     <span className='grid place-items-center w-[22px] h-[22px] rounded-pill bg-surface-sunken text-[11px] font-[650] text-ink-muted shrink-0'>{index + 1}</span>
-                    <span className='text-[13.5px] min-w-0 truncate'>{name}</span>
+                    <span className='text-caption ink-default min-w-0 truncate'>{name}</span>
                     <IconButton icon={XMarkIcon} label={`Remove ${name}`} size='sm' className='ml-auto'
                       onClick={() => setNewItems((current) => current.filter((_, i) => i !== index))} />
                   </li>
@@ -306,9 +306,9 @@ export default function TaskModal({
             </p>
             <ol className='mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6'>
               {PORTING_STAGES.map((stage, index) => (
-                <li key={stage.key} className='flex items-center gap-2.5 py-[9px] border-b border-border/40'>
+                <li key={stage.key} className='flex items-center gap-2.5 py-[9px] border-b border-border'>
                   <span className='grid place-items-center w-[22px] h-[22px] rounded-pill bg-surface-sunken text-[11px] font-[650] text-ink-muted shrink-0'>{index + 1}</span>
-                  <span className='text-[13.5px] text-ink-muted min-w-0 flex-1'>{stage.label}</span>
+                  <span className='text-caption ink-muted min-w-0 flex-1'>{stage.label}</span>
                 </li>
               ))}
             </ol>

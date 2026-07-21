@@ -273,11 +273,11 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
   return (
     <Stack gap='comfortable'>
       <div className='flex items-center gap-2.5'>
-        <label className='flex-1 flex items-center gap-3 bg-surface border-[1.5px] border-border-strong rounded-pill px-[22px] py-[13px]'>
+        <label className='flex-1 flex items-center gap-3 bg-surface border-[1.5px] border-border-strong rounded-pill px-5 py-3'>
           <MagnifyingGlassIcon className='w-[17px] h-[17px] text-ink-muted shrink-0' />
           <input value={q} onChange={(e) => setQ(e.target.value)} aria-label='Search colleges'
             placeholder='Search colleges — name or district…'
-            className='flex-1 bg-transparent outline-none border-none text-[15px] text-ink placeholder:text-ink-subtle' />
+            className='flex-1 bg-transparent outline-none border-none text-body text-ink placeholder:text-ink-subtle' />
         </label>
         <Select pill className='w-[210px]' value={district} onChange={setDistrict}
           options={districtOptions} aria-label='Filter by district' />
@@ -288,29 +288,29 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
         <div className='flex justify-center py-8'><Spinner /></div>
       ) : (
         <div className='surface-card overflow-auto max-h-[65vh]'>
-          <div className={`${COLLEGE_TABLE_COLS} px-[22px] py-3 border-b border-border/60 sticky top-0 bg-surface`}>
+          <div className={`${COLLEGE_TABLE_COLS} px-5 py-3 border-b border-border sticky top-0 bg-surface`}>
             <span className='text-label'>Community college</span>
             <span className='text-label whitespace-nowrap'>Associate degree</span>
             <span className='text-label' />
           </div>
           {rows.map((c) => (
             <div key={c.id}
-              className={`${COLLEGE_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border/40 last:border-0 hover:bg-surface-hover cursor-pointer`}
+              className={`${COLLEGE_TABLE_COLS} items-center px-5 py-3 border-b border-border last:border-0 hover:bg-surface-hover cursor-pointer`}
               onClick={() => onPick(Number(c.id))}>
               <div className='min-w-0'>
-                <p className='text-[14.5px] font-semibold truncate'>{c.name}</p>
-                {c.district && <p className='text-[12.5px] text-ink-subtle truncate'>{c.district}</p>}
+                <p className='text-body-strong truncate'>{c.name}</p>
+                {c.district && <p className='text-tag text-ink-subtle truncate'>{c.district}</p>}
               </div>
               <div><AstStatusBadge availability={c.degreeAvailability} /></div>
               <div>
-                <span className='flex items-center gap-1 text-[13px] font-[550] text-success'>
+                <span className='flex items-center gap-1 text-caption font-[550] text-success'>
                   view <ArrowRightIcon className='w-[13px] h-[13px]' />
                 </span>
               </div>
             </div>
           ))}
           {!rows.length && (
-            <p className='px-[22px] py-8 text-body text-ink-muted text-center'>
+            <p className='px-5 py-8 text-body text-ink-muted text-center'>
               No colleges match these filters.
             </p>
           )}
@@ -351,8 +351,8 @@ function AssociateDegreeSection({ collegeId, availability }) {
   return (
     <section aria-label='Associate degrees'>
       <div className='surface-card px-6 py-5'>
-        <p className='text-label text-[12px]'>Associate degrees</p>
-        <h2 className='mt-1.5 text-[19px] font-[650] tracking-[-.01em]'>
+        <p className='text-label'>Associate degrees</p>
+        <h2 className='mt-1.5 heading-card'>
           {availability?.college_name || 'Community college'}
         </h2>
         <p className='mt-1 text-body text-ink-muted'>{programLine}</p>
@@ -378,10 +378,10 @@ function ReceivingCampusPicker({ campuses, campusId, onSelect }) {
           return (
             <button key={candidate.id} type='button' aria-pressed={active}
               onClick={() => onSelect(candidate.id)}
-              className={`flex-1 text-center px-[15px] py-[7px] rounded-pill text-[13px] whitespace-nowrap border transition-colors ${
+              className={`flex-1 text-center px-[15px] py-[7px] rounded-pill text-caption whitespace-nowrap border transition-colors ${
                 active
                   ? 'bg-primary hover:bg-primary-hover text-on-primary border-primary font-[650]'
-                  : 'bg-surface text-ink-muted border-border-strong font-medium hover:border-primary'
+                  : 'bg-surface ink-muted border-border-strong font-medium hover:border-primary'
               }`}>
               {candidate.name.replace('UC ', '')}
             </button>
@@ -727,11 +727,11 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
       <div className='surface-card overflow-hidden'>
         <div className='px-6 py-5 flex flex-wrap items-start gap-3.5'>
           <div className='min-w-0'>
-            <p className='text-label text-[12px]'>School pair</p>
-            <p className='mt-1.5 flex items-center gap-2.5 flex-wrap text-[19px] tracking-[-.01em]'>
-              <span className='font-[650] break-words'>{doc.community_college}</span>
+            <p className='text-label'>School pair</p>
+            <p className='mt-1.5 flex items-center gap-2.5 flex-wrap heading-card'>
+              <span className='break-words'>{doc.community_college}</span>
               <ArrowRightIcon className='w-[17px] h-[17px] text-ink-subtle shrink-0' />
-              <span className='font-[650] break-words'>{doc.uc_school}</span>
+              <span className='break-words'>{doc.uc_school}</span>
             </p>
             <p className='mt-1 text-body text-ink-muted'>{doc.major}</p>
           </div>
@@ -874,9 +874,9 @@ function StatTile({ label, value, sub = null, full }) {
 // (mockup v2:373-386): a bold tabular code, a muted truncating title, and a
 // muted tabular number (units / ids), independent of each column's width.
 const COURSE_CELL_CLASS = {
-  code: 'text-[13.5px] font-bold tabular tracking-[.01em] text-ink',
-  title: 'text-[13.5px] text-ink-muted truncate min-w-0',
-  num: 'text-[13px] tabular text-ink-muted',
+  code: 'text-caption font-bold tabular tracking-[.01em] ink-default',
+  title: 'text-caption ink-muted truncate min-w-0',
+  num: 'text-caption tabular ink-muted',
 }
 
 function CourseTable({ rows, columns }) {
@@ -884,14 +884,14 @@ function CourseTable({ rows, columns }) {
   return (
     <div className='surface-card overflow-hidden'>
       <div className='overflow-auto max-h-[70vh]'>
-        <div className='grid gap-3.5 px-[22px] py-3 border-b border-border/60 sticky top-0 bg-surface' style={gridStyle}>
+        <div className='grid gap-3.5 px-5 py-3 border-b border-border sticky top-0 bg-surface' style={gridStyle}>
           {columns.map((c) => (
             <span key={c.key} className={`text-label whitespace-nowrap ${c.align === 'right' ? 'text-right' : ''}`}>{c.label}</span>
           ))}
         </div>
         {rows.map((r, i) => (
           <div key={r._id || i} style={gridStyle}
-            className='grid gap-3.5 items-center px-[22px] py-[10.5px] border-b border-border/40 last:border-0 hover:bg-surface-hover'>
+            className='grid gap-3.5 items-center px-5 py-[10.5px] border-b border-border last:border-0 hover:bg-surface-hover'>
             {columns.map((c) => (
               <span key={c.key} className={`${COURSE_CELL_CLASS[c.variant] || COURSE_CELL_CLASS.title} ${c.align === 'right' ? 'text-right' : ''}`}>
                 {c.render ? c.render(r) : (r[c.key] ?? '—')}
@@ -935,7 +935,7 @@ export function InstitutionRail({
         <div className='flex items-center gap-2 bg-canvas border border-border rounded-pill px-3 py-[7px] mx-1 mb-2'>
           <MagnifyingGlassIcon className='w-3.5 h-3.5 text-ink-subtle shrink-0' />
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder='Find…'
-            className='flex-1 min-w-0 bg-transparent outline-none border-none text-[13px] text-ink placeholder:text-ink-subtle' />
+            className='flex-1 min-w-0 bg-transparent outline-none border-none text-caption ink-default placeholder:text-ink-subtle' />
         </div>
       )}
       <div className='flex flex-col gap-0.5'>
@@ -944,13 +944,13 @@ export function InstitutionRail({
           const subtitle = itemSubtitle?.(item)
           return (
             <button key={item.id} type='button' onClick={() => onSelect(item.id)}
-              className={`w-full flex items-start gap-2.5 rounded-[10px] px-3 py-[9px] text-left transition-colors ${
+              className={`w-full flex items-start gap-2.5 rounded-md px-3 py-[9px] text-left transition-colors ${
                 active ? 'bg-primary-soft font-[650]' : 'hover:bg-surface-hover'}`}>
               <span className={`w-[3px] h-3.5 rounded-pill mt-0.5 shrink-0 ${active ? 'bg-accent' : 'bg-transparent'}`} />
               <span className='min-w-0'>
-                <span className='block text-[13.5px] text-ink truncate'>{item.name}</span>
+                <span className='block text-caption ink-default truncate'>{item.name}</span>
                 {subtitle && (
-                  <span className='block text-[11.5px] text-ink-subtle truncate mt-px'>{subtitle}</span>
+                  <span className='block text-tag text-ink-subtle truncate mt-px'>{subtitle}</span>
                 )}
               </span>
             </button>
@@ -987,7 +987,7 @@ function CourseList({ institutionId, useCourses, columns, searchFields }) {
           <MagnifyingGlassIcon className='w-[14px] h-[14px] text-ink-subtle shrink-0' />
           <input value={courseQ} onChange={(e) => setCourseQ(e.target.value)} aria-label='Search courses'
             placeholder='Search prefix / number / title…'
-            className='flex-1 min-w-0 bg-transparent outline-none border-none text-[13.5px] text-ink placeholder:text-ink-subtle' />
+            className='flex-1 min-w-0 bg-transparent outline-none border-none text-caption ink-default placeholder:text-ink-subtle' />
         </label>
         {!coursesQ.isLoading && <span className='text-caption text-ink-subtle'>{rows.length} courses</span>}
       </div>
@@ -1121,13 +1121,13 @@ function DegreeVerificationNotes({ notes, onSave, saving, author }) {
 
   return (
     <div className='mt-3 pt-3 border-t border-border'>
-      <p className='text-label text-[12px]'>Notes — decisions & findings</p>
+      <p className='text-label'>Notes — decisions & findings</p>
       {notes.length > 0 && (
         <ul className='mt-2 flex flex-col gap-2'>
           {notes.map((n, idx) => (
             <li key={n.id || idx} className='flex items-start gap-2 min-w-0'>
               <div className='min-w-0 flex-1'>
-                <p className='text-[13px] whitespace-pre-wrap break-words'>{n.text}</p>
+                <p className='text-caption ink-default whitespace-pre-wrap break-words'>{n.text}</p>
                 <p className='text-caption text-ink-subtle mt-0.5'>
                   {n.author_label || shortAuthorUid(n.author_uid)}
                   {n.created_at ? ` · ${fmtGalleryDate(n.created_at)}` : ''}
@@ -1177,7 +1177,7 @@ function TieredDegreeLedger({ groups, ...ledgerProps }) {
       {buckets.map((section) => (
         <section key={section.tier} aria-label={section.label}>
           <div className='flex items-baseline gap-2.5 mb-2.5 mt-1'>
-            <h4 className='text-label text-[11.5px]'>{section.label}</h4>
+            <h4 className='text-label'>{section.label}</h4>
             <span className='text-tag text-ink-subtle'>{section.sub}</span>
           </div>
           <div className='uui-scope'>
@@ -1198,10 +1198,10 @@ export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = nul
   const sources = degreeSourcesFor(doc)
   return (
     <Stack gap='cozy'>
-      <div className='surface-card px-[22px] py-[18px]'>
-        <p className='text-label text-[12px]'>Hand-curated four-year graduation requirements</p>
+      <div className='surface-card px-5 py-[18px]'>
+        <p className='text-label'>Hand-curated four-year graduation requirements</p>
         <div className='mt-1.5 flex items-center gap-4'>
-          <p className='min-w-0 flex-1 text-[19px] font-[650] tracking-[-.01em] break-words'>
+          <p className='min-w-0 flex-1 heading-card break-words'>
             {doc.school} <span className='text-ink-subtle'>·</span> {doc.program}
           </p>
           {onEdit && (
@@ -1218,17 +1218,17 @@ export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = nul
       <TieredDegreeLedger groups={groups}
         universityCoursesById={doc.university_courses_by_id || null} />
       {sources.length > 0 && (
-        <div className='surface-card px-[22px] py-[18px]'>
-          <p className='text-label text-[12px]'>Verify these requirements</p>
+        <div className='surface-card px-5 py-[18px]'>
+          <p className='text-label'>Verify these requirements</p>
           <p className='text-caption text-ink-muted mt-1'>
             Walk the official pages in order — each covers a distinct slice of the template.
           </p>
           <ol className='mt-2.5 flex flex-col gap-2.5'>
             {sources.map((s, i) => (
               <li key={s.url} className='flex items-start gap-2 min-w-0'>
-                <span className='text-[12px] font-[650] text-ink-subtle tabular-nums mt-[2px] shrink-0'>{i + 1}.</span>
+                <span className='text-tag font-[650] text-ink-subtle tabular-nums mt-[2px] shrink-0'>{i + 1}.</span>
                 <div className='min-w-0'>
-                  <a className='text-[13px] text-primary hover:underline break-words inline-flex items-center gap-1'
+                  <a className='text-caption text-primary hover:underline break-words inline-flex items-center gap-1'
                     href={s.url} target='_blank' rel='noreferrer'>
                     {s.label}
                     <ArrowTopRightOnSquareIcon className='w-3.5 h-3.5 shrink-0' />

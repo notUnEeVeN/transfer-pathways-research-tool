@@ -34,7 +34,7 @@ export default function MismatchGauge({ stats }) {
       <Stack gap='comfortable'>
         <div className='flex items-baseline justify-between gap-3 flex-wrap'>
           <p className='text-label'>Strict mismatch · 95% Wilson upper bound</p>
-          <span className='text-[12.5px] text-ink-subtle'>any deviation from ASSIST — error, over-ask, or flagged</span>
+          <span className='text-tag text-ink-subtle'>any deviation from ASSIST — error, over-ask, or flagged</span>
         </div>
 
         <div className='flex items-start justify-between gap-6 flex-wrap'>
@@ -43,7 +43,7 @@ export default function MismatchGauge({ stats }) {
               <span className='text-ink-subtle' style={{ fontSize: '0.6em' }}>≤ </span>
               {hasSample ? `${ceiling.toFixed(1)}%` : '—'}
             </div>
-            <p className='text-[12.5px] text-ink-subtle mt-2'>
+            <p className='text-tag text-ink-subtle mt-2'>
               {hasSample ? (
                 <>observed <span className='text-ink'>{observed}%</span> · {int(k)}/{int(n)} templates</>
               ) : (
@@ -54,7 +54,7 @@ export default function MismatchGauge({ stats }) {
           {hasSample && estMax != null && (
             <div className='text-right'>
               <div className='text-stat text-ink'>≤ {int(estMax)}</div>
-              <p className='text-[12.5px] text-ink-subtle mt-1'>docs may deviate of {int(total)}</p>
+              <p className='text-tag text-ink-subtle mt-1'>docs may deviate of {int(total)}</p>
             </div>
           )}
         </div>

@@ -239,7 +239,7 @@ function blobAsDataUrl(blob) {
 function SelectControl({ control, active, variants, controls, onSelect }) {
   return (
     <div className='flex flex-col gap-1.5'>
-      <span className='text-[12px] text-ink-subtle'>{control.label}</span>
+      <span className='text-tag text-ink-subtle'>{control.label}</span>
       <div className='inline-flex items-center gap-0.5 p-[3px] rounded-pill bg-surface-sunken'>
         {control.options.map((option) => {
           const candidate = variantForChange(variants, controls, active, control.key, option.value, true)
@@ -247,8 +247,8 @@ function SelectControl({ control, active, variants, controls, onSelect }) {
           return (
             <button key={option.value} type='button' disabled={!candidate}
               aria-pressed={selected} onClick={() => candidate && onSelect(candidate.key)}
-              className={`px-[13px] py-1.5 rounded-pill text-[12.5px] whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed ${
-                selected ? 'bg-primary text-on-primary font-[650]' : 'text-ink-muted font-medium hover:text-ink'
+              className={`px-[13px] py-1.5 rounded-pill text-tag whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed ${
+                selected ? 'bg-primary text-on-primary font-[650]' : 'text-ink-muted hover:text-ink'
               }`}>
               {option.label}
             </button>

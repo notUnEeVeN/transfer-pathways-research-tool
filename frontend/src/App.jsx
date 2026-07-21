@@ -385,7 +385,7 @@ function InterpretationBanner({ stats: s }) {
 // (admins: everything ported; partners: the admin-selected majors).
 function ScopeLine({ stats }) {
   return (
-    <p className='text-[13px] text-ink-subtle'>
+    <p className='text-caption ink-subtle'>
       Dataset · {int(stats.total_docs)} docs · {int(stats.n_templates)} templates · {int(stats.n_majors)} majors
     </p>
   )
@@ -436,7 +436,7 @@ function CellsCard({ stats: s }) {
       </div>
       <div className='flex-1 flex flex-col justify-between mt-3'>
         {rows.map((r) => (
-          <div key={r.k} className='flex items-baseline justify-between gap-3 py-1.5 border-b border-border/40 last:border-0'>
+          <div key={r.k} className='flex items-baseline justify-between gap-3 py-1.5 border-b border-border last:border-0'>
             <span className='text-caption text-ink-muted'>{r.k}</span>
             <span className={`text-body-strong text-ink ${r.tabular ? 'tabular' : ''}`}>{r.v}</span>
           </div>
@@ -661,7 +661,7 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'random', 
             options={[{ value: 'template', label: 'Random template' }, { value: 'random', label: 'Random doc' }]} />
           {isTemplate && (
             <div className='ml-auto flex items-center gap-2.5'>
-              <span className='text-[13px] text-ink-subtle whitespace-nowrap'>
+              <span className='text-caption ink-subtle whitespace-nowrap'>
                 Doc {sessionDone} of {sessionTotal} · {sessionLeft} left
               </span>
               <div className='w-[150px] h-1.5 rounded-pill bg-surface-sunken overflow-hidden'>
@@ -684,7 +684,7 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'random', 
                       titles the requirements; a second "Required" read as
                       clutter. Just the interaction hint (and the live
                       simulate counter, which is functional). */}
-                  <div className='text-[13px] text-ink-subtle'>
+                  <div className='text-caption ink-subtle'>
                     Click a row to mark it in error · tick a box on the right to simulate a student plan.
                     {taken.length > 0 && (
                       <>
@@ -738,7 +738,7 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'random', 
         </span>
         <input data-flag-notes value={notes} onChange={(e) => setNotes(e.target.value)}
           placeholder='Notes (required when flagging)…'
-          className='flex-1 min-w-[150px] bg-transparent outline-none border-none text-[13px] text-ink px-1 placeholder:text-ink-subtle' />
+          className='flex-1 min-w-[150px] bg-transparent outline-none border-none text-caption ink-default px-1 placeholder:text-ink-subtle' />
         <button type='button' onClick={onNext} disabled={nextDisabled}
           className='flex items-center gap-2 rounded-pill px-3.5 py-[9px] text-[13.5px] font-[550] text-ink hover:bg-primary-soft whitespace-nowrap cursor-pointer disabled:opacity-50'>
           {rerolling ? 'Next…' : 'Next'}<span className='text-[10px] font-bold rounded-[5px] px-1.5 py-0.5 bg-surface-sunken text-ink-muted'>N</span>

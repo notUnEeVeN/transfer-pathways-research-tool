@@ -52,7 +52,7 @@ export default function SignInScreen() {
           Research Console
         </h1>
 
-        <p className='mt-[18px] max-w-[44ch] text-[15px] leading-[1.6] text-ink-muted'>
+        <p className='mt-[18px] max-w-[44ch] text-body leading-[1.6] text-ink-muted'>
           Transfer-pathway auditing and analysis. Access is limited to
           project members — sign in with the Google account your admin
           granted.

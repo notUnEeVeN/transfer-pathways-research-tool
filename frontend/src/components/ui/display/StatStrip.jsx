@@ -27,7 +27,7 @@ export default function StatStrip({ tiles, className = '', bare = false }) {
   // values don't get crushed.
   const base = bare
     ? 'flex flex-col md:flex-row md:items-stretch divide-y md:divide-y-0 md:divide-x divide-border'
-    : 'surface-card flex items-stretch divide-x divide-border/60 overflow-hidden'
+    : 'surface-card flex items-stretch divide-x divide-border overflow-hidden'
   return (
     <div className={`${base} ${className}`}>
       {tiles.map((t) => (
