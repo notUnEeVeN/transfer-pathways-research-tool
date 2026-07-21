@@ -35,6 +35,16 @@ describe('figure slides', () => {
     expect(screen.getByText('Live coverage-heatmap embed presentation=true')).toBeInTheDocument()
   })
 
+  it('shows a plain-language formula on every slide without opening anything', () => {
+    render(<FigureSlides onOpen={() => {}} canOpenAnalysis={() => true} />)
+
+    expect(screen.getAllByText('How this is measured')).toHaveLength(FEATURED_FIGURES.length)
+    for (const figure of FEATURED_FIGURES) {
+      expect(screen.getByText(figure.formula.expression)).toBeInTheDocument()
+      expect(screen.getByText(figure.formula.watchFor)).toBeInTheDocument()
+    }
+  })
+
   it('drops the scope minutiae that cluttered the old stage', () => {
     render(<FigureSlides onOpen={() => {}} canOpenAnalysis={() => true} />)
     expect(screen.queryByText(/72 districts and 9 selected programs/)).not.toBeInTheDocument()

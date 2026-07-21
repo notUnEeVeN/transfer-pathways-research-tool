@@ -34,6 +34,16 @@ describe('showcase content module', () => {
     }
   })
 
+  it('gives every presented figure a checkable formula', () => {
+    for (const figure of [...FEATURED_FIGURES, CALIFORNIA_WORK]) {
+      expect(figure.formula.expression).toBeTruthy()
+      expect(figure.formula.grain).toBeTruthy()
+      // watchFor names the modelling choice most likely to differ between
+      // two teams, which is the whole point of showing the formula.
+      expect(figure.formula.watchFor).toBeTruthy()
+    }
+  })
+
   it('presents degree coverage as a live unit-weighted measure, not the retired slot percentage', () => {
     const coverage = FEATURED_FIGURES.find((f) => f.analysisId === 'coverage-heatmap')
 

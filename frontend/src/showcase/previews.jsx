@@ -96,16 +96,16 @@ function RequirementCoveragePreview() {
 
 function PairedDegreePreview() {
   const rows = [
-    { label: 'Local computer science degree', rate: 56.8, extra: '25.8 extra units' },
-    { label: 'Associate Degree for Transfer', rate: 66.3, extra: '16.6 extra units' },
+    { label: 'Local computer science degree', rate: 62.6, extra: '22.4 replacement units' },
+    { label: 'Associate Degree for Transfer', rate: 74.6, extra: '15.3 replacement units' },
   ]
   return (
     <div className='flex h-full flex-col justify-center rounded-2xl border border-border bg-surface px-8 py-7'
-      role='img' aria-label='In 21 matched semester system colleges, local degrees average 56.8 percent alignment and transfer degrees average 66.3 percent'>
+      role='img' aria-label='In 19 matched semester-system colleges, local degrees average 62.6 percent alignment and transfer degrees average 74.6 percent'>
       <div className='flex items-end justify-between gap-5'>
         <div>
           <p className='text-body-strong'>Matched degree comparison</p>
-          <p className='mt-1 text-caption'>The same 21 semester system colleges and the same nine UC programs.</p>
+          <p className='mt-1 text-caption'>The same 19 semester-system colleges and the same nine UC programs.</p>
         </div>
         <Badge variant='conservative'>Descriptive result</Badge>
       </div>
