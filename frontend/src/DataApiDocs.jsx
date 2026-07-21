@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ClipboardIcon, CheckIcon, TrashIcon, KeyIcon, SparklesIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, Input, Tabs } from './components/ui'
+import { Alert, Button, Input, PageContainer, Spinner, Tabs } from './components/ui'
 import SubNav from './components/SubNav'
 import { API_BASE_URL } from '@frontend/lib/constants'
 import { useApiTokens, useCreateApiToken, useRevokeApiToken, usePmtPy } from '@frontend/query/hooks/useData'
@@ -29,12 +29,12 @@ export default function ApiPage() {
         ],
       }} />
       <div className='flex-1 min-h-0 overflow-auto'>
-        <div className='max-w-[880px] mx-auto px-[22px] pt-[30px] pb-14 flex flex-col gap-[18px]'>
+        <PageContainer width='form' className='flex flex-col gap-[18px]'>
           {tab === 'tokens' && <TokenManager />}
           {tab === 'starter' && <StarterSection />}
           {tab === 'endpoints' && <EndpointsSection />}
           {tab === 'guide' && <GuideSection />}
-        </div>
+        </PageContainer>
       </div>
     </div>
   )

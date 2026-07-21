@@ -493,7 +493,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
   }
 
   return (
-    <div className='max-w-[1320px] mx-auto flex flex-col gap-5 pb-6'>
+    <div className='flex flex-col gap-5'>
       <div className='flex items-end justify-between gap-6'>
         <div>
           <h1 className='text-heading'>Visual library</h1>

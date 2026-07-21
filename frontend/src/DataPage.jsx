@@ -3,7 +3,7 @@ import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon, ArrowRightIcon,
   ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon,
 } from '@heroicons/react/24/outline'
-import { Button, Alert, Badge, Select, Spinner, EmptyState, Stack, StatStrip, Tabs, Input, Textarea, LoadingLogo } from './components/ui'
+import { Alert, Badge, Button, EmptyState, Input, LoadingLogo, PageContainer, Select, Spinner, Stack, StatStrip, Tabs, Textarea } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SubNav from './components/SubNav'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
@@ -102,9 +102,7 @@ export default function DataPage({ onNavigate = () => {} }) {
         ],
       }} route={route} />
       <div className='flex-1 min-h-0 overflow-auto'>
-        <div className={tab === 'articulation'
-          ? 'max-w-[1240px] mx-auto px-[22px] pt-[26px] pb-12 w-full'
-          : 'max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12 w-full'}>
+        <PageContainer>
           {tab === 'overview' && <DatasetSummaryPanel onNavigate={changeTab} />}
           {tab === 'articulation' && (
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
@@ -112,7 +110,7 @@ export default function DataPage({ onNavigate = () => {} }) {
           {tab === 'institutions' && <InstitutionsTab onRoute={reportRoute} />}
           {tab === 'prerequisites' && <PrerequisitesTab />}
           {tab === 'districts' && <DistrictsTab />}
-        </div>
+        </PageContainer>
       </div>
     </div>
   )

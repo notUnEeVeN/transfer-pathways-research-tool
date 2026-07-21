@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon, CheckIcon, NoSymbolIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/outline'
-import { Button, Alert, Spinner, EmptyState, Stack, Input, Select, SwitchField } from './components/ui'
+import { Alert, Button, EmptyState, Input, PageContainer, Select, Spinner, Stack, SwitchField } from './components/ui'
 import { ANALYSES } from './analyses/registry'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
@@ -23,7 +23,7 @@ import UserInitialsAvatar from './components/display/UserInitialsAvatar'
  */
 export default function AdminPage() {
   return (
-    <div className='max-w-[1000px] mx-auto px-[22px] pt-[30px] pb-14'>
+    <PageContainer>
       <Stack gap='section'>
         <ProductionBanner />
         <AuditPulsePanel />
@@ -35,7 +35,7 @@ export default function AdminPage() {
         <DatasetPanel />
         <AccessPanel />
       </Stack>
-    </div>
+    </PageContainer>
   )
 }
 

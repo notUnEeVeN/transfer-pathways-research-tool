@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { signOut } from 'firebase/auth'
 import { FlagIcon, CheckBadgeIcon, LockClosedIcon } from '@heroicons/react/24/outline'
-import { Button, Spinner, Alert, EmptyState, StatStrip, Stack, LoadingLogo, Tabs, Logo } from './components/ui'
+import { Button, Spinner, Alert, EmptyState, StatStrip, Stack, LoadingLogo, PageContainer, Tabs, Logo } from './components/ui'
 import { auth } from '@frontend/lib/firebase'
 import { useAuth } from '@frontend/hooks/useAuth'
 import { useAccessMe, useRequestAccess } from '@frontend/query/hooks/useAccess'
@@ -182,16 +182,12 @@ function Console({ role, user }) {
           )}
           {view === 'visuals' && (
             <div className='h-full overflow-auto'>
-              <div className='mx-auto max-w-screen-2xl px-6 py-6'>
-                <VisualsPage onNavigate={setView} />
-              </div>
+              <PageContainer><VisualsPage onNavigate={setView} /></PageContainer>
             </div>
           )}
           {view === 'tasks' && (
             <div className='h-full overflow-auto'>
-              <div className='mx-auto max-w-[1400px] w-full px-[22px] pt-[26px] pb-12'>
-                <TasksPage />
-              </div>
+              <PageContainer><TasksPage /></PageContainer>
             </div>
           )}
           {view === 'api' && <ApiPage />}
@@ -217,8 +213,10 @@ function TopBar({ view, setView, role, user }) {
     { value: 'api', label: 'API' },
     ...(role === 'admin' ? [{ value: 'admin', label: 'Admin' }] : []),
   ]
+  // Gutter matches PageContainer's content edge: the panel inset (p-3/md:p-4)
+  // plus the panel's own gutter (px-6/md:px-12) = 36px / 64px.
   return (
-    <div className='shrink-0 flex items-center gap-5 h-[62px] px-[22px]' style={{ background: '#193018' }}>
+    <div className='shrink-0 flex items-center gap-5 h-[62px] px-9 md:px-16' style={{ background: '#193018' }}>
       <button type='button' onClick={() => setView('data')}
         className='flex items-center gap-[11px] bg-transparent border-0 p-0 cursor-pointer'>
         <span style={{ color: '#96F060' }}><Logo size={21} /></span>
@@ -318,21 +316,21 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
   if ((stats.n_audited ?? 0) === 0) {
     return (
       <div className='h-full overflow-auto'>
-        <div className='max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12'>
+        <PageContainer>
           <Stack gap='section'>
             <div className='flex justify-center pt-8'>
               <EmptyState icon={CheckBadgeIcon} title='No verdicts yet'
                 description='Audit a uniform-random batch to establish the first 95% strict-mismatch ceiling — coverage and per-campus verification populate as verdicts are logged.' />
             </div>
           </Stack>
-        </div>
+        </PageContainer>
       </div>
     )
   }
 
   return (
     <div className='h-full overflow-auto'>
-      <div className='max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-12'>
+      <PageContainer>
         <Stack gap='section'>
           <ScopeLine stats={stats} />
           <StatStrip tiles={buildStrip(stats)} />
@@ -345,7 +343,7 @@ function StatsTab({ filter = DEFAULT_FILTER, setFilter }) {
           </div>
           <CampusCoverage filter={filter} />
         </Stack>
-      </div>
+      </PageContainer>
     </div>
   )
 }
@@ -656,7 +654,7 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'random', 
 
   return (
     <div className='h-full overflow-auto'>
-      <div className='max-w-[1400px] mx-auto px-[22px] pt-[26px] pb-24 flex flex-col gap-4'>
+      <PageContainer className='flex flex-col gap-4'>
         {/* Header: mode tabs + (template mode) the session progress strip. */}
         <div className='flex items-center gap-3.5'>
           <Tabs value={mode} onChange={setMode}
@@ -710,7 +708,7 @@ export function JudgeTab({ filter = DEFAULT_FILTER, setFilter, mode = 'random', 
                   </div>
                 </>
               )}
-      </div>
+      </PageContainer>
 
       {/* Sticky verdict dock — one click submits the verdict (payload/scope
           unchanged); kbd chips mirror the c/v/e/f/n shortcuts. */}
