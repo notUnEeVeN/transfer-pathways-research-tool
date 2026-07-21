@@ -40,15 +40,19 @@
   --color-accent-hover: #89E453;
   --color-on-accent: #193018;
 
-  /* Surfaces — cards separate via borders, not tone (flat brand) */
-  --color-canvas: #FFFFFF;
+  /* Surfaces — the canvas is tinted so white panels read as planes sitting on
+     it. Canvas and surface used to be the same white, which collapsed the
+     frame and left borders doing all the separating. */
+  --color-canvas: #F9FFF6;             /* mint-white page ground */
   --color-surface: #FFFFFF;
   --color-surface-muted: #F6F8F1;
   --color-surface-sunken: #F1F3EB;     /* segmented tracks, chips, code blocks */
   --color-surface-hover: #F6F8F1;
 
-  /* Borders */
-  --color-border: #DFE3D8;
+  /* Borders — a hairline, not a rule. The old #DFE3D8 read heavy enough that
+     39 call sites had patched it locally with /40 and /60 opacity modifiers;
+     lightening it centrally is the fix those patches were reaching for. */
+  --color-border: #E6E9DF;
   --color-border-strong: #B9C0AC;      /* secondary buttons, checkboxes, dashed zones */
 
   /* Ink */
@@ -71,20 +75,32 @@
   /* Scrim — overlay backdrop tint (modals, sheets, popovers) */
   --color-scrim: rgba(25, 48, 24, .45);
 
-  /* Geometry — softer, pill-forward */
+  /* Geometry — softer, pill-forward. Bimodal by intent: every interactive
+     control is a pill; only containers and menu rows take a stepped radius. */
   --radius-xs: 6px;
   --radius-sm: 8px;
   --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-lg: 16px;
   --radius-xl: 18px;
-  --radius-2xl: 22px;
+  --radius-2xl: 24px;
+  --radius-3xl: 24px;                  /* the page panel */
   --radius-pill: 999px;
 
-  /* Elevation — content flat; only true overlays lift */
+  /* Elevation — content flat; only true overlays lift. The one exception is
+     the page panel, whose shadow is wide and almost invisible: it separates
+     the panel from the canvas without reading as a lift. */
   --shadow-xs: none;
   --shadow-sm: none;
+  --shadow-card: 0 4px 40px rgba(25, 48, 24, .03); /* resting page panel */
   --shadow-md: 0 16px 48px rgba(25, 48, 24, .24);  /* floating dock */
   --shadow-lg: 0 24px 64px rgba(25, 48, 24, .30);  /* modals */
+
+  /* Chrome — tints for content on the forest bar, so it stops being written
+     as raw rgba literals in App.jsx and AdminPage.jsx. */
+  --color-on-primary-subtle: rgba(240, 255, 231, .78);
+  --color-on-primary-muted: rgba(240, 255, 231, .62);
+  --color-on-primary-hairline: rgba(240, 255, 231, .22);
+  --color-on-primary-track: rgba(240, 255, 231, .09);
 
   /* Motion */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
@@ -399,20 +415,44 @@ html[data-theme='dark'] {
   100% { transform: translate(0px, 0); }
 }
 
-/* ---------- Type system (closed — never set raw sizes on markup) ---------- */
-@utility text-display     { font-size: 30px; line-height: 1.15; font-weight: 650; letter-spacing: -.02em; }
-@utility text-display-lg  { font-size: 44px; line-height: 1.08; font-weight: 650; letter-spacing: -.022em; } /* sign-in hero */
-@utility text-heading     { font-size: 20px; line-height: 1.3;  font-weight: 650; letter-spacing: -.01em; }
+/* ---------- Type system (closed — never set raw sizes on markup) ------------
+   Headings are named for the slot they fill, not their size, so retuning a
+   level is a one-line change here rather than a search across markup. The
+   canonical stack down a pane is:
+       heading-page → heading-card → text-md → text-body → text-caption
+   Cap a pane at five treatments, and at one text-stat-lg. */
+@utility heading-page     { font-size: 32px; line-height: 1.15; font-weight: var(--weight-heading); letter-spacing: -.02em; }
+@utility heading-section  { font-size: 24px; line-height: 1.25; font-weight: var(--weight-heading); letter-spacing: -.015em; }
+@utility heading-card     { font-size: 18px; line-height: 1.35; font-weight: var(--weight-heading); letter-spacing: -.01em; }
+
+/* Retained until Phase 2 migrates their call sites onto the heading-* names. */
+@utility text-display     { font-size: 30px; line-height: 1.15; font-weight: var(--weight-heading); letter-spacing: -.02em; }
+@utility text-heading     { font-size: 20px; line-height: 1.3;  font-weight: var(--weight-heading); letter-spacing: -.01em; }
+
+@utility text-display-lg  { font-size: 44px; line-height: 1.08; font-weight: var(--weight-heading); letter-spacing: -.035em; } /* sign-in hero */
+@utility text-md          { font-size: 16px; line-height: 1.55; font-weight: 400; } /* lede under a page title, nowhere else */
 @utility text-body        { font-size: 14px; line-height: 1.5;  font-weight: 400; }
 @utility text-body-strong { font-size: 14px; line-height: 1.5;  font-weight: 600; }
-@utility text-caption     { font-size: 13px; line-height: 1.45; color: var(--color-ink-subtle); }
-@utility text-label       { font-size: 11px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; color: var(--color-ink-subtle); }
-@utility text-stat        { font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
-@utility text-stat-lg     { font-size: 29px; font-weight: 650; letter-spacing: -.015em; }
-@utility text-button      { font-size: 13px; font-weight: 600; }
-@utility text-tag         { font-size: 11.5px; font-weight: 600; }
+@utility text-caption     { font-size: 13px; line-height: 1.45; color: var(--ink, var(--color-ink-subtle)); }
+@utility text-label       { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink, var(--color-ink-subtle)); }
+@utility text-stat        { font-size: 24px; font-weight: 600; letter-spacing: -.02em; }
+@utility text-stat-lg     { font-size: 32px; font-weight: var(--weight-heading); letter-spacing: -.03em; }
+@utility text-button      { font-size: 14px; font-weight: 600; }
+@utility text-tag         { font-size: 12px; font-weight: 500; }
 /* Pure-digit columns ONLY (units, ids, counts) — never on values with , . % / */
 @utility tabular          { font-variant-numeric: tabular-nums; }
+
+/* ---------- Ink, decoupled from size --------------------------------------
+   text-caption and text-label used to bake a colour into a size, so any site
+   wanting 13px in a different ink had to escape to text-[13px] — which is how
+   205 arbitrary sizes accumulated. Ink is now a separate axis: the size
+   utilities read var(--ink) with their old colour as the fallback, so every
+   existing call site is unchanged, and `text-caption ink-default` resolves
+   the same regardless of which class Tailwind emits first. */
+@utility ink-default { --ink: var(--color-ink); }
+@utility ink-muted   { --ink: var(--color-ink-muted); }
+@utility ink-subtle  { --ink: var(--color-ink-subtle); }
+@utility ink-inverse { --ink: var(--color-on-primary); }
 
 /* ---------- Surface system (flat) ---------- */
 @utility surface-card     { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }

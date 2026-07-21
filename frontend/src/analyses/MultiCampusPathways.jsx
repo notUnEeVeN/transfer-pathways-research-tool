@@ -289,7 +289,9 @@ function CourseSchedule({ row, terms, courses }) {
               <section key={term.index || index} className='w-60 shrink-0 rounded-xl border border-border bg-surface-muted p-3'>
                 <div className='flex items-start justify-between gap-2 border-b border-border pb-2'>
                   <h4 className='text-body-strong text-ink'>{label}</h4>
-                  <span className='text-caption font-mono tabular-nums text-ink-muted'>{displayNumber(unitTotal, ' units')}</span>
+                  <span className='text-caption font-mono tabular-nums text-ink-muted'>
+                    {intFmt.format(listed.length)} {plural(listed.length, 'course')} · {displayNumber(unitTotal, ' units')}
+                  </span>
                 </div>
                 <div className='mt-3 flex flex-col gap-2'>
                   {listed.map((course) => (

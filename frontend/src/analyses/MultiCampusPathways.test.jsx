@@ -164,6 +164,8 @@ describe('MultiCampusPathways', () => {
     expect(screen.getByText('Earliest modeled course sequence')).toBeInTheDocument()
     expect(screen.getByText('Quarter 1')).toBeInTheDocument()
     expect(screen.getByText('Quarter 2')).toBeInTheDocument()
+    expect(screen.getByText('2 courses · 9 units')).toBeInTheDocument()
+    expect(screen.getByText('1 course · 4.5 units')).toBeInTheDocument()
     expect(screen.getAllByText('CS 1').length).toBeGreaterThan(1)
     const table = screen.getByRole('table')
     expect(within(table).getByText('Data Structures')).toBeInTheDocument()
