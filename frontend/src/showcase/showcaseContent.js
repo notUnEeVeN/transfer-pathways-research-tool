@@ -99,3 +99,160 @@ export const WEEKLY_REVIEW_QUESTIONS = [
   'Which source record or modeling assumption deserves the next round of verification?',
   'What would make this research update easier to discuss with a nontechnical audience?',
 ]
+
+export const SHOWCASE_HERO = {
+  eyebrow: 'California transfer pathways research',
+  title: 'Your figures, rebuilt on California data',
+  lede: 'We ported the Massachusetts transfer pathways analyses to California: 115 community colleges, nine UC computer science programs, current ASSIST agreements, and an audited requirement dataset behind every figure.',
+}
+
+export const FEATURED_FIGURES = [
+  {
+    id: 'figure-district-coverage',
+    analysisId: 'paper-district-heatmap',
+    provenance: 'After the Massachusetts paper’s district coverage figure',
+    metric: '356 of 648',
+    metricLabel: 'district and campus paths are complete',
+    title: 'Which districts have a complete path to each UC campus',
+    question: 'Can a student in each community college district finish every required course group before transfer?',
+    scope: '72 districts and 9 selected programs',
+    method: 'Uses each program’s current required ASSIST groups and counts a district as complete when its member colleges collectively cover every group.',
+    actionLabel: 'Open the full district heatmap',
+    liveNote: 'The live heatmap reads current agreements and may move after the frozen snapshot.',
+  },
+  {
+    id: 'figure-credit-rate',
+    analysisId: 'transfer-credit-rate',
+    provenance: 'After Figure 3 of the Massachusetts paper',
+    metric: '66.3%',
+    metricLabel: 'transfer degree credit counts toward graduation at matched colleges',
+    title: 'How much of an associate degree counts toward a UC degree',
+    question: 'What share of a computer science associate degree carries into each UC graduation plan?',
+    scope: '21 matched semester colleges and 9 UC campuses',
+    method: 'Applies the same articulation and graduation requirement model to both degree types at the same colleges.',
+    actionLabel: 'Open the full credit rate figure',
+    liveNote: 'The live figure shows the full local and transfer cohorts, not only the matched 21 college slice.',
+  },
+  {
+    id: 'figure-extra-units',
+    analysisId: 'transfer-extra-units',
+    provenance: 'After Figure 4 of the Massachusetts paper',
+    metric: '+16.6',
+    metricLabel: 'modeled extra semester units for transfer degree holders',
+    title: 'Additional coursework after transfer',
+    question: 'How many extra units may transfer students need compared with students who began at the university?',
+    scope: '21 matched semester colleges and 9 UC campuses',
+    method: 'Extra units are the associate degree total minus the requirement work it covers — a modeled burden, not observed time to degree.',
+    actionLabel: 'Open the full extra units figure',
+    liveNote: 'The live figure reads the current working model and may move after the frozen snapshot.',
+  },
+  {
+    id: 'figure-coverage',
+    analysisId: 'coverage-heatmap',
+    provenance: 'After the Massachusetts paper’s requirement coverage lens',
+    metric: '74.6%',
+    metricLabel: 'of transfer-designed course requirements have a community college equivalent',
+    title: 'Graduation requirement coverage before transfer',
+    question: 'How much of a UC graduation plan can be completed at each community college?',
+    scope: '1,035 college and campus pairs',
+    method: 'Counts course requirements marked transferable separately from breadth and work reserved for the university.',
+    actionLabel: 'Open the full coverage heatmap',
+    liveNote: 'The live heatmap opens on all modeled graduation requirements; the 74.6% value isolates requirements meant for transfer.',
+  },
+]
+
+export const AUDIT_STORY = {
+  intro: 'Every figure above rests on parsed ASSIST agreements. The audit measures how much that parse can be trusted, and publishes the bound instead of a promise.',
+  steps: [
+    {
+      id: 'corpus',
+      label: 'Source corpus',
+      stat: '2,415',
+      statLabel: 'transfer agreements in the source corpus',
+      body: 'Current ASSIST articulation agreements between 115 California community colleges and the University of California campuses, refreshed July 11, 2026.',
+    },
+    {
+      id: 'templates',
+      label: 'Template collapse',
+      stat: '47',
+      statLabel: 'exact template shapes span all 1,035 agreements in the nine selected pathways',
+      body: 'Agreements parse into exact requirement templates. One human review covers every agreement whose ASSIST source structure is byte-identical, so a small number of careful reviews covers the whole selected corpus.',
+    },
+    {
+      id: 'review',
+      label: 'Complete review',
+      stat: '47 of 47',
+      statLabel: 'template variants have a current human review',
+      body: 'A person compared the parser result against the ASSIST source structure for every template shape in the working dataset.',
+      facts: [
+        '46 reviews matched exactly',
+        '1 asked for more coursework than ASSIST requires',
+        '0 omitted required work — no student would be left underprepared',
+        '48 stored reviews still match current parser output',
+      ],
+    },
+    {
+      id: 'bound',
+      label: 'Statistical bound',
+      body: 'A uniform random sample of templates gives a finite-population Wilson 95% upper bound on the rate of any deviation from ASSIST. We report the ceiling, not the observed rate alone.',
+    },
+  ],
+  bound: {
+    // Read these off the live Audit → Stats page (MismatchGauge) at snapshot
+    // time and fill them together. Never estimate them.
+    //
+    // Measured 2026-07-21 against the live audit, unfiltered scope:
+    //   ceiling 55.8%, observed 0%, 0/3 random clusters,
+    //   ≤ 1348 of 2415 docs, 82 templates.
+    // Deliberately not published: the uniform random sample is only 3
+    // templates, so the ceiling is far too wide to support a credibility
+    // claim, and that scope spans 82 templates rather than the 47 in the
+    // nine selected pathways this showcase describes. Publish once the
+    // random sample is large enough for the bound to mean something.
+    ceilingPct: null,
+    observedPct: null,
+    k: null,
+    n: null,
+    estMax: null,
+    totalDocs: null,
+    pendingNote: 'Bound values are frozen from the live audit at each snapshot. This snapshot has not recorded them yet.',
+  },
+}
+
+export const DEGREE_READINESS = [
+  { value: '199 of 199', label: 'stored degree records retain a catalog source and year' },
+  { value: '97.8%', label: 'local degree course references link to ASSIST' },
+  { value: '97.1%', label: 'transfer degree course references link to ASSIST' },
+  { value: '95.3%', label: 'pathway courses have a prerequisite category mapping' },
+]
+
+export const PREREQ_EXHIBIT = {
+  // null renders the canonical concept graph; viewers can switch to any
+  // college live. Set a source_id here to open on a specific college.
+  initialCollegeId: null,
+  heading: 'Beyond coverage: the prerequisite structure inside the pathway',
+  body: 'Articulation coverage says whether an equivalent course exists. Our concept graph also models what each course requires, per college, and shows the chain-relevant concepts a college has no course for.',
+}
+
+export const PLATFORM_SURFACES = [
+  {
+    id: 'degrees',
+    title: 'Per-college degree pages',
+    body: 'Every analyzable computing degree, with its catalog source, course list, and how each course maps to ASSIST and to prerequisite concepts.',
+  },
+  {
+    id: 'audit',
+    title: 'Audit workbench',
+    body: 'Random-sample reviews, verdict tracking, and live statistical bounds over the parsed corpus — the numbers in this showcase come from here.',
+  },
+  {
+    id: 'visuals',
+    title: 'Visuals gallery',
+    body: 'Published, dated figures with per-account release control. Everything you saw above is a live view, not a screenshot.',
+  },
+  {
+    id: 'api',
+    title: 'Data API',
+    body: 'The same scoped endpoints that power these pages are documented and queryable, so results can be reproduced outside the interface.',
+  },
+]

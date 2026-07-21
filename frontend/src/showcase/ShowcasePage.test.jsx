@@ -24,6 +24,21 @@ vi.mock('../analyses/registry', () => ({
   }),
 }))
 
+vi.mock('../shared/query/hooks/useData', () => ({
+  useColleges: () => ({ data: [], isLoading: false, isError: false }),
+  usePrereqGraph: () => ({
+    data: {
+      concepts: [],
+      rules: [],
+      courses: [],
+      edges: [],
+      stats: { in_scope: 0, examined: 0, mapped: 0, edges: 0, phantom_course_ids: [] },
+    },
+    isLoading: false,
+    isError: false,
+  }),
+}))
+
 import ShowcasePage from './ShowcasePage'
 
 const originalScrollTo = window.scrollTo
@@ -43,103 +58,64 @@ afterAll(() => {
 })
 
 describe('research showcase', () => {
-  it('presents a dated, plain-language research story without contributor controls', () => {
+  it('tells the five-act data-strength story in order, read only', () => {
     render(<ShowcasePage />)
+    expect(screen.getByRole('heading', { name: 'Your figures, rebuilt on California data' })).toBeInTheDocument()
 
-    expect(screen.getByRole('heading', {
-      name: 'How much of a community college pathway carries into a UC degree?',
-    })).toBeInTheDocument()
-    expect(screen.getAllByText('July 20, 2026').length).toBeGreaterThan(0)
-    expect(screen.getByText('2,415')).toBeInTheDocument()
-    expect(screen.getByText('114')).toBeInTheDocument()
-    expect(screen.getAllByText('Working finding').length).toBeGreaterThan(0)
-    expect(screen.getByText('47 of 47')).toBeInTheDocument()
-    expect(screen.getByText('0', { selector: '.text-display-lg' })).toBeInTheDocument()
-    expect(screen.getByText(/Read only means this page contains no editing/)).toBeInTheDocument()
-    expect(screen.queryByText('99.5%')).not.toBeInTheDocument()
-    expect(screen.queryByText('0 of 177')).not.toBeInTheDocument()
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
+    const order = [
+      'Your analyses, run statewide in California',
+      'An audit with a published bound, not a promise',
+      'Confidence and caveats stay beside the findings.',
+      'Beyond coverage: the prerequisite structure inside the pathway',
+      'A living research instrument, not a one-off analysis',
+    ]
+    const indexes = order.map((t) => headings.findIndex((h) => h === t))
+    expect(indexes.every((i) => i >= 0)).toBe(true)
+    expect(indexes).toEqual([...indexes].sort((a, b) => a - b))
 
     expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Publish' })).not.toBeInTheDocument()
   })
 
-  it('keeps related live visuals behind the existing release controls', () => {
-    visualAccess.role = 'partner'
-    visualAccess.releasedIds = ['coverage-heatmap']
+  it('leads with the ported figures and embeds the live figure inline for admins', () => {
     render(<ShowcasePage />)
-
-    expect(screen.getByRole('button', {
-      name: /Related visual not released: A typical district/i,
-    })).toBeDisabled()
-
-    fireEvent.click(screen.getByRole('button', {
-      name: /Community colleges cover three quarters/i,
-    }))
-    expect(screen.getByRole('button', {
-      name: /Explore graduation coverage by college: Community colleges cover/i,
-    })).not.toBeDisabled()
+    expect(screen.getByText('Live paper-district-heatmap visual')).toBeInTheDocument()
+    expect(screen.getAllByText(/After the Massachusetts paper/).length).toBeGreaterThan(0)
   })
 
-  it('switches the guided finding and opens its full live visual', async () => {
+  it('falls back to frozen panels for accounts without the release', () => {
+    visualAccess.role = 'partner'
+    visualAccess.releasedIds = []
     render(<ShowcasePage />)
+    expect(screen.queryByText('Live paper-district-heatmap visual')).not.toBeInTheDocument()
+    expect(screen.getAllByText(/not released for this account/i).length).toBeGreaterThan(0)
+  })
 
+  it('walks the audit story and never shows a fabricated bound', () => {
+    render(<ShowcasePage />)
+    fireEvent.click(screen.getByRole('button', { name: /Statistical bound/ }))
+    expect(screen.getByText(/frozen from the live audit/i)).toBeInTheDocument()
+  })
+
+  it('opens a full live visual from the stage and returns cleanly', async () => {
+    render(<ShowcasePage />)
     fireEvent.click(screen.getByRole('button', {
-      name: /Community colleges cover three quarters/i,
+      name: 'Open the full district heatmap: Which districts have a complete path to each UC campus',
     }))
-    expect(screen.getByRole('heading', {
-      name: 'Community colleges cover three quarters of UC course requirements meant for transfer',
-    })).toBeInTheDocument()
-    expect(screen.getAllByText('74.6%').length).toBeGreaterThan(0)
-
-    fireEvent.click(screen.getByRole('button', {
-      name: 'Explore graduation coverage by college: Community colleges cover three quarters of UC course requirements meant for transfer',
-    }))
-
     const dialog = screen.getByRole('dialog', {
-      name: 'Community colleges cover three quarters of UC course requirements meant for transfer full visual',
+      name: 'Which districts have a complete path to each UC campus full visual',
     })
-    expect(within(dialog).getByText('Live coverage-heatmap visual')).toBeInTheDocument()
-    expect(within(dialog).getByText(/related live, read only visual/i)).toBeInTheDocument()
-    expect(within(dialog).getByText(/isolates course requirements meant for transfer/i)).toBeInTheDocument()
-
+    expect(within(dialog).getByText('Live paper-district-heatmap visual')).toBeInTheDocument()
     fireEvent.click(within(dialog).getByRole('button', { name: 'Close' }))
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
   })
 
-  it('opens a distraction-free presentation of the same showcase', () => {
+  it('keeps presentation mode over the new structure', () => {
     render(<ShowcasePage />)
-
     fireEvent.click(screen.getByRole('button', { name: 'Present showcase' }))
     const dialog = screen.getByRole('dialog', { name: 'California transfer pathways' })
-
     expect(within(dialog).getByText('Presentation mode')).toBeInTheDocument()
-    expect(within(dialog).getByRole('heading', {
-      name: 'How much of a community college pathway carries into a UC degree?',
-    })).toBeInTheDocument()
-    expect(within(dialog).queryByRole('button', { name: 'Present showcase' })).not.toBeInTheDocument()
-  })
-
-  it('returns a presenter to the finding they opened', async () => {
-    render(<ShowcasePage />)
-    fireEvent.click(screen.getByRole('button', { name: 'Present showcase' }))
-    const presentation = screen.getByRole('dialog', { name: 'California transfer pathways' })
-
-    fireEvent.click(within(presentation).getByRole('button', {
-      name: /Community colleges cover three quarters/i,
-    }))
-    fireEvent.click(within(presentation).getByRole('button', {
-      name: /Explore graduation coverage by college:/i,
-    }))
-
-    const detail = await screen.findByRole('dialog', {
-      name: 'Community colleges cover three quarters of UC course requirements meant for transfer full visual',
-    })
-    fireEvent.click(within(detail).getByRole('button', { name: 'Close' }))
-
-    const restored = await screen.findByRole('dialog', { name: 'California transfer pathways' })
-    expect(within(restored).getByRole('heading', {
-      name: 'Community colleges cover three quarters of UC course requirements meant for transfer',
-    })).toBeInTheDocument()
+    expect(within(dialog).getByRole('heading', { name: 'Your figures, rebuilt on California data' })).toBeInTheDocument()
   })
 })
