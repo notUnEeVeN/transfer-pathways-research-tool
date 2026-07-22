@@ -281,29 +281,14 @@ async function loadTransferRequirements(db) {
 // visibility pair-allowlist (null = admin, unrestricted). Visibility is per
 // (school, major) pair — see services/majorVisibility.js.
 const { pairClause, readVisiblePairsUncached } = require('../majorVisibility');
-// The exact ASSIST program the paper scraped per campus (paper repo
-// cs_urls/). The paper-port figures pin to these stored names and IGNORE
-// partner visibility scoping — they are fixed aggregate research figures, and
-// an admin toggling visible majors (e.g. to UCB's EECS B.S.) must never
-// change them. Keep in sync with analysis/paper_credit_loss.PAPER_MAJORS.
-const PAPER_MAJORS = {
-  89: ['Computer Science & Engineering B.S.', 'Computer Science B.S.'],
-  144: ['APPLIED MATHEMATICAL SCIENCES, Computer Science Emphasis, B.S.',
-    'COMPUTER SCIENCE AND ENGINEERING, B.S. '], // trailing space is stored
-  7: ['CSE: Computer Science B.S.',
-    'CSE: Computer Science with a Specialization in Bioinformatics B.S.',
-    'Mathematics/Computer Science B.S.'],
-  128: ['Computer Science, B.S.'],
-  117: ['Computer Science and Engineering/B.S.', 'Computer Science/B.S.',
-    'Linguistics and Computer Science/B.A.'],
-  // UCB needs BOTH: ASSIST moved its paper-era CS math articulations onto
-  // the EECS page — single-program pinning breaks paper replication.
-  79: ['Computer Science, B.A.', 'Electrical Engineering & Computer Sciences, B.S.'],
-  132: ['Computer Science B.A.', 'Computer Science B.S.', 'Computer Science Minor',
-    'Computer Science: Computer Game Design B.S.'],
-  120: ['Computer Science and Engineering, B.S.', 'Computer Science, B.S.'],
-  46: ['Computer Science with Business Applications B.S.', 'Computer Science, B.S.'],
-};
+const { getMajor } = require('../../config/majors');
+// The exact ASSIST program the paper scraped per campus, from the cs entry in
+// config/majors.js (the single source of truth for program pins). The
+// paper-port figures pin to these stored names and IGNORE partner visibility
+// scoping — they are fixed aggregate research figures, and an admin toggling
+// visible majors (e.g. to UCB's EECS B.S.) must never change them.
+// Keep in sync with analysis/paper_credit_loss.PAPER_MAJORS.
+const PAPER_MAJORS = getMajor('cs').programs;
 
 function paperMajorsQuery(idField = 'uc_school_id') {
   return { $or: Object.entries(PAPER_MAJORS).map(([sid, majors]) => ({ [idField]: Number(sid), major: { $in: majors } })) };
