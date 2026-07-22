@@ -165,3 +165,28 @@ the verbatim string `Economics, B.A.` and two share `Economics B.A.`
 `assist_agreements` collection at 115 agreements each (one per community
 college — see the counts note above). Catalogs re-synced: 100,461 sending
 courses, 3,903 receiving courses. `admissions` grew 18 → 34.
+
+## What happens next
+
+Phase 0 is complete. Remaining W1 phases are in
+`docs/superpowers/plans/2026-07-22-bio-econ-onboarding.md`:
+
+- **Phase 1 (gate):** wait for sub-project F to merge to `main`. Until then
+  the ported data is deliberately invisible in the console — expected, not a
+  bug.
+- **Phase 2:** add the `bio` and `econ` entries to `server/config/majors.js`,
+  copying the `programs` pins from the tables above verbatim, with
+  capabilities `{ asDegrees: false, paperBaselines: false,
+  transferMinimums: false, snapshots: [] }`. Then enable them in Admin →
+  visible majors.
+- **Phase 3:** category + concept curation, so the gap figures render.
+- **Phase 4:** 18 degree templates (9 campuses × 2 majors).
+- **Phase 5:** QA sweep and per-major sign-off.
+
+**Deferred:** Task 0.4 (seeding the W4 preset tracking tasks) waits for the
+W4 branch to merge — the `general` task type and preset library don't exist
+yet. Do it as soon as W4 lands.
+
+**Rollback:** any pin can be undone with
+`python port.py remove --exact "<program>"`. Curated data and audit verdicts
+are never touched, and re-adding reconnects them via preserved `_id`s.
