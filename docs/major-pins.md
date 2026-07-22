@@ -15,8 +15,12 @@ Campus set: the nine figure campuses (the `PAPER_MAJORS` keys in
 | Major | Slug | Pins confirmed | Ported | Config entry | Launched |
 | --- | --- | --- | --- | --- | --- |
 | Computer Science | `cs` | ✅ (historical) | ✅ 18 programs, 2,415 agreements | pending F | ✅ |
-| Biology | `bio` | ⏸ awaiting Tybalt | — | — | — |
-| Economics | `econ` | ⏸ awaiting Tybalt | — | — | — |
+| Biology | `bio` | ✅ 2026-07-22 | ✅ 9 pins, 1,035 agreements | pending F | — |
+| Economics | `econ` | ✅ 2026-07-22 | ✅ 9 campus-pins (5 strings), 1,035 agreements | pending F | — |
+
+Research cluster after Phase 0: **32 distinct programs, 4,485 agreements**
+(last refreshed 2026-07-22 23:40 UTC). The ported data is intentionally
+invisible in the console until sub-project F ships the major dimension.
 
 ## How to read the counts (important)
 
@@ -109,21 +113,55 @@ look at Merced advising pages at some point; not a blocker for porting, since
 
 ## Match-string safety note (for the F implementer)
 
-Both `match` strings work **because the research cluster only ever holds
-pinned programs** — `port.py` copies nothing else, so a contains-match on
-`biolog` / `econom` can only hit pinned rows. This is the same property that
-makes CS's `computer science` match safe today.
+**Verified against the live cluster 2026-07-22 — both match strings are
+clean.** A case-insensitive contains query returns exactly the pinned set and
+nothing else:
 
-If a future port ever brings in a non-pinned program containing those
-substrings (say Marine Biology for a separate comparison), the contains
-filter would leak. The durable fix, if that day comes, is to filter by the
-config's `programs` pins with an `$in` clause — the machinery already exists
-as `paperMajorsQuery` in `server/services/analysis/pathways.js`.
+| Slug | `match` | Distinct programs matched | Agreements | Leaks |
+| --- | --- | --- | --- | --- |
+| `cs` | `computer science` | 18 | 2,415 | none |
+| `bio` | `biolog` | 9 | 1,035 | none |
+| `econ` | `econom` | 5 (covering 9 campuses) | 1,035 | none |
+
+The three sets are mutually exclusive — no biology program contains
+"econom", no economics program contains "biolog", and neither matches
+"computer science". So F can use the plain `majorContains` path for all three
+majors with no special-casing.
+
+This holds **because the research cluster only ever holds pinned programs** —
+`port.py` copies nothing else. If a future port ever brings in a non-pinned
+program containing those substrings (say Marine Biology for a separate
+comparison), the contains filter would leak. The durable fix, if that day
+comes, is to filter by the config's `programs` pins with an `$in` clause —
+the machinery already exists as `paperMajorsQuery` in
+`server/services/analysis/pathways.js`.
 
 ## Port log
 
-Filled in during Phase 0 Task 0.3, after pins are confirmed.
+Executed 2026-07-22 via `python port.py add --exact "<program>" --yes`, run
+from `scripts/`. 14 commands cover 18 campus-pins because four campuses share
+the verbatim string `Economics, B.A.` and two share `Economics B.A.`
+(`--exact` is a case-sensitive equality match, so Merced's
+`ECONOMICS, B.A.` stayed a separate command).
 
-| Date | Major | Command | Result |
-| --- | --- | --- | --- |
-| | | | |
+| # | Major | Program string (verbatim) | Campuses | Result |
+| --- | --- | --- | --- | --- |
+| 1 | bio | `Molecular and Cell Biology, B.A.` | UCB | ✅ 115 |
+| 2 | bio | `Biological Sciences B.S.` | UCD | ✅ 115 |
+| 3 | bio | `Biological Sciences, B.S.` | UCI | ✅ 115 |
+| 4 | bio | `Biology/B.S.` | UCLA | ✅ 115 |
+| 5 | bio | `BIOLOGICAL SCIENCES, General Biology Emphasis, B.S.` | UCM | ✅ 115 |
+| 6 | bio | `Biology, B.A. or B.S.` | UCR | ✅ 115 |
+| 7 | bio | `Biology: General Biology B.S.` | UCSD | ✅ 115 |
+| 8 | bio | `Biological Sciences, B.A. & B.S.` | UCSB | ✅ 115 |
+| 9 | bio | `Biology B.S.` | UCSC | ✅ 115 |
+| 10 | econ | `Economics, B.A.` | UCB, UCI, UCR, UCSB | ✅ 460 (115 each) |
+| 11 | econ | `Economics A.B.` | UCD | ✅ 115 |
+| 12 | econ | `Economics/B.A.` | UCLA | ✅ 115 |
+| 13 | econ | `ECONOMICS, B.A.` | UCM | ✅ 115 |
+| 14 | econ | `Economics B.A.` | UCSD, UCSC | ✅ 230 (115 each) |
+
+**0 failures.** All 18 campus-pins verified present in the canonical
+`assist_agreements` collection at 115 agreements each (one per community
+college — see the counts note above). Catalogs re-synced: 100,461 sending
+courses, 3,903 receiving courses. `admissions` grew 18 → 34.
