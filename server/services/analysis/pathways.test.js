@@ -239,6 +239,19 @@ describe('coverageData', () => {
     expect(alphaOther.fully_articulated).toBe(true); // alternative set B is satisfied.
   });
 
+  it('reports a per-group verdict so course-level figures can see which demand fails', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'paper' });
+
+    const beta = rows.find((r) => r.community_college_id === 20 && r.school_id === 1);
+    expect(beta.requirement_groups).toEqual([
+      { group_id: 'Calc', satisfied: true, receivers_required: 1, receivers_articulated: 1 },
+    ]);
+
+    const alphaOther = rows.find((r) => r.community_college_id === 10 && r.school_id === 2);
+    expect(alphaOther.requirement_groups.every((g) => g.satisfied)).toBe(true);
+    expect(alphaOther.requirement_groups).toHaveLength(alphaOther.requirement_groups_required);
+  });
+
   it('uses modeled graduation units as primary coverage while retaining requirement slots', async () => {
     const rows = await coverageData(db, db, { ...P, requirements: 'degree' });
 
@@ -270,6 +283,14 @@ describe('coverageData', () => {
       breadth: { total: 1, covered: 1 },
       nontransferable: { total: 2, covered: 0 },
     });
+
+    // Course types partition the same slots, so they always re-sum to the total.
+    const types = alpha.degree_requirements_by_course_type;
+    expect(Object.keys(types).sort()).toEqual(['computing', 'math', 'non_stem', 'science']);
+    expect(Object.values(types).reduce((sum, t) => sum + t.total, 0))
+      .toBe(alpha.degree_requirement_slots_total);
+    expect(Object.values(types).reduce((sum, t) => sum + t.covered, 0))
+      .toBe(alpha.degree_requirement_slots_with_equivalent);
 
     const beta = rows.find((r) => r.community_college_id === 20);
     expect(beta).toMatchObject({

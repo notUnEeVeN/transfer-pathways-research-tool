@@ -15,7 +15,7 @@ import { useDeleteFigure, useEditFigure, useFigures } from '../shared/query/hook
 import MeasurePanel from '../analyses/MeasurePanel'
 import { measureFor } from '../analyses/measures'
 import { filterBuiltInAnalyses } from './analysisVisibility'
-import { groupGalleryBySource } from './provenance'
+import { SOURCE_META, figureRefForItem, groupGalleryBySource, sourceForItem } from './provenance'
 
 export { filterBuiltInAnalyses } from './analysisVisibility'
 
@@ -79,7 +79,7 @@ function FigureThumbnail({ fig }) {
   )
 }
 
-function LiveThumbnail({ Component, publicationOptions }) {
+function LiveThumbnail({ Component, publicationOptions, figureOnly = false }) {
   if (!Component) {
     return (
       <div className='absolute inset-0 grid place-items-center px-6 text-center text-caption'>
@@ -93,7 +93,8 @@ function LiveThumbnail({ Component, publicationOptions }) {
     // opens the full visual.
     <div className='absolute inset-0 overflow-hidden bg-surface' aria-hidden='true' inert={true}>
       <div className='w-[300%] min-h-[300%] origin-top-left scale-[.333333] p-5
-        transition-transform duration-300 ease-out group-hover:scale-[.341666]'>
+        transition-transform duration-300 ease-out group-hover:scale-[.341666]'
+        style={figureOnly ? { display: 'grid', alignItems: 'center' } : undefined}>
         <Component publicationOptions={publicationOptions || {}} />
       </div>
     </div>
@@ -125,21 +126,31 @@ function itemDetails(item, { isAdmin, releasedSet }) {
 export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new Set(), onOpen }) {
   const { previewRef, ready } = useDeferredPreview()
   const details = itemDetails(item, { isAdmin, releasedSet })
+  // Ported figures show a "CA Fig. 1" / "MA Fig. 3" pill so the source figure
+  // is legible on the card without opening it. Originals get none.
+  const figureRef = figureRefForItem(item)
+  const lane = SOURCE_META[sourceForItem(item)]
   const figure = item.kind === 'figure' ? item.figure : null
   const analysis = item.kind === 'analysis'
     ? item.analysis
     : getAnalysisById(figure?.visual?.id)
-  const Component = (item.kind === 'analysis' && analysis?.PreviewComponent)
-    || analysis?.Component
-    || null
+  const Component = analysis?.PreviewComponent || analysis?.Component || null
+  const figureOnlyPreview = Boolean(analysis?.PreviewComponent)
 
   return (
     <article className='group relative surface-card overflow-hidden transition-[border-color,transform]
       duration-200 hover:-translate-y-0.5 hover:border-border-strong focus-within:border-primary'>
       <div ref={previewRef} className='relative aspect-[16/10] overflow-hidden border-b border-border bg-surface-muted'>
+        {figureRef && (
+          <span className={`pointer-events-none absolute left-2 top-2 z-20 rounded-pill border
+            bg-surface/85 px-2 py-0.5 text-tag font-[650] backdrop-blur-sm ${lane.borderClass} ${lane.textClass}`}>
+            {figureRef}
+          </span>
+        )}
         {ready && (figure && figure.publication_type !== 'interactive'
           ? <FigureThumbnail fig={figure} />
-          : <LiveThumbnail Component={Component} publicationOptions={figure?.visual?.options} />)}
+          : <LiveThumbnail Component={Component} publicationOptions={figure?.visual?.options}
+              figureOnly={figureOnlyPreview} />)}
         {!ready && <div className='absolute inset-0 grid place-items-center'><Spinner /></div>}
         <div className='absolute inset-0 z-10 grid place-items-center bg-primary/0 transition-colors
           duration-200 group-hover:bg-primary/18 group-focus-within:bg-primary/18' aria-hidden='true'>

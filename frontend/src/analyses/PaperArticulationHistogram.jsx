@@ -3,6 +3,9 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 import { buildCoverageMapModel } from './ArticulationCoverageMap'
+import {
+  CA_DIFFERENCE_COLORS, CA_FIGURE,
+} from './californiaFigureStyle'
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
 
 const COVERAGE_PARAMS = {
@@ -194,9 +197,181 @@ function HistogramFigure({ model, paperModel, version, differences }) {
   )
 }
 
-export default function PaperArticulationHistogram() {
-  const [version, setVersion] = useState('current')
-  const [showDiff, setShowDiff] = useState(false)
+const MODERN_HISTOGRAM = {
+  width: CA_FIGURE.width,
+  // Preserve the legacy renderer's 960 x 540 displayed aspect ratio at the
+  // shared 1240-unit publication width. The 12% plot headroom below makes the
+  // effective bar area almost exactly the legacy plot height at this scale.
+  height: 698,
+  plot: { left: 106, right: 36, top: 54, bottom: 586 },
+  fillFraction: 0.88,
+}
+
+function modernHistogramAxisMax(model, paperModel, differences) {
+  const peak = Math.max(
+    0,
+    model.maxFrequency,
+    differences ? paperModel.maxFrequency : 0
+  )
+  return Math.max(5, Math.ceil(peak / 5) * 5)
+}
+
+function roundedTopBarPath(x, y, width, height, radius = 3) {
+  if (!(height > 0)) return ''
+  const r = Math.min(radius, width / 2, height)
+  return [
+    `M ${x} ${y + height}`,
+    `L ${x} ${y + r}`,
+    `Q ${x} ${y} ${x + r} ${y}`,
+    `L ${x + width - r} ${y}`,
+    `Q ${x + width} ${y} ${x + width} ${y + r}`,
+    `L ${x + width} ${y + height}`,
+    'Z',
+  ].join(' ')
+}
+
+function ModernHistogramLegend() {
+  const items = [
+    { label: 'Current', color: CA_FIGURE.blue },
+    { label: 'Added since paper', color: CA_DIFFERENCE_COLORS.gained },
+    { label: 'Paper-only', color: CA_DIFFERENCE_COLORS.lost },
+  ]
+  let cursor = 775
+  return (
+    <g aria-label='Difference legend'>
+      {items.map((item) => {
+        const x = cursor
+        cursor += item.label === 'Added since paper' ? 190 : 135
+        return (
+          <g key={item.label} transform={`translate(${x} 28)`}>
+            <rect width='18' height='13' rx='2.5' fill={item.color}
+              stroke={CA_FIGURE.grid} strokeWidth='1' />
+            <text x='26' y='12' fontSize='14' fill={CA_FIGURE.ink}>{item.label}</text>
+          </g>
+        )
+      })}
+    </g>
+  )
+}
+
+/**
+ * Publication renderer for the current-data Figure 3 variants. The paper
+ * baseline deliberately continues through HistogramFigure above so the port
+ * remains a byte-for-byte visual reference rather than inheriting this skin.
+ */
+function ModernHistogramFigure({ model, paperModel, differences = false }) {
+  const id = useId().replace(/:/g, '')
+  const titleId = `${id}-modern-histogram-title`
+  const descriptionId = `${id}-modern-histogram-description`
+  const { width, height, plot, fillFraction } = MODERN_HISTOGRAM
+  const plotWidth = width - plot.left - plot.right
+  const plotHeight = plot.bottom - plot.top
+  const slotWidth = plotWidth / model.bins.length
+  const barWidth = slotWidth * 0.56
+  const axisMax = modernHistogramAxisMax(model, paperModel, differences)
+  const valueY = (value) => plot.bottom
+    - (value / axisMax) * fillFraction * plotHeight
+  const ticks = Array.from({ length: axisMax / 5 + 1 }, (_, index) => index * 5)
+
+  return (
+    <div className='overflow-hidden bg-white'>
+      <svg viewBox={`0 0 ${width} ${height}`} role='img'
+        aria-labelledby={`${titleId} ${descriptionId}`}
+        data-modern-california-figure='coverage-distribution'
+        className='block h-auto w-full' data-export-width={width}
+        style={{ fontFamily: CA_FIGURE.fontFamily }}>
+        <title id={titleId}>Distribution of complete campus articulation by district</title>
+        <desc id={descriptionId}>
+          Current distribution of California community college districts by the number
+          of University of California campuses with complete articulation.
+        </desc>
+        <rect width={width} height={height} fill={CA_FIGURE.background} />
+        {differences && <ModernHistogramLegend />}
+
+        <g aria-hidden='true'>
+          {ticks.map((tick) => {
+            const y = valueY(tick)
+            return (
+              <g key={tick}>
+                <line x1={plot.left} y1={y} x2={width - plot.right} y2={y}
+                  stroke={tick === 0 ? CA_FIGURE.mutedLine : CA_FIGURE.grid}
+                  strokeWidth={tick === 0 ? 1.5 : 1} />
+                <text x={plot.left - 12} y={y + 4} textAnchor='end'
+                  fontSize='15' fill={CA_FIGURE.ink}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}>{tick}</text>
+              </g>
+            )
+          })}
+        </g>
+
+        <g aria-label='Histogram bars'>
+          {model.bins.map((bin, index) => {
+            const frequency = bin.frequency
+            const paperFrequency = paperModel.bins[index].frequency
+            const delta = frequency - paperFrequency
+            const x = plot.left + index * slotWidth + (slotWidth - barWidth) / 2
+            const y = valueY(frequency)
+            const barHeight = plot.bottom - y
+            const paperY = valueY(paperFrequency)
+            const comparisonTop = Math.min(y, paperY)
+            const names = bin.districts.map((district) => district.name).join(', ')
+            const comparison = differences && delta !== 0
+              ? `. Paper baseline: ${paperFrequency}; change: ${delta > 0 ? '+' : ''}${delta}`
+              : ''
+            const label = `${bin.count} complete campuses. ${frequency} ${frequency === 1 ? 'district' : 'districts'}${comparison}${names ? `: ${names}` : ''}`
+            return (
+              <g key={bin.count} role='img' aria-label={label} tabIndex='0'
+                data-histogram-bin={bin.count}>
+                <title>{label}</title>
+                {barHeight > 0 && (
+                  <path d={roundedTopBarPath(x, y, barWidth, barHeight)}
+                    fill={CA_FIGURE.blue} stroke={CA_FIGURE.grid} strokeWidth='1'
+                    className='transition-opacity hover:opacity-80' />
+                )}
+                {differences && delta > 0 && (
+                  <rect x={x} y={y} width={barWidth} height={paperY - y}
+                    rx='3' fill={CA_DIFFERENCE_COLORS.gained}
+                    data-difference='increase' />
+                )}
+                {differences && delta < 0 && (
+                  <rect x={x} y={paperY} width={barWidth} height={y - paperY}
+                    rx='3' fill={CA_DIFFERENCE_COLORS.lost}
+                    data-difference='decrease' />
+                )}
+                <text x={x + barWidth / 2} y={comparisonTop - 10}
+                  textAnchor='middle' fontSize='16' fontWeight='500'
+                  fill={differences && delta !== 0
+                    ? (delta > 0 ? CA_DIFFERENCE_COLORS.gained : CA_DIFFERENCE_COLORS.lost)
+                    : CA_FIGURE.ink}
+                  data-histogram-value-label={bin.count}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}>
+                  {differences && delta !== 0
+                    ? `${frequency} (${delta > 0 ? '+' : ''}${delta})`
+                    : frequency}
+                </text>
+                <text x={x + barWidth / 2} y={plot.bottom + 31} textAnchor='middle'
+                  fontSize='16' fill={CA_FIGURE.ink}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}>{bin.count}</text>
+              </g>
+            )
+          })}
+        </g>
+
+        <text x={(plot.left + width - plot.right) / 2} y='665' textAnchor='middle'
+          fontSize='18' fontWeight='500' fill={CA_FIGURE.ink}>
+          Number of UC campuses with complete articulation
+        </text>
+        <text x='27' y={(plot.top + plot.bottom) / 2} textAnchor='middle'
+          transform={`rotate(-90 27 ${(plot.top + plot.bottom) / 2})`}
+          fontSize='18' fontWeight='500' fill={CA_FIGURE.ink}>
+          Number of districts
+        </text>
+      </svg>
+    </div>
+  )
+}
+
+function useHistogramModels() {
   const coverage = useCoverage(COVERAGE_PARAMS, {
     staleTime: 0,
     refetchOnWindowFocus: false,
@@ -205,6 +380,21 @@ export default function PaperArticulationHistogram() {
   const rows = coverage.data?.rows || []
   const paperModel = useMemo(() => buildPaperArticulationHistogramModel(), [])
   const currentModel = useMemo(() => buildArticulationHistogramModel(rows), [rows])
+  return { coverage, rows, paperModel, currentModel }
+}
+
+/** Figure-only gallery thumbnail, intentionally pinned to current data. */
+export function PaperArticulationHistogramPreview() {
+  const { coverage, paperModel, currentModel } = useHistogramModels()
+  if (coverage.isLoading) return <div className='h-full grid place-items-center'><Spinner /></div>
+  if (coverage.isError) return <Alert type='error'>Could not load district articulation coverage.</Alert>
+  return <ModernHistogramFigure model={currentModel} paperModel={paperModel} />
+}
+
+export default function PaperArticulationHistogram() {
+  const [version, setVersion] = useState('current')
+  const [showDiff, setShowDiff] = useState(false)
+  const { coverage, rows, paperModel, currentModel } = useHistogramModels()
   const model = version === 'paper' ? paperModel : currentModel
   const diffOn = version === 'current' && showDiff
 
@@ -257,8 +447,11 @@ export default function PaperArticulationHistogram() {
         </div>
       </div>
       <div data-export-root>
-        <HistogramFigure model={model} paperModel={paperModel}
-          version={version} differences={diffOn} />
+        {version === 'paper'
+          ? <HistogramFigure model={model} paperModel={paperModel}
+              version={version} differences={false} />
+          : <ModernHistogramFigure model={model} paperModel={paperModel}
+              differences={diffOn} />}
       </div>
     </Stack>
   )

@@ -5,13 +5,15 @@ import { useRefTable, useDeleteRefRow } from './shared/query/hooks/useData'
 import { refTableByKey, UC_SCHOOLS } from './references/refTablesRegistry'
 import RefRowModal from './references/RefRowModal'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
+import { INCOME_DATASET, districtIncome, formatIncome } from './shared/countyIncome'
 
 /**
  * Hand-curated reference tables, editable in place (row edit/delete/add) via
  * the curation ref CRUD; edits open to any console user, stamped with their uid.
  *
  *   DistrictsTab    — Data → Districts: CC district geography, rail of
- *                     districts → that district's colleges
+ *                     districts → that district's colleges, with the Franchise
+ *                     Tax Board county income roll-up for the service area
  *   CampusMinimums  — one campus's hand-curated UC hard minimum, shown inside
  *                     the Agreements flow next to the degree template
  */
@@ -328,6 +330,74 @@ export default function DistrictsTab() {
   return <DistrictLookup rows={districts.data?.rows || []} />
 }
 
+/**
+ * Service-area income for one district. There is no California-government
+ * income series for community college districts, so this is the Franchise Tax
+ * Board's county table rolled up over the district's counties, weighted by
+ * returns filed. The per-county rows and the source link are shown so the
+ * number can be checked against the published file rather than trusted.
+ */
+function DistrictIncomeCard({ counties }) {
+  const income = districtIncome(counties)
+  const { source, taxableYear, measureLabel } = INCOME_DATASET
+
+  return (
+    <div className='surface-card px-5 py-[18px] flex flex-col gap-3' data-district-income>
+      <div className='flex flex-wrap items-baseline gap-x-3 gap-y-1'>
+        <p className='heading-card tracking-[-.01em]'>Service-area income</p>
+        <span className='text-tag text-ink-subtle'>Taxable year {taxableYear}</span>
+      </div>
+
+      {!income ? (
+        <p className='text-caption ink-subtle'>
+          No county in this district matches the Franchise Tax Board table.
+        </p>
+      ) : (
+        <>
+          <div className='flex flex-wrap items-baseline gap-x-3'>
+            <span className='text-stat text-ink'>
+              {formatIncome(income.meanAgiPerReturn)}
+            </span>
+            <span className='text-caption ink-subtle'>
+              {measureLabel.toLowerCase()}, weighted across{' '}
+              {income.counties.length === 1 ? '1 county' : `${income.counties.length} counties`}
+              {' '}by {intFmt.format(income.returns)} returns
+            </span>
+          </div>
+
+          {income.parts.length > 1 && (
+            <DataTable
+              rows={income.parts.map((part) => ({ ...part, _id: part.county }))}
+              columns={[
+                { key: 'county', label: 'County', cellClassName: 'text-ink' },
+                {
+                  key: 'mean_agi_per_return',
+                  label: 'Mean income per return',
+                  render: (r) => formatIncome(r.mean_agi_per_return),
+                },
+                {
+                  key: 'returns',
+                  label: 'Returns filed',
+                  render: (r) => intFmt.format(r.returns),
+                },
+              ]} />
+          )}
+        </>
+      )}
+
+      <p className='text-tag leading-relaxed text-ink-subtle'>
+        Mean adjusted gross income per tax return — not median household income, and
+        filers only. A county is not a district, so this is only as local as the
+        service area. Source:{' '}
+        <a className='underline underline-offset-2 hover:text-ink' href={source.page}
+          target='_blank' rel='noreferrer'>{source.name}</a>{' · '}
+        <a className='underline underline-offset-2 hover:text-ink' href={source.file}
+          target='_blank' rel='noreferrer'>download</a>
+      </p>
+    </div>
+  )
+}
+
 function DistrictLookup({ rows }) {
   const [query, setQuery] = useState('')
   const [selectedKey, setSelectedKey] = useState(null)
@@ -391,6 +461,8 @@ function DistrictLookup({ rows }) {
                 {selected.counties.map((county) => <span key={county} className='chip'>{county}</span>)}
               </div>
             </div>
+
+            <DistrictIncomeCard counties={selected.counties} />
 
             <DataTable
               rows={selected.colleges}

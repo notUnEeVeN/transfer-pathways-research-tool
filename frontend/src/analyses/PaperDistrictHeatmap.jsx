@@ -3,6 +3,9 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack, StatStrip, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 import { DISTRICTS, PAPER_CELL_COUNT, PAPER_COMPLETE_COUNT, UC_ROWS } from './paperDistrictBaseline'
+import {
+  CA_DIFFERENCE_COLORS, CA_FIGURE, CA_QUARTER_NOTE,
+} from './californiaFigureStyle'
 
 const MAJOR_FILTER = 'computer science'
 const NAVY = '#1a237e'
@@ -320,6 +323,138 @@ function PaperMatrix({ liveModel, view, labelMode, reqMode }) {
   )
 }
 
+const MODERN_MATRIX = {
+  width: CA_FIGURE.width,
+  height: 320,
+  left: 138,
+  // 1079 px yields exactly 72 × 14 px cells + 71 × 1 px gaps. Integer
+  // geometry prevents browser antialiasing from making some white cells look
+  // more heavily bordered than their neighbours.
+  right: 23,
+  top: 22,
+  rowHeight: 20,
+  rowGap: 1,
+}
+
+function modernFillFor({ view, live, paper }) {
+  if (view === 'live') return live ? CA_FIGURE.blue : CA_FIGURE.background
+  if (live && paper) return CA_FIGURE.blue
+  if (!live && !paper) return CA_FIGURE.background
+  return live ? CA_DIFFERENCE_COLORS.gained : CA_DIFFERENCE_COLORS.lost
+}
+
+function modernCampusLabel(uc, labelMode) {
+  return labelMode === 'paper'
+    ? uc.id
+    : uc.campus.replace(/^UC\s+/i, '') + (uc.id.endsWith('*') ? '*' : '')
+}
+
+function ModernLegend({ differences, y }) {
+  const items = differences
+    ? [
+      ['same complete', CA_FIGURE.blue],
+      ['same incomplete', CA_FIGURE.background],
+      ['gained', CA_DIFFERENCE_COLORS.gained],
+      ['lost', CA_DIFFERENCE_COLORS.lost],
+    ]
+    : [
+      ['Complete articulation', CA_FIGURE.blue],
+      ['Incomplete', CA_FIGURE.background],
+    ]
+  let cursor = 24
+
+  return (
+    <g aria-label={differences ? 'Difference legend' : 'Coverage legend'}>
+      {items.map(([label, color]) => {
+        const x = cursor
+        cursor += 31 + label.length * 7.1
+        return (
+          <g key={label} transform={`translate(${x} ${y})`}>
+            <rect width='14' height='14' rx='2' fill={color}
+              stroke={color === CA_FIGURE.background ? CA_FIGURE.mutedLine : CA_FIGURE.grid} />
+            <text x='21' y='11.5' fontSize='12' fill={CA_FIGURE.ink}>{label}</text>
+          </g>
+        )
+      })}
+    </g>
+  )
+}
+
+/** Publication renderer from the modern handoff, fed by the exact live model. */
+export function ModernCoverageMatrix({ liveModel, view = 'live', labelMode = 'names', reqMode = 'paper' }) {
+  const { width, height, left, right, top, rowHeight, rowGap } = MODERN_MATRIX
+  const plotWidth = width - left - right
+  const columnGap = 1
+  const cellWidth = (plotWidth - columnGap * (DISTRICTS.length - 1)) / DISTRICTS.length
+  const plotHeight = UC_ROWS.length * rowHeight + (UC_ROWS.length - 1) * rowGap
+  const differences = view === 'diff'
+  const xFor = (index) => left + index * (cellWidth + columnGap)
+  const yFor = (index) => top + index * (rowHeight + rowGap)
+
+  return (
+    <div className='overflow-hidden bg-white'>
+      <svg viewBox={`0 0 ${width} ${height}`} role='img'
+        aria-label='Community college district transfer coverage by University of California campus'
+        className='block h-auto w-full' data-export-width={width}
+        data-modern-california-figure='coverage-matrix'
+        style={{ fontFamily: CA_FIGURE.fontFamily, fontVariantNumeric: 'tabular-nums' }}>
+        <rect width={width} height={height} fill={CA_FIGURE.background} />
+        <text x='34' y={top + plotHeight / 2} textAnchor='middle'
+          transform={`rotate(-90 34 ${top + plotHeight / 2})`}
+          fontSize='14' fontWeight='500' fill={CA_FIGURE.ink}>UC Campus</text>
+
+        <rect x={left} y={top} width={plotWidth} height={plotHeight}
+          fill={CA_FIGURE.grid} data-matrix-grid shapeRendering='crispEdges' />
+
+        {UC_ROWS.map((uc, rowIndex) => {
+          const y = yFor(rowIndex)
+          return (
+            <g key={uc.id} data-matrix-row={uc.id}>
+              <text x={left - 12} y={y + rowHeight / 2 + 4} textAnchor='end'
+                fontSize='12' fill={CA_FIGURE.ink}>
+                {modernCampusLabel(uc, labelMode)}
+              </text>
+              {DISTRICTS.map((district) => {
+                const liveCell = liveModel.cells.get(cellKey(uc.id, district.index))
+                const live = liveCell?.complete === true
+                const paper = paperValue(uc, district.index)
+                const label = titleFor({ uc, district, liveCell, live, paper, view, reqMode })
+                return (
+                  <rect key={district.index} x={xFor(district.index)} y={y}
+                    width={cellWidth} height={rowHeight}
+                    fill={modernFillFor({ view, live, paper })}
+                    shapeRendering='crispEdges'
+                    aria-label={label} data-matrix-cell={`${uc.id}|${district.index}`}>
+                    <title>{label}</title>
+                  </rect>
+                )
+              })}
+            </g>
+          )
+        })}
+
+        <rect x={left - 0.5} y={top - 0.5} width={plotWidth + 1} height={plotHeight + 1}
+          fill='none' stroke={CA_FIGURE.grid} shapeRendering='crispEdges' />
+
+        {DISTRICTS.filter((district) => district.index % 5 === 0).map((district) => (
+          <text key={district.index} x={xFor(district.index) + cellWidth / 2}
+            y={top + plotHeight + 22} textAnchor='middle' fontSize='12' fill={CA_FIGURE.ink}>
+            {district.index}
+          </text>
+        ))}
+        <text x={left + plotWidth / 2} y={top + plotHeight + 45} textAnchor='middle'
+          fontSize='14' fontWeight='500' fill={CA_FIGURE.ink}>
+          Community College District
+        </text>
+        <ModernLegend differences={differences} y={height - 32} />
+        <text x={differences ? 650 : 430} y={height - 20} fontSize='12' fill={CA_FIGURE.ink}>
+          {CA_QUARTER_NOTE}
+        </text>
+      </svg>
+    </div>
+  )
+}
+
 function DifferenceLegend() {
   return (
     <div className='flex flex-wrap items-center gap-4 text-caption text-ink-subtle'>
@@ -340,7 +475,11 @@ function Chip({ color }) {
  * version and difference controls. The showcase uses it so a walkthrough shows
  * current California data rather than the reproduced paper baseline.
  */
-export default function PaperDistrictHeatmap({ presentation = false }) {
+export function PaperDistrictHeatmapPreview() {
+  return <PaperDistrictHeatmap preview />
+}
+
+export default function PaperDistrictHeatmap({ presentation = false, preview = false }) {
   const [version, setVersion] = useState(presentation ? 'assist' : 'website')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('names')
@@ -381,6 +520,14 @@ export default function PaperDistrictHeatmap({ presentation = false }) {
 
   if (coverage.isError) {
     return <Alert type='error'>Could not load the coverage data for the paper-style heatmap.</Alert>
+  }
+
+  if (preview) {
+    return (
+      <div data-export-root>
+        <ModernCoverageMatrix liveModel={liveModel} view='live' labelMode='names' reqMode='paper' />
+      </div>
+    )
   }
 
   return (
@@ -443,12 +590,14 @@ export default function PaperDistrictHeatmap({ presentation = false }) {
       </div>
 
       <div data-export-root className='flex flex-col gap-4'>
-        <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />
+        {version === 'paper'
+          ? <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />
+          : <ModernCoverageMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />}
         <div
           className='flex flex-wrap items-center gap-4'
           data-export-exclude={view === 'diff' ? undefined : 'controls-only'}
         >
-          {view === 'diff' && <DifferenceLegend />}
+          {view === 'diff' && version === 'paper' && <DifferenceLegend />}
           {/* Deliberately quiet: label naming is a reading preference, not an
               analysis control, so it lives under the matrix as plain text. */}
           <button

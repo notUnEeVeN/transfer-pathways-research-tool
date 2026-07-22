@@ -83,6 +83,22 @@ export function sourceForItem(item, { getAnalysis = getAnalysisById } = {}) {
 }
 
 /**
+ * The source-paper figure a ported item reproduces, as a display label like
+ * "CA Fig. 1" — or null for originals and derived analyses that aren't a
+ * numbered port. A published copy inherits its built-in's figure number, so a
+ * re-published paper figure keeps the same pill.
+ */
+export function figureRefForItem(item, { getAnalysis = getAnalysisById } = {}) {
+  if (!item) return null
+  const analysis = item.kind === 'analysis'
+    ? item.analysis
+    : (item.figure?.visual?.id ? getAnalysis(item.figure.visual.id) : null)
+  const figureNo = analysis?.figureNo
+  if (!figureNo) return null
+  return `${SOURCE_META[sourceForItem(item, { getAnalysis })].label} Fig. ${figureNo}`
+}
+
+/**
  * Bucket a flat gallery into lane groups, in SOURCE_ORDER, preserving each
  * item's incoming order within its lane. Empty lanes are dropped so the page
  * never renders a headed-but-empty shelf.

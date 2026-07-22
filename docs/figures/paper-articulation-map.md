@@ -4,12 +4,14 @@
 
 ## Result
 
-The current-data map has **the same marker class as the paper for all 72
-districts**. A paper/current switch would therefore draw the same map twice.
+The hand-curated current-data map has **the same marker class as the paper for
+all 72 districts**. Its 13 low-, 25 middle-, and 34 high-coverage markers are
+therefore the same colors and shapes as the published map.
 
 The underlying exact counts are not perfectly identical: 69 of 72 match.
-Three districts gained one fully articulated campus in the newer ASSIST data,
-but each stayed in its original 0–3, 4–6, or 7–9 class.
+Three districts gained one fully articulated campus in the refreshed agreement
+data when judged against the paper's hand-curated minimums, but each stayed in
+its original 0–3, 4–6, or 7–9 class.
 
 | District | Paper | Current | Display class |
 | --- | ---: | ---: | --- |
@@ -34,7 +36,14 @@ repository retains that pipeline:
 The repository does not contain the final styled map renderer. The paper image
 appears to have been assembled in a separate mapping tool. This port keeps the
 recovered district centroids and marker classes, then uses an export-safe
-vector California outline instead of a network map tile.
+vector California outline instead of a network map tile. All 72 ported
+centroids match `District_map.geojson`; the only coordinate difference is JSON
+rounding (less than 5e-8 degrees).
+
+The frontend also includes the actual published Figure 4 raster extracted from
+page 5 of `SIGCSE_TS_2027_California_Transfer_Pathways.pdf`, rather than an
+approximation. The **Original figure**, **Hand-curated**, and **ASSIST** version
+control keeps that reference next to both interactive recomputations.
 
 ## Current-data calculation
 
@@ -53,17 +62,70 @@ receipts are documented in
 
 The website renderer applies a compact, one-column vector treatment: a warm
 off-white California silhouette, the paper's redundant color-and-shape bands,
-and a keyed legend inside the map's open upper-right area. Marker focus and
-hover reveal the district's exact count and its real covered-campus list; that
-HTML tooltip sits outside the export root and is omitted from PNG/PDF output.
-The visual design originated in `docs/export 2`, while all counts, names, and
-centroids continue to come from the audited model and recovered paper data.
+and a keyed legend inside the map's open upper-right area. Marker focus, hover,
+or tap reveals the district's exact count and covered campus codes; a 9/9
+district omits the redundant list. That HTML tooltip sits outside the export
+root and is omitted from PNG/PDF output. The map can be zoomed and dragged, and
+an optional difference layer outlines exact-count gains and losses against the
+paper even when the marker remains in the same display class.
+
+The **ASSIST** mode uses the working program selected for each campus and judges
+completion against the required receiver surface stated in ASSIST. This is the
+same requirements/pinning contract used by the ASSIST version of the district
+heatmap: `requirements=assist&pin=settings`. The visual design originated in
+`docs/export 2`, while all counts, names, and centroids continue to come from
+the audited model and recovered paper data.
+
+## District income on hover
+
+Every marker's tooltip carries a **mean income per tax return** for the
+district, alongside the counties it is computed from. It is context for the
+coverage pattern — the rural, low-coverage districts are also the low-income
+ones — and the base layer for later income-vs-access analysis.
+
+**Source.** California Franchise Tax Board, table *B-7, Adjusted Gross Income
+by County*, from the state open data portal (CC-BY), taxable year 2022:
+<https://data.ca.gov/dataset/b-7-adjusted-gross-income-by-county>. The
+committed extract is `analysis/data/ftb_county_income.v1.json`, rebuilt by
+`analysis/fetch_ftb_income.py`.
+
+**The join.** FTB publishes by county; there is no California-government
+income series for community college districts. Each district's value is the
+returns-weighted mean across its service-area counties, as reported by the
+coverage endpoint (`community_college_counties`): total AGI over those counties
+divided by total returns. Weighting by returns means a district spanning a
+large county and a small one reads mostly as the large one. All 72 districts
+match at least one county; 49 map to a single county, and the widest span is
+six.
+
+**What the number is not.** It is a mean, not a median, so high earners pull it
+up; it counts tax filers rather than residents, which biases the poorest areas
+upward; and a joint return covers two people while a single return covers one.
+Most importantly a county is not a district — Allan Hancock's $100,897 is
+San Luis Obispo, Santa Barbara and Ventura counties together, not the Santa
+Maria valley the district actually serves.
+
+**Where else it appears.** Data → Districts shows the same roll-up for the
+selected district: the weighted figure, the per-county rows behind it when the
+service area spans more than one county, and links to the FTB dataset page and
+the exact file, so a reader can check the number against the published source.
+Both views read one committed extract through
+`frontend/src/shared/countyIncome.js`, so they cannot drift apart or sit on
+different taxable years.
+
+**Cross-check.** FTB's ZIP-code table covers the same universe one year later.
+The build script compares the two and records any county differing by more than
+15% in the committed JSON. Four are flagged, and one is a genuine data fault:
+2023 Calaveras sums to a *negative* mean AGI in the ZIP table (two ZIPs carry
+about −$2.5B between them) against +$77,240 in B-7. That is why B-7 is the
+source of record here rather than an aggregation of the ZIP file.
 
 ## Reproduce locally
 
 From `analysis/`:
 
 ```bash
+python fetch_ftb_income.py          # refresh the county income extract
 .venv/bin/python -m visuals.paper_articulation_map \
   --output-dir results/previews
 ```

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/styles.css">
+  <script src="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--link-color); text-decoration: none; }
+    a:hover { color: var(--link-color-hover); }
+  </style>
+</helmet>
+<div style="width: 1240px; box-sizing: border-box; background: var(--surface-card); padding: 22px 24px; font-family: var(--font-sans); color: var(--text-body);">
+  <div style="display: flex; align-items: flex-start;">
+    <div style="position: relative; width: 52px; height: 340px; flex: none;">
+      <div style="position: absolute; left: -2px; top: 0; bottom: 0; width: 18px; display: flex; align-items: center; justify-content: center;">
+        <span style="transform: rotate(-90deg); white-space: nowrap; font-size: var(--text-sm); color: var(--text-body);">Number of districts</span>
+      </div>
+      <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="5">
+        <div style="position: absolute; right: 8px; top: {{ t.topStyle }}; transform: translateY(-50%); line-height: 1; font-size: var(--text-xs); color: var(--text-body); font-variant-numeric: tabular-nums;">{{ t.value }}</div>
+      </sc-for>
+    </div>
+    <div style="flex: 1 1 0;">
+      <div style="position: relative; height: 340px;">
+        <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="5">
+          <div style="position: absolute; left: 0; right: 0; top: {{ t.topStyle }}; height: 1px; background: var(--pmt-forest-a10);"></div>
+        </sc-for>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--pmt-ink-400);"></div>
+        <div style="position: absolute; inset: 0; display: flex; align-items: flex-end;">
+          <sc-for list="{{ bars }}" as="bar" hint-placeholder-count="10">
+            <div style="flex: 1 1 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; --bar-color: {{ bar.barColor }};">
+              <sc-if value="{{ bar.showValue }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-bottom: 3px; line-height: 1; font-size: var(--text-xs); font-weight: var(--fw-medium); color: var(--text-strong); font-variant-numeric: tabular-nums;">{{ bar.valueLabel }}</div>
+              </sc-if>
+              <div style="width: 56%; height: {{ bar.heightStyle }}; background: var(--bar-color, var(--pmt-forest-900)); border-radius: 3px 3px 0 0; box-shadow: inset 0 0 0 1px var(--border-hairline);"></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: flex; margin-top: 6px;">
+        <sc-for list="{{ bars }}" as="bar" hint-placeholder-count="10">
+          <div style="flex: 1 1 0; text-align: center; line-height: 1; font-size: var(--text-xs); color: var(--text-body); font-variant-numeric: tabular-nums;">{{ bar.x }}</div>
+        </sc-for>
+      </div>
+      <div style="text-align: center; margin-top: 12px; font-size: var(--text-sm); color: var(--text-body);">Number of UC campuses with complete articulation</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1240, &quot;height&quot;: 440 },
+  &quot;barColor&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Academic blue&quot;, &quot;Navy&quot;, &quot;Steel&quot;],
+    &quot;default&quot;: &quot;Academic blue&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Color&quot;
+  },
+  &quot;highlightFull&quot;: {
+    &quot;editor&quot;: &quot;boolean&quot;,
+    &quot;default&quot;: false,
+    &quot;tsType&quot;: &quot;boolean&quot;,
+    &quot;section&quot;: &quot;Color&quot;
+  },
+  &quot;showValues&quot;: {
+    &quot;editor&quot;: &quot;boolean&quot;,
+    &quot;default&quot;: true,
+    &quot;tsType&quot;: &quot;boolean&quot;,
+    &quot;section&quot;: &quot;Chart&quot;
+  }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const colorMap = {
+      'Academic blue': '#2E5C8A',
+      'Navy': '#24466F',
+      'Steel': '#5B85B0',
+    };
+    const barColor = colorMap[p.barColor] || '#2E5C8A';
+    const highlightFull = p.highlightFull === true;
+    const showValues = p.showValues !== false;
+
+    const axisMax = 20;
+    const step = 5;
+    const fillFrac = 0.88;
+
+    const counts = [3, 2, 1, 7, 6, 11, 8, 4, 10, 20];
+    const total = counts.reduce((a, b) => a + b, 0);
+
+    const bars = counts.map((v, x) => {
+      const isFull = x === 9;
+      const color = (highlightFull && isFull) ? '#1E3A5F' : barColor;
+      return {
+        x: String(x),
+        valueLabel: String(v),
+        heightStyle: ((v / axisMax) * fillFrac * 100).toFixed(3) + '%',
+        barColor: color,
+        showValue: showValues,
+      };
+    });
+
+    const ticks = [];
+    for (let t = 0; t <= axisMax; t += step) {
+      ticks.push({ value: t, topStyle: (100 - (t / axisMax) * fillFrac * 100).toFixed(3) + '%' });
+    }
+
+    return { bars, ticks, total };
+  }
+}
+</script>
+</body>
+</html>

@@ -26,7 +26,11 @@ or answer a reviewer-style question.
 | [figures/paper-district-heatmap.md](figures/paper-district-heatmap.md) | District x UC complete-transfer matrix | Full proof of the 99.5% replication result and receipts for the 3 gained cells |
 | [figures/paper-articulation-histogram.md](figures/paper-articulation-histogram.md) | California Figure 3: district coverage distribution | Current and paper bin counts and why four bars move |
 | [figures/paper-articulation-map.md](figures/paper-articulation-map.md) | California Figure 4: district articulation coverage map | Why the current and paper maps have identical marker classes despite 3 exact-count gains |
+| [figures/paper-course-barriers.md](figures/paper-course-barriers.md) | California Figure 5: per-course articulation gaps | Which courses block which campuses, the 28-of-32 exact cell match, and receipts for the 4 resolved cells |
 | [figures/paper-credit-loss.md](figures/paper-credit-loss.md) | Figure 1: credit loss, 1st-4th choice | Full paper-method replication, current-data deltas, ASSIST-stated-minimums extension, blockers, and validation |
+| [figures/ma-course-type-spread.md](figures/ma-course-type-spread.md) | Massachusetts Figure 2 recreated on California data: course-type coverage | Course-type rules, per-campus values, and how our denominator differs from the MA paper's |
+| [figures/income-access.md](figures/income-access.md) | Transfer access against local income (original) | The income gradient, the rurality controls that do not explain it, the FTB catchment measure, and what the association is not |
+| [figures/multi-campus-pathways.md](figures/multi-campus-pathways.md) | District preparation for multiple UC campuses | Pinned ASSIST templates, strict district reachability, actual joint course plans, blockers, prerequisites, and modeled time |
 
 ## Conventions
 

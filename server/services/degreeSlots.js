@@ -87,8 +87,33 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   const {
     articulated = null, optionsByParent = new Map(),
     universityCoursesById = {}, coursesById = new Map(), ccGeAreas = null,
+    categoryOf = null,
   } = ctx;
   const evaluated = articulated != null;
+
+  // Optional course-type rollup (Computing / Math / Science / Non-STEM) for the
+  // MA paper's Figure 2. Off unless the caller supplies a categoryOf callback,
+  // so every other consumer of this function is unaffected.
+  const byCategory = categoryOf ? {} : null;
+  let bumpTier = 'transferable';
+  const bump = (category, total, covered) => {
+    if (!byCategory || !category) return;
+    if (!byCategory[category]) {
+      byCategory[category] = {
+        total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
+      };
+    }
+    const bucket = byCategory[category];
+    bucket.total += total;
+    bucket.covered += evaluated ? covered : 0;
+    // Upper-division / residency work is separated out so a figure can choose
+    // whether to hold a campus responsible for coursework a community college
+    // could never offer.
+    if (bumpTier !== 'nontransferable') {
+      bucket.lower_division_total += total;
+      bucket.lower_division_covered += evaluated ? covered : 0;
+    }
+  };
 
   const byTier = {};
   for (const t of TIERS) byTier[t] = { total: 0, covered: 0 };
@@ -103,6 +128,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
 
   const groups = (requirementGroups || []).map((g) => {
     const tier = g.tier || 'transferable';
+    bumpTier = tier;
     let gTotal = 0;
     let gCovered = 0;
     const lines = [];
@@ -120,6 +146,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       if (recvs[0]?.assume_satisfiable) {
         const cov = evaluated ? ask : 0;
         gCovered += cov;
+        bump(categoryOf && categoryOf({ section: s, group: g }), ask, cov);
         if (evaluated) unitsCovered += sectionUnits;
         lines.push({
           title: recvs[0].receiving?.name || g.title,
@@ -136,6 +163,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         const hits = evaluated ? geCoverCourses(s.ge_areas, ccGeAreas) : [];
         const cov = Math.min(hits.length, ask);
         gCovered += cov;
+        bump(categoryOf && categoryOf({ section: s, group: g }), ask, cov);
         if (evaluated) unitsCovered += sectionUnits * (cov / ask);
         lines.push({
           title: recvs[0].receiving?.name || g.title,
@@ -162,6 +190,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
               if (geHits.length) { isCovered = true; cc = geHits.slice(0, 3).map(codeOf); }
             }
             if (isCovered) gCovered += 1;
+            bump(categoryOf && categoryOf({ receiver: r, section: s, group: g }), 1, isCovered ? 1 : 0);
             const codes = pids.map((pid) => {
               const uc = universityCoursesById[pid];
               return uc ? codeOf(uc) : `#${pid}`;
@@ -174,6 +203,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
               status: !evaluated ? 'template' : isCovered ? 'covered' : 'missing',
             });
           } else {
+            bump(categoryOf && categoryOf({ receiver: r, section: s, group: g }), 1, 0);
             lines.push({
               title: r.receiving?.name || g.title,
               covered: evaluated ? 0 : null,
@@ -198,6 +228,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
           }
         }
         gCovered += cov;
+        bump(categoryOf && categoryOf({ section: s, group: g }), ask, cov);
         const cc = artRecvs.slice(0, ask).flatMap((r) =>
           receiverPids(r.receiving).flatMap((pid) =>
             ccCodes(optionsByParent.get(pid) || r.options || [], coursesById)));
@@ -222,6 +253,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   return {
     total,
     covered: evaluated ? covered : null,
+    ...(byCategory ? { by_category: byCategory } : {}),
     by_tier: evaluated ? byTier : Object.fromEntries(TIERS.map((t) => [t, { total: byTier[t].total, covered: null }])),
     units: {
       total: unitsTotal,

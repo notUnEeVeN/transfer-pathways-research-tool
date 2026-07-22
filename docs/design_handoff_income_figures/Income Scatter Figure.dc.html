@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/styles.css">
+  <script src="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--link-color); text-decoration: none; }
+    a:hover { color: var(--link-color-hover); }
+  </style>
+</helmet>
+<div style="width: 960px; box-sizing: border-box; background: var(--surface-card); padding: 26px 28px; font-family: var(--font-sans); color: var(--text-body);">
+  <div style="font-size: var(--text-h3); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); line-height: var(--lh-snug); color: var(--text-strong);">Richer districts reach more CS programs, district by district</div>
+  <div style="font-size: var(--text-sm); color: var(--text-muted); margin-top: 6px;">72 community-college districts &middot; income on a log scale &middot; colour marks how many campuses a district reaches; the navy line is the mean within each income quartile.</div>
+
+  <div style="display: flex; margin-top: 22px;">
+    <div style="width: 20px; flex: none; display: flex; align-items: center; justify-content: center;">
+      <span style="transform: rotate(-90deg); white-space: nowrap; font-size: var(--text-sm); color: var(--text-body);">Campuses reachable, of nine</span>
+    </div>
+    <div style="width: 26px; flex: none; position: relative; height: 360px;">
+      <sc-for list="{{ gridY }}" as="g" hint-placeholder-count="4">
+        <div style="position: absolute; right: 4px; top: {{ g.t }}px; transform: translateY(-50%); font-size: var(--text-xs); color: var(--text-body); font-variant-numeric: tabular-nums; line-height: 1;">{{ g.label }}</div>
+      </sc-for>
+    </div>
+    <div style="position: relative; width: 820px; height: 360px; flex: none;">
+      <sc-for list="{{ gridY }}" as="g" hint-placeholder-count="4">
+        <div style="position: absolute; left: 0; right: 0; top: {{ g.t }}px; height: {{ g.h }}; background: {{ g.color }};"></div>
+      </sc-for>
+      <sc-for list="{{ points }}" as="p" hint-placeholder-count="60">
+        <div style="position: absolute; left: {{ p.l }}px; top: {{ p.t }}px; width: 11px; height: 11px; border-radius: 50%; background: {{ p.fill }}; box-shadow: inset 0 0 0 1px {{ p.stroke }};"></div>
+      </sc-for>
+      <svg width="820" height="360" viewBox="0 0 820 360" style="position: absolute; left: 0; top: 0; overflow: visible; font-family: var(--font-sans);">
+        <polyline points="{{ trendPoly }}" fill="none" stroke="#1E3A5F" stroke-width="2.5" stroke-linejoin="round"></polyline>
+        <sc-for list="{{ trendPts }}" as="tp" hint-placeholder-count="4">
+          <circle cx="{{ tp.x }}" cy="{{ tp.y }}" r="6" fill="#1E3A5F" stroke="#FFFFFF" stroke-width="2"></circle>
+        </sc-for>
+        <sc-for list="{{ trendPts }}" as="tp" hint-placeholder-count="4">
+          <text x="{{ tp.lx }}" y="{{ tp.ly }}" text-anchor="middle" font-size="14" font-weight="600" fill="#1E3A5F">{{ tp.label }}</text>
+        </sc-for>
+      </svg>
+    </div>
+  </div>
+
+  <div style="display: flex; margin-top: 2px;">
+    <div style="width: 46px; flex: none;"></div>
+    <div style="position: relative; width: 820px; height: 22px; flex: none;">
+      <sc-for list="{{ xticks }}" as="t" hint-placeholder-count="6">
+        <div style="position: absolute; left: {{ t.l }}px; top: 4px; transform: translateX(-50%); font-size: var(--text-xs); color: var(--text-body); font-variant-numeric: tabular-nums; line-height: 1;">{{ t.label }}</div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display: flex;">
+    <div style="width: 46px; flex: none;"></div>
+    <div style="width: 820px; flex: none; text-align: center; margin-top: 8px; font-size: var(--text-sm); color: var(--text-body);">Mean income per tax return in the district's catchment (log scale)</div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; margin-top: 16px; padding-left: 46px;">
+    <sc-for list="{{ tiers }}" as="ti" hint-placeholder-count="3">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: {{ ti.color }};"></div>
+        <span style="font-size: var(--text-xs); color: var(--text-body);">{{ ti.label }}</span>
+      </div>
+    </sc-for>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 22px; height: 0; border-top: 2.5px solid #1E3A5F;"></div>
+      <span style="font-size: var(--text-xs); color: var(--text-body);">Income-quartile mean</span>
+    </div>
+  </div>
+  <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-hairline); font-size: var(--text-xs); color: var(--text-muted); line-height: var(--lh-normal); max-width: 860px; text-wrap: pretty;">
+    Each dot is a district (jittered vertically to separate the discrete 0&ndash;9 counts); the navy line is the mean campuses reached within each income quartile (<span style="color: var(--text-strong); font-weight: var(--fw-semibold);">3.7 &rarr; 5.6 &rarr; 6.9 &rarr; 8.2</span>). Income keeps a +0.37 SD effect with population and distance held constant (R&sup2; 0.69). <em>Points were reconstructed from the original figure (67 of 72 recovered) &mdash; replace with the source data before publication.</em>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 960, &quot;height&quot;: 560 }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const RAW = [[46645,4],[50574,0],[50685,3],[50908,5],[51498,1],[53305,3],[55970,4],[56243,5],[56403,3],[57937,6],[59351,3],[61029,5],[62029,6],[62420,8],[62440,1],[63072,0],[63886,2],[64150,3],[66448,9],[66489,5],[66885,8],[67669,6],[70154,9],[70475,0],[71618,8],[71656,5],[73027,4],[73620,9],[76964,6],[77773,9],[82673,6],[82943,9],[83038,8],[83528,7],[85408,5],[88129,9],[89619,7],[89931,6],[95072,6],[95841,9],[101564,5],[102237,9],[103962,8],[106378,3],[109913,9],[111808,8],[112800,7],[114456,9],[119096,5],[119479,8],[123097,9],[123300,7],[133587,7],[134067,9],[140653,6],[143040,7],[143049,9],[158291,9],[171765,9],[178844,8],[184661,9],[200175,8],[220632,8],[235011,9],[235770,8],[269551,9],[426159,9]];
+    const plotW = 820, plotH = 360, padT = 14, padB = 10, r = 5.5;
+    const L0 = Math.log10(44000), L1 = Math.log10(440000);
+    const xPx = (inc) => (Math.log10(inc) - L0) / (L1 - L0) * plotW;
+    const yPx = (c) => padT + (1 - c / 9) * (plotH - padT - padB);
+    const jit = (i) => { const s = Math.sin((i + 1) * 12.9898) * 43758.5453; return ((s - Math.floor(s)) - 0.5) * 0.56; };
+
+    const tierRGB = (c) => c <= 3 ? [213, 94, 0] : (c <= 6 ? [230, 159, 0] : [0, 158, 115]);
+    const points = RAW.map((p, i) => {
+      const inc = p[0], camp = p[1];
+      let cj = camp === 9 ? 9 - Math.abs(jit(i)) : (camp === 0 ? Math.abs(jit(i)) : camp + jit(i));
+      cj = Math.max(0, Math.min(9, cj));
+      const g = tierRGB(camp);
+      return { l: (xPx(inc) - r).toFixed(1), t: (yPx(cj) - r).toFixed(1), fill: `rgba(${g[0]},${g[1]},${g[2]},0.72)`, stroke: `rgba(${Math.round(g[0]*0.65)},${Math.round(g[1]*0.65)},${Math.round(g[2]*0.65)},0.9)` };
+    });
+
+    const gridY = [0, 3, 6, 9].map((c) => ({
+      t: yPx(c).toFixed(1),
+      label: String(c),
+      color: c === 0 ? 'var(--pmt-ink-400)' : 'var(--pmt-forest-a10)',
+      h: c === 0 ? '1.5px' : '1px',
+    }));
+
+    const xticks = [[50000, '$50k'], [75000, '$75k'], [100000, '$100k'], [150000, '$150k'], [250000, '$250k'], [400000, '$400k']]
+      .map((t) => ({ l: xPx(t[0]).toFixed(1), label: t[1] }));
+
+    const Q = [[56000, 3.7], [71000, 5.6], [100000, 6.9], [182000, 8.2]];
+    const trendPts = Q.map((q) => {
+      const x = xPx(q[0]), y = yPx(q[1]);
+      return { x: x.toFixed(1), y: y.toFixed(1), label: q[1].toFixed(1), lx: x.toFixed(1), ly: (y - 13).toFixed(1) };
+    });
+    const trendPoly = Q.map((q) => xPx(q[0]).toFixed(1) + ',' + yPx(q[1]).toFixed(1)).join(' ');
+
+    const tiers = [
+      { label: '0\u20133 campuses', color: '#D55E00' },
+      { label: '4\u20136 campuses', color: '#E69F00' },
+      { label: '7\u20139 campuses', color: '#009E73' },
+    ];
+    return { points, gridY, xticks, trendPts, trendPoly, tiers };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/styles.css">
+  <script src="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--link-color); text-decoration: none; }
+    a:hover { color: var(--link-color-hover); }
+  </style>
+</helmet>
+<div style="width: 1240px; box-sizing: border-box; background: var(--surface-card); padding: 22px 24px; font-family: var(--font-sans); color: var(--text-body);">
+  <div style="display: flex; align-items: stretch;">
+    <div style="width: 20px; flex: none; display: flex; align-items: center; justify-content: center;">
+      <span style="transform: rotate(-90deg); white-space: nowrap; font-size: var(--text-sm); color: var(--text-body);">UC Campus</span>
+    </div>
+    <div style="width: 94px; flex: none; display: grid; grid-template-rows: repeat(9, 20px); gap: 1px;">
+      <sc-for list="{{ rowLabels }}" as="row" hint-placeholder-count="9">
+        <div style="display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: var(--text-xs); color: var(--text-body); line-height: 1;">{{ row.name }}<sc-if value="{{ row.quarter }}" hint-placeholder-val="{{ true }}"><sup style="font-size: 0.78em;">*</sup></sc-if></div>
+      </sc-for>
+    </div>
+    <div style="flex: 1 1 0; display: grid; grid-template-columns: repeat(72, 1fr); grid-template-rows: repeat(9, 20px); gap: 1px; background: var(--pmt-forest-a10); box-shadow: inset 0 0 0 1px var(--border-hairline);">
+      <sc-for list="{{ cells }}" as="cell" hint-placeholder-count="72">
+        <div style="background: {{ cell.bg }};"></div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display: flex; margin-top: 6px;">
+    <div style="width: 114px; flex: none;"></div>
+    <div style="flex: 1 1 0;">
+      <div style="display: grid; grid-template-columns: repeat(72, 1fr); gap: 1px;">
+        <sc-for list="{{ colTicks }}" as="ct" hint-placeholder-count="72">
+          <div style="text-align: center; white-space: nowrap; line-height: 1; font-size: var(--text-xs); color: var(--text-body); font-variant-numeric: tabular-nums;">{{ ct.label }}</div>
+        </sc-for>
+      </div>
+      <div style="text-align: center; margin-top: 10px; font-size: var(--text-sm); color: var(--text-body);">Community College District</div>
+    </div>
+  </div>
+  <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 14px; height: 14px; border-radius: 2px; background: {{ fill }}; box-shadow: inset 0 0 0 1px var(--border-hairline);"></div>
+      <span style="font-size: var(--text-xs); color: var(--text-body);">Complete articulation</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 14px; height: 14px; border-radius: 2px; background: var(--surface-card); box-shadow: inset 0 0 0 1px var(--pmt-ink-400);"></div>
+      <span style="font-size: var(--text-xs); color: var(--text-body);">Incomplete</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--text-body); line-height: 1;">*</span>
+      <span style="font-size: var(--text-xs); color: var(--text-body);">quarter-system campus &nbsp;·&nbsp; unmarked = semester</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1240, &quot;height&quot;: 320 },
+  &quot;fillColor&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Academic blue&quot;, &quot;Navy&quot;],
+    &quot;default&quot;: &quot;Academic blue&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Color&quot;
+  },
+  &quot;colLabels&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Every 5&quot;, &quot;Every 10&quot;, &quot;All&quot;],
+    &quot;default&quot;: &quot;Every 5&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Chart&quot;
+  }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const fillMap = {
+      'Academic blue': '#2E5C8A',
+      'Navy': '#24466F',
+    };
+    const FILL = fillMap[p.fillColor] || '#2E5C8A';
+    const EMPTY = 'var(--surface-card)';
+    const mode = p.colLabels || 'Every 5';
+    const everyN = mode === 'All' ? 1 : (mode === 'Every 10' ? 10 : 5);
+
+    // Extracted from the source matrix (1 = complete articulation, 0 = incomplete).
+    // Rows = UC campus, columns = community-college district 0..71.
+    const rows = [
+      { name: 'Davis',         q: true,  bits: '010011100101000010100000001110010001011011100011010011100001010101100010' },
+      { name: 'Merced',        q: false, bits: '111111111111111011111111011111111111111011110111111111111011111111100011' },
+      { name: 'San Diego',     q: true,  bits: '011011100111001010110100001100010011011011110000110011111001000111100010' },
+      { name: 'Santa Barbara', q: true,  bits: '100111110101111011111000011110010011011011110011111101111111001101110110' },
+      { name: 'Los Angeles',   q: true,  bits: '000011111101001010111010011110011111111011110111111101111001010111100010' },
+      { name: 'Berkeley',      q: false, bits: '111111111111111011111111011111111111111011111111111111111111111111111111' },
+      { name: 'Santa Cruz',    q: true,  bits: '110111100101011011011010001110011001011011100011011111111001011111100011' },
+      { name: 'Irvine',        q: true,  bits: '011011100111101010110000011110011001010011110011110101101000000111100010' },
+      { name: 'Riverside',     q: true,  bits: '101111101101111011110011011111111111011011110111111111111111101101010011' },
+    ];
+
+    const cells = [];
+    rows.forEach((r) => {
+      for (const ch of r.bits) cells.push({ bg: ch === '1' ? FILL : EMPTY });
+    });
+    const rowLabels = rows.map((r) => ({ name: r.name, quarter: r.q }));
+
+    const colTicks = [];
+    for (let i = 0; i < 72; i++) colTicks.push({ label: (i % everyN === 0) ? String(i) : '' });
+
+    return { cells, rowLabels, colTicks, fill: FILL };
+  }
+}
+</script>
+</body>
+</html>

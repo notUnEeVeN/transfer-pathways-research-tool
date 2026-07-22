@@ -1,0 +1,376 @@
+{
+ "dataset_version": "ftb-county-income.2022.v1",
+ "measure": "mean_agi_per_return",
+ "measure_label": "Mean adjusted gross income per return",
+ "taxable_year": 2022,
+ "available_years": [
+  1995,
+  1996,
+  1997,
+  1998,
+  1999,
+  2000,
+  2001,
+  2002,
+  2003,
+  2004,
+  2005,
+  2006,
+  2007,
+  2008,
+  2009,
+  2010,
+  2011,
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022
+ ],
+ "source": {
+  "name": "California Franchise Tax Board \u2014 B-7, Adjusted Gross Income by County",
+  "publisher": "California Franchise Tax Board",
+  "page": "https://data.ca.gov/dataset/b-7-adjusted-gross-income-by-county",
+  "file": "https://data.ca.gov/dataset/2a273ac1-39c6-4e3b-a1e6-e0fb1bf495b5/resource/ef37e456-32f5-40b2-a70b-777032f1592b/download/2023-b-7__adjusted_gross_income_by_county.csv",
+  "license": "Creative Commons Attribution"
+ },
+ "cross_check": {
+  "source": {
+   "name": "California Franchise Tax Board \u2014 Personal Income Tax Statistics by ZIP Code",
+   "page": "https://data.ca.gov/dataset/personal-income-tax-statistics-by-zip-code",
+   "file": "https://data.ca.gov/dataset/71b7f174-eee9-45fa-ac87-5dd533640878/resource/7091fcca-e695-49ab-aa44-6e0c6f49c9c1/download/2024_personal_income_tax_statistics_by_zip_code.csv"
+  },
+  "tolerance": 0.15,
+  "disagreeing_counties": [
+   {
+    "county": "Calaveras",
+    "b7_mean_agi_per_return": 77240,
+    "zip_mean_agi_per_return": -71217,
+    "zip_taxable_year": 2023
+   },
+   {
+    "county": "Lassen",
+    "b7_mean_agi_per_return": 67362,
+    "zip_mean_agi_per_return": 53200,
+    "zip_taxable_year": 2023
+   },
+   {
+    "county": "Mariposa",
+    "b7_mean_agi_per_return": 64989,
+    "zip_mean_agi_per_return": 41289,
+    "zip_taxable_year": 2023
+   },
+   {
+    "county": "Mendocino",
+    "b7_mean_agi_per_return": 65856,
+    "zip_mean_agi_per_return": 40518,
+    "zip_taxable_year": 2023
+   }
+  ]
+ },
+ "caveats": [
+  "Mean per return, not median household income; high earners pull it up.",
+  "Tax filers only \u2014 households below the filing threshold are absent.",
+  "A joint return covers two people, a single return one.",
+  "A county is not a community college district; district figures are a service-area join."
+ ],
+ "retrieved_at": "2026-07-22",
+ "counties": {
+  "Alameda": {
+   "returns": 784286,
+   "adjusted_gross_income": 113688454000,
+   "mean_agi_per_return": 144958
+  },
+  "Alpine": {
+   "returns": 453,
+   "adjusted_gross_income": 39811000,
+   "mean_agi_per_return": 87883
+  },
+  "Amador": {
+   "returns": 16990,
+   "adjusted_gross_income": 1331534000,
+   "mean_agi_per_return": 78372
+  },
+  "Butte": {
+   "returns": 85249,
+   "adjusted_gross_income": 6025598000,
+   "mean_agi_per_return": 70682
+  },
+  "Calaveras": {
+   "returns": 20245,
+   "adjusted_gross_income": 1563731000,
+   "mean_agi_per_return": 77240
+  },
+  "Colusa": {
+   "returns": 9969,
+   "adjusted_gross_income": 669451000,
+   "mean_agi_per_return": 67153
+  },
+  "Contra Costa": {
+   "returns": 502781,
+   "adjusted_gross_income": 69285205000,
+   "mean_agi_per_return": 137804
+  },
+  "Del Norte": {
+   "returns": 9512,
+   "adjusted_gross_income": 557740000,
+   "mean_agi_per_return": 58635
+  },
+  "El Dorado": {
+   "returns": 89464,
+   "adjusted_gross_income": 10497594000,
+   "mean_agi_per_return": 117339
+  },
+  "Fresno": {
+   "returns": 414789,
+   "adjusted_gross_income": 28220649000,
+   "mean_agi_per_return": 68036
+  },
+  "Glenn": {
+   "returns": 12453,
+   "adjusted_gross_income": 735953000,
+   "mean_agi_per_return": 59098
+  },
+  "Humboldt": {
+   "returns": 55797,
+   "adjusted_gross_income": 3532524000,
+   "mean_agi_per_return": 63310
+  },
+  "Imperial": {
+   "returns": 79240,
+   "adjusted_gross_income": 4070714000,
+   "mean_agi_per_return": 51372
+  },
+  "Inyo": {
+   "returns": 8536,
+   "adjusted_gross_income": 629055000,
+   "mean_agi_per_return": 73694
+  },
+  "Kern": {
+   "returns": 355867,
+   "adjusted_gross_income": 21900705000,
+   "mean_agi_per_return": 61542
+  },
+  "Kings": {
+   "returns": 52716,
+   "adjusted_gross_income": 3092547000,
+   "mean_agi_per_return": 58664
+  },
+  "Lake": {
+   "returns": 24583,
+   "adjusted_gross_income": 1438317000,
+   "mean_agi_per_return": 58509
+  },
+  "Lassen": {
+   "returns": 9397,
+   "adjusted_gross_income": 633000000,
+   "mean_agi_per_return": 67362
+  },
+  "Los Angeles": {
+   "returns": 4517811,
+   "adjusted_gross_income": 453833386000,
+   "mean_agi_per_return": 100454
+  },
+  "Madera": {
+   "returns": 62799,
+   "adjusted_gross_income": 3786967000,
+   "mean_agi_per_return": 60303
+  },
+  "Marin": {
+   "returns": 122117,
+   "adjusted_gross_income": 31351040000,
+   "mean_agi_per_return": 256730
+  },
+  "Mariposa": {
+   "returns": 6569,
+   "adjusted_gross_income": 426911000,
+   "mean_agi_per_return": 64989
+  },
+  "Mendocino": {
+   "returns": 37770,
+   "adjusted_gross_income": 2487374000,
+   "mean_agi_per_return": 65856
+  },
+  "Merced": {
+   "returns": 113791,
+   "adjusted_gross_income": 6433973000,
+   "mean_agi_per_return": 56542
+  },
+  "Modoc": {
+   "returns": 2874,
+   "adjusted_gross_income": 152616000,
+   "mean_agi_per_return": 53102
+  },
+  "Mono": {
+   "returns": 5663,
+   "adjusted_gross_income": 488126000,
+   "mean_agi_per_return": 86196
+  },
+  "Monterey": {
+   "returns": 184280,
+   "adjusted_gross_income": 16111356000,
+   "mean_agi_per_return": 87429
+  },
+  "Napa": {
+   "returns": 64751,
+   "adjusted_gross_income": 9172790000,
+   "mean_agi_per_return": 141663
+  },
+  "Nevada": {
+   "returns": 45767,
+   "adjusted_gross_income": 4444099000,
+   "mean_agi_per_return": 97103
+  },
+  "Orange": {
+   "returns": 1502892,
+   "adjusted_gross_income": 178718397000,
+   "mean_agi_per_return": 118916
+  },
+  "Placer": {
+   "returns": 194750,
+   "adjusted_gross_income": 23426609000,
+   "mean_agi_per_return": 120291
+  },
+  "Plumas": {
+   "returns": 8246,
+   "adjusted_gross_income": 578431000,
+   "mean_agi_per_return": 70147
+  },
+  "Riverside": {
+   "returns": 1064621,
+   "adjusted_gross_income": 76723942000,
+   "mean_agi_per_return": 72067
+  },
+  "Sacramento": {
+   "returns": 704931,
+   "adjusted_gross_income": 55447217000,
+   "mean_agi_per_return": 78656
+  },
+  "San Benito": {
+   "returns": 30461,
+   "adjusted_gross_income": 2679161000,
+   "mean_agi_per_return": 87954
+  },
+  "San Bernardino": {
+   "returns": 942952,
+   "adjusted_gross_income": 62826210000,
+   "mean_agi_per_return": 66627
+  },
+  "San Diego": {
+   "returns": 1554562,
+   "adjusted_gross_income": 162594234000,
+   "mean_agi_per_return": 104592
+  },
+  "San Francisco": {
+   "returns": 429520,
+   "adjusted_gross_income": 87627311000,
+   "mean_agi_per_return": 204012
+  },
+  "San Joaquin": {
+   "returns": 336591,
+   "adjusted_gross_income": 25576913000,
+   "mean_agi_per_return": 75988
+  },
+  "San Luis Obispo": {
+   "returns": 127998,
+   "adjusted_gross_income": 12445295000,
+   "mean_agi_per_return": 97230
+  },
+  "San Mateo": {
+   "returns": 371026,
+   "adjusted_gross_income": 87639385000,
+   "mean_agi_per_return": 236208
+  },
+  "Santa Barbara": {
+   "returns": 197174,
+   "adjusted_gross_income": 19870495000,
+   "mean_agi_per_return": 100776
+  },
+  "Santa Clara": {
+   "returns": 899991,
+   "adjusted_gross_income": 183858009000,
+   "mean_agi_per_return": 204289
+  },
+  "Santa Cruz": {
+   "returns": 127806,
+   "adjusted_gross_income": 14631075000,
+   "mean_agi_per_return": 114479
+  },
+  "Shasta": {
+   "returns": 79088,
+   "adjusted_gross_income": 5478988000,
+   "mean_agi_per_return": 69277
+  },
+  "Sierra": {
+   "returns": 1146,
+   "adjusted_gross_income": 82979000,
+   "mean_agi_per_return": 72408
+  },
+  "Siskiyou": {
+   "returns": 18385,
+   "adjusted_gross_income": 1088529000,
+   "mean_agi_per_return": 59207
+  },
+  "Solano": {
+   "returns": 201835,
+   "adjusted_gross_income": 17024614000,
+   "mean_agi_per_return": 84349
+  },
+  "Sonoma": {
+   "returns": 237416,
+   "adjusted_gross_income": 25673598000,
+   "mean_agi_per_return": 108138
+  },
+  "Stanislaus": {
+   "returns": 235283,
+   "adjusted_gross_income": 15411373000,
+   "mean_agi_per_return": 65501
+  },
+  "Sutter": {
+   "returns": 41383,
+   "adjusted_gross_income": 2747964000,
+   "mean_agi_per_return": 66403
+  },
+  "Tehama": {
+   "returns": 22104,
+   "adjusted_gross_income": 1297692000,
+   "mean_agi_per_return": 58708
+  },
+  "Trinity": {
+   "returns": 4235,
+   "adjusted_gross_income": 275905000,
+   "mean_agi_per_return": 65149
+  },
+  "Tulare": {
+   "returns": 187319,
+   "adjusted_gross_income": 10885308000,
+   "mean_agi_per_return": 58111
+  },
+  "Tuolumne": {
+   "returns": 22419,
+   "adjusted_gross_income": 1643471000,
+   "mean_agi_per_return": 73307
+  },
+  "Ventura": {
+   "returns": 396359,
+   "adjusted_gross_income": 40484763000,
+   "mean_agi_per_return": 102142
+  },
+  "Yolo": {
+   "returns": 92985,
+   "adjusted_gross_income": 8798736000,
+   "mean_agi_per_return": 94625
+  },
+  "Yuba": {
+   "returns": 32284,
+   "adjusted_gross_income": 2006079000,
+   "mean_agi_per_return": 62138
+  }
+ }
+}

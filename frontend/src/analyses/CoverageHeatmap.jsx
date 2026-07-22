@@ -2,6 +2,10 @@ import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Select, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import {
+  PAPER_RED_LOW_TO_HIGH_GRADIENT,
+  paperRedCellColor,
+} from './maHeatmapColors'
 
 const MAJOR_FILTER = 'computer science'
 const ROW_MODES = [
@@ -22,16 +26,6 @@ const REQ_MODES = [
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
-const COLOR_STOPS = [
-  { at: 0, rgb: [142, 24, 48] },
-  { at: 0.25, rgb: [211, 69, 65] },
-  { at: 0.5, rgb: [242, 201, 76] },
-  { at: 0.75, rgb: [63, 153, 137] },
-  { at: 1, rgb: [0, 91, 75] },
-]
-const COLOR_GRADIENT = `linear-gradient(90deg, ${COLOR_STOPS
-  .map((stop) => `rgb(${stop.rgb.join(' ')}) ${stop.at * 100}%`)
-  .join(', ')})`
 const DEFAULT_COLOR_SCALE = { min: 0, mid: 50, max: 100 }
 const MIN_COLOR_SPAN = 20
 
@@ -87,26 +81,7 @@ export function createCoverageColorScale(values) {
 }
 
 export function makeCellColor(value, scale = DEFAULT_COLOR_SCALE) {
-  if (!Number.isFinite(value)) {
-    return {
-      backgroundColor: 'var(--color-surface-muted)',
-      color: 'var(--color-ink-subtle)',
-    }
-  }
-
-  const span = Math.max(1, scale.max - scale.min)
-  const normalized = Math.max(0, Math.min(1, (value - scale.min) / span))
-  const stopIndex = Math.min(COLOR_STOPS.length - 2, Math.floor(normalized * (COLOR_STOPS.length - 1)))
-  const lo = COLOR_STOPS[stopIndex]
-  const hi = COLOR_STOPS[stopIndex + 1]
-  const t = (normalized - lo.at) / (hi.at - lo.at)
-  const rgb = lo.rgb.map((v, i) => Math.round(v + (hi.rgb[i] - v) * t))
-  const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255
-
-  return {
-    backgroundColor: `rgb(${rgb.join(' ')})`,
-    color: luminance > 0.55 ? 'var(--color-ink)' : 'white',
-  }
+  return paperRedCellColor(value, scale)
 }
 
 function average(values) {
@@ -337,7 +312,7 @@ function Legend({ reqMode, scale }) {
       <div className='w-64 max-w-full' aria-label={`Coverage color scale from ${pct(scale.min)} to ${pct(scale.max)}`}>
         <div
           className='h-2 rounded-pill border border-border'
-          style={{ background: COLOR_GRADIENT }}
+          style={{ background: PAPER_RED_LOW_TO_HIGH_GRADIENT }}
         />
         <div className='mt-1 flex justify-between font-mono tabular-nums'>
           <span>&le;{pct(scale.min)}</span>

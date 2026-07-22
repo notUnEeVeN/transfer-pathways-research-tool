@@ -27,11 +27,16 @@ const widths = {
  * tucked under a rounded top-left corner — and pinned its own height to the
  * viewport. That is why it had no call sites here: this app has a full-width
  * 62px TopBar and scrolls at the view level.
+ *
+ * The outer is a flex column and the panel is `flex-1` so the white panel
+ * always fills the scroll viewport, even when content is short. `min-h-full`
+ * alone left the panel at content height — a short tab (the campus hubs) then
+ * exposed the canvas below it as a band of mint instead of a thin margin.
  */
 export default function PageContainer({ width = 'wide', className = '', children }) {
   return (
-    <div className='bg-canvas min-h-full p-3 md:p-4'>
-      <div className='rounded-3xl bg-surface shadow-card min-h-full'>
+    <div className='bg-canvas min-h-full p-3 md:p-4 flex flex-col'>
+      <div className='rounded-3xl bg-surface shadow-card flex-1'>
         <div className={`w-full ${widths[width] || widths.wide} mx-auto px-6 md:px-12 py-10 ${className}`}>
           {children}
         </div>

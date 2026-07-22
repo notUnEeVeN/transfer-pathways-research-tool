@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/styles.css">
+  <script src="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--link-color); text-decoration: none; }
+    a:hover { color: var(--link-color-hover); }
+  </style>
+</helmet>
+<div style="width: 1240px; box-sizing: border-box; background: var(--surface-card); padding: 22px 24px; font-family: var(--font-sans); color: var(--text-body);">
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 16px; row-gap: 14px;">
+    <sc-for list="{{ panels }}" as="panel" hint-placeholder-count="6">
+      <div style="display: flex; flex-direction: column; --bar-color: {{ panel.barColor }};">
+        <div style="text-align: center; margin-bottom: 8px; font-size: var(--text-sm); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); color: var(--text-strong);">{{ panel.title }}</div>
+        <div style="display: flex; align-items: flex-start;">
+          <div style="position: relative; width: 38px; height: 172px; flex: none;">
+            <sc-if value="{{ panel.isLeftCol }}" hint-placeholder-val="{{ true }}">
+              <div style="position: absolute; left: -4px; top: 0; bottom: 0; width: 16px; display: flex; align-items: center; justify-content: center;">
+                <span style="transform: rotate(-90deg); white-space: nowrap; font-size: var(--text-xs); color: var(--text-body);">% of CC districts</span>
+              </div>
+            </sc-if>
+            <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="4">
+              <div style="position: absolute; right: 5px; top: {{ t.topStyle }}; transform: translateY(-50%); line-height: 1; font-size: var(--text-xs); color: var(--text-body); font-variant-numeric: tabular-nums;">{{ t.value }}</div>
+            </sc-for>
+          </div>
+          <div style="flex: 1 1 0;">
+            <div style="position: relative; height: 172px;">
+              <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="4">
+                <div style="position: absolute; left: 0; right: 0; top: {{ t.topStyle }}; height: 1px; background: var(--pmt-forest-a10);"></div>
+              </sc-for>
+              <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--pmt-ink-400);"></div>
+              <div style="position: absolute; inset: 0; display: flex; align-items: flex-end;">
+                <sc-for list="{{ panel.slots }}" as="slot" hint-placeholder-count="9">
+                  <div style="flex: 1 1 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;">
+                    <sc-if value="{{ slot.showValue }}" hint-placeholder-val="{{ true }}">
+                      <div style="margin-bottom: 2px; line-height: 1; font-size: var(--text-xs); font-weight: var(--fw-medium); color: var(--text-strong); font-variant-numeric: tabular-nums;">{{ slot.valueLabel }}</div>
+                    </sc-if>
+                    <sc-if value="{{ slot.required }}" hint-placeholder-val="{{ true }}">
+                      <div style="width: 60%; height: {{ slot.heightStyle }}; background: var(--bar-color, var(--pmt-forest-900)); border-radius: 3px 3px 0 0; box-shadow: inset 0 0 0 1px var(--border-hairline);"></div>
+                    </sc-if>
+                    <sc-if value="{{ slot.showHatch }}" hint-placeholder-val="{{ false }}">
+                      <div style="width: 60%; height: 100%; background-image: repeating-linear-gradient(45deg, var(--pmt-ink-400) 0, var(--pmt-ink-400) 1px, transparent 1px, transparent 6px); opacity: 0.55; border-radius: 3px 3px 0 0;"></div>
+                    </sc-if>
+                    <sc-if value="{{ slot.showFaint }}" hint-placeholder-val="{{ false }}">
+                      <div style="width: 60%; height: 100%; background: var(--surface-track); border-radius: 3px 3px 0 0;"></div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; margin-top: 6px;">
+              <sc-for list="{{ panel.slots }}" as="slot" hint-placeholder-count="9">
+                <div style="flex: 1 1 0; text-align: center; line-height: 1; font-size: var(--text-xs); color: var(--text-body);">{{ slot.campus }}<sc-if value="{{ slot.quarter }}" hint-placeholder-val="{{ true }}"><sup style="font-size: 0.78em;">*</sup></sc-if></div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 20px; height: 12px; background-image: repeating-linear-gradient(45deg, var(--pmt-ink-400) 0, var(--pmt-ink-400) 1px, transparent 1px, transparent 6px); border: 1px solid var(--border-hairline); border-radius: 3px;"></div>
+      <span style="font-size: var(--text-xs); color: var(--text-body);">Course not required by this campus</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--text-body); line-height: 1;">*</span>
+      <span style="font-size: var(--text-xs); color: var(--text-body);">quarter-system campus &nbsp;·&nbsp; unmarked = semester</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1240, &quot;height&quot;: 600 },
+  &quot;colorMode&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Per course&quot;, &quot;Single color&quot;],
+    &quot;default&quot;: &quot;Per course&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Color&quot;
+  },
+  &quot;singleColor&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Academic blue&quot;, &quot;Navy&quot;, &quot;Steel&quot;],
+    &quot;default&quot;: &quot;Academic blue&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Color&quot;
+  },
+  &quot;showValues&quot;: {
+    &quot;editor&quot;: &quot;boolean&quot;,
+    &quot;default&quot;: true,
+    &quot;tsType&quot;: &quot;boolean&quot;,
+    &quot;section&quot;: &quot;Chart&quot;
+  },
+  &quot;notRequiredStyle&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Hatched&quot;, &quot;Faint solid&quot;, &quot;Hidden&quot;],
+    &quot;default&quot;: &quot;Hatched&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Chart&quot;
+  },
+  &quot;yMax&quot;: {
+    &quot;editor&quot;: &quot;int&quot;,
+    &quot;default&quot;: 60,
+    &quot;min&quot;: 20,
+    &quot;max&quot;: 100,
+    &quot;step&quot;: 10,
+    &quot;unit&quot;: &quot;%&quot;,
+    &quot;tsType&quot;: &quot;number&quot;,
+    &quot;section&quot;: &quot;Chart&quot;
+  }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const mode = p.colorMode || 'Per course';
+    const perCourse = mode !== 'Single color';
+    const singleMap = {
+      'Academic blue': '#2E5C8A',
+      'Navy': '#24466F',
+      'Steel': '#5B85B0',
+    };
+    const singleColor = singleMap[p.singleColor] || '#2E5C8A';
+
+    // Academic categorical palette (Okabe-Ito, colourblind-safe); arranged so grid neighbours differ.
+    const courseColor = {
+      'Calculus':               '#0072B2',
+      'Intro Programming':      '#E69F00',
+      'Data Structures':        '#009E73',
+      'Advanced Math':          '#CC79A7',
+      'Computer Organization':  '#56B4E9',
+      'Discrete Math':          '#D55E00',
+    };
+
+    const showValues = p.showValues !== false;
+    const nrStyle = p.notRequiredStyle || 'Hatched';
+    const nrHatch = nrStyle === 'Hatched';
+    const nrFaint = nrStyle === 'Faint solid';
+    const yMax = Number(p.yMax) || 60;
+
+    const campuses = [
+      { label: 'UC1', q: true }, { label: 'UC2', q: false }, { label: 'UC3', q: true },
+      { label: 'UC4', q: true }, { label: 'UC5', q: true }, { label: 'UC6', q: false },
+      { label: 'UC7', q: true }, { label: 'UC8', q: true }, { label: 'UC9', q: true },
+    ];
+
+    const data = {
+      'Calculus':               [5.6, 2.8, 4.2, 1.4, 4.2, 2.8, 1.4, 1.4, 1.4],
+      'Intro Programming':      [31.9, 6.9, 34.7, 19.4, 34.7, null, 23.6, 45.8, 20.8],
+      'Data Structures':        [52.8, 9.7, 40.3, 27.8, null, null, null, null, null],
+      'Advanced Math':          [null, 4.2, 5.6, 4.2, 6.9, 4.2, null, null, null],
+      'Computer Organization':  [25.0, null, null, null, null, null, 23.6, null, null],
+      'Discrete Math':          [20.8, null, 31.9, 8.3, null, null, 19.4, null, null],
+    };
+    const order = ['Calculus', 'Intro Programming', 'Data Structures', 'Advanced Math', 'Computer Organization', 'Discrete Math'];
+
+    const ticks = [];
+    for (let t = 0; t <= yMax; t += 20) {
+      ticks.push({ value: t, topStyle: (((yMax - t) / yMax) * 100).toFixed(3) + '%' });
+    }
+
+    const panels = order.map((title, pi) => {
+      const barColor = perCourse ? courseColor[title] : singleColor;
+      const isLeftCol = (pi % 3) === 0;
+      const vals = data[title];
+      const slots = campuses.map((c, i) => {
+        const v = vals[i];
+        const required = v !== null && v !== undefined;
+        const heightPct = required ? Math.min(100, (v / yMax) * 100) : 0;
+        return {
+          campus: c.label,
+          quarter: c.q,
+          required,
+          showHatch: !required && nrHatch,
+          showFaint: !required && nrFaint,
+          valueLabel: required ? v.toFixed(1) : '',
+          heightStyle: heightPct.toFixed(3) + '%',
+          showValue: showValues && required,
+        };
+      });
+      return { title, isLeftCol, barColor, slots };
+    });
+
+    return { panels, ticks };
+  }
+}
+</script>
+</body>
+</html>

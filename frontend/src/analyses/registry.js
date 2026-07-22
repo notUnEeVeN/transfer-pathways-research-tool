@@ -16,9 +16,14 @@
  *     title: 'Articulation coverage heatmap',
  *     description: 'Shows how much required coursework is available at each community college.',
  *     provenance: 'ma',                           // Visual-library lane: 'ca' | 'ma' | 'new'
+ *     figureNo: 1,                                // source paper's figure number (ports only) -> "MA Fig. 1" pill
  *     source: 'Jiang et al. 2024, Fig. 1',        // paper provenance, optional
  *     Component: CoverageHeatmap,
  *   }
+ *
+ * `figureNo` is set only on figures that reproduce a specific numbered figure
+ * from the CA/MA paper; the gallery card shows it as a "<lane> Fig. <n>" pill.
+ * Derived analyses and originals leave it unset (no pill).
  *
  * `provenance` sorts the figure into one of the Visual library's three source
  * lanes (see visuals/provenance.js): 'ca' ports the older transfer-articulation
@@ -31,10 +36,13 @@ import CoverageHeatmap from './CoverageHeatmap'
 import MultiCampusPathways, { MultiCampusPathwaysPreview } from './MultiCampusPathways'
 import TransferCreditRate from './TransferCreditRate'
 import TransferExtraUnits from './TransferExtraUnits'
-import PaperCreditLoss from './PaperCreditLoss'
-import PaperDistrictHeatmap from './PaperDistrictHeatmap'
-import PaperArticulationHistogram from './PaperArticulationHistogram'
+import PaperCreditLoss, { PaperCreditLossPreview } from './PaperCreditLoss'
+import PaperDistrictHeatmap, { PaperDistrictHeatmapPreview } from './PaperDistrictHeatmap'
+import PaperArticulationHistogram, { PaperArticulationHistogramPreview } from './PaperArticulationHistogram'
 import ArticulationCoverageMap from './ArticulationCoverageMap'
+import PaperCourseBarriers, { PaperCourseBarriersPreview } from './PaperCourseBarriers'
+import CourseTypeCoverage from './CourseTypeCoverage'
+import IncomeAccess from './IncomeAccess'
 import CreditLoss from './CreditLoss'
 import ChoiceCost from './ChoiceCost'
 import CategoryGaps from './CategoryGaps'
@@ -54,42 +62,71 @@ export const ANALYSES = [
     title: 'Credit loss by campus',
     description: 'Compares required transfer coursework with the average number of community college courses students need for each campus choice.',
     provenance: 'ca',
+    figureNo: 1,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-06T09:00:00',
     Component: PaperCreditLoss,
+    PreviewComponent: PaperCreditLossPreview,
   },
   {
     id: 'paper-district-heatmap',
     title: 'Transfer coverage by district',
     description: 'Shows which community college districts offer a complete transfer path to each University of California campus.',
     provenance: 'ca',
+    figureNo: 2,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:00:00',
     Component: PaperDistrictHeatmap,
+    PreviewComponent: PaperDistrictHeatmapPreview,
   },
   {
     id: 'paper-articulation-histogram',
     title: 'Districts by complete campus coverage',
     description: 'Shows how many community college districts offer complete computer science transfer paths to zero through nine University of California campuses.',
     provenance: 'ca',
+    figureNo: 3,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-21T10:55:00',
     Component: PaperArticulationHistogram,
+    PreviewComponent: PaperArticulationHistogramPreview,
   },
   {
     id: 'paper-articulation-map',
     title: 'Articulation coverage across California',
     description: 'Maps each community college district by how many University of California campuses offer a complete computer science transfer path.',
     provenance: 'ca',
+    figureNo: 4,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-21T11:00:00',
     Component: ArticulationCoverageMap,
+  },
+  {
+    id: 'paper-course-barriers',
+    title: 'Course gaps by campus',
+    description: 'Shows the share of community college districts with no articulated equivalent for each math and computer science course a University of California campus requires for transfer admission.',
+    provenance: 'ca',
+    figureNo: 5,
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-22T09:00:00',
+    Component: PaperCourseBarriers,
+    PreviewComponent: PaperCourseBarriersPreview,
+  },
+  {
+    id: 'course-type-coverage',
+    title: 'Transferable requirements by course type',
+    description: 'Shows what share of each university computer science degree’s requirements has a community college equivalent, separated into computing, math, science, and other coursework.',
+    provenance: 'ma',
+    figureNo: 2,
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-22T09:30:00',
+    Component: CourseTypeCoverage,
   },
   {
     id: 'transfer-credit-rate',
     title: 'Degree credit toward graduation',
     description: 'Shows how much of a computer science associate degree counts toward graduation requirements at each university.',
     provenance: 'ma',
+    figureNo: 3,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:00:00',
     Component: TransferCreditRate,
@@ -99,6 +136,7 @@ export const ANALYSES = [
     title: 'Modeled replacement coursework',
     description: 'Estimates how many associate-degree units may need to be replaced because they do not apply to university graduation requirements.',
     provenance: 'ma',
+    figureNo: 4,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:05:00',
     Component: TransferExtraUnits,
@@ -108,14 +146,24 @@ export const ANALYSES = [
     title: 'Potential graduation-unit coverage',
     description: 'Shows what share of each university program’s modeled graduation units has a community-college equivalent.',
     provenance: 'ma',
+    figureNo: 1,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:05:00',
     Component: CoverageHeatmap,
   },
   {
+    id: 'income-access',
+    title: 'Transfer access and local income',
+    description: 'Compares how many university computer science programs each community college district can fully reach with the income of the area it serves, alongside the district’s population and its distance to the nearest campus.',
+    provenance: 'new',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-22T11:00:00',
+    Component: IncomeAccess,
+  },
+  {
     id: 'multi-campus-pathways',
-    title: 'Preparation planner for multiple campuses',
-    description: 'See how keeping several University of California computer science pathways open changes the community college coursework and modeled regular terms.',
+    title: 'District preparation for multiple campuses',
+    description: 'Shows how many University of California computer science pathways each community college district can fully support, and the joint courses and modeled academic years needed to satisfy every supported pathway.',
     provenance: 'new',
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-21T09:00:00',
@@ -154,6 +202,7 @@ export const ANALYSES = [
     title: 'Transfer pathway complexity',
     description: 'Shows how prerequisites can delay progress or block students along each transfer pathway.',
     provenance: 'ma',
+    figureNo: 6,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-04T09:03:00',
     Component: Complexity,

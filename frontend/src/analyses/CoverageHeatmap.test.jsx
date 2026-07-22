@@ -2,6 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CoverageHeatmap, { createCoverageColorScale, makeCellColor } from './CoverageHeatmap'
+import { paperRedCellColor } from './maHeatmapColors'
 import { useCoverage } from '../shared/query/hooks/useData'
 
 vi.mock('../shared/query/hooks/useData', () => ({ useCoverage: vi.fn() }))
@@ -84,10 +85,12 @@ describe('CoverageHeatmap adaptive color scale', () => {
     expect(createCoverageColorScale([100])).toEqual({ min: 80, mid: 90, max: 100 })
   })
 
-  it('maps nearby values to visibly different colors inside the adaptive domain', () => {
+  it('uses the same monochrome red ramp as Massachusetts Figures 3 and 4', () => {
     const scale = createCoverageColorScale([40, 45, 50])
     const low = makeCellColor(40, scale)
     const high = makeCellColor(50, scale)
+    expect(low).toEqual(paperRedCellColor(40, scale))
+    expect(high).toEqual(paperRedCellColor(50, scale))
     expect(low.backgroundColor).not.toBe(high.backgroundColor)
   })
 })

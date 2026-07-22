@@ -1,0 +1,1342 @@
+{
+ "dataset_version": "district-income.2022.v1",
+ "taxable_year": 2022,
+ "measure": "mean_agi_per_return",
+ "measure_label": "Mean adjusted gross income per return",
+ "method": "Every ZIP code in the FTB table is assigned to the community college district whose centroid is nearest; a district's income is the returns-weighted mean over the ZIPs assigned to it.",
+ "source": {
+  "name": "California Franchise Tax Board \u2014 Personal Income Tax Statistics by ZIP Code",
+  "publisher": "California Franchise Tax Board",
+  "page": "https://data.ca.gov/dataset/personal-income-tax-statistics-by-zip-code",
+  "file": "https://data.ca.gov/dataset/71b7f174-eee9-45fa-ac87-5dd533640878/resource/7091fcca-e695-49ab-aa44-6e0c6f49c9c1/download/2024_personal_income_tax_statistics_by_zip_code.csv",
+  "license": "Creative Commons Attribution"
+ },
+ "caveats": [
+  "Voronoi catchment, not statutory district boundaries.",
+  "A few ZIP rows per year are data faults and are excluded; see excluded_zip_rows.",
+  "Mean per return, not median household income; high earners pull it up.",
+  "Tax filers only \u2014 households below the filing threshold are absent.",
+  "Ecological measure: it describes an area, never an individual student."
+ ],
+ "unplaced_zip_rows": 2,
+ "excluded_zip_rows": [
+  {
+   "zip_code": "90411",
+   "city": "Santa Monica",
+   "county": "Los Angeles",
+   "district": "Santa Monica Community College District",
+   "returns": 171,
+   "adjusted_gross_income": 462653195,
+   "mean_agi_per_return": 2705574
+  },
+  {
+   "zip_code": "90895",
+   "city": "Glendale",
+   "county": "Los Angeles",
+   "district": "Compton Community College District",
+   "returns": 10,
+   "adjusted_gross_income": 40255907,
+   "mean_agi_per_return": 4025591
+  },
+  {
+   "zip_code": "93102",
+   "city": "Santa Barbara",
+   "county": "Santa Barbara",
+   "district": "Santa Barbara Community College District",
+   "returns": 335,
+   "adjusted_gross_income": -33763547,
+   "mean_agi_per_return": -100787
+  },
+  {
+   "zip_code": "93303",
+   "city": "Bakersfield",
+   "county": "Kern",
+   "district": "West Kern Community College District",
+   "returns": 128,
+   "adjusted_gross_income": -9267855,
+   "mean_agi_per_return": -72405
+  },
+  {
+   "zip_code": "94104",
+   "city": "San Francisco",
+   "county": "San Francisco",
+   "district": "San Francisco Community College District",
+   "returns": 738,
+   "adjusted_gross_income": 1681991076,
+   "mean_agi_per_return": 2279121
+  },
+  {
+   "zip_code": "94119",
+   "city": "San Francisco",
+   "county": "San Francisco",
+   "district": "San Francisco Community College District",
+   "returns": 308,
+   "adjusted_gross_income": 618896497,
+   "mean_agi_per_return": 2009404
+  },
+  {
+   "zip_code": "94567",
+   "city": "Pope Valley",
+   "county": "Napa",
+   "district": "Sonoma County Junior College District",
+   "returns": 286,
+   "adjusted_gross_income": 1024789832,
+   "mean_agi_per_return": 3583181
+  },
+  {
+   "zip_code": "95354",
+   "city": "Modesto",
+   "county": "Stanislaus",
+   "district": "Yosemite Community College District",
+   "returns": 10449,
+   "adjusted_gross_income": 50793332,
+   "mean_agi_per_return": 4861
+  },
+  {
+   "zip_code": "95655",
+   "city": "Mather",
+   "county": "Sacramento",
+   "district": "Los Rios Community College District",
+   "returns": 1843,
+   "adjusted_gross_income": -708302215,
+   "mean_agi_per_return": -384320
+  },
+  {
+   "zip_code": "95838",
+   "city": "Sacramento",
+   "county": "Sacramento",
+   "district": "Los Rios Community College District",
+   "returns": 16547,
+   "adjusted_gross_income": -209816469,
+   "mean_agi_per_return": -12680
+  }
+ ],
+ "exclusion_rule": "ZIP rows whose mean AGI per return falls outside $5,000\u2013$2,000,000 are treated as data faults.",
+ "retrieved_at": "2026-07-22",
+ "districts": {
+  "Allan Hancock Joint Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 60032,
+    "median_zip_agi_per_return": 49634,
+    "returns": 134975,
+    "zip_codes": 24,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100897,
+    "returns": 721531,
+    "counties": [
+     "San Luis Obispo",
+     "Santa Barbara",
+     "Ventura"
+    ]
+   }
+  },
+  "Antelope Valley Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 59533,
+    "median_zip_agi_per_return": 51162,
+    "returns": 191970,
+    "zip_codes": 24,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 97613,
+    "returns": 4873678,
+    "counties": [
+     "Kern",
+     "Los Angeles"
+    ]
+   }
+  },
+  "Barstow Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 48534,
+    "median_zip_agi_per_return": 46707,
+    "returns": 16919,
+    "zip_codes": 16,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 66627,
+    "returns": 942952,
+    "counties": [
+     "San Bernardino"
+    ]
+   }
+  },
+  "Butte-Glenn Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 68034,
+    "median_zip_agi_per_return": 67239,
+    "returns": 117628,
+    "zip_codes": 44,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 69206,
+    "returns": 97702,
+    "counties": [
+     "Butte",
+     "Glenn"
+    ]
+   }
+  },
+  "Cabrillo Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 116372,
+    "median_zip_agi_per_return": 115505,
+    "returns": 127507,
+    "zip_codes": 22,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 97568,
+    "returns": 342547,
+    "counties": [
+     "Monterey",
+     "San Benito",
+     "Santa Cruz"
+    ]
+   }
+  },
+  "Cerritos Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 70426,
+    "median_zip_agi_per_return": 60249,
+    "returns": 179421,
+    "zip_codes": 15,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Chabot-Las Positas Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 161480,
+    "median_zip_agi_per_return": 128794,
+    "returns": 354413,
+    "zip_codes": 22,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 144958,
+    "returns": 784286,
+    "counties": [
+     "Alameda"
+    ]
+   }
+  },
+  "Chaffey Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 72441,
+    "median_zip_agi_per_return": 66601,
+    "returns": 328956,
+    "zip_codes": 22,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 66627,
+    "returns": 942952,
+    "counties": [
+     "San Bernardino"
+    ]
+   }
+  },
+  "Citrus Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 72939,
+    "median_zip_agi_per_return": 62434,
+    "returns": 138181,
+    "zip_codes": 13,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Coast Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 119314,
+    "median_zip_agi_per_return": 95870,
+    "returns": 399997,
+    "zip_codes": 32,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 118916,
+    "returns": 1502892,
+    "counties": [
+     "Orange"
+    ]
+   }
+  },
+  "Compton Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 45925,
+    "median_zip_agi_per_return": 44572,
+    "returns": 352140,
+    "zip_codes": 24,
+    "excluded_zip_codes": [
+     "90895"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Contra Costa Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 124299,
+    "median_zip_agi_per_return": 102000,
+    "returns": 315856,
+    "zip_codes": 26,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 137804,
+    "returns": 502781,
+    "counties": [
+     "Contra Costa"
+    ]
+   }
+  },
+  "Copper Mountain Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 50668,
+    "median_zip_agi_per_return": 48688,
+    "returns": 38022,
+    "zip_codes": 12,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 66627,
+    "returns": 942952,
+    "counties": [
+     "San Bernardino"
+    ]
+   }
+  },
+  "Desert Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 71560,
+    "median_zip_agi_per_return": 55148,
+    "returns": 185305,
+    "zip_codes": 27,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 69512,
+    "returns": 2007573,
+    "counties": [
+     "Riverside",
+     "San Bernardino"
+    ]
+   }
+  },
+  "El Camino Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 106196,
+    "median_zip_agi_per_return": 66916,
+    "returns": 501007,
+    "zip_codes": 42,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Feather River Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 70369,
+    "median_zip_agi_per_return": 71325,
+    "returns": 10001,
+    "zip_codes": 24,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 70147,
+    "returns": 8246,
+    "counties": [
+     "Plumas"
+    ]
+   }
+  },
+  "Foothill-De Anza Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 433667,
+    "median_zip_agi_per_return": 278976,
+    "returns": 136238,
+    "zip_codes": 23,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 204289,
+    "returns": 899991,
+    "counties": [
+     "Santa Clara"
+    ]
+   }
+  },
+  "Gavilan Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 119572,
+    "median_zip_agi_per_return": 111855,
+    "returns": 89275,
+    "zip_codes": 10,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 200480,
+    "returns": 930452,
+    "counties": [
+     "San Benito",
+     "Santa Clara"
+    ]
+   }
+  },
+  "Glendale Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 101816,
+    "median_zip_agi_per_return": 89171,
+    "returns": 288794,
+    "zip_codes": 43,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Grossmont-Cuyamaca Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 83089,
+    "median_zip_agi_per_return": 78068,
+    "returns": 223579,
+    "zip_codes": 32,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 104592,
+    "returns": 1554562,
+    "counties": [
+     "San Diego"
+    ]
+   }
+  },
+  "Hartnell Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 67085,
+    "median_zip_agi_per_return": 57693,
+    "returns": 129518,
+    "zip_codes": 18,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 87503,
+    "returns": 214741,
+    "counties": [
+     "Monterey",
+     "San Benito"
+    ]
+   }
+  },
+  "Imperial Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 51228,
+    "median_zip_agi_per_return": 54863,
+    "returns": 78046,
+    "zip_codes": 17,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 51372,
+    "returns": 79240,
+    "counties": [
+     "Imperial"
+    ]
+   }
+  },
+  "Kern Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 60999,
+    "median_zip_agi_per_return": 62438,
+    "returns": 58956,
+    "zip_codes": 27,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 64472,
+    "returns": 1500337,
+    "counties": [
+     "Inyo",
+     "Kern",
+     "Mono",
+     "San Bernardino",
+     "Tulare"
+    ]
+   }
+  },
+  "Lake Tahoe Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 106553,
+    "median_zip_agi_per_return": 83956,
+    "returns": 32370,
+    "zip_codes": 27,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 117339,
+    "returns": 89464,
+    "counties": [
+     "El Dorado"
+    ]
+   }
+  },
+  "Lassen Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 62904,
+    "median_zip_agi_per_return": 66191,
+    "returns": 12128,
+    "zip_codes": 25,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 71107,
+    "returns": 19080,
+    "counties": [
+     "Lassen",
+     "Modoc",
+     "Mono",
+     "Sierra"
+    ]
+   }
+  },
+  "Long Beach Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 92981,
+    "median_zip_agi_per_return": 93344,
+    "returns": 245535,
+    "zip_codes": 27,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Los Angeles Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 107970,
+    "median_zip_agi_per_return": 74312,
+    "returns": 882223,
+    "zip_codes": 85,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Los Rios Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 81410,
+    "median_zip_agi_per_return": 76738,
+    "returns": 655468,
+    "zip_codes": 72,
+    "excluded_zip_codes": [
+     "95655",
+     "95838"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 90719,
+    "returns": 1082130,
+    "counties": [
+     "El Dorado",
+     "Placer",
+     "Sacramento",
+     "Yolo"
+    ]
+   }
+  },
+  "Marin Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 202058,
+    "median_zip_agi_per_return": 170624,
+    "returns": 161110,
+    "zip_codes": 40,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 256730,
+    "returns": 122117,
+    "counties": [
+     "Marin"
+    ]
+   }
+  },
+  "Mendocino-Lake Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 64020,
+    "median_zip_agi_per_return": 65971,
+    "returns": 51783,
+    "zip_codes": 42,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 62959,
+    "returns": 62353,
+    "counties": [
+     "Lake",
+     "Mendocino"
+    ]
+   }
+  },
+  "Merced Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 57611,
+    "median_zip_agi_per_return": 56612,
+    "returns": 156290,
+    "zip_codes": 37,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 65562,
+    "returns": 528580,
+    "counties": [
+     "Fresno",
+     "Merced"
+    ]
+   }
+  },
+  "MiraCosta Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 88856,
+    "median_zip_agi_per_return": 79111,
+    "returns": 222414,
+    "zip_codes": 20,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 104592,
+    "returns": 1554562,
+    "counties": [
+     "San Diego"
+    ]
+   }
+  },
+  "Monterey Peninsula Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 141475,
+    "median_zip_agi_per_return": 123627,
+    "returns": 48720,
+    "zip_codes": 12,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 87429,
+    "returns": 184280,
+    "counties": [
+     "Monterey"
+    ]
+   }
+  },
+  "Mt. San Antonio Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 83086,
+    "median_zip_agi_per_return": 76102,
+    "returns": 320375,
+    "zip_codes": 18,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Mt. San Jacinto Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 72733,
+    "median_zip_agi_per_return": 70818,
+    "returns": 308266,
+    "zip_codes": 29,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 72067,
+    "returns": 1064621,
+    "counties": [
+     "Riverside"
+    ]
+   }
+  },
+  "Napa Valley Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 106675,
+    "median_zip_agi_per_return": 104050,
+    "returns": 102243,
+    "zip_codes": 14,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 141663,
+    "returns": 64751,
+    "counties": [
+     "Napa"
+    ]
+   }
+  },
+  "North Orange County Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 76167,
+    "median_zip_agi_per_return": 74956,
+    "returns": 383965,
+    "zip_codes": 38,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 118916,
+    "returns": 1502892,
+    "counties": [
+     "Orange"
+    ]
+   }
+  },
+  "Ohlone Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 180351,
+    "median_zip_agi_per_return": 162601,
+    "returns": 127771,
+    "zip_codes": 8,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 144958,
+    "returns": 784286,
+    "counties": [
+     "Alameda"
+    ]
+   }
+  },
+  "Palo Verde Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 50326,
+    "median_zip_agi_per_return": 51614,
+    "returns": 7928,
+    "zip_codes": 7,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 72067,
+    "returns": 1064621,
+    "counties": [
+     "Riverside"
+    ]
+   }
+  },
+  "Palomar Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 145273,
+    "median_zip_agi_per_return": 120546,
+    "returns": 263290,
+    "zip_codes": 27,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 104592,
+    "returns": 1554562,
+    "counties": [
+     "San Diego"
+    ]
+   }
+  },
+  "Pasadena Area Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 98365,
+    "median_zip_agi_per_return": 95267,
+    "returns": 275111,
+    "zip_codes": 35,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Peralta Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 139989,
+    "median_zip_agi_per_return": 120367,
+    "returns": 388431,
+    "zip_codes": 47,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 144958,
+    "returns": 784286,
+    "counties": [
+     "Alameda"
+    ]
+   }
+  },
+  "Rancho Santiago Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 115692,
+    "median_zip_agi_per_return": 122621,
+    "returns": 309245,
+    "zip_codes": 32,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 118916,
+    "returns": 1502892,
+    "counties": [
+     "Orange"
+    ]
+   }
+  },
+  "Redwoods Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 62256,
+    "median_zip_agi_per_return": 60788,
+    "returns": 65400,
+    "zip_codes": 50,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 63812,
+    "returns": 103079,
+    "counties": [
+     "Del Norte",
+     "Humboldt",
+     "Mendocino"
+    ]
+   }
+  },
+  "Rio Hondo Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 55739,
+    "median_zip_agi_per_return": 51912,
+    "returns": 263369,
+    "zip_codes": 18,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Riverside Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 69068,
+    "median_zip_agi_per_return": 66160,
+    "returns": 466066,
+    "zip_codes": 36,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 72067,
+    "returns": 1064621,
+    "counties": [
+     "Riverside"
+    ]
+   }
+  },
+  "San Bernardino Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 63651,
+    "median_zip_agi_per_return": 59891,
+    "returns": 340259,
+    "zip_codes": 45,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 66627,
+    "returns": 942952,
+    "counties": [
+     "San Bernardino"
+    ]
+   }
+  },
+  "San Diego Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 125966,
+    "median_zip_agi_per_return": 99188,
+    "returns": 533858,
+    "zip_codes": 61,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 104592,
+    "returns": 1554562,
+    "counties": [
+     "San Diego"
+    ]
+   }
+  },
+  "San Francisco Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 179629,
+    "median_zip_agi_per_return": 147362,
+    "returns": 531697,
+    "zip_codes": 44,
+    "excluded_zip_codes": [
+     "94104",
+     "94119"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 204012,
+    "returns": 429520,
+    "counties": [
+     "San Francisco"
+    ]
+   }
+  },
+  "San Joaquin Delta Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 80029,
+    "median_zip_agi_per_return": 73127,
+    "returns": 402146,
+    "zip_codes": 51,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 75988,
+    "returns": 336591,
+    "counties": [
+     "San Joaquin"
+    ]
+   }
+  },
+  "San Jose-Evergreen Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 138959,
+    "median_zip_agi_per_return": 130535,
+    "returns": 446728,
+    "zip_codes": 45,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 204289,
+    "returns": 899991,
+    "counties": [
+     "Santa Clara"
+    ]
+   }
+  },
+  "San Luis Obispo County Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 95235,
+    "median_zip_agi_per_return": 88568,
+    "returns": 87733,
+    "zip_codes": 26,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 97230,
+    "returns": 127998,
+    "counties": [
+     "San Luis Obispo"
+    ]
+   }
+  },
+  "San Mateo County Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 273000,
+    "median_zip_agi_per_return": 205705,
+    "returns": 216071,
+    "zip_codes": 23,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 236208,
+    "returns": 371026,
+    "counties": [
+     "San Mateo"
+    ]
+   }
+  },
+  "Santa Barbara Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 157993,
+    "median_zip_agi_per_return": 122766,
+    "returns": 98912,
+    "zip_codes": 25,
+    "excluded_zip_codes": [
+     "93102"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100776,
+    "returns": 197174,
+    "counties": [
+     "Santa Barbara"
+    ]
+   }
+  },
+  "Santa Clarita Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 86685,
+    "median_zip_agi_per_return": 82105,
+    "returns": 480004,
+    "zip_codes": 50,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Santa Monica Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 230421,
+    "median_zip_agi_per_return": 183761,
+    "returns": 394135,
+    "zip_codes": 47,
+    "excluded_zip_codes": [
+     "90411"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 100454,
+    "returns": 4517811,
+    "counties": [
+     "Los Angeles"
+    ]
+   }
+  },
+  "Sequoias Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 57402,
+    "median_zip_agi_per_return": 60907,
+    "returns": 262179,
+    "zip_codes": 50,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 58233,
+    "returns": 240035,
+    "counties": [
+     "Kings",
+     "Tulare"
+    ]
+   }
+  },
+  "Shasta-Tehama-Trinity Joint Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 67989,
+    "median_zip_agi_per_return": 66743,
+    "returns": 95866,
+    "zip_codes": 41,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 66895,
+    "returns": 105427,
+    "counties": [
+     "Shasta",
+     "Tehama",
+     "Trinity"
+    ]
+   }
+  },
+  "Sierra Joint Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 115993,
+    "median_zip_agi_per_return": 107272,
+    "returns": 363628,
+    "zip_codes": 52,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 88125,
+    "returns": 945448,
+    "counties": [
+     "Nevada",
+     "Placer",
+     "Sacramento"
+    ]
+   }
+  },
+  "Siskiyou Joint Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 59371,
+    "median_zip_agi_per_return": 59159,
+    "returns": 19087,
+    "zip_codes": 25,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 58382,
+    "returns": 21259,
+    "counties": [
+     "Modoc",
+     "Siskiyou"
+    ]
+   }
+  },
+  "Solano Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 85443,
+    "median_zip_agi_per_return": 83026,
+    "returns": 161039,
+    "zip_codes": 13,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 87590,
+    "returns": 294820,
+    "counties": [
+     "Solano",
+     "Yolo"
+    ]
+   }
+  },
+  "Sonoma County Junior College District": {
+   "catchment": {
+    "mean_agi_per_return": 101828,
+    "median_zip_agi_per_return": 99168,
+    "returns": 236407,
+    "zip_codes": 53,
+    "excluded_zip_codes": [
+     "94567"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 108138,
+    "returns": 237416,
+    "counties": [
+     "Sonoma"
+    ]
+   }
+  },
+  "South Orange County Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 161505,
+    "median_zip_agi_per_return": 146159,
+    "returns": 383302,
+    "zip_codes": 37,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 118916,
+    "returns": 1502892,
+    "counties": [
+     "Orange"
+    ]
+   }
+  },
+  "Southwestern Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 62761,
+    "median_zip_agi_per_return": 54522,
+    "returns": 324667,
+    "zip_codes": 27,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 104592,
+    "returns": 1554562,
+    "counties": [
+     "San Diego"
+    ]
+   }
+  },
+  "State Center Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 68874,
+    "median_zip_agi_per_return": 57196,
+    "returns": 432725,
+    "zip_codes": 88,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 64510,
+    "returns": 664907,
+    "counties": [
+     "Fresno",
+     "Madera",
+     "Tulare"
+    ]
+   }
+  },
+  "Ventura County Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 103259,
+    "median_zip_agi_per_return": 93132,
+    "returns": 327805,
+    "zip_codes": 39,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 102142,
+    "returns": 396359,
+    "counties": [
+     "Ventura"
+    ]
+   }
+  },
+  "Victor Valley Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 54729,
+    "median_zip_agi_per_return": 51241,
+    "returns": 162395,
+    "zip_codes": 15,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 66627,
+    "returns": 942952,
+    "counties": [
+     "San Bernardino"
+    ]
+   }
+  },
+  "West Hills Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 51257,
+    "median_zip_agi_per_return": 56504,
+    "returns": 30229,
+    "zip_codes": 13,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 71666,
+    "returns": 714584,
+    "counties": [
+     "Fresno",
+     "Kings",
+     "Madera",
+     "Monterey"
+    ]
+   }
+  },
+  "West Kern Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 63752,
+    "median_zip_agi_per_return": 58448,
+    "returns": 242678,
+    "zip_codes": 32,
+    "excluded_zip_codes": [
+     "93303"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 61542,
+    "returns": 355867,
+    "counties": [
+     "Kern"
+    ]
+   }
+  },
+  "West Valley-Mission Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 237655,
+    "median_zip_agi_per_return": 197504,
+    "returns": 294125,
+    "zip_codes": 31,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 193121,
+    "returns": 1027797,
+    "counties": [
+     "Santa Clara",
+     "Santa Cruz"
+    ]
+   }
+  },
+  "Yosemite Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 70711,
+    "median_zip_agi_per_return": 74317,
+    "returns": 246099,
+    "zip_codes": 55,
+    "excluded_zip_codes": [
+     "95354"
+    ]
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 144006,
+    "returns": 1628320,
+    "counties": [
+     "Calaveras",
+     "Merced",
+     "San Joaquin",
+     "Santa Clara",
+     "Stanislaus",
+     "Tuolumne"
+    ]
+   }
+  },
+  "Yuba Community College District": {
+   "catchment": {
+    "mean_agi_per_return": 67522,
+    "median_zip_agi_per_return": 67602,
+    "returns": 108392,
+    "zip_codes": 31,
+    "excluded_zip_codes": []
+   },
+   "county_rollup": {
+    "mean_agi_per_return": 77834,
+    "returns": 201204,
+    "counties": [
+     "Colusa",
+     "Lake",
+     "Sutter",
+     "Yolo",
+     "Yuba"
+    ]
+   }
+  }
+ },
+ "county_rollup_source": {
+  "name": "California Franchise Tax Board \u2014 B-7, Adjusted Gross Income by County",
+  "publisher": "California Franchise Tax Board",
+  "page": "https://data.ca.gov/dataset/b-7-adjusted-gross-income-by-county",
+  "file": "https://data.ca.gov/dataset/2a273ac1-39c6-4e3b-a1e6-e0fb1bf495b5/resource/ef37e456-32f5-40b2-a70b-777032f1592b/download/2023-b-7__adjusted_gross_income_by_county.csv",
+  "license": "Creative Commons Attribution"
+ },
+ "county_rollup_taxable_year": 2022,
+ "catchment_vs_county_spearman": 0.758
+}

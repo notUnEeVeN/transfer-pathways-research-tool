@@ -93,12 +93,13 @@ describe('published interactive visual', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Hand-curated minimums' }))
     expect(differences).not.toBeDisabled()
     fireEvent.click(differences)
-    const increases = [...container.querySelectorAll('[data-difference="increase"]')]
+    const increases = [...container.querySelectorAll(
+      '[data-comparison-overlay][data-difference="increase"]'
+    )]
     expect(increases.length).toBeGreaterThan(1)
-    expect(increases.every((region) => region.getAttribute('stroke') === '#ffffff')).toBe(true)
-    expect(increases.every((region) => region.getAttribute('vector-effect') === 'non-scaling-stroke')).toBe(true)
     const exportRoot = container.querySelector('[data-export-root]')
-    expect(exportRoot.querySelector('[data-export-width]').getAttribute('data-export-width')).toBe('1990.3')
+    expect(exportRoot.querySelector('[data-modern-california-figure="credit-loss"]')).toBeTruthy()
+    expect(exportRoot.querySelector('[data-export-width]').getAttribute('data-export-width')).toBe('1240')
     expect(exportRoot.textContent).toContain('Difference marks vs paper')
     expect(screen.getByText(/More details.*every difference as a matrix/)).toBeTruthy()
   })
@@ -117,9 +118,12 @@ describe('built-in visual registry', () => {
       'paper-district-heatmap',
       'paper-articulation-histogram',
       'paper-articulation-map',
+      'paper-course-barriers',
+      'course-type-coverage',
       'transfer-credit-rate',
       'transfer-extra-units',
       'coverage-heatmap',
+      'income-access',
       'multi-campus-pathways',
       'credit-loss',
       'choice-cost',
@@ -135,10 +139,13 @@ describe('built-in visual registry', () => {
       'Transfer coverage by district',
       'Districts by complete campus coverage',
       'Articulation coverage across California',
+      'Course gaps by campus',
+      'Transferable requirements by course type',
       'Degree credit toward graduation',
       'Modeled replacement coursework',
       'Potential graduation-unit coverage',
-      'Preparation planner for multiple campuses',
+      'Transfer access and local income',
+      'District preparation for multiple campuses',
       'Minimum transfer coursework',
       'Cost of applying to more campuses',
       'Missing courses by subject',
@@ -150,6 +157,20 @@ describe('built-in visual registry', () => {
         /\b(?:CCC|CC|UC|Fig|prereq)\b|\svs\s|\sx\s|[+/%]|paper-style/i
       )
     }
+  })
+
+  it('registers figure-only modern previews for every redesigned California handoff figure', () => {
+    const redesigned = [
+      'paper-credit-loss',
+      'paper-district-heatmap',
+      'paper-articulation-histogram',
+      'paper-course-barriers',
+    ]
+
+    for (const id of redesigned) {
+      expect(getAnalysisById(id)?.PreviewComponent).toBeTypeOf('function')
+    }
+    expect(getAnalysisById('paper-articulation-map')?.PreviewComponent).toBeUndefined()
   })
 
   it('shows admins every available visual regardless of publication', () => {
@@ -197,5 +218,28 @@ describe('visual gallery thumbnails', () => {
     expect(screen.getByTestId('live-preview')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Open Sample transfer visual' }))
     expect(onOpen).toHaveBeenCalledOnce()
+  })
+
+  it('uses a dedicated figure-only preview instead of the full interactive component', () => {
+    const Full = () => <div data-testid='full-component'>Controls and figure</div>
+    const Preview = () => <div data-testid='figure-preview'>Modern current figure</div>
+    const item = {
+      kind: 'analysis',
+      key: 'analysis:sample-preview',
+      analysis: {
+        id: 'sample-preview',
+        title: 'Sample preview visual',
+        description: 'A visual with dedicated thumbnail artwork.',
+        author_label: 'Researcher',
+        published_at: '2026-07-18T09:00:00',
+        Component: Full,
+        PreviewComponent: Preview,
+      },
+    }
+
+    render(<VisualThumbnailCard item={item} onOpen={vi.fn()} />)
+
+    expect(screen.getByTestId('figure-preview')).toBeTruthy()
+    expect(screen.queryByTestId('full-component')).not.toBeInTheDocument()
   })
 })

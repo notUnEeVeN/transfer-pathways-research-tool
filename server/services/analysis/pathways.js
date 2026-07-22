@@ -14,6 +14,7 @@ const { manyToOneCount } = require('./optionSolver');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
 const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
 const { buildDegreeGroups, degreeUnitSystem } = require('../degreeSlots');
+const { COURSE_TYPES, degreeCategoryOf } = require('../courseTypes');
 const { projectPrereqEdges } = require('../prereqGraph');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
@@ -406,6 +407,10 @@ function evaluateTransferRequirementModel(model, articulatedParentIds) {
   let receiversArticulated = 0;
   let groupsSatisfied = 0;
   const groupCount = model.groups.size;
+  // Per-group verdicts travel with the row so course-level figures (the CA
+  // paper's Figure 5) can ask which single demand a district misses, without
+  // re-running the evaluation.
+  const groupResults = [];
 
   for (const group of model.groups.values()) {
     const setResults = [...group.sets.values()].map((set) => {
@@ -427,9 +432,16 @@ function evaluateTransferRequirementModel(model, articulatedParentIds) {
     receiversRequired += best.total;
     receiversArticulated += best.articulated;
     if (best.satisfied) groupsSatisfied += 1;
+    groupResults.push({
+      group_id: group.group_id,
+      satisfied: Boolean(best.satisfied),
+      receivers_required: best.total,
+      receivers_articulated: best.articulated,
+    });
   }
 
   return {
+    requirement_groups: groupResults,
     receivers_required: receiversRequired,
     receivers_articulated: receiversArticulated,
     requirement_groups_required: groupCount,
@@ -664,10 +676,22 @@ async function degreeRequirementCoverageData(db, {
     } },
   ];
 
-  const [articulationRows, geRows] = await Promise.all([
+  // Receiving-course codes for the course-type rollup (MA Figure 2): the
+  // paper types each requirement by the four-year's own course code.
+  const universityCoursePipeline = [
+    { $match: { side: 'receiving', parent_id: { $in: parentIds } } },
+    { $project: { _id: 0, parent_id: 1, prefix: 1, number: 1, title: 1 } },
+  ];
+
+  const [articulationRows, geRows, universityCourseRows] = await Promise.all([
     db.collection('assist_agreements').aggregate(articulationPipeline).toArray(),
     db.collection('assist_courses').aggregate(gePipeline).toArray(),
+    db.collection('assist_courses').aggregate(universityCoursePipeline).toArray(),
   ]);
+  const universityCoursesById = Object.fromEntries(
+    universityCourseRows.map((course) => [Number(course.parent_id), course])
+  );
+  const categoryOf = degreeCategoryOf(universityCoursesById);
 
   const articulatedByPair = new Map();
   for (const row of articulationRows) {
@@ -699,7 +723,8 @@ async function degreeRequirementCoverageData(db, {
         }
       }
       const ccGeAreas = mergeGeAreas(collegeIds, geAreasByCollege);
-      const evaluated = buildDegreeGroups(degree.requirement_groups, { articulated, ccGeAreas });
+      const evaluated = buildDegreeGroups(degree.requirement_groups,
+        { articulated, ccGeAreas, universityCoursesById, categoryOf });
       const pctSlots = evaluated.total
         ? +((evaluated.covered / evaluated.total) * 100).toFixed(1)
         : null;
@@ -743,6 +768,13 @@ async function degreeRequirementCoverageData(db, {
         degree_requirements_total: evaluated.total,
         degree_requirements_with_equivalent: evaluated.covered,
         degree_requirements_by_tier: evaluated.by_tier,
+        // Slots by course type, for the MA paper's Figure 2 breakdown. Every
+        // type is present even when a campus requires nothing in it.
+        degree_requirements_by_course_type: Object.fromEntries(COURSE_TYPES.map((type) => [
+          type,
+          evaluated.by_category?.[type]
+            || { total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0 },
+        ])),
         pct_degree_requirements: pctSlots,
         degree_requirement_slots_total: evaluated.total,
         degree_requirement_slots_with_equivalent: evaluated.covered,

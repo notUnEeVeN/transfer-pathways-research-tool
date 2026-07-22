@@ -1,6 +1,12 @@
-import React, { useMemo, useState } from 'react'
+import React, { useId, useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { Stack, StatStrip, SwitchField } from '../components/ui'
+import { Stack, SwitchField } from '../components/ui'
+import {
+  CA_CHOICE_COLORS,
+  CA_DIFFERENCE_COLORS,
+  CA_FIGURE,
+  CA_QUARTER_NOTE,
+} from './californiaFigureStyle'
 import { CHOICE_LABELS, PAPER_COLORS, PAPER_UC_BARS } from './paperCreditLossBaseline'
 import assistData from './data/paper-credit-loss.assist.json'
 import oursData from './data/paper-credit-loss.ours.json'
@@ -36,8 +42,8 @@ const OFFSETS = [-0.32, -0.16, 0, 0.16, 0.32]
 // 1 pt at 300 dpi, scaled into the ÷3 viewBox.
 const pt = (v) => (v * (300 / 72)) / 3
 
-const GAIN = '#0d7964' // fewer CCC courses than the paper — improvement
-const LOSS = '#cb1d51'
+const GAIN = CA_DIFFERENCE_COLORS.gained // fewer CCC courses than the comparison — improvement
+const LOSS = CA_DIFFERENCE_COLORS.lost
 
 const CAMPUS_NAME = Object.fromEntries(PAPER_UC_BARS.map((b) => [b.code, b.campus]))
 
@@ -52,6 +58,7 @@ const OURS_BARS = PAPER_UC_BARS.map((paper) => {
     requirementSemester: c.requirement.semester_equiv,
     requirementQuarter: c.requirement.quarter_count,
     choices: c.choices.map((ch) => ch.transferable_average),
+    choiceDistricts: c.choices.map((ch) => ch.districts_included),
   }
 })
 
@@ -64,6 +71,7 @@ const ASSIST_BARS = PAPER_UC_BARS.map((paper) => {
     requirementSemester: c.requirement.semester_equiv,
     requirementQuarter: c.requirement.quarter_count,
     choices: c.choices.map((ch) => ch.transferable_average),
+    choiceDistricts: c.choices.map((ch) => ch.districts_included),
   }
 })
 
@@ -85,6 +93,10 @@ function barTop(uc) {
 
 function maxTop(bars) {
   return Math.max(...bars.map((uc) => Math.max(barTop(uc), ...uc.choices)))
+}
+
+function choiceAvailable(campus, choiceIndex) {
+  return campus?.choiceDistricts?.[choiceIndex] !== 0
 }
 
 const xPx = (v) => PLOT.left + ((v - XLIM[0]) / (XLIM[1] - XLIM[0])) * (PLOT.right - PLOT.left)
@@ -355,28 +367,299 @@ export function FigureSVG({ bars, ghost = null, labelMode }) {
   )
 }
 
-function diffStats(bars, baseline) {
-  const deltas = []
-  bars.forEach((barSet, i) => {
-    barSet.choices.forEach((v, j) => {
-      deltas.push({ code: barSet.code, order: j + 1, delta: +(v - baseline[i].choices[j]).toFixed(2) })
-    })
-  })
-  const first = deltas.filter((d) => d.order === 1)
-  const mean = (xs) => xs.reduce((s, x) => s + x, 0) / xs.length
-  const largest = deltas.reduce((m, d) => (Math.abs(d.delta) > Math.abs(m.delta) ? d : m))
-  const reqDrift = bars.filter(
-    (o, i) => o.requirementSemester !== baseline[i].requirementSemester
-      || o.requirementQuarter !== baseline[i].requirementQuarter
-  ).length
-  return {
-    meanFirst: mean(first.map((d) => d.delta)),
-    meanAll: mean(deltas.map((d) => d.delta)),
-    largest,
-    reqDrift,
-    improved: deltas.filter((d) => d.delta < 0).length,
-    worsened: deltas.filter((d) => d.delta > 0).length,
-  }
+// Publication renderer for the recomputed states. The frozen paper baseline
+// intentionally continues to use FigureSVG above so its geometry remains a
+// faithful port; current and ASSIST data share this cleaner visual language
+// with the other modern California figures.
+const MODERN = Object.freeze({
+  width: CA_FIGURE.width,
+  // 1240 / 742 closely matches the legacy figure's 1990.3 / 1190.3 aspect.
+  height: 742,
+  plotLeft: 82,
+  plotRight: 1216,
+  plotTop: 68,
+  plotBottom: 610,
+})
+const REQUIREMENT_GOLD = '#FAE745'
+const REQUIREMENT_CREAM = '#FAF8E1'
+
+function modernTickStep(maximum) {
+  const rough = maximum / 4
+  if (rough <= 1) return 1
+  if (rough <= 2) return 2
+  if (rough <= 5) return 5
+  if (rough <= 10) return 10
+  return Math.ceil(rough / 10) * 10
+}
+
+function roundedTopPath(x, y, width, height, radius = 4) {
+  if (height <= 0) return ''
+  const bottom = y + height
+  const r = Math.min(radius, width / 2, height / 2)
+  return [
+    `M ${x} ${bottom}`,
+    `L ${x} ${y + r}`,
+    `Q ${x} ${y} ${x + r} ${y}`,
+    `L ${x + width - r} ${y}`,
+    `Q ${x + width} ${y} ${x + width} ${y + r}`,
+    `L ${x + width} ${bottom}`,
+    'Z',
+  ].join(' ')
+}
+
+function ModernVerticalLabel({ x, y, fill = CA_FIGURE.ink, anchor = 'start', children }) {
+  return (
+    <text x={x} y={y} transform={`rotate(-90 ${x} ${y})`}
+      textAnchor={anchor} dominantBaseline='central' fontSize='17' fontWeight='500'
+      fill={fill} style={{ fontVariantNumeric: 'tabular-nums lining-nums' }}>
+      {children}
+    </text>
+  )
+}
+
+function ModernDifferenceMark({ x, width, current, comparison, yScale }) {
+  const delta = +(current - comparison).toFixed(2)
+  const currentY = yScale(current)
+  const comparisonY = yScale(comparison)
+  const direction = delta > 0 ? 'increase' : delta < 0 ? 'decrease' : 'unchanged'
+
+  return (
+    <g data-comparison-overlay data-difference={direction}>
+      {delta > 0 && (
+        <rect x={x} y={currentY} width={width} height={comparisonY - currentY}
+          fill={LOSS} fillOpacity='0.78' />
+      )}
+      {delta < 0 && (
+        <rect x={x} y={comparisonY} width={width} height={currentY - comparisonY}
+          fill={GAIN} fillOpacity='0.18' stroke={GAIN} strokeWidth='1.75'
+          strokeDasharray='6 4' vectorEffect='non-scaling-stroke' />
+      )}
+      {delta !== 0 && (
+        <line x1={x - 3} x2={x + width + 3} y1={comparisonY} y2={comparisonY}
+          stroke={CA_FIGURE.ink} strokeWidth='2' vectorEffect='non-scaling-stroke' />
+      )}
+      <ModernVerticalLabel x={x + width / 2}
+        y={Math.min(currentY, comparisonY) - 8}
+        fill={delta === 0 ? CA_FIGURE.mutedLine : delta < 0 ? GAIN : LOSS}>
+        {signed(delta)}
+      </ModernVerticalLabel>
+    </g>
+  )
+}
+
+/**
+ * The modern 1240 px publication figure used by current and ASSIST states.
+ * It deliberately accepts the same `bars` / `ghost` inputs as FigureSVG so
+ * changing presentation cannot change any calculation or comparison meaning.
+ */
+export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names', dataVersion = 'current' }) {
+  const reactId = useId()
+  const hatchId = `creditLossQuarterHatch${reactId.replace(/:/g, '')}`
+  const unavailableHatchId = `creditLossUnavailableHatch${reactId.replace(/:/g, '')}`
+  const tallest = Math.max(maxTop(bars), ghost ? maxTop(ghost) : 0, 1)
+  const tickStep = modernTickStep(tallest)
+  const topTick = Math.max(tickStep, Math.ceil(tallest / tickStep) * tickStep)
+  // Keep about twelve percent of the plotting height clear above the highest
+  // labeled tick, matching the handoff while still accommodating ASSIST's
+  // substantially taller (up to 17-course) requirements.
+  const domainMax = topTick / 0.88
+  const yScale = (value) => MODERN.plotBottom
+    - (value / domainMax) * (MODERN.plotBottom - MODERN.plotTop)
+  const ticks = []
+  for (let value = 0; value <= topTick; value += tickStep) ticks.push(value)
+
+  const groupWidth = (MODERN.plotRight - MODERN.plotLeft) / bars.length
+  const barWidth = 20
+  const barGap = 4
+  const groupBarsWidth = barWidth * 5 + barGap * 4
+  const barX = (groupIndex, seriesIndex) => MODERN.plotLeft
+    + groupIndex * groupWidth
+    + (groupWidth - groupBarsWidth) / 2
+    + seriesIndex * (barWidth + barGap)
+  const barHeight = (value) => MODERN.plotBottom - yScale(value)
+  const legend = [
+    { label: 'CS/Math requirement', fill: REQUIREMENT_GOLD },
+    ...['1st choice', '2nd choice', '3rd choice', '4th choice'].map((label, index) => ({
+      label,
+      fill: CA_CHOICE_COLORS[index],
+    })),
+  ]
+  const legendX = [82, 310, 465, 620, 775]
+
+  return (
+    <svg data-modern-california-figure='credit-loss' data-figure-version={dataVersion}
+      data-export-width={MODERN.width} viewBox={`0 0 ${MODERN.width} ${MODERN.height}`}
+      role='img'
+      aria-label='Grouped bar chart of current CS and math requirements and average community college courses needed for each University of California campus choice'
+      fontFamily={CA_FIGURE.fontFamily}
+      style={{ width: '100%', height: 'auto', display: 'block', background: CA_FIGURE.background }}>
+      <defs>
+        <pattern id={hatchId} patternUnits='userSpaceOnUse' width='11' height='11'>
+          <rect width='11' height='11' fill={REQUIREMENT_CREAM} />
+          <path d='M -3 3 L 3 -3 M 0 11 L 11 0 M 8 14 L 14 8'
+            stroke={REQUIREMENT_GOLD} strokeWidth='2.5' />
+        </pattern>
+        <pattern id={unavailableHatchId} patternUnits='userSpaceOnUse' width='9' height='9'
+          patternTransform='rotate(45)'>
+          <line x1='0' y1='0' x2='0' y2='9' stroke={CA_FIGURE.mutedLine}
+            strokeWidth='1.25' strokeOpacity='0.55' />
+        </pattern>
+      </defs>
+
+      <rect x='12' y='14' width='1216' height='682' rx='8'
+        fill={CA_FIGURE.background} stroke={CA_FIGURE.mutedLine}
+        strokeOpacity='0.45' strokeWidth='1' data-modern-panel-border='credit-loss' />
+
+      <g aria-label='Legend'>
+        {legend.map((item, index) => (
+          <g key={item.label} transform={`translate(${legendX[index]} 26)`}>
+            <rect width='26' height='16' rx='4' fill={item.fill}
+              stroke={CA_FIGURE.ink} strokeOpacity='0.1' />
+            <text x='34' y='8' dominantBaseline='central' fontSize='14' fill={CA_FIGURE.ink}>
+              {item.label}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      {ticks.map((value) => (
+        <g key={value} data-y-tick={value}>
+          <line x1={MODERN.plotLeft} x2={MODERN.plotRight}
+            y1={yScale(value)} y2={yScale(value)} stroke={CA_FIGURE.grid} strokeWidth='1' />
+          <text x={MODERN.plotLeft - 10} y={yScale(value)} textAnchor='end'
+            dominantBaseline='central' fontSize='16' fill={CA_FIGURE.ink}
+            style={{ fontVariantNumeric: 'tabular-nums lining-nums' }}>
+            {value}
+          </text>
+        </g>
+      ))}
+      <line x1={MODERN.plotLeft} x2={MODERN.plotRight}
+        y1={MODERN.plotBottom} y2={MODERN.plotBottom}
+        stroke={CA_FIGURE.mutedLine} strokeWidth='1.5' />
+
+      {bars.map((campus, groupIndex) => {
+        const semester = campus.requirementSemester
+        const total = barTop(campus)
+        const cap = Math.max(0, total - semester)
+        const comparison = ghost?.[groupIndex] || null
+        const requirementX = barX(groupIndex, 0)
+        const semesterY = yScale(semester)
+        const totalY = yScale(total)
+        return (
+          <g key={campus.code} data-campus={campus.code}>
+            <g data-modern-bar data-series='requirement' data-value={total}
+              aria-label={`${campus.campus}, CS and math requirement: ${fmt(total)} courses`}>
+              {cap > 0 ? (
+                <>
+                  <rect x={requirementX} y={semesterY} width={barWidth}
+                    height={barHeight(semester)} fill={REQUIREMENT_GOLD}
+                    stroke={CA_FIGURE.ink} strokeOpacity='0.1' />
+                  <path d={roundedTopPath(requirementX, totalY, barWidth, semesterY - totalY)}
+                    fill={`url(#${hatchId})`} stroke={CA_FIGURE.ink} strokeOpacity='0.1' />
+                </>
+              ) : (
+                <path d={roundedTopPath(requirementX, totalY, barWidth, barHeight(total))}
+                  fill={REQUIREMENT_GOLD} stroke={CA_FIGURE.ink} strokeOpacity='0.1' />
+              )}
+              {comparison ? (
+                <ModernDifferenceMark x={requirementX} width={barWidth} current={total}
+                  comparison={barTop(comparison)} yScale={yScale} />
+              ) : (
+                <>
+                  <ModernVerticalLabel x={requirementX + barWidth / 2} y={totalY - 6}>
+                    {fmt(total)}
+                  </ModernVerticalLabel>
+                  {cap > 0 && (
+                    <ModernVerticalLabel x={requirementX + barWidth / 2} y={semesterY + 5}
+                      anchor='end'>
+                      {fmt(semester)}
+                    </ModernVerticalLabel>
+                  )}
+                </>
+              )}
+            </g>
+
+            {campus.choices.map((value, choiceIndex) => {
+              const x = barX(groupIndex, choiceIndex + 1)
+              const y = yScale(value)
+              const comparisonValue = comparison?.choices[choiceIndex]
+              const available = choiceAvailable(campus, choiceIndex)
+              const ordinal = `${choiceIndex + 1}${choiceIndex === 0 ? 'st' : choiceIndex === 1 ? 'nd' : choiceIndex === 2 ? 'rd' : 'th'}`
+              return (
+                <g key={choiceIndex} data-modern-bar data-series={`choice-${choiceIndex + 1}`}
+                  data-value={available ? value : undefined}
+                  data-unavailable={available ? undefined : 'true'}
+                  aria-label={available
+                    ? `${campus.campus}, ${ordinal} choice: ${fmt(value)} courses`
+                    : `${campus.campus}, ${ordinal} choice: unavailable because no districts were eligible`}>
+                  {available ? (
+                    <path d={roundedTopPath(x, y, barWidth, barHeight(value))}
+                      fill={CA_CHOICE_COLORS[choiceIndex]}
+                      stroke={CA_FIGURE.ink} strokeOpacity='0.1' />
+                  ) : (
+                    <rect x={x} y={MODERN.plotTop} width={barWidth}
+                      height={MODERN.plotBottom - MODERN.plotTop}
+                      fill={`url(#${unavailableHatchId})`} />
+                  )}
+                  {available && comparison ? (
+                    <ModernDifferenceMark x={x} width={barWidth} current={value}
+                      comparison={comparisonValue} yScale={yScale} />
+                  ) : available ? (
+                    <ModernVerticalLabel x={x + barWidth / 2} y={y - 6}>
+                      {fmt(value)}
+                    </ModernVerticalLabel>
+                  ) : (
+                    <text x={x + barWidth / 2} y={MODERN.plotBottom - 7}
+                      textAnchor='middle' fontSize='18' fontWeight='600' fill={CA_FIGURE.ink}>
+                      —
+                    </text>
+                  )}
+                </g>
+              )
+            })}
+
+            <text x={MODERN.plotLeft + groupIndex * groupWidth + groupWidth / 2}
+              y='636' textAnchor='middle' fontSize='16' fill={CA_FIGURE.ink}>
+              {xTickLabel(campus, labelMode)}
+            </text>
+          </g>
+        )
+      })}
+
+      <text x='34' y={(MODERN.plotTop + MODERN.plotBottom) / 2}
+        textAnchor='middle' transform={`rotate(-90 34 ${(MODERN.plotTop + MODERN.plotBottom) / 2})`}
+        fontSize='18' fontWeight='500' fill={CA_FIGURE.ink}>
+        Number of courses
+      </text>
+      <text x={(MODERN.plotLeft + MODERN.plotRight) / 2} y='674'
+        textAnchor='middle' fontSize='18' fontWeight='500' fill={CA_FIGURE.ink}>
+        University of California campus
+      </text>
+
+      <g transform='translate(82 708)' aria-label='Figure notes'>
+        <rect width='24' height='15' rx='4' fill={`url(#${hatchId})`}
+          stroke={CA_FIGURE.ink} strokeOpacity='0.1' />
+        <text x='32' y='7.5' dominantBaseline='central' fontSize='14' fill={CA_FIGURE.ink}>
+          Hatched = quarter-system requirement (semester-equivalent shown solid)
+        </text>
+        <text x='590' y='7.5' dominantBaseline='central' fontSize='14' fontWeight='600'
+          fill={CA_FIGURE.ink}>*</text>
+        <text x='606' y='7.5' dominantBaseline='central' fontSize='14' fill={CA_FIGURE.ink}>
+          {CA_QUARTER_NOTE.slice(2)}
+        </text>
+        <rect x='948' width='24' height='15' rx='3' fill={`url(#${unavailableHatchId})`}
+          stroke={CA_FIGURE.grid} />
+        <text x='980' y='7.5' dominantBaseline='central' fontSize='14' fill={CA_FIGURE.ink}>
+          No eligible districts
+        </text>
+      </g>
+    </svg>
+  )
+}
+
+/** Figure-only gallery thumbnail, intentionally locked to current hand-curated data. */
+export function PaperCreditLossPreview() {
+  return <ModernCreditLossFigure bars={OURS_BARS} labelMode='names' dataVersion='website' />
 }
 
 // The matrix's diverging poles. Crimson (LOSS) = more courses; a validated teal
@@ -407,9 +690,26 @@ function DifferenceHeatmap({ live, baseline, comparisonLabel, labelMode }) {
     const b = baseline[i]
     const our = [barTop(uc), ...uc.choices]
     const base = [barTop(b), ...b.choices]
-    return { code: uc.code, id: uc.id, name: uc.campus, our, base, deltas: our.map((v, k) => +(v - base[k]).toFixed(2)) }
+    const available = [
+      true,
+      ...uc.choices.map((_, choiceIndex) => (
+        choiceAvailable(uc, choiceIndex) && choiceAvailable(b, choiceIndex)
+      )),
+    ]
+    return {
+      code: uc.code,
+      id: uc.id,
+      name: uc.campus,
+      our,
+      base,
+      available,
+      deltas: our.map((v, k) => (available[k] ? +(v - base[k]).toFixed(2) : null)),
+    }
   })
-  const maxAbs = Math.max(0.001, ...rows.flatMap((r) => r.deltas.map((d) => Math.abs(d))))
+  const maxAbs = Math.max(
+    0.001,
+    ...rows.flatMap((r) => r.deltas.filter(Number.isFinite).map((d) => Math.abs(d)))
+  )
   const rowLabel = (r) => (labelMode === 'names' ? r.name.replace(/^UC\s+/i, '') : r.id)
 
   return (
@@ -438,9 +738,15 @@ function DifferenceHeatmap({ live, baseline, comparisonLabel, labelMode }) {
                 <th scope='row' className='text-left px-3 py-2.5 font-medium text-ink whitespace-nowrap'>{rowLabel(r)}</th>
                 {r.deltas.map((d, k) => (
                   <td key={k} className='px-3 py-2.5 text-center rounded-md text-ink font-medium'
-                    style={{ backgroundColor: deltaFill(d, maxAbs) }}
-                    title={`${r.name} · ${COL_LONG[k]}: ${fmt(r.base[k])} → ${fmt(r.our[k])} (${signed(d)})`}>
-                    {Math.abs(d) < 0.005 ? <span className='text-ink-subtle font-normal'>0</span> : signed(d)}
+                    style={{ backgroundColor: Number.isFinite(d) ? deltaFill(d, maxAbs) : 'transparent' }}
+                    title={Number.isFinite(d)
+                      ? `${r.name} · ${COL_LONG[k]}: ${fmt(r.base[k])} → ${fmt(r.our[k])} (${signed(d)})`
+                      : `${r.name} · ${COL_LONG[k]}: unavailable (no eligible districts)`}>
+                    {!Number.isFinite(d)
+                      ? <span className='text-ink-subtle font-normal'>—</span>
+                      : Math.abs(d) < 0.005
+                        ? <span className='text-ink-subtle font-normal'>0</span>
+                        : signed(d)}
                   </td>
                 ))}
               </tr>
@@ -469,10 +775,6 @@ export default function PaperCreditLoss() {
   const baselineBars = reqMode === 'assist' ? OURS_BARS : PAPER_UC_BARS
   const bars = view === 'paper' ? PAPER_UC_BARS : liveBars
   const ghost = view === 'diff' ? baselineBars : null
-  const stats = useMemo(
-    () => diffStats(liveBars, baselineBars),
-    [liveBars, baselineBars]
-  )
   const comparisonLabel = reqMode === 'assist' ? 'hand-curated minimums' : 'paper'
 
   return (
@@ -516,24 +818,15 @@ export default function PaperCreditLoss() {
         </div>
       </div>
 
-      {/* Comparison stats are on-screen context, not part of the exported figure. */}
-      {view !== 'paper' && (
-        <div data-export-exclude>
-          <StatStrip
-            tiles={[
-              { label: 'Mean 1st-choice Δ', value: signed(stats.meanFirst), sub: `CCC courses vs ${comparisonLabel}`, accent: true },
-              { label: 'Mean Δ, all 36 bars', value: signed(stats.meanAll), sub: `${stats.improved} lower · ${stats.worsened} higher` },
-              { label: 'Largest mover', value: `${stats.largest.code} ${signed(stats.largest.delta)}`, sub: `as ${['1st', '2nd', '3rd', '4th'][stats.largest.order - 1]} choice` },
-              { label: 'Requirement drift', value: String(stats.reqDrift), sub: `gold bars differing from ${comparisonLabel}` },
-            ]}
-          />
-        </div>
-      )}
-
       <div data-export-root className='flex flex-col gap-4'>
-        <div className='surface-card p-3' style={{ background: '#ffffff' }}>
-          <FigureSVG bars={bars} ghost={ghost} labelMode={labelMode} />
-        </div>
+        {view === 'paper' ? (
+          <div className='surface-card p-3' style={{ background: '#ffffff' }}>
+            <FigureSVG bars={bars} ghost={ghost} labelMode={labelMode} />
+          </div>
+        ) : (
+          <ModernCreditLossFigure bars={bars} ghost={ghost} labelMode={labelMode}
+            dataVersion={version} />
+        )}
         {view === 'diff' && <DifferenceLegend comparisonLabel={comparisonLabel} />}
       </div>
 

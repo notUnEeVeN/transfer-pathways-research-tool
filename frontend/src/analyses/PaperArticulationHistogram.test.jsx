@@ -2,6 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import PaperArticulationHistogram, {
+  PaperArticulationHistogramPreview,
   buildArticulationHistogramModel,
   buildPaperArticulationHistogramModel,
 } from './PaperArticulationHistogram'
@@ -81,5 +82,31 @@ describe('paper articulation histogram', () => {
       },
       expect.objectContaining({ refetchOnWindowFocus: false, refetchInterval: false })
     )
+  })
+
+  it('uses the publication skin only for current-data states', () => {
+    const { container } = render(<PaperArticulationHistogram />)
+    const modern = container.querySelector('[data-modern-california-figure="coverage-distribution"]')
+
+    expect(modern).toBeTruthy()
+    expect(modern.getAttribute('viewBox')).toBe('0 0 1240 698')
+    expect(modern.style.fontFamily).toContain('Hanken Grotesk')
+    expect(modern.querySelector('path[fill="#2E5C8A"]')).toBeTruthy()
+    expect(modern.querySelector('[data-histogram-value-label]')?.getAttribute('font-size')).toBe('16')
+    expect([...modern.querySelectorAll('text')].map((node) => node.textContent))
+      .not.toContain('Distribution of complete campus articulation')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Paper baseline' }))
+    expect(container.querySelector('[data-modern-california-figure]')).toBeNull()
+    expect(container.querySelector('svg[data-export-width="960"]')).toBeTruthy()
+  })
+
+  it('exports a figure-only current-data preview', () => {
+    const { container } = render(<PaperArticulationHistogramPreview />)
+
+    expect(container.querySelector('[data-modern-california-figure="coverage-distribution"]')).toBeTruthy()
+    expect(container.querySelector('[data-export-exclude]')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Refresh data' })).not.toBeInTheDocument()
   })
 })

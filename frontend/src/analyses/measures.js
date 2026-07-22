@@ -35,6 +35,16 @@ export const MEASURES = {
     grain: 'One count from zero to nine per community college district, displayed in the paper’s 0–3, 4–6, and 7–9 classes.',
     watchFor: 'The map is a geographic summary of the district heatmap, not a separate coverage calculation. District locations are approximate centroids inherited from the paper pipeline, and the three broad display classes can hide exact-count changes that stay inside the same class.',
   },
+  'paper-course-barriers': {
+    expression: 'bar height = districts with no articulated equivalent for that course ÷ all 72 districts',
+    grain: 'One percentage per UC campus × course category; a campus that does not require the course has no percentage.',
+    watchFor: 'The denominator is every district, including the ones that already articulate the course and the ones that require nothing else from that campus, so bars are comparable across panels but understate the burden on districts that use the campus. A district counts as missing whenever any one requirement group in the category fails, so a panel can be driven by a single course in a multi-course sequence.',
+  },
+  'course-type-coverage': {
+    expression: 'point = required courses of one course type with a community college equivalent ÷ required courses of that type, averaged across community colleges',
+    grain: 'One point per university campus per course type; a campus that requires nothing of a type contributes no point.',
+    watchFor: 'Read the scope control first. The default counts the whole degree, including upper-division work no community college can offer — that suppresses the computing column for a structural reason true of any major in its own subject, not because of articulation. The lower-division scope compares the types on coursework a community college can actually teach. Each point weights every community college equally, and the diamond averages the campus points, not the underlying pairs.',
+  },
   'transfer-credit-rate': {
     expression: 'credit rate = associate degree units that apply to the UC degree ÷ total units in the associate degree',
     grain: 'One value per community college × UC campus, for one associate degree type.',
@@ -50,10 +60,15 @@ export const MEASURES = {
     grain: 'One value per community college × UC program.',
     watchFor: 'The denominator is the whole modeled graduation plan and includes university-only work at zero coverage, so a cell cannot reach 100% unless the program reserves nothing for after transfer. Each campus stays in its own quarter or semester units and is never normalized, so an average across campuses mixes the two systems.',
   },
+  'income-access': {
+    expression: 'point = (income of the district’s catchment, campuses whose full transfer requirement the district articulates); the panel is a standardized least-squares fit of campuses on log income, log population and log distance to the nearest campus',
+    grain: 'One point per community college district; the panel is one coefficient per predictor over all districts.',
+    watchFor: 'Ecological and associational: it describes areas, not students, and the fit identifies no cause. Income is a mean per tax return over the ZIP codes nearest the district’s centre — a catchment, not a statutory boundary — so a district near a boundary borrows some of its neighbour’s income. The three predictors are correlated with each other, so read the coefficients as “income still matters alongside these”, not as separate effects.',
+  },
   'multi-campus-pathways': {
-    expression: 'combined plan = the fewest distinct community college courses that jointly satisfy the locally articulable required preparation in every selected ASSIST agreement; modeled terms then pack those courses after their prerequisites within the chosen unit load',
-    grain: 'One value per community college × unordered set of selected UC computer science programs. Average mode summarizes those college-level values without mixing semester and quarter term counts.',
-    watchFor: 'Required preparation with no usable local articulation is flagged but cannot be put on the schedule, so a smaller plan can reflect a gap rather than an easier path. This is an optimistic catalog plan, not observed student time: it assumes courses are offered every term without conflicts and excludes general education, associate-degree requirements, admission criteria, and all university coursework after transfer.',
+    expression: 'district capacity = number of selected UC computer science pathways whose full ASSIST minimum can be articulated somewhere in the district; joint workload = the fewest major-preparation courses found to satisfy every available pathway at once, followed by the addition of known prerequisites',
+    grain: 'One capacity count and one joint course plan per California community college district, summarized within each integer capacity group from zero through nine pathways.',
+    watchFor: 'Courses may be pooled across every member college, so the result assumes district-wide cross-enrollment and is not a single-college promise. The solver minimizes major preparation before adding prerequisites, so the displayed closure is not guaranteed to be the globally smallest course total after prerequisites. Required preparation is never silently dropped, and modeled academic years remain an optimistic catalog schedule rather than observed time to transfer.',
   },
   'credit-loss': {
     expression: 'transfer coursework = the fewest community college courses the solver finds that satisfy every required receiver in one agreement',
