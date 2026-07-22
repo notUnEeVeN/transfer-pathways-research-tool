@@ -155,4 +155,11 @@ module.exports = {
   typeOfSection,
   typeOfReceiver,
   degreeCategoryOf,
+  // The raw rule sets, so config/majors.js can hold them as the cs entry's
+  // coursePatterns (single source of truth for per-major typing).
+  COMPUTING_PREFIXES,
+  MATH_PREFIXES,
+  SCIENCE_PREFIXES,
+  DISCRETE_MATH,
+  TEXT_RULES,
 };
