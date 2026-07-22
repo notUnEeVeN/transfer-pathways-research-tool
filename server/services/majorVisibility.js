@@ -1,6 +1,7 @@
-// Console-wide visibility, with one (school, major) PAIR per configured campus.
-// The research cluster holds every major the admin has ported; a single config
-// doc selects the project's working major at each UC. Pair granularity still
+// Console-wide visibility, as a set of (school, major) PAIRS. The research
+// cluster holds every major the admin has ported; a single config doc selects
+// the project's working set. A campus may carry several majors — one per
+// onboarded field (CS, Biology, Economics). Pair granularity still
 // matters because the same major name can exist at several campuses. The
 // selection scopes every console surface for every account (admin included);
 // the Admin tab retains the full ported inventory. Partners additionally get
@@ -23,15 +24,18 @@ let cache = { at: 0, loaded: false, pairs: undefined }; // pairs: undefined = no
 
 const normalizePair = (p) => ({ school_id: Number(p.school_id), major: String(p.major) });
 
-// Preserve the first saved choice when reading an older config that allowed
-// several majors at one campus. New writes are also validated by the endpoint.
-function onePairPerSchool(pairs = []) {
+// Normalize the saved selection: numeric ids, string majors, exact duplicates
+// dropped, order preserved. A campus may carry several majors — one per
+// onboarded field (CS, Biology, Economics) — so only whole-pair duplicates
+// are collapsed.
+function normalizePairs(pairs = []) {
   const seen = new Set();
   const clean = [];
   for (const raw of pairs || []) {
     const pair = normalizePair(raw);
-    if (seen.has(pair.school_id)) continue;
-    seen.add(pair.school_id);
+    const key = `${pair.school_id}|${pair.major}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
     clean.push(pair);
   }
   return clean;
@@ -43,7 +47,7 @@ async function loadConfig(auditDb) {
   const now = Date.now();
   if (cache.loaded && now - cache.at < TTL_MS) return cache.pairs;
   const doc = await auditDb.collection(CONFIG).findOne({ _id: DOC_ID });
-  cache = { at: now, loaded: true, pairs: doc ? onePairPerSchool(doc.visible_pairs) : undefined };
+  cache = { at: now, loaded: true, pairs: doc ? normalizePairs(doc.visible_pairs) : undefined };
   return cache.pairs;
 }
 
@@ -57,11 +61,11 @@ async function getVisiblePairs(auditDb) {
 // program from this selection). Returns normalized pairs; [] when unset.
 async function readVisiblePairsUncached(auditDb) {
   const doc = await auditDb.collection(CONFIG).findOne({ _id: DOC_ID });
-  return doc ? onePairPerSchool(doc.visible_pairs) : [];
+  return doc ? normalizePairs(doc.visible_pairs) : [];
 }
 
 async function setVisiblePairs(auditDb, pairs, uid) {
-  const clean = onePairPerSchool(pairs);
+  const clean = normalizePairs(pairs);
   await auditDb.collection(CONFIG).updateOne(
     { _id: DOC_ID },
     {
@@ -120,5 +124,5 @@ function scopeTag(pairs) {
 
 module.exports = {
   getVisiblePairs, readVisiblePairsUncached, setVisiblePairs, invalidateVisibilityCache,
-  majorScope, pairAllowed, pairClause, scopeTag, onePairPerSchool,
+  majorScope, pairAllowed, pairClause, scopeTag, normalizePairs,
 };

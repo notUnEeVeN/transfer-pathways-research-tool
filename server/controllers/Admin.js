@@ -193,9 +193,8 @@ exports.putVisibleMajors = asyncHandler(async (req, res) => {
   ) {
     return res.status(400).json({ error: 'pairs must be an array of { school_id, major }' });
   }
-  const schoolIds = pairs.map((p) => Number(p.school_id));
-  if (new Set(schoolIds).size !== schoolIds.length) {
-    return res.status(400).json({ error: 'choose at most one major per UC campus' });
+  if (!pairs.length) {
+    return res.status(400).json({ error: 'choose at least one major' });
   }
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
@@ -207,13 +206,6 @@ exports.putVisibleMajors = asyncHandler(async (req, res) => {
   if (unknown.length) {
     return res.status(400).json({
       error: `not in the ported dataset: ${unknown.map((p) => `${p.school_id}:${p.major}`).join(' · ')}`,
-    });
-  }
-  const selectedSchoolIds = new Set(schoolIds);
-  const missing = schools.filter((school) => !selectedSchoolIds.has(Number(school.school_id)));
-  if (missing.length) {
-    return res.status(400).json({
-      error: `choose one major for every UC campus; missing: ${missing.map((school) => school.school).join(' · ')}`,
     });
   }
   const visible = await setVisiblePairs(auditDb, pairs, req.user?.uid);
