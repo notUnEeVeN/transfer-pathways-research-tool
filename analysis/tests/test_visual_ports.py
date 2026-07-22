@@ -8,6 +8,7 @@ import numpy as np
 matplotlib.use("Agg")
 
 from visuals import coverage_heatmap
+from visuals import paper_articulation_histogram
 from visuals import paper_credit_loss
 from visuals import paper_district_heatmap
 
@@ -15,6 +16,7 @@ from visuals import paper_district_heatmap
 VISUALS = {
     "paper_credit_loss.py",
     "paper_district_heatmap.py",
+    "paper_articulation_histogram.py",
     "coverage_heatmap.py",
     "credit_loss.py",
     "choice_cost.py",
@@ -52,6 +54,12 @@ def test_district_port_keeps_the_papers_nine_by_seventy_two_frame():
     paper = paper_district_heatmap._paper_matrix()
     assert paper.shape == (9, 72)
     assert set(np.unique(paper)) == {0, 1}
+
+
+def test_articulation_histogram_reconstructs_the_paper_distribution():
+    frequency = paper_articulation_histogram.paper_distribution()
+    assert frequency == [3, 2, 1, 7, 7, 10, 8, 4, 12, 18]
+    assert sum(frequency) == 72
 
 
 def test_credit_loss_port_builds_all_five_bars_for_each_campus():

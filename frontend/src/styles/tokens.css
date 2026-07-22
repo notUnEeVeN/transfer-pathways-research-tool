@@ -72,6 +72,17 @@
   --color-conservative-hover: #B49FE8;
   --color-conservative-soft: #F0EAFC;
 
+  /* Provenance — the three figure-source lanes in the Visual library:
+     CA ports of the older research, CA-data versions of the MA paper, and
+     figures original to this paper. Three muted hues that hold their own on
+     the forest canvas; each carries a soft tint for chips and shelf headers. */
+  --color-prov-ca: #A9740B;            /* amber-ochre — older CA research ports */
+  --color-prov-ca-soft: #F4ECD7;
+  --color-prov-ma: #2F6E90;            /* steel-teal — CA versions of the MA paper */
+  --color-prov-ma-soft: #E2EDF3;
+  --color-prov-new: #17855A;           /* brand green — original to this paper */
+  --color-prov-new-soft: #DCF2E6;
+
   /* Scrim — overlay backdrop tint (modals, sheets, popovers) */
   --color-scrim: rgba(25, 48, 24, .45);
 
@@ -142,6 +153,14 @@ html[data-theme='dark'] {
   --color-conservative-fill: #C7B5F1;
   --color-conservative-hover: #D5C8F6;
   --color-conservative-soft: rgba(199, 181, 241, .15);
+
+  /* Provenance — brighter on the dark canvas; softs drop to translucent tints. */
+  --color-prov-ca: #E2AC53;
+  --color-prov-ca-soft: rgba(226, 172, 83, .15);
+  --color-prov-ma: #6FB7D6;
+  --color-prov-ma-soft: rgba(111, 183, 214, .15);
+  --color-prov-new: #4FC98F;
+  --color-prov-new-soft: rgba(79, 201, 143, .16);
 
   /* Scrim — darker for AA on the dark canvas */
   --color-scrim: rgba(0, 0, 0, .6);

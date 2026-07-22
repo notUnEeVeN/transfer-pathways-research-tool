@@ -3,7 +3,9 @@ import { startInMemoryMongo } from '../test/mongoHarness';
 import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
-const { projectEdges, projectPrereqEdges, prerequisiteGraphData } = cjs('./prereqGraph');
+const {
+  projectEdges, projectGroups, projectPrereqEdges, projectPrereqGroups, prerequisiteGraphData,
+} = cjs('./prereqGraph');
 
 let mongo;
 let db;
@@ -125,6 +127,88 @@ describe('projectEdges', () => {
   });
 });
 
+describe('projectGroups', () => {
+  it('preserves interchangeable local courses as one any-of prerequisite', () => {
+    const groups = projectGroups(CONCEPTS, [
+      course(1, 10, 'calc_1'), course(7, 10, 'calc_1'), course(2, 10, 'calc_2'),
+    ]);
+    expect(groups.get('cc:2')).toEqual([
+      { concept: 'calc_1', anyOf: ['cc:1', 'cc:7'] },
+    ]);
+  });
+
+  it('keeps distinct prerequisite concepts as separate all-of groups', () => {
+    const concepts = [
+      { slug: 'physics', requires: [] },
+      { slug: 'diff_eq', requires: [] },
+      { slug: 'combined', requires: [], satisfies: ['diff_eq'] },
+      { slug: 'circuits', requires: ['physics', 'diff_eq'] },
+    ];
+    const groups = projectGroups(concepts, [
+      course(1, 10, 'physics'), course(2, 10, 'diff_eq'),
+      course(3, 10, 'combined'), course(4, 10, 'circuits'),
+    ]);
+    expect(groups.get('cc:4')).toEqual([
+      { concept: 'physics', anyOf: ['cc:1'] },
+      { concept: 'diff_eq', anyOf: ['cc:2', 'cc:3'] },
+    ]);
+  });
+
+  it('preserves every directly offered concept-level alternative', () => {
+    const concepts = [
+      { slug: 'calc', requires: [] },
+      { slug: 'business_calc', requires: [] },
+      { slug: 'discrete', requires: [['calc', 'business_calc']] },
+    ];
+    const groups = projectGroups(concepts, [
+      course(1, 10, 'calc'), course(2, 10, 'business_calc'), course(3, 10, 'discrete'),
+    ]);
+    expect(groups.get('cc:3')).toEqual([
+      { concept: 'calc or business_calc', anyOf: ['cc:1', 'cc:2'] },
+    ]);
+  });
+
+  it('prefers a directly offered OR alternative over another option\'s fallback', () => {
+    const concepts = [
+      { slug: 'calc', requires: [] },
+      { slug: 'combined', requires: ['calc'] },
+      { slug: 'diff_eq', requires: ['calc'] },
+      { slug: 'circuits', requires: [['combined', 'diff_eq']] },
+    ];
+    const groups = projectGroups(concepts, [
+      course(1, 10, 'calc'), course(2, 10, 'diff_eq'), course(3, 10, 'circuits'),
+    ]);
+    expect(groups.get('cc:3')).toEqual([
+      { concept: 'combined or diff_eq', anyOf: ['cc:2'] },
+    ]);
+  });
+
+  it('keeps an unavailable leaf prerequisite visible as an empty group', () => {
+    const concepts = [
+      { slug: 'physics', requires: [] },
+      { slug: 'circuits', requires: ['physics'] },
+    ];
+    const groups = projectGroups(concepts, [course(1, 10, 'circuits')]);
+    expect(groups.get('cc:1')).toEqual([{ concept: 'physics', anyOf: [] }]);
+  });
+
+  it('preserves transitive fallback as multiple prerequisite groups', () => {
+    const concepts = [
+      { slug: 'calc', requires: [] },
+      { slug: 'linear', requires: ['calc'] },
+      { slug: 'physics', requires: [] },
+      { slug: 'circuits', requires: ['linear', 'physics'] },
+    ];
+    const groups = projectGroups(concepts, [
+      course(1, 10, 'calc'), course(2, 10, 'physics'), course(3, 10, 'circuits'),
+    ]);
+    expect(groups.get('cc:3')).toEqual([
+      { concept: 'calc', anyOf: ['cc:1'] },
+      { concept: 'physics', anyOf: ['cc:2'] },
+    ]);
+  });
+});
+
 describe('prerequisiteGraphData', () => {
   beforeEach(async () => {
     await db.collection('curated_requirements').insertMany(CONCEPTS.map((c) => ({
@@ -202,5 +286,18 @@ describe('projectPrereqEdges', () => {
     await db.collection('assist_courses').insertMany([course(1, 10, 'calc_1'), course(2, 10, 'calc_2')]);
     const edges = await projectPrereqEdges(db);
     expect(edges.get('cc:2')).toEqual(['cc:1']);
+  });
+
+  it('loads the structured prerequisite groups from the db', async () => {
+    await db.collection('curated_requirements').insertMany(CONCEPTS.map((c) => ({
+      _id: `prereq_concept:${c.slug}`, kind: 'prereq_concept', legacy_id: c.slug, ...c,
+    })));
+    await db.collection('assist_courses').insertMany([
+      course(1, 10, 'calc_1'), course(7, 10, 'calc_1'), course(2, 10, 'calc_2'),
+    ]);
+    const groups = await projectPrereqGroups(db);
+    expect(groups.get('cc:2')).toEqual([
+      { concept: 'calc_1', anyOf: ['cc:1', 'cc:7'] },
+    ]);
   });
 });

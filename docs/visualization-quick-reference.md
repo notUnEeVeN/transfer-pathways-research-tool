@@ -3,7 +3,7 @@
 Use this when you need the answer without rereading the full methodology notes.
 The detailed receipts live in the figure docs linked at the bottom.
 
-## The three things to remember
+## The five things to remember
 
 1. **The paper figure ports replicate the paper's methods.** The remaining
    differences are data differences from a newer ASSIST snapshot, not a
@@ -15,12 +15,20 @@ The detailed receipts live in the figure docs linked at the bottom.
    the paper's own inputs, our rebuild matches 100% of course-count averages;
    on current data, six of nine first-choice campus bars are identical and no
    first-choice campus moves by more than 0.08 of a course.
+4. **The California map is visually unchanged.** Three districts gained one
+   fully articulated campus, but all three stayed inside their original
+   0–3, 4–6, or 7–9 display class, so all 72 map symbols match Figure 4.
+5. **The Figure 3 distribution moves only where those gains land.** The current
+   0–9 bar heights are 3, 2, 1, 7, 6, 11, 8, 4, 10, and 20; every shift is
+   explained by the same three gained heatmap cells.
 
 ## One-screen summary
 
 | Visualization | What it answers | Main result | Important caveat |
 | --- | --- | --- | --- |
 | District transfer heatmap | Can a district complete each UC campus's hard CS transfer requirements? | 99.5% agreement with the paper: 645/648 cells match; 3 gains; 0 losses | Uses the heatmap completeness rule, which counts series articulations |
+| District coverage distribution | How many UC campus options does a district have? | Current bins from 0–9 campuses: 3, 2, 1, 7, 6, 11, 8, 4, 10, 20 | A district contributes to one bin; the bars do not identify which campuses are covered |
+| California articulation map | How is complete-campus access distributed geographically? | 72/72 marker classes match Figure 4; 69/72 exact district counts match | Broad three-campus buckets hide the three exact-count gains |
 | Credit loss, paper replication | How many CCC courses are needed for UC requirements as a campus becomes 1st-4th choice? | Same algorithm as the paper; current-data deltas are tiny and named at course level | The paper's credit-loss pipeline drops some cross-group series receivers that the heatmap counts |
 | Credit loss, ASSIST-stated minimums | What if demand comes from ASSIST required groups instead of website-minimum curation? | Seven campuses have fully transferable districts; UCSD and UCLA have none | This is our diagnostic extension, not a claim about the paper's demand model or admissions minimums |
 
@@ -97,5 +105,7 @@ path under ASSIST-stated demand**, not missing data.
 | Need | Go to |
 | --- | --- |
 | Full heatmap receipts | [`figures/paper-district-heatmap.md`](figures/paper-district-heatmap.md) |
+| Figure 3 distribution replication | [`figures/paper-articulation-histogram.md`](figures/paper-articulation-histogram.md) |
+| California map replication and comparison | [`figures/paper-articulation-map.md`](figures/paper-articulation-map.md) |
 | Full credit-loss methodology, deltas, ASSIST variant, and validation | [`figures/paper-credit-loss.md`](figures/paper-credit-loss.md) |
 | How to rerun the Python checks | [`../analysis/README.md`](../analysis/README.md) |

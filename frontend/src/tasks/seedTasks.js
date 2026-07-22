@@ -1,8 +1,9 @@
 /**
- * One-time seed backlog for the research portfolio: the three remaining CA
- * paper figures ported to our data (Figs 1–2 are already the credit-loss and
- * district-heatmap analyses) and the MA paper's seven figures recomputed on
- * the ASSIST dataset. Plain tasks — title + description, seeded into To do.
+ * One-time seed backlog for the research portfolio: the remaining CA
+ * paper figures ported to our data (Figs 1–4 are already the credit-loss,
+ * district-heatmap, articulation-histogram, and articulation-map analyses)
+ * and the MA paper's seven figures recomputed on the ASSIST dataset. Plain
+ * tasks — title + description, seeded into To do.
  */
 
 const seed = (source, fig, title, description) => ({
@@ -14,10 +15,6 @@ const seed = (source, fig, title, description) => ({
 
 export const SEED_TASKS = [
   // ── CA paper (Jiang et al.) — the figures not yet ported ──
-  seed('CA', 3, 'How many UCs each district fully articulates to',
-    'Histogram of CCC districts by the number of UC campuses whose CS/Math requirements are fully articulated, recomputed on our dataset.'),
-  seed('CA', 4, 'Articulation coverage across California',
-    'Every CCC district on the state map, colored by how many UCs it has full articulation coverage with.'),
   seed('CA', 5, 'Which requirements block transfer at each campus',
     'Per required course (Calculus, Intro Programming, Data Structures, …), the share of districts missing an articulation at each UC.'),
 

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Select, Spinner, Stack, StatStrip } from '../components/ui'
+import { Alert, Button, EmptyState, Select, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 
 const MAJOR_FILTER = 'computer science'
@@ -366,7 +366,6 @@ export default function CoverageHeatmap({ presentation = false }) {
   )
   const rows = coverage.data?.rows || []
   const model = useMemo(() => buildHeatmap(rows, reqMode), [rows, reqMode])
-  const fullPct = model.valueCount ? (model.fullCount / model.valueCount) * 100 : null
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
 
   if (coverage.isLoading) {
@@ -451,18 +450,6 @@ export default function CoverageHeatmap({ presentation = false }) {
           <span className='font-mono tabular-nums'>{datasetVersion}</span>
           <span>{coverage.isFetching ? 'Updating' : 'Live endpoint'}</span>
         </div>
-      </div>
-
-      {/* Summary stats are on-screen context, not part of the exported figure. */}
-      <div data-export-exclude>
-        <StatStrip
-          tiles={[
-            { label: 'Coverage cells', value: intFmt.format(coverage.data?.n ?? rows.length), sub: 'from /analysis/coverage' },
-            { label: 'Programs', value: intFmt.format(model.columns.length), sub: `${intFmt.format(model.rows.length)} ${rowMode.noun}` },
-            { label: reqMode === 'degree' ? 'Mean unit coverage' : 'Mean articulated', value: pct(model.overallMean), accent: true },
-            { label: reqMode === 'degree' ? '100% of modeled units' : 'Fully articulated', value: pct(fullPct), sub: `${intFmt.format(model.fullCount)} cells` },
-          ]}
-        />
       </div>
 
       <div data-export-root className='flex flex-col gap-6'>

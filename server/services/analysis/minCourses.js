@@ -9,13 +9,17 @@
  * Non-articulated receivers contribute zero course_ids.
  */
 
-// Vendored copy of PMT frontend/src/lib/missingCourses.js — the golden oracle
-// for analysis/pmt_min_courses.py. Adapted only at the module boundary:
-// ESM imports → CommonJS require of the vendored eligibility engine, and a
-// local toSyntheticUserCourse (PMT's courseModel shape, trimmed to the fields
-// the eligibility predicates read). Behavior is otherwise byte-faithful, and
-// the predicates run non-strict (product default-accept) exactly as the app.
-const { isReceiverCompleted, isSectionCompleted, isGroupCompleted } = require('./eligibility')
+// Based on PMT frontend/src/lib/missingCourses.js. The greedy seed and
+// eligibility semantics remain aligned with the product; the exported exact
+// search below corrects PMT's receiver-level branching for choose-N groups and
+// reports proof telemetry needed by the research analysis.
+const {
+  isCourseCompleted,
+  isReceiverCompleted,
+  isSectionCompleted,
+  isGroupCompleted,
+  isMajorCompleted,
+} = require('./eligibility')
 
 // Mirror of courseModel.toSyntheticUserCourse (grade 'PL' earns credit; same_as
 // peers preserved so cross-listed receivers read as satisfied).
@@ -47,9 +51,18 @@ const articulatedReceivers = (section) =>
  * "done" off that course) while the group is still short.
  */
 function sectionClosesItsReceivers(section, group, virtual, crossCc) {
-  const groupHasAsk = group.group_advisement != null || group.group_unit_advisement != null
-  const sectionHasOwnAsk = section.section_advisement != null || section.unit_advisement != null
-  if (groupHasAsk && !sectionHasOwnAsk) return false
+  // A parent unit ask sums every completed receiver directly; section caps do
+  // not cap that rollup in the eligibility engine. Even a section that is
+  // locally "complete" can therefore still contribute another receiver.
+  if (group.group_unit_advisement != null) return false
+  // Distinct-section buckets count raw completed receivers against the
+  // parent's per-section minimum, independently of section_advisement.
+  if (group.group_min_distinct_sections != null) return false
+  const groupHasAsk = group.group_advisement != null
+  // A parent course-count ask caps a section only through
+  // section_advisement. A section unit ask can be complete while another raw
+  // receiver in it still raises the parent's course contribution.
+  if (groupHasAsk && section.section_advisement == null) return false
   return isSectionCompleted(section, virtual, crossCc)
 }
 
@@ -152,6 +165,54 @@ function syntheticCourseFor(id, coursesById) {
   return c ? toSyntheticUserCourse(c) : null
 }
 
+function normalizeNewIds(ids, virtual, coursesById) {
+  const trial = [...virtual]
+  const out = []
+  // Keep the exact agreement-listed identity. Eligibility's unit-advisement
+  // fallback looks up that exact option ID in the transcript, so replacing it
+  // with a same_as alias can satisfy the receiver while incorrectly
+  // contributing zero units. Equivalence is still honored against `trial`,
+  // which prevents selecting two aliases for one physical completion.
+  const candidates = [...new Set((ids || []).map(String))].sort((a, b) => {
+    const unitDifference = unitsOf(a, coursesById) - unitsOf(b, coursesById)
+    return unitDifference || a.localeCompare(b)
+  })
+  for (const id of candidates) {
+    if (isCourseCompleted(id, trial)) continue
+    const synthetic = syntheticCourseFor(id, coursesById)
+    if (!synthetic) continue
+    out.push(id)
+    trial.push(synthetic)
+  }
+  return out.sort()
+}
+
+const satisfyingIdsCache = new WeakMap()
+
+function catalogIdsSatisfying(rawId, coursesById) {
+  const id = String(rawId)
+  let byId = satisfyingIdsCache.get(coursesById)
+  if (!byId) {
+    byId = new Map()
+    satisfyingIdsCache.set(coursesById, byId)
+  }
+  if (byId.has(id)) return byId.get(id)
+  const out = []
+  for (const course of coursesById.values()) {
+    const candidate = String(course.course_id)
+    if (candidate === id
+        || (course.same_as || []).some((peer) => String(peer.course_id) === id)) {
+      out.push(candidate)
+    }
+  }
+  const result = [...new Set(out)].sort((a, b) => {
+    const unitDifference = unitsOf(a, coursesById) - unitsOf(b, coursesById)
+    return unitDifference || a.localeCompare(b)
+  })
+  byId.set(id, result)
+  return result
+}
+
 /**
  * Cross-major picker. Greedy: pin mandatory first, then iterate picking the
  * candidate option that closes the most still-open receivers across every
@@ -178,17 +239,24 @@ function selectMissingAcrossMajors(majors, ctx) {
     for (const id of ids) {
       const s = String(id)
       if (seen.has(s)) continue
-      if (virtual.some((u) => String(u.course_id) === s)) continue
+      if (isCourseCompleted(s, virtual)) continue
       const syn = syntheticCourseFor(s, ctx.coursesById)
       if (!syn) {
+        if (ctx?.telemetry) {
+          const missing = new Set(ctx.telemetry.missingCatalogIds || [])
+          missing.add(s)
+          ctx.telemetry.missingCatalogIds = [...missing].sort()
+        }
         // Catalog cache is missing this id — usually a stale catalog or a
         // race during refetch. Skipping silently would drop a required
         // course with no surface signal; surface it so the gap is visible.
-        console.warn(
-          'selectMissingAcrossMajors: course_id', s,
-          'is not in the local catalog (coursesById); the required course will be skipped.',
-          'Likely a stale catalog cache — refetch and retry.'
-        )
+        if (!ctx?.suppressWarnings) {
+          console.warn(
+            'selectMissingAcrossMajors: course_id', s,
+            'is not in the local catalog (coursesById); the required course will be skipped.',
+            'Likely a stale catalog cache — refetch and retry.'
+          )
+        }
         continue
       }
       seen.add(s)
@@ -217,11 +285,9 @@ function selectMissingAcrossMajors(majors, ctx) {
         // equivalent one that doesn't.
         const trial = [...virtual]
         const newIds = []
-        for (const id of c.ids) {
-          if (trial.some((u) => String(u.course_id) === String(id))) continue
-          newIds.push(String(id))
-          const syn = syntheticCourseFor(id, ctx.coursesById)
-          if (syn) trial.push(syn)
+        for (const id of normalizeNewIds(c.ids, trial, ctx.coursesById)) {
+          newIds.push(id)
+          trial.push(syntheticCourseFor(id, ctx.coursesById))
         }
         return {
           ...c,
@@ -247,14 +313,17 @@ function selectMissingAcrossMajors(majors, ctx) {
   }
 
   if (i === safetyCap) {
+    if (ctx?.telemetry) ctx.telemetry.greedySafetyCapHit = true
     // Loop exhausted without natural convergence — usually means a receiver
     // has no satisfiable option in the local catalog. Surface so a future
     // bug is visible instead of silently producing a partial pick.
-    console.warn(
-      'selectMissingAcrossMajors hit safety cap of', safetyCap,
-      '— some required block may not be satisfiable in the user catalog.',
-      'Majors:', (majors || []).map((m) => m?.major).filter(Boolean)
-    )
+    if (!ctx?.suppressWarnings) {
+      console.warn(
+        'selectMissingAcrossMajors hit safety cap of', safetyCap,
+        '— some required block may not be satisfiable in the user catalog.',
+        'Majors:', (majors || []).map((m) => m?.major).filter(Boolean)
+      )
+    }
   }
 
   return out
@@ -313,7 +382,7 @@ function enumerateCandidateOptions(majors, virtual, ctx) {
       const pick = pickCheapestId(ids, ctx.coursesById)
       return pick ? [pick] : []
     }
-    return ids
+    return normalizeNewIds(ids, virtual, ctx.coursesById)
   }
 
   const emit = (ids) => {
@@ -396,28 +465,42 @@ function cartesian(arrays) {
  * like the old greedy shortcut. The warn surfaces when this happens so we
  * can revisit if real users have a receiver that hits it.
  */
-function movesForReceiver(receiver, coursesById) {
+function movesForReceiver(receiver, coursesById, onCartesianFallback = null, suppressWarnings = false) {
   const options = receiver.options || []
   if (options.length === 0) return []
   const optsConj = (receiver.options_conjunction || 'and').toLowerCase()
 
   // For a single option, list every minimal id-set that satisfies it.
-  //   course_conjunction='and' → one set: every id (take all).
-  //   course_conjunction='or'  → one set per id (take any one).
+  // Every listed id also expands to catalog same_as peers whose synthetic
+  // transcript record explicitly satisfies that id. Keeping all branches (not
+  // replacing the listed id) preserves sending-unit fallback semantics.
   const expandOpt = (opt) => {
-    const ids = (opt.course_ids || []).map(String).filter((id) => coursesById.has(id))
+    const ids = [...new Set((opt.course_ids || []).map(String))]
     if (ids.length === 0) return []
+    const alternatives = ids.map((id) => catalogIdsSatisfying(id, coursesById))
+    if (alternatives.some((choices) => choices.length === 0)) return []
     if ((opt.course_conjunction || 'and').toLowerCase() === 'or') {
-      // Sort lex so deterministic across renders / hashing.
-      return [...ids].sort().map((id) => [id])
+      return [...new Set(alternatives.flat())].sort().map((id) => [id])
     }
-    return [ids]
+    const aliasCombinations = alternatives.reduce((count, choices) => count * choices.length, 1)
+    if (aliasCombinations > 4096) {
+      onCartesianFallback?.(receiver)
+      return [normalizeNewIds(alternatives.map((choices) => choices[0]), [], coursesById)]
+    }
+    const unique = new Map()
+    for (const combination of cartesian(alternatives)) {
+      const move = normalizeNewIds(combination, [], coursesById)
+      if (move.length) unique.set(move.join(','), move)
+    }
+    return [...unique.values()]
   }
 
   if (optsConj === 'or') {
     // Each option independently satisfies — flatten per-option expansions
     // into one moves list.
-    return options.flatMap(expandOpt)
+    const unique = new Map()
+    for (const move of options.flatMap(expandOpt)) unique.set(move.join(','), move)
+    return [...unique.values()]
   }
 
   // AND: every option must be satisfied; a move is the union of one chosen
@@ -426,24 +509,29 @@ function movesForReceiver(receiver, coursesById) {
   if (perOpt.some((w) => w.length === 0)) return []  // an option has no satisfying ids in catalog
   const cartCount = perOpt.reduce((n, w) => n * w.length, 1)
   if (cartCount > 4096) {
+    onCartesianFallback?.(receiver)
     // Pathological branching — fall back to a single greedy combination
     // (cheapest id per OR option) to keep the search tractable.
-    console.warn(
-      'movesForReceiver: cartesian product would emit', cartCount,
-      'moves for one receiver; falling back to greedy pick for this receiver.',
-      'Inspect the receiver if this fires often:', receiver?.hash_id || '(no hash_id)'
-    )
-    const greedyCombo = options.flatMap((opt) => {
-      const ids = (opt.course_ids || []).map(String).filter((id) => coursesById.has(id))
-      if (ids.length === 0) return []
-      if ((opt.course_conjunction || 'and').toLowerCase() === 'or') {
-        return [pickCheapestId(ids, coursesById)].filter(Boolean)
-      }
-      return ids
-    })
-    return greedyCombo.length > 0 ? [greedyCombo] : []
+    if (!suppressWarnings) {
+      console.warn(
+        'movesForReceiver: cartesian product would emit', cartCount,
+        'moves for one receiver; falling back to greedy pick for this receiver.',
+        'Inspect the receiver if this fires often:', receiver?.hash_id || '(no hash_id)'
+      )
+    }
+    const greedyCombo = perOpt.flatMap((moves) => [...moves].sort((left, right) =>
+      left.length - right.length
+      || totalUnits(left, coursesById) - totalUnits(right, coursesById)
+      || left.join(',').localeCompare(right.join(',')))[0] || [])
+    const normalized = normalizeNewIds(greedyCombo, [], coursesById)
+    return normalized.length > 0 ? [normalized] : []
   }
-  return cartesian(perOpt).map((combo) => combo.flat())
+  const unique = new Map()
+  for (const combo of cartesian(perOpt)) {
+    const move = normalizeNewIds(combo.flat(), [], coursesById)
+    if (move.length) unique.set(move.join(','), move)
+  }
+  return [...unique.values()]
 }
 
 /**
@@ -452,7 +540,15 @@ function movesForReceiver(receiver, coursesById) {
  * { receiver, moves } pairs. Used by the B&B search to pick which
  * receiver to branch on.
  */
-function findOpenReceiversWithMoves(majors, virtual, coursesById, includeRecommended, crossCc = []) {
+function findOpenReceiversWithMoves(
+  majors,
+  virtual,
+  coursesById,
+  includeRecommended,
+  crossCc = [],
+  onCartesianFallback = null,
+  suppressWarnings = false,
+) {
   const out = []
   for (const major of majors || []) {
     for (const group of major?.requirement_groups || []) {
@@ -463,7 +559,7 @@ function findOpenReceiversWithMoves(majors, virtual, coursesById, includeRecomme
         for (const r of section.receivers || []) {
           if (r.articulation_status === 'not_articulated') continue
           if (isReceiverCompleted(r, virtual, crossCc)) continue
-          const moves = movesForReceiver(r, coursesById)
+          const moves = movesForReceiver(r, coursesById, onCartesianFallback, suppressWarnings)
           if (moves.length === 0) continue
           out.push({ receiver: r, moves })
         }
@@ -474,18 +570,13 @@ function findOpenReceiversWithMoves(majors, virtual, coursesById, includeRecomme
 }
 
 /**
- * Branch-and-bound exhaustive picker — finds the globally minimum
- * (course-count → total-units → lexical) set of course_ids that closes
- * every required receiver across all majors. Truly exhaustive: branches
- * over every alternative inside course_conjunction='or' options too, so
- * the search considers e.g. MATH 117 vs COMP 117 separately rather than
- * collapsing to the cheaper one.
+ * PMT's original receiver-frontier branch-and-bound, retained as a readable
+ * product-parity reference but not exported. It branches over alternatives
+ * inside a receiver, but choosing one open receiver is not exhaustive when a
+ * choose-N section may legitimately skip that receiver. The corrected
+ * group-frontier search below is the research entry point.
  *
- * Why exhaustive: a single "extra" required course typically represents a
- * full semester of work for a student, so suboptimal picks have real human
- * cost. The product wants the actual minimum.
- *
- * Strategy:
+ * Original strategy:
  *   1. Run greedy first to get a tight upper bound (best-so-far).
  *   2. DFS, branching on the most-constrained open receiver (fewest moves,
  *      classic MRV heuristic).
@@ -497,28 +588,48 @@ function findOpenReceiversWithMoves(majors, virtual, coursesById, includeRecomme
  *      electives") tractable — 20 alternatives with no cross-major impact
  *      collapse to 1 branch instead of 20.
  *
- * Termination guarantees:
+ * Termination behavior:
  *   - Wall-clock budget (default 5000ms) — on timeout returns the best result
  *     found so far (always at least the greedy seed). Logs a warning so
  *     production cases hitting the cap become visible. The first run for a
  *     given target set may freeze the UI thread during the search; useMemo
  *     keeps subsequent renders instant.
  *
- * Falls through `selectMissingAcrossMajors`'s output if the search produces
- * nothing strictly better, so the optimal call is never worse than greedy.
+ * It falls through to the greedy output if it finds nothing better. Do not use
+ * its former `optimalityProven` field as a mathematical proof for choose-N
+ * inputs; only `selectMissingAcrossMajorsExact` below is exported.
  */
-function selectMissingAcrossMajorsOptimal(majors, ctx) {
+function selectMissingAcrossMajorsPmtOriginal(majors, ctx) {
+  const startedAt = Date.now()
   const includeRecommended = ctx?.includeRecommended ?? false
   const crossCc = ctx?.crossCc ?? []
   const coursesById = ctx.coursesById
   const timeBudgetMs = ctx?.timeBudgetMs ?? 5000
+  const telemetry = ctx?.telemetry || null
+  if (telemetry) {
+    Object.assign(telemetry, {
+      algorithm: 'pmt-bnb-v1',
+      timeBudgetMs,
+      timedOut: false,
+      greedySafetyCapHit: false,
+      cartesianFallbacks: 0,
+      missingCatalogIds: [],
+      optimalityProven: false,
+    })
+  }
 
   const greedyIds = selectMissingAcrossMajors(majors, ctx)
   let bestIds = greedyIds
   let bestUnits = totalUnits(greedyIds, coursesById)
+  if (telemetry) telemetry.greedyCourseCount = greedyIds.length
 
   const deadline = Date.now() + timeBudgetMs
   let timedOut = false
+  const cartesianFallbackKeys = new Set()
+  const noteCartesianFallback = (receiver) => {
+    const fallback = String(receiver?.hash_id || JSON.stringify(receiver?.options || []))
+    cartesianFallbackKeys.add(fallback)
+  }
 
   const applyMove = (virtual, move) => {
     const out = [...virtual]
@@ -581,10 +692,16 @@ function selectMissingAcrossMajorsOptimal(majors, ctx) {
         newLen++
         newUnitsSum += unitsOf(id, coursesById)
       }
-      const sortKey = `${newLen}|${newUnitsSum.toFixed(3)}|${[...move].sort().join(',')}`
+      const lexical = [...move].sort().join(',')
       const existing = buckets.get(fpKey)
-      if (!existing || sortKey < existing.sortKey) {
-        buckets.set(fpKey, { move, sortKey })
+      const better = !existing
+        || newLen < existing.newLen
+        || (newLen === existing.newLen && newUnitsSum < existing.newUnitsSum)
+        || (newLen === existing.newLen
+          && newUnitsSum === existing.newUnitsSum
+          && lexical < existing.lexical)
+      if (better) {
+        buckets.set(fpKey, { move, newLen, newUnitsSum, lexical })
       }
     }
     return [...buckets.values()].map((b) => b.move)
@@ -595,18 +712,34 @@ function selectMissingAcrossMajorsOptimal(majors, ctx) {
 
     // Bound: any extension of `picks` will have ≥ picks.length courses.
     if (picks.length > bestIds.length) return
-    if (picks.length === bestIds.length && runningUnits >= bestUnits) return
+    if (picks.length === bestIds.length && runningUnits > bestUnits) return
 
-    const open = findOpenReceiversWithMoves(majors, virtual, coursesById, includeRecommended, crossCc)
+    const open = findOpenReceiversWithMoves(
+      majors,
+      virtual,
+      coursesById,
+      includeRecommended,
+      crossCc,
+      noteCartesianFallback,
+      ctx?.suppressWarnings ?? false,
+    )
     if (open.length === 0) {
       // Goal reached.
+      const pickKey = [...picks].sort().join(',')
+      const bestKey = [...bestIds].sort().join(',')
       if (picks.length < bestIds.length ||
-          (picks.length === bestIds.length && runningUnits < bestUnits)) {
+          (picks.length === bestIds.length && runningUnits < bestUnits) ||
+          (picks.length === bestIds.length && runningUnits === bestUnits && pickKey < bestKey)) {
         bestIds = [...picks]
         bestUnits = runningUnits
       }
       return
     }
+
+    // With the incumbent's course count already used, satisfying another open
+    // receiver would necessarily lose the primary objective. Equal-cost leaves
+    // above are still examined so the documented lexical tie-break is real.
+    if (picks.length === bestIds.length) return
 
     // Branch on the most-constrained receiver (fewest satisfying moves).
     // Most-constrained-first prunes the search space the fastest — same idea
@@ -672,14 +805,214 @@ function selectMissingAcrossMajorsOptimal(majors, ctx) {
 
   dfs([...(ctx.userCourses || [])], [], 0)
 
-  if (timedOut) {
+  if (timedOut && !ctx?.suppressWarnings) {
     console.warn(
       'selectMissingAcrossMajorsOptimal: hit',
       timeBudgetMs + 'ms time budget — returning best result found.',
       'Greedy seed had', greedyIds.length, 'courses; best after search:', bestIds.length
     )
   }
+  if (telemetry) {
+    Object.assign(telemetry, {
+      elapsedMs: Date.now() - startedAt,
+      timedOut,
+      cartesianFallbacks: cartesianFallbackKeys.size,
+      bestCourseCount: bestIds.length,
+      bestUnits,
+      optimalityProven: !timedOut
+        && cartesianFallbackKeys.size === 0
+        && !telemetry.greedySafetyCapHit
+        && !(telemetry.missingCatalogIds || []).length,
+    })
+  }
   return bestIds
 }
 
-module.exports = { selectMissingAcrossMajors, selectMissingAcrossMajorsOptimal, toSyntheticUserCourse }
+/*
+ * Corrected exact search used by the research planner.
+ *
+ * PMT's original DFS branches on one open receiver. That is valid when every
+ * receiver is mandatory, but not for a choose-N section: a completion may
+ * legitimately skip that receiver and fill the remaining slot elsewhere. The
+ * corrected frontier is an incomplete required GROUP. Every completion must
+ * finish at least one currently open receiver in that group, so branching over
+ * all of the group's receiver moves is exhaustive without forcing an optional
+ * receiver. Selected-course sets are memoized to remove ordering duplicates.
+ */
+function selectMissingAcrossMajorsExact(majors, ctx) {
+  const startedAt = Date.now()
+  const includeRecommended = ctx?.includeRecommended ?? false
+  const crossCc = ctx?.crossCc ?? []
+  const coursesById = ctx.coursesById
+  const timeBudgetMs = ctx?.timeBudgetMs ?? 5000
+  const maxStates = ctx?.maxStates ?? 250000
+  const telemetry = ctx?.telemetry || null
+  const unsupportedUnitFallbacks = (majors || []).reduce((count, major) =>
+    count + (major?.requirement_groups || []).reduce((groupCount, group) => {
+      if (!group.is_required && !includeRecommended) return groupCount
+      return groupCount + (group.sections || []).reduce((sectionCount, section) => {
+        const unitSensitive = group.group_unit_advisement != null
+          || section.unit_advisement != null
+        if (!unitSensitive) return sectionCount
+        return sectionCount + (section.receivers || [])
+          .filter((receiver) => receiver.articulation_status !== 'not_articulated'
+            && receiver.receiving?.units == null).length
+      }, 0)
+    }, 0), 0)
+  if (telemetry) {
+    Object.assign(telemetry, {
+      algorithm: 'pmt-bnb-v2-group-frontier',
+      timeBudgetMs,
+      timedOut: false,
+      greedySafetyCapHit: false,
+      cartesianFallbacks: 0,
+      missingCatalogIds: [],
+      unsupportedUnitFallbacks,
+      optimalityProven: false,
+      statesExplored: 0,
+    })
+  }
+
+  const numericBudget = Number(timeBudgetMs)
+  const deadline = startedAt + (Number.isFinite(numericBudget) ? numericBudget : 5000)
+  let timedOut = false
+  let statesExplored = 0
+  const cartesianFallbackKeys = new Set()
+  const noteCartesianFallback = (receiver) => {
+    cartesianFallbackKeys.add(String(
+      receiver?.hash_id || JSON.stringify(receiver?.options || []),
+    ))
+  }
+
+  const applyIds = (virtual, ids) => {
+    const out = [...virtual]
+    for (const id of normalizeNewIds(ids, out, coursesById)) {
+      const synthetic = syntheticCourseFor(id, coursesById)
+      if (synthetic) out.push(synthetic)
+    }
+    return out
+  }
+  const allCompleted = (virtual) => (majors || []).length === 0
+    || (majors || []).every((major) => isMajorCompleted(major, virtual, crossCc))
+
+  const startingVirtual = [...(ctx.userCourses || [])]
+  const greedyIds = normalizeNewIds(
+    selectMissingAcrossMajors(majors, ctx), startingVirtual, coursesById,
+  )
+  const greedyComplete = allCompleted(applyIds(startingVirtual, greedyIds))
+  let bestIds = greedyComplete ? greedyIds : null
+  let bestUnits = greedyComplete ? totalUnits(greedyIds, coursesById) : Infinity
+  if (telemetry) telemetry.greedyCourseCount = greedyIds.length
+
+  const openGroupFrontiers = (virtual) => {
+    const frontiers = []
+    for (let majorIndex = 0; majorIndex < (majors || []).length; majorIndex++) {
+      const major = majors[majorIndex]
+      const groups = major?.requirement_groups || []
+      for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+        const group = groups[groupIndex]
+        if (!group.is_required && !includeRecommended) continue
+        if (isGroupCompleted(group, virtual, crossCc)) continue
+        const moves = []
+        for (const section of group.sections || []) {
+          if (sectionClosesItsReceivers(section, group, virtual, crossCc)) continue
+          for (const receiver of section.receivers || []) {
+            if (receiver.articulation_status === 'not_articulated') continue
+            if (isReceiverCompleted(receiver, virtual, crossCc)) continue
+            moves.push(...movesForReceiver(
+              receiver,
+              coursesById,
+              noteCartesianFallback,
+              ctx?.suppressWarnings ?? false,
+            ))
+          }
+        }
+        const deduped = new Map()
+        for (const move of moves) {
+          const ids = normalizeNewIds(move, virtual, coursesById)
+          if (ids.length) deduped.set(ids.join(','), ids)
+        }
+        frontiers.push({
+          key: `${majorIndex}|${groupIndex}`,
+          moves: [...deduped.values()],
+        })
+      }
+    }
+    return frontiers
+  }
+
+  const seenStates = new Set()
+  const dfs = (virtual, picks, runningUnits) => {
+    statesExplored += 1
+    if (statesExplored > maxStates || Date.now() > deadline) {
+      timedOut = true
+      return
+    }
+    const stateKey = [...picks].sort().join(',')
+    if (seenStates.has(stateKey)) return
+    seenStates.add(stateKey)
+
+    if (allCompleted(virtual)) {
+      const bestKey = bestIds ? [...bestIds].sort().join(',') : ''
+      if (!bestIds
+          || picks.length < bestIds.length
+          || (picks.length === bestIds.length && runningUnits < bestUnits)
+          || (picks.length === bestIds.length
+            && runningUnits === bestUnits && stateKey < bestKey)) {
+        bestIds = [...picks].sort()
+        bestUnits = runningUnits
+      }
+      return
+    }
+    if (bestIds && picks.length >= bestIds.length) return
+
+    const frontiers = openGroupFrontiers(virtual)
+    if (!frontiers.length || frontiers.some((frontier) => !frontier.moves.length)) return
+    frontiers.sort((left, right) => left.moves.length - right.moves.length
+      || left.key.localeCompare(right.key))
+    const moves = frontiers[0].moves
+      .map((ids) => ({ ids, units: totalUnits(ids, coursesById) }))
+      .sort((left, right) => left.ids.length - right.ids.length
+        || left.units - right.units
+        || left.ids.join(',').localeCompare(right.ids.join(',')))
+
+    for (const move of moves) {
+      const nextPicks = [...picks, ...move.ids].sort()
+      dfs(applyIds(virtual, move.ids), nextPicks, runningUnits + move.units)
+      if (timedOut) return
+    }
+  }
+
+  dfs(startingVirtual, [], 0)
+  const returnedIds = bestIds || greedyIds
+  if (timedOut && !ctx?.suppressWarnings) {
+    console.warn(
+      'selectMissingAcrossMajorsExact: hit',
+      timeBudgetMs + 'ms time budget — returning best feasible result found.',
+      'Greedy seed had', greedyIds.length, 'courses; best after search:', returnedIds.length,
+    )
+  }
+  if (telemetry) {
+    Object.assign(telemetry, {
+      elapsedMs: Date.now() - startedAt,
+      timedOut,
+      statesExplored,
+      cartesianFallbacks: cartesianFallbackKeys.size,
+      bestCourseCount: returnedIds.length,
+      bestUnits: totalUnits(returnedIds, coursesById),
+      optimalityProven: !timedOut
+        && bestIds != null
+        && cartesianFallbackKeys.size === 0
+        && unsupportedUnitFallbacks === 0
+        && !telemetry.greedySafetyCapHit
+        && !(telemetry.missingCatalogIds || []).length,
+    })
+  }
+  return returnedIds
+}
+
+module.exports = {
+  selectMissingAcrossMajors,
+  selectMissingAcrossMajorsOptimal: selectMissingAcrossMajorsExact,
+  toSyntheticUserCourse,
+}

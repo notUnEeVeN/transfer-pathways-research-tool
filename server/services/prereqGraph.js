@@ -100,6 +100,140 @@ function projectEdges(conceptRows, courseRows) {
   return edges;
 }
 
+// Structured sibling of projectEdges for schedulers. Each course maps to an
+// ALL-of list whose entries are ANY-of local course ids. projectEdges flattens
+// these alternatives for graph display; doing that in a scheduler would make
+// interchangeable honors/language variants look simultaneously required.
+//
+// Example: circuits requiring physics AND (differential equations OR a
+// combined linear-algebra/differential-equations course) becomes:
+//   [{ concept: 'physics', anyOf: ['cc:1'] },
+//    { concept: 'diff_eq', anyOf: ['cc:2', 'cc:3'] }]
+function projectGroups(conceptRows, courseRows) {
+  const requires = new Map(conceptRows.map((c) => [String(c.slug), c.requires || []]));
+  const satisfies = new Map(conceptRows.map((c) => [
+    String(c.slug), (c.satisfies || []).map(String),
+  ]));
+  const byCollege = new Map();
+  for (const row of courseRows) {
+    if (row.concept_source === undefined) continue;
+    const college = collegeKeyOf(row);
+    if (!byCollege.has(college)) byCollege.set(college, []);
+    byCollege.get(college).push(row);
+  }
+
+  const groupsByCourse = new Map();
+  for (const rows of byCollege.values()) {
+    const localBySlug = new Map();
+    const langOf = new Map();
+    for (const row of rows) {
+      if (!row.concept) continue;
+      const key = courseKeyOf(row);
+      if (row.language) langOf.set(key, String(row.language));
+      for (const slug of [row.concept, ...(satisfies.get(row.concept) || [])]) {
+        if (!localBySlug.has(slug)) localBySlug.set(slug, []);
+        localBySlug.get(slug).push(key);
+      }
+    }
+
+    const pickLocal = (slug, lang) => {
+      const all = localBySlug.get(slug) || [];
+      if (!lang) return all;
+      const matching = all.filter((key) => !langOf.get(key) || langOf.get(key) === lang);
+      return matching.length ? matching : all;
+    };
+
+    const uniqueGroup = (concept, ids) => ({
+      concept,
+      anyOf: [...new Set(ids)].sort(),
+    });
+
+    // Distribute OR across prerequisite formulas already expressed as CNF.
+    // For example, (A AND B) OR C becomes (A OR C) AND (B OR C).
+    const orFormulas = (formulas, concept) => {
+      let clauses = formulas[0] || [];
+      for (const formula of formulas.slice(1)) {
+        clauses = clauses.flatMap((left) => formula.map((right) =>
+          uniqueGroup(concept, [...left.anyOf, ...right.anyOf])));
+      }
+      const seenClauses = new Set();
+      return clauses.filter((clause) => {
+        const key = clause.anyOf.join(',');
+        if (seenClauses.has(key)) return false;
+        seenClauses.add(key);
+        return true;
+      });
+    };
+
+    function resolveRequirement(slug, seen, lang) {
+      if (seen.has(slug)) return [];
+      const local = pickLocal(slug, lang);
+      if (local.length) {
+        return [uniqueGroup(slug, local)];
+      }
+      const entries = requires.get(slug) || [];
+      // A leaf concept not offered locally cannot be silently erased. Null is
+      // propagated to the course-level projection as an unresolved group.
+      if (!entries.length) return null;
+      return resolveList(entries, new Set([...seen, slug]), lang);
+    }
+
+    function resolveEntry(entry, seen, lang) {
+      if (!Array.isArray(entry)) return resolveRequirement(String(entry), seen, lang);
+
+      const alternatives = entry.map(String);
+      // If any named alternative is offered directly, preserve every direct
+      // option. Only fall through concept prerequisites when none is offered;
+      // otherwise a transitive fallback could incorrectly beat a later direct
+      // catalog option.
+      const direct = alternatives.flatMap((slug) => pickLocal(slug, lang));
+      if (direct.length) return [uniqueGroup(alternatives.join(' or '), direct)];
+
+      const fallbackFormulas = alternatives
+        .map((slug) => resolveRequirement(slug, seen, lang))
+        .filter((formula) => Array.isArray(formula));
+      if (!fallbackFormulas.length) return null;
+      if (fallbackFormulas.some((formula) => formula.length === 0)) return [];
+      return orFormulas(fallbackFormulas, alternatives.join(' or '));
+    }
+
+    function resolveList(entries, seen, lang) {
+      const out = [];
+      for (const entry of entries || []) {
+        const formula = resolveEntry(entry, seen, lang);
+        if (formula == null) return null;
+        out.push(...formula);
+      }
+      return out;
+    }
+
+    for (const row of rows) {
+      const key = courseKeyOf(row);
+      if (!row.concept) {
+        groupsByCourse.set(key, []);
+        continue;
+      }
+      const groups = [];
+      for (const entry of requires.get(row.concept) || []) {
+        const formula = resolveEntry(entry, new Set([row.concept]), row.language || null);
+        if (formula == null) {
+          const concepts = (Array.isArray(entry) ? entry : [entry]).map(String);
+          groups.push({ concept: concepts.join(' or '), anyOf: [] });
+        } else {
+          groups.push(...formula);
+        }
+      }
+      const cleaned = groups
+        .map((group) => ({
+          ...group,
+          anyOf: group.anyOf.filter((candidate) => candidate !== key),
+        }));
+      groupsByCourse.set(key, cleaned);
+    }
+  }
+  return groupsByCourse;
+}
+
 async function loadExaminedCourses(db, collegeKey = null) {
   const filter = { side: 'sending', concept_source: { $exists: true } };
   if (collegeKey) filter.institution_id = collegeKey;
@@ -114,6 +248,11 @@ async function loadExaminedCourses(db, collegeKey = null) {
 async function projectPrereqEdges(db) {
   const [concepts, courses] = await Promise.all([loadConceptRows(db), loadExaminedCourses(db)]);
   return projectEdges(concepts, courses);
+}
+
+async function projectPrereqGroups(db) {
+  const [concepts, courses] = await Promise.all([loadConceptRows(db), loadExaminedCourses(db)]);
+  return projectGroups(concepts, courses);
 }
 
 // Distinct numeric CC course ids in agreement options, optionally one college.
@@ -192,7 +331,7 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   // correct: it scores the min-set pathway, which picks a single course.)
   const conceptOfKey = new Map(rows.map((r) => [courseKeyOf(r), r.concept ?? null]));
   const groupSize = new Map();
-  const groupKey = (e) => `${e.to} ${conceptOfKey.get(e.from) ?? ''}`;
+  const groupKey = (e) => `${e.to}\u0000${conceptOfKey.get(e.from) ?? ''}`;
   for (const e of edges) groupSize.set(groupKey(e), (groupSize.get(groupKey(e)) || 0) + 1);
   for (const e of edges) {
     if (groupSize.get(groupKey(e)) > 1) { e.option = true; e.group = groupKey(e); }
@@ -245,4 +384,10 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   return { concepts, rules, stats, courses, edges, legacy };
 }
 
-module.exports = { projectEdges, projectPrereqEdges, prerequisiteGraphData };
+module.exports = {
+  projectEdges,
+  projectGroups,
+  projectPrereqEdges,
+  projectPrereqGroups,
+  prerequisiteGraphData,
+};

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Spinner, Stack, StatStrip } from '../components/ui'
+import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import { createCoverageColorScale } from './CoverageHeatmap'
 
@@ -291,17 +291,6 @@ export default function TransferCreditRate() {
   return (
     <Stack gap='section'>
       {controls}
-      <div data-export-exclude>
-        <StatStrip tiles={[
-          { label: 'Mean degree applied', value: pct(model.overallMean) || '—', accent: true },
-          { label: 'Colleges', value: intFmt.format(model.rows.length), sub: `${intFmt.format(model.valueCount)} modeled college and campus pairs` },
-          {
-            label: 'Whole degree applies',
-            value: intFmt.format([...model.cells.values()].filter((c) => c.rate === 100).length),
-            sub: 'college and campus pairs',
-          },
-        ]} />
-      </div>
       <div data-export-root className='flex flex-col gap-3'>
         <RateTable model={model} />
         <TransferMethodNote warningCount={warningCount}>

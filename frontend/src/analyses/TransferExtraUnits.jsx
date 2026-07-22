@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Spinner, Stack, StatStrip } from '../components/ui'
+import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
   DEGREE_MODES, TransferMethodNote, buildRateMatrix, methodDetail,
@@ -13,7 +13,6 @@ import {
  * semester/quarter values to semester-equivalent units so every college shares
  * one comparable scale. This is modeled coursework, not an observed outcome.
  */
-const intFmt = new Intl.NumberFormat()
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const plus = (value) => (Number.isFinite(value) ? `+${unitFmt.format(value)}` : '')
 
@@ -126,7 +125,6 @@ export default function TransferExtraUnits() {
     return <Alert type='error'>Could not load the transfer credit data.</Alert>
   }
 
-  const zeroCells = [...model.cells.values()].filter((c) => c.extra_units_semester === 0).length
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
       <div className='flex flex-col'>
@@ -165,22 +163,6 @@ export default function TransferExtraUnits() {
   return (
     <Stack gap='section'>
       {controls}
-      <div data-export-exclude>
-        <StatStrip tiles={[
-          {
-            label: 'Mean replacement units',
-            value: Number.isFinite(model.overallMean) ? plus(model.overallMean) : '—',
-            sub: 'semester-equivalent units',
-          },
-          { label: 'Colleges', value: intFmt.format(model.rows.length), sub: `${intFmt.format(model.valueCount)} modeled college and campus pairs` },
-          {
-            label: 'No replacement units',
-            value: intFmt.format(zeroCells),
-            sub: 'college and campus pairs',
-            accent: zeroCells > 0,
-          },
-        ]} />
-      </div>
       <div data-export-root className='flex flex-col gap-3'>
         <ExtraTable model={model} />
         <TransferMethodNote warningCount={warningCount}>

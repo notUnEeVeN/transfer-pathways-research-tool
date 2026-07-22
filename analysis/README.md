@@ -9,6 +9,8 @@ renderer already shipped with the website. The Python implementations under
 | --- | --- | --- |
 | `visuals/paper_credit_loss.py` | Paper Figure 1 credit loss | version, differences, detail matrix, campus labels |
 | `visuals/paper_district_heatmap.py` | District x UC complete-transfer matrix | version, differences, campus labels |
+| `visuals/paper_articulation_histogram.py` | California paper Figure 3 district coverage distribution | paper/current version, differences |
+| `visuals/paper_articulation_map.py` | California paper Figure 4 district coverage map | none; current data has the same 72 display classes |
 | `visuals/coverage_heatmap.py` | Articulation coverage | college/district/county, ASSIST/hand-curated minimums |
 | `visuals/credit_loss.py` | Cheapest complete pathway distribution | courses/units |
 | `visuals/choice_cost.py` | Incremental cost of additional campus choices | intentional application orders supplied locally |
@@ -44,6 +46,12 @@ PMT_CLIENT=../starter.py .venv/bin/python -m visuals.paper_district_heatmap \
 
 PMT_CLIENT=../starter.py .venv/bin/python -m visuals.paper_credit_loss \
   --recompute --workers 8 --output-dir results/previews --publish
+
+.venv/bin/python -m visuals.paper_articulation_map \
+  --output-dir results/previews
+
+.venv/bin/python -m visuals.paper_articulation_histogram \
+  --output-dir results/previews
 
 .venv/bin/python -m visuals.choice_cost \
   --order 79,89 --order 120,117,7 --output-dir results/previews

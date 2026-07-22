@@ -51,7 +51,8 @@ describe('TransferCreditRate', () => {
     // The cell value repeats in the column-average row (one computable cell).
     expect(screen.getAllByText('90.5%').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Average')).toHaveLength(2)
-    expect(screen.getByText('Mean degree applied')).toBeInTheDocument()
+    expect(screen.queryByText('Mean degree applied')).not.toBeInTheDocument()
+    expect(screen.queryByText('Whole degree applies')).not.toBeInTheDocument()
     expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Degree applied to graduation: 90.5%/i)).toHaveAttribute(
       'aria-label', expect.stringMatching(/named requirements 20 · GE and breadth 30 · free electives 4.3 semester units/i)
     )

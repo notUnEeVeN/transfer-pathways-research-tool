@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowsPointingOutIcon, ChartBarIcon, PencilSquareIcon, TrashIcon,
 } from '@heroicons/react/24/outline'
@@ -15,6 +15,7 @@ import { useDeleteFigure, useEditFigure, useFigures } from '../shared/query/hook
 import MeasurePanel from '../analyses/MeasurePanel'
 import { measureFor } from '../analyses/measures'
 import { filterBuiltInAnalyses } from './analysisVisibility'
+import { groupGalleryBySource } from './provenance'
 
 export { filterBuiltInAnalyses } from './analysisVisibility'
 
@@ -128,7 +129,9 @@ export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new S
   const analysis = item.kind === 'analysis'
     ? item.analysis
     : getAnalysisById(figure?.visual?.id)
-  const Component = analysis?.Component || null
+  const Component = (item.kind === 'analysis' && analysis?.PreviewComponent)
+    || analysis?.Component
+    || null
 
   return (
     <article className='group relative surface-card overflow-hidden transition-[border-color,transform]
@@ -422,6 +425,62 @@ export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSa
   )
 }
 
+// A sticky, non-destructive filter: hovering or pinning a lane spotlights it by
+// dimming the others — it never hides a card, which is the whole point of
+// organizing by source without making the reader click into a single lane.
+function SpotlightLegend({ groups, active, pinned, onHover, onLeave, onToggle }) {
+  if (groups.length < 2) return null
+  return (
+    <div className='sticky top-0 z-20 -mx-1 flex flex-wrap items-center gap-2
+      bg-canvas/85 px-1 py-2 backdrop-blur-sm' onMouseLeave={onLeave}>
+      <span className='mr-1 text-tag ink-subtle'>Source</span>
+      {groups.map(({ id, meta, items }) => {
+        const isActive = active === id
+        const dimmed = active && !isActive
+        return (
+          <button key={id} type='button' aria-pressed={pinned === id} title={meta.tagline}
+            onMouseEnter={() => onHover(id)} onFocus={() => onHover(id)} onBlur={onLeave}
+            onClick={() => onToggle(id)}
+            className={`inline-flex items-center gap-2 rounded-pill border px-3 py-1.5 text-tag
+              transition-[opacity,border-color,background-color,color] duration-200 ${
+              isActive
+                ? `${meta.borderClass} ${meta.softClass} ${meta.textClass}`
+                : 'border-border text-ink-muted hover:border-border-strong hover:text-ink'
+            } ${dimmed ? 'opacity-45' : 'opacity-100'}`}>
+            <span className={`h-2 w-2 rounded-full ${meta.dotClass}`} aria-hidden='true' />
+            <span className='font-[650]'>{meta.label}</span>
+            <span className='tabular opacity-70'>{items.length}</span>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function ProvenanceShelf({ group, dimmed, shelfRef, isAdmin, releasedSet, onOpen }) {
+  const { meta, items } = group
+  return (
+    <section ref={shelfRef} aria-label={meta.name}
+      className={`scroll-mt-20 transition-opacity duration-300 ease-out ${
+        dimmed ? 'opacity-40' : 'opacity-100'}`}>
+      <div className='mb-3 flex items-center gap-3'>
+        <span className={`h-5 w-1.5 rounded-pill ${meta.dotClass}`} aria-hidden='true' />
+        <h2 className='heading-card'>{meta.name}</h2>
+        <span className={`rounded-pill px-2 py-0.5 text-tag font-[650] ${meta.softClass} ${meta.textClass}`}>
+          {items.length}
+        </span>
+        <p className='hidden truncate text-caption ink-subtle sm:block'>{meta.tagline}</p>
+      </div>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
+        {items.map((item) => (
+          <VisualThumbnailCard key={item.key} item={item} isAdmin={isAdmin}
+            releasedSet={releasedSet} onOpen={() => onOpen(item.key)} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function VisualsPage({ onNavigate = () => {} }) {
   const [selectedKey, setSelectedKey] = useState(null)
   const me = useAccessMe()
@@ -449,8 +508,29 @@ export default function VisualsPage({ onNavigate = () => {} }) {
       kind: 'figure', key: `figure:${figure.slug}`, at: figure.updated_at, figure,
     }))
     return [...builtIns, ...published]
-      .sort((a, b) => new Date(a.at || 0) - new Date(b.at || 0))
+      .sort((a, b) => new Date(b.at || 0) - new Date(a.at || 0))
   }, [figures, visibleAnalyses])
+  // Group the flat gallery into the three source lanes (CA / MA / New).
+  const groups = useMemo(() => groupGalleryBySource(gallery), [gallery])
+
+  // Spotlight state: a lane is `active` while hovered/focused, or `pinned` by a
+  // click. Pinning wins and persists; hovering only previews.
+  const [hoveredSource, setHoveredSource] = useState(null)
+  const [pinnedSource, setPinnedSource] = useState(null)
+  // Hover wins over the pin, so you can peek another lane and snap back on exit.
+  const activeSource = hoveredSource || pinnedSource
+  const shelfRefs = useRef({})
+  const togglePin = (id) => {
+    const next = pinnedSource === id ? null : id
+    setPinnedSource(next)
+    if (!next) return
+    const reduce = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    shelfRefs.current[next]?.scrollIntoView?.({
+      behavior: reduce ? 'auto' : 'smooth', block: 'start',
+    })
+  }
+
   const selectedItem = gallery.find((item) => item.key === selectedKey) || null
   const selectedDetails = selectedItem
     ? itemDetails(selectedItem, { isAdmin, releasedSet })
@@ -516,12 +596,18 @@ export default function VisualsPage({ onNavigate = () => {} }) {
             : 'Published visuals will appear here as the team finishes them.'}
           action={isAdmin ? <Button onClick={() => onNavigate('admin')}>Open visual settings</Button> : null} />
       )}
-      {!!gallery.length && (
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
-          {gallery.map((item) => (
-            <VisualThumbnailCard key={item.key} item={item} isAdmin={isAdmin}
-              releasedSet={releasedSet} onOpen={() => setSelectedKey(item.key)} />
-          ))}
+      {!!groups.length && (
+        <div className='flex flex-col gap-3'>
+          <SpotlightLegend groups={groups} active={activeSource} pinned={pinnedSource}
+            onHover={setHoveredSource} onLeave={() => setHoveredSource(null)} onToggle={togglePin} />
+          <div className='flex flex-col gap-9'>
+            {groups.map((group) => (
+              <ProvenanceShelf key={group.id} group={group}
+                dimmed={!!activeSource && activeSource !== group.id}
+                shelfRef={(el) => { shelfRefs.current[group.id] = el }}
+                isAdmin={isAdmin} releasedSet={releasedSet} onOpen={setSelectedKey} />
+            ))}
+          </div>
         </div>
       )}
 

@@ -217,7 +217,7 @@ export function useMultiCampusPathways(params = {}, options = {}) {
 
   return useQuery({
     queryKey: [
-      'analysis-multi-campus-pathways', 'v1', user?.uid, mode,
+      'analysis-multi-campus-pathways', 'v2', user?.uid, mode,
       schoolIds.join(','), mode === 'college' ? communityCollegeId : null,
       semesterLoad, quarterLoad,
     ],
@@ -233,8 +233,35 @@ export function useMultiCampusPathways(params = {}, options = {}) {
       })
       .then((r) => r.data),
     enabled: !!user?.uid && enabled && ready,
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    ...queryOptions,
+  })
+}
+
+// One manually generated artifact contains every non-empty combination of the
+// nine configured UC goals. A mount refresh checks for a newly generated file,
+// while the previously persisted artifact remains renderable during that
+// request. Campus switching itself never creates another query.
+export function useMultiCampusPathwaysSnapshot(options = {}) {
+  const { user } = useAuth()
+  const { enabled = true, ...queryOptions } = options
+  return useQuery({
+    queryKey: ['analysis-multi-campus-pathways-snapshot', 'v1', user?.uid],
+    queryFn: () => apiClient
+      .get('/analysis/multi-campus-pathways/snapshot')
+      .then((response) => response.data),
+    enabled: !!user?.uid && enabled,
+    staleTime: 5 * 60 * 1000,
+    gcTime: Infinity,
     refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: (failureCount, error) => {
+      const status = Number(error?.response?.status)
+      if ([401, 403, 409].includes(status)) return false
+      return failureCount < 2
+    },
     ...queryOptions,
   })
 }

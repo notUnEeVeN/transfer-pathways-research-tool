@@ -23,6 +23,8 @@ describe('research API router', () => {
     expect(paths).toContain('/analysis/releases');
     expect(paths).toContain('/analysis/requirement-comparison');
     expect(paths).toContain('/analysis/credit-loss');
+    expect(paths).toContain('/analysis/multi-campus-pathways');
+    expect(paths).toContain('/analysis/multi-campus-pathways/snapshot');
     expect(paths).toContain('/analysis/choice-cost');
     expect(paths).toContain('/analysis/category-gaps');
     expect(paths).toContain('/analysis/complexity');

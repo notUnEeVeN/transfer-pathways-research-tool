@@ -3,7 +3,11 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { exportCsAstDegrees, exportLocalCsAsDegrees } = cjs('./Analysis');
+const {
+  exportCsAstDegrees,
+  exportLocalCsAsDegrees,
+  _parseMultiCampusPathwayParams,
+} = cjs('./Analysis');
 
 let mongo;
 let db;
@@ -73,5 +77,41 @@ describe('CS A.S.-T export', () => {
       _id: 'as_degree:10:local', degree_type: 'local_cs_as', college_name: 'Example College',
     });
     expect(response.body.rows[0].courses_by_id['cc:100']).toMatchObject({ code: 'CS 1', units: 4 });
+  });
+});
+
+describe('multi-campus pathway request parameters', () => {
+  it('treats campus goals as a sorted, de-duplicated set', () => {
+    expect(_parseMultiCampusPathwayParams({ schoolIds: '89,79,89' })).toEqual({
+      schoolIds: [79, 89],
+      mode: 'average',
+      communityCollegeId: null,
+      semesterLoad: 15,
+      quarterLoad: 15,
+    });
+  });
+
+  it('accepts a specific college and calendar-specific loads', () => {
+    expect(_parseMultiCampusPathwayParams({
+      schoolIds: '79', mode: 'college', communityCollegeId: '51',
+      semesterLoad: '12.5', quarterLoad: '18',
+    })).toEqual({
+      schoolIds: [79],
+      mode: 'college',
+      communityCollegeId: 51,
+      semesterLoad: 12.5,
+      quarterLoad: 18,
+    });
+  });
+
+  it.each([
+    [{}, 'schoolIds'],
+    [{ schoolIds: '79,nope' }, 'schoolIds'],
+    [{ schoolIds: '79', mode: 'college' }, 'communityCollegeId'],
+    [{ schoolIds: '79', mode: 'average', communityCollegeId: '51' }, 'communityCollegeId'],
+    [{ schoolIds: '79', semesterLoad: '25' }, 'semesterLoad'],
+    [{ schoolIds: '79', quarterLoad: '5' }, 'quarterLoad'],
+  ])('rejects an invalid request %#', (query, field) => {
+    expect(_parseMultiCampusPathwayParams(query).error).toContain(field);
   });
 });

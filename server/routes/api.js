@@ -56,6 +56,8 @@ router.get('/analysis/coverage', ...guarded, analysisController.coverage);
 router.get('/analysis/requirement-comparison', ...guarded, analysisController.requirementComparison);
 router.get('/analysis/credit-loss', ...guarded, analysisController.creditLoss);
 router.get('/analysis/transfer-credit-rate', ...guarded, analysisController.transferCreditRate);
+router.get('/analysis/multi-campus-pathways/snapshot', ...guarded, analysisController.multiCampusPathwaysSnapshot);
+router.get('/analysis/multi-campus-pathways', ...guarded, analysisController.multiCampusPathways);
 router.get('/analysis/choice-cost', ...guarded, analysisController.choiceCost);
 router.get('/analysis/category-gaps', ...guarded, analysisController.categoryGaps);
 router.get('/analysis/complexity', ...guarded, analysisController.complexity);

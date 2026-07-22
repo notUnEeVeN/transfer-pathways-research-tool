@@ -10,6 +10,7 @@ __pycache__/
 .venv/
 pmt-env/
 analysis/.ipynb_checkpoints/
+server/data/analysis/*.checkpoint.ndjson
 # Local researcher files — may contain a personal pmtr_ token
 temp.py
 starter.py

@@ -115,6 +115,8 @@ describe('built-in visual registry', () => {
     expect(ANALYSES.map((analysis) => analysis.id)).toEqual([
       'paper-credit-loss',
       'paper-district-heatmap',
+      'paper-articulation-histogram',
+      'paper-articulation-map',
       'transfer-credit-rate',
       'transfer-extra-units',
       'coverage-heatmap',
@@ -131,6 +133,8 @@ describe('built-in visual registry', () => {
     expect(ANALYSES.map((analysis) => analysis.title)).toEqual([
       'Credit loss by campus',
       'Transfer coverage by district',
+      'Districts by complete campus coverage',
+      'Articulation coverage across California',
       'Degree credit toward graduation',
       'Modeled replacement coursework',
       'Potential graduation-unit coverage',

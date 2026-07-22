@@ -25,6 +25,16 @@ export const MEASURES = {
     grain: 'One yes or no per community college district × UC campus.',
     watchFor: 'Articulation pools across every college in the district, so a complete district is not a promise that any single college offers the whole path. Within a group the test is all-or-nothing: one satisfied option is enough, and a partly satisfied option counts for nothing.',
   },
+  'paper-articulation-histogram': {
+    expression: 'bar height at n = number of districts that are complete for exactly n of the nine UC campuses',
+    grain: 'One district contributes to exactly one integer bin from zero through nine.',
+    watchFor: 'This is a distribution of the district heatmap’s row totals, so it inherits district-wide pooling across colleges. It shows how common each number of campus options is, but not which campuses or districts produce a bar.',
+  },
+  'paper-articulation-map': {
+    expression: 'district coverage = number of UC campuses for which the district is complete under the paper’s hard-minimum requirement model',
+    grain: 'One count from zero to nine per community college district, displayed in the paper’s 0–3, 4–6, and 7–9 classes.',
+    watchFor: 'The map is a geographic summary of the district heatmap, not a separate coverage calculation. District locations are approximate centroids inherited from the paper pipeline, and the three broad display classes can hide exact-count changes that stay inside the same class.',
+  },
   'transfer-credit-rate': {
     expression: 'credit rate = associate degree units that apply to the UC degree ÷ total units in the associate degree',
     grain: 'One value per community college × UC campus, for one associate degree type.',
@@ -41,9 +51,9 @@ export const MEASURES = {
     watchFor: 'The denominator is the whole modeled graduation plan and includes university-only work at zero coverage, so a cell cannot reach 100% unless the program reserves nothing for after transfer. Each campus stays in its own quarter or semester units and is never normalized, so an average across campuses mixes the two systems.',
   },
   'multi-campus-pathways': {
-    expression: 'combined plan = the fewest distinct community college courses that jointly satisfy the required major preparation in every selected ASSIST agreement; modeled terms then pack those courses after their prerequisites within the chosen unit load',
+    expression: 'combined plan = the fewest distinct community college courses that jointly satisfy the locally articulable required preparation in every selected ASSIST agreement; modeled terms then pack those courses after their prerequisites within the chosen unit load',
     grain: 'One value per community college × unordered set of selected UC computer science programs. Average mode summarizes those college-level values without mixing semester and quarter term counts.',
-    watchFor: 'This is an optimistic catalog plan, not observed student time. It assumes courses are offered every term without conflicts, and it excludes general education, associate-degree requirements, admission criteria, and all university coursework after transfer. A bounded schedule is shown as a range rather than an exact minimum.',
+    watchFor: 'Required preparation with no usable local articulation is flagged but cannot be put on the schedule, so a smaller plan can reflect a gap rather than an easier path. This is an optimistic catalog plan, not observed student time: it assumes courses are offered every term without conflicts and excludes general education, associate-degree requirements, admission criteria, and all university coursework after transfer.',
   },
   'credit-loss': {
     expression: 'transfer coursework = the fewest community college courses the solver finds that satisfy every required receiver in one agreement',

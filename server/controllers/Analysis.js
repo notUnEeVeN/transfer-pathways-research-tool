@@ -10,6 +10,8 @@
  *   groupBy=college|district|county  (coverage only; default college)
  *   requirements=degree|assist|paper (coverage only; default assist)
  * choice-cost additionally takes schoolIds=1,2,3 — an ORDERED list.
+ * multi-campus-pathways takes schoolIds as an UNORDERED set, plus an optional
+ * communityCollegeId and native semester/quarter unit-load assumptions.
  *
  * Results are cached briefly per (endpoint × params); curation edits or a
  * re-port show up within a minute without a restart.
@@ -24,6 +26,8 @@ const {
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
 const { transferCreditRateData } = require('../services/analysis/transferCreditRate');
+const { multiCampusPathwaysData } = require('../services/analysis/pathwayPlanner');
+const { loadMultiCampusSnapshot } = require('../services/analysis/pathwaySnapshot');
 
 const TTL_MS = 60 * 1000;
 const cache = new Map(); // key → { at, rows }
@@ -148,6 +152,137 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
   res.json({ params: { degree_type: degreeType, method: 'full_degree_v2' }, n: rows.length, rows });
 });
 
+function parseMultiCampusPathwayParams(query = {}) {
+  const rawSchoolIds = String(query.schoolIds || '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+  if (!rawSchoolIds.length || rawSchoolIds.some((value) => !/^\d+$/.test(value))) {
+    return { error: 'schoolIds must be a comma-separated list of campus ids' };
+  }
+  const schoolIds = [...new Set(rawSchoolIds.map(Number))].sort((a, b) => a - b);
+  if (!schoolIds.length || schoolIds.length > 9 || schoolIds.some((id) => id <= 0)) {
+    return { error: 'Choose between 1 and 9 campus goals' };
+  }
+
+  if (query.mode === 'average' && query.communityCollegeId != null) {
+    return { error: 'communityCollegeId is only used in college mode' };
+  }
+  const mode = query.mode === 'college' || (query.mode == null && query.communityCollegeId != null)
+    ? 'college'
+    : 'average';
+  if (query.mode != null && !['average', 'college'].includes(query.mode)) {
+    return { error: 'mode must be average or college' };
+  }
+  let communityCollegeId = null;
+  if (mode === 'college') {
+    const rawCollegeId = String(query.communityCollegeId ?? '').trim();
+    if (!/^\d+$/.test(rawCollegeId) || Number(rawCollegeId) <= 0) {
+      return { error: 'communityCollegeId is required in college mode' };
+    }
+    communityCollegeId = Number(rawCollegeId);
+  }
+
+  const semesterLoad = query.semesterLoad == null || query.semesterLoad === ''
+    ? 15
+    : Number(query.semesterLoad);
+  const quarterLoad = query.quarterLoad == null || query.quarterLoad === ''
+    ? 15
+    : Number(query.quarterLoad);
+  if (!Number.isFinite(semesterLoad) || semesterLoad < 6 || semesterLoad > 24) {
+    return { error: 'semesterLoad must be between 6 and 24 units' };
+  }
+  if (!Number.isFinite(quarterLoad) || quarterLoad < 6 || quarterLoad > 30) {
+    return { error: 'quarterLoad must be between 6 and 30 units' };
+  }
+
+  return { schoolIds, mode, communityCollegeId, semesterLoad, quarterLoad };
+}
+
+// Joint, overlap-aware major-preparation planner. Unlike choice-cost, campus
+// order has no meaning: the same set of goals always shares one cache entry.
+exports.multiCampusPathways = asyncHandler(async (req, res) => {
+  const parsed = parseMultiCampusPathwayParams(req.query);
+  if (parsed.error) return res.status(400).json({ error: parsed.error });
+
+  const db = req.app.locals.db;
+  const auditDb = req.app.locals.auditDb || db;
+  const visiblePairs = await majorScope(req);
+  if (visiblePairs != null) {
+    const available = new Set(visiblePairs.map((pair) => Number(pair.school_id)));
+    const unavailable = parsed.schoolIds.filter((schoolId) => !available.has(schoolId));
+    if (unavailable.length) {
+      return res.status(400).json({
+        error: 'One or more selected campuses do not have a configured program in this dataset',
+      });
+    }
+  }
+  const key = [
+    'multi-campus-pathways-v2',
+    parsed.schoolIds.join(','),
+    parsed.mode,
+    parsed.communityCollegeId || '',
+    parsed.semesterLoad,
+    parsed.quarterLoad,
+    `v:${scopeTag(visiblePairs)}`,
+  ].join('|');
+  const data = await cached(key, () => multiCampusPathwaysData(db, auditDb, {
+    ...parsed,
+    visiblePairs,
+  }));
+
+  if (req.query.format === 'csv') {
+    const rows = data.rows || [];
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="multi-campus-pathways.csv"');
+    return res.send(toCsv(rows));
+  }
+  return res.json(data);
+});
+
+// Manually generated all-combinations average. This is one guarded, immutable
+// research artifact rather than 511 expensive requests. Specific-college mode
+// deliberately remains on the live endpoint above.
+exports.multiCampusPathwaysSnapshot = asyncHandler(async (req, res) => {
+  let snapshot;
+  try {
+    snapshot = await loadMultiCampusSnapshot();
+  } catch (error) {
+    if (error?.code === 'ENOENT') {
+      return res.status(503).json({
+        error: 'The multi-campus snapshot has not been generated yet.',
+      });
+    }
+    return res.status(503).json({
+      error: 'The multi-campus snapshot is invalid. Regenerate it before using this view.',
+    });
+  }
+
+  // The saved working-program selection scopes every account. Refuse a stale
+  // artifact whose campus/program pairs no longer equal that selection; this
+  // prevents a static bundle from bypassing the live endpoint's pair scope.
+  const visiblePairs = await majorScope(req);
+  if (visiblePairs != null) {
+    const visible = new Set(visiblePairs.map((pair) =>
+      `${Number(pair.school_id)}|${String(pair.major)}`));
+    const snapPairs = new Set(snapshot.campuses.map((campus) =>
+      `${Number(campus.school_id)}|${String(campus.major)}`));
+    const sameScope = visible.size === snapPairs.size
+      && [...snapPairs].every((pair) => visible.has(pair));
+    if (!sameScope) {
+      return res.status(409).json({
+        error: 'The working program selection has changed since this snapshot was generated.',
+      });
+    }
+  }
+
+  const etag = `"${snapshot.artifact_fingerprint}"`;
+  res.setHeader('Cache-Control', 'private, no-cache');
+  res.setHeader('ETag', etag);
+  if (String(req.headers?.['if-none-match'] || '') === etag) return res.status(304).send('');
+  return res.json(snapshot);
+});
+
 exports.creditLoss = makeEndpoint('credit-loss', creditLossData);
 exports.choiceCost = makeEndpoint('choice-cost', choiceCostData, { needsSchoolIds: true });
 exports.categoryGaps = makeEndpoint('category-gaps', categoryGapsData);
@@ -176,3 +311,4 @@ exports.exportLocalCsAsDegrees = makeEndpoint(
 );
 
 exports._toCsv = toCsv;
+exports._parseMultiCampusPathwayParams = parseMultiCampusPathwayParams;
