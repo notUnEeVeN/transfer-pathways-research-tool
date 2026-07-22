@@ -51,6 +51,14 @@ coverage algorithm. The three exact-count gains and their course-level
 receipts are documented in
 [`paper-district-heatmap.md`](paper-district-heatmap.md).
 
+The website renderer applies a compact, one-column vector treatment: a warm
+off-white California silhouette, the paper's redundant color-and-shape bands,
+and a keyed legend inside the map's open upper-right area. Marker focus and
+hover reveal the district's exact count and its real covered-campus list; that
+HTML tooltip sits outside the export root and is omitted from PNG/PDF output.
+The visual design originated in `docs/export 2`, while all counts, names, and
+centroids continue to come from the audited model and recovered paper data.
+
 ## Reproduce locally
 
 From `analysis/`:

@@ -1,9 +1,10 @@
-import React, { useId, useMemo } from 'react'
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 import mapGeometry from '../../../analysis/data/paper_articulation_map.json'
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
+import { shortenSchool } from './chartBits'
 
 const COVERAGE_PARAMS = {
   majorContains: 'computer science',
@@ -12,13 +13,28 @@ const COVERAGE_PARAMS = {
   pin: 'paper',
 }
 
-const MAP = { width: 960, height: 820, left: 28, top: 44, plotWidth: 884, plotHeight: 748 }
-const BOUNDS = { minLon: -124.65, maxLon: -114.05, minLat: 32.35, maxLat: 42.15 }
+const FIGURE = { width: 520, height: 680 }
+const MAP_FRAME = { x: 16, y: 84, width: 488, height: 560 }
+const LEGEND = { x: 312, y: 100, width: 192, height: 150 }
+const DEG = Math.PI / 180
+const INK = '#22331f'
+const LAND = '#fbf8ec'
+const OUTLINE = '#aec0b4'
+const FONT = "'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, sans-serif"
 
 export const COVERAGE_BUCKETS = [
-  { key: 'low', min: 0, max: 3, label: '0–3 campuses', color: '#b3261e', shape: 'square' },
-  { key: 'middle', min: 4, max: 6, label: '4–6 campuses', color: '#f2bd00', shape: 'circle' },
-  { key: 'high', min: 7, max: 9, label: '7–9 campuses', color: '#08783e', shape: 'diamond' },
+  {
+    key: 'low', min: 0, max: 3, label: '0–3 campuses', bandLabel: 'Lower coverage',
+    color: '#fe4f32', shape: 'square',
+  },
+  {
+    key: 'middle', min: 4, max: 6, label: '4–6 campuses', bandLabel: 'Moderate coverage',
+    color: '#fae745', shape: 'circle',
+  },
+  {
+    key: 'high', min: 7, max: 9, label: '7–9 campuses', bandLabel: 'Higher coverage',
+    color: '#60f088', shape: 'diamond',
+  },
 ]
 
 const centroidByDistrict = new Map(
@@ -27,7 +43,7 @@ const centroidByDistrict = new Map(
   ])
 )
 const districtByName = new Map(DISTRICTS.map((district) => [normalizeName(district.name), district]))
-
+const campusOrder = new Map(UC_ROWS.map((campus, index) => [normalizeName(campus.campus), index]))
 const intFmt = new Intl.NumberFormat()
 
 function normalizeName(value) {
@@ -41,6 +57,17 @@ function normalizeName(value) {
     .toLowerCase()
 }
 
+function campusName(row) {
+  const short = shortenSchool(row.school)
+  return short ? `UC ${short}` : `Campus ${row.school_id}`
+}
+
+function compareCampusNames(left, right) {
+  const leftOrder = campusOrder.get(normalizeName(left)) ?? Number.MAX_SAFE_INTEGER
+  const rightOrder = campusOrder.get(normalizeName(right)) ?? Number.MAX_SAFE_INTEGER
+  return leftOrder - rightOrder || left.localeCompare(right)
+}
+
 export function bucketFor(count) {
   return COVERAGE_BUCKETS.find((bucket) => count >= bucket.min && count <= bucket.max)
     || COVERAGE_BUCKETS[0]
@@ -50,7 +77,7 @@ function paperCount(districtIndex) {
   return UC_ROWS.reduce((count, campus) => count + (campus.bits[districtIndex] === '1' ? 1 : 0), 0)
 }
 
-/** Build the current district counts and compare them to Figure 4's buckets. */
+/** Build current counts while retaining the paper baseline and real covered-campus names. */
 export function buildCoverageMapModel(rows = []) {
   const completeCampuses = new Map()
   let ignoredRows = 0
@@ -67,13 +94,15 @@ export function buildCoverageMapModel(rows = []) {
     const campusKey = row.school_id == null
       ? normalizeName(row.school)
       : String(row.school_id)
-    if (!completeCampuses.has(district.index)) completeCampuses.set(district.index, new Set())
-    completeCampuses.get(district.index).add(campusKey)
+    if (!completeCampuses.has(district.index)) completeCampuses.set(district.index, new Map())
+    completeCampuses.get(district.index).set(campusKey, campusName(row))
   }
 
   const districts = DISTRICTS.map((district) => {
     const coordinates = centroidByDistrict.get(normalizeName(district.name)) || null
-    const currentCount = completeCampuses.get(district.index)?.size || 0
+    const coveredCampuses = [...(completeCampuses.get(district.index)?.values() || [])]
+      .sort(compareCampusNames)
+    const currentCount = coveredCampuses.length
     const baselineCount = paperCount(district.index)
     const bucket = bucketFor(currentCount)
     const paperBucket = bucketFor(baselineCount)
@@ -81,6 +110,7 @@ export function buildCoverageMapModel(rows = []) {
       ...district,
       ...coordinates,
       currentCount,
+      coveredCampuses,
       paperCount: baselineCount,
       bucket,
       paperBucket,
@@ -106,165 +136,216 @@ export function buildCoverageMapModel(rows = []) {
   }
 }
 
-function project(longitude, latitude) {
+function mercator(longitude, latitude) {
+  const y = Math.log(Math.tan(Math.PI / 4 + (latitude * DEG) / 2))
   return {
-    x: MAP.left + ((longitude - BOUNDS.minLon) / (BOUNDS.maxLon - BOUNDS.minLon)) * MAP.plotWidth,
-    y: MAP.top + ((BOUNDS.maxLat - latitude) / (BOUNDS.maxLat - BOUNDS.minLat)) * MAP.plotHeight,
+    x: longitude * DEG,
+    y: Math.max(-Math.PI, Math.min(Math.PI, y)),
   }
 }
 
-function outlinePath() {
+function makeProjection(ring, frame, padding) {
+  const points = ring.map(([longitude, latitude]) => mercator(longitude, latitude))
+  const xValues = points.map((point) => point.x)
+  const yValues = points.map((point) => point.y)
+  const minX = Math.min(...xValues)
+  const maxX = Math.max(...xValues)
+  const minY = Math.min(...yValues)
+  const maxY = Math.max(...yValues)
+  const innerWidth = frame.width - padding * 2
+  const innerHeight = frame.height - padding * 2
+  const scale = Math.min(innerWidth / (maxX - minX), innerHeight / (maxY - minY))
+  const offsetX = frame.x + padding + (innerWidth - (maxX - minX) * scale) / 2
+  const offsetY = frame.y + padding + (innerHeight - (maxY - minY) * scale) / 2
+
+  return (longitude, latitude) => {
+    const point = mercator(longitude, latitude)
+    return {
+      x: offsetX + (point.x - minX) * scale,
+      y: offsetY + (maxY - point.y) * scale,
+    }
+  }
+}
+
+function outlinePath(projection) {
   return mapGeometry.california_outline.map(([longitude, latitude], index) => {
-    const { x, y } = project(longitude, latitude)
-    return `${index ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`
+    const point = projection(longitude, latitude)
+    return `${index ? 'L' : 'M'}${point.x.toFixed(2)} ${point.y.toFixed(2)}`
   }).join(' ') + ' Z'
 }
 
 function markerLabel(district) {
   const comparison = district.exactMatch
-    ? 'same exact count as the paper'
-    : `paper count ${district.paperCount}; marker class unchanged`
+    ? 'same exact count as the paper baseline'
+    : `paper baseline ${district.paperCount}; coverage band unchanged`
   return [
     district.name,
     `${district.currentCount} of 9 University of California campuses fully articulated`,
-    `${district.bucket.label}; ${comparison}`,
+    district.bucket.bandLabel,
+    comparison,
   ].join('. ')
 }
 
-function MarkerShape({ bucket, x, y, scale = 1 }) {
-  const size = 11 * scale
+function MarkerShape({ bucket, x, y, size, strokeWidth = 1 }) {
+  const common = {
+    fill: bucket.color,
+    stroke: INK,
+    strokeWidth,
+    strokeLinejoin: 'round',
+  }
   if (bucket.shape === 'square') {
-    return (
-      <>
-        <rect x={x - size} y={y - size} width={size * 2} height={size * 2} rx={1.5 * scale}
-          fill={bucket.color} stroke='#ffffff' strokeWidth={2 * scale} />
-        <rect x={x - size * 0.42} y={y - size * 0.42} width={size * 0.84} height={size * 0.84}
-          fill='#ffffff' />
-      </>
-    )
+    return <rect {...common} x={x - size / 2} y={y - size / 2}
+      width={size} height={size} rx={1.1} />
   }
   if (bucket.shape === 'diamond') {
-    const outer = `${x},${y - size * 1.18} ${x + size * 1.18},${y} ${x},${y + size * 1.18} ${x - size * 1.18},${y}`
-    const inner = `${x},${y - size * 0.46} ${x + size * 0.46},${y} ${x},${y + size * 0.46} ${x - size * 0.46},${y}`
-    return (
-      <>
-        <polygon points={outer} fill={bucket.color} stroke='#ffffff' strokeWidth={2 * scale} />
-        <polygon points={inner} fill='#ffffff' />
-      </>
-    )
+    const radius = size * 0.72
+    return <polygon {...common}
+      points={`${x},${y - radius} ${x + radius},${y} ${x},${y + radius} ${x - radius},${y}`} />
   }
+  return <circle {...common} cx={x} cy={y} r={size * 0.56} />
+}
+
+function MapTooltip({ tip, svgRef }) {
+  if (!tip || !svgRef.current) return null
+  const bounds = svgRef.current.getBoundingClientRect()
+  const viewBox = svgRef.current.viewBox?.baseVal
+  const viewWidth = viewBox?.width || FIGURE.width
+  const viewHeight = viewBox?.height || FIGURE.height
+  const left = bounds.left + (tip.x / viewWidth) * bounds.width
+  const top = bounds.top + (tip.y / viewHeight) * bounds.height
+  const district = tip.district
+
   return (
-    <>
-      <circle cx={x} cy={y} r={size} fill={bucket.color} stroke='#ffffff' strokeWidth={2 * scale} />
-      <circle cx={x} cy={y} r={size * 0.47} fill='#ffffff' />
-    </>
+    <div role='status' data-export-exclude
+      className='fixed z-30 min-w-44 max-w-64 rounded-xl border border-border bg-white px-3.5 py-3 pointer-events-none'
+      style={{
+        left,
+        top,
+        transform: 'translate(-50%, calc(-100% - 16px))',
+        boxShadow: '0 8px 30px rgba(25,48,24,0.14)',
+        fontFamily: FONT,
+      }}>
+      <div className='text-body-strong leading-tight text-ink'>{district.name}</div>
+      <div className='mt-2 flex items-center gap-2 text-caption text-ink-muted'>
+        <svg width='13' height='13' viewBox='0 0 14 14' aria-hidden='true' className='shrink-0'>
+          <MarkerShape bucket={district.bucket} x={7} y={7} size={11} />
+        </svg>
+        <span>{district.currentCount} of 9 · {district.bucket.bandLabel}</span>
+      </div>
+      {!district.exactMatch && (
+        <div className='mt-1 text-tag text-ink-subtle'>Paper baseline: {district.paperCount} campuses</div>
+      )}
+      {district.coveredCampuses.length > 0 && (
+        <div className='mt-2 border-t border-border pt-2'>
+          <div className='text-tag font-semibold uppercase tracking-wide text-ink-subtle'>
+            Articulated campuses
+          </div>
+          <div className='mt-1 text-caption leading-snug text-ink-muted'>
+            {district.coveredCampuses.join(' · ')}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
-const REFERENCE_PLACES = [
-  ['Sacramento', -121.4944, 38.5816, 9, -7],
-  ['San Francisco', -122.4194, 37.7749, -74, 4],
-  ['Fresno', -119.7871, 36.7378, 8, -7],
-  ['Los Angeles', -118.2437, 34.0522, 9, -7],
-  ['San Diego', -117.1611, 32.7157, 9, 14],
-]
-
-function ArticulationMapFigure({ model }) {
+export function ArticulationMapFigure({ model }) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-articulation-map-title`
   const descriptionId = `${id}-articulation-map-description`
-  const clipId = `${id}-california-map-clip`
-  const shadowId = `${id}-marker-shadow`
-  const path = outlinePath()
-  const subtitle = model.sameBucket === DISTRICTS.length
-    ? 'Current data · same coverage bands as paper Figure 4'
-    : `Current data · ${model.sameBucket} of 72 coverage bands match paper Figure 4`
+  const svgRef = useRef(null)
+  const [activeDistrict, setActiveDistrict] = useState(null)
+  const [tip, setTip] = useState(null)
+  const projection = useMemo(
+    () => makeProjection(mapGeometry.california_outline, MAP_FRAME, 6),
+    []
+  )
+  const path = useMemo(() => outlinePath(projection), [projection])
+  const placed = useMemo(() => model.districts
+    .filter((district) => Number.isFinite(district.longitude) && Number.isFinite(district.latitude))
+    .map((district) => {
+      const point = projection(district.longitude, district.latitude)
+      return { district, ...point }
+    })
+    .sort((left, right) => left.district.currentCount - right.district.currentCount),
+  [model.districts, projection])
+
+  const activate = useCallback((district, x, y) => {
+    setActiveDistrict(district.index)
+    setTip({ district, x, y })
+  }, [])
+  const deactivate = useCallback(() => {
+    setActiveDistrict(null)
+    setTip(null)
+  }, [])
 
   return (
-    <div className='surface-card overflow-hidden bg-white'>
-      <svg viewBox={`0 0 ${MAP.width} ${MAP.height}`} role='img'
-        aria-labelledby={`${titleId} ${descriptionId}`}
-        className='block h-auto w-full' data-export-width={MAP.width}>
-        <title id={titleId}>Articulation coverage across California</title>
-        <desc id={descriptionId}>
-          Community college district centroids grouped by the number of University of California
-          campuses with a complete computer science transfer path.
-        </desc>
-        <rect width={MAP.width} height={MAP.height} fill='#eaf4f3' />
-        <text x='28' y='27' fontFamily='Arial, sans-serif' fontSize='16' fontWeight='700'
-          letterSpacing='-0.15' fill='#17251d'>
-          Articulation coverage across California
-        </text>
-        <text x='28' y='48' fontFamily='Arial, sans-serif' fontSize='12' fill='#516158'>{subtitle}</text>
+    <div className='relative mx-auto w-full' style={{ maxWidth: FIGURE.width, fontFamily: FONT }}>
+      <div data-export-root className='overflow-hidden bg-white'>
+        <svg ref={svgRef} viewBox={`0 0 ${FIGURE.width} ${FIGURE.height}`} role='img'
+          aria-labelledby={`${titleId} ${descriptionId}`} data-export-width={FIGURE.width}
+          className='block h-auto w-full' style={{ fontFamily: FONT }}>
+          <title id={titleId}>California articulation coverage</title>
+          <desc id={descriptionId}>
+            Each community college district is marked by a coral square for zero to three,
+            a yellow circle for four to six, or a green diamond for seven to nine fully
+            articulated University of California campuses.
+          </desc>
+          <rect width={FIGURE.width} height={FIGURE.height} fill='#ffffff' />
+          <text x='28' y='46' fontSize='24' fontWeight='600' letterSpacing='-0.72' fill='#193018'>
+            California articulation coverage
+          </text>
+          <text x='28' y='68' fontSize='13' fill='#6e7d6f'>
+            Fully articulated UC campuses (of 9), by community college district
+          </text>
 
-        <defs>
-          <clipPath id={clipId}><path d={path} /></clipPath>
-          <filter id={shadowId} x='-30%' y='-30%' width='160%' height='160%'>
-            <feDropShadow dx='0' dy='1.2' stdDeviation='1.2' floodColor='#294337' floodOpacity='0.18' />
-          </filter>
-        </defs>
-        <path d={path} fill='none' stroke='#c2ddda' strokeWidth='8' opacity='0.7' />
-        <path d={path} fill='#fbfaf4' stroke='#68766e' strokeWidth='2.1' />
-        <g clipPath={`url(#${clipId})`} opacity='0.45'>
-          {[34, 36, 38, 40].map((latitude) => {
-            const start = project(BOUNDS.minLon, latitude)
-            const end = project(BOUNDS.maxLon, latitude)
-            return <line key={latitude} x1={start.x} y1={start.y} x2={end.x} y2={end.y}
-              stroke='#b7c0b9' strokeWidth='1' strokeDasharray='5 7' />
-          })}
-        </g>
+          <path d={path} fill={LAND} stroke={OUTLINE} strokeWidth='1.15' strokeLinejoin='round' />
 
-        <g aria-hidden='true'>
-          {REFERENCE_PLACES.map(([name, longitude, latitude, dx, dy]) => {
-            const { x, y } = project(longitude, latitude)
-            return (
-              <g key={name}>
-                <circle cx={x} cy={y} r='2.2' fill='#6f7b74' />
-                <text x={x + dx} y={y + dy} fontFamily='Arial, sans-serif' fontSize='10.5' fill='#7a857e'>
-                  {name}
-                </text>
-              </g>
-            )
-          })}
-        </g>
-
-        <g aria-label='Community college district markers'>
-          {[...model.districts]
-            .filter((district) => Number.isFinite(district.longitude) && Number.isFinite(district.latitude))
-            .sort((a, b) => a.currentCount - b.currentCount)
-            .map((district) => {
-              const { x, y } = project(district.longitude, district.latitude)
+          <g aria-label='Community college district markers'>
+            {placed.map(({ district, x, y }) => {
+              const active = activeDistrict === district.index
+              const size = 7.6 * (active ? 1.28 : 1)
               const label = markerLabel(district)
               return (
                 <g key={district.index} role='img' aria-label={label} tabIndex='0'
                   data-district-marker={district.index} data-bucket={district.bucket.key}
-                  filter={`url(#${shadowId})`}>
+                  className='cursor-pointer outline-none'
+                  onMouseEnter={() => activate(district, x, y)} onMouseLeave={deactivate}
+                  onFocus={() => activate(district, x, y)} onBlur={deactivate}>
                   <title>{label}</title>
-                  <MarkerShape bucket={district.bucket} x={x} y={y} />
+                  {active && <circle cx={x} cy={y} r={size * 0.72 + 3.5}
+                    fill='none' stroke={INK} strokeWidth='1.4' />}
+                  <MarkerShape bucket={district.bucket} x={x} y={y} size={size} strokeWidth={0.9} />
                 </g>
               )
             })}
-        </g>
+          </g>
 
-        <g transform='translate(570 86)' aria-label='Map legend'>
-          <rect width='342' height='172' rx='10' fill='#ffffff' fillOpacity='0.96'
-            stroke='#c4cec7' strokeWidth='1.4' />
-          <text x='20' y='30' fontFamily='Arial, sans-serif' fontSize='13' fontWeight='700' fill='#17251d'>
-            UC campuses with complete articulation
+          <g aria-label='Map legend'>
+            <rect x={LEGEND.x} y={LEGEND.y} width={LEGEND.width} height={LEGEND.height}
+              rx='12' fill='#ffffff' fillOpacity='0.9' stroke='#193018' strokeOpacity='0.12' />
+            {COVERAGE_BUCKETS.map((bucket, index) => {
+              const y = LEGEND.y + 30 + index * 38
+              return (
+                <g key={bucket.key}>
+                  <MarkerShape bucket={bucket} x={LEGEND.x + 22} y={y} size={13} />
+                  <text x={LEGEND.x + 42} y={y - 2} fontSize='14' fontWeight='600' fill={INK}>
+                    {bucket.label.replace(' campuses', '')}
+                  </text>
+                  <text x={LEGEND.x + 42} y={y + 14} fontSize='11.5' fill='#8a9a8c'>
+                    {bucket.bandLabel}
+                  </text>
+                </g>
+              )
+            })}
+          </g>
+
+          <text x='28' y={FIGURE.height - 14} fontSize='10.5' fill='#98a79a'>
+            Marker shape and fill encode the coverage band.
           </text>
-          {COVERAGE_BUCKETS.map((bucket, index) => {
-            const y = 63 + index * 42
-            return (
-              <g key={bucket.key}>
-                <MarkerShape bucket={bucket} x={34} y={y} scale={0.82} />
-                <text x='58' y={y + 4} fontFamily='Arial, sans-serif' fontSize='13' fill='#26352c'>
-                  {bucket.label}
-                </text>
-              </g>
-            )
-          })}
-        </g>
-      </svg>
+        </svg>
+      </div>
+      <MapTooltip tip={tip} svgRef={svgRef} />
     </div>
   )
 }
@@ -297,9 +378,7 @@ export default function ArticulationCoverageMap() {
         </span>
       </div>
 
-      <div data-export-root>
-        <ArticulationMapFigure model={model} />
-      </div>
+      <ArticulationMapFigure model={model} />
     </Stack>
   )
 }
