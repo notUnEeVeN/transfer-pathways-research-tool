@@ -100,23 +100,14 @@ function defaultMajor() {
   return MAJORS[0];
 }
 
-const serializeRegex = (re) => ({ source: re.source, flags: re.flags });
-
 /**
- * JSON-safe projection for GET /api/majors. RegExp values cannot survive
- * JSON.stringify, so they become {source, flags} and the client rebuilds them.
+ * JSON-safe projection for GET /api/majors — only the fields the frontend
+ * actually renders. `coursePatterns` is deliberately omitted: course typing is
+ * a server-side concern (services/courseTypes.js), so shipping regexes to the
+ * browser would be payload the client never reads.
  */
 function serializeMajors() {
-  return MAJORS.map((m) => ({
-    ...m,
-    coursePatterns: {
-      ...m.coursePatterns,
-      discreteMath: serializeRegex(m.coursePatterns.discreteMath),
-      textRules: m.coursePatterns.textRules.map(([pattern, type]) => ({
-        pattern: serializeRegex(pattern), type,
-      })),
-    },
-  }));
+  return MAJORS.map(({ coursePatterns, ...rest }) => rest);
 }
 
 /**

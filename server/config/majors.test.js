@@ -32,14 +32,21 @@ describe('majors config', () => {
     expect(getMajor(undefined)).toBeNull();
   });
 
-  it('serializeMajors is JSON-safe (regexes become {source, flags})', () => {
+  it('serializeMajors is JSON-safe and omits server-only course patterns', () => {
     const json = JSON.parse(JSON.stringify(serializeMajors()));
     const cs = json.find((m) => m.slug === 'cs');
-    expect(cs.coursePatterns.discreteMath.source).toContain('discrete');
-    expect(typeof cs.coursePatterns.discreteMath.flags).toBe('string');
-    expect(Array.isArray(cs.coursePatterns.computingPrefixes)).toBe(true);
-    expect(cs.coursePatterns.textRules[0]).toHaveProperty('pattern.source');
-    expect(cs.coursePatterns.textRules[0]).toHaveProperty('type');
+    // Course typing is server-side; the browser never needs the regexes.
+    expect(cs.coursePatterns).toBeUndefined();
+    // What the frontend does render survives the round-trip intact.
+    expect(cs.label).toBe('Computer Science');
+    expect(cs.programs['79']).toContain('Computer Science, B.A.');
+    expect(cs.categories.map((c) => c.key)).toContain('discrete_math');
+    expect(cs.capabilities.paperBaselines).toBe(true);
+  });
+
+  it('serializing does not mutate the underlying config', () => {
+    serializeMajors();
+    expect(getMajor('cs').coursePatterns.discreteMath).toBeInstanceOf(RegExp);
   });
 
   it('majorScopeFromQuery: slug wins, contains kept for back-compat', () => {
