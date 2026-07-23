@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useChoiceCost, useSchools } from '../shared/query/hooks/useData'
+import { majorLabelFor } from '../shared/majors/majorLabel'
 import { AnalysisLoading, shortenSchool } from './chartBits'
 
 const MAX_SCHOOLS = 4
@@ -14,6 +15,8 @@ const ORDINALS = ['1st', '2nd', '3rd', '4th']
 
 const intFmt = new Intl.NumberFormat()
 const numFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+
+export const majorDisplayName = majorLabelFor
 
 function stepMeans(rows, orderedIds) {
   return orderedIds.map((schoolId, i) => {
@@ -38,8 +41,9 @@ function stepMeans(rows, orderedIds) {
  * beyond the union already taken. Segment color = addition order (ordinal
  * ramp), consistent between the two views.
  */
-export default function ChoiceCost({ majorSlug = 'cs' }) {
+export default function ChoiceCost({ majorSlug = 'cs', majorLabel: configuredMajorLabel = '' }) {
   const [orderedIds, setOrderedIds] = useState(null) // null until schools load
+  const majorLabel = majorDisplayName(majorSlug, configuredMajorLabel)
 
   const schoolsQ = useSchools()
   // /schools returns { uc: [{id, name}] } — same unwrap as DataPage's browser.
@@ -173,6 +177,7 @@ export default function ChoiceCost({ majorSlug = 'cs' }) {
 
       <div data-export-root className='flex flex-col gap-6'>
         <div className='surface-card p-4'>
+          <p className='text-label text-ink mb-1' data-export-major>{majorLabel}</p>
           <p className='text-caption text-ink-subtle mb-3'>Mean additional CC courses per added campus</p>
           <div className='flex items-end gap-6 h-40 max-w-xl'>
             {steps.map((step, i) => {

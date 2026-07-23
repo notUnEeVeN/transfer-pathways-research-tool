@@ -1,6 +1,7 @@
 import React, { useId, useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { Stack, SwitchField } from '../components/ui'
+import { Alert, Stack, SwitchField } from '../components/ui'
+import { majorLabelFor } from '../shared/majors/majorLabel'
 import {
   CA_CHOICE_COLORS,
   CA_DIFFERENCE_COLORS,
@@ -8,8 +9,28 @@ import {
   CA_QUARTER_NOTE,
 } from './californiaFigureStyle'
 import { CHOICE_LABELS, PAPER_COLORS, PAPER_UC_BARS } from './paperCreditLossBaseline'
-import assistData from './data/paper-credit-loss.assist.json'
 import oursData from './data/paper-credit-loss.ours.json'
+
+// Generated ASSIST artifacts are major-scoped. New majors become available by
+// adding a verified `paper-credit-loss.<slug>.assist.json`; the legacy CS name
+// is indexed from its embedded scope metadata. Missing/unknown scopes never
+// fall back to CS.
+const ASSIST_ARTIFACT_MODULES = import.meta.glob(
+  './data/paper-credit-loss*.assist.json',
+  { eager: true, import: 'default' }
+)
+const ASSIST_DATA_BY_MAJOR = new Map(
+  Object.values(ASSIST_ARTIFACT_MODULES).flatMap((artifact) => {
+    const slug = String(artifact?.major_scope?.slug || '').trim()
+    return slug ? [[slug, artifact]] : []
+  })
+)
+
+export function getAssistCreditLossArtifact(majorSlug) {
+  return ASSIST_DATA_BY_MAJOR.get(String(majorSlug || '').trim().toLowerCase()) || null
+}
+
+const assistData = getAssistCreditLossArtifact('cs')
 
 /**
  * Paper Figure 1 — "Visualizing the credit loss in transfer pathways":
@@ -62,18 +83,23 @@ const OURS_BARS = PAPER_UC_BARS.map((paper) => {
   }
 })
 
-const ASSIST_BARS = PAPER_UC_BARS.map((paper) => {
-  const c = assistData.campuses.find((x) => x.code === paper.code)
-  return {
-    code: c.code,
-    id: c.id,
-    campus: CAMPUS_NAME[c.code],
-    requirementSemester: c.requirement.semester_equiv,
-    requirementQuarter: c.requirement.quarter_count,
-    choices: c.choices.map((ch) => ch.transferable_average),
-    choiceDistricts: c.choices.map((ch) => ch.districts_included),
-  }
-})
+function barsFromAssistArtifact(artifact) {
+  return PAPER_UC_BARS.map((paper) => {
+    const c = artifact.campuses.find((x) => x.code === paper.code)
+    if (!c) throw new Error(`ASSIST credit-loss artifact is missing ${paper.code}`)
+    return {
+      code: c.code,
+      id: c.id,
+      campus: CAMPUS_NAME[c.code],
+      requirementSemester: c.requirement.semester_equiv,
+      requirementQuarter: c.requirement.quarter_count,
+      choices: c.choices.map((ch) => ch.transferable_average),
+      choiceDistricts: c.choices.map((ch) => ch.districts_included),
+    }
+  })
+}
+
+const ASSIST_BARS = barsFromAssistArtifact(assistData)
 
 // The three meaningful figures: the transcribed paper original, and our data
 // against each minimums source. "Difference" is an overlay (a toggle), not a
@@ -452,8 +478,18 @@ function ModernDifferenceMark({ x, width, current, comparison, yScale }) {
  * It deliberately accepts the same `bars` / `ghost` inputs as FigureSVG so
  * changing presentation cannot change any calculation or comparison meaning.
  */
-export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names', dataVersion = 'current' }) {
+export function ModernCreditLossFigure({
+  bars,
+  ghost = null,
+  labelMode = 'names',
+  dataVersion = 'current',
+  majorLabel = 'Computer Science',
+  requirementLabel = 'CS/Math requirement',
+  requirementAriaLabel = 'CS and math requirements',
+}) {
   const reactId = useId()
+  const titleId = `creditLossTitle${reactId.replace(/:/g, '')}`
+  const descriptionId = `creditLossDescription${reactId.replace(/:/g, '')}`
   const hatchId = `creditLossQuarterHatch${reactId.replace(/:/g, '')}`
   const unavailableHatchId = `creditLossUnavailableHatch${reactId.replace(/:/g, '')}`
   const tallest = Math.max(maxTop(bars), ghost ? maxTop(ghost) : 0, 1)
@@ -478,7 +514,7 @@ export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names'
     + seriesIndex * (barWidth + barGap)
   const barHeight = (value) => MODERN.plotBottom - yScale(value)
   const legend = [
-    { label: 'CS/Math requirement', fill: REQUIREMENT_GOLD },
+    { label: requirementLabel, fill: REQUIREMENT_GOLD },
     ...['1st choice', '2nd choice', '3rd choice', '4th choice'].map((label, index) => ({
       label,
       fill: CA_CHOICE_COLORS[index],
@@ -490,9 +526,15 @@ export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names'
     <svg data-modern-california-figure='credit-loss' data-figure-version={dataVersion}
       data-export-width={MODERN.width} viewBox={`0 0 ${MODERN.width} ${MODERN.height}`}
       role='img'
-      aria-label='Grouped bar chart of current CS and math requirements and average community college courses needed for each University of California campus choice'
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
       fontFamily={CA_FIGURE.fontFamily}
       style={{ width: '100%', height: 'auto', display: 'block', background: CA_FIGURE.background }}>
+      <title id={titleId}>{majorLabel} transfer pathway credit loss by University of California campus</title>
+      <desc id={descriptionId}>
+        Grouped bar chart of current {requirementAriaLabel} and average community college courses
+        needed for each University of California campus choice.
+      </desc>
       <defs>
         <pattern id={hatchId} patternUnits='userSpaceOnUse' width='11' height='11'>
           <rect width='11' height='11' fill={REQUIREMENT_CREAM} />
@@ -521,6 +563,10 @@ export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names'
           </g>
         ))}
       </g>
+      <text x='1208' y='34' textAnchor='end' dominantBaseline='central'
+        fontSize='14' fontWeight='600' fill={CA_FIGURE.ink} data-major-label>
+        Major · {majorLabel}
+      </text>
 
       {ticks.map((value) => (
         <g key={value} data-y-tick={value}>
@@ -548,7 +594,7 @@ export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names'
         return (
           <g key={campus.code} data-campus={campus.code}>
             <g data-modern-bar data-series='requirement' data-value={total}
-              aria-label={`${campus.campus}, CS and math requirement: ${fmt(total)} courses`}>
+              aria-label={`${campus.campus}, ${requirementAriaLabel}: ${fmt(total)} courses`}>
               {cap > 0 ? (
                 <>
                   <rect x={requirementX} y={semesterY} width={barWidth}
@@ -657,9 +703,22 @@ export function ModernCreditLossFigure({ bars, ghost = null, labelMode = 'names'
   )
 }
 
-/** Figure-only gallery thumbnail, intentionally locked to current hand-curated data. */
-export function PaperCreditLossPreview() {
-  return <ModernCreditLossFigure bars={OURS_BARS} labelMode='names' dataVersion='website' />
+/** Figure-only gallery thumbnail, always reflecting the selected major's live ASSIST state. */
+export function PaperCreditLossPreview({ majorSlug = 'cs', majorLabel = '' }) {
+  const normalizedSlug = String(majorSlug || 'cs').trim().toLowerCase()
+  const resolvedMajorLabel = majorLabelFor(normalizedSlug, majorLabel)
+  const artifact = getAssistCreditLossArtifact(normalizedSlug)
+  if (!artifact || artifact.requirements !== 'assist' || Number(artifact.schema_version) < 2) {
+    return null
+  }
+  try {
+    return <ModernCreditLossFigure bars={barsFromAssistArtifact(artifact)} labelMode='names'
+      dataVersion='assist' majorLabel={resolvedMajorLabel}
+      requirementLabel='ASSIST requirement slots'
+      requirementAriaLabel={`${resolvedMajorLabel} ASSIST required receiver slots`} />
+  } catch {
+    return null
+  }
 }
 
 // The matrix's diverging poles. Crimson (LOSS) = more courses; a validated teal
@@ -758,7 +817,7 @@ function DifferenceHeatmap({ live, baseline, comparisonLabel, labelMode }) {
   )
 }
 
-export default function PaperCreditLoss() {
+function CsPaperCreditLoss({ majorLabel }) {
   // ASSIST first; the paper baseline stays one click away as the comparison.
   const [version, setVersion] = useState('assist')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
@@ -826,7 +885,12 @@ export default function PaperCreditLoss() {
           </div>
         ) : (
           <ModernCreditLossFigure bars={bars} ghost={ghost} labelMode={labelMode}
-            dataVersion={version} />
+            dataVersion={version}
+            majorLabel={majorLabel}
+            requirementLabel={reqMode === 'assist' ? 'ASSIST requirement slots' : undefined}
+            requirementAriaLabel={reqMode === 'assist'
+              ? 'ASSIST required receiver slots'
+              : undefined} />
         )}
         {view === 'diff' && <DifferenceLegend comparisonLabel={comparisonLabel} />}
       </div>
@@ -861,4 +925,74 @@ export default function PaperCreditLoss() {
       </div>
     </Stack>
   )
+}
+
+function AssistOnlyPaperCreditLoss({ majorSlug, majorLabel }) {
+  const [labelMode, setLabelMode] = useState('names')
+  const artifact = getAssistCreditLossArtifact(majorSlug)
+
+  if (!artifact) {
+    return (
+      <Alert type='warning'>
+        No audited ASSIST credit-loss artifact is available for this major.
+      </Alert>
+    )
+  }
+  if (artifact.requirements !== 'assist' || Number(artifact.schema_version) < 2) {
+    return (
+      <Alert type='warning'>
+        This major&apos;s ASSIST credit-loss artifact predates the canonical-template denominator and must be regenerated.
+      </Alert>
+    )
+  }
+
+  let bars
+  try {
+    bars = barsFromAssistArtifact(artifact)
+  } catch (error) {
+    return <Alert type='error'>{error.message}</Alert>
+  }
+  return (
+    <Stack gap='section'>
+      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+        <div className='flex flex-col'>
+          <span className='field-label'>Requirement source</span>
+          <span className='text-body text-ink'>Current ASSIST requirements · receiver-slot model</span>
+        </div>
+        <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
+          <span className='font-mono tabular-nums'>{artifact.dataset_version}</span>
+          <span>recomputed {artifact.generated_at?.slice(0, 10)} by {artifact.generated_by}</span>
+        </div>
+      </div>
+
+      <div data-export-root className='flex flex-col gap-4'>
+        <ModernCreditLossFigure
+          bars={bars}
+          labelMode={labelMode}
+          dataVersion='assist'
+          majorLabel={majorLabel}
+          requirementLabel='ASSIST requirement slots'
+          requirementAriaLabel={`${majorLabel} ASSIST required receiver slots`}
+        />
+      </div>
+
+      <div className='flex flex-wrap items-center gap-4' data-export-exclude>
+        <button
+          type='button'
+          onClick={() => setLabelMode(labelMode === 'paper' ? 'names' : 'paper')}
+          className='ml-auto text-tag font-mono text-ink-subtle hover:text-ink underline underline-offset-2'
+        >
+          {labelMode === 'paper' ? 'show campus names' : 'show UC1–9 ids'}
+        </button>
+      </div>
+    </Stack>
+  )
+}
+
+export default function PaperCreditLoss({ majorSlug = 'cs', majorLabel = '' }) {
+  const normalizedSlug = String(majorSlug || 'cs').trim().toLowerCase()
+  const resolvedMajorLabel = majorLabelFor(normalizedSlug, majorLabel)
+  return normalizedSlug === 'cs'
+    ? <CsPaperCreditLoss majorLabel={resolvedMajorLabel} />
+    : <AssistOnlyPaperCreditLoss majorSlug={normalizedSlug} majorLabel={resolvedMajorLabel} />
 }

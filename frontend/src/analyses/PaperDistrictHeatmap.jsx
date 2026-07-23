@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react'
+import React, { useId, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack, StatStrip, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { majorLabelFor } from '../shared/majors/majorLabel'
 import { DISTRICTS, PAPER_CELL_COUNT, PAPER_COMPLETE_COUNT, UC_ROWS } from './paperDistrictBaseline'
 import {
   CA_DIFFERENCE_COLORS, CA_FIGURE, CA_QUARTER_NOTE,
@@ -25,10 +26,9 @@ const VERSIONS = [
 //   paper  — the hand-curated university-website hard minimums
 //            (curated transfer-minimum requirements), the paper's methodology.
 //   assist — ASSIST's own stated requirement surface: a cell is complete when
-//            at least one CS program at the campus has EVERY receiver in its
-//            required agreement groups articulated (curation overrides
-//            honored). Far stricter in practice — ASSIST pages list required
-//            receivers that articulate almost nowhere.
+//            the configured program at the campus has every required receiver
+//            satisfied under the eligibility engine (curation overrides
+//            honored). This is the sole state used for newer majors.
 
 // Row label under each mode. Campus names keep the paper's `*` annotation
 // (selective-admission majors) so the two modes stay comparable.
@@ -185,17 +185,23 @@ function labelFor({ view, live, paper }) {
   return live ? 'newly complete in our data' : 'complete in paper baseline only'
 }
 
-function titleFor({ uc, district, liveCell, live, paper, view, reqMode }) {
+function titleFor({
+  uc, district, liveCell, live, paper, view, reqMode,
+  includePaper = true, isComputerScience = true,
+}) {
   const parts = [
     `${uc.id} · ${uc.campus}`,
     `District ${district.index}: ${district.name}`,
     `Cell: ${labelFor({ view, live, paper })}`,
     `Our data (${reqMode === 'assist' ? 'ASSIST-stated minimums' : 'hand-curated minimums'}): ${live ? 'complete' : 'missing'}`,
-    `Paper baseline: ${paper ? 'complete' : 'missing'}`,
   ]
+  if (includePaper) parts.push(`Paper baseline: ${paper ? 'complete' : 'missing'}`)
   if (liveCell) {
     if (Number.isFinite(liveCell.bestPct)) parts.push(`Best live coverage: ${pctFmt.format(liveCell.bestPct)}%`)
-    parts.push(`${intFmt.format(liveCell.programs.size)} live CS program${liveCell.programs.size === 1 ? '' : 's'}`)
+    const programs = intFmt.format(liveCell.programs.size)
+    parts.push(isComputerScience
+      ? `${programs} live CS program${liveCell.programs.size === 1 ? '' : 's'}`
+      : `${programs} live program${liveCell.programs.size === 1 ? '' : 's'} for the selected major`)
   }
   return parts.join('\n')
 }
@@ -380,7 +386,18 @@ function ModernLegend({ differences, y }) {
 }
 
 /** Publication renderer from the modern handoff, fed by the exact live model. */
-export function ModernCoverageMatrix({ liveModel, view = 'live', labelMode = 'names', reqMode = 'paper' }) {
+export function ModernCoverageMatrix({
+  liveModel,
+  view = 'live',
+  labelMode = 'names',
+  reqMode = 'paper',
+  includePaper = true,
+  isComputerScience = true,
+  majorLabel = null,
+}) {
+  const id = useId()
+  const titleId = `${id}-modern-coverage-matrix-title`
+  const descriptionId = `${id}-modern-coverage-matrix-description`
   const { width, height, left, right, top, rowHeight, rowGap } = MODERN_MATRIX
   const plotWidth = width - left - right
   const columnGap = 1
@@ -393,11 +410,23 @@ export function ModernCoverageMatrix({ liveModel, view = 'live', labelMode = 'na
   return (
     <div className='overflow-hidden bg-white'>
       <svg viewBox={`0 0 ${width} ${height}`} role='img'
-        aria-label='Community college district transfer coverage by University of California campus'
+        aria-labelledby={`${titleId} ${descriptionId}`}
         className='block h-auto w-full' data-export-width={width}
         data-modern-california-figure='coverage-matrix'
         style={{ fontFamily: CA_FIGURE.fontFamily, fontVariantNumeric: 'tabular-nums' }}>
+        <title id={titleId}>
+          {majorLabel ? `${majorLabel}: ` : ''}community college district transfer coverage by University of California campus
+        </title>
+        <desc id={descriptionId}>
+          California district-by-campus articulation coverage for {majorLabel || 'the selected major'}.
+        </desc>
         <rect width={width} height={height} fill={CA_FIGURE.background} />
+        {majorLabel && (
+          <text x={width - 24} y='14' textAnchor='end' fontSize='12' fontWeight='600'
+            fill={CA_FIGURE.ink} data-major-label>
+            Major: {majorLabel}
+          </text>
+        )}
         <text x='34' y={top + plotHeight / 2} textAnchor='middle'
           transform={`rotate(-90 34 ${top + plotHeight / 2})`}
           fontSize='14' fontWeight='500' fill={CA_FIGURE.ink}>UC Campus</text>
@@ -417,7 +446,10 @@ export function ModernCoverageMatrix({ liveModel, view = 'live', labelMode = 'na
                 const liveCell = liveModel.cells.get(cellKey(uc.id, district.index))
                 const live = liveCell?.complete === true
                 const paper = paperValue(uc, district.index)
-                const label = titleFor({ uc, district, liveCell, live, paper, view, reqMode })
+                const label = titleFor({
+                  uc, district, liveCell, live, paper, view, reqMode,
+                  includePaper, isComputerScience,
+                })
                 return (
                   <rect key={district.index} x={xFor(district.index)} y={y}
                     width={cellWidth} height={rowHeight}
@@ -474,21 +506,34 @@ function Chip({ color }) {
  * version and difference controls. The showcase uses it so a walkthrough shows
  * current California data rather than the reproduced paper baseline.
  */
-export function PaperDistrictHeatmapPreview() {
-  return <PaperDistrictHeatmap preview />
+export function PaperDistrictHeatmapPreview({ majorSlug = 'cs', majorLabel = '' }) {
+  return <PaperDistrictHeatmap preview majorSlug={majorSlug} majorLabel={majorLabel} />
 }
 
-export default function PaperDistrictHeatmap({ presentation = false, preview = false }) {
+export default function PaperDistrictHeatmap({
+  presentation = false,
+  preview = false,
+  majorSlug = 'cs',
+  majorLabel: configuredMajorLabel = '',
+}) {
+  const selectedMajorSlug = String(majorSlug || '').trim().toLowerCase() || 'cs'
+  const isComputerScience = selectedMajorSlug === 'cs'
+  const majorLabel = majorLabelFor(selectedMajorSlug, configuredMajorLabel)
   // ASSIST first in both the console and the presentation skin.
   const [version, setVersion] = useState('assist')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('names')
 
+  // Paper and hand-curated states are a CS-only historical comparison. If the
+  // selected major changes while this component remains mounted, force the
+  // effective state to live ASSIST data immediately rather than carrying a
+  // stale paper selection across majors.
+  const activeVersion = isComputerScience ? version : 'assist'
   // Derive the underlying view/minimums from version + differences toggle. Note the
   // coverage endpoint uses requirements:'paper' for the website minimums.
-  const reqMode = version === 'assist' ? 'assist' : 'paper'
-  const diffOn = showDiff && version !== 'paper'
-  const view = version === 'paper' ? 'paper' : (diffOn ? 'diff' : 'live')
+  const reqMode = activeVersion === 'assist' ? 'assist' : 'paper'
+  const diffOn = isComputerScience && showDiff && activeVersion !== 'paper'
+  const view = activeVersion === 'paper' ? 'paper' : (diffOn ? 'diff' : 'live')
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on
   // demand. The ASSIST-minimums variant fetches lazily on first selection and
   // then stays cached, so flipping the toggle is instant afterwards.
@@ -496,13 +541,31 @@ export default function PaperDistrictHeatmap({ presentation = false, preview = f
   // the canonical CS config and ignore partner-visibility settings. The two
   // requests differ only in their requirement source: hand-curated paper
   // minimums versus the canonical CS ASSIST trees.
+  const currentParams = isComputerScience
+    ? { majorSlug: 'cs', groupBy: 'district', requirements: 'assist', pin: 'settings' }
+    : { majorSlug: selectedMajorSlug, groupBy: 'district', requirements: 'assist' }
+  // Hooks stay unconditional, but the dormant paper observer receives the
+  // selected major's safe ASSIST params and is disabled outside CS. Therefore
+  // a Biology/Economics render cannot issue a paper, pinned, or CS request.
   const paperCoverage = useCoverage(
-    { majorSlug: 'cs', groupBy: 'district', requirements: 'paper', pin: 'paper' },
-    { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
+    isComputerScience
+      ? { majorSlug: 'cs', groupBy: 'district', requirements: 'paper', pin: 'paper' }
+      : currentParams,
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      ...(!isComputerScience ? { enabled: false } : {}),
+    }
   )
   const assistCoverage = useCoverage(
-    { majorSlug: 'cs', groupBy: 'district', requirements: 'assist', pin: 'settings' },
-    { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false, enabled: reqMode === 'assist' }
+    currentParams,
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      enabled: !isComputerScience || reqMode === 'assist',
+    }
   )
   const coverage = reqMode === 'assist' ? assistCoverage : paperCoverage
   const rows = coverage.data?.rows || []
@@ -510,19 +573,34 @@ export default function PaperDistrictHeatmap({ presentation = false, preview = f
   const diff = useMemo(() => compare(liveModel), [liveModel])
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
   const net = liveModel.complete - PAPER_COMPLETE_COUNT
+  const statTiles = isComputerScience
+    ? [
+      { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: reqMode === 'assist' ? 'per ASSIST-stated minimums' : 'per hand-curated minimums', accent: true },
+      { label: 'Paper complete cells', value: intFmt.format(PAPER_COMPLETE_COUNT), sub: 'baseline · hand-curated minimums' },
+      { label: 'Net vs paper', value: signedFmt.format(net), sub: `${intFmt.format(diff.changed)} changed cells` },
+      { label: 'Matrix agreement', value: `${pctFmt.format(diff.agreementPct)}%`, sub: `${intFmt.format(diff.gained)} gained · ${intFmt.format(diff.lost)} lost` },
+    ]
+    : [
+      { label: 'Complete cells', value: intFmt.format(liveModel.complete), sub: 'per ASSIST-stated requirements', accent: true },
+      { label: 'Incomplete cells', value: intFmt.format(liveModel.missing), sub: `${DISTRICTS.length} districts × ${UC_ROWS.length} campuses` },
+      { label: 'Districts represented', value: `${intFmt.format(liveModel.districtsSeen)} of ${DISTRICTS.length}`, sub: 'matched to the California district list' },
+      { label: 'Campuses represented', value: `${intFmt.format(liveModel.campusSeen)} of ${UC_ROWS.length}`, sub: 'configured programs in live data' },
+    ]
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   }
 
   if (coverage.isError) {
-    return <Alert type='error'>Could not load the coverage data for the paper-style heatmap.</Alert>
+    return <Alert type='error'>Could not load the district coverage heatmap data.</Alert>
   }
 
   if (preview) {
     return (
       <div data-export-root>
-        <ModernCoverageMatrix liveModel={liveModel} view='live' labelMode='names' reqMode='paper' />
+        <ModernCoverageMatrix liveModel={liveModel} view='live' labelMode='names'
+          reqMode={reqMode} includePaper={isComputerScience}
+          isComputerScience={isComputerScience} majorLabel={majorLabel} />
       </div>
     )
   }
@@ -531,7 +609,7 @@ export default function PaperDistrictHeatmap({ presentation = false, preview = f
     <Stack gap='section'>
       {/* Controls stay out of PDF/PNG exports — the file should read as a figure. */}
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-        {!presentation && (
+        {!presentation && isComputerScience && (
           <>
             <div className='flex flex-col'>
               <span className='field-label'>Version</span>
@@ -577,24 +655,21 @@ export default function PaperDistrictHeatmap({ presentation = false, preview = f
       {/* Comparison stats are on-screen context, not part of the exported figure. */}
       <div data-export-exclude>
         <StatStrip
-          tiles={[
-            { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: reqMode === 'assist' ? 'per ASSIST-stated minimums' : 'per hand-curated minimums', accent: true },
-            { label: 'Paper complete cells', value: intFmt.format(PAPER_COMPLETE_COUNT), sub: 'baseline · hand-curated minimums' },
-            { label: 'Net vs paper', value: signedFmt.format(net), sub: `${intFmt.format(diff.changed)} changed cells` },
-            { label: 'Matrix agreement', value: `${pctFmt.format(diff.agreementPct)}%`, sub: `${intFmt.format(diff.gained)} gained · ${intFmt.format(diff.lost)} lost` },
-          ]}
+          tiles={statTiles}
         />
       </div>
 
       <div data-export-root className='flex flex-col gap-4'>
-        {version === 'paper'
+        {activeVersion === 'paper'
           ? <PaperMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />
-          : <ModernCoverageMatrix liveModel={liveModel} view={view} labelMode={labelMode} reqMode={reqMode} />}
+          : <ModernCoverageMatrix liveModel={liveModel} view={view} labelMode={labelMode}
+              reqMode={reqMode} includePaper={isComputerScience}
+              isComputerScience={isComputerScience} majorLabel={majorLabel} />}
         <div
           className='flex flex-wrap items-center gap-4'
           data-export-exclude={view === 'diff' ? undefined : 'controls-only'}
         >
-          {view === 'diff' && version === 'paper' && <DifferenceLegend />}
+          {view === 'diff' && activeVersion === 'paper' && <DifferenceLegend />}
           {/* Deliberately quiet: label naming is a reading preference, not an
               analysis control, so it lives under the matrix as plain text. */}
           <button

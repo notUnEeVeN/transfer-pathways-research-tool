@@ -63,7 +63,7 @@ describe('CoverageHeatmap requirement basis', () => {
     expect(screen.getByText(/Each campus is calculated in its own native quarter or semester units/)).toBeTruthy()
   })
 
-  it('keeps both existing minimums modes selectable', () => {
+  it('keeps both existing minimums modes selectable for CS', () => {
     render(<CoverageHeatmap />)
 
     fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
@@ -75,6 +75,38 @@ describe('CoverageHeatmap requirement basis', () => {
       expect.objectContaining({ requirements: 'assist' }),
       expect.any(Object)
     )
+  })
+
+  it('queries Biology by its slug and omits the unsupported paper mode', () => {
+    render(<CoverageHeatmap majorSlug='bio' majorCapabilities={{ transferMinimums: false }} />)
+
+    expect(useCoverage).toHaveBeenCalledWith(
+      expect.objectContaining({ majorSlug: 'bio', requirements: 'degree' }),
+      expect.any(Object)
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
+    expect(screen.getByRole('option', { name: 'ASSIST minimums' })).toBeTruthy()
+    expect(screen.queryByRole('option', { name: 'Hand-curated minimums' })).toBeNull()
+  })
+
+  it('fails closed for non-CS slugs and normalizes stale paper state to degree', () => {
+    const { rerender } = render(<CoverageHeatmap majorSlug='cs' />)
+
+    fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
+    fireEvent.click(screen.getByRole('option', { name: 'Hand-curated minimums' }))
+    expect(useCoverage).toHaveBeenLastCalledWith(
+      expect.objectContaining({ majorSlug: 'cs', requirements: 'paper' }),
+      expect.any(Object)
+    )
+
+    rerender(<CoverageHeatmap majorSlug='bio' />)
+
+    expect(useCoverage).toHaveBeenLastCalledWith(
+      expect.objectContaining({ majorSlug: 'bio', requirements: 'degree' }),
+      expect.any(Object)
+    )
+    expect(screen.getByRole('button', { name: '4-year graduation plan (by units)' })).toBeTruthy()
   })
 })
 

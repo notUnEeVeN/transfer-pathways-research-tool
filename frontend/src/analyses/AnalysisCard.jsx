@@ -21,6 +21,7 @@ import { exportAnalysisCard } from './exportCard'
  *     data-export-exclude nodes; figure-sized single-page PDF).
  *   - Published figures: pass downloadFormats + onDownload to serve the STORED
  *     svg/png/pdf instead of re-capturing.
+ *   - Unavailable analysis states: pass exportable={false} to omit downloads.
  */
 
 // Header-only ghost pill: smaller and lighter than the shared Button primitive
@@ -41,6 +42,7 @@ function DownloadButton({ onClick, disabled, children }) {
 
 export default function AnalysisCard({
   title, source, badge, exportName, children, downloadFormats, onDownload, actions,
+  exportable = true,
 }) {
   const cardRef = useRef(null)
   const [exporting, setExporting] = useState(null) // 'pdf' | 'png' | null
@@ -78,7 +80,7 @@ export default function AnalysisCard({
             downloadFormats.map((fmt) => (
               <DownloadButton key={fmt} onClick={() => onDownload?.(fmt)}>{fmt.toUpperCase()}</DownloadButton>
             ))
-          ) : (
+          ) : exportable ? (
             <>
               <DownloadButton disabled={!!exporting} onClick={() => doExport('pdf')}>
                 {exporting === 'pdf' ? 'Exporting…' : 'PDF'}
@@ -87,12 +89,12 @@ export default function AnalysisCard({
                 {exporting === 'png' ? 'Exporting…' : 'PNG'}
               </DownloadButton>
             </>
-          )}
+          ) : null}
           {actions}
           {badge}
         </div>
       </div>
-      {exportError && !storedDownloads && <Alert type='error'>{exportError}</Alert>}
+      {exportError && !storedDownloads && exportable && <Alert type='error'>{exportError}</Alert>}
       {children}
     </section>
   )

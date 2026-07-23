@@ -18,6 +18,11 @@
  *     provenance: 'ma',                           // Visual-library lane: 'ca' | 'ma' | 'new'
  *     figureNo: 1,                                // source paper's figure number (ports only) -> "MA Fig. 1" pill
  *     source: 'Jiang et al. 2024, Fig. 1',        // paper provenance, optional
+ *     majorScope: {                               // declarative major/data support
+ *       mode: 'selected',
+ *       requiredCapabilities: ['degreeTemplates'],
+ *       datasets: ['articulation agreements', 'four-year degree templates'],
+ *     },
  *     Component: CoverageHeatmap,
  *   }
  *
@@ -56,10 +61,42 @@ import TimeToDegree from './TimeToDegree'
 // TODO(owner): confirm the exact display name to attribute these to.
 export const ANALYSIS_AUTHOR = 'Tybalt Mallet'
 
+const selectedMajor = ({ requiredCapabilities = [], datasets = [], pendingReason } = {}) => ({
+  majorScope: {
+    mode: 'selected',
+    requiredCapabilities,
+    datasets,
+    ...(pendingReason ? { pendingReason } : {}),
+  },
+})
+
+// For the California-paper ports, "selected" also carries a state policy:
+// Computer Science keeps its audited paper/hand-curated/ASSIST comparisons,
+// while every newer major renders one unpinned live ASSIST state. Each port
+// enforces that boundary at its query call and in focused regression tests.
+
+// `pinnedMajor` remains on fixed figures for compatibility with published
+// interactive manifests. New gallery rendering should resolve `majorScope`
+// instead, so a selected-major figure can never silently fall back to CS.
+const fixedComputerScience = ({ reason, datasets = [] }) => ({
+  pinnedMajor: 'cs',
+  majorScope: {
+    mode: 'fixed',
+    slug: 'cs',
+    label: 'Computer Science',
+    reason,
+    datasets,
+  },
+})
+
 export const ANALYSES = [
   {
     id: 'paper-credit-loss',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'caCreditLossArtifact'],
+      datasets: ['ASSIST articulation agreements', 'generated California Figure 1 artifact'],
+      pendingReason: 'The major-specific California Figure 1 artifact must be generated from ASSIST agreements before this visual can run.',
+    }),
     title: 'Credit loss by campus',
     description: 'Compares required transfer coursework with the average number of community college courses students need for each campus choice.',
     provenance: 'ca',
@@ -71,7 +108,10 @@ export const ANALYSES = [
   },
   {
     id: 'paper-district-heatmap',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements'],
+      datasets: ['ASSIST articulation agreements', 'community college districts'],
+    }),
     title: 'Transfer coverage by district',
     description: 'Shows which community college districts offer a complete transfer path to each University of California campus.',
     provenance: 'ca',
@@ -83,9 +123,12 @@ export const ANALYSES = [
   },
   {
     id: 'paper-articulation-histogram',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements'],
+      datasets: ['ASSIST articulation agreements', 'community college districts'],
+    }),
     title: 'Districts by complete campus coverage',
-    description: 'Shows how many community college districts offer complete computer science transfer paths to zero through nine University of California campuses.',
+    description: 'Shows how many community college districts offer a complete transfer path to zero through nine University of California campuses.',
     provenance: 'ca',
     figureNo: 3,
     author_label: ANALYSIS_AUTHOR,
@@ -95,9 +138,12 @@ export const ANALYSES = [
   },
   {
     id: 'paper-articulation-map',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements'],
+      datasets: ['ASSIST articulation agreements', 'California community college district geography'],
+    }),
     title: 'Articulation coverage across California',
-    description: 'Maps each community college district by how many University of California campuses offer a complete computer science transfer path.',
+    description: 'Maps each community college district by how many University of California campuses offer a complete transfer path.',
     provenance: 'ca',
     figureNo: 4,
     author_label: ANALYSIS_AUTHOR,
@@ -106,7 +152,10 @@ export const ANALYSES = [
   },
   {
     id: 'paper-course-barriers',
-    pinnedMajor: 'cs',
+    ...fixedComputerScience({
+      reason: 'This course-level figure needs a redesigned major-specific course organization before it can move beyond Computer Science.',
+      datasets: ['committed California-paper baseline', 'Computer Science course-group mapping'],
+    }),
     title: 'Course gaps by campus',
     description: 'Shows the share of community college districts with no articulated equivalent for each math and computer science course a University of California campus requires for transfer admission.',
     provenance: 'ca',
@@ -118,7 +167,10 @@ export const ANALYSES = [
   },
   {
     id: 'course-type-coverage',
-    pinnedMajor: 'cs',
+    ...fixedComputerScience({
+      reason: 'Course-type rules have only been validated for Computer Science.',
+      datasets: ['articulation agreements', 'Computer Science course-type rules'],
+    }),
     title: 'Transferable requirements by course type',
     description: 'Shows what share of each university computer science degree’s requirements has a community college equivalent, separated into computing, math, science, and other coursework.',
     provenance: 'ma',
@@ -129,7 +181,10 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-credit-rate',
-    pinnedMajor: 'cs',
+    ...fixedComputerScience({
+      reason: 'Associate-degree inputs are currently available only for Computer Science.',
+      datasets: ['associate degrees', 'four-year degree templates'],
+    }),
     title: 'Degree credit toward graduation',
     description: 'Shows what share of complete or lower-division bachelor’s requirements is fulfilled by a computer science associate degree.',
     provenance: 'ma',
@@ -140,7 +195,10 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-extra-units',
-    pinnedMajor: 'cs',
+    ...fixedComputerScience({
+      reason: 'Associate-degree inputs are currently available only for Computer Science.',
+      datasets: ['associate degrees', 'four-year degree templates'],
+    }),
     title: 'Modeled replacement coursework',
     description: 'Estimates how many associate-degree units may need to be replaced because they do not apply to university graduation requirements.',
     provenance: 'ma',
@@ -151,7 +209,11 @@ export const ANALYSES = [
   },
   {
     id: 'coverage-heatmap',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'degreeTemplates'],
+      datasets: ['articulation agreements', 'four-year degree templates'],
+      pendingReason: 'Four-year degree requirements must be gathered before graduation-unit coverage can be modeled.',
+    }),
     title: 'Potential graduation-unit coverage',
     description: 'Shows what share of each university program’s modeled graduation units has a community-college equivalent.',
     provenance: 'ma',
@@ -162,9 +224,12 @@ export const ANALYSES = [
   },
   {
     id: 'income-access',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements'],
+      datasets: ['ASSIST articulation agreements', 'district income and geography'],
+    }),
     title: 'Transfer access and local income',
-    description: 'Compares how many university computer science programs each community college district can fully reach with the income of the area it serves, alongside the district’s population and its distance to the nearest campus.',
+    description: 'Compares how many university programs each community college district can fully reach with the income of the area it serves, alongside the district’s population and its distance to the nearest campus.',
     provenance: 'new',
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-22T11:00:00',
@@ -172,7 +237,10 @@ export const ANALYSES = [
   },
   {
     id: 'multi-campus-pathways',
-    pinnedMajor: 'cs',
+    ...fixedComputerScience({
+      reason: 'This figure is backed by a committed Computer Science pathway snapshot.',
+      datasets: ['committed multi-campus pathway snapshot'],
+    }),
     title: 'Preparation as campus options expand',
     description: 'Shows how modeled courses and regular terms change when students keep one through seven reachable university computer science options open.',
     provenance: 'new',
@@ -183,7 +251,11 @@ export const ANALYSES = [
   },
   {
     id: 'credit-loss',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'agreementPathways'],
+      datasets: ['articulation agreements', 'proof-aware per-agreement pathway solutions'],
+      pendingReason: 'Per-agreement pathways must exclude blocked agreements and record solver optimality before this visual can run for the selected major.',
+    }),
     title: 'Minimum transfer coursework',
     description: 'Shows the fewest courses or units needed to complete each campus transfer agreement.',
     provenance: 'ca',
@@ -193,7 +265,11 @@ export const ANALYSES = [
   },
   {
     id: 'choice-cost',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'agreementPathways'],
+      datasets: ['articulation agreements', 'proof-aware per-agreement pathway solutions'],
+      pendingReason: 'Per-agreement pathways must exclude blocked agreements and record solver optimality before this visual can run for the selected major.',
+    }),
     title: 'Cost of applying to more campuses',
     description: 'Shows how many additional community college courses are needed as students add more campus options.',
     provenance: 'ca',
@@ -203,7 +279,11 @@ export const ANALYSES = [
   },
   {
     id: 'category-gaps',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'courseCategories'],
+      datasets: ['articulation agreements', 'validated course categories'],
+      pendingReason: 'Course categories must be validated for this major before subject gaps can be compared.',
+    }),
     title: 'Missing courses by subject',
     description: 'Shows where community colleges do not offer an equivalent course, organized by campus and subject.',
     provenance: 'ca',
@@ -213,7 +293,11 @@ export const ANALYSES = [
   },
   {
     id: 'complexity',
-    pinnedMajor: 'cs',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'prerequisites'],
+      datasets: ['articulation agreements', 'validated prerequisite concepts'],
+      pendingReason: 'Prerequisite concepts and chains must be validated for this major before pathway complexity can be modeled.',
+    }),
     title: 'Transfer pathway complexity',
     description: 'Shows how prerequisites can delay progress or block students along each transfer pathway.',
     provenance: 'ma',
@@ -224,7 +308,10 @@ export const ANALYSES = [
   },
   {
     id: 'time-to-degree',
-    pinnedMajor: 'cs',
+    ...fixedComputerScience({
+      reason: 'Associate-degree inputs are currently available only for Computer Science.',
+      datasets: ['associate degrees', 'articulation agreements'],
+    }),
     title: 'Associate degree transfer credit',
     description: 'Shows how much of an associate degree counts toward transfer requirements and estimates the cost of units that do not count.',
     provenance: 'ma',

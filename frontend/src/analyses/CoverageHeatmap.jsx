@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Select, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
@@ -328,14 +328,34 @@ function Legend({ reqMode, scale }) {
  * hides its selector. The showcase uses it so a walkthrough cannot land on the
  * minimums lenses, which answer a different question than the figure claims.
  */
-export default function CoverageHeatmap({ presentation = false, majorSlug = 'cs' }) {
+export default function CoverageHeatmap({
+  presentation = false,
+  majorSlug = 'cs',
+  majorCapabilities,
+}) {
   const [rowModeValue, setRowModeValue] = useState('college')
   const [reqMode, setReqMode] = useState('degree')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
+  // Hand-curated website minimums only exist for CS. Prefer the registry's
+  // explicit capability when the caller has it, while failing closed for an
+  // unrecognized/non-CS slug during incremental major-picker plumbing.
+  const supportsPaperMode = majorCapabilities?.transferMinimums
+    ?? String(majorSlug).trim().toLowerCase() === 'cs'
+  const reqModes = supportsPaperMode
+    ? REQ_MODES
+    : REQ_MODES.filter((mode) => mode.value !== 'paper')
+
+  // A major can change while this component stays mounted. Do not carry a
+  // previously selected CS-only paper lens into Biology/Economics requests.
+  useEffect(() => {
+    if (!supportsPaperMode && reqMode === 'paper') setReqMode('degree')
+  }, [reqMode, supportsPaperMode])
+
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
-  const reqModes = REQ_MODES
-  const activeReqMode = reqModes.some((m) => m.value === reqMode) ? reqMode : 'assist'
+  const activeReqMode = presentation
+    ? 'degree'
+    : reqModes.some((m) => m.value === reqMode) ? reqMode : 'degree'
   const coverage = useCoverage(
     { majorSlug, groupBy: rowMode.value, requirements: activeReqMode },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }

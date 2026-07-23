@@ -161,4 +161,33 @@ describe('income and transfer access', () => {
       expect.anything()
     )
   })
+
+  it('uses only the selected Economics ASSIST state without baseline controls', () => {
+    const { container } = render(<IncomeAccess majorSlug='econ' />)
+
+    expect(container.querySelector('[data-control-group="version"]')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Hand-curated' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'ASSIST' })).not.toBeInTheDocument()
+    expect(screen.getByText(
+      'Economics transfer access and local income, district by district'
+    )).toBeInTheDocument()
+    expect(screen.getByText(
+      'Economics programs reachable by local-income quartile'
+    )).toBeInTheDocument()
+    expect(container.textContent).not.toMatch(/richer districts|far more/i)
+
+    expect(useCoverage).toHaveBeenCalledTimes(2)
+    for (const [params] of useCoverage.mock.calls) {
+      expect(params).toEqual({
+        majorSlug: 'econ',
+        groupBy: 'district',
+        requirements: 'assist',
+      })
+    }
+    expect(useCoverage.mock.calls.some(([, options]) => options.enabled === false)).toBe(true)
+    expect(useCoverage.mock.calls.some(([, options]) => options.enabled === true)).toBe(false)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Refresh data' }))
+    expect(refetch).toHaveBeenCalledOnce()
+  })
 })

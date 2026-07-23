@@ -11,30 +11,39 @@ import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
 import { fmtDate } from '../shared/fmtDate'
 import { useAccessMe, useVisualSettings } from '../shared/query/hooks/useAccess'
-import { useDeleteFigure, useEditFigure, useFigures } from '../shared/query/hooks/useData'
+import {
+  useDegreeRequirements, useDeleteFigure, useEditFigure, useFigures,
+} from '../shared/query/hooks/useData'
 import MeasurePanel from '../analyses/MeasurePanel'
 import { measureFor } from '../analyses/measures'
 import { filterBuiltInAnalyses } from './analysisVisibility'
+import { resolveAnalysisAvailability } from './analysisAvailability'
 import { SOURCE_META, figureRefForItem, groupGalleryBySource, sourceForItem } from './provenance'
 import { useMajorChoice } from '../shared/majors/MajorContext'
+import MajorPicker from '../shared/majors/MajorPicker'
 
 export { filterBuiltInAnalyses } from './analysisVisibility'
 
 const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
 
-/**
- * Some figures are fixed to one major regardless of the console's selection —
- * the paper replications, the frozen CS snapshots, and the models that need
- * AS-degree data. Say so, but only when the reader is actually looking at a
- * different major, so the gallery stays quiet in the single-major case.
- */
-function PinnedMajorNotice({ pinnedMajor }) {
-  const { slug, majors } = useMajorChoice('visuals')
-  if (!pinnedMajor || pinnedMajor === slug || majors.length < 2) return null
-  const label = majors.find((m) => m.slug === pinnedMajor)?.label || pinnedMajor
+function AvailabilityBadge({ availability }) {
+  if (!availability) return null
+  const variant = availability.available && !availability.fixed ? 'success' : 'neutral'
+  return <Badge variant={variant}>{availability.label}</Badge>
+}
+
+function AnalysisScopeNotice({ availability, selectedMajor }) {
+  if (!availability?.available) return null
+  if (availability.fixed) {
+    return (
+      <p className='text-caption text-ink-subtle' data-export-exclude>
+        Computer Science reference. This visual is tied to its original audited dataset.
+      </p>
+    )
+  }
   return (
     <p className='text-caption text-ink-subtle' data-export-exclude>
-      Fixed to {label}. This figure does not follow the selected major.
+      Showing {selectedMajor?.label || availability.effectiveMajorSlug} data.
     </p>
   )
 }
@@ -97,11 +106,19 @@ function FigureThumbnail({ fig }) {
   )
 }
 
-function LiveThumbnail({ Component, publicationOptions, figureOnly = false, majorSlug = 'cs' }) {
+function LiveThumbnail({
+  Component,
+  publicationOptions,
+  figureOnly = false,
+  majorSlug = 'cs',
+  majorLabel = '',
+  majorCapabilities = null,
+  unavailableMessage = 'Interactive preview unavailable',
+}) {
   if (!Component) {
     return (
       <div className='absolute inset-0 grid place-items-center px-6 text-center text-caption'>
-        Interactive preview unavailable
+        {unavailableMessage}
       </div>
     )
   }
@@ -114,7 +131,8 @@ function LiveThumbnail({ Component, publicationOptions, figureOnly = false, majo
         transition-transform duration-300 ease-out group-hover:scale-[.341666]'
         style={figureOnly ? { display: 'grid', alignItems: 'center' } : undefined}>
         <Component publicationOptions={publicationOptions || {}}
-          majorSlug={majorSlug} />
+          majorSlug={majorSlug} majorLabel={majorLabel}
+          majorCapabilities={majorCapabilities} />
       </div>
     </div>
   )
@@ -142,7 +160,13 @@ function itemDetails(item, { isAdmin, releasedSet }) {
   }
 }
 
-export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new Set(), onOpen }) {
+export function VisualThumbnailCard({
+  item,
+  isAdmin = false,
+  releasedSet = new Set(),
+  onOpen,
+  selectedMajor = null,
+}) {
   const { previewRef, ready } = useDeferredPreview()
   const details = itemDetails(item, { isAdmin, releasedSet })
   // Ported figures show a "CA Fig. 1" / "MA Fig. 3" pill so the source figure
@@ -155,6 +179,21 @@ export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new S
     : getAnalysisById(figure?.visual?.id)
   const Component = analysis?.PreviewComponent || analysis?.Component || null
   const figureOnlyPreview = Boolean(analysis?.PreviewComponent)
+  const availability = item.kind === 'analysis'
+    ? resolveAnalysisAvailability(item.analysis, selectedMajor)
+    : null
+  const previewComponent = availability && !availability.available ? null : Component
+  // Published interactive figures are frozen publications. Their manifest's
+  // major wins; old manifests predate the field and therefore remain CS.
+  const previewMajorSlug = item.kind === 'figure'
+    ? (figure?.visual?.options?.majorSlug || analysis?.pinnedMajor || 'cs')
+    : availability?.effectiveMajorSlug
+  const previewMajorLabel = item.kind === 'figure'
+    ? (figure?.visual?.options?.majorLabel || '')
+    : (selectedMajor?.label || '')
+  const unavailableMessage = availability && !availability.available
+    ? availability.reason
+    : 'Interactive preview unavailable'
 
   return (
     <article className='group relative surface-card overflow-hidden transition-[border-color,transform]
@@ -168,8 +207,12 @@ export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new S
         )}
         {ready && (figure && figure.publication_type !== 'interactive'
           ? <FigureThumbnail fig={figure} />
-          : <LiveThumbnail Component={Component} publicationOptions={figure?.visual?.options}
-              figureOnly={figureOnlyPreview} majorSlug={analysis?.pinnedMajor || 'cs'} />)}
+          : <LiveThumbnail key={`${item.key}:${previewMajorSlug || availability?.status || 'frozen'}`}
+              Component={previewComponent} publicationOptions={figure?.visual?.options}
+              figureOnly={figureOnlyPreview} majorSlug={previewMajorSlug}
+              majorLabel={previewMajorLabel}
+              majorCapabilities={item.kind === 'analysis' ? selectedMajor?.capabilities : null}
+              unavailableMessage={unavailableMessage} />)}
         {!ready && <div className='absolute inset-0 grid place-items-center'><Spinner /></div>}
         <div className='absolute inset-0 z-10 grid place-items-center bg-primary/0 transition-colors
           duration-200 group-hover:bg-primary/18 group-focus-within:bg-primary/18' aria-hidden='true'>
@@ -188,7 +231,10 @@ export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new S
           <h2 className='min-w-0 flex-1 text-body-strong leading-snug'>
             {details.title}
           </h2>
-          <div className='shrink-0'>{details.badge}</div>
+          <div className='flex shrink-0 flex-col items-end gap-1'>
+            {details.badge}
+            <AvailabilityBadge availability={availability} />
+          </div>
         </div>
         <p className='line-clamp-2 text-caption text-ink-muted'>{details.description}</p>
         <p className='mt-auto truncate text-caption'>{details.source}</p>
@@ -442,6 +488,7 @@ export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSa
   // copies share one renderer instead of drifting into parallel implementations.
   const analysis = getAnalysisById(fig.visual?.id)
   const Component = analysis?.Component || null
+  const frozenMajorSlug = fig.visual?.options?.majorSlug || analysis?.pinnedMajor || 'cs'
 
   return (
     <PublicationCard fig={fig} canModify={canModify} onDelete={onDelete} deleting={deleting}
@@ -449,10 +496,72 @@ export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSa
       {!Component ? (
         <Alert type='error'>This interactive visual renderer is not available in the current application.</Alert>
       ) : (
-        <Component publicationOptions={fig.visual?.options || {}}
-          majorSlug={analysis.pinnedMajor || 'cs'} />
+        <>
+          <p className='text-caption text-ink-subtle' data-export-exclude>
+            Frozen publication · {frozenMajorSlug} data
+          </p>
+          <Component publicationOptions={fig.visual?.options || {}}
+            majorSlug={frozenMajorSlug}
+            majorLabel={fig.visual?.options?.majorLabel || ''} />
+        </>
       )}
     </PublicationCard>
+  )
+}
+
+export function BuiltInAnalysisCard({
+  analysis,
+  selectedMajor,
+  isAdmin = false,
+  releasedSet = new Set(),
+  availability: providedAvailability = null,
+}) {
+  const availability = providedAvailability
+    || resolveAnalysisAvailability(analysis, selectedMajor)
+  const Component = analysis?.Component || null
+  const majorLabel = selectedMajor?.label || selectedMajor?.slug || 'the selected major'
+  const fixedMajorLabel = analysis?.majorScope?.label || analysis?.majorScope?.slug || 'its configured major'
+  const scopeBadge = <AvailabilityBadge availability={availability} />
+
+  return (
+    <AnalysisCard title={analysis.title}
+      source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
+      exportName={`${analysis.id}-${availability.effectiveMajorSlug || selectedMajor?.slug || 'unavailable'}`}
+      exportable={availability.available && !!Component}
+      badge={isAdmin
+        ? (
+          <span className='flex items-center gap-2'>
+            <PublicationBadge published={releasedSet.has(analysis.id)} />
+            {scopeBadge}
+          </span>
+        )
+        : scopeBadge}>
+      {!availability.available ? (
+        <Alert type='info'>
+          <span className='font-[650] text-ink'>
+            {availability.fixed
+              ? `This audited visual is available only for ${fixedMajorLabel}.`
+              : `This visual is not ready for ${majorLabel}.`}
+          </span>
+          {' '}{availability.reason}
+          {!!availability.datasets?.length && (
+            <> Required data: {availability.datasets.join(', ')}.</>
+          )}
+        </Alert>
+      ) : !Component ? (
+        <Alert type='error'>This visual renderer is not available in the current application.</Alert>
+      ) : (
+        <>
+          <AnalysisScopeNotice availability={availability} selectedMajor={selectedMajor} />
+          <Component key={`${analysis.id}:${availability.effectiveMajorSlug}`}
+            majorSlug={availability.effectiveMajorSlug}
+            majorLabel={selectedMajor?.label || ''}
+            majorCapabilities={selectedMajor?.capabilities || null} />
+          {/* Kept out of exports — a downloaded figure should read as a figure. */}
+          <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />
+        </>
+      )}
+    </AnalysisCard>
   )
 }
 
@@ -488,7 +597,9 @@ function SpotlightLegend({ groups, active, pinned, onHover, onLeave, onToggle })
   )
 }
 
-function ProvenanceShelf({ group, dimmed, shelfRef, isAdmin, releasedSet, onOpen }) {
+function ProvenanceShelf({
+  group, dimmed, shelfRef, isAdmin, releasedSet, onOpen, selectedMajor,
+}) {
   const { meta, items } = group
   return (
     <section ref={shelfRef} aria-label={meta.name}
@@ -505,7 +616,8 @@ function ProvenanceShelf({ group, dimmed, shelfRef, isAdmin, releasedSet, onOpen
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
         {items.map((item) => (
           <VisualThumbnailCard key={item.key} item={item} isAdmin={isAdmin}
-            releasedSet={releasedSet} onOpen={() => onOpen(item.key)} />
+            releasedSet={releasedSet} selectedMajor={selectedMajor}
+            onOpen={() => onOpen(item.key)} />
         ))}
       </div>
     </section>
@@ -514,6 +626,18 @@ function ProvenanceShelf({ group, dimmed, shelfRef, isAdmin, releasedSet, onOpen
 
 export default function VisualsPage({ onNavigate = () => {} }) {
   const [selectedKey, setSelectedKey] = useState(null)
+  const {
+    slug: majorSlug,
+    setSlug: setMajorSlug,
+    major: selectedMajor,
+    majors,
+    isLoading: majorsLoading,
+    isError: majorsError,
+  } = useMajorChoice('visuals', { urlParam: 'major' })
+  // /majors initially exposes a CS-only fallback. Do not mount any analysis
+  // against that temporary value: a deep link such as ?major=bio must not fire
+  // a transient CS request before the configured major registry arrives.
+  const analysisMajor = majorsLoading || majorsError ? null : selectedMajor
   const me = useAccessMe()
   const isAdmin = me.data?.role === 'admin'
   const myUid = me.data?.uid || null
@@ -527,7 +651,18 @@ export default function VisualsPage({ onNavigate = () => {} }) {
     [disabledIds, isAdmin, releasedIds, visualSettings.isLoading]
   )
   const releasedSet = useMemo(() => new Set(releasedIds), [releasedIds])
+  const analysisAvailability = useMemo(
+    () => new Map(visibleAnalyses.map((analysis) => [
+      analysis.id,
+      resolveAnalysisAvailability(analysis, analysisMajor),
+    ])),
+    [analysisMajor, visibleAnalyses]
+  )
+  const availableAnalysisCount = [...analysisAvailability.values()]
+    .filter((availability) => availability.available).length
+  const pendingAnalysisCount = analysisAvailability.size - availableAnalysisCount
   const figuresQuery = useFigures()
+  const degreeRequirements = useDegreeRequirements()
   const deleteFigure = useDeleteFigure()
   const editFigure = useEditFigure()
   const figures = figuresQuery.data?.figures || []
@@ -567,8 +702,16 @@ export default function VisualsPage({ onNavigate = () => {} }) {
     ? itemDetails(selectedItem, { isAdmin, releasedSet })
     : null
 
-  const loading = figuresQuery.isLoading || visualSettings.isLoading
-  const failed = figuresQuery.isError || visualSettings.isError
+  const loading = figuresQuery.isLoading || visualSettings.isLoading || majorsLoading
+  const failed = figuresQuery.isError || visualSettings.isError || majorsError
+  const selectedDegreeTemplates = useMemo(
+    () => (degreeRequirements.data?.rows || [])
+      .filter((row) => row.major_slug === majorSlug),
+    [degreeRequirements.data, majorSlug]
+  )
+  const hasUnverifiedDegreeTemplates = selectedDegreeTemplates.some((row) => (
+    String(row.research_status || '').includes('needs_human_verification')
+  ))
 
   const renderDetail = (item) => {
     if (item.kind === 'figure') {
@@ -590,17 +733,11 @@ export default function VisualsPage({ onNavigate = () => {} }) {
     }
 
     const { analysis } = item
-    const Component = analysis.Component
+    const availability = analysisAvailability.get(analysis.id)
+      || resolveAnalysisAvailability(analysis, analysisMajor)
     return (
-      <AnalysisCard title={analysis.title}
-        source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
-        exportName={analysis.id}
-        badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
-        <PinnedMajorNotice pinnedMajor={analysis.pinnedMajor} />
-        <Component majorSlug={analysis.pinnedMajor || 'cs'} />
-        {/* Kept out of exports — a downloaded figure should read as a figure. */}
-        <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />
-      </AnalysisCard>
+      <BuiltInAnalysisCard analysis={analysis} selectedMajor={analysisMajor}
+        isAdmin={isAdmin} releasedSet={releasedSet} availability={availability} />
     )
   }
 
@@ -610,16 +747,73 @@ export default function VisualsPage({ onNavigate = () => {} }) {
         <div>
           <h1 className='text-heading'>Visual library</h1>
           <p className='mt-1 text-body text-ink-muted'>
-            Browse compact previews, then open a visual to explore, edit, or export it.
+            Choose a major once, then browse every ready visual and every clearly marked data gap.
           </p>
         </div>
         {!!gallery.length && (
           <Badge variant='neutral'>{gallery.length} {gallery.length === 1 ? 'visual' : 'visuals'}</Badge>
         )}
       </div>
+      <section className='surface-card flex flex-col gap-4 px-[22px] py-[18px] lg:flex-row lg:items-end'>
+        <div className='min-w-0 flex-1'>
+          <p className='text-label'>Analysis major</p>
+          <p className='mt-1 text-body text-ink-muted'>
+            Reusable visuals follow this selection. Audited registry figures are labeled as fixed;
+            published copies remain frozen to the data used when they were created.
+          </p>
+          {!majorsError && majors.length > 1 && (
+            <p className='mt-1 text-caption text-ink-subtle'>
+              {majors.length} majors are currently onboarded; future majors become available through
+              the same capability checks.
+            </p>
+          )}
+        </div>
+        <div className='flex flex-col gap-2 sm:flex-row sm:items-end'>
+          <div className='min-w-52'>
+            {majorsLoading ? (
+              <span className='inline-flex min-h-9 items-center gap-2 text-caption text-ink-subtle'>
+                <Spinner /> Loading majors…
+              </span>
+            ) : majorsError ? (
+              <span className='inline-flex min-h-9 items-center text-caption text-danger'>
+                Major registry unavailable
+              </span>
+            ) : (
+              <MajorPicker value={majorSlug} onChange={setMajorSlug} className='w-full' />
+            )}
+            {!majorsLoading && !majorsError && majors.length < 2 && (
+              <p className='text-body-strong'>{selectedMajor?.label || majorSlug}</p>
+            )}
+          </div>
+          {!majorsLoading && !majorsError && !!analysisAvailability.size && (
+            <div className='flex min-h-9 items-center gap-2'>
+              <Badge variant='success'>{availableAnalysisCount} analyses ready</Badge>
+              {!!pendingAnalysisCount && (
+                <Badge variant='neutral'>{pendingAnalysisCount} analyses pending or reference-only</Badge>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+      {!majorsLoading && !majorsError && hasUnverifiedDegreeTemplates && (
+        <Alert type='info'>
+          {selectedMajor?.label || majorSlug} graduation templates are AI-researched and linked to
+          official sources, but still await human verification. Treat visuals that use them as provisional.
+        </Alert>
+      )}
       {figuresQuery.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
       {visualSettings.isError && <Alert type='error'>Failed to load built-in visual settings.</Alert>}
-      {loading && !gallery.length && <div className='flex justify-center py-10'><Spinner /></div>}
+      {majorsError && (
+        <Alert type='error'>
+          Failed to load the major registry. No live analysis was started, and the requested major
+          remains in the URL so a reload can retry it safely.
+        </Alert>
+      )}
+      {degreeRequirements.isError && (
+        <Alert type='error'>Could not load graduation-template verification status.</Alert>
+      )}
+      {loading && (!gallery.length || majorsLoading)
+        && <div className='flex justify-center py-10'><Spinner /></div>}
       {!loading && !failed && !gallery.length && (
         <EmptyState icon={ChartBarIcon}
           title={isAdmin ? 'No visuals available' : 'No visuals published yet'}
@@ -628,7 +822,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
             : 'Published visuals will appear here as the team finishes them.'}
           action={isAdmin ? <Button onClick={() => onNavigate('admin')}>Open visual settings</Button> : null} />
       )}
-      {!!groups.length && (
+      {!majorsLoading && !majorsError && !!groups.length && (
         <div className='flex flex-col gap-3'>
           <SpotlightLegend groups={groups} active={activeSource} pinned={pinnedSource}
             onHover={setHoveredSource} onLeave={() => setHoveredSource(null)} onToggle={togglePin} />
@@ -637,7 +831,8 @@ export default function VisualsPage({ onNavigate = () => {} }) {
               <ProvenanceShelf key={group.id} group={group}
                 dimmed={!!activeSource && activeSource !== group.id}
                 shelfRef={(el) => { shelfRefs.current[group.id] = el }}
-                isAdmin={isAdmin} releasedSet={releasedSet} onOpen={setSelectedKey} />
+                isAdmin={isAdmin} releasedSet={releasedSet} selectedMajor={analysisMajor}
+                onOpen={setSelectedKey} />
             ))}
           </div>
         </div>

@@ -86,6 +86,21 @@ describe('articulation coverage map', () => {
     expect(districtIncome(['Nowhere'])).toBeNull()
   })
 
+  it('omits the Computer Science paper baseline when building another major', () => {
+    const model = buildCoverageMapModel(currentRows(), { includePaperBaseline: false })
+
+    expect(model.sameBucket).toBeNull()
+    expect(model.sameExact).toBeNull()
+    expect(model.changed).toEqual([])
+    expect(model.districts.every((district) => (
+      district.paperCount == null
+      && district.paperBucket == null
+      && district.delta == null
+      && district.exactMatch == null
+      && district.bucketMatch == null
+    ))).toBe(true)
+  })
+
   it('zooms smoothly on scroll, keeping the point under the cursor fixed', () => {
     const { container } = render(<ArticulationCoverageMap />)
     const svg = container.querySelector('[data-export-root] svg')
@@ -151,6 +166,8 @@ describe('articulation coverage map', () => {
     const mapSvg = container.querySelector('svg[data-export-width]')
     expect(mapSvg.getAttribute('viewBox')).toBe('0 0 520 680')
     expect(mapSvg.getAttribute('data-export-width')).toBe('520')
+    expect(mapSvg.querySelector('[data-major-label]'))
+      .toHaveTextContent('Major: Computer Science')
     expect(screen.queryByText('Map-class agreement')).not.toBeInTheDocument()
     expect(screen.queryByText('Exact-count agreement')).not.toBeInTheDocument()
     expect(screen.queryByText('Current class totals')).not.toBeInTheDocument()
@@ -190,6 +207,7 @@ describe('articulation coverage map', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Original figure' }))
     expect(screen.getByRole('img', { name: /Original California paper Figure 4/i })).toBeTruthy()
+    expect(container.querySelector('[data-major-label]')).toBeNull()
     expect(screen.getByRole('switch', { name: 'Show differences' })).toBeDisabled()
     expect(screen.queryByRole('button', { name: 'Refresh data' })).not.toBeInTheDocument()
 
@@ -220,5 +238,54 @@ describe('articulation coverage map', () => {
         enabled: true,
       })
     )
+  })
+
+  it('uses only unpinned ASSIST coverage and current-state controls for Biology', () => {
+    const { container } = render(<ArticulationCoverageMap majorSlug='bio' />)
+
+    expect(container.querySelector('[data-control-group="version"]')).toBeNull()
+    expect(container.querySelector('[data-control-group="comparison"]')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Original figure' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Hand-curated' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'ASSIST' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('switch', { name: 'Show differences' })).not.toBeInTheDocument()
+    expect(screen.getByText(/district–campus rows · ASSIST minimums/i)).toBeInTheDocument()
+    const mapSvg = container.querySelector('[data-export-root] svg')
+    expect(mapSvg.querySelector('[data-major-label]'))
+      .toHaveTextContent('Major: Biology')
+    expect(mapSvg.querySelector('title')).toHaveTextContent('Biology: California articulation coverage')
+    expect(mapSvg.querySelector('desc')).toHaveTextContent('for Biology')
+
+    expect(useCoverage).toHaveBeenCalledTimes(2)
+    for (const [params] of useCoverage.mock.calls) {
+      expect(params).toEqual({
+        majorSlug: 'bio',
+        groupBy: 'district',
+        requirements: 'assist',
+      })
+    }
+    expect(useCoverage.mock.calls.some(([, options]) => options.enabled === false)).toBe(true)
+    expect(useCoverage.mock.calls.some(([, options]) => options.enabled === true)).toBe(true)
+
+    const allanHancock = screen.getByRole('img', {
+      name: /Allan Hancock.*5 of 9 University of California campuses fully articulated/i,
+    })
+    expect(allanHancock).not.toHaveAccessibleName(/paper baseline/i)
+    fireEvent.mouseEnter(allanHancock)
+    expect(screen.getByRole('status')).not.toHaveTextContent(/Paper|change \+1/i)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Refresh data' }))
+    expect(refetchAssist).toHaveBeenCalledOnce()
+  })
+
+  it('labels Economics and arbitrary future-major exports without falling back to CS', () => {
+    const view = render(<ArticulationCoverageMap majorSlug='econ' />)
+    const label = () => view.container.querySelector('[data-export-root] [data-major-label]')
+
+    expect(label()).toHaveTextContent('Major: Economics')
+
+    view.rerender(<ArticulationCoverageMap majorSlug='environmental-science' />)
+    expect(label()).toHaveTextContent('Major: Environmental Science')
+    expect(label()).not.toHaveTextContent('Computer Science')
   })
 })

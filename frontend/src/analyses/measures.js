@@ -18,22 +18,22 @@ export const MEASURES = {
   'paper-credit-loss': {
     expression: 'courses added by a campus = community college courses in the pooled optimal pathway that the earlier choices did not already cover',
     grain: 'One bar per UC campus at one position in a four-campus application order, averaged over community college districts.',
-    watchFor: 'Averaged only over districts where the campus is fully articulable at that position, so the bars describe students who can already reach the campus. Courses are identified by name, so a course shared with an earlier choice is counted once — which is why later choices look cheap.',
+    watchFor: 'Averaged only over districts where the campus is fully articulable at that position, so the blue bars describe students who can already reach the campus. The gold ASSIST bar is the required receiver-slot count from one systemwide canonical UC-side template per campus; district composition can change articulation paths but not that denominator. A series or named requirement is one slot unless ASSIST represents it as separate receivers.',
   },
   'paper-district-heatmap': {
-    expression: 'district is complete ⇔ every required course group has at least one fully articulated option somewhere in the district',
-    grain: 'One yes or no per community college district × UC campus.',
-    watchFor: 'Articulation pools across every college in the district, so a complete district is not a promise that any single college offers the whole path. Within a group the test is all-or-nothing: one satisfied option is enough, and a partly satisfied option counts for nothing.',
+    expression: 'district is complete ⇔ every required group or section meets its stated completion rule, including any choose-N minimum, using articulated options pooled across the district',
+    grain: 'One yes or no per community college district × UC campus × selected major.',
+    watchFor: 'Biology and Economics use the ASSIST requirement model only; Computer Science also exposes its historical paper and hand-curated comparison states. Articulation pools across every college in the district, so a complete district is not a promise that any single college offers the whole path.',
   },
   'paper-articulation-histogram': {
     expression: 'bar height at n = number of districts that are complete for exactly n of the nine UC campuses',
     grain: 'One district contributes to exactly one integer bin from zero through nine.',
-    watchFor: 'This is a distribution of the district heatmap’s row totals, so it inherits district-wide pooling across colleges. It shows how common each number of campus options is, but not which campuses or districts produce a bar.',
+    watchFor: 'This is a distribution of the selected major’s district heatmap row totals, so it inherits its requirement source and district-wide pooling. It shows how common each number of campus options is, but not which campuses or districts produce a bar.',
   },
   'paper-articulation-map': {
-    expression: 'district coverage = number of UC campuses for which the district is complete under the paper’s hard-minimum requirement model',
+    expression: 'district coverage = number of UC campuses for which the district is complete under the selected major’s active requirement model',
     grain: 'One count from zero to nine per community college district, displayed in the paper’s 0–3, 4–6, and 7–9 classes.',
-    watchFor: 'The map is a geographic summary of the district heatmap, not a separate coverage calculation. District locations are approximate centroids inherited from the paper pipeline, and the three broad display classes can hide exact-count changes that stay inside the same class.',
+    watchFor: 'The map is a geographic summary of the district heatmap, not a separate coverage calculation. Biology and Economics use ASSIST only; Computer Science retains its historical comparison states. The three broad display classes can hide exact-count changes that stay inside the same class.',
   },
   'paper-course-barriers': {
     expression: 'bar height = districts with no articulated equivalent for that course ÷ all 72 districts',
@@ -61,9 +61,9 @@ export const MEASURES = {
     watchFor: 'The denominator is the whole modeled graduation plan and includes university-only work at zero coverage, so a cell cannot reach 100% unless the program reserves nothing for after transfer. Each campus stays in its own quarter or semester units and is never normalized, so an average across campuses mixes the two systems.',
   },
   'income-access': {
-    expression: 'point = (income of the district’s catchment, campuses whose full transfer requirement the district articulates); the panel is a standardized least-squares fit of campuses on log income, log population and log distance to the nearest campus',
-    grain: 'One point per community college district; the panel is one coefficient per predictor over all districts.',
-    watchFor: 'Ecological and associational: it describes areas, not students, and the fit identifies no cause. Income is a mean per tax return over the ZIP codes nearest the district’s centre — a catchment, not a statutory boundary — so a district near a boundary borrows some of its neighbour’s income. The three predictors are correlated with each other, so read the coefficients as “income still matters alongside these”, not as separate effects.',
+    expression: 'point = (income of the district’s catchment, UC campuses whose full selected-major transfer requirement the district articulates); each quartile bar is the mean campus count for one quarter of districts ordered by income',
+    grain: 'One point per community college district; one summary bar per local-income quartile.',
+    watchFor: 'Ecological and associational: it describes areas, not students, and identifies no cause. Income is a mean per tax return over the ZIP codes nearest the district’s centre — a catchment, not a statutory boundary — so a district near a boundary borrows some of its neighbour’s income. Compare the plotted values rather than assuming that every major has a strong or monotonic income gradient.',
   },
   'multi-campus-pathways': {
     expression: 'row mean at k = first average the jointly optimized, prerequisite-closed course plan for every real k-program portfolio within each eligible district, then average those district means equally',

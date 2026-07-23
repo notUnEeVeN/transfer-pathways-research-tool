@@ -2,6 +2,7 @@ import React, { useId, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { majorLabelFor, majorShortLabelFor } from '../shared/majors/majorLabel'
 import districtIncomeData from '../../../analysis/data/district_income.v1.json'
 import mapGeometry from '../../../analysis/data/paper_articulation_map.json'
 import { bucketFor } from './ArticulationCoverageMap'
@@ -20,6 +21,22 @@ const ASSIST_PARAMS = {
   groupBy: 'district',
   requirements: 'assist',
   pin: 'settings',
+}
+
+function assistParamsFor(majorSlug) {
+  if (majorSlug === 'cs') return ASSIST_PARAMS
+  return {
+    majorSlug,
+    groupBy: 'district',
+    requirements: 'assist',
+  }
+}
+
+function majorNameFor(majorSlug, configuredLabel = '') {
+  return {
+    full: majorLabelFor(majorSlug, configuredLabel),
+    short: majorShortLabelFor(majorSlug, configuredLabel),
+  }
 }
 
 export const REQUIREMENT_VERSIONS = [
@@ -199,11 +216,11 @@ export function standardizedRegression(outcome, predictors) {
 /**
  * District access against the income of the area it serves.
  *
- * Access is the district's count of fully articulated UC computer science
- * programs — the coverage-map measure. Income is the Franchise Tax Board
- * catchment mean. Population and distance to the nearest UC come along because
- * they are the two obvious alternative explanations, and the finding is only
- * interesting if income survives them.
+ * Access is the district's count of fully articulated programs for the
+ * selected major — the coverage-map measure. Income is the Franchise Tax
+ * Board catchment mean. Population and distance to the nearest UC are retained
+ * as contextual covariates; the rendered headings remain descriptive rather
+ * than claiming a relationship that a particular major's data may not show.
  */
 export function buildIncomeAccessModel(rows = []) {
   const campuses = new Map()
@@ -315,7 +332,7 @@ export function jitteredCampuses(campuses, index) {
   return Math.max(0, Math.min(9, campuses + offset))
 }
 
-function ScatterFigure({ model }) {
+function ScatterFigure({ model, majorName }) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-scatter-title`
   const descriptionId = `${id}-scatter-description`
@@ -331,16 +348,16 @@ function ScatterFigure({ model }) {
       aria-labelledby={`${titleId} ${descriptionId}`}
       className='block h-auto w-full' data-export-width={CANVAS.width}
       data-income-figure='scatter' style={{ fontFamily: FONT }}>
-      <title id={titleId}>Richer districts reach more computer science programs</title>
+      <title id={titleId}>{majorName.full} transfer access and local income</title>
       <desc id={descriptionId}>
         One point per California community college district, plotted by the mean income of
-        the area it serves against the number of University of California computer science
+        the area it serves against the number of University of California {majorName.full}
         programs it can fully reach, with the mean of each income quartile joined by a line.
       </desc>
       <rect width={CANVAS.width} height={SCATTER.height} fill='#ffffff' />
 
       <text x={CANVAS.padX} y='46' fontSize='20' fontWeight='600' letterSpacing='-0.3' fill={INK}>
-        Richer districts reach more CS programs, district by district
+        {majorName.short} transfer access and local income, district by district
       </text>
 
       <g aria-hidden='true'>
@@ -425,7 +442,7 @@ function ScatterFigure({ model }) {
   )
 }
 
-function GradientFigure({ model }) {
+function GradientFigure({ model, majorName }) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-gradient-title`
   const descriptionId = `${id}-gradient-description`
@@ -445,7 +462,7 @@ function GradientFigure({ model }) {
       <rect width={CANVAS.width} height={GRADIENT.height} fill='#ffffff' />
 
       <text x={CANVAS.padX} y='46' fontSize='20' fontWeight='600' letterSpacing='-0.3' fill={INK}>
-        Students in higher-income districts can reach far more CS programs
+        {majorName.short} programs reachable by local-income quartile
       </text>
 
       {model.quartiles.map((quartile, index) => {
@@ -496,13 +513,20 @@ function GradientFigure({ model }) {
   )
 }
 
-export default function IncomeAccess() {
+export default function IncomeAccess({ majorSlug = 'cs', majorLabel: configuredMajorLabel = '' }) {
+  const selectedMajorSlug = String(majorSlug || '').trim().toLowerCase() || 'cs'
+  const hasPaperBaseline = selectedMajorSlug === 'cs'
+  const majorName = majorNameFor(selectedMajorSlug, configuredMajorLabel)
   // ASSIST first — see ArticulationCoverageMap; both figures share the control.
   const [version, setVersion] = useState('assist')
   const options = { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
-  const handCurated = useCoverage(HAND_CURATED_PARAMS, options)
-  const assist = useCoverage(ASSIST_PARAMS, options)
-  const coverage = version === 'assist' ? assist : handCurated
+  const handCurated = useCoverage(
+    hasPaperBaseline ? HAND_CURATED_PARAMS : assistParamsFor(selectedMajorSlug),
+    hasPaperBaseline ? options : { ...options, enabled: false }
+  )
+  const assist = useCoverage(assistParamsFor(selectedMajorSlug), options)
+  const activeVersion = hasPaperBaseline ? version : 'assist'
+  const coverage = activeVersion === 'assist' ? assist : handCurated
   const rows = coverage.data?.rows || []
   const model = useMemo(() => buildIncomeAccessModel(rows), [rows])
 
@@ -516,21 +540,23 @@ export default function IncomeAccess() {
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-4' data-export-exclude>
-        <div className='flex flex-col' data-control-group='version'>
-          <span className='field-label'>Transfer requirements</span>
-          <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {REQUIREMENT_VERSIONS.map((item) => (
-              <button key={item.value} type='button' onClick={() => setVersion(item.value)}
-                className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  version === item.value
-                    ? 'bg-primary-soft text-primary'
-                    : 'text-ink-muted hover:bg-surface-hover'
-                }`}>
-                {item.label}
-              </button>
-            ))}
+        {hasPaperBaseline && (
+          <div className='flex flex-col' data-control-group='version'>
+            <span className='field-label'>Transfer requirements</span>
+            <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
+              {REQUIREMENT_VERSIONS.map((item) => (
+                <button key={item.value} type='button' onClick={() => setVersion(item.value)}
+                  className={`px-3 text-button border-r border-border last:border-r-0 ${
+                    version === item.value
+                      ? 'bg-primary-soft text-primary'
+                      : 'text-ink-muted hover:bg-surface-hover'
+                  }`}>
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         <span className='text-caption text-ink-subtle'>
           Income: {INCOME_SOURCE.source.publisher}, taxable year {INCOME_SOURCE.taxableYear}
         </span>
@@ -545,10 +571,10 @@ export default function IncomeAccess() {
           off it. Both export together and share every design token. */}
       <div data-export-root className='flex flex-col gap-4'>
         <div className='surface-card overflow-hidden bg-white'>
-          <ScatterFigure model={model} />
+          <ScatterFigure model={model} majorName={majorName} />
         </div>
         <div className='surface-card overflow-hidden bg-white'>
-          <GradientFigure model={model} />
+          <GradientFigure model={model} majorName={majorName} />
         </div>
       </div>
 

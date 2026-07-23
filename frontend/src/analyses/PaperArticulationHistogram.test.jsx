@@ -92,6 +92,8 @@ describe('paper articulation histogram', () => {
     expect(modern.getAttribute('viewBox')).toBe('0 0 1240 698')
     expect(modern.style.fontFamily).toContain('Hanken Grotesk')
     expect(modern.querySelector('path[fill="#2E5C8A"]')).toBeTruthy()
+    expect(modern.querySelector('[data-major-label]'))
+      .toHaveTextContent('Major: Computer Science')
     expect(modern.querySelector('[data-histogram-value-label]')?.getAttribute('font-size')).toBe('16')
     expect([...modern.querySelectorAll('text')].map((node) => node.textContent))
       .not.toContain('Distribution of complete campus articulation')
@@ -99,14 +101,90 @@ describe('paper articulation histogram', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Paper baseline' }))
     expect(container.querySelector('[data-modern-california-figure]')).toBeNull()
     expect(container.querySelector('svg[data-export-width="960"]')).toBeTruthy()
+    expect(container.querySelector('[data-major-label]')).toBeNull()
   })
 
   it('exports a figure-only current-data preview', () => {
-    const { container } = render(<PaperArticulationHistogramPreview />)
+    const { container } = render(<PaperArticulationHistogramPreview majorSlug='bio' />)
+    const modern = container.querySelector('[data-modern-california-figure="coverage-distribution"]')
 
-    expect(container.querySelector('[data-modern-california-figure="coverage-distribution"]')).toBeTruthy()
+    expect(modern).toBeTruthy()
+    expect(modern.querySelector('[data-major-label]'))
+      .toHaveTextContent('Major: Biology')
+    expect(modern.querySelector('title')).toHaveTextContent('Biology: distribution of complete campus articulation')
+    expect(modern.querySelector('desc')).toHaveTextContent('for Biology')
     expect(container.querySelector('[data-export-exclude]')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Refresh data' })).not.toBeInTheDocument()
+  })
+
+  it('uses only Biology ASSIST coverage and hides paper/version/difference controls', () => {
+    const { container } = render(<PaperArticulationHistogram majorSlug='bio' />)
+
+    expect(useCoverage).toHaveBeenCalledOnce()
+    expect(useCoverage).toHaveBeenCalledWith(
+      { majorSlug: 'bio', groupBy: 'district', requirements: 'assist' },
+      expect.objectContaining({ refetchOnWindowFocus: false, refetchInterval: false })
+    )
+    expect(container.querySelector('[data-modern-california-figure="coverage-distribution"]')).toBeTruthy()
+    expect(container.querySelector('[data-export-root] [data-major-label]'))
+      .toHaveTextContent('Major: Biology')
+    expect(container.querySelector('svg[data-export-width="960"]')).toBeNull()
+    expect(screen.queryByText('Version')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Current data' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('switch', { name: 'Show differences' })).not.toBeInTheDocument()
+    expect(screen.getByText(/district–campus rows · ASSIST-stated requirements/)).toBeTruthy()
+    expect(screen.queryByText('Added since paper')).not.toBeInTheDocument()
+
+    // Bin 8 is lower in this selected-major model than in the frozen CS paper
+    // model. Its visible label must still follow its own bar, not that hidden
+    // comparison value.
+    const bin = container.querySelector('[data-histogram-bin="8"]')
+    const barPath = bin.querySelector('path').getAttribute('d')
+    const barTop = Number(/Q\s+\S+\s+([\d.]+)/.exec(barPath)?.[1])
+    const labelY = Number(bin.querySelector('[data-histogram-value-label]').getAttribute('y'))
+    expect(labelY).toBeCloseTo(barTop - 10, 5)
+  })
+
+  it('does not carry a selected CS paper state into Economics', () => {
+    const view = render(<PaperArticulationHistogram majorSlug='cs' />)
+    fireEvent.click(screen.getByRole('button', { name: 'Paper baseline' }))
+    expect(view.container.querySelector('svg[data-export-width="960"]')).toBeTruthy()
+
+    useCoverage.mockClear()
+    view.rerender(<PaperArticulationHistogram majorSlug='econ' />)
+
+    expect(view.container.querySelector('svg[data-export-width="960"]')).toBeNull()
+    expect(view.container.querySelector('[data-modern-california-figure="coverage-distribution"]')).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
+    expect(useCoverage).toHaveBeenCalledOnce()
+    expect(useCoverage).toHaveBeenCalledWith(
+      { majorSlug: 'econ', groupBy: 'district', requirements: 'assist' },
+      expect.any(Object)
+    )
+  })
+
+  it('forwards Economics through the current-data gallery preview', () => {
+    const { container } = render(<PaperArticulationHistogramPreview majorSlug='econ' />)
+
+    expect(useCoverage).toHaveBeenCalledOnce()
+    expect(useCoverage).toHaveBeenCalledWith(
+      { majorSlug: 'econ', groupBy: 'district', requirements: 'assist' },
+      expect.any(Object)
+    )
+    expect(container.querySelector('[data-major-label]'))
+      .toHaveTextContent('Major: Economics')
+  })
+
+  it('turns an arbitrary future slug into a truthful export label', () => {
+    const { container } = render(
+      <PaperArticulationHistogramPreview majorSlug='environmental-science' />
+    )
+
+    expect(container.querySelector('[data-major-label]'))
+      .toHaveTextContent('Major: Environmental Science')
+    expect(container.querySelector('[data-major-label]'))
+      .not.toHaveTextContent('Computer Science')
   })
 })

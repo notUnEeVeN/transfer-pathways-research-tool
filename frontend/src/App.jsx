@@ -31,6 +31,7 @@ import {
 } from '@frontend/query/hooks/useAudit'
 import { qk } from '@frontend/query/keys'
 import apiClient from '@frontend/api/apiClient'
+import { readUrlParam, writeUrlParam } from './shared/urlState'
 
 /**
  * Transfer Pathways Research Console — web port of the internal desktop audit tool.
@@ -150,10 +151,52 @@ function Shell() {
 
 // The authenticated, approved console. Reached only through the gate above, so
 // access is guaranteed here — every view can fetch without a per-view guard.
+function availableConsoleViews(role) {
+  return new Set([
+    'data',
+    ...(SHOWCASE_ENABLED ? ['showcase'] : []),
+    'visuals',
+    'audit',
+    'tasks',
+    'api',
+    ...(role === 'admin' ? ['admin'] : []),
+  ])
+}
+
+function safeConsoleView(candidate, role) {
+  return availableConsoleViews(role).has(candidate) ? candidate : 'data'
+}
+
 function Console({ role, user }) {
-  const [view, setView] = useState('data')
+  const [view, setViewState] = useState(() => safeConsoleView(readUrlParam('view'), role))
   const [auditTab, setAuditTab] = useState('judge') // judge | review | stats
   const [filter, setFilter] = useState(DEFAULT_FILTER)
+
+  const setView = useCallback((candidate) => {
+    const nextView = safeConsoleView(candidate, role)
+    setViewState(nextView)
+    // Data is the landing view, so keep its URL canonical and compact.
+    writeUrlParam('view', nextView === 'data' ? null : nextView)
+  }, [role])
+
+  useEffect(() => {
+    const syncViewFromUrl = () => {
+      const requestedView = readUrlParam('view')
+      const nextView = safeConsoleView(requestedView, role)
+      setViewState(nextView)
+
+      // Remove explicit `data`, invalid values, and views the current role
+      // cannot access. replaceState preserves Back/Forward semantics.
+      const canonicalParam = nextView === 'data' ? null : nextView
+      if (requestedView !== canonicalParam) {
+        writeUrlParam('view', canonicalParam, { replace: true })
+      }
+    }
+
+    syncViewFromUrl()
+    window.addEventListener('popstate', syncViewFromUrl)
+    return () => window.removeEventListener('popstate', syncViewFromUrl)
+  }, [role])
 
   // Eagerly run /audit/bootstrap so the first visit to Review and Stats is
   // warm — react-query dedupes with the Stats view's own call.

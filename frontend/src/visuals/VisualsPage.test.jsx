@@ -2,7 +2,8 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import {
-  FigureCard, InteractiveFigureCard, VisualThumbnailCard, filterBuiltInAnalyses,
+  BuiltInAnalysisCard, FigureCard, InteractiveFigureCard, VisualThumbnailCard,
+  filterBuiltInAnalyses,
 } from './VisualsPage'
 import { ANALYSES, getAnalysisById } from '../analyses/registry'
 import apiClient from '../shared/api/apiClient'
@@ -136,8 +137,32 @@ describe('built-in visual registry', () => {
     ])
   })
 
-  it('pins every current figure to the canonical CS major', () => {
-    expect(ANALYSES.every((analysis) => analysis.pinnedMajor === 'cs')).toBe(true)
+  it('declares reusable and fixed-major figures without an implicit CS fallback', () => {
+    expect(ANALYSES.every((analysis) => analysis.majorScope)).toBe(true)
+
+    const selected = ANALYSES
+      .filter((analysis) => analysis.majorScope.mode === 'selected')
+      .map((analysis) => analysis.id)
+    expect(selected).toEqual([
+      'paper-credit-loss',
+      'paper-district-heatmap',
+      'paper-articulation-histogram',
+      'paper-articulation-map',
+      'coverage-heatmap',
+      'income-access',
+      'credit-loss',
+      'choice-cost',
+      'category-gaps',
+      'complexity',
+    ])
+
+    const fixed = ANALYSES.filter((analysis) => analysis.majorScope.mode === 'fixed')
+    expect(fixed.every((analysis) => (
+      analysis.majorScope.slug === 'cs' && analysis.pinnedMajor === 'cs'
+    ))).toBe(true)
+    expect(ANALYSES
+      .filter((analysis) => analysis.majorScope.mode === 'selected')
+      .every((analysis) => analysis.pinnedMajor == null)).toBe(true)
   })
 
   it('uses clean, plain-language titles and descriptions in the gallery', () => {
@@ -201,9 +226,17 @@ describe('built-in visual registry', () => {
 })
 
 describe('visual gallery thumbnails', () => {
+  const biology = {
+    slug: 'bio',
+    label: 'Biology',
+    capabilities: { degreeTemplates: true, courseCategories: false, prerequisites: false },
+  }
+
   it('shows compact metadata and opens the full visual from one accessible target', () => {
     const onOpen = vi.fn()
-    const Preview = () => <div data-testid='live-preview'>Preview contents</div>
+    const Preview = ({ majorSlug }) => (
+      <div data-testid='live-preview' data-major={majorSlug}>Preview contents</div>
+    )
     const item = {
       kind: 'analysis',
       key: 'analysis:sample',
@@ -213,16 +246,18 @@ describe('visual gallery thumbnails', () => {
         description: 'A compact description for the visual library.',
         author_label: 'Researcher',
         published_at: '2026-07-18T09:00:00',
+        majorScope: { mode: 'selected', requiredCapabilities: [], datasets: [] },
         Component: Preview,
       },
     }
 
     render(<VisualThumbnailCard item={item} isAdmin releasedSet={new Set(['sample'])}
-      onOpen={onOpen} />)
+      selectedMajor={biology} onOpen={onOpen} />)
 
     expect(screen.getByText('A compact description for the visual library.')).toBeTruthy()
     expect(screen.getByText('Published')).toBeTruthy()
-    expect(screen.getByTestId('live-preview')).toBeTruthy()
+    expect(screen.getByTestId('live-preview')).toHaveAttribute('data-major', 'bio')
+    expect(screen.getByText('Biology available')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Open Sample transfer visual' }))
     expect(onOpen).toHaveBeenCalledOnce()
   })
@@ -239,14 +274,114 @@ describe('visual gallery thumbnails', () => {
         description: 'A visual with dedicated thumbnail artwork.',
         author_label: 'Researcher',
         published_at: '2026-07-18T09:00:00',
+        majorScope: { mode: 'selected', requiredCapabilities: [], datasets: [] },
         Component: Full,
         PreviewComponent: Preview,
       },
     }
 
-    render(<VisualThumbnailCard item={item} onOpen={vi.fn()} />)
+    render(<VisualThumbnailCard item={item} selectedMajor={biology} onOpen={vi.fn()} />)
 
     expect(screen.getByTestId('figure-preview')).toBeTruthy()
     expect(screen.queryByTestId('full-component')).not.toBeInTheDocument()
+  })
+
+  it('keeps an unsupported reference visible without mounting its CS renderer', () => {
+    const FixedRenderer = vi.fn(() => <div data-testid='fixed-renderer'>CS data</div>)
+    const item = {
+      kind: 'analysis',
+      key: 'analysis:fixed-sample',
+      analysis: {
+        id: 'fixed-sample',
+        title: 'Fixed sample',
+        description: 'A fixed Computer Science reference.',
+        author_label: 'Researcher',
+        published_at: '2026-07-18T09:00:00',
+        pinnedMajor: 'cs',
+        majorScope: {
+          mode: 'fixed', slug: 'cs', label: 'Computer Science',
+          reason: 'Only the audited Computer Science baseline exists.',
+          datasets: ['audited baseline'],
+        },
+        Component: FixedRenderer,
+      },
+    }
+
+    render(<VisualThumbnailCard item={item} selectedMajor={biology} onOpen={vi.fn()} />)
+
+    expect(screen.getByText('Computer Science only')).toBeTruthy()
+    expect(screen.getByText('Only the audited Computer Science baseline exists.')).toBeTruthy()
+    expect(screen.queryByTestId('fixed-renderer')).not.toBeInTheDocument()
+    expect(FixedRenderer).not.toHaveBeenCalled()
+  })
+
+  it('passes the selected major through the full detail renderer', () => {
+    const Renderer = vi.fn(({ majorSlug, majorCapabilities }) => (
+      <div data-testid='major-detail' data-major={majorSlug}
+        data-templates={String(majorCapabilities.degreeTemplates)} />
+    ))
+    const analysis = {
+      id: 'dynamic-detail',
+      title: 'Dynamic detail',
+      description: 'A reusable major-aware visual.',
+      author_label: 'Researcher',
+      published_at: '2026-07-18T09:00:00',
+      majorScope: { mode: 'selected', requiredCapabilities: ['degreeTemplates'] },
+      Component: Renderer,
+    }
+
+    render(<BuiltInAnalysisCard analysis={analysis} selectedMajor={biology} />)
+
+    expect(screen.getByTestId('major-detail')).toHaveAttribute('data-major', 'bio')
+    expect(screen.getByTestId('major-detail')).toHaveAttribute('data-templates', 'true')
+    expect(screen.getByText('Showing Biology data.')).toBeTruthy()
+  })
+
+  it('explains pending detail data without mounting a renderer', () => {
+    const Renderer = vi.fn(() => <div data-testid='pending-detail'>Wrong data</div>)
+    const analysis = {
+      id: 'pending-detail',
+      title: 'Pending detail',
+      description: 'A visual waiting for categories.',
+      author_label: 'Researcher',
+      published_at: '2026-07-18T09:00:00',
+      majorScope: {
+        mode: 'selected',
+        requiredCapabilities: ['courseCategories'],
+        pendingReason: 'Biology categories require validation.',
+        datasets: ['validated course categories'],
+      },
+      Component: Renderer,
+    }
+
+    render(<BuiltInAnalysisCard analysis={analysis} selectedMajor={biology} />)
+
+    expect(screen.getByText(/Biology categories require validation/)).toBeTruthy()
+    expect(screen.getByText(/Required data: validated course categories/)).toBeTruthy()
+    expect(screen.queryByTestId('pending-detail')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'PDF' })).not.toBeInTheDocument()
+    expect(Renderer).not.toHaveBeenCalled()
+  })
+
+  it('describes fixed detail as an audited reference rather than future pending work', () => {
+    const Renderer = vi.fn(() => <div data-testid='fixed-detail'>Wrong data</div>)
+    const analysis = {
+      id: 'fixed-detail',
+      title: 'Fixed detail',
+      description: 'An audited reference.',
+      author_label: 'Researcher',
+      published_at: '2026-07-18T09:00:00',
+      majorScope: {
+        mode: 'fixed', slug: 'cs', label: 'Computer Science',
+        reason: 'The published baseline remains fixed.',
+      },
+      Component: Renderer,
+    }
+
+    render(<BuiltInAnalysisCard analysis={analysis} selectedMajor={biology} />)
+
+    expect(screen.getByText(/audited visual is available only for Computer Science/)).toBeTruthy()
+    expect(screen.queryByTestId('fixed-detail')).not.toBeInTheDocument()
+    expect(Renderer).not.toHaveBeenCalled()
   })
 })

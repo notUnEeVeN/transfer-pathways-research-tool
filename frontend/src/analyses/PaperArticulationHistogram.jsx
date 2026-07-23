@@ -2,13 +2,14 @@ import React, { useId, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { majorLabelFor } from '../shared/majors/majorLabel'
 import { buildCoverageMapModel } from './ArticulationCoverageMap'
 import {
   CA_DIFFERENCE_COLORS, CA_FIGURE,
 } from './californiaFigureStyle'
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
 
-const COVERAGE_PARAMS = {
+const CS_COVERAGE_PARAMS = {
   majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'paper',
@@ -148,7 +149,9 @@ function HistogramFigure({ model, paperModel, version, differences }) {
             const y = yScale(frequency, yMax)
             const height = PLOT.bottom - y
             const paperY = yScale(paperFrequency, yMax)
-            const comparisonTop = Math.min(y, paperY)
+            // A frozen CS paper value must not affect a selected-major ASSIST
+            // figure unless the comparison overlay is actually enabled.
+            const comparisonTop = differences ? Math.min(y, paperY) : y
             const names = bin.districts.map((district) => district.name).join(', ')
             const comparison = differences && delta !== 0
               ? `. Paper baseline: ${paperFrequency}; change: ${delta > 0 ? '+' : ''}${delta}`
@@ -259,7 +262,7 @@ function ModernHistogramLegend() {
  * baseline deliberately continues through HistogramFigure above so the port
  * remains a byte-for-byte visual reference rather than inheriting this skin.
  */
-function ModernHistogramFigure({ model, paperModel, differences = false }) {
+function ModernHistogramFigure({ model, paperModel, differences = false, majorLabel = null }) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-modern-histogram-title`
   const descriptionId = `${id}-modern-histogram-description`
@@ -280,12 +283,20 @@ function ModernHistogramFigure({ model, paperModel, differences = false }) {
         data-modern-california-figure='coverage-distribution'
         className='block h-auto w-full' data-export-width={width}
         style={{ fontFamily: CA_FIGURE.fontFamily }}>
-        <title id={titleId}>Distribution of complete campus articulation by district</title>
+        <title id={titleId}>
+          {majorLabel ? `${majorLabel}: ` : ''}distribution of complete campus articulation by district
+        </title>
         <desc id={descriptionId}>
           Current distribution of California community college districts by the number
-          of University of California campuses with complete articulation.
+          of University of California campuses with complete articulation for {majorLabel || 'the selected major'}.
         </desc>
         <rect width={width} height={height} fill={CA_FIGURE.background} />
+        {majorLabel && (
+          <text x='36' y='30' fontSize='14' fontWeight='600' fill={CA_FIGURE.ink}
+            data-major-label>
+            Major: {majorLabel}
+          </text>
+        )}
         {differences && <ModernHistogramLegend />}
 
         <g aria-hidden='true'>
@@ -313,7 +324,9 @@ function ModernHistogramFigure({ model, paperModel, differences = false }) {
             const y = valueY(frequency)
             const barHeight = plot.bottom - y
             const paperY = valueY(paperFrequency)
-            const comparisonTop = Math.min(y, paperY)
+            // Keep the CS paper distribution entirely out of single-state
+            // ASSIST geometry; it matters only when differences are visible.
+            const comparisonTop = differences ? Math.min(y, paperY) : y
             const names = bin.districts.map((district) => district.name).join(', ')
             const comparison = differences && delta !== 0
               ? `. Paper baseline: ${paperFrequency}; change: ${delta > 0 ? '+' : ''}${delta}`
@@ -371,8 +384,20 @@ function ModernHistogramFigure({ model, paperModel, differences = false }) {
   )
 }
 
-function useHistogramModels() {
-  const coverage = useCoverage(COVERAGE_PARAMS, {
+function useHistogramModels(majorSlug = 'cs', configuredMajorLabel = '') {
+  const selectedMajorSlug = String(majorSlug || '').trim().toLowerCase() || 'cs'
+  const isComputerScience = selectedMajorSlug === 'cs'
+  // Figure 3's frozen comparison is defined against the CS paper baseline.
+  // Every other major uses its own live ASSIST agreement surface, without a
+  // compatibility pin or hand-curated/paper requirements request.
+  const coverageParams = isComputerScience
+    ? CS_COVERAGE_PARAMS
+    : {
+      majorSlug: selectedMajorSlug,
+      groupBy: 'district',
+      requirements: 'assist',
+    }
+  const coverage = useCoverage(coverageParams, {
     staleTime: 0,
     refetchOnWindowFocus: false,
     refetchInterval: false,
@@ -380,23 +405,37 @@ function useHistogramModels() {
   const rows = coverage.data?.rows || []
   const paperModel = useMemo(() => buildPaperArticulationHistogramModel(), [])
   const currentModel = useMemo(() => buildArticulationHistogramModel(rows), [rows])
-  return { coverage, rows, paperModel, currentModel }
+  return {
+    coverage, rows, paperModel, currentModel, isComputerScience,
+    majorLabel: majorLabelFor(selectedMajorSlug, configuredMajorLabel),
+  }
 }
 
 /** Figure-only gallery thumbnail, intentionally pinned to current data. */
-export function PaperArticulationHistogramPreview() {
-  const { coverage, paperModel, currentModel } = useHistogramModels()
+export function PaperArticulationHistogramPreview({ majorSlug = 'cs', majorLabel: configuredMajorLabel = '' }) {
+  const { coverage, paperModel, currentModel, majorLabel } = useHistogramModels(
+    majorSlug, configuredMajorLabel
+  )
   if (coverage.isLoading) return <div className='h-full grid place-items-center'><Spinner /></div>
   if (coverage.isError) return <Alert type='error'>Could not load district articulation coverage.</Alert>
-  return <ModernHistogramFigure model={currentModel} paperModel={paperModel} />
+  return <ModernHistogramFigure model={currentModel} paperModel={paperModel}
+    majorLabel={majorLabel} />
 }
 
-export default function PaperArticulationHistogram() {
+export default function PaperArticulationHistogram({
+  majorSlug = 'cs',
+  majorLabel: configuredMajorLabel = '',
+}) {
   const [version, setVersion] = useState('current')
   const [showDiff, setShowDiff] = useState(false)
-  const { coverage, rows, paperModel, currentModel } = useHistogramModels()
-  const model = version === 'paper' ? paperModel : currentModel
-  const diffOn = version === 'current' && showDiff
+  const {
+    coverage, rows, paperModel, currentModel, isComputerScience, majorLabel,
+  } = useHistogramModels(majorSlug, configuredMajorLabel)
+  // A component can survive a page-level major change. Paper state never
+  // carries into Biology/Economics, even if it was selected moments earlier.
+  const activeVersion = isComputerScience ? version : 'current'
+  const model = activeVersion === 'paper' ? paperModel : currentModel
+  const diffOn = isComputerScience && activeVersion === 'current' && showDiff
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -409,34 +448,38 @@ export default function PaperArticulationHistogram() {
     <Stack gap='section'>
       <div className='surface-card p-4' data-export-exclude>
         <div className='flex flex-col gap-4 lg:flex-row lg:items-end'>
-          <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6'>
-            <div className='flex flex-col' data-control-group='version'>
-              <span className='field-label'>Version</span>
-              <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
-                {VERSIONS.map((item) => (
-                  <button key={item.value} type='button' onClick={() => setVersion(item.value)}
-                    className={`px-3 text-button border-r border-border last:border-r-0 ${
-                      version === item.value
-                        ? 'bg-primary-soft text-primary'
-                        : 'text-ink-muted hover:bg-surface-hover'
-                    }`}>
-                    {item.label}
-                  </button>
-                ))}
+          {isComputerScience && (
+            <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6'>
+              <div className='flex flex-col' data-control-group='version'>
+                <span className='field-label'>Version</span>
+                <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
+                  {VERSIONS.map((item) => (
+                    <button key={item.value} type='button' onClick={() => setVersion(item.value)}
+                      className={`px-3 text-button border-r border-border last:border-r-0 ${
+                        activeVersion === item.value
+                          ? 'bg-primary-soft text-primary'
+                          : 'text-ink-muted hover:bg-surface-hover'
+                      }`}>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className='flex flex-col' data-control-group='comparison'>
+                <span className='field-label'>Comparison</span>
+                <div className='flex h-9 items-center'>
+                  <SwitchField label='Show differences' checked={diffOn}
+                    onChange={() => setShowDiff((shown) => !shown)} disabled={activeVersion === 'paper'} />
+                </div>
               </div>
             </div>
-            <div className='flex flex-col' data-control-group='comparison'>
-              <span className='field-label'>Comparison</span>
-              <div className='flex h-9 items-center'>
-                <SwitchField label='Show differences' checked={diffOn}
-                  onChange={() => setShowDiff((shown) => !shown)} disabled={version === 'paper'} />
-              </div>
-            </div>
-          </div>
+          )}
           <div className='flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between lg:ml-auto lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0'
             data-control-group='data'>
             <span className='text-caption text-ink-subtle'>
-              {intFmt.format(rows.length)} district–campus rows · paper-matched requirements
+              {intFmt.format(rows.length)} district–campus rows · {isComputerScience
+                ? 'paper-matched requirements'
+                : 'ASSIST-stated requirements'}
             </span>
             <Button className='self-start sm:self-auto' variant='secondary'
               leadingIcon={ArrowPathIcon} loading={coverage.isFetching && !coverage.isLoading}
@@ -447,11 +490,11 @@ export default function PaperArticulationHistogram() {
         </div>
       </div>
       <div data-export-root>
-        {version === 'paper'
+        {activeVersion === 'paper'
           ? <HistogramFigure model={model} paperModel={paperModel}
-              version={version} differences={false} />
+              version={activeVersion} differences={false} />
           : <ModernHistogramFigure model={model} paperModel={paperModel}
-              differences={diffOn} />}
+              differences={diffOn} majorLabel={majorLabel} />}
       </div>
     </Stack>
   )

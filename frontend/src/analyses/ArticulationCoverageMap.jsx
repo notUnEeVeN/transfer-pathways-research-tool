@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { majorLabelFor } from '../shared/majors/majorLabel'
 import mapGeometry from '../../../analysis/data/paper_articulation_map.json'
 import { districtIncome, formatIncome } from '../shared/countyIncome'
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
@@ -19,6 +20,15 @@ const ASSIST_PARAMS = {
   groupBy: 'district',
   requirements: 'assist',
   pin: 'settings',
+}
+
+function assistParamsFor(majorSlug) {
+  if (majorSlug === 'cs') return ASSIST_PARAMS
+  return {
+    majorSlug,
+    groupBy: 'district',
+    requirements: 'assist',
+  }
 }
 
 const VERSIONS = [
@@ -127,8 +137,9 @@ function paperCount(districtIndex) {
   return UC_ROWS.reduce((count, campus) => count + (campus.bits[districtIndex] === '1' ? 1 : 0), 0)
 }
 
-/** Build current counts while retaining the paper baseline and real covered-campus codes. */
-export function buildCoverageMapModel(rows = []) {
+/** Build current counts and real covered-campus codes. The paper comparison is
+ * optional because that hand-curated baseline exists only for Computer Science. */
+export function buildCoverageMapModel(rows = [], { includePaperBaseline = true } = {}) {
   const completeCampuses = new Map()
   const countiesByDistrict = new Map()
   let ignoredRows = 0
@@ -158,9 +169,9 @@ export function buildCoverageMapModel(rows = []) {
     const coveredCampusCodes = [...(completeCampuses.get(district.index)?.values() || [])]
       .sort(compareCampusCodes)
     const currentCount = coveredCampusCodes.length
-    const baselineCount = paperCount(district.index)
+    const baselineCount = includePaperBaseline ? paperCount(district.index) : null
     const bucket = bucketFor(currentCount)
-    const paperBucket = bucketFor(baselineCount)
+    const paperBucket = includePaperBaseline ? bucketFor(baselineCount) : null
     const counties = [...(countiesByDistrict.get(district.index) || [])].sort()
     return {
       ...district,
@@ -170,11 +181,11 @@ export function buildCoverageMapModel(rows = []) {
       currentCount,
       coveredCampusCodes,
       paperCount: baselineCount,
-      delta: currentCount - baselineCount,
+      delta: includePaperBaseline ? currentCount - baselineCount : null,
       bucket,
       paperBucket,
-      exactMatch: currentCount === baselineCount,
-      bucketMatch: bucket.key === paperBucket.key,
+      exactMatch: includePaperBaseline ? currentCount === baselineCount : null,
+      bucketMatch: includePaperBaseline ? bucket.key === paperBucket.key : null,
     }
   })
 
@@ -187,9 +198,15 @@ export function buildCoverageMapModel(rows = []) {
     districts,
     mapped: districts.filter((district) => Number.isFinite(district.latitude)
       && Number.isFinite(district.longitude)).length,
-    sameBucket: districts.filter((district) => district.bucketMatch).length,
-    sameExact: districts.filter((district) => district.exactMatch).length,
-    changed: districts.filter((district) => !district.exactMatch),
+    sameBucket: includePaperBaseline
+      ? districts.filter((district) => district.bucketMatch).length
+      : null,
+    sameExact: includePaperBaseline
+      ? districts.filter((district) => district.exactMatch).length
+      : null,
+    changed: includePaperBaseline
+      ? districts.filter((district) => !district.exactMatch)
+      : [],
     bucketCounts,
     ignoredRows,
   }
@@ -234,9 +251,11 @@ function outlinePath(projection) {
 }
 
 function markerLabel(district) {
-  const comparison = district.exactMatch
-    ? 'same exact count as the paper baseline'
-    : `paper baseline ${district.paperCount}; change ${district.delta > 0 ? '+' : ''}${district.delta}`
+  const comparison = district.paperCount == null
+    ? null
+    : district.exactMatch
+      ? 'same exact count as the paper baseline'
+      : `paper baseline ${district.paperCount}; change ${district.delta > 0 ? '+' : ''}${district.delta}`
   return [
     district.name,
     `${district.currentCount} of 9 University of California campuses fully articulated`,
@@ -313,7 +332,7 @@ function MapTooltip({ tip, svgRef, camera }) {
         </svg>
         <span>{district.currentCount} of 9 · {district.bucket.bandLabel}</span>
       </div>
-      {!district.exactMatch && (
+      {district.paperCount != null && !district.exactMatch && (
         <div className='mt-1 text-tag text-ink-subtle'>
           Paper {district.paperCount} · change {district.delta > 0 ? '+' : ''}{district.delta}
         </div>
@@ -358,7 +377,7 @@ function clampCamera(camera) {
   }
 }
 
-export function ArticulationMapFigure({ model, differences = false }) {
+export function ArticulationMapFigure({ model, differences = false, majorLabel = null }) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-articulation-map-title`
   const descriptionId = `${id}-articulation-map-description`
@@ -471,9 +490,11 @@ export function ArticulationMapFigure({ model, differences = false }) {
           style={{ fontFamily: FONT, touchAction: 'none' }}
           onPointerDown={startPan} onPointerMove={movePan}
           onPointerUp={stopPan} onPointerCancel={stopPan}>
-          <title id={titleId}>California articulation coverage</title>
+          <title id={titleId}>
+            {majorLabel ? `${majorLabel}: ` : ''}California articulation coverage
+          </title>
           <desc id={descriptionId}>
-            Each community college district is marked by a coral square for zero to three,
+            Each community college district for {majorLabel || 'the selected major'} is marked by a coral square for zero to three,
             a yellow circle for four to six, or a green diamond for seven to nine fully
             articulated University of California campuses.
           </desc>
@@ -481,6 +502,12 @@ export function ArticulationMapFigure({ model, differences = false }) {
           <text x='28' y='46' fontSize='24' fontWeight='600' letterSpacing='-0.72' fill='#193018'>
             California articulation coverage
           </text>
+          {majorLabel && (
+            <text x={FIGURE.width - 28} y='46' textAnchor='end' fontSize='13'
+              fontWeight='600' fill={INK} data-major-label>
+              Major: {majorLabel}
+            </text>
+          )}
 
           <defs>
             <clipPath id={`${id}-map-clip`}>
@@ -568,31 +595,43 @@ export function ArticulationMapFigure({ model, differences = false }) {
   )
 }
 
-export default function ArticulationCoverageMap() {
+export default function ArticulationCoverageMap({
+  majorSlug = 'cs',
+  majorLabel: configuredMajorLabel = '',
+}) {
+  const selectedMajorSlug = String(majorSlug || '').trim().toLowerCase() || 'cs'
+  const hasPaperBaseline = selectedMajorSlug === 'cs'
+  const majorLabel = majorLabelFor(selectedMajorSlug, configuredMajorLabel)
   // ASSIST first: it is what the console measures against everywhere else,
   // and the hand-curated minimums exist only for computer science.
   const [version, setVersion] = useState('assist')
   const [showDiff, setShowDiff] = useState(false)
-  const handCuratedCoverage = useCoverage(HAND_CURATED_PARAMS, {
+  const handCuratedCoverage = useCoverage(
+    hasPaperBaseline ? HAND_CURATED_PARAMS : assistParamsFor(selectedMajorSlug), {
     staleTime: 0,
     refetchOnWindowFocus: false,
     refetchInterval: false,
+    ...(hasPaperBaseline ? {} : { enabled: false }),
   })
-  const assistCoverage = useCoverage(ASSIST_PARAMS, {
+  const activeVersion = hasPaperBaseline ? version : 'assist'
+  const assistCoverage = useCoverage(assistParamsFor(selectedMajorSlug), {
     staleTime: 0,
     refetchOnWindowFocus: false,
     refetchInterval: false,
-    enabled: version === 'assist',
+    enabled: activeVersion === 'assist',
   })
-  const coverage = version === 'assist' ? assistCoverage : handCuratedCoverage
+  const coverage = activeVersion === 'assist' ? assistCoverage : handCuratedCoverage
   const rows = coverage.data?.rows || []
-  const model = useMemo(() => buildCoverageMapModel(rows), [rows])
-  const interactive = version !== 'original'
-  const diffOn = interactive && showDiff
-  const sourceLabel = version === 'assist' ? 'ASSIST minimums' : 'Hand-curated minimums'
+  const model = useMemo(
+    () => buildCoverageMapModel(rows, { includePaperBaseline: hasPaperBaseline }),
+    [hasPaperBaseline, rows]
+  )
+  const interactive = activeVersion !== 'original'
+  const diffOn = hasPaperBaseline && interactive && showDiff
+  const sourceLabel = activeVersion === 'assist' ? 'ASSIST minimums' : 'Hand-curated minimums'
 
   let figure
-  if (version === 'original') {
+  if (activeVersion === 'original') {
     figure = (
       <div data-export-root className='mx-auto w-full overflow-hidden bg-white'
         style={{ maxWidth: FIGURE.width }}>
@@ -606,43 +645,47 @@ export default function ArticulationCoverageMap() {
   } else if (coverage.isError) {
     figure = <Alert type='error'>Could not load district articulation coverage for the map.</Alert>
   } else {
-    figure = <ArticulationMapFigure key={version} model={model}
-      differences={diffOn} />
+    figure = <ArticulationMapFigure key={activeVersion} model={model}
+      differences={diffOn} majorLabel={majorLabel} />
   }
 
   return (
     <Stack gap='section'>
       <div className='surface-card p-4' data-export-exclude>
         <div className='flex flex-col gap-4 lg:flex-row lg:items-end'>
-          <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6'>
-            <div className='flex flex-col' data-control-group='version'>
-              <span className='field-label'>Version</span>
-              <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
-                {VERSIONS.map((item) => (
-                  <button key={item.value} type='button' onClick={() => setVersion(item.value)}
-                    className={`px-3 text-button border-r border-border last:border-r-0 ${
-                      version === item.value
-                        ? 'bg-primary-soft text-primary'
-                        : 'text-ink-muted hover:bg-surface-hover'
-                    }`}>
-                    {item.label}
-                  </button>
-                ))}
+          {hasPaperBaseline && (
+            <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6'>
+              <div className='flex flex-col' data-control-group='version'>
+                <span className='field-label'>Version</span>
+                <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
+                  {VERSIONS.map((item) => (
+                    <button key={item.value} type='button' onClick={() => setVersion(item.value)}
+                      className={`px-3 text-button border-r border-border last:border-r-0 ${
+                        version === item.value
+                          ? 'bg-primary-soft text-primary'
+                          : 'text-ink-muted hover:bg-surface-hover'
+                      }`}>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className='flex flex-col' data-control-group='comparison'>
+                <span className='field-label'>Comparison</span>
+                <div className='flex h-9 items-center'>
+                  <SwitchField label='Show differences' checked={diffOn}
+                    onChange={() => setShowDiff((shown) => !shown)} disabled={!interactive} />
+                </div>
               </div>
             </div>
-            <div className='flex flex-col' data-control-group='comparison'>
-              <span className='field-label'>Comparison</span>
-              <div className='flex h-9 items-center'>
-                <SwitchField label='Show differences' checked={diffOn}
-                  onChange={() => setShowDiff((shown) => !shown)} disabled={!interactive} />
-              </div>
-            </div>
-          </div>
-          <div className='flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center
-            sm:justify-between lg:ml-auto lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0'
+          )}
+          <div className={`flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center
+            sm:justify-between lg:ml-auto lg:border-t-0 lg:pt-0 ${
+              hasPaperBaseline ? 'lg:border-l lg:pl-5' : ''
+            }`}
             data-control-group='data'>
             <span className='text-caption text-ink-subtle'>
-              {version === 'original'
+              {activeVersion === 'original'
                 ? 'Paper Figure 4 · static reference'
                 : `${intFmt.format(rows.length)} district–campus rows · ${sourceLabel}`}
             </span>

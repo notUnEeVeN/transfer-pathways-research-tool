@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCreditLoss } from '../shared/query/hooks/useData'
+import { majorLabelFor } from '../shared/majors/majorLabel'
 import { AnalysisLoading, HistogramRows, shortenSchool } from './chartBits'
 
 const METRICS = [
@@ -11,6 +12,8 @@ const METRICS = [
 
 const intFmt = new Intl.NumberFormat()
 const numFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+
+export const majorDisplayName = majorLabelFor
 
 function buildModel(rows, metric) {
   const bySchool = new Map()
@@ -74,9 +77,10 @@ function buildModel(rows, metric) {
  * path through each agreement requires. One histogram row per campus on a
  * shared scale; hairline tick = campus mean.
  */
-export default function CreditLoss({ majorSlug = 'cs' }) {
+export default function CreditLoss({ majorSlug = 'cs', majorLabel: configuredMajorLabel = '' }) {
   const [metricValue, setMetricValue] = useState('courses')
   const metric = METRICS.find((m) => m.value === metricValue) || METRICS[0]
+  const majorLabel = majorDisplayName(majorSlug, configuredMajorLabel)
   const query = useCreditLoss(
     { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
@@ -153,6 +157,7 @@ export default function CreditLoss({ majorSlug = 'cs' }) {
       </div>
 
       <div className='surface-card p-4' data-export-root>
+        <p className='text-label text-ink mb-1' data-export-major>{majorLabel}</p>
         <p className='text-caption text-ink-subtle mb-3'>
           Agreements by cheapest-path {metric.unit} required, per campus
         </p>

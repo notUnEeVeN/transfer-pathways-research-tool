@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import PaperCreditLoss, {
   FigureSVG,
+  getAssistCreditLossArtifact,
   PaperCreditLossPreview,
 } from './PaperCreditLoss'
 import oursData from './data/paper-credit-loss.ours.json'
@@ -52,6 +53,13 @@ describe('California paper credit-loss figure', () => {
     expect(screen.getByText('University of California campus')).toBeTruthy()
     expect(screen.getByText('Number of courses').getAttribute('x')).toBe('34')
     expect(screen.getByText('quarter-system campus · unmarked = semester')).toBeTruthy()
+    expect(figure.querySelector('[data-major-label]').textContent).toContain('Computer Science')
+    expect(figure.querySelector('title').textContent).toContain('Computer Science')
+    expect(figure.querySelector('desc').textContent).toContain('CS and math requirements')
+    expect(figure.getAttribute('aria-labelledby')).toBe(figure.querySelector('title').id)
+    expect(figure.getAttribute('aria-describedby')).toBe(figure.querySelector('desc').id)
+    expect(figure.querySelector('[data-campus="UCD"] [data-series="requirement"]')
+      .getAttribute('aria-label')).toContain('CS and math requirements')
 
     fireEvent.click(screen.getByRole('switch', { name: 'Show differences' }))
     expect(figure.querySelectorAll('[data-comparison-overlay]').length).toBeGreaterThan(0)
@@ -67,22 +75,95 @@ describe('California paper credit-loss figure', () => {
     expect(figure.getAttribute('data-figure-version')).toBe('assist')
     expect(figure.querySelector('[data-y-tick="20"]')).toBeTruthy()
     expect(figure.querySelector('[data-campus="UCLA"] [data-series="requirement"]')
-      .getAttribute('data-value')).toBe('17')
+      .getAttribute('data-value')).toBe('16')
     expect(figure.querySelectorAll('[data-unavailable="true"]')).toHaveLength(8)
     expect(figure.querySelector('[data-campus="UCSD"] [data-series="choice-1"]')
       .getAttribute('data-value')).toBeNull()
     expect(screen.getByText('No eligible districts')).toBeTruthy()
   })
 
-  it('exports a figure-only current-data preview for gallery thumbnails', () => {
+  it('exports a figure-only live ASSIST preview for gallery thumbnails', () => {
+    const cs = getAssistCreditLossArtifact('cs')
     const { container } = render(<PaperCreditLossPreview />)
     const figure = container.querySelector('[data-modern-california-figure="credit-loss"]')
 
     expect(figure).toBeTruthy()
-    expect(figure.getAttribute('data-figure-version')).toBe('website')
+    expect(figure.getAttribute('data-figure-version')).toBe('assist')
     expect(figure.querySelector('[data-campus="UCD"] [data-series="choice-1"]')
-      .getAttribute('data-value')).toBe('7')
+      .getAttribute('data-value')).toBe(String(cs.campuses[0].choices[0].transferable_average))
+    expect(figure.querySelector('[data-major-label]').textContent).toContain('Computer Science')
+    expect(screen.getByText('ASSIST requirement slots')).toBeTruthy()
     expect(screen.queryByRole('button')).toBeNull()
     expect(screen.queryByText('Mean 1st-choice Δ')).toBeNull()
+  })
+
+  it('exports the selected non-CS ASSIST artifact and configured label in previews', () => {
+    const bio = getAssistCreditLossArtifact('bio')
+    const { container } = render(
+      <PaperCreditLossPreview majorSlug='bio' majorLabel='Biological Sciences' />,
+    )
+    const figure = container.querySelector('[data-modern-california-figure="credit-loss"]')
+
+    expect(figure).toBeTruthy()
+    expect(figure.getAttribute('data-figure-version')).toBe('assist')
+    expect(figure.querySelector('[data-major-label]').textContent).toContain('Biological Sciences')
+    expect(figure.querySelector('title').textContent).toContain('Biological Sciences')
+    expect(figure.querySelector('[data-campus="UCD"] [data-series="requirement"]')
+      .getAttribute('data-value')).toBe(String(bio.campuses[0].requirement.native_count))
+    expect(figure.querySelector('[data-campus="UCD"] [data-series="requirement"]')
+      .getAttribute('aria-label')).toContain('Biological Sciences ASSIST required receiver slots')
+    expect(screen.queryByRole('button')).toBeNull()
+  })
+
+  it.each([
+    ['bio', 'Biology'],
+    ['econ', 'Economics'],
+  ])('renders %s from only its audited ASSIST artifact', (majorSlug, majorLabel) => {
+    const artifact = getAssistCreditLossArtifact(majorSlug)
+    expect(artifact?.major_scope?.slug).toBe(majorSlug)
+    expect(artifact?.schema_version).toBe(2)
+
+    const { container } = render(<PaperCreditLoss majorSlug={majorSlug} />)
+    const figure = container.querySelector('[data-modern-california-figure="credit-loss"]')
+    const expectedUcd = artifact.campuses.find((campus) => campus.code === 'UCD')
+      .requirement.native_count
+
+    expect(figure).toBeTruthy()
+    expect(figure.getAttribute('data-figure-version')).toBe('assist')
+    expect(figure.querySelector('title').textContent).toContain(majorLabel)
+    expect(figure.querySelector('desc').textContent)
+      .toContain(`${majorLabel} ASSIST required receiver slots`)
+    expect(figure.querySelector('desc').textContent).not.toContain('CS')
+    expect(screen.getByText('ASSIST requirement slots')).toBeTruthy()
+    expect(figure.querySelector('[data-campus="UCD"] [data-series="requirement"]')
+      .getAttribute('data-value')).toBe(String(expectedUcd))
+    expect(screen.getByText('Current ASSIST requirements · receiver-slot model')).toBeTruthy()
+    expect(screen.queryByText('Version')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Paper baseline' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Hand-curated minimums' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'ASSIST minimums' })).toBeNull()
+    expect(screen.queryByRole('switch', { name: 'Show differences' })).toBeNull()
+  })
+
+  it('prefers a configured major label throughout the modern non-CS export', () => {
+    const { container } = render(
+      <PaperCreditLoss majorSlug='bio' majorLabel='Biological Sciences' />,
+    )
+    const figure = container.querySelector('[data-modern-california-figure="credit-loss"]')
+
+    expect(figure.querySelector('[data-major-label]').textContent).toContain('Biological Sciences')
+    expect(figure.querySelector('title').textContent).toContain('Biological Sciences')
+    expect(figure.querySelector('desc').textContent)
+      .toContain('Biological Sciences ASSIST required receiver slots')
+    expect(figure.querySelector('[data-campus="UCD"] [data-series="requirement"]')
+      .getAttribute('aria-label')).toContain('Biological Sciences ASSIST required receiver slots')
+  })
+
+  it('fails closed when a major has no audited artifact', () => {
+    render(<PaperCreditLoss majorSlug='future-major' />)
+
+    expect(screen.getByText(/No audited ASSIST credit-loss artifact/)).toBeTruthy()
+    expect(screen.queryByRole('img')).toBeNull()
+    expect(getAssistCreditLossArtifact('future-major')).toBeNull()
   })
 })
