@@ -15,10 +15,6 @@
  * regexes and because adding a major already requires an admin at a terminal
  * (port.py). Moving it to a collection later is a contained change.
  */
-const {
-  COMPUTING_PREFIXES, MATH_PREFIXES, SCIENCE_PREFIXES, DISCRETE_MATH, TEXT_RULES,
-} = require('../services/courseTypes');
-
 const MAJORS = [
   {
     slug: 'cs',
@@ -66,14 +62,11 @@ const MAJORS = [
     broadAxes: ['computing', 'math', 'science', 'non_stem'],
     // Which prereq-concept disciplines this major's chains draw on.
     conceptDisciplines: ['math', 'cs', 'physics', 'engr', 'stats'],
-    // Course-typing rules for the MA Figure 2 course-type analysis.
-    coursePatterns: {
-      computingPrefixes: [...COMPUTING_PREFIXES],
-      mathPrefixes: [...MATH_PREFIXES],
-      sciencePrefixes: [...SCIENCE_PREFIXES],
-      discreteMath: DISCRETE_MATH,
-      textRules: TEXT_RULES,
-    },
+    // Course-code typing rules are NOT here: the only analysis that types
+    // courses (MA Figure 2) is a paper-baseline figure, and those stay
+    // CS-only. Its rules live in services/courseTypes.js. Give this config a
+    // coursePatterns field when a second major actually needs course typing.
+    //
     // What this major's data supports. Everything defaults false for a new
     // major; cs has the full historical dataset.
     capabilities: {
@@ -100,14 +93,9 @@ function defaultMajor() {
   return MAJORS[0];
 }
 
-/**
- * JSON-safe projection for GET /api/majors — only the fields the frontend
- * actually renders. `coursePatterns` is deliberately omitted: course typing is
- * a server-side concern (services/courseTypes.js), so shipping regexes to the
- * browser would be payload the client never reads.
- */
+/** The majors payload for GET /api/majors. Every field here is JSON-safe. */
 function serializeMajors() {
-  return MAJORS.map(({ coursePatterns, ...rest }) => rest);
+  return [...MAJORS];
 }
 
 /**
