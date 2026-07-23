@@ -245,10 +245,26 @@ function MajorAccessPanel() {
   const [selected, setSelected] = useState(null) // Map of school_id -> major; null until data loads
 
   useEffect(() => {
-    if (q.data && selected === null) {
-      setSelected(majorsBySchool(q.data.visible))
+    if (!q.data || selected !== null) return
+    // Start from what is saved, then pre-check each configured major's pins so
+    // a newly onboarded field is one click from being applied rather than
+    // needing to be re-entered by hand.
+    const next = majorsBySchool(q.data.visible)
+    const savedPrograms = new Set(q.data.visible.map((p) => String(p.major).toLowerCase()))
+    for (const major of majors) {
+      const match = String(major.match || '').toLowerCase()
+      if (!match) continue
+      // An explicit saved choice for this field wins — never re-add pins the
+      // admin deliberately unchecked.
+      if ([...savedPrograms].some((p) => p.includes(match))) continue
+      for (const [schoolId, programs] of Object.entries(major.programs || {})) {
+        const key = String(Number(schoolId))
+        if (!next.has(key)) next.set(key, new Set())
+        programs.forEach((program) => next.get(key).add(program))
+      }
     }
-  }, [q.data, selected])
+    setSelected(next)
+  }, [q.data, selected, majors])
 
   if (q.isLoading || selected === null) {
     return <div className='flex justify-center py-8'><Spinner /></div>
@@ -281,6 +297,10 @@ function MajorAccessPanel() {
   // `other` catches anything ported that no configured field claims.
   const fields = majors.map((m) => ({ slug: m.slug, label: m.label, match: String(m.match || '').toLowerCase() }))
   const fieldOf = (major) => fields.find((f) => f.match && major.toLowerCase().includes(f.match))
+  const countSelected = (rows) => rows.reduce((n, { school, programs }) => {
+    const chosen = selected.get(String(Number(school.school_id))) || new Set()
+    return n + programs.filter((p) => chosen.has(p)).length
+  }, 0)
   const groups = [
     ...fields.map((f) => ({
       ...f,
@@ -294,7 +314,7 @@ function MajorAccessPanel() {
         .map((school) => ({ school, programs: school.majors.filter((m) => !fieldOf(m)) }))
         .filter((row) => row.programs.length),
     },
-  ].filter((g) => g.rows.length)
+  ].filter((g) => g.rows.length).map((g) => ({ ...g, selectedCount: countSelected(g.rows) }))
 
   return (
     <Stack gap='comfortable'>
@@ -325,7 +345,17 @@ function MajorAccessPanel() {
         <Stack gap='section'>
           {groups.map((group) => (
             <div key={group.slug}>
-              <p className='text-label mb-2'>{group.label}</p>
+              <div className='flex items-baseline gap-2 mb-2'>
+                <p className='text-label'>{group.label}</p>
+                <span className='text-caption text-ink-subtle'>
+                  {group.selectedCount} selected
+                </span>
+                {group.slug !== 'other' && !group.selectedCount && (
+                  <span className='text-caption text-danger'>
+                    needs at least one program
+                  </span>
+                )}
+              </div>
               <Stack gap='cozy'>
                 {group.rows.map(({ school, programs }) => {
                   const schoolId = String(Number(school.school_id))

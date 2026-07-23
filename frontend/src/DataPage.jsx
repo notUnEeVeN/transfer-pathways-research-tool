@@ -413,22 +413,26 @@ function CampusAgreements({
   const [majorSlug, setMajorSlug] = useState(ALL_MAJORS)
   const major = majors.find((m) => m.slug === majorSlug) || null
   const [selectedSection, setSelectedSection] = useState(null)
-  const agreements = useMemo(() => {
+  // Every agreement this college has with the selected campus, before any
+  // major filter. The section fallback below keys off THIS — a major with no
+  // agreements must not look like a college with no agreements.
+  const allAgreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
-    const all = (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
-    // Show one field at a time. The match string is the same one the server
-    // scopes analyses by, so this page and the figures agree on what counts as
-    // the selected major.
+    return (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
+  }, [batch.data, campus.school_id])
+  const agreements = useMemo(() => {
+    // The match string is the same one the server scopes analyses by, so this
+    // page and the figures agree on what counts as the selected major.
     const match = major?.match?.toLowerCase()
-    if (!match) return all
-    return all.filter((a) => String(a.major).toLowerCase().includes(match))
-  }, [batch.data, campus.school_id, major])
+    if (!match) return allAgreements
+    return allAgreements.filter((a) => String(a.major).toLowerCase().includes(match))
+  }, [allAgreements, major])
   const defaultAgreementId = agreements[0]?._id
   // A college with no agreement opens on the useful degree finding. Otherwise
   // transfer articulation remains the familiar default. An explicit user
   // choice always wins after the batch resolves.
   const section = selectedSection
-    || (!batch.isLoading && !agreements.length ? 'degrees' : 'articulation')
+    || (!batch.isLoading && !allAgreements.length ? 'degrees' : 'articulation')
 
   // Keep the one shared route chip synchronized with the selected peer view.
   // Once inside articulation, the active agreement card reports its finer
@@ -491,7 +495,9 @@ function CampusAgreements({
             <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
           ) : !agreements.length ? (
             <EmptyState title='No agreements'
-              description='This college has no agreements for the selected campus and major.' />
+              description={major
+                ? `This college has no ${major.label} agreements with the selected campus. Switch to All majors to see what it does offer.`
+                : 'This college has no agreements for the selected campus.'} />
           ) : (
             <Stack gap='section'>
               {agreements.map((agreement) => (
