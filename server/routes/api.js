@@ -47,6 +47,9 @@ router.get('/curated/degrees', ...guarded, degreeRequirementsController.list);
 router.get('/curated/degree-evaluation', ...guarded, degreeRequirementsController.evaluate);
 router.get('/curated/as-degrees', ...guarded, canonicalDataController.asDegrees);
 router.get('/curated/as-degree-availability', ...guarded, canonicalDataController.asDegreeAvailability);
+router.get('/curated/as-degree-validation-cohort', ...guarded, curationController.getAsDegreeValidationCohort);
+router.put('/curated/as-degree-validation-cohort', ...guarded, jsonBody, curationController.putAsDegreeValidationCohort);
+router.post('/curated/as-degrees/:id/assist', ...guarded, jsonBody, curationController.postAsDegreeAssist);
 
 // ───────── Built-in visual analyses (JSON or ?format=csv) ─────────
 // These routes compute from the same canonical collections as the data API.

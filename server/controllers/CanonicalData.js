@@ -3,6 +3,7 @@ const { asyncHandler } = require('../middleware/asyncHandler');
 const { majorScope, pairClause } = require('../services/majorVisibility');
 const { prerequisiteGraphData } = require('../services/prereqGraph');
 const asDegreeView = require('../services/asDegreeView');
+const { recomputeAsDegreeCoveredConcepts } = require('../services/asDegreeConcepts');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -468,6 +469,7 @@ exports.putRequirement = asyncHandler(async (req, res) => {
   if (kind === 'as_degree') {
     const invalid = await validateAsDegree(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
+    canonical.covered_concepts = await recomputeAsDegreeCoveredConcepts(db, canonical);
     // Group-level curation stamp: the doc-level curated_by above records who
     // last saved; group-level curated_by records who confirmed THIS group.
     for (const g of canonical.requirement_groups || []) {
@@ -660,3 +662,4 @@ exports.asDegreeAvailability = asyncHandler(async (req, res) => {
 exports.COLLECTIONS = COLLECTIONS;
 exports.REQUIREMENT_KINDS = REQUIREMENT_KINDS;
 exports.parseInstitutionId = parseInstitutionId;
+exports.validateAsDegree = validateAsDegree;

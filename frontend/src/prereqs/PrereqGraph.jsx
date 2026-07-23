@@ -14,7 +14,6 @@
      The rules table below the graph remains the no-interaction fallback.
 
    No libraries. Deterministic. Colors only via CSS vars with fallbacks.
-   Design handoff: docs/handoff 2/PREREQ-GRAPH-HANDOFF.md (demo + mockups there).
    ========================================================================== */
 import React, { useState, useMemo, useCallback } from 'react';
 

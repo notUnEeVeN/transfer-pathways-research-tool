@@ -69,6 +69,7 @@ export default function Select({
       if (open && options[activeIndex]) commit(options[activeIndex])
       else setOpen(true)
     } else if (e.key === 'Escape') {
+      if (open) e.stopPropagation()
       setOpen(false)
     }
   }

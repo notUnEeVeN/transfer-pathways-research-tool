@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { XMarkIcon } from '@heroicons/react/24/outline'
@@ -24,8 +24,41 @@ export default function FullScreenPanel({
   actions,
   children
 }) {
+  const panelRef = useRef(null)
+  const previousFocusRef = useRef(null)
   useEscape(onClose, open)
   useBodyScrollLock(open)
+
+  useEffect(() => {
+    if (!open || typeof document === 'undefined') return undefined
+    previousFocusRef.current = document.activeElement
+    panelRef.current?.querySelector('[data-full-screen-close]')?.focus()
+    return () => {
+      const previous = previousFocusRef.current
+      if (previous && document.contains(previous)) previous.focus()
+    }
+  }, [open])
+
+  const trapFocus = (event) => {
+    if (event.key !== 'Tab' || !panelRef.current) return
+    const focusable = [...panelRef.current.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    )].filter((element) => !element.closest('[aria-hidden="true"]'))
+    if (!focusable.length) {
+      event.preventDefault()
+      panelRef.current.focus()
+      return
+    }
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && (document.activeElement === first || !panelRef.current.contains(document.activeElement))) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
 
   if (typeof document === 'undefined') return null
 
@@ -33,6 +66,7 @@ export default function FullScreenPanel({
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={panelRef}
           key='panel'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -40,8 +74,10 @@ export default function FullScreenPanel({
           transition={{ duration: 0.15 }}
           className='fixed inset-0 z-50 bg-canvas flex flex-col'
           role='dialog'
+          tabIndex={-1}
           aria-modal='true'
           aria-label={ariaLabel ?? (typeof title === 'string' ? title : undefined)}
+          onKeyDown={trapFocus}
         >
           {/* Full-bleed bar; inner content aligns to the centered column so the
               title sits over the body below it. Header wraps on small screens —
@@ -59,6 +95,7 @@ export default function FullScreenPanel({
               <div className='flex items-center gap-2 shrink-0'>
                 {actions}
                 <button
+                  data-full-screen-close
                   type='button'
                   onClick={onClose}
                   aria-label='Close'

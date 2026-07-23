@@ -345,6 +345,16 @@ describe('as_degree kind', () => {
     await db.collection('assist_institutions').insertOne({
       _id: 'cc:110', kind: 'community_college', source_id: 110, name: 'Allan Hancock College',
     });
+    await db.collection('assist_courses').insertMany([
+      {
+        _id: 'cc:101', side: 'sending', course_id: 101, institution_id: 'cc:110',
+        title: 'Programming I', concept: 'cs_1',
+      },
+      {
+        _id: 'cc:102', side: 'sending', course_id: 102, institution_id: 'cc:110',
+        title: 'Discrete Mathematics', concept: 'discrete_math',
+      },
+    ]);
     await db.collection('curated_requirements').insertOne({
       _id: 'as_degree_template:cs', kind: 'as_degree_template', slug: 'cs', groups: [],
     });
@@ -404,6 +414,21 @@ describe('as_degree kind', () => {
     expect(res.statusCode).toBe(200);
     const stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:local_cs_as' });
     expect(stored.covered_concepts).toEqual(['cs_1', 'discrete_math']);
+  });
+
+  it('recomputes covered_concepts instead of saving stale caller data', async () => {
+    await seedForDegree();
+    const body = { ...degreeDoc(), covered_concepts: ['calc_3'] };
+    body.requirement_groups[0].unresolved_courses_seen = [{
+      course_code_seen: 'BIO 1', title_seen: 'General Biology',
+    }];
+
+    const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body }));
+
+    expect(res.statusCode).toBe(200);
+    const stored = await db.collection('curated_requirements')
+      .findOne({ _id: 'as_degree:110:local_cs_as' });
+    expect(stored.covered_concepts).toEqual(['bio_cell_molec', 'cs_1', 'discrete_math']);
   });
 
   it('does not require covered_concepts', async () => {

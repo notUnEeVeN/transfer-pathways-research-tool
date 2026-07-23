@@ -1,5 +1,7 @@
 /** Human judgments stored in the permanent curated collections. */
 const { asyncHandler } = require('../middleware/asyncHandler');
+const { getValidationCohort, setValidationCohort } = require('../services/asDegreeValidation');
+const { proposeAsDegreeEdit } = require('../services/asDegreeAssist');
 
 const MAPPINGS = 'curated_mappings';
 const REQUIREMENTS = 'curated_requirements';
@@ -13,6 +15,16 @@ const BROAD_AXES = ['computing', 'math', 'science', 'non_stem'];
 
 const stamp = (req) => ({ curated_by: req.user?.uid ?? null, curated_at: new Date() });
 const curationDb = (req) => req.app.locals.auditDb || req.app.locals.db;
+
+let anthropicClient = null;
+function getAnthropic() {
+  if (!process.env.ANTHROPIC_API_KEY) return null;
+  if (!anthropicClient) {
+    const Anthropic = require('@anthropic-ai/sdk');
+    anthropicClient = new Anthropic();
+  }
+  return anthropicClient;
+}
 
 exports.listCategories = asyncHandler(async (req, res) => {
   const rows = await curationDb(req).collection(MAPPINGS)
@@ -148,6 +160,44 @@ exports.deleteAssocDegree = asyncHandler(async (req, res) => {
     .deleteOne({ _id: `associate_degree:${req.params.id}` });
   if (!result.deletedCount) return res.status(404).json({ error: 'no such degree doc' });
   res.json({ ok: true });
+});
+
+exports.getAsDegreeValidationCohort = asyncHandler(async (req, res) => {
+  res.json(await getValidationCohort(curationDb(req), req.app.locals.db));
+});
+
+exports.putAsDegreeValidationCohort = asyncHandler(async (req, res) => {
+  const ids = req.body?.college_ids;
+  if (!Array.isArray(ids)) return res.status(400).json({ error: 'college_ids array required' });
+  res.json(await setValidationCohort(curationDb(req), ids, req.user?.uid));
+});
+
+exports.postAsDegreeAssist = asyncHandler(async (req, res) => {
+  const instruction = String(req.body?.instruction || '').trim();
+  if (!instruction) return res.status(400).json({ error: 'instruction required' });
+
+  // Log every valid attempt before client construction or provider/database
+  // work so unavailable-provider and failed-proposal requests remain auditable.
+  console.log(`[ai-assist] uid=${req.user?.uid ?? 'unknown'} doc=${req.params.id} instruction=${JSON.stringify(instruction.slice(0, 200))}`);
+
+  const anthropic = getAnthropic();
+  if (!anthropic) {
+    return res.status(503).json({
+      error: 'ai_assist_unavailable',
+      detail: 'ANTHROPIC_API_KEY is not configured on the server.',
+    });
+  }
+  try {
+    const { validateAsDegree } = require('./CanonicalData');
+    const result = await proposeAsDegreeEdit(
+      req.app.locals.db,
+      { recordId: req.params.id, instruction },
+      { anthropic, validate: validateAsDegree },
+    );
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error?.message || 'AI assist could not produce a valid proposal.' });
+  }
 });
 
 exports.CANONICAL_CATEGORIES = CANONICAL_CATEGORIES;

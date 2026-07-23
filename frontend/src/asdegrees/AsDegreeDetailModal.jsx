@@ -14,9 +14,8 @@ const describeSection = (s) => {
 
 // Plain, triage-grade detail view for one college's AS degree doc — bulk QA
 // only (mark-group-reviewed, doc status, total_units). Course-level
-// corrections and verification notes belong to the Phase 3 designed view
-// (docs/as-degree-view-design-prompt.md); this modal deliberately doesn't
-// touch either.
+// corrections and verification notes belong to the designed per-college view;
+// this modal deliberately doesn't touch either.
 export default function AsDegreeDetailModal({ collegeId, onClose }) {
   const detail = useAsDegreeDetail(collegeId)
   const save = useSaveAsDegree()

@@ -10,6 +10,7 @@ import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
 import AsDegreeSchoolView from './asdegrees/AsDegreeSchoolView'
+import ValidationWorkspace from './asdegrees/validation/ValidationWorkspace'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
 import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -364,6 +365,7 @@ function AssociateDegreeSection({ collegeId, availability }) {
             onDegreeTypeChange={(degreeType) => setSelection({ collegeId, degreeType })} />
         </div>
       )}
+      <ValidationWorkspace initialCollegeId={collegeId} />
     </section>
   )
 }

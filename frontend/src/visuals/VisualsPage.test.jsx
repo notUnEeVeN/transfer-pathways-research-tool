@@ -145,7 +145,7 @@ describe('built-in visual registry', () => {
       'Modeled replacement coursework',
       'Potential graduation-unit coverage',
       'Transfer access and local income',
-      'District preparation for multiple campuses',
+      'Preparation as campus options expand',
       'Minimum transfer coursework',
       'Cost of applying to more campuses',
       'Missing courses by subject',

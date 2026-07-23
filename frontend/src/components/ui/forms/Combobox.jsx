@@ -70,6 +70,7 @@ export default function Combobox({
         commit(filtered[activeIndex])
       }
     } else if (e.key === 'Escape') {
+      if (open) e.stopPropagation()
       setOpen(false)
       setQuery('')
     }
