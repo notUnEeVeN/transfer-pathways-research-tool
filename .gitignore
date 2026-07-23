@@ -16,5 +16,8 @@ temp.py
 starter.py
 .superpowers/
 
+# Migration backups — curated research rows dumped before a schema rewrite
+as-degree-backup-*.json
+
 # Claude Code worktrees — isolated checkouts, never part of the repo
 .claude/worktrees/
