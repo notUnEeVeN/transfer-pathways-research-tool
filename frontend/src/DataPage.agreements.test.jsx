@@ -509,4 +509,13 @@ describe('Community Colleges degree integration', () => {
     expect(await screen.findByRole('tab', { name: 'A.S.-T' })).toBeInTheDocument()
     expect(screen.queryByText(/No Biology associate degrees yet/)).toBeNull()
   })
+
+  it('never labels the CS availability survey under another major', async () => {
+    // The availability survey is Computer Science only. Picking Biology must
+    // not borrow a CS record's title into a "Biology · …" header line.
+    renderCollegePane({ degrees: [], major: { slug: 'bio', label: 'Biology',
+      capabilities: { asDegrees: false } } })
+    await screen.findByRole('tab', { name: 'A.S.-T' })
+    expect(screen.queryByText(/Computer Science/)).toBeNull()
+  })
 })

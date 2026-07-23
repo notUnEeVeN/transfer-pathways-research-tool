@@ -334,7 +334,11 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
     && AS_DEGREE_SLOTS.includes(selection.slot)
     ? selection.slot
     : AS_DEGREE_SLOTS[0]
-  const record = availability?.types?.[selectedSlot] || null
+  // The availability survey is Computer Science only, so its record details
+  // (title seen, catalog year) belong to a CS header alone. For any other
+  // major the line stays the subject and the slot until that major has its
+  // own survey — never CS's data under another major's name.
+  const record = majorSlug === 'cs' ? (availability?.types?.[selectedSlot] || null) : null
   const subject = major?.label || 'Computer Science'
   const programLine = [subject, record?.degree_title_seen || slotLabel(selectedSlot),
     record?.catalog_year].filter(Boolean).join(' · ')
