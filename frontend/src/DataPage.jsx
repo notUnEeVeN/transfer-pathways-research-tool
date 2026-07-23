@@ -471,16 +471,19 @@ function CampusAgreements({
 
   return (
     <Stack gap='cozy'>
-      <div className='flex items-center gap-3'>
+      <div className='flex items-center'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={backToColleges}>All colleges</Button>
+      </div>
+      {/* Major sits with the section tabs: it scopes all of them. */}
+      <div className='flex flex-wrap items-center gap-3'>
+        <Tabs value={section} onChange={setSelectedSection} options={[
+          { value: 'articulation', label: 'Transfer articulation' },
+          { value: 'degrees', label: 'Associate degrees' },
+          { value: 'courses', label: 'Courses' },
+          { value: 'prerequisites', label: 'Prerequisites' },
+        ]} />
         <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
       </div>
-      <Tabs value={section} onChange={setSelectedSection} options={[
-        { value: 'articulation', label: 'Transfer articulation' },
-        { value: 'degrees', label: 'Associate degrees' },
-        { value: 'courses', label: 'Courses' },
-        { value: 'prerequisites', label: 'Prerequisites' },
-      ]} />
       {section === 'courses' ? (
         <CourseList institutionId={collegeId} useCourses={useCcCourses}
           columns={CC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title']} />
@@ -549,7 +552,7 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
     <Stack gap='cozy'>
       {/* This pane's own major: a campus has one four-year template per major,
           so browsing them here is the point. Independent of the college pane. */}
-      <div className='flex items-center gap-3'>
+      <div className='flex flex-wrap items-center gap-3'>
         {onBack && (
           <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
         )}
