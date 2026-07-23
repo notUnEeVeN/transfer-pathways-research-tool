@@ -172,8 +172,11 @@ function meanBySchoolOf(data) {
 const CAMPUS_TABLE_COLS = 'grid grid-cols-[2.2fr_1fr_1fr_1.3fr_2.4fr_2.4fr] gap-3.5'
 
 function CampusTable({ schools, onNavigate = null }) {
-  const assistCoverage = useCoverage()
-  const websiteCoverage = useCoverage({ requirements: 'paper' })
+  // This table reports the computer-science study's coverage. It used to rely
+  // on the console being globally scoped to CS; now that every ported major is
+  // in the corpus, it has to say so.
+  const assistCoverage = useCoverage({ majorSlug: 'cs' })
+  const websiteCoverage = useCoverage({ majorSlug: 'cs', requirements: 'paper' })
   const degreeTemplates = useDegreeRequirements()
   const meanAssist = React.useMemo(() => meanBySchoolOf(assistCoverage.data), [assistCoverage.data])
   const meanWebsite = React.useMemo(() => meanBySchoolOf(websiteCoverage.data), [websiteCoverage.data])
