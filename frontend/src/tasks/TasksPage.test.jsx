@@ -138,9 +138,9 @@ describe('TasksPage filters and export', () => {
     })
   })
 
-  it('copies both complete-history exports from the All tasks view', async () => {
+  it('copies both complete-history exports from the Table view', async () => {
     render(<TasksPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'All tasks' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Table' }))
 
     fireEvent.click(screen.getByRole('button', { name: 'Export' }))
     fireEvent.click(screen.getByRole('menuitem', { name: 'Copy weekly history (markdown)' }))
@@ -155,9 +155,9 @@ describe('TasksPage filters and export', () => {
     expect(navigator.clipboard.writeText.mock.calls[1][0]).toContain('# Research task history')
   })
 
-  it('dismisses the Export menu with Escape and when leaving All tasks', () => {
+  it('dismisses the Export menu with Escape and when leaving the Table view', () => {
     render(<TasksPage />)
-    fireEvent.click(screen.getByRole('tab', { name: 'All tasks' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Table' }))
 
     const exportButton = screen.getByRole('button', { name: 'Export' })
     fireEvent.click(exportButton)

@@ -25,9 +25,8 @@ import { isAwaitingVerification, isBareGeneralTask, nextStage, withBoardAssignme
 
 const VIEWS = [
   { value: 'board', label: 'Board' },
+  { value: 'table', label: 'Table' },
   { value: 'verification', label: 'Verification' },
-  { value: 'mine', label: 'My tasks' },
-  { value: 'all', label: 'All tasks' },
 ]
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000
@@ -67,6 +66,7 @@ export default function TasksPage() {
   const [modal, setModal] = useState(null) // null | { task } | { initialStatus }
   const [seeding, setSeeding] = useState(false)
   const [showArchived, setShowArchived] = useState(false)
+  const [mineOnly, setMineOnly] = useState(false)
   const [exportOpen, setExportOpen] = useState(false)
   const exportRef = useRef(null)
   const [filters, setFilters] = usePersistedState('tasks-filters', EMPTY_TASK_FILTERS)
@@ -229,7 +229,7 @@ export default function TasksPage() {
       <div className='flex flex-wrap items-center gap-3'>
         <Tabs value={view} onChange={(nextView) => { setView(nextView); setExportOpen(false) }} options={VIEWS} />
         <span className='ml-auto flex flex-wrap items-center justify-end gap-1'>
-          {view === 'all' && (
+          {view === 'table' && (
             <span ref={exportRef} className='relative' onKeyDown={onExportMenuKeyDown}>
               <Button variant='secondary' leadingIcon={ArrowDownTrayIcon} trailingIcon={ChevronDownIcon}
                 aria-haspopup='menu' aria-expanded={exportOpen}
@@ -304,15 +304,15 @@ export default function TasksPage() {
         />
       ) : (
         <Stack gap='cozy'>
-          {view === 'all' && (
-            <SwitchField className='justify-end' label='Show archived'
-              checked={showArchived} onChange={() => setShowArchived((s) => !s)} />
-          )}
+          <div className='flex flex-wrap items-center justify-end gap-5'>
+            <SwitchField label='Only mine' checked={mineOnly} onChange={() => setMineOnly((s) => !s)} />
+            <SwitchField label='Show archived' checked={showArchived} onChange={() => setShowArchived((s) => !s)} />
+          </div>
           <TaskList
-            tasks={view === 'mine' ? mine : filteredTasks}
+            tasks={mineOnly ? mine : filteredTasks}
             onOpen={(task) => setModal({ task })}
-            includeArchived={view === 'all' && showArchived}
-            emptyTitle={view === 'mine' ? 'Nothing assigned to you' : 'No tasks'}
+            includeArchived={showArchived}
+            emptyTitle={mineOnly ? 'Nothing assigned to you' : 'No tasks'}
           />
         </Stack>
       )}
