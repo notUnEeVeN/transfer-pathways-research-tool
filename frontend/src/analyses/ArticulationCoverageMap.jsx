@@ -628,7 +628,6 @@ export default function ArticulationCoverageMap({
   )
   const interactive = activeVersion !== 'original'
   const diffOn = hasPaperBaseline && interactive && showDiff
-  const sourceLabel = activeVersion === 'assist' ? 'ASSIST minimums' : 'Hand-curated minimums'
 
   let figure
   if (activeVersion === 'original') {
@@ -684,11 +683,9 @@ export default function ArticulationCoverageMap({
               hasPaperBaseline ? 'lg:border-l lg:pl-5' : ''
             }`}
             data-control-group='data'>
-            <span className='text-caption text-ink-subtle'>
-              {activeVersion === 'original'
-                ? 'Paper Figure 4 · static reference'
-                : `${intFmt.format(rows.length)} district–campus rows · ${sourceLabel}`}
-            </span>
+            {activeVersion === 'original' && (
+              <span className='text-caption text-ink-subtle'>Paper Figure 4 · static reference</span>
+            )}
             {interactive && (
               <Button className='self-start sm:self-auto' variant='secondary'
                 leadingIcon={ArrowPathIcon} loading={coverage.isFetching && !coverage.isLoading}

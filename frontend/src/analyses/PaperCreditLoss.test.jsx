@@ -137,7 +137,7 @@ describe('California paper credit-loss figure', () => {
     expect(screen.getByText('ASSIST requirement slots')).toBeTruthy()
     expect(figure.querySelector('[data-campus="UCD"] [data-series="requirement"]')
       .getAttribute('data-value')).toBe(String(expectedUcd))
-    expect(screen.getByText('Current ASSIST requirements · receiver-slot model')).toBeTruthy()
+    expect(screen.queryByText('Current ASSIST requirements · receiver-slot model')).toBeNull()
     expect(screen.queryByText('Version')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Paper baseline' })).toBeNull()
     expect(screen.queryByRole('button', { name: 'Hand-curated minimums' })).toBeNull()

@@ -212,7 +212,7 @@ describe('articulation coverage map', () => {
     expect(screen.queryByRole('button', { name: 'Refresh data' })).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'ASSIST' }))
-    expect(screen.getByText(/district–campus rows · ASSIST minimums/i)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Refresh data' })).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Refresh data' }))
     expect(refetchAssist).toHaveBeenCalledOnce()
@@ -249,7 +249,6 @@ describe('articulation coverage map', () => {
     expect(screen.queryByRole('button', { name: 'Hand-curated' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'ASSIST' })).not.toBeInTheDocument()
     expect(screen.queryByRole('switch', { name: 'Show differences' })).not.toBeInTheDocument()
-    expect(screen.getByText(/district–campus rows · ASSIST minimums/i)).toBeInTheDocument()
     const mapSvg = container.querySelector('[data-export-root] svg')
     expect(mapSvg.querySelector('[data-major-label]'))
       .toHaveTextContent('Major: Biology')

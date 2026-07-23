@@ -334,7 +334,7 @@ describe('visual gallery thumbnails', () => {
 
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-major', 'bio')
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-templates', 'true')
-    expect(screen.getByText('Showing Biology data.')).toBeTruthy()
+    expect(screen.getByText('Biology')).toBeTruthy()
   })
 
   it('explains pending detail data without mounting a renderer', () => {

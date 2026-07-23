@@ -32,19 +32,18 @@ function AvailabilityBadge({ availability }) {
   return <Badge variant={variant}>{availability.label}</Badge>
 }
 
+// One clear, large statement of which major the figure is showing. Kept out of
+// exports (a downloaded figure carries its own in-figure label); here it is the
+// single header that replaces every figure's scattered scope/provenance lines.
 function AnalysisScopeNotice({ availability, selectedMajor }) {
   if (!availability?.available) return null
-  if (availability.fixed) {
-    return (
-      <p className='text-caption text-ink-subtle' data-export-exclude>
-        Computer Science reference. This visual is tied to its original audited dataset.
-      </p>
-    )
-  }
+  const label = selectedMajor?.label || availability.effectiveMajorSlug
   return (
-    <p className='text-caption text-ink-subtle' data-export-exclude>
-      Showing {selectedMajor?.label || availability.effectiveMajorSlug} data.
-    </p>
+    <div className='flex items-center gap-2.5' data-export-exclude>
+      <span className='inline-block w-2.5 h-2.5 rounded-full bg-primary shrink-0' />
+      <span className='text-title font-[680] text-ink leading-none'>{label}</span>
+      {availability.fixed && <Badge variant='neutral'>reference dataset</Badge>}
+    </div>
   )
 }
 

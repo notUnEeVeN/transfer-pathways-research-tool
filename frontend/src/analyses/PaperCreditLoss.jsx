@@ -867,14 +867,9 @@ function CsPaperCreditLoss({ majorLabel }) {
           />
         </div>
         <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
-          {view === 'paper'
-            ? <span>Paper baseline — transcribed from the 2026 optimal set-cover CSVs</span>
-            : (
-              <>
-                <span className='font-mono tabular-nums'>{activeData.dataset_version}</span>
-                <span>recomputed {activeData.generated_at?.slice(0, 10)} by {activeData.generated_by}</span>
-              </>
-            )}
+          {view === 'paper' && (
+            <span>Paper baseline — transcribed from the 2026 optimal set-cover CSVs</span>
+          )}
         </div>
       </div>
 
@@ -954,17 +949,6 @@ function AssistOnlyPaperCreditLoss({ majorSlug, majorLabel }) {
   }
   return (
     <Stack gap='section'>
-      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-        <div className='flex flex-col'>
-          <span className='field-label'>Requirement source</span>
-          <span className='text-body text-ink'>Current ASSIST requirements · receiver-slot model</span>
-        </div>
-        <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
-          <span className='font-mono tabular-nums'>{artifact.dataset_version}</span>
-          <span>recomputed {artifact.generated_at?.slice(0, 10)} by {artifact.generated_by}</span>
-        </div>
-      </div>
-
       <div data-export-root className='flex flex-col gap-4'>
         <ModernCreditLossFigure
           bars={bars}

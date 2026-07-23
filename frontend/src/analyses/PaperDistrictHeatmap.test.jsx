@@ -101,7 +101,9 @@ describe('paper district export figure', () => {
     expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Hand-curated minimums' })).not.toBeInTheDocument()
     expect(screen.queryByRole('switch', { name: 'Show differences' })).not.toBeInTheDocument()
-    expect(screen.getByText('Complete cells')).toBeTruthy()
+    // No paper baseline for Biology means nothing to compare, so the whole
+    // stat strip is omitted rather than restated as bare descriptive counts.
+    expect(screen.queryByText('Complete cells')).not.toBeInTheDocument()
     expect(screen.queryByText('Paper complete cells')).not.toBeInTheDocument()
     expect(screen.queryByText('Net vs paper')).not.toBeInTheDocument()
 

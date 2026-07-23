@@ -573,6 +573,10 @@ export default function PaperDistrictHeatmap({
   const diff = useMemo(() => compare(liveModel), [liveModel])
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
   const net = liveModel.complete - PAPER_COMPLETE_COUNT
+  // The stat strip compares live data against the paper baseline, which only
+  // exists for Computer Science. For every other major there is nothing to
+  // compare against, so the strip is omitted rather than restated as bare
+  // descriptive counts.
   const statTiles = isComputerScience
     ? [
       { label: 'Our complete cells', value: intFmt.format(liveModel.complete), sub: reqMode === 'assist' ? 'per ASSIST-stated minimums' : 'per hand-curated minimums', accent: true },
@@ -580,12 +584,7 @@ export default function PaperDistrictHeatmap({
       { label: 'Net vs paper', value: signedFmt.format(net), sub: `${intFmt.format(diff.changed)} changed cells` },
       { label: 'Matrix agreement', value: `${pctFmt.format(diff.agreementPct)}%`, sub: `${intFmt.format(diff.gained)} gained · ${intFmt.format(diff.lost)} lost` },
     ]
-    : [
-      { label: 'Complete cells', value: intFmt.format(liveModel.complete), sub: 'per ASSIST-stated requirements', accent: true },
-      { label: 'Incomplete cells', value: intFmt.format(liveModel.missing), sub: `${DISTRICTS.length} districts × ${UC_ROWS.length} campuses` },
-      { label: 'Districts represented', value: `${intFmt.format(liveModel.districtsSeen)} of ${DISTRICTS.length}`, sub: 'matched to the California district list' },
-      { label: 'Campuses represented', value: `${intFmt.format(liveModel.campusSeen)} of ${UC_ROWS.length}`, sub: 'configured programs in live data' },
-    ]
+    : []
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -652,12 +651,13 @@ export default function PaperDistrictHeatmap({
         </div>
       </div>
 
-      {/* Comparison stats are on-screen context, not part of the exported figure. */}
-      <div data-export-exclude>
-        <StatStrip
-          tiles={statTiles}
-        />
-      </div>
+      {/* Comparison stats are on-screen context, not part of the exported
+          figure — and only exist where there is a paper baseline to compare to. */}
+      {statTiles.length > 0 && (
+        <div data-export-exclude>
+          <StatStrip tiles={statTiles} />
+        </div>
+      )}
 
       <div data-export-root className='flex flex-col gap-4'>
         {activeVersion === 'paper'

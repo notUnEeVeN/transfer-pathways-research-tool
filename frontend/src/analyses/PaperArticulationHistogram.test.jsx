@@ -134,7 +134,6 @@ describe('paper articulation histogram', () => {
     expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Current data' })).not.toBeInTheDocument()
     expect(screen.queryByRole('switch', { name: 'Show differences' })).not.toBeInTheDocument()
-    expect(screen.getByText(/district–campus rows · ASSIST-stated requirements/)).toBeTruthy()
     expect(screen.queryByText('Added since paper')).not.toBeInTheDocument()
 
     // Bin 8 is lower in this selected-major model than in the frozen CS paper
