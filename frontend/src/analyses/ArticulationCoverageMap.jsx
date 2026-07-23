@@ -569,7 +569,9 @@ export function ArticulationMapFigure({ model, differences = false }) {
 }
 
 export default function ArticulationCoverageMap() {
-  const [version, setVersion] = useState('hand-curated')
+  // ASSIST first: it is what the console measures against everywhere else,
+  // and the hand-curated minimums exist only for computer science.
+  const [version, setVersion] = useState('assist')
   const [showDiff, setShowDiff] = useState(false)
   const handCuratedCoverage = useCoverage(HAND_CURATED_PARAMS, {
     staleTime: 0,

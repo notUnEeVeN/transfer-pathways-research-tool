@@ -144,8 +144,8 @@ afterAll(async () => {
   await mongo.stop();
 });
 
-describe('transferCreditRateData v2', () => {
-  it('uses the whole associate degree as the denominator and applies direct, GE, and elective units once', async () => {
+describe('transferCreditRateData v3', () => {
+  it('reports the share of all bachelor requirements and lower-division requirements fulfilled by the AS degree', async () => {
     await seedTemplate({
       schoolId: 1,
       groups: [
@@ -158,6 +158,15 @@ describe('transferCreditRateData v2', () => {
         {
           title: 'Unrestricted electives', tier: 'transferable', sections: [
             { section_advisement: 1, unit_advisement: 6, receivers: [geReceiver('ELECTIVE', { assume: true })] },
+          ],
+        },
+        {
+          title: 'Upper-division coursework', tier: 'nontransferable', sections: [
+            {
+              section_advisement: 3,
+              unit_advisement: 12,
+              receivers: Array.from({ length: 3 }, () => ({ receiving: { kind: 'requirement' } })),
+            },
           ],
         },
       ],
@@ -184,7 +193,16 @@ describe('transferCreditRateData v2', () => {
     expect(cell.ge_counted_units).toBe(8);
     expect(cell.elective_counted_units).toBe(6);
     expect(cell.transferred_units).toBe(18);
-    expect(cell.rate).toBe(30);
+    expect(cell.degree_unit_system).toBe('semester');
+    expect(cell.full_degree_required_units).toBe(30);
+    expect(cell.full_degree_fulfilled_units).toBe(18);
+    expect(cell.full_degree_completion_pct).toBe(60);
+    expect(cell.lower_division_required_units).toBe(18);
+    expect(cell.lower_division_fulfilled_units).toBe(18);
+    expect(cell.lower_division_completion_pct).toBe(100);
+    expect(cell.rate).toBe(60);
+    // AS-unit utilization remains separately for the replacement-coursework visual.
+    expect(cell.as_unit_utilization_pct).toBe(30);
     expect(cell.extra_units).toBe(42);
     expect(cell.extra_units_semester).toBe(42);
     expect(cell.method_status).toBe('estimated');
@@ -224,7 +242,8 @@ describe('transferCreditRateData v2', () => {
     expect(cell.named_units).toBe(6);
     expect(cell.named_transferred_units).toBe(6);
     expect(cell.transferred_units).toBe(6);
-    expect(cell.rate).toBe(10);
+    expect(cell.rate).toBe(75);
+    expect(cell.as_unit_utilization_pct).toBe(10);
     expect(cell.extra_units).toBe(54);
   });
 
@@ -463,7 +482,8 @@ describe('transferCreditRateData v2', () => {
     expect(cell.ge_demand_units).toBe(8);
     expect(cell.ge_counted_units).toBe(8);
     expect(cell.transferred_units).toBe(8);
-    expect(cell.rate).toBeCloseTo(13.3, 1);
+    expect(cell.rate).toBe(100);
+    expect(cell.as_unit_utilization_pct).toBeCloseTo(13.3, 1);
   });
 
   it('converts semester-campus capacity into quarter-college units and returns semester-equivalent extra units', async () => {
@@ -488,6 +508,10 @@ describe('transferCreditRateData v2', () => {
     expect(cell.ge_demand_units).toBe(9);
     expect(cell.ge_counted_units).toBe(9);
     expect(cell.transferred_units).toBe(9);
+    expect(cell.full_degree_required_units).toBe(6);
+    expect(cell.full_degree_fulfilled_units).toBe(6);
+    expect(cell.full_degree_completion_pct).toBe(100);
+    expect(cell.lower_division_completion_pct).toBe(100);
     expect(cell.extra_units).toBe(81);
     expect(cell.extra_units_semester).toBe(54);
   });
@@ -505,6 +529,10 @@ describe('transferCreditRateData v2', () => {
 
     const cell = await cellFor({ collegeId: 80, schoolId: 8 });
     expect(cell.rate).toBeNull();
+    expect(cell.full_degree_completion_pct).toBeNull();
+    expect(cell.lower_division_completion_pct).toBeNull();
+    expect(cell.full_degree_required_units).toBe(4);
+    expect(cell.lower_division_required_units).toBe(4);
     expect(cell.prescribed_units).toBeNull();
     expect(cell.transferred_units).toBeNull();
     expect(cell.extra_units).toBeNull();

@@ -45,6 +45,10 @@ describe('TransferExtraUnits', () => {
     expect(screen.queryByText('No replacement units')).not.toBeInTheDocument()
     expect(screen.getByLabelText(/Modeled replacement coursework: \+20 semester-equivalent units/i))
       .toHaveAttribute('aria-label', expect.stringMatching(/30 quarter units do not apply/i))
+    expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Modeled replacement coursework: \+0 semester-equivalent units/i))
+      .toHaveStyle({ backgroundColor: 'rgb(255 255 255)' })
+    expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Modeled replacement coursework: \+20 semester-equivalent units/i))
+      .toHaveStyle({ backgroundColor: 'rgb(103 0 13)' })
     expect(screen.getByRole('note')).toHaveTextContent('modeled replacement units, not observed student outcomes')
   })
 

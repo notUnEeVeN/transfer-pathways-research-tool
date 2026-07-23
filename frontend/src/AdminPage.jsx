@@ -298,7 +298,24 @@ function VisualSettingsPanel() {
   )
 }
 
-function DatasetPanel() {
+function humanizeSettingKey(value) {
+  return String(value || '')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .replace(/^./, (char) => char.toUpperCase())
+}
+
+function capabilityLabels(capabilities = {}) {
+  return Object.entries(capabilities).flatMap(([key, value]) => {
+    if (value === true) return [humanizeSettingKey(key)]
+    if (Array.isArray(value) && value.length) {
+      return [`${humanizeSettingKey(key)} (${value.length})`]
+    }
+    return []
+  })
+}
+
+export function DatasetPanel() {
   const q = useAdminDataset()
   if (q.isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
   if (q.isError) return <Alert type='error'>Failed to load the dataset status.</Alert>
@@ -309,33 +326,144 @@ function DatasetPanel() {
         description='Run `python port.py init` then `python port.py add "<major>"` from scripts/ to port the first majors.' />
     )
   }
-  const majors = meta.majors || {}
-  const counts = meta.counts || {}
+  const summary = meta.major_summary || {}
+  const families = meta.major_families || []
+  const unmapped = meta.unmapped_programs || []
+  const collections = meta.collections || Object.entries(meta.counts || {})
+    .map(([name, count]) => ({ name, count }))
+  const metrics = [
+    ['Research major families', summary.research_major_families],
+    ['Configured campus programs', summary.configured_campus_programs],
+    ['Available campus programs', summary.available_campus_programs],
+    ['Distinct source labels', summary.distinct_source_program_labels],
+    ['Unmapped source programs', summary.unmapped_campus_programs],
+  ]
   return (
     <Stack gap='comfortable'>
       <div>
         <h2 className='heading-card tracking-[-.01em]'>Dataset</h2>
         <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
           Updated {meta.updated_at ? new Date(meta.updated_at).toLocaleString() : '—'}
-          {' '}· ported with <span className='font-mono'>scripts/port.py</span> from the admin machine
+          {' '}· research majors are grouped separately from each campus’s exact source-program label
         </p>
       </div>
+
       <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3'>
-        {Object.entries(counts).map(([coll, n]) => (
-          <div key={coll} className='surface-card p-4'>
-            <p className='text-stat font-mono'>{Number(n).toLocaleString()}</p>
-            <p className='text-caption text-ink-muted break-words'>{coll}</p>
+        {metrics.map(([label, value]) => (
+          <div key={label} className='surface-card p-4'>
+            <p className='text-stat font-mono'>{Number(value ?? 0).toLocaleString()}</p>
+            <p className='text-caption text-ink-muted break-words'>{label}</p>
           </div>
         ))}
       </div>
-      {Object.entries(majors).map(([coll, names]) => (
-        <div key={coll} className='surface-card p-5'>
-          <p className='text-label mb-2'>{coll} — {names.length} major{names.length === 1 ? '' : 's'}</p>
-          {names.length
-            ? <ul className='text-body text-ink-muted list-disc pl-5 space-y-0.5'>{names.map((m) => <li key={m}>{m}</li>)}</ul>
-            : <p className='text-caption text-ink-subtle'>none ported</p>}
+
+      <div className='surface-card px-5 py-4 text-caption text-ink-muted'>
+        <span className='font-semibold text-ink'>Why 20 source labels can represent 27 programs: </span>
+        campuses often use the same exact degree title. Counts of distinct strings collapse those repeats;
+        campus-program coverage below keeps all nine campus entries in every configured research major.
+      </div>
+
+      <Stack gap='cozy'>
+        <div>
+          <h3 className='text-body-strong'>Major and campus coverage</h3>
+          <p className='mt-1 text-caption text-ink-subtle max-w-[76ch]'>
+            This hierarchy is generated from the server’s major registry and matched against live agreements.
+            New major families, additional campuses, capabilities, and missing imports appear without a new UI layout.
+          </p>
         </div>
-      ))}
+        {families.map((family) => {
+          const capabilities = capabilityLabels(family.capabilities)
+          const complete = family.available_programs === family.expected_programs
+          return (
+            <details key={family.slug} className='surface-card overflow-hidden' open>
+              <summary className='cursor-pointer list-none px-5 py-4 flex flex-wrap items-center gap-x-4 gap-y-2'>
+                <div className='min-w-0'>
+                  <p className='text-body-strong'>{family.label}</p>
+                  <p className='text-caption text-ink-subtle'>
+                    <span className='font-mono'>{family.slug}</span>
+                    {family.match ? ` · source match “${family.match}”` : ''}
+                  </p>
+                </div>
+                <div className='ml-auto flex flex-wrap items-center justify-end gap-2'>
+                  <span className={`rounded-pill px-2.5 py-1 text-tag font-semibold ${
+                    complete ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
+                  }`}>
+                    {family.available_programs} of {family.expected_programs} campus programs
+                  </span>
+                  <span className='rounded-pill bg-surface-sunken px-2.5 py-1 text-tag text-ink-muted'>
+                    {Number(family.agreement_count || 0).toLocaleString()} agreements
+                  </span>
+                </div>
+              </summary>
+              <div className='border-t border-border'>
+                <div className='px-5 py-3 flex flex-wrap gap-2 bg-surface-muted'>
+                  {capabilities.length ? capabilities.map((label) => (
+                    <span key={label} className='rounded-pill bg-surface px-2.5 py-1 text-tag text-ink-muted'>{label}</span>
+                  )) : (
+                    <span className='text-caption text-ink-subtle'>Source agreements only; no derived capabilities enabled yet.</span>
+                  )}
+                  <span className='rounded-pill bg-surface px-2.5 py-1 text-tag text-ink-muted'>
+                    {family.category_count || 0} course categories
+                  </span>
+                </div>
+                <div className='hidden md:grid grid-cols-[minmax(150px,.8fr)_minmax(260px,1.5fr)_110px_100px] gap-4 px-5 py-2 border-t border-border text-label'>
+                  <span>Campus</span><span>Exact source program</span><span className='text-right'>Agreements</span><span className='text-right'>Colleges</span>
+                </div>
+                {family.programs.map((program) => (
+                  <div key={`${program.school_id}|${program.source_program}`}
+                    className='grid grid-cols-1 md:grid-cols-[minmax(150px,.8fr)_minmax(260px,1.5fr)_110px_100px] gap-1 md:gap-4 px-5 py-3 border-t border-border items-center'>
+                    <span className='text-caption text-ink'>{program.school}</span>
+                    <span className='text-caption text-ink-muted break-words'>{program.source_program}</span>
+                    <span className={`text-caption md:text-right tabular-nums ${program.available ? 'text-ink' : 'text-danger font-semibold'}`}>
+                      {program.available ? Number(program.agreements).toLocaleString() : 'Missing'}
+                    </span>
+                    <span className='text-caption text-ink-muted md:text-right tabular-nums'>
+                      {program.available ? Number(program.community_colleges).toLocaleString() : '—'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )
+        })}
+      </Stack>
+
+      <div className='surface-card overflow-hidden'>
+        <div className='px-5 py-4 border-b border-border'>
+          <p className='text-body-strong'>Expansion readiness</p>
+          <p className='mt-1 text-caption text-ink-subtle'>
+            Imported campus programs not assigned to a research major family appear here automatically.
+          </p>
+        </div>
+        {unmapped.length ? (
+          <div className='divide-y divide-border'>
+            {unmapped.map((program) => (
+              <div key={`${program.school_id}|${program.source_program}`} className='px-5 py-3 flex flex-wrap gap-x-4 gap-y-1'>
+                <span className='text-caption text-ink font-semibold'>{program.school}</span>
+                <span className='text-caption text-ink-muted'>{program.source_program}</span>
+                <span className='ml-auto text-caption tabular-nums text-ink-muted'>{Number(program.agreements || 0).toLocaleString()} agreements</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className='px-5 py-4 text-caption text-success'>Every imported campus program is mapped to a configured research major.</p>
+        )}
+      </div>
+
+      <details className='surface-card overflow-hidden'>
+        <summary className='cursor-pointer list-none px-5 py-4 flex items-center gap-3'>
+          <span className='text-body-strong'>Collection inventory</span>
+          <span className='ml-auto text-caption text-ink-subtle'>{collections.length} collections</span>
+        </summary>
+        <div className='border-t border-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
+          {collections.map((collection) => (
+            <div key={collection.name} className='px-5 py-3 border-b border-r border-border flex items-center gap-3'>
+              <span className='text-caption text-ink-muted break-all'>{collection.name}</span>
+              <span className='ml-auto text-caption font-mono tabular-nums text-ink'>{Number(collection.count).toLocaleString()}</span>
+            </div>
+          ))}
+        </div>
+      </details>
     </Stack>
   )
 }

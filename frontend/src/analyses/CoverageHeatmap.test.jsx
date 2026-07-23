@@ -87,10 +87,11 @@ describe('CoverageHeatmap adaptive color scale', () => {
 
   it('uses the same monochrome red ramp as Massachusetts Figures 3 and 4', () => {
     const scale = createCoverageColorScale([40, 45, 50])
-    const low = makeCellColor(40, scale)
-    const high = makeCellColor(50, scale)
-    expect(low).toEqual(paperRedCellColor(40, scale))
-    expect(high).toEqual(paperRedCellColor(50, scale))
-    expect(low.backgroundColor).not.toBe(high.backgroundColor)
+    const low = makeCellColor(scale.min, scale)
+    const high = makeCellColor(scale.max, scale)
+    expect(low).toEqual(paperRedCellColor(scale.min, scale))
+    expect(high).toEqual(paperRedCellColor(scale.max, scale))
+    expect(low.backgroundColor).toBe('rgb(255 255 255)')
+    expect(high.backgroundColor).toBe('rgb(103 0 13)')
   })
 })

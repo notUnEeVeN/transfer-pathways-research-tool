@@ -9,13 +9,18 @@ export { paperRedCellColor } from './maHeatmapColors'
 
 /**
  * Degree credit toward graduation: for each college × campus pair, the share
- * of the WHOLE associate degree that the curated four-year graduation model
- * can apply. Each associate-degree unit is counted at most once across named
- * course requirements, GE/breadth, and documented free-elective room.
+ * of the receiving bachelor's requirements fulfilled by the associate degree.
+ * The scope control compares the complete four-year model with only the work a
+ * community college can perform (transferable + breadth tiers).
  */
 export const DEGREE_MODES = [
   { value: 'local_cs_as', label: 'Local CS A.S.' },
   { value: 'ast', label: 'CS A.S.-T' },
+]
+
+export const REQUIREMENT_SCOPES = [
+  { value: 'full-degree', label: 'All bachelor’s requirements' },
+  { value: 'lower-division', label: 'Lower-division only' },
 ]
 
 const intFmt = new Intl.NumberFormat()
@@ -44,9 +49,39 @@ function average(values) {
   return nums.reduce((sum, value) => sum + value, 0) / nums.length
 }
 
+export function rateForScope(row, scope) {
+  return scope === 'lower-division'
+    ? row?.lower_division_completion_pct
+    : row?.full_degree_completion_pct
+}
+
+function fulfilledForScope(row, scope) {
+  return scope === 'lower-division'
+    ? row?.lower_division_fulfilled_units
+    : row?.full_degree_fulfilled_units
+}
+
+function requiredForScope(row, scope) {
+  return scope === 'lower-division'
+    ? row?.lower_division_required_units
+    : row?.full_degree_required_units
+}
+
+function scopeLabel(scope) {
+  return scope === 'lower-division'
+    ? 'Lower-division requirements fulfilled'
+    : 'Bachelor’s requirements fulfilled'
+}
+
+function scopeDescription(scope) {
+  return scope === 'lower-division'
+    ? 'Transferable and breadth requirements; university-only work is excluded.'
+    : 'The complete modeled graduation plan, including upper-division and university-only work.'
+}
+
 // Shared by the Fig. 3 (rate) and Fig. 4 (extra units) cards — `getValue`
 // picks the measure; `makeScale` its color domain.
-export function buildRateMatrix(rows, getValue = (r) => r.rate, makeScale = createCoverageColorScale) {
+export function buildRateMatrix(rows, getValue = (r) => r.full_degree_completion_pct, makeScale = createCoverageColorScale) {
   const colMap = new Map()
   const rowMap = new Map()
   const records = new Map()
@@ -110,12 +145,13 @@ function applicationNote(cell) {
     ['free electives', cell.elective_counted_units],
   ].filter(([, value]) => Number.isFinite(value))
   if (!buckets.length) return null
-  return `Applied once: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')} ${unitSystemName(cell.as_unit_system)}`
+  return `AS units applied once: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')} ${unitSystemName(cell.as_unit_system)}`
 }
 
-function cellTitle(row, col, cell) {
+function cellTitle(row, col, cell, scope) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
-  if (!Number.isFinite(cell.rate)) {
+  const rate = rateForScope(cell, scope)
+  if (!Number.isFinite(rate)) {
     return [
       row.name,
       col.school,
@@ -125,8 +161,8 @@ function cellTitle(row, col, cell) {
   return [
     row.name,
     col.school,
-    `Degree applied to graduation: ${pct(cell.rate)}`,
-    `${units(cell.transferred_units)} of ${units(cell.as_total_units)} ${unitSystemName(cell.as_unit_system)} apply`,
+    `${scopeLabel(scope)}: ${pct(rate)}`,
+    `${units(fulfilledForScope(cell, scope))} of ${units(requiredForScope(cell, scope))} ${unitSystemName(cell.degree_unit_system)} in this requirement scope`,
     applicationNote(cell),
     methodDetail(cell),
   ].filter(Boolean).join('\n')
@@ -144,7 +180,7 @@ export function TransferMethodNote({ children, warningCount = 0 }) {
   )
 }
 
-function RateTable({ model }) {
+function RateTable({ model, scope }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -172,13 +208,14 @@ function RateTable({ model }) {
               </th>
               {model.columns.map((col) => {
                 const cell = model.records.get(`${row.key}|${col.key}`)
+                const value = rateForScope(cell, scope)
                 return (
                   <td key={col.key}
-                    title={cellTitle(row, col, cell)}
-                    aria-label={cellTitle(row, col, cell)}
+                    title={cellTitle(row, col, cell, scope)}
+                    aria-label={cellTitle(row, col, cell, scope)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                    style={paperRedCellColor(cell?.rate ?? null, model.colorScale)}>
-                    {pct(cell?.rate ?? null)}
+                    style={paperRedCellColor(value ?? null, model.colorScale)}>
+                    {pct(value ?? null)}
                   </td>
                 )
               })}
@@ -213,16 +250,20 @@ function RateTable({ model }) {
 export default function TransferCreditRate() {
   // Local CS A.S. is the headline cohort; A.S.-T is the standardized benchmark.
   const [degreeType, setDegreeType] = useState('local_cs_as')
+  const [scope, setScope] = useState('full-degree')
   const query = useTransferCreditRate(degreeType)
   const rows = query.data?.rows || []
-  const model = useMemo(() => buildRateMatrix(rows), [rows])
+  const model = useMemo(
+    () => buildRateMatrix(rows, (row) => rateForScope(row, scope)),
+    [rows, scope]
+  )
   const warningCount = methodWarningCount(rows)
 
   if (query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   }
   if (query.isError) {
-    return <Alert type='error'>Could not load the transfer credit rates.</Alert>
+    return <Alert type='error'>Could not load bachelor’s requirement completion.</Alert>
   }
 
   const controls = (
@@ -236,6 +277,19 @@ export default function TransferCreditRate() {
                 degreeType === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
               }`}>
               {mode.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className='flex flex-col' data-control-group='scope'>
+        <span className='field-label'>Requirements counted</span>
+        <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+          {REQUIREMENT_SCOPES.map((item) => (
+            <button key={item.value} type='button' onClick={() => setScope(item.value)}
+              className={`px-3 text-button border-r border-border last:border-r-0 ${
+                scope === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+              }`}>
+              {item.label}
             </button>
           ))}
         </div>
@@ -264,9 +318,13 @@ export default function TransferCreditRate() {
     <Stack gap='section'>
       {controls}
       <div data-export-root className='flex flex-col gap-3'>
-        <RateTable model={model} />
+        <div className='surface-card px-4 py-3'>
+          <p className='text-label'>{REQUIREMENT_SCOPES.find((item) => item.value === scope)?.label}</p>
+          <p className='mt-1 text-caption text-ink-muted'>{scopeDescription(scope)}</p>
+        </div>
+        <RateTable model={model} scope={scope} />
         <TransferMethodNote warningCount={warningCount}>
-          Each associate-degree unit is applied at most once to an articulated course requirement, general education or breadth, or documented free-elective room in the curated full graduation model. Blank cells lack enough curated information.
+          The denominator is the receiving bachelor’s requirements, not the associate degree. The full view includes university-only upper-division work; the lower-division view excludes that tier. Associate-degree units are applied at most once to articulated courses, general education or breadth, and documented elective room. Blank cells lack enough curated information.
         </TransferMethodNote>
       </div>
     </Stack>

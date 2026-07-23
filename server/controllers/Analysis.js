@@ -165,10 +165,12 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
-// Whole-degree transfer-credit model: per (college with a CS associate degree ×
-// campus), the share of the associate degree that applies to the full, curated
-// graduation plan. Degree and associate-degree structures are editable in the
-// Data tab, so this endpoint deliberately bypasses the short analysis cache;
+// Associate-degree contribution model: per (college with a CS associate degree ×
+// campus), the share of the full bachelor's plan and of its lower-division
+// requirements fulfilled by that associate degree. Legacy AS-unit utilization
+// fields remain for the separate replacement-coursework figure. Both degree
+// structures are editable in the Data tab, so this endpoint deliberately
+// bypasses the short analysis cache;
 // an explicit frontend refresh must never receive a pre-edit result.
 exports.transferCreditRate = asyncHandler(async (req, res) => {
   // The AS-degree layer exists only for majors whose associate-degree data has
@@ -199,7 +201,7 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
     return res.send(toCsv(rows));
   }
   res.json({
-    params: { degree_type: degreeType, majorSlug: major.slug, method: 'full_degree_v2' },
+    params: { degree_type: degreeType, majorSlug: major.slug, method: 'bachelors_completion_v3' },
     n: rows.length,
     rows,
   });

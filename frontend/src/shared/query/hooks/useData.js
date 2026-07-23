@@ -114,19 +114,20 @@ export function useCoverage(params = {}, options = {}) {
   })
 }
 
-// Per college × campus, the share of the whole CS associate degree that applies
-// once toward the curated four-year graduation model. The result is edited
-// frequently, so a persisted response may paint immediately but every mount
-// must still fetch the current calculation. degree_type: 'local_cs_as' | 'ast'.
+// Per college × campus, the share of all bachelor's requirements and of only
+// lower-division requirements fulfilled by the selected CS associate degree.
+// The result is edited frequently, so a persisted response may paint immediately
+// but every mount must still fetch the current calculation.
+// degree_type: 'local_cs_as' | 'ast'.
 export function useTransferCreditRate(degreeType = 'local_cs_as', options = {}) {
   const { user } = useAuth()
   const type = ['ast', 'local_cs_as'].includes(degreeType) ? degreeType : 'local_cs_as'
   const majorSlug = 'cs'
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    // v2 prevents a persisted prescribed-units payload from rendering against
-    // the whole-degree field contract, even for the brief hydration paint.
-    queryKey: ['analysis-transfer-credit-rate', 'v3', user?.uid, majorSlug, type],
+    // v4 prevents the old AS-denominator payload from rendering against the
+    // bachelor's-requirement completion field contract during hydration.
+    queryKey: ['analysis-transfer-credit-rate', 'v4', user?.uid, majorSlug, type],
     queryFn: () =>
       apiClient
         .get('/analysis/transfer-credit-rate', { params: { degree_type: type, majorSlug } })

@@ -131,7 +131,7 @@ export const ANALYSES = [
     id: 'transfer-credit-rate',
     pinnedMajor: 'cs',
     title: 'Degree credit toward graduation',
-    description: 'Shows how much of a computer science associate degree counts toward graduation requirements at each university.',
+    description: 'Shows what share of complete or lower-division bachelor’s requirements is fulfilled by a computer science associate degree.',
     provenance: 'ma',
     figureNo: 3,
     author_label: ANALYSIS_AUTHOR,

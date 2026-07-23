@@ -86,6 +86,9 @@ describe('published interactive visual', () => {
     const { container } = render(<InteractiveFigureCard fig={interactive} canModify={false}
       onDelete={vi.fn()} deleting={false} onSave={vi.fn()} saving={false} />)
 
+    // The figure opens on ASSIST; the paper baseline is the comparison root, so
+    // step onto it before exercising the difference overlay.
+    fireEvent.click(screen.getByRole('button', { name: 'Paper baseline' }))
     expect(screen.getByRole('img').getAttribute('viewBox')).toBe('0 0 1990.3 1190.3')
     const differences = screen.getByRole('switch', { name: 'Show differences' })
     expect(differences).toBeDisabled()

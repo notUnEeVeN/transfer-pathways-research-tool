@@ -7,8 +7,9 @@
 // If a campus's requirements are re-gathered from new pages, update BOTH the
 // doc and this map.
 //
-// Keyed by the numeric ASSIST `school_id` carried on each served degree
-// document (not the UCB/UCSD authoring keys in uc_degree_requirements.json).
+// Historical CS entries are keyed by numeric ASSIST `school_id`. New entries
+// use `<major_slug>:<school_id>` so a Biology or Economics degree can never
+// inherit the CS verification path merely because it belongs to the same UC.
 
 const DEGREE_SOURCES = {
   // UC Berkeley — EECS B.S.
@@ -173,8 +174,20 @@ const DEGREE_SOURCES = {
 // Verification path for a served degree document; falls back to the
 // document's own single source_url when the campus isn't in the map.
 export function degreeSourcesFor(doc) {
-  const sources = DEGREE_SOURCES[Number(doc?.school_id)]
+  const schoolId = Number(doc?.school_id)
+  const majorSlug = String(doc?.major_slug || 'cs')
+  const sources = DEGREE_SOURCES[`${majorSlug}:${schoolId}`]
+    || (majorSlug === 'cs' ? DEGREE_SOURCES[schoolId] : null)
   if (sources?.length) return sources
+  if (Array.isArray(doc?.sources) && doc.sources.length) {
+    return doc.sources
+      .filter((source) => source?.url)
+      .map((source) => ({
+        label: source.label || source.kind || 'Source',
+        url: source.url,
+        note: source.note || null,
+      }))
+  }
   if (doc?.source_url) return [{ label: 'Source', url: doc.source_url, note: null }]
   return []
 }

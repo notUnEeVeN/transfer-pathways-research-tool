@@ -17,6 +17,7 @@ const {
   listMembers, grantMember, revokeMember,
 } = require('../services/teamMembers');
 const { AUDIT_RESULTS } = require('../services/audit/filters');
+const { listMajors, programPairs } = require('../config/majors');
 
 // Audit pulse — read-only auditing activity for the admin page. Deliberately
 // no targets (the template pool is effectively unbounded): ALL-TIME verdict
@@ -93,19 +94,116 @@ exports.setTeamName = asyncHandler(async (req, res) => {
 exports.getDataset = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
-  const [settings, ...values] = await Promise.all([
+  const [settings, collectionInfo, portedPrograms, universities] = await Promise.all([
     auditDb.collection('settings').findOne({ _id: 'app' }),
-    ...['assist_agreements', 'assist_courses', 'assist_institutions', 'admissions']
-      .map((name) => db.collection(name).estimatedDocumentCount()),
+    db.listCollections({}, { nameOnly: true }).toArray(),
+    db.collection('assist_agreements').aggregate([
+      {
+        $group: {
+          _id: {
+            school_id: '$uc_school_id',
+            school: '$uc_school',
+            major: '$major',
+          },
+          agreements: { $sum: 1 },
+          community_college_ids: { $addToSet: '$community_college_id' },
+        },
+      },
+      { $sort: { '_id.school': 1, '_id.major': 1 } },
+    ]).toArray(),
+    db.collection('assist_institutions').find(
+      { kind: 'university' },
+      { projection: { source_id: 1, name: 1, _id: 0 } }
+    ).toArray(),
   ]);
-  const names = ['assist_agreements', 'assist_courses', 'assist_institutions', 'admissions'];
-  const counts = Object.fromEntries(names.map((name, index) => [name, values[index]]));
-  const majors = await db.collection('assist_agreements').distinct('major');
+
+  // Collection inventory is discovered rather than hard-coded. A new
+  // canonical collection therefore appears in Settings on its first import.
+  const collectionNames = collectionInfo
+    .map((row) => row.name)
+    .filter((name) => !name.startsWith('system.') && !name.includes('__staging'))
+    .sort();
+  const collectionCounts = await Promise.all(collectionNames.map(async (name) => ({
+    name,
+    count: await db.collection(name).estimatedDocumentCount(),
+  })));
+  const counts = Object.fromEntries(collectionCounts.map((row) => [row.name, row.count]));
+
+  const universityNameById = new Map(
+    universities.map((row) => [Number(row.source_id), row.name])
+  );
+  const portedByPair = new Map(portedPrograms.map((row) => {
+    const schoolId = Number(row._id.school_id);
+    const major = String(row._id.major || '');
+    return [`${schoolId}|${major}`, {
+      school_id: schoolId,
+      school: row._id.school || universityNameById.get(schoolId) || `School ${schoolId}`,
+      source_program: major,
+      agreements: Number(row.agreements) || 0,
+      community_colleges: (row.community_college_ids || []).filter((id) => id != null).length,
+    }];
+  }));
+
+  // A "major" in the product is a research family (CS, Biology, Economics),
+  // while ASSIST stores an exact source-program label per campus. Preserve that
+  // hierarchy so repeated labels never collapse nine campus programs into a
+  // misleading distinct-string count.
+  const configuredPairKeys = new Set();
+  const majorFamilies = listMajors().map((major) => {
+    const programs = programPairs(major).map((pair) => {
+      const key = `${pair.school_id}|${pair.major}`;
+      configuredPairKeys.add(key);
+      const ported = portedByPair.get(key);
+      return {
+        school_id: pair.school_id,
+        school: ported?.school || universityNameById.get(pair.school_id) || `School ${pair.school_id}`,
+        source_program: pair.major,
+        available: Boolean(ported),
+        agreements: ported?.agreements || 0,
+        community_colleges: ported?.community_colleges || 0,
+      };
+    }).sort((a, b) => a.school.localeCompare(b.school));
+    return {
+      slug: major.slug,
+      label: major.label,
+      match: major.match,
+      capabilities: major.capabilities || {},
+      category_count: (major.categories || []).length,
+      expected_programs: programs.length,
+      available_programs: programs.filter((program) => program.available).length,
+      agreement_count: programs.reduce((sum, program) => sum + program.agreements, 0),
+      programs,
+    };
+  });
+  const unmappedPrograms = [...portedByPair.entries()]
+    .filter(([key]) => !configuredPairKeys.has(key))
+    .map(([, program]) => program)
+    .sort((a, b) => a.school.localeCompare(b.school) || a.source_program.localeCompare(b.source_program));
+  const configuredPrograms = majorFamilies.reduce((sum, major) => sum + major.expected_programs, 0);
+  const availablePrograms = majorFamilies.reduce((sum, major) => sum + major.available_programs, 0);
+  const distinctSourceLabels = new Set(
+    majorFamilies.flatMap((major) => major.programs.map((program) => program.source_program))
+  );
+
   res.json({
     meta: {
       updated_at: settings?.last_data_refresh_at ?? null,
       counts,
-      majors: { agreements: majors.sort() },
+      collections: collectionCounts,
+      major_summary: {
+        research_major_families: majorFamilies.length,
+        configured_campus_programs: configuredPrograms,
+        available_campus_programs: availablePrograms,
+        distinct_source_program_labels: distinctSourceLabels.size,
+        unmapped_campus_programs: unmappedPrograms.length,
+      },
+      major_families: majorFamilies,
+      unmapped_programs: unmappedPrograms,
+      // Compatibility for older admin clients. These are source-label strings,
+      // not major families or campus-program pairs.
+      majors: {
+        agreements: [...new Set(portedPrograms.map((row) => String(row._id.major || '')))].sort(),
+      },
     },
     changelog: [],
   });
@@ -156,11 +254,12 @@ exports.revokeAccess = asyncHandler(async (req, res) => {
   res.json({ ok: true });
 });
 
-// ── working major visibility ──
-// The ported dataset (everything in assist_agreements) is the admin inventory;
-// `visible` selects exactly one working major for each campus. The same major
-// name can exist at several campuses, so each choice remains a school+major
-// pair. Deny-by-default: until choices are saved, partners see nothing.
+// ── legacy working-pair settings ──
+// These endpoints preserve older admin clients that stored a set of exact
+// campus+program pairs. Website scope now comes from config/majors.js, which
+// supports any number of research-major families and campus programs. Keep
+// pairs exact here because the same source-program title can occur on several
+// campuses.
 
 // The ported universe, grouped by school for the admin UI.
 async function portedBySchool(db) {

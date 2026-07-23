@@ -75,7 +75,7 @@ function ExtraTable({ model }) {
                     title={cellTitle(row, col, cell)}
                     aria-label={cellTitle(row, col, cell)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                    style={paperRedCellColor(cell?.extra_units_semester ?? null, model.colorScale, true)}>
+                    style={paperRedCellColor(cell?.extra_units_semester ?? null, model.colorScale)}>
                     {plus(cell?.extra_units_semester ?? null)}
                   </td>
                 )
@@ -94,7 +94,7 @@ function ExtraTable({ model }) {
             {model.columns.map((col, i) => (
               <td key={col.key}
                 className='sticky bottom-0 z-20 border-t border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                style={paperRedCellColor(model.columnMeans[i], model.colorScale, true)}>
+                style={paperRedCellColor(model.columnMeans[i], model.colorScale)}>
                 {plus(model.columnMeans[i])}
               </td>
             ))}

@@ -759,7 +759,8 @@ function DifferenceHeatmap({ live, baseline, comparisonLabel, labelMode }) {
 }
 
 export default function PaperCreditLoss() {
-  const [version, setVersion] = useState('paper')  // 'paper' | 'website' | 'assist'
+  // ASSIST first; the paper baseline stays one click away as the comparison.
+  const [version, setVersion] = useState('assist')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('names')
   const [showMatrix, setShowMatrix] = useState(false)

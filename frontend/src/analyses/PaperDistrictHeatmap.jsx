@@ -479,7 +479,8 @@ export function PaperDistrictHeatmapPreview() {
 }
 
 export default function PaperDistrictHeatmap({ presentation = false, preview = false }) {
-  const [version, setVersion] = useState(presentation ? 'assist' : 'website')  // 'paper' | 'website' | 'assist'
+  // ASSIST first in both the console and the presentation skin.
+  const [version, setVersion] = useState('assist')  // 'paper' | 'website' | 'assist'
   const [showDiff, setShowDiff] = useState(false)
   const [labelMode, setLabelMode] = useState('names')
 

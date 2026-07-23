@@ -1106,6 +1106,13 @@ function UniversitiesPane({ onRoute = () => {} }) {
   const summary = useDataSummary()
   const [selectedSchoolId, setSelectedSchoolId] = useState(null)
   const [subTab, setSubTab] = useState('courses')
+  // Same pane-level major choice the graduation-requirements tab reads, so the
+  // sub-tabs and the template below them agree on which major is in view.
+  const { major } = useMajorChoice('campuses')
+  // Hand-curated minimums exist for computer science only, and permanently so:
+  // majors added since are ASSIST-driven end to end.
+  const hasMinimums = major?.capabilities?.transferMinimums !== false
+  const activeSubTab = subTab === 'minimums' && !hasMinimums ? 'courses' : subTab
 
   const schools = summary.data?.schools || []
   const items = useMemo(() => schools.map((s) => ({ id: s.school_id, name: s.school })), [schools])
@@ -1124,8 +1131,8 @@ function UniversitiesPane({ onRoute = () => {} }) {
       requirements: '/api/curated/degrees',
       minimums: '/api/curated/requirements?kind=transfer_minimum',
     }
-    onRoute({ path: paths[subTab] })
-  }, [onRoute, selectedSchoolId, subTab])
+    onRoute({ path: paths[activeSubTab] })
+  }, [onRoute, selectedSchoolId, activeSubTab])
 
   if (summary.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (summary.isError) return <Alert type='error'>Failed to load the UC campuses.</Alert>
@@ -1140,17 +1147,17 @@ function UniversitiesPane({ onRoute = () => {} }) {
           description='Pick one from the list to see its requirements and courses.' />
       ) : (
         <Stack gap='cozy'>
-          <Tabs value={subTab} onChange={setSubTab}
+          <Tabs value={activeSubTab} onChange={setSubTab}
             options={[
               { value: 'courses', label: 'Courses' },
               { value: 'requirements', label: 'Graduation Requirements' },
-              { value: 'minimums', label: 'Transfer Minimums' },
+              ...(hasMinimums ? [{ value: 'minimums', label: 'Transfer Minimums' }] : []),
             ]} />
-          {subTab === 'requirements' && (
+          {activeSubTab === 'requirements' && (
             <CampusDegreeTemplate schoolId={selectedCampus.school_id} school={selectedCampus.school} />
           )}
-          {subTab === 'minimums' && <CampusMinimums schoolId={selectedCampus.school_id} />}
-          {subTab === 'courses' && (
+          {activeSubTab === 'minimums' && <CampusMinimums schoolId={selectedCampus.school_id} />}
+          {activeSubTab === 'courses' && (
             <CourseList institutionId={selectedCampus.school_id} useCourses={useUniversityCourses}
               columns={UC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title', 'department']} />
           )}

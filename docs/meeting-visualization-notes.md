@@ -17,7 +17,7 @@
 | CA 5 — Course gaps | Which required course types are missing most often? |
 | MA 1 — Degree coverage | How much of the full UC degree could be completed before transfer? |
 | MA 2 — Course types | Is coverage better for math and science than for computing? |
-| MA 3 — Credit rate | What share of an associate degree actually applies to the UC degree? |
+| MA 3 — Degree completion | With an associate degree, what share of the bachelor’s requirements is already fulfilled? |
 | MA 4 — Replacement work | How many associate-degree units may need to be replaced? |
 | New — Income and access | Do richer areas have access to more complete UC pathways? |
 | New — Multi-campus preparation | How much more work is needed to keep more UC choices open? |
@@ -87,16 +87,17 @@ These four figures come from *Lost in Transfer: Examining CS Transfer Pathways f
 
 ### 8. Degree credit toward graduation — MA Figure 3
 
-- **What it asks:** What share of a completed associate degree would actually apply to the UC bachelor's degree?
-- **How we calculate it:** Build a transfer-oriented version of the associate degree. Apply each associate-degree unit at most once: first to named UC course requirements, then to GE or breadth, then to documented elective space. Divide applied units by total associate-degree units.
+- **What it asks:** After completing an associate degree, what share of the receiving bachelor’s graduation requirements is already fulfilled?
+- **How we calculate it:** Build a feasible, transfer-oriented version of the associate degree and apply its units once to named UC course requirements, then GE or breadth, then documented elective space. Divide the bachelor’s requirement units fulfilled by the bachelor’s requirement units in the selected scope.
+- **Two views:** **All bachelor’s requirements** includes the complete four-year model, including upper-division and university-only work. **Lower-division only** includes transferable and breadth tiers, excluding the work a California community college cannot offer.
 - **Where it came from:** The MA group manually overlaid an ASCS and BSCS for 61 nearby college pairs, chose the most efficient pathway, and divided ASCS credits that applied by total ASCS credits.
-- **Quick result:** Our frozen comparison found about 62.6% for local CS associate degrees and 74.6% for the transfer-oriented degree cohort.
+- **Quick result:** The prior 62.6% and 74.6% results used the associate degree as the denominator and are retired; the corrected live view should be read directly from the visual.
 - **Important caution:** This is an optimistic, best-case student who chooses the most transferable options. It is modeled credit use, not observed student transcripts.
 
 ### 9. Modeled replacement coursework — MA Figure 4
 
 - **What it asks:** How many associate-degree units do not apply to the UC degree and may therefore need to be replaced?
-- **How we calculate it:** Total associate-degree units minus the units counted in MA Figure 3. Quarter results are converted to semester-equivalent units so colleges can be compared.
+- **How we calculate it:** Total associate-degree units minus the units that the graduation model can apply. Quarter results are converted to semester-equivalent units so colleges can be compared. This keeps the associate degree as its denominator and is now a separate companion accounting from Figure 3.
 - **Where it came from:** The MA group added the ASCS and remaining BSCS work, then measured how many credits the transfer pathway exceeded the normal 120-credit bachelor's total. Algebraically, that is the same basic lost-credit remainder.
 - **Quick result:** Our frozen comparison found about 22.4 replacement units for local degrees and 15.3 for the transfer-oriented degree cohort.
 - **Important caution:** This is not observed repeated coursework or observed time to degree. Because the model gives students the best reasonable use of GE and electives, it is better read as a lower bound on the problem.

@@ -83,7 +83,9 @@ export function useUnblockAccount() {
 export function useAdminDataset() {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['admin-dataset', user?.uid],
+    // Version the cached shape so clients do not briefly render the legacy
+    // flat distinct-major payload after the coverage inventory ships.
+    queryKey: ['admin-dataset', 'coverage-v2', user?.uid],
     queryFn: () => apiClient.get('/admin/dataset').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 60 * 1000,

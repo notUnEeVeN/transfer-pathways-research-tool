@@ -497,7 +497,8 @@ function GradientFigure({ model }) {
 }
 
 export default function IncomeAccess() {
-  const [version, setVersion] = useState('hand-curated')
+  // ASSIST first — see ArticulationCoverageMap; both figures share the control.
+  const [version, setVersion] = useState('assist')
   const options = { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   const handCurated = useCoverage(HAND_CURATED_PARAMS, options)
   const assist = useCoverage(ASSIST_PARAMS, options)

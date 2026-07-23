@@ -46,14 +46,14 @@ export const MEASURES = {
     watchFor: 'Read the scope control first. The default counts the whole degree, including upper-division work no community college can offer — that suppresses the computing column for a structural reason true of any major in its own subject, not because of articulation. The lower-division scope compares the types on coursework a community college can actually teach. Each point weights every community college equally, and the diamond averages the campus points, not the underlying pairs.',
   },
   'transfer-credit-rate': {
-    expression: 'credit rate = associate degree units that apply to the UC degree ÷ total units in the associate degree',
+    expression: 'completion = bachelor’s requirement units fulfilled by the associate degree ÷ bachelor’s requirement units in the selected scope',
     grain: 'One value per community college × UC campus, for one associate degree type.',
-    watchFor: 'The denominator is the whole associate degree, not only its prescribed coursework. Units apply at most once even when a course satisfies two requirements, and general education and elective room are credited on the assumption the student picked courses that qualify on both sides — so this is an optimal student, not an observed one.',
+    watchFor: 'Read the scope control first. The full view includes upper-division and other university-only work; the lower-division view excludes the nontransferable tier. Associate-degree units apply at most once, while general education and elective room use an optimal-student assumption rather than observed transcripts.',
   },
   'transfer-extra-units': {
     expression: 'replacement units = total units in the associate degree − associate degree units that apply to the UC degree',
     grain: 'One value per community college × UC campus, for one associate degree type.',
-    watchFor: 'This is the residual of the credit rate figure, so the two always agree. Every optimistic assumption in the credit model pushes this number down, which makes it a lower bound on repeated coursework rather than an estimate of it.',
+    watchFor: 'This companion measure keeps the associate degree as its denominator, unlike the bachelor’s-requirement completion figure. Every optimistic application assumption pushes replacement units down, so read it as a lower bound rather than observed repeated coursework.',
   },
   'coverage-heatmap': {
     expression: 'coverage = modeled graduation units with a community college equivalent ÷ all modeled graduation units',

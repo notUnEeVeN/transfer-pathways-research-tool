@@ -3,8 +3,8 @@ import {
   Alert, Button, EmptyState, Spinner, Stack, Textarea,
 } from '../../components/ui'
 import { useAsDegreeDetail, useCcCourses, useSaveAsDegree } from '../../shared/query/hooks/useData'
-import apiClient from '../../shared/api/apiClient'
 import { DegreePanel } from '../AsDegreeSchoolView'
+import AsDegreeJsonPanel from './AsDegreeJsonPanel'
 import { courseLabel, isComplexGroup, setGroupCourses } from './asDegreeCourses'
 
 /**
@@ -13,7 +13,8 @@ import { courseLabel, isComplexGroup, setGroupCourses } from './asDegreeCourses'
  *
  * The degree renders exactly as it does everywhere else — the shared ledger, in
  * catalog order — with an Edit button on each group the researcher can fix by
- * clicking. Anything a flat course list cannot state goes to the assistant.
+ * clicking. Anything a flat course list cannot state is edited as the stored
+ * document itself, by hand or with help from whichever AI they prefer.
  */
 export default function AsDegreeReview({ collegeId, degreeType = null }) {
   const detail = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
@@ -45,8 +46,8 @@ export default function AsDegreeReview({ collegeId, degreeType = null }) {
   }))
 
   // Only groups a flat list can represent honestly. A group encoding a real
-  // choice rule, a GE pattern, or an electives-to-total total is left to the
-  // assistant rather than shown half-editable.
+  // choice rule, a GE pattern, or an electives-to-total total is edited in the
+  // document below rather than shown half-editable here.
   const isEditable = (group) => !!group?.group_id && !group.ge_area && !group.units_fill
     && !isComplexGroup(group)
 
@@ -57,7 +58,7 @@ export default function AsDegreeReview({ collegeId, degreeType = null }) {
     )),
   })
 
-  // verified === null saves course edits without touching the verdict.
+  // verified === null saves edits without touching the verdict.
   const persist = async (verified) => {
     setError(null)
     setSaved(null)
@@ -74,7 +75,7 @@ export default function AsDegreeReview({ collegeId, degreeType = null }) {
       })
       setDraft(null)
       setSaved(verified === null
-        ? 'Course changes saved.'
+        ? 'Changes saved.'
         : verified ? 'Marked verified.' : 'Flagged as needing work.')
     } catch (e) {
       setError(e?.response?.data?.error || 'Could not save this record.')
@@ -103,7 +104,8 @@ export default function AsDegreeReview({ collegeId, degreeType = null }) {
       <DegreePanel degree={{ ...active, doc }} showDegreeTitle={false}
         editing={{ isEditable, courseOptions, onChange: editGroup }} />
 
-      <AssistBox recordId={doc._id} onApplied={() => { setDraft(null); detail.refetch() }} />
+      <AsDegreeJsonPanel doc={doc} courses={courses.data?.rows || []}
+        onChange={(next) => setDraft(next)} />
 
       <div>
         <span className='field-label'>Verification note</span>
@@ -117,7 +119,7 @@ export default function AsDegreeReview({ collegeId, degreeType = null }) {
       <div className='flex flex-wrap items-center gap-2'>
         {draft && (
           <Button variant='secondary' onClick={() => persist(null)} disabled={save.isPending}>
-            Save course changes
+            Save changes
           </Button>
         )}
         <Button onClick={() => persist(true)} disabled={save.isPending}>
@@ -128,88 +130,5 @@ export default function AsDegreeReview({ collegeId, degreeType = null }) {
         </Button>
       </div>
     </Stack>
-  )
-}
-
-/**
- * Describe a correction in plain English; the assistant rewrites the stored
- * document, and the change is listed before anything is saved.
- */
-function AssistBox({ recordId, onApplied }) {
-  const save = useSaveAsDegree()
-  const [instruction, setInstruction] = useState('')
-  const [proposal, setProposal] = useState(null)
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState(null)
-
-  const propose = async () => {
-    setBusy(true)
-    setError(null)
-    try {
-      const { data } = await apiClient.post(
-        `/curated/as-degrees/${encodeURIComponent(recordId)}/assist`,
-        { instruction },
-      )
-      setProposal(data)
-    } catch (e) {
-      setError(e?.response?.data?.error || 'Could not produce a change.')
-    }
-    setBusy(false)
-  }
-
-  const apply = async () => {
-    setBusy(true)
-    setError(null)
-    try {
-      await save.mutateAsync(proposal.proposed_doc)
-      setProposal(null)
-      setInstruction('')
-      onApplied?.()
-    } catch (e) {
-      setError(e?.response?.data?.error || 'Could not save the change.')
-    }
-    setBusy(false)
-  }
-
-  return (
-    <div className='surface-card p-4'>
-      <p className='text-body-strong'>Tell the assistant what to change</p>
-      <p className='text-caption text-ink-subtle mt-0.5 mb-3'>
-        Describe the correction in your own words and it rewrites this degree record.
-        It can see the college&apos;s course list but not the catalog page, so tell it
-        what the catalog actually says. You review the change before it is saved.
-      </p>
-
-      <Textarea value={instruction} onChange={(e) => setInstruction(e.target.value)} rows={3}
-        placeholder='e.g. remove PHYS 163 from the program requirements, it is not in the catalog · MATH 115 is missing from the electives · this group should be pick 2 of 4, not all four' />
-
-      {error && <Alert type='error' className='mt-2'>{error}</Alert>}
-
-      {proposal ? (
-        <div className='mt-3'>
-          <p className='field-label mb-1.5'>Proposed change</p>
-          <ul className='flex flex-col gap-1 mb-3'>
-            {(proposal.changes || []).map((change, index) => (
-              <li key={index} className='text-caption'>
-                <span className='text-ink-subtle'>{change.group_id}</span> — {change.summary}
-              </li>
-            ))}
-          </ul>
-          <div className='flex gap-2'>
-            <Button onClick={apply} disabled={busy}>
-              {busy ? 'Saving…' : 'Apply change'}
-            </Button>
-            <Button variant='ghost' onClick={() => setProposal(null)} disabled={busy}>
-              Discard
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <Button className='mt-2' variant='secondary'
-          disabled={!instruction.trim() || busy} onClick={propose}>
-          {busy ? 'Thinking…' : 'Propose a change'}
-        </Button>
-      )}
-    </div>
   )
 }

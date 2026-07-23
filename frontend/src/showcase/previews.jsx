@@ -96,38 +96,38 @@ function RequirementCoveragePreview() {
 
 function PairedDegreePreview() {
   const rows = [
-    { label: 'Local computer science degree', rate: 62.6, extra: '22.4 replacement units' },
-    { label: 'Associate Degree for Transfer', rate: 74.6, extra: '15.3 replacement units' },
+    {
+      label: 'All bachelor’s requirements',
+      detail: 'Complete four-year graduation model',
+      denominator: 'Includes university-only upper division',
+    },
+    {
+      label: 'Lower-division requirements',
+      detail: 'Transferable and breadth tiers',
+      denominator: 'Excludes university-only work',
+    },
   ]
   return (
     <div className='flex h-full flex-col justify-center rounded-2xl border border-border bg-surface px-8 py-7'
-      role='img' aria-label='In 19 matched semester-system colleges, local degrees average 62.6 percent alignment and transfer degrees average 74.6 percent'>
+      role='img' aria-label='Associate degree completion is compared against all bachelor requirements and against lower-division requirements only'>
       <div className='flex items-end justify-between gap-5'>
         <div>
-          <p className='text-body-strong'>Matched degree comparison</p>
-          <p className='mt-1 text-caption'>The same 19 semester-system colleges and the same nine UC programs.</p>
+          <p className='text-body-strong'>Bachelor’s requirements fulfilled</p>
+          <p className='mt-1 text-caption'>The selected associate degree is applied to the same receiving graduation plan.</p>
         </div>
-        <Badge variant='conservative'>Descriptive result</Badge>
+        <Badge variant='conservative'>Two scopes</Badge>
       </div>
-      <div className='mt-8 flex flex-col gap-7'>
+      <div className='mt-8 grid grid-cols-2 gap-4'>
         {rows.map((row) => (
-          <div key={row.label}>
-            <div className='mb-2 flex items-end justify-between gap-4'>
-              <div>
-                <p className='text-body-strong'>{row.label}</p>
-                <p className='text-caption'>{row.extra} in the working model</p>
-              </div>
-              <p className='text-stat-lg'>{row.rate.toFixed(1)}%</p>
-            </div>
-            <div className='h-5 overflow-hidden rounded-pill bg-surface-sunken'>
-              <div className='h-full rounded-pill bg-primary' style={{ width: `${row.rate}%` }} />
-            </div>
+          <div key={row.label} className='rounded-2xl bg-surface-muted p-5'>
+            <p className='text-body-strong'>{row.label}</p>
+            <p className='mt-2 text-caption text-ink-muted'>{row.detail}</p>
+            <p className='mt-5 border-t border-border pt-4 text-caption text-primary'>{row.denominator}</p>
           </div>
         ))}
       </div>
-      <div className='mt-7 flex items-center justify-between gap-5 border-t border-border pt-5'>
-        <p className='text-caption text-ink-muted'>The transfer degree is higher in 131 of 189 matched campus comparisons.</p>
-        <p className='shrink-0 text-body-strong text-success'>9.2 fewer semester units</p>
+      <div className='mt-7 border-t border-border pt-5'>
+        <p className='text-caption text-ink-muted'>Same associate-degree plan; the receiving requirement scope changes the denominator.</p>
       </div>
     </div>
   )

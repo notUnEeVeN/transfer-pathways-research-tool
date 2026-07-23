@@ -143,6 +143,8 @@ describe('income and transfer access', () => {
       .map((node) => Number(node.textContent.match(/(\d+\.\d)$/)?.[1]))
     const pointCountOf = () => container.querySelectorAll('[data-district-point]').length
 
+    // The figure opens on ASSIST, so read the looser set first by switching to it.
+    fireEvent.click(screen.getByRole('button', { name: 'Hand-curated' }))
     const handCurated = quartileMeans()
 
     fireEvent.click(screen.getByRole('button', { name: 'ASSIST' }))

@@ -7,9 +7,10 @@
  * `controllers/Curation.js` and `services/courseTypes.js` read from here rather
  * than holding their own copies.
  *
- * Onboarding a major (roadmap W1) = port its agreements with scripts/port.py,
- * then add an entry here. Program pins for Biology and Economics are recorded
- * in docs/major-pins.md, already ported and awaiting their entries.
+ * Onboarding a major = port its agreements with scripts/port.py, then add one
+ * entry here. The API and Settings coverage inventory discover every entry,
+ * campus pin, capability, and category from this registry. Program-pin
+ * decisions and exclusions are documented in docs/major-pins.md.
  *
  * It is a JS module rather than a Mongo collection because the values are
  * regexes and because adding a major already requires an admin at a terminal

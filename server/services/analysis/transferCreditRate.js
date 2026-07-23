@@ -1,5 +1,5 @@
 /**
- * Whole-degree transfer-credit model.
+ * Associate-degree contribution to bachelor's requirements.
  *
  * For each associate degree × UC graduation template, the service builds a
  * feasible, transfer-oriented associate-degree plan and applies each unit at
@@ -9,13 +9,21 @@
  *   2. a GE or breadth requirement in the UC template;
  *   3. an explicitly authored UC-transferable elective block.
  *
- *   rate  = applied associate-degree units / associate-degree total units
- *   extra = associate-degree total units - applied associate-degree units
+ * The primary figure reports the result from the bachelor's side:
  *
- * All row-level accounting stays in the community college's native unit
- * system. `extra_units_semester` is supplied for comparable cross-college
- * averages. UC requirement capacities are converted into that same native
- * system before they are used.
+ *   full degree = fulfilled bachelor's units / all modeled bachelor's units
+ *   lower div   = fulfilled lower-division units / modeled lower-division units
+ *
+ * The lower-division denominator excludes `nontransferable` template groups,
+ * which represent upper-division, residency, and other university-only work.
+ * Associate-degree utilization fields (`as_unit_utilization_pct`,
+ * `extra_units`, etc.) remain in the payload for the separate
+ * replacement-coursework figure.
+ *
+ * Associate-degree application accounting stays in the community college's
+ * native unit system. The fulfilled/required bachelor fields are returned in
+ * the receiving campus's unit system. `extra_units_semester` remains available
+ * for comparable cross-college replacement-unit averages.
  *
  * The model is intentionally optimistic where the source only supplies an
  * aggregate GE/elective block: it assumes a transfer-bound student chooses
@@ -31,6 +39,7 @@ const ASSUMED_UNITS_PER_COURSE = 4;
 const DEGREE_TYPES = ['local_cs_as', 'ast'];
 const EPSILON = 1e-7;
 const { defaultMajor, getMajor, programPairClause, programPairs } = require('../../config/majors');
+const { computeUnitBudget } = require('../degreeSlots');
 
 const round1 = (value) => +(Number(value) || 0).toFixed(1);
 
@@ -54,6 +63,10 @@ function fromSemesterUnits(units, system) {
 
 function campusUnitsToCollege(units, campusSystem, collegeSystem) {
   return fromSemesterUnits(toSemesterUnits(units, campusSystem), collegeSystem);
+}
+
+function collegeUnitsToCampus(units, collegeSystem, campusSystem) {
+  return fromSemesterUnits(toSemesterUnits(units, collegeSystem), campusSystem);
 }
 
 function receivingPids(receiving) {
@@ -400,11 +413,16 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
   const optionsByPid = agreementOptionsByPid(agreements);
   const directIds = new Set();
   let directAppliedUnits = 0;
+  let lowerDirectAppliedUnits = 0;
   let geCampusUnits = 0;
+  let lowerGeCampusUnits = 0;
   let electiveCampusUnits = 0;
+  let lowerElectiveCampusUnits = 0;
 
   for (const group of template.requirement_groups || []) {
     for (const section of group.sections || []) {
+      const tier = section.tier || group.tier || 'transferable';
+      const isLowerDivision = tier !== 'nontransferable';
       const receivers = section.receivers || [];
       if (!receivers.length) continue;
       const ask = Math.max(0, Number(section.section_advisement) || receivers.length);
@@ -414,17 +432,20 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
       const role = assumedRole(section, receivers);
       if (role === 'elective') {
         electiveCampusUnits += campusUnits;
+        if (isLowerDivision) lowerElectiveCampusUnits += campusUnits;
         continue;
       }
       if (role === 'zero') continue;
       if (role === 'ge') {
         geCampusUnits += campusUnits;
+        if (isLowerDivision) lowerGeCampusUnits += campusUnits;
         continue;
       }
 
       const geReceivers = receivers.filter((receiver) => receiver.receiving?.kind === 'ge_area');
       if (geReceivers.length) {
         geCampusUnits += campusUnits;
+        if (isLowerDivision) lowerGeCampusUnits += campusUnits;
         continue;
       }
 
@@ -456,11 +477,14 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
         const appliedHere = Math.min(rawNewUnits, capacityRemaining);
         sectionAppliedUnits += appliedHere;
         directAppliedUnits += appliedHere;
+        if (isLowerDivision) lowerDirectAppliedUnits += appliedHere;
         for (const id of candidate.ids) directIds.add(id);
       }
 
       if (hasGeFallback(section, receivers) && selected.length < ask) {
-        geCampusUnits += campusUnits * ((ask - selected.length) / ask);
+        const fallbackUnits = campusUnits * ((ask - selected.length) / ask);
+        geCampusUnits += fallbackUnits;
+        if (isLowerDivision) lowerGeCampusUnits += fallbackUnits;
       }
     }
   }
@@ -468,15 +492,49 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
   return {
     directIds,
     directAppliedUnits,
+    lowerDirectAppliedUnits,
     geCampusUnits,
+    lowerGeCampusUnits,
     electiveCampusUnits,
+    lowerElectiveCampusUnits,
   };
+}
+
+function applyAssociateUnits({
+  asTotal, directApplied, geUnits, geDemand, electiveDemand,
+}) {
+  const direct = Math.min(asTotal, directApplied);
+  let remaining = Math.max(0, asTotal - direct);
+  const geCounted = Math.min(geUnits, geDemand, remaining);
+  remaining -= geCounted;
+  const electiveCounted = Math.min(electiveDemand, remaining);
+  return {
+    direct,
+    geCounted,
+    electiveCounted,
+    applied: Math.min(asTotal, direct + geCounted + electiveCounted),
+  };
+}
+
+function completionMetric(appliedCollegeUnits, requiredCampusUnits, collegeSystem, campusSystem) {
+  const required = Number(requiredCampusUnits) || 0;
+  if (required <= 0) return { fulfilled: null, pct: null };
+  const fulfilled = Math.min(
+    required,
+    collegeUnitsToCampus(appliedCollegeUnits, collegeSystem, campusSystem)
+  );
+  return { fulfilled: round1(fulfilled), pct: round1((100 * fulfilled) / required) };
 }
 
 function nullMetrics(row, status, warning, namedUnits = null) {
   return {
     ...row,
     rate: null,
+    as_unit_utilization_pct: null,
+    full_degree_completion_pct: null,
+    full_degree_fulfilled_units: null,
+    lower_division_completion_pct: null,
+    lower_division_fulfilled_units: null,
     prescribed_units: null,
     transferred_units: null,
     named_units: namedUnits,
@@ -529,12 +587,17 @@ async function transferCreditRateData(db, _auditDb, {
     : templates;
 
   const campuses = scopedTemplates
-    .map((template) => ({
-      template,
-      school_id: Number(template.school_id),
-      school: template.school,
-      unitSystem: unitSystemOfTemplate(template),
-    }))
+    .map((template) => {
+      const budget = computeUnitBudget(template.requirement_groups);
+      return {
+        template,
+        school_id: Number(template.school_id),
+        school: template.school,
+        unitSystem: unitSystemOfTemplate(template),
+        fullRequiredUnits: budget.modeled_units,
+        lowerRequiredUnits: budget.per_tier.transferable + budget.per_tier.breadth,
+      };
+    })
     .sort((a, b) => String(a.school).localeCompare(String(b.school)));
 
   const collegeIds = [...new Set(degrees.map((degree) => Number(degree.community_college_id)))];
@@ -598,6 +661,9 @@ async function transferCreditRateData(db, _auditDb, {
         record_id: doc._id,
         as_total_units: round1(asTotal),
         as_unit_system: collegeSystem,
+        degree_unit_system: campus.unitSystem,
+        full_degree_required_units: round1(campus.fullRequiredUnits),
+        lower_division_required_units: round1(campus.lowerRequiredUnits),
         ge_units: round1(geUnits),
         unresolved_count: unresolved,
       };
@@ -635,7 +701,6 @@ async function transferCreditRateData(db, _auditDb, {
         campus.unitSystem,
         collegeSystem
       );
-      const directApplied = Math.min(asTotal, evaluated.directAppliedUnits);
       const geDemand = campusUnitsToCollege(
         evaluated.geCampusUnits,
         campus.unitSystem,
@@ -646,12 +711,31 @@ async function transferCreditRateData(db, _auditDb, {
         campus.unitSystem,
         collegeSystem
       );
-      let remaining = Math.max(0, asTotal - directApplied);
-      const geCounted = Math.min(geUnits, geDemand, remaining);
-      remaining -= geCounted;
-      const electiveCounted = Math.min(electiveDemand, remaining);
-      remaining -= electiveCounted;
-      const applied = Math.min(asTotal, directApplied + geCounted + electiveCounted);
+      const fullApplication = applyAssociateUnits({
+        asTotal,
+        directApplied: evaluated.directAppliedUnits,
+        geUnits,
+        geDemand,
+        electiveDemand,
+      });
+      const lowerGeDemand = campusUnitsToCollege(
+        evaluated.lowerGeCampusUnits,
+        campus.unitSystem,
+        collegeSystem
+      );
+      const lowerElectiveDemand = campusUnitsToCollege(
+        evaluated.lowerElectiveCampusUnits,
+        campus.unitSystem,
+        collegeSystem
+      );
+      const lowerApplication = applyAssociateUnits({
+        asTotal,
+        directApplied: evaluated.lowerDirectAppliedUnits,
+        geUnits,
+        geDemand: lowerGeDemand,
+        electiveDemand: lowerElectiveDemand,
+      });
+      const { direct: directApplied, geCounted, electiveCounted, applied } = fullApplication;
       const extra = Math.max(0, asTotal - applied);
       const geCountedVerified = Math.min(geVerifiedUnits, geCounted);
       const geCountedAssumed = geCounted - geCountedVerified;
@@ -661,10 +745,30 @@ async function transferCreditRateData(db, _auditDb, {
       if (electiveCounted > EPSILON) {
         warnings.push('Elective credit assumes the remaining associate-degree units are UC-transferable.');
       }
+      const fullCompletion = completionMetric(
+        fullApplication.applied,
+        campus.fullRequiredUnits,
+        collegeSystem,
+        campus.unitSystem
+      );
+      const lowerCompletion = completionMetric(
+        lowerApplication.applied,
+        campus.lowerRequiredUnits,
+        collegeSystem,
+        campus.unitSystem
+      );
 
       rows.push({
         ...base,
-        rate: asTotal > 0 ? round1((100 * applied) / asTotal) : null,
+        // `rate` follows the visual's default full-degree scope. The explicit
+        // fields should be preferred by new clients because they name the
+        // denominator and keep the lower-division state alongside it.
+        rate: fullCompletion.pct,
+        full_degree_completion_pct: fullCompletion.pct,
+        full_degree_fulfilled_units: fullCompletion.fulfilled,
+        lower_division_completion_pct: lowerCompletion.pct,
+        lower_division_fulfilled_units: lowerCompletion.fulfilled,
+        as_unit_utilization_pct: asTotal > 0 ? round1((100 * applied) / asTotal) : null,
         // Backward-compatible name for downloads; v2 defines it as the whole
         // associate degree rather than named+GE prescribed units.
         prescribed_units: round1(asTotal),

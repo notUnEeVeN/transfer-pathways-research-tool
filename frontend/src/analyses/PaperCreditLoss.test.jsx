@@ -18,12 +18,15 @@ describe('California paper credit-loss figure', () => {
     expect(oursData.artifact_fingerprint).toMatch(/^[a-f0-9]{64}$/)
   })
 
-  it('keeps the default paper baseline on the legacy renderer unchanged', () => {
+  // The figure now opens on ASSIST; the paper baseline is one click away and
+  // still has to come out byte-identical on the legacy renderer.
+  it('keeps the paper baseline on the legacy renderer unchanged', () => {
     const direct = render(<FigureSVG bars={PAPER_UC_BARS} labelMode='names' />)
     const expected = direct.getByRole('img').outerHTML
     direct.unmount()
 
     const { container } = render(<PaperCreditLoss />)
+    fireEvent.click(screen.getByRole('button', { name: 'Paper baseline' }))
     const figure = container.querySelector('[data-export-root] svg')
 
     expect(figure.outerHTML).toBe(expected)

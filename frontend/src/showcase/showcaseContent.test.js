@@ -55,6 +55,15 @@ describe('showcase content module', () => {
     expect(JSON.stringify(coverage)).not.toContain('74.6')
   })
 
+  it('uses bachelor requirements—not associate-degree units—as the Figure 3 denominator', () => {
+    const credit = FEATURED_FIGURES.find((f) => f.analysisId === 'transfer-credit-rate')
+
+    expect(credit.star).toBe('Two views')
+    expect(credit.formula.expression).toMatch(/bachelor’s requirement units in scope/i)
+    expect(credit.formula.watchFor).toMatch(/lower-division scope/i)
+    expect(JSON.stringify(credit)).not.toMatch(/62\.6|74\.6/)
+  })
+
   it('tells the audit story in four steps and never fabricates the bound', () => {
     expect(AUDIT_STORY.steps.map((s) => s.id)).toEqual([
       'corpus', 'templates', 'review', 'bound',

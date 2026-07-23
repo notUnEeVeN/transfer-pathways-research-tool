@@ -19,8 +19,15 @@ Env (scripts/.env or shell):
 
 Output collection:
   curated_requirements (kind=degree):
-    { _id: 'degree:<school_id>', school_id, school, program, total_units,
-      source_url, requirement_groups[], source, updated_at }
+    { _id: 'degree:<school_id>:<major_slug>', school_id, major_slug, school,
+      program, total_units, source_url, sources[], requirement_groups[],
+      source, updated_at }
+
+The historical CS authoring file predates the major dimension. When its
+`_meta` has no `major_slug`, this importer deliberately preserves its legacy
+`degree:<school_id>` ids while stamping `major_slug: "cs"`. New authoring
+files must declare `_meta.major_slug`; those always use major-scoped ids so a
+Biology or Economics import can never overwrite CS or one another.
 
 Usage:
   python scripts/import_uc_degree_requirements.py --dry-run      # resolve + report, NO write
@@ -43,6 +50,7 @@ HERE = Path(__file__).resolve().parent
 load_dotenv(HERE / ".env")
 
 DEFAULT_SOURCE = HERE / "data" / "uc_degree_requirements.json"
+MAJOR_SLUG_RE = re.compile(r"^[a-z0-9_]+$")
 
 # Our scraped data still stores the pre-2025 EE numbering (EECS 16A/16B); the
 # current Berkeley catalog renamed these ELENG 66/64. Author codes either way —
@@ -182,7 +190,14 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
     select = int(req["select"])
     frm = req.get("from")
     ge_area = req.get("ge_area")  # single IGETC area a specific course also satisfies
-    section = {"section_advisement": select, "unit_advisement": None, "tier": tier, "receivers": []}
+    section = {
+        "section_advisement": select,
+        "unit_advisement": None,
+        "tier": tier,
+        "receivers": [],
+        "source_refs": list(req.get("source_refs", [])),
+        "note": req.get("note"),
+    }
     # Optional authored "units" (the block's stated total, e.g. Berkeley's
     # 20-unit upper-division rule or a 12-unit series) overrides the flat
     # ~4u/course assumption in the unit budget shown on the template page.
@@ -265,7 +280,26 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
     return section
 
 
-def build_doc(campus_key, campus, by_code, by_prefix, report):
+def source_identity(data, campus):
+    """Return (major_slug, use_major_scoped_id) for one authored campus.
+
+    A campus-level major_slug is allowed for forward-compatible combined
+    authoring files, though the Biology/Economics files each use one `_meta`
+    slug. Missing metadata means the historical CS file and preserves its ids.
+    """
+    meta = data.get("_meta") if isinstance(data.get("_meta"), dict) else {}
+    raw = campus.get("major_slug", meta.get("major_slug"))
+    explicit = raw is not None
+    slug = str(raw if explicit else "cs").strip()
+    if not MAJOR_SLUG_RE.fullmatch(slug):
+        raise ValueError(
+            f"major_slug must match {MAJOR_SLUG_RE.pattern}; got {slug!r}"
+        )
+    return slug, explicit
+
+
+def build_doc(campus_key, campus, by_code, by_prefix, report,
+              major_slug="cs", major_scoped_id=False):
     counter = [0]
     def seq():
         counter[0] += 1
@@ -279,18 +313,31 @@ def build_doc(campus_key, campus, by_code, by_prefix, report):
             "group_conjunction": "And",
             "title": g["title"],
             "tier": tier,
+            "source_refs": list(g.get("source_refs", [])),
+            "note": g.get("note"),
             "sections": sections,
         })
+    school_id = int(campus["school_id"])
+    row_id = f"degree:{school_id}:{major_slug}" if major_scoped_id else f"degree:{school_id}"
+    legacy_id = f"{school_id}:{major_slug}" if major_scoped_id else str(school_id)
     return {
-        "_id": f"degree:{campus['school_id']}",
-        "legacy_id": str(campus["school_id"]),
+        "_id": row_id,
+        "legacy_id": legacy_id,
         "kind": "degree",
-        "institution_id": f"uc:{campus['school_id']}",
-        "school_id": int(campus["school_id"]),
+        "institution_id": f"uc:{school_id}",
+        "school_id": school_id,
+        "major_slug": major_slug,
         "school": campus["school"],
         "program": campus["program"],
         "total_units": campus.get("total_units"),
         "source_url": campus.get("source_url"),
+        "sources": campus.get("sources", []),
+        "catalog_year": campus.get("catalog_year"),
+        "college": campus.get("college"),
+        "degree_variant": campus.get("degree_variant"),
+        "research_status": campus.get("research_status", "needs_human_verification"),
+        "unit_audit": campus.get("unit_audit"),
+        "modeling_notes": campus.get("modeling_notes", []),
         "requirement_groups": groups,
         "source": "hand_curated_degree",
         "campus_key": campus_key,
@@ -311,14 +358,29 @@ def main():
 
     db = connect()
     ops = []
+    seen_ids = set()
     for campus_key, campus in campuses.items():
+        try:
+            major_slug, major_scoped_id = source_identity(data, campus)
+        except ValueError as error:
+            sys.exit(f"{campus_key}: {error}")
         by_code, by_prefix = school_course_index(db, campus["school_id"])
         report = {"resolved": [], "unresolved": [], "required_slots": 0,
                   "transferable_slots": 0, "breadth_slots": 0, "nontransferable_slots": 0,
                   "breadth_courses": 0}
-        doc = build_doc(campus_key, campus, by_code, by_prefix, report)
+        doc = build_doc(
+            campus_key, campus, by_code, by_prefix, report,
+            major_slug=major_slug, major_scoped_id=major_scoped_id,
+        )
+        if doc["_id"] in seen_ids:
+            sys.exit(f"duplicate degree identity in source: {doc['_id']}")
+        seen_ids.add(doc["_id"])
 
-        print(f"\n=== {campus_key}: {campus['school']} — {campus['program']} ===")
+        print(
+            f"\n=== {campus_key}: {campus['school']} — {campus['program']} "
+            f"[{major_slug}] ==="
+        )
+        print(f"  identity: {doc['_id']}")
         print(f"  requirement slots (denominator): {report['required_slots']}"
               f"  [transferable {report['transferable_slots']}"
               f" + breadth {report['breadth_slots']}"
