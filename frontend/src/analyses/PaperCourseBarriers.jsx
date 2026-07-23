@@ -692,11 +692,8 @@ export default function PaperCourseBarriers() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between lg:ml-auto lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0'
+          <div className='flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-end lg:ml-auto lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0'
             data-control-group='data'>
-            <span className='text-caption text-ink-subtle'>
-              {intFmt.format(rows.length)} district–campus rows · paper-matched requirements
-            </span>
             <Button className='self-start sm:self-auto' variant='secondary'
               leadingIcon={ArrowPathIcon} loading={coverage.isFetching && !coverage.isLoading}
               onClick={() => coverage.refetch()}>
