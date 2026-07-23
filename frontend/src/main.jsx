@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { ToastProvider } from './components/ui'
 import { AuthProvider } from '@frontend/hooks/AuthProvider'
+import { MajorProvider } from './shared/majors/MajorContext'
 import { queryClient, queryPersister } from '@frontend/query/client'
 import App from './App.jsx'
 import packagejson from '../package.json'
@@ -32,7 +33,11 @@ createRoot(document.getElementById('root')).render(
   >
     <ToastProvider>
       <AuthProvider>
-        <App />
+        {/* Below AuthProvider: the majors read is user-scoped, so it only
+            fires once someone is signed in. */}
+        <MajorProvider>
+          <App />
+        </MajorProvider>
       </AuthProvider>
     </ToastProvider>
   </PersistQueryClientProvider>
