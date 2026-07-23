@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon, CheckIcon, NoSymbolIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, PageContainer, Select, Spinner, Stack, SwitchField } from './components/ui'
+import { Alert, Button, Checkbox, EmptyState, Input, PageContainer, Select, Spinner, Stack, SwitchField } from './components/ui'
 import { ANALYSES } from './analyses/registry'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
@@ -224,13 +224,15 @@ function BlockedAccountsPanel() {
   )
 }
 
-// The working dataset contains exactly one major for each UC campus. Keep the
-// form state keyed by campus so the UI cannot construct an invalid selection.
+// A campus can carry several majors — one per onboarded field (CS, Biology,
+// Economics). Form state is keyed by campus, each holding a set of chosen
+// program names.
 export function majorsBySchool(pairs = []) {
   const selected = new Map()
   for (const pair of pairs) {
     const key = String(Number(pair.school_id))
-    if (!selected.has(key)) selected.set(key, pair.major)
+    if (!selected.has(key)) selected.set(key, new Set())
+    selected.get(key).add(pair.major)
   }
   return selected
 }
@@ -253,61 +255,71 @@ function MajorAccessPanel() {
 
   const schools = q.data.schools || []
   const saved = majorsBySchool(q.data.visible)
-  const dirty = selected.size !== saved.size || [...selected].some(([schoolId, major]) => saved.get(schoolId) !== major)
-  const configuredCount = schools.filter((school) => selected.has(String(Number(school.school_id)))).length
-  const complete = configuredCount === schools.length
-  const chooseMajor = (schoolId, major) => setSelected((current) => {
-    const next = new Map(current)
+  const asPairs = (map) => schools.flatMap((school) => {
+    const key = String(Number(school.school_id))
+    return [...(map.get(key) || [])].map((major) => ({ school_id: Number(school.school_id), major }))
+  })
+  const selectedPairs = asPairs(selected)
+  const savedPairs = asPairs(saved)
+  const dirty = JSON.stringify(selectedPairs) !== JSON.stringify(savedPairs)
+  const chosenCount = selectedPairs.length
+  const configuredCount = schools.filter((school) => (selected.get(String(Number(school.school_id)))?.size || 0) > 0).length
+
+  const toggleMajor = (schoolId, major) => setSelected((current) => {
+    const next = new Map([...current].map(([k, v]) => [k, new Set(v)]))
     const key = String(Number(schoolId))
-    if (major) next.set(key, major)
+    const set = next.get(key) || new Set()
+    if (set.has(major)) set.delete(major)
+    else set.add(major)
+    if (set.size) next.set(key, set)
     else next.delete(key)
     return next
   })
-  const submit = () => {
-    const pairs = schools.flatMap((school) => {
-      const major = selected.get(String(Number(school.school_id)))
-      return major ? [{ school_id: Number(school.school_id), major }] : []
-    })
-    save.mutate(pairs)
-  }
 
   return (
     <Stack gap='comfortable'>
       <div>
-        <h2 className='heading-card tracking-[-.01em]'>Working major by campus</h2>
+        <h2 className='heading-card tracking-[-.01em]'>Working majors by campus</h2>
         <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
-          Choose one major for each UC included in the working dataset. The
-          selection scopes browsing, audits, analyses, and visuals for everyone;
-          the full ported dataset remains available in the admin inventory below.
+          Choose the majors included in the working dataset at each UC — one per
+          field you are studying. The selection scopes browsing, audits,
+          analyses, and visuals for everyone; the full ported dataset remains
+          available in the admin inventory below.
         </p>
       </div>
       <div className='surface-card p-5'>
         <div className='flex items-center gap-3 mb-4'>
-          <p className='text-label'>{configuredCount} of {schools.length} campuses configured</p>
+          <p className='text-label'>
+            {chosenCount} {chosenCount === 1 ? 'major' : 'majors'} across {configuredCount} of {schools.length} campuses
+          </p>
           <div className='ml-auto flex items-center gap-2'>
-            <Button onClick={submit} disabled={!complete || !dirty || save.isPending}>
-              {save.isPending ? 'Saving…' : !complete ? 'Choose all campuses' : dirty ? 'Save' : 'Saved'}
+            <Button onClick={() => save.mutate(selectedPairs)} disabled={!chosenCount || !dirty || save.isPending}>
+              {save.isPending ? 'Saving…' : !chosenCount ? 'Choose a major' : dirty ? 'Save' : 'Saved'}
             </Button>
           </div>
         </div>
-        {!complete && (
-          <p className='text-caption text-ink-muted mb-4'>Choose one major for every UC campus before saving.</p>
+        {!chosenCount && (
+          <p className='text-caption text-ink-muted mb-4'>Choose at least one major before saving.</p>
         )}
         {save.isError && <Alert type='error'>{save.error?.response?.data?.error || 'Save failed.'}</Alert>}
         <Stack gap='comfortable'>
           {schools.map((s) => {
             const schoolId = String(Number(s.school_id))
-            const value = selected.get(schoolId) || ''
-            const options = s.majors.map((major) => ({ value: major, label: major }))
+            const chosen = selected.get(schoolId) || new Set()
             return (
-              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,28rem)] gap-3 items-center border-b border-border pb-4'>
+              <div key={s.school_id} className='grid grid-cols-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(16rem,32rem)] gap-3 border-b border-border pb-4'>
                 <div className='min-w-0'>
                   <p className='text-body-strong'>{s.school}</p>
-                  <p className='text-caption text-ink-subtle'>{s.majors.length} available {s.majors.length === 1 ? 'major' : 'majors'}</p>
+                  <p className='text-caption text-ink-subtle'>
+                    {chosen.size} of {s.majors.length} selected
+                  </p>
                 </div>
-                <Select value={value} options={options} placeholder='Choose a major…'
-                  onChange={(major) => chooseMajor(s.school_id, major)}
-                  aria-label={`${s.school} major`} />
+                <div className='flex flex-col gap-1.5'>
+                  {s.majors.map((major) => (
+                    <Checkbox key={major} checked={chosen.has(major)} label={major}
+                      onChange={() => toggleMajor(s.school_id, major)} />
+                  ))}
+                </div>
               </div>
             )
           })}
