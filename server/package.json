@@ -14,6 +14,8 @@
     "schema:audit": "node scripts/migrateCanonicalSchema.js",
     "schema:apply": "node scripts/migrateCanonicalSchema.js --apply",
     "schema:cleanup": "node scripts/migrateCanonicalSchema.js --apply --drop-legacy --yes",
+    "slots:audit": "node scripts/migrateAsDegreeSlots.js",
+    "slots:apply": "node scripts/migrateAsDegreeSlots.js --apply",
     "snapshot:multi-campus": "node scripts/generateMultiCampusPathwaysSnapshot.js",
     "test": "vitest run",
     "test:watch": "vitest"
