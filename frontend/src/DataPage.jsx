@@ -524,15 +524,19 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const raw = useDegreeRequirementDocuments()
   const save = useSaveDegreeRequirement()
   const { user } = useAuth()
+  const { major } = useMajorSelection()
   const [editing, setEditing] = useState(false)
-  const doc = useMemo(
-    () => (q.data?.rows || []).find((r) => Number(r.school_id) === Number(schoolId)) || null,
-    [q.data, schoolId]
-  )
-  const rawDoc = useMemo(
-    () => (raw.data?.rows || []).find((r) => Number(r.school_id) === Number(schoolId)) || null,
-    [raw.data, schoolId]
-  )
+  // A campus has one graduation template PER MAJOR. Match the program to the
+  // selected major so Biology never renders the computer-science degree.
+  const forMajor = useCallback((rows) => {
+    const match = major?.match?.toLowerCase()
+    return (rows || []).find((r) => (
+      Number(r.school_id) === Number(schoolId)
+      && (!match || String(r.program || '').toLowerCase().includes(match))
+    )) || null
+  }, [major, schoolId])
+  const doc = useMemo(() => forMajor(q.data?.rows), [q.data, forMajor])
+  const rawDoc = useMemo(() => forMajor(raw.data?.rows), [raw.data, forMajor])
   // Notes ride on the stored degree doc (PUT replaces the whole row, so the
   // raw doc is spread back in full); the importer $sets its own fields only,
   // so notes survive re-imports.
@@ -553,8 +557,10 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
       ) : q.isError || raw.isError ? (
         <Alert type='error'>Failed to load the graduation requirements.</Alert>
       ) : !doc ? (
-        <EmptyState title='No graduation requirements'
-          description='No hand-curated four-year graduation requirements have been added for this campus.'
+        <EmptyState title={major ? `No ${major.label} graduation requirements` : 'No graduation requirements'}
+          description={major
+            ? `No hand-curated four-year ${major.label} requirements have been added for this campus yet.`
+            : 'No hand-curated four-year graduation requirements have been added for this campus.'}
           action={<Button leadingIcon={PencilSquareIcon} onClick={() => setEditing(true)}>Create requirements</Button>} />
       ) : (
         <DegreeRequirementsDetail doc={doc} onEdit={() => setEditing(true)}
