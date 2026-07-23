@@ -236,14 +236,16 @@ exports.multiCampusPathways = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
   const visiblePairs = await majorScope(req);
-  if (visiblePairs != null) {
-    const available = new Set(visiblePairs.map((pair) => Number(pair.school_id)));
-    const unavailable = parsed.schoolIds.filter((schoolId) => !available.has(schoolId));
-    if (unavailable.length) {
-      return res.status(400).json({
-        error: 'One or more selected campuses do not have a configured program in this dataset',
-      });
-    }
+  // A campus can only be planned for if the major has a program pinned there.
+  // config/majors.js is the definition, so it is what we validate against.
+  const scopeMajor = getMajor(String(req.query.majorSlug || '').trim() || defaultMajor().slug);
+  if (!scopeMajor) return res.status(400).json({ error: `unknown major: ${req.query.majorSlug}` });
+  const available = new Set(Object.keys(scopeMajor.programs).map(Number));
+  const unavailable = parsed.schoolIds.filter((schoolId) => !available.has(schoolId));
+  if (unavailable.length) {
+    return res.status(400).json({
+      error: 'One or more selected campuses do not have a configured program in this dataset',
+    });
   }
   const key = [
     'multi-campus-pathways-v2',
@@ -286,20 +288,21 @@ exports.multiCampusPathwaysSnapshot = asyncHandler(async (req, res) => {
     });
   }
 
-  // The saved working-program selection scopes every account. Refuse a stale
-  // artifact whose campus/program pairs no longer equal that selection; this
-  // prevents a static bundle from bypassing the live endpoint's pair scope.
-  const visiblePairs = await majorScope(req);
-  if (visiblePairs != null) {
-    const visible = new Set(visiblePairs.map((pair) =>
-      `${Number(pair.school_id)}|${String(pair.major)}`));
+  // A frozen artifact is only valid for the program pins it was computed from.
+  // config/majors.js defines those, so refuse the snapshot when its baked-in
+  // campus/program pairs no longer match the configured major.
+  const snapshotMajor = getMajor(snapshot.major_slug || defaultMajor().slug);
+  if (snapshotMajor) {
+    const configured = new Set(
+      Object.entries(snapshotMajor.programs).flatMap(([schoolId, programs]) =>
+        programs.map((program) => `${Number(schoolId)}|${program}`)),
+    );
     const snapPairs = new Set(snapshot.campuses.map((campus) =>
       `${Number(campus.school_id)}|${String(campus.major)}`));
-    const sameScope = visible.size === snapPairs.size
-      && [...snapPairs].every((pair) => visible.has(pair));
+    const sameScope = [...snapPairs].every((pair) => configured.has(pair));
     if (!sameScope) {
       return res.status(409).json({
-        error: 'The working program selection has changed since this snapshot was generated.',
+        error: 'The configured programs have changed since this snapshot was generated.',
       });
     }
   }

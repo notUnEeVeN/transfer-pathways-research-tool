@@ -48,9 +48,9 @@ function combined(seed = 1) {
   ]));
 }
 
-function makeSnapshot(load, generatedAt) {
+function makeSnapshot(load, generatedAt, program = 'Computer Science, B.A.') {
   const context = {
-    targets: [{ school_id: 79, school: 'UC Berkeley', major: 'Berkeley CS', program: 'Berkeley CS' }],
+    targets: [{ school_id: 79, school: 'UC Berkeley', major: program, program }],
     colleges: [{ source_id: 2, name: 'Semester College' }],
     sourceFingerprint: 'a'.repeat(64),
     calendarForCollege: () => 'semester',
@@ -125,16 +125,13 @@ describe('multi-campus snapshot endpoint', () => {
     expect(response.body.error).toMatch(/not been generated/);
   });
 
-  it('refuses a snapshot from a different configured program scope', async () => {
-    await db.collection('settings').insertOne({
-      _id: 'app', visible_pairs: [{ school_id: 79, major: 'Different CS' }],
-    });
-    await fs.promises.writeFile(
-      process.env.MULTI_CAMPUS_SNAPSHOT_PATH,
-      JSON.stringify(makeSnapshot(15, '2026-07-21T12:00:00.000Z')),
-    );
+  it('refuses a snapshot whose programs are no longer the configured ones', async () => {
+    // A valid artifact, generated from a program that is no longer pinned for
+    // computer science in config/majors.js.
+    const stale = makeSnapshot(15, '2026-07-21T12:00:00.000Z', 'Retired CS Program');
+    await fs.promises.writeFile(process.env.MULTI_CAMPUS_SNAPSHOT_PATH, JSON.stringify(stale));
     const response = await run();
     expect(response.statusCode).toBe(409);
-    expect(response.body.error).toMatch(/selection has changed/);
+    expect(response.body.error).toMatch(/configured programs have changed/);
   });
 });

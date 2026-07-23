@@ -100,28 +100,6 @@ export function useAdminAccessList() {
   })
 }
 
-export function useVisibleMajors() {
-  const { user } = useAuth()
-  return useQuery({
-    queryKey: ['admin-visible-majors', user?.uid],
-    queryFn: () => apiClient.get('/admin/visible-majors').then((r) => r.data),
-    enabled: !!user?.uid,
-    staleTime: 30 * 1000,
-  })
-}
-
-export function useSetVisibleMajors() {
-  const qc = useQueryClient()
-  return useMutation({
-    // Exactly one pair per ported school. A visibility edit changes the working
-    // dataset globally, so every active query must be refreshed.
-    mutationFn: (pairs) => apiClient.put('/admin/visible-majors', { pairs }).then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries(),
-  })
-}
-
-// Built-in Visuals presentation settings. Admins can preview every available
-// card; partners only receive cards in the published set.
 export function useVisualSettings() {
   const { user } = useAuth()
   return useQuery({

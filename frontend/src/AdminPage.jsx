@@ -4,13 +4,11 @@ import { Alert, Button, Checkbox, EmptyState, Input, PageContainer, Select, Spin
 import { ANALYSES } from './analyses/registry'
 import {
   useAdminDataset, useAdminAccessList, useGrantAccess, useRevokeAccess,
-  useVisibleMajors, useSetVisibleMajors,
   useAccessRequests, useBlockAccessRequest, useBlockedAccounts, useUnblockAccount,
   useVisualSettings, useSetPublishedVisuals, useSetHiddenVisuals,
   useTeam, useSetTeamName, useAuditPulse,
 } from '@frontend/query/hooks/useAccess'
 import UserInitialsAvatar from './components/display/UserInitialsAvatar'
-import { useMajorSelection } from './shared/majors/MajorContext'
 
 /**
  * Admin view (ADMIN_UIDS accounts only — the server enforces it; this page
@@ -31,7 +29,6 @@ export default function AdminPage() {
         <SignInRequestsPanel />
         <BlockedAccountsPanel />
         <TeamNamesPanel />
-        <MajorAccessPanel />
         <VisualSettingsPanel />
         <DatasetPanel />
         <AccessPanel />
@@ -221,168 +218,6 @@ function BlockedAccountsPanel() {
       {unblock.isError && (
         <Alert type='error'>{unblock.error?.response?.data?.error || 'Un-block failed.'}</Alert>
       )}
-    </Stack>
-  )
-}
-
-// A campus can carry several majors — one per onboarded field (CS, Biology,
-// Economics). Form state is keyed by campus, each holding a set of chosen
-// program names.
-export function majorsBySchool(pairs = []) {
-  const selected = new Map()
-  for (const pair of pairs) {
-    const key = String(Number(pair.school_id))
-    if (!selected.has(key)) selected.set(key, new Set())
-    selected.get(key).add(pair.major)
-  }
-  return selected
-}
-
-function MajorAccessPanel() {
-  const q = useVisibleMajors()
-  const save = useSetVisibleMajors()
-  const { majors } = useMajorSelection()
-  const [selected, setSelected] = useState(null) // Map of school_id -> major; null until data loads
-
-  useEffect(() => {
-    if (!q.data || selected !== null) return
-    // Start from what is saved, then pre-check each configured major's pins so
-    // a newly onboarded field is one click from being applied rather than
-    // needing to be re-entered by hand.
-    const next = majorsBySchool(q.data.visible)
-    const savedPrograms = new Set(q.data.visible.map((p) => String(p.major).toLowerCase()))
-    for (const major of majors) {
-      const match = String(major.match || '').toLowerCase()
-      if (!match) continue
-      // An explicit saved choice for this field wins — never re-add pins the
-      // admin deliberately unchecked.
-      if ([...savedPrograms].some((p) => p.includes(match))) continue
-      for (const [schoolId, programs] of Object.entries(major.programs || {})) {
-        const key = String(Number(schoolId))
-        if (!next.has(key)) next.set(key, new Set())
-        programs.forEach((program) => next.get(key).add(program))
-      }
-    }
-    setSelected(next)
-  }, [q.data, selected, majors])
-
-  if (q.isLoading || selected === null) {
-    return <div className='flex justify-center py-8'><Spinner /></div>
-  }
-  if (q.isError) return <Alert type='error'>Failed to load the major list.</Alert>
-
-  const schools = q.data.schools || []
-  const saved = majorsBySchool(q.data.visible)
-  const asPairs = (map) => schools.flatMap((school) => {
-    const key = String(Number(school.school_id))
-    return [...(map.get(key) || [])].map((major) => ({ school_id: Number(school.school_id), major }))
-  })
-  const selectedPairs = asPairs(selected)
-  const dirty = JSON.stringify(selectedPairs) !== JSON.stringify(asPairs(saved))
-  const chosenCount = selectedPairs.length
-
-  const toggleMajor = (schoolId, major) => setSelected((current) => {
-    const next = new Map([...current].map(([k, v]) => [k, new Set(v)]))
-    const key = String(Number(schoolId))
-    const set = next.get(key) || new Set()
-    if (set.has(major)) set.delete(major)
-    else set.add(major)
-    if (set.size) next.set(key, set)
-    else next.delete(key)
-    return next
-  })
-
-  // Group the ported programs by field, so this reads as "what counts as
-  // Computer Science at each campus" rather than a choice between fields.
-  // `other` catches anything ported that no configured field claims.
-  const fields = majors.map((m) => ({ slug: m.slug, label: m.label, match: String(m.match || '').toLowerCase() }))
-  const fieldOf = (major) => fields.find((f) => f.match && major.toLowerCase().includes(f.match))
-  const countSelected = (rows) => rows.reduce((n, { school, programs }) => {
-    const chosen = selected.get(String(Number(school.school_id))) || new Set()
-    return n + programs.filter((p) => chosen.has(p)).length
-  }, 0)
-  const groups = [
-    ...fields.map((f) => ({
-      ...f,
-      rows: schools
-        .map((school) => ({ school, programs: school.majors.filter((m) => fieldOf(m)?.slug === f.slug) }))
-        .filter((row) => row.programs.length),
-    })),
-    {
-      slug: 'other', label: 'Other ported programs', match: null,
-      rows: schools
-        .map((school) => ({ school, programs: school.majors.filter((m) => !fieldOf(m)) }))
-        .filter((row) => row.programs.length),
-    },
-  ].filter((g) => g.rows.length).map((g) => ({ ...g, selectedCount: countSelected(g.rows) }))
-
-  return (
-    <Stack gap='comfortable'>
-      <div>
-        <h2 className='heading-card tracking-[-.01em]'>What counts as each major</h2>
-        <p className='text-caption leading-[1.55] ink-subtle max-w-[76ch] mt-1'>
-          Each field is studied through specific ASSIST programs at each campus.
-          Change these when a campus's programs shift or a different degree is
-          the better stand-in for the field — for example whether Berkeley's
-          computer science is the L&amp;S B.A., the EECS B.S., or both. This is
-          not a choice between fields: every field you are studying stays
-          selected. The full ported inventory is below.
-        </p>
-      </div>
-      <div className='surface-card p-5'>
-        <div className='flex items-center gap-3 mb-4'>
-          <p className='text-label'>{chosenCount} {chosenCount === 1 ? 'program' : 'programs'} selected</p>
-          <div className='ml-auto flex items-center gap-2'>
-            <Button onClick={() => save.mutate(selectedPairs)} disabled={!chosenCount || !dirty || save.isPending}>
-              {save.isPending ? 'Saving…' : !chosenCount ? 'Choose a program' : dirty ? 'Save' : 'Saved'}
-            </Button>
-          </div>
-        </div>
-        {!chosenCount && (
-          <p className='text-caption text-ink-muted mb-4'>Choose at least one program before saving.</p>
-        )}
-        {save.isError && <Alert type='error'>{save.error?.response?.data?.error || 'Save failed.'}</Alert>}
-        <Stack gap='section'>
-          {groups.map((group) => (
-            <div key={group.slug}>
-              <div className='flex items-baseline gap-2 mb-2'>
-                <p className='text-label'>{group.label}</p>
-                <span className='text-caption text-ink-subtle'>
-                  {group.selectedCount} selected
-                </span>
-                {group.slug !== 'other' && !group.selectedCount && (
-                  <span className='text-caption text-danger'>
-                    needs at least one program
-                  </span>
-                )}
-              </div>
-              <Stack gap='cozy'>
-                {group.rows.map(({ school, programs }) => {
-                  const schoolId = String(Number(school.school_id))
-                  const chosen = selected.get(schoolId) || new Set()
-                  return (
-                    <div key={`${group.slug}-${school.school_id}`}
-                      className='grid grid-cols-1 sm:grid-cols-[minmax(11rem,1fr)_minmax(16rem,32rem)] gap-3 border-b border-border pb-3'>
-                      <p className='text-body-strong min-w-0'>{school.school}</p>
-                      <div className='flex flex-col gap-1.5'>
-                        {programs.map((major) => (
-                          <Checkbox key={major} checked={chosen.has(major)} label={major}
-                            onChange={() => toggleMajor(school.school_id, major)} />
-                        ))}
-                      </div>
-                    </div>
-                  )
-                })}
-              </Stack>
-            </div>
-          ))}
-        </Stack>
-        {!schools.length && (
-          <p className='text-caption text-ink-subtle'>
-            Nothing ported yet — run <span className='font-mono'>python port.py add "…"</span> first.
-          </p>
-        )}
-      </div>
     </Stack>
   )
 }

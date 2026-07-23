@@ -90,7 +90,9 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     const row = await auditDb.collection('agreement_reviews').findOne({ doc_id: oid(3) });
     expect(row.source).toBe('random_template_weighted');
     expect(row.sample_method).toBe('random');
-    expect(row.sample_scope).toBe(scopeKey({ visiblePairs }));
+    // Majors are no longer gated, so a random sample is drawn from the whole
+    // corpus and records the unrestricted scope.
+    expect(row.sample_scope).toBe(scopeKey({ visiblePairs: null }));
   });
 
   it('a tier read joins auditDb verdicts against db agreements', async () => {

@@ -37,22 +37,15 @@ describe('majorScope', () => {
     invalidateVisibilityCache();
   });
 
-  it('a saved selection scopes EVERYONE — the admin included', async () => {
-    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toEqual([CS_AT_1]);
+  // Majors are no longer gated by a settings document: everything ported is
+  // part of the corpus and each surface picks the major it displays. Account
+  // access is still enforced upstream by requireAuditAccess.
+  it('never restricts by major, whoever is asking', async () => {
+    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toBeNull();
     invalidateVisibilityCache();
-    expect(await majorScope(reqFor('partner-1', [CS_AT_1]))).toEqual([CS_AT_1]);
-  });
-
-  it('pairs are normalized (string ids become numbers)', async () => {
-    const scope = await majorScope(reqFor('partner-1', [{ school_id: '1', major: 'Computer Science B.S.' }]));
-    expect(scope).toEqual([CS_AT_1]);
-  });
-
-  it('keeps several majors at the same campus', async () => {
-    expect(normalizePairs([CS_AT_1, MATH_AT_1, CS_AT_2]))
-      .toEqual([CS_AT_1, MATH_AT_1, CS_AT_2]);
-    expect(await majorScope(reqFor('partner-1', [CS_AT_1, MATH_AT_1, CS_AT_2])))
-      .toEqual([CS_AT_1, MATH_AT_1, CS_AT_2]);
+    expect(await majorScope(reqFor('partner-1', [CS_AT_1]))).toBeNull();
+    invalidateVisibilityCache();
+    expect(await majorScope(reqFor('partner-1', null))).toBeNull();
   });
 
   it('drops exact duplicate pairs, preserving order', () => {
@@ -60,10 +53,16 @@ describe('majorScope', () => {
       .toEqual([CS_AT_1, MATH_AT_1]);
   });
 
-  it('before any selection exists: admins unrestricted, partners denied', async () => {
-    expect(await majorScope(reqFor('admin-1', null))).toBeNull();
-    invalidateVisibilityCache();
-    expect(await majorScope(reqFor('partner-1', null))).toEqual([]);
+  it('keeps several majors at the same campus when pairs are read directly', () => {
+    expect(normalizePairs([CS_AT_1, MATH_AT_1, CS_AT_2]))
+      .toEqual([CS_AT_1, MATH_AT_1, CS_AT_2]);
+  });
+
+  // readVisiblePairsUncached still serves the paper figures, which resolve each
+  // campus's program from the saved selection.
+  it('still reads the saved pairs for the paper figures', async () => {
+    expect(await getVisiblePairs(fakeAuditDb([{ school_id: '1', major: 'Computer Science B.S.' }])))
+      .toEqual([CS_AT_1]);
     invalidateVisibilityCache();
     expect(await getVisiblePairs(fakeAuditDb(null))).toEqual([]);
   });

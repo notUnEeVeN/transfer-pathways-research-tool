@@ -14,7 +14,6 @@
 // batch, analysis) — the frontend never sees data outside the subset, so
 // partners' stats pages automatically reflect exactly the granted pairs.
 const crypto = require('crypto');
-const { isAdmin } = require('./access');
 
 const CONFIG = 'settings';
 const DOC_ID = 'app';
@@ -86,18 +85,24 @@ function invalidateVisibilityCache() {
 }
 
 /**
- * The visibility scope for a request. The saved selection is the project's
- * WORKING DATASET, so it scopes everyone — the admin included; the Admin tab
- * is where the full ported universe remains visible and the selection is
- * changed. Only before any selection has been saved do the roles diverge:
- * admins are unrestricted (null) so a fresh deployment isn't empty, while
- * partners are denied (deny-by-default).
+ * The visibility scope for a request: `null` — unrestricted.
+ *
+ * Majors are no longer gated here. Everything ported into the research cluster
+ * is part of the corpus, and each console surface picks the major it is showing
+ * (see frontend useMajorChoice). Requiring a major to ALSO be listed in a
+ * settings document meant onboarding it in two places, which is how a ported
+ * major could be invisible, and how the wrong list could mix three majors into
+ * one figure.
+ *
+ * Account-level access is unchanged and still enforced upstream by
+ * requireAuditAccess — reaching this code already means an approved account.
+ *
+ * The `visible_pairs` document is left in place and still read by
+ * readVisiblePairsUncached, which the paper figures use to resolve each
+ * campus's program for their ASSIST view.
  */
-async function majorScope(req) {
-  const auditDb = req.app.locals.auditDb || req.app.locals.db;
-  const pairs = await loadConfig(auditDb);
-  if (pairs === undefined) return isAdmin(req.user?.uid) ? null : [];
-  return pairs;
+async function majorScope() {
+  return null;
 }
 
 // True when a (schoolId, major) combination is inside the scope. `null`
