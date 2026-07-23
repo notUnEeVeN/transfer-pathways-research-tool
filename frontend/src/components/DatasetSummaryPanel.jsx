@@ -94,8 +94,8 @@ function CsDegreeLandscapePanel({ onNavigate }) {
   const totals = { ast: 0, local: 0, other: 0 }
   for (const row of rows) {
     const ast = row.types?.ast?.status === 'available'
-    const local = row.types?.local_cs_as?.status === 'available'
-    const other = row.types?.local_computing?.status === 'available'
+    const local = row.types?.local_as?.status === 'available'
+    const other = row.types?.local_other?.status === 'available'
     if (ast) totals.ast += 1
     if (local) totals.local += 1
     if (other) totals.other += 1

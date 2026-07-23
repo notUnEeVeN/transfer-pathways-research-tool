@@ -53,7 +53,7 @@ describe('TransferCreditRate', () => {
   it('defaults to the local CS A.S. cohort and renders the matrix', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
-    expect(mockRate).toHaveBeenCalledWith('local_cs_as')
+    expect(mockRate).toHaveBeenCalledWith('local_as')
     expect(screen.getByText('CC Alpha')).toBeInTheDocument()
     // The cell value repeats in the column-average row (one computable cell).
     expect(screen.getAllByText('45.2%').length).toBeGreaterThan(0)

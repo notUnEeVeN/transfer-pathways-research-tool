@@ -4,6 +4,7 @@ import { Stack, Tabs, Spinner, EmptyState } from '../components/ui'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 import GroupCourseEditor from './validation/GroupCourseEditor'
+import { DEGREE_TYPE_DESCRIPTION as TYPE_DESCRIPTION, DEGREE_TYPE_LABEL as TYPE_TAB } from '../shared/lib/asDegreeTypes'
 
 // Per-college associate-degree view, shown as the Associate degrees sub-tab in
 // the Community Colleges catalog. The requirement groups render through the shared
@@ -12,18 +13,6 @@ import GroupCourseEditor from './validation/GroupCourseEditor'
 // as_degree kind's agreement-skeleton storage makes possible with no
 // translation (receivers just have no university side). GE-pattern and
 // electives groups carry no course structure, so they stay one-line notes.
-
-const TYPE_TAB = {
-  ast: 'CS A.S.-T',
-  local_cs_as: 'Local CS A.S.',
-  local_computing: 'Other computing',
-}
-
-const TYPE_DESCRIPTION = {
-  ast: 'Statewide transfer degree',
-  local_cs_as: 'College-defined CS degree',
-  local_computing: 'Other college-defined computing degree',
-}
 
 // GE pattern identifiers → the section title shown on the pattern's card.
 const GE_PATTERN_NAME = {

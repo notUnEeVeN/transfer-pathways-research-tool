@@ -52,6 +52,6 @@ describe('AsDegreeQaTable', () => {
     const onDegreeTypeChange = vi.fn()
     render(<AsDegreeQaTable degreeType='ast' onDegreeTypeChange={onDegreeTypeChange} />)
     fireEvent.click(screen.getByRole('tab', { name: 'Local CS A.S.' }))
-    expect(onDegreeTypeChange).toHaveBeenCalledWith('local_cs_as')
+    expect(onDegreeTypeChange).toHaveBeenCalledWith('local_as')
   })
 })

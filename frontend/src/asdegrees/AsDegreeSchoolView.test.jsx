@@ -25,7 +25,7 @@ const LOCAL_GE_BREAKDOWN = {
 }
 
 const degree = (over = {}) => ({
-  degree_type: 'local_cs_as',
+  degree_type: 'local_as',
   ge_breakdowns: { local_pattern: LOCAL_GE_BREAKDOWN },
   courses_by_id: {
     'cc:1': { course_id: 1, prefix: 'CS', number: '21', code: 'CS 21',
@@ -135,7 +135,7 @@ describe('AsDegreeSchoolView', () => {
     const onDegreeTypeChange = vi.fn()
     mockDetail.mockReturnValue({
       data: { degrees: [
-        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'local_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
         degree({ degree_type: 'ast', coverage_pct: 100, missing_core_concepts: [],
           doc: { ...degree().doc, degree_title_seen: 'CS for Transfer' } }),
       ] }, isLoading: false, isError: false,
@@ -153,7 +153,7 @@ describe('AsDegreeSchoolView', () => {
   it('opens the requested degree type when reached from a statewide record', () => {
     mockDetail.mockReturnValue({
       data: { degrees: [
-        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'local_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
         degree({ degree_type: 'ast', doc: { ...degree().doc, degree_title_seen: 'CS A.S.-T detail' } }),
       ] },
       isLoading: false,
@@ -167,7 +167,7 @@ describe('AsDegreeSchoolView', () => {
   it('can isolate one degree type and suppress its repeated title', () => {
     mockDetail.mockReturnValue({
       data: { degrees: [
-        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'local_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
         degree({ degree_type: 'ast', doc: { ...degree().doc, degree_title_seen: 'CS A.S.-T detail' } }),
       ] },
       isLoading: false,
@@ -186,14 +186,14 @@ describe('AsDegreeSchoolView', () => {
     mockDetail.mockReturnValue({
       data: { degrees: [
         degree({ degree_type: 'ast', doc: { ...degree().doc, degree_title_seen: 'CS A.S.-T' } }),
-        degree({ degree_type: 'local_cs_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
-        degree({ degree_type: 'local_computing', doc: { ...degree().doc, degree_title_seen: 'Distinct computing degree' } }),
+        degree({ degree_type: 'local_as', doc: { ...degree().doc, degree_title_seen: 'Local CS A.S.' } }),
+        degree({ degree_type: 'local_other', doc: { ...degree().doc, degree_title_seen: 'Distinct computing degree' } }),
       ] },
       isLoading: false,
       isError: false,
     })
     render(<AsDegreeSchoolView collegeId={14} initialDegreeType='ast'
-      degreeTypes={['ast', 'local_cs_as', 'local_computing']} />)
+      degreeTypes={['ast', 'local_as', 'local_other']} />)
     expect(screen.getByRole('tab', { name: 'CS A.S.-T' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Local CS A.S.' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Other computing' })).toBeInTheDocument()
@@ -203,9 +203,9 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('Distinct computing degree')).toBeInTheDocument()
   })
 
-  it('renders a local_computing degree with no summary tiles', () => {
+  it('renders a local_other degree with no summary tiles', () => {
     mockDetail.mockReturnValue({
-      data: { degrees: [degree({ degree_type: 'local_computing', coverage_pct: null, missing_core_concepts: [] })] },
+      data: { degrees: [degree({ degree_type: 'local_other', coverage_pct: null, missing_core_concepts: [] })] },
       isLoading: false, isError: false,
     })
     render(<AsDegreeSchoolView collegeId={5} />)

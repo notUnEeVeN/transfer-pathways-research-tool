@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { buildAsDegreeContext, courseCatalogLines } from './asDegreeContext'
 
 const DOC = {
-  _id: 'as_degree:4:local_cs_as',
+  _id: 'as_degree:4:cs:local_as',
   status: 'found',
   degree_title_seen: 'A.S. in Computer Science',
   requirement_groups: [{ group_id: 'core', sections: [] }],
@@ -30,7 +30,7 @@ describe('buildAsDegreeContext', () => {
   const text = buildAsDegreeContext({ doc: DOC, courses: COURSES })
 
   it('carries the document itself, so a fresh chat needs nothing else', () => {
-    expect(text).toContain('"_id": "as_degree:4:local_cs_as"')
+    expect(text).toContain('"_id": "as_degree:4:cs:local_as"')
     expect(text).toContain('167678 | MATH 1A | Calculus I | 5u')
   })
 

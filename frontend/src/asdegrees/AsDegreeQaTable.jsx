@@ -2,17 +2,10 @@ import React, { useMemo, useState } from 'react'
 import { Alert, Badge, Button, Select, Input, Spinner, Stack, Tabs } from '../components/ui'
 import { useAsDegrees } from '../shared/query/hooks/useData'
 import { DataTable } from '../DataReferences'
-
-export const DEGREE_TYPE_LABEL = {
-  ast: 'CS A.S.-T',
-  local_cs_as: 'Local CS A.S.',
-  local_computing: 'Other computing',
-}
+import { AS_DEGREE_SLOTS, DEGREE_TYPE_LABEL, DEGREE_TYPE_ORDER } from '../shared/lib/asDegreeTypes'
 
 const TYPE_OPTIONS = [
-  { value: 'ast', label: 'CS A.S.-T' },
-  { value: 'local_cs_as', label: 'Local CS A.S.' },
-  { value: 'local_computing', label: 'Other computing' },
+  ...AS_DEGREE_SLOTS.map((value) => ({ value, label: DEGREE_TYPE_LABEL[value] })),
   { value: 'all', label: 'All records' },
 ]
 
@@ -32,7 +25,6 @@ const SORT_OPTIONS = [
   { value: 'confidence', label: 'Sort: lowest confidence' },
 ]
 
-const TYPE_ORDER = { ast: 0, local_cs_as: 1, local_computing: 2 }
 const STATUS_VARIANT = { found: 'success', none_found: 'neutral', ambiguous: 'conservative' }
 
 const confidencePct = (value) => value == null ? '—' : `${Math.round(value * 100)}%`
@@ -67,7 +59,7 @@ export default function AsDegreeQaTable({ degreeType = 'ast', onDegreeTypeChange
     })
     return filtered.slice().sort((a, b) => {
       if (sort === 'degree_type') {
-        return (TYPE_ORDER[a.degree_type] ?? 99) - (TYPE_ORDER[b.degree_type] ?? 99)
+        return (DEGREE_TYPE_ORDER[a.degree_type] ?? 99) - (DEGREE_TYPE_ORDER[b.degree_type] ?? 99)
           || String(a.college_name).localeCompare(String(b.college_name))
       }
       if (sort === 'coverage') {

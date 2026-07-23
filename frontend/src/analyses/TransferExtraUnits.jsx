@@ -109,7 +109,7 @@ function ExtraTable({ model }) {
 }
 
 export default function TransferExtraUnits() {
-  const [degreeType, setDegreeType] = useState('local_cs_as')
+  const [degreeType, setDegreeType] = useState('local_as')
   const query = useTransferCreditRate(degreeType)
   const rows = query.data?.rows || []
   const model = useMemo(

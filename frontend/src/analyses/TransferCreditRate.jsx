@@ -14,7 +14,7 @@ export { paperRedCellColor } from './maHeatmapColors'
  * community college can perform (transferable + breadth tiers).
  */
 export const DEGREE_MODES = [
-  { value: 'local_cs_as', label: 'Local CS A.S.' },
+  { value: 'local_as', label: 'Local CS A.S.' },
   { value: 'ast', label: 'CS A.S.-T' },
 ]
 
@@ -249,7 +249,7 @@ function RateTable({ model, scope }) {
 
 export default function TransferCreditRate() {
   // Local CS A.S. is the headline cohort; A.S.-T is the standardized benchmark.
-  const [degreeType, setDegreeType] = useState('local_cs_as')
+  const [degreeType, setDegreeType] = useState('local_as')
   const [scope, setScope] = useState('full-degree')
   const query = useTransferCreditRate(degreeType)
   const rows = query.data?.rows || []

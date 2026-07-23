@@ -118,10 +118,10 @@ export function useCoverage(params = {}, options = {}) {
 // lower-division requirements fulfilled by the selected CS associate degree.
 // The result is edited frequently, so a persisted response may paint immediately
 // but every mount must still fetch the current calculation.
-// degree_type: 'local_cs_as' | 'ast'.
-export function useTransferCreditRate(degreeType = 'local_cs_as', options = {}) {
+// degree_type: 'local_as' | 'ast'.
+export function useTransferCreditRate(degreeType = 'local_as', options = {}) {
   const { user } = useAuth()
-  const type = ['ast', 'local_cs_as'].includes(degreeType) ? degreeType : 'local_cs_as'
+  const type = ['ast', 'local_as'].includes(degreeType) ? degreeType : 'local_as'
   const majorSlug = 'cs'
   const { enabled = true, ...queryOptions } = options
   return useQuery({
@@ -476,13 +476,15 @@ export function useSaveCourseConcept() {
 
 // Data → Associate Degrees: statewide record QA, optionally isolated to one
 // stable category. The CS A.S.-T view uses the server filter so the response
-// itself — not just the rendered rows — is the analysis cohort.
-export function useAsDegrees(degreeType = null) {
+// itself — not just the rendered rows — is the analysis cohort. `major`
+// defaults to the server's own default ('cs') and must ride the query key —
+// otherwise two majors would share one cache entry.
+export function useAsDegrees(degreeType = null, major = 'cs') {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['as-degrees', user?.uid, degreeType || 'all'],
+    queryKey: ['as-degrees', user?.uid, degreeType || 'all', major],
     queryFn: () => apiClient
-      .get('/curated/as-degrees', { params: degreeType ? { degree_type: degreeType } : {} })
+      .get('/curated/as-degrees', { params: { major, ...(degreeType ? { degree_type: degreeType } : {}) } })
       .then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: 60 * 1000,
@@ -499,12 +501,12 @@ export function useAsDegreeAvailability() {
   })
 }
 
-export function useAsDegreeDetail(collegeId) {
+export function useAsDegreeDetail(collegeId, major = 'cs') {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['as-degree-detail', user?.uid, collegeId],
+    queryKey: ['as-degree-detail', user?.uid, collegeId, major],
     queryFn: () => apiClient
-      .get('/curated/as-degrees', { params: { college_id: collegeId } })
+      .get('/curated/as-degrees', { params: { college_id: collegeId, major } })
       .then((r) => r.data),
     enabled: !!user?.uid && !!collegeId,
     staleTime: 60 * 1000,

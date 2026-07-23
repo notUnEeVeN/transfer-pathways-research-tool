@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Alert, Badge, Button, Input, Select, Spinner, Stack, StatStrip, Tabs } from '../components/ui'
 import { DataTable } from '../DataReferences'
 import { useAsDegreeAvailability } from '../shared/query/hooks/useData'
-import AsDegreeQaTable, { DEGREE_TYPE_LABEL } from './AsDegreeQaTable'
+import AsDegreeQaTable from './AsDegreeQaTable'
 import AsDegreeSchoolView from './AsDegreeSchoolView'
+import { DEGREE_TYPE_LABEL } from '../shared/lib/asDegreeTypes'
 
 const AVAILABILITY_LABEL = {
   available: 'Available',
@@ -45,7 +46,7 @@ function TypeAvailability({ value, type, row, onOpen }) {
       {value.degree_title_seen && (
         <span className='max-w-[240px] text-[11.5px] text-ink-subtle'>{value.degree_title_seen}</span>
       )}
-      {type === 'local_computing' && titleCount > 0 && (
+      {type === 'local_other' && titleCount > 0 && (
         <span className='text-[11.5px] text-ink-subtle'>{titleCount} catalog program{titleCount === 1 ? '' : 's'}</span>
       )}
       {value.record_id && (
@@ -83,7 +84,7 @@ function CoverageTable({ data, onOpen }) {
           || a.college_name.localeCompare(b.college_name)
       }
       if (sort === 'local_status') {
-        return (STATUS_ORDER[a.types.local_cs_as.status] ?? 99) - (STATUS_ORDER[b.types.local_cs_as.status] ?? 99)
+        return (STATUS_ORDER[a.types.local_as.status] ?? 99) - (STATUS_ORDER[b.types.local_as.status] ?? 99)
           || a.college_name.localeCompare(b.college_name)
       }
       return a.college_name.localeCompare(b.college_name)
@@ -107,10 +108,10 @@ function CoverageTable({ data, onOpen }) {
         { key: 'college_name', label: 'College' },
         { key: 'ast', label: 'CS A.S.-T',
           render: (row) => <TypeAvailability value={row.types.ast} type='ast' row={row} onOpen={onOpen} /> },
-        { key: 'local_cs_as', label: 'Local CS A.S.',
-          render: (row) => <TypeAvailability value={row.types.local_cs_as} type='local_cs_as' row={row} onOpen={onOpen} /> },
-        { key: 'local_computing', label: 'Other computing',
-          render: (row) => <TypeAvailability value={row.types.local_computing} type='local_computing' row={row} onOpen={onOpen} /> },
+        { key: 'local_as', label: 'Local CS A.S.',
+          render: (row) => <TypeAvailability value={row.types.local_as} type='local_as' row={row} onOpen={onOpen} /> },
+        { key: 'local_other', label: 'Other computing',
+          render: (row) => <TypeAvailability value={row.types.local_other} type='local_other' row={row} onOpen={onOpen} /> },
         { key: 'source', label: 'Inventory source',
           render: (row) => row.inventory_source_url
             ? <a className='underline' href={row.inventory_source_url} target='_blank' rel='noreferrer'>catalog evidence</a>
@@ -154,8 +155,8 @@ export default function AsDegreesTab({ onRoute = () => {} }) {
   }
 
   const ast = availability.data?.counts?.ast
-  const local = availability.data?.counts?.local_cs_as
-  const computing = availability.data?.counts?.local_computing
+  const local = availability.data?.counts?.local_as
+  const computing = availability.data?.counts?.local_other
   const tiles = [
     { label: 'Colleges surveyed', value: availability.data?.counts?.total_colleges ?? '—' },
     { label: 'CS A.S.-T analyzable', value: ast?.available ?? '—', sub: '/exports/cs-ast-degrees', accent: true },

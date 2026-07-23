@@ -113,7 +113,7 @@ export const ENDPOINT_GROUPS = [
         path: '/curated/as-degree-availability',
         title: 'Associate-degree availability by college',
         plain: 'One row per surveyed community college, separating CS A.S.-T availability, confirmed absence, extraction gaps, local CS A.S. programs, and other computing degrees.',
-        returns: '{ counts, rows: [ { college_id, college_name, types: { ast, local_cs_as, local_computing } } ] }',
+        returns: '{ counts, rows: [ { college_id, college_name, types: { ast, local_as, local_other } } ] }',
         fields: [
           ['types.<type>.status', 'available, confirmed_none, data_gap, or duplicate_candidate.'],
           ['types.ast', 'The standardized Computer Science Associate Degree for Transfer cohort used for analysis.'],
@@ -124,8 +124,8 @@ export const ENDPOINT_GROUPS = [
         method: 'GET',
         path: '/curated/as-degrees?degree_type=ast',
         title: 'Associate-degree QA records',
-        plain: 'Summarized associate-degree records, optionally filtered to ast, local_cs_as, or local_computing; use ast for the standardized transfer-analysis cohort.',
-        returns: '{ params: { degree_type }, template, n, rows }',
+        plain: 'Summarized associate-degree records, optionally filtered to ast, local_as, or local_other; use ast for the standardized transfer-analysis cohort. Add major=<slug> to read a different major\'s slots (default cs; also bio, econ) — an unconfigured slug 400s.',
+        returns: '{ params: { degree_type, major }, template, n, rows }',
       },
       {
         method: 'GET',
@@ -226,7 +226,7 @@ export const ENDPOINT_GROUPS = [
         path: '/exports/local-cs-as-degrees',
         title: 'All local Computer Science A.S. degrees',
         plain: 'The college-defined local CS A.S. analysis cohort, with full nested requirements and referenced course records; A.S.-T and broader computing degrees are excluded.',
-        returns: '{ params: { degree_type: "local_cs_as", ... }, n, rows }',
+        returns: '{ params: { degree_type: "local_as", ... }, n, rows }',
       },
     ],
   },

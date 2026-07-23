@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
         name: 'Alpha College',
         degrees: [
           {
-            record_id: 'as_degree:110:ast',
+            record_id: 'as_degree:110:cs:ast',
             degree_type: 'ast',
             status: 'found',
             verified: true,
@@ -20,8 +20,8 @@ const mocks = vi.hoisted(() => ({
             groups_curated: 4,
           },
           {
-            record_id: 'as_degree:110:local_cs_as',
-            degree_type: 'local_cs_as',
+            record_id: 'as_degree:110:cs:local_as',
+            degree_type: 'local_as',
             status: 'found',
             verified: false,
             groups_total: 3,

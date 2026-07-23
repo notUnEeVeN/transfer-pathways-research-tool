@@ -30,8 +30,8 @@ const summary = {
 const offered = (ast, local, computing = false) => ({
   types: {
     ast: { inventory_offered: ast, status: ast ? 'available' : 'confirmed_none' },
-    local_cs_as: { inventory_offered: local, status: local ? 'available' : 'confirmed_none' },
-    local_computing: { inventory_offered: computing, status: computing ? 'available' : 'confirmed_none' },
+    local_as: { inventory_offered: local, status: local ? 'available' : 'confirmed_none' },
+    local_other: { inventory_offered: computing, status: computing ? 'available' : 'confirmed_none' },
   },
 })
 const availability = {
@@ -46,8 +46,8 @@ const availability = {
     {
       types: {
         ast: { inventory_offered: true, status: 'data_gap' },
-        local_cs_as: { inventory_offered: false, status: 'confirmed_none' },
-        local_computing: { inventory_offered: true, status: 'available' },
+        local_as: { inventory_offered: false, status: 'confirmed_none' },
+        local_other: { inventory_offered: true, status: 'available' },
       },
     },
     // Duplicate candidates are not distinct degrees, so this college belongs
@@ -55,8 +55,8 @@ const availability = {
     {
       types: {
         ast: { inventory_offered: false, status: 'confirmed_none' },
-        local_cs_as: { inventory_offered: false, status: 'confirmed_none' },
-        local_computing: { inventory_offered: true, status: 'duplicate_candidate' },
+        local_as: { inventory_offered: false, status: 'confirmed_none' },
+        local_other: { inventory_offered: true, status: 'duplicate_candidate' },
       },
     },
   ],

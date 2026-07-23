@@ -7,7 +7,7 @@ const useAsDegreesMock = vi.fn(() => ({
   data: {
     n: 1,
     rows: [{
-      _id: 'as_degree:1:ast', community_college_id: 1, college_id: 'cc:1',
+      _id: 'as_degree:1:cs:ast', community_college_id: 1, college_id: 'cc:1',
       college_name: 'Alpha College', degree_type: 'ast', status: 'found',
       degree_title_seen: 'Computer Science A.S.-T', coverage_pct: 100,
       units_accounted: 60, total_units: 60, unit_system: 'semester',
@@ -24,25 +24,25 @@ vi.mock('../shared/query/hooks/useData', () => ({
       counts: {
         total_colleges: 3,
         ast: { available: 1, data_gap: 1, confirmed_none: 1, duplicate_candidate: 0 },
-        local_cs_as: { available: 1, data_gap: 0, confirmed_none: 2, duplicate_candidate: 0 },
-        local_computing: { available: 0, data_gap: 0, confirmed_none: 2, duplicate_candidate: 1 },
+        local_as: { available: 1, data_gap: 0, confirmed_none: 2, duplicate_candidate: 0 },
+        local_other: { available: 0, data_gap: 0, confirmed_none: 2, duplicate_candidate: 1 },
       },
       rows: [
         {
           college_id: 'cc:1', community_college_id: 1, college_name: 'Alpha College',
           inventory_source_url: 'https://catalog.example/alpha',
           types: {
-            ast: { status: 'available', record_id: 'as_degree:1:ast', degree_title_seen: 'Computer Science A.S.-T', inventory_titles: [] },
-            local_cs_as: { status: 'available', record_id: 'as_degree:1:local', degree_title_seen: 'Computer Science A.S.', inventory_titles: [] },
-            local_computing: { status: 'confirmed_none', record_id: null, inventory_titles: [] },
+            ast: { status: 'available', record_id: 'as_degree:1:cs:ast', degree_title_seen: 'Computer Science A.S.-T', inventory_titles: [] },
+            local_as: { status: 'available', record_id: 'as_degree:1:cs:local_as', degree_title_seen: 'Computer Science A.S.', inventory_titles: [] },
+            local_other: { status: 'confirmed_none', record_id: null, inventory_titles: [] },
           },
         },
         {
           college_id: 'cc:2', community_college_id: 2, college_name: 'Beta College',
           types: {
             ast: { status: 'data_gap', record_id: null, inventory_titles: [] },
-            local_cs_as: { status: 'confirmed_none', record_id: null, inventory_titles: [] },
-            local_computing: { status: 'confirmed_none', record_id: null, inventory_titles: [] },
+            local_as: { status: 'confirmed_none', record_id: null, inventory_titles: [] },
+            local_other: { status: 'confirmed_none', record_id: null, inventory_titles: [] },
           },
         },
       ],
@@ -104,9 +104,9 @@ describe('AsDegreesTab', () => {
     }))
 
     fireEvent.click(screen.getByRole('tab', { name: 'Local CS A.S.' }))
-    expect(useAsDegreesMock).toHaveBeenLastCalledWith('local_cs_as')
+    expect(useAsDegreesMock).toHaveBeenLastCalledWith('local_as')
     await waitFor(() => expect(onRoute).toHaveBeenCalledWith({
-      path: '/api/curated/as-degrees?degree_type=local_cs_as',
+      path: '/api/curated/as-degrees?degree_type=local_as',
     }))
   })
 })
