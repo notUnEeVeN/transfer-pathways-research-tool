@@ -11,6 +11,38 @@
 **Spec:** `docs/superpowers/specs/2026-07-22-major-dimension-foundation-design.md`
 **Roadmap:** `docs/superpowers/specs/2026-07-22-expansion-roadmap.md`
 
+## Status (2026-07-22)
+
+Built on branch `worktree-major-foundation` (worktree at
+`.claude/worktrees/major-foundation`), 12 commits, both suites green
+(517 server / 349 frontend) and a clean build.
+
+**Done:** Tasks 1–6, 9, 10, 11, 12, 13.
+**Dropped — Task 7** (`courseTypes` per-major factory): it would have had no
+caller. The only analysis that types courses is a paper-baseline figure,
+which stays CS-only, so the config's `coursePatterns` field was removed too
+rather than carry a field nothing reads.
+**Deferred — Task 8** (slug-aware snapshots): three of its targets
+(`districtPathwayPlanner.js`, `generateDistrictPathwaySnapshot.js`,
+`generateDistrictPortfolioSubsets.js`) are untracked files that exist only in
+the main working tree, so they cannot be edited from a worktree. Do this
+after that district-portfolio work is committed. Nothing in W1 needs it: bio
+and econ ship with `capabilities.snapshots: []`.
+**Remaining — Task 14** (copy sweep): registry/measure wording still says
+"computer science" in places, and `degreeSources.js` is still keyed by
+`school_id` alone. Cosmetic; do it alongside W1 Phase 2.
+
+**Deviations from the spec, all deliberate:**
+- The query parameter is **`majorSlug`**, not `major`. `major` already means
+  "exact ASSIST program name" in `requirement-comparison` and in the
+  visible-pairs shape; overloading it would have been ambiguous.
+- `/api/majors` omits `coursePatterns` (see Task 7 above).
+- CS-pinned figures are declared once as `pinnedMajor: 'cs'` in
+  `analyses/registry.js`, and `VisualsPage` renders a single notice, instead
+  of a locked picker duplicated into seven components.
+- `MajorProvider` mounts in `main.jsx` beside the other providers rather than
+  inside `App.jsx`, which keeps `App` renderable without a QueryClient.
+
 ## Global Constraints
 
 - Work on branch `major-foundation` (branch from `design-makeover` or `main` per Tybalt's direction at execution time). Never push without asking.
