@@ -11,9 +11,10 @@ import {
  * TaskCard — one task on the board. Workflow stage progress is server-derived;
  * drag chrome lives in TaskBoard.
  */
-export default function TaskCard({ task, onOpen, dragging = false }) {
+export default function TaskCard({ task, onOpen, dragging = false, compact = false }) {
   const notes = task.notes || []
   const workflowNotes = (task.workflow_log || []).filter((entry) => entry.note)
+  const noteCount = notes.length + workflowNotes.length
   const isDone = task.status === 'done'
   const nextLine = nextStepLabel(task)
 
@@ -22,6 +23,54 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
   // items complete in any order, so "everything before the cursor" is wrong).
   const upNextIndex = currentStageIndex(task)
   const doneN = stages.filter((stage) => isStageComplete(task, stage.key)).length
+
+  // A slim two-line card so a long column holds many more before scrolling:
+  // title + stage dots on top, type and assignee beneath. Full detail is one
+  // click away in the modal. Audit fixes read as "N open", not progress.
+  if (compact) {
+    return (
+      <div
+        role='button'
+        tabIndex={0}
+        data-task-drag-surface
+        data-dragging={dragging || undefined}
+        onClick={onOpen}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen?.() } }}
+        style={dragging ? { boxShadow: 'var(--shadow-lg)' } : undefined}
+        className={`w-full overflow-hidden text-left surface-card px-3 py-2 outline-none transition-[background-color,border-color,box-shadow] hover:bg-surface-hover hover:border-border-strong focus-visible:ring-2 focus-visible:ring-primary/40 ${dragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
+      >
+        <div className='flex items-center gap-2 min-w-0'>
+          <p className={`flex-1 min-w-0 text-caption font-[650] leading-snug truncate ${isDone ? 'text-ink-muted line-through decoration-ink-subtle/60' : ''}`}>
+            {task.title}
+          </p>
+          {stages.length > 0 && (task.task_type === 'audit_fix' ? (
+            <span className='shrink-0 text-tag text-ink-subtle whitespace-nowrap tabular'>{stages.length - doneN} open</span>
+          ) : (
+            <div className='flex items-center gap-[3px] shrink-0'>
+              {stages.map((stage, i) => (
+                <span key={stage.key} title={stage.label}
+                  className={`w-2 h-2 rounded-pill ${
+                    isStageComplete(task, stage.key) ? 'bg-primary'
+                      : i === upNextIndex ? 'bg-surface border border-accent'
+                        : 'bg-surface border border-border-strong'}`} />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className='mt-1 flex items-center gap-2 min-w-0'>
+          <Badge variant={taskTypeBadgeVariant(task.task_type)}>{taskTypeLabel(task.task_type)}</Badge>
+          {task.assignee_uid && (
+            <UserInitialsAvatar email={task.assignee_label || task.assignee_uid} size='sm' className='!w-[18px] !h-[18px]' />
+          )}
+          {noteCount > 0 && (
+            <span className='ml-auto inline-flex items-center gap-1 text-tag text-ink-subtle'>
+              <ChatBubbleLeftIcon className='w-3.5 h-3.5' />{noteCount}
+            </span>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div

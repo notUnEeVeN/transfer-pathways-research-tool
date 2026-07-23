@@ -235,6 +235,7 @@ export default function TaskBoard({
     >
       <TaskCard
         task={task}
+        compact
         dragging={dragging === task._id}
         onOpen={() => {
           // a real drag ends with a click on the same element — swallow it
