@@ -17,11 +17,9 @@ or answer a reviewer-style question.
 | --- | --- |
 | [`visualization-quick-reference.md`](visualization-quick-reference.md) | One compact read of the important takeaways from all current visualization work |
 | [`figures/`](figures/) | Deep notes, one per ported paper figure: provenance, methodology, verification, difference analysis, and receipts |
-| [`superpowers/specs/`](superpowers/specs/) | Approved design documents (dated), including the expansion roadmap |
-| [`superpowers/plans/`](superpowers/plans/) | Step-by-step implementation plans executed from the specs |
 
-One-off design handoffs, design-session prompts, and gate-review docs are
-removed once implemented — recover any of them from git history.
+Design documents, implementation plans, one-off handoffs, and gate-review docs
+are removed once implemented — recover any of them from git history.
 
 ## Figure documents
 
