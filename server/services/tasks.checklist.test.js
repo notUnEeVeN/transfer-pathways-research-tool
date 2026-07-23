@@ -118,3 +118,50 @@ describe('data_verification checklist tasks', () => {
     expect(task.checklist_items.map((i) => i.key)).toEqual(['same_name', 'same_name_2']);
   });
 });
+
+// A general task is the plain to-do: a title is enough, and checkpoints are
+// optional rather than owed. It shares the checklist engine with data
+// verification, so the cases that differ are the ones worth pinning.
+describe('general tasks', () => {
+  const createGeneral = (body = {}, uid = 'author') =>
+    createTask(db, db, { title: 'Chase down the FTB extract', task_type: 'general', ...body }, uid);
+
+  it('creates with no checkpoints at all', async () => {
+    const task = await createGeneral();
+    expect(task.task_type).toBe('general');
+    expect(task.checklist_items).toEqual([]);
+    expect(task.progress).toBe(0);
+  });
+
+  it('closes on request even with nothing to check off', async () => {
+    const task = await createGeneral();
+    const done = await updateTask(db, db, task._id, { status: 'done' }, 'author');
+    expect(done.status).toBe('done');
+  });
+
+  it('takes checkpoints later, and drops back to none', async () => {
+    const task = await createGeneral();
+    const withItems = await updateTask(db, db, task._id, {
+      checklist_items: ['Email the analyst', 'Diff against last year'],
+    }, 'author');
+    expect(withItems.checklist_items.map((i) => i.label))
+      .toEqual(['Email the analyst', 'Diff against last year']);
+    const cleared = await updateTask(db, db, task._id, { checklist_items: [] }, 'author');
+    expect(cleared.checklist_items).toEqual([]);
+  });
+
+  it('waits to be closed once its last checkpoint lands, rather than self-closing', async () => {
+    const task = await createGeneral({ checklist_items: ['Only item'] });
+    const after = await completeTaskStage(db, db, task._id, 'only_item', {}, 'author');
+    expect(after.progress).toBe(100);
+    expect(after.status).toBe('in_progress');
+    const closed = await updateTask(db, db, task._id, { status: 'done' }, 'author');
+    expect(closed.status).toBe('done');
+  });
+
+  it('still refuses to close a data-verification task with checkpoints outstanding', async () => {
+    const task = await createVerification(['UC Berkeley']);
+    await expect(updateTask(db, db, task._id, { status: 'done' }, 'author'))
+      .rejects.toThrow(ValidationError);
+  });
+});

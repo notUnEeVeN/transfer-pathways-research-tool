@@ -9,8 +9,18 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 // this doesn't change the AgreementsBrowser setup; the focused detail test
 // below supplies one covered college.
 vi.mock('@frontend/query/hooks/useData', () => ({
-  // The college pane mounts AsDegreeReview, which reads these two.
-  useAsDegreeDetail: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
+  // The college pane mounts AsDegreeReview, which reads these two. Two records
+  // so the section's degree-type tabs have something to switch between.
+  useAsDegreeDetail: () => ({
+    data: {
+      degrees: [
+        { degree_type: 'ast', courses_by_id: {}, doc: { _id: 'd-ast', degree_type: 'ast', requirement_groups: [] } },
+        { degree_type: 'local_cs_as', courses_by_id: {}, doc: { _id: 'd-local', degree_type: 'local_cs_as', requirement_groups: [] } },
+      ],
+    },
+    isLoading: false,
+    isError: false,
+  }),
   useSaveAsDegree: () => ({ mutateAsync: async () => ({}), isPending: false }),
   useDataSummary: () => ({
     data: {
@@ -58,9 +68,10 @@ vi.mock('@frontend/query/hooks/useData', () => ({
   useAgreementsBatch: (collegeId, campusId) => ({
     data: [{
       school_id: Number(campusId),
-      agreements: Number(collegeId) === 101 && Number(campusId) === 79 ? [{
-        _id: 'agreement-1', major: 'Electrical Engineering & Computer Sciences, B.S.',
-      }] : [],
+      agreements: Number(collegeId) === 101 && Number(campusId) === 79 ? [
+        { _id: 'agreement-extra', major: 'Computer Science, B.A.' },
+        { _id: 'agreement-1', major: 'Electrical Engineering & Computer Sciences, B.S.' },
+      ] : [],
     }],
     isLoading: false,
   }),
@@ -170,18 +181,11 @@ vi.mock('./DataReferences', () => ({
   DataTable: () => null,
 }))
 vi.mock('./degrees/DegreeTemplateEditor', () => ({ default: () => null }))
+// The college pane renders the real AsDegreeReview (its hooks are mocked
+// above); it pulls DegreePanel from this module, so the stub must export it.
 vi.mock('./asdegrees/AsDegreeSchoolView', () => ({
-  default: ({ collegeId, initialDegreeType, onlyDegreeType, degreeTypes, showDegreeTitle, onDegreeTypeChange }) => (
-    <div>
-      Associate degree detail {collegeId} {initialDegreeType} {onlyDegreeType || 'any'} {degreeTypes?.join(',') || 'all'} {showDegreeTitle ? 'title' : 'no-title'}
-      {degreeTypes?.includes('ast') && (
-        <button type='button' onClick={() => onDegreeTypeChange?.('ast')}>Select mock A.S.-T</button>
-      )}
-      {degreeTypes?.includes('local_cs_as') && (
-        <button type='button' onClick={() => onDegreeTypeChange?.('local_cs_as')}>Select mock local A.S.</button>
-      )}
-    </div>
-  ),
+  default: () => null,
+  DegreePanel: ({ degree }) => <div>Associate degree detail {degree?.doc?.degree_type}</div>,
 }))
 vi.mock('./prereqs/ConceptGraphView', () => ({ default: () => null }))
 
@@ -279,7 +283,7 @@ describe('DataPage SubNav route chip', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
-    expect(screen.getByText('Associate degree detail 101 ast any ast,local_cs_as no-title')).toBeInTheDocument()
+    expect(screen.getByText('Associate degree detail ast')).toBeInTheDocument()
     expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
     expect(screen.getByText('Computer Science · Associate in Science for Transfer · 2025-2026')).toBeInTheDocument()
     expect(screen.queryByText(/complete CS A.S.-T requirement record/i)).not.toBeInTheDocument()
@@ -325,7 +329,7 @@ describe('DataPage SubNav route chip', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'Graduation Requirements Coverage' }))
     expect(screen.getByRole('button', {
-      name: 'GET /api/curated/degree-evaluation?school_id=79&community_college_id=101',
+      name: 'GET /api/curated/degree-evaluation?school_id=79&community_college_id=101&majorSlug=cs',
     })).toBeInTheDocument()
 
     const summary = screen.getByRole('region', { name: 'Degree coverage summary' })
@@ -427,7 +431,7 @@ describe('Community Colleges degree integration', () => {
 
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
     expect(screen.getByText('Computer Science · Associate in Science · 2024-2025')).toBeInTheDocument()
-    expect(screen.getByText('Associate degree detail 4 local_cs_as any local_cs_as no-title')).toBeInTheDocument()
+    expect(screen.getByText('Associate degree detail local_cs_as')).toBeInTheDocument()
   })
 
   it('updates the degree header when switching between transfer and local A.S. records', () => {
@@ -437,7 +441,7 @@ describe('Community Colleges degree integration', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
 
     expect(screen.getByText('Computer Science · Associate in Science for Transfer · 2025-2026')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Select mock local A.S.' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Local CS A.S.' }))
     expect(screen.getByText('Computer Science · Associate in Science · 2025-2026')).toBeInTheDocument()
   })
 })

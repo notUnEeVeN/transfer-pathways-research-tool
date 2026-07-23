@@ -26,15 +26,26 @@ const { getDisplayName, listDisplayNames } = require('./displayNames');
 const COLLECTION = 'tasks';
 
 const STATUSES = ['backlog', 'todo', 'in_progress', 'done'];
-const TASK_TYPES = ['porting', 'data_verification', 'audit_fix'];
+const TASK_TYPES = ['porting', 'data_verification', 'audit_fix', 'general'];
 const DEFAULT_TASK_TYPE = 'porting';
 
 // Checklist-shaped types: the workflow points live on the doc as
 // `checklist_items`, completable in any order, with no peer gate.
 // 'data_verification' items are user-authored; 'audit_fix' items are
-// machine-appended by audit verdicts (one standing task accumulates them).
-const CHECKLIST_TASK_TYPES = new Set(['data_verification', 'audit_fix']);
+// machine-appended by audit verdicts (one standing task accumulates them);
+// 'general' is the plain to-do — checkpoints optional.
+const CHECKLIST_TASK_TYPES = new Set(['data_verification', 'audit_fix', 'general']);
 const isChecklistType = (taskType) => CHECKLIST_TASK_TYPES.has(taskType);
+// A general task is the one kind that is meaningful with no checkpoints at all:
+// a title and a column. Every other checklist type owes at least one item.
+const allowsEmptyChecklist = (taskType) => taskType === 'general';
+const isBareGeneral = (taskLike) => taskLike?.task_type === 'general'
+  && !(taskLike?.checklist_items || []).length;
+// Types that close themselves the moment the last stage lands. Porting's
+// approval IS the closing act, and the audit-fix inbox reopens on a later
+// verdict. Checklist tasks a person owns instead surface a "ready to close"
+// banner and wait to be marked done deliberately.
+const SELF_CLOSING_TASK_TYPES = new Set(['porting', 'audit_fix']);
 const MAX_CHECKLIST_ITEMS = 100;
 
 // The weights intentionally put most of the work in research and development.
@@ -136,9 +147,9 @@ const slugify = (label) => label.toLowerCase().replace(/[^a-z0-9]+/g, '_').repla
 
 // Accepts strings or {key?, label} rows; keys are kept when supplied (so a
 // rename doesn't orphan the item's log history) and slug-generated when new.
-function cleanChecklistItems(value) {
+function cleanChecklistItems(value, allowEmpty = false) {
   const rows = cleanArray('checklist_items', value);
-  if (!rows.length) fail('checklist_items must have at least one item');
+  if (!rows.length && !allowEmpty) fail('checklist_items must have at least one item');
   if (rows.length > MAX_CHECKLIST_ITEMS) fail(`checklist_items must have ${MAX_CHECKLIST_ITEMS} or fewer items`);
   const used = new Set();
   return rows.map((row) => {
@@ -281,7 +292,7 @@ async function createTask(auditDb, db, body = {}, uid) {
     : DEFAULT_TASK_TYPE;
   let checklistItems;
   if (isChecklistType(taskType)) {
-    checklistItems = cleanChecklistItems(body.checklist_items ?? []);
+    checklistItems = cleanChecklistItems(body.checklist_items ?? [], allowsEmptyChecklist(taskType));
   } else if (body.checklist_items != null) {
     fail(`${taskType} tasks have a fixed workflow — checklist_items only apply to checklist task types`);
   }
@@ -363,7 +374,10 @@ async function updateTask(auditDb, db, id, patch = {}, uid) {
     if (normalized.status === 'done') {
       fail('reopen an item before editing the checklist of a done task');
     }
-    $set.checklist_items = cleanChecklistItems(patch.checklist_items);
+    $set.checklist_items = cleanChecklistItems(
+      patch.checklist_items,
+      allowsEmptyChecklist($set.task_type || normalized.task_type)
+    );
     const keptKeys = new Set($set.checklist_items.map((item) => item.key));
     for (const [key, state] of Object.entries(normalized.workflow_stages)) {
       if (isStageDone(state) && !keptKeys.has(key)) {
@@ -371,10 +385,14 @@ async function updateTask(auditDb, db, id, patch = {}, uid) {
       }
     }
   }
-  const workflowComplete = isWorkflowComplete(
-    { ...normalized, ...('checklist_items' in $set ? { checklist_items: $set.checklist_items } : {}) },
-    normalized.workflow_stages
-  );
+  const afterPatch = {
+    ...normalized,
+    ...('checklist_items' in $set ? { checklist_items: $set.checklist_items } : {}),
+  };
+  // A general task with no checkpoints has no workflow to finish — its title
+  // is the whole task, so moving it to Done is the completion.
+  const workflowComplete = isBareGeneral(afterPatch)
+    || isWorkflowComplete(afterPatch, normalized.workflow_stages);
   if ($set.status === 'done' && !workflowComplete) {
     fail('complete every workflow stage before marking this task done');
   }
@@ -520,13 +538,14 @@ async function completeTaskStage(auditDb, db, id, stageKey, body = {}, uid) {
     ...task.workflow_stages,
     [stage.key]: stageState,
   };
-  // Data-verification tasks never auto-close: verifying the last checkpoint
-  // surfaces a "ready to close" banner and the user marks the task done
-  // explicitly. Porting flips to done at 100% (approval IS the closing act),
-  // and the audit-fix inbox closes itself when its last item resolves — a
-  // later verdict starts a fresh wave.
+  // Data-verification and general tasks never auto-close: completing the last
+  // checkpoint surfaces a "ready to close" banner and the user marks the task
+  // done explicitly. Porting flips to done at 100% (approval IS the closing
+  // act), and the audit-fix inbox closes itself when its last item resolves —
+  // a later verdict starts a fresh wave.
   const progress = progressForStages(task, workflowStages);
-  const final = task.task_type !== 'data_verification' && isWorkflowComplete(task, workflowStages);
+  const final = SELF_CLOSING_TASK_TYPES.has(task.task_type)
+    && isWorkflowComplete(task, workflowStages);
   const status = final ? 'done' : 'in_progress';
   const event = {
     _id: eventId,

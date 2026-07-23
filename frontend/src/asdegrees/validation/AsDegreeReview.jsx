@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import {
-  Alert, Button, Combobox, EmptyState, Spinner, Stack, Tabs, Textarea,
+  Alert, Button, EmptyState, Spinner, Stack, Textarea,
 } from '../../components/ui'
 import { useAsDegreeDetail, useCcCourses, useSaveAsDegree } from '../../shared/query/hooks/useData'
 import apiClient from '../../shared/api/apiClient'
-import {
-  courseByIdKey, courseLabel, groupCourseIds, groupLabel, isComplexGroup, setGroupCourses,
-} from './asDegreeCourses'
+import { DegreePanel } from '../AsDegreeSchoolView'
+import { courseLabel, isComplexGroup, setGroupCourses } from './asDegreeCourses'
 
 /**
- * Correct and sign off one college's AI-scraped AS degrees.
+ * Read one college's AI-scraped AS degrees against the catalog, and correct
+ * them in place.
  *
- * The degree is already rendered above this panel, in catalog form, by
- * DegreePanel — that is what the researcher reads against the real catalog, so
- * this panel never repeats it. It carries the three things that view cannot:
- * adding or removing a course, describing a change too involved to click, and
- * a verdict with a note.
+ * The degree renders exactly as it does everywhere else — the shared ledger, in
+ * catalog order — with an Edit button on each group the researcher can fix by
+ * clicking. Anything a flat course list cannot state goes to the assistant.
  */
-export default function AsDegreeReview({ collegeId }) {
+export default function AsDegreeReview({ collegeId, degreeType = null }) {
   const detail = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
   const courses = useCcCourses(collegeId)
   const save = useSaveAsDegree()
 
   const records = detail.data?.degrees || []
-  const [recordId, setRecordId] = useState(null)
   const [note, setNote] = useState('')
   const [draft, setDraft] = useState(null)
   const [error, setError] = useState(null)
   const [saved, setSaved] = useState(null)
 
-  const active = records.find((r) => r.doc?._id === recordId) || records[0] || null
+  // Which degree to show is the caller's choice — the section owns the type
+  // tabs so the page header and the record below it can never disagree.
+  const active = records.find((r) => r.degree_type === degreeType) || records[0] || null
   const stored = active?.doc || null
   const doc = draft && draft._id === stored?._id ? draft : stored
 
@@ -47,9 +45,10 @@ export default function AsDegreeReview({ collegeId }) {
   }))
 
   // Only groups a flat list can represent honestly. A group encoding a real
-  // choice rule is left to the assistant rather than shown here half-editable.
-  const quickFixGroups = (doc?.requirement_groups || [])
-    .filter((g) => !isComplexGroup(g) && groupCourseIds(g).length)
+  // choice rule, a GE pattern, or an electives-to-total total is left to the
+  // assistant rather than shown half-editable.
+  const isEditable = (group) => !!group?.group_id && !group.ge_area && !group.units_fill
+    && !isComplexGroup(group)
 
   const editGroup = (groupId, courseIds) => setDraft({
     ...doc,
@@ -96,34 +95,13 @@ export default function AsDegreeReview({ collegeId }) {
   return (
     <Stack gap='comfortable'>
       <div className='flex flex-wrap items-center gap-3'>
-        {records.length > 1 && (
-          <Tabs value={doc._id} onChange={setRecordId}
-            options={records.map((r) => ({
-              value: r.doc._id,
-              label: r.doc.degree_title_seen || r.doc.degree_type,
-            }))} />
-        )}
         <span className={`ml-auto text-caption ${verified ? 'text-primary' : 'text-ink-subtle'}`}>
           {verified ? 'Verified' : 'Not yet verified'}
         </span>
       </div>
 
-      {quickFixGroups.length > 0 && (
-        <div className='surface-card p-4'>
-          <p className='text-body-strong'>Quick fixes</p>
-          <p className='text-caption text-ink-subtle mt-0.5 mb-3'>
-            Add or remove a course. Anything more involved — splitting a group,
-            changing how many are required — goes to the assistant below.
-          </p>
-          <Stack gap='comfortable'>
-            {quickFixGroups.map((group) => (
-              <QuickFixGroup key={group.group_id} group={group}
-                coursesById={active?.courses_by_id || {}} courseOptions={courseOptions}
-                onChange={(ids) => editGroup(group.group_id, ids)} />
-            ))}
-          </Stack>
-        </div>
-      )}
+      <DegreePanel degree={{ ...active, doc }} showDegreeTitle={false}
+        editing={{ isEditable, courseOptions, onChange: editGroup }} />
 
       <AssistBox recordId={doc._id} onApplied={() => { setDraft(null); detail.refetch() }} />
 
@@ -232,33 +210,6 @@ function AssistBox({ recordId, onApplied }) {
           {busy ? 'Thinking…' : 'Propose a change'}
         </Button>
       )}
-    </div>
-  )
-}
-
-/** One group's courses, as removable rows plus a picker. */
-function QuickFixGroup({ group, coursesById, courseOptions, onChange }) {
-  const ids = groupCourseIds(group)
-  return (
-    <div>
-      <p className='text-caption text-ink-muted mb-1.5'>{groupLabel(group)}</p>
-      <div className='flex flex-col gap-1'>
-        {ids.map((id) => (
-          <div key={id} className='flex items-center gap-2'>
-            <span className='text-body flex-1 min-w-0 truncate'>
-              {courseLabel(coursesById[courseByIdKey(id)]) || `Course ${id}`}
-            </span>
-            <button type='button' aria-label={`Remove course ${id}`}
-              onClick={() => onChange(ids.filter((x) => x !== id))}
-              className='shrink-0 rounded-pill p-1 text-ink-subtle hover:bg-primary-soft hover:text-ink'>
-              <XMarkIcon className='w-4 h-4' aria-hidden='true' />
-            </button>
-          </div>
-        ))}
-      </div>
-      <Combobox value='' options={courseOptions} placeholder='Add a course…'
-        className='mt-1.5'
-        onChange={(value) => value && onChange([...ids, Number(value)])} />
     </div>
   )
 }

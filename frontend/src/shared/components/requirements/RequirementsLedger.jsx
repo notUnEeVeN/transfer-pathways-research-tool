@@ -512,8 +512,14 @@ function Group({ group, ctx, showMissing, groupIdx }) {
                 keep the original wording. */}
             <h3 className='text-[21px] font-[650] tracking-[-.01em] text-ink'>{group.title || (group.is_required ? 'Required' : 'Recommended')}</h3>
             {groupComplete && <CompletionCheck />}
+            {/* Opt-in per-group affordance, top-right of the heading (AS-degree
+                verification). Null everywhere else — no wrapper, no spacing. */}
+            {ctx.groupAction && (
+              <span className='ml-auto shrink-0'>{ctx.groupAction(group, groupIdx)}</span>
+            )}
           </div>
           {ruleLine && <p className='text-caption ink-subtle font-medium'>{ruleLine}</p>}
+          {ctx.groupPanel?.(group, groupIdx)}
         </Stack>
         <div className='flex flex-col gap-3'>
           {visible.map(({ section, index }) => (
@@ -557,7 +563,13 @@ export default function RequirementsLedger({
   // eligibility engine, which treats requirements nothing articulates as
   // vacuously satisfied. Right for a student plan; misleading in reference
   // views with no student — those pass false to render plain.
-  showCompletion = true
+  showCompletion = true,
+  // Opt-in per-group editing affordances (AS-degree verification). `groupAction`
+  // returns a node pinned to the top right of a group's heading; `groupPanel`
+  // returns a node placed directly under it. Both null by default, so every
+  // other consumer renders exactly as before.
+  groupAction = null,
+  groupPanel = null
 }) {
   if (!major || !Array.isArray(major.requirement_groups)) return null
 
@@ -566,7 +578,7 @@ export default function RequirementsLedger({
     ? major.requirement_groups
     : [...major.requirement_groups].sort((a, b) => (a.is_required === b.is_required ? 0 : a.is_required ? -1 : 1))
 
-  const ctx = { courses, userCourses, crossCc, universityCoursesById, showCompletion }
+  const ctx = { courses, userCourses, crossCc, universityCoursesById, showCompletion, groupAction, groupPanel }
 
   const cards = groups
     .filter((g) => !(showMissing && (!g.is_required || isGroupCompleted(g, userCourses, crossCc))))

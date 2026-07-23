@@ -3,6 +3,7 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { Stack, Tabs, Spinner, EmptyState } from '../components/ui'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { useAsDegreeDetail } from '../shared/query/hooks/useData'
+import GroupCourseEditor from './validation/GroupCourseEditor'
 
 // Per-college associate-degree view, shown as the Associate degrees sub-tab in
 // the Community Colleges catalog. The requirement groups render through the shared
@@ -125,9 +126,16 @@ const ledgerTitle = (raw) => {
   return t
 }
 
-export function DegreePanel({ degree, showDegreeTitle = true }) {
+/**
+ * `editing` (opt-in, AS-degree verification) arms a small Edit button on the
+ * top right of every group a flat course list can represent honestly. Shape:
+ * `{ isEditable(group), courseOptions, onChange(groupId, courseIds) }`.
+ * Absent everywhere else, and the panel renders unchanged.
+ */
+export function DegreePanel({ degree, showDegreeTitle = true, editing = null }) {
   const { doc, courses_by_id: coursesById, ge_breakdowns: geBreakdowns } = degree
   const groups = doc.requirement_groups || []
+  const [openGroupId, setOpenGroupId] = useState(null)
 
   // Every group renders through the shared RequirementsLedger, in catalog
   // order. Course groups pass through as stored. A GE-pattern group has no
@@ -178,13 +186,33 @@ export function DegreePanel({ degree, showDegreeTitle = true }) {
 
   const unresolved = groups.flatMap((g) => g.unresolved_courses_seen || [])
 
+  // A group only gets the Edit button when the caller arms editing AND a flat
+  // course list can state the group without losing meaning.
+  const groupAction = editing
+    ? (group) => (editing.isEditable(group) ? (
+      <button type='button'
+        onClick={() => setOpenGroupId(openGroupId === group.group_id ? null : group.group_id)}
+        className='rounded-pill border border-border-strong px-2.5 py-[3px] text-caption font-medium text-ink-muted hover:border-primary hover:text-ink'>
+        {openGroupId === group.group_id ? 'Done' : 'Edit'}
+      </button>
+    ) : null)
+    : null
+  const groupPanel = editing
+    ? (group) => (openGroupId === group.group_id ? (
+      <GroupCourseEditor group={group} coursesById={coursesById}
+        courseOptions={editing.courseOptions}
+        onChange={(ids) => editing.onChange(group.group_id, ids)} />
+    ) : null)
+    : null
+
   return (
     <Stack gap='cozy'>
       {showDegreeTitle && <p className='text-body text-ink-muted'>{doc.degree_title_seen}</p>}
       {ledgerMajor.requirement_groups.length > 0 && (
         <div className='uui-scope'>
           <RequirementsLedger major={ledgerMajor} courses={ledgerCourses}
-            preserveOrder showCompletion={false} />
+            preserveOrder showCompletion={false}
+            groupAction={groupAction} groupPanel={groupPanel} />
         </div>
       )}
       {unresolved.length > 0 && (

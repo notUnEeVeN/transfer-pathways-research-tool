@@ -9,7 +9,6 @@ import SubNav from './components/SubNav'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
-import AsDegreeSchoolView from './asdegrees/AsDegreeSchoolView'
 import AsDegreeReview from './asdegrees/validation/AsDegreeReview'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
 import { degreeSourcesFor } from './degrees/degreeSources'
@@ -324,20 +323,17 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
 }
 
 const CS_DEGREE_PROGRAMS = [
-  { type: 'ast', award: 'Associate in Science for Transfer' },
-  { type: 'local_cs_as', award: 'Associate in Science' },
-  { type: 'local_computing', award: null },
+  { type: 'ast', award: 'Associate in Science for Transfer', tab: 'CS A.S.-T' },
+  { type: 'local_cs_as', award: 'Associate in Science', tab: 'Local CS A.S.' },
+  { type: 'local_computing', award: null, tab: 'Other computing' },
 ]
 
 function AssociateDegreeSection({ collegeId, availability, major = null }) {
   // The associate-degree layer only exists for majors whose AS data has been
   // gathered — CS today. Say so rather than showing another major's degrees.
-  if (major && major.capabilities?.asDegrees === false) {
-    return (
-      <EmptyState title={`No ${major.label} associate degrees yet`}
-        description={`Associate-degree records have only been gathered for Computer Science. ${major.label} transfer articulation is available under Transfer articulation.`} />
-    )
-  }
+  // The gate covers the degrees themselves, never the section: hiding the
+  // whole thing also hid the verification tool.
+  const gatedOut = !!major && major.capabilities?.asDegrees === false
   const availablePrograms = CS_DEGREE_PROGRAMS.filter(({ type }) => (
     availability?.types?.[type]?.status === 'available'
       && availability.types[type].record_id
@@ -366,20 +362,30 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
         <h2 className='mt-1.5 heading-card'>
           {availability?.college_name || 'Community college'}
         </h2>
-        <p className='mt-1 text-body text-ink-muted'>{programLine}</p>
+        <p className='mt-1 text-body text-ink-muted'>
+          {gatedOut ? `No ${major.label} associate degrees yet` : programLine}
+        </p>
       </div>
-      {degreeTypes.length > 0 && (
+      {gatedOut ? (
         <div className='mt-4'>
-          <AsDegreeSchoolView collegeId={collegeId} initialDegreeType={selectedDegreeType}
-            degreeTypes={degreeTypes} showDegreeTitle={false}
-            onDegreeTypeChange={(degreeType) => setSelection({ collegeId, degreeType })} />
+          <EmptyState title={`No ${major.label} associate degrees yet`}
+            description={`Associate-degree records have only been gathered for Computer Science. ${major.label} transfer articulation is available under Transfer articulation.`} />
         </div>
+      ) : (
+        <>
+          {degreeTypes.length > 1 && (
+            <div className='mt-4 flex justify-end'>
+              <Tabs value={selectedDegreeType}
+                onChange={(degreeType) => setSelection({ collegeId, degreeType })}
+                options={availablePrograms.map(({ type, tab }) => ({ value: type, label: tab }))} />
+            </div>
+          )}
+          {/* The scraped record, read against the catalog and corrected in place. */}
+          <div className='mt-4'>
+            <AsDegreeReview collegeId={collegeId} degreeType={selectedDegreeType} />
+          </div>
+        </>
       )}
-      {/* Check the scraped records against the catalog, in place. */}
-      <div className='mt-6'>
-        <p className='field-label mb-2'>Verify scraped records</p>
-        <AsDegreeReview collegeId={collegeId} />
-      </div>
     </section>
   )
 }
@@ -408,6 +414,15 @@ function ReceivingCampusPicker({ campuses, campusId, onSelect }) {
   )
 }
 
+// Program identity is a campus/program pair, not a free-text major label. A
+// contains check makes adding a related program (for example Computer Science
+// Engineering) silently change the currently selected major everywhere.
+export function configuredProgramsForCampus(major, schoolId) {
+  const configured = major?.programs?.[String(Number(schoolId))]
+  if (Array.isArray(configured)) return configured.filter((program) => typeof program === 'string')
+  return typeof configured === 'string' ? [configured] : []
+}
+
 // One campus × college batch can contain several majors. Keep the college's
 // degree requirements and university articulation as peer views so neither
 // creates a long stacked page.
@@ -433,12 +448,9 @@ function CampusAgreements({
     return (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
   }, [batch.data, campus.school_id])
   const agreements = useMemo(() => {
-    // The match string is the same one the server scopes analyses by, so this
-    // page and the figures agree on what counts as the selected major.
-    const match = major?.match?.toLowerCase()
-    if (!match) return allAgreements
-    return allAgreements.filter((a) => String(a.major).toLowerCase().includes(match))
-  }, [allAgreements, major])
+    const programs = new Set(configuredProgramsForCampus(major, campus.school_id))
+    return allAgreements.filter((agreement) => programs.has(String(agreement.major)))
+  }, [allAgreements, campus.school_id, major])
   const defaultAgreementId = agreements[0]?._id
   // A college with no agreement opens on the useful degree finding. Otherwise
   // transfer articulation remains the familiar default. An explicit user
@@ -513,7 +525,7 @@ function CampusAgreements({
               {agreements.map((agreement) => (
                 <AgreementDetail key={agreement._id} agreementId={agreement._id}
                   onRoute={onRoute}
-                  compareFor={{ schoolId: campus.school_id, major: agreement.major, communityCollegeId: collegeId }} />
+                  compareFor={{ schoolId: campus.school_id, major: agreement.major, majorSlug, communityCollegeId: collegeId }} />
               ))}
             </Stack>
           )}
@@ -535,15 +547,20 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const { user } = useAuth()
   const { slug: majorSlug, setSlug, major } = useMajorChoice('campuses')
   const [editing, setEditing] = useState(false)
-  // A campus has one graduation template PER MAJOR. Match the program to the
-  // selected major so Biology never renders the computer-science degree.
+  const configuredPrograms = useMemo(
+    () => configuredProgramsForCampus(major, schoolId),
+    [major, schoolId]
+  )
+  const defaultProgram = configuredPrograms[0] || ''
+  // New templates carry an explicit major_slug. Existing templates predate
+  // that field and are all CS, so only the CS pane may adopt an unstamped row.
   const forMajor = useCallback((rows) => {
-    const match = major?.match?.toLowerCase()
-    return (rows || []).find((r) => (
-      Number(r.school_id) === Number(schoolId)
-      && (!match || String(r.program || '').toLowerCase().includes(match))
-    )) || null
-  }, [major, schoolId])
+    const atCampus = (rows || []).filter((row) => Number(row.school_id) === Number(schoolId))
+    return atCampus.find((row) => row.major_slug === majorSlug
+        && configuredPrograms.includes(String(row.program)))
+      || (majorSlug === 'cs' ? atCampus.find((row) => !row.major_slug) : null)
+      || null
+  }, [configuredPrograms, majorSlug, schoolId])
   const doc = useMemo(() => forMajor(q.data?.rows), [q.data, forMajor])
   const rawDoc = useMemo(() => forMajor(raw.data?.rows), [raw.data, forMajor])
   // Notes ride on the stored degree doc (PUT replaces the whole row, so the
@@ -581,7 +598,8 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
       )}
       <DegreeTemplateEditor open={editing} onClose={() => setEditing(false)}
         initialDocument={rawDoc} schoolId={schoolId} school={school || doc?.school}
-        campusKey={rawDoc?.campus_key || null} onSaved={() => setEditing(false)} />
+        campusKey={rawDoc?.campus_key || null} majorSlug={majorSlug}
+        defaultProgram={defaultProgram} onSaved={() => setEditing(false)} />
     </Stack>
   )
 }
@@ -747,7 +765,7 @@ const routeForAgreementView = (view, agreementId, compareFor) => (
   : view === 'comparison' && compareFor
     ? `/api/curated/requirement-comparison?school_id=${compareFor.schoolId}&major=${encodeURIComponent(compareFor.major)}&community_college_id=${compareFor.communityCollegeId}`
   : view === 'degree' && compareFor
-    ? `/api/curated/degree-evaluation?school_id=${compareFor.schoolId}&community_college_id=${compareFor.communityCollegeId}`
+    ? `/api/curated/degree-evaluation?school_id=${compareFor.schoolId}&community_college_id=${compareFor.communityCollegeId}&majorSlug=${encodeURIComponent(compareFor.majorSlug)}`
   : `/api/audit/doc/${agreementId}?system=uc`
 )
 
@@ -808,7 +826,8 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
           <EmptyState title={`${major?.label || 'This major'} graduation requirements not gathered yet`}
             description={`Coverage compares a college's courses against the campus's four-year ${major?.label || ''} template. Those templates are still being hand-gathered for this major, so there is nothing to measure against yet.`} />
         ) : (
-          <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+          <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId}
+            majorSlug={compareFor.majorSlug} />
         )
       )}
       {activeView === 'ledger' && (
@@ -1306,8 +1325,8 @@ export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = nul
 
 // One campus's whole four-year degree evaluated against the selected college.
 // Shown as a tab inside an agreement pair view.
-function DegreeCompletionView({ schoolId, collegeId }) {
-  const q = useDegreeEvaluation(schoolId, collegeId)
+function DegreeCompletionView({ schoolId, collegeId, majorSlug }) {
+  const q = useDegreeEvaluation(schoolId, collegeId, majorSlug)
   if (q.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (q.isError) {
     return <EmptyState title='No degree template yet'
