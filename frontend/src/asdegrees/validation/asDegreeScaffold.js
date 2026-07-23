@@ -33,6 +33,10 @@ export function buildScaffold({ collegeId, major, slot }) {
 
 const filled = (value) => typeof value === 'string' && value.trim().length > 0
 
+// as_degree unit-system vocab, mirrored from UNIT_SYSTEMS in
+// server/controllers/CanonicalData.js — keep in sync if that list changes.
+const UNIT_SYSTEMS = ['semester', 'quarter']
+
 /** Plain-language reasons the server would reject this row; [] when saveable. */
 export function saveBlockers(doc) {
   if (!doc || typeof doc !== 'object') return ['a document']
@@ -46,6 +50,7 @@ export function saveBlockers(doc) {
   if (!filled(doc.degree_title_seen)) blockers.push('a degree title as printed in the catalog')
   if (!/^https?:\/\//.test(String(doc.catalog_url || ''))) blockers.push('a catalog URL starting with http')
   if (!filled(doc.catalog_year)) blockers.push('a catalog year')
+  if (!UNIT_SYSTEMS.includes(doc.unit_system)) blockers.push('a unit system of semester or quarter')
   if (!Number.isFinite(doc.total_units) || doc.total_units <= 0) blockers.push('a positive total unit count')
   if (!groups.length) blockers.push('at least one requirement group')
   return blockers

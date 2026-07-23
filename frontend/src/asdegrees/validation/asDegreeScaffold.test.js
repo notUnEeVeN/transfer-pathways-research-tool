@@ -48,6 +48,16 @@ describe('saveBlockers', () => {
       .toEqual(['a catalog URL starting with http'])
   })
 
+  it('rejects an invalid unit system', () => {
+    expect(saveBlockers({ ...complete, unit_system: 'trimester' }))
+      .toEqual(['a unit system of semester or quarter'])
+  })
+
+  it('rejects a missing unit system', () => {
+    expect(saveBlockers({ ...complete, unit_system: undefined }))
+      .toEqual(['a unit system of semester or quarter'])
+  })
+
   it('drops the found-row fields when the status is not found', () => {
     expect(saveBlockers({ ...buildScaffold({ collegeId: 110, major: 'cs', slot: 'ast' }),
       status: 'none_found', requirement_groups: [] })).toEqual([])
