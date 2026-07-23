@@ -27,7 +27,7 @@ import {
   useSaveDegreeRequirement, useAsDegreeAvailability,
 } from '@frontend/query/hooks/useData'
 import { useAuth } from '@frontend/hooks/useAuth'
-import MajorPicker, { ALL_MAJORS } from './shared/majors/MajorPicker'
+import MajorPicker from './shared/majors/MajorPicker'
 import { useMajorSelection } from './shared/majors/MajorContext'
 
 /**
@@ -407,11 +407,9 @@ function CampusAgreements({
   onBack,
 }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
-  const { setSlug, majors } = useMajorSelection()
-  // Browsing a college defaults to showing every major's agreements; narrowing
-  // to one is a click away.
-  const [majorSlug, setMajorSlug] = useState(ALL_MAJORS)
-  const major = majors.find((m) => m.slug === majorSlug) || null
+  // One major at a time, shared with the rest of the console so the analyses
+  // follow whatever you were just browsing.
+  const { slug: majorSlug, setSlug, major } = useMajorSelection()
   const [selectedSection, setSelectedSection] = useState(null)
   // Every agreement this college has with the selected campus, before any
   // major filter. The section fallback below keys off THIS — a major with no
@@ -484,19 +482,13 @@ function CampusAgreements({
       ) : (
         <Stack gap='comfortable'>
           <ReceivingCampusPicker campuses={campuses} campusId={campus.school_id} onSelect={changeCampus} />
-          <MajorPicker value={majorSlug} allowAll className='w-60 max-w-full'
-            onChange={(next) => {
-              setMajorSlug(next)
-              // Picking a specific major here also sets the console-wide
-              // selection, so the analyses follow what you were just browsing.
-              if (next !== ALL_MAJORS) setSlug(next)
-            }} />
+          <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
           {batch.isLoading ? (
             <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
           ) : !agreements.length ? (
             <EmptyState title='No agreements'
               description={major
-                ? `This college has no ${major.label} agreements with the selected campus. Switch to All majors to see what it does offer.`
+                ? `This college has no ${major.label} agreements with the selected campus. Try another major or campus.`
                 : 'This college has no agreements for the selected campus.'} />
           ) : (
             <Stack gap='section'>
