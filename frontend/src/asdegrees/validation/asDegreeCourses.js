@@ -58,11 +58,27 @@ export function setGroupCourses(group, courseIds) {
       ...section,
       receivers: [{
         ...receiver,
-        options: ids.map((id) => ({ course_ids: [id] })),
-        options_conjunction: 'or',
+        // course_keys must mirror course_ids as 'cc:<n>' — the server rejects
+        // the document otherwise. The group's own choice rule
+        // (options_conjunction) is preserved, never inferred.
+        options: ids.map((id) => ({
+          course_ids: [id],
+          course_keys: [`cc:${id}`],
+          course_conjunction: 'and',
+        })),
       }],
     }],
   }
+}
+
+/** The catalog's own wording for a group, falling back to its slug id. */
+export function groupLabel(group) {
+  return group?.label_seen || group?.group_id || 'Requirement'
+}
+
+/** courses_by_id is keyed 'cc:<n>', not by the bare numeric id. */
+export function courseByIdKey(id) {
+  return `cc:${Number(id)}`
 }
 
 /**

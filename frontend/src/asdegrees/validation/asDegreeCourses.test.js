@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
-  groupCourseIds, courseLabel, setGroupCourses, isComplexGroup,
+  groupCourseIds, courseLabel, setGroupCourses, isComplexGroup, groupLabel, courseByIdKey,
 } from './asDegreeCourses'
 
 const flatGroup = {
@@ -36,6 +36,36 @@ describe('setGroupCourses', () => {
 
   it('can empty a group', () => {
     expect(groupCourseIds(setGroupCourses(flatGroup, []))).toEqual([])
+  })
+
+  // The server rejects a document whose course_keys do not mirror course_ids.
+  it('writes course_keys alongside every course id', () => {
+    const options = setGroupCourses(flatGroup, [7, 8]).sections[0].receivers[0].options
+    expect(options).toEqual([
+      { course_ids: [7], course_keys: ['cc:7'], course_conjunction: 'and' },
+      { course_ids: [8], course_keys: ['cc:8'], course_conjunction: 'and' },
+    ])
+  })
+
+  it("keeps the group's own choice rule rather than inferring one", () => {
+    const withRule = {
+      ...flatGroup,
+      sections: [{ receivers: [{ options_conjunction: 'and', options: [{ course_ids: [1] }] }] }],
+    }
+    expect(setGroupCourses(withRule, [1, 2]).sections[0].receivers[0].options_conjunction)
+      .toBe('and')
+  })
+})
+
+describe('display helpers', () => {
+  it('prefers the catalog wording over the slug id', () => {
+    expect(groupLabel({ group_id: '1_core_select_one', label_seen: 'Core Programming Course' }))
+      .toBe('Core Programming Course')
+    expect(groupLabel({ group_id: '1_core_select_one' })).toBe('1_core_select_one')
+  })
+
+  it('looks courses up by their prefixed key', () => {
+    expect(courseByIdKey(167678)).toBe('cc:167678')
   })
 })
 

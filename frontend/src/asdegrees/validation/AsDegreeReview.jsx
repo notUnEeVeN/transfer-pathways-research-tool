@@ -3,10 +3,11 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import {
   Alert, Button, Combobox, EmptyState, RemovableItem, Spinner, Stack, Tabs, Textarea,
 } from '../../components/ui'
-import { useAsDegreeDetail, useSaveAsDegree } from '../../shared/query/hooks/useData'
-import { useCcCourses } from '../../shared/query/hooks/useData'
+import { useAsDegreeDetail, useCcCourses, useSaveAsDegree } from '../../shared/query/hooks/useData'
 import apiClient from '../../shared/api/apiClient'
-import { courseLabel, groupCourseIds, isComplexGroup, setGroupCourses } from './asDegreeCourses'
+import {
+  courseByIdKey, courseLabel, groupCourseIds, groupLabel, isComplexGroup, setGroupCourses,
+} from './asDegreeCourses'
 
 /**
  * Check one college's AI-scraped AS degrees against its catalog.
@@ -19,14 +20,13 @@ import { courseLabel, groupCourseIds, isComplexGroup, setGroupCourses } from './
  * shape.
  */
 export default function AsDegreeReview({ collegeId, onClose = null }) {
-  const detail = useAsDegreeDetail(collegeId)
+  const detail = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
   const courses = useCcCourses(collegeId)
   const save = useSaveAsDegree()
 
-  const records = detail.data?.rows || []
+  const records = detail.data?.degrees || []
   const [recordId, setRecordId] = useState(null)
   const [draft, setDraft] = useState(null)
-  const [note, setNote] = useState('')
   const [error, setError] = useState(null)
 
   const active = records.find((r) => r.doc?._id === recordId) || records[0] || null
@@ -67,6 +67,9 @@ export default function AsDegreeReview({ collegeId, onClose = null }) {
   }
 
   if (detail.isLoading) return <div className='flex justify-center py-12'><Spinner /></div>
+  if (detail.isError && detail.error?.response?.status !== 404) {
+    return <Alert type='error'>Could not load this college's records.</Alert>
+  }
   if (!records.length) {
     return <EmptyState card title='No AS-degree records'
       description='Nothing has been scraped for this college yet.' />
@@ -143,7 +146,7 @@ function GroupRow({ group, coursesById, courseOptions, onChange }) {
   return (
     <div className='surface-card p-4'>
       <div className='flex flex-wrap items-baseline gap-2 mb-3'>
-        <p className='text-body-strong'>{group.group_id}</p>
+        <p className='text-body-strong'>{groupLabel(group)}</p>
         {group.ge_area && <span className='text-caption text-ink-subtle'>{group.ge_area}</span>}
         {group.source === 'curated' && <span className='text-caption text-primary'>edited</span>}
       </div>
@@ -152,7 +155,7 @@ function GroupRow({ group, coursesById, courseOptions, onChange }) {
         <>
           <ul className='flex flex-col gap-1'>
             {ids.map((id) => (
-              <li key={id} className='text-body'>{courseLabel(coursesById[id]) || `Course ${id}`}</li>
+              <li key={id} className='text-body'>{courseLabel(coursesById[courseByIdKey(id)]) || `Course ${id}`}</li>
             ))}
           </ul>
           <p className='mt-2 text-caption text-ink-subtle'>
@@ -168,7 +171,7 @@ function GroupRow({ group, coursesById, courseOptions, onChange }) {
               <div className='flex flex-col gap-1.5'>
                 {ids.map((id) => (
                   <RemovableItem key={id}
-                    label={courseLabel(coursesById[id]) || `Course ${id}`}
+                    label={courseLabel(coursesById[courseByIdKey(id)]) || `Course ${id}`}
                     removeLabel='Remove course'
                     onRemove={() => onChange(ids.filter((x) => x !== id))} />
                 ))}
