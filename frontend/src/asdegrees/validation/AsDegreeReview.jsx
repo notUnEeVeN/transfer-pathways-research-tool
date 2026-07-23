@@ -1,41 +1,69 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, EmptyState, Spinner, Stack, Tabs, Textarea } from '../../components/ui'
-import { useAsDegreeDetail, useSaveAsDegree } from '../../shared/query/hooks/useData'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  Alert, Button, Combobox, EmptyState, Spinner, Stack, Tabs, Textarea,
+} from '../../components/ui'
+import { useAsDegreeDetail, useCcCourses, useSaveAsDegree } from '../../shared/query/hooks/useData'
 import apiClient from '../../shared/api/apiClient'
+import {
+  courseByIdKey, courseLabel, groupCourseIds, groupLabel, isComplexGroup, setGroupCourses,
+} from './asDegreeCourses'
 
 /**
- * Record a verdict on one college's AI-scraped AS degrees, and change them by
- * describing the change.
+ * Correct and sign off one college's AI-scraped AS degrees.
  *
- * The degree itself is already rendered above this panel, in catalog form, by
- * DegreePanel — that is what the researcher reads and judges against the real
- * catalog. This panel deliberately does not repeat it. It carries only the two
- * things that view cannot: a way to rewrite the record, and a verdict.
+ * The degree is already rendered above this panel, in catalog form, by
+ * DegreePanel — that is what the researcher reads against the real catalog, so
+ * this panel never repeats it. It carries the three things that view cannot:
+ * adding or removing a course, describing a change too involved to click, and
+ * a verdict with a note.
  */
 export default function AsDegreeReview({ collegeId }) {
   const detail = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
+  const courses = useCcCourses(collegeId)
   const save = useSaveAsDegree()
 
   const records = detail.data?.degrees || []
   const [recordId, setRecordId] = useState(null)
   const [note, setNote] = useState('')
+  const [draft, setDraft] = useState(null)
   const [error, setError] = useState(null)
   const [saved, setSaved] = useState(null)
 
   const active = records.find((r) => r.doc?._id === recordId) || records[0] || null
-  const doc = active?.doc || null
+  const stored = active?.doc || null
+  const doc = draft && draft._id === stored?._id ? draft : stored
 
   useEffect(() => {
-    if (!doc) return
-    setNote(doc.verification?.note || '')
+    if (!stored) return
+    setNote(stored.verification?.note || '')
+    setDraft(null)
     setSaved(null)
-  }, [doc?._id])
+  }, [stored?._id])
 
+  const courseOptions = (courses.data?.rows || []).map((c) => ({
+    value: String(c.course_id),
+    label: courseLabel(c),
+  }))
+
+  // Only groups a flat list can represent honestly. A group encoding a real
+  // choice rule is left to the assistant rather than shown here half-editable.
+  const quickFixGroups = (doc?.requirement_groups || [])
+    .filter((g) => !isComplexGroup(g) && groupCourseIds(g).length)
+
+  const editGroup = (groupId, courseIds) => setDraft({
+    ...doc,
+    requirement_groups: doc.requirement_groups.map((g) => (
+      g.group_id === groupId ? setGroupCourses(g, courseIds) : g
+    )),
+  })
+
+  // verified === null saves course edits without touching the verdict.
   const persist = async (verified) => {
     setError(null)
     setSaved(null)
     try {
-      await save.mutateAsync({
+      await save.mutateAsync(verified === null ? doc : {
         ...doc,
         verification: {
           ...(doc.verification || {}),
@@ -45,7 +73,10 @@ export default function AsDegreeReview({ collegeId }) {
           note: note.trim() || null,
         },
       })
-      setSaved(verified ? 'Marked verified.' : 'Flagged as needing work.')
+      setDraft(null)
+      setSaved(verified === null
+        ? 'Course changes saved.'
+        : verified ? 'Marked verified.' : 'Flagged as needing work.')
     } catch (e) {
       setError(e?.response?.data?.error || 'Could not save this record.')
     }
@@ -77,7 +108,24 @@ export default function AsDegreeReview({ collegeId }) {
         </span>
       </div>
 
-      <AssistBox recordId={doc._id} onApplied={() => detail.refetch()} />
+      {quickFixGroups.length > 0 && (
+        <div className='surface-card p-4'>
+          <p className='text-body-strong'>Quick fixes</p>
+          <p className='text-caption text-ink-subtle mt-0.5 mb-3'>
+            Add or remove a course. Anything more involved — splitting a group,
+            changing how many are required — goes to the assistant below.
+          </p>
+          <Stack gap='comfortable'>
+            {quickFixGroups.map((group) => (
+              <QuickFixGroup key={group.group_id} group={group}
+                coursesById={active?.courses_by_id || {}} courseOptions={courseOptions}
+                onChange={(ids) => editGroup(group.group_id, ids)} />
+            ))}
+          </Stack>
+        </div>
+      )}
+
+      <AssistBox recordId={doc._id} onApplied={() => { setDraft(null); detail.refetch() }} />
 
       <div>
         <span className='field-label'>Verification note</span>
@@ -89,6 +137,11 @@ export default function AsDegreeReview({ collegeId }) {
       {saved && <Alert type='success'>{saved}</Alert>}
 
       <div className='flex flex-wrap items-center gap-2'>
+        {draft && (
+          <Button variant='secondary' onClick={() => persist(null)} disabled={save.isPending}>
+            Save course changes
+          </Button>
+        )}
         <Button onClick={() => persist(true)} disabled={save.isPending}>
           {save.isPending ? 'Saving…' : 'Mark verified'}
         </Button>
@@ -179,6 +232,33 @@ function AssistBox({ recordId, onApplied }) {
           {busy ? 'Thinking…' : 'Propose a change'}
         </Button>
       )}
+    </div>
+  )
+}
+
+/** One group's courses, as removable rows plus a picker. */
+function QuickFixGroup({ group, coursesById, courseOptions, onChange }) {
+  const ids = groupCourseIds(group)
+  return (
+    <div>
+      <p className='text-caption text-ink-muted mb-1.5'>{groupLabel(group)}</p>
+      <div className='flex flex-col gap-1'>
+        {ids.map((id) => (
+          <div key={id} className='flex items-center gap-2'>
+            <span className='text-body flex-1 min-w-0 truncate'>
+              {courseLabel(coursesById[courseByIdKey(id)]) || `Course ${id}`}
+            </span>
+            <button type='button' aria-label={`Remove course ${id}`}
+              onClick={() => onChange(ids.filter((x) => x !== id))}
+              className='shrink-0 rounded-pill p-1 text-ink-subtle hover:bg-primary-soft hover:text-ink'>
+              <XMarkIcon className='w-4 h-4' aria-hidden='true' />
+            </button>
+          </div>
+        ))}
+      </div>
+      <Combobox value='' options={courseOptions} placeholder='Add a course…'
+        className='mt-1.5'
+        onChange={(value) => value && onChange([...ids, Number(value)])} />
     </div>
   )
 }
