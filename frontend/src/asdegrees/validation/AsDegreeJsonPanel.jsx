@@ -12,7 +12,9 @@ import { buildAsDegreeContext } from './asDegreeContext'
  *
  * Nothing is written to the database until Save — this only moves the draft.
  */
-export default function AsDegreeJsonPanel({ doc, courses = [], onChange }) {
+export default function AsDegreeJsonPanel({
+  doc, courses = [], onChange, mode = 'edit', collegeName = null,
+}) {
   const [text, setText] = useState(() => JSON.stringify(doc, null, 2))
   const [error, setError] = useState(null)
   const [copied, setCopied] = useState(false)
@@ -50,7 +52,7 @@ export default function AsDegreeJsonPanel({ doc, courses = [], onChange }) {
   }
 
   const copyContext = async () => {
-    await navigator.clipboard.writeText(buildAsDegreeContext({ doc, courses }))
+    await navigator.clipboard.writeText(buildAsDegreeContext({ doc, courses, mode, collegeName }))
     setCopied(true)
     setTimeout(() => setCopied(false), 2500)
   }
