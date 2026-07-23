@@ -340,10 +340,10 @@ export default function CoverageHeatmap({ presentation = false }) {
   // ASSIST-only majors have no hand-curated minimums and, until their degree
   // templates are authored, no graduation plan to measure against.
   const caps = major?.capabilities || {}
-  const reqModes = REQ_MODES.filter((m) => (
-    (m.value !== 'paper' || caps.transferMinimums !== false)
-    && (m.value !== 'degree' || caps.degreeTemplates !== false)
-  ))
+  // Hand-curated minimums will never exist for ASSIST-only majors, so that mode
+  // is dropped. The graduation-plan mode stays: its templates are pending, and
+  // it renders empty until they are authored.
+  const reqModes = REQ_MODES.filter((m) => m.value !== 'paper' || caps.transferMinimums !== false)
   const activeReqMode = reqModes.some((m) => m.value === reqMode) ? reqMode : 'assist'
   const coverage = useCoverage(
     { majorSlug, groupBy: rowMode.value, requirements: activeReqMode },

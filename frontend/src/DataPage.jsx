@@ -751,8 +751,7 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
   if (docQ.isError) return <Alert type='error'>Failed to load the agreement.</Alert>
   // Switching to an ASSIST-only major removes tabs; fall back rather than
   // render an empty card.
-  const activeView = (view === 'comparison' && caps.transferMinimums === false)
-    || (view === 'degree' && caps.degreeTemplates === false) ? 'ledger' : view
+  const activeView = view === 'comparison' && caps.transferMinimums === false ? 'ledger' : view
   const doc = docQ.data?.doc
   if (!doc) return null
 
@@ -787,13 +786,18 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
           // ASSIST-only majors have no hand-curated minimums (permanent) and
           // no graduation templates yet (until W1 Phase 4).
           ...(compareFor && caps.transferMinimums !== false ? [{ value: 'comparison', label: 'Curated Transfer Minimums' }] : []),
-          ...(compareFor && caps.degreeTemplates !== false ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
+          ...(compareFor ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
           { value: 'stored', label: 'DB document' },
           { value: 'raw',    label: 'Raw ASSIST API' },
         ]} />
       {activeView === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
       {activeView === 'degree' && compareFor && (
-        <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+        caps.degreeTemplates === false ? (
+          <EmptyState title={`${major?.label || 'This major'} graduation requirements not gathered yet`}
+            description={`Coverage compares a college's courses against the campus's four-year ${major?.label || ''} template. Those templates are still being hand-gathered for this major, so there is nothing to measure against yet.`} />
+        ) : (
+          <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+        )
       )}
       {activeView === 'ledger' && (
         <div className='uui-scope'>
