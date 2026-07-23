@@ -8,19 +8,23 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 // list) so the Community Colleges hub's rail has real options to pick from —
 // this doesn't change the AgreementsBrowser setup; the focused detail test
 // below supplies one covered college.
+// Wrapped in vi.fn() (rather than a static factory return) so the
+// slots-always-render tests below can swap in a different `degrees` list per
+// case, same "mock<Name>" hoisting convention MajorPicker.test.jsx uses.
+const mockAsDegreeDetail = vi.fn(() => ({
+  data: {
+    degrees: [
+      { degree_type: 'ast', courses_by_id: {}, doc: { _id: 'd-ast', degree_type: 'ast', requirement_groups: [] } },
+      { degree_type: 'local_as', courses_by_id: {}, doc: { _id: 'd-local', degree_type: 'local_as', requirement_groups: [] } },
+    ],
+  },
+  isLoading: false,
+  isError: false,
+}))
 vi.mock('@frontend/query/hooks/useData', () => ({
   // The college pane mounts AsDegreeReview, which reads these two. Two records
   // so the section's degree-type tabs have something to switch between.
-  useAsDegreeDetail: () => ({
-    data: {
-      degrees: [
-        { degree_type: 'ast', courses_by_id: {}, doc: { _id: 'd-ast', degree_type: 'ast', requirement_groups: [] } },
-        { degree_type: 'local_cs_as', courses_by_id: {}, doc: { _id: 'd-local', degree_type: 'local_cs_as', requirement_groups: [] } },
-      ],
-    },
-    isLoading: false,
-    isError: false,
-  }),
+  useAsDegreeDetail: (...args) => mockAsDegreeDetail(...args),
   useSaveAsDegree: () => ({ mutateAsync: async () => ({}), isPending: false }),
   useDataSummary: () => ({
     data: {
@@ -111,32 +115,32 @@ vi.mock('@frontend/query/hooks/useData', () => ({
       counts: {
         total_colleges: 115,
         ast: { available: 69, confirmed_none: 43, data_gap: 3 },
-        local_cs_as: { available: 10 },
-        local_computing: { available: 20, duplicate_candidate: 2 },
+        local_as: { available: 10 },
+        local_other: { available: 20, duplicate_candidate: 2 },
       },
       rows: [
         {
           college_id: 'cc:4', community_college_id: 4, college_name: 'College of Marin',
           types: {
             ast: { status: 'confirmed_none', record_id: null },
-            local_cs_as: { status: 'available', record_id: 'as_degree:4:local_cs_as', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
-            local_computing: { status: 'duplicate_candidate', record_id: 'as_degree:4:local_computing', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
+            local_as: { status: 'available', record_id: 'as_degree:4:local_as', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
+            local_other: { status: 'duplicate_candidate', record_id: 'as_degree:4:local_other', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
           },
         },
         {
           college_id: 'cc:101', community_college_id: 101, college_name: 'Diablo Valley College',
           types: {
             ast: { status: 'available', record_id: 'as_degree:101:ast', degree_title_seen: 'Computer Science A.S.-T', catalog_year: '2025-2026' },
-            local_cs_as: { status: 'available', record_id: 'as_degree:101:local_cs_as', degree_title_seen: 'Computer Science A.S.', catalog_year: '2025-2026' },
-            local_computing: { status: 'data_gap', record_id: null },
+            local_as: { status: 'available', record_id: 'as_degree:101:local_as', degree_title_seen: 'Computer Science A.S.', catalog_year: '2025-2026' },
+            local_other: { status: 'data_gap', record_id: null },
           },
         },
         {
           college_id: 'cc:202', community_college_id: 202, college_name: 'Santa Monica College',
           types: {
             ast: { status: 'confirmed_none', record_id: null },
-            local_cs_as: { status: 'confirmed_none', record_id: null },
-            local_computing: { status: 'confirmed_none', record_id: null },
+            local_as: { status: 'confirmed_none', record_id: null },
+            local_other: { status: 'confirmed_none', record_id: null },
           },
         },
       ],
@@ -189,7 +193,44 @@ vi.mock('./asdegrees/AsDegreeSchoolView', () => ({
 }))
 vi.mock('./prereqs/ConceptGraphView', () => ({ default: () => null }))
 
+// The associate-degree section's `major` prop comes from useMajorChoice,
+// which only differs from the CS fallback inside a MajorProvider. Mocking the
+// underlying useMajors (same pattern as MajorPicker.test.jsx) lets
+// renderCollegePane hand the pane a non-CS major without a real /api/majors
+// round trip; every other test in this file never wraps DataPage in a
+// provider, so it keeps seeing the CS_FALLBACK default untouched.
+const mockMajors = vi.fn()
+vi.mock('./shared/majors/useMajors', async (importOriginal) => ({
+  ...(await importOriginal()),
+  useMajors: (...a) => mockMajors(...a),
+}))
+
 import DataPage, { AgreementsBrowser } from './DataPage'
+import { MajorProvider } from './shared/majors/MajorContext'
+import { CS_FALLBACK } from './shared/majors/useMajors'
+
+// Renders the Community Colleges pane, drills into one college, and opens its
+// Associate degrees tab — the setup every degree-section test below shares.
+// `degrees` overrides the AsDegreeReview detail fixture (e.g. to an empty
+// list); `major` overrides the chosen major (default: the CS fallback), each
+// wrapped as the sole onboarded major so useMajorChoice resolves to it without
+// a picker interaction.
+function renderCollegePane({ degrees = null, major = null, collegeName = 'Diablo Valley College' } = {}) {
+  if (degrees) {
+    mockAsDegreeDetail.mockReturnValue({ data: { degrees }, isLoading: false, isError: false })
+  }
+  const chosen = major || CS_FALLBACK[0]
+  mockMajors.mockReturnValue({
+    majors: [chosen],
+    defaultSlug: chosen.slug,
+    bySlug: new Map([[chosen.slug, chosen]]),
+    isLoading: false,
+  })
+  render(<MajorProvider><DataPage /></MajorProvider>)
+  fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+  fireEvent.click(screen.getByText(collegeName).closest('[class*="cursor-pointer"]'))
+  fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
+}
 
 describe('AgreementsBrowser', () => {
   it('puts receiving-campus bubbles inside a college articulation tab and preserves the college on switch', async () => {
@@ -285,7 +326,7 @@ describe('DataPage SubNav route chip', () => {
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
     expect(screen.getByText('Associate degree detail ast')).toBeInTheDocument()
     expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · Associate in Science for Transfer · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · Computer Science A.S.-T · 2025-2026')).toBeInTheDocument()
     expect(screen.queryByText(/complete CS A.S.-T requirement record/i)).not.toBeInTheDocument()
     expect(screen.queryByText('Receiving campus')).not.toBeInTheDocument()
     expect(screen.queryByText('School pair')).not.toBeInTheDocument()
@@ -409,7 +450,9 @@ describe('Community Colleges degree integration', () => {
 
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
     expect(screen.getByText('Santa Monica College')).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · No associate degree found')).toBeInTheDocument()
+    // No record for any slot at this college — the header falls back to the
+    // slot's own label rather than a "no degree" message; the tabs stay put.
+    expect(screen.getByText('Computer Science · A.S.-T')).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Associate degrees' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.queryByText('No agreements')).not.toBeInTheDocument()
     await waitFor(() => expect(screen.getByRole('button', {
@@ -424,14 +467,22 @@ describe('Community Colleges degree integration', () => {
     })).toBeInTheDocument()
   })
 
-  it('opens a local CS A.S. when a college has no A.S.-T and excludes duplicate computing records', () => {
+  it('shows the local A.S. record for a college with no A.S.-T, without excluding any slot', () => {
     render(<DataPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
     fireEvent.click(screen.getByText('College of Marin').closest('[class*="cursor-pointer"]'))
 
+    // Three slots always show, regardless of that college's actual coverage —
+    // College of Marin has no A.S.-T (confirmed_none) and a duplicate-flagged
+    // "Other" record, and neither absence removes a tab.
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · Associate in Science · 2024-2025')).toBeInTheDocument()
-    expect(screen.getByText('Associate degree detail local_cs_as')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'A.S.-T' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Local A.S.' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Other' })).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · A.S.-T')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Local A.S.' }))
+    expect(screen.getByText('Computer Science · A.S. in Computer Science · 2024-2025')).toBeInTheDocument()
   })
 
   it('updates the degree header when switching between transfer and local A.S. records', () => {
@@ -440,8 +491,22 @@ describe('Community Colleges degree integration', () => {
     fireEvent.click(screen.getByText('Diablo Valley College').closest('[class*="cursor-pointer"]'))
     fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
 
-    expect(screen.getByText('Computer Science · Associate in Science for Transfer · 2025-2026')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('tab', { name: 'Local CS A.S.' }))
-    expect(screen.getByText('Computer Science · Associate in Science · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science · Computer Science A.S.-T · 2025-2026')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('tab', { name: 'Local A.S.' }))
+    expect(screen.getByText('Computer Science · Computer Science A.S. · 2025-2026')).toBeInTheDocument()
+  })
+
+  it('shows all three slots even when the college has no records', async () => {
+    renderCollegePane({ degrees: [] })
+    expect(await screen.findByRole('tab', { name: 'A.S.-T' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Local A.S.' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Other' })).toBeInTheDocument()
+  })
+
+  it('shows slots for a major whose asDegrees capability is false', async () => {
+    renderCollegePane({ degrees: [], major: { slug: 'bio', label: 'Biology',
+      capabilities: { asDegrees: false } } })
+    expect(await screen.findByRole('tab', { name: 'A.S.-T' })).toBeInTheDocument()
+    expect(screen.queryByText(/No Biology associate degrees yet/)).toBeNull()
   })
 })

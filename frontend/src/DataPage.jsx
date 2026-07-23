@@ -10,6 +10,7 @@ import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
 import AsDegreeReview from './asdegrees/validation/AsDegreeReview'
+import { AS_DEGREE_SLOTS, slotLabel } from './asdegrees/asDegreeSlots'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
 import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -322,39 +323,22 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
   )
 }
 
-const CS_DEGREE_PROGRAMS = [
-  { type: 'ast', award: 'Associate in Science for Transfer', tab: 'CS A.S.-T' },
-  { type: 'local_cs_as', award: 'Associate in Science', tab: 'Local CS A.S.' },
-  { type: 'local_computing', award: null, tab: 'Other computing' },
-]
-
 function AssociateDegreeSection({ collegeId, availability, major = null }) {
-  // The associate-degree layer only exists for majors whose AS data has been
-  // gathered — CS today. Say so rather than showing another major's degrees.
-  // The gate covers the degrees themselves, never the section: hiding the
-  // whole thing also hid the verification tool.
-  const gatedOut = !!major && major.capabilities?.asDegrees === false
-  const availablePrograms = CS_DEGREE_PROGRAMS.filter(({ type }) => (
-    availability?.types?.[type]?.status === 'available'
-      && availability.types[type].record_id
-  ))
-  const degreeTypes = availablePrograms.map(({ type }) => type)
+  // Every major carries all three slots at every college. An empty slot is not
+  // an absence to hide — it is where a record gets created, so the tabs are a
+  // constant and the capability flag no longer gates this section. The
+  // analysis layer keeps its own guard (server/controllers/Analysis.js).
+  const majorSlug = major?.slug || 'cs'
   const [selection, setSelection] = useState(null)
-  const selectedDegreeType = selection?.collegeId === collegeId && degreeTypes.includes(selection.degreeType)
-    ? selection.degreeType
-    : degreeTypes[0] || null
-  const selectedProgram = availablePrograms.find(({ type }) => type === selectedDegreeType) || null
-  const selectedRecord = selectedDegreeType ? availability?.types?.[selectedDegreeType] : null
-  const hasDataGap = CS_DEGREE_PROGRAMS.some(({ type }) => availability?.types?.[type]?.status === 'data_gap')
-  const programSummary = selectedProgram
-    ? selectedProgram.award || selectedRecord?.degree_title_seen || 'Other computing associate degree'
-    : hasDataGap
-      ? 'Degree data gap'
-      : 'No associate degree found'
-  const programLine = selectedDegreeType === 'local_computing'
-    ? [programSummary, selectedRecord?.catalog_year].filter(Boolean).join(' · ')
-    : ['Computer Science', programSummary, selectedRecord?.catalog_year]
-    .filter(Boolean).join(' · ')
+  const selectedSlot = selection?.collegeId === collegeId
+    && AS_DEGREE_SLOTS.includes(selection.slot)
+    ? selection.slot
+    : AS_DEGREE_SLOTS[0]
+  const record = availability?.types?.[selectedSlot] || null
+  const subject = major?.label || 'Computer Science'
+  const programLine = [subject, record?.degree_title_seen || slotLabel(selectedSlot),
+    record?.catalog_year].filter(Boolean).join(' · ')
+
   return (
     <section aria-label='Associate degrees'>
       <div className='surface-card px-6 py-5'>
@@ -362,30 +346,18 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
         <h2 className='mt-1.5 heading-card'>
           {availability?.college_name || 'Community college'}
         </h2>
-        <p className='mt-1 text-body text-ink-muted'>
-          {gatedOut ? `No ${major.label} associate degrees yet` : programLine}
-        </p>
+        <p className='mt-1 text-body text-ink-muted'>{programLine}</p>
       </div>
-      {gatedOut ? (
-        <div className='mt-4'>
-          <EmptyState title={`No ${major.label} associate degrees yet`}
-            description={`Associate-degree records have only been gathered for Computer Science. ${major.label} transfer articulation is available under Transfer articulation.`} />
-        </div>
-      ) : (
-        <>
-          {degreeTypes.length > 1 && (
-            <div className='mt-4 flex justify-end'>
-              <Tabs value={selectedDegreeType}
-                onChange={(degreeType) => setSelection({ collegeId, degreeType })}
-                options={availablePrograms.map(({ type, tab }) => ({ value: type, label: tab }))} />
-            </div>
-          )}
-          {/* The scraped record, read against the catalog and corrected in place. */}
-          <div className='mt-4'>
-            <AsDegreeReview collegeId={collegeId} degreeType={selectedDegreeType} />
-          </div>
-        </>
-      )}
+      <div className='mt-4 flex justify-end'>
+        <Tabs value={selectedSlot}
+          onChange={(slot) => setSelection({ collegeId, slot })}
+          options={AS_DEGREE_SLOTS.map((slot) => ({ value: slot, label: slotLabel(slot) }))} />
+      </div>
+      {/* The record, read against the catalog and corrected in place — or, for
+          an empty slot, created there. */}
+      <div className='mt-4'>
+        <AsDegreeReview collegeId={collegeId} major={majorSlug} slot={selectedSlot} />
+      </div>
     </section>
   )
 }
