@@ -81,7 +81,8 @@ async function seedTemplate({
 
 async function seedAsDegree({
   collegeId,
-  degreeType = 'local_cs_as',
+  degreeType = 'local_as',
+  majorSlug = 'cs',
   totalUnits = 60,
   unitSystem = 'semester',
   groups,
@@ -90,6 +91,7 @@ async function seedAsDegree({
     _id: `as_degree:${collegeId}:${degreeType}`,
     kind: 'as_degree',
     degree_type: degreeType,
+    major_slug: majorSlug,
     status: 'found',
     community_college_id: collegeId,
     college_id: `cc:${collegeId}`,
@@ -126,7 +128,7 @@ async function seedAgreement({ schoolId, collegeId, major = 'Computer Science B.
   });
 }
 
-async function cellFor({ collegeId, schoolId, degreeType = 'local_cs_as' }) {
+async function cellFor({ collegeId, schoolId, degreeType = 'local_as' }) {
   const rows = await transferCreditRateData(db, null, { degreeType });
   return rows.find((row) => row.community_college_id === collegeId && row.school_id === schoolId);
 }
@@ -329,7 +331,7 @@ describe('transferCreditRateData v3', () => {
     });
 
     const rows = await transferCreditRateData(db, null, {
-      degreeType: 'local_cs_as', majorSlug: 'cs',
+      degreeType: 'local_as', majorSlug: 'cs',
     });
     const scoped = rows.filter((row) => row.community_college_id === 79 && row.school_id === 79);
     expect(scoped).toHaveLength(1);

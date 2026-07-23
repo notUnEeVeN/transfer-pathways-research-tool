@@ -56,7 +56,7 @@ describe('CS A.S.-T export', () => {
     };
     await db.collection('curated_requirements').insertMany([
       { ...shared, _id: 'as_degree:10:ast', degree_type: 'ast', degree_title_seen: 'Computer Science A.S.-T' },
-      { ...shared, _id: 'as_degree:10:local', degree_type: 'local_cs_as', degree_title_seen: 'Computer Science A.S.' },
+      { ...shared, _id: 'as_degree:10:local', degree_type: 'local_as', degree_title_seen: 'Computer Science A.S.' },
     ]);
 
     const response = await run(exportCsAstDegrees);
@@ -74,10 +74,10 @@ describe('CS A.S.-T export', () => {
     const response = await run(exportLocalCsAsDegrees);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.params.degree_type).toBe('local_cs_as');
+    expect(response.body.params.degree_type).toBe('local_as');
     expect(response.body.n).toBe(1);
     expect(response.body.rows[0]).toMatchObject({
-      _id: 'as_degree:10:local', degree_type: 'local_cs_as', college_name: 'Example College',
+      _id: 'as_degree:10:local', degree_type: 'local_as', college_name: 'Example College',
     });
     expect(response.body.rows[0].courses_by_id['cc:100']).toMatchObject({ code: 'CS 1', units: 4 });
   });

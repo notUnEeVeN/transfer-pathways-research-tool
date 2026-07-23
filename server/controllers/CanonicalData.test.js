@@ -734,4 +734,24 @@ describe('asDegrees endpoint', () => {
     expect(bad.statusCode).toBe(400);
     expect(bad.body.error).toMatch(/degree_type/);
   });
+
+  it('400s on a major that is not configured', async () => {
+    const res = await run(asDegrees, request({ query: { major: 'astronomy' } }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/unknown major/);
+  });
+
+  it('passes the major through to the detail lookup', async () => {
+    await db.collection('assist_institutions').insertOne(
+      { _id: 'cc:110', source_id: 110, kind: 'community_college', name: 'Allan Hancock College' });
+    await db.collection('curated_requirements').insertOne(
+      { _id: 'as_degree:110:cs:ast', kind: 'as_degree', college_id: 'cc:110', community_college_id: 110,
+        degree_type: 'ast', major_slug: 'cs', status: 'found', requirement_groups: [],
+        verification: { verified: false } });
+
+    const res = await run(asDegrees, request({
+      query: { college_id: 'cc:110', major: 'cs' },
+    }));
+    expect(res.statusCode).toBe(200);
+  });
 });

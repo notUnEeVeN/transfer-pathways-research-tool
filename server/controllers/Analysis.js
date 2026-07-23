@@ -186,9 +186,9 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
       major: major.slug,
     });
   }
-  const degreeType = ['ast', 'local_cs_as'].includes(req.query.degree_type)
+  const degreeType = ['ast', 'local_as'].includes(req.query.degree_type)
     ? req.query.degree_type
-    : 'local_cs_as';
+    : 'local_as';
   const db = req.app.locals.db;
   const rows = await transferCreditRateData(db, null, {
     degreeType,
@@ -361,16 +361,16 @@ exports.exportUniversityCourses = makeEndpoint('university-courses', universityC
 // the transfer-credit visualizations, with full nested requirements + courses.
 exports.exportCsAstDegrees = makeEndpoint(
   'cs-ast-degrees',
-  (db) => asDegreesExportData(db, { degreeType: 'ast' }),
+  (db) => asDegreesExportData(db, { degreeType: 'ast', major: 'cs' }),
   { responseParams: { degree_type: 'ast' } },
 );
 // The college's own CS A.S. is a separate construct from the standardized
 // A.S.-T. Keep it in a sibling fixed-cohort export so analyses can compare the
-// two without mixing in CIS/IT/networking degrees from local_computing.
+// two without mixing in other locally-titled CS-adjacent degrees.
 exports.exportLocalCsAsDegrees = makeEndpoint(
   'local-cs-as-degrees',
-  (db) => asDegreesExportData(db, { degreeType: 'local_cs_as' }),
-  { responseParams: { degree_type: 'local_cs_as' } },
+  (db) => asDegreesExportData(db, { degreeType: 'local_as', major: 'cs' }),
+  { responseParams: { degree_type: 'local_as' } },
 );
 
 exports._toCsv = toCsv;

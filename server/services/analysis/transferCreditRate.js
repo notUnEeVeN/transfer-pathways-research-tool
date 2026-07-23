@@ -36,7 +36,7 @@ const GE_UC_VERIFIED = new Set(['calgetc', 'igetc']);
 const GE_DEFAULT_SEMESTER_UNITS = { calgetc: 34, igetc: 37, csu_ge: 39 };
 const GE_STATUTORY_MINIMUM_SEMESTER_UNITS = 18;
 const ASSUMED_UNITS_PER_COURSE = 4;
-const DEGREE_TYPES = ['local_cs_as', 'ast'];
+const DEGREE_TYPES = ['local_as', 'ast'];
 const EPSILON = 1e-7;
 const { defaultMajor, getMajor, programPairClause, programPairs } = require('../../config/majors');
 const { computeUnitBudget } = require('../degreeSlots');
@@ -548,14 +548,17 @@ function nullMetrics(row, status, warning, namedUnits = null) {
 }
 
 async function transferCreditRateData(db, _auditDb, {
-  degreeType = 'local_cs_as', majorSlug = null, majorPrograms = null,
+  degreeType = 'local_as', majorSlug = null, majorPrograms = null,
 } = {}) {
-  const type = DEGREE_TYPES.includes(degreeType) ? degreeType : 'local_cs_as';
+  const type = DEGREE_TYPES.includes(degreeType) ? degreeType : 'local_as';
   const slug = String(majorSlug || '').trim();
   const configuredMajor = slug ? getMajor(slug) : null;
   const exactPrograms = majorPrograms || configuredMajor?.programs || null;
   const legacySlug = defaultMajor().slug;
-  const degreeQuery = { kind: 'as_degree', degree_type: type, status: 'found' };
+  const degreeQuery = {
+    kind: 'as_degree', degree_type: type, status: 'found',
+    major_slug: majorSlug || 'cs',
+  };
   const templateQuery = { kind: 'degree' };
   if (slug) {
     const dimensional = [{ major_slug: slug }];

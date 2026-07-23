@@ -685,15 +685,22 @@ exports.asDegrees = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const collegeId = String(req.query.college_id || '').trim();
   const degreeType = String(req.query.degree_type || '').trim() || null;
+  const major = String(req.query.major || '').trim() || 'cs';
+  if (!getMajor(major)) {
+    return res.status(400).json({
+      error: `unknown major: ${major}`,
+      known: listMajors().map((m) => m.slug),
+    });
+  }
   if (degreeType && !AS_DEGREE_SLOTS.includes(degreeType)) {
     return res.status(400).json({ error: `degree_type must be one of ${AS_DEGREE_SLOTS.join(', ')}` });
   }
   if (collegeId) {
-    const detail = await asDegreeView.asDegreeDetail(db, collegeId);
+    const detail = await asDegreeView.asDegreeDetail(db, collegeId, { major });
     if (!detail) return res.status(404).json({ error: 'no as_degree row for that college' });
     return res.json(detail);
   }
-  res.json(await asDegreeView.asDegreeOverview(db, { degreeType }));
+  res.json(await asDegreeView.asDegreeOverview(db, { degreeType, major }));
 });
 
 // One row per college with explicit available / confirmed-none / data-gap
