@@ -6,8 +6,9 @@ import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
   paperRedCellColor,
 } from './maHeatmapColors'
+import MajorPicker from '../shared/majors/MajorPicker'
+import { useMajorSelection } from '../shared/majors/MajorContext'
 
-const MAJOR_FILTER = 'computer science'
 const ROW_MODES = [
   { value: 'college', label: 'College', noun: 'colleges', header: 'Community college' },
   { value: 'district', label: 'District', noun: 'districts', header: 'Community college district' },
@@ -335,8 +336,9 @@ export default function CoverageHeatmap({ presentation = false }) {
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
+  const { slug: majorSlug, setSlug } = useMajorSelection()
   const coverage = useCoverage(
-    { majorContains: MAJOR_FILTER, groupBy: rowMode.value, requirements: reqMode },
+    { majorSlug, groupBy: rowMode.value, requirements: reqMode },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
@@ -390,6 +392,7 @@ export default function CoverageHeatmap({ presentation = false }) {
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+        <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
         <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>

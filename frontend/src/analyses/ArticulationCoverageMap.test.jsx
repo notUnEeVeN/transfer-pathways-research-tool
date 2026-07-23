@@ -200,7 +200,7 @@ describe('articulation coverage map', () => {
     expect(refetchAssist).toHaveBeenCalledOnce()
     expect(useCoverage).toHaveBeenCalledWith(
       {
-        majorContains: 'computer science',
+        majorSlug: 'cs',
         groupBy: 'district',
         requirements: 'paper',
         pin: 'paper',
@@ -209,7 +209,7 @@ describe('articulation coverage map', () => {
     )
     expect(useCoverage).toHaveBeenCalledWith(
       {
-        majorContains: 'computer science',
+        majorSlug: 'cs',
         groupBy: 'district',
         requirements: 'assist',
         pin: 'settings',

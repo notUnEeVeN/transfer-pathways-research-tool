@@ -47,7 +47,7 @@ describe('CoverageHeatmap requirement basis', () => {
     const { container } = render(<CoverageHeatmap />)
 
     expect(useCoverage).toHaveBeenCalledWith(
-      expect.objectContaining({ majorContains: 'computer science', requirements: 'degree' }),
+      expect.objectContaining({ majorSlug: 'cs', requirements: 'degree' }),
       expect.any(Object)
     )
     expect(screen.queryByRole('textbox', { name: 'Degree program filter' })).toBeNull()

@@ -9,14 +9,14 @@ import { bucketFor } from './ArticulationCoverageMap'
 // Two readings of "can this district transfer", as on the coverage map: the
 // paper's hand-curated campus minimums, and what ASSIST itself marks required.
 const HAND_CURATED_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'paper',
   pin: 'paper',
 }
 
 const ASSIST_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'assist',
   pin: 'settings',

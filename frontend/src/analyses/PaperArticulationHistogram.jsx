@@ -9,7 +9,7 @@ import {
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
 
 const COVERAGE_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'paper',
   pin: 'paper',

@@ -6,7 +6,7 @@ import { useCoverage } from '../shared/query/hooks/useData'
 // Whole curated degree template per campus, visibility-independent: this is an
 // aggregate research figure, so an admin's major selection must not move it.
 const COVERAGE_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'college',
   requirements: 'degree',
   pin: 'settings',

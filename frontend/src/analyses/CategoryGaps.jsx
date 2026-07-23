@@ -1,10 +1,11 @@
-import React, { useDeferredValue, useMemo, useState } from 'react'
-import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, Stack, StatStrip } from '../components/ui'
+import React, { useMemo, useState } from 'react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCategoryGaps } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
+import MajorPicker from '../shared/majors/MajorPicker'
+import { useMajorSelection } from '../shared/majors/MajorContext'
 
-const DEFAULT_MAJOR_FILTER = 'computer science'
 const UNTAGGED = 'Untagged'
 
 const intFmt = new Intl.NumberFormat()
@@ -63,10 +64,9 @@ function buildGrid(rows) {
  * share stays visible rather than silently dropped.
  */
 export default function CategoryGaps() {
-  const [majorFilter, setMajorFilter] = useState(DEFAULT_MAJOR_FILTER)
-  const deferredMajorFilter = useDeferredValue(majorFilter)
+  const { slug: majorSlug, setSlug } = useMajorSelection()
   const query = useCategoryGaps(
-    { majorContains: deferredMajorFilter },
+    { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = query.data?.rows || []
@@ -81,14 +81,7 @@ export default function CategoryGaps() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <Input
-        label='Major filter'
-        value={majorFilter}
-        onChange={(e) => setMajorFilter(e.target.value)}
-        placeholder='computer science'
-        leadingIcon={MagnifyingGlassIcon}
-        className='w-80 max-w-full'
-      />
+      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <Button
         variant='secondary'
         leadingIcon={ArrowPathIcon}

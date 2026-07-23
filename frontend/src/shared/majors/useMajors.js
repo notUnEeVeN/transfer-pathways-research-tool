@@ -10,7 +10,7 @@ import { useAuth } from '../hooks/useAuth'
 // major that has always been there. Capabilities are permissive here: the CS
 // dataset supports every figure, and gating off a failed fetch would hide
 // working views.
-const CS_FALLBACK = [{
+export const CS_FALLBACK = [{
   slug: 'cs',
   label: 'Computer Science',
   capabilities: { asDegrees: true, paperBaselines: true, transferMinimums: true, snapshots: [] },

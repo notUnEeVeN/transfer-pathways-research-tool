@@ -16,10 +16,28 @@ import MeasurePanel from '../analyses/MeasurePanel'
 import { measureFor } from '../analyses/measures'
 import { filterBuiltInAnalyses } from './analysisVisibility'
 import { SOURCE_META, figureRefForItem, groupGalleryBySource, sourceForItem } from './provenance'
+import { useMajorSelection } from '../shared/majors/MajorContext'
 
 export { filterBuiltInAnalyses } from './analysisVisibility'
 
 const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
+
+/**
+ * Some figures are fixed to one major regardless of the console's selection —
+ * the paper replications, the frozen CS snapshots, and the models that need
+ * AS-degree data. Say so, but only when the reader is actually looking at a
+ * different major, so the gallery stays quiet in the single-major case.
+ */
+function PinnedMajorNotice({ pinnedMajor }) {
+  const { slug, majors } = useMajorSelection()
+  if (!pinnedMajor || pinnedMajor === slug || majors.length < 2) return null
+  const label = majors.find((m) => m.slug === pinnedMajor)?.label || pinnedMajor
+  return (
+    <p className='text-caption text-ink-subtle' data-export-exclude>
+      Fixed to {label}. This figure does not follow the selected major.
+    </p>
+  )
+}
 
 function PublicationBadge({ published }) {
   return <Badge variant={published ? 'success' : 'neutral'}>{published ? 'Published' : 'Admin only'}</Badge>
@@ -576,6 +594,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
         source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
         exportName={analysis.id}
         badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
+        <PinnedMajorNotice pinnedMajor={analysis.pinnedMajor} />
         <Component />
         {/* Kept out of exports — a downloaded figure should read as a figure. */}
         <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />

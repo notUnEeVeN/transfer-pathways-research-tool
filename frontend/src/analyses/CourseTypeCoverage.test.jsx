@@ -125,7 +125,7 @@ describe('course type coverage', () => {
     expect(refetch).toHaveBeenCalledOnce()
     expect(useCoverage).toHaveBeenCalledWith(
       {
-        majorContains: 'computer science',
+        majorSlug: 'cs',
         groupBy: 'college',
         requirements: 'degree',
         pin: 'settings',

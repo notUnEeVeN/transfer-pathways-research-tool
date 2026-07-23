@@ -1,10 +1,11 @@
-import React, { useDeferredValue, useMemo, useState } from 'react'
-import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, Stack, StatStrip } from '../components/ui'
+import React, { useMemo, useState } from 'react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useChoiceCost, useSchools } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
+import MajorPicker from '../shared/majors/MajorPicker'
+import { useMajorSelection } from '../shared/majors/MajorContext'
 
-const DEFAULT_MAJOR_FILTER = 'computer science'
 const MAX_SCHOOLS = 4
 
 // Ordinal brand-blue ramp, dark→light in ADDITION ORDER (first choice darkest).
@@ -40,9 +41,8 @@ function stepMeans(rows, orderedIds) {
  * ramp), consistent between the two views.
  */
 export default function ChoiceCost() {
-  const [majorFilter, setMajorFilter] = useState(DEFAULT_MAJOR_FILTER)
+  const { slug: majorSlug, setSlug } = useMajorSelection()
   const [orderedIds, setOrderedIds] = useState(null) // null until schools load
-  const deferredMajorFilter = useDeferredValue(majorFilter)
 
   const schoolsQ = useSchools()
   // /schools returns { uc: [{id, name}] } — same unwrap as DataPage's browser.
@@ -55,7 +55,7 @@ export default function ChoiceCost() {
   const effectiveIds = orderedIds ?? schools.slice(0, 2).map((s) => Number(s.id))
 
   const query = useChoiceCost(
-    { majorContains: deferredMajorFilter, schoolIds: effectiveIds },
+    { majorSlug, schoolIds: effectiveIds },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = query.data?.rows || []
@@ -85,14 +85,7 @@ export default function ChoiceCost() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <Input
-        label='Major filter'
-        value={majorFilter}
-        onChange={(e) => setMajorFilter(e.target.value)}
-        placeholder='computer science'
-        leadingIcon={MagnifyingGlassIcon}
-        className='w-72 max-w-full'
-      />
+      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <div className='flex flex-col min-w-0'>
         <span className='field-label'>Campuses, in application order (up to {MAX_SCHOOLS})</span>
         <div className='flex flex-wrap gap-1.5'>

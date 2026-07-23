@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react'
 import { usePersistedState } from '../hooks/usePersistedState'
-import { useMajors } from './useMajors'
+import { useMajors, CS_FALLBACK } from './useMajors'
 
 // The console's current major. Selection is contextual — each surface renders
 // its own picker — but the choice is shared so moving between Data, Visuals and
@@ -22,19 +22,21 @@ export function MajorProvider({ children }) {
   return <MajorContext.Provider value={value}>{children}</MajorContext.Provider>
 }
 
+// Outside a provider there is nothing to fetch against, so this is a plain
+// constant rather than a second query — it keeps every consuming component
+// renderable on its own, without a QueryClient.
+const NO_PROVIDER = {
+  slug: CS_FALLBACK[0].slug,
+  setSlug: () => {},
+  major: CS_FALLBACK[0],
+  majors: CS_FALLBACK,
+  isLoading: false,
+}
+
 /**
- * The selected major. Safe outside a MajorProvider — falls back to the first
- * onboarded major so a component can be rendered in isolation (tests, stories).
+ * The selected major. Safe outside a MajorProvider, where it reports the single
+ * long-standing major so a component can be rendered in isolation.
  */
 export function useMajorSelection() {
-  const ctx = useContext(MajorContext)
-  const fallback = useMajors()
-  if (ctx) return ctx
-  return {
-    slug: fallback.defaultSlug,
-    setSlug: () => {},
-    major: fallback.bySlug.get(fallback.defaultSlug) || null,
-    majors: fallback.majors,
-    isLoading: fallback.isLoading,
-  }
+  return useContext(MajorContext) ?? NO_PROVIDER
 }
