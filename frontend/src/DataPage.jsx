@@ -328,7 +328,15 @@ const CS_DEGREE_PROGRAMS = [
   { type: 'local_computing', award: null },
 ]
 
-function AssociateDegreeSection({ collegeId, availability }) {
+function AssociateDegreeSection({ collegeId, availability, major = null }) {
+  // The associate-degree layer only exists for majors whose AS data has been
+  // gathered — CS today. Say so rather than showing another major's degrees.
+  if (major && major.capabilities?.asDegrees === false) {
+    return (
+      <EmptyState title={`No ${major.label} associate degrees yet`}
+        description={`Associate-degree records have only been gathered for Computer Science. ${major.label} transfer articulation is available under Transfer articulation.`} />
+    )
+  }
   const availablePrograms = CS_DEGREE_PROGRAMS.filter(({ type }) => (
     availability?.types?.[type]?.status === 'available'
       && availability.types[type].record_id
@@ -463,8 +471,9 @@ function CampusAgreements({
 
   return (
     <Stack gap='cozy'>
-      <div className='flex items-center'>
+      <div className='flex items-center gap-3'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={backToColleges}>All colleges</Button>
+        <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
       </div>
       <Tabs value={section} onChange={setSelectedSection} options={[
         { value: 'articulation', label: 'Transfer articulation' },
@@ -478,11 +487,11 @@ function CampusAgreements({
       ) : section === 'prerequisites' ? (
         <ConceptGraphView key={collegeId} initialCollegeId={collegeId} lockCollege />
       ) : section === 'degrees' ? (
-        <AssociateDegreeSection collegeId={collegeId} availability={degreeAvailability} />
+        <AssociateDegreeSection collegeId={collegeId} availability={degreeAvailability}
+          major={major} />
       ) : (
         <Stack gap='comfortable'>
           <ReceivingCampusPicker campuses={campuses} campusId={campus.school_id} onSelect={changeCampus} />
-          <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
           {batch.isLoading ? (
             <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
           ) : !agreements.length ? (
@@ -726,12 +735,18 @@ const routeForAgreementView = (view, agreementId, compareFor) => (
 
 function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw | comparison | degree
+  const { major } = useMajorSelection()
+  const caps = major?.capabilities || {}
   const docQ = useAuditDoc(agreementId, 'uc')
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
   const courses = useCourseList(docQ.data?.course_names)
 
   if (docQ.isLoading) return <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
   if (docQ.isError) return <Alert type='error'>Failed to load the agreement.</Alert>
+  // Switching to an ASSIST-only major removes tabs; fall back rather than
+  // render an empty card.
+  const activeView = (view === 'comparison' && caps.transferMinimums === false)
+    || (view === 'degree' && caps.degreeTemplates === false) ? 'ledger' : view
   const doc = docQ.data?.doc
   if (!doc) return null
 
@@ -760,26 +775,28 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
           )}
         </div>
       </div>
-      <Tabs value={view} onChange={changeView}
+      <Tabs value={activeView} onChange={changeView}
         options={[
           { value: 'ledger', label: 'ASSIST Transfer Requirements' },
-          ...(compareFor ? [{ value: 'comparison', label: 'Curated Transfer Minimums' }] : []),
-          ...(compareFor ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
+          // ASSIST-only majors have no hand-curated minimums (permanent) and
+          // no graduation templates yet (until W1 Phase 4).
+          ...(compareFor && caps.transferMinimums !== false ? [{ value: 'comparison', label: 'Curated Transfer Minimums' }] : []),
+          ...(compareFor && caps.degreeTemplates !== false ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
           { value: 'stored', label: 'DB document' },
           { value: 'raw',    label: 'Raw ASSIST API' },
         ]} />
-      {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
-      {view === 'degree' && compareFor && (
+      {activeView === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
+      {activeView === 'degree' && compareFor && (
         <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
       )}
-      {view === 'ledger' && (
+      {activeView === 'ledger' && (
         <div className='uui-scope'>
           <RequirementsLedger major={doc} courses={courses}
             universityCoursesById={docQ.data?.university_courses || null} preserveOrder showCompletion={false} />
         </div>
       )}
-      {view === 'stored' && <JsonPanel data={doc} filename={`${slug}.stored.json`} />}
-      {view === 'raw' && (
+      {activeView === 'stored' && <JsonPanel data={doc} filename={`${slug}.stored.json`} />}
+      {activeView === 'raw' && (
         raw.isLoading ? <div className='flex justify-center py-10'><Spinner /></div>
         : raw.isError ? <Alert type='error'>{raw.error?.response?.data?.error || 'assist.org fetch failed.'}</Alert>
         : raw.data ? <JsonPanel data={raw.data} filename={`${slug}.assist-raw.json`} /> : null

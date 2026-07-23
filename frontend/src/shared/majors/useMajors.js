@@ -13,7 +13,10 @@ import { useAuth } from '../hooks/useAuth'
 export const CS_FALLBACK = [{
   slug: 'cs',
   label: 'Computer Science',
-  capabilities: { asDegrees: true, paperBaselines: true, transferMinimums: true, snapshots: [] },
+  capabilities: {
+    asDegrees: true, paperBaselines: true, transferMinimums: true,
+    degreeTemplates: true, snapshots: [],
+  },
 }]
 
 export function useMajors() {

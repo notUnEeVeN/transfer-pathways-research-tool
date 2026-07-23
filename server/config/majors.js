@@ -73,6 +73,7 @@ const MAJORS = [
       asDegrees: true,
       paperBaselines: true,
       transferMinimums: true,
+      degreeTemplates: true,
       snapshots: ['district-multi-campus-pathways', 'multi-campus-pathways',
         'district-portfolio-subsets'],
     },
@@ -114,7 +115,12 @@ const MAJORS = [
     capabilities: {
       asDegrees: false,
       paperBaselines: false,
+      // Deliberately permanent: new majors are ASSIST-driven end to end, so
+      // there are no hand-curated website minimums to gather.
       transferMinimums: false,
+      // Temporary — flip to true per major when its nine degree templates are
+      // authored (W1 Phase 4).
+      degreeTemplates: false,
       snapshots: [],
     },
   },
@@ -152,7 +158,12 @@ const MAJORS = [
     capabilities: {
       asDegrees: false,
       paperBaselines: false,
+      // Deliberately permanent: new majors are ASSIST-driven end to end, so
+      // there are no hand-curated website minimums to gather.
       transferMinimums: false,
+      // Temporary — flip to true per major when its nine degree templates are
+      // authored (W1 Phase 4).
+      degreeTemplates: false,
       snapshots: [],
     },
   },
