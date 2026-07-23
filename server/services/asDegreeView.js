@@ -120,11 +120,16 @@ function courseSetKey(doc) {
 // Historical extraction titles sometimes carry a bracketed note ("[same
 // program as <pre-migration type name>; ...]") using one of the retired type
 // names from before the slot rename (see
-// scripts/data/as_degrees_cs_extraction.json). Built from
-// LEGACY_TYPE_TO_SLOT's keys so the legacy strings themselves stay confined
-// to asDegreeSlots.js rather than being re-hardcoded here.
+// scripts/data/as_degrees_cs_extraction.json). Built from the
+// LEGACY_TYPE_TO_SLOT entries whose key actually changed, so the legacy
+// strings themselves stay confined to asDegreeSlots.js rather than being
+// re-hardcoded here. `ast` maps to itself (it was never renamed) and must be
+// excluded — it's not a legacy note vocabulary word, and including it widens
+// this regex to match bracket notes it never matched before.
 const LEGACY_TITLE_NOTE_RE = new RegExp(
-  `\\s*\\[same program as (?:${Object.keys(LEGACY_TYPE_TO_SLOT).join('|')})[^\\]]*\\]\\s*`, 'i');
+  `\\s*\\[same program as (?:${
+    Object.entries(LEGACY_TYPE_TO_SLOT).filter(([k, v]) => k !== v).map(([k]) => k).join('|')
+  })[^\\]]*\\]\\s*`, 'i');
 
 function normalizedDegreeTitle(doc) {
   return String(doc.degree_title_seen || '')

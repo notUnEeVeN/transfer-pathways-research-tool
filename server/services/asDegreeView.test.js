@@ -257,6 +257,18 @@ describe('duplicateLocalOtherIds', () => {
     const bio = { ...cs, _id: 'as_degree:1:bio:local_other', major_slug: 'bio', degree_type: 'local_other' };
     expect([...duplicateLocalOtherIds([cs, bio])]).toEqual([]);
   });
+
+  it('does not strip a "[same program as ast; ...]" bracket note (ast was never renamed)', () => {
+    // Only local_cs_as/local_computing are legacy note vocabulary; `ast` maps
+    // to itself in LEGACY_TYPE_TO_SLOT and must stay unmatched by the title
+    // normalizer, so this bracket note keeps the titles distinct.
+    const local = { _id: 'as_degree:1:cs:local_as', community_college_id: 1, major_slug: 'cs',
+      degree_type: 'local_as', degree_title_seen: 'Computer Science',
+      requirement_groups: [{ sections: [{ receivers: [receiver(101)] }] }] };
+    const other = { ...local, _id: 'as_degree:1:cs:local_other', degree_type: 'local_other',
+      degree_title_seen: 'Computer Science [same program as ast; deduped]' };
+    expect([...duplicateLocalOtherIds([local, other])]).toEqual([]);
+  });
 });
 
 describe('asDegreeDetail', () => {
