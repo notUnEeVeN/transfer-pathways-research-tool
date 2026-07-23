@@ -53,6 +53,10 @@ these are the college's own graduation requirements, not an articulation.
 The complete corrected document as JSON, and nothing else — no commentary
 before or after, no markdown fence. It gets pasted straight back in.`;
 
+const CREATE_INTRO = `This college has no record for this degree slot yet — no record exists yet
+to correct. Build one from the printed catalog: the scaffold below already
+carries the correct identity fields, and you fill in the rest.`;
+
 /** `id | CODE | title | units` — the only course ids that may be referenced. */
 export function courseCatalogLines(courses = []) {
   return courses
@@ -71,23 +75,32 @@ export function courseCatalogLines(courses = []) {
  * as it stands. Self-contained on purpose — a researcher pastes this into a
  * fresh chat that has no other context.
  */
-export function buildAsDegreeContext({ doc, courses = [] }) {
+export function buildAsDegreeContext({ doc, courses = [], mode = 'edit', collegeName = null }) {
+  const creating = mode === 'create';
   const catalog = courseCatalogLines(courses);
+  const heading = creating
+    ? '# Creating an AS-degree requirement document'
+    : '# Correcting an AS-degree requirement document';
+  const closing = creating
+    ? 'Paste the college\'s catalog text for this degree, then return the complete document.'
+    : 'Tell me what you want changed, then return the complete corrected document.';
   return [
-    '# Correcting an AS-degree requirement document',
+    heading,
     '',
+    ...(collegeName ? [`College: ${collegeName}`, ''] : []),
+    ...(creating ? [CREATE_INTRO, ''] : []),
     RULES,
     '',
     '## The college\'s course catalog (id | code | title | units)',
     '',
     catalog || '(no courses on file for this college)',
     '',
-    '## The document as it stands',
+    creating ? '## The scaffold to fill in' : '## The document as it stands',
     '',
     '```json',
     JSON.stringify(doc, null, 2),
     '```',
     '',
-    'Tell me what you want changed, then return the complete corrected document.',
+    closing,
   ].join('\n');
 }

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { buildAsDegreeContext, courseCatalogLines } from './asDegreeContext'
+import { buildScaffold } from './asDegreeScaffold'
 
 const DOC = {
   _id: 'as_degree:4:cs:local_as',
@@ -56,5 +57,31 @@ describe('buildAsDegreeContext', () => {
   it('says so plainly when the college has no courses on file', () => {
     expect(buildAsDegreeContext({ doc: DOC, courses: [] }))
       .toContain('(no courses on file for this college)')
+  })
+})
+
+describe('creation mode', () => {
+  const doc = buildScaffold({ collegeId: 110, major: 'cs', slot: 'ast' })
+
+  it('frames an empty scaffold as a record to create', () => {
+    const text = buildAsDegreeContext({ doc, courses: [], mode: 'create',
+      collegeName: 'Foothill College' })
+    expect(text).toContain('# Creating an AS-degree requirement document')
+    expect(text).toContain('Foothill College')
+    expect(text).toContain('no record exists yet')
+  })
+
+  it('still carries the hard rules and the catalog in creation mode', () => {
+    const text = buildAsDegreeContext({
+      doc, mode: 'create',
+      courses: [{ course_id: 7, prefix: 'MATH', number: '1A', title: 'Calculus', units: 5 }],
+    })
+    expect(text).toContain('## Hard rules the server enforces on save')
+    expect(text).toContain('7 | MATH 1A | Calculus | 5u')
+  })
+
+  it('keeps the editing framing by default', () => {
+    expect(buildAsDegreeContext({ doc, courses: [] }))
+      .toContain('# Correcting an AS-degree requirement document')
   })
 })
