@@ -4,7 +4,7 @@ import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCategoryGaps } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
 import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const UNTAGGED = 'Untagged'
 
@@ -64,7 +64,7 @@ function buildGrid(rows) {
  * share stays visible rather than silently dropped.
  */
 export default function CategoryGaps() {
-  const { slug: majorSlug, setSlug } = useMajorSelection()
+  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
   const query = useCategoryGaps(
     { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }

@@ -28,7 +28,7 @@ import {
 } from '@frontend/query/hooks/useData'
 import { useAuth } from '@frontend/hooks/useAuth'
 import MajorPicker from './shared/majors/MajorPicker'
-import { useMajorSelection } from './shared/majors/MajorContext'
+import { useMajorChoice } from './shared/majors/MajorContext'
 
 /**
  * Data explorer — the partners' access point into the research database.
@@ -415,9 +415,9 @@ function CampusAgreements({
   onBack,
 }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
-  // One major at a time, shared with the rest of the console so the analyses
-  // follow whatever you were just browsing.
-  const { slug: majorSlug, setSlug, major } = useMajorSelection()
+  // This pane's own choice — browsing a college in Biology must not retune the
+  // UC pane or the Visuals gallery.
+  const { slug: majorSlug, setSlug, major } = useMajorChoice('colleges')
   const [selectedSection, setSelectedSection] = useState(null)
   // Every agreement this college has with the selected campus, before any
   // major filter. The section fallback below keys off THIS — a major with no
@@ -524,7 +524,7 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const raw = useDegreeRequirementDocuments()
   const save = useSaveDegreeRequirement()
   const { user } = useAuth()
-  const { major } = useMajorSelection()
+  const { slug: majorSlug, setSlug, major } = useMajorChoice('campuses')
   const [editing, setEditing] = useState(false)
   // A campus has one graduation template PER MAJOR. Match the program to the
   // selected major so Biology never renders the computer-science degree.
@@ -547,11 +547,14 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
 
   return (
     <Stack gap='cozy'>
-      {onBack && (
-        <div className='flex items-center'>
+      {/* This pane's own major: a campus has one four-year template per major,
+          so browsing them here is the point. Independent of the college pane. */}
+      <div className='flex items-center gap-3'>
+        {onBack && (
           <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
-        </div>
-      )}
+        )}
+        <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
+      </div>
       {q.isLoading || raw.isLoading ? (
         <div className='flex justify-center py-10'><Spinner /></div>
       ) : q.isError || raw.isError ? (
@@ -741,7 +744,7 @@ const routeForAgreementView = (view, agreementId, compareFor) => (
 
 function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw | comparison | degree
-  const { major } = useMajorSelection()
+  const { major } = useMajorChoice('colleges')
   const caps = major?.capabilities || {}
   const docQ = useAuditDoc(agreementId, 'uc')
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })

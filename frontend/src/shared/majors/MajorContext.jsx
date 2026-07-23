@@ -2,22 +2,18 @@ import React, { createContext, useContext, useMemo } from 'react'
 import { usePersistedState } from '../hooks/usePersistedState'
 import { useMajors, CS_FALLBACK } from './useMajors'
 
-// The console's current major. Selection is contextual — each surface renders
-// its own picker — but the choice is shared so moving between Data, Visuals and
-// Audit keeps the major you were looking at.
+// The onboarded majors, fetched once and shared. The provider deliberately
+// holds NO selected major: each surface asks a different question — what does
+// this college offer in Biology, what does Berkeley require for Economics —
+// so each keeps its own choice via useMajorChoice().
 
 const MajorContext = createContext(null)
 
 export function MajorProvider({ children }) {
   const { majors, defaultSlug, bySlug, isLoading } = useMajors()
-  const [stored, setSlug] = usePersistedState('major-selection', null)
-  // A stored slug can outlive the major it names (config edit, revoked
-  // access), so always resolve against what the server currently offers.
-  const slug = bySlug.has(stored) ? stored : defaultSlug
-
   const value = useMemo(
-    () => ({ slug, setSlug, major: bySlug.get(slug) || null, majors, isLoading }),
-    [slug, setSlug, bySlug, majors, isLoading],
+    () => ({ majors, defaultSlug, bySlug, isLoading }),
+    [majors, defaultSlug, bySlug, isLoading],
   )
   return <MajorContext.Provider value={value}>{children}</MajorContext.Provider>
 }
@@ -26,17 +22,29 @@ export function MajorProvider({ children }) {
 // constant rather than a second query — it keeps every consuming component
 // renderable on its own, without a QueryClient.
 const NO_PROVIDER = {
-  slug: CS_FALLBACK[0].slug,
-  setSlug: () => {},
-  major: CS_FALLBACK[0],
   majors: CS_FALLBACK,
+  defaultSlug: CS_FALLBACK[0].slug,
+  bySlug: new Map(CS_FALLBACK.map((m) => [m.slug, m])),
   isLoading: false,
 }
 
-/**
- * The selected major. Safe outside a MajorProvider, where it reports the single
- * long-standing major so a component can be rendered in isolation.
- */
+/** The onboarded majors. Safe outside a MajorProvider. */
 export function useMajorSelection() {
   return useContext(MajorContext) ?? NO_PROVIDER
+}
+
+/**
+ * One surface's chosen major, kept independent of every other surface.
+ *
+ * `scope` names the surface ('colleges', 'campuses', 'visuals'); surfaces
+ * sharing a scope share a choice, which is what keeps the Visuals gallery
+ * internally consistent. The choice survives navigation within the tab but is
+ * always re-validated against the majors the server currently offers, so a
+ * remembered slug can't outlive the major it names.
+ */
+export function useMajorChoice(scope) {
+  const { majors, defaultSlug, bySlug } = useMajorSelection()
+  const [stored, setSlug] = usePersistedState(`major-choice:${scope}`, null)
+  const slug = bySlug.has(stored) ? stored : defaultSlug
+  return { slug, setSlug, major: bySlug.get(slug) || null, majors }
 }

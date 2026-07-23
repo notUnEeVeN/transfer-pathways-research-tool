@@ -7,7 +7,7 @@ import {
   paperRedCellColor,
 } from './maHeatmapColors'
 import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const ROW_MODES = [
   { value: 'college', label: 'College', noun: 'colleges', header: 'Community college' },
@@ -336,7 +336,7 @@ export default function CoverageHeatmap({ presentation = false }) {
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
-  const { slug: majorSlug, setSlug, major } = useMajorSelection()
+  const { slug: majorSlug, setSlug, major } = useMajorChoice('visuals')
   // ASSIST-only majors have no hand-curated minimums and, until their degree
   // templates are authored, no graduation plan to measure against.
   const caps = major?.capabilities || {}

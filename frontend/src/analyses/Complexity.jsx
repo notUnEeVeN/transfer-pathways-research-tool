@@ -4,7 +4,7 @@ import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useComplexity } from '../shared/query/hooks/useData'
 import { AnalysisLoading, HistogramRows, shortenSchool } from './chartBits'
 import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const METRICS = [
   { value: 'complexity', label: 'Complexity', field: 'complexity', unit: 'complexity score' },
@@ -77,7 +77,7 @@ function buildModel(rows, metric) {
  * count — the banner keeps that caveat in front of the reader.
  */
 export default function Complexity() {
-  const { slug: majorSlug, setSlug } = useMajorSelection()
+  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
   const [metricValue, setMetricValue] = useState('complexity')
   const metric = METRICS.find((m) => m.value === metricValue) || METRICS[0]
   const query = useComplexity(

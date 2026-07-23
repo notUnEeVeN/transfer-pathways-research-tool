@@ -16,7 +16,7 @@ import MeasurePanel from '../analyses/MeasurePanel'
 import { measureFor } from '../analyses/measures'
 import { filterBuiltInAnalyses } from './analysisVisibility'
 import { SOURCE_META, figureRefForItem, groupGalleryBySource, sourceForItem } from './provenance'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 export { filterBuiltInAnalyses } from './analysisVisibility'
 
@@ -29,7 +29,7 @@ const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unkno
  * different major, so the gallery stays quiet in the single-major case.
  */
 function PinnedMajorNotice({ pinnedMajor }) {
-  const { slug, majors } = useMajorSelection()
+  const { slug, majors } = useMajorChoice('visuals')
   if (!pinnedMajor || pinnedMajor === slug || majors.length < 2) return null
   const label = majors.find((m) => m.slug === pinnedMajor)?.label || pinnedMajor
   return (

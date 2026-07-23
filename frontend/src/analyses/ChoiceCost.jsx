@@ -4,7 +4,7 @@ import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useChoiceCost, useSchools } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
 import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const MAX_SCHOOLS = 4
 
@@ -41,7 +41,7 @@ function stepMeans(rows, orderedIds) {
  * ramp), consistent between the two views.
  */
 export default function ChoiceCost() {
-  const { slug: majorSlug, setSlug } = useMajorSelection()
+  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
   const [orderedIds, setOrderedIds] = useState(null) // null until schools load
 
   const schoolsQ = useSchools()

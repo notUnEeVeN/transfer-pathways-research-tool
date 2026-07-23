@@ -4,7 +4,7 @@ import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCreditLoss } from '../shared/query/hooks/useData'
 import { AnalysisLoading, HistogramRows, shortenSchool } from './chartBits'
 import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const METRICS = [
   { value: 'courses', label: 'Courses', field: 'min_cc_courses', binStep: 1, unit: 'courses' },
@@ -77,7 +77,7 @@ function buildModel(rows, metric) {
  * shared scale; hairline tick = campus mean.
  */
 export default function CreditLoss() {
-  const { slug: majorSlug, setSlug } = useMajorSelection()
+  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
   const [metricValue, setMetricValue] = useState('courses')
   const metric = METRICS.find((m) => m.value === metricValue) || METRICS[0]
   const query = useCreditLoss(

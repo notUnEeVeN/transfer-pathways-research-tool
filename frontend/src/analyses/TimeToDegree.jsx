@@ -4,7 +4,7 @@ import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useTimeToDegree } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
 import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorSelection } from '../shared/majors/MajorContext'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
 
 const intFmt = new Intl.NumberFormat()
@@ -19,7 +19,7 @@ const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
  * the loss costs. One meter row per degree × agreement, worst rate first.
  */
 export default function TimeToDegree() {
-  const { slug: majorSlug, setSlug } = useMajorSelection()
+  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
   const query = useTimeToDegree(
     { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
