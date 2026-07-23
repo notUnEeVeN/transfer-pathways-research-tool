@@ -22,7 +22,9 @@ export const CS_FALLBACK = [{
 export function useMajors() {
   const { user } = useAuth()
   const query = useQuery({
-    queryKey: ['majors', user?.uid],
+    // Versioned so an entry persisted by an older build (before the
+    // capability flags existed) can never hydrate this shape.
+    queryKey: ['majors', 'v2', user?.uid],
     queryFn: () => apiClient.get('/majors').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: Infinity,

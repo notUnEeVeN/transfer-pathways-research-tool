@@ -21,13 +21,15 @@ createRoot(document.getElementById('root')).render(
       // a stale "granted" from before a revoke would otherwise let a removed
       // account render the console from cache instead of hitting the gate.
       maxAge: 24 * 60 * 60 * 1000,
-      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1`,
-      // NEVER persist the access check. It is the security gate: it must be
-      // re-verified against the server on every load, never rehydrated from
-      // IndexedDB. Everything else still persists for instant first paint.
+      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2`,
       dehydrateOptions: {
+        // NEVER persist the access check (the security gate) or the majors
+        // config. Both describe what the SERVER currently allows; a rehydrated
+        // copy silently misreports it — a stale majors payload hides newly
+        // onboarded majors and misstates their capabilities.
         shouldDehydrateQuery: (query) =>
-          query.state.status === 'success' && query.queryKey?.[0] !== 'access-me',
+          query.state.status === 'success'
+          && !['access-me', 'majors'].includes(query.queryKey?.[0]),
       },
     }}
   >
