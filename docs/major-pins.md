@@ -166,6 +166,36 @@ the verbatim string `Economics, B.A.` and two share `Economics B.A.`
 college — see the counts note above). Catalogs re-synced: 100,461 sending
 courses, 3,903 receiving courses. `admissions` grew 18 → 34.
 
+## ⚠ Hazard: port.py wipes curated college profiles
+
+`port.py add` copies `community_colleges` and `uc_schools` wholesale from the
+source PMT cluster, then rebuilds `assist_institutions` from them. The curated
+**district / region / counties_served** fields live only in the research
+cluster (they were entered through the console and the districts importer), so
+the source has none and **every port erases them**.
+
+Nothing warns you. The collections still have the right document counts; the
+fields are simply empty. Everything that groups by district then silently
+collapses — the district heatmap, the coverage histogram, the California map,
+and the income-access figures all render blank or all-zero, on local *and*
+deployed, because they share this cluster.
+
+**After every `port.py add` / `refresh-catalogs`, re-run:**
+
+```bash
+cd scripts && python import_cc_districts.py
+```
+
+Then confirm before trusting any district figure:
+
+```
+115 of 115 community colleges with a district · 72 distinct districts
+```
+
+This happened on 2026-07-22 during the bio/econ port and was diagnosed only
+after the figures broke. A post-port integrity check that counts agreements and
+courses is **not** sufficient — it must also check institution profile fields.
+
 ## What happens next
 
 Phase 0 is complete. Remaining W1 phases are in
