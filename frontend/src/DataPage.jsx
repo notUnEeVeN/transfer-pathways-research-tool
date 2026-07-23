@@ -27,6 +27,8 @@ import {
   useSaveDegreeRequirement, useAsDegreeAvailability,
 } from '@frontend/query/hooks/useData'
 import { useAuth } from '@frontend/hooks/useAuth'
+import MajorPicker from './shared/majors/MajorPicker'
+import { useMajorSelection } from './shared/majors/MajorContext'
 
 /**
  * Data explorer — the partners' access point into the research database.
@@ -405,11 +407,18 @@ function CampusAgreements({
   onBack,
 }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
+  const { slug: majorSlug, setSlug, major } = useMajorSelection()
   const [selectedSection, setSelectedSection] = useState(null)
   const agreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
-    return (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
-  }, [batch.data, campus.school_id])
+    const all = (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
+    // Show one field at a time. The match string is the same one the server
+    // scopes analyses by, so this page and the figures agree on what counts as
+    // the selected major.
+    const match = major?.match?.toLowerCase()
+    if (!match) return all
+    return all.filter((a) => String(a.major).toLowerCase().includes(match))
+  }, [batch.data, campus.school_id, major])
   const defaultAgreementId = agreements[0]?._id
   // A college with no agreement opens on the useful degree finding. Otherwise
   // transfer articulation remains the familiar default. An explicit user
@@ -467,10 +476,12 @@ function CampusAgreements({
       ) : (
         <Stack gap='comfortable'>
           <ReceivingCampusPicker campuses={campuses} campusId={campus.school_id} onSelect={changeCampus} />
+          <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
           {batch.isLoading ? (
             <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
           ) : !agreements.length ? (
-            <EmptyState title='No agreements' description='This college has no agreements for the selected campus.' />
+            <EmptyState title='No agreements'
+              description='This college has no agreements for the selected campus and major.' />
           ) : (
             <Stack gap='section'>
               {agreements.map((agreement) => (
