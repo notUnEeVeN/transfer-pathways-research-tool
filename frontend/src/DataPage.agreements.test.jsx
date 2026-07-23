@@ -9,6 +9,9 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 // this doesn't change the AgreementsBrowser setup; the focused detail test
 // below supplies one covered college.
 vi.mock('@frontend/query/hooks/useData', () => ({
+  // The college pane mounts AsDegreeReview, which reads these two.
+  useAsDegreeDetail: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
+  useSaveAsDegree: () => ({ mutateAsync: async () => ({}), isPending: false }),
   useDataSummary: () => ({
     data: {
       schools: [

@@ -10,7 +10,7 @@ import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
 import AsDegreeSchoolView from './asdegrees/AsDegreeSchoolView'
-import ValidationWorkspace from './asdegrees/validation/ValidationWorkspace'
+import AsDegreeReview from './asdegrees/validation/AsDegreeReview'
 import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
 import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
@@ -375,7 +375,11 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
             onDegreeTypeChange={(degreeType) => setSelection({ collegeId, degreeType })} />
         </div>
       )}
-      <ValidationWorkspace initialCollegeId={collegeId} />
+      {/* Check the scraped records against the catalog, in place. */}
+      <div className='mt-6'>
+        <p className='field-label mb-2'>Verify scraped records</p>
+        <AsDegreeReview collegeId={collegeId} />
+      </div>
     </section>
   )
 }
