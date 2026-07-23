@@ -658,9 +658,6 @@ export default function VisualsPage({ onNavigate = () => {} }) {
     ])),
     [analysisMajor, visibleAnalyses]
   )
-  const availableAnalysisCount = [...analysisAvailability.values()]
-    .filter((availability) => availability.available).length
-  const pendingAnalysisCount = analysisAvailability.size - availableAnalysisCount
   const figuresQuery = useFigures()
   const degreeRequirements = useDegreeRequirements()
   const deleteFigure = useDeleteFigure()
@@ -704,15 +701,6 @@ export default function VisualsPage({ onNavigate = () => {} }) {
 
   const loading = figuresQuery.isLoading || visualSettings.isLoading || majorsLoading
   const failed = figuresQuery.isError || visualSettings.isError || majorsError
-  const selectedDegreeTemplates = useMemo(
-    () => (degreeRequirements.data?.rows || [])
-      .filter((row) => row.major_slug === majorSlug),
-    [degreeRequirements.data, majorSlug]
-  )
-  const hasUnverifiedDegreeTemplates = selectedDegreeTemplates.some((row) => (
-    String(row.research_status || '').includes('needs_human_verification')
-  ))
-
   const renderDetail = (item) => {
     if (item.kind === 'figure') {
       const figure = item.figure
@@ -754,53 +742,24 @@ export default function VisualsPage({ onNavigate = () => {} }) {
           <Badge variant='neutral'>{gallery.length} {gallery.length === 1 ? 'visual' : 'visuals'}</Badge>
         )}
       </div>
-      <section className='surface-card flex flex-col gap-4 px-[22px] py-[18px] lg:flex-row lg:items-end'>
-        <div className='min-w-0 flex-1'>
-          <p className='text-label'>Analysis major</p>
-          <p className='mt-1 text-body text-ink-muted'>
-            Reusable visuals follow this selection. Audited registry figures are labeled as fixed;
-            published copies remain frozen to the data used when they were created.
-          </p>
-          {!majorsError && majors.length > 1 && (
-            <p className='mt-1 text-caption text-ink-subtle'>
-              {majors.length} majors are currently onboarded; future majors become available through
-              the same capability checks.
-            </p>
-          )}
-        </div>
-        <div className='flex flex-col gap-2 sm:flex-row sm:items-end'>
-          <div className='min-w-52'>
-            {majorsLoading ? (
-              <span className='inline-flex min-h-9 items-center gap-2 text-caption text-ink-subtle'>
-                <Spinner /> Loading majors…
-              </span>
-            ) : majorsError ? (
-              <span className='inline-flex min-h-9 items-center text-caption text-danger'>
-                Major registry unavailable
-              </span>
-            ) : (
-              <MajorPicker value={majorSlug} onChange={setMajorSlug} className='w-full' />
-            )}
-            {!majorsLoading && !majorsError && majors.length < 2 && (
-              <p className='text-body-strong'>{selectedMajor?.label || majorSlug}</p>
-            )}
-          </div>
-          {!majorsLoading && !majorsError && !!analysisAvailability.size && (
-            <div className='flex min-h-9 items-center gap-2'>
-              <Badge variant='success'>{availableAnalysisCount} analyses ready</Badge>
-              {!!pendingAnalysisCount && (
-                <Badge variant='neutral'>{pendingAnalysisCount} analyses pending or reference-only</Badge>
-              )}
-            </div>
+      <section className='surface-card flex items-center gap-3 px-[22px] py-4'>
+        <p className='text-label shrink-0'>Major</p>
+        <div className='ml-auto min-w-52'>
+          {majorsLoading ? (
+            <span className='inline-flex min-h-9 items-center gap-2 text-caption text-ink-subtle'>
+              <Spinner /> Loading majors…
+            </span>
+          ) : majorsError ? (
+            <span className='inline-flex min-h-9 items-center text-caption text-danger'>
+              Major registry unavailable
+            </span>
+          ) : majors.length < 2 ? (
+            <p className='text-body-strong'>{selectedMajor?.label || majorSlug}</p>
+          ) : (
+            <MajorPicker value={majorSlug} onChange={setMajorSlug} className='w-full' />
           )}
         </div>
       </section>
-      {!majorsLoading && !majorsError && hasUnverifiedDegreeTemplates && (
-        <Alert type='info'>
-          {selectedMajor?.label || majorSlug} graduation templates are AI-researched and linked to
-          official sources, but still await human verification. Treat visuals that use them as provisional.
-        </Alert>
-      )}
       {figuresQuery.isError && <Alert type='error'>Failed to load the figure gallery.</Alert>}
       {visualSettings.isError && <Alert type='error'>Failed to load built-in visual settings.</Alert>}
       {majorsError && (
