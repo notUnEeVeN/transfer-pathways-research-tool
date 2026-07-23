@@ -11,7 +11,9 @@ import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
 import AsDegreeReview from './asdegrees/validation/AsDegreeReview'
 import { AS_DEGREE_SLOTS, slotLabel } from './asdegrees/asDegreeSlots'
-import DegreeTemplateEditor from './degrees/DegreeTemplateEditor'
+import JsonDocumentPanel from './shared/JsonDocumentPanel'
+import { buildDegreeContext } from './degrees/degreeContext'
+import { createDegreeDocument } from './degrees/degreeTemplateModel'
 import { degreeSourcesFor } from './degrees/degreeSources'
 import AnalysisCard from './analyses/AnalysisCard'
 import { fmtDate as fmtGalleryDate } from './shared/fmtDate'
@@ -27,7 +29,6 @@ import {
   useDegreeRequirements, useDegreeRequirementDocuments, useDegreeEvaluation,
   useSaveDegreeRequirement, useAsDegreeAvailability,
 } from '@frontend/query/hooks/useData'
-import { useAuth } from '@frontend/hooks/useAuth'
 import MajorPicker from './shared/majors/MajorPicker'
 import { useMajorChoice } from './shared/majors/MajorContext'
 
@@ -520,9 +521,8 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const q = useDegreeRequirements()
   const raw = useDegreeRequirementDocuments()
   const save = useSaveDegreeRequirement()
-  const { user } = useAuth()
+  const ucCourses = useUniversityCourses(schoolId)
   const { slug: majorSlug, setSlug, major } = useMajorChoice('campuses')
-  const [editing, setEditing] = useState(false)
   const configuredPrograms = useMemo(
     () => configuredProgramsForCampus(major, schoolId),
     [major, schoolId]
@@ -539,13 +539,40 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   }, [configuredPrograms, majorSlug, schoolId])
   const doc = useMemo(() => forMajor(q.data?.rows), [q.data, forMajor])
   const rawDoc = useMemo(() => forMajor(raw.data?.rows), [raw.data, forMajor])
-  // Notes ride on the stored degree doc (PUT replaces the whole row, so the
-  // raw doc is spread back in full); the importer $sets its own fields only,
-  // so notes survive re-imports.
-  const saveNotes = useCallback(
-    (nextNotes) => save.mutateAsync({ ...rawDoc, verification_notes: nextNotes }),
-    [rawDoc, save]
+
+  // An empty template to fill in when this campus has none for the major yet.
+  // Same JSON-document editing as the associate-degree tool: edit the stored
+  // document, or brief an AI and paste its answer back, and the ledger above
+  // redraws — nothing is written until Save.
+  const scaffold = useMemo(
+    () => createDegreeDocument({ schoolId, school: school || doc?.school, majorSlug, defaultProgram }),
+    [schoolId, school, doc?.school, majorSlug, defaultProgram]
   )
+  const base = rawDoc || scaffold
+  const [draft, setDraft] = useState(null)
+  const [error, setError] = useState(null)
+  const [saved, setSaved] = useState(null)
+  const creating = !rawDoc
+  const editDoc = draft && draft._id === base._id ? draft : base
+
+  // Drop a half-typed draft when the campus, major, or stored record changes.
+  useEffect(() => {
+    setDraft(null)
+    setError(null)
+    setSaved(null)
+  }, [schoolId, majorSlug, rawDoc?._id])
+
+  const persist = async () => {
+    setError(null)
+    setSaved(null)
+    try {
+      await save.mutateAsync(editDoc)
+      setDraft(null)
+      setSaved(creating ? 'Requirements created.' : 'Changes saved.')
+    } catch (e) {
+      setError(e?.response?.data?.error || 'Could not save these requirements.')
+    }
+  }
 
   return (
     <Stack gap='cozy'>
@@ -561,21 +588,30 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
         <div className='flex justify-center py-10'><Spinner /></div>
       ) : q.isError || raw.isError ? (
         <Alert type='error'>Failed to load the graduation requirements.</Alert>
-      ) : !doc ? (
-        <EmptyState title={major ? `No ${major.label} graduation requirements` : 'No graduation requirements'}
-          description={major
-            ? `No hand-curated four-year ${major.label} requirements have been added for this campus yet.`
-            : 'No hand-curated four-year graduation requirements have been added for this campus.'}
-          action={<Button leadingIcon={PencilSquareIcon} onClick={() => setEditing(true)}>Create requirements</Button>} />
       ) : (
-        <DegreeRequirementsDetail doc={doc} onEdit={() => setEditing(true)}
-          onSaveNotes={rawDoc ? saveNotes : null} savingNotes={save.isPending}
-          noteAuthor={{ uid: user?.uid || null, label: user?.displayName || user?.email || null }} />
+        <>
+          {doc ? (
+            <DegreeRequirementsDetail doc={doc} />
+          ) : (
+            <EmptyState title={major ? `No ${major.label} graduation requirements yet` : 'No graduation requirements yet'}
+              description={`Fill in the document below — by hand or with the AI briefing — to add the four-year ${major?.label || ''} template for this campus.`} />
+          )}
+          <JsonDocumentPanel doc={editDoc} onChange={setDraft}
+            ariaLabel='Graduation requirements JSON'
+            redrawNote='The template above redraws as you type.'
+            buildBriefing={() => buildDegreeContext({
+              doc: editDoc, courses: ucCourses.data || [],
+              mode: creating ? 'create' : 'edit', campusName: school || doc?.school,
+            })} />
+          {error && <Alert type='error'>{error}</Alert>}
+          {saved && <Alert type='success'>{saved}</Alert>}
+          <div className='flex flex-wrap items-center gap-2'>
+            <Button onClick={persist} disabled={save.isPending}>
+              {save.isPending ? 'Saving…' : creating ? 'Create requirements' : 'Save changes'}
+            </Button>
+          </div>
+        </>
       )}
-      <DegreeTemplateEditor open={editing} onClose={() => setEditing(false)}
-        initialDocument={rawDoc} schoolId={schoolId} school={school || doc?.school}
-        campusKey={rawDoc?.campus_key || null} majorSlug={majorSlug}
-        defaultProgram={defaultProgram} onSaved={() => setEditing(false)} />
     </Stack>
   )
 }
