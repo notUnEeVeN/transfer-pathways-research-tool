@@ -27,13 +27,18 @@ export default function AsDegreeReview({ collegeId, onClose = null }) {
   const records = detail.data?.degrees || []
   const [recordId, setRecordId] = useState(null)
   const [draft, setDraft] = useState(null)
+  const [note, setNote] = useState('')
   const [error, setError] = useState(null)
 
   const active = records.find((r) => r.doc?._id === recordId) || records[0] || null
 
   useEffect(() => {
     if (!active?.doc) return
-    setDraft((current) => (current?._id === active.doc._id ? current : active.doc))
+    setDraft((current) => {
+      if (current?._id === active.doc._id) return current
+      setNote(active.doc.verification?.note || '')
+      return active.doc
+    })
     setRecordId((current) => current ?? active.doc._id)
   }, [active])
 
@@ -56,7 +61,13 @@ export default function AsDegreeReview({ collegeId, onClose = null }) {
     setError(null)
     const next = verified === null ? doc : {
       ...doc,
-      verification: { ...(doc.verification || {}), verified, verified_at: new Date().toISOString() },
+      verification: {
+        ...(doc.verification || {}),
+        verified,
+        verified_at: new Date().toISOString(),
+        // Written by the person checking the catalog, never generated.
+        note: note.trim() || null,
+      },
     }
     try {
       await save.mutateAsync(next)
@@ -118,7 +129,12 @@ export default function AsDegreeReview({ collegeId, onClose = null }) {
 
       <AssistBox recordId={draft._id} onApply={(doc) => setDraft(doc)} />
 
-      <div className='flex flex-wrap items-center gap-2 border-t border-border pt-4'>
+      <div className='border-t border-border pt-4'>
+        <Textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2}
+          placeholder="What's wrong with this record, or what did you check? (saved with your verdict)" />
+      </div>
+
+      <div className='flex flex-wrap items-center gap-2'>
         <Button onClick={() => persist(draft, { verified: true })}
           disabled={save.isPending}>
           {save.isPending ? 'Saving…' : 'Mark verified'}

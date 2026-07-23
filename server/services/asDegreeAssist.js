@@ -120,8 +120,16 @@ async function callModel(anthropic, system, userText) {
   const response = await anthropic.messages.create({
     model: MODEL,
     max_tokens: 16000,
+    // Restructuring a requirement document correctly is reasoning work — the
+    // model has to map an English description onto choose-N nesting without
+    // changing what the degree means. Adaptive thinking is off unless asked
+    // for on this model, so ask.
+    thinking: { type: 'adaptive' },
     system,
-    output_config: { format: { type: 'json_schema', schema: RESPONSE_SCHEMA } },
+    output_config: {
+      effort: 'high',
+      format: { type: 'json_schema', schema: RESPONSE_SCHEMA },
+    },
     messages: [{ role: 'user', content: userText }],
   });
   return readStructuredResponse(response);

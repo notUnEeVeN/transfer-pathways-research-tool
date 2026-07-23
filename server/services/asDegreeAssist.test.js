@@ -148,7 +148,12 @@ describe('AS-degree AI assist', () => {
     expect(anthropic.messages.create).toHaveBeenCalledTimes(1);
     expect(anthropic.messages.create).toHaveBeenCalledWith(expect.objectContaining({
       model: 'claude-opus-4-8',
-      output_config: { format: { type: 'json_schema', schema: _RESPONSE_SCHEMA } },
+      // Structural rewrites reason before answering.
+      thinking: { type: 'adaptive' },
+      output_config: {
+        effort: 'high',
+        format: { type: 'json_schema', schema: _RESPONSE_SCHEMA },
+      },
     }));
   });
 
