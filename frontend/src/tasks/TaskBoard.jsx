@@ -156,6 +156,7 @@ function trueOrderSlot(
  */
 export default function TaskBoard({
   tasks = [], orderingTasks = tasks, onOpen, onMove, onNewIn, onArchiveDone,
+  onReviewVerification, me = null,
 }) {
   const columnRefs = useRef(new Map())
   const [dragging, setDragging] = useState(null)   // task _id being dragged
@@ -257,6 +258,12 @@ export default function TaskBoard({
           : displayOrder
         const groups = groupByTaskType(visibleCards)
         const grouped = visibleCards.length > 6 && groups.length > 1
+        // Verification is high-volume and homogeneous; the board shows it as a
+        // summary tile that hands off to the dedicated review queue rather than
+        // a long, non-draggable card list nobody wants sprawling here.
+        const myVerifyCount = status === 'verification'
+          ? col.filter((task) => task.assignee_uid && task.assignee_uid === me?.uid).length
+          : 0
         return (
           <div
             key={status}
@@ -294,7 +301,27 @@ export default function TaskBoard({
                 </span>
               )}
             </div>
-            {!folded && (
+            {!folded && status === 'verification' && (
+              <div className='mt-1'>
+                {col.length === 0 ? (
+                  <p className='rounded-xl px-3 py-[22px] text-center text-tag text-ink-subtle'>
+                    Nothing awaiting verification
+                  </p>
+                ) : (
+                  <div className='rounded-xl border border-border bg-surface px-3 py-4 text-center'>
+                    <p className='text-[26px] font-[680] leading-none text-ink tabular'>{col.length}</p>
+                    <p className='mt-1 text-tag text-ink-subtle'>
+                      awaiting{myVerifyCount ? ` · ${myVerifyCount} yours` : ''}
+                    </p>
+                    <button type='button' onClick={() => onReviewVerification?.()}
+                      className='mt-3 inline-flex items-center gap-1 rounded-pill bg-primary px-3.5 py-1.5 text-caption font-[650] text-on-primary hover:bg-primary-hover'>
+                      Review →
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+            {!folded && status !== 'verification' && (
               // Bounded height → the column scrolls instead of stretching the
               // page. During a drag, overflow goes visible so the dragged card
               // isn't clipped leaving the column (you can't scroll mid-drag

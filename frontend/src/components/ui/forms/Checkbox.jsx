@@ -5,7 +5,9 @@ import { CheckIcon } from '@heroicons/react/24/solid'
 // filled box + white check render regardless of which token layer wins —
 // this console layers the shared UUI theme over the tool tokens, and the
 // two disagree about what `primary` / `on-primary` mean.
-export default function Checkbox({ checked, onChange, label, id, className = '' }) {
+export default function Checkbox({
+  checked, onChange, label, id, className = '', 'aria-label': ariaLabel,
+}) {
   const generatedId = React.useId()
   const cbId = id || generatedId
   return (
@@ -16,6 +18,7 @@ export default function Checkbox({ checked, onChange, label, id, className = '' 
           type='checkbox'
           checked={checked}
           onChange={onChange}
+          aria-label={ariaLabel}
           className='absolute inset-0 appearance-none w-5 h-5 rounded-[6px] border transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
           style={{
             backgroundColor: checked ? 'var(--color-primary, #193018)' : 'var(--color-surface, #fff)',

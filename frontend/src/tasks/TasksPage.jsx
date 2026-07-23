@@ -16,14 +16,16 @@ import TaskBoard from './TaskBoard'
 import TaskFilters from './TaskFilters'
 import TaskList from './TaskList'
 import TaskModal from './TaskModal'
+import VerificationQueue from './VerificationQueue'
 import { buildTaskHistoryAiBriefing, buildTaskHistoryMarkdown } from './taskHistory'
 import {
   EMPTY_TASK_FILTERS, filterTasks, hasActiveTaskFilters,
 } from './taskFilter'
-import { isBareGeneralTask, withBoardAssignment } from './taskWorkflow'
+import { isAwaitingVerification, isBareGeneralTask, nextStage, withBoardAssignment } from './taskWorkflow'
 
 const VIEWS = [
   { value: 'board', label: 'Board' },
+  { value: 'verification', label: 'Verification' },
   { value: 'mine', label: 'My tasks' },
   { value: 'all', label: 'All tasks' },
 ]
@@ -147,6 +149,27 @@ export default function TasksPage() {
     onError: () => toast.error('Could not delete the task.'),
   })
 
+  // Approve a task's current verification stage (self-verify or team approval).
+  // The server enforces the peer rule, so surface its error rather than hiding
+  // the action. "Needs work" opens the task so a note or stage reopen is a
+  // deliberate, attributed step.
+  const approveVerification = (task) => {
+    const stage = nextStage(task)
+    if (!stage) return Promise.resolve()
+    return completeTaskStage.mutateAsync({ id: task._id, stage: stage.key })
+  }
+  const onApproveOne = (task) => approveVerification(task).then(
+    () => toast.success('Approved'),
+    (error) => toast.error(error?.response?.data?.error || 'Could not approve this task.'),
+  )
+  const onApproveMany = async (picked) => {
+    const results = await Promise.allSettled(picked.map((task) => approveVerification(task)))
+    const ok = results.filter((r) => r.status === 'fulfilled').length
+    const failed = results.length - ok
+    if (ok) toast.success(`Approved ${ok} ${ok === 1 ? 'task' : 'tasks'}`)
+    if (failed) toast.error(`${failed} could not be approved — open them to see why.`)
+  }
+
   // Sweep only the board's current (filtered) Done column into the archive.
   // Tasks excluded by the active filters stay untouched and remain recoverable
   // from this same action after the filter changes.
@@ -266,6 +289,18 @@ export default function TasksPage() {
           onMove={onMove}
           onNewIn={(status) => setModal({ initialStatus: status })}
           onArchiveDone={archiveDone}
+          onReviewVerification={() => setView('verification')}
+          me={user}
+        />
+      ) : view === 'verification' ? (
+        <VerificationQueue
+          tasks={filteredTasks}
+          me={user}
+          onOpen={(task) => setModal({ task })}
+          onApprove={onApproveOne}
+          onApproveMany={onApproveMany}
+          onNeedsWork={(task) => setModal({ task })}
+          busy={completeTaskStage.isPending}
         />
       ) : (
         <Stack gap='cozy'>

@@ -34,24 +34,33 @@ const todoTask = task({ _id: 'tk-todo', title: 'Todo item', status: 'todo', prog
 const column = (label) =>
   screen.getByRole('button', { name: `Collapse ${label}` }).closest('.bg-surface-muted')
 
-const renderBoard = (tasks) => render(
-  <TaskBoard tasks={tasks} onOpen={vi.fn()} onMove={vi.fn()} onNewIn={vi.fn()} onArchiveDone={vi.fn()} />
+const renderBoard = (tasks, extra = {}) => render(
+  <TaskBoard tasks={tasks} onOpen={vi.fn()} onMove={vi.fn()} onNewIn={vi.fn()}
+    onArchiveDone={vi.fn()} {...extra} />
 )
 
 beforeEach(() => { sessionStorage.clear() })
 
 describe('TaskBoard Verification column', () => {
-  it('routes a self-verified task into Verification, not In progress', () => {
-    renderBoard([awaitingTask, midTask, todoTask])
+  it('summarizes a self-verified task into Verification, not In progress', () => {
+    const onReviewVerification = vi.fn()
+    renderBoard([awaitingTask, midTask, todoTask], { onReviewVerification })
+    const verification = column('Verification')
 
-    expect(within(column('Verification')).getByText('Awaiting verification')).toBeInTheDocument()
+    // High-volume verification is a summary tile that hands off to the queue,
+    // not a card list — so the task is counted here, and reviewed there.
+    const review = within(verification).getByRole('button', { name: /Review/ })
+    expect(within(verification).getByText('awaiting')).toBeInTheDocument()
+    review.click()
+    expect(onReviewVerification).toHaveBeenCalled()
+    // Routed out of In progress.
     expect(within(column('In progress')).queryByText('Awaiting verification')).not.toBeInTheDocument()
   })
 
-  it('routes a published task still pending self-verify into Verification too', () => {
+  it('counts a published task still pending self-verify into Verification too', () => {
     renderBoard([selfVerifyTask, midTask, todoTask])
 
-    expect(within(column('Verification')).getByText('Awaiting self-verify')).toBeInTheDocument()
+    expect(within(column('Verification')).getByRole('button', { name: /Review/ })).toBeInTheDocument()
     expect(within(column('In progress')).queryByText('Awaiting self-verify')).not.toBeInTheDocument()
   })
 
