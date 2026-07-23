@@ -147,14 +147,18 @@ export default function AsDegreeReview({ collegeId, major = 'cs', slot }) {
             {creating ? 'Create record' : 'Save changes'}
           </Button>
         )}
-        <Button onClick={() => persist(true)}
-          disabled={save.isPending || blockers.length > 0}>
-          {save.isPending ? 'Saving…' : 'Mark verified'}
-        </Button>
-        <Button variant='secondary' onClick={() => persist(false)}
-          disabled={save.isPending || blockers.length > 0}>
-          Needs work
-        </Button>
+        {!creating && (
+          <>
+            <Button onClick={() => persist(true)}
+              disabled={save.isPending || blockers.length > 0}>
+              {save.isPending ? 'Saving…' : 'Mark verified'}
+            </Button>
+            <Button variant='secondary' onClick={() => persist(false)}
+              disabled={save.isPending || blockers.length > 0}>
+              Needs work
+            </Button>
+          </>
+        )}
         {blockers.length > 0 && (
           <span className='text-caption text-ink-subtle'>
             Still needs {blockers.join(', ')}.
