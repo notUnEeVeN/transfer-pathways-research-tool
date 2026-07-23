@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
   getVisiblePairs, majorScope, pairAllowed, pairClause, scopeTag, invalidateVisibilityCache,
-  onePairPerSchool,
+  normalizePairs,
 } from './majorVisibility';
 import { systemMatch, verdictMatch, scopeKey, SYSTEM_BY_KEY } from './audit/filters';
 
@@ -48,10 +48,16 @@ describe('majorScope', () => {
     expect(scope).toEqual([CS_AT_1]);
   });
 
-  it('keeps only the first choice per campus from legacy settings', async () => {
-    expect(onePairPerSchool([CS_AT_1, MATH_AT_1, CS_AT_2])).toEqual([CS_AT_1, CS_AT_2]);
+  it('keeps several majors at the same campus', async () => {
+    expect(normalizePairs([CS_AT_1, MATH_AT_1, CS_AT_2]))
+      .toEqual([CS_AT_1, MATH_AT_1, CS_AT_2]);
     expect(await majorScope(reqFor('partner-1', [CS_AT_1, MATH_AT_1, CS_AT_2])))
-      .toEqual([CS_AT_1, CS_AT_2]);
+      .toEqual([CS_AT_1, MATH_AT_1, CS_AT_2]);
+  });
+
+  it('drops exact duplicate pairs, preserving order', () => {
+    expect(normalizePairs([CS_AT_1, MATH_AT_1, CS_AT_1]))
+      .toEqual([CS_AT_1, MATH_AT_1]);
   });
 
   it('before any selection exists: admins unrestricted, partners denied', async () => {

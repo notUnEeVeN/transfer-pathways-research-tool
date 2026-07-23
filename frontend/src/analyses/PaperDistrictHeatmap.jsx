@@ -7,7 +7,6 @@ import {
   CA_DIFFERENCE_COLORS, CA_FIGURE, CA_QUARTER_NOTE,
 } from './californiaFigureStyle'
 
-const MAJOR_FILTER = 'computer science'
 const NAVY = '#1a237e'
 const WHITE = '#ffffff'
 const GAIN = '#0d7964'
@@ -500,11 +499,11 @@ export default function PaperDistrictHeatmap({ presentation = false, preview = f
   // PAPER_MAJORS), so it tracks the selected program (e.g. UCB's EECS B.S.
   // instead of Computer Science, B.A.) while the paper/website views stay frozen.
   const paperCoverage = useCoverage(
-    { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'paper', pin: 'paper' },
+    { majorSlug: 'cs', groupBy: 'district', requirements: 'paper', pin: 'paper' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const assistCoverage = useCoverage(
-    { majorContains: MAJOR_FILTER, groupBy: 'district', requirements: 'assist', pin: 'settings' },
+    { majorSlug: 'cs', groupBy: 'district', requirements: 'assist', pin: 'settings' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false, enabled: reqMode === 'assist' }
   )
   const coverage = reqMode === 'assist' ? assistCoverage : paperCoverage

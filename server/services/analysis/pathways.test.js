@@ -5,6 +5,7 @@ import {
   categoryGapsData, complexityData, timeToDegreeData, receiversExportData,
   _settingsMajors, _paperMajors,
 } from './pathways';
+import { getMajor } from '../../config/majors';
 
 let mongo;
 let db;
@@ -320,6 +321,23 @@ describe('coverageData', () => {
       pct_degree_requirement_slots: 66.7,
       pct_articulated: 57.1,
     });
+  });
+});
+
+describe('paper pins', () => {
+  // The pins moved into config/majors.js; the paper figures replicate only if
+  // the values are byte-identical to what they were validated against.
+  it('are the cs entry programs from the majors config', () => {
+    expect(_paperMajors).toEqual(getMajor('cs').programs);
+  });
+
+  it('preserve the stored trailing space in the Merced program name', () => {
+    expect(_paperMajors[144]).toContain('COMPUTER SCIENCE AND ENGINEERING, B.S. ');
+  });
+
+  it('cover exactly the nine figure campuses', () => {
+    expect(Object.keys(_paperMajors).map(Number).sort((a, b) => a - b))
+      .toEqual([7, 46, 79, 89, 117, 120, 128, 132, 144]);
   });
 });
 

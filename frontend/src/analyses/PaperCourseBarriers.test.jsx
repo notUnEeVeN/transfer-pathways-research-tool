@@ -115,7 +115,7 @@ describe('paper course barriers', () => {
     expect(refetch).toHaveBeenCalledOnce()
     expect(useCoverage).toHaveBeenCalledWith(
       {
-        majorContains: 'computer science',
+        majorSlug: 'cs',
         groupBy: 'district',
         requirements: 'paper',
         pin: 'paper',

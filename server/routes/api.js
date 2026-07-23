@@ -4,6 +4,7 @@ const canonicalDataController = require('../controllers/CanonicalData');
 const analysisController = require('../controllers/Analysis');
 const curationController = require('../controllers/Curation');
 const degreeRequirementsController = require('../controllers/DegreeRequirements');
+const majorsController = require('../controllers/Majors');
 const authenticateToken = require('../middleware/auth');
 const requireAuditAccess = require('../middleware/requireAuditAccess');
 const requireAdmin = require('../middleware/requireAdmin');
@@ -54,6 +55,11 @@ router.post('/curated/as-degrees/:id/assist', ...guarded, jsonBody, curationCont
 // ───────── Built-in visual analyses (JSON or ?format=csv) ─────────
 // These routes compute from the same canonical collections as the data API.
 // majorScope keeps every result limited to the caller's visible programs.
+// Which majors are onboarded, and their per-major metadata (program pins,
+// category vocabulary, capability flags). The frontend's major pickers read
+// this instead of holding a mirrored copy.
+router.get('/majors', ...guarded, majorsController.listMajorsEndpoint);
+
 router.get('/analysis/releases', ...guarded, analysisController.getReleases);
 router.get('/analysis/coverage', ...guarded, analysisController.coverage);
 router.get('/analysis/requirement-comparison', ...guarded, analysisController.requirementComparison);

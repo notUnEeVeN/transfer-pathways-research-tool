@@ -88,17 +88,19 @@ export function useAgreementsBatch(collegeId, schoolId) {
 // One fetch covers the whole visible subset; components index client-side.
 export function useCoverage(params = {}, options = {}) {
   const { user } = useAuth()
+  const majorSlug = String(params.majorSlug || '').trim()
   const majorContains = String(params.majorContains || '').trim()
   const groupBy = ['college', 'district', 'county'].includes(params.groupBy) ? params.groupBy : 'college'
   const requirements = ['degree', 'assist', 'paper'].includes(params.requirements) ? params.requirements : 'assist'
   const pin = ['paper', 'settings'].includes(params.pin) ? params.pin : null
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: ['analysis-coverage', user?.uid, majorContains, groupBy, requirements, pin],
+    queryKey: ['analysis-coverage', user?.uid, majorSlug, majorContains, groupBy, requirements, pin],
     queryFn: () =>
       apiClient
         .get('/analysis/coverage', {
           params: {
+            ...(majorSlug ? { majorSlug } : {}),
             ...(majorContains ? { majorContains } : {}),
             ...(groupBy !== 'college' ? { groupBy } : {}),
             ...(requirements !== 'assist' ? { requirements } : {}),
@@ -164,15 +166,19 @@ export function useRequirementComparison({ schoolId, major, communityCollegeId }
 // the incremental cost of adding that campus to the student's options.
 function useAnalysisEndpoint(key, path, params = {}, options = {}) {
   const { user } = useAuth()
+  // majorSlug is the current way to scope an analysis; majorContains is the
+  // older free-text filter, kept for callers that still pass one.
+  const majorSlug = String(params.majorSlug || '').trim()
   const majorContains = String(params.majorContains || '').trim()
   const schoolIds = (params.schoolIds || []).map(Number).filter(Number.isFinite)
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: [key, user?.uid, majorContains, schoolIds.join(',')],
+    queryKey: [key, user?.uid, majorSlug, majorContains, schoolIds.join(',')],
     queryFn: () =>
       apiClient
         .get(path, {
           params: {
+            ...(majorSlug ? { majorSlug } : {}),
             ...(majorContains ? { majorContains } : {}),
             ...(schoolIds.length ? { schoolIds: schoolIds.join(',') } : {}),
           },

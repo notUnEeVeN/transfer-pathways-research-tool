@@ -1,10 +1,11 @@
-import React, { useDeferredValue, useMemo, useState } from 'react'
-import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import { Alert, Button, EmptyState, Input, Stack, StatStrip } from '../components/ui'
+import React, { useMemo, useState } from 'react'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
+import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCreditLoss } from '../shared/query/hooks/useData'
 import { AnalysisLoading, HistogramRows, shortenSchool } from './chartBits'
+import MajorPicker from '../shared/majors/MajorPicker'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
-const DEFAULT_MAJOR_FILTER = 'computer science'
 const METRICS = [
   { value: 'courses', label: 'Courses', field: 'min_cc_courses', binStep: 1, unit: 'courses' },
   { value: 'units', label: 'Units', field: 'min_cc_units', binStep: 2, unit: 'units' },
@@ -76,12 +77,11 @@ function buildModel(rows, metric) {
  * shared scale; hairline tick = campus mean.
  */
 export default function CreditLoss() {
-  const [majorFilter, setMajorFilter] = useState(DEFAULT_MAJOR_FILTER)
+  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
   const [metricValue, setMetricValue] = useState('courses')
   const metric = METRICS.find((m) => m.value === metricValue) || METRICS[0]
-  const deferredMajorFilter = useDeferredValue(majorFilter)
   const query = useCreditLoss(
-    { majorContains: deferredMajorFilter },
+    { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = query.data?.rows || []
@@ -99,14 +99,7 @@ export default function CreditLoss() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <Input
-        label='Major filter'
-        value={majorFilter}
-        onChange={(e) => setMajorFilter(e.target.value)}
-        placeholder='computer science'
-        leadingIcon={MagnifyingGlassIcon}
-        className='w-80 max-w-full'
-      />
+      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <div className='flex flex-col'>
         <span className='field-label'>Metric</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>

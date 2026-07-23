@@ -8,14 +8,14 @@ import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
 import originalPaperFigure from '../assets/california-paper-figure-4.png'
 
 const HAND_CURATED_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'paper',
   pin: 'paper',
 }
 
 const ASSIST_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'assist',
   pin: 'settings',

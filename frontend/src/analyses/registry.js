@@ -59,6 +59,7 @@ export const ANALYSIS_AUTHOR = 'Tybalt Mallet'
 export const ANALYSES = [
   {
     id: 'paper-credit-loss',
+    pinnedMajor: 'cs',
     title: 'Credit loss by campus',
     description: 'Compares required transfer coursework with the average number of community college courses students need for each campus choice.',
     provenance: 'ca',
@@ -70,6 +71,7 @@ export const ANALYSES = [
   },
   {
     id: 'paper-district-heatmap',
+    pinnedMajor: 'cs',
     title: 'Transfer coverage by district',
     description: 'Shows which community college districts offer a complete transfer path to each University of California campus.',
     provenance: 'ca',
@@ -81,6 +83,7 @@ export const ANALYSES = [
   },
   {
     id: 'paper-articulation-histogram',
+    pinnedMajor: 'cs',
     title: 'Districts by complete campus coverage',
     description: 'Shows how many community college districts offer complete computer science transfer paths to zero through nine University of California campuses.',
     provenance: 'ca',
@@ -92,6 +95,7 @@ export const ANALYSES = [
   },
   {
     id: 'paper-articulation-map',
+    pinnedMajor: 'cs',
     title: 'Articulation coverage across California',
     description: 'Maps each community college district by how many University of California campuses offer a complete computer science transfer path.',
     provenance: 'ca',
@@ -102,6 +106,7 @@ export const ANALYSES = [
   },
   {
     id: 'paper-course-barriers',
+    pinnedMajor: 'cs',
     title: 'Course gaps by campus',
     description: 'Shows the share of community college districts with no articulated equivalent for each math and computer science course a University of California campus requires for transfer admission.',
     provenance: 'ca',
@@ -113,6 +118,7 @@ export const ANALYSES = [
   },
   {
     id: 'course-type-coverage',
+    pinnedMajor: 'cs',
     title: 'Transferable requirements by course type',
     description: 'Shows what share of each university computer science degree’s requirements has a community college equivalent, separated into computing, math, science, and other coursework.',
     provenance: 'ma',
@@ -123,6 +129,7 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-credit-rate',
+    pinnedMajor: 'cs',
     title: 'Degree credit toward graduation',
     description: 'Shows how much of a computer science associate degree counts toward graduation requirements at each university.',
     provenance: 'ma',
@@ -133,6 +140,7 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-extra-units',
+    pinnedMajor: 'cs',
     title: 'Modeled replacement coursework',
     description: 'Estimates how many associate-degree units may need to be replaced because they do not apply to university graduation requirements.',
     provenance: 'ma',
@@ -153,6 +161,7 @@ export const ANALYSES = [
   },
   {
     id: 'income-access',
+    pinnedMajor: 'cs',
     title: 'Transfer access and local income',
     description: 'Compares how many university computer science programs each community college district can fully reach with the income of the area it serves, alongside the district’s population and its distance to the nearest campus.',
     provenance: 'new',
@@ -162,6 +171,7 @@ export const ANALYSES = [
   },
   {
     id: 'multi-campus-pathways',
+    pinnedMajor: 'cs',
     title: 'Preparation as campus options expand',
     description: 'Shows how modeled courses and regular terms change when students keep one through seven reachable university computer science options open.',
     provenance: 'new',

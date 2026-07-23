@@ -2,16 +2,17 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { getValidationCohort, setValidationCohort } = require('../services/asDegreeValidation');
 const { proposeAsDegreeEdit } = require('../services/asDegreeAssist');
+const { getMajor, defaultMajor } = require('../config/majors');
 
 const MAPPINGS = 'curated_mappings';
 const REQUIREMENTS = 'curated_requirements';
 
-const CANONICAL_CATEGORIES = [
-  'calculus', 'advanced_math', 'discrete_math', 'other_math',
-  'intro_programming', 'data_structures', 'computer_org', 'other_computing',
-  'science', 'non_stem',
-];
-const BROAD_AXES = ['computing', 'math', 'science', 'non_stem'];
+// The category vocabulary is per-major and lives in config/majors.js.
+// Resolves ?majorSlug=, defaulting to the first onboarded major.
+function majorFromQuery(req) {
+  const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
+  return getMajor(slug) || { error: `unknown major: ${slug}` };
+}
 
 const stamp = (req) => ({ curated_by: req.user?.uid ?? null, curated_at: new Date() });
 const curationDb = (req) => req.app.locals.auditDb || req.app.locals.db;
@@ -27,24 +28,33 @@ function getAnthropic() {
 }
 
 exports.listCategories = asyncHandler(async (req, res) => {
+  const major = majorFromQuery(req);
+  if (major.error) return res.status(400).json({ error: major.error });
   const rows = await curationDb(req).collection(MAPPINGS)
     .find({ kind: 'course_category' }).toArray();
   const categories = rows.map(({ _id, kind, course_id, legacy_id, ...row }) => ({
     ...row,
     _id: Number(legacy_id ?? String(course_id).replace(/^university:/, '')),
   }));
-  res.json({ categories, canonical: CANONICAL_CATEGORIES, broad: BROAD_AXES });
+  res.json({
+    categories,
+    canonical: major.categories.map((c) => c.key),
+    broad: major.broadAxes,
+  });
 });
 
 exports.putCategory = asyncHandler(async (req, res) => {
   const parentId = Number(req.params.parentId);
   if (!Number.isFinite(parentId)) return res.status(400).json({ error: 'numeric parentId required' });
+  const major = majorFromQuery(req);
+  if (major.error) return res.status(400).json({ error: major.error });
+  const canonical = major.categories.map((c) => c.key);
   const { category, broad, note } = req.body || {};
-  if (category != null && !CANONICAL_CATEGORIES.includes(category)) {
-    return res.status(400).json({ error: `category must be one of ${CANONICAL_CATEGORIES.join(', ')}` });
+  if (category != null && !canonical.includes(category)) {
+    return res.status(400).json({ error: `category must be one of ${canonical.join(', ')}` });
   }
-  if (broad != null && !BROAD_AXES.includes(broad)) {
-    return res.status(400).json({ error: `broad must be one of ${BROAD_AXES.join(', ')}` });
+  if (broad != null && !major.broadAxes.includes(broad)) {
+    return res.status(400).json({ error: `broad must be one of ${major.broadAxes.join(', ')}` });
   }
   const db = curationDb(req);
   const id = `course_category:${parentId}`;
@@ -59,6 +69,7 @@ exports.putCategory = asyncHandler(async (req, res) => {
       kind: 'course_category',
       course_id: `university:${parentId}`,
       legacy_id: parentId,
+      major_slug: major.slug,
       category: category ?? null,
       broad: broad ?? null,
       note: note ?? null,
@@ -82,12 +93,15 @@ exports.listOverrides = asyncHandler(async (req, res) => {
 exports.putOverride = asyncHandler(async (req, res) => {
   const hashId = String(req.params.hashId || '').trim();
   if (!hashId) return res.status(400).json({ error: 'hashId required' });
+  const major = majorFromQuery(req);
+  if (major.error) return res.status(400).json({ error: major.error });
+  const canonical = major.categories.map((c) => c.key);
   const { exclude, category, broad, note } = req.body || {};
-  if (category != null && !CANONICAL_CATEGORIES.includes(category)) {
-    return res.status(400).json({ error: `category must be one of ${CANONICAL_CATEGORIES.join(', ')}` });
+  if (category != null && !canonical.includes(category)) {
+    return res.status(400).json({ error: `category must be one of ${canonical.join(', ')}` });
   }
-  if (broad != null && !BROAD_AXES.includes(broad)) {
-    return res.status(400).json({ error: `broad must be one of ${BROAD_AXES.join(', ')}` });
+  if (broad != null && !major.broadAxes.includes(broad)) {
+    return res.status(400).json({ error: `broad must be one of ${major.broadAxes.join(', ')}` });
   }
   const db = curationDb(req);
   const id = `receiver_override:${hashId}`;
@@ -200,5 +214,3 @@ exports.postAsDegreeAssist = asyncHandler(async (req, res) => {
   }
 });
 
-exports.CANONICAL_CATEGORIES = CANONICAL_CATEGORIES;
-exports.BROAD_AXES = BROAD_AXES;

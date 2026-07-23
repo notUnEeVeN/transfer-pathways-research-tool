@@ -6,8 +6,9 @@ import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
   paperRedCellColor,
 } from './maHeatmapColors'
+import MajorPicker from '../shared/majors/MajorPicker'
+import { useMajorChoice } from '../shared/majors/MajorContext'
 
-const MAJOR_FILTER = 'computer science'
 const ROW_MODES = [
   { value: 'college', label: 'College', noun: 'colleges', header: 'Community college' },
   { value: 'district', label: 'District', noun: 'districts', header: 'Community college district' },
@@ -335,12 +336,21 @@ export default function CoverageHeatmap({ presentation = false }) {
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
+  const { slug: majorSlug, setSlug, major } = useMajorChoice('visuals')
+  // ASSIST-only majors have no hand-curated minimums and, until their degree
+  // templates are authored, no graduation plan to measure against.
+  const caps = major?.capabilities || {}
+  // Hand-curated minimums will never exist for ASSIST-only majors, so that mode
+  // is dropped. The graduation-plan mode stays: its templates are pending, and
+  // it renders empty until they are authored.
+  const reqModes = REQ_MODES.filter((m) => m.value !== 'paper' || caps.transferMinimums !== false)
+  const activeReqMode = reqModes.some((m) => m.value === reqMode) ? reqMode : 'assist'
   const coverage = useCoverage(
-    { majorContains: MAJOR_FILTER, groupBy: rowMode.value, requirements: reqMode },
+    { majorSlug, groupBy: rowMode.value, requirements: activeReqMode },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
-  const model = useMemo(() => buildHeatmap(rows, reqMode), [rows, reqMode])
+  const model = useMemo(() => buildHeatmap(rows, activeReqMode), [rows, activeReqMode])
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
 
   if (coverage.isLoading) {
@@ -375,7 +385,7 @@ export default function CoverageHeatmap({ presentation = false }) {
           {!presentation && (
             <div className='flex flex-col min-w-64'>
               <span className='field-label'>Requirement basis</span>
-              <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
+              <Select value={activeReqMode} onChange={setReqMode} options={reqModes} />
             </div>
           )}
           <Button variant='secondary' leadingIcon={ArrowPathIcon} onClick={() => coverage.refetch()}>
@@ -390,6 +400,7 @@ export default function CoverageHeatmap({ presentation = false }) {
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+        <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
         <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -410,7 +421,7 @@ export default function CoverageHeatmap({ presentation = false }) {
         {!presentation && (
           <div className='flex flex-col min-w-64'>
             <span className='field-label'>Requirement basis</span>
-            <Select value={reqMode} onChange={setReqMode} options={REQ_MODES} />
+            <Select value={activeReqMode} onChange={setReqMode} options={reqModes} />
           </div>
         )}
         <Button
@@ -428,9 +439,9 @@ export default function CoverageHeatmap({ presentation = false }) {
       </div>
 
       <div data-export-root className='flex flex-col gap-6'>
-        <HeatmapTable model={model} rowMode={rowMode} reqMode={reqMode} />
-        <Legend reqMode={reqMode} scale={model.colorScale} />
-        {reqMode === 'degree' && (
+        <HeatmapTable model={model} rowMode={rowMode} reqMode={activeReqMode} />
+        <Legend reqMode={activeReqMode} scale={model.colorScale} />
+        {activeReqMode === 'degree' && (
           <p className='text-caption text-ink-subtle max-w-4xl'>
             Percentage of modeled UC graduation units with a community-college equivalent. Each campus is calculated in its own native quarter or semester units. Requirement-slot counts remain available in each cell tooltip as secondary context.
           </p>

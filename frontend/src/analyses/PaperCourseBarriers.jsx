@@ -10,7 +10,7 @@ import {
 } from './paperCourseBarriersBaseline'
 
 const COVERAGE_PARAMS = {
-  majorContains: 'computer science',
+  majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'paper',
   pin: 'paper',

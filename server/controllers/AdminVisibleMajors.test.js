@@ -53,7 +53,7 @@ const run = (pairs) => new Promise((resolve, reject) => {
 });
 
 describe('PUT /admin/visible-majors', () => {
-  it('saves exactly one major for every ported UC campus', async () => {
+  it('saves a major for every ported UC campus', async () => {
     const pairs = [
       { school_id: 7, major: 'Computer Science B.S.' },
       { school_id: 79, major: 'Computer Science B.A.' },
@@ -65,21 +65,50 @@ describe('PUT /admin/visible-majors', () => {
     expect(doc.visible_pairs).toEqual(pairs);
   });
 
-  it('rejects two selected majors for the same campus', async () => {
-    const res = await run([
+  // The working dataset is multi-major since 2026-07: a campus may carry one
+  // major per onboarded field (CS + Biology + Economics).
+  it('accepts several majors at the same campus', async () => {
+    const pairs = [
       { school_id: 7, major: 'Computer Science B.S.' },
       { school_id: 7, major: 'Mathematics/Computer Science B.S.' },
+      { school_id: 79, major: 'Computer Science B.A.' },
+    ];
+    const res = await run(pairs);
+
+    expect(res.statusCode).toBe(200);
+    const doc = await db.collection('settings').findOne({ _id: 'app' });
+    expect(doc.visible_pairs).toEqual(pairs);
+  });
+
+  it('drops exact duplicate pairs', async () => {
+    const res = await run([
+      { school_id: 7, major: 'Computer Science B.S.' },
+      { school_id: 7, major: 'Computer Science B.S.' },
+      { school_id: 79, major: 'Computer Science B.A.' },
+    ]);
+
+    expect(res.statusCode).toBe(200);
+    const doc = await db.collection('settings').findOne({ _id: 'app' });
+    expect(doc.visible_pairs).toEqual([
+      { school_id: 7, major: 'Computer Science B.S.' },
+      { school_id: 79, major: 'Computer Science B.A.' },
+    ]);
+  });
+
+  it('still rejects a major that is not in the ported dataset', async () => {
+    const res = await run([
+      { school_id: 7, major: 'Underwater Basket Weaving B.A.' },
       { school_id: 79, major: 'Computer Science B.A.' },
     ]);
 
     expect(res.statusCode).toBe(400);
-    expect(res.body.error).toContain('at most one major per UC campus');
+    expect(res.body.error).toContain('not in the ported dataset');
   });
 
-  it('rejects a selection that omits a ported campus', async () => {
-    const res = await run([{ school_id: 7, major: 'Computer Science B.S.' }]);
+  it('rejects an empty selection', async () => {
+    const res = await run([]);
 
     expect(res.statusCode).toBe(400);
-    expect(res.body.error).toContain('missing: UC Berkeley');
+    expect(res.body.error).toContain('at least one');
   });
 });

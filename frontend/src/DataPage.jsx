@@ -28,6 +28,8 @@ import {
   useSaveDegreeRequirement, useAsDegreeAvailability,
 } from '@frontend/query/hooks/useData'
 import { useAuth } from '@frontend/hooks/useAuth'
+import MajorPicker from './shared/majors/MajorPicker'
+import { useMajorChoice } from './shared/majors/MajorContext'
 
 /**
  * Data explorer — the partners' access point into the research database.
@@ -327,7 +329,15 @@ const CS_DEGREE_PROGRAMS = [
   { type: 'local_computing', award: null },
 ]
 
-function AssociateDegreeSection({ collegeId, availability }) {
+function AssociateDegreeSection({ collegeId, availability, major = null }) {
+  // The associate-degree layer only exists for majors whose AS data has been
+  // gathered — CS today. Say so rather than showing another major's degrees.
+  if (major && major.capabilities?.asDegrees === false) {
+    return (
+      <EmptyState title={`No ${major.label} associate degrees yet`}
+        description={`Associate-degree records have only been gathered for Computer Science. ${major.label} transfer articulation is available under Transfer articulation.`} />
+    )
+  }
   const availablePrograms = CS_DEGREE_PROGRAMS.filter(({ type }) => (
     availability?.types?.[type]?.status === 'available'
       && availability.types[type].record_id
@@ -407,17 +417,30 @@ function CampusAgreements({
   onBack,
 }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
+  // This pane's own choice — browsing a college in Biology must not retune the
+  // UC pane or the Visuals gallery.
+  const { slug: majorSlug, setSlug, major } = useMajorChoice('colleges')
   const [selectedSection, setSelectedSection] = useState(null)
-  const agreements = useMemo(() => {
+  // Every agreement this college has with the selected campus, before any
+  // major filter. The section fallback below keys off THIS — a major with no
+  // agreements must not look like a college with no agreements.
+  const allAgreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
     return (group?.agreements || []).slice().sort((a, b) => String(a.major).localeCompare(String(b.major)))
   }, [batch.data, campus.school_id])
+  const agreements = useMemo(() => {
+    // The match string is the same one the server scopes analyses by, so this
+    // page and the figures agree on what counts as the selected major.
+    const match = major?.match?.toLowerCase()
+    if (!match) return allAgreements
+    return allAgreements.filter((a) => String(a.major).toLowerCase().includes(match))
+  }, [allAgreements, major])
   const defaultAgreementId = agreements[0]?._id
   // A college with no agreement opens on the useful degree finding. Otherwise
   // transfer articulation remains the familiar default. An explicit user
   // choice always wins after the batch resolves.
   const section = selectedSection
-    || (!batch.isLoading && !agreements.length ? 'degrees' : 'articulation')
+    || (!batch.isLoading && !allAgreements.length ? 'degrees' : 'articulation')
 
   // Keep the one shared route chip synchronized with the selected peer view.
   // Once inside articulation, the active agreement card reports its finer
@@ -453,26 +476,34 @@ function CampusAgreements({
       <div className='flex items-center'>
         <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={backToColleges}>All colleges</Button>
       </div>
-      <Tabs value={section} onChange={setSelectedSection} options={[
-        { value: 'articulation', label: 'Transfer articulation' },
-        { value: 'degrees', label: 'Associate degrees' },
-        { value: 'courses', label: 'Courses' },
-        { value: 'prerequisites', label: 'Prerequisites' },
-      ]} />
+      {/* Major sits with the section tabs: it scopes all of them. */}
+      <div className='flex flex-wrap items-center gap-3'>
+        <Tabs value={section} onChange={setSelectedSection} options={[
+          { value: 'articulation', label: 'Transfer articulation' },
+          { value: 'degrees', label: 'Associate degrees' },
+          { value: 'courses', label: 'Courses' },
+          { value: 'prerequisites', label: 'Prerequisites' },
+        ]} />
+        <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
+      </div>
       {section === 'courses' ? (
         <CourseList institutionId={collegeId} useCourses={useCcCourses}
           columns={CC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title']} />
       ) : section === 'prerequisites' ? (
         <ConceptGraphView key={collegeId} initialCollegeId={collegeId} lockCollege />
       ) : section === 'degrees' ? (
-        <AssociateDegreeSection collegeId={collegeId} availability={degreeAvailability} />
+        <AssociateDegreeSection collegeId={collegeId} availability={degreeAvailability}
+          major={major} />
       ) : (
         <Stack gap='comfortable'>
           <ReceivingCampusPicker campuses={campuses} campusId={campus.school_id} onSelect={changeCampus} />
           {batch.isLoading ? (
             <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
           ) : !agreements.length ? (
-            <EmptyState title='No agreements' description='This college has no agreements for the selected campus.' />
+            <EmptyState title='No agreements'
+              description={major
+                ? `This college has no ${major.label} agreements with the selected campus. Try another major or campus.`
+                : 'This college has no agreements for the selected campus.'} />
           ) : (
             <Stack gap='section'>
               {agreements.map((agreement) => (
@@ -498,15 +529,19 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
   const raw = useDegreeRequirementDocuments()
   const save = useSaveDegreeRequirement()
   const { user } = useAuth()
+  const { slug: majorSlug, setSlug, major } = useMajorChoice('campuses')
   const [editing, setEditing] = useState(false)
-  const doc = useMemo(
-    () => (q.data?.rows || []).find((r) => Number(r.school_id) === Number(schoolId)) || null,
-    [q.data, schoolId]
-  )
-  const rawDoc = useMemo(
-    () => (raw.data?.rows || []).find((r) => Number(r.school_id) === Number(schoolId)) || null,
-    [raw.data, schoolId]
-  )
+  // A campus has one graduation template PER MAJOR. Match the program to the
+  // selected major so Biology never renders the computer-science degree.
+  const forMajor = useCallback((rows) => {
+    const match = major?.match?.toLowerCase()
+    return (rows || []).find((r) => (
+      Number(r.school_id) === Number(schoolId)
+      && (!match || String(r.program || '').toLowerCase().includes(match))
+    )) || null
+  }, [major, schoolId])
+  const doc = useMemo(() => forMajor(q.data?.rows), [q.data, forMajor])
+  const rawDoc = useMemo(() => forMajor(raw.data?.rows), [raw.data, forMajor])
   // Notes ride on the stored degree doc (PUT replaces the whole row, so the
   // raw doc is spread back in full); the importer $sets its own fields only,
   // so notes survive re-imports.
@@ -517,18 +552,23 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
 
   return (
     <Stack gap='cozy'>
-      {onBack && (
-        <div className='flex items-center'>
+      {/* This pane's own major: a campus has one four-year template per major,
+          so browsing them here is the point. Independent of the college pane. */}
+      <div className='flex flex-wrap items-center gap-3'>
+        {onBack && (
           <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
-        </div>
-      )}
+        )}
+        <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
+      </div>
       {q.isLoading || raw.isLoading ? (
         <div className='flex justify-center py-10'><Spinner /></div>
       ) : q.isError || raw.isError ? (
         <Alert type='error'>Failed to load the graduation requirements.</Alert>
       ) : !doc ? (
-        <EmptyState title='No graduation requirements'
-          description='No hand-curated four-year graduation requirements have been added for this campus.'
+        <EmptyState title={major ? `No ${major.label} graduation requirements` : 'No graduation requirements'}
+          description={major
+            ? `No hand-curated four-year ${major.label} requirements have been added for this campus yet.`
+            : 'No hand-curated four-year graduation requirements have been added for this campus.'}
           action={<Button leadingIcon={PencilSquareIcon} onClick={() => setEditing(true)}>Create requirements</Button>} />
       ) : (
         <DegreeRequirementsDetail doc={doc} onEdit={() => setEditing(true)}
@@ -709,12 +749,17 @@ const routeForAgreementView = (view, agreementId, compareFor) => (
 
 function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null }) {
   const [view, setView] = useState('ledger') // ledger | stored | raw | comparison | degree
+  const { major } = useMajorChoice('colleges')
+  const caps = major?.capabilities || {}
   const docQ = useAuditDoc(agreementId, 'uc')
   const raw = useRawAssist(agreementId, { enabled: view === 'raw' })
   const courses = useCourseList(docQ.data?.course_names)
 
   if (docQ.isLoading) return <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
   if (docQ.isError) return <Alert type='error'>Failed to load the agreement.</Alert>
+  // Switching to an ASSIST-only major removes tabs; fall back rather than
+  // render an empty card.
+  const activeView = view === 'comparison' && caps.transferMinimums === false ? 'ledger' : view
   const doc = docQ.data?.doc
   if (!doc) return null
 
@@ -743,26 +788,33 @@ function AgreementDetail({ agreementId, onRoute = () => {}, compareFor = null })
           )}
         </div>
       </div>
-      <Tabs value={view} onChange={changeView}
+      <Tabs value={activeView} onChange={changeView}
         options={[
           { value: 'ledger', label: 'ASSIST Transfer Requirements' },
-          ...(compareFor ? [{ value: 'comparison', label: 'Curated Transfer Minimums' }] : []),
+          // ASSIST-only majors have no hand-curated minimums (permanent) and
+          // no graduation templates yet (until W1 Phase 4).
+          ...(compareFor && caps.transferMinimums !== false ? [{ value: 'comparison', label: 'Curated Transfer Minimums' }] : []),
           ...(compareFor ? [{ value: 'degree', label: 'Graduation Requirements Coverage' }] : []),
           { value: 'stored', label: 'DB document' },
           { value: 'raw',    label: 'Raw ASSIST API' },
         ]} />
-      {view === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
-      {view === 'degree' && compareFor && (
-        <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+      {activeView === 'comparison' && compareFor && <ComparisonView compareFor={compareFor} />}
+      {activeView === 'degree' && compareFor && (
+        caps.degreeTemplates === false ? (
+          <EmptyState title={`${major?.label || 'This major'} graduation requirements not gathered yet`}
+            description={`Coverage compares a college's courses against the campus's four-year ${major?.label || ''} template. Those templates are still being hand-gathered for this major, so there is nothing to measure against yet.`} />
+        ) : (
+          <DegreeCompletionView schoolId={compareFor.schoolId} collegeId={compareFor.communityCollegeId} />
+        )
       )}
-      {view === 'ledger' && (
+      {activeView === 'ledger' && (
         <div className='uui-scope'>
           <RequirementsLedger major={doc} courses={courses}
             universityCoursesById={docQ.data?.university_courses || null} preserveOrder showCompletion={false} />
         </div>
       )}
-      {view === 'stored' && <JsonPanel data={doc} filename={`${slug}.stored.json`} />}
-      {view === 'raw' && (
+      {activeView === 'stored' && <JsonPanel data={doc} filename={`${slug}.stored.json`} />}
+      {activeView === 'raw' && (
         raw.isLoading ? <div className='flex justify-center py-10'><Spinner /></div>
         : raw.isError ? <Alert type='error'>{raw.error?.response?.data?.error || 'assist.org fetch failed.'}</Alert>
         : raw.data ? <JsonPanel data={raw.data} filename={`${slug}.assist-raw.json`} /> : null
