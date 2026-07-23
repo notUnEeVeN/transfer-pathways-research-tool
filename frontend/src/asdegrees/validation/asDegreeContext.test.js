@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { buildAsDegreeContext, courseCatalogLines } from './asDegreeContext'
 import { buildScaffold } from './asDegreeScaffold'
+import { AS_DEGREE_SLOTS } from '../asDegreeSlots'
 
 const DOC = {
   _id: 'as_degree:4:cs:local_as',
@@ -83,5 +84,31 @@ describe('creation mode', () => {
   it('keeps the editing framing by default', () => {
     expect(buildAsDegreeContext({ doc, courses: [] }))
       .toContain('# Correcting an AS-degree requirement document')
+  })
+})
+
+describe('briefing stays in step with the server', () => {
+  const text = buildAsDegreeContext({
+    doc: buildScaffold({ collegeId: 110, major: 'cs', slot: 'ast' }), courses: [],
+  })
+
+  it('promises only fields the validator actually lets a save change', () => {
+    for (const field of ['status', 'degree_title_seen', 'catalog_url',
+      'catalog_year', 'unit_system', 'total_units', 'requirement_groups']) {
+      expect(text).toContain(field)
+    }
+  })
+
+  it('never names a retired degree type', () => {
+    expect(text).not.toContain('local_cs_as')
+    expect(text).not.toContain('local_computing')
+  })
+
+  it('states the group_id rule the validator enforces', () => {
+    expect(text).toContain('^[a-z0-9_]+$')
+  })
+
+  it('covers every live slot in the vocabulary', () => {
+    expect(AS_DEGREE_SLOTS).toHaveLength(3)
   })
 })
