@@ -4,7 +4,8 @@ const { majorScope, pairClause } = require('../services/majorVisibility');
 const { prerequisiteGraphData } = require('../services/prereqGraph');
 const asDegreeView = require('../services/asDegreeView');
 const { recomputeAsDegreeCoveredConcepts } = require('../services/asDegreeConcepts');
-const { defaultMajor, getMajor } = require('../config/majors');
+const { defaultMajor, getMajor, listMajors } = require('../config/majors');
+const { AS_DEGREE_SLOTS, parseAsDegreeRowId } = require('../config/asDegreeSlots');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -93,10 +94,10 @@ const GE_AREAS = [
 const AS_DEGREE_STATUSES = ['found', 'none_found', 'ambiguous'];
 const AS_DEGREE_SOURCES = ['extracted', 'template_default', 'curated'];
 const UNIT_SYSTEMS = ['semester', 'quarter'];
-// as_degree: a college may hold up to one row per degree type; the row id's
-// slug segment is the degree_type (as_degree:<cc>:<degree_type>), decoupled
-// from major_slug (which stays 'cs' for all v1 docs and is used for grouping).
-const AS_DEGREE_TYPES = ['local_cs_as', 'local_computing', 'ast'];
+// as_degree: a college may hold up to one row per (major, degree_type); the
+// row id is <cc>:<major>:<slot> (as_degree:<cc>:<major>:<slot>). The slot
+// vocabulary and the major vocabulary each live in their own config module —
+// see server/config/asDegreeSlots.js and server/config/majors.js.
 
 async function validatePrereqConcept(db, canonical) {
   const slug = String(canonical.slug || '');
@@ -218,19 +219,26 @@ async function validateAsDegreeTemplate(db, canonical) {
 // (spec §1B). Body fields mirror assist_agreements exactly so the golden
 // engines can evaluate the doc with no translation layer.
 async function validateAsDegree(db, canonical) {
-  const idMatch = /^(\d+):([a-z0-9_]+)$/.exec(String(canonical.legacy_id || ''));
-  if (!idMatch) return 'row id must look like <community_college_id>:<degree_type>, e.g. 110:local_cs_as';
-  const ccId = Number(idMatch[1]);
+  const parsed = parseAsDegreeRowId(canonical.legacy_id);
+  if (!parsed) {
+    return 'row id must look like <community_college_id>:<major>:<slot>, e.g. 110:cs:ast';
+  }
+  const { communityCollegeId: ccId, majorSlug, slot } = parsed;
   if (canonical.community_college_id !== ccId) {
     return 'community_college_id must match the numeric part of the row id';
   }
   if (canonical.college_id !== `cc:${ccId}`) return `college_id must be 'cc:${ccId}'`;
-  if (!AS_DEGREE_TYPES.includes(canonical.degree_type)) {
-    return `degree_type must be one of ${AS_DEGREE_TYPES.join(', ')}`;
+  if (!AS_DEGREE_SLOTS.includes(canonical.degree_type)) {
+    return `degree_type must be one of ${AS_DEGREE_SLOTS.join(', ')}`;
   }
-  if (canonical.degree_type !== idMatch[2]) return 'degree_type must match the slug part of the row id';
-  if (typeof canonical.major_slug !== 'string' || !CONCEPT_SLUG_RE.test(canonical.major_slug)) {
-    return 'major_slug must be a non-empty slug matching ^[a-z0-9_]+$';
+  if (canonical.degree_type !== slot) {
+    return 'degree_type must match the slot segment of the row id';
+  }
+  if (!getMajor(canonical.major_slug)) {
+    return `major_slug must be a configured major (${listMajors().map((m) => m.slug).join(', ')})`;
+  }
+  if (canonical.major_slug !== majorSlug) {
+    return 'major_slug must match the major segment of the row id';
   }
   const inst = await db.collection(COLLECTIONS.institutions)
     .findOne({ _id: `cc:${ccId}` }, { projection: { kind: 1 } });
@@ -677,8 +685,8 @@ exports.asDegrees = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const collegeId = String(req.query.college_id || '').trim();
   const degreeType = String(req.query.degree_type || '').trim() || null;
-  if (degreeType && !AS_DEGREE_TYPES.includes(degreeType)) {
-    return res.status(400).json({ error: `degree_type must be one of ${AS_DEGREE_TYPES.join(', ')}` });
+  if (degreeType && !AS_DEGREE_SLOTS.includes(degreeType)) {
+    return res.status(400).json({ error: `degree_type must be one of ${AS_DEGREE_SLOTS.join(', ')}` });
   }
   if (collegeId) {
     const detail = await asDegreeView.asDegreeDetail(db, collegeId);

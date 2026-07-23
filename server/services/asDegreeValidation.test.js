@@ -4,6 +4,24 @@ import { createRequire } from 'node:module';
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const { getValidationCohort, setValidationCohort } = cjs('./asDegreeValidation');
+const { validateAsDegree } = cjs('../controllers/CanonicalData');
+
+// Lightweight stub for validateAsDegree's own db calls (assist_institutions
+// and, only when template_ref is set, curated_requirements) — no need for
+// the in-memory mongo harness above, which is for the cohort tests.
+function fakeDb(institutionsById = {}) {
+  return {
+    collection(name) {
+      if (name === 'assist_institutions') {
+        return { findOne: async ({ _id }) => institutionsById[_id] || null };
+      }
+      if (name === 'curated_requirements') {
+        return { findOne: async () => null };
+      }
+      throw new Error(`unexpected collection ${name}`);
+    },
+  };
+}
 
 let mongo;
 let auditDb;
@@ -51,11 +69,12 @@ describe('as-degree validation cohort', () => {
     });
     await db.collection('curated_requirements').insertMany([
       {
-        _id: 'as_degree:110:local_cs_as',
+        _id: 'as_degree:110:cs:local_as',
         kind: 'as_degree',
         college_id: 'cc:110',
         community_college_id: 110,
-        degree_type: 'local_cs_as',
+        degree_type: 'local_as',
+        major_slug: 'cs',
         status: 'found',
         verification: { verified: false },
         requirement_groups: [
@@ -67,11 +86,12 @@ describe('as-degree validation cohort', () => {
         ],
       },
       {
-        _id: 'as_degree:110:ast',
+        _id: 'as_degree:110:cs:ast',
         kind: 'as_degree',
         college_id: 'cc:110',
         community_college_id: 110,
         degree_type: 'ast',
+        major_slug: 'cs',
         status: 'found',
         verification: { verified: true },
         requirement_groups: [],
@@ -87,7 +107,7 @@ describe('as-degree validation cohort', () => {
         name: 'Allan Hancock College',
         degrees: [
           {
-            record_id: 'as_degree:110:ast',
+            record_id: 'as_degree:110:cs:ast',
             degree_type: 'ast',
             status: 'found',
             verified: true,
@@ -95,8 +115,8 @@ describe('as-degree validation cohort', () => {
             groups_curated: 0,
           },
           {
-            record_id: 'as_degree:110:local_cs_as',
-            degree_type: 'local_cs_as',
+            record_id: 'as_degree:110:cs:local_as',
+            degree_type: 'local_as',
             status: 'found',
             verified: false,
             groups_total: 3,
@@ -132,5 +152,45 @@ describe('as-degree validation cohort', () => {
       updated_by: null,
       updated_at: null,
     });
+  });
+});
+
+describe('major-scoped as_degree identity', () => {
+  // A minimal non-'found' row: status short-circuits before the catalog fields.
+  const row = (over = {}) => ({
+    legacy_id: '110:cs:ast',
+    community_college_id: 110,
+    college_id: 'cc:110',
+    degree_type: 'ast',
+    major_slug: 'cs',
+    status: 'none_found',
+    ...over,
+  });
+  const db = fakeDb({ 'cc:110': { kind: 'community_college' } });
+
+  it('accepts a three-segment id whose segments all agree', async () => {
+    expect(await validateAsDegree(db, row())).toBeNull();
+  });
+
+  it('rejects the pre-migration two-segment id', async () => {
+    expect(await validateAsDegree(db, row({ legacy_id: '110:ast' })))
+      .toMatch(/<community_college_id>:<major>:<slot>/);
+  });
+
+  it('rejects a retired CS type name', async () => {
+    expect(await validateAsDegree(db, row({
+      legacy_id: '110:cs:local_cs_as', degree_type: 'local_cs_as',
+    }))).toMatch(/degree_type must be one of ast, local_as, local_other/);
+  });
+
+  it('rejects a major that is not configured', async () => {
+    expect(await validateAsDegree(db, row({
+      legacy_id: '110:astronomy:ast', major_slug: 'astronomy',
+    }))).toMatch(/major_slug must be a configured major/);
+  });
+
+  it('rejects a major_slug that disagrees with the id', async () => {
+    expect(await validateAsDegree(db, row({ major_slug: 'bio' })))
+      .toMatch(/major_slug must match the major segment/);
   });
 });
