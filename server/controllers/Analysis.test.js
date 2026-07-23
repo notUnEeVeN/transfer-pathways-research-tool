@@ -7,6 +7,7 @@ const {
   exportCsAstDegrees,
   exportLocalCsAsDegrees,
   _parseMultiCampusPathwayParams,
+  _resolveMajorScope,
 } = cjs('./Analysis');
 
 let mongo;
@@ -77,6 +78,29 @@ describe('CS A.S.-T export', () => {
       _id: 'as_degree:10:local', degree_type: 'local_cs_as', college_name: 'Example College',
     });
     expect(response.body.rows[0].courses_by_id['cc:100']).toMatchObject({ code: 'CS 1', units: 4 });
+  });
+});
+
+describe('major scope resolution', () => {
+  // `major` already means "exact ASSIST program name" elsewhere in the API
+  // (requirement-comparison, visible pairs), so the slug param is majorSlug.
+  it('resolves a slug to that major\'s match string', () => {
+    expect(_resolveMajorScope({ majorSlug: 'cs' }))
+      .toEqual({ slug: 'cs', majorContains: 'computer science' });
+  });
+
+  it('keeps the legacy majorContains filter working', () => {
+    expect(_resolveMajorScope({ majorContains: 'econom' }))
+      .toEqual({ slug: null, majorContains: 'econom' });
+  });
+
+  it('defaults to an empty, unscoped filter', () => {
+    expect(_resolveMajorScope({})).toEqual({ slug: null, majorContains: '' });
+  });
+
+  it('reports unknown slugs with the onboarded list', () => {
+    expect(_resolveMajorScope({ majorSlug: 'underwater-basket-weaving' }))
+      .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs'] });
   });
 });
 

@@ -17,6 +17,7 @@
  * re-port show up within a minute without a restart.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
+const { majorScopeFromQuery, getMajor, defaultMajor } = require('../config/majors');
 const { asDegreesExportData } = require('../services/asDegreeView');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
 const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
@@ -50,9 +51,21 @@ async function cached(key, compute) {
   return rows;
 }
 
-async function parseParams(req) {
+// ?majorSlug=<slug> (preferred) or the legacy ?majorContains=<substring>.
+// The param is majorSlug, not major, because `major` already means the exact
+// ASSIST program name elsewhere in this API (requirement-comparison, the
+// visible-pairs shape). Returns {slug, majorContains}, or {error, known}.
+function resolveMajorScope(query = {}) {
+  return majorScopeFromQuery({
+    major: query.majorSlug,
+    majorContains: query.majorContains,
+  });
+}
+
+async function parseParams(req, scope) {
   return {
-    majorContains: String(req.query.majorContains || '').trim(),
+    majorSlug: scope.slug,
+    majorContains: scope.majorContains,
     schoolIds: String(req.query.schoolIds || '')
       .split(',')
       .map((s) => Number(s.trim()))
@@ -90,11 +103,13 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
   return asyncHandler(async (req, res) => {
     const db = req.app.locals.db;
     const auditDb = req.app.locals.auditDb || db;
-    const params = await parseParams(req);
+    const scope = resolveMajorScope(req.query);
+    if (scope.error) return res.status(400).json({ error: scope.error, known: scope.known });
+    const params = await parseParams(req, scope);
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
-    const key = `${name}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
+    const key = `${name}|${params.majorSlug || ''}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
     // Degree templates are editable in the Data tab. The frontend invalidates
     // its query after a save; bypassing the short analysis cache here makes the
     // next request reflect that edit immediately.
@@ -139,6 +154,19 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
 // Data tab, so this endpoint deliberately bypasses the short analysis cache;
 // an explicit frontend refresh must never receive a pre-edit result.
 exports.transferCreditRate = asyncHandler(async (req, res) => {
+  // The AS-degree layer exists only for majors whose associate-degree data has
+  // been gathered (cs today). Asking for one without it is a client bug, not an
+  // empty result, so say so plainly.
+  const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
+  const major = getMajor(slug);
+  if (!major) return res.status(400).json({ error: `unknown major: ${slug}` });
+  if (!major.capabilities.asDegrees) {
+    return res.status(400).json({
+      error: 'capability_required',
+      capability: 'asDegrees',
+      major: major.slug,
+    });
+  }
   const degreeType = ['ast', 'local_cs_as'].includes(req.query.degree_type)
     ? req.query.degree_type
     : 'local_cs_as';
@@ -312,3 +340,4 @@ exports.exportLocalCsAsDegrees = makeEndpoint(
 
 exports._toCsv = toCsv;
 exports._parseMultiCampusPathwayParams = parseMultiCampusPathwayParams;
+exports._resolveMajorScope = resolveMajorScope;
