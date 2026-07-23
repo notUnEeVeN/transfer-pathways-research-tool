@@ -744,14 +744,21 @@ describe('asDegrees endpoint', () => {
   it('passes the major through to the detail lookup', async () => {
     await db.collection('assist_institutions').insertOne(
       { _id: 'cc:110', source_id: 110, kind: 'community_college', name: 'Allan Hancock College' });
-    await db.collection('curated_requirements').insertOne(
+    await db.collection('curated_requirements').insertMany([
       { _id: 'as_degree:110:cs:ast', kind: 'as_degree', college_id: 'cc:110', community_college_id: 110,
         degree_type: 'ast', major_slug: 'cs', status: 'found', requirement_groups: [],
-        verification: { verified: false } });
+        verification: { verified: false } },
+      { _id: 'as_degree:110:bio:ast', kind: 'as_degree', college_id: 'cc:110', community_college_id: 110,
+        degree_type: 'ast', major_slug: 'bio', status: 'found', requirement_groups: [],
+        verification: { verified: false } },
+    ]);
 
     const res = await run(asDegrees, request({
-      query: { college_id: 'cc:110', major: 'cs' },
+      query: { college_id: 'cc:110', major: 'bio' },
     }));
     expect(res.statusCode).toBe(200);
+    expect(res.body.degrees).toHaveLength(1);
+    expect(res.body.degrees[0].doc.major_slug).toBe('bio');
+    expect(res.body.degrees[0].doc._id).toBe('as_degree:110:bio:ast');
   });
 });
