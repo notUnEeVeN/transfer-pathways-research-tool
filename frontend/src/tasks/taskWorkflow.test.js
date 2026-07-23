@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
-  PORTING_STAGES, currentStageIndex, derivedProgress, nextStage, isAwaitingVerification,
-  withBoardAssignment,
+  CREATABLE_TASK_TYPES, PORTING_STAGES, currentStageIndex, derivedProgress,
+  isAwaitingVerification, isChecklistTask, nextStage, nextStepLabel, stagesForTask,
+  taskTypeLabel, withBoardAssignment,
 } from './taskWorkflow'
 
 const through = (keys) => Object.fromEntries(keys.map((key) => [key, { completed: true }]))
@@ -89,6 +90,37 @@ describe('Porting task workflow', () => {
       expect(withBoardAssignment(task, { status: 'done', order: 4000 }, me, roster)).toEqual({
         status: 'done', order: 4000,
       })
+    })
+  })
+
+  describe('general tasks', () => {
+    it('exposes General as a creatable checklist-capable type', () => {
+      const task = { task_type: 'general' }
+      expect(CREATABLE_TASK_TYPES.map((option) => option.value)).toContain('general')
+      expect(taskTypeLabel('general')).toBe('General')
+      expect(isChecklistTask(task)).toBe(true)
+      expect(stagesForTask(task)).toEqual([])
+      expect(derivedProgress(task)).toBe(0)
+    })
+
+    it('treats an explicit empty checklist as a bare general task', () => {
+      const task = { task_type: 'general', checklist_items: [] }
+      expect(isChecklistTask(task)).toBe(true)
+      expect(stagesForTask(task)).toEqual([])
+      expect(nextStepLabel(task)).toBeNull()
+    })
+
+    it('uses neutral progress copy for a general checklist', () => {
+      const task = {
+        task_type: 'general',
+        checklist_items: [{ key: 'draft', label: 'Draft' }],
+        workflow_stages: {},
+      }
+      expect(nextStepLabel(task)).toBe('Next: Draft')
+      expect(nextStepLabel({
+        ...task,
+        workflow_stages: { draft: { completed: true } },
+      })).toBe('All checkpoints complete')
     })
   })
 })

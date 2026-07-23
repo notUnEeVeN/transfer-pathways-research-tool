@@ -51,4 +51,21 @@ describe('TaskCard stage-dot strip', () => {
     expect(screen.getByText(`${PORTING_STAGES.length} of ${PORTING_STAGES.length}`)).toBeInTheDocument()
     expect(screen.queryByText(/%/)).not.toBeInTheDocument()
   })
+
+  it('omits the progress strip for a bare general task', () => {
+    const task = {
+      _id: 'tc-general1',
+      title: 'Write results section',
+      task_type: 'general',
+      status: 'todo',
+      progress: 0,
+      workflow_stages: {},
+      workflow_log: [],
+    }
+    const { container } = render(<TaskCard task={task} onOpen={() => {}} />)
+
+    expect(screen.getByText('General')).toBeInTheDocument()
+    expect(container.querySelectorAll('[title]')).toHaveLength(0)
+    expect(screen.queryByText('0 of 0')).not.toBeInTheDocument()
+  })
 })

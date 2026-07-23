@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
-  ArchiveBoxIcon, ArchiveBoxXMarkIcon, PlusIcon, TrashIcon, XMarkIcon,
+  ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowLeftIcon, PlusIcon, TrashIcon, XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {
-  Badge, Button, Combobox, CompletionCheck, IconButton, Input, Modal, Select, Textarea,
+  Badge, Button, Combobox, CompletionCheck, IconButton, Input, Modal, OptionCard, Select, Textarea,
 } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import PortingWorkflow from './PortingWorkflow'
@@ -11,9 +11,10 @@ import VerificationChecklist from './VerificationChecklist'
 import AuditFixInbox from './AuditFixInbox'
 import {
   CREATABLE_TASK_TYPES, PORTING_STAGES, TASK_TYPE_OPTIONS, isChecklistTask,
-  taskTypeBadgeVariant, taskTypeLabel,
+  isBareGeneralTask, taskTypeBadgeVariant, taskTypeLabel,
 } from './taskWorkflow'
-import { useSchools } from '@frontend/query/hooks/useData'
+import { TASK_PRESETS, buildPresetTask } from './taskPresets'
+import { useColleges, useSchools } from '@frontend/query/hooks/useData'
 
 const OPEN_STATUS_OPTIONS = [
   { value: 'todo', label: 'To do' },
@@ -25,6 +26,8 @@ const fmtWhen = (value) => (value
       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
     })
   : '')
+
+const checklistItemLabel = (item) => (typeof item === 'string' ? item : item?.label || '')
 
 export default function TaskModal({
   open, onClose, task = null, initialStatus = 'todo', roster = [],
@@ -43,25 +46,90 @@ export default function TaskModal({
   const [note, setNote] = useState('')
   const [newItems, setNewItems] = useState([])
   const [itemDraft, setItemDraft] = useState('')
+  const [createStep, setCreateStep] = useState(editing ? 'form' : 'preset')
+  const [selectedPreset, setSelectedPreset] = useState(null)
+  const [presetParams, setPresetParams] = useState({})
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const presetHeadingRef = useRef(null)
+  const titleInputRef = useRef(null)
   const set = (patch) => setDraft((current) => ({ ...current, ...patch }))
+
+  useEffect(() => {
+    if (editing) return
+    if (createStep === 'form') titleInputRef.current?.focus()
+    else presetHeadingRef.current?.focus()
+  }, [createStep, editing])
 
   // Checklist types carry user-authored checkpoints; on create they're built
   // here (typed or quick-filled). Editing items later happens in the
   // verification panel, not here.
   const creatingChecklist = !editing && isChecklistTask({ task_type: draft.task_type })
+  const checklistRequired = creatingChecklist && draft.task_type !== 'general'
   const schools = useSchools()
+  const colleges = useColleges()
   const addDraftItem = () => {
     const label = itemDraft.trim()
     if (!label) return
+    if (newItems.some((item) => checklistItemLabel(item).toLocaleLowerCase() === label.toLocaleLowerCase())) {
+      setItemDraft('')
+      return
+    }
     setNewItems((current) => [...current, label])
     setItemDraft('')
   }
   const prefillCampuses = () => {
     const names = (schools.data?.uc || []).map((row) => row.name).sort((a, b) => a.localeCompare(b))
-    if (names.length) setNewItems(names)
+    if (names.length) setNewItems((current) => {
+      const seen = new Set(current.map((item) => checklistItemLabel(item).toLocaleLowerCase()))
+      return [
+        ...current,
+        ...names.filter((name) => !seen.has(name.toLocaleLowerCase())),
+      ]
+    })
   }
+
+  const campusNames = useMemo(
+    () => (schools.data?.uc || []).map((row) => row.name).filter(Boolean).sort((a, b) => a.localeCompare(b)),
+    [schools.data]
+  )
+  const collegeNames = useMemo(
+    () => (colleges.data || []).map((row) => row.name).filter(Boolean).sort((a, b) => a.localeCompare(b)),
+    [colleges.data]
+  )
+  const schoolNames = useMemo(
+    () => [...new Set([...campusNames, ...collegeNames])].sort((a, b) => a.localeCompare(b)),
+    [campusNames, collegeNames]
+  )
+
+  const applyPreset = (presetKey, params) => {
+    const built = buildPresetTask(presetKey, params)
+    setDraft((current) => ({
+      ...current,
+      title: built.title,
+      description: built.description,
+      task_type: built.task_type,
+    }))
+    setNewItems(built.checklist_items || [])
+    setItemDraft('')
+    setError(null)
+    setCreateStep('form')
+  }
+
+  const choosePreset = (preset) => {
+    const defaults = {
+      campus: campusNames[0] || '',
+      college: collegeNames[0] || '',
+      major: '',
+    }
+    setSelectedPreset(preset.key)
+    setPresetParams(defaults)
+    setError(null)
+    if (!preset.params.length) applyPreset(preset.key, defaults)
+  }
+
+  const activePreset = TASK_PRESETS.find((preset) => preset.key === selectedPreset) || null
+  const presetReady = activePreset?.params.every((param) => String(presetParams[param] || '').trim())
 
   const rosterOptions = useMemo(
     () => [{ value: '', label: 'Unassigned' }, ...roster.map((person) => ({ value: person.uid, label: person.label }))],
@@ -72,7 +140,7 @@ export default function TaskModal({
 
   const save = async () => {
     if (!draft.title.trim()) { setError('A title is required.'); return }
-    if (creatingChecklist && !newItems.length) { setError('Add at least one checkpoint.'); return }
+    if (checklistRequired && !newItems.length) { setError('Add at least one checkpoint.'); return }
     const body = {
       title: draft.title.trim(),
       description: draft.description,
@@ -80,7 +148,7 @@ export default function TaskModal({
       assignee_uid: draft.assignee_uid || null,
       assignee_label: roster.find((person) => person.uid === draft.assignee_uid)?.label || null,
     }
-    if (creatingChecklist) body.checklist_items = newItems
+    if (creatingChecklist && newItems.length) body.checklist_items = newItems
     if (!editing || task.status !== 'done') body.status = draft.status
     setSaving(true)
     setError(null)
@@ -110,7 +178,7 @@ export default function TaskModal({
 
   const details = (
     <div className='space-y-4'>
-      <Input label='Title' value={draft.title} onChange={(event) => set({ title: event.target.value })}
+      <Input ref={titleInputRef} label='Title' value={draft.title} onChange={(event) => set({ title: event.target.value })}
         placeholder='e.g. Recreate MA Fig 3 — transfer credit rate'
         error={error && !draft.title.trim() ? error : undefined} />
       <Textarea label='Description' value={draft.description}
@@ -122,8 +190,8 @@ export default function TaskModal({
           <p className='field-label'>Task type</p>
           {editing ? (
             <Select value={draft.task_type} onChange={(value) => set({ task_type: value })}
-              options={TASK_TYPE_OPTIONS}
-              disabled={(task?.progress || 0) > 0 || task?.task_type === 'audit_fix'} />
+              options={task?.task_type === 'audit_fix' ? TASK_TYPE_OPTIONS : CREATABLE_TASK_TYPES}
+              disabled={task?.status === 'done' || (task?.progress || 0) > 0 || task?.task_type === 'audit_fix'} />
           ) : (
             <div className='flex items-stretch gap-0.5 bg-surface-sunken rounded-pill p-[3px]'>
               {CREATABLE_TASK_TYPES.map((option) => {
@@ -153,7 +221,9 @@ export default function TaskModal({
         {editing && task.status === 'done' ? (
           <div className='input-field flex items-center gap-2 text-success'>
             <CompletionCheck size='sm' />
-            <span>{isChecklistTask(task) ? 'Done — every item verified' : 'Done via team approval'}</span>
+            <span>{task.task_type === 'general'
+              ? 'Done'
+              : isChecklistTask(task) ? 'Done — every item verified' : 'Done via team approval'}</span>
           </div>
         ) : (
           <Select value={draft.status} onChange={(value) => set({ status: value })} options={OPEN_STATUS_OPTIONS} />
@@ -163,8 +233,74 @@ export default function TaskModal({
       {error && draft.title.trim() && <p className='text-caption text-danger'>{error}</p>}
 
       <div className='flex items-center justify-end gap-2'>
+        {!editing && (
+          <Button variant='ghost' leadingIcon={ArrowLeftIcon}
+            onClick={() => { setCreateStep('preset'); setError(null) }}>
+            Presets
+          </Button>
+        )}
         <Button variant='ghost' onClick={onClose}>Cancel</Button>
         <Button onClick={save} loading={saving}>{editing ? 'Save details' : 'Create task'}</Button>
+      </div>
+    </div>
+  )
+
+  const presetPicker = (
+    <div>
+      <div>
+        <h3 ref={presetHeadingRef} tabIndex={-1} className='text-heading'>What kind of work is this?</h3>
+        <p className='text-caption text-ink-subtle mt-1'>
+          Start from a research workflow, then edit every field before creating the task.
+        </p>
+      </div>
+      <div className='mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3'>
+        {TASK_PRESETS.map((preset) => (
+          <OptionCard key={preset.key} title={preset.label} description={preset.blurb}
+            selected={selectedPreset === preset.key} onClick={() => choosePreset(preset)} />
+        ))}
+      </div>
+
+      {activePreset?.params.length > 0 && (
+        <section className='mt-5 pt-5 border-t border-border' aria-label={`${activePreset.label} details`}>
+          <h3 className='text-body-strong'>Preset details</h3>
+          <div className='mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3'>
+            {activePreset.params.includes('campus') && (
+              <div>
+                <p className='field-label'>Campus</p>
+                <Select aria-label='Campus' value={presetParams.campus || ''}
+                  onChange={(campus) => setPresetParams((current) => ({ ...current, campus }))}
+                  options={campusNames.map((name) => ({ value: name, label: name }))}
+                  placeholder={schools.isLoading ? 'Loading campuses…' : 'Choose a campus'} />
+              </div>
+            )}
+            {activePreset.params.includes('college') && (
+              <div>
+                <p className='field-label'>College</p>
+                <Select aria-label='College' value={presetParams.college || ''}
+                  onChange={(college) => setPresetParams((current) => ({ ...current, college }))}
+                  options={collegeNames.map((name) => ({ value: name, label: name }))}
+                  placeholder={colleges.isLoading ? 'Loading colleges…' : 'Choose a college'} />
+              </div>
+            )}
+            {activePreset.params.includes('major') && (
+              // F: swap this free-text field for MajorPicker when the shared
+              // major dimension lands.
+              <Input label='Major' value={presetParams.major || ''}
+                onChange={(event) => setPresetParams((current) => ({ ...current, major: event.target.value }))}
+                placeholder='e.g. Biology' />
+            )}
+          </div>
+          <div className='mt-4 flex justify-end'>
+            <Button disabled={!presetReady}
+              onClick={() => applyPreset(activePreset.key, presetParams)}>
+              Continue with preset
+            </Button>
+          </div>
+        </section>
+      )}
+
+      <div className='mt-5 flex justify-end'>
+        <Button variant='ghost' onClick={onClose}>Cancel</Button>
       </div>
     </div>
   )
@@ -175,7 +311,11 @@ export default function TaskModal({
       onClose={onClose}
       size={editing ? 'xl' : 'lg'}
       title={editing ? 'Task workflow' : 'New task'}
-      subtitle={editing ? `${taskTypeLabel(task.task_type)} · ${task.progress || 0}% complete` : taskTypeLabel(draft.task_type)}
+      subtitle={editing
+        ? isBareGeneralTask(task)
+          ? `${taskTypeLabel(task.task_type)}${task.status === 'done' ? ' · Done' : ''}`
+          : `${taskTypeLabel(task.task_type)} · ${task.progress || 0}% complete`
+        : createStep === 'preset' ? 'Choose a starting point' : taskTypeLabel(draft.task_type)}
       actions={editing && (
         <span className='inline-flex items-center gap-1'>
           <IconButton
@@ -187,7 +327,7 @@ export default function TaskModal({
         </span>
       )}
     >
-      {editing ? (
+      {!editing && createStep === 'preset' ? presetPicker : editing ? (
         <div className='grid grid-cols-1 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.35fr)] gap-6'>
           <div className='min-w-0'>
             <section aria-labelledby='task-details-title'>
@@ -235,6 +375,7 @@ export default function TaskModal({
                 onCompleteStage={onCompleteStage} onReopenStage={onReopenStage} />
             ) : isChecklistTask(task) ? (
               <VerificationChecklist task={task} me={me} roster={roster}
+                schoolOptions={schoolNames}
                 onCompleteStage={onCompleteStage} onReopenStage={onReopenStage}
                 onAddStageNote={onAddStageNote} onDeleteStageNote={onDeleteStageNote}
                 onPatch={onPatch} onClose={onClose} />
@@ -251,46 +392,69 @@ export default function TaskModal({
           {details}
           <section className='mt-6 pt-5 border-t border-border'>
             <div className='flex items-baseline justify-between gap-3'>
-              <h3 className='text-body-strong'>Verification checkpoints</h3>
+              <h3 className='text-body-strong'>
+                {draft.task_type === 'general' ? 'Task checkpoints' : 'Verification checkpoints'}
+              </h3>
               <span className='text-tag text-ink-subtle'>
                 {newItems.length === 1 ? '1 checkpoint' : `${newItems.length} checkpoints`}
               </span>
             </div>
             <p className='text-caption text-ink-subtle mt-2'>
-              Checkpoints are this task's flexible progression — verify them in any order, and add more as you find them.
+              {draft.task_type === 'general'
+                ? 'Optional checkpoints break the work into steps. Leave this empty for a simple board card.'
+                : 'Add each school, dataset, or validation unit as a checkpoint, then verify them one by one.'}
             </p>
-            <div className='mt-3 flex flex-wrap items-center gap-2'>
-              <span className='text-tag font-[600] text-ink-subtle'>Quick fill</span>
-              <Button size='sm' variant='secondary' leadingIcon={PlusIcon}
-                onClick={prefillCampuses} disabled={!(schools.data?.uc || []).length}>
-                One per UC campus
-              </Button>
-              {newItems.length > 0 && (
-                <Button size='sm' variant='ghost' className='hover:!bg-danger-soft hover:!text-danger'
-                  onClick={() => setNewItems([])}>Clear all</Button>
-              )}
-            </div>
+            {(draft.task_type === 'data_verification' || newItems.length > 0) && (
+              <div className='mt-3 flex flex-wrap items-center gap-2'>
+                {draft.task_type === 'data_verification' && (
+                  <>
+                    <span className='text-tag font-[600] text-ink-subtle'>School quick fill</span>
+                    <Button size='sm' variant='secondary' leadingIcon={PlusIcon}
+                      onClick={prefillCampuses} disabled={!(schools.data?.uc || []).length}>
+                      One per UC campus
+                    </Button>
+                  </>
+                )}
+                {newItems.length > 0 && (
+                  <Button size='sm' variant='ghost' className='hover:!bg-danger-soft hover:!text-danger'
+                    onClick={() => setNewItems([])}>Clear all</Button>
+                )}
+              </div>
+            )}
             {newItems.length > 0 && (
               <ol className='mt-2'>
-                {newItems.map((name, index) => (
-                  <li key={`${name}-${index}`} className='flex items-center gap-2.5 py-[6.5px] border-b border-border'>
-                    <span className='grid place-items-center w-[22px] h-[22px] rounded-pill bg-surface-sunken text-[11px] font-[650] text-ink-muted shrink-0'>{index + 1}</span>
-                    <span className='text-caption ink-default min-w-0 truncate'>{name}</span>
-                    <IconButton icon={XMarkIcon} label={`Remove ${name}`} size='sm' className='ml-auto'
-                      onClick={() => setNewItems((current) => current.filter((_, i) => i !== index))} />
-                  </li>
-                ))}
+                {newItems.map((item, index) => {
+                  const label = checklistItemLabel(item)
+                  return (
+                    <li key={`${typeof item === 'object' ? item.key : label}-${index}`}
+                      className='flex items-center gap-2.5 py-[6.5px] border-b border-border'>
+                      <span className='grid place-items-center w-[22px] h-[22px] rounded-pill bg-surface-sunken text-[11px] font-[650] text-ink-muted shrink-0'>{index + 1}</span>
+                      <span className='text-caption ink-default min-w-0 truncate'>{label}</span>
+                      <IconButton icon={XMarkIcon} label={`Remove ${label}`} size='sm' className='ml-auto'
+                        onClick={() => setNewItems((current) => current.filter((_, i) => i !== index))} />
+                    </li>
+                  )
+                })}
               </ol>
             )}
             <div className='mt-3 flex items-center gap-2.5'>
               <input value={itemDraft}
+                aria-label={draft.task_type === 'general' ? 'New task checkpoint' : 'New verification checkpoint'}
+                list={draft.task_type === 'data_verification' ? 'task-school-options' : undefined}
                 onChange={(event) => setItemDraft(event.target.value)}
                 onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); addDraftItem() } }}
-                placeholder='Add a checkpoint — a campus, dataset, or spot-check…'
+                placeholder={draft.task_type === 'general'
+                  ? 'Add a checkpoint — a deliverable, review, or follow-up…'
+                  : 'Add a school, dataset, or validation item…'}
                 className='flex-1 min-w-0 bg-surface border border-border rounded-pill px-4 py-[9px] text-[13px] outline-none placeholder:text-ink-subtle focus:border-primary' />
+              {draft.task_type === 'data_verification' && (
+                <datalist id='task-school-options'>
+                  {schoolNames.map((name) => <option key={name} value={name} />)}
+                </datalist>
+              )}
               <Button size='sm' variant='secondary' disabled={!itemDraft.trim()} onClick={addDraftItem}>Add</Button>
             </div>
-            {error && !newItems.length && <p className='text-caption text-danger mt-2'>{error}</p>}
+            {error && checklistRequired && !newItems.length && <p className='text-caption text-danger mt-2'>{error}</p>}
           </section>
         </div>
       ) : (

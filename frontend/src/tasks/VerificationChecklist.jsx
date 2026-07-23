@@ -38,15 +38,13 @@ const latestNoteFor = (task, stageKey, state) => {
 }
 
 /**
- * VerificationChecklist — the Data Verification task's right column.
- * User-authored checkpoints verified in any order: segmented progress,
- * a pulsing up-next node, one-click verify/undo (node or button), one
- * editable note per checkpoint, inline add/remove, and an explicit
- * ready-to-close banner once every checkpoint is verified.
+ * VerificationChecklist — the editable checklist used by data-verification
+ * and general tasks. Checkpoints complete in any order with segmented
+ * progress, notes, inline add/remove, and an explicit close action at 100%.
  */
 export default function VerificationChecklist({
   task, me, roster = [], onCompleteStage, onReopenStage, onAddStageNote,
-  onDeleteStageNote, onPatch, onClose = null,
+  onDeleteStageNote, onPatch, onClose = null, schoolOptions = [],
 }) {
   const allStages = stagesForTask(task)
   const [noteStage, setNoteStage] = useState(null)
@@ -74,14 +72,21 @@ export default function VerificationChecklist({
   const doneCount = stages.filter((stage) => isStageComplete(task, stage.key)).length
   const allDone = stages.length > 0 && doneCount === stages.length
   const pct = Math.max(0, Math.min(100, task.progress || 0))
-  // Audit-fix tasks render through AuditFixInbox; this component is the
-  // data-verification checkpoint timeline.
-  const copy = {
+  // Audit-fix tasks render through AuditFixInbox. General tasks use neutral
+  // completion language; data-verification keeps its domain-specific copy.
+  const general = task.task_type === 'general'
+  const copy = general ? {
+    title: 'Task checkpoints',
+    count: stages.length ? `${doneCount} of ${stages.length} checkpoints complete` : 'No checkpoints',
+    verb: 'Complete',
+    banner: 'Every checkpoint is complete — this task is ready to close.',
+    addPlaceholder: 'Add a checkpoint — a deliverable, review, or follow-up…',
+  } : {
     title: 'Verification checkpoints',
     count: `${doneCount} of ${stages.length} checkpoints verified`,
     verb: 'Verify',
     banner: 'Every checkpoint is verified — this task is ready to close.',
-    addPlaceholder: 'Add a checkpoint — a campus, dataset, or spot-check…',
+    addPlaceholder: 'Add a school, dataset, or validation item…',
   }
 
   const names = useMemo(() => new Map(roster.map((person) => [person.uid, person.label])), [roster])
@@ -106,9 +111,9 @@ export default function VerificationChecklist({
   }
 
   const verify = (stage) => run(`verify:${stage.key}`,
-    () => onCompleteStage(task._id, stage.key), 'Could not verify this checkpoint.')
+    () => onCompleteStage(task._id, stage.key), `Could not ${general ? 'complete' : 'verify'} this checkpoint.`)
   const undo = (stage) => run(`undo:${stage.key}`,
-    () => onReopenStage(task._id, stage.key), 'Could not un-verify this checkpoint.')
+    () => onReopenStage(task._id, stage.key), `Could not reopen this ${general ? 'checkpoint' : 'verification'}.`)
   const toggle = (stage) => (isStageComplete(task, stage.key) ? undo(stage) : verify(stage))
 
   const openNote = (stage) => {
@@ -134,6 +139,12 @@ export default function VerificationChecklist({
   const addItem = async () => {
     const label = newItem.trim()
     if (!label) return
+    if ((task.checklist_items || []).some((item) => (
+      item.label?.toLocaleLowerCase() === label.toLocaleLowerCase()
+    ))) {
+      setNewItem('')
+      return
+    }
     const ok = await run('add-item',
       () => onPatch(task._id, { checklist_items: [...(task.checklist_items || []), label] }),
       'Could not add the checkpoint.')
@@ -170,18 +181,29 @@ export default function VerificationChecklist({
           <h3 className='text-heading'>{copy.title}</h3>
           <p className='text-caption text-ink-subtle mt-0.5'>{copy.count}</p>
         </div>
-        <span className='ml-auto text-stat tracking-[-.01em] leading-none text-success'>{pct}%</span>
+        {stages.length > 0 && (
+          <span className='ml-auto text-stat tracking-[-.01em] leading-none text-success'>{pct}%</span>
+        )}
       </div>
 
-      {/* Segmented progress: one pill per checkpoint. */}
-      <div className='mt-3 flex gap-1' role='progressbar' aria-label='Checkpoints verified'
-        aria-valuemin={0} aria-valuemax={stages.length} aria-valuenow={doneCount}>
-        {stages.map((stage, i) => (
-          <span key={stage.key} className={`flex-1 h-[7px] rounded-pill transition-colors duration-200 ${
-            isStageComplete(task, stage.key) ? 'bg-success' : i === upNextIndex ? 'bg-accent' : 'bg-surface-sunken'
-          }`} />
-        ))}
-      </div>
+      {stages.length > 0 ? (
+        // Segmented progress: one pill per checkpoint.
+        <div className='mt-3 flex gap-1' role='progressbar'
+          aria-label={general ? 'Checkpoints complete' : 'Checkpoints verified'}
+          aria-valuemin={0} aria-valuemax={stages.length} aria-valuenow={doneCount}>
+          {stages.map((stage, i) => (
+            <span key={stage.key} className={`flex-1 h-[7px] rounded-pill transition-colors duration-200 ${
+              isStageComplete(task, stage.key) ? 'bg-success' : i === upNextIndex ? 'bg-accent' : 'bg-surface-sunken'
+            }`} />
+          ))}
+        </div>
+      ) : (
+        <p className='mt-3 rounded-xl bg-surface-muted px-3 py-3 text-caption text-ink-subtle'>
+          {task.status === 'done'
+            ? 'This simple task is done. Move it back to To do or In progress from the board to add checkpoints.'
+            : 'No checkpoints yet. Add one below, or keep this as a simple board task.'}
+        </p>
+      )}
 
       {allDone && task.status !== 'done' && (
         <div className='mt-4 flex items-center gap-3 bg-primary-soft border border-accent rounded-[12px] px-3.5 py-3'>
@@ -208,7 +230,9 @@ export default function VerificationChecklist({
               <div className='flex flex-col items-center'>
                 <button
                   type='button'
-                  title={done ? 'Click to un-verify' : 'Click to verify'}
+                  title={done
+                    ? `Click to ${general ? 'reopen' : 'un-verify'}`
+                    : `Click to ${general ? 'complete' : 'verify'}`}
                   disabled={Boolean(busy) || (!done && !canVerify)}
                   onClick={() => toggle(stage)}
                   className={`shrink-0 w-7 h-7 rounded-pill box-border grid place-items-center cursor-pointer border-2 transition-colors ${
@@ -220,7 +244,8 @@ export default function VerificationChecklist({
                   }`}
                 >
                   {done
-                    ? <CheckIcon className='w-3.5 h-3.5 text-accent' strokeWidth={2.5} aria-label={`${stage.label} verified`} />
+                    ? <CheckIcon className='w-3.5 h-3.5 text-accent' strokeWidth={2.5}
+                        aria-label={`${stage.label} ${general ? 'complete' : 'verified'}`} />
                     : <span className={`text-tag font-[650] ${isNext ? 'text-ink-muted' : 'text-ink-subtle'}`}>{index + 1}</span>}
                 </button>
                 <span className={`w-[2px] flex-1 min-h-[16px] rounded-[1px] mt-1 ${done ? 'bg-success/60' : 'bg-border'}`} aria-hidden />
@@ -257,9 +282,11 @@ export default function VerificationChecklist({
                         )}
                       </>
                     )}
-                    <IconButton icon={XMarkIcon} label={`Remove ${stage.label}`} size='sm'
-                      disabled={busy === `remove:${stage.key}`}
-                      onClick={() => removeItem(stage)} />
+                    {task.status !== 'done' && (
+                      <IconButton icon={XMarkIcon} label={`Remove ${stage.label}`} size='sm'
+                        disabled={busy === `remove:${stage.key}`}
+                        onClick={() => removeItem(stage)} />
+                    )}
                   </span>
                 </div>
 
@@ -290,23 +317,32 @@ export default function VerificationChecklist({
           )
         })}
 
-        {/* Add checkpoint — the timeline's open end. */}
-        <div className='flex gap-4 items-center'>
-          <span className='shrink-0 w-7 h-7 rounded-pill box-border border-[1.5px] border-dashed border-border-strong grid place-items-center text-ink-subtle'>
-            <PlusIcon className='w-3 h-3' strokeWidth={2} />
-          </span>
-          <div className='flex-1 min-w-0'>
-            <input
-              value={newItem}
-              onChange={(event) => setNewItem(event.target.value)}
-              onKeyDown={(event) => { if (event.key === 'Enter') addItem() }}
-              placeholder={copy.addPlaceholder}
-              className='w-full bg-surface border border-border rounded-pill px-4 py-[9px] text-caption ink-default outline-none placeholder:text-ink-subtle focus:border-primary'
-            />
+        {task.status !== 'done' && (
+          // Add checkpoint — the timeline's open end.
+          <div className='flex gap-4 items-center'>
+            <span className='shrink-0 w-7 h-7 rounded-pill box-border border-[1.5px] border-dashed border-border-strong grid place-items-center text-ink-subtle'>
+              <PlusIcon className='w-3 h-3' strokeWidth={2} />
+            </span>
+            <div className='flex-1 min-w-0'>
+              <input
+                aria-label={general ? 'New task checkpoint' : 'New verification checkpoint'}
+                list={!general && schoolOptions.length ? 'verification-school-options' : undefined}
+                value={newItem}
+                onChange={(event) => setNewItem(event.target.value)}
+                onKeyDown={(event) => { if (event.key === 'Enter') addItem() }}
+                placeholder={copy.addPlaceholder}
+                className='w-full bg-surface border border-border rounded-pill px-4 py-[9px] text-caption ink-default outline-none placeholder:text-ink-subtle focus:border-primary'
+              />
+              {!general && schoolOptions.length > 0 && (
+                <datalist id='verification-school-options'>
+                  {schoolOptions.map((name) => <option key={name} value={name} />)}
+                </datalist>
+              )}
+            </div>
+            <Button size='sm' variant='secondary' loading={busy === 'add-item'}
+              disabled={!newItem.trim()} onClick={addItem}>Add</Button>
           </div>
-          <Button size='sm' variant='secondary' loading={busy === 'add-item'}
-            disabled={!newItem.trim()} onClick={addItem}>Add</Button>
-        </div>
+        )}
       </Reorder.Group>
     </div>
   )

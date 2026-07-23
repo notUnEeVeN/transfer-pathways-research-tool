@@ -1,8 +1,11 @@
+// Mirrors server/services/tasks.js TASK_TYPES — change both together so the
+// UI and API accept the same task types.
 export const TASK_TYPE_OPTIONS = [
   { value: 'porting', label: 'Porting' },
   { value: 'data_verification', label: 'Data Verification' },
   // Machine-made: audit verdicts feed one standing task (no manual creation).
   { value: 'audit_fix', label: 'Audit Fix' },
+  { value: 'general', label: 'General' },
 ]
 export const CREATABLE_TASK_TYPES = TASK_TYPE_OPTIONS.filter((option) => option.value !== 'audit_fix')
 
@@ -10,7 +13,14 @@ export const CREATABLE_TASK_TYPES = TASK_TYPE_OPTIONS.filter((option) => option.
 // completable in any order, no peer gate. Mirrors the server's
 // CHECKLIST_TASK_TYPES.
 export const isChecklistTask = (task) => (
-  task?.task_type === 'data_verification' || task?.task_type === 'audit_fix'
+  task?.task_type === 'data_verification'
+  || task?.task_type === 'audit_fix'
+  || task?.task_type === 'general'
+)
+
+export const isBareGeneralTask = (task) => (
+  task?.task_type === 'general'
+  && (!Array.isArray(task?.checklist_items) || task.checklist_items.length === 0)
 )
 
 export const PORTING_STAGES = [
@@ -150,6 +160,10 @@ export const nextStepLabel = (task) => {
   const upcoming = nextStage(task)
   if (task?.task_type === 'audit_fix') {
     return upcoming ? `Next: fix ${upcoming.label}` : 'Inbox clear — new verdicts reopen it'
+  }
+  if (task?.task_type === 'general') {
+    if (isBareGeneralTask(task)) return null
+    return upcoming ? `Next: ${upcoming.label}` : 'All checkpoints complete'
   }
   if (isChecklistTask(task)) {
     return upcoming ? `Next: verify ${upcoming.label}` : 'All checkpoints verified'

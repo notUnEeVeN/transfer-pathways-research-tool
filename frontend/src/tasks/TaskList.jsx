@@ -3,7 +3,9 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Badge, EmptyState, Panel } from '../components/ui'
 import UserInitialsAvatar from '../components/display/UserInitialsAvatar'
 import { COLUMNS } from './TaskBoard'
-import { isAwaitingVerification, taskTypeBadgeVariant, taskTypeLabel } from './taskWorkflow'
+import {
+  isAwaitingVerification, isBareGeneralTask, taskTypeBadgeVariant, taskTypeLabel,
+} from './taskWorkflow'
 
 const STATUS_LABEL = Object.fromEntries(COLUMNS.map((c) => [c.status, c.label]))
 // Verification is a derived board state (stored status stays in_progress); its
@@ -42,7 +44,7 @@ export default function TaskList({ tasks, onOpen, includeArchived = false, empty
             {t.archived && <Badge>archived</Badge>}
             <Badge variant={taskTypeBadgeVariant(t.task_type)} className='hidden md:inline-flex'>{taskTypeLabel(t.task_type)}</Badge>
             <span className={`text-caption font-semibold flex-1 min-w-0 truncate ${t.status === 'done' || t.archived ? 'ink-muted' : 'ink-default'}`}>{t.title}</span>
-            {t.status !== 'done' && (t.task_type === 'audit_fix' ? (
+            {t.status !== 'done' && !isBareGeneralTask(t) && (t.task_type === 'audit_fix' ? (
               // The fix inbox has no progress framing — just how many are open.
               <Badge className='hidden lg:inline-flex tabular'>
                 {(t.checklist_items || []).filter((item) => !(t.workflow_stages?.[item.key]?.completed || t.workflow_stages?.[item.key]?.completed_at)).length} open

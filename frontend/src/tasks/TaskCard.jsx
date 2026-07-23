@@ -43,7 +43,7 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
         {task.title}
       </p>
 
-      <div className='mt-2.5 flex items-center gap-2'>
+      {stages.length > 0 && <div className='mt-2.5 flex items-center gap-2'>
         {task.task_type === 'audit_fix' ? (
           // A collection, not a pipeline: tier-colored dots, no connectors,
           // and the count reads as open fixes rather than progress-to-done.
@@ -88,7 +88,7 @@ export default function TaskCard({ task, onOpen, dragging = false }) {
             <span className='ml-auto text-tag text-ink-subtle whitespace-nowrap tabular'>{doneN} of {stages.length}</span>
           </>
         )}
-      </div>
+      </div>}
       {!isDone && nextLine && <p className='text-tag text-ink-subtle mt-1.5 truncate'>{nextLine}</p>}
 
       <div className='mt-2.5 flex items-center gap-2 min-h-[1.25rem]'>

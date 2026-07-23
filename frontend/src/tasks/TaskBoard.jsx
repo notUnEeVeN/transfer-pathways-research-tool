@@ -2,8 +2,10 @@ import React, { useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { PlusIcon, ChevronDownIcon, ChevronRightIcon, ArchiveBoxArrowDownIcon } from '@heroicons/react/24/outline'
 import TaskCard from './TaskCard'
-import { isAwaitingVerification } from './taskWorkflow'
+import { isAwaitingVerification, taskTypeLabel } from './taskWorkflow'
 import { usePersistedState } from '../shared/hooks/usePersistedState'
+
+const DONE_LIMIT = 10
 
 // Verification is a DERIVED column, not a stored status: a task lands there when
 // it is in_progress and its next stage is in the verification phase — Self-verify
@@ -20,6 +22,40 @@ export const COLUMNS = [
 // status except the derived Verification bucket, which pulls self-verified
 // in_progress tasks out of In progress.
 const columnFor = (task) => (isAwaitingVerification(task) ? 'verification' : task.status)
+
+const tasksByColumn = (tasks) => {
+  const columns = Object.fromEntries(COLUMNS.map((column) => [column.status, []]))
+  for (const task of Array.isArray(tasks) ? tasks : []) {
+    if (task.archived) continue
+    const status = columnFor(task)
+    if (columns[status]) columns[status].push(task)
+  }
+  for (const status of Object.keys(columns)) {
+    columns[status].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  }
+  return columns
+}
+
+const updatedTime = (task) => {
+  const time = Date.parse(task?.updated_at)
+  return Number.isNaN(time) ? 0 : time
+}
+
+const groupByTaskType = (tasks) => {
+  const groups = []
+  const byType = new Map()
+  for (const task of tasks) {
+    const taskType = task.task_type || 'porting'
+    let group = byType.get(taskType)
+    if (!group) {
+      group = { taskType, tasks: [] }
+      byType.set(taskType, group)
+      groups.push(group)
+    }
+    group.tasks.push(task)
+  }
+  return groups
+}
 
 // Fractional index between two neighbors for drag-drop reordering — the moved
 // card takes the midpoint, so a reorder writes one doc instead of renumbering
@@ -47,6 +83,53 @@ function dropSlot(columnEl, draggedId, pointY) {
   return { prevId: prev, nextId: null }
 }
 
+// Convert a visible DOM boundary into adjacent neighbors from the complete,
+// true-order column. The next visible card is the anchor; filtered-out cards
+// immediately before it still participate in the midpoint. A drop below every
+// rendered card appends after the true final card, including capped/hidden ones.
+function trueOrderSlot(
+  column,
+  draggedId,
+  nextVisibleId,
+  { grouped = false, prevVisibleId = null, draggedTaskType = null } = {}
+) {
+  const ordered = column.filter((task) => task._id !== draggedId)
+  // Grouping changes DOM adjacency: the card after the final card in one type
+  // section belongs to the next section, even when it appeared much earlier in
+  // the column's true order. Treat that boundary as "append to this type" and
+  // anchor after the final matching task in the complete ordering universe.
+  // This also keeps filtered-out cards of the same type ahead of the append.
+  if (grouped && prevVisibleId != null && nextVisibleId != null) {
+    const prevVisible = ordered.find((task) => task._id === prevVisibleId)
+    const nextVisible = ordered.find((task) => task._id === nextVisibleId)
+    const typeFor = (task) => task?.task_type || 'porting'
+    if (prevVisible && nextVisible
+      && typeFor(prevVisible) === draggedTaskType
+      && typeFor(nextVisible) !== draggedTaskType) {
+      let lastTypeIndex = -1
+      for (let index = 0; index < ordered.length; index += 1) {
+        if (typeFor(ordered[index]) === draggedTaskType) lastTypeIndex = index
+      }
+      if (lastTypeIndex >= 0) {
+        return {
+          prev: ordered[lastTypeIndex],
+          next: ordered[lastTypeIndex + 1] || null,
+        }
+      }
+    }
+  }
+  if (nextVisibleId != null) {
+    const nextIndex = ordered.findIndex((task) => task._id === nextVisibleId)
+    if (nextIndex >= 0) {
+      return {
+        prev: nextIndex > 0 ? ordered[nextIndex - 1] : null,
+        next: ordered[nextIndex],
+      }
+    }
+  }
+  return { prev: ordered.length ? ordered[ordered.length - 1] : null, next: null }
+}
+
 /**
  * TaskBoard — four-column kanban over the shared tasks list. Cards drag
  * between/within columns with framer-motion; the drop writes ONE patch
@@ -59,6 +142,11 @@ function dropSlot(columnEl, draggedId, pointY) {
  * a drop target: cards enter it by completing Publish (the verification phase
  * is Self-verify + peer approval) and leave via approval or a stage reopen,
  * so its cards don't drag and it takes no drops.
+ * Columns with more than six visible cards and multiple task types split into
+ * persisted, collapsible type sections. Done starts with the ten most recently
+ * updated cards and can expand to the full column. Neither presentation layer
+ * changes ordering: orderingTasks supplies the complete column used for every
+ * fractional-order calculation, even when tasks is a filtered subset.
  * A long column scrolls
  * within a bounded height rather than growing the page; while a drag is in
  * flight every column switches to overflow-visible so the dragged card isn't
@@ -66,28 +154,33 @@ function dropSlot(columnEl, draggedId, pointY) {
  * (onArchiveDone) so finished work leaves the board without being lost —
  * archived tasks stay reachable in the All list.
  */
-export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDone }) {
+export default function TaskBoard({
+  tasks = [], orderingTasks = tasks, onOpen, onMove, onNewIn, onArchiveDone,
+}) {
   const columnRefs = useRef(new Map())
   const [dragging, setDragging] = useState(null)   // task _id being dragged
   const [hoverCol, setHoverCol] = useState(null)   // status under the pointer
   const [collapsed, setCollapsed] = usePersistedState('tasks-board-collapsed', [])
+  const [collapsedSections, setCollapsedSections] = usePersistedState('tasks-board-sections', [])
+  const [showAllDone, setShowAllDone] = useState(false)
   const didDrag = useRef(false)
 
-  const byColumn = useMemo(() => {
-    const m = Object.fromEntries(COLUMNS.map((c) => [c.status, []]))
-    for (const t of tasks) {
-      if (t.archived) continue
-      const col = columnFor(t)
-      if (m[col]) m[col].push(t)
-    }
-    for (const k of Object.keys(m)) m[k].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    return m
-  }, [tasks])
+  const byColumn = useMemo(() => tasksByColumn(tasks), [tasks])
+  const orderingByColumn = useMemo(() => tasksByColumn(orderingTasks), [orderingTasks])
+  const collapsedColumns = Array.isArray(collapsed) ? collapsed : []
+  const sectionKeys = Array.isArray(collapsedSections) ? collapsedSections : []
 
-  const isCollapsed = (status) => collapsed.includes(status)
+  const isCollapsed = (status) => collapsedColumns.includes(status)
   const toggleCollapsed = (status) => setCollapsed(
-    isCollapsed(status) ? collapsed.filter((s) => s !== status) : [...collapsed, status]
+    isCollapsed(status) ? collapsedColumns.filter((s) => s !== status) : [...collapsedColumns, status]
   )
+  const isSectionCollapsed = (status, taskType) => sectionKeys.includes(`${status}:${taskType}`)
+  const toggleSection = (status, taskType) => {
+    const key = `${status}:${taskType}`
+    setCollapsedSections(
+      sectionKeys.includes(key) ? sectionKeys.filter((item) => item !== key) : [...sectionKeys, key]
+    )
+  }
 
   const columnAt = (point) => {
     for (const [status, el] of columnRefs.current) {
@@ -102,27 +195,68 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
     setHoverCol(null)
     const status = columnAt(info.point)
     if (!status) return
-    const col = byColumn[status]
+    const col = orderingByColumn[status] || []
     let order
     if (isCollapsed(status)) {
       // no cards in the DOM to slot between — append to the column's end
-      order = orderBetween(col.length ? col[col.length - 1].order : null, null)
+      const { prev, next } = trueOrderSlot(col, task._id, null)
+      order = orderBetween(prev?.order ?? null, next?.order ?? null)
     } else {
       const el = columnRefs.current.get(status)
       const { prevId, nextId } = dropSlot(el, task._id, info.point.y)
-      const prev = col.find((t) => t._id === prevId)
-      const next = col.find((t) => t._id === nextId)
+      const { prev, next } = trueOrderSlot(col, task._id, nextId, {
+        grouped: Boolean(el.querySelector('[data-task-section]')),
+        prevVisibleId: prevId,
+        draggedTaskType: task.task_type || 'porting',
+      })
       order = orderBetween(prev?.order ?? null, next?.order ?? null)
     }
     if (status === task.status && order === task.order) return
     onMove(task, { status, order })
   }
 
+  const renderCard = (task, status) => (
+    <motion.div
+      key={task._id}
+      data-task-id={task._id}
+      layout='position'
+      drag={status !== 'verification'}
+      dragSnapToOrigin
+      dragElastic={0.15}
+      whileDrag={{ scale: 1.03, zIndex: 40, cursor: 'grabbing' }}
+      onDragStart={() => { setDragging(task._id); didDrag.current = true }}
+      onDrag={(_, info) => {
+        const column = columnAt(info.point)
+        if (column !== hoverCol) setHoverCol(column)
+      }}
+      onDragEnd={(_, info) => handleDragEnd(task, info)}
+      className='relative rounded-xl isolate'
+    >
+      <TaskCard
+        task={task}
+        dragging={dragging === task._id}
+        onOpen={() => {
+          // a real drag ends with a click on the same element — swallow it
+          if (didDrag.current) { didDrag.current = false; return }
+          onOpen(task)
+        }}
+      />
+    </motion.div>
+  )
+
   return (
     <div className='flex flex-col xl:flex-row gap-4 items-stretch xl:items-start'>
       {COLUMNS.map(({ status, label }) => {
         const col = byColumn[status]
         const folded = isCollapsed(status)
+        const displayOrder = status === 'done'
+          ? col.slice().sort((a, b) => updatedTime(b) - updatedTime(a))
+          : col
+        const visibleCards = status === 'done' && !showAllDone
+          ? displayOrder.slice(0, DONE_LIMIT)
+          : displayOrder
+        const groups = groupByTaskType(visibleCards)
+        const grouped = visibleCards.length > 6 && groups.length > 1
         return (
           <div
             key={status}
@@ -144,8 +278,9 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
               {!folded && (
                 <span className='ml-auto inline-flex items-center gap-0.5'>
                   {status === 'done' && col.length > 0 && (
-                    <button type='button' onClick={() => onArchiveDone?.()}
-                      aria-label='Archive all done tasks' title='Archive all — clears the column; find them under All tasks'
+                    <button type='button' onClick={() => onArchiveDone?.(col)}
+                      aria-label={`Archive ${col.length} ${col.length === 1 ? 'task' : 'tasks'} in Done`}
+                      title='Archive this Done column — tasks excluded by filters are kept'
                       className='text-ink-subtle hover:text-ink rounded-md p-0.5'>
                       <ArchiveBoxArrowDownIcon className='w-4 h-4' />
                     </button>
@@ -179,34 +314,35 @@ export default function TaskBoard({ tasks, onOpen, onMove, onNewIn, onArchiveDon
                 )}
                 {/* Match the transformed wrapper to TaskCard's radius; the
                     rounded child owns the shadow so no square drag layer shows. */}
-                {col.map((task) => (
-                  <motion.div
-                    key={task._id}
-                    data-task-id={task._id}
-                    layout='position'
-                    drag={status !== 'verification'}
-                    dragSnapToOrigin
-                    dragElastic={0.15}
-                    whileDrag={{ scale: 1.03, zIndex: 40, cursor: 'grabbing' }}
-                    onDragStart={() => { setDragging(task._id); didDrag.current = true }}
-                    onDrag={(_, info) => {
-                      const c = columnAt(info.point)
-                      if (c !== hoverCol) setHoverCol(c)
-                    }}
-                    onDragEnd={(_, info) => handleDragEnd(task, info)}
-                    className='relative rounded-xl isolate'
-                  >
-                    <TaskCard
-                      task={task}
-                      dragging={dragging === task._id}
-                      onOpen={() => {
-                        // a real drag ends with a click on the same element — swallow it
-                        if (didDrag.current) { didDrag.current = false; return }
-                        onOpen(task)
-                      }}
-                    />
-                  </motion.div>
-                ))}
+                {grouped ? groups.map(({ taskType, tasks: groupTasks }) => {
+                  const sectionCollapsed = isSectionCollapsed(status, taskType)
+                  return (
+                    <section key={taskType} data-task-section={`${status}:${taskType}`}
+                      className='rounded-xl border border-border p-2'>
+                      <button type='button' onClick={() => toggleSection(status, taskType)}
+                        aria-expanded={!sectionCollapsed}
+                        aria-label={`${sectionCollapsed ? 'Expand' : 'Collapse'} ${taskTypeLabel(taskType)} in ${label}`}
+                        className='flex w-full items-center gap-1.5 rounded-md px-0.5 py-0.5 text-left text-ink-muted hover:text-ink'>
+                        {sectionCollapsed
+                          ? <ChevronRightIcon className='h-3.5 w-3.5' />
+                          : <ChevronDownIcon className='h-3.5 w-3.5' />}
+                        <span className='text-tag font-[650]'>{taskTypeLabel(taskType)}</span>
+                        <span className='chip bg-surface'>{groupTasks.length}</span>
+                      </button>
+                      {!sectionCollapsed && (
+                        <div className='mt-2 space-y-2'>
+                          {groupTasks.map((task) => renderCard(task, status))}
+                        </div>
+                      )}
+                    </section>
+                  )
+                }) : visibleCards.map((task) => renderCard(task, status))}
+                {status === 'done' && col.length > DONE_LIMIT && (
+                  <button type='button' onClick={() => setShowAllDone((shown) => !shown)}
+                    className='w-full rounded-xl px-3 py-2 text-caption text-ink-muted hover:bg-surface-hover hover:text-ink'>
+                    {showAllDone ? `Show recent ${DONE_LIMIT}` : `Show all ${col.length}`}
+                  </button>
+                )}
               </div>
             )}
           </div>
