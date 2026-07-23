@@ -4,7 +4,7 @@ import { DataTable } from '../DataReferences'
 import { useAsDegreeAvailability } from '../shared/query/hooks/useData'
 import AsDegreeQaTable from './AsDegreeQaTable'
 import AsDegreeSchoolView from './AsDegreeSchoolView'
-import { DEGREE_TYPE_LABEL } from '../shared/lib/asDegreeTypes'
+import { DEGREE_TYPE_LABEL, slotLabel } from './asDegreeSlots'
 
 const AVAILABILITY_LABEL = {
   available: 'Available',
@@ -22,16 +22,16 @@ const AVAILABILITY_VARIANT = {
 
 const COVERAGE_FILTERS = [
   { value: 'all', label: 'All colleges' },
-  { value: 'ast_available', label: 'CS A.S.-T available' },
-  { value: 'ast_none', label: 'Confirmed no CS A.S.-T' },
-  { value: 'ast_gap', label: 'CS A.S.-T data gaps' },
+  { value: 'ast_available', label: `${DEGREE_TYPE_LABEL.ast} available` },
+  { value: 'ast_none', label: `Confirmed no ${DEGREE_TYPE_LABEL.ast}` },
+  { value: 'ast_gap', label: `${DEGREE_TYPE_LABEL.ast} data gaps` },
   { value: 'multiple', label: 'Multiple stored types' },
 ]
 
 const COVERAGE_SORTS = [
-  { value: 'ast_status', label: 'Sort: CS A.S.-T status' },
+  { value: 'ast_status', label: `Sort: ${DEGREE_TYPE_LABEL.ast} status` },
   { value: 'college', label: 'Sort: college' },
-  { value: 'local_status', label: 'Sort: local CS A.S. status' },
+  { value: 'local_status', label: `Sort: ${DEGREE_TYPE_LABEL.local_as} status` },
 ]
 
 const STATUS_ORDER = { data_gap: 0, confirmed_none: 1, duplicate_candidate: 2, available: 3 }
@@ -106,11 +106,11 @@ function CoverageTable({ data, onOpen }) {
       </div>
       <DataTable rows={rows} columns={[
         { key: 'college_name', label: 'College' },
-        { key: 'ast', label: 'CS A.S.-T',
+        { key: 'ast', label: DEGREE_TYPE_LABEL.ast,
           render: (row) => <TypeAvailability value={row.types.ast} type='ast' row={row} onOpen={onOpen} /> },
-        { key: 'local_as', label: 'Local CS A.S.',
+        { key: 'local_as', label: DEGREE_TYPE_LABEL.local_as,
           render: (row) => <TypeAvailability value={row.types.local_as} type='local_as' row={row} onOpen={onOpen} /> },
-        { key: 'local_other', label: 'Other computing',
+        { key: 'local_other', label: DEGREE_TYPE_LABEL.local_other,
           render: (row) => <TypeAvailability value={row.types.local_other} type='local_other' row={row} onOpen={onOpen} /> },
         { key: 'source', label: 'Inventory source',
           render: (row) => row.inventory_source_url
@@ -145,7 +145,7 @@ export default function AsDegreesTab({ onRoute = () => {} }) {
           <Button variant='ghost' onClick={() => setSelected(null)}>← Back to associate degrees</Button>
           <span className='text-caption text-ink-subtle'>{selected.college_name}</span>
           <Badge variant={selected.degree_type === 'ast' ? 'success' : 'neutral'}>
-            {DEGREE_TYPE_LABEL[selected.degree_type] || selected.degree_type}
+            {slotLabel(selected.degree_type)}
           </Badge>
         </div>
         <AsDegreeSchoolView collegeId={selected.community_college_id}
@@ -159,10 +159,10 @@ export default function AsDegreesTab({ onRoute = () => {} }) {
   const computing = availability.data?.counts?.local_other
   const tiles = [
     { label: 'Colleges surveyed', value: availability.data?.counts?.total_colleges ?? '—' },
-    { label: 'CS A.S.-T analyzable', value: ast?.available ?? '—', sub: '/exports/cs-ast-degrees', accent: true },
-    { label: 'CS A.S.-T data gaps', value: ast?.data_gap ?? '—', sub: 'offered, requirements missing',
+    { label: `${DEGREE_TYPE_LABEL.ast} analyzable`, value: ast?.available ?? '—', sub: '/exports/cs-ast-degrees', accent: true },
+    { label: `${DEGREE_TYPE_LABEL.ast} data gaps`, value: ast?.data_gap ?? '—', sub: 'offered, requirements missing',
       tone: ast?.data_gap ? 'danger' : undefined },
-    { label: 'Confirmed no CS A.S.-T', value: ast?.confirmed_none ?? '—', sub: 'catalog inventory finding' },
+    { label: `Confirmed no ${DEGREE_TYPE_LABEL.ast}`, value: ast?.confirmed_none ?? '—', sub: 'catalog inventory finding' },
     { label: 'Other stored types', value: local && computing
       ? `${local.available} local · ${computing.available + computing.duplicate_candidate} other`
       : '—', sub: `${computing?.duplicate_candidate ?? 0} duplicate candidates` },

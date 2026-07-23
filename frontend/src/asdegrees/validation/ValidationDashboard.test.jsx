@@ -77,7 +77,7 @@ describe('ValidationDashboard', () => {
     expect(screen.getByText('5/7')).toBeInTheDocument()
     expect(screen.getByText('Records verified')).toBeInTheDocument()
     expect(screen.getByText('1/2')).toBeInTheDocument()
-    expect(screen.getByText('CS A.S.-T · 4/4 groups')).toBeInTheDocument()
+    expect(screen.getByText('A.S.-T · 4/4 groups')).toBeInTheDocument()
     expect(screen.getByText('Verified')).toBeInTheDocument()
     expect(screen.getByText('No AS-degree records yet')).toBeInTheDocument()
   })

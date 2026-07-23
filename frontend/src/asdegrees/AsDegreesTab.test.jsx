@@ -78,7 +78,7 @@ describe('AsDegreesTab', () => {
     const onRoute = vi.fn()
     render(<AsDegreesTab onRoute={onRoute} />)
 
-    expect(screen.getByText('CS A.S.-T analyzable')).toBeInTheDocument()
+    expect(screen.getByText('A.S.-T analyzable')).toBeInTheDocument()
     expect(screen.getByText('Alpha College')).toBeInTheDocument()
     expect(screen.getByText('Beta College')).toBeInTheDocument()
     expect(screen.getByText('Data gap')).toBeInTheDocument()
@@ -103,7 +103,7 @@ describe('AsDegreesTab', () => {
       path: '/api/curated/as-degrees?degree_type=ast',
     }))
 
-    fireEvent.click(screen.getByRole('tab', { name: 'Local CS A.S.' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Local A.S.' }))
     expect(useAsDegreesMock).toHaveBeenLastCalledWith('local_as')
     await waitFor(() => expect(onRoute).toHaveBeenCalledWith({
       path: '/api/curated/as-degrees?degree_type=local_as',

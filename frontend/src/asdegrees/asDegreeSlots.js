@@ -11,26 +11,34 @@
  * and AsDegreeSchoolView, each free to drift from the others. Collapsed here
  * so there is exactly one place to update when a slot's copy changes.
  *
- * The associate-degree UI itself is still Computer-Science-only (the data has
- * only been gathered for CS), so these display strings stay CS-flavored on
- * purpose — generalizing the copy across majors is a later task.
+ * The labels and descriptions below must stay major-neutral too: this same
+ * vocabulary renders the degree-type tabs for every major (Biology, Economics,
+ * ...), not just Computer Science, so no slot copy may name a specific major.
+ * Page copy that is genuinely about the CS-only *data* (e.g. "records have
+ * only been gathered for Computer Science") belongs in the consuming page,
+ * not here.
  */
 
 export const AS_DEGREE_SLOTS = ['ast', 'local_as', 'local_other']
 
 /** Short tab/chip copy. */
 export const DEGREE_TYPE_LABEL = {
-  ast: 'CS A.S.-T',
-  local_as: 'Local CS A.S.',
-  local_other: 'Other computing',
+  ast: 'A.S.-T',
+  local_as: 'Local A.S.',
+  local_other: 'Other',
 }
 
 /** One-line description shown alongside the active degree type. */
 export const DEGREE_TYPE_DESCRIPTION = {
   ast: 'Statewide transfer degree',
-  local_as: 'College-defined CS degree',
-  local_other: 'Other college-defined computing degree',
+  local_as: 'College-defined degree',
+  local_other: 'Other college-defined degree',
 }
 
 /** Canonical statewide-first display order. */
 export const DEGREE_TYPE_ORDER = { ast: 0, local_as: 1, local_other: 2 }
+
+/** Display label for a slot, falling back to the raw value if unknown. */
+export function slotLabel(slot) {
+  return DEGREE_TYPE_LABEL[slot] || slot
+}

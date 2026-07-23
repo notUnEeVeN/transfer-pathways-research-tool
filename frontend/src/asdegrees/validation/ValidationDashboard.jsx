@@ -18,7 +18,7 @@ import {
 } from '../../components/ui'
 import { useColleges } from '../../shared/query/hooks/useData'
 import { useSetValidationCohort, useValidationCohort } from './useValidation'
-import { DEGREE_TYPE_LABEL as DEGREE_LABEL } from '../../shared/lib/asDegreeTypes'
+import { DEGREE_TYPE_LABEL as DEGREE_LABEL } from '../asDegreeSlots'
 
 function errorMessage(error) {
   return error?.response?.data?.error || error?.message || 'The validation cohort could not be updated.'

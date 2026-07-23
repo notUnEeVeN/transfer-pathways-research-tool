@@ -4,7 +4,7 @@ import { Stack, Tabs, Spinner, EmptyState } from '../components/ui'
 import RequirementsLedger from '@frontend/components/requirements/RequirementsLedger'
 import { useAsDegreeDetail } from '../shared/query/hooks/useData'
 import GroupCourseEditor from './validation/GroupCourseEditor'
-import { DEGREE_TYPE_DESCRIPTION as TYPE_DESCRIPTION, DEGREE_TYPE_LABEL as TYPE_TAB } from '../shared/lib/asDegreeTypes'
+import { DEGREE_TYPE_DESCRIPTION as TYPE_DESCRIPTION, DEGREE_TYPE_LABEL as TYPE_TAB } from './asDegreeSlots'
 
 // Per-college associate-degree view, shown as the Associate degrees sub-tab in
 // the Community Colleges catalog. The requirement groups render through the shared

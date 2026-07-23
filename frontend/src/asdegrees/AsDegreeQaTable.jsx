@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { Alert, Badge, Button, Select, Input, Spinner, Stack, Tabs } from '../components/ui'
 import { useAsDegrees } from '../shared/query/hooks/useData'
 import { DataTable } from '../DataReferences'
-import { AS_DEGREE_SLOTS, DEGREE_TYPE_LABEL, DEGREE_TYPE_ORDER } from '../shared/lib/asDegreeTypes'
+import { AS_DEGREE_SLOTS, DEGREE_TYPE_LABEL, DEGREE_TYPE_ORDER, slotLabel } from './asDegreeSlots'
 
 const TYPE_OPTIONS = [
   ...AS_DEGREE_SLOTS.map((value) => ({ value, label: DEGREE_TYPE_LABEL[value] })),
@@ -99,7 +99,7 @@ export default function AsDegreeQaTable({ degreeType = 'ast', onDegreeTypeChange
           { key: 'college_name', label: 'College' },
           { key: 'degree_type', label: 'Type',
             render: (row) => <Badge variant={row.degree_type === 'ast' ? 'success' : 'neutral'}>
-              {DEGREE_TYPE_LABEL[row.degree_type] || row.degree_type}
+              {slotLabel(row.degree_type)}
             </Badge> },
           { key: 'degree_title_seen', label: 'Degree as printed' },
           { key: 'status', label: 'Status',
