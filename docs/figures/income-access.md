@@ -65,9 +65,10 @@ rescaling it.
 
 ## What the figure shows
 
-Two stacked panels, built to the design in
-`docs/design_handoff_income_figures/` — a 960 px canvas, shared type ramp,
-gridlines and palette, so they read as one exhibit in a manuscript column.
+Two stacked panels built as a matched pair — a 960 px canvas, shared type
+ramp, gridlines and palette, so they read as one exhibit in a manuscript
+column. (The original design handoff lived in `docs/design_handoff_income_figures/`;
+it was implemented and removed — see git history if needed.)
 
 **Top — the distribution.** One point per district: income of the area it
 serves (log scale) against the number of UC computer science programs it can

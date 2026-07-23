@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/tokens/effects.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/tokens/base.css">
+  <link rel="stylesheet" href="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/styles.css">
+  <script src="_ds/plan-my-transfer-design-system-38282b72-9397-400f-b325-90895344021e/_ds_bundle.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--color-bg);font-family:var(--font-sans);color:var(--text-strong);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    a{color:var(--link-color);text-decoration:underline;text-underline-offset:2px}
+    a:hover{color:var(--link-color-hover)}
+  </style>
+</helmet>
+
+<figure style="width:1120px;margin:24px auto;background:var(--surface-card);border-radius:var(--radius-2xl);box-shadow:var(--shadow-card),var(--border-hairline-shadow);padding:40px 44px 30px;font-family:var(--font-sans);color:var(--text-strong)">
+
+  <div style="max-width:880px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted)">Multi-campus articulation · California community colleges</div>
+    <h1 style="margin:9px 0 0;font-size:33px;line-height:1.08;font-weight:700;letter-spacing:-0.03em;text-wrap:balance">Reachable UC computer-science programs, by community-college district</h1>
+    <p style="margin:13px 0 0;font-size:15px;line-height:1.5;color:var(--text-body);max-width:860px;text-wrap:pretty">Each of 72 California community-college districts is grouped by how many of nine pinned UC CS / EECS pathways its colleges can fully prepare a student for. The groups are mutually exclusive cohorts — not one cohort progressively adding programs.</p>
+  </div>
+
+  <p style="margin:18px 0 26px;font-size:17px;line-height:1.5;letter-spacing:-0.01em;color:var(--text-body);max-width:900px;text-wrap:pretty"><strong style="font-weight:700">Seven of nine is the current statewide ceiling.</strong> Thirteen districts reach it — on a modeled joint plan of about twenty distinct courses over roughly six regular terms — and because no district completes a path for UCLA or UCSD, the eight- and nine-program groups are empty.</p>
+
+  <!-- ===== CHART ===== -->
+  <div>
+    <!-- panel titles -->
+    <div style="display:flex;gap:24px;align-items:flex-end;padding:0 10px 8px">
+      <div style="width:96px;flex:none">
+        <div style="font-size:13px;font-weight:700;letter-spacing:-0.02em">Programs reached</div>
+        <div style="font-size:11px;color:var(--text-muted)">of 9</div>
+      </div>
+      <div style="width:216px;flex:none">
+        <div style="font-size:13px;font-weight:700;letter-spacing:-0.02em">Districts</div>
+        <div style="font-size:11px;color:var(--text-muted)">of 72</div>
+      </div>
+      <div style="width:526px;flex:none">
+        <div style="font-size:13px;font-weight:700;letter-spacing:-0.02em">Combined course burden</div>
+        <div style="font-size:11px;color:var(--text-muted)">distinct courses in the modeled joint plan · mean labeled, bar shows the group's range</div>
+      </div>
+      <div style="width:110px;flex:none">
+        <div style="font-size:13px;font-weight:700;letter-spacing:-0.02em">Avg. terms</div>
+        <div style="font-size:11px;color:var(--text-muted)">semester-equiv.</div>
+      </div>
+    </div>
+
+    <!-- axis ticks -->
+    <div style="display:flex;gap:24px;align-items:flex-end;padding:0 10px 4px">
+      <div style="width:96px;flex:none"></div>
+      <div style="width:216px;flex:none;display:flex;gap:12px">
+        <div style="position:relative;width:160px;height:13px;font-size:10px;color:var(--text-muted)">
+          <span style="position:absolute;left:0">0</span>
+          <span style="position:absolute;left:40px;transform:translateX(-50%)">5</span>
+          <span style="position:absolute;left:80px;transform:translateX(-50%)">10</span>
+          <span style="position:absolute;left:120px;transform:translateX(-50%)">15</span>
+          <span style="position:absolute;left:160px;transform:translateX(-100%)">20</span>
+        </div>
+        <div style="width:44px;flex:none"></div>
+      </div>
+      <div style="width:526px;flex:none;display:flex;gap:14px">
+        <div style="position:relative;width:432px;height:13px;font-size:10px;color:var(--text-muted)">
+          <span style="position:absolute;left:0">10</span>
+          <span style="position:absolute;left:120px;transform:translateX(-50%)">15</span>
+          <span style="position:absolute;left:240px;transform:translateX(-50%)">20</span>
+          <span style="position:absolute;left:360px;transform:translateX(-50%)">25</span>
+        </div>
+        <div style="width:80px;flex:none"></div>
+      </div>
+      <div style="width:110px;flex:none"></div>
+    </div>
+
+    <!-- data rows -->
+    <div style="border-top:1px solid var(--pmt-forest-a10)">
+    <sc-for list="{{ rows }}" as="row" hint-placeholder-count="10">
+      <div style="position:relative;display:flex;gap:24px;align-items:center;min-height:50px;padding:5px 10px;border-bottom:1px solid var(--pmt-forest-a06)">
+        <sc-if value="{{ row.hi }}">
+          <div style="position:absolute;inset:0;background:var(--pmt-mint-100);border-radius:10px;box-shadow:inset 3px 0 0 0 var(--pmt-lime-400), inset 0 0 0 1px rgba(25,48,24,.10)"></div>
+        </sc-if>
+
+        <!-- reach -->
+        <div style="position:relative;z-index:1;width:96px;flex:none;display:flex;align-items:center;gap:8px">
+          <span style="font-size:24px;font-weight:700;letter-spacing:-0.03em;line-height:1">{{ row.reach }}</span>
+          <sc-if value="{{ row.hi }}">
+            <span style="font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--pmt-forest-900);background:var(--pmt-lime-400);padding:2px 6px;border-radius:100px;line-height:1">Max</span>
+          </sc-if>
+        </div>
+
+        <!-- districts -->
+        <div style="position:relative;z-index:1;width:216px;flex:none;display:flex;align-items:center;gap:12px">
+          <div style="position:relative;width:160px;height:22px;background:repeating-linear-gradient(90deg,rgba(25,48,24,.08) 0 1px,transparent 1px 40px)">
+            <div style="position:absolute;top:50%;left:0;transform:translateY(-50%);height:13px;width:{{ row.barW }}px;background:var(--pmt-forest-900);border-radius:3px"></div>
+          </div>
+          <span style="width:44px;flex:none;font-size:16px;font-weight:700;letter-spacing:-0.02em">{{ row.districts }}</span>
+        </div>
+
+        <!-- course burden -->
+        <div style="position:relative;z-index:1;width:526px;flex:none;display:flex;align-items:center;gap:14px">
+          <div style="position:relative;width:432px;height:26px;background:repeating-linear-gradient(90deg,rgba(25,48,24,.08) 0 1px,transparent 1px 120px)">
+            <sc-if value="{{ row.hasCourse }}">
+              <sc-if value="{{ row.showRange }}">
+                <div style="position:absolute;top:50%;left:{{ row.course.xmin }}px;width:{{ row.course.whiskerW }}px;height:4px;transform:translateY(-50%);background:rgba(25,48,24,.26);border-radius:2px"></div>
+                <div style="position:absolute;top:50%;left:{{ row.course.xq1 }}px;width:{{ row.course.boxW }}px;height:15px;transform:translateY(-50%);background:rgba(25,48,24,.15);border:1px solid rgba(25,48,24,.38);border-radius:3px"></div>
+              </sc-if>
+              <div style="position:absolute;top:50%;left:{{ row.course.xmean }}px;width:11px;height:11px;transform:translate(-50%,-50%);border-radius:50%;background:#193018;box-shadow:0 0 0 2px var(--surface-card)"></div>
+            </sc-if>
+            <sc-if value="{{ row.burdenIsText }}">
+              <div style="position:absolute;top:50%;left:2px;transform:translateY(-50%);font-size:12px;font-style:italic;color:var(--text-muted)">{{ row.burdenText }}</div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ row.hasCourse }}">
+            <span style="width:80px;flex:none;font-size:18px;font-weight:700;letter-spacing:-0.02em">{{ row.course.meanLabel }}</span>
+          </sc-if>
+        </div>
+
+        <!-- avg terms -->
+        <div style="position:relative;z-index:1;width:110px;flex:none">
+          <span style="font-size:16px;font-weight:700;letter-spacing:-0.02em;{{ row.termsColor }}">{{ row.avgTerms }}</span>
+        </div>
+      </div>
+    </sc-for>
+    </div>
+  </div>
+
+  <!-- ===== CEILING EXPLAINER ===== -->
+  <sc-if value="{{ showCeiling }}">
+  <div style="margin-top:26px;background:var(--surface-subtle);border-radius:var(--radius-xl);padding:24px 26px;box-shadow:var(--border-hairline-shadow)">
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1 1 340px;min-width:300px;max-width:440px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted)">Why the ceiling is seven</div>
+        <h3 style="margin:8px 0 0;font-size:20px;line-height:1.15;font-weight:700;letter-spacing:-0.02em">Two campuses have no district-wide path</h3>
+        <p style="margin:11px 0 0;font-size:13.5px;line-height:1.5;color:var(--text-body);text-wrap:pretty">A district reaches a UC program only if its colleges collectively complete that program's full ASSIST template. Seven of the nine programs are reachable by at least one district; UCLA and UCSD by none — so no district can exceed seven, and the eight- and nine-program groups are structurally empty.</p>
+        <p style="margin:10px 0 0;font-size:12.5px;line-height:1.5;color:var(--text-muted);text-wrap:pretty">Every seven-program district reaches the same seven: UCB, UCD, UCI, UCM, UCR, UCSB, UCSC.</p>
+      </div>
+      <div style="flex:1 1 400px;min-width:340px">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted)">Districts with a complete pinned path, by program · of 72</div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:12px">
+          <sc-for list="{{ programs }}" as="prog" hint-placeholder-count="9">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="width:46px;flex:none;font-size:13px;font-weight:700;letter-spacing:-0.02em">{{ prog.code }}</span>
+              <div style="position:relative;flex:1;height:14px;background:var(--surface-track);border-radius:7px;box-shadow:inset 0 0 0 1px rgba(25,48,24,.06)">
+                <div style="position:absolute;top:0;left:0;bottom:0;width:{{ prog.barW }}%;background:#193018;border-radius:7px"></div>
+              </div>
+              <span style="width:30px;flex:none;text-align:right;font-size:13px;font-weight:700;letter-spacing:-0.02em;color:{{ prog.labelColor }}">{{ prog.nLabel }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:11px;font-size:11.5px;color:var(--pmt-coral-500);font-weight:600">UCLA and UCSD are reachable by no district — the reason reach stops at seven.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ===== METHODS NOTE ===== -->
+  <div style="margin-top:22px">
+    <x-import component-from-global-scope="PlanMyTransferDesignSystem_38282b.InfoNote" tone="neutral" hint-size="100%,120px">
+      <div style="font-size:12.5px;line-height:1.55;color:var(--text-body);text-wrap:pretty"><strong style="font-weight:700">How to read this.</strong> Reach groups are separate district cohorts, not one cohort adding programs; differences reflect district and campus composition, not a cost per added campus. Course counts are modeled feasible joint plans — shared physical courses counted once, known prerequisites included — and the minimum is mathematically proven for 49 of 68 plans. Average terms are semester-equivalents that place quarter and semester calendars on one academic-time scale (1 quarter = 2⁄3 semester) and exclude two bounded schedules. The model is structural and optimistic: it omits general education, Cal-GETC / UC-7, associate-degree and post-transfer requirements, GPA and selective admission, term-by-term offerings, seat availability, and summer terms. A district-level path assumes students can cross-enroll among member colleges.</div>
+    </x-import>
+  </div>
+
+  <!-- ===== SOURCE ===== -->
+  <div style="margin-top:16px;padding-top:13px;border-top:1px solid var(--pmt-forest-a10);font-size:11px;color:var(--text-muted);line-height:1.5;text-wrap:pretty"><strong style="color:var(--text-body);font-weight:600">Source.</strong> Pinned ASSIST CS / EECS templates for nine UC campuses evaluated across 72 California community-college districts (115 colleges), July 2026. 335 of 648 district–campus pathways are reachable; statewide mean 4.7 of 9 programs per district. Course-plan optimality and schedule optimality are reported as separate concepts.</div>
+
+</figure>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;order&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;0-to-9&quot;,&quot;9-to-0&quot;],&quot;default&quot;:&quot;0-to-9&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showSpread&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Course burden&quot;},&quot;showCeiling&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;highlightMax&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Emphasis&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props || {};
+    const order = p.order ?? '0-to-9';
+    const showCeiling = p.showCeiling ?? true;
+    const highlightMax = p.highlightMax ?? true;
+    const showSpread = p.showSpread ?? true;
+
+    const CW = 432, DW = 160;
+    const R = x => Math.round(x * 100) / 100;
+    const cx = v => R((v - 10) / 18 * CW);
+    const dw = n => R(n / 20 * DW);
+
+    const raw = [
+      { reach: 0, districts: 4, empty: 'no-plan' },
+      { reach: 1, districts: 1, course: { mean: 14.0, q1: 14, q3: 14, min: 14, max: 14 }, meanEq: 5.0 },
+      { reach: 2, districts: 5, course: { mean: 12.2, q1: 12, q3: 13, min: 11, max: 13 }, meanEq: 4.8 },
+      { reach: 3, districts: 8, course: { mean: 14.5, q1: 14, q3: 15, min: 13, max: 15 }, meanEq: 4.9 },
+      { reach: 4, districts: 9, course: { mean: 16.7, q1: 15, q3: 18, min: 13, max: 20 }, meanEq: 5.1 },
+      { reach: 5, districts: 19, course: { mean: 16.5, q1: 15, q3: 17, min: 13, max: 27 }, meanEq: 4.9 },
+      { reach: 6, districts: 13, course: { mean: 19.6, q1: 16, q3: 23, min: 14, max: 24 }, meanEq: 5.6 },
+      { reach: 7, districts: 13, max: true, course: { mean: 20.2, q1: 18, q3: 22, min: 15, max: 25 }, meanEq: 5.8 },
+      { reach: 8, districts: 0, empty: 'no-districts' },
+      { reach: 9, districts: 0, empty: 'no-districts' },
+    ];
+
+    let rows = raw.map(r => {
+      const noPlan = r.empty === 'no-plan';
+      const dim = r.empty === 'no-districts';
+      const o = {
+        reach: r.reach, districts: r.districts,
+        barW: dw(r.districts),
+        hi: !!r.max && highlightMax,
+        hasCourse: !!r.course,
+        burdenIsText: !r.course,
+        burdenText: noPlan ? 'No joint plan modeled' : (dim ? 'No districts' : ''),
+        avgTerms: r.meanEq != null ? r.meanEq.toFixed(1) : '—',
+        termsColor: r.meanEq != null ? '' : 'color:var(--text-muted)',
+      };
+      if (r.course) {
+        const c = r.course;
+        const single = c.min === c.max;
+        o.showRange = showSpread && !single;
+        o.course = {
+          meanLabel: c.mean.toFixed(1),
+          xmin: cx(c.min), whiskerW: R(cx(c.max) - cx(c.min)),
+          xq1: cx(c.q1), boxW: R(cx(c.q3) - cx(c.q1)),
+          xmean: cx(c.mean),
+        };
+      }
+      return o;
+    });
+    if (order === '9-to-0') rows = rows.slice().reverse();
+
+    const progRaw = [['UCB', 64], ['UCM', 64], ['UCR', 57], ['UCSB', 50], ['UCSC', 47], ['UCI', 39], ['UCD', 14], ['UCLA', 0], ['UCSD', 0]];
+    const programs = progRaw.map(([code, n]) => ({
+      code, nLabel: String(n), barW: R(n / 72 * 100),
+      labelColor: n === 0 ? 'var(--pmt-coral-500)' : 'var(--text-strong)',
+    }));
+
+    return { rows, programs, showCeiling };
+  }
+}
+</script>
+</body>
+</html>

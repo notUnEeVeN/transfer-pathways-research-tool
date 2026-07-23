@@ -66,9 +66,9 @@ export const MEASURES = {
     watchFor: 'Ecological and associational: it describes areas, not students, and the fit identifies no cause. Income is a mean per tax return over the ZIP codes nearest the district’s centre — a catchment, not a statutory boundary — so a district near a boundary borrows some of its neighbour’s income. The three predictors are correlated with each other, so read the coefficients as “income still matters alongside these”, not as separate effects.',
   },
   'multi-campus-pathways': {
-    expression: 'district capacity = number of selected UC computer science pathways whose full ASSIST minimum can be articulated somewhere in the district; joint workload = the fewest major-preparation courses found to satisfy every available pathway at once, followed by the addition of known prerequisites',
-    grain: 'One capacity count and one joint course plan per California community college district, summarized within each integer capacity group from zero through nine pathways.',
-    watchFor: 'Courses may be pooled across every member college, so the result assumes district-wide cross-enrollment and is not a single-college promise. The solver minimizes major preparation before adding prerequisites, so the displayed closure is not guaranteed to be the globally smallest course total after prerequisites. Required preparation is never silently dropped, and modeled academic years remain an optimistic catalog schedule rather than observed time to transfer.',
+    expression: 'row mean at k = first average the jointly optimized, prerequisite-closed course plan for every real k-program portfolio within each eligible district, then average those district means equally',
+    grain: 'One modeled plan per community college district × nonempty subset of district-reachable UC computer science programs; the figure summarizes portfolio sizes one through seven.',
+    watchFor: 'This is modeled articulation feasibility, not observed student behavior. Courses may be pooled across member colleges, and time assumes regular-term availability under a 15-unit cap. The main curve includes feasible solver upper bounds so almost every real portfolio remains represented; the declining proven-minimum share is printed on every row and must remain visible.',
   },
   'credit-loss': {
     expression: 'transfer coursework = the fewest community college courses the solver finds that satisfy every required receiver in one agreement',

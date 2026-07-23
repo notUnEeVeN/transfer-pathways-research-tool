@@ -17,7 +17,11 @@ or answer a reviewer-style question.
 | --- | --- |
 | [`visualization-quick-reference.md`](visualization-quick-reference.md) | One compact read of the important takeaways from all current visualization work |
 | [`figures/`](figures/) | Deep notes, one per ported paper figure: provenance, methodology, verification, difference analysis, and receipts |
-| [`plans/`](plans/) | Implementation plans and research notes for in-progress or proposed analysis work |
+| [`superpowers/specs/`](superpowers/specs/) | Approved design documents (dated), including the expansion roadmap |
+| [`superpowers/plans/`](superpowers/plans/) | Step-by-step implementation plans executed from the specs |
+
+One-off design handoffs, design-session prompts, and gate-review docs are
+removed once implemented — recover any of them from git history.
 
 ## Figure documents
 
@@ -30,7 +34,8 @@ or answer a reviewer-style question.
 | [figures/paper-credit-loss.md](figures/paper-credit-loss.md) | Figure 1: credit loss, 1st-4th choice | Full paper-method replication, current-data deltas, ASSIST-stated-minimums extension, blockers, and validation |
 | [figures/ma-course-type-spread.md](figures/ma-course-type-spread.md) | Massachusetts Figure 2 recreated on California data: course-type coverage | Course-type rules, per-campus values, and how our denominator differs from the MA paper's |
 | [figures/income-access.md](figures/income-access.md) | Transfer access against local income (original) | The income gradient, the rurality controls that do not explain it, the FTB catchment measure, and what the association is not |
-| [figures/multi-campus-pathways.md](figures/multi-campus-pathways.md) | District preparation for multiple UC campuses | Pinned ASSIST templates, strict district reachability, actual joint course plans, blockers, prerequisites, and modeled time |
+| [figures/district-portfolio-subsets.md](figures/district-portfolio-subsets.md) | Preparation as campus options expand | Reproducible 3,266-plan analysis, the live 1–7 portfolio figure, weighting definitions, solver-quality strata, and audit rules |
+| [figures/multi-campus-pathways.md](figures/multi-campus-pathways.md) | Archived exact-reach predecessor | The superseded one-plan-per-district result and why it is no longer the live gallery statistic |
 
 ## Conventions
 

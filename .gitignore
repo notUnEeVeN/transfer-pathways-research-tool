@@ -15,3 +15,6 @@ server/data/analysis/*.checkpoint.ndjson
 temp.py
 starter.py
 .superpowers/
+
+# Claude Code worktrees — isolated checkouts, never part of the repo
+.claude/worktrees/

@@ -41,7 +41,6 @@ const UC_CAMPUSES = [
   ['Santa Cruz', -122.0609, 36.9914],
 ]
 
-// ── design system: docs/design_handoff_income_figures ───────────────────────
 // The two figures are a pair — same canvas, type ramp, gridlines and palette —
 // so they stack as one exhibit in a manuscript column.
 const CANVAS = { width: 960, padX: 28 }

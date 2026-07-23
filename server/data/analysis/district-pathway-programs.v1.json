@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "selection_method": "modal raw ASSIST template among the 115 configured agreements for each selected program; a deterministic parsed representative is pinned within that raw template",
+  "programs": [
+    {
+      "school_id": 7,
+      "school": "UC San Diego",
+      "uc_code": "UCSD",
+      "major": "CSE: Computer Science B.S.",
+      "raw_template_hash": "4aebe98655",
+      "template_fp": "413e57a62dc3f103246469d7501468c9",
+      "representative_agreement_id": "6a20ba52ab5af349b0a7d30a",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 115
+    },
+    {
+      "school_id": 46,
+      "school": "UC Riverside",
+      "uc_code": "UCR",
+      "major": "Computer Science, B.S.",
+      "raw_template_hash": "d762334ce0",
+      "template_fp": "3e2776b94f814ecf6951f5591463ba90",
+      "representative_agreement_id": "6a20ba53ab5af349b0a7e8e4",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 115
+    },
+    {
+      "school_id": 79,
+      "school": "UC Berkeley",
+      "uc_code": "UCB",
+      "major": "Electrical Engineering & Computer Sciences, B.S.",
+      "raw_template_hash": "28e1b2691f",
+      "template_fp": "46ac11ea3cef521882c8c2caeae839b7",
+      "representative_agreement_id": "6a20ba53ab5af349b0a7f401",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 50
+    },
+    {
+      "school_id": 89,
+      "school": "UC Davis",
+      "uc_code": "UCD",
+      "major": "Computer Science B.S.",
+      "raw_template_hash": "9db8ce4a1a",
+      "template_fp": "20c71471854fe85d2347a09219c1e711",
+      "representative_agreement_id": "6a20ba61ab5af349b0a8729c",
+      "representative_community_college_id": 6,
+      "matching_raw_template_agreements": 31,
+      "matching_parsed_representatives_within_raw_template": 24
+    },
+    {
+      "school_id": 117,
+      "school": "UC Los Angeles",
+      "uc_code": "UCLA",
+      "major": "Computer Science/B.S.",
+      "raw_template_hash": "6a3c3ff0e1",
+      "template_fp": "fc0ae3df4508cb637318a0f5a40ed706",
+      "representative_agreement_id": "6a20ba54ab5af349b0a805ff",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 114
+    },
+    {
+      "school_id": 120,
+      "school": "UC Irvine",
+      "uc_code": "UCI",
+      "major": "Computer Science, B.S.",
+      "raw_template_hash": "bae5a02b8a",
+      "template_fp": "5a6cfd10cfe72b7582f4da8e1232f806",
+      "representative_agreement_id": "6a20ba55ab5af349b0a808bb",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 106
+    },
+    {
+      "school_id": 128,
+      "school": "UC Santa Barbara",
+      "uc_code": "UCSB",
+      "major": "Computer Science, B.S.",
+      "raw_template_hash": "644d4eb1f4",
+      "template_fp": "9fb6d33a9b7e296f2727abed742c51df",
+      "representative_agreement_id": "6a20ba55ab5af349b0a80ba9",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 112
+    },
+    {
+      "school_id": 132,
+      "school": "UC Santa Cruz",
+      "uc_code": "UCSC",
+      "major": "Computer Science B.S.",
+      "raw_template_hash": "226274aab9",
+      "template_fp": "98c7d1b229ff88289e5b369a53b4c40c",
+      "representative_agreement_id": "6a20ba55ab5af349b0a80fbd",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 115
+    },
+    {
+      "school_id": 144,
+      "school": "UC Merced",
+      "uc_code": "UCM",
+      "major": "COMPUTER SCIENCE AND ENGINEERING, B.S. ",
+      "raw_template_hash": "9468bac1eb",
+      "template_fp": "1ace064e62b47656f0793712f4e84f5a",
+      "representative_agreement_id": "6a20ba55ab5af349b0a815f6",
+      "representative_community_college_id": 2,
+      "matching_raw_template_agreements": 115
+    }
+  ]
+}

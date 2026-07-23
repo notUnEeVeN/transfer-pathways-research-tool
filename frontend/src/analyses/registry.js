@@ -162,8 +162,8 @@ export const ANALYSES = [
   },
   {
     id: 'multi-campus-pathways',
-    title: 'District preparation for multiple campuses',
-    description: 'Shows how many University of California computer science pathways each community college district can fully support, and the joint courses and modeled academic years needed to satisfy every supported pathway.',
+    title: 'Preparation as campus options expand',
+    description: 'Shows how modeled courses and regular terms change when students keep one through seven reachable university computer science options open.',
     provenance: 'new',
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-21T09:00:00',

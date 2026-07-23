@@ -1,881 +1,453 @@
-import React, { useMemo, useState } from 'react'
-import { ArrowPathIcon } from '@heroicons/react/24/outline'
-import {
-  Alert, Badge, Button, Combobox, EmptyState, Input, Panel, Stack, StatStrip, Tabs,
-} from '../components/ui'
-import {
-  useColleges, useMultiCampusPathways, useMultiCampusPathwaysSnapshot, useSchools,
-} from '../shared/query/hooks/useData'
-import { fmtDate } from '../shared/fmtDate'
-import { AnalysisLoading, shortenSchool } from './chartBits'
-import { materializeAverageSnapshot } from './multiCampusSnapshot'
+import React, { useId } from 'react'
+import portfolioSnapshot from './data/district-portfolio-subsets.v1.json'
 
-const MODE_OPTIONS = [
-  { value: 'average', label: 'Average across colleges' },
-  { value: 'college', label: 'Specific college' },
-]
+const FIGURE = { width: 1120, height: 1064 }
+const FONT = "'Hanken Grotesk Variable', 'Hanken Grotesk', system-ui, sans-serif"
+const INK = '#193018'
+const BODY = '#3F4840'
+const MUTED = '#5F6A60'
+const LIME = '#96F060'
+const MINT = '#EFF8E5'
+const SAGE = '#F6F8F1'
+const TRACK = '#E8EDE3'
+const HAIRLINE = 'rgba(25,48,24,0.10)'
+const GRID = 'rgba(25,48,24,0.08)'
+const CORAL = '#D22F14'
+
+const ROW_TOP = 342
+const ROW_HEIGHT = 62
+const COURSE_PLOT = { x: 352, width: 400, min: 6, max: 24 }
+const EVIDENCE_TRACK = { x: 145, width: 94 }
 
 const intFmt = new Intl.NumberFormat()
-const numFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+const oneFmt = new Intl.NumberFormat(undefined, {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+})
 
-const finite = (...values) => values.find((value) => Number.isFinite(Number(value)))
-const asNumber = (...values) => {
-  const value = finite(...values)
-  return value == null ? null : Number(value)
-}
-const displayNumber = (value, suffix = '') => (
-  Number.isFinite(Number(value)) ? `${numFmt.format(Number(value))}${suffix}` : '—'
-)
-const signedNumber = (value, suffix = '') => {
-  if (!Number.isFinite(Number(value))) return '—'
+function numberOrNull(value) {
+  if (value == null || value === '') return null
   const number = Number(value)
-  return `${number > 0 ? '+' : ''}${numFmt.format(number)}${suffix}`
-}
-const plural = (value, singular, pluralForm = `${singular}s`) => (
-  Number(value) === 1 ? singular : pluralForm
-)
-const termNoun = (system, value = 2) => plural(value, system === 'quarter' ? 'quarter' : 'semester')
-
-function calendarLabel(system) {
-  if (system === 'quarter') return 'Quarter'
-  if (system === 'semester') return 'Semester'
-  return 'Calendar unavailable'
+  return Number.isFinite(number) ? number : null
 }
 
-const STATUS_LABELS = {
-  optimal: 'Exact local plan',
-  bounded: 'Not fully proven',
-  estimated: 'Uses an assumption',
-  unavailable: 'Data needs review',
+function courseX(value) {
+  const number = Math.max(COURSE_PLOT.min, Math.min(COURSE_PLOT.max, Number(value)))
+  return COURSE_PLOT.x
+    + ((number - COURSE_PLOT.min) / (COURSE_PLOT.max - COURSE_PLOT.min)) * COURSE_PLOT.width
 }
 
-const statusLabel = (status) => STATUS_LABELS[status] || 'Modeled result'
-
-const failClosedSnapshotStatus = (error) => {
-  const status = Number(error?.response?.status)
-  return [401, 403, 409].includes(status) ? status : null
+function diamondPoints(x, y, radius = 5.5) {
+  return `${x},${y - radius} ${x + radius},${y} ${x},${y + radius} ${x - radius},${y}`
 }
 
-function combinedFor(row) {
-  return row?.combined || row?.plan || row?.summary || {}
-}
-
-function scheduleFor(row) {
-  const combined = combinedFor(row)
-  return combined.schedule && !Array.isArray(combined.schedule) ? combined.schedule : {}
-}
-
-function exactTermsFor(row) {
-  const combined = combinedFor(row)
-  const schedule = scheduleFor(row)
-  return asNumber(combined.estimated_terms, combined.min_terms, schedule.min_terms)
-}
-
-function termRangeFor(row) {
-  const combined = combinedFor(row)
-  const schedule = scheduleFor(row)
-  const exact = exactTermsFor(row)
-  if (exact != null) return { low: exact, high: exact, exact: true }
-  const low = asNumber(combined.lower_bound_terms, schedule.lower_bound_terms)
-  const high = asNumber(combined.upper_bound_terms, schedule.upper_bound_terms)
-  if (low == null && high == null) return null
-  return { low: low ?? high, high: high ?? low, exact: false }
-}
-
-function termText(row, system) {
-  if (system === 'unknown') return '—'
-  const range = termRangeFor(row)
-  if (!range) return '—'
-  const noun = termNoun(system, range.high)
-  return range.low === range.high
-    ? `${intFmt.format(range.high)} ${noun}`
-    : `${intFmt.format(range.low)}–${intFmt.format(range.high)} ${noun}`
-}
-
-function coursesFor(row) {
-  const combined = combinedFor(row)
-  return asNumber(combined.distinct_courses, combined.course_count, row?.distinct_courses)
-}
-
-function unitsFor(row) {
-  const combined = combinedFor(row)
-  return asNumber(combined.native_units, combined.total_units, row?.native_units)
-}
-
-function premiumFor(row) {
-  const combined = combinedFor(row)
-  return asNumber(
-    combined.optionality_premium_courses,
-    combined.additional_courses,
-    row?.optionality_premium_courses,
-  )
-}
-
-function rowSystem(row) {
-  const value = String(row?.unit_system || row?.calendar || row?.academic_calendar || '').toLowerCase()
-  if (value === 'quarter') return 'quarter'
-  if (value === 'semester') return 'semester'
-  return 'unknown'
-}
-
-function mean(values) {
-  const usable = values.filter(Number.isFinite)
-  return usable.length ? usable.reduce((sum, value) => sum + value, 0) / usable.length : null
-}
-
-function median(values) {
-  const usable = values.filter(Number.isFinite).sort((a, b) => a - b)
-  if (!usable.length) return null
-  const middle = Math.floor(usable.length / 2)
-  return usable.length % 2 ? usable[middle] : (usable[middle - 1] + usable[middle]) / 2
-}
-
-function calendarModel(data, rows, system) {
-  const supplied = (data?.calendar_groups || data?.calendarGroups || [])
-    .find((group) => String(group.unit_system || group.system) === system) || {}
-  const systemRows = rows.filter((row) => rowSystem(row) === system)
-  const observed = systemRows
-    .map((row) => ({ row, range: termRangeFor(row) }))
-    .filter(({ row, range }) => (!row.status || row.status === 'optimal')
-      && range?.exact && range.high != null)
-  const bounded = systemRows.filter((row) => {
-    const range = termRangeFor(row)
-    return range && !range.exact
-  })
-  const bins = new Map()
-  const suppliedDistribution = Array.isArray(supplied.distribution) ? supplied.distribution : []
-  if (suppliedDistribution.length) {
-    for (const item of suppliedDistribution) {
-      const terms = asNumber(item.terms, item.value, item.term)
-      const count = asNumber(item.count, item.n)
-      if (terms != null && count != null) bins.set(terms, count)
-    }
-  } else {
-    for (const { range } of observed) bins.set(range.high, (bins.get(range.high) || 0) + 1)
+function normalizeStats(stats) {
+  if (!stats || typeof stats !== 'object') return null
+  const normalized = {}
+  for (const field of ['n', 'mean', 'median', 'q1', 'q3', 'min', 'max']) {
+    normalized[field] = numberOrNull(stats[field])
   }
-  const values = observed.map(({ range }) => range.high)
+  return normalized.mean == null ? null : normalized
+}
+
+/** Convert the compact, generated artifact into the exact values drawn. */
+export function buildPortfolioFigureModel(data = {}) {
+  const rows = (Array.isArray(data.rows) ? data.rows : [])
+    .map((row) => {
+      const portfolioSize = numberOrNull(row.portfolio_size)
+      const courses = normalizeStats(row.district_equal?.distinct_courses)
+      const years = normalizeStats(row.district_equal?.academic_years)
+      return {
+        portfolioSize,
+        scenarioCount: numberOrNull(row.scenario_count) || 0,
+        eligibleDistrictCount: numberOrNull(row.eligible_district_count) || 0,
+        representedDistrictCount: numberOrNull(row.represented_district_count) || 0,
+        usableScenarioCount: numberOrNull(row.usable_scenario_count) || 0,
+        exactScenarioCount: numberOrNull(row.exact_scenario_count) || 0,
+        boundedScenarioCount: numberOrNull(row.bounded_scenario_count) || 0,
+        unavailableScenarioCount: numberOrNull(row.unavailable_scenario_count) || 0,
+        exactSharePct: numberOrNull(row.exact_share_pct) || 0,
+        courses,
+        years,
+        semesterEquivalentTerms: years?.mean == null ? null : years.mean * 2,
+        fixedCohortCourseMean: numberOrNull(
+          row.fixed_high_access_cohort?.distinct_courses?.mean
+        ),
+        pathWeightedCourseMean: numberOrNull(row.path_weighted?.distinct_courses?.mean),
+        overlapSavingsMean: numberOrNull(row.overlap_savings_courses?.mean),
+      }
+    })
+    .filter((row) => row.portfolioSize != null && row.courses && row.years)
+    .sort((left, right) => left.portfolioSize - right.portfolioSize)
+
+  const first = rows[0] || null
+  const last = rows[rows.length - 1] || null
+  const pathWeightingMaxDifference = rows.reduce((maximum, row) => Math.max(
+    maximum,
+    Math.abs((row.pathWeightedCourseMean ?? row.courses.mean) - row.courses.mean),
+  ), 0)
+  const fixedCohortMaxDifference = rows.reduce((maximum, row) => Math.max(
+    maximum,
+    Math.abs((row.fixedCohortCourseMean ?? row.courses.mean) - row.courses.mean),
+  ), 0)
+
   return {
-    system,
-    n: asNumber(supplied.n, supplied.count) ?? systemRows.length,
-    exactN: asNumber(supplied.exact_n, supplied.exact_count) ?? observed.length,
-    boundedN: asNumber(supplied.bounded_n, supplied.bounded_count) ?? bounded.length,
-    estimatedN: asNumber(supplied.estimated_n) ?? systemRows.filter((row) => row.status === 'estimated').length,
-    unavailableN: asNumber(supplied.unavailable_n) ?? systemRows.filter((row) => row.status === 'unavailable').length,
-    excludedN: asNumber(supplied.excluded_n) ?? Math.max(0, systemRows.length - observed.length),
-    meanPremium: asNumber(supplied.mean_optionality_premium_terms),
-    meanPremiumN: asNumber(supplied.mean_optionality_premium_terms_n),
-    mean: asNumber(supplied.mean_terms, supplied.mean) ?? mean(values),
-    median: asNumber(supplied.median_terms, supplied.median) ?? median(values),
-    bins: [...bins.entries()].map(([terms, count]) => ({ terms, count })).sort((a, b) => a.terms - b.terms),
+    rows,
+    first,
+    last,
+    summary: data.summary || {},
+    generatedAt: data.generated_at || null,
+    commonProgramCodes: data.fixed_high_access_cohort?.common_program_codes || [],
+    fixedCohortDistrictCount:
+      numberOrNull(data.fixed_high_access_cohort?.district_count) || 0,
+    pathWeightingMaxDifference,
+    fixedCohortMaxDifference,
   }
 }
 
-function TermDistribution({ model }) {
-  const label = model.system === 'quarter' ? 'Quarter colleges' : 'Semester colleges'
-  const max = Math.max(1, ...model.bins.map((bin) => bin.count))
+function FigureHeader({ model }) {
+  const firstCourses = oneFmt.format(model.first.courses.mean)
+  const lastCourses = oneFmt.format(model.last.courses.mean)
   return (
-    <section className='min-w-0 rounded-xl border border-border bg-surface p-4'>
-      <div className='flex items-start justify-between gap-4'>
-        <div>
-          <h4 className='text-body-strong text-ink'>{label}</h4>
-          <p className='text-caption text-ink-subtle'>
-            {intFmt.format(model.n)} colleges · {intFmt.format(model.exactN)} exact local plans
-            {model.boundedN ? ` · ${intFmt.format(model.boundedN)} not fully proven` : ''}
-            {model.estimatedN ? ` · ${intFmt.format(model.estimatedN)} assumption-based` : ''}
-            {model.unavailableN ? ` · ${intFmt.format(model.unavailableN)} unavailable` : ''}
-          </p>
-        </div>
-        <p className='text-caption text-ink-muted text-right'>
-          Mean: {model.mean == null ? '—' : `${numFmt.format(model.mean)} ${termNoun(model.system, model.mean)}`}<br />
-          Median: {model.median == null ? '—' : `${numFmt.format(model.median)} ${termNoun(model.system, model.median)}`}
-        </p>
-      </div>
-      {model.bins.length ? (
-        <div className='mt-4 flex h-32 items-end gap-2' aria-label={`${label} by estimated terms`}>
-          {model.bins.map((bin) => {
-            const title = `${bin.terms} ${termNoun(model.system, bin.terms)}: ${bin.count} ${plural(bin.count, 'college')}`
-            return (
-              <div key={bin.terms} className='flex h-full min-w-0 flex-1 flex-col justify-end gap-1'>
-                <span className='text-center text-tag font-mono text-ink-subtle'>{intFmt.format(bin.count)}</span>
-                <div
-                  className='mx-auto w-full max-w-14 rounded-t-sm bg-primary transition-opacity hover:opacity-75'
-                  style={{ height: `${Math.max(8, (bin.count / max) * 100)}%` }}
-                  title={title}
-                  aria-label={title}
-                />
-                <span className='text-center text-label font-mono text-ink-muted'>{intFmt.format(bin.terms)}</span>
-              </div>
-            )
-          })}
-        </div>
-      ) : (
-        <p className='mt-6 text-caption text-ink-subtle'>No usable term estimates in this calendar.</p>
-      )}
-      {model.meanPremium != null && (
-        <p className='mt-3 border-t border-border pt-3 text-caption text-ink-muted'>
-          More campus options add {signedNumber(model.meanPremium)} {termNoun(model.system, model.meanPremium)} on average
-          {model.meanPremiumN ? ` across ${intFmt.format(model.meanPremiumN)} comparable colleges` : ''}.
-        </p>
-      )}
-    </section>
+    <g>
+      <text x='44' y='48' fontSize='11' fontWeight='700' letterSpacing='1.15' fill={MUTED}>
+        MULTI-CAMPUS PREPARATION · CALIFORNIA COMMUNITY COLLEGES
+      </text>
+      <text x='44' y='87' fontSize='33' fontWeight='700' letterSpacing='-1.05' fill={INK}>
+        How much preparation keeps more UC CS options open?
+      </text>
+      <text x='44' y='120' fontSize='15' fill={BODY}>
+        For every district, we modeled every real combination of one to seven reachable UC programs.
+      </text>
+      <text x='44' y='142' fontSize='15' fill={BODY}>
+        Combinations are averaged within each district first, then every represented district receives equal weight.
+      </text>
+
+      <rect x='44' y='166' width='1032' height='62' rx='14' fill={SAGE} stroke={HAIRLINE} />
+      <text x='66' y='191' fontSize='17' fill={INK}>
+        <tspan fontWeight='700'>{firstCourses} → {lastCourses} courses.</tspan>
+        <tspan> Keeping seven UC options open roughly doubles—not septuples—the modeled coursework.</tspan>
+      </text>
+      <text x='66' y='213' fontSize='13' fill={BODY}>
+        The fixed 13-district cohort follows nearly the same curve; shared requirements drive most of the reuse.
+      </text>
+    </g>
   )
 }
 
-function SelectedPrograms({ programs, selectedIds, nameById }) {
-  const byId = new Map((programs || []).map((program) => [Number(program.school_id), program]))
+function ChartHeader() {
   return (
-    <Panel title='Selected major preparation pathways' surface='flat'>
-      <div className='divide-y divide-border'>
-        {selectedIds.map((schoolId) => {
-          const program = byId.get(Number(schoolId)) || {}
+    <g>
+      <text x='54' y='256' fontSize='12' fontWeight='700' letterSpacing='.65' fill={INK}>
+        UC OPTIONS
+      </text>
+      <text x='54' y='274' fontSize='11' fill={MUTED}>retained</text>
+
+      <text x='145' y='256' fontSize='12' fontWeight='700' letterSpacing='.65' fill={INK}>
+        MODELED EVIDENCE
+      </text>
+      <text x='145' y='274' fontSize='11' fill={MUTED}>eligible districts · real portfolios</text>
+
+      <text x='352' y='256' fontSize='12' fontWeight='700' letterSpacing='.65' fill={INK}>
+        DISTINCT COURSES IN THE JOINT PLAN
+      </text>
+      <text x='352' y='274' fontSize='11' fill={MUTED}>district-equal mean; distribution across district averages</text>
+
+      <text x='905' y='256' fontSize='12' fontWeight='700' letterSpacing='.65' fill={INK}>
+        REGULAR TERMS
+      </text>
+      <text x='905' y='274' fontSize='11' fill={MUTED}>semester-equivalent</text>
+
+      {[6, 12, 18, 24].map((tick) => (
+        <text key={tick} x={courseX(tick)} y='303' textAnchor='middle' fontSize='11' fill={MUTED}>
+          {tick}
+        </text>
+      ))}
+
+      <g transform='translate(352 323)'>
+        <line x1='0' y1='0' x2='20' y2='0' stroke={INK} strokeOpacity='.35' strokeWidth='3' />
+        <rect x='5' y='-5' width='10' height='10' rx='2' fill={INK} fillOpacity='.14'
+          stroke={INK} strokeOpacity='.42' />
+        <circle cx='10' cy='0' r='4.5' fill={INK} stroke='#fff' strokeWidth='1.5' />
+        <text x='27' y='4' fontSize='11' fill={BODY}>all represented districts · IQR + range</text>
+      </g>
+      <g transform='translate(614 323)'>
+        <polygon points={diamondPoints(6, 0, 5)} fill='#fff' stroke={INK} strokeWidth='1.5' />
+        <text x='18' y='4' fontSize='11' fill={BODY}>same 13 high-access districts</text>
+      </g>
+    </g>
+  )
+}
+
+function PortfolioRow({ row, index, isMaximum }) {
+  const top = ROW_TOP + index * ROW_HEIGHT
+  const baseline = top + 25
+  const courses = row.courses
+  const cohortX = courseX(row.fixedCohortCourseMean)
+  const exactWidth = EVIDENCE_TRACK.width * (row.exactSharePct / 100)
+  const districtLabel = row.representedDistrictCount === row.eligibleDistrictCount
+    ? `${intFmt.format(row.eligibleDistrictCount)} districts`
+    : `${intFmt.format(row.eligibleDistrictCount)} eligible districts`
+
+  return (
+    <g data-portfolio-row={row.portfolioSize}>
+      {isMaximum && (
+        <>
+          <rect x='44' y={top} width='1032' height={ROW_HEIGHT} fill={MINT} />
+          <rect x='44' y={top} width='4' height={ROW_HEIGHT} rx='2' fill={LIME} />
+        </>
+      )}
+      <line x1='44' y1={top} x2='1076' y2={top} stroke={HAIRLINE} />
+
+      {[6, 12, 18, 24].map((tick) => (
+        <line key={tick} x1={courseX(tick)} y1={top + 5} x2={courseX(tick)} y2={top + 55}
+          stroke={GRID} />
+      ))}
+
+      <text x='54' y={baseline + 7} fontSize='25' fontWeight='700' letterSpacing='-.8' fill={INK}>
+        {row.portfolioSize}
+      </text>
+      {isMaximum && (
+        <g transform={`translate(82 ${baseline - 10})`}>
+          <rect width='34' height='18' rx='9' fill={LIME} />
+          <text x='17' y='12.5' textAnchor='middle' fontSize='9' fontWeight='700'
+            letterSpacing='.5' fill={INK}>MAX</text>
+        </g>
+      )}
+
+      <text x='145' y={baseline - 7} fontSize='12.5' fontWeight='650' fill={INK}>
+        {districtLabel} · {intFmt.format(row.scenarioCount)} plans
+      </text>
+      <rect x={EVIDENCE_TRACK.x} y={baseline + 5} width={EVIDENCE_TRACK.width} height='7'
+        rx='3.5' fill={TRACK} />
+      <rect x={EVIDENCE_TRACK.x} y={baseline + 5} width={exactWidth} height='7'
+        rx='3.5' fill={INK} />
+      <text x='247' y={baseline + 13} fontSize='10.5' fill={MUTED}>
+        {row.representedDistrictCount !== row.eligibleDistrictCount
+          ? `${row.representedDistrictCount} represented · `
+          : ''}{Math.round(row.exactSharePct)}% proven
+      </text>
+
+      <line x1={courseX(courses.min)} y1={baseline} x2={courseX(courses.max)} y2={baseline}
+        stroke={INK} strokeOpacity='.30' strokeWidth='4' strokeLinecap='round' />
+      <rect x={courseX(courses.q1)} y={baseline - 8}
+        width={Math.max(2, courseX(courses.q3) - courseX(courses.q1))} height='16' rx='3'
+        fill={INK} fillOpacity='.14' stroke={INK} strokeOpacity='.42' />
+      <circle cx={courseX(courses.mean)} cy={baseline} r='5.5' fill={INK}
+        stroke='#fff' strokeWidth='2' />
+      <polygon points={diamondPoints(cohortX, baseline + 18)} fill='#fff' stroke={INK}
+        strokeWidth='1.5' />
+      <text x='778' y={baseline + 6} fontSize='18' fontWeight='700'
+        letterSpacing='-.4' fill={INK}>{oneFmt.format(courses.mean)}</text>
+
+      <text x='905' y={baseline + 4} fontSize='17' fontWeight='700'
+        letterSpacing='-.35' fill={INK}>{oneFmt.format(row.semesterEquivalentTerms)}</text>
+      <text x='944' y={baseline + 4} fontSize='12' fill={MUTED}>terms</text>
+      <text x='905' y={baseline + 21} fontSize='11' fill={MUTED}>
+        ≈ {oneFmt.format(row.years.mean)} academic years
+      </text>
+    </g>
+  )
+}
+
+function CeilingNote({ model }) {
+  const codes = model.commonProgramCodes.join(', ')
+  return (
+    <g>
+      <rect x='44' y='798' width='1032' height='76' rx='16' fill={SAGE} stroke={HAIRLINE} />
+      <text x='68' y='825' fontSize='11' fontWeight='700' letterSpacing='.8' fill={MUTED}>
+        WHY THE CHART ENDS AT SEVEN
+      </text>
+      <text x='68' y='847' fontSize='14.5' fontWeight='700' fill={INK}>
+        No district completes the pinned UCLA or UCSD
+      </text>
+      <text x='68' y='865' fontSize='14.5' fontWeight='700' fill={INK}>
+        pathway under the strict pinned-template method.
+      </text>
+      <text x='650' y='825' fontSize='11' fontWeight='700' letterSpacing='.8' fill={MUTED}>
+        THE COMMON SEVEN
+      </text>
+      <text x='650' y='849' fontSize='14' fill={BODY}>{codes}</text>
+    </g>
+  )
+}
+
+function MethodNote({ model }) {
+  const exact = intFmt.format(model.summary.exact_scenarios || 0)
+  const bounded = intFmt.format(model.summary.bounded_scenarios || 0)
+  const total = intFmt.format(model.summary.scenarios_total || 0)
+  const unavailable = intFmt.format(model.summary.unavailable_scenarios || 0)
+  return (
+    <g>
+      <rect x='44' y='894' width='1032' height='118' rx='16' fill='#fff' stroke={HAIRLINE} />
+      <circle cx='69' cy='919' r='10' fill={MINT} stroke={HAIRLINE} />
+      <text x='69' y='923' textAnchor='middle' fontSize='12' fontWeight='700' fill={INK}>i</text>
+      <text x='88' y='923' fontSize='13' fontWeight='700' fill={INK}>How to read this</text>
+      <text x='68' y='947' fontSize='12.5' fill={BODY}>
+        Each row averages all usable portfolios of that size within a district, then gives districts equal weight. Boxes show the middle 50%
+      </text>
+      <text x='68' y='966' fontSize='12.5' fill={BODY}>
+        of district averages; whiskers show their range. Courses include pinned ASSIST major preparation plus modeled prerequisites, count a
+      </text>
+      <text x='68' y='985' fontSize='12.5' fill={BODY}>
+        shared physical course once, and allow cross-enrollment within a district. Time assumes 15 native units and regular-term availability.
+      </text>
+      <text x='68' y='1002' fontSize='11.5' fontWeight='650' fill={CORAL}>
+        Preliminary solver sensitivity: {exact} of {total} plans are proven minima; {bounded} are feasible upper bounds and {unavailable} are omitted.
+      </text>
+    </g>
+  )
+}
+
+function SourceNote({ model }) {
+  const usable = intFmt.format(model.summary.usable_scenarios || 0)
+  const total = intFmt.format(model.summary.scenarios_total || 0)
+  return (
+    <g>
+      <line x1='44' y1='1032' x2='1076' y2='1032' stroke={HAIRLINE} />
+      <text x='44' y='1052' fontSize='10.8' fill={MUTED}>
+        <tspan fontWeight='700' fill={BODY}>Source. </tspan>
+        Pinned ASSIST CS/EECS templates for nine UC campuses across 72 districts (115 colleges), July 2026; {usable} of {total} modeled portfolios usable.
+      </text>
+    </g>
+  )
+}
+
+function PortfolioFigure({ model, compact = false }) {
+  const rawId = useId().replace(/:/g, '')
+  const titleId = `${rawId}-portfolio-title`
+  const descriptionId = `${rawId}-portfolio-description`
+
+  if (compact) {
+    const maxCourses = Math.max(...model.rows.map((row) => row.courses.mean))
+    return (
+      <svg viewBox='0 0 820 460' role='img' aria-labelledby={`${titleId} ${descriptionId}`}
+        className='block h-auto w-full' style={{ fontFamily: FONT }}>
+        <title id={titleId}>Modeled preparation for one through seven UC options</title>
+        <desc id={descriptionId}>Average courses rise from 8.8 for one option to 17.7 for seven.</desc>
+        <rect width='820' height='460' fill='#fff' />
+        <text x='34' y='45' fontSize='13' fontWeight='700' letterSpacing='.7' fill={MUTED}>
+          DISTRICT-WIDE UC PREPARATION
+        </text>
+        <text x='34' y='84' fontSize='27' fontWeight='700' letterSpacing='-.6' fill={INK}>
+          Keeping more UC options open
+        </text>
+        <text x='34' y='111' fontSize='14' fill={BODY}>
+          Average best-found joint plan · courses including prerequisites
+        </text>
+        {model.rows.map((row, index) => {
+          const y = 148 + index * 42
+          const width = (row.courses.mean / maxCourses) * 570
           return (
-            <div key={schoolId} className='py-3 first:pt-0 last:pb-0'>
-              <p className='text-body-strong text-ink'>{shortenSchool(program.school || nameById.get(Number(schoolId)) || `Campus ${schoolId}`)}</p>
-              <p className='mt-0.5 text-caption text-ink-subtle'>{program.program || program.major || 'Configured computer science program'}</p>
-            </div>
+            <g key={row.portfolioSize}>
+              <text x='34' y={y + 18} fontSize='14' fontWeight='700' fill={INK}>
+                {row.portfolioSize} UC{row.portfolioSize === 1 ? '' : 's'}
+              </text>
+              <rect x='102' y={y} width='570' height='24' rx='4' fill={TRACK} />
+              <rect x='102' y={y} width={width} height='24' rx='4'
+                fill={index === model.rows.length - 1 ? LIME : INK} />
+              <text x='690' y={y + 18} fontSize='16' fontWeight='700' fill={INK}>
+                {oneFmt.format(row.courses.mean)}
+              </text>
+            </g>
           )
         })}
-      </div>
-    </Panel>
-  )
-}
-
-function AverageTable({ rows, targetCount }) {
-  const sorted = rows.slice().sort((a, b) => String(a.community_college).localeCompare(String(b.community_college)))
-  return (
-    <div className='surface-card overflow-auto' data-export-exclude>
-      <table className='min-w-full border-separate border-spacing-0'>
-        <thead>
-          <tr>
-            {['Community college', 'Calendar', 'Full agreements covered', 'Distinct courses', 'Native units', 'Estimated terms', 'Courses added for more campus options', 'Status'].map((heading, index) => (
-              <th key={heading} className={`border-b border-border px-3 py-2 text-label ${index === 0 ? 'text-left' : 'text-right'}`}>{heading}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((row) => {
-            const system = rowSystem(row)
-            const campusRows = row.campuses || row.targets || []
-            const fullyCovered = campusRows.filter((campus) =>
-              campus.strict_complete === true || campus.fully_satisfiable === true).length
-            const warnings = row.warnings || []
-            const status = row.status || scheduleFor(row).status || 'modeled'
-            return (
-              <tr key={row.community_college_id ?? row.community_college} className='hover:bg-surface-hover'>
-                <td className='border-b border-border px-3 py-2 text-caption text-ink'>{row.community_college || row.college_name || 'Unknown college'}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption text-ink-muted'>{calendarLabel(system)}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{intFmt.format(fullyCovered)} of {intFmt.format(targetCount)}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{displayNumber(coursesFor(row))}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{displayNumber(unitsFor(row))}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{termText(row, system)}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{signedNumber(premiumFor(row))}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption text-ink-muted' title={warnings.join('\n')}>
-                  {warnings.length
-                    ? `${statusLabel(status)} · ${warnings.length} ${plural(warnings.length, 'warning')}`
-                    : statusLabel(status)}
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function courseCode(course) {
-  return course?.code || [course?.prefix, course?.number].filter(Boolean).join(' ') || `Course ${course?.course_id ?? ''}`.trim()
-}
-
-const ROLE_LABELS = {
-  major: 'Major preparation',
-  major_preparation: 'Major preparation',
-  prerequisite: 'Prerequisite only',
-  prerequisite_only: 'Prerequisite only',
-  flexible: 'Flexible requirement',
-}
-
-function CourseSchedule({ row, terms, courses }) {
-  const system = rowSystem(row)
-  const combined = combinedFor(row)
-  const byId = new Map(courses.map((course) => [String(course.course_id), course]))
-  const schedule = scheduleFor(row)
-  const scheduleStatus = schedule.status || combined.schedule_status || row.schedule_status
-  const unitFloor = asNumber(combined.unit_lower_bound_terms, schedule.unit_lower_bound_terms)
-  const sequenceFloor = asNumber(combined.sequence_lower_bound_terms, schedule.sequence_lower_bound_terms)
-
-  if (system === 'unknown') {
-    return <EmptyState title='Calendar unavailable' description='A term sequence cannot be calculated until this college is identified as a semester or quarter college.' className='py-10' />
-  }
-
-  if (!terms.length) {
-    return <EmptyState title='No course sequence available' description='The model could not build a term-by-term sequence for this college.' className='py-10' />
+      </svg>
+    )
   }
 
   return (
-    <div>
-      {scheduleStatus && scheduleStatus !== 'optimal' && (
-        <Alert type='warning'>The sequence below is feasible. Its minimum length is within the displayed lower and upper bounds, but has not been proven exactly.</Alert>
-      )}
-      {unitFloor != null && sequenceFloor != null && (
-        <p className='mt-3 text-caption text-ink-muted'>
-          Units alone require at least {numFmt.format(unitFloor)} {termNoun(system, unitFloor)}.
-          {' '}Prerequisite order requires at least {numFmt.format(sequenceFloor)} {termNoun(system, sequenceFloor)}.
-        </p>
-      )}
-      <div className='mt-4 overflow-x-auto pb-2'>
-        <div className='flex min-w-max gap-3'>
-          {terms.map((term, index) => {
-            const listed = Array.isArray(term.courses)
-              ? term.courses
-              : (term.course_ids || []).map((id) => byId.get(String(id))).filter(Boolean)
-            const placeholders = term.placeholders || []
-            const unitTotal = asNumber(term.units, term.total_units)
-              ?? listed.reduce((sum, course) => sum + (Number(course.units) || 0), 0)
-            const label = term.label || `${system === 'unknown' ? 'Term' : calendarLabel(system)} ${term.index || index + 1}`
-            return (
-              <section key={term.index || index} className='w-60 shrink-0 rounded-xl border border-border bg-surface-muted p-3'>
-                <div className='flex items-start justify-between gap-2 border-b border-border pb-2'>
-                  <h4 className='text-body-strong text-ink'>{label}</h4>
-                  <span className='text-caption font-mono tabular-nums text-ink-muted'>
-                    {intFmt.format(listed.length)} {plural(listed.length, 'course')} · {displayNumber(unitTotal, ' units')}
-                  </span>
-                </div>
-                <div className='mt-3 flex flex-col gap-2'>
-                  {listed.map((course) => (
-                    <div key={course.course_id || courseCode(course)} className='rounded-lg border border-border bg-surface px-3 py-2'>
-                      <p className='text-caption font-[650] text-ink'>{courseCode(course)}</p>
-                      <p className='mt-0.5 line-clamp-2 text-tag text-ink-subtle'>{course.title || ROLE_LABELS[course.role] || 'Required course'}</p>
-                    </div>
-                  ))}
-                  {placeholders.map((placeholder, placeholderIndex) => {
-                    const labelText = typeof placeholder === 'string' ? placeholder : placeholder.label || 'Flexible requirement'
-                    return (
-                      <div key={`${labelText}-${placeholderIndex}`} className='rounded-lg border border-dashed border-border-strong px-3 py-2'>
-                        <p className='text-caption text-ink-muted'>{labelText}</p>
-                      </div>
-                    )
-                  })}
-                </div>
-              </section>
-            )
-          })}
-        </div>
-      </div>
-    </div>
+    <svg viewBox={`0 0 ${FIGURE.width} ${FIGURE.height}`} role='img'
+      aria-labelledby={`${titleId} ${descriptionId}`} className='block h-auto w-full'
+      data-export-width={FIGURE.width} data-portfolio-figure style={{ fontFamily: FONT }}>
+      <title id={titleId}>How much preparation keeps more UC computer science options open?</title>
+      <desc id={descriptionId}>
+        Seven rows compare one through seven reachable UC programs. The district-equal
+        average best-found joint plan rises from 8.8 courses and 4.0 semester-equivalent
+        regular terms for one program to 17.7 courses and 5.4 terms for seven programs.
+        Exact-solver coverage is shown for every row.
+      </desc>
+      <rect width={FIGURE.width} height={FIGURE.height} fill='#fff' />
+      <FigureHeader model={model} />
+      <ChartHeader />
+      {model.rows.map((row, index) => (
+        <PortfolioRow key={row.portfolioSize} row={row} index={index}
+          isMaximum={index === model.rows.length - 1} />
+      ))}
+      <line x1='44' y1={ROW_TOP + model.rows.length * ROW_HEIGHT}
+        x2='1076' y2={ROW_TOP + model.rows.length * ROW_HEIGHT} stroke={HAIRLINE} />
+      <CeilingNote model={model} />
+      <MethodNote model={model} />
+      <SourceNote model={model} />
+    </svg>
   )
 }
 
-function CampusPreparation({ row, selectedIds, programs, nameById }) {
-  const supplied = row.campuses || row.targets || []
-  const byId = new Map(supplied.map((campus) => [Number(campus.school_id), campus]))
-  const programById = new Map((programs || []).map((program) => [Number(program.school_id), program]))
+function AccessibleDataTable({ model }) {
   return (
-    <Panel title='What this plan prepares for' surface='flat'>
-      <div className='divide-y divide-border'>
-        {selectedIds.map((schoolId) => {
-          const campus = byId.get(Number(schoolId)) || {}
-          const program = programById.get(Number(schoolId)) || {}
-          const required = asNumber(campus.requirements_required, campus.receivers_required)
-          const satisfied = asNumber(campus.requirements_satisfied, campus.receivers_satisfied)
-          const pct = asNumber(campus.completion_pct, campus.coverage_pct)
-            ?? (required ? (100 * satisfied) / required : null)
-          const complete = campus.strict_complete === true || campus.complete === true
-            || campus.fully_satisfiable === true || (required != null && satisfied >= required)
-          const localComplete = campus.product_complete === true
-          const baselineTerms = asNumber(campus.estimated_terms)
-          const baselineCourses = asNumber(campus.distinct_courses, campus.course_count)
-          return (
-            <div key={schoolId} className='py-3 first:pt-0 last:pb-0'>
-              <div className='flex items-center justify-between gap-3'>
-                <p className='text-body-strong text-ink'>{shortenSchool(campus.school || program.school || nameById.get(Number(schoolId)) || `Campus ${schoolId}`)}</p>
-                <Badge variant={complete ? 'success' : 'neutral'}>
-                  {complete ? 'Full agreement covered' : localComplete ? 'Local coursework covered' : 'Data needs review'}
-                </Badge>
-              </div>
-              <p className='mt-0.5 text-caption text-ink-subtle'>{campus.major || program.program || program.major || 'Configured computer science program'}</p>
-              {(baselineCourses != null || baselineTerms != null) && (
-                <p className='mt-1 text-tag text-ink-muted'>
-                  {baselineCourses == null ? null : `${numFmt.format(baselineCourses)} ${plural(baselineCourses, 'course')}`}
-                  {baselineCourses != null && baselineTerms != null ? ' · ' : null}
-                  {baselineTerms == null ? null : `${numFmt.format(baselineTerms)} ${termNoun(rowSystem(row), baselineTerms)} on its own`}
-                </p>
-              )}
-              {pct != null && (
-                <div className='mt-2'>
-                  <div className='h-1.5 overflow-hidden rounded-pill bg-surface-sunken'>
-                    <div className='h-full rounded-pill bg-primary' style={{ width: `${Math.max(0, Math.min(100, pct))}%` }} />
-                  </div>
-                  <p className='mt-1 text-tag text-ink-muted'>
-                    {required != null && satisfied != null
-                      ? `${intFmt.format(satisfied)} of ${intFmt.format(required)} required blocks modeled`
-                      : `${numFmt.format(pct)}% of required preparation modeled`}
-                  </p>
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
-    </Panel>
-  )
-}
-
-function CourseTable({ courses, nameById }) {
-  const byId = new Map(courses.map((course) => [String(course.course_id), course]))
-  return (
-    <div className='surface-card overflow-auto' data-export-exclude>
-      <table className='min-w-full border-separate border-spacing-0'>
-        <thead>
-          <tr>
-            {['Course', 'Title', 'Units', 'Modeled term', 'Role', 'Needed for', 'Prerequisites', 'Evidence'].map((heading, index) => (
-              <th key={heading} className={`border-b border-border px-3 py-2 text-label ${index < 2 ? 'text-left' : 'text-right'}`}>{heading}</th>
-            ))}
+    <table className='sr-only' aria-label='Modeled UC portfolio preparation data'>
+      <caption>
+        District-equal best-feasible course and time summaries by number of UC programs retained.
+      </caption>
+      <thead>
+        <tr>
+          <th>UC programs retained</th>
+          <th>Eligible districts</th>
+          <th>Districts represented in mean</th>
+          <th>Modeled portfolios</th>
+          <th>Proven minima</th>
+          <th>Average courses</th>
+          <th>Course IQR</th>
+          <th>Average semester-equivalent terms</th>
+          <th>High-access cohort average courses</th>
+        </tr>
+      </thead>
+      <tbody>
+        {model.rows.map((row) => (
+          <tr key={row.portfolioSize}>
+            <th scope='row'>{row.portfolioSize}</th>
+            <td>{row.eligibleDistrictCount}</td>
+            <td>{row.representedDistrictCount}</td>
+            <td>{row.scenarioCount}</td>
+            <td>{row.exactScenarioCount}</td>
+            <td>{oneFmt.format(row.courses.mean)}</td>
+            <td>{oneFmt.format(row.courses.q1)}–{oneFmt.format(row.courses.q3)}</td>
+            <td>{oneFmt.format(row.semesterEquivalentTerms)}</td>
+            <td>{oneFmt.format(row.fixedCohortCourseMean)}</td>
           </tr>
-        </thead>
-        <tbody>
-          {courses.map((course) => {
-            const schoolIds = course.school_ids || course.campus_ids || []
-            const prereqIds = course.prerequisite_ids || []
-            const prerequisites = prereqIds.map((id) => courseCode(byId.get(String(id)) || { course_id: id })).join(', ')
-            return (
-              <tr key={course.course_id || courseCode(course)} className='hover:bg-surface-hover'>
-                <td className='border-b border-border px-3 py-2 text-caption font-[650] text-ink whitespace-nowrap'>{courseCode(course)}</td>
-                <td className='max-w-xs border-b border-border px-3 py-2 text-caption text-ink-muted'>{course.title || '—'}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{displayNumber(course.units)}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption font-mono tabular-nums'>{displayNumber(course.modeled_term || course.term)}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption text-ink-muted'>{ROLE_LABELS[course.role] || course.role || 'Major preparation'}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption text-ink-muted'>{schoolIds.length ? schoolIds.map((id) => shortenSchool(nameById.get(Number(id)) || id)).join(', ') : 'Shared plan'}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption text-ink-muted'>{prerequisites || 'None modeled'}</td>
-                <td className='border-b border-border px-3 py-2 text-right text-caption text-ink-muted'>{course.evidence || course.source_status || 'Documented'}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-function MethodCaveat() {
-  return (
-    <div role='note' className='rounded-xl border border-border bg-surface-muted px-4 py-3 text-caption text-ink-muted'>
-      <span className='font-[650] text-ink'>This is an optimistic preparation model, not a prediction of time to degree.</span>{' '}
-      It schedules the required lower division preparation that has a usable local path in the selected ASSIST agreements and flags preparation the college cannot articulate. It assumes every selected course is offered every term without conflicts. It does not model general education, associate degree completion, admission, seats, repeated courses, or university coursework after transfer.
-    </div>
-  )
-}
-
-export function MultiCampusPathwaysPreview() {
-  return (
-    <div className='surface-card p-6'>
-      <p className='text-heading text-ink'>Build one plan for several campuses</p>
-      <p className='mt-1 text-body text-ink-muted'>Choose goals, a community college, and a unit load.</p>
-      <div className='mt-5 flex flex-wrap gap-2'>
-        {['Berkeley', 'Davis', 'Los Angeles'].map((campus) => (
-          <span key={campus} className='rounded-pill bg-primary-soft px-3 py-1.5 text-caption text-primary'>{campus}</span>
         ))}
-      </div>
-      <div className='mt-6 grid grid-cols-2 gap-4'>
-        <div className='rounded-xl border border-border bg-surface-muted p-4'>
-          <p className='text-label text-ink-subtle'>Across colleges</p>
-          <p className='mt-2 text-title text-ink'>Compare typical terms</p>
-          <div className='mt-5 flex h-16 items-end gap-2'>
-            {[35, 65, 100, 72, 42].map((height, index) => (
-              <span key={index} className='flex-1 rounded-t-sm bg-primary' style={{ height: `${height}%` }} />
-            ))}
-          </div>
-        </div>
-        <div className='rounded-xl border border-border bg-surface-muted p-4'>
-          <p className='text-label text-ink-subtle'>At one college</p>
-          <p className='mt-2 text-title text-ink'>See the course sequence</p>
-          <div className='mt-5 flex gap-2'>
-            {['Term 1', 'Term 2', 'Term 3'].map((term) => (
-              <span key={term} className='flex-1 rounded-lg border border-border bg-surface px-2 py-4 text-center text-caption text-ink-muted'>{term}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+      </tbody>
+    </table>
   )
 }
 
-export default function MultiCampusPathways() {
-  const [mode, setMode] = useState('average')
-  const [selectedIds, setSelectedIds] = useState(null)
-  const [appliedIds, setAppliedIds] = useState(null)
-  const [collegeId, setCollegeId] = useState(null)
-  const [semesterLoad, setSemesterLoad] = useState(15)
-  const [quarterLoad, setQuarterLoad] = useState(15)
-  const [appliedLoads, setAppliedLoads] = useState({ semester: 15, quarter: 15 })
-
-  const schoolsQ = useSchools()
-  const collegesQ = useColleges()
-  const schools = useMemo(
-    () => (schoolsQ.data?.uc || []).slice().sort((a, b) => String(a.name).localeCompare(String(b.name))),
-    [schoolsQ.data],
-  )
-  const defaultIds = schools.slice(0, 2).map((school) => Number(school.id))
-  const effectiveIds = (selectedIds ?? defaultIds).slice().sort((a, b) => a - b)
-  const appliedEffectiveIds = (appliedIds ?? defaultIds).slice().sort((a, b) => a - b)
-  const colleges = Array.isArray(collegesQ.data) ? collegesQ.data : (collegesQ.data?.rows || [])
-  const selectedCollege = colleges.find((college) => Number(college.id ?? college.source_id) === Number(collegeId)) || null
-  const collegeReady = appliedEffectiveIds.length > 0 && collegeId != null
-  const parsedSemesterLoad = Number(semesterLoad)
-  const parsedQuarterLoad = Number(quarterLoad)
-  const loadsValid = Number.isFinite(parsedSemesterLoad)
-    && parsedSemesterLoad >= 6 && parsedSemesterLoad <= 24
-    && Number.isFinite(parsedQuarterLoad)
-    && parsedQuarterLoad >= 6 && parsedQuarterLoad <= 30
-  const loadsChanged = parsedSemesterLoad !== appliedLoads.semester
-    || parsedQuarterLoad !== appliedLoads.quarter
-  const targetsChanged = effectiveIds.join(',') !== appliedEffectiveIds.join(',')
-  const pendingChanges = loadsChanged || targetsChanged
-
-  const snapshotQuery = useMultiCampusPathwaysSnapshot({
-    enabled: mode === 'average',
-  })
-  const rejectedSnapshotStatus = mode === 'average'
-    ? failClosedSnapshotStatus(snapshotQuery.error)
-    : null
-  const collegeQuery = useMultiCampusPathways({
-    mode: 'college',
-    schoolIds: appliedEffectiveIds,
-    communityCollegeId: collegeId,
-    semesterLoad: appliedLoads.semester,
-    quarterLoad: appliedLoads.quarter,
-  }, {
-    enabled: mode === 'college' && collegeReady,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-  })
-  const averageData = useMemo(
-    () => rejectedSnapshotStatus
-      ? null
-      : materializeAverageSnapshot(snapshotQuery.data, effectiveIds),
-    [snapshotQuery.data, rejectedSnapshotStatus, effectiveIds.join(',')],
-  )
-  const averageSnapshot = averageData?.snapshot || {}
-  const averageGeneratedDate = fmtDate(averageSnapshot.generated_at)
-  const query = mode === 'average' ? snapshotQuery : collegeQuery
-
-  const nameById = useMemo(
-    () => new Map(schools.map((school) => [Number(school.id), school.name])),
-    [schools],
-  )
-
-  const toggleSchool = (rawId) => {
-    const id = Number(rawId)
-    const current = [...effectiveIds]
-    const at = current.indexOf(id)
-    if (at >= 0) {
-      if (current.length === 1) return
-      current.splice(at, 1)
-    } else {
-      current.push(id)
-    }
-    setSelectedIds(current.sort((a, b) => a - b))
-  }
-
-  const changeMode = (nextMode) => {
-    if (nextMode === 'college') setAppliedIds([...effectiveIds])
-    setMode(nextMode)
-  }
-
-  const controls = (
-    <div className='surface-card p-4' data-export-exclude>
-      <div className='flex flex-wrap items-end gap-x-6 gap-y-4'>
-        <div className='flex flex-col gap-1.5'>
-          <span className='field-label'>View</span>
-          <Tabs value={mode} onChange={changeMode} options={MODE_OPTIONS} />
-        </div>
-        {mode === 'college' && (
-          <div className='flex w-80 max-w-full flex-col gap-1.5'>
-            <span className='field-label'>Community college</span>
-            <Combobox
-              value={collegeId}
-              onChange={(value) => setCollegeId(Number(value))}
-              options={colleges.map((college) => ({
-                value: Number(college.id ?? college.source_id),
-                label: college.name || college.community_college,
-              }))}
-              placeholder='Choose a college'
-            />
-          </div>
-        )}
-        {mode === 'average' ? (
-          <>
-            <div className='flex flex-col gap-1.5'>
-              <span className='field-label'>Precomputed term load</span>
-              <p className='text-caption text-ink'>
-                {averageSnapshot.semester_load == null
-                  ? 'Loading assumptions'
-                  : `${numFmt.format(averageSnapshot.semester_load)} units per semester · ${numFmt.format(averageSnapshot.quarter_load)} units per quarter`}
-              </p>
-              {averageGeneratedDate && <p className='text-tag text-ink-subtle'>Generated {averageGeneratedDate}</p>}
-            </div>
-            <Button
-              variant='secondary'
-              leadingIcon={ArrowPathIcon}
-              loading={snapshotQuery.isFetching && !snapshotQuery.isLoading}
-              onClick={() => snapshotQuery.refetch()}
-            >
-              Reload saved snapshot
-            </Button>
-          </>
-        ) : (
-          <>
-            <Input
-              label='Units per semester'
-              type='number'
-              min='6'
-              max='24'
-              step='0.5'
-              value={semesterLoad}
-              onChange={(event) => setSemesterLoad(event.target.value)}
-              className='w-28'
-            />
-            <Input
-              label='Units per quarter'
-              type='number'
-              min='6'
-              max='30'
-              step='0.5'
-              value={quarterLoad}
-              onChange={(event) => setQuarterLoad(event.target.value)}
-              className='w-28'
-            />
-            <Button
-              variant='secondary'
-              leadingIcon={ArrowPathIcon}
-              loading={collegeQuery.isFetching && !collegeQuery.isLoading}
-              disabled={!effectiveIds.length || collegeId == null || !loadsValid}
-              onClick={() => {
-                if (pendingChanges) {
-                  setAppliedIds([...effectiveIds])
-                  setAppliedLoads({ semester: parsedSemesterLoad, quarter: parsedQuarterLoad })
-                } else {
-                  collegeQuery.refetch()
-                }
-              }}
-            >
-              {pendingChanges ? 'Update estimate' : 'Refresh'}
-            </Button>
-          </>
-        )}
-      </div>
-
-      <div className='mt-4 flex flex-col gap-1.5 border-t border-border pt-4'>
-        <div className='flex flex-wrap items-baseline justify-between gap-2'>
-          <span className='field-label'>Target University of California programs</span>
-          <span className='text-caption text-ink-subtle'>{effectiveIds.length} selected · choose one to nine</span>
-        </div>
-        <Tabs
-          multiple
-          value={effectiveIds}
-          onChange={toggleSchool}
-          options={schools.map((school) => ({ value: Number(school.id), label: shortenSchool(school.name) }))}
-          className='max-w-full flex-wrap'
-        />
-        <p className='text-caption text-ink-subtle'>Targets are unordered. A course shared by several programs is counted once.</p>
-        {mode === 'college' && pendingChanges && <p className='text-caption text-primary'>Changes are ready. Select Update estimate to recalculate.</p>}
-      </div>
-    </div>
-  )
-
-  if (schoolsQ.isLoading || collegesQ.isLoading) return <AnalysisLoading />
-  if (schoolsQ.isError || collegesQ.isError) return <Alert type='error'>Could not load the college and campus choices.</Alert>
-
-  if (mode === 'college' && collegeId == null) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <EmptyState card title='Choose a community college' description='Select a college to build its combined preparation plan and modeled course sequence.' className='p-8' />
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-
-  if (rejectedSnapshotStatus) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <Alert type='error'>
-          {rejectedSnapshotStatus === 409
-            ? 'The saved snapshot no longer matches the current working program selection. Regenerate it before using the average view.'
-            : 'You no longer have access to the saved multi-campus snapshot.'}
-        </Alert>
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-
-  if (query.isLoading && !query.data) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <AnalysisLoading />
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-  if (query.isError && !query.data) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <Alert type='error'>
-          {mode === 'average'
-            ? 'Could not load the precomputed multi-campus snapshot.'
-            : 'Could not calculate the multi-campus preparation plan.'}
-        </Alert>
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-
-  const data = mode === 'average' ? (averageData || {}) : (collegeQuery.data || {})
-  const rows = data.rows || []
-  const programs = data.programs || []
-  const specificRow = data.row || data.college || rows[0] || null
-
-  if (mode === 'average' && snapshotQuery.data && !averageData) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <EmptyState card title='Snapshot needs regeneration' description='This campus combination is not present in the saved statewide snapshot.' className='p-8' />
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-  if (mode === 'average' && !rows.length) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <EmptyState card title='No colleges can be modeled' description='Try another combination of target programs.' className='p-8' />
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-  if (mode === 'college' && !specificRow) {
-    return (
-      <Stack gap='section'>
-        {controls}
-        <EmptyState card title='No plan is available' description='This college does not have usable agreements for the selected targets.' className='p-8' />
-        <MethodCaveat />
-      </Stack>
-    )
-  }
-
-  if (mode === 'average') {
-    const summary = data.summary || {}
-    const semester = calendarModel(data, rows, 'semester')
-    const quarter = calendarModel(data, rows, 'quarter')
-    const meanUnits = asNumber(summary.mean_semester_equiv_units)
-      ?? mean(rows.map((row) => asNumber(combinedFor(row).semester_equiv_units)).filter(Number.isFinite))
-    const meanCourses = asNumber(summary.mean_distinct_courses)
-      ?? mean(rows.map(coursesFor).filter(Number.isFinite))
-    const meanMajorCourses = asNumber(summary.mean_major_courses)
-    const meanPrerequisiteCourses = asNumber(summary.mean_prerequisite_courses)
-    const meanPremium = asNumber(summary.mean_optionality_premium_courses)
-      ?? mean(rows.map(premiumFor).filter(Number.isFinite))
-    const typicalParts = [
-      semester.n && semester.median != null ? `${numFmt.format(semester.median)} semesters` : null,
-      quarter.n && quarter.median != null ? `${numFmt.format(quarter.median)} quarters` : null,
-    ].filter(Boolean)
-    return (
-      <Stack gap='section'>
-        {controls}
-        <div data-export-root className='flex flex-col gap-6'>
-          <StatStrip tiles={[
-            { label: 'Colleges analyzed', value: intFmt.format(asNumber(summary.colleges_analyzed) ?? rows.length), sub: [summary.colleges_exact != null ? `${intFmt.format(summary.colleges_exact)} exact local plans` : null, summary.colleges_excluded ? `${intFmt.format(summary.colleges_excluded)} unavailable` : null].filter(Boolean).join(' · ') || null },
-            { label: 'Mean coursework', value: meanUnits == null ? '—' : `${numFmt.format(meanUnits)} units`, sub: summary.mean_semester_equiv_units_n ? `semester equivalent · n=${intFmt.format(summary.mean_semester_equiv_units_n)}` : 'semester equivalent', accent: true },
-            { label: 'Mean distinct courses', value: displayNumber(meanCourses), sub: meanMajorCourses != null && meanPrerequisiteCourses != null ? `${numFmt.format(meanMajorCourses)} preparation + ${numFmt.format(meanPrerequisiteCourses)} prerequisite${summary.mean_distinct_courses_n ? ` · n=${intFmt.format(summary.mean_distinct_courses_n)}` : ''}` : `${effectiveIds.length} selected ${plural(effectiveIds.length, 'program')}${summary.mean_distinct_courses_n ? ` · n=${intFmt.format(summary.mean_distinct_courses_n)}` : ''}` },
-            { label: 'Courses added for more campus options', value: meanPremium == null ? 'Not available' : signedNumber(meanPremium, ' courses'), sub: meanPremium == null ? 'requires comparable complete baselines' : `beyond the largest one-campus plan${summary.mean_optionality_premium_courses_n ? ` · n=${intFmt.format(summary.mean_optionality_premium_courses_n)}` : ''}` },
-          ]} />
-          <p className='text-caption text-ink-muted'>
-            Model inputs: {effectiveIds.length} selected {plural(effectiveIds.length, 'program')} · {numFmt.format(averageSnapshot.semester_load)} units per semester · {numFmt.format(averageSnapshot.quarter_load)} units per quarter · unweighted college averages
-            {averageGeneratedDate ? ` · snapshot generated ${averageGeneratedDate}` : ''}
-          </p>
-          <div className='grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,.85fr)]'>
-            <section className='surface-card p-4'>
-              <div className='flex flex-wrap items-baseline justify-between gap-2'>
-                <div>
-                  <h3 className='text-heading text-ink'>Estimated regular terms across colleges</h3>
-                  <p className='mt-1 text-caption text-ink-subtle'>Separate calendars keep semester and quarter counts comparable on their own terms.</p>
-                </div>
-                <p className='text-caption text-ink-muted'>{typicalParts.join(' · ') || 'No exact term estimates'}</p>
-              </div>
-              <div className='mt-4 grid gap-4 lg:grid-cols-2'>
-                <TermDistribution model={semester} />
-                <TermDistribution model={quarter} />
-              </div>
-            </section>
-            <SelectedPrograms programs={programs} selectedIds={effectiveIds} nameById={nameById} />
-          </div>
-          <MethodCaveat />
-        </div>
-
-        <AverageTable rows={rows} targetCount={effectiveIds.length} />
-      </Stack>
-    )
-  }
-
-  const combined = combinedFor(specificRow)
-  const system = rowSystem(specificRow)
-  const terms = data.terms
-    || specificRow.terms
-    || (Array.isArray(combined.schedule) ? combined.schedule : combined.schedule?.schedule)
-    || []
-  const courses = data.courses || specificRow.courses || combined.courses || []
-  const premium = premiumFor(specificRow)
-  const premiumTerms = asNumber(combined.optionality_premium_terms)
-  const majorCourses = asNumber(combined.major_course_count)
-  const prerequisiteCourses = asNumber(combined.prerequisite_course_count)
-  const specificWarnings = specificRow.warnings || []
-  const collegeName = selectedCollege?.name || specificRow.community_college
-    || specificRow.college_name || 'Selected college'
-  const activeUnitCap = system === 'quarter' ? appliedLoads.quarter : appliedLoads.semester
-  const specificScheduleStatus = scheduleFor(specificRow).status
-    || combined.schedule_status
-    || specificRow.schedule_status
+export function MultiCampusPathwaysPreview({ data = portfolioSnapshot }) {
+  const model = buildPortfolioFigureModel(data)
+  if (model.rows.length !== 7) return null
   return (
-    <Stack gap='section'>
-      {controls}
-      <div data-export-root className='flex flex-col gap-6'>
-        <StatStrip tiles={[
-          { label: 'Community college', value: collegeName, sub: system === 'unknown' ? 'Calendar unavailable' : `${system} calendar` },
-          { label: 'Distinct courses', value: displayNumber(coursesFor(specificRow) ?? courses.length), sub: majorCourses == null ? 'shared courses counted once' : `${numFmt.format(majorCourses)} preparation${prerequisiteCourses ? ` + ${numFmt.format(prerequisiteCourses)} prerequisite` : ''}`, accent: true },
-          { label: 'Community college units', value: displayNumber(unitsFor(specificRow), ' units'), sub: system === 'unknown' ? 'native units; calendar unavailable' : `native ${system} units` },
-          { label: 'Terms for this course set', value: termText(specificRow, system), sub: premium == null ? null : `${signedNumber(premium, ' courses')}${premiumTerms == null ? '' : ` · ${signedNumber(premiumTerms, ` ${termNoun(system, premiumTerms)}`)}`} for multiple targets` },
-        ]} />
-        <p className='text-caption text-ink-muted'>
-          Model inputs: {collegeName} · {appliedEffectiveIds.length} selected {plural(appliedEffectiveIds.length, 'program')} · {numFmt.format(activeUnitCap)} {system === 'unknown' ? 'native' : system} units per term
-        </p>
-        {!!specificWarnings.length && (
-          <Alert type={specificRow.status === 'unavailable' ? 'error' : 'warning'}>
-            <ul className='list-disc space-y-1 pl-4'>
-              {specificWarnings.map((warning) => <li key={warning}>{warning}</li>)}
-            </ul>
-          </Alert>
-        )}
-        <div className='grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,.85fr)]'>
-          <section className='surface-card p-4'>
-            <div>
-              <h3 className='text-heading text-ink'>{specificScheduleStatus === 'bounded' ? 'Feasible modeled sequence' : 'Minimum-term sequence for this course set'}</h3>
-              <p className='mt-1 text-caption text-ink-subtle'>Prerequisites come first; each term stays within the selected unit load.</p>
-            </div>
-            <CourseSchedule row={specificRow} terms={terms} courses={courses} />
-          </section>
-          <CampusPreparation row={specificRow} selectedIds={appliedEffectiveIds} programs={programs} nameById={nameById} />
-        </div>
-        <MethodCaveat />
-      </div>
-
-      {courses.length ? <CourseTable courses={courses} nameById={nameById} /> : null}
-    </Stack>
+    <div className='surface-card overflow-hidden bg-white'>
+      <PortfolioFigure model={model} compact />
+    </div>
   )
 }
 
-export {
-  calendarModel, exactTermsFor, premiumFor, termRangeFor, termText,
+export default function MultiCampusPathways({ data = portfolioSnapshot }) {
+  const model = buildPortfolioFigureModel(data)
+  if (model.rows.length !== 7) {
+    return (
+      <div className='surface-card p-8 text-center'>
+        <h3 className='text-heading text-ink'>Portfolio analysis unavailable</h3>
+        <p className='mt-2 text-caption text-ink-subtle'>The saved figure artifact is incomplete.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div data-export-root>
+      <div className='surface-card overflow-hidden bg-white'>
+        <PortfolioFigure model={model} />
+      </div>
+      <AccessibleDataTable model={model} />
+    </div>
+  )
 }

@@ -1,430 +1,144 @@
 import React from 'react'
-import { fireEvent, render, screen, within } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { render, screen, within } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import MultiCampusPathways, {
-  MultiCampusPathwaysPreview, calendarModel, termRangeFor, termText,
+  MultiCampusPathwaysPreview,
+  buildPortfolioFigureModel,
 } from './MultiCampusPathways'
 
-const mockPlanner = vi.fn()
-const mockSnapshot = vi.fn()
-const mockSnapshotRefetch = vi.fn()
-const mockSchools = vi.fn()
-const mockColleges = vi.fn()
-
-vi.mock('../shared/query/hooks/useData', () => ({
-  useMultiCampusPathways: (...args) => mockPlanner(...args),
-  useMultiCampusPathwaysSnapshot: (...args) => mockSnapshot(...args),
-  useSchools: () => mockSchools(),
-  useColleges: () => mockColleges(),
-}))
-
-const schools = [
-  { id: 120, name: 'UC Irvine' },
-  { id: 89, name: 'UC Davis' },
-  { id: 79, name: 'UC Berkeley' },
-]
-
-const averageData = {
-  programs: [
-    { school_id: 79, school: 'UC Berkeley', program: 'Electrical Engineering and Computer Sciences' },
-    { school_id: 89, school: 'UC Davis', program: 'Computer Science' },
-  ],
-  summary: {
-    colleges_analyzed: 2,
-    mean_semester_equiv_units: 43.5,
-    mean_distinct_courses: 10.5,
-    mean_optionality_premium_courses: 2.5,
-  },
-  rows: [
-    {
-      community_college_id: 10,
-      community_college: 'Alpha College',
-      unit_system: 'semester',
-      status: 'optimal',
-      combined: {
-        distinct_courses: 10,
-        native_units: 45,
-        semester_equiv_units: 45,
-        estimated_terms: 3,
-        optionality_premium_courses: 2,
-        schedule: { status: 'optimal' },
-      },
-    },
-    {
-      community_college_id: 51,
-      community_college: 'Foothill College',
-      unit_system: 'quarter',
-      status: 'optimal',
-      combined: {
-        distinct_courses: 11,
-        native_units: 63,
-        semester_equiv_units: 42,
-        estimated_terms: 6,
-        optionality_premium_courses: 3,
-        schedule: { status: 'optimal' },
-      },
-    },
-  ],
+function stats(n, mean, q1, q3, min, max) {
+  return { n, mean, median: mean, q1, q3, min, max }
 }
 
-const snapshotRowFields = [
-  'status', 'plan_status', 'prerequisite_status', 'schedule_status',
-  'warning_indices', 'strict_complete_mask', 'combined.distinct_courses',
-  'combined.native_units', 'combined.semester_equiv_units',
-  'combined.estimated_terms', 'combined.optionality_premium_courses',
-]
-
-const compactAverageRows = averageData.rows.map((row) => [
-  row.status, 'optimal', 'complete', 'optimal', [], 3,
-  row.combined.distinct_courses, row.combined.native_units,
-  row.combined.semester_equiv_units, row.combined.estimated_terms,
-  row.combined.optionality_premium_courses,
-])
-
-const combination = (meanDistinctCourses, schoolIds) => ({
-  school_ids: schoolIds,
-  summary: {
-    ...averageData.summary,
-    mean_distinct_courses: meanDistinctCourses,
-  },
-  calendar_groups: [],
-  rows: compactAverageRows,
-})
-
-const snapshotData = {
+const fixture = {
   schema_version: 1,
-  generated_at: '2026-07-21T12:00:00.000Z',
-  default_load_profile: 's15-q15',
-  row_fields: snapshotRowFields,
-  campuses: [
-    ...averageData.programs,
-    { school_id: 120, school: 'UC Irvine', program: 'Computer Science' },
-  ],
-  colleges: averageData.rows.map((row) => ({
-    community_college_id: row.community_college_id,
-    community_college: row.community_college,
-    unit_system: row.unit_system,
-  })),
-  warnings: [],
-  load_profiles: {
-    's15-q15': {
-      semester_load: 15,
-      quarter_load: 15,
-      combinations: {
-        3: combination(10.5, [79, 89]),
-        6: combination(12, [89, 120]),
-        7: combination(13, [79, 89, 120]),
-      },
-    },
+  generated_at: '2026-07-22T18:29:40.351Z',
+  summary: {
+    districts_total: 72,
+    scenarios_total: 140,
+    usable_scenarios: 133,
+    exact_scenarios: 91,
+    bounded_scenarios: 42,
+    unavailable_scenarios: 7,
+    maximum_portfolio_size: 7,
+    maximum_portfolio_districts: 13,
   },
-}
-
-const collegeData = {
-  programs: averageData.programs,
-  row: {
-    community_college_id: 51,
-    community_college: 'Foothill College',
-    unit_system: 'quarter',
-    status: 'optimal',
-    combined: {
-      distinct_courses: 3,
-      native_units: 13.5,
-      optionality_premium_courses: 1,
-      schedule: {
-        status: 'optimal',
-        min_terms: 2,
-        schedule: [
-          { index: 1, course_ids: ['1', '3'] },
-          { index: 2, course_ids: ['2'] },
-        ],
-      },
-    },
-    campuses: [
-      { school_id: 79, school: 'UC Berkeley', requirements_required: 2, requirements_satisfied: 2, product_complete: true, strict_complete: true, fully_satisfiable: true },
-      { school_id: 89, school: 'UC Davis', requirements_required: 2, requirements_satisfied: 1, product_complete: true, strict_complete: false, fully_satisfiable: false },
-    ],
-    courses: [
-      { course_id: '1', code: 'CS 1', title: 'Introduction to Programming', units: 4.5, modeled_term: 1, role: 'major_preparation', school_ids: [79, 89] },
-      { course_id: '2', code: 'CS 2', title: 'Data Structures', units: 4.5, modeled_term: 2, role: 'major_preparation', school_ids: [79], prerequisite_ids: ['1'] },
-      { course_id: '3', code: 'MATH 1', title: 'Calculus', units: 4.5, modeled_term: 1, role: 'major_preparation', school_ids: [89] },
-    ],
+  fixed_high_access_cohort: {
+    district_count: 13,
+    reachable_count: 7,
+    complete_balanced_portfolio_grid: true,
+    common_program_codes: ['UCB', 'UCD', 'UCI', 'UCM', 'UCR', 'UCSB', 'UCSC'],
   },
+  rows: Array.from({ length: 7 }, (_, index) => {
+    const portfolioSize = index + 1
+    const courseMean = 7 + portfolioSize * 1.5
+    return {
+      portfolio_size: portfolioSize,
+      scenario_count: 30 - index,
+      eligible_district_count: 20 - index,
+      represented_district_count: 20 - index - (portfolioSize === 2 ? 1 : 0),
+      usable_scenario_count: 28 - index,
+      exact_scenario_count: 20 - index,
+      bounded_scenario_count: 8,
+      unavailable_scenario_count: 2 - Math.min(index, 2),
+      exact_share_pct: 70 - index * 5,
+      district_equal: {
+        distinct_courses: stats(20 - index, courseMean, courseMean - 1, courseMean + 1,
+          courseMean - 2, courseMean + 2),
+        academic_years: stats(20 - index, 1.5 + index * 0.2, 1.4, 2.5, 1, 3),
+      },
+      path_weighted: {
+        distinct_courses: stats(28 - index, courseMean + 0.2, courseMean - 1,
+          courseMean + 1, courseMean - 2, courseMean + 2),
+      },
+      exact_only_district_equal: {
+        distinct_courses: stats(20 - index, courseMean - 0.4, courseMean - 1,
+          courseMean + 1, courseMean - 2, courseMean + 2),
+      },
+      fixed_high_access_cohort: {
+        distinct_courses: stats(13, courseMean + 0.5, courseMean, courseMean + 1,
+          courseMean - 1, courseMean + 2),
+      },
+      overlap_savings_courses: stats(28 - index, index * 5, 0, index * 6, 0, index * 8),
+    }
+  }),
 }
 
 describe('MultiCampusPathways', () => {
-  beforeEach(() => {
-    mockPlanner.mockReset()
-    mockSnapshot.mockReset()
-    mockSnapshotRefetch.mockReset()
-    mockSchools.mockReset()
-    mockColleges.mockReset()
-    mockSchools.mockReturnValue({ data: { uc: schools }, isLoading: false, isError: false })
-    mockColleges.mockReturnValue({ data: [{ id: 10, name: 'Alpha College' }, { id: 51, name: 'Foothill College' }], isLoading: false, isError: false })
-    mockSnapshot.mockReturnValue({
-      data: snapshotData,
-      isLoading: false,
-      isError: false,
-      isFetching: false,
-      refetch: mockSnapshotRefetch,
+  it('builds a one-through-seven district-equal model with semester-equivalent terms', () => {
+    const model = buildPortfolioFigureModel(fixture)
+
+    expect(model.rows).toHaveLength(7)
+    expect(model.rows[0]).toMatchObject({
+      portfolioSize: 1,
+      eligibleDistrictCount: 20,
+      representedDistrictCount: 20,
+      courses: { mean: 8.5 },
+      semesterEquivalentTerms: 3,
+      fixedCohortCourseMean: 9,
+      pathWeightedCourseMean: 8.7,
     })
-    mockPlanner.mockImplementation((params) => ({
-      data: params.communityCollegeId != null ? collegeData : undefined,
-      isLoading: false,
-      isError: false,
-      isFetching: false,
-      refetch: vi.fn(),
-    }))
-  })
-
-  it('renders a data-free gallery preview without running the planner', () => {
-    render(<MultiCampusPathwaysPreview />)
-    expect(screen.getByText('Build one plan for several campuses')).toBeInTheDocument()
-    expect(mockPlanner).not.toHaveBeenCalled()
-    expect(mockSnapshot).not.toHaveBeenCalled()
-  })
-
-  it('shows separate semester and quarter summaries, an average table, and the permanent caveat', () => {
-    render(<MultiCampusPathways />)
-
-    expect(mockSnapshot).toHaveBeenCalledWith(expect.objectContaining({ enabled: true }))
-    expect(mockPlanner).toHaveBeenCalledWith(
-      expect.objectContaining({ mode: 'college', schoolIds: [79, 89] }),
-      expect.objectContaining({ enabled: false }),
-    )
-    expect(screen.getByText('Mean coursework')).toBeInTheDocument()
-    expect(screen.getByText('43.5 units')).toBeInTheDocument()
-    expect(screen.getByLabelText('Semester colleges by estimated terms')).toBeInTheDocument()
-    expect(screen.getByLabelText('Quarter colleges by estimated terms')).toBeInTheDocument()
-    expect(screen.getByLabelText('3 semesters: 1 college')).toBeInTheDocument()
-    expect(screen.getByLabelText('6 quarters: 1 college')).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: 'Alpha College' })).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: 'Foothill College' })).toBeInTheDocument()
-    expect(screen.getByRole('note')).toHaveTextContent('not a prediction of time to degree')
-    expect(screen.getByRole('note')).toHaveTextContent('required lower division preparation that has a usable local path')
-    expect(document.querySelector('[data-export-root]')).toHaveTextContent('2 selected programs · 15 units per semester · 15 units per quarter')
-    expect(document.querySelector('[data-export-root]')).toHaveTextContent('snapshot generated Jul 21, 2026')
-    expect(screen.queryByRole('spinbutton', { name: 'Units per semester' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Update estimate' })).not.toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Reload saved snapshot' }))
-    expect(mockSnapshotRefetch).toHaveBeenCalledOnce()
-  })
-
-  it('switches unordered target combinations immediately without enabling the live planner', () => {
-    render(<MultiCampusPathways />)
-
-    fireEvent.click(screen.getByRole('button', { name: 'Irvine' }))
-    expect(screen.getByText('13')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Update estimate' })).not.toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Berkeley' }))
-    expect(screen.getByText('12')).toBeInTheDocument()
-    expect(screen.getByText(/2 selected · choose one to nine/)).toBeInTheDocument()
-    expect(mockPlanner.mock.calls.every(([, options]) => options.enabled === false)).toBe(true)
-  })
-
-  it('fails closed when a retained snapshot is rejected for the current program scope', () => {
-    mockSnapshot.mockReturnValue({
-      data: snapshotData,
-      error: { response: { status: 409 } },
-      isLoading: false,
-      isError: true,
-      isFetching: false,
-      refetch: mockSnapshotRefetch,
+    expect(model.rows[1]).toMatchObject({
+      portfolioSize: 2,
+      eligibleDistrictCount: 19,
+      representedDistrictCount: 18,
     })
-
-    render(<MultiCampusPathways />)
-
-    expect(screen.getByText(/no longer matches the current working program selection/i)).toBeInTheDocument()
-    expect(screen.queryByText('Mean coursework')).not.toBeInTheDocument()
-    expect(screen.queryByRole('cell', { name: 'Alpha College' })).not.toBeInTheDocument()
-    expect(screen.queryByText('43.5 units')).not.toBeInTheDocument()
+    expect(model.last.portfolioSize).toBe(7)
+    expect(model.fixedCohortDistrictCount).toBe(13)
+    expect(model.pathWeightingMaxDifference).toBeCloseTo(0.2)
+    expect(model.fixedCohortMaxDifference).toBeCloseTo(0.5)
   })
 
-  it('keeps retained snapshot data visible through an ordinary transient refresh error', () => {
-    mockSnapshot.mockReturnValue({
-      data: snapshotData,
-      error: { response: { status: 503 } },
-      isLoading: false,
-      isError: true,
-      isFetching: false,
-      refetch: mockSnapshotRefetch,
-    })
+  it('renders a static, exportable research figure with visible denominators and quality', () => {
+    const { container } = render(<MultiCampusPathways data={fixture} />)
+    const figure = container.querySelector('svg[data-portfolio-figure]')
 
-    render(<MultiCampusPathways />)
+    expect(figure).toBeTruthy()
+    expect(figure).toHaveAttribute('data-export-width', '1120')
+    expect(within(figure).getByText('How much preparation keeps more UC CS options open?'))
+      .toBeInTheDocument()
+    expect(figure).toHaveTextContent('8.5 → 17.5 courses')
+    expect(figure).toHaveTextContent('20 districts · 30 plans')
+    expect(figure).toHaveTextContent('19 eligible districts · 29 plans')
+    expect(figure).toHaveTextContent('18 represented · 65% proven')
+    expect(figure).toHaveTextContent('UCB, UCD, UCI, UCM, UCR, UCSB, UCSC')
+    expect(figure).toHaveTextContent('91 of 140 plans are proven minima')
+    expect(container.querySelectorAll('[data-portfolio-row]')).toHaveLength(7)
 
-    expect(screen.getByText('Mean coursework')).toBeInTheDocument()
-    expect(screen.getByText('43.5 units')).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: 'Alpha College' })).toBeInTheDocument()
+    const table = screen.getByRole('table', { name: 'Modeled UC portfolio preparation data', hidden: true })
+    expect(within(table).getAllByRole('row', { hidden: true })).toHaveLength(8)
   })
 
-  it('builds a specific-college sequence and course table after a college is selected', () => {
-    render(<MultiCampusPathways />)
+  it('renders the completed artifact instead of the obsolete exact-reach result', () => {
+    const { container } = render(<MultiCampusPathways />)
+    const figure = container.querySelector('svg[data-portfolio-figure]')
 
-    fireEvent.click(screen.getByRole('tab', { name: 'Specific college' }))
-    expect(screen.getByText('Choose a community college')).toBeInTheDocument()
-
-    const collegeInput = screen.getByRole('combobox')
-    fireEvent.focus(collegeInput)
-    fireEvent.change(collegeInput, { target: { value: 'Foothill' } })
-    fireEvent.mouseDown(screen.getByRole('option', { name: 'Foothill College' }))
-
-    expect(mockPlanner).toHaveBeenLastCalledWith(
-      expect.objectContaining({ mode: 'college', communityCollegeId: 51, schoolIds: [79, 89] }),
-      expect.any(Object),
-    )
-    expect(screen.getByText('Minimum-term sequence for this course set')).toBeInTheDocument()
-    expect(screen.getByText('Quarter 1')).toBeInTheDocument()
-    expect(screen.getByText('Quarter 2')).toBeInTheDocument()
-    expect(screen.getByText('2 courses · 9 units')).toBeInTheDocument()
-    expect(screen.getByText('1 course · 4.5 units')).toBeInTheDocument()
-    expect(screen.getAllByText('CS 1').length).toBeGreaterThan(1)
-    const table = screen.getByRole('table')
-    expect(within(table).getByText('Data Structures')).toBeInTheDocument()
-    expect(within(table).getAllByText('CS 1').length).toBeGreaterThan(0)
-    expect(screen.getByText('Full agreement covered')).toBeInTheDocument()
-    expect(screen.getByText('Local coursework covered')).toBeInTheDocument()
-    expect(document.querySelector('[data-export-root]')).toHaveTextContent('Foothill College · 2 selected programs · 15 quarter units per term')
+    expect(figure).toHaveTextContent('8.8 → 17.7 courses')
+    expect(figure).toHaveTextContent('68 districts · 335 plans')
+    expect(figure).toHaveTextContent('67 eligible districts · 741 plans')
+    expect(figure).toHaveTextContent('66 represented · 72% proven')
+    expect(figure).toHaveTextContent('13 districts · 13 plans')
+    expect(figure).toHaveTextContent('31% proven')
+    expect(figure).toHaveTextContent('5.4terms')
+    expect(figure).toHaveTextContent('1,970 of 3,266 plans are proven minima')
+    expect(figure).not.toHaveTextContent('20.2')
   })
 
-  it('carries the visible average targets into specific-college mode', () => {
-    render(<MultiCampusPathways />)
-    fireEvent.click(screen.getByRole('button', { name: 'Irvine' }))
-    fireEvent.click(screen.getByRole('tab', { name: 'Specific college' }))
+  it('uses the completed one-through-seven result in the gallery thumbnail', () => {
+    const { container } = render(<MultiCampusPathwaysPreview />)
+    const preview = container.querySelector('svg')
 
-    const collegeInput = screen.getByRole('combobox')
-    fireEvent.focus(collegeInput)
-    fireEvent.change(collegeInput, { target: { value: 'Foothill' } })
-    fireEvent.mouseDown(screen.getByRole('option', { name: 'Foothill College' }))
-
-    expect(mockPlanner).toHaveBeenLastCalledWith(
-      expect.objectContaining({ schoolIds: [79, 89, 120], communityCollegeId: 51 }),
-      expect.objectContaining({ enabled: true }),
-    )
-    expect(screen.queryByText(/Changes are ready/)).not.toBeInTheDocument()
+    expect(preview).toHaveTextContent('Keeping more UC options open')
+    expect(preview).toHaveTextContent('1 UC')
+    expect(preview).toHaveTextContent('7 UCs')
+    expect(preview).toHaveTextContent('8.8')
+    expect(preview).toHaveTextContent('17.7')
+    expect(preview).not.toHaveTextContent('20.2')
   })
 
-  it('labels a bounded schedule as one feasible sequence instead of a proven minimum', () => {
-    const boundedCollege = {
-      ...collegeData,
-      row: {
-        ...collegeData.row,
-        status: 'bounded',
-        combined: {
-          ...collegeData.row.combined,
-          schedule: {
-            ...collegeData.row.combined.schedule,
-            status: 'bounded',
-            min_terms: null,
-            lower_bound_terms: 2,
-            upper_bound_terms: 3,
-          },
-        },
-      },
-    }
-    mockPlanner.mockImplementation((params) => ({
-      data: params.mode === 'college' && params.communityCollegeId != null
-        ? boundedCollege
-        : averageData,
-      isLoading: false,
-      isError: false,
-      isFetching: false,
-      refetch: vi.fn(),
-    }))
-
-    render(<MultiCampusPathways />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Specific college' }))
-    const collegeInput = screen.getByRole('combobox')
-    fireEvent.focus(collegeInput)
-    fireEvent.change(collegeInput, { target: { value: 'Foothill' } })
-    fireEvent.mouseDown(screen.getByRole('option', { name: 'Foothill College' }))
-
-    expect(screen.getByText('Feasible modeled sequence')).toBeInTheDocument()
-    expect(screen.queryByText('Minimum-term sequence for this course set')).not.toBeInTheDocument()
-    expect(screen.getByText(/minimum length is within the displayed lower and upper bounds/i)).toBeInTheDocument()
-  })
-
-  it('sends calendar-specific load changes to the planner', () => {
-    render(<MultiCampusPathways />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Specific college' }))
-    const collegeInput = screen.getByRole('combobox')
-    fireEvent.focus(collegeInput)
-    fireEvent.change(collegeInput, { target: { value: 'Foothill' } })
-    fireEvent.mouseDown(screen.getByRole('option', { name: 'Foothill College' }))
-    fireEvent.change(screen.getByRole('spinbutton', { name: 'Units per semester' }), { target: { value: '12' } })
-    fireEvent.change(screen.getByRole('spinbutton', { name: 'Units per quarter' }), { target: { value: '18' } })
-    expect(screen.getByRole('button', { name: 'Update estimate' })).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Update estimate' }))
-    expect(mockPlanner).toHaveBeenLastCalledWith(
-      expect.objectContaining({ semesterLoad: 12, quarterLoad: 18 }),
-      expect.any(Object),
-    )
-  })
-
-  it('does not silently classify an unknown calendar as semester', () => {
-    const unknownSnapshot = {
-      ...snapshotData,
-      colleges: [{
-        community_college_id: 99,
-        community_college: 'Calendar Pending College',
-        unit_system: null,
-      }],
-      load_profiles: {
-        's15-q15': {
-          ...snapshotData.load_profiles['s15-q15'],
-          combinations: {
-            ...snapshotData.load_profiles['s15-q15'].combinations,
-            3: {
-              school_ids: [79, 89],
-              summary: { colleges_analyzed: 1 },
-              calendar_groups: [],
-              rows: [{
-                status: 'optimal',
-                strict_complete_mask: 3,
-                warning_indices: [],
-                combined: { distinct_courses: 8, native_units: 36, estimated_terms: 3 },
-              }],
-            },
-          },
-        },
-      },
-    }
-    mockSnapshot.mockReturnValue({
-      data: unknownSnapshot,
-      isLoading: false,
-      isError: false,
-      isFetching: false,
-      refetch: vi.fn(),
-    })
-
-    render(<MultiCampusPathways />)
-
-    expect(screen.getByRole('cell', { name: 'Calendar unavailable' })).toBeInTheDocument()
-    expect(screen.getAllByText('No usable term estimates in this calendar.')).toHaveLength(2)
-    expect(screen.queryByLabelText('3 semesters: 1 college')).not.toBeInTheDocument()
-    expect(screen.queryByText('3 semesters')).not.toBeInTheDocument()
-  })
-})
-
-describe('multi-campus term labels', () => {
-  it('shows a certified exact result only when min_terms is present and a range for bounded schedules', () => {
-    expect(termRangeFor({ combined: { schedule: { status: 'optimal', min_terms: 4 } } })).toEqual({ low: 4, high: 4, exact: true })
-    const bounded = { combined: { schedule: { status: 'bounded', lower_bound_terms: 4, upper_bound_terms: 6 } } }
-    expect(termRangeFor(bounded)).toEqual({ low: 4, high: 6, exact: false })
-    expect(termText(bounded, 'semester')).toBe('4–6 semesters')
-  })
-
-  it('does not turn a bounded upper estimate into an exact histogram point', () => {
-    const rows = [{
-      unit_system: 'semester',
-      combined: { schedule: { status: 'bounded', lower_bound_terms: 4, upper_bound_terms: 6 } },
-    }]
-    expect(calendarModel({}, rows, 'semester')).toMatchObject({
-      n: 1,
-      exactN: 0,
-      boundedN: 1,
-      mean: null,
-      median: null,
-      bins: [],
-    })
+  it('fails closed when the compact artifact is incomplete', () => {
+    render(<MultiCampusPathways data={{ rows: [] }} />)
+    expect(screen.getByRole('heading', { name: 'Portfolio analysis unavailable' }))
+      .toBeInTheDocument()
   })
 })
