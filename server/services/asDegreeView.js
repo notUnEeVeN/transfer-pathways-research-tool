@@ -5,9 +5,9 @@
 // joining `template`, not by copying template content into docs.
 
 const DEFAULT_INVENTORY = require('../../scripts/data/as_degrees_cs_extraction.json').survey;
+const { AS_DEGREE_SLOTS, LEGACY_TYPE_TO_SLOT } = require('../config/asDegreeSlots');
 
 const LOW_CONFIDENCE = 0.7;
-const DEGREE_TYPES = ['ast', 'local_cs_as', 'local_computing'];
 
 // ── GE pattern areas ─────────────────────────────────────────────────────────
 // Display definitions for each GE pattern an as_degree GE group can reference,
@@ -117,32 +117,42 @@ function courseSetKey(doc) {
   return collectCourseIds([doc]).sort((a, b) => Number(a) - Number(b)).join(',');
 }
 
+// Historical extraction titles sometimes carry a bracketed note ("[same
+// program as <pre-migration type name>; ...]") using one of the retired type
+// names from before the slot rename (see
+// scripts/data/as_degrees_cs_extraction.json). Built from
+// LEGACY_TYPE_TO_SLOT's keys so the legacy strings themselves stay confined
+// to asDegreeSlots.js rather than being re-hardcoded here.
+const LEGACY_TITLE_NOTE_RE = new RegExp(
+  `\\s*\\[same program as (?:${Object.keys(LEGACY_TYPE_TO_SLOT).join('|')})[^\\]]*\\]\\s*`, 'i');
+
 function normalizedDegreeTitle(doc) {
   return String(doc.degree_title_seen || '')
-    .replace(/\s*\[same program as local_cs_as[^\]]*\]\s*/i, '')
+    .replace(LEGACY_TITLE_NOTE_RE, '')
     .trim()
     .toLowerCase();
 }
 
 // The statewide extraction currently contains a small set of rows where the
-// same local CS A.S. was emitted once as local_cs_as and again as
-// local_computing. Surface these as QA candidates; never silently hide them.
-function duplicateLocalComputingIds(docs) {
-  const bySchoolAndType = new Map(docs.map((doc) => [
-    `${doc.community_college_id}:${doc.degree_type}`,
+// same local A.S. was emitted once as local_as and again as local_other.
+// Surface these as QA candidates; never silently hide them. Keyed by major
+// too so two majors' local degrees at one college never collide.
+function duplicateLocalOtherIds(docs) {
+  const byKey = new Map(docs.map((doc) => [
+    `${doc.community_college_id}:${doc.major_slug}:${doc.degree_type}`,
     doc,
   ]));
-  const duplicates = new Set();
-  for (const computing of docs.filter((doc) => doc.degree_type === 'local_computing')) {
-    const localCs = bySchoolAndType.get(`${computing.community_college_id}:local_cs_as`);
-    if (!localCs) continue;
-    const courses = courseSetKey(computing);
-    if (courses && courses === courseSetKey(localCs)
-        && normalizedDegreeTitle(computing) === normalizedDegreeTitle(localCs)) {
-      duplicates.add(computing._id);
+  const ids = new Set();
+  for (const other of docs.filter((doc) => doc.degree_type === 'local_other')) {
+    const localAs = byKey.get(`${other.community_college_id}:${other.major_slug}:local_as`);
+    if (!localAs) continue;
+    const courses = courseSetKey(other);
+    if (courses && courses === courseSetKey(localAs)
+        && normalizedDegreeTitle(other) === normalizedDegreeTitle(localAs)) {
+      ids.add(other._id);
     }
   }
-  return duplicates;
+  return ids;
 }
 
 async function loadCourses(db, docs) {
@@ -298,7 +308,7 @@ function summarizeDoc(doc, template, collegeName, unitsByCourseId, duplicateIds 
   };
 }
 
-async function asDegreeOverview(db, { degreeType = null } = {}) {
+async function asDegreeOverview(db, { degreeType = null, major = 'cs' } = {}) {
   // There are now two statewide templates (cs_local / cs_ast — one per
   // degree_type); coverage_pct only means anything if each row is compared
   // against ITS OWN template_ref, not one arbitrary template for every row.
@@ -308,8 +318,9 @@ async function asDegreeOverview(db, { degreeType = null } = {}) {
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1 } }).toArray(),
   ]);
-  const docs = degreeType ? allDocs.filter((doc) => doc.degree_type === degreeType) : allDocs;
-  const duplicateIds = duplicateLocalComputingIds(allDocs);
+  const docs = allDocs.filter((doc) => doc.major_slug === major
+    && (!degreeType || doc.degree_type === degreeType));
+  const duplicateIds = duplicateLocalOtherIds(allDocs);
   const templatesById = new Map(templates.map((t) => [t._id, t]));
   const nameById = new Map(institutions.map((i) => [i._id, i.name]));
   const courses = await loadCourses(db, docs);
@@ -322,17 +333,21 @@ async function asDegreeOverview(db, { degreeType = null } = {}) {
   const template = degreeType
     ? templates.find((row) => row.degree_type === degreeType) || null
     : templates[0] || null;
-  return { params: { degree_type: degreeType }, template, n: rows.length, rows };
+  return { params: { degree_type: degreeType, major }, template, n: rows.length, rows };
 }
 
-function inventoryOffers(survey, type) {
-  if (type === 'ast') return !!survey.ast_cs_exists;
-  if (type === 'local_cs_as') return !!survey.local_cs_as_exists;
+// The statewide survey is a Computer Science inventory (see
+// scripts/data/as_degrees_cs_extraction.json); these are the SURVEY's own
+// field names, not degree_type values, and renaming them would break the
+// data file. asDegreeAvailability is CS-only for that reason.
+function inventoryOffers(survey, slot) {
+  if (slot === 'ast') return !!survey.ast_cs_exists;
+  if (slot === 'local_as') return !!survey.local_cs_as_exists;
   return (survey.local_computing_degrees || []).length > 0;
 }
 
-function availabilityFor(survey, type, doc, duplicateIds) {
-  const offered = inventoryOffers(survey, type);
+function availabilityFor(survey, slot, doc, duplicateIds) {
+  const offered = inventoryOffers(survey, slot);
   let status;
   if (doc?.status === 'found' && duplicateIds.has(doc._id)) status = 'duplicate_candidate';
   else if (doc?.status === 'found') status = 'available';
@@ -346,7 +361,7 @@ function availabilityFor(survey, type, doc, duplicateIds) {
     catalog_url: doc?.catalog_url || null,
     catalog_year: doc?.catalog_year || null,
     verified: !!doc?.verification?.verified,
-    inventory_titles: type === 'local_computing'
+    inventory_titles: slot === 'local_other'
       ? (survey.local_computing_degrees || []).map((degree) => ({
         name: degree.name || null,
         award: degree.award || null,
@@ -358,27 +373,28 @@ function availabilityFor(survey, type, doc, duplicateIds) {
 // One row per surveyed college, including explicit negative findings. This is
 // separate from the record overview because an absent as_degree row cannot by
 // itself distinguish "confirmed not offered" from "offered, extraction gap".
+// CS-only: the statewide survey has no equivalent for other majors, so the
+// doc set is restricted to major_slug 'cs' regardless of caller.
 async function asDegreeAvailability(db, inventory = DEFAULT_INVENTORY) {
-  const [docs, institutions] = await Promise.all([
+  const [allDocs, institutions] = await Promise.all([
     db.collection('curated_requirements').find({ kind: 'as_degree' }).toArray(),
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1, district: 1, region: 1, source_id: 1 } })
       .toArray(),
   ]);
-  const docBySchoolAndType = new Map(docs.map((doc) => [
-    `${doc.community_college_id}:${doc.degree_type}`,
-    doc,
-  ]));
+  const docs = allDocs.filter((doc) => doc.major_slug === 'cs');
+  const docBySchoolAndSlot = new Map(docs
+    .map((doc) => [`${doc.community_college_id}:${doc.degree_type}`, doc]));
   const institutionBySourceId = new Map(institutions.map((row) => [row.source_id, row]));
-  const duplicateIds = duplicateLocalComputingIds(docs);
+  const duplicateIds = duplicateLocalOtherIds(docs);
   const rows = inventory.map((survey) => {
     const institution = institutionBySourceId.get(Number(survey.community_college_id));
-    const types = Object.fromEntries(DEGREE_TYPES.map((type) => [
-      type,
+    const types = Object.fromEntries(AS_DEGREE_SLOTS.map((slot) => [
+      slot,
       availabilityFor(
         survey,
-        type,
-        docBySchoolAndType.get(`${survey.community_college_id}:${type}`),
+        slot,
+        docBySchoolAndSlot.get(`${survey.community_college_id}:${slot}`),
         duplicateIds,
       ),
     ]));
@@ -395,9 +411,9 @@ async function asDegreeAvailability(db, inventory = DEFAULT_INVENTORY) {
   }).sort((a, b) => String(a.college_name).localeCompare(String(b.college_name)));
 
   const counts = { total_colleges: rows.length };
-  for (const type of DEGREE_TYPES) {
-    counts[type] = { available: 0, data_gap: 0, confirmed_none: 0, duplicate_candidate: 0 };
-    for (const row of rows) counts[type][row.types[type].status] += 1;
+  for (const slot of AS_DEGREE_SLOTS) {
+    counts[slot] = { available: 0, data_gap: 0, confirmed_none: 0, duplicate_candidate: 0 };
+    for (const row of rows) counts[slot][row.types[slot].status] += 1;
   }
   return { counts, rows };
 }
@@ -417,10 +433,10 @@ function courseView(course) {
 // Full nested degree documents for notebook/visualization work. Unlike the QA
 // overview, this preserves requirement logic and includes a joined course map
 // so an analysis needs one request rather than 69 per-college detail calls.
-async function asDegreesExportData(db, { degreeType = 'ast' } = {}) {
+async function asDegreesExportData(db, { degreeType = 'ast', major = 'cs' } = {}) {
   const [docs, institutions] = await Promise.all([
     db.collection('curated_requirements')
-      .find({ kind: 'as_degree', degree_type: degreeType, status: 'found' })
+      .find({ kind: 'as_degree', degree_type: degreeType, major_slug: major, status: 'found' })
       .sort({ community_college_id: 1 })
       .toArray(),
     db.collection('assist_institutions')
@@ -439,16 +455,16 @@ async function asDegreesExportData(db, { degreeType = 'ast' } = {}) {
   });
 }
 
-async function asDegreeDetail(db, collegeId) {
+async function asDegreeDetail(db, collegeId, { major = 'cs' } = {}) {
   const docs = await db.collection('curated_requirements')
-    .find({ kind: 'as_degree', college_id: String(collegeId) }).toArray();
+    .find({ kind: 'as_degree', college_id: String(collegeId), major_slug: major }).toArray();
   if (!docs.length) return null;
   const inst = await db.collection('assist_institutions')
     .findOne({ _id: String(collegeId) }, { projection: { name: 1 } });
   const degrees = await Promise.all(docs.map(async (doc) => {
     // template_ref is intentionally null for a degree_type with no statewide
-    // template (e.g. local_computing) — no fallback; that degree simply has
-    // no template to compare against (coverage_pct null, see below).
+    // template (e.g. the local_other slot) — no fallback; that degree simply
+    // has no template to compare against (coverage_pct null, see below).
     const [template, courses] = await Promise.all([
       doc.template_ref
         ? db.collection('curated_requirements').findOne({ _id: doc.template_ref })
@@ -489,6 +505,6 @@ module.exports = {
   asDegreeAvailability,
   asDegreesExportData,
   asDegreeDetail,
-  duplicateLocalComputingIds,
+  duplicateLocalOtherIds,
   templateRequiredSlots,
 };

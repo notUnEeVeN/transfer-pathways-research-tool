@@ -5,7 +5,7 @@ const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const {
   asDegreeOverview, asDegreeAvailability, asDegreesExportData,
-  asDegreeDetail, duplicateLocalComputingIds, templateRequiredSlots,
+  asDegreeDetail, duplicateLocalOtherIds, templateRequiredSlots,
 } = cjs('./asDegreeView');
 
 let mongo; let db;
@@ -102,8 +102,8 @@ async function seed() {
   ]);
   await db.collection('curated_requirements').insertMany([
     CONCEPT_TEMPLATE,
-    { _id: 'as_degree:110:local_cs_as', kind: 'as_degree', community_college_id: 110, college_id: 'cc:110',
-      degree_type: 'local_cs_as', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'found',
+    { _id: 'as_degree:110:cs:local_as', kind: 'as_degree', community_college_id: 110, college_id: 'cc:110',
+      degree_type: 'local_as', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'found',
       degree_title_seen: 'Computer Science, A.S.', catalog_url: 'https://x', catalog_year: '2025-2026',
       unit_system: 'semester', total_units: 60,
       verification: { verified: false },
@@ -121,7 +121,7 @@ async function seed() {
           label_seen: 'Computer Ethics', is_required: true,
           sections: [{ section_advisement: null, unit_advisement: 3, receivers: [receiver(101)] }] },
       ] },
-    { _id: 'as_degree:110:ast', kind: 'as_degree', community_college_id: 110, college_id: 'cc:110',
+    { _id: 'as_degree:110:cs:ast', kind: 'as_degree', community_college_id: 110, college_id: 'cc:110',
       degree_type: 'ast', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'found',
       degree_title_seen: 'Computer Science for Transfer, A.S.-T.', catalog_url: 'https://x-ast',
       catalog_year: '2025-2026', unit_system: 'semester', total_units: 60,
@@ -134,8 +134,8 @@ async function seed() {
           sections: [{ section_advisement: null, unit_advisement: null,
             receivers: [receiver(101)] }] },
       ] },
-    { _id: 'as_degree:110:local_computing', kind: 'as_degree', community_college_id: 110, college_id: 'cc:110',
-      degree_type: 'local_computing', major_slug: 'cis', template_ref: null, status: 'found',
+    { _id: 'as_degree:110:cs:local_other', kind: 'as_degree', community_college_id: 110, college_id: 'cc:110',
+      degree_type: 'local_other', major_slug: 'cs', template_ref: null, status: 'found',
       degree_title_seen: 'Computer Information Systems, A.S.', catalog_url: 'https://x-cis',
       catalog_year: '2025-2026', unit_system: 'semester', total_units: 60,
       verification: { verified: false },
@@ -145,8 +145,8 @@ async function seed() {
           is_required: true,
           sections: [{ section_advisement: null, unit_advisement: null, receivers: [receiver(101)] }] },
       ] },
-    { _id: 'as_degree:2:local_cs_as', kind: 'as_degree', community_college_id: 2, college_id: 'cc:2',
-      degree_type: 'local_cs_as', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
+    { _id: 'as_degree:2:cs:local_as', kind: 'as_degree', community_college_id: 2, college_id: 'cc:2',
+      degree_type: 'local_as', major_slug: 'cs', template_ref: 'as_degree_template:cs', status: 'none_found',
       catalog_url: 'https://y', catalog_year: '2025-2026' },
   ]);
 }
@@ -156,7 +156,7 @@ describe('asDegreeOverview', () => {
     await seed();
     const { template, rows } = await asDegreeOverview(db);
     expect(template._id).toBe('as_degree_template:cs');
-    const hancock = rows.find((r) => r.college_id === 'cc:110' && r.degree_type === 'local_cs_as');
+    const hancock = rows.find((r) => r.college_id === 'cc:110' && r.degree_type === 'local_as');
     expect(hancock.college_name).toBe('Allan Hancock College');
     expect(hancock.major_slug).toBe('cs');
     expect(hancock.source_counts).toEqual({ extracted: 2, template_default: 1, curated: 0 });
@@ -171,16 +171,16 @@ describe('asDegreeOverview', () => {
       expect.arrayContaining(['template_default_groups', 'low_confidence', 'unresolved_courses', 'units_mismatch']));
     const evergreen = rows.find((r) => r.college_id === 'cc:2');
     expect(evergreen.status).toBe('none_found');
-    expect(evergreen.degree_type).toBe('local_cs_as');
+    expect(evergreen.degree_type).toBe('local_as');
     expect(evergreen.flags).toEqual([]);
   });
 
-  it('resolves coverage_pct null for a degree whose template_ref is null (local_computing)', async () => {
+  it('resolves coverage_pct null for a degree whose template_ref is null (local_other)', async () => {
     await seed();
     const { rows } = await asDegreeOverview(db);
-    const localComputing = rows.find((r) => r.college_id === 'cc:110' && r.degree_type === 'local_computing');
-    expect(localComputing.coverage_pct).toBe(null);
-    expect(localComputing.missing_core_count).toBe(0);
+    const localOther = rows.find((r) => r.college_id === 'cc:110' && r.degree_type === 'local_other');
+    expect(localOther.coverage_pct).toBe(null);
+    expect(localOther.missing_core_count).toBe(0);
   });
 
   it('yields one row per degree, so a multi-degree college produces one row per degree', async () => {
@@ -189,7 +189,7 @@ describe('asDegreeOverview', () => {
     expect(rows).toHaveLength(4);
     const hancockRows = rows.filter((r) => r.college_id === 'cc:110');
     expect(hancockRows).toHaveLength(3);
-    expect(hancockRows.map((r) => r.degree_type).sort()).toEqual(['ast', 'local_computing', 'local_cs_as']);
+    expect(hancockRows.map((r) => r.degree_type).sort()).toEqual(['ast', 'local_as', 'local_other']);
     const ast = hancockRows.find((r) => r.degree_type === 'ast');
     expect(ast.college_name).toBe('Allan Hancock College');
     expect(ast.degree_title_seen).toBe('Computer Science for Transfer, A.S.-T.');
@@ -200,7 +200,7 @@ describe('asDegreeOverview', () => {
   it('filters the overview to one stable degree_type cohort', async () => {
     await seed();
     const result = await asDegreeOverview(db, { degreeType: 'ast' });
-    expect(result.params).toEqual({ degree_type: 'ast' });
+    expect(result.params).toEqual({ degree_type: 'ast', major: 'cs' });
     expect(result.n).toBe(1);
     expect(result.rows.map((row) => row.degree_type)).toEqual(['ast']);
   });
@@ -220,9 +220,9 @@ describe('asDegreeAvailability', () => {
     const hancock = result.rows.find((row) => row.college_id === 'cc:110');
     const evergreen = result.rows.find((row) => row.college_id === 'cc:2');
     expect(hancock.types.ast.status).toBe('available');
-    expect(hancock.types.local_cs_as.status).toBe('available');
+    expect(hancock.types.local_as.status).toBe('available');
     expect(evergreen.types.ast.status).toBe('data_gap');
-    expect(evergreen.types.local_cs_as.status).toBe('confirmed_none');
+    expect(evergreen.types.local_as.status).toBe('confirmed_none');
     expect(result.counts.ast).toMatchObject({ available: 1, data_gap: 1, confirmed_none: 0 });
   });
 });
@@ -233,21 +233,29 @@ describe('asDegreesExportData', () => {
     const rows = await asDegreesExportData(db);
     expect(rows).toHaveLength(1);
     expect(rows[0]).toMatchObject({
-      _id: 'as_degree:110:ast', degree_type: 'ast', college_name: 'Allan Hancock College',
+      _id: 'as_degree:110:cs:ast', degree_type: 'ast', college_name: 'Allan Hancock College',
     });
     expect(rows[0].courses_by_id['cc:101']).toMatchObject({ code: 'CS 111', units: 4 });
   });
 });
 
-describe('duplicateLocalComputingIds', () => {
-  it('flags only same-title, same-course local-computing duplicates', () => {
-    const local = { _id: 'as_degree:1:local_cs_as', community_college_id: 1,
-      degree_type: 'local_cs_as', degree_title_seen: 'Computer Science, A.S.',
+describe('duplicateLocalOtherIds', () => {
+  it('flags only same-title, same-course local-other duplicates', () => {
+    const local = { _id: 'as_degree:1:cs:local_as', community_college_id: 1, major_slug: 'cs',
+      degree_type: 'local_as', degree_title_seen: 'Computer Science, A.S.',
       requirement_groups: [{ sections: [{ receivers: [receiver(101)] }] }] };
-    const duplicate = { ...local, _id: 'as_degree:1:local_computing', degree_type: 'local_computing' };
-    const distinct = { ...local, _id: 'as_degree:2:local_computing', community_college_id: 2,
-      degree_type: 'local_computing', degree_title_seen: 'Computer Information Systems, A.S.' };
-    expect([...duplicateLocalComputingIds([local, duplicate, distinct])]).toEqual([duplicate._id]);
+    const duplicate = { ...local, _id: 'as_degree:1:cs:local_other', degree_type: 'local_other' };
+    const distinct = { ...local, _id: 'as_degree:2:cs:local_other', community_college_id: 2,
+      degree_type: 'local_other', degree_title_seen: 'Computer Information Systems, A.S.' };
+    expect([...duplicateLocalOtherIds([local, duplicate, distinct])]).toEqual([duplicate._id]);
+  });
+
+  it('does not match a duplicate across different majors at the same college', () => {
+    const cs = { _id: 'as_degree:1:cs:local_as', community_college_id: 1, major_slug: 'cs',
+      degree_type: 'local_as', degree_title_seen: 'Same Title, A.S.',
+      requirement_groups: [{ sections: [{ receivers: [receiver(101)] }] }] };
+    const bio = { ...cs, _id: 'as_degree:1:bio:local_other', major_slug: 'bio', degree_type: 'local_other' };
+    expect([...duplicateLocalOtherIds([cs, bio])]).toEqual([]);
   });
 });
 
@@ -257,25 +265,59 @@ describe('asDegreeDetail', () => {
     const detail = await asDegreeDetail(db, 'cc:110');
     expect(detail.college_name).toBe('Allan Hancock College');
     expect(detail.degrees).toHaveLength(3);
-    const localCsAs = detail.degrees.find((d) => d.degree_type === 'local_cs_as');
-    expect(localCsAs.doc._id).toBe('as_degree:110:local_cs_as');
-    expect(localCsAs.courses_by_id['cc:101']).toEqual(
+    const localAs = detail.degrees.find((d) => d.degree_type === 'local_as');
+    expect(localAs.doc._id).toBe('as_degree:110:cs:local_as');
+    expect(localAs.courses_by_id['cc:101']).toEqual(
       { course_id: 101, prefix: 'CS', number: '111', code: 'CS 111',
         title: 'Programming I', units: 4, concept: 'cs_1' });
-    expect(localCsAs.covered_concepts).toEqual(['cs_1', 'comp_arch_assembly', 'discrete_math', 'calc_1']);
-    expect(localCsAs.missing_core_concepts).toEqual(['calc_2', 'linear_alg']);
-    expect(localCsAs.coverage_pct).toBe(80);
+    expect(localAs.covered_concepts).toEqual(['cs_1', 'comp_arch_assembly', 'discrete_math', 'calc_1']);
+    expect(localAs.missing_core_concepts).toEqual(['calc_2', 'linear_alg']);
+    expect(localAs.coverage_pct).toBe(80);
     const ast = detail.degrees.find((d) => d.degree_type === 'ast');
-    expect(ast.doc._id).toBe('as_degree:110:ast');
+    expect(ast.doc._id).toBe('as_degree:110:cs:ast');
     expect(ast.courses_by_id['cc:101']).toBeTruthy();
     expect(ast.coverage_pct).toBe(20);
     expect(ast.missing_core_concepts).toEqual(
       ['comp_arch_assembly', 'discrete_math', 'calc_1', 'calc_2', 'linear_alg']);
-    const localComputing = detail.degrees.find((d) => d.degree_type === 'local_computing');
-    expect(localComputing.covered_concepts).toEqual(['cs_1']);
-    expect(localComputing.missing_core_concepts).toEqual([]);
-    expect(localComputing.coverage_pct).toBe(null);
+    const localOther = detail.degrees.find((d) => d.degree_type === 'local_other');
+    expect(localOther.covered_concepts).toEqual(['cs_1']);
+    expect(localOther.missing_core_concepts).toEqual([]);
+    expect(localOther.coverage_pct).toBe(null);
     expect(await asDegreeDetail(db, 'cc:999')).toBe(null);
+  });
+});
+
+describe('major scoping', () => {
+  async function seedMajors() {
+    await db.collection('assist_institutions').insertOne(
+      { _id: 'cc:110', kind: 'community_college', source_id: 110, name: 'Allan Hancock College' });
+    await db.collection('curated_requirements').insertMany([
+      { _id: 'as_degree:110:cs:ast', kind: 'as_degree', college_id: 'cc:110',
+        community_college_id: 110, major_slug: 'cs', degree_type: 'ast',
+        status: 'found', requirement_groups: [] },
+      { _id: 'as_degree:110:bio:ast', kind: 'as_degree', college_id: 'cc:110',
+        community_college_id: 110, major_slug: 'bio', degree_type: 'ast',
+        status: 'found', requirement_groups: [] },
+    ]);
+  }
+
+  it('returns only the requested major from asDegreeDetail', async () => {
+    await seedMajors();
+    const cs = await asDegreeDetail(db, 'cc:110', { major: 'cs' });
+    expect(cs.degrees.map((d) => d.doc.major_slug)).toEqual(['cs']);
+    const bio = await asDegreeDetail(db, 'cc:110', { major: 'bio' });
+    expect(bio.degrees.map((d) => d.doc.major_slug)).toEqual(['bio']);
+  });
+
+  it('defaults to cs when no major is given', async () => {
+    await seedMajors();
+    const detail = await asDegreeDetail(db, 'cc:110');
+    expect(detail.degrees.map((d) => d.doc.major_slug)).toEqual(['cs']);
+  });
+
+  it('returns null when the college has no record for that major', async () => {
+    await seedMajors();
+    expect(await asDegreeDetail(db, 'cc:110', { major: 'econ' })).toBeNull();
   });
 });
 
@@ -345,8 +387,8 @@ describe('GE area breakdowns', () => {
         title: 'Bookkeeping', units: 3, uc_transferable: false, calgetc_area: ['3B'] },
     ]);
     await db.collection('curated_requirements').insertOne(
-      { _id: 'as_degree:9:local_cs_as', kind: 'as_degree', community_college_id: 9, college_id: 'cc:9',
-        degree_type: 'local_cs_as', major_slug: 'cs', template_ref: null, status: 'found',
+      { _id: 'as_degree:9:cs:local_as', kind: 'as_degree', community_college_id: 9, college_id: 'cc:9',
+        degree_type: 'local_as', major_slug: 'cs', template_ref: null, status: 'found',
         degree_title_seen: 'Computer Science, A.S.', catalog_url: 'https://q', catalog_year: '2025-2026',
         unit_system: 'semester', total_units: 60,
         verification: { verified: false }, covered_concepts: [],

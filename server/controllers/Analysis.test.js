@@ -51,6 +51,7 @@ describe('CS A.S.-T export', () => {
     });
     const shared = {
       kind: 'as_degree', community_college_id: 10, college_id: 'cc:10', status: 'found',
+      major_slug: 'cs',
       requirement_groups: [{ sections: [{ receivers: [{ options: [{ course_ids: [100] }] }] }] }],
     };
     await db.collection('curated_requirements').insertMany([
