@@ -32,16 +32,24 @@ export function cloneDegreeDocument(document) {
   return document ? JSON.parse(JSON.stringify(document)) : null
 }
 
-export function createDegreeDocument({ schoolId, school, campusKey = null }) {
+export function createDegreeDocument({
+  schoolId,
+  school,
+  campusKey = null,
+  majorSlug,
+  defaultProgram = '',
+}) {
   const id = Number(schoolId)
+  const slug = String(majorSlug || '').trim()
   return {
-    _id: `degree:${id}`,
-    legacy_id: String(id),
+    _id: slug ? `degree:${id}:${slug}` : `degree:${id}`,
+    legacy_id: slug ? `${id}:${slug}` : String(id),
     kind: 'degree',
     institution_id: `uc:${id}`,
     school_id: id,
     school: school || `UC campus ${id}`,
-    program: '',
+    ...(slug ? { major_slug: slug } : {}),
+    program: defaultProgram,
     total_units: null,
     source_url: '',
     requirement_groups: [],

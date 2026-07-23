@@ -19,31 +19,24 @@ const MAJORS = [
   {
     slug: 'cs',
     label: 'Computer Science',
-    // Case-insensitive substring used by the majorContains filters. Safe as a
-    // contains match because the research cluster only ever holds ported
-    // (pinned) programs — see docs/major-pins.md.
+    // Human-friendly fallback used only by legacy callers that explicitly ask
+    // for a contains search. Analysis requests with majorSlug=cs use the exact
+    // campus/program pairs below.
     match: 'computer science',
-    // The exact ASSIST program names the paper scraped, per UC school id.
-    // Byte-identical values are load-bearing: the paper-port figures pin to
-    // these stored names, so an edit here changes replicated figures.
-    // Keep in sync with analysis/paper_credit_loss.PAPER_MAJORS.
+    // The single canonical CS program analyzed at each campus. These values
+    // are byte-identical to Atlas (including Merced's stored trailing space).
+    // Alternative CS, CSE, joint, minor, and specialisation programs are not
+    // part of this major and must never enter a majorSlug=cs analysis.
     programs: {
-      89: ['Computer Science & Engineering B.S.', 'Computer Science B.S.'],
-      144: ['APPLIED MATHEMATICAL SCIENCES, Computer Science Emphasis, B.S.',
-        'COMPUTER SCIENCE AND ENGINEERING, B.S. '], // trailing space is stored
-      7: ['CSE: Computer Science B.S.',
-        'CSE: Computer Science with a Specialization in Bioinformatics B.S.',
-        'Mathematics/Computer Science B.S.'],
+      89: ['Computer Science B.S.'],
+      144: ['COMPUTER SCIENCE AND ENGINEERING, B.S. '], // trailing space is stored
+      7: ['CSE: Computer Science B.S.'],
       128: ['Computer Science, B.S.'],
-      117: ['Computer Science and Engineering/B.S.', 'Computer Science/B.S.',
-        'Linguistics and Computer Science/B.A.'],
-      // UCB needs BOTH: ASSIST moved its paper-era CS math articulations onto
-      // the EECS page — single-program pinning breaks paper replication.
-      79: ['Computer Science, B.A.', 'Electrical Engineering & Computer Sciences, B.S.'],
-      132: ['Computer Science B.A.', 'Computer Science B.S.', 'Computer Science Minor',
-        'Computer Science: Computer Game Design B.S.'],
-      120: ['Computer Science and Engineering, B.S.', 'Computer Science, B.S.'],
-      46: ['Computer Science with Business Applications B.S.', 'Computer Science, B.S.'],
+      117: ['Computer Science/B.S.'],
+      79: ['Electrical Engineering & Computer Sciences, B.S.'],
+      132: ['Computer Science B.S.'],
+      120: ['Computer Science, B.S.'],
+      46: ['Computer Science, B.S.'],
     },
     // Canonical course categories for the gap figures, and the broad axes they
     // roll up into. Consumed by controllers/Curation.js.
@@ -183,6 +176,45 @@ function defaultMajor() {
   return MAJORS[0];
 }
 
+function programsFor(majorOrPrograms) {
+  if (typeof majorOrPrograms === 'string') return getMajor(majorOrPrograms)?.programs || null;
+  if (majorOrPrograms?.programs) return majorOrPrograms.programs;
+  return majorOrPrograms && typeof majorOrPrograms === 'object' ? majorOrPrograms : null;
+}
+
+/** Flatten a configured major into exact, JSON-safe campus/program pairs. */
+function programPairs(majorOrPrograms) {
+  const programs = programsFor(majorOrPrograms);
+  if (!programs) return [];
+  return Object.entries(programs).flatMap(([schoolId, names]) =>
+    (Array.isArray(names) ? names : []).map((major) => ({
+      school_id: Number(schoolId),
+      major: String(major),
+    }))).filter((pair) => Number.isFinite(pair.school_id));
+}
+
+/** Exact Mongo clause for a configured major's campus/program pairs. */
+function programPairClause(majorOrPrograms, {
+  schoolField = 'uc_school_id', majorField = 'major',
+} = {}) {
+  const pairs = programPairs(majorOrPrograms);
+  // Configured majors always have pairs. Keeping an explicit match-nothing
+  // result makes an incomplete future entry fail closed instead of exposing
+  // the full corpus.
+  if (!pairs.length) return { _id: { $exists: false } };
+  const namesBySchool = new Map();
+  for (const pair of pairs) {
+    if (!namesBySchool.has(pair.school_id)) namesBySchool.set(pair.school_id, []);
+    namesBySchool.get(pair.school_id).push(pair.major);
+  }
+  return {
+    $or: [...namesBySchool.entries()].map(([schoolId, majors]) => ({
+      [schoolField]: schoolId,
+      [majorField]: { $in: majors },
+    })),
+  };
+}
+
 /** The majors payload for GET /api/majors. Every field here is JSON-safe. */
 function serializeMajors() {
   return [...MAJORS];
@@ -198,11 +230,16 @@ function majorScopeFromQuery(query = {}) {
   if (slug) {
     const entry = getMajor(slug);
     if (!entry) return { error: `unknown major: ${slug}`, known: MAJORS.map((m) => m.slug) };
-    return { slug: entry.slug, majorContains: entry.match };
+    return { slug: entry.slug, majorPrograms: entry.programs, majorContains: '' };
   }
-  return { slug: null, majorContains: String(query.majorContains ?? '').trim() };
+  return {
+    slug: null,
+    majorPrograms: null,
+    majorContains: String(query.majorContains ?? '').trim(),
+  };
 }
 
 module.exports = {
   getMajor, listMajors, defaultMajor, serializeMajors, majorScopeFromQuery,
+  programPairs, programPairClause,
 };

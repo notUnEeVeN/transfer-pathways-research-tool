@@ -121,14 +121,15 @@ export function useCoverage(params = {}, options = {}) {
 export function useTransferCreditRate(degreeType = 'local_cs_as', options = {}) {
   const { user } = useAuth()
   const type = ['ast', 'local_cs_as'].includes(degreeType) ? degreeType : 'local_cs_as'
+  const majorSlug = 'cs'
   const { enabled = true, ...queryOptions } = options
   return useQuery({
     // v2 prevents a persisted prescribed-units payload from rendering against
     // the whole-degree field contract, even for the brief hydration paint.
-    queryKey: ['analysis-transfer-credit-rate', 'v2', user?.uid, type],
+    queryKey: ['analysis-transfer-credit-rate', 'v3', user?.uid, majorSlug, type],
     queryFn: () =>
       apiClient
-        .get('/analysis/transfer-credit-rate', { params: { degree_type: type } })
+        .get('/analysis/transfer-credit-rate', { params: { degree_type: type, majorSlug } })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
     ...queryOptions,
@@ -208,6 +209,7 @@ export function useChoiceCost(params = {}, options = {}) {
 // is selected, so opening the visual never sends an invalid request.
 export function useMultiCampusPathways(params = {}, options = {}) {
   const { user } = useAuth()
+  const majorSlug = String(params.majorSlug || 'cs').trim()
   const schoolIds = [...new Set((params.schoolIds || [])
     .map(Number)
     .filter((id) => Number.isFinite(id) && id > 0))]
@@ -224,6 +226,7 @@ export function useMultiCampusPathways(params = {}, options = {}) {
   return useQuery({
     queryKey: [
       'analysis-multi-campus-pathways', 'v2', user?.uid, mode,
+      majorSlug,
       schoolIds.join(','), mode === 'college' ? communityCollegeId : null,
       semesterLoad, quarterLoad,
     ],
@@ -231,6 +234,7 @@ export function useMultiCampusPathways(params = {}, options = {}) {
       .get('/analysis/multi-campus-pathways', {
         params: {
           schoolIds: schoolIds.join(','),
+          majorSlug,
           mode,
           ...(mode === 'college' ? { communityCollegeId } : {}),
           semesterLoad,
@@ -373,17 +377,20 @@ export function useSaveDegreeRequirement() {
 // One degree evaluated against one community college: the merged ledger + the
 // share of the four-year degree that transfers. 404s (no template for a campus)
 // don't retry — the caller shows an empty state.
-export function useDegreeEvaluation(schoolId, collegeId, options = {}) {
+export function useDegreeEvaluation(schoolId, collegeId, majorSlug, options = {}) {
   const { user } = useAuth()
   const sid = Number(schoolId)
   const cid = Number(collegeId)
-  const ready = Number.isFinite(sid) && Number.isFinite(cid)
+  const slug = String(majorSlug || '').trim()
+  const ready = Number.isFinite(sid) && Number.isFinite(cid) && !!slug
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: ['degree-evaluation', user?.uid, sid, cid],
+    queryKey: ['degree-evaluation', user?.uid, sid, cid, slug],
     queryFn: () =>
       apiClient
-        .get('/curated/degree-evaluation', { params: { school_id: sid, community_college_id: cid } })
+        .get('/curated/degree-evaluation', {
+          params: { school_id: sid, community_college_id: cid, majorSlug: slug },
+        })
         .then((r) => r.data),
     enabled: !!user?.uid && ready && enabled,
     staleTime: 5 * 60 * 1000,

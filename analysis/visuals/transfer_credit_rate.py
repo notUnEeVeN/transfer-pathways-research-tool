@@ -26,7 +26,7 @@ def render(rows, major_filter):
     ax.invert_yaxis()
     ax.set_xlim(0, 100)
     ax.set_xlabel("Associate-degree units counting toward the transfer pathway")
-    ax.set_title(f"Transfer credit rate, lowest first | Major contains: {major_filter}", loc="left")
+    ax.set_title(f"Transfer credit rate, lowest first | Major: {major_filter}", loc="left")
     ax.spines[["top", "right", "left"]].set_visible(False)
     ax.tick_params(axis="y", length=0)
     ax.grid(axis="x", color=BORDER, linewidth=0.5)
@@ -39,12 +39,12 @@ def render(rows, major_filter):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--major", default="computer science", help="case-insensitive major-name filter")
+    parser.add_argument("--major", default="cs", help="configured major slug (default: cs)")
     add_delivery_arguments(parser)
     args = parser.parse_args(argv)
     apply_style()
 
-    rows = compute("transfer-credit-rate", majorContains=args.major)
+    rows = compute("transfer-credit-rate", majorSlug=args.major)
     if not rows:
         raise SystemExit(
             "Transfer credit rate is not publishable yet: no curated associate-degree "

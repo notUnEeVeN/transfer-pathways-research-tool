@@ -38,7 +38,7 @@ from a UC, differ in transfer access by the income of the people they serve.
 
 The figure has a **Transfer requirements** control, matching the coverage map's:
 *Hand-curated* is the paper's per-campus minimums, *ASSIST* is what ASSIST
-itself marks as required for the working major selection. ASSIST states a
+itself marks as required for the exact canonical CS program at each campus. ASSIST states a
 broader requirement set, so fewer district–campus pairs come out complete — 356
 against 440, and no district reaches more than seven of nine.
 
@@ -94,8 +94,9 @@ title. Both recompute from whichever requirement set the control selects.
 **Access** is the Figure 4 measure — the count of UC campuses for which the
 district articulates every required course, pooled across the district's
 colleges — under whichever requirement set the control selects: the paper's
-hand-curated minimums (pinned to the scraped programs) or ASSIST's own required
-receivers.
+hand-curated minimums or ASSIST's own required receivers. Both modes use the
+same nine exact canonical CS campus/program pairs; adding another major or CS
+sibling program cannot change this figure.
 
 **Income** is the Franchise Tax Board catchment mean:
 `analysis/data/district_income.v1.json`, built by

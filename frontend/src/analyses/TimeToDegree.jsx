@@ -3,8 +3,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useTimeToDegree } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
-import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorChoice } from '../shared/majors/MajorContext'
 
 
 const intFmt = new Intl.NumberFormat()
@@ -18,8 +16,7 @@ const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
  * agreement's cheapest path, what's lost, and (with institution tuition) what
  * the loss costs. One meter row per degree × agreement, worst rate first.
  */
-export default function TimeToDegree() {
-  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
+export default function TimeToDegree({ majorSlug = 'cs' }) {
   const query = useTimeToDegree(
     { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
@@ -43,7 +40,6 @@ export default function TimeToDegree() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <Button
         variant='secondary'
         leadingIcon={ArrowPathIcon}

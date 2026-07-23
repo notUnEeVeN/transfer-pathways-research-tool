@@ -31,6 +31,28 @@ def test_every_former_visual_has_a_separate_local_entrypoint():
     assert VISUALS <= {path.name for path in directory.glob("*.py")}
 
 
+def test_visual_data_calls_use_configured_major_slugs_not_title_filters():
+    analysis = Path(__file__).resolve().parents[1]
+    callers = [*sorted((analysis / "visuals").glob("*.py")), analysis / "income_access_stats.py"]
+    for path in callers:
+        source = path.read_text()
+        assert "majorContains" not in source, path.name
+        assert 'pin="paper"' not in source, path.name
+        assert 'pin="settings"' not in source, path.name
+
+
+def test_cs_paper_visuals_request_the_exact_configured_major_scope():
+    directory = Path(__file__).resolve().parents[1] / "visuals"
+    for name in (
+        "paper_district_heatmap.py",
+        "paper_articulation_histogram.py",
+        "paper_articulation_map.py",
+        "paper_course_barriers.py",
+        "ma_course_type_spread.py",
+    ):
+        assert 'majorSlug="cs"' in (directory / name).read_text(), name
+
+
 def test_coverage_matrix_preserves_rows_programs_and_duplicate_averaging():
     rows = [
         {
@@ -63,8 +85,21 @@ def test_articulation_histogram_reconstructs_the_paper_distribution():
 
 
 def test_credit_loss_port_builds_all_five_bars_for_each_campus():
-    results = paper_credit_loss._load_results(recompute=False, workers=1)
-    bars = paper_credit_loss._bars(results["paper"])
+    bars = paper_credit_loss._bars(paper_credit_loss._paper_result())
     assert len(bars) == 9
     assert all(len(row["choices"]) == 4 for row in bars)
     assert paper_credit_loss._difference_matrix(bars, bars).shape == (9, 5)
+
+
+def test_committed_credit_loss_results_have_canonical_scope_and_valid_fingerprints():
+    results = paper_credit_loss._load_results(recompute=False, workers=1)
+    for key in ("website", "assist"):
+        assert results[key]["dataset_version"] == "2026-07-22-canonical-cs-v1"
+        assert len(results[key]["major_scope"]["program_pins"]) == 9
+
+
+def test_credit_loss_port_rejects_results_without_exact_pin_provenance(tmp_path):
+    path = tmp_path / "legacy.json"
+    path.write_text('{"major_filter":"computer science","campuses":[]}')
+    with np.testing.assert_raises_regex(RuntimeError, "canonical-nine CS scope"):
+        paper_credit_loss._read_canonical_result(path)

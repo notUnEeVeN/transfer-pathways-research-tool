@@ -1,15 +1,43 @@
 # Major-dimension foundation (F) — design
 
-**Date:** 2026-07-22 · **Status:** approved
+**Date:** 2026-07-22 · **Status:** implemented, amended
 **Roadmap:** `2026-07-22-expansion-roadmap.md` — this is sub-project F.
+
+## Canonical-pair amendment (2026-07-22)
+
+This section supersedes every conflicting historical statement below.
+
+- CS, Biology, and Economics are onboarded. Each major is defined by exact
+  `(school_id, ASSIST program)` pairs in `server/config/majors.js`.
+- CS is exactly the nine canonical programs listed in `docs/major-pins.md`:
+  one program per UC campus. Alternative CS/CSE degrees, joint majors,
+  minors, and emphases are not part of the CS study.
+- A `majorSlug` request resolves to those exact pairs. It must never be
+  translated into a substring search. `majorContains` remains only as an
+  explicit legacy API search.
+- Imported programs are inert until added to the major config. The website,
+  audit population, data APIs, and analyses are all scoped to the union of
+  configured exact pairs; mutable `settings.app.visible_pairs` is not a data
+  identity source.
+- Every current published/paper figure is CS-scoped and uses the canonical
+  nine pairs. Biology and Economics figures will be separate artifacts or
+  explicit `majorSlug` views.
+- Degree templates are keyed by campus and `major_slug`; unstamped historical
+  templates are treated as CS only and are stamped on their next editor save.
+- The earlier byte-identical/frozen-output constraint is revoked where the old
+  output included noncanonical programs. Correct canonical scope takes
+  precedence, and affected artifacts must be regenerated.
+- Atlas was simplified after the exact-pair regressions passed: the 12
+  noncanonical CS pairs are removed from active data, leaving exactly 27
+  configured pairs / 3,105 agreements. Recovery manifest
+  `major-pair-removal-20260723T065112846564Z-e9fa871f` preserves the deleted
+  rows and pre-removal settings.
 
 ## Goal
 
-After F ships, the app behaves **exactly as today for CS** (only CS
-onboarded → pixel-identical), but every major-touching surface reads from a
-per-major config instead of a hardcoded CS constant. Onboarding Biology or
-Economics (W1) then requires: run `port.py`, add a config entry, gather
-degree templates — **no code hunt**.
+After F ships, adding a configured major cannot change another major's data,
+audit population, or figures. Every major-touching surface reads exact pairs
+from one per-major config instead of a hardcoded label or substring.
 
 ## Non-goals
 

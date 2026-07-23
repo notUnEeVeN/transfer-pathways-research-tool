@@ -123,6 +123,33 @@ describe('multiCampusPathwaysData', () => {
     expect(second.rows.every((row) => row.status === 'optimal')).toBe(true);
   });
 
+  it('does not apply another major\'s receiver override to a CS plan', async () => {
+    await seedTwoCollegePortfolio();
+    await db.collection('curated_mappings').insertOne({
+      _id: 'receiver_override:bio:r-2-89',
+      kind: 'receiver_override',
+      receiver_hash: 'r-2-89',
+      major_slug: 'bio',
+      exclude: true,
+    });
+
+    const result = await multiCampusPathwaysData(db, db, {
+      majorSlug: 'cs',
+      schoolIds: [89],
+      mode: 'college',
+      communityCollegeId: 2,
+      semesterLoad: 15,
+      quarterLoad: 15,
+      visiblePairs,
+    });
+
+    expect(result.row.campuses[0]).toMatchObject({
+      school_id: 89,
+      direct_course_count: 1,
+      strict_complete: true,
+    });
+  });
+
   it('jointly chooses a shared course, adds its prerequisite, and keeps calendars native', async () => {
     await seedTwoCollegePortfolio();
 

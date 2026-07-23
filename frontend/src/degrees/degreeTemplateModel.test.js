@@ -83,4 +83,19 @@ describe('degree template document validation', () => {
     doc.requirement_groups = [{ title: 'Math', tier: 'transferable', sections: [courseSection] }]
     expect(validateDegreeDocument(doc)).toBe(null)
   })
+
+  it('gives each major its own stable document id and explicit identity', () => {
+    const doc = createDegreeDocument({
+      schoolId: 79,
+      school: 'UC Berkeley',
+      majorSlug: 'bio',
+      defaultProgram: 'Molecular and Cell Biology, B.A.',
+    })
+    expect(doc).toMatchObject({
+      _id: 'degree:79:bio',
+      legacy_id: '79:bio',
+      major_slug: 'bio',
+      program: 'Molecular and Cell Biology, B.A.',
+    })
+  })
 })

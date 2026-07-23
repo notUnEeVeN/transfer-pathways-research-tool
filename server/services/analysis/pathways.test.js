@@ -2,8 +2,8 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { startInMemoryMongo } from '../../test/mongoHarness';
 import {
   coverageData, requirementComparisonData, creditLossData, choiceCostData,
-  categoryGapsData, complexityData, timeToDegreeData, receiversExportData,
-  _settingsMajors, _paperMajors,
+  categoryGapsData, complexityData, timeToDegreeData, agreementsExportData,
+  receiversExportData, _settingsMajors, _canonicalCsPrograms,
 } from './pathways';
 import { getMajor } from '../../config/majors';
 
@@ -324,36 +324,35 @@ describe('coverageData', () => {
   });
 });
 
-describe('paper pins', () => {
-  // The pins moved into config/majors.js; the paper figures replicate only if
-  // the values are byte-identical to what they were validated against.
+describe('canonical CS pins', () => {
   it('are the cs entry programs from the majors config', () => {
-    expect(_paperMajors).toEqual(getMajor('cs').programs);
+    expect(_canonicalCsPrograms).toEqual(getMajor('cs').programs);
   });
 
   it('preserve the stored trailing space in the Merced program name', () => {
-    expect(_paperMajors[144]).toContain('COMPUTER SCIENCE AND ENGINEERING, B.S. ');
+    expect(_canonicalCsPrograms[144]).toEqual(['COMPUTER SCIENCE AND ENGINEERING, B.S. ']);
   });
 
-  it('cover exactly the nine figure campuses', () => {
-    expect(Object.keys(_paperMajors).map(Number).sort((a, b) => a - b))
+  it('cover exactly the nine figure campuses with one program each', () => {
+    expect(Object.keys(_canonicalCsPrograms).map(Number).sort((a, b) => a - b))
       .toEqual([7, 46, 79, 89, 117, 120, 128, 132, 144]);
+    expect(Object.values(_canonicalCsPrograms).every((programs) => programs.length === 1)).toBe(true);
   });
 });
 
-describe('settingsMajors (pin=settings resolution)', () => {
+describe('settingsMajors compatibility alias', () => {
   afterAll(async () => {
     // Leave no working-dataset selection behind for the other suites.
     await db.collection('settings').deleteOne({ _id: 'app' });
   });
 
-  it('reads the working-dataset selection, scopes to figure campuses, falls back to PAPER_MAJORS', async () => {
+  it('ignores the retired mutable selection and always returns canonical CS', async () => {
     await db.collection('settings').replaceOne(
       { _id: 'app' },
       {
         _id: 'app',
         visible_pairs: [
-          { school_id: 79, major: 'Electrical Engineering & Computer Sciences, B.S.' }, // UCB → EECS only
+          { school_id: 79, major: 'Computer Science, B.A.' }, // retired alternative, ignored
           { school_id: 99999, major: 'Not A Figure Campus' }, // ignored: outside the nine campuses
         ],
       },
@@ -362,20 +361,18 @@ describe('settingsMajors (pin=settings resolution)', () => {
 
     const byCampus = await _settingsMajors(db);
 
-    // the selected campus reflects exactly the working-dataset choice…
+    // The old settings choice cannot reintroduce a noncanonical program.
     expect(byCampus.get(79)).toEqual(['Electrical Engineering & Computer Sciences, B.S.']);
-    // …a campus the selection omits falls back to PAPER_MAJORS (never dropped)…
-    expect(byCampus.get(89)).toEqual(_paperMajors[89]);
-    // …and non-figure campuses never enter the scope.
+    expect(byCampus.get(89)).toEqual(_canonicalCsPrograms[89]);
     expect(byCampus.has(99999)).toBe(false);
     expect([...byCampus.keys()].sort((a, b) => a - b))
-      .toEqual(Object.keys(_paperMajors).map(Number).sort((a, b) => a - b));
+      .toEqual(Object.keys(_canonicalCsPrograms).map(Number).sort((a, b) => a - b));
   });
 
-  it('falls back entirely to PAPER_MAJORS when no selection has been saved', async () => {
+  it('returns the same canonical mapping when no setting exists', async () => {
     await db.collection('settings').deleteOne({ _id: 'app' });
     const byCampus = await _settingsMajors(db);
-    expect(byCampus.get(79)).toEqual(_paperMajors[79]); // both CS B.A. + EECS B.S.
+    expect(byCampus.get(79)).toEqual(_canonicalCsPrograms[79]);
   });
 });
 
@@ -579,5 +576,150 @@ describe('timeToDegreeData', () => {
     expect(adt.transfer_credit_rate_pct).toBeCloseTo(78.6, 1);
     expect(adt.lost_units).toBe(3);
     expect(adt.est_lost_cost_usd).toBe(300);
+  });
+});
+
+describe('exact configured major isolation', () => {
+  beforeAll(async () => {
+    await db.collection('assist_institutions').insertMany([
+      {
+        _id: 'uc:79', source_id: 79, kind: 'university', name: 'UC Berkeley',
+        academic_calendar: 'semester',
+      },
+      {
+        _id: 'cc:70', source_id: 70, kind: 'community_college', name: 'Scope College',
+        district: 'Scope District', region: 'Bay', counties_served: ['Scope'],
+      },
+    ]);
+    await db.collection('assist_courses').insertMany([
+      { course_id: 'scope-extra', units: 4, community_college_id: 70, side: 'sending' },
+      { parent_id: 701, side: 'receiving', prefix: 'EECS', number: '16A', min_units: 4, max_units: 4 },
+      { parent_id: 702, side: 'receiving', prefix: 'CSE', number: '8A', min_units: 4, max_units: 4 },
+    ]);
+    await db.collection('assist_agreements').insertMany([
+      {
+        _id: 'scope:canonical-cs', uc_school: 'UC Berkeley', uc_school_id: 79,
+        community_college: 'Scope College', community_college_id: 70,
+        major: 'Electrical Engineering & Computer Sciences, B.S.',
+        requirement_groups: oneGroup([
+          recv([], { status: 'not_articulated', hash: 'scope-canonical', parentId: 701 }),
+        ]),
+      },
+      {
+        _id: 'scope:extra-cs', uc_school: 'UC Berkeley', uc_school_id: 79,
+        community_college: 'Scope College', community_college_id: 70,
+        major: 'Computer Science, B.A.',
+        requirement_groups: oneGroup([
+          recv([opt(['scope-extra'])], { hash: 'scope-extra', parentId: 701 }),
+        ]),
+      },
+      {
+        _id: 'scope:bio', uc_school: 'UC Berkeley', uc_school_id: 79,
+        community_college: 'Scope College', community_college_id: 70,
+        major: 'Molecular and Cell Biology, B.A.',
+        requirement_groups: oneGroup([
+          recv([opt(['scope-extra'])], { hash: 'scope-bio', parentId: 701 }),
+        ]),
+      },
+      {
+        _id: 'scope:econ', uc_school: 'UC Berkeley', uc_school_id: 79,
+        community_college: 'Scope College', community_college_id: 70,
+        major: 'Economics, B.A.',
+        requirement_groups: oneGroup([
+          recv([opt(['scope-extra'])], { hash: 'scope-econ', parentId: 701 }),
+        ]),
+      },
+    ]);
+    await db.collection('curated_requirements').insertMany([
+      {
+        _id: 'degree:scope:cs', kind: 'degree', major_slug: 'cs', school_id: 79,
+        school: 'UC Berkeley', program: 'Electrical Engineering & Computer Sciences, B.S.',
+        requirement_groups: oneGroup([{ receiving: { kind: 'course', parent_id: 701 } }]),
+      },
+      {
+        _id: 'degree:scope:cs-mislabeled', kind: 'degree', major_slug: 'cs', school_id: 79,
+        school: 'UC Berkeley', program: 'Computer Science, B.A.',
+        requirement_groups: oneGroup([{ receiving: { kind: 'course', parent_id: 701 } }]),
+      },
+      {
+        // Legacy CS templates predate major_slug and use catalog-facing labels
+        // that differ from their ASSIST program pin.
+        _id: 'degree:scope:cs-legacy', kind: 'degree', school_id: 7,
+        school: 'UC San Diego', program: 'Computer Science, B.S. (CS26)',
+        requirement_groups: oneGroup([{ receiving: { kind: 'course', parent_id: 702 } }]),
+      },
+      {
+        _id: 'degree:scope:bio', kind: 'degree', major_slug: 'bio', school_id: 79,
+        school: 'UC Berkeley', program: 'Molecular and Cell Biology, B.A.',
+        requirement_groups: oneGroup([{ receiving: { kind: 'course', parent_id: 701 } }]),
+      },
+      {
+        _id: 'degree:scope:econ', kind: 'degree', major_slug: 'econ', school_id: 79,
+        school: 'UC Berkeley', program: 'Economics, B.A.',
+        requirement_groups: oneGroup([{ receiving: { kind: 'course', parent_id: 701 } }]),
+      },
+    ]);
+  });
+
+  it('majorSlug=cs resolves inside the service and excludes other and variant programs', async () => {
+    const rows = await agreementsExportData(db, db, { majorSlug: 'cs' });
+    expect(rows.map((row) => row._id)).toEqual(['scope:canonical-cs']);
+
+    // The explicit legacy substring remains available and demonstrates why a
+    // configured slug must not silently degrade to it.
+    const legacy = await agreementsExportData(db, db, { majorContains: 'computer science' });
+    expect(legacy.map((row) => row._id)).toContain('scope:extra-cs');
+  });
+
+  it.each(['paper', 'settings'])('%s compatibility pin cannot restore an extra CS program', async (pin) => {
+    const rows = await coverageData(db, db, { majorSlug: 'cs', pin });
+    const scoped = rows.filter((row) => row.community_college_id === 70);
+    expect(scoped).toHaveLength(1);
+    expect(scoped[0]).toMatchObject({
+      school_id: 79,
+      major: 'Electrical Engineering & Computer Sciences, B.S.',
+      receivers_articulated: 0,
+    });
+  });
+
+  it('choice cost deterministically uses the configured canonical program', async () => {
+    const rows = await choiceCostData(db, db, { majorSlug: 'cs', schoolIds: [79] });
+    const scopeCollege = rows.find((row) => row.community_college_id === 70);
+    expect(scopeCollege.steps).toEqual([{
+      school_id: 79,
+      school: 'UC Berkeley',
+      has_agreement: true,
+      additional_courses: 0,
+      blocked_receivers: 1,
+    }]);
+    expect(scopeCollege.total_courses).toBe(0);
+  });
+
+  it('the per-college comparison does not pool articulation from a sibling CS program', async () => {
+    const comparison = await requirementComparisonData(db, db, {
+      schoolId: 79,
+      major: 'Electrical Engineering & Computer Sciences, B.S.',
+      communityCollegeId: 70,
+    });
+    expect(comparison.assist).toMatchObject({ required: 1, articulated: 0, fully: false });
+  });
+
+  it('degree coverage isolates CS templates and exact CS articulation rows', async () => {
+    const rows = await coverageData(db, db, {
+      majorSlug: 'cs', requirements: 'degree',
+    });
+    expect([...new Set(rows.map((row) => row.degree_template_id))].sort()).toEqual([
+      'degree:scope:cs',
+      'degree:scope:cs-legacy',
+    ]);
+    const berkeley = rows.find((row) =>
+      row.degree_template_id === 'degree:scope:cs' && row.community_college_id === 70);
+    // The extra CS, Biology, and Economics agreements all articulate parent
+    // 701. Exact pair scoping keeps all three from inflating this CS cell.
+    expect(berkeley).toMatchObject({
+      degree_requirements_total: 1,
+      degree_requirements_with_equivalent: 0,
+      pct_degree_requirement_slots: 0,
+    });
   });
 });

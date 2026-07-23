@@ -10,17 +10,23 @@ const { ObjectId } = require('mongodb');
 const { startInMemoryMongo } = require('../../test/mongoHarness');
 const cache = require('../auditCache');
 const Audit = require('../../controllers/Audit');
-const { invalidateVisibilityCache } = require('../majorVisibility');
+const { invalidateVisibilityCache, majorScope } = require('../majorVisibility');
 const { scopeKey } = require('./filters');
 
 const oid = (n) => new ObjectId(String(n).padStart(24, '0'));
+const UCB = {
+  id: 79,
+  school: 'UC Berkeley',
+  cs: 'Electrical Engineering & Computer Sciences, B.S.',
+  bio: 'Molecular and Cell Biology, B.A.',
+};
 
 function agreement(id, over = {}) {
   return {
     _id: oid(id),
-    uc_school_id: 100, uc_school: 'UC Alpha',
+    uc_school_id: UCB.id, uc_school: UCB.school,
     community_college: 'CC One', community_college_id: 1,
-    major: 'Computer Science', major_id: 'm-cs',
+    major: UCB.cs, major_id: 'm-cs',
     raw_template_hash: 'hashA', template_fp: 'fpA', parser_output_hash: 'poA',
     ...over,
   };
@@ -37,8 +43,8 @@ function makeRes() {
 
 let harness, db, auditDb;
 beforeAll(async () => {
-  // Run as an admin so the partner major-visibility scope stays out of these
-  // dual-connection characterizations.
+  // Authentication is incidental here; configured-pair visibility applies to
+  // every account, including this test admin.
   process.env.ADMIN_UIDS = 'u1';
   harness = await startInMemoryMongo();
   db = harness.client.db('pmt_ref_test');        // reference: agreements
@@ -69,7 +75,7 @@ describe('audit dual-connection (auditDb separate from db)', () => {
   });
 
   it('stamps weighted random-template verdicts as random samples for the visible stats scope', async () => {
-    const visiblePairs = [{ school_id: 100, major: 'Computer Science' }];
+    const visiblePairs = [{ school_id: UCB.id, major: UCB.cs }];
     await auditDb.collection('settings').insertOne({ _id: 'app', visible_pairs: visiblePairs });
     invalidateVisibilityCache();
     await db.collection('assist_agreements').insertOne(agreement(3));
@@ -90,16 +96,16 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     const row = await auditDb.collection('agreement_reviews').findOne({ doc_id: oid(3) });
     expect(row.source).toBe('random_template_weighted');
     expect(row.sample_method).toBe('random');
-    // Majors are no longer gated, so a random sample is drawn from the whole
-    // corpus and records the unrestricted scope.
-    expect(row.sample_scope).toBe(scopeKey({ visiblePairs: null }));
+    // Random samples are stamped with the configured campus/program union,
+    // independent of the legacy settings selector.
+    expect(row.sample_scope).toBe(scopeKey({ visiblePairs: await majorScope() }));
   });
 
   it('a tier read joins auditDb verdicts against db agreements', async () => {
-    await db.collection('assist_agreements').insertOne(agreement(2, { major: 'Biology' }));
+    await db.collection('assist_agreements').insertOne(agreement(2, { major: UCB.bio, major_id: 'm-bio' }));
     await auditDb.collection('agreement_reviews').insertOne({
       doc_id: oid(2), result: 'error', system: 'uc',
-      uc_school_id: 100, uc_school: 'UC Alpha', major: 'Biology',
+      uc_school_id: UCB.id, uc_school: UCB.school, major: UCB.bio,
       raw_template_hash: 'hashA', template_fp: 'fpA', parser_output_hash: 'poA',
       notes: 'x', source: 'verify', verified_at: '2026-05-01T00:00:00.000Z',
     });
@@ -109,10 +115,9 @@ describe('audit dual-connection (auditDb separate from db)', () => {
     if (nextErr) throw nextErr;
     expect(res.statusCode).toBe(200);
     // The verdict (auditDb) joined to its agreement (db) — both handles exercised.
-    expect(res.body.map((r) => r.major)).toEqual(['Biology']);
+    expect(res.body.map((r) => r.major)).toEqual([UCB.bio]);
     expect(res.body[0].community_college).toBe('CC One');
   });
 
-  // (groupings CRUD test removed with the groupings feature — the research
-  // console scopes by the admin-selected visible-major subset instead.)
+  // (groupings CRUD test removed with the groupings feature.)
 });

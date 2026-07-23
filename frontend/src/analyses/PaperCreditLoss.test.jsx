@@ -5,9 +5,19 @@ import PaperCreditLoss, {
   FigureSVG,
   PaperCreditLossPreview,
 } from './PaperCreditLoss'
+import oursData from './data/paper-credit-loss.ours.json'
 import { PAPER_UC_BARS } from './paperCreditLossBaseline'
 
 describe('California paper credit-loss figure', () => {
+  it('ships the canonical nine-program CS scope with verifiable provenance', () => {
+    expect(oursData.dataset_version).toBe('2026-07-22-canonical-cs-v1')
+    expect(oursData.major_scope.program_pins).toHaveLength(9)
+    expect(oursData.major_scope.program_pins.find((pin) => pin.school_id === 79)?.program)
+      .toBe('Electrical Engineering & Computer Sciences, B.S.')
+    expect(oursData.major_scope_fingerprint).toMatch(/^[a-f0-9]{64}$/)
+    expect(oursData.artifact_fingerprint).toMatch(/^[a-f0-9]{64}$/)
+  })
+
   it('keeps the default paper baseline on the legacy renderer unchanged', () => {
     const direct = render(<FigureSVG bars={PAPER_UC_BARS} labelMode='names' />)
     const expected = direct.getByRole('img').outerHTML
@@ -68,7 +78,7 @@ describe('California paper credit-loss figure', () => {
     expect(figure).toBeTruthy()
     expect(figure.getAttribute('data-figure-version')).toBe('website')
     expect(figure.querySelector('[data-campus="UCD"] [data-series="choice-1"]')
-      .getAttribute('data-value')).toBe('7.15')
+      .getAttribute('data-value')).toBe('7')
     expect(screen.queryByRole('button')).toBeNull()
     expect(screen.queryByText('Mean 1st-choice Δ')).toBeNull()
   })

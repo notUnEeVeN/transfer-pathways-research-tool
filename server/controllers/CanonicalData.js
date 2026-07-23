@@ -4,6 +4,7 @@ const { majorScope, pairClause } = require('../services/majorVisibility');
 const { prerequisiteGraphData } = require('../services/prereqGraph');
 const asDegreeView = require('../services/asDegreeView');
 const { recomputeAsDegreeCoveredConcepts } = require('../services/asDegreeConcepts');
+const { defaultMajor, getMajor } = require('../config/majors');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -25,6 +26,37 @@ const REQUIREMENT_PREFIX = Object.freeze({
   as_degree: 'as_degree',
 });
 const REQUIREMENT_KINDS = Object.keys(REQUIREMENT_PREFIX);
+
+function validateDegreeIdentity(canonical) {
+  const schoolId = Number(canonical.school_id);
+  if (!Number.isFinite(schoolId)) return 'degree school_id must be a number';
+  const slug = String(canonical.major_slug || defaultMajor().slug).trim();
+  const major = getMajor(slug);
+  if (!major) return `unknown degree major_slug: ${slug}`;
+  const configuredPrograms = major.programs?.[schoolId] || [];
+  if (!configuredPrograms.length) {
+    return `major ${slug} is not configured at school ${schoolId}`;
+  }
+  // The major config owns the ASSIST program identity. Accept trimming at the
+  // API boundary (Merced's source label has a trailing space), then store the
+  // byte-exact configured value so a sibling program cannot be mislabeled as
+  // this major and enter downstream degree figures.
+  const requestedProgram = String(canonical.program || '').trim();
+  const configuredProgram = configuredPrograms.find((program) =>
+    String(program).trim() === requestedProgram);
+  if (!configuredProgram) {
+    return `degree program must match the configured ${slug} program at school ${schoolId}`;
+  }
+  const modernId = `degree:${schoolId}:${slug}`;
+  const legacyCsId = `degree:${schoolId}`;
+  if (canonical._id !== modernId
+      && !(slug === defaultMajor().slug && canonical._id === legacyCsId)) {
+    return `degree _id must be ${modernId}`;
+  }
+  canonical.major_slug = slug;
+  canonical.program = configuredProgram;
+  return null;
+}
 
 function parseInstitutionId(value, expectedKind = null) {
   const raw = String(value ?? '').trim();
@@ -461,6 +493,10 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     const invalid = await validatePrereqConcept(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
     canonical.source = canonical.source || 'hand_curated';
+  }
+  if (kind === 'degree') {
+    const invalid = validateDegreeIdentity(canonical);
+    if (invalid) return res.status(400).json({ error: invalid });
   }
   if (kind === 'as_degree_template') {
     const invalid = await validateAsDegreeTemplate(db, canonical);

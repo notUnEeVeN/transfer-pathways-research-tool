@@ -6,7 +6,8 @@
  *
  * Query params shared by all endpoints:
  *   scope=all|uc|csu           (default all)
- *   majorContains=<substring>  (case-insensitive; usually the whole point)
+ *   majorSlug=<configured slug> (exact campus/program pairs; preferred)
+ *   majorContains=<substring>  (legacy explicit free-text search only)
  *   groupBy=college|district|county  (coverage only; default college)
  *   requirements=degree|assist|paper (coverage only; default assist)
  * choice-cost additionally takes schoolIds=1,2,3 — an ORDERED list.
@@ -17,7 +18,9 @@
  * re-port show up within a minute without a restart.
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
-const { majorScopeFromQuery, getMajor, defaultMajor } = require('../config/majors');
+const {
+  majorScopeFromQuery, getMajor, listMajors, defaultMajor, programPairs,
+} = require('../config/majors');
 const { asDegreesExportData } = require('../services/asDegreeView');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
 const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
@@ -54,10 +57,16 @@ async function cached(key, compute) {
 // ?majorSlug=<slug> (preferred) or the legacy ?majorContains=<substring>.
 // The param is majorSlug, not major, because `major` already means the exact
 // ASSIST program name elsewhere in this API (requirement-comparison, the
-// visible-pairs shape). Returns {slug, majorContains}, or {error, known}.
+// visible-pairs shape). A known slug returns its exact campus/program mapping;
+// it is never converted into a substring search.
 function resolveMajorScope(query = {}) {
+  // Analysis endpoints fail safe to the established CS study. A newly
+  // configured major must be requested explicitly; merely onboarding it can
+  // never widen an existing figure or an older API client's result.
+  const majorSlug = query.majorSlug
+    || (String(query.majorContains || '').trim() ? '' : defaultMajor().slug);
   return majorScopeFromQuery({
-    major: query.majorSlug,
+    major: majorSlug,
     majorContains: query.majorContains,
   });
 }
@@ -65,6 +74,7 @@ function resolveMajorScope(query = {}) {
 async function parseParams(req, scope) {
   return {
     majorSlug: scope.slug,
+    majorPrograms: scope.majorPrograms,
     majorContains: scope.majorContains,
     schoolIds: String(req.query.schoolIds || '')
       .split(',')
@@ -76,10 +86,9 @@ async function parseParams(req, scope) {
     requirements: ['degree', 'assist', 'paper'].includes(req.query.requirements)
       ? req.query.requirements
       : 'assist',
-    // pin=paper: the paper-port figures' fixed major set (pathways.js
-    // PAPER_MAJORS) — exact scraped programs, visibility scoping not applied.
-    // pin=settings: those same figures' ASSIST view, resolving each campus's
-    // program from the working-dataset selection instead (see settingsMajors).
+    // Compatibility aliases retained for existing figure URLs. Both resolve
+    // to the configured canonical major; neither reads a historical union or
+    // mutable settings selection anymore.
     pin: ['paper', 'settings'].includes(req.query.pin) ? req.query.pin : null,
     // Partner visibility (null = admin, unrestricted). Applied inside every
     // pathways query, so partners' analyses cover exactly the granted subset.
@@ -109,7 +118,9 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
     }
-    const key = `${name}|${params.majorSlug || ''}|${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
+    const exactScope = programPairs(params.majorPrograms)
+      .map((pair) => `${pair.school_id}:${pair.major}`).join(',');
+    const key = `${name}|${params.majorSlug || ''}|x:${exactScope}|q:${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
     // Degree templates are editable in the Data tab. The frontend invalidates
     // its query after a save; bypassing the short analysis cache here makes the
     // next request reflect that edit immediately.
@@ -141,9 +152,15 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   if (!Number.isFinite(schoolId) || !Number.isFinite(communityCollegeId) || !major) {
     return res.status(400).json({ error: 'school_id, major, and community_college_id are required' });
   }
+  const configuredMajor = listMajors().find((entry) => programPairs(entry).some((pair) => (
+    pair.school_id === schoolId && pair.major.trim() === major
+  )));
+  if (!configuredMajor) {
+    return res.status(400).json({ error: 'major is not configured for this campus' });
+  }
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
-  const key = `requirement-comparison|${schoolId}|${communityCollegeId}|${major}`;
+  const key = `requirement-comparison|${configuredMajor.slug}|${schoolId}|${communityCollegeId}|${major}`;
   const data = await cached(key, () => requirementComparisonData(db, auditDb, { schoolId, major, communityCollegeId }));
   res.json(data);
 });
@@ -171,13 +188,21 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
     ? req.query.degree_type
     : 'local_cs_as';
   const db = req.app.locals.db;
-  const rows = await transferCreditRateData(db, null, { degreeType });
+  const rows = await transferCreditRateData(db, null, {
+    degreeType,
+    majorSlug: major.slug,
+    majorPrograms: major.programs,
+  });
   if (req.query.format === 'csv') {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename="transfer-credit-rate.csv"');
     return res.send(toCsv(rows));
   }
-  res.json({ params: { degree_type: degreeType, method: 'full_degree_v2' }, n: rows.length, rows });
+  res.json({
+    params: { degree_type: degreeType, majorSlug: major.slug, method: 'full_degree_v2' },
+    n: rows.length,
+    rows,
+  });
 });
 
 function parseMultiCampusPathwayParams(query = {}) {
@@ -249,6 +274,7 @@ exports.multiCampusPathways = asyncHandler(async (req, res) => {
   }
   const key = [
     'multi-campus-pathways-v2',
+    scopeMajor.slug,
     parsed.schoolIds.join(','),
     parsed.mode,
     parsed.communityCollegeId || '',
@@ -258,7 +284,11 @@ exports.multiCampusPathways = asyncHandler(async (req, res) => {
   ].join('|');
   const data = await cached(key, () => multiCampusPathwaysData(db, auditDb, {
     ...parsed,
-    visiblePairs,
+    majorSlug: scopeMajor.slug,
+    // The planner resolves one target per campus by order. Give it only this
+    // major's exact pairs so adding another configured field can never change
+    // which program it selects.
+    visiblePairs: programPairs(scopeMajor),
   }));
 
   if (req.query.format === 'csv') {

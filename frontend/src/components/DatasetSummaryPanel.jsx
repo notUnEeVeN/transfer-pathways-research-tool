@@ -181,7 +181,9 @@ function CampusTable({ schools, onNavigate = null }) {
   const meanAssist = React.useMemo(() => meanBySchoolOf(assistCoverage.data), [assistCoverage.data])
   const meanWebsite = React.useMemo(() => meanBySchoolOf(websiteCoverage.data), [websiteCoverage.data])
   const templateBySchool = React.useMemo(
-    () => new Map((degreeTemplates.data?.rows || []).map((row) => [Number(row.school_id), row])),
+    () => new Map((degreeTemplates.data?.rows || [])
+      .filter((row) => row.major_slug === 'cs' || !row.major_slug)
+      .map((row) => [Number(row.school_id), row])),
     [degreeTemplates.data]
   )
 

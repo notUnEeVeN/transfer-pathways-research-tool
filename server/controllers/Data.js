@@ -1,11 +1,10 @@
 /**
  * Data-explorer endpoints — the partners' window into the research database.
- * Everything is scoped by partner visibility (admins see all ported data).
+ * Everything is scoped to exact campus/program pairs for configured majors.
  *
  *   GET /data/summary          — what the caller's dataset contains: majors
- *       per school, agreement counts, and course counts. Admins see the full
- *       ported catalogs; partners see the CC/university courses their visible
- *       agreements reference.
+ *       per school, agreement counts, and course counts. Course counts include
+ *       only records referenced by configured agreements.
  *   GET /data/raw-assist/:id   — the raw ASSIST.org API payload for one
  *       agreement (live per-major fetch through the session proxy; the same
  *       upstream JSON the parser's raw_cache mirrors).
@@ -61,8 +60,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
       .findOne({ _id: 'app' }, { projection: { last_data_refresh_at: 1 } }),
   ]);
 
-  // Courses in scope: whole collections for admins (that's exactly what was
-  // ported); for partners, only what their visible agreements reference.
+  // Courses in scope: only what configured exact-pair agreements reference.
   let nCourses;
   let nUniversityCourses;
   if (pairs == null) {

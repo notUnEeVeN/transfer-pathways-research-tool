@@ -30,6 +30,7 @@ const GE_STATUTORY_MINIMUM_SEMESTER_UNITS = 18;
 const ASSUMED_UNITS_PER_COURSE = 4;
 const DEGREE_TYPES = ['local_cs_as', 'ast'];
 const EPSILON = 1e-7;
+const { defaultMajor, getMajor, programPairClause, programPairs } = require('../../config/majors');
 
 const round1 = (value) => +(Number(value) || 0).toFixed(1);
 
@@ -488,17 +489,46 @@ function nullMetrics(row, status, warning, namedUnits = null) {
   };
 }
 
-async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as' } = {}) {
+async function transferCreditRateData(db, _auditDb, {
+  degreeType = 'local_cs_as', majorSlug = null, majorPrograms = null,
+} = {}) {
   const type = DEGREE_TYPES.includes(degreeType) ? degreeType : 'local_cs_as';
+  const slug = String(majorSlug || '').trim();
+  const configuredMajor = slug ? getMajor(slug) : null;
+  const exactPrograms = majorPrograms || configuredMajor?.programs || null;
+  const legacySlug = defaultMajor().slug;
+  const degreeQuery = { kind: 'as_degree', degree_type: type, status: 'found' };
+  const templateQuery = { kind: 'degree' };
+  if (slug) {
+    const dimensional = [{ major_slug: slug }];
+    // Existing CS documents predate major_slug; no other major may claim an
+    // unstamped row. Editing one stamps it permanently.
+    if (slug === legacySlug) dimensional.push({ major_slug: { $exists: false } });
+    degreeQuery.$or = dimensional;
+    templateQuery.$or = dimensional;
+  }
   const [degrees, templates, institutions] = await Promise.all([
     db.collection('curated_requirements')
-      .find({ kind: 'as_degree', degree_type: type, status: 'found' }).toArray(),
-    db.collection('curated_requirements').find({ kind: 'degree' }).toArray(),
+      .find(degreeQuery).toArray(),
+    db.collection('curated_requirements').find(templateQuery).toArray(),
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1, source_id: 1 } }).toArray(),
   ]);
 
-  const campuses = templates
+  const scopedTemplates = exactPrograms
+    ? templates.filter((template) => {
+      const pins = programPairs(exactPrograms)
+        .filter((pair) => pair.school_id === Number(template.school_id));
+      if (template.major_slug) {
+        return template.major_slug === slug
+          && pins.some((pair) => pair.major === String(template.program));
+      }
+      if (slug !== legacySlug) return false;
+      return pins.some((pair) => normalizeMajor(pair.major) === normalizeMajor(template.program));
+    })
+    : templates;
+
+  const campuses = scopedTemplates
     .map((template) => ({
       template,
       school_id: Number(template.school_id),
@@ -513,6 +543,7 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
       {
         uc_school_id: { $in: campuses.map((campus) => campus.school_id) },
         community_college_id: { $in: collegeIds },
+        ...(exactPrograms ? programPairClause(exactPrograms) : {}),
       },
       { projection: { uc_school_id: 1, community_college_id: 1, major: 1, requirement_groups: 1 } }
     ).toArray()
@@ -563,6 +594,7 @@ async function transferCreditRateData(db, _auditDb, { degreeType = 'local_cs_as'
         school_id: campus.school_id,
         school: campus.school,
         degree_type: type,
+        ...(slug ? { major_slug: slug } : {}),
         record_id: doc._id,
         as_total_units: round1(asTotal),
         as_unit_system: collegeSystem,

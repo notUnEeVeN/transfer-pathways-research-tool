@@ -3,8 +3,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useChoiceCost, useSchools } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
-import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const MAX_SCHOOLS = 4
 
@@ -40,8 +38,7 @@ function stepMeans(rows, orderedIds) {
  * beyond the union already taken. Segment color = addition order (ordinal
  * ramp), consistent between the two views.
  */
-export default function ChoiceCost() {
-  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
+export default function ChoiceCost({ majorSlug = 'cs' }) {
   const [orderedIds, setOrderedIds] = useState(null) // null until schools load
 
   const schoolsQ = useSchools()
@@ -85,7 +82,6 @@ export default function ChoiceCost() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <div className='flex flex-col min-w-0'>
         <span className='field-label'>Campuses, in application order (up to {MAX_SCHOOLS})</span>
         <div className='flex flex-wrap gap-1.5'>

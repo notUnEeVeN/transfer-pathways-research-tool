@@ -491,13 +491,10 @@ export default function PaperDistrictHeatmap({ presentation = false, preview = f
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on
   // demand. The ASSIST-minimums variant fetches lazily on first selection and
   // then stays cached, so flipping the toggle is instant afterwards.
-  // The paper/website views pin:'paper' — the server resolves the exact
-  // per-campus programs the paper scraped (pathways.js PAPER_MAJORS) and ignores
-  // partner-visibility toggles, so those views can never drift with admin
-  // settings. The ASSIST view instead pins:'settings' — it resolves each
-  // campus's program from the working-dataset selection (falling back to
-  // PAPER_MAJORS), so it tracks the selected program (e.g. UCB's EECS B.S.
-  // instead of Computer Science, B.A.) while the paper/website views stay frozen.
+  // Both compatibility pins resolve to the exact nine campus/program pairs in
+  // the canonical CS config and ignore partner-visibility settings. The two
+  // requests differ only in their requirement source: hand-curated paper
+  // minimums versus the canonical CS ASSIST trees.
   const paperCoverage = useCoverage(
     { majorSlug: 'cs', groupBy: 'district', requirements: 'paper', pin: 'paper' },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }

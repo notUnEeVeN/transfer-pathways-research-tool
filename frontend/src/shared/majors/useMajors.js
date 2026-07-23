@@ -13,6 +13,20 @@ import { useAuth } from '../hooks/useAuth'
 export const CS_FALLBACK = [{
   slug: 'cs',
   label: 'Computer Science',
+  // Fail closed to the canonical CS campus/program pairs while the server
+  // config is loading or unavailable. A substring fallback would reintroduce
+  // adjacent CS programs into the data browser.
+  programs: {
+    7: ['CSE: Computer Science B.S.'],
+    46: ['Computer Science, B.S.'],
+    79: ['Electrical Engineering & Computer Sciences, B.S.'],
+    89: ['Computer Science B.S.'],
+    117: ['Computer Science/B.S.'],
+    120: ['Computer Science, B.S.'],
+    128: ['Computer Science, B.S.'],
+    132: ['Computer Science B.S.'],
+    144: ['COMPUTER SCIENCE AND ENGINEERING, B.S. '],
+  },
   capabilities: {
     asDegrees: true, paperBaselines: true, transferMinimums: true,
     degreeTemplates: true, snapshots: [],

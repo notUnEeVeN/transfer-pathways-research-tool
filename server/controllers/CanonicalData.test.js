@@ -50,14 +50,15 @@ describe('canonical curated-data storage', () => {
       kind: 'degree',
       school_id: 79,
       school: 'UC Berkeley',
-      program: 'EECS, B.S.',
+      program: 'Electrical Engineering & Computer Sciences, B.S.',
       requirement_groups: [],
     };
     await run(putRequirement, request({ params: { kind: 'degree' }, body }));
 
     const stored = await db.collection('curated_requirements').findOne({ _id: 'degree:79' });
     expect(stored).toMatchObject({
-      kind: 'degree', legacy_id: '79', curated_by: 'curator-1', program: 'EECS, B.S.',
+      kind: 'degree', legacy_id: '79', major_slug: 'cs',
+      curated_by: 'curator-1', program: 'Electrical Engineering & Computer Sciences, B.S.',
     });
     expect(stored.updated_at).toBeInstanceOf(Date);
     expect(await auditDb.collection('curated_requirements').countDocuments()).toBe(0);
@@ -65,6 +66,46 @@ describe('canonical curated-data storage', () => {
     const response = await run(listRequirements, request({ query: { kind: 'degree' } }));
     expect(response.body.rows).toHaveLength(1);
     expect(response.body.rows[0]._id).toBe('degree:79');
+  });
+
+  it('stores separate per-major degree templates and rejects a colliding id', async () => {
+    const body = {
+      _id: 'degree:79:bio',
+      kind: 'degree',
+      major_slug: 'bio',
+      school_id: 79,
+      school: 'UC Berkeley',
+      program: 'Molecular and Cell Biology, B.A.',
+      requirement_groups: [],
+    };
+    const saved = await run(putRequirement, request({ params: { kind: 'degree' }, body }));
+    expect(saved.statusCode).toBe(200);
+    expect(await db.collection('curated_requirements').findOne({ _id: 'degree:79:bio' }))
+      .toMatchObject({ major_slug: 'bio', school_id: 79 });
+
+    const collision = await run(putRequirement, request({
+      params: { kind: 'degree' }, body: { ...body, _id: 'degree:79' },
+    }));
+    expect(collision.statusCode).toBe(400);
+    expect(collision.body.error).toContain('degree _id must be degree:79:bio');
+  });
+
+  it('rejects a sibling program mislabeled with the canonical CS slug', async () => {
+    const response = await run(putRequirement, request({
+      params: { kind: 'degree' },
+      body: {
+        _id: 'degree:79:cs',
+        kind: 'degree',
+        major_slug: 'cs',
+        school_id: 79,
+        school: 'UC Berkeley',
+        program: 'Computer Science, B.A.',
+        requirement_groups: [],
+      },
+    }));
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toContain('configured cs program');
+    expect(await db.collection('curated_requirements').countDocuments()).toBe(0);
   });
 
   it('keeps curated prerequisites with the research dataset as well', async () => {

@@ -1,11 +1,8 @@
-// Console-wide visibility, as a set of (school, major) PAIRS. The research
-// cluster holds every major the admin has ported; a single config doc selects
-// the project's working set. A campus may carry several majors — one per
-// onboarded field (CS, Biology, Economics). Pair granularity still
-// matters because the same major name can exist at several campuses. The
-// selection scopes every console surface for every account (admin included);
-// the Admin tab retains the full ported inventory. Partners additionally get
-// deny-by-default before any selection exists.
+// Console-wide scope is the union of exact campus/program pairs in the major
+// config. Atlas can temporarily hold additional imported programs while a new
+// field is being researched, but those rows do not enter the website, audit,
+// or analyses until the field is deliberately configured. Adding Biology or
+// Economics therefore cannot change a Computer Science result.
 //
 //   settings (audit handle):
 //     { _id: 'app', visible_pairs: [{ school_id: Number, major: String }] }
@@ -14,6 +11,7 @@
 // batch, analysis) — the frontend never sees data outside the subset, so
 // partners' stats pages automatically reflect exactly the granted pairs.
 const crypto = require('crypto');
+const { listMajors, programPairs } = require('../config/majors');
 
 const CONFIG = 'settings';
 const DOC_ID = 'app';
@@ -85,24 +83,16 @@ function invalidateVisibilityCache() {
 }
 
 /**
- * The visibility scope for a request: `null` — unrestricted.
+ * The configured exact pair scope for every request. This is intentionally
+ * independent of the historical `settings.app.visible_pairs` selector: major
+ * onboarding has one source of truth (`config/majors.js`) and fails closed.
+ * Account-level access remains enforced upstream by requireAuditAccess.
  *
- * Majors are no longer gated here. Everything ported into the research cluster
- * is part of the corpus, and each console surface picks the major it is showing
- * (see frontend useMajorChoice). Requiring a major to ALSO be listed in a
- * settings document meant onboarding it in two places, which is how a ported
- * major could be invisible, and how the wrong list could mix three majors into
- * one figure.
- *
- * Account-level access is unchanged and still enforced upstream by
- * requireAuditAccess — reaching this code already means an approved account.
- *
- * The `visible_pairs` document is left in place and still read by
- * readVisiblePairsUncached, which the paper figures use to resolve each
- * campus's program for their ASSIST view.
+ * The settings helpers remain for backwards-compatible Admin/settings reads;
+ * they no longer decide what enters a website query or figure.
  */
 async function majorScope() {
-  return null;
+  return normalizePairs(listMajors().flatMap((major) => programPairs(major)));
 }
 
 // True when a (schoolId, major) combination is inside the scope. `null`

@@ -6,8 +6,6 @@ import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
   paperRedCellColor,
 } from './maHeatmapColors'
-import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const ROW_MODES = [
   { value: 'college', label: 'College', noun: 'colleges', header: 'Community college' },
@@ -330,20 +328,13 @@ function Legend({ reqMode, scale }) {
  * hides its selector. The showcase uses it so a walkthrough cannot land on the
  * minimums lenses, which answer a different question than the figure claims.
  */
-export default function CoverageHeatmap({ presentation = false }) {
+export default function CoverageHeatmap({ presentation = false, majorSlug = 'cs' }) {
   const [rowModeValue, setRowModeValue] = useState('college')
   const [reqMode, setReqMode] = useState('degree')
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
-  const { slug: majorSlug, setSlug, major } = useMajorChoice('visuals')
-  // ASSIST-only majors have no hand-curated minimums and, until their degree
-  // templates are authored, no graduation plan to measure against.
-  const caps = major?.capabilities || {}
-  // Hand-curated minimums will never exist for ASSIST-only majors, so that mode
-  // is dropped. The graduation-plan mode stays: its templates are pending, and
-  // it renders empty until they are authored.
-  const reqModes = REQ_MODES.filter((m) => m.value !== 'paper' || caps.transferMinimums !== false)
+  const reqModes = REQ_MODES
   const activeReqMode = reqModes.some((m) => m.value === reqMode) ? reqMode : 'assist'
   const coverage = useCoverage(
     { majorSlug, groupBy: rowMode.value, requirements: activeReqMode },
@@ -400,7 +391,6 @@ export default function CoverageHeatmap({ presentation = false }) {
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-        <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
         <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>

@@ -3,6 +3,11 @@
 Use this when you need the answer without rereading the full methodology notes.
 The detailed receipts live in the figure docs linked at the bottom.
 
+> The credit-loss and district-coverage artifacts were rebaselined on
+> 2026-07-22 against the same nine exact canonical CS campus/program pairs.
+> Their scope and artifact fingerprints are recorded with the JSON outputs;
+> the district heatmap retains its 645/648 result.
+
 ## The five things to remember
 
 1. **The paper figure ports replicate the paper's methods.** The remaining
@@ -55,7 +60,7 @@ What changed on current data:
 
 | Campus | First-choice movement | Why |
 | --- | ---: | --- |
-| UC Davis | +0.08 | `ECS 036A` newly articulates at San Francisco and San Luis Obispo; Antelope Valley now explicitly lists it as not articulated |
+| UC Davis | -0.07 | Corrected scope: `Computer Science B.S.` stands alone instead of borrowing receivers from the sibling CSE degree |
 | UC Santa Barbara | -0.02 | Allan Hancock now completes UCSB with a low-course pathway |
 | UC San Diego | -0.02 | `CSE 8B` disappeared from current agreements; `CSE 11` carries the intro group |
 | The other six campuses | 0.00 | First-choice bars match the paper exactly |
@@ -67,20 +72,21 @@ paper's own district CSVs, reproduces **2,592 of 2,592 course-count averages**.
 
 This extension swaps the demand side from website-minimum curation to the
 required groups that ASSIST agreements state for the one partner-facing CS
-major per campus. It uses the ported Plan My Transfer eligibility and
+major per campus. Those are nine exact, code-configured campus/program pins,
+not a title match or settings selection. It uses the ported Plan My Transfer eligibility and
 minimum-course algorithms.
 
 | Campus | ASSIST gold | Fully transferable districts | First-choice avg | Main reminder |
 | --- | ---: | ---: | ---: | --- |
-| UCD | 6.00 | 28 | 8.75 | `ECS 036C` is the biggest named blocker |
-| UCM | 10.00 | 64 | 11.03 | Broadly transferable, but higher demand than website curation |
+| UCD | 8.00 | 30 | 8.93 | `ECS 036C` is the biggest named blocker |
+| UCM | 10.00 | 64 | 10.98 | Broadly transferable, but higher demand than website curation |
 | UCSD | 7.33 | 0 | 0.00 | `CSE 29` blocks essentially every district |
-| UCSB | 4.67 | 49 | 7.00 | Website and ASSIST gold bars agree |
-| UCLA | 10.67 | 0 | 0.00 | `COM SCI 35L` blocks every district |
-| UCB | 3.00 | 69 | 3.81 | Lowest ASSIST demand among the nine |
-| UCSC | 3.33 | 46 | 5.13 | Moderate demand, many complete districts |
-| UCI | 2.67 | 39 | 5.08 | Low gold bar, but more CCC courses needed |
-| UCR | 4.67 | 57 | 7.54 | Strong district coverage |
+| UCSB | 4.67 | 50 | 7.02 | Website and ASSIST gold bars agree |
+| UCLA | 11.33 | 0 | 0.00 | `COM SCI 35L` blocks every district |
+| UCB | 10.00 | 69 | 10.09 | Canonical EECS carries broader ASSIST demand than the old CS B.A. input |
+| UCSC | 3.33 | 47 | 5.15 | Moderate demand, many complete districts |
+| UCI | 8.00 | 39 | 5.36 | Broader ASSIST demand than website curation |
+| UCR | 4.67 | 57 | 7.67 | Strong district coverage |
 
 Zeros in this view mean **no district has a fully articulated single-college
 path under ASSIST-stated demand**, not missing data.
@@ -93,10 +99,9 @@ path under ASSIST-stated demand**, not missing data.
   can be invisible there.
 - **Why is ASSIST-stated minimums separate?** The paper used website-minimum
   curation. The ASSIST view is our extension for comparing surfaces.
-- **Did anything actually get worse?** In the heatmap, no. In credit loss, the
-  one first-choice transferability drop is Antelope Valley x Davis, caused by
-  ASSIST now explicitly marking `ECS 036A` not articulated where it used to be
-  silent.
+- **Did anything actually get worse?** The first-choice transferability set has
+  no losses. Davis's lower average comes from removing the sibling CSE degree
+  from its evidence pool, not from deleting a canonical articulation.
 - **Are UCLA and UCSD zeros a rendering issue?** No. Their ASSIST-stated
   required groups have genuine blockers in every district.
 

@@ -97,9 +97,10 @@ question_1/scripts/scripts_for_data/optimal_total_combinations.py)
 
 Known deviations from the paper run (documented, deliberate)
 -----------------------------------------------------------
-- Equivalency sources: we union matching receivers across every CS-titled
-  program of a college (e.g. "Computer Science and Engineering"), same as the
-  console's other analyses; the paper scraped one CS agreement per college.
+- Equivalency sources: each campus is pinned to one canonical CS program by
+  exact ASSIST name. The selection is independent of database contents and
+  admin settings, so adding another major or sibling program cannot change a
+  CS figure's corpus.
 - options_conjunction == 'and' receivers expand to the cartesian product of
   their options' alternatives, capped at 64 combos (mirrors the console's
   optionSolver); the paper's scrape flattened these during CSV generation.
@@ -137,37 +138,13 @@ from pymongo import MongoClient
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pmt_eligibility as pmt_elig  # noqa: E402  faithful PMT eligibility port + our one modification
 import pmt_min_courses as pmt_min  # noqa: E402  faithful PMT minimum-course optimizer port
-
-MAJOR_FILTER_TEXT = "computer science"  # legacy label; loaders pin PAPER_MAJORS
-
-# HARDCODED equivalency-source programs per campus — the frozen set every
-# validated run used (7/9 exact 1st-choice replication; heatmap 99.5%).
-# Frozen by exact stored name so admin visibility toggles can never change
-# the figures. Single-program pinning was tested and REJECTED: ASSIST moved
-# content between pages since the paper's scrape (e.g. Berkeley's paper-era
-# CS math articulations now live on the EECS B.S. page), so only the union
-# reproduces the paper's articulation surface.
-PAPER_MAJORS = {
-    89: ["Computer Science & Engineering B.S.", "Computer Science B.S."],
-    144: ["APPLIED MATHEMATICAL SCIENCES, Computer Science Emphasis, B.S.",
-          "COMPUTER SCIENCE AND ENGINEERING, B.S. "],  # trailing space is stored
-    7: ["CSE: Computer Science B.S.",
-        "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
-        "Mathematics/Computer Science B.S."],
-    128: ["Computer Science, B.S."],
-    117: ["Computer Science and Engineering/B.S.", "Computer Science/B.S.",
-          "Linguistics and Computer Science/B.A."],
-    79: ["Computer Science, B.A.", "Electrical Engineering & Computer Sciences, B.S."],
-    132: ["Computer Science B.A.", "Computer Science B.S.", "Computer Science Minor",
-          "Computer Science: Computer Game Design B.S."],
-    120: ["Computer Science and Engineering, B.S.", "Computer Science, B.S."],
-    46: ["Computer Science with Business Applications B.S.", "Computer Science, B.S."],
-}
-
-
-def paper_major_query():
-    return {"$or": [{"uc_school_id": sid, "major": {"$in": majors}}
-                    for sid, majors in PAPER_MAJORS.items()]}
+from major_pins import (  # noqa: E402
+    canonical_cs_scope_fingerprint,
+    canonical_cs_query,
+    canonical_cs_scope_metadata,
+    canonical_json_fingerprint,
+    major_document_filter,
+)
 
 # Paper x-axis order; ids/school_ids as everywhere else in this repo.
 # `quarter` replicates grouped_bar_graph.py L64–84 (UCB and UCM are semester).
@@ -183,35 +160,7 @@ CAMPUSES = [
     {"code": "UCR", "id": "UC9*", "school_id": 46, "quarter": True},
 ]
 CODE_BY_SCHOOL = {c["school_id"]: c["code"] for c in CAMPUSES}
-CAMPUS_SCHOOL_IDS = {c["school_id"] for c in CAMPUSES}
 
-
-def load_canonical_majors(db):
-    """school_id -> [major] from the console's one-major-per-campus selection.
-
-    Reads settings.app.visible_pairs (the admin-selected working
-    dataset; lives in the research DB), scoped to the 9 figure campuses. The
-    ASSIST variant uses this instead of the frozen PAPER_MAJORS union, so the
-    figure tracks exactly what is selected in Settings. It falls back to
-    PAPER_MAJORS only when no selection has ever been saved.
-    """
-    doc = db.settings.find_one({"_id": "app"})
-    pairs = (doc or {}).get("visible_pairs")
-    if not pairs:
-        print("canonical majors: no settings.app selection — "
-              "falling back to PAPER_MAJORS")
-        return {sid: list(majors) for sid, majors in PAPER_MAJORS.items()}
-    out = {}
-    for p in pairs:
-        sid = int(p["school_id"])
-        if sid in CAMPUS_SCHOOL_IDS and sid not in out:
-            out[sid] = [str(p["major"])]
-    return out
-
-
-def canonical_major_query(canonical):
-    return {"$or": [{"uc_school_id": sid, "major": {"$in": majors}}
-                    for sid, majors in canonical.items()]}
 
 # The paper figure's constants (grouped_bar_graph.py L64–84 + the order CSVs'
 # TRANSFERABLE AVERAGE rows) — the gold assertion + --diff baseline.
@@ -241,6 +190,23 @@ def connect():
     return MongoClient(uri, compressors="zlib")[name]
 
 
+def result_provenance(data_refreshed_at):
+    date = str(data_refreshed_at or "unknown")[:10]
+    return {
+        "dataset_version": f"{date}-canonical-cs-v1",
+        "major_scope": canonical_cs_scope_metadata(),
+        "major_scope_fingerprint": canonical_cs_scope_fingerprint(),
+    }
+
+
+def stamp_artifact_fingerprint(result):
+    """Fingerprint substantive output while excluding wall-clock generation time."""
+    payload = {key: value for key, value in result.items()
+               if key not in {"generated_at", "artifact_fingerprint"}}
+    result["artifact_fingerprint"] = canonical_json_fingerprint(payload)
+    return result
+
+
 # ── requirement model (same loader as paper_district_heatmap.py) ─────────────
 
 def load_requirement_models(db):
@@ -251,7 +217,10 @@ def load_requirement_models(db):
     the pooling work with (the paper's (UC, Group ID, Set ID, Receiving) key).
     """
     models = {}
-    rows = db.curated_requirements.find({"kind": "transfer_minimum"}).sort(
+    rows = db.curated_requirements.find({
+        "kind": "transfer_minimum",
+        **major_document_filter("cs"),
+    }).sort(
         [("school_id", 1), ("group_id", 1), ("set_id", 1), ("source_order", 1)]
     )
     for row in rows:
@@ -409,7 +378,7 @@ def load_district_rows(db, models):
     visible = defaultdict(set)  # district → {identity mentioned by any receiver}
     fields = {"uc_school_id": 1, "community_college_id": 1, "community_college": 1,
               "requirement_groups": 1}
-    for doc in db.assist_agreements.find(paper_major_query(), fields):
+    for doc in db.assist_agreements.find(canonical_cs_query(), fields):
         model = models.get(int(doc["uc_school_id"]))
         if not model:
             continue
@@ -600,7 +569,10 @@ def load_curation(db):
     return {
         "override_by_hash": {
             str(o["receiver_hash"]): o
-            for o in db.curated_mappings.find({"kind": "receiver_override"})
+            for o in db.curated_mappings.find({
+                "kind": "receiver_override",
+                **major_document_filter("cs"),
+            })
         }
     }
 
@@ -903,17 +875,14 @@ def load_assist_inputs(db):
     """Build the pooled per-(campus, district) requirement models the ASSIST figure
     needs — the paper's method with ASSIST demand.
 
-    Demand = the ONE canonical CS major per campus from Settings
-    (settings.app; falls back to PAPER_MAJORS); its ASSIST required
-    groups define the minimum, and its articulations are pooled per UC receiver
+    Demand = the one code-pinned canonical CS major per campus; its ASSIST
+    required groups define the minimum, and its articulations are pooled per UC receiver
     across sibling colleges within a district — exactly the paper's college pooling.
     Returns district_models[district] = {campus_sid: pooled_requirement_groups}, the
     per-campus gold (required UC course count), and the CC-course catalog.
     """
     is_excluded = make_is_excluded(load_curation(db))
     code_of_parent = university_course_codes(db)
-    canonical = load_canonical_majors(db)
-
     # course_id -> {course_id, units, same_as, name} for the optimizer (str ids, to
     # match the stringified option ids in prep_requirement_groups).
     courses_by_id = {}
@@ -945,7 +914,7 @@ def load_assist_inputs(db):
     by_district_campus = defaultdict(lambda: defaultdict(list))
     by_campus = defaultdict(list)
     n_agreements = 0
-    for doc in db.assist_agreements.find(canonical_major_query(canonical), fields):
+    for doc in db.assist_agreements.find(canonical_cs_query(), fields):
         ref = ref_by_cc.get(int(doc["community_college_id"]))
         if not ref or not ref.get("district"):
             continue
@@ -1513,16 +1482,17 @@ def main():
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "data_refreshed_at": data_refreshed_at,
             "requirements": "assist",
-            "major_filter": MAJOR_FILTER_TEXT,
+            **result_provenance(data_refreshed_at),
             "districts_total": len(assist["all_districts"]),
-            "method": "the paper's credit-loss method with ASSIST demand: the one canonical CS "
-                      "major per campus (from Settings) states the required groups; its articulations "
+            "method": "the paper's credit-loss method with ASSIST demand: the code-pinned canonical "
+                      "CS major at each campus states the required groups; its articulations "
                       "are pooled per receiver across sibling colleges (best college per requirement, "
                       "the paper's rule); minimum CC courses from the ported PMT branch-and-bound "
                       "optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations "
                       "+ transferable-average; see docs/figures/paper-credit-loss.md",
             "campuses": campuses_out,
         }
+        stamp_artifact_fingerprint(out)
 
         json_path = root / "results" / "paper-credit-loss.assist.json"
         json_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1659,12 +1629,13 @@ def main():
         "generated_by": "analysis/paper_credit_loss.py",
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "data_refreshed_at": data_refreshed_at,
-        "major_filter": MAJOR_FILTER_TEXT,
+        **result_provenance(data_refreshed_at),
         "districts_total": len(districts),
         "method": "paper Figure 1 replication: district-pooled optimal set cover over "
                   "all P(9,4) choice permutations; see docs/figures/paper-credit-loss.md",
         "campuses": campuses_out,
     }
+    stamp_artifact_fingerprint(out)
 
     root = Path(__file__).resolve().parent
     json_path = root / "results" / "paper-credit-loss.ours.json"

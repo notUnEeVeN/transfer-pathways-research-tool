@@ -14,6 +14,7 @@ const {
   loadMultiCampusPathwayContext,
   multiCampusPathwaysDataFromContext,
 } = require('../services/analysis/pathwayPlanner');
+const { getMajor, programPairs } = require('../config/majors');
 const {
   DEFAULT_SNAPSHOT_PATH,
   SNAPSHOT_SCHEMA_VERSION,
@@ -184,9 +185,14 @@ async function generate(options) {
       throw new Error(`Expected exactly nine UC campuses; found ${schoolIds.length}.`);
     }
     process.stderr.write('Loading planner corpus once...\n');
+    const snapshotMajor = getMajor('cs');
     const context = await loadMultiCampusPathwayContext(db, auditDb, {
       schoolIds,
-      visiblePairs: null,
+      majorSlug: 'cs',
+      // Frozen paper artifacts are explicitly CS. Never infer one program per
+      // campus from mutable settings or from whichever degree template happens
+      // to be returned first after another major is added.
+      visiblePairs: programPairs(snapshotMajor),
       includeSourceFingerprint: true,
       retainSingletonBaselines: true,
     });

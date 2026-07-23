@@ -17,6 +17,11 @@ from matplotlib.colors import TwoSlopeNorm
 from matplotlib.patches import Patch
 
 from paper_credit_loss import CAMPUSES, PAPER_CHOICES, PAPER_GOLD
+from major_pins import (
+    canonical_cs_scope_fingerprint,
+    canonical_cs_scope_metadata,
+    canonical_json_fingerprint,
+)
 
 from ._publish import Variant, add_delivery_arguments, deliver
 from ._style import GAIN, LOSS, apply_style
@@ -54,26 +59,47 @@ def _recompute(workers):
         subprocess.run(command, cwd=ANALYSIS_ROOT, check=True)
 
 
+def _paper_result():
+    return {
+        "campuses": [{
+            "code": campus["code"],
+            "id": campus["id"],
+            "requirement": {
+                "semester_equiv": PAPER_GOLD[campus["code"]][0],
+                "quarter_count": PAPER_GOLD[campus["code"]][1],
+            },
+            "choices": [
+                {"order": index + 1, "transferable_average": value}
+                for index, value in enumerate(PAPER_CHOICES[campus["code"]])
+            ],
+        } for campus in CAMPUSES],
+    }
+
+
+def _read_canonical_result(path):
+    result = json.loads(path.read_text())
+    scope = result.get("major_scope")
+    if (scope != canonical_cs_scope_metadata()
+            or result.get("major_scope_fingerprint") != canonical_cs_scope_fingerprint()):
+        raise RuntimeError(
+            f"{path.name} predates the canonical-nine CS scope. Rebuild both artifacts with "
+            "`python -m visuals.paper_credit_loss --recompute --workers 8 "
+            "--output-dir results/previews` before rendering or publishing."
+        )
+    payload = {key: value for key, value in result.items()
+               if key not in {"generated_at", "artifact_fingerprint"}}
+    if result.get("artifact_fingerprint") != canonical_json_fingerprint(payload):
+        raise RuntimeError(f"{path.name} failed its artifact fingerprint check")
+    return result
+
+
 def _load_results(recompute, workers):
     if recompute or not WEBSITE_RESULT.is_file() or not ASSIST_RESULT.is_file():
         _recompute(workers)
     return {
-        "paper": {
-            "campuses": [{
-                "code": campus["code"],
-                "id": campus["id"],
-                "requirement": {
-                    "semester_equiv": PAPER_GOLD[campus["code"]][0],
-                    "quarter_count": PAPER_GOLD[campus["code"]][1],
-                },
-                "choices": [
-                    {"order": index + 1, "transferable_average": value}
-                    for index, value in enumerate(PAPER_CHOICES[campus["code"]])
-                ],
-            } for campus in CAMPUSES],
-        },
-        "website": json.loads(WEBSITE_RESULT.read_text()),
-        "assist": json.loads(ASSIST_RESULT.read_text()),
+        "paper": _paper_result(),
+        "website": _read_canonical_result(WEBSITE_RESULT),
+        "assist": _read_canonical_result(ASSIST_RESULT),
     }
 
 

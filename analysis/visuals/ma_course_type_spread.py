@@ -119,8 +119,7 @@ def main(argv=None):
     apply_style()
 
     rows = compute(
-        "coverage", majorContains="computer science", groupBy="college",
-        requirements="degree", pin="settings",
+        "coverage", majorSlug="cs", groupBy="college", requirements="degree",
     )
     variants = [
         Variant(key="whole-degree", label="Whole degree",

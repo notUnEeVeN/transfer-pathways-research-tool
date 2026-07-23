@@ -97,7 +97,7 @@ function FigureThumbnail({ fig }) {
   )
 }
 
-function LiveThumbnail({ Component, publicationOptions, figureOnly = false }) {
+function LiveThumbnail({ Component, publicationOptions, figureOnly = false, majorSlug = 'cs' }) {
   if (!Component) {
     return (
       <div className='absolute inset-0 grid place-items-center px-6 text-center text-caption'>
@@ -113,7 +113,8 @@ function LiveThumbnail({ Component, publicationOptions, figureOnly = false }) {
       <div className='w-[300%] min-h-[300%] origin-top-left scale-[.333333] p-5
         transition-transform duration-300 ease-out group-hover:scale-[.341666]'
         style={figureOnly ? { display: 'grid', alignItems: 'center' } : undefined}>
-        <Component publicationOptions={publicationOptions || {}} />
+        <Component publicationOptions={publicationOptions || {}}
+          majorSlug={majorSlug} />
       </div>
     </div>
   )
@@ -168,7 +169,7 @@ export function VisualThumbnailCard({ item, isAdmin = false, releasedSet = new S
         {ready && (figure && figure.publication_type !== 'interactive'
           ? <FigureThumbnail fig={figure} />
           : <LiveThumbnail Component={Component} publicationOptions={figure?.visual?.options}
-              figureOnly={figureOnlyPreview} />)}
+              figureOnly={figureOnlyPreview} majorSlug={analysis?.pinnedMajor || 'cs'} />)}
         {!ready && <div className='absolute inset-0 grid place-items-center'><Spinner /></div>}
         <div className='absolute inset-0 z-10 grid place-items-center bg-primary/0 transition-colors
           duration-200 group-hover:bg-primary/18 group-focus-within:bg-primary/18' aria-hidden='true'>
@@ -448,7 +449,8 @@ export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSa
       {!Component ? (
         <Alert type='error'>This interactive visual renderer is not available in the current application.</Alert>
       ) : (
-        <Component publicationOptions={fig.visual?.options || {}} />
+        <Component publicationOptions={fig.visual?.options || {}}
+          majorSlug={analysis.pinnedMajor || 'cs'} />
       )}
     </PublicationCard>
   )
@@ -595,7 +597,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
         exportName={analysis.id}
         badge={isAdmin ? <PublicationBadge published={releasedSet.has(analysis.id)} /> : null}>
         <PinnedMajorNotice pinnedMajor={analysis.pinnedMajor} />
-        <Component />
+        <Component majorSlug={analysis.pinnedMajor || 'cs'} />
         {/* Kept out of exports — a downloaded figure should read as a figure. */}
         <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />
       </AnalysisCard>

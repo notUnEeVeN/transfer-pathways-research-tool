@@ -17,12 +17,12 @@ def _nice_step(maximum):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--major", default="computer science", help="case-insensitive major-name filter")
+    parser.add_argument("--major", default="cs", help="configured major slug (default: cs)")
     add_delivery_arguments(parser)
     args = parser.parse_args(argv)
     apply_style()
 
-    rows = compute("complexity", majorContains=args.major)
+    rows = compute("complexity", majorSlug=args.major)
     specs = {
         "complexity": ("complexity", "Complexity score"),
         "delay": ("max_delay", "Longest prerequisite chain"),
@@ -39,7 +39,7 @@ def main(argv=None):
                 field=field,
                 bin_step=_nice_step(maximum),
                 unit=unit,
-                title=f"Agreements by pathway {unit.lower()}, per campus\nMajor contains: {args.major}",
+                title=f"Agreements by pathway {unit.lower()}, per campus\nMajor: {args.major}",
             ),
         ))
 
@@ -56,7 +56,7 @@ def main(argv=None):
         title="Pathway complexity",
         caption=(
             "Curricular Analytics-style delay and blocking scores over the curated "
-            f"prerequisite graph for majors containing '{args.major}'."
+            f"prerequisite graph for the configured '{args.major}' major."
         ),
         variants=variants,
         controls=controls,

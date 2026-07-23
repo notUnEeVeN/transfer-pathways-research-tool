@@ -14,7 +14,8 @@ describe('GET /majors', () => {
     const json = vi.fn();
     await listMajorsEndpoint({}, { json }, vi.fn());
     const round = JSON.parse(JSON.stringify(json.mock.calls[0][0]));
-    expect(round.majors[0].programs['79']).toContain('Computer Science, B.A.');
+    expect(round.majors[0].programs['79'])
+      .toEqual(['Electrical Engineering & Computer Sciences, B.S.']);
     expect(round.majors[0].capabilities.asDegrees).toBe(true);
   });
 });

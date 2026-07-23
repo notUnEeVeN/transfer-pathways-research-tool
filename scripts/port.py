@@ -20,12 +20,16 @@ Commands (run from scripts/):
     python port.py add  "computer science"  # port matching majors (contains, case-insens.)
     python port.py add  --exact "CSE: Computer Science B.S."
     python port.py remove --exact "CSE: Computer Science B.S."
+    python port.py remove-pairs --pair "7=CSE: Computer Science B.S." --dry-run
+    python port.py remove-pairs --pair "7=CSE: Computer Science B.S." --yes
     python port.py refresh-catalogs         # backfill/update all CC + UC catalog docs
     python port.py status                   # what the research cluster holds now
 
 Every mutating operation records `settings.last_data_refresh_at`. Audit
 verdicts and curated data are never touched — removing a major orphans its
 reviews harmlessly; re-adding the major reconnects them (same `_id`s).
+Exact pair removal first snapshots the affected agreements, admissions, and
+all settings into `port_removal_backups` / `port_removal_backup_documents`.
 Source-shaped staging collections exist only for the duration of a port and
 are removed after the canonical rebuild succeeds.
 
@@ -41,6 +45,7 @@ import os
 import re
 import subprocess
 import sys
+import uuid
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -54,6 +59,8 @@ AGREEMENT_COLLECTIONS = ("uc_agreements",)
 FULL_COPY_COLLECTIONS = ("community_colleges", "uc_schools")
 CANONICAL_AGREEMENTS = "assist_agreements"
 CANONICAL_ADMISSIONS = "admissions"
+REMOVAL_BACKUPS = "port_removal_backups"
+REMOVAL_BACKUP_DOCUMENTS = "port_removal_backup_documents"
 
 
 def _env(name, default=None, required=False):
@@ -83,8 +90,171 @@ def major_filter(term, exact):
     return {"major": {"$regex": re.escape(term), "$options": "i"}}
 
 
-def matched_majors(db, mfilter):
-    return {coll: sorted(db[coll].distinct("major", mfilter)) for coll in AGREEMENT_COLLECTIONS}
+def matched_majors(db, mfilter, collections=AGREEMENT_COLLECTIONS):
+    return {coll: sorted(db[coll].distinct("major", mfilter)) for coll in collections}
+
+
+def parse_school_major_pair(value):
+    """Parse SCHOOL_ID=EXACT_MAJOR without normalizing the major string."""
+    school_id, separator, major = value.partition("=")
+    if not separator or not school_id.strip() or not major:
+        raise argparse.ArgumentTypeError(
+            "pair must use SCHOOL_ID=EXACT_MAJOR (for example, "
+            "79=Computer Science, B.A.)"
+        )
+    try:
+        numeric_school_id = int(school_id.strip())
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("pair school id must be an integer") from exc
+    if numeric_school_id <= 0:
+        raise argparse.ArgumentTypeError("pair school id must be positive")
+    return numeric_school_id, major
+
+
+def exact_pair_filter(pairs):
+    """Return an exact campus+program filter for one or more parsed pairs."""
+    clauses = [
+        {"uc_school_id": school_id, "major": major}
+        for school_id, major in dict.fromkeys(pairs)
+    ]
+    if not clauses:
+        raise ValueError("at least one campus-program pair is required")
+    return clauses[0] if len(clauses) == 1 else {"$or": clauses}
+
+
+def preferred_collection(target_db, canonical, legacy):
+    """Read the canonical collection when installed, otherwise its port stage."""
+    if target_db[canonical].estimated_document_count() > 0:
+        return canonical
+    return legacy
+
+
+def pair_removal_preview(target_db, pairs):
+    """Count exact pair matches without creating a legacy stage or writing."""
+    agreement_collection = preferred_collection(
+        target_db, CANONICAL_AGREEMENTS, AGREEMENT_COLLECTIONS[0]
+    )
+    admissions_collection = preferred_collection(
+        target_db, CANONICAL_ADMISSIONS, "uc_major_admissions"
+    )
+    names = {
+        int(row["source_id"]): row.get("name")
+        for row in target_db["assist_institutions"].find(
+            {
+                "kind": "university",
+                "source_id": {"$in": sorted({school_id for school_id, _ in pairs})},
+            },
+            {"source_id": 1, "name": 1},
+        )
+        if row.get("source_id") is not None
+    }
+    preview = []
+    for school_id, major in dict.fromkeys(pairs):
+        query = exact_pair_filter([(school_id, major)])
+        preview.append({
+            "school_id": school_id,
+            "school": names.get(school_id, f"UC school {school_id}"),
+            "major": major,
+            "agreements": target_db[agreement_collection].count_documents(query),
+            "admissions": target_db[admissions_collection].count_documents(query),
+        })
+    return preview
+
+
+def create_removal_backup(target_db, pairs, preview, now=None, token=None):
+    """Persist exact pre-removal rows before any staging or canonical writes.
+
+    The canonical migration intentionally replaces collections with
+    ``dropTarget`` and subsequently drops its legacy inputs.  These two backup
+    collections are not migration destinations or legacy collections, so the
+    snapshot survives a successful cleanup as well as an interrupted rebuild.
+    """
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    token = token or uuid.uuid4().hex[:8]
+    timestamp = now.astimezone(datetime.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    backup_id = f"major-pair-removal-{timestamp}-{token}"
+    pairs = list(dict.fromkeys(pairs))
+    removal_filter = exact_pair_filter(pairs)
+    agreement_docs = list(target_db[CANONICAL_AGREEMENTS].find(removal_filter))
+    admission_docs = list(target_db[CANONICAL_ADMISSIONS].find(removal_filter))
+    settings_docs = list(target_db["settings"].find({}))
+    expected_agreements = sum(row["agreements"] for row in preview)
+    expected_admissions = sum(row["admissions"] for row in preview)
+
+    if len(agreement_docs) != expected_agreements or len(admission_docs) != expected_admissions:
+        sys.exit(
+            "Canonical rows changed after preview; refusing removal before backup "
+            f"(agreements {len(agreement_docs)}/{expected_agreements}, "
+            f"admissions {len(admission_docs)}/{expected_admissions})."
+        )
+    if not settings_docs:
+        sys.exit("Settings are empty; refusing removal without a settings backup.")
+
+    manifest = {
+        "_id": backup_id,
+        "kind": "exact_major_pair_removal",
+        "schema_version": 1,
+        "status": "preparing",
+        "created_at": now,
+        "pairs": [
+            {"school_id": school_id, "major": major}
+            for school_id, major in pairs
+        ],
+        "counts": {
+            CANONICAL_AGREEMENTS: len(agreement_docs),
+            CANONICAL_ADMISSIONS: len(admission_docs),
+            "settings": len(settings_docs),
+        },
+    }
+    records = []
+    for collection, docs in (
+        (CANONICAL_AGREEMENTS, agreement_docs),
+        (CANONICAL_ADMISSIONS, admission_docs),
+        ("settings", settings_docs),
+    ):
+        for doc in docs:
+            records.append({
+                "_id": f"{backup_id}:{collection}:{doc['_id']}",
+                "backup_id": backup_id,
+                "collection": collection,
+                "original_id": doc["_id"],
+                "document": doc,
+            })
+
+    manifests = target_db[REMOVAL_BACKUPS]
+    documents = target_db[REMOVAL_BACKUP_DOCUMENTS]
+    manifests.create_index([("created_at", -1)])
+    documents.create_index([("backup_id", 1), ("collection", 1)])
+    manifests.insert_one(manifest)
+    for index in range(0, len(records), 500):
+        documents.insert_many(records[index : index + 500], ordered=True)
+    stored = documents.count_documents({"backup_id": backup_id})
+    if stored != len(records):
+        raise RuntimeError(
+            f"Removal backup {backup_id} stored {stored} documents; expected {len(records)}"
+        )
+    result = manifests.update_one(
+        {"_id": backup_id, "status": "preparing"},
+        {"$set": {"status": "ready", "document_count": stored, "ready_at": now}},
+    )
+    if result.matched_count != 1:
+        raise RuntimeError(f"Removal backup {backup_id} could not be marked ready")
+    return backup_id
+
+
+def complete_removal_backup(target_db, backup_id, counts):
+    """Mark a ready backup as the recovery point for a completed removal."""
+    completed_at = datetime.datetime.now(datetime.timezone.utc)
+    result = target_db[REMOVAL_BACKUPS].update_one(
+        {"_id": backup_id, "status": "ready"},
+        {"$set": {
+            "status": "completed",
+            "completed_at": completed_at,
+            "mutation_counts": counts,
+        }},
+    )
+    if result.matched_count != 1:
+        raise RuntimeError(f"Removal completed but backup {backup_id} status was not updated")
 
 
 def upsert_by_id(target_coll, docs):
@@ -115,6 +285,25 @@ def prepare_agreement_stage(target_db):
             target_db["uc_major_admissions"],
             list(target_db[CANONICAL_ADMISSIONS].find()),
         )
+
+
+def reset_agreement_stage(target_db):
+    """Recreate removal inputs exactly from canonical data.
+
+    Pair removal must not trust a source-shaped collection left behind by an
+    interrupted or canceled prior port. Replacing the temporary inputs here
+    guarantees that deleting requested pairs cannot also resurrect or discard
+    unrelated programs during the canonical rebuild.
+    """
+    agreements = list(target_db[CANONICAL_AGREEMENTS].find())
+    if not agreements:
+        sys.exit("Canonical agreements are empty; refusing pair removal.")
+    replace_collection(target_db[AGREEMENT_COLLECTIONS[0]], agreements)
+    replace_collection(
+        target_db["uc_major_admissions"],
+        list(target_db[CANONICAL_ADMISSIONS].find()),
+        required=False,
+    )
 
 
 def rebuild_canonical():
@@ -270,20 +459,26 @@ def cmd_add(args):
 
 def cmd_remove(args):
     source_db, target_db = connect()
-    prepare_agreement_stage(target_db)
     mfilter = major_filter(args.term, args.exact)
-    matched = matched_majors(target_db, mfilter)
+    preview_collection = preferred_collection(
+        target_db, CANONICAL_AGREEMENTS, AGREEMENT_COLLECTIONS[0]
+    )
+    matched = matched_majors(target_db, mfilter, (preview_collection,))
     if not any(matched.values()):
         sys.exit("No majors in the research cluster match that term.")
 
     print("Removing from the research cluster:")
     for coll, majors in matched.items():
         for m in majors:
-            print(f"  [{coll.split('_')[0]}] {m}")
+            print(f"  [uc] {m}")
     print("(Audit verdicts/groupings/curations are kept; re-adding the major reconnects them.)")
+    if args.dry_run:
+        print("Dry run only; no DB writes.")
+        return
     if not args.yes and input("\nType 'yes' to remove: ").strip().lower() != "yes":
         sys.exit("Aborted.")
 
+    prepare_agreement_stage(target_db)
     counts = {}
     for coll in AGREEMENT_COLLECTIONS:
         counts[coll] = -target_db[coll].delete_many(mfilter).deleted_count
@@ -299,6 +494,90 @@ def cmd_remove(args):
     print(f"\nRemoved @ {refreshed_at.isoformat()}:")
     for coll, n in counts.items():
         print(f"  {coll}: {n} docs")
+
+
+def cmd_remove_pairs(args):
+    """Preview or remove an explicit set of exact campus-program pairs."""
+    pairs = list(dict.fromkeys(args.pair))
+    _source_db, target_db = connect()
+    preview = pair_removal_preview(target_db, pairs)
+    missing = [row for row in preview if row["agreements"] == 0]
+
+    print("Exact campus-program removal preview:")
+    for row in preview:
+        print(
+            f"  [{row['school_id']}] {row['school']} — {row['major']!r}: "
+            f"{row['agreements']} agreement(s), {row['admissions']} admission row(s)"
+        )
+    print(
+        f"Total: {sum(row['agreements'] for row in preview)} agreement(s), "
+        f"{sum(row['admissions'] for row in preview)} admission row(s)"
+    )
+    print("Audit verdicts/groupings/curations are kept and may become orphaned.")
+
+    if missing:
+        labels = ", ".join(f"{row['school_id']}={row['major']!r}" for row in missing)
+        sys.exit(f"Refusing removal: no agreement matches these exact pairs: {labels}")
+    if args.dry_run:
+        print("Dry run only; no DB writes or staging collections were created.")
+        return
+    if not args.yes and input("\nType 'yes' to remove exactly these pairs: ").strip().lower() != "yes":
+        sys.exit("Aborted.")
+
+    # This is the first write. The durable snapshot must be complete and marked
+    # ready before temporary inputs or canonical data can change.
+    backup_id = create_removal_backup(target_db, pairs, preview)
+    print(f"Durable pre-removal backup ready: {backup_id}")
+
+    # Start from a deterministic copy of canonical data, then verify that the
+    # pairs about to be deleted still have the counts shown in the preview.
+    reset_agreement_stage(target_db)
+    staged_preview = pair_removal_preview_from_collections(
+        target_db, pairs, AGREEMENT_COLLECTIONS[0], "uc_major_admissions"
+    )
+    for before, staged in zip(preview, staged_preview):
+        if (
+            before["agreements"] != staged["agreements"]
+            or before["admissions"] != staged["admissions"]
+        ):
+            sys.exit(
+                "Staged counts changed after preview; refusing removal for "
+                f"{before['school_id']}={before['major']!r}."
+            )
+
+    removal_filter = exact_pair_filter(pairs)
+    counts = {
+        AGREEMENT_COLLECTIONS[0]: -target_db[AGREEMENT_COLLECTIONS[0]]
+        .delete_many(removal_filter).deleted_count,
+        "uc_major_admissions": -target_db["uc_major_admissions"]
+        .delete_many(removal_filter).deleted_count,
+    }
+    # Exact removal must not refresh the source catalogs as a side effect. The
+    # canonical rebuild falls back to the already-installed institutions and
+    # courses when the legacy catalog collections are absent, so only the two
+    # explicitly staged pair-bearing collections change here.
+    refreshed_at = mark_refreshed(target_db, counts)
+    rebuild_canonical()
+    complete_removal_backup(target_db, backup_id, counts)
+    print(f"\nRemoved exact pairs @ {refreshed_at.isoformat()}:")
+    print(f"  recovery backup: {backup_id}")
+    for coll, n in counts.items():
+        print(f"  {coll}: {n} docs")
+
+
+def pair_removal_preview_from_collections(target_db, pairs, agreements, admissions):
+    """Internal exact-count check against explicitly selected collections."""
+    return [
+        {
+            "agreements": target_db[agreements].count_documents(
+                exact_pair_filter([(school_id, major)])
+            ),
+            "admissions": target_db[admissions].count_documents(
+                exact_pair_filter([(school_id, major)])
+            ),
+        }
+        for school_id, major in pairs
+    ]
 
 
 def cmd_refresh_catalogs(args):
@@ -353,6 +632,10 @@ def main():
     p_list = sub.add_parser("list", help="preview source majors matching a term")
     p_add = sub.add_parser("add", help="port majors matching a term")
     p_remove = sub.add_parser("remove", help="remove majors from the research cluster")
+    p_remove_pairs = sub.add_parser(
+        "remove-pairs",
+        help="safely preview/remove exact UC-campus + major pairs",
+    )
     sub.add_parser("status", help="show what the research cluster holds")
 
     for p in (p_list, p_add, p_remove):
@@ -360,6 +643,17 @@ def main():
         p.add_argument("--exact", action="store_true", help="match the major name exactly")
     for p in (p_add, p_remove):
         p.add_argument("--yes", action="store_true", help="skip the interactive confirm")
+    p_remove.add_argument("--dry-run", action="store_true", help="preview without writing")
+    p_remove_pairs.add_argument(
+        "--pair",
+        action="append",
+        required=True,
+        type=parse_school_major_pair,
+        metavar="SCHOOL_ID=EXACT_MAJOR",
+        help="exact pair to remove; repeat for a batch",
+    )
+    p_remove_pairs.add_argument("--dry-run", action="store_true", help="preview without writing")
+    p_remove_pairs.add_argument("--yes", action="store_true", help="skip the interactive confirm")
 
     args = ap.parse_args()
     {
@@ -368,6 +662,7 @@ def main():
         "list": cmd_list,
         "add": cmd_add,
         "remove": cmd_remove,
+        "remove-pairs": cmd_remove_pairs,
         "status": cmd_status,
     }[
         args.command

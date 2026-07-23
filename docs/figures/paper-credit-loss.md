@@ -6,8 +6,14 @@ data — with every difference named at the course level.**
 > Paper caption: *"Visualizing the credit loss in transfer pathways: average UC
 > incoming transfer requirements (yellow) and their CCC equivalents (blue)."*
 >
-> Dataset `2026-07-06-v1` · CS majors · 9 UC campuses × 72 CC districts ×
-> 4 choice positions · July 6, 2026
+> Dataset `2026-07-22-canonical-cs-v1` · CS majors · 9 UC campuses × 72 CC
+> districts × 4 choice positions · July 22, 2026
+
+> **Canonical-scope migration complete (2026-07-22):** the calculation and
+> frontend artifacts now read only the nine exact CS campus/program pins. Both
+> current-data variants were regenerated, carry the same scope fingerprint,
+> and pass their artifact fingerprints. The paper baseline and the
+> algorithm-equivalence validation use the paper's own inputs and are unchanged.
 
 ## How to read this note
 
@@ -41,11 +47,12 @@ ASSIST articulation data changed (2025–26 snapshot vs theirs):
 
 - **UCSB × Allan Hancock** newly articulated `CS 111 → CMPSC 16`,
   `CS 112 → CMPSC 24` (the same cell the heatmap found).
-- **UC Davis**: `ECS 036A` newly articulated at San Francisco and San Luis
-  Obispo; Antelope Valley now lists it as not-articulated (was unmentioned),
-  dropping that district from Davis's average.
+- **UC Davis**: the canonical `Computer Science B.S.` now stands alone instead
+  of borrowing receivers from `Computer Science & Engineering B.S.`. Its
+  first-choice average is 7.00 versus the paper's 7.07; the former union-based
+  7.15 result is retired.
 - **UCSD**: `CSE 8B` is gone from all agreements; `CSE 11` carries Intro.
-- The rest of the 337 changed rows (of 4,116) are bundle updates and course
+- The rest of the 334 changed rows (of 4,116) are bundle updates and course
   renumbering — full list in
   [`analysis/results/articulation_changes.csv`](../../analysis/results/articulation_changes.csv).
 
@@ -55,7 +62,7 @@ identical at first choice, the rest within ±0.08, every difference a named
 articulation change."*
 
 **ASSIST-stated minimums extension:** when demand comes from `assist_agreements`
-required groups (the one Settings-selected CS major per campus) instead of the
+required groups (the one code-pinned CS major per campus) instead of the
 website-minimum curation — with sibling colleges pooled per requirement, exactly
 as the paper pools — both eligibility and the minimum-course count are decided by
 the ported Plan My Transfer algorithms: the eligibility formula (honoring choose-N:
@@ -75,19 +82,19 @@ zero, each blocked at every district by a genuinely required receiver (UCLA
   fails loudly on drift.
 - **Blue bars: 6 of 9 campuses reproduce the paper's 1st-choice average
 exactly**; every delta in the figure is within ±0.08.
-- **Per-district: 86.4% of all 2,592 (campus × district × position)
-  average-pairs are identical to two decimals.** 31 cells flip
-  transferability across all positions — 25 of them gains. At 1st choice:
-  one gain (UCSB × Allan Hancock), one loss (UCD × Antelope Valley, see
-  below — a visibility change, not a lost articulation).
+- **Per-district: 87.9% of all 2,592 (campus × district × position) full
+  average-pairs are identical to two decimals; articulated course counts alone
+  match in 88.9%.** Twenty-one cells flip transferability across all positions
+  (19 gains, 2 losses). At first choice there is one gain—UCSB × Allan
+  Hancock—and no losses.
 
 | Δ (ours − paper), transferable average | 1st | 2nd | 3rd | 4th |
 | --- | --- | --- | --- | --- |
-| UCD | +0.08 | +0.06 | +0.00 | −0.03 |
-| UCM | +0.00 | −0.02 | −0.03 | −0.04 |
+| UCD | −0.07 | −0.04 | −0.08 | −0.08 |
+| UCM | +0.00 | −0.01 | −0.04 | −0.04 |
 | UCSD | −0.02 | −0.04 | −0.04 | −0.04 |
-| UCSB | −0.02 | −0.03 | −0.05 | −0.05 |
-| UCLA | +0.00 | −0.02 | −0.04 | −0.05 |
+| UCSB | −0.02 | −0.03 | −0.04 | −0.05 |
+| UCLA | +0.00 | −0.01 | −0.04 | −0.05 |
 | UCB | +0.00 | +0.01 | +0.00 | +0.01 |
 | UCSC | +0.00 | +0.03 | +0.02 | +0.02 |
 | UCI | +0.00 | −0.03 | −0.01 | −0.03 |
@@ -150,20 +157,15 @@ the paper repo checked out as a sibling `transfer-agreements-analysis/`).
 
 ## The differences on our data, with receipts
 
-### UC Davis +0.08 as 1st choice
+### UC Davis −0.07 as 1st choice
 
-Three small, named effects:
-
-1. `ECS 036A` **newly articulated** at San Francisco CCD (`CS 110A/110B`) and
-   San Luis Obispo County CCD (`CS 217`) — those districts' Davis pathways
-   now include it.
-2. Antelope Valley's agreement now **mentions `ECS 036A` without articulating
-   it** (paper-era agreements didn't mention it at all). Under the paper's
-   rules a mentioned-but-unarticulated requirement blocks full
-   transferability, so Antelope Valley drops out of Davis's average — a
-   *visibility* change in ASSIST, not a lost articulation.
-3. 33 Davis requirement rows elsewhere have updated course bundles (see the
-   change CSV).
+This is the visible effect of correcting the analysis boundary. The earlier
+7.15 result combined Davis's canonical `Computer Science B.S.` receivers with
+the sibling `Computer Science & Engineering B.S.` agreement. The corrected
+single-program result is 7.00, compared with the paper's 7.07. No articulation
+was deleted to produce this change; the sibling degree simply no longer
+contributes evidence to the CS figure. Thirty-three Davis requirement rows also
+carry current-data bundle updates, listed in the change CSV.
 
 ### UC Santa Barbara −0.02 / UC San Diego −0.02
 
@@ -195,7 +197,7 @@ there. We replicate each figure's own methodology exactly rather than
 
 ### The change inventory
 
-337 of 4,116 requirement rows differ at the course level (91.8% byte-
+334 of 4,116 requirement rows differ at the course level (91.9% byte-
 identical). Nearly all are `courses-changed` — bundle updates, honors
 variants, unit changes, and course renumbering (e.g. Chabot–Las Positas
 `MATH 1 → MTH 1`). The handful that move the figure are the rows above.
@@ -237,10 +239,9 @@ them; the credit-loss pipeline's curated-key filter — the paper's own code —
 does not. Each figure replicates its own paper methodology exactly.
 
 **"Did anything actually get harder?"**
-No articulation was withdrawn anywhere in the figure's inputs. The one
-first-choice district that dropped out (Antelope Valley × Davis) did so
-because ASSIST now explicitly lists `ECS 036A` as not-articulated where it
-used to be silent — more information, not less articulation.
+The first-choice transferability set has no losses. Davis's lower average is a
+scope correction—the sibling CSE agreement stopped contributing—not evidence
+that a canonical CS articulation was withdrawn.
 
 **"Is the paper wrong?"**
 No — both figures are snapshots of ASSIST at different times, produced by
@@ -251,9 +252,10 @@ the same (now provably equivalent) machinery.
 This is **our extension**, not a paper replication. The paper asked how many
 CCC courses satisfy a fixed, hand-curated set of UC website minimums. The
 ASSIST variant asks the same credit-loss question against the minimums ASSIST
-agreements themselves state, for the one hand-selected CS major per campus in
-the working dataset (Settings -> `settings.app.visible_pairs`; falls back to
-`PAPER_MAJORS` if unset). Both halves are the website's own algorithms, ported
+agreements themselves state, for the one exact canonical CS program per
+campus. Those nine pairs are code-configured and independent of settings and
+other majors in Atlas; there is no title-substring or historical-union
+fallback. Both halves are the website's own algorithms, ported
 so the figure inherits the console's rigor: the eligibility decision from
 `analysis/pmt_eligibility.py` (which honors choose-N — "Complete 1 of the
 following" is satisfied by any one receiver), and the minimum-course count from
@@ -266,10 +268,10 @@ Diego and Los Angeles have no district where one college meets every requirement
 
 | Piece | Website-minimums figure | ASSIST-stated-minimums variant |
 | --- | --- | --- |
-| Demand source | `curated_requirements` fixed per campus | `assist_agreements.requirement_groups` (truthy `is_required`) for the one Settings-selected CS major per campus |
+| Demand source | `curated_requirements` fixed per campus | `assist_agreements.requirement_groups` (truthy `is_required`) for the one exact canonical CS program per campus |
 | Advisements | Website curation groups/sets | Both coverage/blockers (`pmt_eligibility.py`, strict) and the course count (`pmt_min_courses.py`, non-strict) delegate every completion decision to the ported eligibility engine, so section/group choose-N, unit advisements, OR sections, series, and `same_as` cross-listing are all honored by construction — no separate advisement re-encoding. Curation receiver exclusions applied (none in the current dataset) |
 | Unit of evaluation | District pools sibling-college supply against fixed campus demand | **Same** — sibling colleges pooled per requirement, keeping the **best college per requirement** (fewest-course alternative, ties by name — the paper's `creating_district_csvs` rule); one district-pooled model per campus |
-| Program choice | Not applicable; paper rows are campus-level | The one Settings-selected CS major per campus |
+| Program choice | Nine exact canonical CS campus/program pairs supply articulations | The same nine exact canonical CS campus/program pairs supply requirements and articulations |
 | Missing campus agreement | Not a case in the paper model | Counts as all-unarticulated using that campus's required-course (gold) count |
 | Unarticulated identity | Curated receiving course names | Hybrid grain: a genuinely must-take receiver → its university course code (from `university_courses.parent_id`); a choose-N section short of its minimum → a section-level `N of [A / B / …]` descriptor |
 | Downstream averaging | P(9,4), ÷336, round per district, transferable-average filter | Same permutation and averaging machinery; districts with no fully articulated path render as `0` with `districts_included: 0` |
@@ -288,7 +290,7 @@ gold is higher than the website's hand-picked hard minimum.
 | UCSD | 4.67 | 7.33 | 11 | 0 | 0.00 |
 | UCSB | 4.67 | 4.67 | 7 | 50 | 7.02 |
 | UCLA | 4.67 | 11.33 | 17 | 0 | 0.00 |
-| UCB | 4.00 | 3.00 | 3 | 69 | 3.83 |
+| UCB | 4.00 | 10.00 | 10 | 69 | 10.09 |
 | UCSC | 3.33 | 3.33 | 5 | 47 | 5.15 |
 | UCI | 4.00 | 8.00 | 12 | 39 | 5.36 |
 | UCR | 3.33 | 4.67 | 7 | 57 | 7.67 |
@@ -349,8 +351,8 @@ that genuinely cannot reach their minimum surface.
   separately by `server/services/analysis/pathways.test.js`; the vendored JS
   eligibility port is locked against the same PMT goldens by
   `server/services/analysis/eligibility.test.js`.
-- **Determinism:** the deterministic CSVs hash to district `748601cb…`, blocker
-  summary `c9a2eae2…`, complete districts `702525f2…`.
+- **Determinism:** the deterministic CSVs hash to ASSIST district `ad5cd724…`,
+  blocker summary `615bf150…`, and complete districts `f4a46031…`.
 - **Render/build:** `npm run build --prefix frontend` passes; headless Chrome
   screenshots at `1991×1191` for Website, ASSIST, and ASSIST-difference views
   render without label collisions.
@@ -387,14 +389,14 @@ the finished Figure is published to the gallery with `pmt.publish(fig, ...)`.
 
 ```bash
 cd analysis
-.venv/bin/python paper_credit_loss.py --diff               # recompute + per-bar deltas (~3 min)
-.venv/bin/python paper_credit_loss.py --requirements assist --diff  # ASSIST-stated variant
+.venv/bin/python paper_credit_loss.py --workers 8 --diff   # canonical website-minimums rebaseline (~3 min)
+.venv/bin/python paper_credit_loss.py --requirements assist --workers 8 --diff  # canonical ASSIST variant
 .venv/bin/python paper_credit_loss.py --validate-paper     # our algorithm on THEIR data
 .venv/bin/python paper_credit_loss.py --articulation-diff  # course-level change list
 ```
 
 Outputs: `analysis/results/paper-credit-loss.ours.json` (stamped
-with `data_refreshed_at`),
+with `data_refreshed_at` and the nine exact `major_scope.program_pins`),
 `analysis/results/paper-credit-loss.assist.json` (ASSIST-minimums
 view),
 `analysis/results/paper_credit_loss_districts.csv` (per-district receipts),

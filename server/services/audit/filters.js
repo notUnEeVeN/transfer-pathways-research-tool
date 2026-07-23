@@ -57,10 +57,8 @@ async function parseFilter(req) {
     .filter((n) => Number.isFinite(n) && n > 0);
   const majorContains = String(req.query.majorContains || '').trim();
 
-  // Research-console access scoping: admins see everything ported
-  // (visiblePairs = null); partners are hard-limited to the admin-selected
-  // (school, major) pairs (possibly empty). Applied by systemMatch/
-  // verdictMatch below, so every audit read/stat reflects the granted pairs.
+  // Exact configured campus/program pairs. Imported but unconfigured variants
+  // stay out of the audit population just as they stay out of figures.
   const visiblePairs = await majorScope(req);
 
   return { scope, schoolIds, majorContains, groupingId: null, pairs: [], visiblePairs };

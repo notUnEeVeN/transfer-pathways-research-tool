@@ -30,6 +30,22 @@ const { parseFilter } = require('./filters');
 const oid = (n) => new ObjectId(String(n).padStart(24, '0'));
 const GHOST_ID = oid(99); // verdict points here; no agreement doc seeded
 
+// Use real configured campus/program pairs so these audit-pipeline
+// characterizations exercise the same fail-closed scope as production.
+const UCB = {
+  id: 79,
+  school: 'UC Berkeley',
+  cs: 'Electrical Engineering & Computer Sciences, B.S.',
+  bio: 'Molecular and Cell Biology, B.A.',
+};
+const UCD = {
+  id: 89,
+  school: 'UC Davis',
+  cs: 'Computer Science B.S.',
+  bio: 'Biological Sciences B.S.',
+  econ: 'Economics A.B.',
+};
+
 // requirement_groups carrying exactly `nReceivers` receivers (only the
 // receiver count drives the cell/propagation math).
 function reqGroups(nReceivers) {
@@ -42,11 +58,11 @@ function reqGroups(nReceivers) {
 function agreement(id, over) {
   return {
     _id: oid(id),
-    uc_school_id: 100,
-    uc_school: 'UC Alpha',
+    uc_school_id: UCB.id,
+    uc_school: UCB.school,
     community_college: 'CC One',
     community_college_id: 1,
-    major: 'Computer Science',
+    major: UCB.cs,
     major_id: 'm-cs',
     raw_template_hash: 'hashA',
     template_fp: 'fpA',
@@ -60,9 +76,9 @@ function verdict(docId, over) {
   return {
     doc_id: docId,
     system: 'uc',
-    uc_school_id: 100,
-    uc_school: 'UC Alpha',
-    major: 'Computer Science',
+    uc_school_id: UCB.id,
+    uc_school: UCB.school,
+    major: UCB.cs,
     major_id: 'm-cs',
     result: 'correct',
     source: 'verify',
@@ -80,32 +96,32 @@ function verdict(docId, over) {
 
 // 8 agreements across 3 template clusters + an empty-rg doc + a no-hash doc.
 const AGREEMENTS = [
-  agreement(11),                                                        // cluster A (100/CS/hashA) ×3
+  agreement(11),                                                        // cluster A (UCB/CS/hashA) ×3
   agreement(12),
   agreement(13),
-  agreement(21, { major: 'Mathematics', major_id: 'm-math', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', requirement_groups: reqGroups(3) }), // cluster B
-  agreement(31, { uc_school_id: 200, uc_school: 'UC Beta', community_college: 'CC Two', community_college_id: 2, raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', requirement_groups: reqGroups(1) }), // cluster C ×2
-  agreement(32, { uc_school_id: 200, uc_school: 'UC Beta', community_college: 'CC Two', community_college_id: 2, raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', requirement_groups: reqGroups(1) }),
-  agreement(41, { uc_school_id: 200, uc_school: 'UC Beta', major: 'Biology', major_id: 'm-bio', raw_template_hash: 'hashE', template_fp: 'fpE', parser_output_hash: 'poE', requirement_groups: [] }),          // empty rg → excluded from clusters, counted in total_docs
-  agreement(51, { uc_school_id: 200, uc_school: 'UC Beta', major: 'Chemistry', major_id: 'm-chem', raw_template_hash: null, template_fp: 'fpNH', parser_output_hash: 'poNH', requirement_groups: reqGroups(2) }), // no raw_template_hash → excluded from clusters, counted in total_docs
+  agreement(21, { major: UCB.bio, major_id: 'm-bio', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', requirement_groups: reqGroups(3) }), // cluster B
+  agreement(31, { uc_school_id: UCD.id, uc_school: UCD.school, community_college: 'CC Two', community_college_id: 2, major: UCD.cs, raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', requirement_groups: reqGroups(1) }), // cluster C ×2
+  agreement(32, { uc_school_id: UCD.id, uc_school: UCD.school, community_college: 'CC Two', community_college_id: 2, major: UCD.cs, raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', requirement_groups: reqGroups(1) }),
+  agreement(41, { uc_school_id: UCD.id, uc_school: UCD.school, major: UCD.bio, major_id: 'm-bio', raw_template_hash: 'hashE', template_fp: 'fpE', parser_output_hash: 'poE', requirement_groups: [] }),          // empty rg → excluded from clusters, counted in total_docs
+  agreement(51, { uc_school_id: UCD.id, uc_school: UCD.school, major: UCD.econ, major_id: 'm-econ', raw_template_hash: null, template_fp: 'fpNH', parser_output_hash: 'poNH', requirement_groups: reqGroups(2) }), // no raw_template_hash → excluded from clusters, counted in total_docs
 ];
 
 // 7 verdicts: 5 live (one per tier + a resolved error) + 2 stale (hash drift, deleted doc).
 const VERDICTS = [
   verdict(oid(11), { result: 'error', cells_in_error: 1, notes: 'err note', verified_at: '2026-05-01T00:00:00.000Z' }), // v1 live error
   verdict(oid(12), { result: 'conservative', verified_at: '2026-05-02T00:00:00.000Z' }),                                 // v2 live conservative
-  verdict(oid(21), { result: 'correct', source: 'random_template_weighted', major: 'Mathematics', major_id: 'm-math', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', receivers_checked: 3, verified_at: '2026-05-03T00:00:00.000Z' }), // v3 live correct (direct)
-  verdict(oid(31), { result: 'flagged', source: 'template', uc_school_id: 200, uc_school: 'UC Beta', raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', receivers_checked: 1, verified_at: '2026-05-04T00:00:00.000Z' }), // v4 live flagged (NON-direct source)
-  verdict(oid(32), { result: 'error', status: 'resolved', resolution_notes: 'fixed', uc_school_id: 200, uc_school: 'UC Beta', raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', receivers_checked: 1, cells_in_error: 1, verified_at: '2026-05-05T00:00:00.000Z' }), // v5 live resolved error
+  verdict(oid(21), { result: 'correct', source: 'random_template_weighted', major: UCB.bio, major_id: 'm-bio', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', receivers_checked: 3, verified_at: '2026-05-03T00:00:00.000Z' }), // v3 live correct (direct)
+  verdict(oid(31), { result: 'flagged', source: 'template', uc_school_id: UCD.id, uc_school: UCD.school, major: UCD.cs, raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', receivers_checked: 1, verified_at: '2026-05-04T00:00:00.000Z' }), // v4 live flagged (NON-direct source)
+  verdict(oid(32), { result: 'error', status: 'resolved', resolution_notes: 'fixed', uc_school_id: UCD.id, uc_school: UCD.school, major: UCD.cs, raw_template_hash: 'hashC', template_fp: 'fpC', parser_output_hash: 'poC', receivers_checked: 1, cells_in_error: 1, verified_at: '2026-05-05T00:00:00.000Z' }), // v5 live resolved error
   verdict(oid(13), { result: 'error', raw_template_hash: 'OLDHASH', cells_in_error: 1, verified_at: '2026-05-06T00:00:00.000Z' }), // v6 STALE (raw_template_hash drift vs current hashA)
-  verdict(GHOST_ID, { result: 'error', uc_school_id: 200, uc_school: 'UC Beta', major: 'Physics', major_id: 'm-phys', raw_template_hash: 'hashX', template_fp: 'fpX', parser_output_hash: 'poX', receivers_checked: 1, cells_in_error: 1, verified_at: '2026-05-07T00:00:00.000Z' }), // v7 STALE (doc deleted)
+  verdict(GHOST_ID, { result: 'error', uc_school_id: UCD.id, uc_school: UCD.school, major: UCD.econ, major_id: 'm-econ', raw_template_hash: 'hashX', template_fp: 'fpX', parser_output_hash: 'poX', receivers_checked: 1, cells_in_error: 1, verified_at: '2026-05-07T00:00:00.000Z' }), // v7 STALE (doc deleted)
 ];
 
 // ───────── handler drivers ─────────
 
-// Fake reqs run as the test admin (ADMIN_UIDS below) so the partner
-// major-visibility scope stays out of these characterization tests —
-// visibility itself is covered in services/majorVisibility.test.js.
+// Fake reqs run as the test admin (ADMIN_UIDS below). Major visibility is now
+// a console-wide configured-pair scope, so these fixtures deliberately use
+// canonical pairs; the scope helper itself is covered separately.
 function makeReq(db, query) {
   return { query, user: { uid: 'test-admin' }, app: { locals: { db } } };
 }
@@ -210,7 +226,7 @@ describe('audit stats — _statsData (getStats)', () => {
     expect(s.n_conservative).toBe(1);  // v2
     expect(s.n_flagged).toBe(1);       // v4
     expect(s.n_correct).toBe(1);       // v3
-    // Clusters: (100/CS/hashA), (100/Math/hashB), (200/CS/hashC); empty-rg + no-hash excluded.
+    // Clusters: (UCB/CS/hashA), (UCB/Bio/hashB), (UCD/CS/hashC); empty-rg + no-hash excluded.
     expect(s.n_majors).toBe(3);
     expect(s.n_templates).toBe(3);
     expect(s.n_templates_audited).toBe(3);
@@ -233,10 +249,10 @@ describe('audit stats — _statsData (getStats)', () => {
   it('exports n_random_clusters_strict, counting non-error deviations too', async () => {
     await db.collection('agreement_reviews').deleteMany({});
     await db.collection('agreement_reviews').insertMany([
-      // Cluster A (100/CS/hashA): worst = conservative → strict but NOT error.
+      // Cluster A (UCB/CS/hashA): worst = conservative → strict but NOT error.
       verdict(oid(11), { result: 'conservative' }),
-      // Cluster B (100/Math/hashB): correct → neither.
-      verdict(oid(21), { result: 'correct', source: 'random_template_weighted', major: 'Mathematics', major_id: 'm-math', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', receivers_checked: 3 }),
+      // Cluster B (UCB/Bio/hashB): correct → neither.
+      verdict(oid(21), { result: 'correct', source: 'random_template_weighted', major: UCB.bio, major_id: 'm-bio', raw_template_hash: 'hashB', template_fp: 'fpB', parser_output_hash: 'poB', receivers_checked: 3 }),
     ]);
     const s = await callStats(db, { scope: 'all' });
     expect(s.n_random_clusters).toBe(2);
@@ -287,17 +303,17 @@ describe('dedup guard — _statsData stats === buildScope stats', () => {
 describe('audit template variants — _templateVariantsData (getTemplateVariants)', () => {
   it('buckets docs into template clusters with worst-tier result', async () => {
     const rows = await callTemplateVariants(db, { scope: 'all' });
-    // Clusters: 100/CS/hashA (3 docs, worst tier error), 100/Math/hashB (1, correct),
-    // 200/CS/hashC (2, error), 200/Chemistry (no-hash doc → fp cluster, unaudited).
+    // Clusters: UCB/CS/hashA (3 docs, worst tier error), UCB/Bio/hashB (1, correct),
+    // UCD/CS/hashC (2, error), UCD/Econ (no-hash doc → fp cluster, unaudited).
     // docEmpty (empty requirement_groups) is excluded.
     const byKey = Object.fromEntries(rows.map((r) => [`${r.school_id}|${r.major}`, r]));
     expect(rows).toHaveLength(4);
-    expect(byKey['100|Computer Science'].result).toBe('error');
-    expect(byKey['100|Computer Science'].n_docs).toBe(3);
-    expect(byKey['100|Mathematics'].result).toBe('correct');
-    expect(byKey['200|Computer Science'].result).toBe('error');
-    expect(byKey['200|Chemistry'].result).toBeNull();        // unaudited cluster
-    expect(byKey['200|Chemistry'].n_audited_docs).toBe(0);
+    expect(byKey[`${UCB.id}|${UCB.cs}`].result).toBe('error');
+    expect(byKey[`${UCB.id}|${UCB.cs}`].n_docs).toBe(3);
+    expect(byKey[`${UCB.id}|${UCB.bio}`].result).toBe('correct');
+    expect(byKey[`${UCD.id}|${UCD.cs}`].result).toBe('error');
+    expect(byKey[`${UCD.id}|${UCD.econ}`].result).toBeNull();        // unaudited cluster
+    expect(byKey[`${UCD.id}|${UCD.econ}`].n_audited_docs).toBe(0);
   });
 
   it('matches the pinned template-variants snapshot', async () => {
@@ -324,8 +340,8 @@ describe('audit bootstrap — memory-refactor characterization', () => {
       // bucket is keyed by school_id, so the sample doc's university id matches.
       expect(row.sample_university_id).toBe(row.school_id);
     }
-    // The audited 100/CS cluster surfaces one of its own docs (11,12,13).
-    const csA = tv.find((r) => r.school_id === 100 && r.major === 'Computer Science');
+    // The audited UCB/CS cluster surfaces one of its own docs (11,12,13).
+    const csA = tv.find((r) => r.school_id === UCB.id && r.major === UCB.cs);
     expect(['000000000000000000000011', '000000000000000000000012', '000000000000000000000013'])
       .toContain(csA.sample_doc_id);
   });
@@ -334,32 +350,32 @@ describe('audit bootstrap — memory-refactor characterization', () => {
     const b = await callBootstrap(db, {});
     const byKey = Object.fromEntries(b.all.template_variants.map((r) => [`${r.school_id}|${r.major}`, r]));
     // cluster A: docs 11,12,13; live verdicts v1(error)@11 + v2(cons)@12 (v6@13 is stale → unaudited here).
-    expect(byKey['100|Computer Science'].n_docs).toBe(3);
-    expect(byKey['100|Computer Science'].n_groups).toBe(1);
-    expect(byKey['100|Computer Science'].n_receivers).toBe(2);
-    expect(byKey['100|Computer Science'].n_parser_shapes).toBe(1);
-    expect(byKey['100|Computer Science'].n_audited_docs).toBe(2);
+    expect(byKey[`${UCB.id}|${UCB.cs}`].n_docs).toBe(3);
+    expect(byKey[`${UCB.id}|${UCB.cs}`].n_groups).toBe(1);
+    expect(byKey[`${UCB.id}|${UCB.cs}`].n_receivers).toBe(2);
+    expect(byKey[`${UCB.id}|${UCB.cs}`].n_parser_shapes).toBe(1);
+    expect(byKey[`${UCB.id}|${UCB.cs}`].n_audited_docs).toBe(2);
     // cluster C: docs 31,32; v4(flagged)@31 + v5(resolved error)@32 → worst tier error.
-    expect(byKey['200|Computer Science'].n_docs).toBe(2);
-    expect(byKey['200|Computer Science'].n_audited_docs).toBe(2);
-    expect(byKey['200|Computer Science'].result).toBe('error');
+    expect(byKey[`${UCD.id}|${UCD.cs}`].n_docs).toBe(2);
+    expect(byKey[`${UCD.id}|${UCD.cs}`].n_audited_docs).toBe(2);
+    expect(byKey[`${UCD.id}|${UCD.cs}`].result).toBe('error');
     // no-raw-hash doc 51 clusters by template_fp; unaudited.
-    expect(byKey['200|Chemistry'].n_docs).toBe(1);
-    expect(byKey['200|Chemistry'].n_audited_docs).toBe(0);
-    expect(byKey['200|Chemistry'].result).toBeNull();
+    expect(byKey[`${UCD.id}|${UCD.econ}`].n_docs).toBe(1);
+    expect(byKey[`${UCD.id}|${UCD.econ}`].n_audited_docs).toBe(0);
+    expect(byKey[`${UCD.id}|${UCD.econ}`].result).toBeNull();
   });
 
   it('enriches in-scope stale (drift) rows from the agreement doc, nulls deleted ones', async () => {
     const b = await callBootstrap(db, {});
     const drift = b.all.stale.find((r) => r.reason === 'raw_drift'); // v6 @ doc 13
     expect(drift).toBeTruthy();
-    expect(drift.major).toBe('Computer Science');
+    expect(drift.major).toBe(UCB.cs);
     expect(drift.community_college).toBe('CC One');
     expect(drift.current_raw_template_hash).toBe('hashA');
     expect(drift.prior_raw_template_hash).toBe('OLDHASH');
     const deleted = b.all.stale.find((r) => r.reason === 'deleted'); // v7 ghost id
     expect(deleted.community_college).toBeNull();
-    expect(deleted.major).toBe('Physics'); // falls back to the verdict's denormalized field
+    expect(deleted.major).toBe(UCD.econ); // falls back to the verdict's denormalized field
   });
 
 });

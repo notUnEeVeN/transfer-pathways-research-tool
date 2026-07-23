@@ -102,7 +102,7 @@ def render(rows, *, row_mode, minimums, major_filter):
     ax.tick_params(which="minor", bottom=False, left=False)
     ax.set_title(
         f"{ROW_MODES[row_mode]} articulation coverage | {MINIMUMS[minimums]}\n"
-        f"Major contains: {major_filter} | {full} fully articulated source rows",
+        f"Major: {major_filter} | {full} fully articulated source rows",
         loc="left",
         fontsize=10,
         pad=12,
@@ -115,7 +115,7 @@ def render(rows, *, row_mode, minimums, major_filter):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--major", default="computer science", help="case-insensitive major-name filter")
+    parser.add_argument("--major", default="cs", help="configured major slug (default: cs)")
     add_delivery_arguments(parser)
     args = parser.parse_args(argv)
     apply_style()
@@ -125,7 +125,7 @@ def main(argv=None):
         for row_mode in ROW_MODES:
             rows = compute(
                 "coverage",
-                majorContains=args.major,
+                majorSlug=args.major,
                 groupBy=row_mode,
                 requirements=minimums,
             )
@@ -154,8 +154,8 @@ def main(argv=None):
         slug="coverage-heatmap",
         title="Articulation coverage heatmap",
         caption=(
-            f"Community-college coverage of UC requirements for majors containing "
-            f"'{args.major}', with switchable geography and minimums source."
+            f"Community-college coverage of UC requirements for the configured "
+            f"'{args.major}' major, with switchable geography and minimums source."
         ),
         variants=variants,
         controls=controls,

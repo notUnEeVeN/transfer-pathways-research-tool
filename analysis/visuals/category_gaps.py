@@ -48,7 +48,7 @@ def render(rows, major_filter):
     ax.set_yticks(np.arange(-0.5, display.shape[0], 1), minor=True)
     ax.grid(which="minor", color="white", linewidth=0.6)
     ax.tick_params(which="minor", bottom=False, left=False)
-    ax.set_title(f"Colleges missing articulation by course category\nMajor contains: {major_filter}", loc="left")
+    ax.set_title(f"Colleges missing articulation by course category\nMajor: {major_filter}", loc="left")
     colorbar = fig.colorbar(image, ax=ax, fraction=0.025, pad=0.02)
     colorbar.set_label("Colleges missing an articulated equivalent")
     fig.tight_layout()
@@ -57,14 +57,14 @@ def render(rows, major_filter):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--major", default="computer science", help="case-insensitive major-name filter")
+    parser.add_argument("--major", default="cs", help="configured major slug (default: cs)")
     parser.add_argument("--allow-untagged", action="store_true",
                         help="render the uninformative Untagged-only state")
     add_delivery_arguments(parser)
     args = parser.parse_args(argv)
     apply_style()
 
-    rows = compute("category-gaps", majorContains=args.major)
+    rows = compute("category-gaps", majorSlug=args.major)
     tagged = [row for row in rows if row.get("category")]
     if not tagged and not args.allow_untagged:
         raise SystemExit(

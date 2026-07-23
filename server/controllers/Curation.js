@@ -14,6 +14,26 @@ function majorFromQuery(req) {
   return getMajor(slug) || { error: `unknown major: ${slug}` };
 }
 
+// Existing mapping ids/documents predate the major dimension and belong to
+// CS. Keep those ids readable for CS while giving every additional major its
+// own collision-proof key and requiring an explicit stamp.
+function majorMappingClause(slug) {
+  if (slug === defaultMajor().slug) {
+    return { $or: [
+      { major_slug: slug },
+      { major_slug: { $exists: false } },
+      { major_slug: null },
+    ] };
+  }
+  return { major_slug: slug };
+}
+
+function mappingId(kind, key, slug) {
+  return slug === defaultMajor().slug
+    ? `${kind}:${key}`
+    : `${kind}:${slug}:${key}`;
+}
+
 const stamp = (req) => ({ curated_by: req.user?.uid ?? null, curated_at: new Date() });
 const curationDb = (req) => req.app.locals.auditDb || req.app.locals.db;
 
@@ -31,7 +51,7 @@ exports.listCategories = asyncHandler(async (req, res) => {
   const major = majorFromQuery(req);
   if (major.error) return res.status(400).json({ error: major.error });
   const rows = await curationDb(req).collection(MAPPINGS)
-    .find({ kind: 'course_category' }).toArray();
+    .find({ kind: 'course_category', ...majorMappingClause(major.slug) }).toArray();
   const categories = rows.map(({ _id, kind, course_id, legacy_id, ...row }) => ({
     ...row,
     _id: Number(legacy_id ?? String(course_id).replace(/^university:/, '')),
@@ -57,7 +77,7 @@ exports.putCategory = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: `broad must be one of ${major.broadAxes.join(', ')}` });
   }
   const db = curationDb(req);
-  const id = `course_category:${parentId}`;
+  const id = mappingId('course_category', parentId, major.slug);
   if (category == null && broad == null) {
     await db.collection(MAPPINGS).deleteOne({ _id: id });
     return res.json({ ok: true, cleared: true });
@@ -81,8 +101,10 @@ exports.putCategory = asyncHandler(async (req, res) => {
 });
 
 exports.listOverrides = asyncHandler(async (req, res) => {
+  const major = majorFromQuery(req);
+  if (major.error) return res.status(400).json({ error: major.error });
   const rows = await curationDb(req).collection(MAPPINGS)
-    .find({ kind: 'receiver_override' }).toArray();
+    .find({ kind: 'receiver_override', ...majorMappingClause(major.slug) }).toArray();
   const overrides = rows.map(({ _id, kind, receiver_hash, legacy_id, ...row }) => ({
     ...row,
     _id: String(receiver_hash ?? legacy_id),
@@ -104,7 +126,7 @@ exports.putOverride = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: `broad must be one of ${major.broadAxes.join(', ')}` });
   }
   const db = curationDb(req);
-  const id = `receiver_override:${hashId}`;
+  const id = mappingId('receiver_override', hashId, major.slug);
   if (exclude == null && category == null && broad == null) {
     await db.collection(MAPPINGS).deleteOne({ _id: id });
     return res.json({ ok: true, cleared: true });
@@ -116,6 +138,7 @@ exports.putOverride = asyncHandler(async (req, res) => {
       kind: 'receiver_override',
       receiver_hash: hashId,
       legacy_id: hashId,
+      major_slug: major.slug,
       exclude: exclude === true,
       category: category ?? null,
       broad: broad ?? null,
@@ -213,4 +236,3 @@ exports.postAsDegreeAssist = asyncHandler(async (req, res) => {
     res.status(400).json({ error: error?.message || 'AI assist could not produce a valid proposal.' });
   }
 });
-

@@ -243,6 +243,8 @@ export default function DegreeTemplateEditor({
   schoolId,
   school,
   campusKey = null,
+  majorSlug,
+  defaultProgram = '',
   onSaved,
 }) {
   const save = useSaveDegreeRequirement()
@@ -259,13 +261,19 @@ export default function DegreeTemplateEditor({
 
   useEffect(() => {
     if (!open) return
-    const next = cloneDegreeDocument(initialDocument) || createDegreeDocument({ schoolId, school, campusKey })
+    const next = cloneDegreeDocument(initialDocument) || createDegreeDocument({
+      schoolId, school, campusKey, majorSlug, defaultProgram,
+    })
+    // Opening a legacy CS template is its migration point. This also prevents
+    // a save made from one major pane from changing another major's identity.
+    if (majorSlug) next.major_slug = majorSlug
+    if (defaultProgram) next.program = defaultProgram
     next.requirement_groups = Array.isArray(next.requirement_groups) ? next.requirement_groups : []
     setDraft(next)
     setDirty(false)
     setError(null)
     setSectionEditor(null)
-  }, [campusKey, initialDocument, open, school, schoolId])
+  }, [campusKey, defaultProgram, initialDocument, majorSlug, open, school, schoolId])
 
   const change = (updater) => {
     setDraft((current) => typeof updater === 'function' ? updater(current) : updater)

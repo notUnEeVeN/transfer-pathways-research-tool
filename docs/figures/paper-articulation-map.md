@@ -69,10 +69,10 @@ root and is omitted from PNG/PDF output. The map can be zoomed and dragged, and
 an optional difference layer outlines exact-count gains and losses against the
 paper even when the marker remains in the same display class.
 
-The **ASSIST** mode uses the working program selected for each campus and judges
-completion against the required receiver surface stated in ASSIST. This is the
-same requirements/pinning contract used by the ASSIST version of the district
-heatmap: `requirements=assist&pin=settings`. The visual design originated in
+The **ASSIST** mode uses the exact canonical CS program configured for each
+campus and judges completion against the required receiver surface stated in
+ASSIST. This is the same major-isolated contract used by the ASSIST version of
+the district heatmap: `majorSlug=cs&requirements=assist`. The visual design originated in
 `docs/export 2`, while all counts, names, and centroids continue to come from
 the audited model and recovered paper data.
 

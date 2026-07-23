@@ -3,8 +3,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCategoryGaps } from '../shared/query/hooks/useData'
 import { AnalysisLoading, shortenSchool } from './chartBits'
-import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const UNTAGGED = 'Untagged'
 
@@ -63,8 +61,7 @@ function buildGrid(rows) {
  * curated category aggregate into a pinned "Untagged" row so the untagged
  * share stays visible rather than silently dropped.
  */
-export default function CategoryGaps() {
-  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
+export default function CategoryGaps({ majorSlug = 'cs' }) {
   const query = useCategoryGaps(
     { majorSlug },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
@@ -81,7 +78,6 @@ export default function CategoryGaps() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <Button
         variant='secondary'
         leadingIcon={ArrowPathIcon}

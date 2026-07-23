@@ -48,7 +48,7 @@ function combined(seed = 1) {
   ]));
 }
 
-function makeSnapshot(load, generatedAt, program = 'Computer Science, B.A.') {
+function makeSnapshot(load, generatedAt, program = 'Electrical Engineering & Computer Sciences, B.S.') {
   const context = {
     targets: [{ school_id: 79, school: 'UC Berkeley', major: program, program }],
     colleges: [{ source_id: 2, name: 'Semester College' }],

@@ -14,6 +14,7 @@ const {
   degreeUnitSystem,
 } = require('../services/degreeSlots');
 const { evaluateDegreeAtCollege } = require('../services/degreeCoverage');
+const { defaultMajor, getMajor, listMajors } = require('../config/majors');
 
 const COLLECTION = 'curated_requirements';
 
@@ -34,6 +35,10 @@ exports.list = asyncHandler(async (req, res) => {
       _id: doc._id,
       school_id: doc.school_id,
       school: doc.school,
+      // All legacy degree templates predate the major dimension and are CS.
+      // Exposing that identity lets the frontend isolate templates now; the
+      // next editor save persists the field on the canonical document.
+      major_slug: doc.major_slug || defaultMajor().slug,
       program: doc.program,
       total_units: doc.total_units ?? null,
       unit_system: degreeUnitSystem(doc, calendarBySchool.get(Number(doc.school_id))),
@@ -50,15 +55,22 @@ exports.list = asyncHandler(async (req, res) => {
 });
 
 // One degree evaluated against one community college.
-// ?school_id= & ?community_college_id=.
+// ?school_id= & ?community_college_id= & ?majorSlug=cs.
 exports.evaluate = asyncHandler(async (req, res) => {
   const school_id = Number(req.query.school_id);
   const community_college_id = Number(req.query.community_college_id);
   if (!Number.isFinite(school_id) || !Number.isFinite(community_college_id)) {
     return res.status(400).json({ error: 'school_id and community_college_id are required' });
   }
+  const majorSlug = String(req.query.majorSlug || defaultMajor().slug).trim();
+  if (!getMajor(majorSlug)) {
+    return res.status(400).json({
+      error: `unknown major: ${majorSlug}`,
+      known: listMajors().map((major) => major.slug),
+    });
+  }
   const result = await evaluateDegreeAtCollege(req.app.locals.db, {
-    schoolId: school_id, communityCollegeId: community_college_id,
+    schoolId: school_id, communityCollegeId: community_college_id, majorSlug,
   });
   if (!result) return res.status(404).json({ error: 'no degree template for this campus yet' });
   res.json(result);

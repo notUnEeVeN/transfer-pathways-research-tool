@@ -1,8 +1,51 @@
 {
   "generated_by": "analysis/paper_credit_loss.py",
-  "generated_at": "2026-07-12T04:37:26+00:00",
-  "data_refreshed_at": "2026-07-11T16:30:59.444000",
-  "major_filter": "computer science",
+  "generated_at": "2026-07-23T06:28:54+00:00",
+  "data_refreshed_at": "2026-07-22T23:40:04.400000",
+  "dataset_version": "2026-07-22-canonical-cs-v1",
+  "major_scope": {
+    "slug": "cs",
+    "label": "Computer Science",
+    "program_pins": [
+      {
+        "school_id": 7,
+        "program": "CSE: Computer Science B.S."
+      },
+      {
+        "school_id": 46,
+        "program": "Computer Science, B.S."
+      },
+      {
+        "school_id": 79,
+        "program": "Electrical Engineering & Computer Sciences, B.S."
+      },
+      {
+        "school_id": 89,
+        "program": "Computer Science B.S."
+      },
+      {
+        "school_id": 117,
+        "program": "Computer Science/B.S."
+      },
+      {
+        "school_id": 120,
+        "program": "Computer Science, B.S."
+      },
+      {
+        "school_id": 128,
+        "program": "Computer Science, B.S."
+      },
+      {
+        "school_id": 132,
+        "program": "Computer Science B.S."
+      },
+      {
+        "school_id": 144,
+        "program": "COMPUTER SCIENCE AND ENGINEERING, B.S. "
+      }
+    ]
+  },
+  "major_scope_fingerprint": "a11075a5c54fa1249316f91f8806dd991276cdccd34a2ffff9110ddeb7bc05f9",
   "districts_total": 72,
   "method": "paper Figure 1 replication: district-pooled optimal set cover over all P(9,4) choice permutations; see docs/figures/paper-credit-loss.md",
   "campuses": [
@@ -19,23 +62,23 @@
       "choices": [
         {
           "order": 1,
-          "transferable_average": 7.15,
-          "districts_included": 27
+          "transferable_average": 7.0,
+          "districts_included": 28
         },
         {
           "order": 2,
-          "transferable_average": 3.63,
-          "districts_included": 26
+          "transferable_average": 3.53,
+          "districts_included": 27
         },
         {
           "order": 3,
-          "transferable_average": 2.55,
-          "districts_included": 24
+          "transferable_average": 2.47,
+          "districts_included": 25
         },
         {
           "order": 4,
-          "transferable_average": 1.89,
-          "districts_included": 24
+          "transferable_average": 1.84,
+          "districts_included": 25
         }
       ]
     },
@@ -57,13 +100,13 @@
         },
         {
           "order": 2,
-          "transferable_average": 2.76,
+          "transferable_average": 2.77,
           "districts_included": 64
         },
         {
           "order": 3,
-          "transferable_average": 1.48,
-          "districts_included": 59
+          "transferable_average": 1.47,
+          "districts_included": 58
         },
         {
           "order": 4,
@@ -96,7 +139,7 @@
         {
           "order": 3,
           "transferable_average": 1.88,
-          "districts_included": 37
+          "districts_included": 36
         },
         {
           "order": 4,
@@ -128,8 +171,8 @@
         },
         {
           "order": 3,
-          "transferable_average": 1.76,
-          "districts_included": 49
+          "transferable_average": 1.77,
+          "districts_included": 48
         },
         {
           "order": 4,
@@ -156,13 +199,13 @@
         },
         {
           "order": 2,
-          "transferable_average": 2.23,
+          "transferable_average": 2.24,
           "districts_included": 47
         },
         {
           "order": 3,
           "transferable_average": 1.17,
-          "districts_included": 46
+          "districts_included": 45
         },
         {
           "order": 4,
@@ -195,7 +238,7 @@
         {
           "order": 3,
           "transferable_average": 0.83,
-          "districts_included": 68
+          "districts_included": 67
         },
         {
           "order": 4,
@@ -228,7 +271,7 @@
         {
           "order": 3,
           "transferable_average": 1.58,
-          "districts_included": 44
+          "districts_included": 43
         },
         {
           "order": 4,
@@ -303,5 +346,6 @@
         }
       ]
     }
-  ]
+  ],
+  "artifact_fingerprint": "4ea5d70692d9a1f17947abc5f00f082edbb6b07c6f46a375c8c2c795ce1d751d"
 }

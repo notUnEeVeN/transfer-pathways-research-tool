@@ -13,19 +13,41 @@ const {
   loadCollegeGeAreas,
   degreeUnitSystem,
 } = require('./degreeSlots');
+const { defaultMajor, getMajor, programPairClause } = require('../config/majors');
 
 const COLLECTION = 'curated_requirements';
 
-async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
+async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, majorSlug }) {
   const school_id = Number(schoolId);
   const community_college_id = Number(communityCollegeId);
-  const degree = await db.collection(COLLECTION).findOne({ kind: 'degree', school_id });
+  const selectedMajor = getMajor(majorSlug || defaultMajor().slug);
+  if (!selectedMajor) return null;
+
+  // Prefer explicitly dimensional templates. Unstamped templates are the
+  // historical CS set and may only be used by CS; Biology/Economics must fail
+  // closed until their own templates exist.
+  const configuredPrograms = selectedMajor.programs?.[school_id] || [];
+  let degree = await db.collection(COLLECTION).findOne({
+    kind: 'degree',
+    school_id,
+    major_slug: selectedMajor.slug,
+    program: { $in: configuredPrograms },
+  });
+  if (!degree && selectedMajor.slug === defaultMajor().slug) {
+    degree = await db.collection(COLLECTION).findOne({
+      kind: 'degree', school_id, major_slug: { $exists: false },
+    });
+  }
   if (!degree) return null;
 
   // What this CC articulates for this UC: the set of parent_ids, and the CC
   // course options that satisfy each — unioned across the CC's agreements.
   const agreements = await db.collection('assist_agreements')
-    .find({ uc_school_id: school_id, community_college_id })
+    .find({
+      uc_school_id: school_id,
+      community_college_id,
+      ...programPairClause(selectedMajor),
+    })
     .project({ requirement_groups: 1 })
     .toArray();
   const optionsByParent = new Map();
@@ -79,6 +101,7 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId }) {
   return {
     school_id,
     school: degree.school,
+    major_slug: selectedMajor.slug,
     program: degree.program,
     total_units: degree.total_units ?? null,
     unit_system: unitSystem,

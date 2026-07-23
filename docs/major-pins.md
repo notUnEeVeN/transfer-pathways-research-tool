@@ -7,20 +7,38 @@ handoff artifact between W1 Phase 0 (discovery + porting) and Phase 2 (the
 whitespace, which ASSIST does store.
 
 Plan: `docs/superpowers/plans/2026-07-22-bio-econ-onboarding.md`
-Campus set: the nine figure campuses (the `PAPER_MAJORS` keys in
-`server/services/analysis/pathways.js`).
+Campus set: the nine UC figure campuses configured in
+`server/config/majors.js`.
 
 ## Status
 
 | Major | Slug | Pins confirmed | Ported | Config entry | Launched |
 | --- | --- | --- | --- | --- | --- |
-| Computer Science | `cs` | ✅ (historical) | ✅ 18 programs, 2,415 agreements | pending F | ✅ |
-| Biology | `bio` | ✅ 2026-07-22 | ✅ 9 pins, 1,035 agreements | pending F | — |
-| Economics | `econ` | ✅ 2026-07-22 | ✅ 9 campus-pins (5 strings), 1,035 agreements | pending F | — |
+| Computer Science | `cs` | ✅ 9 canonical campus-pins | ✅ 9 pins, 1,035 agreements | ✅ | ✅ |
+| Biology | `bio` | ✅ 2026-07-22 | ✅ 9 pins, 1,035 agreements | ✅ | — |
+| Economics | `econ` | ✅ 2026-07-22 | ✅ 9 campus-pins (5 strings), 1,035 agreements | ✅ | — |
 
-Research cluster after Phase 0: **32 distinct programs, 4,485 agreements**
-(last refreshed 2026-07-22 23:40 UTC). The ported data is intentionally
-invisible in the console until sub-project F ships the major dimension.
+Research cluster after the canonical-CS cleanup: **27 campus/program pairs,
+3,105 agreements** (verified 2026-07-23 06:51 UTC): nine campus-pins and 1,035
+agreements each for CS, Biology, and Economics. The twelve retired CS sibling
+pairs (1,380 agreements and 9 admissions rows) were removed from active Atlas
+data after a durable recovery snapshot was verified.
+
+## Isolation invariant
+
+**Every analysis selects a configured major slug, and the slug resolves to
+exact campus/program pairs.** Major title substrings are discovery aids only;
+they are never an analysis boundary. Admin visibility and task selections also
+cannot change a figure's corpus.
+
+Curation rows follow the same boundary. Newly authored requirements, course
+categories, and receiver overrides carry `major_slug`; the CS loaders also
+accept missing/null stamps solely for the legacy CS curation that predates that
+field. A row stamped `bio`, `econ`, or any future slug cannot enter a CS figure.
+
+This is what makes onboarding safe: adding Biology, Economics, a CS
+specialization, or any future major cannot alter an existing CS result unless
+the exact `cs.programs` pins themselves are deliberately edited.
 
 ## How to read the counts (important)
 
@@ -33,6 +51,33 @@ becomes visible after porting (coverage/credit-loss views).
 
 The two Merced business-economics rows are the sole exception (109 + 6),
 because that program is mid-transition between catalog years.
+
+---
+
+## Computer Science (slug: `cs`)
+
+**Doctrine (corrected 2026-07-22): exactly one program per campus.** Earlier
+paper ports treated every CS-titled sibling program as one equivalency union.
+That made the figures depend on degrees they were not intended to analyze and
+made future database additions unsafe. The union doctrine is retired; both
+paper-style and current figures use these nine exact pairs.
+
+| UC campus | school_id | **Canonical pin (verbatim)** | Legacy sibling pairs excluded |
+| --- | --- | --- | --- |
+| UC Berkeley | 79 | `Electrical Engineering & Computer Sciences, B.S.` | Computer Science, B.A. |
+| UC Davis | 89 | `Computer Science B.S.` | Computer Science & Engineering B.S. |
+| UC Irvine | 120 | `Computer Science, B.S.` | Computer Science and Engineering, B.S. |
+| UC Los Angeles | 117 | `Computer Science/B.S.` | Computer Science and Engineering/B.S.; Linguistics and Computer Science/B.A. |
+| UC Merced | 144 | `COMPUTER SCIENCE AND ENGINEERING, B.S. ` | Applied Mathematical Sciences, Computer Science Emphasis, B.S. |
+| UC Riverside | 46 | `Computer Science, B.S.` | Computer Science with Business Applications B.S. |
+| UC San Diego | 7 | `CSE: Computer Science B.S.` | CSE: Computer Science with a Specialization in Bioinformatics B.S.; Mathematics/Computer Science B.S. |
+| UC Santa Barbara | 128 | `Computer Science, B.S.` | — |
+| UC Santa Cruz | 132 | `Computer Science B.S.` | Computer Science B.A.; Computer Science Minor; Computer Science: Computer Game Design B.S. |
+
+**Pin count: 9 programs, one per campus, 1,035 agreements.** Merced's trailing
+space is part of the stored ASSIST name. The twelve excluded campus/program
+pairs were removed from active Atlas data and are not alternate inputs to paper
+figures.
 
 ---
 
@@ -111,30 +156,18 @@ look at Merced advising pages at some point; not a blocker for porting, since
 
 ---
 
-## Match-string safety note (for the F implementer)
+## Exact-pair query rule
 
-**Verified against the live cluster 2026-07-22 — both match strings are
-clean.** A case-insensitive contains query returns exactly the pinned set and
-nothing else:
+The `match` strings (`computer science`, `biolog`, and `econom`) remain useful
+for search and import discovery. They are deliberately insufficient for
+analysis. All website and local-visual requests pass a `majorSlug`; the server
+resolves it through `server/config/majors.js` to an `$or` of exact
+`(uc_school_id, major)` pairs. The standalone Python paper calculations carry
+the same nine exact CS pairs in `analysis/major_pins.py` and test the full
+query shape.
 
-| Slug | `match` | Distinct programs matched | Agreements | Leaks |
-| --- | --- | --- | --- | --- |
-| `cs` | `computer science` | 18 | 2,415 | none |
-| `bio` | `biolog` | 9 | 1,035 | none |
-| `econ` | `econom` | 5 (covering 9 campuses) | 1,035 | none |
-
-The three sets are mutually exclusive — no biology program contains
-"econom", no economics program contains "biolog", and neither matches
-"computer science". So F can use the plain `majorContains` path for all three
-majors with no special-casing.
-
-This holds **because the research cluster only ever holds pinned programs** —
-`port.py` copies nothing else. If a future port ever brings in a non-pinned
-program containing those substrings (say Marine Biology for a separate
-comparison), the contains filter would leak. The durable fix, if that day
-comes, is to filter by the config's `programs` pins with an `$in` clause —
-the machinery already exists as `paperMajorsQuery` in
-`server/services/analysis/pathways.js`.
+Do not restore title-substring filtering as a fallback. A missing or unknown
+major slug should fail clearly instead of broadening the dataset.
 
 ## Port log
 
@@ -198,17 +231,14 @@ courses is **not** sufficient — it must also check institution profile fields.
 
 ## What happens next
 
-Phase 0 is complete. Remaining W1 phases are in
+Discovery, porting, and the code-configured major dimension are complete.
+Remaining W1 phases are in
 `docs/superpowers/plans/2026-07-22-bio-econ-onboarding.md`:
 
-- **Phase 1 (gate):** wait for sub-project F to merge to `main`. Until then
-  the ported data is deliberately invisible in the console — expected, not a
-  bug.
-- **Phase 2:** add the `bio` and `econ` entries to `server/config/majors.js`,
-  copying the `programs` pins from the tables above verbatim, with
-  capabilities `{ asDegrees: false, paperBaselines: false,
-  transferMinimums: false, snapshots: [] }`. Then enable them in Admin →
-  visible majors.
+- **Canonical cleanup (complete 2026-07-23 UTC):** removed the twelve excluded
+  CS pairs with `port.py remove-pairs`. Recovery manifest
+  `major-pair-removal-20260723T065112846564Z-e9fa871f` is complete and holds
+  1,380 agreements, 9 admissions rows, and the pre-removal settings document.
 - **Phase 3:** category + concept curation, so the gap figures render.
 - **Phase 4:** 18 degree templates (9 campuses × 2 majors).
 - **Phase 5:** QA sweep and per-major sign-off.
@@ -217,6 +247,8 @@ Phase 0 is complete. Remaining W1 phases are in
 W4 branch to merge — the `general` task type and preset library don't exist
 yet. Do it as soon as W4 lands.
 
-**Rollback:** any pin can be undone with
-`python port.py remove --exact "<program>"`. Curated data and audit verdicts
-are never touched, and re-adding reconnects them via preserved `_id`s.
+**Removal safety:** always run
+`python port.py remove-pairs --pair "<school_id>=<program>" --dry-run` first,
+then repeat without `--dry-run` and with `--yes` only after the exact counts
+match the intended scope. The command creates a recovery backup before
+rebuilding. Curated data and audit verdicts remain outside the deletion set.

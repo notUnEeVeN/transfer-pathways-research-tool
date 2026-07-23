@@ -4,6 +4,7 @@ import {
   normalizePairs,
 } from './majorVisibility';
 import { systemMatch, verdictMatch, scopeKey, SYSTEM_BY_KEY } from './audit/filters';
+import { listMajors, programPairs } from '../config/majors';
 
 const UC = SYSTEM_BY_KEY.get('uc');
 const CS_AT_1 = { school_id: 1, major: 'Computer Science B.S.' };
@@ -37,15 +38,15 @@ describe('majorScope', () => {
     invalidateVisibilityCache();
   });
 
-  // Majors are no longer gated by a settings document: everything ported is
-  // part of the corpus and each surface picks the major it displays. Account
-  // access is still enforced upstream by requireAuditAccess.
-  it('never restricts by major, whoever is asking', async () => {
-    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toBeNull();
+  it('always returns the configured exact pairs, independent of old settings', async () => {
+    const expected = listMajors().flatMap((major) => programPairs(major));
+    expect(expected).toHaveLength(27);
+    expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toEqual(expected);
     invalidateVisibilityCache();
-    expect(await majorScope(reqFor('partner-1', [CS_AT_1]))).toBeNull();
+    expect(await majorScope(reqFor('partner-1', [CS_AT_1]))).toEqual(expected);
     invalidateVisibilityCache();
-    expect(await majorScope(reqFor('partner-1', null))).toBeNull();
+    const unconfigured = { school_id: 79, major: 'Computer Science, B.A.' };
+    expect(await majorScope(reqFor('partner-1', null))).not.toContainEqual(unconfigured);
   });
 
   it('drops exact duplicate pairs, preserving order', () => {

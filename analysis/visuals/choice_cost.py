@@ -54,7 +54,7 @@ def render(rows, order, names, major_filter):
     bars = top.bar(x, means, color=STEP_COLORS[:len(order)], width=0.62)
     top.set_xticks(x, [f"{ORDINALS[i]}\n{shorten_school(names.get(sid, sid))}" for i, sid in enumerate(order)])
     top.set_ylabel("Mean additional CC courses")
-    top.set_title(f"Mean course cost of each added campus | Major contains: {major_filter}", loc="left")
+    top.set_title(f"Mean course cost of each added campus | Major: {major_filter}", loc="left")
     top.spines[["top", "right"]].set_visible(False)
     top.grid(axis="y", color=BORDER, linewidth=0.5)
     for bar, mean, count in zip(bars, means, counts):
@@ -84,7 +84,7 @@ def render(rows, order, names, major_filter):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--major", default="computer science", help="case-insensitive major-name filter")
+    parser.add_argument("--major", default="cs", help="configured major slug (default: cs)")
     parser.add_argument("--order", action="append", type=_parse_order,
                         help="comma-separated school ids in application order; may be repeated")
     add_delivery_arguments(parser)
@@ -100,7 +100,7 @@ def main(argv=None):
 
     variants = []
     for order in orders:
-        rows = compute("choice-cost", majorContains=args.major, schoolIds=order)
+        rows = compute("choice-cost", majorSlug=args.major, schoolIds=order)
         key = "order-" + "-".join(map(str, order))
         label = " -> ".join(shorten_school(names[school_id]) for school_id in order)
         variants.append(Variant(

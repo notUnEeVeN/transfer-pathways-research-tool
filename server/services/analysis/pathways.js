@@ -26,10 +26,22 @@ const systemsFor = () => SYSTEMS;
 
 // ── curation joins ──
 
-async function loadCuration(auditDb) {
+function majorDocumentFilter(majorSlug) {
+  const slug = String(majorSlug || '').trim();
+  if (!slug) return {};
+  // Existing CS curation predates major_slug. Treat only those legacy rows as
+  // CS; every newly onboarded major must be explicitly stamped.
+  if (slug === 'cs') {
+    return { $or: [{ major_slug: slug }, { major_slug: { $exists: false } }, { major_slug: null }] };
+  }
+  return { major_slug: slug };
+}
+
+async function loadCuration(auditDb, majorSlug = null) {
+  const majorClause = majorDocumentFilter(majorSlug);
   const [cats, overrides] = await Promise.all([
-    auditDb.collection('curated_mappings').find({ kind: 'course_category' }).toArray(),
-    auditDb.collection('curated_mappings').find({ kind: 'receiver_override' }).toArray(),
+    auditDb.collection('curated_mappings').find({ kind: 'course_category', ...majorClause }).toArray(),
+    auditDb.collection('curated_mappings').find({ kind: 'receiver_override', ...majorClause }).toArray(),
   ]);
   return {
     categoryByParent: new Map(cats.map((c) => [
@@ -239,9 +251,10 @@ function agreementMinSetExact(doc, isExcluded, coursesById) {
   };
 }
 
-async function loadTransferRequirements(db) {
+async function loadTransferRequirements(db, majorSlug = null) {
+  const majorClause = majorDocumentFilter(majorSlug);
   const rows = await db.collection('curated_requirements')
-    .find({ kind: 'transfer_minimum' }, { projection: {
+    .find({ kind: 'transfer_minimum', ...majorClause }, { projection: {
       school_id: 1, school: 1, uc_code: 1, group_id: 1, set_id: 1,
       receiving_code: 1, parent_ids: 1, matched: 1,
     } })
@@ -277,70 +290,88 @@ async function loadTransferRequirements(db) {
   return bySchool;
 }
 
-// Combined major scope: the optional contains-search AND the partner
-// visibility pair-allowlist (null = admin, unrestricted). Visibility is per
-// (school, major) pair — see services/majorVisibility.js.
-const { pairClause, readVisiblePairsUncached } = require('../majorVisibility');
-const { getMajor } = require('../../config/majors');
-// The exact ASSIST program the paper scraped per campus, from the cs entry in
-// config/majors.js (the single source of truth for program pins). The
-// paper-port figures pin to these stored names and IGNORE partner visibility
-// scoping — they are fixed aggregate research figures, and an admin toggling
-// visible majors (e.g. to UCB's EECS B.S.) must never change them.
-// Keep in sync with analysis/paper_credit_loss.PAPER_MAJORS.
-const PAPER_MAJORS = getMajor('cs').programs;
+// Combined major scope: the configured exact pairs (or an explicit legacy
+// contains-search) intersected with the caller's configured/authorized pair
+// allowlist. Visibility is per (school, major) pair.
+const { pairClause } = require('../majorVisibility');
+const {
+  getMajor, listMajors, programPairs, programPairClause,
+} = require('../../config/majors');
 
-function paperMajorsQuery(idField = 'uc_school_id') {
-  return { $or: Object.entries(PAPER_MAJORS).map(([sid, majors]) => ({ [idField]: Number(sid), major: { $in: majors } })) };
-}
+// The configured CS entry is the sole compatibility target for old
+// pin=paper/settings URLs. Both aliases now mean the same canonical nine
+// campus/program pairs; neither can restore a historical program union or a
+// mutable settings selection.
+const CANONICAL_CS_PROGRAMS = getMajor('cs').programs;
 
-// The nine figure campuses = the PAPER_MAJORS keys (UC school ids). Every
-// paper-port figure is scoped to exactly these campuses.
-const CAMPUS_SCHOOL_IDS = Object.keys(PAPER_MAJORS).map(Number);
-
-// pin==='settings': resolve each figure campus's program from the admin's
-// working-dataset selection (settings.app.visible_pairs),
-// scoped to the nine campuses and falling back to PAPER_MAJORS for any campus
-// the selection omits (so a campus is never dropped). This is how a paper-port
-// figure's ASSIST view tracks the selected program — e.g. UCB's EECS B.S. —
-// while its website/paper views stay pinned to PAPER_MAJORS. Ignores the
-// caller's partner scope (an aggregate research figure is identical for
-// everyone). Mirrors analysis/paper_credit_loss.load_canonical_majors.
-async function settingsMajors(auditDb) {
-  const pairs = await readVisiblePairsUncached(auditDb); // normalized [{school_id, major}], [] when unset
-  const byCampus = new Map();
-  for (const p of pairs) {
-    const sid = Number(p.school_id);
-    if (!CAMPUS_SCHOOL_IDS.includes(sid)) continue;
-    if (!byCampus.has(sid)) byCampus.set(sid, []);
-    byCampus.get(sid).push(String(p.major));
+function resolveProgramScope(majorSlug, majorPrograms) {
+  const slug = String(majorSlug || '').trim();
+  if (slug) {
+    const configured = getMajor(slug);
+    if (!configured) throw new Error(`unknown major: ${slug}`);
+    return majorPrograms || configured.programs;
   }
-  for (const sid of CAMPUS_SCHOOL_IDS) {
-    if (!byCampus.get(sid)?.length) byCampus.set(sid, [...PAPER_MAJORS[sid]]);
-  }
-  return byCampus;
+  return majorPrograms || null;
 }
 
-function settingsMajorsQuery(byCampus, idField = 'uc_school_id') {
-  return { $or: [...byCampus.entries()].map(([sid, majors]) => ({ [idField]: Number(sid), major: { $in: majors } })) };
+async function settingsMajors() {
+  return new Map(Object.entries(CANONICAL_CS_PROGRAMS)
+    .map(([schoolId, majors]) => [Number(schoolId), [...majors]]));
 }
 
-// The major-scope query for one system, honoring the coverage pin. Kept in one
-// place so coverageData and hardRequirementCoverageData resolve majors
-// identically. `settings` is the pre-resolved settingsMajors() map (null unless
-// pin==='settings').
-function coverageMajorQuery({ pin, majorContains, visiblePairs, settings }, idField) {
-  if (pin === 'paper') return paperMajorsQuery(idField);
-  if (pin === 'settings') return settingsMajorsQuery(settings, idField);
-  return majorFilter(majorContains, visiblePairs, idField);
+function coverageMajorQuery({
+  pin, majorSlug, majorPrograms, majorContains, visiblePairs,
+}, idField) {
+  const exactPrograms = resolveProgramScope(majorSlug, majorPrograms)
+    || (pin ? CANONICAL_CS_PROGRAMS : null);
+  return majorFilter({
+    majorSlug,
+    majorPrograms: exactPrograms,
+    majorContains: exactPrograms ? '' : majorContains,
+    // Pinned aggregate figures remain visibility-independent, but are still
+    // constrained to the canonical configured major.
+    visiblePairs: pin ? null : visiblePairs,
+  }, idField);
 }
 
-function majorFilter(majorContains, visiblePairs = null, idField = 'uc_school_id') {
+function majorFilter({
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+} = {}, idField = 'uc_school_id') {
   const clauses = [];
-  if (majorContains) clauses.push({ major: { $regex: escapeRegex(majorContains), $options: 'i' } });
+  const exactPrograms = resolveProgramScope(majorSlug, majorPrograms);
+  if (exactPrograms) clauses.push(programPairClause(exactPrograms, { schoolField: idField }));
+  // Free-text matching exists only for an explicit legacy caller. A resolved
+  // major slug always supplies majorPrograms and therefore never reaches this.
+  else if (majorContains) clauses.push({ major: { $regex: escapeRegex(majorContains), $options: 'i' } });
   if (visiblePairs != null) clauses.push(pairClause(visiblePairs, idField));
   if (!clauses.length) return {};
   return clauses.length === 1 ? clauses[0] : { $and: clauses };
+}
+
+function normalizeProgramName(value) {
+  return String(value || '')
+    .trim()
+    // UCSD's degree template carries its catalog code while the ASSIST pin
+    // carries the CSE department prefix.
+    .replace(/^\s*[a-z]{2,}\s*:\s*/i, '')
+    .replace(/\(\s*[a-z]{2,}\s*\d+[a-z0-9-]*\s*\)/ig, '')
+    .replace(/&/g, ' and ')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function degreeMatchesPrograms(degree, majorSlug, majorPrograms) {
+  const stampedSlug = String(degree.major_slug || '').trim();
+  const configured = programPairs(majorPrograms)
+    .filter((pair) => pair.school_id === Number(degree.school_id));
+  if (stampedSlug) {
+    return Boolean(majorSlug)
+      && stampedSlug === majorSlug
+      && configured.some((pair) => pair.major === String(degree.program));
+  }
+  const normalized = normalizeProgramName(degree.program);
+  return configured.some((pair) => normalizeProgramName(pair.major) === normalized);
 }
 
 function escapeRegex(s) {
@@ -436,17 +467,19 @@ function evaluateTransferRequirementModel(model, articulatedParentIds) {
   };
 }
 
-async function hardRequirementCoverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', pin = null } = {}, refs) {
+async function hardRequirementCoverageData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+  groupBy = 'college', pin = null,
+} = {}, refs) {
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
-  const requirementsBySchool = await loadTransferRequirements(db);
+  const effectiveMajorSlug = majorSlug || (pin ? 'cs' : null);
+  const requirementsBySchool = await loadTransferRequirements(db, effectiveMajorSlug);
   const buckets = new Map();
-  const settings = pin === 'settings' ? await settingsMajors(auditDb) : null;
 
   for (const sys of systemsFor()) {
-    // pin==='paper': exact scraped programs; pin==='settings': the working-
-    // dataset selection (both ignore visibility scoping — aggregate figures).
-    // Otherwise the normal major/visibility filter.
-    const query = coverageMajorQuery({ pin, majorContains, visiblePairs, settings }, sys.idField);
+    const query = coverageMajorQuery({
+      pin, majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField);
     const docs = await db.collection(sys.coll).find(query).toArray();
     for (const doc of docs) {
       const schoolRequirements = requirementsBySchool.get(Number(doc[sys.idField]));
@@ -593,26 +626,38 @@ function mergeGeAreas(communityCollegeIds, geAreasByCollege) {
  * Requirement-slot coverage is retained as a secondary structural measure.
  */
 async function degreeRequirementCoverageData(db, {
-  majorContains = '', visiblePairs = null, groupBy = 'college', pin = null,
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+  groupBy = 'college', pin = null,
 } = {}, refs) {
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
   const degreeFilter = { kind: 'degree' };
+  const exactPrograms = resolveProgramScope(majorSlug, majorPrograms)
+    || (pin ? CANONICAL_CS_PROGRAMS : null);
 
-  // Pinned aggregate figures are admin-defined and visibility-independent, as
-  // in the other coverage modes. Normal partner views remain campus-scoped.
-  if (!pin && visiblePairs != null) {
+  // Degree-template labels are not always byte-identical to ASSIST program
+  // names (for example UCSD includes "(CS26)"). Scope stamped templates by
+  // major_slug; for the nine legacy unstamped CS templates, load only the
+  // configured campuses and apply normalized campus/program equivalence below.
+  if (exactPrograms) {
+    degreeFilter.school_id = { $in: programPairs(exactPrograms).map((pair) => pair.school_id) };
+  } else if (!pin && visiblePairs != null) {
     const schoolIds = [...new Set(visiblePairs.map((pair) => Number(pair.school_id)).filter(Number.isFinite))];
     if (!schoolIds.length) return [];
     degreeFilter.school_id = { $in: schoolIds };
   }
-  if (!pin && majorContains) {
+  if (!exactPrograms && !pin && majorContains) {
     degreeFilter.program = { $regex: escapeRegex(majorContains), $options: 'i' };
   }
 
-  const degrees = await db.collection('curated_requirements')
+  const candidateDegrees = await db.collection('curated_requirements')
     .find(degreeFilter)
     .sort({ school_id: 1 })
     .toArray();
+  const degrees = exactPrograms
+    ? candidateDegrees.filter((degree) => degreeMatchesPrograms(
+      degree, majorSlug || (pin ? 'cs' : null), exactPrograms,
+    ))
+    : candidateDegrees;
   if (!degrees.length) return [];
 
   const schoolIds = [...new Set(degrees.map((degree) => Number(degree.school_id)).filter(Number.isFinite))];
@@ -620,8 +665,17 @@ async function degreeRequirementCoverageData(db, {
 
   // Return one compact row per campus-college pair. Doing this reduction in
   // Mongo avoids shipping every full agreement tree for a live heatmap refresh.
+  const exactArticulationScope = majorFilter({
+    majorSlug,
+    majorPrograms: exactPrograms,
+    majorContains: exactPrograms ? '' : majorContains,
+    visiblePairs: pin ? null : visiblePairs,
+  });
+  const articulationMatch = Object.keys(exactArticulationScope).length
+    ? { $and: [{ uc_school_id: { $in: schoolIds } }, exactArticulationScope] }
+    : { uc_school_id: { $in: schoolIds } };
   const articulationPipeline = [
-    { $match: { uc_school_id: { $in: schoolIds } } },
+    { $match: articulationMatch },
     { $unwind: '$requirement_groups' },
     { $unwind: '$requirement_groups.sections' },
     { $unwind: '$requirement_groups.sections.receivers' },
@@ -778,26 +832,31 @@ async function degreeRequirementCoverageData(db, {
   return rows;
 }
 
-async function coverageData(db, auditDb, { majorContains = '', visiblePairs = null, groupBy = 'college', requirements = 'assist', pin = null } = {}) {
+async function coverageData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+  groupBy = 'college', requirements = 'assist', pin = null,
+} = {}) {
   const refs = await loadRefs(db);
   if (requirements === 'degree') {
-    return degreeRequirementCoverageData(db, { majorContains, visiblePairs, groupBy, pin }, refs);
+    return degreeRequirementCoverageData(db, {
+      majorSlug, majorPrograms, majorContains, visiblePairs, groupBy, pin,
+    }, refs);
   }
   if (requirements === 'paper') {
-    return hardRequirementCoverageData(db, auditDb, { majorContains, visiblePairs, groupBy, pin }, refs);
+    return hardRequirementCoverageData(db, auditDb, {
+      majorSlug, majorPrograms, majorContains, visiblePairs, groupBy, pin,
+    }, refs);
   }
 
-  const curation = await loadCuration(auditDb);
+  const curation = await loadCuration(auditDb, majorSlug || (pin ? 'cs' : null));
   const isExcluded = makeIsExcluded(curation);
   const buckets = new Map();
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
-  const settings = pin === 'settings' ? await settingsMajors(auditDb) : null;
 
   for (const sys of systemsFor()) {
-    // pin==='paper': exact scraped programs; pin==='settings': the working-
-    // dataset selection (e.g. the paper heatmap's ASSIST view — see
-    // settingsMajors). Both ignore visibility scoping. Otherwise the normal filter.
-    const query = coverageMajorQuery({ pin, majorContains, visiblePairs, settings }, sys.idField);
+    const query = coverageMajorQuery({
+      pin, majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField);
     const docs = await db.collection(sys.coll).find(query).toArray();
     for (const doc of docs) {
       const memberships = membershipsFor(doc, refs, mode);
@@ -907,9 +966,12 @@ async function coverageData(db, auditDb, { majorContains = '', visiblePairs = nu
 async function requirementComparisonData(db, auditDb, { schoolId, major, communityCollegeId } = {}) {
   schoolId = Number(schoolId);
   communityCollegeId = Number(communityCollegeId);
+  const wantedMajor = String(major || '').trim();
+  const configuredMajor = listMajors().find((entry) =>
+    (entry.programs[schoolId] || []).some((program) => String(program).trim() === wantedMajor));
   const [requirementsBySchool, curation] = await Promise.all([
-    loadTransferRequirements(db),
-    loadCuration(auditDb),
+    loadTransferRequirements(db, configuredMajor?.slug || null),
+    loadCuration(auditDb, configuredMajor?.slug || null),
   ]);
   const model = requirementsBySchool.get(schoolId);
   const isExcluded = makeIsExcluded(curation);
@@ -920,19 +982,20 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   const collegeAll = await db.collection('assist_agreements').find(
     { uc_school_id: schoolId, community_college_id: communityCollegeId },
     { projection: { requirement_groups: 1, community_college: 1, uc_school: 1, major: 1 } }).toArray();
-  const wantedMajor = String(major || '').trim();
   const agreement = collegeAll.find((a) => String(a.major || '').trim() === wantedMajor) || null;
-  // Articulation reality: the college's CS agreements for this campus.
-  const collegeDocs = collegeAll.filter((a) => /computer science/i.test(a.major || ''));
+  // Articulation reality belongs to this exact program. Pooling sibling CS,
+  // CSE, joint, or minor agreements can make a missing canonical articulation
+  // appear present, which is the same cross-major leakage the aggregate
+  // figures guard against.
+  const collegeDocs = agreement ? [agreement] : [];
 
-  // College-level articulation: every UC parent_id this CC articulates for this
-  // campus (union across its CS agreements), plus a parent_id -> UC code label
-  // and the articulating CC course_ids (options as OR-of-AND, the specific
-  // agreement preferred so the CC courses match the ledger shown next door).
+  // College-level articulation: every UC parent_id this CC articulates in the
+  // selected exact agreement, plus a parent_id -> UC code label and the
+  // articulating CC course_ids (options as OR-of-AND).
   const articulatedParents = new Set();
   const codeOfParent = new Map();
   const ccByParent = new Map(); // parent_id -> string[][] (options -> CC course_id strings)
-  const orderedDocs = agreement ? [agreement, ...collegeDocs] : collegeDocs;
+  const orderedDocs = collegeDocs;
   for (const doc of orderedDocs) {
     for (const r of allReceivers(doc)) {
       const label = r.receiving && r.receiving.name;
@@ -1108,15 +1171,19 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
  *       campus calendar (quarter course = 2/3 semester course), the CA
  *       paper's semester-to-quarter loss axis. Uses institution calendar data.
  */
-async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
-  const curation = await loadCuration(auditDb);
+async function creditLossData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+} = {}) {
+  const curation = await loadCuration(auditDb, majorSlug);
   const refs = await loadRefs(db);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter({
+      majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField)).toArray();
     for (const doc of docs) {
       const solved = agreementMinSetExact(doc, isExcluded, coursesById);
       const calendar = refs.calendarByUniversity.get(Number(doc[sys.idField])) || null;
@@ -1155,13 +1222,18 @@ async function creditLossData(db, auditDb, { majorContains = '', visiblePairs = 
  * bars). For each CC and the given ORDERED list of schools, the incremental
  * CC courses each additional school demands beyond the union already taken.
  */
-async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = null, schoolIds = [] } = {}) {
-  const curation = await loadCuration(auditDb);
+async function choiceCostData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+  schoolIds = [],
+} = {}) {
+  const curation = await loadCuration(auditDb, majorSlug);
   const isExcluded = makeIsExcluded(curation);
   // agreements grouped per CC, in the requested school order
   const byCc = new Map();
   for (const sys of systemsFor()) {
-    const filter = { ...majorFilter(majorContains, visiblePairs, sys.idField) };
+    const filter = { ...majorFilter({
+      majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField) };
     if (schoolIds.length) filter[sys.idField] = { $in: schoolIds.map(Number) };
     const docs = await db.collection(sys.coll).find(filter).toArray();
     for (const doc of docs) {
@@ -1173,12 +1245,25 @@ async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = 
 
   const coursesById = await loadCoursesById(db);
   const order = schoolIds.map(Number);
+  const programOrder = new Map(programPairs(majorPrograms)
+    .map((pair, index) => [`${pair.school_id}|${pair.major}`, index]));
   const rows = [];
   for (const [ccId, { community_college, agreements }] of byCc) {
     const taken = new Set();
     const steps = [];
     for (const schoolId of order) {
-      const entry = agreements.find((a) => Number(a.doc[a.sys.idField]) === schoolId);
+      // Exact configured scopes normally yield one program per campus. If a
+      // future major intentionally configures alternatives, choose by config
+      // order (then stable document identity) instead of Mongo return order.
+      const entry = agreements
+        .filter((a) => Number(a.doc[a.sys.idField]) === schoolId)
+        .sort((a, b) => {
+          const aRank = programOrder.get(`${schoolId}|${a.doc.major}`) ?? Number.MAX_SAFE_INTEGER;
+          const bRank = programOrder.get(`${schoolId}|${b.doc.major}`) ?? Number.MAX_SAFE_INTEGER;
+          return aRank - bRank
+            || String(a.doc.major).localeCompare(String(b.doc.major))
+            || String(a.doc._id || '').localeCompare(String(b.doc._id || ''));
+        })[0];
       if (!entry) {
         steps.push({ school_id: schoolId, school: null, has_agreement: false, additional_courses: null });
         continue;
@@ -1211,13 +1296,17 @@ async function choiceCostData(db, auditDb, { majorContains = '', visiblePairs = 
  * equivalent. Requires curation tags; untagged receivers land in category
  * null so the untagged share is visible rather than silently dropped.
  */
-async function categoryGapsData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
-  const curation = await loadCuration(auditDb);
+async function categoryGapsData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+} = {}) {
+  const curation = await loadCuration(auditDb, majorSlug);
   const isExcluded = makeIsExcluded(curation);
   // key: system|school|category → { ccsWith: Set, ccsMissing: Set }
   const agg = new Map();
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter({
+      majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField)).toArray();
     for (const doc of docs) {
       const cc = Number(doc.community_college_id);
       // Walk sections (not a flat receiver list) so choose-N context survives: a
@@ -1277,15 +1366,19 @@ async function categoryGapsData(db, auditDb, { majorContains = '', visiblePairs 
  * Edges come from services/prereqGraph (concept rules × course concept tags);
  * coverage counts pathway courses that have been examined (concept_source set).
  */
-async function complexityData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
-  const curation = await loadCuration(auditDb);
+async function complexityData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+} = {}) {
+  const curation = await loadCuration(auditDb, majorSlug);
   const isExcluded = makeIsExcluded(curation);
   const prereqsByKey = await projectPrereqEdges(db);
   const coursesById = await loadCoursesById(db);
 
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter({
+      majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField)).toArray();
     for (const doc of docs) {
       const solved = agreementMinSetExact(doc, isExcluded, coursesById);
       const keys = solved.courses.map((id) => `cc:${id}`);
@@ -1350,14 +1443,16 @@ async function complexityData(db, auditDb, { majorContains = '', visiblePairs = 
  *   lost_units + est. cost — the non-mapping remainder, costed with
  *       institution tuition (per-credit, university side) as the papers do.
  */
-async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
-  const curation = await loadCuration(auditDb);
+async function timeToDegreeData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+} = {}) {
+  const curation = await loadCuration(auditDb, majorSlug);
   const refs = await loadRefs(db);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
   const degrees = await auditDb.collection('curated_requirements')
-    .find({ kind: 'associate_degree' }).toArray();
+    .find({ kind: 'associate_degree', ...majorDocumentFilter(majorSlug) }).toArray();
   const byCc = new Map();
   for (const d of degrees) {
     const cc = Number(d.community_college_id);
@@ -1367,7 +1462,9 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs 
 
   const rows = [];
   for (const sys of systemsFor()) {
-    const docs = await db.collection(sys.coll).find(majorFilter(majorContains, visiblePairs, sys.idField)).toArray();
+    const docs = await db.collection(sys.coll).find(majorFilter({
+      majorSlug, majorPrograms, majorContains, visiblePairs,
+    }, sys.idField)).toArray();
     for (const doc of docs) {
       const ccDegrees = byCc.get(Number(doc.community_college_id)) || [];
       if (!ccDegrees.length) continue;
@@ -1409,10 +1506,12 @@ async function timeToDegreeData(db, auditDb, { majorContains = '', visiblePairs 
  * Every agreement in scope, as stored (full requirement_groups). One call
  * replaces 115 per-college fetches when a script wants the whole corpus.
  */
-async function agreementsExportData(db, auditDb, { majorContains = '', visiblePairs = null } = {}) {
+async function agreementsExportData(db, auditDb, {
+  majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
+} = {}) {
   const sys = SYSTEMS[0];
   const docs = await db.collection(sys.coll)
-    .find(majorFilter(majorContains, visiblePairs, sys.idField))
+    .find(majorFilter({ majorSlug, majorPrograms, majorContains, visiblePairs }, sys.idField))
     .toArray();
   return docs.map((d) => ({ ...d, _id: String(d._id) }));
 }
@@ -1495,5 +1594,8 @@ module.exports = {
   _chooseNMinimum: chooseNMinimum,
   _agreementMinSetExact: agreementMinSetExact,
   _settingsMajors: settingsMajors,
-  _paperMajors: PAPER_MAJORS,
+  _canonicalCsPrograms: CANONICAL_CS_PROGRAMS,
+  // Temporary private alias for downstream tests/tools that imported the old
+  // name. Its value is canonical now; there is no historical union remaining.
+  _paperMajors: CANONICAL_CS_PROGRAMS,
 };

@@ -2,6 +2,10 @@
 
 > Current paper-matched data · 9 UC campuses × 72 community college districts · July 21, 2026
 
+Current-data rows use the same nine exact canonical CS campus/program pairs as
+the district heatmap. The canonical-scope rerun preserves the distribution;
+adding other majors or CS sibling programs to Atlas cannot change it.
+
 ## Result
 
 Figure 3 counts how many districts have complete articulation with exactly

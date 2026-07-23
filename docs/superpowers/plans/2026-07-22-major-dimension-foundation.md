@@ -1,5 +1,17 @@
 # Major-Dimension Foundation Implementation Plan
 
+> **Canonical-pair amendment (2026-07-22):** The detailed task log below is
+> retained as implementation history, but its “only CS”, historical program
+> union, mutable visible-pairs, substring-equivalence, frozen-artifact, and
+> byte-identical-output requirements are superseded by the amendment in the
+> [design spec](../specs/2026-07-22-major-dimension-foundation-design.md).
+> Current behavior is exact-pair scoped: CS/Biology/Economics are configured,
+> CS contains one canonical program at each of nine campuses, `majorSlug`
+> resolves to exact pairs, all current figures explicitly use CS, and affected
+> affected artifacts have been regenerated for that canonical scope, and the
+> 12 noncanonical CS pairs have been removed from Atlas with a verified durable
+> backup (leaving 27 pairs / 3,105 agreements).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make "major" a selectable, config-driven dimension across the console while keeping the app pixel- and byte-identical for CS (the only onboarded major).

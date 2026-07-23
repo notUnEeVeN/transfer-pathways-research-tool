@@ -1,6 +1,6 @@
 """Extract real ASSIST CS agreements as DB-free golden cases for the optimizer port.
 
-Pulls a deterministic, varied sample of agreements for the 9 settings-selected
+Pulls a deterministic, varied sample of agreements for the 9 code-pinned
 canonical CS majors, slims each requirement_groups tree to the fields the
 eligibility engine + optimizer read, resolves the referenced CC courses
 (units + same_as), and writes analysis/tests/fixtures/min_courses_real_cases.json.
@@ -11,6 +11,7 @@ Run once (and whenever the canonical majors change):
 """
 import json
 import os
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -19,6 +20,9 @@ from pymongo import MongoClient
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "fixtures" / "min_courses_real_cases.json"
+sys.path.insert(0, str(HERE.parent))
+
+from major_pins import canonical_cs_query  # noqa: E402
 
 # Fields the eligibility predicates + optimizer actually read.
 GROUP_KEYS = ("is_required", "group_advisement", "group_conjunction", "group_unit_advisement",
@@ -68,9 +72,7 @@ def main():
     db = MongoClient(os.environ["TARGET_MONGO_URI"], serverSelectionTimeoutMS=8000)[
         os.environ.get("TARGET_DB_NAME", "pmt_research")]
 
-    pairs = {(int(p["school_id"]), p["major"])
-             for p in db.settings.find_one({"_id": "app"})["visible_pairs"]}
-    q = {"$or": [{"uc_school_id": sid, "major": m} for sid, m in pairs]}
+    q = canonical_cs_query()
 
     courses = {int(c["course_id"]): {"units": c.get("units"),
                                      "same_as": [{"course_id": str(p.get("course_id"))}

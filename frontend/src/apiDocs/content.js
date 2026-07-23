@@ -169,10 +169,10 @@ export const ENDPOINT_GROUPS = [
       },
       {
         method: 'GET',
-        path: '/curated/degree-evaluation?school_id=79&community_college_id=113',
+        path: '/curated/degree-evaluation?school_id=79&community_college_id=113&majorSlug=cs',
         title: 'Evaluate one degree at one college',
-        plain: 'The degree ledger, transferable coverage, and tier totals for a campus/college pair.',
-        returns: '{ school_id, community_college_id, completion, groups, ... }',
+        plain: 'The selected major’s degree ledger, transferable coverage, and tier totals for a campus/college pair.',
+        returns: '{ school_id, community_college_id, major_slug, completion, groups, ... }',
       },
     ],
   },

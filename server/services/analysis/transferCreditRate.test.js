@@ -265,6 +265,59 @@ describe('transferCreditRateData v2', () => {
     expect(cell.method_warning || '').not.toMatch(/major fallback/i);
   });
 
+  it('excludes adjacent CS programs when called with the configured CS slug', async () => {
+    await seedTemplate({
+      schoolId: 79,
+      school: 'UC Berkeley',
+      program: 'Electrical Engineering & Computer Sciences, B.S.',
+      groups: [namedGroup([{
+        section_advisement: 1,
+        receivers: [ucCourse(7901)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 79,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        receivers: [asReceiver(790)],
+      }])],
+    });
+    await seedCourses([[790, 4]]);
+    await seedAgreement({
+      schoolId: 79,
+      collegeId: 79,
+      major: 'Electrical Engineering & Computer Sciences, B.S.',
+      receivers: [],
+    });
+    await seedAgreement({
+      schoolId: 79,
+      collegeId: 79,
+      major: 'Computer Science, B.A.',
+      receivers: [articulated({ kind: 'course', parent_id: 7901 }, [790])],
+    });
+    await db.collection('curated_requirements').insertOne({
+      _id: 'degree:79:cs-mislabeled',
+      kind: 'degree',
+      major_slug: 'cs',
+      school_id: 79,
+      school: 'UC Berkeley',
+      program: 'Computer Science, B.A.',
+      total_units: 120,
+      requirement_groups: [namedGroup([{
+        section_advisement: 1,
+        receivers: [ucCourse(7901)],
+      }])],
+    });
+
+    const rows = await transferCreditRateData(db, null, {
+      degreeType: 'local_cs_as', majorSlug: 'cs',
+    });
+    const scoped = rows.filter((row) => row.community_college_id === 79 && row.school_id === 79);
+    expect(scoped).toHaveLength(1);
+    const [cell] = scoped;
+    expect(cell).toMatchObject({ major_slug: 'cs', named_transferred_units: 0 });
+  });
+
   it('enforces UC choose-N capacity and requires the complete sending option for a series', async () => {
     await seedTemplate({
       schoolId: 4,

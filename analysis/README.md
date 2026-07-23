@@ -23,6 +23,12 @@ renderer already shipped with the website. The Python implementations under
 bridge at `server/scripts/computeVisualData.js` reuses the canonical calculation
 functions directly; it is not an API route.
 
+All data-backed visual requests use a configured `majorSlug`, which resolves
+to exact campus/program pairs. Generic visual entry points default to `cs` and
+accept another configured slug through `--major`; the California/MA paper
+ports are intentionally fixed to the nine canonical CS pins. Neither path
+uses title-substring discovery or settings as an analysis scope.
+
 ## Setup
 
 ```bash

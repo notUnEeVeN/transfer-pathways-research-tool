@@ -133,6 +133,10 @@ describe('built-in visual registry', () => {
     ])
   })
 
+  it('pins every current figure to the canonical CS major', () => {
+    expect(ANALYSES.every((analysis) => analysis.pinnedMajor === 'cs')).toBe(true)
+  })
+
   it('uses clean, plain-language titles and descriptions in the gallery', () => {
     expect(ANALYSES.map((analysis) => analysis.title)).toEqual([
       'Credit loss by campus',

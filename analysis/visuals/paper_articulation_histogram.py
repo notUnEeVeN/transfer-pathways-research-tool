@@ -97,8 +97,7 @@ def main(argv=None):
     apply_style()
 
     rows = compute(
-        "coverage", majorContains="computer science", groupBy="district",
-        requirements="paper", pin="paper",
+        "coverage", majorSlug="cs", groupBy="district", requirements="paper",
     )
     variants = [
         Variant(

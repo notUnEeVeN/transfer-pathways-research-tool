@@ -16,12 +16,12 @@ METRICS = {
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--major", default="computer science", help="case-insensitive major-name filter")
+    parser.add_argument("--major", default="cs", help="configured major slug (default: cs)")
     add_delivery_arguments(parser)
     args = parser.parse_args(argv)
     apply_style()
 
-    rows = compute("credit-loss", majorContains=args.major)
+    rows = compute("credit-loss", majorSlug=args.major)
     variants = []
     for key, metric in METRICS.items():
         variants.append(Variant(
@@ -35,7 +35,7 @@ def main(argv=None):
                 unit=metric["unit"],
                 title=(
                     f"Agreements by cheapest-path {metric['unit'].lower()}, per campus\n"
-                    f"Major contains: {args.major}"
+                    f"Major: {args.major}"
                 ),
             ),
         ))
@@ -53,7 +53,7 @@ def main(argv=None):
         title="Cheapest-path credit load",
         caption=(
             "Distribution of the exact minimum CC courses or units needed to satisfy each "
-            f"agreement for majors containing '{args.major}'."
+            f"agreement for the configured '{args.major}' major."
         ),
         variants=variants,
         controls=controls,

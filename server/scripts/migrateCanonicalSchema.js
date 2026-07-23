@@ -61,6 +61,30 @@ const setIfNewer = (map, row) => {
   if (!current || rowTime(row) >= rowTime(current)) map.set(key, row);
 };
 
+// These fields are edited directly on the canonical institution row.  A
+// source port recreates the legacy college catalog before this migration runs,
+// so treating that catalog as the whole institution record would erase the
+// team's district curation on every port/rebuild.
+const CURATED_INSTITUTION_FIELDS = Object.freeze([
+  'district',
+  'region',
+  'counties_served',
+  'district_source',
+  'district_source_college_name',
+  'curated_by',
+  'curated_at',
+  'updated_at',
+]);
+
+function carryCuratedInstitutionFields(imported, existing) {
+  if (!existing) return imported;
+  const carried = {};
+  for (const field of CURATED_INSTITUTION_FIELDS) {
+    if (existing[field] !== undefined) carried[field] = existing[field];
+  }
+  return { ...imported, ...carried };
+}
+
 function canonicalPrereqKey(value) {
   const key = String(value || '');
   if (key.startsWith('uni:')) return `university:${key.slice(4)}`;
@@ -208,7 +232,12 @@ async function buildModel(db) {
       };
     }),
   ];
-  const institutions = importedInstitutions.length ? importedInstitutions : existingInstitutions.map((row) => {
+  const existingInstitutionById = new Map(
+    existingInstitutions.map((row) => [String(row._id), row])
+  );
+  const institutions = importedInstitutions.length ? importedInstitutions.map((row) => (
+    carryCuratedInstitutionFields(row, existingInstitutionById.get(String(row._id)))
+  )) : existingInstitutions.map((row) => {
     if (row.kind === 'community_college') {
       const district = districtById.get(Number(row.source_id));
       return district ? {
@@ -435,7 +464,17 @@ async function buildModel(db) {
     canonical_dirty: false,
   };
   delete appSettings.schema_version;
-  const settings = [appSettings];
+  // `settings` is shared application state, not a singleton collection.  In
+  // particular, the AS-degree validation cohort lives in its own settings
+  // document.  Keep every non-app document byte-for-byte and only normalize
+  // the fields owned by this migration on settings.app.
+  const settingsById = new Map(
+    existingSettings
+      .filter((row) => row._id !== 'app')
+      .map((row) => [String(row._id), row])
+  );
+  settingsById.set('app', appSettings);
+  const settings = [...settingsById.values()];
 
   const importedFigures = figures.map((row) => ({
     ...withoutId(row),
@@ -504,6 +543,7 @@ async function buildModel(db) {
       reviews: agreementReviews.length,
       members: members.length,
       figures: publishedFigures.length,
+      settings: settings.length,
     },
     prerequisiteCoverage: {
       rows: prerequisiteEvidence.length || existingPrerequisites.filter(
@@ -591,7 +631,9 @@ const VALIDATORS = Object.freeze({
     },
   },
   settings: {
-    $jsonSchema: { bsonType: 'object', required: ['_id', 'visible_pairs', 'canonical_dirty'] },
+    // Only settings.app owns visible_pairs/canonical_dirty. Other documents
+    // have independent schemas (for example, as_degree_validation).
+    $jsonSchema: { bsonType: 'object', required: ['_id'] },
   },
   published_figures: {
     $jsonSchema: {
@@ -632,6 +674,12 @@ async function validateModel(model) {
     reviews: c.agreement_reviews.length === model.sourceCounts.reviews,
     members: c.team_members.length === model.sourceCounts.members,
     figures: c.published_figures.length === model.sourceCounts.figures,
+    settings: c.settings.length === model.sourceCounts.settings
+      && c.settings.some((row) => (
+        row._id === 'app'
+        && Array.isArray(row.visible_pairs)
+        && typeof row.canonical_dirty === 'boolean'
+      )),
   };
   const failed = Object.entries(checks).filter(([, ok]) => !ok).map(([name]) => name);
   if (failed.length) throw new Error(`model validation failed: ${failed.join(', ')}`);

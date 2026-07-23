@@ -151,6 +151,7 @@ export const ANALYSES = [
   },
   {
     id: 'coverage-heatmap',
+    pinnedMajor: 'cs',
     title: 'Potential graduation-unit coverage',
     description: 'Shows what share of each university program’s modeled graduation units has a community-college equivalent.',
     provenance: 'ma',
@@ -182,6 +183,7 @@ export const ANALYSES = [
   },
   {
     id: 'credit-loss',
+    pinnedMajor: 'cs',
     title: 'Minimum transfer coursework',
     description: 'Shows the fewest courses or units needed to complete each campus transfer agreement.',
     provenance: 'ca',
@@ -191,6 +193,7 @@ export const ANALYSES = [
   },
   {
     id: 'choice-cost',
+    pinnedMajor: 'cs',
     title: 'Cost of applying to more campuses',
     description: 'Shows how many additional community college courses are needed as students add more campus options.',
     provenance: 'ca',
@@ -200,6 +203,7 @@ export const ANALYSES = [
   },
   {
     id: 'category-gaps',
+    pinnedMajor: 'cs',
     title: 'Missing courses by subject',
     description: 'Shows where community colleges do not offer an equivalent course, organized by campus and subject.',
     provenance: 'ca',
@@ -209,6 +213,7 @@ export const ANALYSES = [
   },
   {
     id: 'complexity',
+    pinnedMajor: 'cs',
     title: 'Transfer pathway complexity',
     description: 'Shows how prerequisites can delay progress or block students along each transfer pathway.',
     provenance: 'ma',
@@ -219,6 +224,7 @@ export const ANALYSES = [
   },
   {
     id: 'time-to-degree',
+    pinnedMajor: 'cs',
     title: 'Associate degree transfer credit',
     description: 'Shows how much of an associate degree counts toward transfer requirements and estimates the cost of units that do not count.',
     provenance: 'ma',

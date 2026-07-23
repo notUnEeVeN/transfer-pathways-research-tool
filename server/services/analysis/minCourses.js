@@ -50,7 +50,7 @@ const articulatedReceivers = (section) =>
  * from the following" group stops the picker after one course (the bucket reads
  * "done" off that course) while the group is still short.
  */
-function sectionClosesItsReceivers(section, group, virtual, crossCc) {
+function sectionClosesItsReceivers(section, group, virtual, crossCc, strict = false) {
   // A parent unit ask sums every completed receiver directly; section caps do
   // not cap that rollup in the eligibility engine. Even a section that is
   // locally "complete" can therefore still contribute another receiver.
@@ -63,7 +63,7 @@ function sectionClosesItsReceivers(section, group, virtual, crossCc) {
   // section_advisement. A section unit ask can be complete while another raw
   // receiver in it still raises the parent's course contribution.
   if (groupHasAsk && section.section_advisement == null) return false
-  return isSectionCompleted(section, virtual, crossCc)
+  return isSectionCompleted(section, virtual, crossCc, strict)
 }
 
 function isSectionAllReceiversMandatory(section) {
@@ -211,6 +211,29 @@ function catalogIdsSatisfying(rawId, coursesById) {
   })
   byId.set(id, result)
   return result
+}
+
+function hasFeasiblePrerequisiteOrder(
+  ids,
+  coursesById,
+  prerequisiteGroupsByCourse,
+  userCourses = [],
+) {
+  const remaining = new Set((ids || []).map(String))
+  const completed = [...(userCourses || [])]
+  while (remaining.size) {
+    const ready = [...remaining].filter((courseId) =>
+      (prerequisiteGroupsByCourse.get(courseId) || []).every((group) =>
+        (group.anyOf || []).some((rawId) =>
+          isCourseCompleted(String(rawId).replace(/^cc:/, ''), completed))))
+    if (!ready.length) return false
+    for (const courseId of ready) {
+      remaining.delete(courseId)
+      const synthetic = syntheticCourseFor(courseId, coursesById)
+      if (synthetic) completed.push(synthetic)
+    }
+  }
+  return true
 }
 
 /**
@@ -1011,8 +1034,268 @@ function selectMissingAcrossMajorsExact(majors, ctx) {
   return returnedIds
 }
 
+/*
+ * Joint exact search for district plans.
+ *
+ * The ordinary research picker minimizes the direct ASSIST course set. A
+ * district plan, however, is displayed after known prerequisites are added.
+ * Optimizing those stages separately can choose a superficially cheap direct
+ * path whose prerequisite closure is larger than another valid ASSIST path.
+ *
+ * This search keeps one selected-course state and treats two kinds of open
+ * constraints identically:
+ *   1. an incomplete required ASSIST group; and
+ *   2. an unsatisfied prerequisite any-of group activated by a selected course.
+ *
+ * Every feasible completion must add at least one move from each open
+ * constraint, so branching on the smallest frontier is exhaustive. The
+ * objective is total selected courses, then native units, then stable ids.
+ * `feasibleSeedIds` is only an incumbent; it cannot affect the proof.
+ */
+// A real district pair (Cabrillo UCR + UCB) needs 604,090 states to complete
+// the proof, while remaining below the ordinary five-second time budget. One
+// million removes that artificial bound without making the state cap looser
+// than the independent wall-clock budget.
+const DEFAULT_CLOSED_SEARCH_MAX_STATES = 1000000
+
+function normalizeClosedSearchMaxStates(value) {
+  const parsed = Number(value ?? DEFAULT_CLOSED_SEARCH_MAX_STATES)
+  return Number.isFinite(parsed) && parsed >= 1
+    ? Math.floor(parsed)
+    : DEFAULT_CLOSED_SEARCH_MAX_STATES
+}
+
+function selectClosedAcrossMajorsOptimal(majors, ctx = {}) {
+  const startedAt = Date.now()
+  const coursesById = ctx.coursesById
+  const prerequisiteGroupsByCourse = ctx.prerequisiteGroupsByCourse || new Map()
+  const includeRecommended = ctx.includeRecommended ?? false
+  const crossCc = ctx.crossCc || []
+  const strict = ctx.strict ?? true
+  const timeBudgetMs = Number(ctx.timeBudgetMs ?? 5000)
+  const maxStates = normalizeClosedSearchMaxStates(ctx.maxStates)
+  const telemetry = ctx.telemetry || null
+  const deadline = startedAt + (Number.isFinite(timeBudgetMs) ? timeBudgetMs : 5000)
+  let stopped = false
+  let timeBudgetHit = false
+  let stateCapHit = false
+  let statesExplored = 0
+  let cyclicLeavesRejected = 0
+  const cartesianFallbackKeys = new Set()
+  const noteCartesianFallback = (receiver) => {
+    cartesianFallbackKeys.add(String(
+      receiver?.hash_id || JSON.stringify(receiver?.options || []),
+    ))
+  }
+
+  const unsupportedUnitFallbacks = (majors || []).reduce((count, major) =>
+    count + (major?.requirement_groups || []).reduce((groupCount, group) => {
+      if (!group.is_required && !includeRecommended) return groupCount
+      return groupCount + (group.sections || []).reduce((sectionCount, section) => {
+        const unitSensitive = group.group_unit_advisement != null
+          || section.unit_advisement != null
+        if (!unitSensitive) return sectionCount
+        return sectionCount + (section.receivers || [])
+          .filter((receiver) => receiver.articulation_status !== 'not_articulated'
+            && receiver.receiving?.units == null).length
+      }, 0)
+    }, 0), 0)
+
+  const applyIds = (virtual, ids) => {
+    const out = [...virtual]
+    for (const id of normalizeNewIds(ids, out, coursesById)) {
+      const synthetic = syntheticCourseFor(id, coursesById)
+      if (synthetic) out.push(synthetic)
+    }
+    return out
+  }
+  const transcriptFor = (ids) => applyIds([...(ctx.userCourses || [])], ids)
+  const prerequisiteSatisfied = (group, virtual) =>
+    (group?.anyOf || []).some((rawId) =>
+      isCourseCompleted(String(rawId).replace(/^cc:/, ''), virtual))
+  const prerequisitesCompleted = (ids, virtual) => ids.every((id) =>
+    (prerequisiteGroupsByCourse.get(String(id)) || [])
+      .every((group) => prerequisiteSatisfied(group, virtual)))
+  const majorsCompleted = (virtual) => (majors || []).length === 0
+    || (majors || []).every((major) => isMajorCompleted(major, virtual, crossCc, strict))
+
+  const majorFrontiers = (virtual) => {
+    const frontiers = []
+    for (let majorIndex = 0; majorIndex < (majors || []).length; majorIndex += 1) {
+      const major = majors[majorIndex]
+      const groups = major?.requirement_groups || []
+      for (let groupIndex = 0; groupIndex < groups.length; groupIndex += 1) {
+        const group = groups[groupIndex]
+        if (!group.is_required && !includeRecommended) continue
+        if (isGroupCompleted(group, virtual, crossCc, strict)) continue
+        const moves = []
+        for (const section of group.sections || []) {
+          if (sectionClosesItsReceivers(section, group, virtual, crossCc, strict)) continue
+          for (const receiver of section.receivers || []) {
+            if (receiver.articulation_status === 'not_articulated') continue
+            if (isReceiverCompleted(receiver, virtual, crossCc)) continue
+            moves.push(...movesForReceiver(
+              receiver,
+              coursesById,
+              noteCartesianFallback,
+              ctx.suppressWarnings ?? false,
+            ))
+          }
+        }
+        const deduped = new Map()
+        for (const move of moves) {
+          const ids = normalizeNewIds(move, virtual, coursesById)
+          if (ids.length) deduped.set(ids.join(','), ids)
+        }
+        frontiers.push({
+          key: `major:${majorIndex}:${groupIndex}`,
+          moves: [...deduped.values()],
+        })
+      }
+    }
+    return frontiers
+  }
+
+  const prerequisiteFrontiers = (ids, virtual) => {
+    const frontiers = []
+    for (const courseId of ids) {
+      const groups = prerequisiteGroupsByCourse.get(String(courseId)) || []
+      for (let groupIndex = 0; groupIndex < groups.length; groupIndex += 1) {
+        const group = groups[groupIndex]
+        if (prerequisiteSatisfied(group, virtual)) continue
+        const deduped = new Map()
+        for (const rawId of group.anyOf || []) {
+          const prerequisiteId = String(rawId).replace(/^cc:/, '')
+          for (const candidate of catalogIdsSatisfying(prerequisiteId, coursesById)) {
+            const move = normalizeNewIds([candidate], virtual, coursesById)
+            if (move.length) deduped.set(move.join(','), move)
+          }
+        }
+        frontiers.push({
+          key: `prerequisite:${courseId}:${groupIndex}`,
+          moves: [...deduped.values()],
+        })
+      }
+    }
+    return frontiers
+  }
+
+  const compareSolutions = (leftIds, rightIds) => {
+    if (!rightIds) return -1
+    if (leftIds.length !== rightIds.length) return leftIds.length - rightIds.length
+    const unitDifference = totalUnits(leftIds, coursesById) - totalUnits(rightIds, coursesById)
+    return unitDifference || leftIds.join(',').localeCompare(rightIds.join(','))
+  }
+
+  const seedIds = normalizeNewIds(
+    ctx.feasibleSeedIds || [],
+    [...(ctx.userCourses || [])],
+    coursesById,
+  )
+  const seedTranscript = transcriptFor(seedIds)
+  let bestIds = seedIds.length
+    && majorsCompleted(seedTranscript)
+    && prerequisitesCompleted(seedIds, seedTranscript)
+    && hasFeasiblePrerequisiteOrder(
+      seedIds, coursesById, prerequisiteGroupsByCourse, ctx.userCourses || [],
+    )
+    ? seedIds.slice().sort()
+    : null
+  const seenStates = new Set()
+
+  const dfs = (ids, virtual) => {
+    statesExplored += 1
+    if (statesExplored > maxStates || Date.now() > deadline) {
+      stopped = true
+      stateCapHit = statesExplored > maxStates
+      timeBudgetHit = !stateCapHit
+      return
+    }
+    const stateKey = ids.join(',')
+    if (seenStates.has(stateKey)) return
+    seenStates.add(stateKey)
+
+    const completeMajors = majorsCompleted(virtual)
+    const completePrerequisites = prerequisitesCompleted(ids, virtual)
+    if (completeMajors && completePrerequisites) {
+      if (hasFeasiblePrerequisiteOrder(
+        ids, coursesById, prerequisiteGroupsByCourse, ctx.userCourses || [],
+      )) {
+        if (compareSolutions(ids, bestIds) < 0) bestIds = ids.slice()
+      } else {
+        cyclicLeavesRejected += 1
+      }
+      return
+    }
+    // Every move adds at least one course. Once an incomplete state has used
+    // the incumbent's course count it cannot tie, much less improve, it.
+    if (bestIds && ids.length >= bestIds.length) return
+
+    const frontiers = [
+      ...(completeMajors ? [] : majorFrontiers(virtual)),
+      ...(completePrerequisites ? [] : prerequisiteFrontiers(ids, virtual)),
+    ]
+    if (!frontiers.length || frontiers.some((frontier) => !frontier.moves.length)) return
+    frontiers.sort((left, right) => left.moves.length - right.moves.length
+      || left.key.localeCompare(right.key))
+    const moves = frontiers[0].moves
+      .map((moveIds) => ({
+        ids: moveIds,
+        units: totalUnits(moveIds, coursesById),
+      }))
+      .sort((left, right) => left.ids.length - right.ids.length
+        || left.units - right.units
+        || left.ids.join(',').localeCompare(right.ids.join(',')))
+
+    for (const move of moves) {
+      const nextIds = [...ids, ...move.ids].sort()
+      dfs(nextIds, applyIds(virtual, move.ids))
+      if (stopped) return
+    }
+  }
+
+  dfs([], [...(ctx.userCourses || [])])
+  const returnedIds = bestIds || seedIds
+  if (stopped && !ctx.suppressWarnings) {
+    console.warn(
+      'selectClosedAcrossMajorsOptimal: hit its time/state budget; returning the best feasible plan.',
+    )
+  }
+  if (telemetry) {
+    Object.assign(telemetry, {
+      algorithm: 'pmt-bnb-v3-joint-prerequisite-frontier',
+      objective: 'minimum modeled prerequisite-closed courses, then native units',
+      timeBudgetMs,
+      maxStates,
+      elapsedMs: Date.now() - startedAt,
+      timedOut: timeBudgetHit,
+      stateCapHit,
+      statesExplored,
+      cartesianFallbacks: cartesianFallbackKeys.size,
+      unsupportedUnitFallbacks,
+      cyclicLeavesRejected,
+      bestCourseCount: returnedIds.length,
+      bestUnits: totalUnits(returnedIds, coursesById),
+      feasible: Boolean(bestIds),
+      optimalityProven: !stopped
+        && bestIds != null
+        && cartesianFallbackKeys.size === 0
+        && unsupportedUnitFallbacks === 0,
+    })
+  }
+  return returnedIds
+}
+
 module.exports = {
+  DEFAULT_CLOSED_SEARCH_MAX_STATES,
   selectMissingAcrossMajors,
   selectMissingAcrossMajorsOptimal: selectMissingAcrossMajorsExact,
+  selectClosedAcrossMajorsOptimal,
+  hasFeasiblePrerequisiteOrder,
   toSyntheticUserCourse,
+  // District pooling must preserve the full semantics of a receiver before
+  // alternatives from several colleges are combined. Exposing the same path
+  // expansion used by the exact optimizer avoids turning an ASSIST "A and B"
+  // sequence into an accidental "A or B" choice.
+  movesForReceiver,
 }

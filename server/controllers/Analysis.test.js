@@ -9,6 +9,7 @@ const {
   _parseMultiCampusPathwayParams,
   _resolveMajorScope,
 } = cjs('./Analysis');
+const { getMajor } = cjs('../config/majors');
 
 let mongo;
 let db;
@@ -84,18 +85,19 @@ describe('CS A.S.-T export', () => {
 describe('major scope resolution', () => {
   // `major` already means "exact ASSIST program name" elsewhere in the API
   // (requirement-comparison, visible pairs), so the slug param is majorSlug.
-  it('resolves a slug to that major\'s match string', () => {
+  it('resolves a slug to that major\'s exact campus/program mapping', () => {
     expect(_resolveMajorScope({ majorSlug: 'cs' }))
-      .toEqual({ slug: 'cs', majorContains: 'computer science' });
+      .toEqual({ slug: 'cs', majorPrograms: getMajor('cs').programs, majorContains: '' });
   });
 
   it('keeps the legacy majorContains filter working', () => {
     expect(_resolveMajorScope({ majorContains: 'econom' }))
-      .toEqual({ slug: null, majorContains: 'econom' });
+      .toEqual({ slug: null, majorPrograms: null, majorContains: 'econom' });
   });
 
-  it('defaults to an empty, unscoped filter', () => {
-    expect(_resolveMajorScope({})).toEqual({ slug: null, majorContains: '' });
+  it('defaults to exact canonical CS so new majors cannot widen old callers', () => {
+    expect(_resolveMajorScope({}))
+      .toEqual({ slug: 'cs', majorPrograms: getMajor('cs').programs, majorContains: '' });
   });
 
   it('reports unknown slugs with the onboarded list', () => {

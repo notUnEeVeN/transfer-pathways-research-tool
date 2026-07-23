@@ -109,12 +109,10 @@ def main(argv=None):
     apply_style()
 
     website = _live_matrix(compute(
-        "coverage", majorContains="computer science", groupBy="district",
-        requirements="paper", pin="paper",
+        "coverage", majorSlug="cs", groupBy="district", requirements="paper",
     ))
     assist = _live_matrix(compute(
-        "coverage", majorContains="computer science", groupBy="district",
-        requirements="assist", pin="settings",
+        "coverage", majorSlug="cs", groupBy="district", requirements="assist",
     ))
     live_by_version = {"paper": _paper_matrix(), "website": website, "assist": assist}
     version_labels = {

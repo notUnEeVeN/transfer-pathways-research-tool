@@ -53,7 +53,7 @@ describe('DegreeTemplateEditor', () => {
     const onSaved = vi.fn()
     const { getByRole, getByDisplayValue, getByText } = render(
       <DegreeTemplateEditor open initialDocument={document}
-        schoolId={79} school='UC Berkeley'
+        schoolId={79} school='UC Berkeley' majorSlug='cs'
         onClose={() => {}} onSaved={onSaved} />
     )
 
@@ -70,6 +70,7 @@ describe('DegreeTemplateEditor', () => {
     await waitFor(() => expect(hooks.save).toHaveBeenCalledTimes(1))
     expect(hooks.save.mock.calls[0][0]).toMatchObject({
       _id: 'degree:79',
+      major_slug: 'cs',
       program: 'EECS, B.S.',
       requirement_groups: [{ title: 'Lower-division mathematics' }],
     })

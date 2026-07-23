@@ -3,8 +3,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useComplexity } from '../shared/query/hooks/useData'
 import { AnalysisLoading, HistogramRows, shortenSchool } from './chartBits'
-import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const METRICS = [
   { value: 'complexity', label: 'Complexity', field: 'complexity', unit: 'complexity score' },
@@ -76,8 +74,7 @@ function buildModel(rows, metric) {
  * course scores delay 1 / blocking 0 and "complexity" collapses to the course
  * count — the banner keeps that caveat in front of the reader.
  */
-export default function Complexity() {
-  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
+export default function Complexity({ majorSlug = 'cs' }) {
   const [metricValue, setMetricValue] = useState('complexity')
   const metric = METRICS.find((m) => m.value === metricValue) || METRICS[0]
   const query = useComplexity(
@@ -100,7 +97,6 @@ export default function Complexity() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <div className='flex flex-col'>
         <span className='field-label'>Metric</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>

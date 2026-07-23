@@ -3,8 +3,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Stack, StatStrip } from '../components/ui'
 import { useCreditLoss } from '../shared/query/hooks/useData'
 import { AnalysisLoading, HistogramRows, shortenSchool } from './chartBits'
-import MajorPicker from '../shared/majors/MajorPicker'
-import { useMajorChoice } from '../shared/majors/MajorContext'
 
 const METRICS = [
   { value: 'courses', label: 'Courses', field: 'min_cc_courses', binStep: 1, unit: 'courses' },
@@ -76,8 +74,7 @@ function buildModel(rows, metric) {
  * path through each agreement requires. One histogram row per campus on a
  * shared scale; hairline tick = campus mean.
  */
-export default function CreditLoss() {
-  const { slug: majorSlug, setSlug } = useMajorChoice('visuals')
+export default function CreditLoss({ majorSlug = 'cs' }) {
   const [metricValue, setMetricValue] = useState('courses')
   const metric = METRICS.find((m) => m.value === metricValue) || METRICS[0]
   const query = useCreditLoss(
@@ -99,7 +96,6 @@ export default function CreditLoss() {
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-center gap-3' data-export-exclude>
-      <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
       <div className='flex flex-col'>
         <span className='field-label'>Metric</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>

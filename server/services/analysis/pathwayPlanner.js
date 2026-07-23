@@ -10,6 +10,9 @@
  */
 
 const {
+  DEFAULT_CLOSED_SEARCH_MAX_STATES,
+  hasFeasiblePrerequisiteOrder,
+  selectClosedAcrossMajorsOptimal,
   selectMissingAcrossMajorsOptimal,
   toSyntheticUserCourse,
 } = require('./minCourses');
@@ -37,6 +40,20 @@ const KNOWN_CALENDAR_COLLEGE_IDS = new Set(
 const round1 = (value) => (Number.isFinite(Number(value)) ? +Number(value).toFixed(1) : null);
 const uniq = (values) => [...new Set(values)];
 const stripCourseKey = (value) => String(value ?? '').replace(/^cc:/, '');
+
+function majorDocumentFilter(majorSlug = 'cs') {
+  const slug = String(majorSlug || 'cs').trim() || 'cs';
+  // Unstamped curation is the historical CS corpus. Every later major must be
+  // explicitly stamped so an equal receiver hash cannot alter a CS plan.
+  if (slug === 'cs') {
+    return { $or: [
+      { major_slug: slug },
+      { major_slug: { $exists: false } },
+      { major_slug: null },
+    ] };
+  }
+  return { major_slug: slug };
+}
 
 function stableSerialize(value) {
   if (value === undefined) return '"__undefined__"';
@@ -157,14 +174,19 @@ function metricStats(rows, read) {
 function cleanTelemetry(telemetry) {
   return {
     algorithm: telemetry.algorithm,
+    objective: telemetry.objective,
     elapsed_ms: telemetry.elapsedMs,
     time_budget_ms: telemetry.timeBudgetMs,
+    max_states: telemetry.maxStates,
     greedy_course_count: telemetry.greedyCourseCount,
     best_course_count: telemetry.bestCourseCount,
     best_units: round1(telemetry.bestUnits),
     states_explored: Number(telemetry.statesExplored) || 0,
     timed_out: Boolean(telemetry.timedOut),
+    state_cap_hit: Boolean(telemetry.stateCapHit),
+    feasible: telemetry.feasible === undefined ? undefined : Boolean(telemetry.feasible),
     cartesian_fallbacks: Number(telemetry.cartesianFallbacks) || 0,
+    cyclic_leaves_rejected: Number(telemetry.cyclicLeavesRejected) || 0,
     unsupported_unit_fallbacks: Number(telemetry.unsupportedUnitFallbacks) || 0,
     missing_catalog_ids: telemetry.missingCatalogIds || [],
     optimality_proven: Boolean(telemetry.optimalityProven),
@@ -302,13 +324,79 @@ function compareFootprints(a, b, selected, catalog) {
   return unitDiff || newA.sort().join(',').localeCompare(newB.sort().join(','));
 }
 
-function closePrerequisites(directIds, catalog, projectedGroups) {
+function materializePrerequisiteClosure(
+  selectedIds,
+  directIds,
+  catalog,
+  projectedGroups,
+  prerequisiteGroupsByCourse = null,
+) {
+  const selected = new Set(selectedIds.map(String));
+  const direct = new Set(directIds.map(String));
+  const unresolved = [];
+  const requirementsByCourse = new Map();
+  let prerequisiteChoices = 0;
+  const groupsFor = (id) => prerequisiteGroupsByCourse?.get(String(id))
+    || projectedGroups.get(`cc:${id}`)
+    || [];
+
+  for (const courseId of selected) {
+    const resolvedGroups = [];
+    for (const group of groupsFor(courseId)) {
+      const candidates = (group.anyOf || []).map(stripCourseKey);
+      const satisfiers = selectedSatisfiers(candidates, selected, catalog).sort();
+      const availableChoices = uniq(candidates.flatMap((candidate) =>
+        [...equivalentIds(candidate, catalog)].filter((id) => catalog.has(id))));
+      if (availableChoices.length > 1) prerequisiteChoices += 1;
+      if (!satisfiers.length) {
+        unresolved.push({ course_id: courseId, concept: group.concept || null });
+        continue;
+      }
+      resolvedGroups.push({ concept: group.concept || null, anyOf: satisfiers });
+    }
+    requirementsByCourse.set(courseId, resolvedGroups);
+  }
+
+  const unresolvedUnique = [];
+  const unresolvedKeys = new Set();
+  for (const item of unresolved) {
+    const key = `${item.course_id}|${item.concept || ''}`;
+    if (unresolvedKeys.has(key)) continue;
+    unresolvedKeys.add(key);
+    unresolvedUnique.push(item);
+  }
+  const examined = [...selected]
+    .filter((id) => catalog.get(id)?.concept_source !== undefined).length;
+  const mapped = [...selected].filter((id) => Boolean(catalog.get(id)?.concept)).length;
+  return {
+    ids: [...selected].sort(),
+    prerequisite_ids: [...selected].filter((id) => !direct.has(id)).sort(),
+    requirements_by_course: requirementsByCourse,
+    unresolved_groups: unresolvedUnique,
+    prerequisite_choices: prerequisiteChoices,
+    evidence: {
+      examined_courses: examined,
+      mapped_courses: mapped,
+      total_courses: selected.size,
+      examined_pct: selected.size ? round1((100 * examined) / selected.size) : null,
+      mapped_pct: selected.size ? round1((100 * mapped) / selected.size) : null,
+    },
+  };
+}
+
+function closePrerequisites(
+  directIds,
+  catalog,
+  projectedGroups,
+  prerequisiteGroupsByCourse = null,
+) {
   const selected = new Set(directIds.map(String));
   const direct = new Set(selected);
   const unresolved = [];
   let prerequisiteChoices = 0;
 
-  const groupsFor = (id) => projectedGroups.get(`cc:${id}`);
+  const groupsFor = (id) => prerequisiteGroupsByCourse?.get(String(id))
+    || projectedGroups.get(`cc:${id}`);
   const footprint = (candidateId, baseSelected, path = new Set()) => {
     const id = String(candidateId);
     if ([...baseSelected].some((selectedId) => equivalent(selectedId, id, catalog))) {
@@ -360,43 +448,19 @@ function closePrerequisites(directIds, catalog, projectedGroups) {
     }
   }
 
-  const requirementsByCourse = new Map();
-  for (const courseId of selected) {
-    const resolvedGroups = [];
-    for (const group of groupsFor(courseId) || []) {
-      const satisfiers = selectedSatisfiers(group.anyOf || [], selected, catalog);
-      if (!satisfiers.length) {
-        unresolved.push({ course_id: courseId, concept: group.concept || null });
-        continue;
-      }
-      resolvedGroups.push({ concept: group.concept || null, anyOf: satisfiers.sort() });
-    }
-    requirementsByCourse.set(courseId, resolvedGroups);
-  }
-
-  const unresolvedUnique = [];
-  const unresolvedKeys = new Set();
-  for (const item of unresolved) {
-    const key = `${item.course_id}|${item.concept || ''}`;
-    if (unresolvedKeys.has(key)) continue;
-    unresolvedKeys.add(key);
-    unresolvedUnique.push(item);
-  }
-  const examined = [...selected].filter((id) => catalog.get(id)?.concept_source !== undefined).length;
-  const mapped = [...selected].filter((id) => Boolean(catalog.get(id)?.concept)).length;
+  const materialized = materializePrerequisiteClosure(
+    [...selected], [...direct], catalog, projectedGroups, prerequisiteGroupsByCourse,
+  );
   return {
-    ids: [...selected].sort(),
-    prerequisite_ids: [...selected].filter((id) => !direct.has(id)).sort(),
-    requirements_by_course: requirementsByCourse,
-    unresolved_groups: unresolvedUnique,
-    prerequisite_choices: prerequisiteChoices,
-    evidence: {
-      examined_courses: examined,
-      mapped_courses: mapped,
-      total_courses: selected.size,
-      examined_pct: selected.size ? round1((100 * examined) / selected.size) : null,
-      mapped_pct: selected.size ? round1((100 * mapped) / selected.size) : null,
-    },
+    ...materialized,
+    prerequisite_choices: Math.max(prerequisiteChoices, materialized.prerequisite_choices),
+    unresolved_groups: uniq([
+      ...unresolved.map((item) => `${item.course_id}|${item.concept || ''}`),
+      ...materialized.unresolved_groups.map((item) => `${item.course_id}|${item.concept || ''}`),
+    ]).map((key) => {
+      const [courseId, concept] = key.split('|');
+      return { course_id: courseId, concept: concept || null };
+    }),
   };
 }
 
@@ -437,6 +501,239 @@ function solveDirect(majors, catalog, timeBudgetMs) {
     missing_reference_ids: missingReferences,
     missing_unit_ids: missingUnitIds,
     optimizer: cleanedOptimizer,
+  };
+}
+
+function prerequisiteGroupsForCatalog(catalog, projectedGroups, metadata = null) {
+  const adjacency = new Map([...catalog.keys()].map((id) => [String(id), new Set()]));
+  for (const [rawId, course] of catalog) {
+    const id = String(rawId);
+    for (const peer of course?.same_as || []) {
+      const peerId = String(peer.course_id);
+      if (!adjacency.has(peerId)) continue;
+      adjacency.get(id).add(peerId);
+      adjacency.get(peerId).add(id);
+    }
+  }
+  const result = new Map();
+  const visited = new Set();
+  const reviewedConceptConflicts = [];
+  let componentsWithUnionedGroups = 0;
+  for (const rawId of catalog.keys()) {
+    const id = String(rawId);
+    if (visited.has(id)) continue;
+    const component = [];
+    const queue = [id];
+    visited.add(id);
+    while (queue.length) {
+      const next = queue.shift();
+      component.push(next);
+      for (const peer of adjacency.get(next) || []) {
+        if (visited.has(peer)) continue;
+        visited.add(peer);
+        queue.push(peer);
+      }
+    }
+    const componentSet = new Set(component);
+    const rawSignatures = new Set(component.map((member) => JSON.stringify(
+      projectedGroups.get(`cc:${member}`) || [],
+    )));
+    if (component.length > 1 && rawSignatures.size > 1) componentsWithUnionedGroups += 1;
+    const reviewedConcepts = uniq(component.map((member) => catalog.get(member))
+      .filter((course) => course?.concept_source !== undefined && course?.concept)
+      .map((course) => String(course.concept))).sort();
+    if (reviewedConcepts.length > 1) {
+      reviewedConceptConflicts.push({
+        course_ids: component.slice().sort(),
+        concepts: reviewedConcepts,
+      });
+    }
+    // A same_as component is one physical completion. Give every catalog
+    // identity the union of modeled obligations found on any alias so choosing
+    // a cross-listed name cannot erase a prerequisite. Alternative local
+    // satisfiers for the same prerequisite concept are merged; different
+    // concepts remain separate ALL-of constraints.
+    const groups = new Map();
+    for (const member of component) {
+      for (const group of projectedGroups.get(`cc:${member}`) || []) {
+        const concept = group.concept || null;
+        const key = concept == null
+          ? `anonymous:${JSON.stringify(group)}`
+          : `concept:${concept}`;
+        if (!groups.has(key)) groups.set(key, { concept, anyOf: new Set() });
+        for (const candidate of group.anyOf || []) {
+          const candidateId = stripCourseKey(candidate);
+          // Any alias in this same physical-course component would be a
+          // self-dependency, even if projection removed only the current name.
+          if (!componentSet.has(candidateId)) groups.get(key).anyOf.add(String(candidate));
+        }
+      }
+    }
+    const sharedGroups = [...groups.values()].map((group) => ({
+      concept: group.concept,
+      anyOf: [...group.anyOf].sort(),
+    })).sort((left, right) =>
+      JSON.stringify(left).localeCompare(JSON.stringify(right)));
+    for (const member of component) result.set(member, sharedGroups);
+  }
+  if (metadata) {
+    metadata.sameAsComponentsWithUnionedGroups = componentsWithUnionedGroups;
+    metadata.reviewedSameAsConceptConflictCount = reviewedConceptConflicts.length;
+    metadata.reviewedSameAsConceptConflicts = reviewedConceptConflicts;
+  }
+  return result;
+}
+
+function solvePrerequisiteClosed(
+  majors,
+  catalog,
+  projectedGroups,
+  timeBudgetMs,
+  optimizerMaxStates = DEFAULT_CLOSED_SEARCH_MAX_STATES,
+) {
+  const budget = Number(timeBudgetMs) || 5000;
+  const parsedMaxStates = Number(optimizerMaxStates);
+  const maxStates = Number.isFinite(parsedMaxStates) && parsedMaxStates >= 1
+    ? Math.floor(parsedMaxStates)
+    : DEFAULT_CLOSED_SEARCH_MAX_STATES;
+  // A short direct solve supplies a strong feasible incumbent. It is not the
+  // proof unless it is already prerequisite-closed; the joint search below is
+  // free to choose additional direct courses when that reduces total closure.
+  const seedBudget = Math.max(50, Math.min(1000, budget));
+  const directSeed = solveDirect(majors, catalog, seedBudget);
+  const aliasMetadata = {};
+  const prerequisiteGroups = prerequisiteGroupsForCatalog(
+    catalog, projectedGroups, aliasMetadata,
+  );
+  const seedClosure = closePrerequisites(
+    directSeed.ids, catalog, projectedGroups, prerequisiteGroups,
+  );
+  const seedIsClosed = seedClosure.unresolved_groups.length === 0
+    && seedClosure.ids.length === directSeed.ids.length
+    && hasFeasiblePrerequisiteOrder(
+      seedClosure.ids, catalog, prerequisiteGroups,
+    );
+  let selectedIds;
+  let optimizer;
+
+  if (seedIsClosed
+    && directSeed.product_complete
+    && directSeed.strict_complete
+    && directSeed.optimizer.optimality_proven) {
+    selectedIds = seedClosure.ids;
+    optimizer = {
+      ...directSeed.optimizer,
+      algorithm: 'pmt-bnb-v3-joint-prerequisite-frontier-fast-path',
+      objective: 'minimum modeled prerequisite-closed courses, then native units',
+      feasible: true,
+      max_states: maxStates,
+      state_limit_applied: false,
+      fast_path: 'proven direct optimum was already prerequisite-closed',
+    };
+  } else {
+    const telemetry = {};
+    const candidateIds = selectClosedAcrossMajorsOptimal(majors, {
+      userCourses: [],
+      coursesById: catalog,
+      prerequisiteGroupsByCourse: prerequisiteGroups,
+      feasibleSeedIds: seedClosure.unresolved_groups.length ? [] : seedClosure.ids,
+      includeRecommended: false,
+      crossCc: [],
+      strict: true,
+      timeBudgetMs: budget,
+      maxStates,
+      telemetry,
+      suppressWarnings: true,
+    }).map(String).sort();
+    const cleaned = cleanTelemetry(telemetry);
+    selectedIds = cleaned.feasible ? candidateIds : seedClosure.ids;
+    optimizer = {
+      ...cleaned,
+      seed_direct_course_count: directSeed.ids.length,
+      seed_closed_course_count: seedClosure.ids.length,
+      seed_optimizer_proven: directSeed.optimizer.optimality_proven,
+    };
+  }
+
+  // Roles are explanatory, not part of the joint objective. Re-solve the
+  // ASSIST-only witness inside the chosen closed set so a course is not labeled
+  // prerequisite-only merely because DFS happened to encounter it that way.
+  const selectedCatalog = new Map(selectedIds
+    .map((id) => [id, catalog.get(id)]).filter(([, value]) => value));
+  const attributionTelemetry = {};
+  let directIds = selectMissingAcrossMajorsOptimal(majors, {
+    userCourses: [],
+    coursesById: selectedCatalog,
+    includeRecommended: false,
+    crossCc: [],
+    timeBudgetMs: Math.max(50, Math.min(1000, budget)),
+    telemetry: attributionTelemetry,
+    suppressWarnings: true,
+  }).map(String).sort();
+  let directTranscript = directIds
+    .map((id) => selectedCatalog.get(id)).filter(Boolean).map(toSyntheticUserCourse);
+  if (!majors.every((major) => isMajorCompleted(major, directTranscript, [], true))) {
+    // Keep a valid deterministic witness even if the small explanatory solve
+    // times out. Backward elimination need not prove a minimum; the role
+    // partition is explicitly diagnostic and does not affect the joint result.
+    directIds = selectedIds.slice();
+    for (const id of selectedIds.slice().reverse()) {
+      const candidateIds = directIds.filter((candidate) => candidate !== id);
+      const candidateTranscript = candidateIds
+        .map((candidate) => selectedCatalog.get(candidate))
+        .filter(Boolean)
+        .map(toSyntheticUserCourse);
+      if (majors.every((major) => isMajorCompleted(major, candidateTranscript, [], true))) {
+        directIds = candidateIds;
+      }
+    }
+    directTranscript = directIds
+      .map((id) => selectedCatalog.get(id)).filter(Boolean).map(toSyntheticUserCourse);
+  }
+
+  const closure = materializePrerequisiteClosure(
+    selectedIds, directIds, catalog, projectedGroups, prerequisiteGroups,
+  );
+  const transcript = selectedIds
+    .map((id) => catalog.get(id)).filter(Boolean).map(toSyntheticUserCourse);
+  const productComplete = majors.every((major) => isMajorCompleted(major, transcript, [], false));
+  const strictComplete = majors.every((major) => isMajorCompleted(major, transcript, [], true));
+  const missingReferences = uniq(majors.flatMap((major) =>
+    [...referencedCourseIds(major)].filter((id) => !catalog.has(id)))).sort();
+  const missingUnitIds = selectedIds.filter((id) => {
+    const units = catalog.get(id)?.units;
+    return !Number.isFinite(units) || units <= 0;
+  });
+  optimizer.missing_agreement_reference_ids = missingReferences;
+  optimizer.catalog_complete = missingReferences.length === 0;
+  optimizer.same_as_components_with_unioned_prerequisite_groups =
+    aliasMetadata.sameAsComponentsWithUnionedGroups;
+  optimizer.reviewed_same_as_concept_conflict_count =
+    aliasMetadata.reviewedSameAsConceptConflictCount;
+  optimizer.reviewed_same_as_concept_conflicts =
+    aliasMetadata.reviewedSameAsConceptConflicts;
+  const selectedSet = new Set(selectedIds);
+  const selectedAliasConflicts = aliasMetadata.reviewedSameAsConceptConflicts
+    .filter((conflict) => conflict.course_ids.some((id) => selectedSet.has(id)));
+  optimizer.selected_reviewed_same_as_concept_conflict_count = selectedAliasConflicts.length;
+  optimizer.selected_reviewed_same_as_concept_conflicts = selectedAliasConflicts;
+  optimizer.optimality_proven = Boolean(optimizer.optimality_proven)
+    && optimizer.catalog_complete
+    && productComplete
+    && strictComplete
+    && missingUnitIds.length === 0
+    && closure.unresolved_groups.length === 0;
+  return {
+    ids: selectedIds,
+    direct_ids: directIds,
+    transcript,
+    product_complete: productComplete,
+    strict_complete: strictComplete,
+    missing_reference_ids: missingReferences,
+    missing_unit_ids: missingUnitIds,
+    optimizer,
+    attribution_optimizer: cleanTelemetry(attributionTelemetry),
+    closure,
   };
 }
 
@@ -673,7 +970,11 @@ async function loadMultiCampusPathwayContext(db, auditDb, params = {}) {
       concept: 1, concept_source: 1, concept_confidence: 1, language: 1,
     } }).toArray(),
     db.collection('curated_requirements').find({ kind: 'prereq_concept' }).toArray(),
-    auditDb.collection('curated_mappings').find({ kind: 'receiver_override', exclude: true }).toArray(),
+    auditDb.collection('curated_mappings').find({
+      kind: 'receiver_override',
+      exclude: true,
+      ...majorDocumentFilter(params.majorSlug),
+    }).toArray(),
   ]);
   const excludedHashes = new Set(overrideRows.map((row) =>
     String(row.receiver_hash ?? row.legacy_id ?? '').replace(/^receiver_override:/, '')));
@@ -987,6 +1288,7 @@ function multiCampusPathwaysDataFromContext(context, params = {}) {
   const response = {
     params: {
       method: METHOD_ID,
+      ...(params.majorSlug ? { major_slug: params.majorSlug } : {}),
       mode,
       school_ids: schoolIds,
       community_college_id: communityCollegeId,
@@ -1064,6 +1366,7 @@ async function multiCampusPathwaysData(db, auditDb, params = {}) {
   const context = await loadMultiCampusPathwayContext(db, auditDb, {
     schoolIds: params.schoolIds,
     visiblePairs: params.visiblePairs,
+    majorSlug: params.majorSlug,
     communityCollegeId: mode === 'college' ? params.communityCollegeId : null,
   });
   return multiCampusPathwaysDataFromContext(context, params);
@@ -1077,9 +1380,14 @@ module.exports = {
   _calendarForCollege: calendarForCollege,
   _chosenPrerequisites: chosenPrerequisites,
   _closePrerequisites: closePrerequisites,
+  _materializePrerequisiteClosure: materializePrerequisiteClosure,
   _normalizeMajor: normalizeMajor,
   _prepAgreement: prepAgreement,
+  _prerequisiteGroupsForCatalog: prerequisiteGroupsForCatalog,
+  _scheduleClosedPlan: scheduleClosedPlan,
+  _solvePrerequisiteClosed: solvePrerequisiteClosed,
   _solveDirect: solveDirect,
+  _totalUnits: totalUnits,
   _clearSingletonBaselineCache: clearSingletonBaselineCache,
   _singletonBaselineCacheStats: singletonBaselineCacheStats,
 };

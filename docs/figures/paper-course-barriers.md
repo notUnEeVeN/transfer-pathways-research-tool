@@ -61,8 +61,8 @@ The legacy implementation is
 - The denominator is all 72 districts, not just the ones that require or offer
   the course.
 
-The port applies that operation to the internal tool's paper-matched coverage
-rows (`requirements=paper`, `pin=paper`, `groupBy=district`) — the same rows
+The port applies that operation to the internal tool's canonical-CS coverage
+rows (`majorSlug=cs`, `requirements=paper`, `groupBy=district`) — the same rows
 behind Figures 2, 3 and 4. The server now returns a per-group verdict
 (`requirement_groups: [{ group_id, satisfied, … }]`) with each row, so the
 course panels read the heatmap's own evaluation rather than running a second

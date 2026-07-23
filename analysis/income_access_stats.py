@@ -113,13 +113,11 @@ def main(argv=None):
                         help="which transfer requirement set defines access")
     args = parser.parse_args(argv)
 
-    # The paper's hand-curated minimums are pinned to the scraped programs; the
-    # ASSIST view reads what ASSIST itself marks as required for the working
-    # major selection.
+    # Both demand views use the same exact, code-configured CS campus/program
+    # pins; only the requirement source changes.
     rows = compute(
-        "coverage", majorContains="computer science", groupBy="district",
+        "coverage", majorSlug="cs", groupBy="district",
         requirements=args.requirements,
-        pin="paper" if args.requirements == "paper" else "settings",
     )
     complete = {}
     for row in rows:

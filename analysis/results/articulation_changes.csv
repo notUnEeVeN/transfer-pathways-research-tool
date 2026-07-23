@@ -1,7 +1,6 @@
 district,campus,group,set,receiving,paper_courses,our_courses,change
 allan hancock,UCSB,DataStructures,A,CMPSC 24,,CS 112 (4.00),newly-articulated
 allan hancock,UCSB,Intro,A,CMPSC 16,,CS 111 (4.00),newly-articulated
-antelope valley,UCD,Intro1,A,ECS 036A,,,newly-mentioned
 chabot-las positas,UCB,Calc1,A,MATH 51,MATH 1 (5.00),MTH 1 (5.00),courses-changed
 chabot-las positas,UCB,Calc2,A,MATH 52,MATH 2 (5.00),MTH 2 (5.00),courses-changed
 chabot-las positas,UCB,LinearAlgebraAndDifferentialEqations,A,MATH 54,MATH 5 (3.50) | MATH 7 (3.50),MTH 4 (3.00) | MTH 6 (3.00),courses-changed
@@ -203,8 +202,6 @@ san bernardino,UCSC,DiscreteMath,A,CSE 16,CS 130 (3.00),CSCI 200 (4.00) | MATH 2
 san bernardino,UCSC,Intro,A,CSE 30,CS 265 (3.00),CSCI 230 (3.00),courses-changed
 san bernardino,UCSC,Organization,A,CSE 12,CS 170 (4.00),CSCI 240 (3.00),courses-changed
 san bernardino,UCSD,Calc1,A,MATH 20A,MATH 250 (4.00),MATH 250 (4.00) | MATH 250E (4.00),courses-changed
-san francisco,UCD,Intro1,A,ECS 036A,,CS 110A (4.00) | CS 110B (4.00),newly-articulated
-san luis obispo county,UCD,Intro1,A,ECS 036A,,CS 217 (3.00),newly-articulated
 state center,UCD,Calc2,A,MAT 021B,MATH  5B (4.00),MATH 5B (4.00),courses-changed
 state center,UCD,Calc3,A,MAT 021C,MATH 6 (4.00),MATH 6 (5.00),courses-changed
 state center,UCD,DataStructures,A,ECS 036C,CSCI  41 (4.00),CSCI 41 (4.00),courses-changed

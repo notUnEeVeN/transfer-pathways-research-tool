@@ -19,11 +19,12 @@ The model, in words
    the university courses it needs; each course is identified by the
    university-catalog `parent_ids` it was matched to.
 
-2. WHAT COUNTS AS "ARTICULATED" comes from `assist_agreements`.
-   ASSIST is used ONLY as an equivalency source here: we walk every receiver
-   in every CS agreement (required or not) and collect the university-course
-   parent_ids whose `articulation_status == 'articulated'` — i.e. the campus
-   courses a CC student can actually earn credit for at that college.
+2. WHAT COUNTS AS "ARTICULATED" comes from `assist_agreements` for one exact,
+   canonical CS program per campus. ASSIST is used ONLY as an equivalency
+   source here: we walk every receiver in those nine pinned programs (required
+   or not) and collect the university-course parent_ids whose
+   `articulation_status == 'articulated'` — i.e. the campus courses a CC
+   student can actually earn credit for at that college.
 
 3. EVALUATION (per campus × district):
    - Pool the articulated parent_ids of every college in the district (the
@@ -61,30 +62,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
-# HARDCODED equivalency-source programs per campus — the frozen set every
-# validated run used (99.5% matrix replication). Frozen by exact stored name
-# so admin visibility toggles can never change the figure. UCB needs BOTH
-# programs: ASSIST moved its paper-era CS math articulations onto the EECS
-# page. Keep in sync with paper_credit_loss.PAPER_MAJORS and
-# server/services/analysis/pathways.js.
-PAPER_MAJORS = {
-    89: ["Computer Science & Engineering B.S.", "Computer Science B.S."],
-    144: ["APPLIED MATHEMATICAL SCIENCES, Computer Science Emphasis, B.S.",
-          "COMPUTER SCIENCE AND ENGINEERING, B.S. "],  # trailing space is stored
-    7: ["CSE: Computer Science B.S.",
-        "CSE: Computer Science with a Specialization in Bioinformatics B.S.",
-        "Mathematics/Computer Science B.S."],
-    128: ["Computer Science, B.S."],
-    117: ["Computer Science and Engineering/B.S.", "Computer Science/B.S.",
-          "Linguistics and Computer Science/B.A."],
-    79: ["Computer Science, B.A.", "Electrical Engineering & Computer Sciences, B.S."],
-    132: ["Computer Science B.A.", "Computer Science B.S.", "Computer Science Minor",
-          "Computer Science: Computer Game Design B.S."],
-    120: ["Computer Science and Engineering, B.S.", "Computer Science, B.S."],
-    46: ["Computer Science with Business Applications B.S.", "Computer Science, B.S."],
-}
-MAJOR_FILTER = {"$or": [{"uc_school_id": sid, "major": {"$in": majors}}
-                        for sid, majors in PAPER_MAJORS.items()]}
+from major_pins import CANONICAL_CS_PROGRAMS, canonical_cs_query, major_document_filter
 
 # ── the paper's frame: 72 districts (column order) and 9 campuses (row order) ─
 # District names as printed in the paper's matrix, left to right. Our data
@@ -210,7 +188,10 @@ def load_requirement_models(db):
     courses outside it can't satisfy anything, so we ignore them.
     """
     models = {}
-    rows = db.curated_requirements.find({"kind": "transfer_minimum"}).sort(
+    rows = db.curated_requirements.find({
+        "kind": "transfer_minimum",
+        **major_document_filter("cs"),
+    }).sort(
         [("school_id", 1), ("group_id", 1), ("set_id", 1), ("source_order", 1)]
     )
     for row in rows:
@@ -239,9 +220,9 @@ def receiver_parent_ids(receiver):
 def load_articulations(db, models):
     """(school_id, district) → {college name → set(articulated parent_ids)}
 
-    Walks EVERY receiver of every CS agreement (ASSIST as an equivalency
-    source — its required/recommended grouping is deliberately ignored; the
-    requirement model above decides what is required).
+    Walks every receiver of the exact canonical CS agreement for that campus
+    (ASSIST as an equivalency source — its required/recommended grouping is
+    deliberately ignored; the requirement model above decides what is required).
     """
     district_of = {
         int(d["source_id"]): d.get("district")
@@ -252,7 +233,7 @@ def load_articulations(db, models):
     per_cell = defaultdict(lambda: defaultdict(set))
     fields = {"uc_school_id": 1, "community_college_id": 1, "community_college": 1,
               "major": 1, "requirement_groups": 1}
-    for doc in db.assist_agreements.find(MAJOR_FILTER, fields):
+    for doc in db.assist_agreements.find(canonical_cs_query(), fields):
         school_id = int(doc["uc_school_id"])
         model = models.get(school_id)
         if not model:
@@ -357,7 +338,7 @@ def explain(db, models, per_cell, campus_query, district_query):
     # articulated receivers point at it, per college.
     cc_courses = defaultdict(lambda: defaultdict(set))
     docs = db.assist_agreements.find(
-        {"uc_school_id": school_id, "major": {"$in": PAPER_MAJORS[school_id]}},
+        {"uc_school_id": school_id, "major": CANONICAL_CS_PROGRAMS[school_id]},
         {"community_college": 1, "requirement_groups": 1},
     )
     for doc in docs:

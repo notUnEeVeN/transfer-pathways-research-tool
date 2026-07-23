@@ -109,6 +109,79 @@ describe('canonical schema migration', () => {
     expect(model.collections.published_figures.map((row) => row._id)).toContain('figure-a');
   });
 
+  it('preserves every settings document while normalizing settings.app', async () => {
+    const cohortUpdatedAt = new Date('2026-07-22T20:00:00Z');
+    await db.collection('settings').insertMany([
+      {
+        _id: 'app',
+        visible_pairs: [{ school_id: 20, major: 'Computer Science' }],
+        released_analysis_ids: ['paper-credit-loss'],
+        last_refresh_counts: { uc_agreements: 1 },
+        canonical_dirty: true,
+      },
+      {
+        _id: 'as_degree_validation',
+        college_ids: ['10', '42'],
+        updated_by: 'user-1',
+        updated_at: cohortUpdatedAt,
+      },
+    ]);
+
+    const model = await buildModel(db);
+    const app = model.collections.settings.find((row) => row._id === 'app');
+    const cohort = model.collections.settings.find((row) => row._id === 'as_degree_validation');
+
+    expect(model.collections.settings).toHaveLength(2);
+    expect(app).toMatchObject({
+      released_analysis_ids: ['paper-credit-loss'],
+      last_refresh_counts: { uc_agreements: 1 },
+      canonical_dirty: false,
+    });
+    expect(cohort).toEqual({
+      _id: 'as_degree_validation',
+      college_ids: ['10', '42'],
+      updated_by: 'user-1',
+      updated_at: cohortUpdatedAt,
+    });
+
+    // Exercise the relaxed collection validator as well as the in-memory
+    // model: the cohort document must survive the atomic replacement.
+    await replaceAtomically(db, 'settings', model.collections.settings);
+    expect(await db.collection('settings').findOne({ _id: 'as_degree_validation' }))
+      .toMatchObject({ college_ids: ['10', '42'], updated_by: 'user-1' });
+  });
+
+  it('carries curated district geography across a source-catalog rebuild', async () => {
+    const curatedAt = new Date('2026-07-22T21:00:00Z');
+    await db.collection('assist_institutions').insertOne({
+      _id: 'cc:10',
+      institution_id: 'cc:10',
+      source_id: 10,
+      kind: 'community_college',
+      system: 'ccc',
+      name: 'CC Test',
+      district: 'Curated District',
+      region: 'Bay Area',
+      counties_served: ['Alpha', 'Beta'],
+      district_source: 'console',
+      district_source_college_name: 'CC Test',
+      curated_by: 'user-1',
+      curated_at: curatedAt,
+    });
+
+    const model = await buildModel(db);
+    const college = model.collections.assist_institutions.find((row) => row._id === 'cc:10');
+    expect(college).toMatchObject({
+      district: 'Curated District',
+      region: 'Bay Area',
+      counties_served: ['Alpha', 'Beta'],
+      district_source: 'console',
+      district_source_college_name: 'CC Test',
+      curated_by: 'user-1',
+      curated_at: curatedAt,
+    });
+  });
+
   it('carries concept fields forward when rebuilding courses from legacy', async () => {
     // The beforeEach seeds a legacy CC course; stamp concept fields on its
     // current canonical row and rebuild.

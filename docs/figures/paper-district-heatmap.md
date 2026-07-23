@@ -4,6 +4,11 @@
 
 > Dataset `2026-07-03-v2` · CS majors · 9 UC campuses × 72 CC districts · July 4, 2026
 
+Current-data rows are isolated to the nine exact canonical CS
+campus/program pairs in `server/config/majors.js` (and
+`analysis/major_pins.py` for the standalone audit). Adding another major or a
+CS sibling program to Atlas cannot change this matrix.
+
 ## How to read this note
 
 For the condensed memory-refresh version, start with

@@ -627,6 +627,7 @@ async function loadDistrictPathwayContext(db, auditDb, params = {}) {
   const [context, receivingCourseRows] = await Promise.all([
     loadMultiCampusPathwayContext(db, auditDb, {
       schoolIds,
+      majorSlug: 'cs',
       visiblePairs: programPins.programs.map((program) => ({
         school_id: program.school_id,
         major: program.major,

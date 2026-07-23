@@ -1,11 +1,54 @@
 {
   "generated_by": "analysis/paper_credit_loss.py",
-  "generated_at": "2026-07-09T14:49:32+00:00",
-  "dataset_version": "2026-07-06-v1",
+  "generated_at": "2026-07-23T06:35:33+00:00",
+  "data_refreshed_at": "2026-07-22T23:40:04.400000",
   "requirements": "assist",
-  "major_filter": "computer science",
+  "dataset_version": "2026-07-22-canonical-cs-v1",
+  "major_scope": {
+    "slug": "cs",
+    "label": "Computer Science",
+    "program_pins": [
+      {
+        "school_id": 7,
+        "program": "CSE: Computer Science B.S."
+      },
+      {
+        "school_id": 46,
+        "program": "Computer Science, B.S."
+      },
+      {
+        "school_id": 79,
+        "program": "Electrical Engineering & Computer Sciences, B.S."
+      },
+      {
+        "school_id": 89,
+        "program": "Computer Science B.S."
+      },
+      {
+        "school_id": 117,
+        "program": "Computer Science/B.S."
+      },
+      {
+        "school_id": 120,
+        "program": "Computer Science, B.S."
+      },
+      {
+        "school_id": 128,
+        "program": "Computer Science, B.S."
+      },
+      {
+        "school_id": 132,
+        "program": "Computer Science B.S."
+      },
+      {
+        "school_id": 144,
+        "program": "COMPUTER SCIENCE AND ENGINEERING, B.S. "
+      }
+    ]
+  },
+  "major_scope_fingerprint": "a11075a5c54fa1249316f91f8806dd991276cdccd34a2ffff9110ddeb7bc05f9",
   "districts_total": 72,
-  "method": "the paper's credit-loss method with ASSIST demand: the one canonical CS major per campus (from Settings) states the required groups; its articulations are pooled per receiver across sibling colleges (best college per requirement, the paper's rule); minimum CC courses from the ported PMT branch-and-bound optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations + transferable-average; see docs/figures/paper-credit-loss.md",
+  "method": "the paper's credit-loss method with ASSIST demand: the code-pinned canonical CS major at each campus states the required groups; its articulations are pooled per receiver across sibling colleges (best college per requirement, the paper's rule); minimum CC courses from the ported PMT branch-and-bound optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations + transferable-average; see docs/figures/paper-credit-loss.md",
   "campuses": [
     {
       "code": "UCD",
@@ -68,7 +111,7 @@
         },
         {
           "order": 4,
-          "transferable_average": 1.78,
+          "transferable_average": 1.79,
           "districts_included": 64
         }
       ]
@@ -256,17 +299,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 2.1,
+          "transferable_average": 2.11,
           "districts_included": 39
         },
         {
           "order": 3,
-          "transferable_average": 1.65,
+          "transferable_average": 1.67,
           "districts_included": 39
         },
         {
           "order": 4,
-          "transferable_average": 1.44,
+          "transferable_average": 1.46,
           "districts_included": 39
         }
       ]
@@ -299,10 +342,11 @@
         },
         {
           "order": 4,
-          "transferable_average": 0.76,
+          "transferable_average": 0.77,
           "districts_included": 57
         }
       ]
     }
-  ]
+  ],
+  "artifact_fingerprint": "51e97da43c480e73eff5f6c0cb5507a17f4d136ae936138170b0c2d41550497d"
 }
