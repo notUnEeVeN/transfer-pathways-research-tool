@@ -50,8 +50,8 @@ these are the college's own graduation requirements, not an articulation.
 
 ## What to return
 
-The complete corrected document as JSON, and nothing else — no commentary
-before or after, no markdown fence. It gets pasted straight back in.`;
+The complete document as JSON, and nothing else — no commentary before or
+after, no markdown fence. It gets pasted straight back in.`;
 
 const CREATE_INTRO = `This college has no record for this degree slot yet — no record exists yet
 to correct. Build one from the printed catalog: the scaffold below already
