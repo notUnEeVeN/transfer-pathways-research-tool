@@ -1,0 +1,742 @@
+{
+  "_meta": {
+    "major_slug": "bio",
+    "catalog_scope": "Current official requirements researched 2026-07-23; UCR uses its latest controlling 2025-26 catalog PDF.",
+    "research_status": "ai_researched_needs_human_verification",
+    "purpose": "Nine full four-year Biology graduation templates for the exact ASSIST program pins in server/config/majors.js. Major preparation, governing GE, upper-division minima, and degree-unit closure are sourced separately so a human can verify each layer.",
+    "modeling_policy": [
+      "The authored unit budget uses one explicitly documented canonical minimum-unit path where a catalog offers alternatives; higher-unit alternatives remain visible and their effect is noted.",
+      "A course is lower division only when its course number is below 100. Requirement-section labels do not override course level: UCSB CHEM 109A/B, UC Merced BIO 110, and UCR BCH 100/110A are university-only.",
+      "GE units are the derived distinct remainder after named major overlaps under the documented transfer lens, not a second copy of science/math already counted in the major.",
+      "Elective capacity is a derived balancing amount to the published degree minimum. It is explicitly UC-transferable capacity, not a claim that a particular associate degree contains the right courses.",
+      "Residence, GPA, certification, and proficiency gates are retained in notes or zero-unit rows; they are not invented as course units.",
+      "All records remain AI-researched and must be human-verified before production import or enabling the major's degreeTemplates capability."
+    ]
+  },
+  "UCB": {
+    "school_id": 79,
+    "school": "UC Berkeley",
+    "program": "Molecular and Cell Biology, B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 120,
+    "unit_system": "semester",
+    "catalog_year": "2026-27",
+    "college": "College of Letters and Science",
+    "academic_unit": "Department of Molecular and Cell Biology",
+    "ge_authority": "College of Letters and Science",
+    "ge_model": "L&S full-degree requirements with MCB overlap; Fall 2025+ transfer policy",
+    "source_url": "https://mcb.berkeley.edu/undergrad/major/major-requirements/requirements",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucb_mcb_program", "kind": "major", "label": "Berkeley catalog — Molecular and Cell Biology B.A.", "url": "https://undergraduate.catalog.berkeley.edu/programs/25974U/overview-aoYks", "note": "Program and award owner." },
+      { "id": "ucb_mcb_requirements", "kind": "major", "label": "MCB department — current major requirements", "url": "https://mcb.berkeley.edu/undergrad/major/major-requirements/requirements", "note": "Lower-division core, Fall 2026 Physics change, and emphasis structure." },
+      { "id": "ucb_lns_degree", "kind": "graduation", "label": "Berkeley L&S — degree requirements", "url": "https://lsadvising.berkeley.edu/node/69", "note": "120 units, upper-division and residence rules." },
+      { "id": "ucb_lns_breadth", "kind": "ge", "label": "Berkeley L&S — seven-course breadth", "url": "https://lsadvising.berkeley.edu/seven-course-breadth", "note": "One course in each of seven breadth areas." },
+      { "id": "ucb_lns_transfer", "kind": "transfer", "label": "Berkeley L&S — current transfer-admission and degree policy", "url": "https://ls.berkeley.edu/prospective-students/new-policies-transfer-student-applicants", "note": "Current official transfer policy; read with the L&S degree and breadth pages for R&C, breadth, language, and American Cultures." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 120,
+      "modeled_units": 120,
+      "major_lower_division": 38,
+      "major_upper_division": 21,
+      "additional_upper_division": 15,
+      "distinct_ge_after_overlap": 27,
+      "uc_transferable_elective_capacity": 19,
+      "canonical_path": "Standard MCB chemistry path; MATH 51/52; one 4-unit physics course; minimum 21-unit active emphasis."
+    },
+    "modeling_notes": [
+      "MCB has eleven active emphasis/track paths and no single official major subtotal. This template uses the common 38-unit preparation path plus the catalog-stated 21-unit minimum emphasis.",
+      "The BBS Track 2 chemistry routes raise lower-division preparation to approximately 40 or 42 units; those alternatives require a separate variant before production use.",
+      "Distinct GE is derived as two R&C courses, five breadth areas not already met by MCB science, and American Cultures. Quantitative Reasoning and two science breadth areas overlap the canonical major path; language is a proficiency gate.",
+      "L&S requires 36 upper-division units, including six outside the major, plus residence rules. The 15-unit additional upper block reaches 36 under the 21-unit major minimum and includes the outside-major constraint."
+    ],
+    "data_quality_flags": [
+      { "code": "track_variant", "severity": "review", "message": "Choose and hand-verify one MCB emphasis/track; Track 2 chemistry has a larger lower-division total." },
+      { "code": "physics_change", "severity": "review", "message": "PHYSICS 8B is no longer required for expected graduation Fall 2026 or later; confirm catalog rights for the analyzed cohort." }
+    ],
+    "groups": [
+      {
+        "title": "Lower-division mathematics — one complete sequence",
+        "tier": "transferable",
+        "course_level": "lower_division",
+        "cc_articulable": true,
+        "source_refs": ["ucb_mcb_requirements"],
+        "requirements": [
+          { "select": 1, "units": 8, "from": { "series": [["MATH 51", "MATH 52"], ["MATH 10A", "MATH 10B"]] }, "source_refs": ["ucb_mcb_requirements"], "note": "Canonical budget is 8 units." }
+        ]
+      },
+      {
+        "title": "Lower-division chemistry — standard MCB path",
+        "tier": "transferable",
+        "course_level": "lower_division",
+        "cc_articulable": true,
+        "source_refs": ["ucb_mcb_requirements"],
+        "requirements": [
+          { "select": 1, "units": 17, "from": { "series": [["CHEM 1A", "CHEM 1AL", "CHEM 3A", "CHEM 3AL", "CHEM 3B", "CHEM 3BL"]] }, "source_refs": ["ucb_mcb_requirements"], "note": "CHEM 4A may substitute for CHEM 1A/1AL. Track 2 chemistry variants are documented but not collapsed into this canonical path." }
+        ]
+      },
+      {
+        "title": "Lower-division biology",
+        "tier": "transferable",
+        "course_level": "lower_division",
+        "cc_articulable": true,
+        "source_refs": ["ucb_mcb_requirements"],
+        "requirements": [
+          { "select": 3, "units": 9, "from": ["BIOLOGY 1A", "BIOLOGY 1AL", "BIOLOGY 1B"], "source_refs": ["ucb_mcb_requirements"] }
+        ]
+      },
+      {
+        "title": "Lower-division physics — PHYSICS 8A or 7A",
+        "tier": "transferable",
+        "course_level": "lower_division",
+        "cc_articulable": true,
+        "source_refs": ["ucb_mcb_requirements"],
+        "requirements": [
+          { "select": 1, "units": 4, "from": ["PHYSICS 8A", "PHYSICS 7A"], "source_refs": ["ucb_mcb_requirements"] }
+        ]
+      },
+      {
+        "title": "L&S general education remaining after canonical MCB overlap",
+        "tier": "breadth",
+        "course_level": "lower_division_or_proficiency",
+        "cc_articulable": true,
+        "source_refs": ["ucb_lns_breadth", "ucb_lns_transfer"],
+        "note": "Derived distinct capacity: R&C, five non-science breadth areas, and American Cultures. QR and two science areas overlap major preparation.",
+        "requirements": [
+          { "select": 7, "units": 27, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Berkeley L&S GE remaining after MCB science/math overlap" }, "source_refs": ["ucb_lns_breadth", "ucb_lns_transfer"] },
+          { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Language other than English — proficiency through second-semester level" }, "source_refs": ["ucb_lns_transfer"], "note": "May be satisfied without degree units." }
+        ]
+      },
+      {
+        "title": "UC-transferable elective capacity to the 120-unit minimum",
+        "tier": "breadth",
+        "course_level": "lower_division_capacity",
+        "cc_articulable": true,
+        "source_refs": ["ucb_lns_degree"],
+        "requirements": [
+          { "select": 5, "units": 19, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucb_lns_degree"], "note": "120 minus the distinct canonical major, GE, and 36-unit upper-division floor." }
+        ]
+      },
+      {
+        "title": "Upper-division MCB emphasis — one complete active path",
+        "tier": "nontransferable",
+        "course_level": "upper_division",
+        "cc_articulable": false,
+        "source_refs": ["ucb_mcb_requirements"],
+        "requirements": [
+          { "select": 6, "units": 21, "from": null, "label": "One current MCB emphasis/track (minimum 21 units)", "source_refs": ["ucb_mcb_requirements"], "note": "Eleven active track paths; exact courses depend on the selected path." }
+        ]
+      },
+      {
+        "title": "Additional upper-division coursework — L&S 36-unit minimum and outside-major rule",
+        "tier": "nontransferable",
+        "course_level": "upper_division",
+        "cc_articulable": false,
+        "source_refs": ["ucb_lns_degree"],
+        "requirements": [
+          { "select": 4, "units": 15, "from": null, "label": "Additional upper-division coursework, including at least 6 units outside MCB", "source_refs": ["ucb_lns_degree"] }
+        ]
+      }
+    ]
+  },
+  "UCD": {
+    "school_id": 89,
+    "school": "UC Davis",
+    "program": "Biological Sciences B.S.",
+    "degree_variant": "B.S.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "College of Biological Sciences",
+    "academic_unit": "Biological Sciences program / College of Biological Sciences",
+    "ge_authority": "UC Davis campus GE plus College of Biological Sciences",
+    "ge_model": "Cal-GETC/IGETC transfer lens plus upper-division college composition",
+    "source_url": "https://catalog.ucdavis.edu/departments-programs-degrees/biological-sciences/biological-sciences-bs/",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucd_bio_requirements", "kind": "major", "label": "UC Davis catalog — Biological Sciences B.S.", "url": "https://catalog.ucdavis.edu/departments-programs-degrees/biological-sciences/biological-sciences-bs/", "note": "97–115-unit major: preparation, depth, labs, and restricted electives." },
+      { "id": "ucd_bio_transition", "kind": "course_transition", "label": "UC Davis Biology — BIS 2 / BIO 1-2-3 transition and articulation guidance", "url": "https://biology.ucdavis.edu/about/bio-1-2-3/students", "note": "BIS 2 ends after Summer 2026; CC courses continue articulating to BIS 2 in the short term while BIO 1-2-3 articulation is built." },
+      { "id": "ucd_ge_2026", "kind": "ge", "label": "UC Davis catalog — General Education", "url": "https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/general-education-ge-requirements/", "note": "Topical Breadth/Core Literacies and transfer certification treatment." },
+      { "id": "ucd_cbs_degree", "kind": "college", "label": "UC Davis — College of Biological Sciences degree requirements", "url": "https://catalog.ucdavis.edu/undergraduate-education/college-degree-requirements/biological-sciences/", "note": "180 units, 64 upper division, composition, transfer limits, and residence." },
+      { "id": "ucd_units", "kind": "graduation", "label": "UC Davis catalog — unit requirements and limitations", "url": "https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/unit-requirements-limitations/", "note": "Degree and two-year transfer-unit limits." },
+      { "id": "ucd_residence", "kind": "residency", "label": "UC Davis catalog — senior residence", "url": "https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/senior-residence-requirements/", "note": "Residence requirement; no invented course units." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 55,
+      "major_upper_division": 42,
+      "additional_upper_division": 22,
+      "distinct_ge_after_overlap": 40,
+      "uc_transferable_elective_capacity": 21,
+      "canonical_path": "Minimum-unit preparation (CHE 8A/B and MAT 21A/B) plus minimum 42-unit upper-division major path."
+    },
+    "modeling_notes": [
+      "The official major is 97–115 units: 55–65 preparation plus a choice-dependent depth/lab/restricted-elective block. This canonical model uses the published minimums.",
+      "The 22-unit additional upper block brings the 42-unit minimum major depth to the College's 64-upper-division graduation floor; it includes upper-division composition.",
+      "GE/Core Literacy designations overlap each other and the science major. Forty distinct quarter units is a transfer-lens estimate after major overlap; verify against a student audit rather than treating 52 Topical Breadth plus 35 Core Literacy as additive.",
+      "The current 2026–27 catalog introduced BIO 1/1L/2/2L/3. Official transition guidance says CC courses continue to articulate to BIS 2A/B/C in the short term, so the whole legacy series is retained as an alternative rather than inventing one-to-one aliases."
+    ],
+    "data_quality_flags": [
+      { "code": "course_transition", "severity": "review", "message": "Verify the approved whole-series substitution from BIS 2A/B/C to BIO 1/1L/2/2L/3 on a 2026–27 Biological Sciences audit." },
+      { "code": "lab_overlap", "severity": "review", "message": "A lab may satisfy depth or restricted electives, but not both; verify the chosen 42-unit minimum path." }
+    ],
+    "groups": [
+      { "title": "Lower-division introductory biology — current or transition series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_bio_requirements", "ucd_bio_transition"], "requirements": [
+        { "select": 1, "units": 14, "from": { "series": [["BIO 001", "BIO 001L", "BIO 002", "BIO 002L", "BIO 003"], ["BIS 002A", "BIS 002B", "BIS 002C"]] }, "source_refs": ["ucd_bio_requirements", "ucd_bio_transition"], "note": "Canonical current series is 14 units; legacy BIS 2 is 15. Whole-series transition is kept because current CC articulation still targets BIS 2." }
+      ] },
+      { "title": "Lower-division general chemistry — one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_bio_requirements"], "requirements": [
+        { "select": 1, "units": 15, "from": { "series": [["CHE 002A", "CHE 002B", "CHE 002C"], ["CHE 004A", "CHE 004B", "CHE 004C"]] }, "source_refs": ["ucd_bio_requirements"] }
+      ] },
+      { "title": "Lower-division organic chemistry — one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_bio_requirements"], "requirements": [
+        { "select": 1, "units": 6, "from": { "series": [["CHE 008A", "CHE 008B"], ["CHE 118A", "CHE 118B", "CHE 118C"]] }, "source_refs": ["ucd_bio_requirements"], "note": "Canonical budget uses the 6-unit CHE 8 path; CHE 118 is 12 units." }
+      ] },
+      { "title": "Lower-division calculus — one complete path", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_bio_requirements"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["MAT 017A", "MAT 017B", "MAT 017C"], ["MAT 021A", "MAT 021B"]] }, "source_refs": ["ucd_bio_requirements"], "note": "Canonical budget uses MAT 21A/B; MAT 21C is recommended, not required." }
+      ] },
+      { "title": "Lower-division physics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_bio_requirements"], "requirements": [
+        { "select": 1, "units": 12, "from": { "series": [["PHY 007A", "PHY 007B", "PHY 007C"]] }, "source_refs": ["ucd_bio_requirements"] }
+      ] },
+      { "title": "Campus/College GE remaining after Biology overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucd_ge_2026", "ucd_cbs_degree"], "requirements": [
+        { "select": 10, "units": 40, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UC Davis GE/Core Literacy capacity after Biology overlap" }, "source_refs": ["ucd_ge_2026", "ucd_cbs_degree"], "note": "Includes lower composition; upper composition is inside the additional upper-division block." }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucd_units"], "requirements": [
+        { "select": 6, "units": 21, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucd_units"] }
+      ] },
+      { "title": "Upper-division Biological Sciences depth, laboratories, and restricted electives", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucd_bio_requirements"], "requirements": [
+        { "select": 12, "units": 42, "from": null, "label": "Minimum upper-division major path", "source_refs": ["ucd_bio_requirements"], "note": "Core 10–13; six topic selections 21–26; at least 11 restricted-elective units; lab overlap rules apply." }
+      ] },
+      { "title": "Additional upper-division coursework to the 64-unit College minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucd_cbs_degree"], "requirements": [
+        { "select": 6, "units": 22, "from": null, "label": "Additional upper-division work, including upper composition", "source_refs": ["ucd_cbs_degree"] }
+      ] }
+    ]
+  },
+  "UCI": {
+    "school_id": 120,
+    "school": "UC Irvine",
+    "program": "Biological Sciences, B.S.",
+    "degree_variant": "B.S.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "Charlie Dunlop School of Biological Sciences",
+    "academic_unit": "Charlie Dunlop School of Biological Sciences",
+    "ge_authority": "UCI campuswide GE plus Dunlop School rules",
+    "ge_model": "Campus GE with science/quantitative/upper-writing overlap into the major",
+    "source_url": "https://catalogue.uci.edu/charliedunlopschoolofbiologicalsciences/biologicalsciences_bs/",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "uci_bio_major_2026", "kind": "major", "label": "UCI catalog — Biological Sciences B.S.", "url": "https://catalogue.uci.edu/charliedunlopschoolofbiologicalsciences/biologicalsciences_bs/", "note": "Major-specific upper pools and award." },
+      { "id": "uci_bio_school_2026", "kind": "college", "label": "UCI catalog — Dunlop School B.S. requirements", "url": "https://catalogue.uci.edu/charliedunlopschoolofbiologicalsciences/", "note": "Core, chemistry, math, physics, writing, laboratories, and School residence." },
+      { "id": "uci_degree_ge_2026", "kind": "ge", "label": "UCI catalog — bachelor's degree and GE/transfer rules", "url": "https://catalogue.uci.edu/informationforadmittedstudents/requirementsforabachelorsdegree/", "note": "180 units, eight GE categories, Cal-GETC treatment, transfer cap, and residence." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 83,
+      "major_upper_or_uci_only": 39,
+      "distinct_ge_after_overlap": 32,
+      "uc_transferable_elective_capacity": 26,
+      "canonical_path": "Standard chemistry; MATH 2A/B; 14-unit PHYSICS 7 path; minimum-unit lab route."
+    },
+    "modeling_notes": [
+      "The canonical lower-division budget is 83 units. The alternate PHYSICS 3 path adds one unit; honors chemistry units require human verification.",
+      "BIO SCI 100 and the transfer seminar BIO SCI 190 are university-only. BIO SCI 100 plus the selected upper labs satisfies upper-division writing.",
+      "The 32-unit distinct GE estimate covers lower writing, Arts/Humanities, and Social/Behavioral Sciences. Science, quantitative, upper writing, and overlay categories are modeled as major overlaps.",
+      "UCI states no campuswide 60-upper-division-unit minimum in the current catalog; none was imported."
+    ],
+    "data_quality_flags": [
+      { "code": "honors_chemistry", "severity": "review", "message": "The requirements list honors chemistry codes whose current course-index units are not consistently exposed." },
+      { "code": "all_bio_at_uci", "severity": "review", "message": "After matriculation, required BIO SCI courses must be completed at UCI; verify how transferred articulations are applied to this School rule." }
+    ],
+    "groups": [
+      { "title": "Lower-division Biological Sciences core", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_bio_school_2026"], "requirements": [
+        { "select": 6, "units": 21, "from": ["BIO SCI 90L", "BIO SCI 93", "BIO SCI 94", "BIO SCI 97", "BIO SCI 98", "BIO SCI 99"], "source_refs": ["uci_bio_school_2026"], "note": "Honors H93/H94/H97 are alternatives; standard codes are the canonical ASSIST-facing path." }
+      ] },
+      { "title": "Lower-division general chemistry — one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_bio_school_2026"], "requirements": [
+        { "select": 1, "units": 18, "from": { "series": [["CHEM 1A", "CHEM 1B", "CHEM 1C", "CHEM 1LC", "CHEM 1LD"], ["CHEM H2A", "CHEM H2B", "CHEM H2C", "CHEM H2LA", "CHEM H2LB"]] }, "source_refs": ["uci_bio_school_2026"], "human_review": "Honors-series units and current availability." }
+      ] },
+      { "title": "Lower-division organic chemistry", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_bio_school_2026"], "requirements": [
+        { "select": 1, "units": 18, "from": { "series": [["CHEM 51A", "CHEM 51B", "CHEM 51C", "CHEM 51LB", "CHEM 51LC"]] }, "source_refs": ["uci_bio_school_2026"] }
+      ] },
+      { "title": "Lower-division mathematics and statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_bio_school_2026"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["MATH 5A", "MATH 5B"], ["MATH 2A", "MATH 2B"]] }, "source_refs": ["uci_bio_school_2026"] },
+        { "select": 1, "units": 4, "from": ["STATS 7", "STATS 8", "MATH 2D", "MATH 3A"], "source_refs": ["uci_bio_school_2026"] }
+      ] },
+      { "title": "Lower-division physics — one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_bio_school_2026"], "requirements": [
+        { "select": 1, "units": 14, "from": { "series": [["PHYSICS 3A", "PHYSICS 3B", "PHYSICS 3C", "PHYSICS 3LB", "PHYSICS 3LC"], ["PHYSICS 7C", "PHYSICS 7D", "PHYSICS 7E", "PHYSICS 7LC", "PHYSICS 7LD"]] }, "source_refs": ["uci_bio_school_2026"], "note": "Canonical budget uses the 14-unit 7-series; the 3-series is 15 units." }
+      ] },
+      { "title": "UCI GE remaining after Biology science, quantitative, and writing overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["uci_degree_ge_2026"], "requirements": [
+        { "select": 8, "units": 32, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct lower-division UCI GE after Biology overlap" }, "source_refs": ["uci_degree_ge_2026"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Language other than English proficiency" }, "source_refs": ["uci_degree_ge_2026"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["uci_degree_ge_2026"], "requirements": [
+        { "select": 7, "units": 26, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["uci_degree_ge_2026"] }
+      ] },
+      { "title": "BIO SCI 100 and transfer seminar — completed at UCI", "tier": "nontransferable", "course_level": "upper_division_or_residency", "cc_articulable": false, "source_refs": ["uci_bio_school_2026"], "requirements": [
+        { "select": 1, "units": 3, "from": null, "label": "BIO SCI 100 — Scientific Writing", "source_refs": ["uci_bio_school_2026"] },
+        { "select": 1, "units": 1, "from": null, "label": "BIO SCI 190 — Transfer Student Seminar", "source_refs": ["uci_bio_school_2026"] }
+      ] },
+      { "title": "Upper-division Biological Sciences breadth, laboratories, and electives", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["uci_bio_major_2026", "uci_bio_school_2026"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "Choose 3 biological breadth courses", "source_refs": ["uci_bio_major_2026"] },
+        { "select": 2, "units": 7, "from": null, "label": "Choose 2 approved upper-division laboratories", "source_refs": ["uci_bio_major_2026"], "note": "Minimum-unit route; listed laboratories range from 3 to 5 units." },
+        { "select": 4, "units": 16, "from": null, "label": "Choose 4 advanced Biological Sciences electives", "source_refs": ["uci_bio_major_2026"] }
+      ] }
+    ]
+  },
+  "UCLA": {
+    "school_id": 117,
+    "school": "UCLA",
+    "program": "Biology/B.S.",
+    "degree_variant": "B.S.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "College of Letters and Science",
+    "academic_unit": "Department of Ecology and Evolutionary Biology / Life Sciences",
+    "ge_authority": "UCLA College of Letters and Science",
+    "ge_model": "L&S GE with Scientific Inquiry and quantitative overlap into Biology",
+    "source_url": "https://catalog.registrar.ucla.edu/major/2026/BiologyBS",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucla_bio_major_2026", "kind": "major", "label": "UCLA catalog — Biology B.S.", "url": "https://catalog.registrar.ucla.edu/major/2026/BiologyBS", "note": "Preparation series and five upper-division principles." },
+      { "id": "ucla_ls_degree_2026", "kind": "graduation", "label": "UCLA L&S — undergraduate degree and university requirements", "url": "https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/CollegeofLettersandScience/Undergraduate-Degree-and-University-Requirements", "note": "180 units, 60 upper division, residence, and UC requirements." },
+      { "id": "ucla_ls_ge_2026", "kind": "ge", "label": "UCLA L&S — General Education", "url": "https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/CollegeofLettersandScience/College-Requirements/General-Education-Requirements", "note": "Ten courses / at least 47 units across three foundations." },
+      { "id": "ucla_ls_writing_2026", "kind": "college", "label": "UCLA L&S — Writing requirement", "url": "https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/CollegeofLettersandScience/College-Requirements/Writing-Requirement", "note": "Writing I and II; transfer treatment." },
+      { "id": "ucla_university_2026", "kind": "university", "label": "UCLA — University requirements", "url": "https://catalog.registrar.ucla.edu/Undergraduate-Study/Degree-Requirements/University-Requirements", "note": "ELWR and American History & Institutions." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 67,
+      "major_upper_division": 40,
+      "additional_upper_division": 20,
+      "distinct_ge_after_overlap": 35,
+      "uc_transferable_elective_capacity": 18,
+      "canonical_path": "CHEM 14, LIFESCI 30, PHYSICS 5, and minimum 4 units for each of ten upper courses."
+    },
+    "modeling_notes": [
+      "Preparation ranges from 67 to 78 units. The template uses the 67-unit CHEM 14 + LIFESCI 30 + PHYSICS 5 path while preserving all complete-series alternatives.",
+      "The major requires exactly ten upper-division courses: two from each of five principle pools, at least five EEB, and at least two labs including one EEB lab.",
+      "The 35-unit distinct GE estimate retains Arts/Humanities, Society/Culture, and lower writing after Scientific Inquiry and quantitative overlap. Writing II/Diversity overlap is a human-review assumption.",
+      "Twenty additional upper-division units reach the College's 60-unit minimum under the minimum 40-unit upper major path."
+    ],
+    "data_quality_flags": [
+      { "code": "ge_overlap", "severity": "review", "message": "Confirm Writing II and Diversity overlap and the exact Scientific Inquiry approvals for the chosen preparation courses." }
+    ],
+    "groups": [
+      { "title": "Lower-division chemistry — choose one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 19, "from": { "series": [["CHEM 14A", "CHEM 14B", "CHEM 14BL", "CHEM 14C", "CHEM 14D"], ["CHEM 20A", "CHEM 20B", "CHEM 20L", "CHEM 30A", "CHEM 30AL", "CHEM 30B"]] }, "source_refs": ["ucla_bio_major_2026"], "note": "Canonical budget uses CHEM 14 (19 units); the CHEM 20/30 path is 23." }
+      ] },
+      { "title": "Lower-division Life Sciences core", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_bio_major_2026"], "requirements": [
+        { "select": 4, "units": 18, "from": ["LIFESCI 7A", "LIFESCI 7B", "LIFESCI 7C", "LIFESCI 7L"], "source_refs": ["ucla_bio_major_2026"] }
+      ] },
+      { "title": "Lower-division mathematics — choose one complete path", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 10, "from": { "series": [["LIFESCI 30A", "LIFESCI 30B"], ["MATH 3A", "MATH 3B", "MATH 3C"], ["MATH 31A", "MATH 31B", "MATH 32A"]] }, "source_refs": ["ucla_bio_major_2026"], "note": "MATH 31AL may replace 31A. Canonical budget uses LIFESCI 30A/B; other paths are 12–13 units." }
+      ] },
+      { "title": "Lower-division statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 5, "from": ["LIFESCI 40", "STATS 13"], "source_refs": ["ucla_bio_major_2026"] }
+      ] },
+      { "title": "Lower-division physics — choose one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 15, "from": { "series": [["PHYSICS 1A", "PHYSICS 1B", "PHYSICS 1C", "PHYSICS 4AL", "PHYSICS 4BL"], ["PHYSICS 5A", "PHYSICS 5B", "PHYSICS 5C"]] }, "source_refs": ["ucla_bio_major_2026"], "note": "Canonical budget uses PHYSICS 5 (15 units); PHYSICS 1/4 is 19." }
+      ] },
+      { "title": "L&S GE remaining after Biology Scientific Inquiry/quantitative overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucla_ls_ge_2026", "ucla_ls_writing_2026"], "requirements": [
+        { "select": 8, "units": 35, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UCLA L&S GE and writing capacity after Biology overlap" }, "source_refs": ["ucla_ls_ge_2026", "ucla_ls_writing_2026"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Foreign-language proficiency through level 3" }, "source_refs": ["ucla_ls_degree_2026"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucla_ls_degree_2026"], "requirements": [
+        { "select": 5, "units": 18, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucla_ls_degree_2026"] }
+      ] },
+      { "title": "Upper-division Biology principles — two courses from each of five pools", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucla_bio_major_2026"], "requirements": [
+        { "select": 10, "units": 40, "from": null, "label": "Ten upper-division Biology courses (2 × 5 principle pools)", "source_refs": ["ucla_bio_major_2026"], "note": "At least five EEB; at least two labs including one EEB lab; one course cannot satisfy two principles." }
+      ] },
+      { "title": "Additional upper-division coursework to the 60-unit College minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucla_ls_degree_2026"], "requirements": [
+        { "select": 5, "units": 20, "from": null, "label": "Additional upper-division coursework", "source_refs": ["ucla_ls_degree_2026"] }
+      ] }
+    ]
+  },
+  "UCM": {
+    "school_id": 144,
+    "school": "UC Merced",
+    "program": "BIOLOGICAL SCIENCES, General Biology Emphasis, B.S.",
+    "degree_variant": "B.S. — General Biology emphasis",
+    "total_units": 120,
+    "unit_system": "semester",
+    "catalog_year": "2026-27",
+    "college": "School of Natural Sciences",
+    "academic_unit": "School of Natural Sciences / Biological Sciences",
+    "ge_authority": "UC Merced campuswide General Education",
+    "ge_model": "Campuswide transfer GE with three university-only upper-division experiences",
+    "source_url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4450&returnto=3780",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucm_bio_major_2026", "kind": "major", "label": "UC Merced catalog — Biological Sciences B.S., General Biology emphasis", "url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4450&returnto=3780", "note": "Current catoid 26 foundation, emphasis core, practicum, and electives." },
+      { "id": "ucm_sns_2026", "kind": "college", "label": "UC Merced catalog — School of Natural Sciences rules", "url": "https://catalog.ucmerced.edu/content.php?catoid=26&navoid=3651", "note": "School ownership and major-course rules." },
+      { "id": "ucm_ge_2026", "kind": "ge", "label": "UC Merced catalog — General Education", "url": "https://catalog.ucmerced.edu/content.php?catoid=26&navoid=3664", "note": "Lower GE, badges, transfer certification, and three upper-division experiences." },
+      { "id": "ucm_ge_readable", "kind": "ge", "label": "UC Merced GE Office — current requirements", "url": "https://ge.ucmerced.edu/node/451", "note": "Readable human-verification path and transfer table." },
+      { "id": "ucm_graduation_2026", "kind": "graduation", "label": "UC Merced catalog — graduation requirements", "url": "https://catalog.ucmerced.edu/content.php?catoid=26&navoid=3603", "note": "120 units and residence." },
+      { "id": "ucm_upper_units", "kind": "graduation", "label": "UC Merced Registrar — 44 upper-division units", "url": "https://registrar.ucmerced.edu/node/1376", "note": "Campus upper-division minimum." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 120,
+      "modeled_units": 120,
+      "major_lower_division": 51,
+      "major_upper_division": 31,
+      "upper_ge_experiences": 12,
+      "additional_upper_division": 1,
+      "distinct_lower_ge_after_overlap": 16,
+      "uc_transferable_elective_capacity": 9,
+      "canonical_path": "Four-unit probability/statistics choice; 3-unit practicum; 3-unit additional science; minimum 9 elective units."
+    },
+    "modeling_notes": [
+      "BIO 110 is course-numbered upper division even though the catalog places it inside a common Biological Sciences requirement block; it is not counted as CC-completable.",
+      "The official major minimum is approximately 82 units under the catalog's 3-unit practicum floor: 51 lower plus 31 upper. Alternative choices raise it to roughly 88 units.",
+      "Cal-GETC/IGETC waives or satisfies most lower GE, but Crossroads, Writing in the Discipline, and Culminating Experience remain at Merced. These 12 units plus the 31-unit major upper block nearly satisfy the 44-upper-unit campus minimum.",
+      "No course may be shared across separate major requirement blocks."
+    ],
+    "data_quality_flags": [
+      { "code": "practicum_range_conflict", "severity": "blocker_for_verification", "message": "The practicum header says 3–7 units, but listed BIO 120+120L and BIO 150+150L paths appear to total 8; human adjudication required." },
+      { "code": "new_emphasis", "severity": "review", "message": "General Biology began Fall 2025; verify the current catalog block against the first live student audit." }
+    ],
+    "groups": [
+      { "title": "Lower-division biology foundation", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_bio_major_2026"], "requirements": [
+        { "select": 4, "units": 10, "from": ["BIO 011", "BIO 011L", "BIO 012", "BIO 012L"], "source_refs": ["ucm_bio_major_2026"] }
+      ] },
+      { "title": "Lower-division general and organic chemistry", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 10, "from": { "series": [["CHEM 002", "CHEM 002L", "CHEM 010", "CHEM 010L"]] }, "source_refs": ["ucm_bio_major_2026"], "note": "Honors lecture alternatives are accepted." },
+        { "select": 1, "units": 5, "from": { "series": [["CHEM 008", "CHEM 008L"]] }, "source_refs": ["ucm_bio_major_2026"], "note": "Honors lecture/lab alternatives are accepted." }
+      ] },
+      { "title": "Lower-division mathematics, computing, and probability/statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_bio_major_2026"], "requirements": [
+        { "select": 2, "units": 8, "from": ["MATH 011", "MATH 012"], "source_refs": ["ucm_bio_major_2026"] },
+        { "select": 1, "units": 4, "from": ["BIOE 021", "CSE 019", "CSE 022", "DSC 011", "ME 021"], "source_refs": ["ucm_bio_major_2026"] },
+        { "select": 1, "units": 4, "from": ["BIO 018", "DSC 008", "ECON 010", "MATH 032", "PSY 010"], "source_refs": ["ucm_bio_major_2026"], "note": "Canonical budget uses a four-unit option; PSY 10 is five." }
+      ] },
+      { "title": "Lower-division physics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 10, "from": { "series": [["PHYS 018", "PHYS 018L", "PHYS 019", "PHYS 019L"]] }, "source_refs": ["ucm_bio_major_2026"] }
+      ] },
+      { "title": "Campuswide lower GE remaining after Biology overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["ucm_ge_2026", "ucm_ge_readable"], "requirements": [
+        { "select": 4, "units": 16, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct lower-division UC Merced GE after Biology overlap" }, "source_refs": ["ucm_ge_2026", "ucm_ge_readable"], "note": "Spark is waived for an eligible transfer; science, quantitative, language/computing, and badges overlap the major/Cal-GETC lens." }
+      ] },
+      { "title": "UC-transferable elective capacity to 120 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucm_graduation_2026"], "requirements": [
+        { "select": 3, "units": 9, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucm_graduation_2026"] }
+      ] },
+      { "title": "BIO 110 — upper-division course inside the common foundation block", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucm_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 4, "from": null, "label": "BIO 110", "source_refs": ["ucm_bio_major_2026"], "note": "Course level, not catalog section placement, determines CC eligibility." }
+      ] },
+      { "title": "Upper-division General Biology emphasis", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucm_bio_major_2026"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "BIO 140, BIO 141, and one of BIO 117/BIO 148", "source_refs": ["ucm_bio_major_2026"] },
+        { "select": 1, "units": 3, "from": null, "label": "Approved upper-division practicum path", "source_refs": ["ucm_bio_major_2026"], "human_review": "Catalog range/list conflict; canonical floor is 3 units." },
+        { "select": 1, "units": 3, "from": null, "label": "One additional upper-division Science/Engineering course", "source_refs": ["ucm_bio_major_2026"] },
+        { "select": 3, "units": 9, "from": null, "label": "Three approved upper-division Biology electives", "source_refs": ["ucm_bio_major_2026"] }
+      ] },
+      { "title": "Upper-division campus GE experiences", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucm_ge_2026", "ucm_ge_readable"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "Crossroads, Writing in the Discipline, and Culminating Experience", "source_refs": ["ucm_ge_2026", "ucm_ge_readable"], "note": "WID/Culminating may overlap approved major courses; human audit must prevent double counting." }
+      ] },
+      { "title": "Additional upper-division capacity to the 44-unit campus minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucm_upper_units"], "requirements": [
+        { "select": 1, "units": 1, "from": null, "label": "Remaining upper-division unit", "source_refs": ["ucm_upper_units"] }
+      ] }
+    ]
+  },
+  "UCR": {
+    "school_id": 46,
+    "school": "UC Riverside",
+    "program": "Biology, B.A. or B.S.",
+    "degree_variant": "B.S.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2025-26",
+    "college": "College of Natural and Agricultural Sciences",
+    "academic_unit": "Department of Evolution, Ecology, and Organismal Biology",
+    "ge_authority": "College of Natural and Agricultural Sciences",
+    "ge_model": "CNAS B.S. breadth, course-by-course articulation; Cal-GETC policy conflict flagged",
+    "source_url": "https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucr_catalog_2025_26", "kind": "catalog_pdf", "label": "UCR General Catalog 2025–26", "url": "https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf", "note": "Controlling source: university pp. 67–70; CNAS pp. 93–96; Biology pp. 162–163." },
+      { "id": "ucr_catalog_landing", "kind": "catalog_index", "label": "UCR Registrar — catalog landing", "url": "https://registrar.ucr.edu/registering/catalog", "note": "Current official catalog index." },
+      { "id": "ucr_bio_advising", "kind": "program_corroboration", "label": "UCR CNAS — Biology advising and current summary sheet", "url": "https://cnasstudent.ucr.edu/biology", "note": "Current course-level corroboration and B.S. worksheet." },
+      { "id": "ucr_bio_sheet", "kind": "checklist", "label": "UCR CNAS — Biology B.S. degree summary sheet", "url": "https://cnasstudent.ucr.edu/sites/default/files/2025-11/bs-biol-degree-summary-sheet-updated-11.19.25.pdf", "note": "Core, 36-unit upper block, related units, and CNAS breadth." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 64,
+      "major_upper_division": 56,
+      "distinct_ge_after_overlap": 36,
+      "uc_transferable_elective_capacity": 24,
+      "canonical_path": "Biology B.S.; minimum lower-core choices; BCH 100; 36 upper Biology +16 related upper units."
+    },
+    "modeling_notes": [
+      "The ASSIST pin combines B.A. and B.S.; this template deliberately selects the B.S. variant, matching the project-wide Biology pin policy.",
+      "BCH 100/100H/110A/110HA is course-numbered upper division although it appears in the shared core. It is separated from the 64-unit lower core.",
+      "CNAS B.S. breadth remaining after Natural Sciences/Math and the 16-unit Additional Courses overlap is modeled as 12 composition +12 humanities +12 social-science units. Ethnicity may overlap Humanities/Social Sciences.",
+      "Current catalog pages conflict on whether Cal-GETC fully satisfies CNAS breadth; individual CC-articulable breadth capacity is used rather than assuming wholesale certification."
+    ],
+    "data_quality_flags": [
+      { "code": "award_variant", "severity": "review", "message": "Confirm B.S. is the intended award behind the combined ASSIST label." },
+      { "code": "calgetc_policy_conflict", "severity": "blocker_for_verification", "message": "General UCR guidance accepts Cal-GETC for most breadth, while the CNAS page retains conflicting legacy IGETC wording." }
+    ],
+    "groups": [
+      { "title": "Lower-division Biology core", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 1, "units": 5, "from": { "series": [["BIOL 005A", "BIOL 05LA"], ["BIOL 020"]] }, "source_refs": ["ucr_bio_sheet"], "note": "The 5A+5LA route may total 6; canonical budget uses the 5-unit BIOL 20 route." },
+        { "select": 2, "units": 8, "from": ["BIOL 005B", "BIOL 005C"], "source_refs": ["ucr_bio_sheet"] }
+      ] },
+      { "title": "Lower-division general chemistry", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 1, "units": 15, "from": { "series": [["CHEM 001A", "CHEM 01LA", "CHEM 001B", "CHEM 01LB", "CHEM 001C", "CHEM 01LC"]] }, "source_refs": ["ucr_bio_sheet"] }
+      ] },
+      { "title": "Lower-division organic chemistry", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["CHEM 008A", "CHEM 08LA", "CHEM 008B", "CHEM 08LB"]] }, "source_refs": ["ucr_bio_sheet"], "note": "Honors lecture/lab counterparts are accepted." }
+      ] },
+      { "title": "Lower-division calculus, physics, and statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["MATH 007A", "MATH 007B"], ["MATH 009A", "MATH 009B"]] }, "source_refs": ["ucr_bio_sheet"] },
+        { "select": 1, "units": 15, "from": { "series": [["PHYS 002A", "PHYS 02LA", "PHYS 002B", "PHYS 02LB", "PHYS 002C", "PHYS 02LC"]] }, "source_refs": ["ucr_bio_sheet"], "note": "Honors counterparts are accepted." },
+        { "select": 1, "units": 5, "from": ["STAT 010"], "source_refs": ["ucr_bio_sheet"] }
+      ] },
+      { "title": "CNAS B.S. breadth remaining after Biology overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 9, "units": 36, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Composition, Humanities, and Social Sciences after Biology overlap" }, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "note": "Scored as course-by-course CC-satisfiable capacity; not guaranteed by Cal-GETC until the catalog conflict is resolved." }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26"], "requirements": [
+        { "select": 6, "units": 24, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucr_catalog_2025_26"] }
+      ] },
+      { "title": "BCH 100/110A requirement — upper division despite core placement", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 1, "units": 4, "from": null, "label": "One of BCH 100, 100H, 110A, or 110HA", "source_refs": ["ucr_bio_sheet"] }
+      ] },
+      { "title": "Upper-division Biology requirements", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "requirements": [
+        { "select": 9, "units": 36, "from": null, "label": "BIOL 102 plus approved upper-division Biology/related courses", "source_refs": ["ucr_bio_sheet"] },
+        { "select": 4, "units": 16, "from": null, "label": "B.S. additional approved Biology or substantive related-field units", "source_refs": ["ucr_catalog_2025_26", "ucr_bio_sheet"], "note": "Catalog allows some related-field courses below 100; conservative model treats this flexible block as university-only pending the public approved list." }
+      ] }
+    ]
+  },
+  "UCSD": {
+    "school_id": 7,
+    "school": "UC San Diego",
+    "program": "Biology: General Biology B.S.",
+    "degree_variant": "B.S. — General Biology (BI31)",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "UC San Diego undergraduate residential-college system",
+    "academic_unit": "School of Biological Sciences",
+    "ge_authority": "Student's UC San Diego residential college (8 variants)",
+    "ge_model": "Canonical comparison lens: full Cal-GETC/IGETC transfer in Warren College; all 8 variants retained below",
+    "ge_variants": [
+      { "id": "revelle", "label": "Revelle", "url": "https://revelle.ucsd.edu/academics/general-education/gen-ed-tran-students.html", "remaining_after_full_certification": "HUM 100 plus Revelle math and four natural-science courses; major courses may overlap math/science." },
+      { "id": "muir", "label": "Muir", "url": "https://muir.ucsd.edu/academics/degree.html", "remaining_after_full_certification": "MCWP 125 or 125R at UCSD." },
+      { "id": "marshall", "label": "Marshall", "url": "https://marshall.ucsd.edu/academics/transfer-ge.html", "remaining_after_full_certification": "Two four-unit upper-division Disciplinary Breadth courses outside the major, one with significant writing." },
+      { "id": "warren", "label": "Warren", "url": "https://warren.ucsd.edu/academics/general-education/index.html", "remaining_after_full_certification": "WCWP 100 plus one four-unit upper-division non-contiguous course." },
+      { "id": "erc", "label": "Eleanor Roosevelt", "url": "https://roosevelt.ucsd.edu/academics/gen-ed/index.html", "remaining_after_full_certification": "MMW 122 at UCSD; language may remain when certification lacks optional LOTE." },
+      { "id": "sixth", "label": "Sixth", "url": "https://sixth.ucsd.edu/academics/requirements/transfer-requirements.html", "remaining_after_full_certification": "CAT 125/125R plus Experiential Learning." },
+      { "id": "seventh", "label": "Seventh", "url": "https://seventh.ucsd.edu/academics/degree-requirements/degree-requirements-transfers.html", "remaining_after_full_certification": "SYN 100 plus one 2–4-unit High-Impact course." },
+      { "id": "eighth", "label": "Eighth", "url": "https://eighth.ucsd.edu/academics/degree-requirements/transfer.html", "remaining_after_full_certification": "CCE 110 and CCE 120, both four units at UCSD." }
+    ],
+    "source_url": "https://catalog.ucsd.edu/curric/BIOL-ug.html",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucsd_bio_major_2026", "kind": "major", "label": "UCSD catalog — General Biology B.S.", "url": "https://catalog.ucsd.edu/curric/BIOL-ug.html", "note": "Lower division, 48-unit upper division, laboratory/elective rules, and School residence." },
+      { "id": "ucsd_bio_checklist_2026", "kind": "department_requirements", "label": "UCSD Biology — current General Biology requirements", "url": "https://biology.ucsd.edu/education/undergrad/major-minor-programs/majors/requirements/general/index.html", "note": "Current department requirements and worksheet entry point; check CHEM 40/41 renumbering against the catalog and ASSIST snapshot." },
+      { "id": "ucsd_degree_2026", "kind": "graduation", "label": "UCSD catalog — undergraduate degree requirements", "url": "https://catalog.ucsd.edu/undergraduate/degree-requirements/index.html", "note": "180 units, 60 upper division, major floor, residence, DEI/AHI/ELWR." },
+      { "id": "ucsd_colleges_2026", "kind": "ge_authority", "label": "UCSD catalog — undergraduate colleges", "url": "https://catalog.ucsd.edu/undergraduate/colleges/index.html", "note": "Any major may belong to any of eight residential colleges; the college, not the major school, owns GE." },
+      { "id": "ucsd_ge_compare_2026", "kind": "ge", "label": "UCSD catalog — college GE comparison", "url": "https://catalog.ucsd.edu/undergraduate/graduation-requirements/index.html", "note": "Full four-year college patterns and campuswide requirements." },
+      { "id": "ucsd_warren_transfer", "kind": "ge_variant", "label": "Warren College — transfer GE", "url": "https://warren.ucsd.edu/academics/general-education/index.html", "note": "Canonical comparison lens used in this single-template data model." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 71,
+      "major_upper_division": 48,
+      "warren_upper_ge": 8,
+      "additional_upper_division": 4,
+      "distinct_calgetc_after_major_overlap": 36,
+      "uc_transferable_elective_capacity": 13,
+      "canonical_path": "71-unit minimum preparation; 48-unit major; Cal-GETC-certified Warren transfer; 60-unit campus upper-division floor."
+    },
+    "modeling_notes": [
+      "UCSD has no major-owned GE. This one-document engine cannot yet select among eight residential colleges, so Warren is the explicit canonical lens used by the historical CS template; the full variant matrix is retained for the future dimension.",
+      "General Biology lower division is 71–72 units and upper division is exactly 48. The canonical path uses the 71-unit alternative.",
+      "Thirty-six lower GE units are a derived remainder of the full Cal-GETC/IGETC pattern after science and quantitative overlap with Biology; human verification should use an actual certification audit.",
+      "Warren's two post-certification courses contribute eight upper units; four more units reach UCSD's 60-upper-unit degree minimum."
+    ],
+    "data_quality_flags": [
+      { "code": "residential_college_dimension", "severity": "blocker_for_generalization", "message": "A student's residential college changes GE. Warren is only the explicit comparison lens, not a UCSD-wide truth." },
+      { "code": "chem_renumbering", "severity": "review", "message": "Current catalog/checklist and ASSIST receiving data may differ between CHEM 40A/B and CHEM 41A/B numbering." }
+    ],
+    "groups": [
+      { "title": "Lower-division Biological Sciences", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_bio_major_2026"], "requirements": [
+        { "select": 5, "units": 20, "from": ["BILD 1", "BILD 2", "BILD 3", "BILD 4", "BILD 5"], "source_refs": ["ucsd_bio_major_2026"] }
+      ] },
+      { "title": "Lower-division chemistry", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_bio_major_2026", "ucsd_bio_checklist_2026"], "requirements": [
+        { "select": 4, "units": 16, "from": ["CHEM 6A", "CHEM 6B", "CHEM 6C", "CHEM 7L"], "source_refs": ["ucsd_bio_major_2026"] },
+        { "select": 2, "units": 8, "from": ["CHEM 40A", "CHEM 40B"], "source_refs": ["ucsd_bio_major_2026", "ucsd_bio_checklist_2026"], "human_review": "Reconcile current 40/41 numbering with receiving-course data." }
+      ] },
+      { "title": "Lower-division mathematics — choose one complete path", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 12, "from": { "series": [["MATH 10A", "MATH 10B", "MATH 11"], ["MATH 20A", "MATH 20B", "MATH 11"]] }, "source_refs": ["ucsd_bio_major_2026"] }
+      ] },
+      { "title": "Lower-division physics — choose one complete path", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_bio_major_2026"], "requirements": [
+        { "select": 1, "units": 15, "from": { "series": [["PHYS 1A", "PHYS 1AL", "PHYS 1B", "PHYS 1BL", "PHYS 1C", "PHYS 1CL"], ["PHYS 2A", "PHYS 2B", "PHYS 2C", "PHYS 2BL"]] }, "source_refs": ["ucsd_bio_major_2026"], "note": "The PHYS 2 route permits one of 2BL/2CL/2DL; 2BL is the canonical displayed option." }
+      ] },
+      { "title": "Cal-GETC/IGETC lower GE remaining after Biology overlap", "tier": "breadth", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_ge_compare_2026", "ucsd_warren_transfer"], "requirements": [
+        { "select": 9, "units": 36, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct lower GE after Biology science/quantitative overlap" }, "source_refs": ["ucsd_ge_compare_2026", "ucsd_warren_transfer"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucsd_degree_2026"], "requirements": [
+        { "select": 4, "units": 13, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucsd_degree_2026"] }
+      ] },
+      { "title": "Upper-division General Biology major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsd_bio_major_2026", "ucsd_bio_checklist_2026"], "requirements": [
+        { "select": 12, "units": 48, "from": null, "label": "Biochemistry, genetics, ecology, molecular biology, physiology, lab, and electives", "source_refs": ["ucsd_bio_major_2026"], "note": "Exactly 48 units; lab route changes elective units so the total remains 48. At least 20 upper major units must meet School residence." }
+      ] },
+      { "title": "Warren transfer GE remaining after full certification", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsd_warren_transfer"], "requirements": [
+        { "select": 2, "units": 8, "from": null, "label": "WCWP 100 plus one upper-division non-contiguous course", "source_refs": ["ucsd_warren_transfer"] }
+      ] },
+      { "title": "Additional upper-division coursework to the UCSD 60-unit minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsd_degree_2026"], "requirements": [
+        { "select": 1, "units": 4, "from": null, "label": "Additional upper-division coursework", "source_refs": ["ucsd_degree_2026"] }
+      ] }
+    ]
+  },
+  "UCSB": {
+    "school_id": 128,
+    "school": "UC Santa Barbara",
+    "program": "Biological Sciences, B.A. & B.S.",
+    "degree_variant": "B.S.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "College of Letters and Science",
+    "academic_unit": "Ecology, Evolution and Marine Biology + Molecular, Cellular and Developmental Biology",
+    "ge_authority": "College of Letters and Science — B.S. requirements",
+    "ge_model": "L&S B.S. GE with science/quantitative overlap; full IGETC transfer treatment",
+    "source_url": "https://undergrad.biology.ucsb.edu/majors/biological-sciences",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucsb_bio_landing_2026", "kind": "major", "label": "UCSB Biology — Biological Sciences major", "url": "https://undergrad.biology.ucsb.edu/majors/biological-sciences", "note": "Program owner and current requirement-sheet links." },
+      { "id": "ucsb_bio_bs_2026", "kind": "major_sheet", "label": "UCSB Biological Sciences B.S. major sheet 2026–27", "url": "https://undergrad.biology.ucsb.edu/sites/default/files/2026-07/Biological%20Sciences%20BS%20Major%20%282026-2027%29.pdf", "note": "Preparation and exact 48-unit upper-division area rules." },
+      { "id": "ucsb_prebio_2026", "kind": "major_sheet", "label": "UCSB Pre-Biology major sheet 2026–27", "url": "https://undergrad.biology.ucsb.edu/sites/default/files/2026-07/Pre-Biology%20Major%20%282026-2027%29.pdf", "note": "Shared chemistry, biology, math, statistics, and physics preparation." },
+      { "id": "ucsb_bs_ge_2026", "kind": "ge", "label": "UCSB L&S — Bachelor of Science GE", "url": "https://catalog.ucsb.edu/pages/9zg5uiQGhSAEWh9bwu5o", "note": "B.S.-specific areas and special-subject requirements." },
+      { "id": "ucsb_degree_2026", "kind": "graduation", "label": "UCSB L&S — degree requirements", "url": "https://www.duels.ucsb.edu/degree-planning/degree-requirements", "note": "180 units, 60 upper division, and university requirements." },
+      { "id": "ucsb_transfer_2026", "kind": "transfer", "label": "UCSB L&S — transfer advising and IGETC", "url": "https://www.duels.ucsb.edu/advising/transfer-student-advising", "note": "Full IGETC satisfies GE but not AHI, ELWR, residence, major, or unit minima." },
+      { "id": "ucsb_residence_2026", "kind": "residency", "label": "UCSB — General University requirements", "url": "https://duels.ucsb.edu/lasar/general-university-requirements", "note": "Current three-term and 35-of-final-45 residence rules." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 59,
+      "upper_division_chemistry_preparation": 8,
+      "major_upper_division": 48,
+      "additional_upper_division": 4,
+      "distinct_ge_after_overlap": 32,
+      "uc_transferable_elective_capacity": 29,
+      "canonical_path": "B.S.; minimum-unit lower prep; CHEM 109A/B upper prep; 48-unit major; L&S 60-upper floor."
+    },
+    "modeling_notes": [
+      "The exact ASSIST pin combines B.A. and B.S.; this template selects the B.S. award. The B.A. has different physics, upper-major, and GE requirements and needs its own future award variant.",
+      "CHEM 109A/B (or honors) is numbered upper division although the major sheet places it in preparation. It is separated from the 59–60 lower-division preparation total.",
+      "The B.S. upper major is exactly 48 units. Eight units of upper organic chemistry plus 48 upper major units leave four additional upper units to reach the College's 60-unit minimum.",
+      "Full IGETC satisfies L&S GE for transfers. The 32-unit distinct GE estimate removes science and quantitative areas already met by the major."
+    ],
+    "data_quality_flags": [
+      { "code": "combined_award_pin", "severity": "review", "message": "Confirm B.S. is the intended analysis variant; do not apply these requirements to the B.A." },
+      { "code": "chem_109_level", "severity": "review", "message": "CHEM 109A/B are upper division despite their placement in preparation." }
+    ],
+    "groups": [
+      { "title": "Lower-division general chemistry — choose one complete lab route", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_prebio_2026", "ucsb_bio_bs_2026"], "requirements": [
+        { "select": 1, "units": 15, "from": { "series": [["CHEM 1A", "CHEM 1B", "CHEM 1C", "CHEM 2AL", "CHEM 2BL"], ["CHEM 1A", "CHEM 1AL", "CHEM 1B", "CHEM 1BL", "CHEM 1C", "CHEM 1CL"]] }, "source_refs": ["ucsb_prebio_2026"] }
+      ] },
+      { "title": "Lower-division biology core", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_prebio_2026", "ucsb_bio_bs_2026"], "requirements": [
+        { "select": 6, "units": 17, "from": ["MCDB 1A", "MCDB 1B", "EEMB 2", "EEMB 3", "MCDB 1LL", "EEMB 2LL"], "source_refs": ["ucsb_prebio_2026"] }
+      ] },
+      { "title": "Lower-division organic chemistry laboratory", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_prebio_2026", "ucsb_bio_bs_2026"], "requirements": [
+        { "select": 1, "units": 3, "from": ["CHEM 6AL"], "source_refs": ["ucsb_prebio_2026"] }
+      ] },
+      { "title": "Lower-division mathematics and statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_prebio_2026", "ucsb_bio_bs_2026"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["MATH 3A", "MATH 3B"], ["MATH 34A", "MATH 34B"]] }, "source_refs": ["ucsb_prebio_2026"] },
+        { "select": 1, "units": 4, "from": ["PSTAT 5LS", "PSTAT 5A", "MATH 4A"], "source_refs": ["ucsb_bio_bs_2026"], "note": "Options total 4–5 units; canonical budget uses 4." }
+      ] },
+      { "title": "Lower-division physics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_bio_bs_2026"], "requirements": [
+        { "select": 1, "units": 12, "from": { "series": [["PHYS 6A", "PHYS 6AL", "PHYS 6B", "PHYS 6BL", "PHYS 6C", "PHYS 6CL"]] }, "source_refs": ["ucsb_bio_bs_2026"] }
+      ] },
+      { "title": "L&S B.S. GE remaining after Biology overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["ucsb_bs_ge_2026", "ucsb_transfer_2026"], "requirements": [
+        { "select": 8, "units": 32, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UCSB B.S. GE after Biology science/quantitative overlap" }, "source_refs": ["ucsb_bs_ge_2026", "ucsb_transfer_2026"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Area B language proficiency if not otherwise certified" }, "source_refs": ["ucsb_bs_ge_2026"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucsb_degree_2026"], "requirements": [
+        { "select": 8, "units": 29, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucsb_degree_2026"] }
+      ] },
+      { "title": "CHEM 109A/B organic chemistry — upper-division preparation", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsb_prebio_2026", "ucsb_bio_bs_2026"], "requirements": [
+        { "select": 2, "units": 8, "from": null, "label": "CHEM 109A and 109B (or honors)", "source_refs": ["ucsb_prebio_2026"] }
+      ] },
+      { "title": "Upper-division Biological Sciences B.S.", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsb_bio_bs_2026"], "requirements": [
+        { "select": 12, "units": 48, "from": null, "label": "Genetics sequence; six subject areas; laboratory; EEMB/MCDB electives to 48 units", "source_refs": ["ucsb_bio_bs_2026"], "note": "One course cannot fill two major areas; independent-study exclusions/caps apply." }
+      ] },
+      { "title": "Additional upper-division coursework to the 60-unit College minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsb_degree_2026"], "requirements": [
+        { "select": 1, "units": 4, "from": null, "label": "Additional upper-division coursework", "source_refs": ["ucsb_degree_2026"] }
+      ] }
+    ]
+  },
+  "UCSC": {
+    "school_id": 132,
+    "school": "UC Santa Cruz",
+    "program": "Biology B.S.",
+    "degree_variant": "B.S.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "UC Santa Cruz campuswide undergraduate program",
+    "academic_unit": "Molecular, Cell and Developmental Biology / Physical & Biological Sciences Division",
+    "ge_authority": "UC Santa Cruz campuswide GE plus conditional residential-college core",
+    "ge_model": "Campus GE transfer lens; IGETC/Cal-GETC substitutes for all GE except embedded Disciplinary Communication",
+    "source_url": "https://catalog.ucsc.edu/en/current/general-catalog/academic-units/physical-and-biological-sciences-division/molecular-cell-and-developmental-biology/biology-bs",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucsc_bio_requirements", "kind": "major", "label": "UCSC catalog — Biology B.S.", "url": "https://catalog.ucsc.edu/en/current/general-catalog/academic-units/physical-and-biological-sciences-division/molecular-cell-and-developmental-biology/biology-bs", "note": "Lower division, upper core, laboratories, electives, DC, and major residence." },
+      { "id": "ucsc_ge_2026", "kind": "ge", "label": "UCSC catalog — General Education", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/general-education-requirements", "note": "Campuswide 52-unit pattern including DC." },
+      { "id": "ucsc_transfer_ge", "kind": "transfer", "label": "UCSC catalog — GE for transfer students", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/credit-for-transfer-students/general-education-for-transfers", "note": "IGETC/Cal-GETC/reciprocity substitutes for GE except DC; transfer students are exempt from college core." },
+      { "id": "ucsc_graduation", "kind": "graduation", "label": "UCSC catalog — graduation requirements", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/graduation-requirements", "note": "180 credits and degree gates." },
+      { "id": "ucsc_university", "kind": "residency", "label": "UCSC catalog — University requirements", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/university-requirements", "note": "Residence, AHI, and ELWR." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 76,
+      "major_upper_division": 44,
+      "distinct_ge_after_overlap": 32,
+      "uc_transferable_elective_capacity": 28,
+      "canonical_path": "CHEM 4 general sequence; minimum-unit approved labs/electives; DC embedded in upper major."
+    },
+    "modeling_notes": [
+      "Lower division ranges 76–81 units; upper division ranges 44–58. The canonical model uses the minimum paths while preserving the chemistry/math/physics alternatives.",
+      "Disciplinary Communication and the comprehensive requirement are embedded in the upper major and are not added twice.",
+      "UCSC does not state a separate campuswide upper-division-unit minimum in the current catalog.",
+      "The approximately 32 distinct GE units after Biology math/science/DC overlap are derived; verify exact course designations for the selected path."
+    ],
+    "data_quality_flags": [
+      { "code": "ge_designation_inference", "severity": "review", "message": "MF/SI/SR overlap is inferred from the selected major courses and needs course-designation validation." }
+    ],
+    "groups": [
+      { "title": "Lower-division biology", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_bio_requirements"], "requirements": [
+        { "select": 4, "units": 17, "from": ["BIOL 20A", "BIOL 20L", "BIOE 20B", "BIOE 20C"], "source_refs": ["ucsc_bio_requirements"] }
+      ] },
+      { "title": "Lower-division general chemistry — one complete sequence", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_bio_requirements"], "requirements": [
+        { "select": 1, "units": 14, "from": { "series": [["CHEM 3A", "CHEM 3B", "CHEM 3C"], ["CHEM 4A", "CHEM 4AL", "CHEM 4B", "CHEM 4BL"]] }, "source_refs": ["ucsc_bio_requirements"], "note": "Canonical budget uses the 14-unit CHEM 4 route; CHEM 3 is 19." }
+      ] },
+      { "title": "Lower-division organic chemistry", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_bio_requirements"], "requirements": [
+        { "select": 1, "units": 12, "from": { "series": [["CHEM 8A", "CHEM 8L", "CHEM 8B"]] }, "source_refs": ["ucsc_bio_requirements"] }
+      ] },
+      { "title": "Lower-division mathematics and statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_bio_requirements"], "requirements": [
+        { "select": 1, "units": 10, "from": { "series": [["MATH 11A", "MATH 11B"], ["MATH 16A", "MATH 16B"], ["MATH 19A", "MATH 19B"]] }, "source_refs": ["ucsc_bio_requirements"] },
+        { "select": 1, "units": 7, "from": { "series": [["STAT 7", "STAT 7L"]] }, "source_refs": ["ucsc_bio_requirements"] }
+      ] },
+      { "title": "Lower-division physics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_bio_requirements"], "requirements": [
+        { "select": 4, "units": 16, "from": ["PHYS 6A", "PHYS 6B", "PHYS 6C", "PHYS 6L", "PHYS 6M", "PHYS 6N"], "source_refs": ["ucsc_bio_requirements"], "note": "Require PHYS 6A/B/C and one of 6L/6M/6N." }
+      ] },
+      { "title": "Campuswide GE remaining after Biology/DC overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucsc_ge_2026", "ucsc_transfer_ge"], "requirements": [
+        { "select": 8, "units": 32, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UCSC GE after Biology math/science/DC overlap" }, "source_refs": ["ucsc_ge_2026", "ucsc_transfer_ge"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 credits", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucsc_graduation"], "requirements": [
+        { "select": 6, "units": 28, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucsc_graduation"] }
+      ] },
+      { "title": "Upper-division Biology core, laboratories, electives, DC, and comprehensive requirement", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsc_bio_requirements"], "requirements": [
+        { "select": 5, "units": 25, "from": null, "label": "BIOL 100, 101, 105; BIOE 107, 109", "source_refs": ["ucsc_bio_requirements"] },
+        { "select": 2, "units": 4, "from": null, "label": "Primary and additional approved laboratory/field courses", "source_refs": ["ucsc_bio_requirements"], "note": "Canonical minimum; approved labs range 2–7 units each." },
+        { "select": 3, "units": 15, "from": null, "label": "Three approved upper-division electives", "source_refs": ["ucsc_bio_requirements"], "note": "Canonical minimum; electives may total 15–21 units." }
+      ] }
+    ]
+  }
+}

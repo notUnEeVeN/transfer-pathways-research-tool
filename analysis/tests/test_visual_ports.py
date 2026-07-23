@@ -93,8 +93,14 @@ def test_credit_loss_port_builds_all_five_bars_for_each_campus():
 
 def test_committed_credit_loss_results_have_canonical_scope_and_valid_fingerprints():
     results = paper_credit_loss._load_results(recompute=False, workers=1)
+    assert results["website"]["dataset_version"] == "2026-07-22-canonical-cs-v1"
+    assert results["assist"]["dataset_version"] == "2026-07-23-canonical-cs-v2"
+    assert results["assist"]["schema_version"] == 2
+    assert (
+        results["assist"]["method_version"]
+        == "paper-choice-cost-assist-canonical-template-v2"
+    )
     for key in ("website", "assist"):
-        assert results[key]["dataset_version"] == "2026-07-22-canonical-cs-v1"
         assert len(results[key]["major_scope"]["program_pins"]) == 9
 
 

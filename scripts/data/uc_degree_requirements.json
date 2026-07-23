@@ -1,5 +1,6 @@
 {
   "_meta": {
+    "major_slug": "cs",
     "purpose": "Hand-gathered FULL four-year BSCS/EECS graduation requirements per UC campus, modeled in the ASSIST agreement requirement_groups shape so the degree-coverage figure (MA Fig. 1) can reuse the existing choose-N eligibility engine. Course codes are resolved to university_courses.parent_id by scripts/import_uc_degree_requirements.py; provenance for every datum lives in docs/figures/degree-coverage-sources.md.",
     "authoring_schema": {
       "campus_key -> object": {
@@ -249,7 +250,7 @@
   "UCSD": {
     "school_id": 7,
     "school": "UC San Diego",
-    "program": "Computer Science, B.S. (CS26)",
+    "program": "CSE: Computer Science B.S.",
     "total_units": 180,
     "source_url": "https://drive.google.com/file/d/1hLg7rehInSV9pra_1RYuPq8Rsi4IEwXc/view",
     "groups": [
@@ -824,7 +825,7 @@
   "UCD": {
     "school_id": 89,
     "school": "UC Davis",
-    "program": "Computer Science, B.S.",
+    "program": "Computer Science B.S.",
     "total_units": 180,
     "source_url": "https://catalog.ucdavis.edu/departments-programs-degrees/computer-science-engineering/computer-science-bs/",
     "groups": [
@@ -996,7 +997,7 @@
   "UCLA": {
     "school_id": 117,
     "school": "UCLA",
-    "program": "Computer Science, B.S.",
+    "program": "Computer Science/B.S.",
     "total_units": 180,
     "source_url": "https://catalog.registrar.ucla.edu/major/2026/ComputerScienceBS",
     "groups": [
@@ -1648,7 +1649,7 @@
   "UCSC": {
     "school_id": 132,
     "school": "UC Santa Cruz",
-    "program": "Computer Science, B.S.",
+    "program": "Computer Science B.S.",
     "total_units": 180,
     "source_url": "https://undergrad.engineering.ucsc.edu/files/2025/09/CS_BS_25-26.pdf",
     "groups": [
@@ -1969,7 +1970,7 @@
   "UCM": {
     "school_id": 144,
     "school": "UC Merced",
-    "program": "Computer Science and Engineering, B.S.",
+    "program": "COMPUTER SCIENCE AND ENGINEERING, B.S. ",
     "total_units": 120,
     "source_url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4233",
     "groups": [

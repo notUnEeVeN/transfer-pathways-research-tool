@@ -34,8 +34,25 @@ describe('majors config', () => {
     const cs = getMajor('cs');
     expect(cs.match).toBe('computer science');
     expect(cs.capabilities.asDegrees).toBe(true);
+    expect(cs.capabilities.assistAgreements).toBe(true);
+    expect(cs.capabilities.caCreditLossArtifact).toBe(true);
+    expect(cs.capabilities.agreementPathways).toBe(true);
     expect(cs.capabilities.paperBaselines).toBe(true);
     expect(cs.capabilities.transferMinimums).toBe(true);
+    expect(cs.capabilities.courseCategories).toBe(true);
+    expect(cs.capabilities.prerequisites).toBe(true);
+  });
+
+  it('enables researched templates but leaves unvalidated visual inputs pending for new majors', () => {
+    for (const slug of ['bio', 'econ']) {
+      const capabilities = getMajor(slug).capabilities;
+      expect(capabilities.assistAgreements).toBe(true);
+      expect(capabilities.caCreditLossArtifact).toBe(true);
+      expect(capabilities.agreementPathways).toBe(false);
+      expect(capabilities.degreeTemplates).toBe(true);
+      expect(capabilities.courseCategories).toBe(false);
+      expect(capabilities.prerequisites).toBe(false);
+    }
   });
 
   it('unknown slug returns null', () => {

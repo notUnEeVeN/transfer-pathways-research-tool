@@ -64,10 +64,15 @@ const MAJORS = [
     // What this major's data supports. Everything defaults false for a new
     // major; cs has the full historical dataset.
     capabilities: {
+      assistAgreements: true,
+      caCreditLossArtifact: true,
+      agreementPathways: true,
       asDegrees: true,
       paperBaselines: true,
       transferMinimums: true,
       degreeTemplates: true,
+      courseCategories: true,
+      prerequisites: true,
       snapshots: ['district-multi-campus-pathways', 'multi-campus-pathways',
         'district-portfolio-subsets'],
     },
@@ -107,14 +112,22 @@ const MAJORS = [
     broadAxes: ['science', 'math', 'non_stem'],
     conceptDisciplines: ['math', 'chem', 'bio', 'physics', 'stats'],
     capabilities: {
+      assistAgreements: true,
+      caCreditLossArtifact: true,
+      // Per-agreement exact-path artifacts still need blocked-path and solver-
+      // proof metadata before the exploratory minimum/choice-cost cards are
+      // honest for this larger corpus.
+      agreementPathways: false,
       asDegrees: false,
       paperBaselines: false,
       // Deliberately permanent: new majors are ASSIST-driven end to end, so
       // there are no hand-curated website minimums to gather.
       transferMinimums: false,
-      // Temporary — flip to true per major when its nine degree templates are
-      // authored (W1 Phase 4).
-      degreeTemplates: false,
+      degreeTemplates: true,
+      // Category names and prerequisite concepts are provisional until their
+      // dedicated validation passes are complete.
+      courseCategories: false,
+      prerequisites: false,
       snapshots: [],
     },
   },
@@ -150,14 +163,19 @@ const MAJORS = [
     broadAxes: ['economics', 'math', 'non_stem'],
     conceptDisciplines: ['math', 'stats', 'other'],
     capabilities: {
+      assistAgreements: true,
+      caCreditLossArtifact: true,
+      agreementPathways: false,
       asDegrees: false,
       paperBaselines: false,
       // Deliberately permanent: new majors are ASSIST-driven end to end, so
       // there are no hand-curated website minimums to gather.
       transferMinimums: false,
-      // Temporary — flip to true per major when its nine degree templates are
-      // authored (W1 Phase 4).
-      degreeTemplates: false,
+      degreeTemplates: true,
+      // Category names and prerequisite concepts are provisional until their
+      // dedicated validation passes are complete.
+      courseCategories: false,
+      prerequisites: false,
       snapshots: [],
     },
   },

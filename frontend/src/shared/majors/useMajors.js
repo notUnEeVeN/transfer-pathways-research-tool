@@ -9,7 +9,8 @@ import { useAuth } from '../hooks/useAuth'
 // If the request fails the console still has to render, so fall back to the
 // major that has always been there. Capabilities are permissive here: the CS
 // dataset supports every figure, and gating off a failed fetch would hide
-// working views.
+// working views. URL-backed surfaces also receive `isError`, allowing them to
+// pause rather than mistake this resilience fallback for a validated deep link.
 export const CS_FALLBACK = [{
   slug: 'cs',
   label: 'Computer Science',
@@ -28,8 +29,12 @@ export const CS_FALLBACK = [{
     144: ['COMPUTER SCIENCE AND ENGINEERING, B.S. '],
   },
   capabilities: {
+    assistAgreements: true,
+    caCreditLossArtifact: true,
+    agreementPathways: true,
     asDegrees: true, paperBaselines: true, transferMinimums: true,
-    degreeTemplates: true, snapshots: [],
+    degreeTemplates: true, courseCategories: true, prerequisites: true,
+    snapshots: [],
   },
 }]
 
@@ -38,7 +43,10 @@ export function useMajors() {
   const query = useQuery({
     // Versioned so an entry persisted by an older build (before the
     // capability flags existed) can never hydrate this shape.
-    queryKey: ['majors', 'v2', user?.uid],
+    // v5 adds proof-aware per-agreement pathway readiness. A persisted older
+    // response must not make an exploratory solver card appear ready (or hide
+    // the audited CS version) until the browser cache expires.
+    queryKey: ['majors', 'v5', user?.uid],
     queryFn: () => apiClient.get('/majors').then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: Infinity,
@@ -49,5 +57,7 @@ export function useMajors() {
     defaultSlug: query.data?.default || CS_FALLBACK[0].slug,
     bySlug: new Map(majors.map((m) => [m.slug, m])),
     isLoading: query.isLoading,
+    isError: query.isError,
+    error: query.error || null,
   }
 }

@@ -49,11 +49,10 @@ function validateDegreeIdentity(canonical) {
     return `degree program must match the configured ${slug} program at school ${schoolId}`;
   }
   const modernId = `degree:${schoolId}:${slug}`;
-  const legacyCsId = `degree:${schoolId}`;
-  if (canonical._id !== modernId
-      && !(slug === defaultMajor().slug && canonical._id === legacyCsId)) {
+  if (canonical._id !== modernId) {
     return `degree _id must be ${modernId}`;
   }
+  canonical.legacy_id = `${schoolId}:${slug}`;
   canonical.major_slug = slug;
   canonical.program = configuredProgram;
   return null;

@@ -1,0 +1,613 @@
+{
+  "_meta": {
+    "major_slug": "econ",
+    "catalog_scope": "Current official requirements researched 2026-07-23; UCR uses its latest controlling 2025-26 catalog PDF and UCSB Economics uses the newest department sheet currently posted (2025-26).",
+    "research_status": "ai_researched_needs_human_verification",
+    "purpose": "Nine full four-year Economics graduation templates for the exact ASSIST program pins in server/config/majors.js. Major preparation, governing GE, upper-division minima, and degree-unit closure are sourced separately so a human can verify each layer.",
+    "modeling_policy": [
+      "The authored unit budget uses one explicitly documented canonical minimum-unit path where a catalog offers alternatives; higher-unit alternatives remain visible and their effect is noted.",
+      "Course level and CC articulability are independent of the catalog section label. UCI ECON 15 is a lower-division requirement that the School says must be completed at UCI; UCSB PSTAT 120A is upper division even when offered as a preparation alternative.",
+      "GE units are the derived distinct remainder after named Economics/math overlaps, not a second copy of requirements already counted in the major.",
+      "Elective capacity is a derived balancing amount to the published degree minimum. It is UC-transferable capacity, not a claim that any specific associate-degree course is usable.",
+      "Residence, GPA, certification, and proficiency gates are retained in notes or zero-unit rows rather than invented as course units.",
+      "All records remain AI-researched and must be human-verified before production import or enabling the major's degreeTemplates capability."
+    ]
+  },
+  "UCB": {
+    "school_id": 79,
+    "school": "UC Berkeley",
+    "program": "Economics, B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 120,
+    "unit_system": "semester",
+    "catalog_year": "2026-27",
+    "college": "College of Letters and Science",
+    "academic_unit": "Department of Economics",
+    "ge_authority": "College of Letters and Science",
+    "ge_model": "L&S full-degree requirements with Economics/quantitative overlap; Fall 2025+ transfer policy",
+    "source_url": "https://econ.berkeley.edu/undergraduate/program/major-requirements",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucb_econ_requirements", "kind": "major", "label": "Berkeley Economics — B.A. major requirements", "url": "https://econ.berkeley.edu/undergraduate/program/major-requirements", "note": "Preparation, three upper core courses, five electives, and restrictions." },
+      { "id": "ucb_econ_catalog", "kind": "major", "label": "Berkeley catalog — Economics B.A.", "url": "https://undergraduate.catalog.berkeley.edu/programs/25246U/requirements-krhha", "note": "Current catalog corroboration and award." },
+      { "id": "ucb_lns_degree", "kind": "graduation", "label": "Berkeley L&S — degree requirements", "url": "https://lsadvising.berkeley.edu/node/69", "note": "120 units, 36 upper division, outside-major and residence rules." },
+      { "id": "ucb_lns_breadth", "kind": "ge", "label": "Berkeley L&S — seven-course breadth", "url": "https://lsadvising.berkeley.edu/seven-course-breadth", "note": "One course in each of seven breadth areas." },
+      { "id": "ucb_lns_rc", "kind": "ge", "label": "Berkeley L&S — Reading and Composition", "url": "https://lsadvising.berkeley.edu/reading-composition", "note": "Two sequential courses." },
+      { "id": "ucb_lns_transfer", "kind": "transfer", "label": "Berkeley L&S — current transfer-admission and degree policy", "url": "https://ls.berkeley.edu/prospective-students/new-policies-transfer-student-applicants", "note": "Current official transfer policy; read with the L&S degree and breadth pages for breadth, language, R&C, and American Cultures." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 120,
+      "modeled_units": 120,
+      "major_lower_division": 14,
+      "major_upper_division": 32,
+      "additional_upper_division_outside_major": 6,
+      "distinct_ge_after_overlap": 30,
+      "uc_transferable_elective_capacity": 38,
+      "canonical_path": "MATH 16A/B; one four-unit statistics course; standard eight-course upper major."
+    },
+    "modeling_notes": [
+      "Preparation is 14–16 units depending on the calculus path. The canonical budget uses MATH 16A/B (six units).",
+      "The upper major is normally 32 units: three four-unit core courses plus five electives. ECON H195B can make the total 31 in a narrow approved case; that exception is not the canonical path.",
+      "Distinct GE is derived as R&C, six breadth areas not met by Economics, and American Cultures. Social & Behavioral Sciences and Quantitative Reasoning overlap the major; language is a proficiency gate.",
+      "Although L&S requires 36 upper-division units, it also requires six upper units outside the major; with a 32-unit upper major the outside-major constraint controls the six-unit additional block."
+    ],
+    "data_quality_flags": [
+      { "code": "elective_unit_exception", "severity": "review", "message": "An approved 3-unit ECON H195B elective can reduce the upper-major total to 31; canonical model uses 32." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucb_econ_requirements"], "requirements": [
+        { "select": 1, "units": 4, "from": ["ECON 1", "ECON 2"], "source_refs": ["ucb_econ_requirements"] }
+      ] },
+      { "title": "Lower-division calculus — one complete sequence", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucb_econ_requirements"], "requirements": [
+        { "select": 1, "units": 6, "from": { "series": [["MATH 16A", "MATH 16B"], ["MATH 51", "MATH 52"]] }, "source_refs": ["ucb_econ_requirements"], "note": "Canonical budget uses MATH 16A/B (6); MATH 51/52 is 8." }
+      ] },
+      { "title": "Statistics preparation", "tier": "transferable", "course_level": "lower_or_upper_choice", "cc_articulable": true, "source_refs": ["ucb_econ_requirements"], "requirements": [
+        { "select": 1, "units": 4, "from": ["STAT 20", "STAT 21", "STAT W21", "STAT 88", "DATA C88S", "DATA 89", "STAT C131A", "STAT 135", "STAT C140"], "source_refs": ["ucb_econ_requirements"], "note": "Several catalog alternatives are upper division and will remain unresolved/CC-ineligible in ASSIST; the canonical CC-facing options are STAT 20/21." }
+      ] },
+      { "title": "L&S general education remaining after Economics overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["ucb_lns_breadth", "ucb_lns_rc", "ucb_lns_transfer"], "requirements": [
+        { "select": 8, "units": 30, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Berkeley L&S GE after Economics/quantitative overlap" }, "source_refs": ["ucb_lns_breadth", "ucb_lns_rc", "ucb_lns_transfer"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Language other than English — proficiency through second-semester level" }, "source_refs": ["ucb_lns_transfer"] }
+      ] },
+      { "title": "UC-transferable elective capacity to the 120-unit minimum", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucb_lns_degree"], "requirements": [
+        { "select": 10, "units": 38, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucb_lns_degree"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucb_econ_requirements", "ucb_econ_catalog"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "Microeconomics, macroeconomics, and econometrics/statistics core", "source_refs": ["ucb_econ_requirements"] },
+        { "select": 5, "units": 20, "from": null, "label": "Five approved upper-division Economics electives", "source_refs": ["ucb_econ_requirements"], "note": "At most two outside-ECON courses; core courses cannot double as electives." }
+      ] },
+      { "title": "Upper-division coursework outside Economics", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucb_lns_degree"], "requirements": [
+        { "select": 2, "units": 6, "from": null, "label": "At least six upper-division units outside the major", "source_refs": ["ucb_lns_degree"] }
+      ] }
+    ]
+  },
+  "UCD": {
+    "school_id": 89,
+    "school": "UC Davis",
+    "program": "Economics A.B.",
+    "degree_variant": "A.B.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "College of Letters and Science",
+    "academic_unit": "Department of Economics",
+    "ge_authority": "UC Davis campus GE plus College of Letters and Science",
+    "ge_model": "Cal-GETC/IGETC transfer lens plus L&S composition/language rules",
+    "source_url": "https://catalog.ucdavis.edu/departments-programs-degrees/economics/economics-ab/",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucd_econ_requirements", "kind": "major", "label": "UC Davis catalog — Economics A.B.", "url": "https://catalog.ucdavis.edu/departments-programs-degrees/economics/economics-ab/", "note": "64–68-unit major, preparation, core, history choice, and specialization." },
+      { "id": "ucd_ge_2026", "kind": "ge", "label": "UC Davis catalog — General Education", "url": "https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/general-education-ge-requirements/", "note": "Topical Breadth/Core Literacies and transfer certification." },
+      { "id": "ucd_lns_degree", "kind": "college", "label": "UC Davis — College of Letters and Science degree requirements", "url": "https://catalog.ucdavis.edu/undergraduate-education/college-degree-requirements/letters-science/", "note": "Composition, A.B. language, upper division, residence, and degree rules." },
+      { "id": "ucd_units", "kind": "graduation", "label": "UC Davis catalog — unit requirements and limitations", "url": "https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/unit-requirements-limitations/", "note": "180 units and transfer-unit limits." },
+      { "id": "ucd_residence", "kind": "residency", "label": "UC Davis catalog — senior residence", "url": "https://catalog.ucdavis.edu/undergraduate-education/university-degree-requirements/senior-residence-requirements/", "note": "27 upper residence units including 18 in the major under College rules." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 20,
+      "major_upper_division": 44,
+      "additional_upper_division": 20,
+      "distinct_ge_after_overlap": 40,
+      "uc_transferable_elective_capacity": 56,
+      "canonical_path": "Eight-unit calculus path; four-unit statistics; 44-unit upper major; 64-upper campus floor."
+    },
+    "modeling_notes": [
+      "The major is 64–68 units. The canonical lower path is 20 units; MAT 19A/B/C raises it by four.",
+      "The 20-unit additional upper block brings the 44-unit upper major to the 64-upper-unit degree minimum and includes upper-division composition.",
+      "GE Topical Breadth and Core Literacies overlap each other and the Economics/statistics/math requirements. Forty distinct units is a transfer-lens estimate, not 52+35 additive units.",
+      "The A.B. language requirement may be satisfied by proficiency, full older IGETC, or Cal-GETC with the optional UC language certification; it is modeled as a zero-unit gate."
+    ],
+    "data_quality_flags": [
+      { "code": "specialization_choice", "severity": "review", "message": "Select and hand-verify one complete six-course Economics specialization." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics principles", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_econ_requirements"], "requirements": [
+        { "select": 2, "units": 8, "from": ["ECN 001A", "ECN 001B"], "source_refs": ["ucd_econ_requirements"], "note": "Online variants listed by the catalog are equivalent alternatives." }
+      ] },
+      { "title": "Lower-division statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_econ_requirements"], "requirements": [
+        { "select": 1, "units": 4, "from": ["STA 013", "STA 032"], "source_refs": ["ucd_econ_requirements"] }
+      ] },
+      { "title": "Lower-division mathematics — choose one complete path", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucd_econ_requirements"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["MAT 017A", "MAT 017B"], ["MAT 019A", "MAT 019B", "MAT 019C"], ["MAT 021A", "MAT 021B"]] }, "source_refs": ["ucd_econ_requirements"], "note": "Canonical budget uses an 8-unit path; MAT 19A/B/C is 12." }
+      ] },
+      { "title": "Campus/College GE remaining after Economics overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucd_ge_2026", "ucd_lns_degree"], "requirements": [
+        { "select": 10, "units": 40, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UC Davis GE/Core Literacy capacity after Economics overlap" }, "source_refs": ["ucd_ge_2026", "ucd_lns_degree"], "note": "Includes lower composition; upper composition is inside the additional upper block." },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "A.B. foreign-language proficiency through level three" }, "source_refs": ["ucd_lns_degree"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucd_units"], "requirements": [
+        { "select": 14, "units": 56, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucd_units"] }
+      ] },
+      { "title": "Upper-division Economics core, history, and specialization", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucd_econ_requirements"], "requirements": [
+        { "select": 4, "units": 16, "from": null, "label": "ECN 100A, 100B, 101, and 102", "source_refs": ["ucd_econ_requirements"] },
+        { "select": 1, "units": 4, "from": null, "label": "One approved economic-history course", "source_refs": ["ucd_econ_requirements"] },
+        { "select": 6, "units": 24, "from": null, "label": "One complete six-course Economics specialization", "source_refs": ["ucd_econ_requirements"] }
+      ] },
+      { "title": "Additional upper-division coursework to the 64-unit minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucd_lns_degree"], "requirements": [
+        { "select": 5, "units": 20, "from": null, "label": "Additional upper-division work, including upper composition", "source_refs": ["ucd_lns_degree"] }
+      ] }
+    ]
+  },
+  "UCI": {
+    "school_id": 120,
+    "school": "UC Irvine",
+    "program": "Economics, B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "School of Social Sciences",
+    "academic_unit": "Department of Economics / School of Social Sciences",
+    "ge_authority": "UCI campuswide GE plus School of Social Sciences rules",
+    "ge_model": "Campus GE with Economics/Social Sciences/quantitative overlap",
+    "source_url": "https://catalogue.uci.edu/schoolofsocialsciences/departmentofeconomics/economics_ba/",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "uci_econ_major_2026", "kind": "major", "label": "UCI catalog — Economics B.A.", "url": "https://catalogue.uci.edu/schoolofsocialsciences/departmentofeconomics/economics_ba/", "note": "Controlling 16-course requirement table and upper electives." },
+      { "id": "uci_social_school_2026", "kind": "college", "label": "UCI catalog — School of Social Sciences requirements", "url": "https://catalogue.uci.edu/schoolofsocialsciences/", "note": "Math/stat sequence, computer education, nine upper and four additional social-science courses, writing, and residence." },
+      { "id": "uci_degree_ge_2026", "kind": "ge", "label": "UCI catalog — bachelor's degree and GE/transfer rules", "url": "https://catalogue.uci.edu/informationforadmittedstudents/requirementsforabachelorsdegree/", "note": "180 units, eight GE categories, Cal-GETC treatment, transfer cap, and residence." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 20,
+      "school_computer_requirement": 4,
+      "school_additional_social_science": 8,
+      "major_upper_division": 44,
+      "distinct_ge_after_overlap": 32,
+      "uc_transferable_elective_capacity": 72,
+      "canonical_path": "Controlling ECON 15 requirement table, upper writing overlapped into one Economics elective."
+    },
+    "modeling_notes": [
+      "The controlling requirement table requires ECON 15 and says it must be taken at UCI. It remains a lower-division denominator requirement but is deliberately not CC-articulable.",
+      "The current sample schedule instead shows ECON 15A+15B. The template follows the controlling table and flags the inconsistency for human adjudication.",
+      "The School's nine upper courses and three-course math/stat requirement overlap the Economics major. The four additional social-science rule is modeled as ECON 20A/B plus two distinct CC-satisfiable social-science courses; verify this derived overlap.",
+      "The 32-unit GE remainder covers lower writing, Science/Technology, and Arts/Humanities after Social/Behavioral, quantitative, upper writing, and overlay-category overlap."
+    ],
+    "data_quality_flags": [
+      { "code": "econ_15_conflict", "severity": "blocker_for_verification", "message": "Requirement table says ECON 15; sample plan says ECON 15A+15B. Do not silently normalize." },
+      { "code": "school_four_course_overlap", "severity": "review", "message": "Confirm ECON 20A/B count as two of the four additional Social Sciences courses." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics and calculus — CC-articulable portion", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_econ_major_2026"], "requirements": [
+        { "select": 2, "units": 8, "from": ["ECON 20A", "ECON 20B"], "source_refs": ["uci_econ_major_2026"] },
+        { "select": 2, "units": 8, "from": ["MATH 2A", "MATH 2B"], "source_refs": ["uci_econ_major_2026"] }
+      ] },
+      { "title": "ECON 15 — lower division but required at UCI", "tier": "transferable", "course_level": "lower_division", "cc_articulable": false, "source_refs": ["uci_econ_major_2026", "uci_social_school_2026"], "requirements": [
+        { "select": 1, "units": 4, "from": ["ECON 15"], "source_refs": ["uci_econ_major_2026", "uci_social_school_2026"], "note": "Kept in the lower-division denominator; expected to remain unresolved because the catalog requires completion at UCI.", "human_review": "ECON 15 versus sample-plan ECON 15A/15B." }
+      ] },
+      { "title": "School computer-education requirement", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["uci_social_school_2026"], "requirements": [
+        { "select": 1, "units": 4, "from": ["I&C SCI 31", "COGS 14M", "COGS 14P", "SOC SCI 3A"], "source_refs": ["uci_social_school_2026"] }
+      ] },
+      { "title": "School additional Social Sciences — two distinct courses after ECON 20A/B overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["uci_social_school_2026"], "requirements": [
+        { "select": 2, "units": 8, "from": { "assume": true, "code": "GE-SOC", "credit_role": "ge_certification", "label": "Two additional Social Sciences courses" }, "source_refs": ["uci_social_school_2026"], "human_review": "Derived interpretation of the School four-course rule." }
+      ] },
+      { "title": "UCI GE remaining after Economics/School overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["uci_degree_ge_2026"], "requirements": [
+        { "select": 8, "units": 32, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct lower-division UCI GE after Economics/School overlap" }, "source_refs": ["uci_degree_ge_2026"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Language other than English proficiency" }, "source_refs": ["uci_degree_ge_2026"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["uci_degree_ge_2026"], "requirements": [
+        { "select": 18, "units": 72, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["uci_degree_ge_2026"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["uci_econ_major_2026", "uci_social_school_2026"], "requirements": [
+        { "select": 5, "units": 20, "from": null, "label": "ECON 100A, 100B, 100C, 122A, and 122B", "source_refs": ["uci_econ_major_2026"] },
+        { "select": 6, "units": 24, "from": null, "label": "Six additional Economics courses", "source_refs": ["uci_econ_major_2026"], "note": "At most one may be lower division; upper writing is modeled as one approved W elective." }
+      ] }
+    ]
+  },
+  "UCLA": {
+    "school_id": 117,
+    "school": "UCLA",
+    "program": "Economics/B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "College of Letters and Science",
+    "academic_unit": "Department of Economics",
+    "ge_authority": "UCLA College of Letters and Science",
+    "ge_model": "L&S GE with Society/Culture and quantitative overlap into Economics",
+    "source_url": "https://catalog.registrar.ucla.edu/major/2026/EconomicsBA",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucla_econ_major_2026", "kind": "major", "label": "UCLA catalog — Economics B.A.", "url": "https://catalog.registrar.ucla.edu/major/2026/EconomicsBA", "note": "Six-course preparation and twelve-course upper major." },
+      { "id": "ucla_ls_degree_2026", "kind": "graduation", "label": "UCLA L&S — undergraduate degree and university requirements", "url": "https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/CollegeofLettersandScience/Undergraduate-Degree-and-University-Requirements", "note": "180 units, 60 upper division, residence, and UC requirements." },
+      { "id": "ucla_ls_ge_2026", "kind": "ge", "label": "UCLA L&S — General Education", "url": "https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/CollegeofLettersandScience/College-Requirements/General-Education-Requirements", "note": "Ten courses / at least 47 units across three foundations." },
+      { "id": "ucla_ls_writing_2026", "kind": "college", "label": "UCLA L&S — Writing requirement", "url": "https://catalog.registrar.ucla.edu/browse/College%20and%20Schools/CollegeofLettersandScience/College-Requirements/Writing-Requirement", "note": "Writing I and II; transfer treatment." },
+      { "id": "ucla_university_2026", "kind": "university", "label": "UCLA — University requirements", "url": "https://catalog.registrar.ucla.edu/Undergraduate-Study/Degree-Requirements/University-Requirements", "note": "ELWR and American History & Institutions." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 24,
+      "major_upper_division": 42,
+      "additional_upper_division": 18,
+      "distinct_ge_after_overlap": 47,
+      "uc_transferable_elective_capacity": 49,
+      "canonical_path": "MATH 31A (not 31AL); minimum four-unit Economics electives; 60-upper College floor."
+    },
+    "modeling_notes": [
+      "Preparation is 24–25 units depending on MATH 31A/31AL; the canonical budget is 24.",
+      "The upper major contains 12 courses and at least 42 units. Eighteen additional upper units reach the College's 60-unit minimum.",
+      "The 47-unit GE/writing capacity is a derived conservative remainder after Economics/quantitative overlap; exact Society/Culture, Writing II, Diversity, and transfer-certification overlap needs a student audit.",
+      "Foreign language is retained as a proficiency gate with no required unit assumption."
+    ],
+    "data_quality_flags": [
+      { "code": "ge_overlap", "severity": "review", "message": "Confirm the exact L&S GE, Writing II, and Diversity overlaps for the selected Economics courses." }
+    ],
+    "groups": [
+      { "title": "Lower-division calculus", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_econ_major_2026"], "requirements": [
+        { "select": 2, "units": 8, "from": ["MATH 31A", "MATH 31B"], "source_refs": ["ucla_econ_major_2026"], "note": "MATH 31AL may replace 31A and raises the path by one unit." }
+      ] },
+      { "title": "Lower-division Economics preparation", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucla_econ_major_2026"], "requirements": [
+        { "select": 4, "units": 16, "from": ["ECON 1", "ECON 2", "ECON 11", "ECON 41"], "source_refs": ["ucla_econ_major_2026"] }
+      ] },
+      { "title": "L&S GE and writing remaining after Economics overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucla_ls_ge_2026", "ucla_ls_writing_2026"], "requirements": [
+        { "select": 10, "units": 47, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UCLA L&S GE/writing capacity after Economics overlap" }, "source_refs": ["ucla_ls_ge_2026", "ucla_ls_writing_2026"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Foreign-language proficiency through level 3" }, "source_refs": ["ucla_ls_degree_2026"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucla_ls_degree_2026"], "requirements": [
+        { "select": 13, "units": 49, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucla_ls_degree_2026"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucla_econ_major_2026"], "requirements": [
+        { "select": 4, "units": 13, "from": null, "label": "ECON 101, 102, 103, and 103L", "source_refs": ["ucla_econ_major_2026"] },
+        { "select": 1, "units": 5, "from": null, "label": "ECON 104+104L or ECON 109D+109DL", "source_refs": ["ucla_econ_major_2026"] },
+        { "select": 6, "units": 24, "from": null, "label": "Six approved upper-division Economics electives", "source_refs": ["ucla_econ_major_2026"] }
+      ] },
+      { "title": "Additional upper-division coursework to the 60-unit College minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucla_ls_degree_2026"], "requirements": [
+        { "select": 5, "units": 18, "from": null, "label": "Additional upper-division coursework", "source_refs": ["ucla_ls_degree_2026"] }
+      ] }
+    ]
+  },
+  "UCM": {
+    "school_id": 144,
+    "school": "UC Merced",
+    "program": "ECONOMICS, B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 120,
+    "unit_system": "semester",
+    "catalog_year": "2026-27",
+    "college": "School of Social Sciences, Humanities and Arts",
+    "academic_unit": "Economics / School of Social Sciences, Humanities and Arts",
+    "ge_authority": "UC Merced campuswide General Education",
+    "ge_model": "Campuswide transfer GE with three university-only upper-division experiences",
+    "source_url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4259&returnto=3780",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucm_econ_major_2026", "kind": "major", "label": "UC Merced catalog — Economics B.A.", "url": "https://catalog.ucmerced.edu/preview_program.php?catoid=26&poid=4259&returnto=3780", "note": "Current catoid 26 48-unit major." },
+      { "id": "ucm_econ_readable", "kind": "major", "label": "UC Merced Economics — B.A. requirements", "url": "https://economics.ucmerced.edu/undergraduate-programs/majors/economics-ba", "note": "Readable department source with exact lower and upper blocks." },
+      { "id": "ucm_ssha_2026", "kind": "college", "label": "UC Merced catalog — SSHA rules", "url": "https://catalog.ucmerced.edu/content.php?catoid=26&navoid=3650", "note": "School ownership and degree rules." },
+      { "id": "ucm_ge_2026", "kind": "ge", "label": "UC Merced catalog — General Education", "url": "https://catalog.ucmerced.edu/content.php?catoid=26&navoid=3664", "note": "Lower GE, badges, transfer certification, and three upper experiences." },
+      { "id": "ucm_ge_readable", "kind": "ge", "label": "UC Merced GE Office — current requirements", "url": "https://ge.ucmerced.edu/node/451", "note": "Readable human-verification path and transfer table." },
+      { "id": "ucm_graduation_2026", "kind": "graduation", "label": "UC Merced catalog — graduation requirements", "url": "https://catalog.ucmerced.edu/content.php?catoid=26&navoid=3603", "note": "120 units and residence." },
+      { "id": "ucm_upper_units", "kind": "graduation", "label": "UC Merced Registrar — 44 upper-division units", "url": "https://registrar.ucmerced.edu/node/1376", "note": "Campus upper-division minimum." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 120,
+      "modeled_units": 120,
+      "major_lower_division": 16,
+      "major_upper_division": 32,
+      "upper_ge_and_additional_upper": 12,
+      "distinct_lower_ge_after_overlap": 20,
+      "uc_transferable_elective_capacity": 40,
+      "canonical_path": "Four-course lower major; eight-course upper major; upper GE experiences supply the 44-upper campus floor."
+    },
+    "modeling_notes": [
+      "The Economics B.A. major is exactly 48 units: 16 lower and 32 upper.",
+      "The three campuswide upper GE experiences are modeled as 12 units and bring the 32-unit upper major to the campus 44-upper-unit minimum. WID/Culminating may overlap approved major courses, so a human audit must prevent double counting.",
+      "The 20-unit lower GE remainder retains writing, science, and humanities after Economics satisfies quantitative/social-science portions; Spark is waived for eligible transfers.",
+      "Campuswide GE is the same authority as Biology even though the majors belong to different schools."
+    ],
+    "data_quality_flags": [
+      { "code": "upper_ge_overlap", "severity": "review", "message": "Verify whether Economics courses satisfy WID/Culminating and reallocate the 12-unit upper floor without double counting." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics core", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"], "requirements": [
+        { "select": 2, "units": 8, "from": ["ECON 001", "ECON 010"], "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"] }
+      ] },
+      { "title": "Lower-division calculus", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"], "requirements": [
+        { "select": 1, "units": 4, "from": ["MATH 011"], "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"] }
+      ] },
+      { "title": "Lower-division introductory social science", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"], "requirements": [
+        { "select": 1, "units": 4, "from": ["COGS 001", "PSY 001", "POLI 001", "SOC 001"], "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"] }
+      ] },
+      { "title": "Campuswide lower GE remaining after Economics overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["ucm_ge_2026", "ucm_ge_readable"], "requirements": [
+        { "select": 5, "units": 20, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct lower-division UC Merced GE after Economics overlap" }, "source_refs": ["ucm_ge_2026", "ucm_ge_readable"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 120 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucm_graduation_2026"], "requirements": [
+        { "select": 10, "units": 40, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucm_graduation_2026"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "ECON 100, 101, and 110", "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"] },
+        { "select": 5, "units": 20, "from": null, "label": "Five additional upper-division Economics courses", "source_refs": ["ucm_econ_major_2026", "ucm_econ_readable"] }
+      ] },
+      { "title": "Upper-division campus GE experiences / remaining 44-unit floor", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucm_ge_2026", "ucm_upper_units"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "Crossroads, Writing in the Discipline, and Culminating Experience", "source_refs": ["ucm_ge_2026", "ucm_upper_units"], "note": "May overlap approved major courses; this canonical allocation also supplies the 12 units above the 32-unit upper major needed for the campus floor." }
+      ] }
+    ]
+  },
+  "UCR": {
+    "school_id": 46,
+    "school": "UC Riverside",
+    "program": "Economics, B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2025-26",
+    "college": "College of Humanities, Arts, and Social Sciences",
+    "academic_unit": "Department of Economics",
+    "ge_authority": "College of Humanities, Arts, and Social Sciences",
+    "ge_model": "CHASS B.A. breadth, course-by-course articulation; Cal-GETC policy conflict flagged",
+    "source_url": "https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucr_catalog_2025_26", "kind": "catalog_pdf", "label": "UCR General Catalog 2025–26", "url": "https://documents.ucr.edu/registrar/UCR%20Catalog%202025-2026.pdf", "note": "Controlling source: university pp. 67–70; CHASS pp. 84–87; Economics pp. 314–316." },
+      { "id": "ucr_catalog_landing", "kind": "catalog_index", "label": "UCR Registrar — catalog landing", "url": "https://registrar.ucr.edu/registering/catalog", "note": "Current official catalog index." },
+      { "id": "ucr_econ_department", "kind": "program_corroboration", "label": "UCR Economics — undergraduate major", "url": "https://economics.ucr.edu/undergraduate-program/economics-major/", "note": "Department overview and official worksheet link." },
+      { "id": "ucr_econ_worksheet", "kind": "checklist", "label": "UCR Economics — B.A. requirement worksheet", "url": "https://economics.ucr.edu/wp-content/uploads/2019/04/ECON_worksheet.pdf", "note": "Course-level corroboration; controlling catalog takes precedence where dates differ." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 18,
+      "major_upper_division": 54,
+      "distinct_chass_breadth_after_math_overlap": 76,
+      "uc_transferable_elective_capacity": 32,
+      "canonical_path": "Minimum-unit upper choices; 12-unit composition; CHASS breadth minus eight-unit calculus overlap."
+    },
+    "modeling_notes": [
+      "The major is at least 72 units: four lower courses (at least 18) and twelve upper courses (at least 54).",
+      "CHASS breadth is modeled as 72 table units plus 12 composition units minus eight units of calculus overlap. Major-discipline ECON courses cannot satisfy breadth.",
+      "Language through level four may be satisfied through proficiency; when no course units are earned, the same 16 units become degree-elective room. The canonical 76-unit breadth capacity uses the standard-coursework scenario and needs a student-audit variant.",
+      "Current UCR guidance and college pages conflict on the extent to which Cal-GETC/legacy IGETC clears breadth; course-by-course capacity is retained."
+    ],
+    "data_quality_flags": [
+      { "code": "calgetc_policy_conflict", "severity": "blocker_for_verification", "message": "Resolve the current general-versus-college transfer-GE language before treating certification as wholesale breadth completion." },
+      { "code": "language_proficiency_units", "severity": "review", "message": "Canonical breadth assumes language coursework; a proficiency path reallocates up to 16 units to electives." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_econ_worksheet"], "requirements": [
+        { "select": 2, "units": 10, "from": ["ECON 002", "ECON 003"], "source_refs": ["ucr_catalog_2025_26", "ucr_econ_worksheet"], "note": "Honors variants are accepted." }
+      ] },
+      { "title": "Lower-division calculus", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26", "ucr_econ_worksheet"], "requirements": [
+        { "select": 2, "units": 8, "from": ["MATH 009A", "MATH 009B"], "source_refs": ["ucr_catalog_2025_26", "ucr_econ_worksheet"], "note": "Honors variants are accepted." }
+      ] },
+      { "title": "CHASS B.A. breadth remaining after calculus overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26"], "requirements": [
+        { "select": 19, "units": 76, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "CHASS breadth and composition after eight-unit math overlap" }, "source_refs": ["ucr_catalog_2025_26"], "note": "Course-by-course CC-satisfiable capacity; includes standard language coursework and excludes major-discipline ECON overlap." }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucr_catalog_2025_26"], "requirements": [
+        { "select": 8, "units": 32, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucr_catalog_2025_26"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucr_catalog_2025_26", "ucr_econ_worksheet"], "requirements": [
+        { "select": 6, "units": 30, "from": null, "label": "ECON 104A, 104B, 105A, 105B, 101, and 107", "source_refs": ["ucr_catalog_2025_26", "ucr_econ_worksheet"] },
+        { "select": 1, "units": 4, "from": null, "label": "One advanced-prerequisite Economics course", "source_refs": ["ucr_catalog_2025_26"] },
+        { "select": 5, "units": 20, "from": null, "label": "Five additional upper-division Economics courses", "source_refs": ["ucr_catalog_2025_26"], "note": "At least three meet the advanced-prerequisite rule; ECON 102/103/190 exclusions apply." }
+      ] }
+    ]
+  },
+  "UCSD": {
+    "school_id": 7,
+    "school": "UC San Diego",
+    "program": "Economics B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "UC San Diego undergraduate residential-college system",
+    "academic_unit": "Department of Economics / School of Social Sciences",
+    "ge_authority": "Student's UC San Diego residential college (8 variants)",
+    "ge_model": "Canonical comparison lens: full Cal-GETC/IGETC transfer in Warren College; all 8 variants retained below",
+    "ge_variants": [
+      { "id": "revelle", "label": "Revelle", "url": "https://revelle.ucsd.edu/academics/general-education/gen-ed-tran-students.html", "remaining_after_full_certification": "HUM 100 plus Revelle math and four natural-science courses; major courses may overlap math/science." },
+      { "id": "muir", "label": "Muir", "url": "https://muir.ucsd.edu/academics/degree.html", "remaining_after_full_certification": "MCWP 125 or 125R at UCSD." },
+      { "id": "marshall", "label": "Marshall", "url": "https://marshall.ucsd.edu/academics/transfer-ge.html", "remaining_after_full_certification": "Two four-unit upper-division Disciplinary Breadth courses outside the major, one with significant writing." },
+      { "id": "warren", "label": "Warren", "url": "https://warren.ucsd.edu/academics/general-education/index.html", "remaining_after_full_certification": "WCWP 100 plus one four-unit upper-division non-contiguous course." },
+      { "id": "erc", "label": "Eleanor Roosevelt", "url": "https://roosevelt.ucsd.edu/academics/gen-ed/index.html", "remaining_after_full_certification": "MMW 122 at UCSD; language may remain when certification lacks optional LOTE." },
+      { "id": "sixth", "label": "Sixth", "url": "https://sixth.ucsd.edu/academics/requirements/transfer-requirements.html", "remaining_after_full_certification": "CAT 125/125R plus Experiential Learning." },
+      { "id": "seventh", "label": "Seventh", "url": "https://seventh.ucsd.edu/academics/degree-requirements/degree-requirements-transfers.html", "remaining_after_full_certification": "SYN 100 plus one 2–4-unit High-Impact course." },
+      { "id": "eighth", "label": "Eighth", "url": "https://eighth.ucsd.edu/academics/degree-requirements/transfer.html", "remaining_after_full_certification": "CCE 110 and CCE 120, both four units at UCSD." }
+    ],
+    "source_url": "https://catalog.ucsd.edu/curric/ECON-ug.html",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucsd_econ_major_2026", "kind": "major", "label": "UCSD catalog — Economics B.A.", "url": "https://catalog.ucsd.edu/curric/ECON-ug.html", "note": "20-unit lower preparation and 48-unit upper major." },
+      { "id": "ucsd_degree_2026", "kind": "graduation", "label": "UCSD catalog — undergraduate degree requirements", "url": "https://catalog.ucsd.edu/undergraduate/degree-requirements/index.html", "note": "180 units, 60 upper division, major floor, residence, DEI/AHI/ELWR." },
+      { "id": "ucsd_colleges_2026", "kind": "ge_authority", "label": "UCSD catalog — undergraduate colleges", "url": "https://catalog.ucsd.edu/undergraduate/colleges/index.html", "note": "Any major may belong to any of eight residential colleges; the college owns GE." },
+      { "id": "ucsd_ge_compare_2026", "kind": "ge", "label": "UCSD catalog — college GE comparison", "url": "https://catalog.ucsd.edu/undergraduate/graduation-requirements/index.html", "note": "Full four-year college patterns and campuswide requirements." },
+      { "id": "ucsd_warren_transfer", "kind": "ge_variant", "label": "Warren College — transfer GE", "url": "https://warren.ucsd.edu/academics/general-education/index.html", "note": "Canonical comparison lens used in this single-template data model." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 20,
+      "major_upper_division": 48,
+      "warren_upper_ge": 8,
+      "additional_upper_division": 4,
+      "distinct_calgetc_after_major_overlap": 38,
+      "uc_transferable_elective_capacity": 62,
+      "canonical_path": "MATH 10 series; 48-unit major; Cal-GETC-certified Warren transfer; 60-unit campus upper floor."
+    },
+    "modeling_notes": [
+      "UCSD has no major-owned GE. Warren is the explicit canonical lens used by the historical CS template; the full eight-college variant matrix is retained for a future residential-college dimension.",
+      "Economics lower division is 20 units; upper division is 48 units / twelve courses.",
+      "Thirty-eight lower GE units are a derived remainder of full Cal-GETC/IGETC after quantitative and social-science overlap with Economics.",
+      "Warren's two post-certification courses contribute eight upper units; four more units reach UCSD's 60-upper-unit minimum."
+    ],
+    "data_quality_flags": [
+      { "code": "residential_college_dimension", "severity": "blocker_for_generalization", "message": "A student's residential college changes GE. Warren is only the explicit comparison lens, not a UCSD-wide truth." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_econ_major_2026"], "requirements": [
+        { "select": 2, "units": 8, "from": ["ECON 1", "ECON 3"], "source_refs": ["ucsd_econ_major_2026"] }
+      ] },
+      { "title": "Lower-division calculus — choose one complete series", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_econ_major_2026"], "requirements": [
+        { "select": 1, "units": 12, "from": { "series": [["MATH 10A", "MATH 10B", "MATH 10C"], ["MATH 20A", "MATH 20B", "MATH 20C"]] }, "source_refs": ["ucsd_econ_major_2026"], "note": "MATH 20 is recommended; either complete series satisfies the requirement." }
+      ] },
+      { "title": "Cal-GETC/IGETC lower GE remaining after Economics overlap", "tier": "breadth", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsd_ge_compare_2026", "ucsd_warren_transfer"], "requirements": [
+        { "select": 10, "units": 38, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct lower GE after Economics quantitative/social overlap" }, "source_refs": ["ucsd_ge_compare_2026", "ucsd_warren_transfer"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucsd_degree_2026"], "requirements": [
+        { "select": 16, "units": 62, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucsd_degree_2026"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsd_econ_major_2026"], "requirements": [
+        { "select": 7, "units": 28, "from": null, "label": "ECON 100A/B, 110A/B, and 120A/B/C", "source_refs": ["ucsd_econ_major_2026"] },
+        { "select": 5, "units": 20, "from": null, "label": "Five upper-division Economics electives", "source_refs": ["ucsd_econ_major_2026"], "note": "No more than four of the twelve upper major courses may be taken external to UCSD." }
+      ] },
+      { "title": "Warren transfer GE remaining after full certification", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsd_warren_transfer"], "requirements": [
+        { "select": 2, "units": 8, "from": null, "label": "WCWP 100 plus one upper-division non-contiguous course", "source_refs": ["ucsd_warren_transfer"] }
+      ] },
+      { "title": "Additional upper-division coursework to the UCSD 60-unit minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsd_degree_2026"], "requirements": [
+        { "select": 1, "units": 4, "from": null, "label": "Additional upper-division coursework", "source_refs": ["ucsd_degree_2026"] }
+      ] }
+    ]
+  },
+  "UCSB": {
+    "school_id": 128,
+    "school": "UC Santa Barbara",
+    "program": "Economics, B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2025-26 major sheet; 2026-27 college catalog",
+    "college": "College of Letters and Science",
+    "academic_unit": "Department of Economics",
+    "ge_authority": "College of Letters and Science — B.A. requirements",
+    "ge_model": "L&S B.A. GE with Economics/math overlap; full IGETC transfer treatment",
+    "source_url": "https://econ.ucsb.edu/sites/default/files/2025-10/Economics%20Major%20%282025%29.pdf",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucsb_econ_sheet_2025", "kind": "major_sheet", "label": "UCSB Economics B.A. major sheet 2025–26", "url": "https://econ.ucsb.edu/sites/default/files/2025-10/Economics%20Major%20%282025%29.pdf", "note": "Newest department sheet currently posted: preparation, admission GPA, 40-unit upper major." },
+      { "id": "ucsb_econ_landing", "kind": "major", "label": "UCSB Economics — undergraduate majors", "url": "https://econ.ucsb.edu/programs/undergraduate/majors", "note": "Official landing and current worksheet links." },
+      { "id": "ucsb_ba_ge_2026", "kind": "ge", "label": "UCSB L&S — Bachelor of Arts GE", "url": "https://catalog.ucsb.edu/pages/03lVOj4Ey447GOnP4RhY", "note": "B.A.-specific areas, language, and special-subject requirements." },
+      { "id": "ucsb_degree_2026", "kind": "graduation", "label": "UCSB L&S — degree requirements", "url": "https://www.duels.ucsb.edu/degree-planning/degree-requirements", "note": "180 units, 60 upper division, and university requirements." },
+      { "id": "ucsb_transfer_2026", "kind": "transfer", "label": "UCSB L&S — transfer advising and IGETC", "url": "https://www.duels.ucsb.edu/advising/transfer-student-advising", "note": "Full IGETC satisfies GE but not AHI, ELWR, residence, major, or unit minima." },
+      { "id": "ucsb_residence_2026", "kind": "residency", "label": "UCSB — General University requirements", "url": "https://duels.ucsb.edu/lasar/general-university-requirements", "note": "Current three-term and 35-of-final-45 residence rules." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 28,
+      "major_upper_division": 40,
+      "additional_upper_division": 20,
+      "distinct_ge_after_overlap": 38,
+      "uc_transferable_elective_capacity": 54,
+      "canonical_path": "ECON 5 lower-division statistics path; eight-unit math path; 40-unit upper major; 60-upper College floor."
+    },
+    "modeling_notes": [
+      "The canonical preparation path is 28 units using ECON 5. The alternative PSTAT 120A is upper division and its current four-unit catalog listing conflicts with the five-unit line on the 2025–26 major sheet; that variant is not silently merged.",
+      "ECON 5 and ECON 10A must be completed at UCSB under the department sheet. Keep them in the lower-division denominator but expect no CC articulation for those campus-only requirements.",
+      "The 38-unit distinct GE estimate removes quantitative and social-science overlap from the B.A. pattern; full IGETC satisfies GE for transfers.",
+      "Twenty additional upper units reach the College's 60-unit minimum under the 40-unit upper major path."
+    ],
+    "data_quality_flags": [
+      { "code": "pstat_120a_units", "severity": "blocker_for_variant", "message": "2025–26 major sheet budgets the PSTAT 120A alternative as five units; the current catalog lists four and the course is upper division." },
+      { "code": "campus_only_prep", "severity": "review", "message": "ECON 5 and ECON 10A are required at UCSB; verify how transfer exceptions appear on student audits." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics preparation", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_econ_sheet_2025"], "requirements": [
+        { "select": 2, "units": 10, "from": ["ECON 1", "ECON 2"], "source_refs": ["ucsb_econ_sheet_2025"] },
+        { "select": 1, "units": 5, "from": ["ECON 10A"], "source_refs": ["ucsb_econ_sheet_2025"], "note": "Must be taken at UCSB; retained in the lower-division denominator and expected to lack CC articulation." },
+        { "select": 1, "units": 5, "from": ["ECON 5"], "source_refs": ["ucsb_econ_sheet_2025"], "note": "Canonical statistics path; must be taken at UCSB. PSTAT 120A is an upper-division alternative requiring a separate verified variant." }
+      ] },
+      { "title": "Lower-division mathematics — choose one complete sequence", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsb_econ_sheet_2025"], "requirements": [
+        { "select": 1, "units": 8, "from": { "series": [["MATH 2A", "MATH 2B"], ["MATH 3A", "MATH 3B"], ["MATH 34A", "MATH 34B"]] }, "source_refs": ["ucsb_econ_sheet_2025"], "note": "Published paths total 8–10 units; canonical budget uses 8." }
+      ] },
+      { "title": "L&S B.A. GE remaining after Economics/math overlap", "tier": "breadth", "course_level": "lower_division_or_proficiency", "cc_articulable": true, "source_refs": ["ucsb_ba_ge_2026", "ucsb_transfer_2026"], "requirements": [
+        { "select": 10, "units": 38, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UCSB B.A. GE after Economics/math overlap" }, "source_refs": ["ucsb_ba_ge_2026", "ucsb_transfer_2026"] },
+        { "select": 1, "units": 0, "from": { "assume": true, "code": "LOTE", "credit_role": "zero_unit_requirement", "label": "Area B language proficiency if not otherwise certified" }, "source_refs": ["ucsb_ba_ge_2026"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 units", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucsb_degree_2026"], "requirements": [
+        { "select": 14, "units": 54, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucsb_degree_2026"] }
+      ] },
+      { "title": "Upper-division Economics major", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsb_econ_sheet_2025"], "requirements": [
+        { "select": 3, "units": 12, "from": null, "label": "ECON 100B, 101, and 140A", "source_refs": ["ucsb_econ_sheet_2025"] },
+        { "select": 6, "units": 24, "from": null, "label": "Six Area D upper-division Economics courses", "source_refs": ["ucsb_econ_sheet_2025"] },
+        { "select": 1, "units": 4, "from": null, "label": "One additional Area D or approved supplemental course", "source_refs": ["ucsb_econ_sheet_2025"] }
+      ] },
+      { "title": "Additional upper-division coursework to the 60-unit College minimum", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsb_degree_2026"], "requirements": [
+        { "select": 5, "units": 20, "from": null, "label": "Additional upper-division coursework", "source_refs": ["ucsb_degree_2026"] }
+      ] }
+    ]
+  },
+  "UCSC": {
+    "school_id": 132,
+    "school": "UC Santa Cruz",
+    "program": "Economics B.A.",
+    "degree_variant": "B.A.",
+    "total_units": 180,
+    "unit_system": "quarter",
+    "catalog_year": "2026-27",
+    "college": "UC Santa Cruz campuswide undergraduate program",
+    "academic_unit": "Department of Economics / Social Sciences Division",
+    "ge_authority": "UC Santa Cruz campuswide GE plus conditional residential-college core",
+    "ge_model": "Campus GE transfer lens; IGETC/Cal-GETC substitutes for all GE except embedded Disciplinary Communication",
+    "source_url": "https://catalog.ucsc.edu/en/current/general-catalog/academic-units/social-sciences-division/economics/economics-ba",
+    "research_status": "ai_researched_needs_human_verification",
+    "sources": [
+      { "id": "ucsc_econ_requirements", "kind": "major", "label": "UCSC catalog — Economics B.A.", "url": "https://catalog.ucsc.edu/en/current/general-catalog/academic-units/social-sciences-division/economics/economics-ba", "note": "Lower preparation, upper core, DC, electives, comprehensive, and residence." },
+      { "id": "ucsc_ge_2026", "kind": "ge", "label": "UCSC catalog — General Education", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/general-education-requirements", "note": "Campuswide 52-unit pattern including DC." },
+      { "id": "ucsc_transfer_ge", "kind": "transfer", "label": "UCSC catalog — GE for transfer students", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/credit-for-transfer-students/general-education-for-transfers", "note": "IGETC/Cal-GETC/reciprocity substitutes for GE except DC; transfer students are exempt from college core." },
+      { "id": "ucsc_graduation", "kind": "graduation", "label": "UCSC catalog — graduation requirements", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/graduation-requirements", "note": "180 credits and degree gates." },
+      { "id": "ucsc_university", "kind": "residency", "label": "UCSC catalog — University requirements", "url": "https://catalog.ucsc.edu/en/current/general-catalog/undergraduate-information/undergraduate-academic-program/university-requirements", "note": "Residence, AHI, and ELWR." }
+    ],
+    "unit_audit": {
+      "graduation_minimum": 180,
+      "modeled_units": 180,
+      "major_lower_division": 27,
+      "major_upper_division": 45,
+      "distinct_ge_after_overlap": 32,
+      "uc_transferable_elective_capacity": 76,
+      "canonical_path": "Ten-unit math path; five-unit upper electives; DC embedded in upper major."
+    },
+    "modeling_notes": [
+      "Lower preparation is 27–32 units and upper major is 45–46. The canonical model uses the 27/45 minimum path.",
+      "Disciplinary Communication and the comprehensive sequence are embedded in the upper major and are not added twice.",
+      "UCSC does not state a separate campuswide upper-division-unit minimum in the current catalog.",
+      "The approximately 32 distinct GE units after Economics math/stat/social/DC overlap are derived; verify exact course designations for the selected path."
+    ],
+    "data_quality_flags": [
+      { "code": "ge_designation_inference", "severity": "review", "message": "MF/SR/PE-H overlap is inferred from the selected major courses and needs course-designation validation." }
+    ],
+    "groups": [
+      { "title": "Lower-division Economics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_econ_requirements"], "requirements": [
+        { "select": 2, "units": 10, "from": ["ECON 1", "ECON 2"], "source_refs": ["ucsc_econ_requirements"] }
+      ] },
+      { "title": "Lower-division mathematics — choose one approved path", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_econ_requirements"], "requirements": [
+        { "select": 1, "units": 10, "from": { "series": [["AM 11A", "AM 11B"], ["MATH 11A", "MATH 11B", "MATH 22"], ["MATH 19A", "MATH 19B", "MATH 23A"], ["MATH 19A", "MATH 19B", "AM 30"], ["MATH 11A", "AM 11B"], ["MATH 19A", "AM 11B"]] }, "source_refs": ["ucsc_econ_requirements"], "note": "Canonical budget uses a 10-unit path; three-course paths may total 15." }
+      ] },
+      { "title": "Lower-division statistics", "tier": "transferable", "course_level": "lower_division", "cc_articulable": true, "source_refs": ["ucsc_econ_requirements"], "requirements": [
+        { "select": 1, "units": 7, "from": { "series": [["STAT 17", "STAT 17L"]] }, "source_refs": ["ucsc_econ_requirements"] }
+      ] },
+      { "title": "Campuswide GE remaining after Economics/DC overlap", "tier": "breadth", "course_level": "lower_division_or_mixed", "cc_articulable": true, "source_refs": ["ucsc_ge_2026", "ucsc_transfer_ge"], "requirements": [
+        { "select": 8, "units": 32, "from": { "assume": true, "code": "GE", "credit_role": "ge_certification", "label": "Distinct UCSC GE after Economics math/stat/social/DC overlap" }, "source_refs": ["ucsc_ge_2026", "ucsc_transfer_ge"] }
+      ] },
+      { "title": "UC-transferable elective capacity to 180 credits", "tier": "breadth", "course_level": "lower_division_capacity", "cc_articulable": true, "source_refs": ["ucsc_graduation"], "requirements": [
+        { "select": 16, "units": 76, "from": { "assume": true, "code": "ELECTIVE", "credit_role": "elective_capacity", "label": "Derived UC-transferable elective capacity" }, "source_refs": ["ucsc_graduation"] }
+      ] },
+      { "title": "Upper-division Economics major, DC, and comprehensive requirement", "tier": "nontransferable", "course_level": "upper_division", "cc_articulable": false, "source_refs": ["ucsc_econ_requirements"], "requirements": [
+        { "select": 3, "units": 15, "from": null, "label": "ECON 100A/100M, 100B/100N, and 113", "source_refs": ["ucsc_econ_requirements"] },
+        { "select": 1, "units": 5, "from": null, "label": "ECON 104 or 197 — Disciplinary Communication", "source_refs": ["ucsc_econ_requirements"] },
+        { "select": 5, "units": 25, "from": null, "label": "Five constrained upper-division Economics electives", "source_refs": ["ucsc_econ_requirements"], "note": "Canonical five-unit electives; ECON 114 is six. General/Finance/Business Management limits apply." }
+      ] }
+    ]
+  }
+}

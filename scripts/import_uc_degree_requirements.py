@@ -1,8 +1,8 @@
 """
-Import the hand-gathered FULL four-year degree requirements (BSCS/EECS) into the
-research DB, modeled in the ASSIST agreement `requirement_groups` shape so the
-degree-coverage figure (MA Fig. 1) can reuse the existing choose-N eligibility
-engine (server/services/analysis/pathways.chooseNMinimum).
+Import researched FULL four-year degree requirements into the research DB,
+modeled in the ASSIST agreement `requirement_groups` shape so the degree-
+coverage and associate-degree contribution analyses can reuse the existing
+choose-N/unit engines.
 
 Unlike an agreement, a degree-requirements doc is NOT tied to one community
 college: it stores the requirement MODEL only (groups -> sections -> receivers
@@ -10,8 +10,13 @@ with parent_id + section_advisement). The figure stamps articulation_status per
 community college at compute time — a receiver is "articulated" for a CC when
 that CC articulates the receiver's parent_id in its real agreement.
 
-Source (hand-authored): scripts/data/uc_degree_requirements.json
-Provenance (per datum, with URLs): docs/figures/degree-coverage-sources.md
+Sources:
+  scripts/data/uc_degree_requirements.json       historical hand-verified CS
+  scripts/data/uc_degree_requirements_bio.json  AI research; human review due
+  scripts/data/uc_degree_requirements_econ.json AI research; human review due
+Provenance:
+  docs/figures/degree-coverage-sources.md
+  docs/figures/degree-coverage-sources-bio-econ.md
 
 Env (scripts/.env or shell):
   TARGET_MONGO_URI (required)
@@ -23,11 +28,11 @@ Output collection:
       program, total_units, source_url, sources[], requirement_groups[],
       source, updated_at }
 
-The historical CS authoring file predates the major dimension. When its
-`_meta` has no `major_slug`, this importer deliberately preserves its legacy
-`degree:<school_id>` ids while stamping `major_slug: "cs"`. New authoring
-files must declare `_meta.major_slug`; those always use major-scoped ids so a
-Biology or Economics import can never overwrite CS or one another.
+Every degree uses a major-scoped identity, including the historical CS source:
+`degree:<school_id>:<major_slug>`. A source without `_meta.major_slug` defaults
+to `cs` for backwards compatibility, but it is still written with the scoped
+identity. After a successful CS upsert, the importer removes only that campus's
+exact legacy `degree:<school_id>` row so list views cannot show duplicates.
 
 Usage:
   python scripts/import_uc_degree_requirements.py --dry-run      # resolve + report, NO write
@@ -51,6 +56,9 @@ load_dotenv(HERE / ".env")
 
 DEFAULT_SOURCE = HERE / "data" / "uc_degree_requirements.json"
 MAJOR_SLUG_RE = re.compile(r"^[a-z0-9_]+$")
+LEGACY_MIGRATION_CONTROL_FIELDS = {
+    "_id", "legacy_id", "major_slug", "updated_at",
+}
 
 # Our scraped data still stores the pre-2025 EE numbering (EECS 16A/16B); the
 # current Berkeley catalog renamed these ELENG 66/64. Author codes either way —
@@ -58,6 +66,10 @@ MAJOR_SLUG_RE = re.compile(r"^[a-z0-9_]+$")
 CODE_ALIASES = {
     "ELENG 66": "EECS 16A",
     "ELENG 64": "EECS 16B",
+    # UCSD renamed its organic chemistry sequence in the receiving-course
+    # snapshot before every current catalog/checklist link caught up.
+    "CHEM 40A": "CHEM 41A",
+    "CHEM 40B": "CHEM 41B",
 }
 
 
@@ -77,7 +89,11 @@ def connect():
 def normalize_code(value):
     s = str(value or "").upper().replace("&", " AND ")
     s = re.sub(r"[^A-Z0-9]+", " ", s)
-    return re.sub(r"\s+", " ", s).strip()
+    s = re.sub(r"\s+", " ", s).strip()
+    # Catalogs inconsistently pad course numbers (UCR writes CHEM 001A and
+    # CHEM 01LA while ASSIST stores CHEM 1A and CHEM 1LA). Normalize both
+    # index and authored code, preserving meaningful zeros after letters.
+    return re.sub(r"\b0+(?=\d)", "", s)
 
 
 def leading_int(number):
@@ -169,7 +185,8 @@ def series_receiver(parent_ids, tier, seq):
     }
 
 
-def ge_area_receiver(code, name, seq, ge_areas=None, assume=False):
+def ge_area_receiver(code, name, seq, ge_areas=None, assume=False,
+                     credit_role=None):
     return {
         "receiving": {"kind": "ge_area", "code": code, "name": name, "parent_id": None, "units": None},
         "articulation_status": None,
@@ -182,6 +199,7 @@ def ge_area_receiver(code, name, seq, ge_areas=None, assume=False):
         # igetc_area tags, or assume it's satisfiable everywhere.
         "ge_areas": ge_areas or [],
         "assume_satisfiable": bool(assume),
+        "credit_role": credit_role,
     }
 
 
@@ -197,12 +215,16 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
         "receivers": [],
         "source_refs": list(req.get("source_refs", [])),
         "note": req.get("note"),
+        "course_level": req.get("course_level"),
+        "cc_articulable": req.get("cc_articulable"),
+        "overlap_key": req.get("overlap_key"),
+        "human_review": req.get("human_review"),
     }
     # Optional authored "units" (the block's stated total, e.g. Berkeley's
     # 20-unit upper-division rule or a 12-unit series) overrides the flat
     # ~4u/course assumption in the unit budget shown on the template page.
     if req.get("units") is not None:
-        section["unit_advisement"] = int(req["units"])
+        section["unit_advisement"] = req["units"]
 
     if frm is None:
         # Non-transferable: `select` named slots, never satisfiable by any CC.
@@ -265,7 +287,10 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
         code = frm.get("code", "REQ")
         label = frm.get("label", f"{title} — assumed satisfiable")
         section["assume_satisfiable"] = True
-        section["receivers"] = [ge_area_receiver(code, label, seq(), assume=True)]
+        section["receivers"] = [ge_area_receiver(
+            code, label, seq(), assume=True,
+            credit_role=frm.get("credit_role") or req.get("credit_role"),
+        )]
         report["breadth_courses"] += 1
 
     else:
@@ -281,25 +306,95 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
 
 
 def source_identity(data, campus):
-    """Return (major_slug, use_major_scoped_id) for one authored campus.
+    """Return the validated major slug and scoped-id policy for one campus.
 
     A campus-level major_slug is allowed for forward-compatible combined
-    authoring files, though the Biology/Economics files each use one `_meta`
-    slug. Missing metadata means the historical CS file and preserves its ids.
+    authoring files. Missing metadata defaults to CS, but all degree identities
+    are major-scoped so no major can collide with another.
     """
     meta = data.get("_meta") if isinstance(data.get("_meta"), dict) else {}
     raw = campus.get("major_slug", meta.get("major_slug"))
-    explicit = raw is not None
-    slug = str(raw if explicit else "cs").strip()
+    slug = str(raw if raw is not None else "cs").strip()
     if not MAJOR_SLUG_RE.fullmatch(slug):
         raise ValueError(
             f"major_slug must match {MAJOR_SLUG_RE.pattern}; got {slug!r}"
         )
-    return slug, explicit
+    return slug, True
+
+
+def merge_legacy_fields(doc, legacy_doc=None, modern_doc=None):
+    """Carry DB-only curation fields across an old CS id migration.
+
+    Authored fields in ``doc`` always win. If a modern row already exists, its
+    DB-only fields also win. Everything else from the legacy row is retained,
+    except identity/timestamp controls that must be regenerated for the new id.
+    """
+    merged = dict(doc)
+    legacy_doc = legacy_doc or {}
+    modern_doc = modern_doc or {}
+    for key, value in legacy_doc.items():
+        if key in LEGACY_MIGRATION_CONTROL_FIELDS:
+            continue
+        if key not in merged and key not in modern_doc:
+            merged[key] = value
+    return merged
+
+
+def validate_existing_cs_doc(doc, school_id, *, legacy):
+    """Reject an unsafe row before any CS identity migration writes occur."""
+    if doc is None:
+        return
+    expected_id = f"degree:{school_id}" if legacy else f"degree:{school_id}:cs"
+    if doc.get("_id") != expected_id:
+        raise ValueError(f"unexpected CS degree id: {doc.get('_id')!r}")
+    if doc.get("kind") != "degree":
+        raise ValueError(f"{expected_id} is not a degree document")
+    try:
+        stored_school_id = int(doc.get("school_id"))
+    except (TypeError, ValueError):
+        stored_school_id = None
+    if stored_school_id != int(school_id):
+        raise ValueError(
+            f"{expected_id} has school_id {doc.get('school_id')!r}; "
+            f"expected {school_id}"
+        )
+    stamp = doc.get("major_slug")
+    allowed = {None, "", "cs"} if legacy else {"cs"}
+    if stamp not in allowed:
+        raise ValueError(
+            f"{expected_id} has incompatible major_slug {stamp!r}"
+        )
+
+
+def preflight_legacy_cs_migration(coll, docs):
+    """Load and validate legacy/modern CS rows without mutating Mongo."""
+    cs_docs = [doc for doc in docs if doc.get("major_slug") == "cs"]
+    if not cs_docs:
+        return {}
+    ids = []
+    for doc in cs_docs:
+        ids.extend([f"degree:{doc['school_id']}", doc["_id"]])
+    existing = {row["_id"]: row for row in coll.find({"_id": {"$in": ids}})}
+    migrations = {}
+    for doc in cs_docs:
+        school_id = int(doc["school_id"])
+        old_id = f"degree:{school_id}"
+        new_id = doc["_id"]
+        old = existing.get(old_id)
+        modern = existing.get(new_id)
+        validate_existing_cs_doc(old, school_id, legacy=True)
+        validate_existing_cs_doc(modern, school_id, legacy=False)
+        if old is not None and modern is not None:
+            raise ValueError(
+                f"refusing CS migration: both {old_id} and {new_id} exist"
+            )
+        if old is not None:
+            migrations[new_id] = old
+    return migrations
 
 
 def build_doc(campus_key, campus, by_code, by_prefix, report,
-              major_slug="cs", major_scoped_id=False):
+              major_slug="cs", major_scoped_id=True):
     counter = [0]
     def seq():
         counter[0] += 1
@@ -315,11 +410,24 @@ def build_doc(campus_key, campus, by_code, by_prefix, report,
             "tier": tier,
             "source_refs": list(g.get("source_refs", [])),
             "note": g.get("note"),
+            "course_level": g.get("course_level"),
+            "cc_articulable": g.get("cc_articulable"),
+            "overlap_key": g.get("overlap_key"),
+            "human_review": g.get("human_review"),
             "sections": sections,
         })
     school_id = int(campus["school_id"])
     row_id = f"degree:{school_id}:{major_slug}" if major_scoped_id else f"degree:{school_id}"
     legacy_id = f"{school_id}:{major_slug}" if major_scoped_id else str(school_id)
+    research_status = campus.get(
+        "research_status",
+        "hand_verified" if major_slug == "cs" else "needs_human_verification",
+    )
+    source_method = campus.get(
+        "source_method",
+        "ai_web_research" if str(research_status).startswith("ai_researched")
+        else "hand_curated",
+    )
     return {
         "_id": row_id,
         "legacy_id": legacy_id,
@@ -334,12 +442,24 @@ def build_doc(campus_key, campus, by_code, by_prefix, report,
         "sources": campus.get("sources", []),
         "catalog_year": campus.get("catalog_year"),
         "college": campus.get("college"),
+        # Keep the organizational owner of the major separate from the body
+        # that sets GE. They are usually the same L&S college, but UC San
+        # Diego's residential colleges and UC Merced's campuswide GE are
+        # important counterexamples.
+        "academic_unit": campus.get("academic_unit", campus.get("college")),
+        "ge_authority": campus.get("ge_authority", campus.get("college")),
         "degree_variant": campus.get("degree_variant"),
-        "research_status": campus.get("research_status", "needs_human_verification"),
+        "unit_system": campus.get("unit_system"),
+        "ge_model": campus.get("ge_model"),
+        "ge_variants": campus.get("ge_variants", []),
+        "research_status": research_status,
+        "source_method": source_method,
         "unit_audit": campus.get("unit_audit"),
         "modeling_notes": campus.get("modeling_notes", []),
+        "data_quality_flags": campus.get("data_quality_flags", []),
         "requirement_groups": groups,
-        "source": "hand_curated_degree",
+        "source": "ai_researched_degree" if source_method == "ai_web_research"
+        else "hand_curated_degree",
         "campus_key": campus_key,
     }
 
@@ -358,6 +478,7 @@ def main():
 
     db = connect()
     ops = []
+    legacy_cs_ids = []
     seen_ids = set()
     for campus_key, campus in campuses.items():
         try:
@@ -375,6 +496,8 @@ def main():
         if doc["_id"] in seen_ids:
             sys.exit(f"duplicate degree identity in source: {doc['_id']}")
         seen_ids.add(doc["_id"])
+        if major_slug == "cs":
+            legacy_cs_ids.append(f"degree:{int(campus['school_id'])}")
 
         print(
             f"\n=== {campus_key}: {campus['school']} — {campus['program']} "
@@ -397,15 +520,61 @@ def main():
 
         ops.append(doc)
 
+    coll = db["curated_requirements"]
+    try:
+        legacy_migrations = preflight_legacy_cs_migration(coll, ops)
+    except ValueError as error:
+        sys.exit(f"CS identity migration preflight failed: {error}")
+
     if args.dry_run:
+        if legacy_migrations:
+            print(
+                "\n[dry-run] validated legacy CS migrations: "
+                + ", ".join(sorted(
+                    old["_id"] for old in legacy_migrations.values()
+                ))
+            )
+        elif legacy_cs_ids:
+            print("\n[dry-run] CS identities are already major-scoped.")
         print("\n[dry-run] no write. Re-run without --dry-run to upsert.")
         return
 
     now = dt.datetime.now(dt.timezone.utc)
-    coll = db["curated_requirements"]
-    writes = [UpdateOne({"_id": d["_id"]}, {"$set": {**d, "updated_at": now}}, upsert=True) for d in ops]
+    writes = []
+    for doc in ops:
+        fields = dict(doc)
+        legacy_doc = legacy_migrations.get(doc["_id"])
+        if legacy_doc:
+            fields = merge_legacy_fields(fields, legacy_doc)
+        fields["updated_at"] = now
+        writes.append(UpdateOne(
+            {"_id": doc["_id"]}, {"$set": fields}, upsert=True,
+        ))
     res = coll.bulk_write(writes)
-    print(f"\nUpserted {res.upserted_count + res.modified_count} degree requirement doc(s) into curated_requirements.")
+    deleted = 0
+    if legacy_migrations:
+        guards = [{
+            "_id": old["_id"],
+            "kind": "degree",
+            "school_id": int(old["school_id"]),
+            "$or": [
+                {"major_slug": {"$exists": False}},
+                {"major_slug": None},
+                {"major_slug": "cs"},
+            ],
+        } for old in legacy_migrations.values()]
+        delete_result = coll.delete_many({"$or": guards})
+        deleted = delete_result.deleted_count
+        if deleted != len(legacy_migrations):
+            sys.exit(
+                "CS templates were safely upserted, but legacy cleanup was "
+                f"incomplete: expected {len(legacy_migrations)} deletions, "
+                f"got {deleted}. Both copies may remain; inspect before retrying."
+            )
+    print(
+        f"\nUpserted {res.upserted_count + res.modified_count} degree requirement "
+        f"doc(s) into curated_requirements; removed {deleted} legacy CS doc(s)."
+    )
 
 
 if __name__ == "__main__":

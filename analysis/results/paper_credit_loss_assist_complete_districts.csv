@@ -5,7 +5,6 @@ UCR,Allan Hancock Joint Community College District,8
 UCSB,Allan Hancock Joint Community College District,6
 UCSC,Allan Hancock Joint Community College District,5
 UCB,Antelope Valley Community College District,10
-UCD,Antelope Valley Community College District,9
 UCI,Antelope Valley Community College District,5
 UCM,Antelope Valley Community College District,11
 UCSC,Antelope Valley Community College District,5
@@ -26,7 +25,6 @@ UCR,Cabrillo Community College District,8
 UCSB,Cabrillo Community College District,7
 UCSC,Cabrillo Community College District,5
 UCB,Cerritos Community College District,9
-UCD,Cerritos Community College District,8
 UCI,Cerritos Community College District,5
 UCM,Cerritos Community College District,10
 UCR,Cerritos Community College District,7
@@ -46,17 +44,15 @@ UCB,Citrus Community College District,10
 UCM,Citrus Community College District,11
 UCR,Citrus Community College District,8
 UCB,Coast Community College District,9
-UCD,Coast Community College District,9
-UCI,Coast Community College District,6
+UCI,Coast Community College District,4
 UCM,Coast Community College District,10
 UCR,Coast Community College District,7
 UCSB,Coast Community College District,6
 UCSC,Coast Community College District,5
-UCB,Compton Community College District,9
 UCI,Compton Community College District,5
 UCM,Compton Community College District,10
 UCB,Contra Costa Community College District,10
-UCD,Contra Costa Community College District,9
+UCD,Contra Costa Community College District,10
 UCI,Contra Costa Community College District,5
 UCM,Contra Costa Community College District,11
 UCR,Contra Costa Community College District,8
@@ -79,7 +75,7 @@ UCR,El Camino Community College District,8
 UCSB,El Camino Community College District,6
 UCSC,El Camino Community College District,5
 UCB,Foothill-De Anza Community College District,13
-UCD,Foothill-De Anza Community College District,9
+UCD,Foothill-De Anza Community College District,8
 UCI,Foothill-De Anza Community College District,5
 UCM,Foothill-De Anza Community College District,13
 UCR,Foothill-De Anza Community College District,8
@@ -91,12 +87,10 @@ UCR,Gavilan Community College District,8
 UCSB,Gavilan Community College District,7
 UCSC,Gavilan Community College District,6
 UCB,Glendale Community College District,10
-UCD,Glendale Community College District,9
 UCI,Glendale Community College District,5
 UCM,Glendale Community College District,11
 UCR,Glendale Community College District,8
 UCSB,Glendale Community College District,7
-UCB,Grossmont-Cuyamaca Community College District,10
 UCI,Grossmont-Cuyamaca Community College District,5
 UCM,Grossmont-Cuyamaca Community College District,11
 UCR,Grossmont-Cuyamaca Community College District,8
@@ -108,7 +102,7 @@ UCSB,Hartnell Community College District,7
 UCSC,Hartnell Community College District,6
 UCB,Imperial Community College District,10
 UCM,Imperial Community College District,11
-UCB,Kern Community College District,8
+UCB,Kern Community College District,9
 UCM,Kern Community College District,11
 UCR,Kern Community College District,8
 UCSC,Kern Community College District,5
@@ -135,23 +129,21 @@ UCR,Los Rios Community College District,8
 UCSB,Los Rios Community College District,7
 UCSC,Los Rios Community College District,5
 UCB,Marin Community College District,9
-UCD,Marin Community College District,9
 UCI,Marin Community College District,5
 UCM,Marin Community College District,10
 UCR,Marin Community College District,8
 UCSB,Marin Community College District,6
 UCSC,Marin Community College District,5
-UCB,Mendocino-Lake Community College District,10
 UCM,Mendocino-Lake Community College District,11
 UCR,Mendocino-Lake Community College District,8
 UCB,Merced Community College District,10
-UCI,Merced Community College District,6
+UCI,Merced Community College District,4
 UCM,Merced Community College District,10
 UCR,Merced Community College District,8
 UCSC,Merced Community College District,5
 UCB,MiraCosta Community College District,10
 UCD,MiraCosta Community College District,9
-UCI,MiraCosta Community College District,7
+UCI,MiraCosta Community College District,5
 UCM,MiraCosta Community College District,11
 UCR,MiraCosta Community College District,8
 UCSB,MiraCosta Community College District,8
@@ -182,20 +174,17 @@ UCR,North Orange County Community College District,7
 UCSB,North Orange County Community College District,6
 UCSC,North Orange County Community College District,5
 UCB,Ohlone Community College District,10
-UCD,Ohlone Community College District,9
 UCM,Ohlone Community College District,11
 UCR,Ohlone Community College District,8
 UCSB,Ohlone Community College District,7
 UCSC,Ohlone Community College District,5
 UCB,Palomar Community College District,10
-UCD,Palomar Community College District,9
 UCI,Palomar Community College District,5
 UCM,Palomar Community College District,11
 UCR,Palomar Community College District,7
 UCSB,Palomar Community College District,8
 UCSC,Palomar Community College District,5
 UCB,Pasadena Area Community College District,10
-UCD,Pasadena Area Community College District,10
 UCI,Pasadena Area Community College District,6
 UCM,Pasadena Area Community College District,11
 UCR,Pasadena Area Community College District,8
@@ -219,13 +208,11 @@ UCM,Rio Hondo Community College District,10
 UCR,Rio Hondo Community College District,8
 UCB,Riverside Community College District,11
 UCD,Riverside Community College District,9
-UCI,Riverside Community College District,7
+UCI,Riverside Community College District,5
 UCM,Riverside Community College District,12
 UCR,Riverside Community College District,8
 UCSB,Riverside Community College District,7
 UCSC,Riverside Community College District,5
-UCB,San Bernardino Community College District,10
-UCD,San Bernardino Community College District,9
 UCI,San Bernardino Community College District,4
 UCM,San Bernardino Community College District,11
 UCR,San Bernardino Community College District,8
@@ -237,10 +224,9 @@ UCM,San Diego Community College District,11
 UCR,San Diego Community College District,7
 UCSB,San Diego Community College District,7
 UCB,San Francisco Community College District,11
-UCD,San Francisco Community College District,8
 UCI,San Francisco Community College District,5
 UCM,San Francisco Community College District,14
-UCR,San Francisco Community College District,8
+UCR,San Francisco Community College District,9
 UCSB,San Francisco Community College District,6
 UCSC,San Francisco Community College District,5
 UCB,San Joaquin Delta Community College District,10
@@ -255,19 +241,16 @@ UCR,San Jose-Evergreen Community College District,8
 UCSB,San Jose-Evergreen Community College District,7
 UCSC,San Jose-Evergreen Community College District,5
 UCB,San Luis Obispo County Community College District,9
-UCD,San Luis Obispo County Community College District,8
 UCM,San Luis Obispo County Community College District,10
 UCR,San Luis Obispo County Community College District,8
 UCSC,San Luis Obispo County Community College District,6
 UCB,San Mateo County Community College District,10
-UCD,San Mateo County Community College District,10
 UCI,San Mateo County Community College District,5
 UCM,San Mateo County Community College District,11
 UCR,San Mateo County Community College District,8
 UCSB,San Mateo County Community College District,7
 UCSC,San Mateo County Community College District,5
 UCB,Santa Barbara Community College District,10
-UCD,Santa Barbara Community College District,10
 UCI,Santa Barbara Community College District,5
 UCM,Santa Barbara Community College District,11
 UCR,Santa Barbara Community College District,8
@@ -279,7 +262,7 @@ UCR,Santa Clarita Community College District,8
 UCSB,Santa Clarita Community College District,10
 UCSC,Santa Clarita Community College District,6
 UCB,Santa Monica Community College District,11
-UCI,Santa Monica Community College District,7
+UCI,Santa Monica Community College District,5
 UCM,Santa Monica Community College District,11
 UCR,Santa Monica Community College District,8
 UCSB,Santa Monica Community College District,7
@@ -292,7 +275,6 @@ UCM,Shasta-Tehama-Trinity Joint Community College District,11
 UCR,Shasta-Tehama-Trinity Joint Community College District,7
 UCSB,Shasta-Tehama-Trinity Joint Community College District,7
 UCB,Sierra Joint Community College District,12
-UCD,Sierra Joint Community College District,9
 UCM,Sierra Joint Community College District,10
 UCR,Sierra Joint Community College District,7
 UCSB,Sierra Joint Community College District,6
@@ -301,7 +283,6 @@ UCB,Siskiyou Joint Community College District,11
 UCM,Siskiyou Joint Community College District,11
 UCR,Siskiyou Joint Community College District,8
 UCB,Solano Community College District,10
-UCD,Solano Community College District,8
 UCM,Solano Community College District,11
 UCSC,Solano Community College District,5
 UCB,Sonoma County Junior College District,11
@@ -311,7 +292,7 @@ UCSB,Sonoma County Junior College District,7
 UCSC,Sonoma County Junior College District,5
 UCB,South Orange County Community College District,10
 UCD,South Orange County Community College District,9
-UCI,South Orange County Community College District,8
+UCI,South Orange County Community College District,5
 UCM,South Orange County Community College District,11
 UCR,South Orange County Community College District,8
 UCSB,South Orange County Community College District,7
@@ -328,8 +309,8 @@ UCR,State Center Community College District,7
 UCSB,State Center Community College District,6
 UCSC,State Center Community College District,5
 UCB,Ventura County Community College District,10
-UCD,Ventura County Community College District,9
-UCI,Ventura County Community College District,7
+UCD,Ventura County Community College District,10
+UCI,Ventura County Community College District,5
 UCM,Ventura County Community College District,11
 UCSB,Ventura County Community College District,7
 UCSC,Ventura County Community College District,5
@@ -340,8 +321,7 @@ UCB,West Hills Community College District,10
 UCB,West Kern Community College District,10
 UCSB,West Kern Community College District,7
 UCB,West Valley-Mission Community College District,11
-UCD,West Valley-Mission Community College District,8
-UCI,West Valley-Mission Community College District,7
+UCI,West Valley-Mission Community College District,5
 UCM,West Valley-Mission Community College District,11
 UCR,West Valley-Mission Community College District,8
 UCSB,West Valley-Mission Community College District,7

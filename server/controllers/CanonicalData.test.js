@@ -46,7 +46,7 @@ function run(handler, req) {
 describe('canonical curated-data storage', () => {
   it('writes and lists degree templates from the research database', async () => {
     const body = {
-      _id: 'degree:79',
+      _id: 'degree:79:cs',
       kind: 'degree',
       school_id: 79,
       school: 'UC Berkeley',
@@ -55,9 +55,9 @@ describe('canonical curated-data storage', () => {
     };
     await run(putRequirement, request({ params: { kind: 'degree' }, body }));
 
-    const stored = await db.collection('curated_requirements').findOne({ _id: 'degree:79' });
+    const stored = await db.collection('curated_requirements').findOne({ _id: 'degree:79:cs' });
     expect(stored).toMatchObject({
-      kind: 'degree', legacy_id: '79', major_slug: 'cs',
+      kind: 'degree', legacy_id: '79:cs', major_slug: 'cs',
       curated_by: 'curator-1', program: 'Electrical Engineering & Computer Sciences, B.S.',
     });
     expect(stored.updated_at).toBeInstanceOf(Date);
@@ -65,7 +65,7 @@ describe('canonical curated-data storage', () => {
 
     const response = await run(listRequirements, request({ query: { kind: 'degree' } }));
     expect(response.body.rows).toHaveLength(1);
-    expect(response.body.rows[0]._id).toBe('degree:79');
+    expect(response.body.rows[0]._id).toBe('degree:79:cs');
   });
 
   it('stores separate per-major degree templates and rejects a colliding id', async () => {
@@ -88,6 +88,20 @@ describe('canonical curated-data storage', () => {
     }));
     expect(collision.statusCode).toBe(400);
     expect(collision.body.error).toContain('degree _id must be degree:79:bio');
+  });
+
+  it('rejects the pre-major CS degree id', async () => {
+    const response = await run(putRequirement, request({
+      params: { kind: 'degree' },
+      body: {
+        _id: 'degree:79', kind: 'degree', major_slug: 'cs', school_id: 79,
+        school: 'UC Berkeley',
+        program: 'Electrical Engineering & Computer Sciences, B.S.',
+        requirement_groups: [],
+      },
+    }));
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toContain('degree _id must be degree:79:cs');
   });
 
   it('rejects a sibling program mislabeled with the canonical CS slug', async () => {

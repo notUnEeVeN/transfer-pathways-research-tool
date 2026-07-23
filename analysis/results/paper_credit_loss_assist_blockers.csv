@@ -1,7 +1,9 @@
 district,campus,unarticulated_receiver
+Allan Hancock Joint Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
 Allan Hancock Joint Community College District,UCD,ECS 036A
 Allan Hancock Joint Community College District,UCD,ECS 036B
 Allan Hancock Joint Community College District,UCD,ECS 036C
+Allan Hancock Joint Community College District,UCD,MAT 021C
 Allan Hancock Joint Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Allan Hancock Joint Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Allan Hancock Joint Community College District,UCLA,COM SCI 31
@@ -11,6 +13,9 @@ Allan Hancock Joint Community College District,UCLA,COM SCI 35L
 Allan Hancock Joint Community College District,UCSD,CSE 12
 Allan Hancock Joint Community College District,UCSD,CSE 21
 Allan Hancock Joint Community College District,UCSD,CSE 29
+Antelope Valley Community College District,UCD,ECS 036A
+Antelope Valley Community College District,UCD,ECS 036B
+Antelope Valley Community College District,UCD,ECS 036C
 Antelope Valley Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Antelope Valley Community College District,UCLA,COM SCI 31
 Antelope Valley Community College District,UCLA,COM SCI 35L
@@ -25,6 +30,8 @@ Barstow Community College District,UCD,ECS 036A
 Barstow Community College District,UCD,ECS 036B
 Barstow Community College District,UCD,ECS 036C
 Barstow Community College District,UCD,ECS 050
+Barstow Community College District,UCD,MAT 021B
+Barstow Community College District,UCD,MAT 021C
 Barstow Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Barstow Community College District,UCLA,COM SCI 31
 Barstow Community College District,UCLA,COM SCI 32
@@ -58,6 +65,8 @@ Cabrillo Community College District,UCLA,COM SCI 33
 Cabrillo Community College District,UCLA,COM SCI 35L
 Cabrillo Community College District,UCSD,CSE 21
 Cabrillo Community College District,UCSD,CSE 29
+Cerritos Community College District,UCD,MAT 021B
+Cerritos Community College District,UCD,MAT 021C
 Cerritos Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Cerritos Community College District,UCLA,COM SCI 33
 Cerritos Community College District,UCLA,COM SCI 35L
@@ -86,6 +95,9 @@ Chaffey Community College District,UCSD,CSE 29
 Chaffey Community College District,UCSD,CSE 30
 Citrus Community College District,UCD,ECS 036B
 Citrus Community College District,UCD,ECS 036C
+Citrus Community College District,UCD,MAT 021A
+Citrus Community College District,UCD,MAT 021B
+Citrus Community College District,UCD,MAT 021C
 Citrus Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Citrus Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Citrus Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -99,10 +111,13 @@ Citrus Community College District,UCSD,CSE 20
 Citrus Community College District,UCSD,CSE 21
 Citrus Community College District,UCSD,CSE 29
 Citrus Community College District,UCSD,CSE 30
+Coast Community College District,UCD,MAT 021C
 Coast Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Coast Community College District,UCLA,COM SCI 35L
 Coast Community College District,UCSD,CSE 21
 Coast Community College District,UCSD,CSE 29
+Compton Community College District,UCB,PHYSICS 7A
+Compton Community College District,UCB,PHYSICS 7B
 Compton Community College District,UCD,ECS 036A
 Compton Community College District,UCD,ECS 036B
 Compton Community College District,UCD,ECS 036C
@@ -126,6 +141,9 @@ Contra Costa Community College District,UCLA,COM SCI 35L
 Contra Costa Community College District,UCSD,CSE 21
 Contra Costa Community College District,UCSD,CSE 29
 Copper Mountain Community College District,UCD,ECS 036C
+Copper Mountain Community College District,UCD,MAT 021A
+Copper Mountain Community College District,UCD,MAT 021B
+Copper Mountain Community College District,UCD,MAT 021C
 Copper Mountain Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Copper Mountain Community College District,UCLA,COM SCI 31
 Copper Mountain Community College District,UCLA,COM SCI 32
@@ -157,6 +175,7 @@ El Camino Community College District,UCSD,CSE 21
 El Camino Community College District,UCSD,CSE 29
 El Camino Community College District,UCSD,CSE 30
 Feather River Community College District,UCB,MATH 54
+Feather River Community College District,UCB,PHYSICS 7B
 Feather River Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
 Feather River Community College District,UCD,ECS 020
 Feather River Community College District,UCD,ECS 036A
@@ -206,6 +225,7 @@ Foothill-De Anza Community College District,UCLA,COM SCI 35L
 Foothill-De Anza Community College District,UCSD,CSE 21
 Foothill-De Anza Community College District,UCSD,CSE 29
 Gavilan Community College District,UCD,ECS 036B
+Gavilan Community College District,UCD,MAT 021C
 Gavilan Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Gavilan Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Gavilan Community College District,UCLA,COM SCI 31
@@ -216,10 +236,13 @@ Gavilan Community College District,UCSD,CSE 12
 Gavilan Community College District,UCSD,CSE 21
 Gavilan Community College District,UCSD,CSE 29
 Gavilan Community College District,UCSD,CSE 30
+Glendale Community College District,UCD,MAT 021C
 Glendale Community College District,UCLA,COM SCI 35L
 Glendale Community College District,UCSC,CSE 16
 Glendale Community College District,UCSD,CSE 21
 Glendale Community College District,UCSD,CSE 29
+Grossmont-Cuyamaca Community College District,UCB,PHYSICS 7A
+Grossmont-Cuyamaca Community College District,UCB,PHYSICS 7B
 Grossmont-Cuyamaca Community College District,UCD,ECS 036C
 Grossmont-Cuyamaca Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Grossmont-Cuyamaca Community College District,UCLA,COM SCI 32
@@ -259,10 +282,10 @@ Imperial Community College District,UCSD,CSE 21
 Imperial Community College District,UCSD,CSE 29
 Kern Community College District,UCD,ECS 036A
 Kern Community College District,UCD,ECS 036C
+Kern Community College District,UCD,MAT 021C
 Kern Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Kern Community College District,UCLA,COM SCI 35L
 Kern Community College District,UCLA,MATH 61
-Kern Community College District,UCLA,PHYSICS 1C
 Kern Community College District,UCSB,CMPSC 24
 Kern Community College District,UCSD,CSE 11
 Kern Community College District,UCSD,CSE 12
@@ -360,6 +383,7 @@ Los Angeles Community College District,UCSD,CSE 29
 Los Rios Community College District,UCLA,COM SCI 35L
 Los Rios Community College District,UCSD,CSE 21
 Los Rios Community College District,UCSD,CSE 29
+Marin Community College District,UCD,MAT 021C
 Marin Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Marin Community College District,UCLA,COM SCI 33
 Marin Community College District,UCLA,COM SCI 35L
@@ -368,6 +392,8 @@ Marin Community College District,UCSD,CSE 11
 Marin Community College District,UCSD,CSE 21
 Marin Community College District,UCSD,CSE 29
 Marin Community College District,UCSD,CSE 30
+Mendocino-Lake Community College District,UCB,PHYSICS 7A
+Mendocino-Lake Community College District,UCB,PHYSICS 7B
 Mendocino-Lake Community College District,UCD,ECS 020
 Mendocino-Lake Community College District,UCD,ECS 036B
 Mendocino-Lake Community College District,UCD,ECS 036C
@@ -391,6 +417,7 @@ Mendocino-Lake Community College District,UCSD,CSE 21
 Mendocino-Lake Community College District,UCSD,CSE 29
 Mendocino-Lake Community College District,UCSD,CSE 30
 Merced Community College District,UCD,ECS 036C
+Merced Community College District,UCD,MAT 021C
 Merced Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Merced Community College District,UCLA,COM SCI 31
 Merced Community College District,UCLA,COM SCI 32
@@ -409,6 +436,9 @@ MiraCosta Community College District,UCLA,Computer programming courses: C++ pref
 MiraCosta Community College District,UCSD,CSE 21
 MiraCosta Community College District,UCSD,CSE 29
 Monterey Peninsula Community College District,UCD,ECS 036C
+Monterey Peninsula Community College District,UCD,MAT 021A
+Monterey Peninsula Community College District,UCD,MAT 021B
+Monterey Peninsula Community College District,UCD,MAT 021C
 Monterey Peninsula Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Monterey Peninsula Community College District,UCLA,COM SCI 32
 Monterey Peninsula Community College District,UCLA,COM SCI 35L
@@ -419,6 +449,8 @@ Monterey Peninsula Community College District,UCSD,CSE 21
 Monterey Peninsula Community College District,UCSD,CSE 29
 Mt. San Antonio Community College District,UCD,ECS 036C
 Mt. San Antonio Community College District,UCD,ECS 050
+Mt. San Antonio Community College District,UCD,MAT 021B
+Mt. San Antonio Community College District,UCD,MAT 021C
 Mt. San Antonio Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Mt. San Antonio Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Mt. San Antonio Community College District,UCLA,COM SCI 35L
@@ -454,6 +486,8 @@ Napa Valley Community College District,UCSD,CSE 30
 North Orange County Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 North Orange County Community College District,UCLA,COM SCI 35L
 North Orange County Community College District,UCSD,CSE 29
+Ohlone Community College District,UCD,MAT 021B
+Ohlone Community College District,UCD,MAT 021C
 Ohlone Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Ohlone Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Ohlone Community College District,UCLA,COM SCI 35L
@@ -530,9 +564,12 @@ Palo Verde Community College District,UCSD,CSE 30
 Palo Verde Community College District,UCSD,MATH 18
 Palo Verde Community College District,UCSD,MATH 20B
 Palo Verde Community College District,UCSD,MATH 20C
+Palomar Community College District,UCD,MAT 021C
 Palomar Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Palomar Community College District,UCLA,COM SCI 35L
 Palomar Community College District,UCSD,CSE 21
+Pasadena Area Community College District,UCD,MAT 021B
+Pasadena Area Community College District,UCD,MAT 021C
 Pasadena Area Community College District,UCLA,COM SCI 35L
 Pasadena Area Community College District,UCSD,CSE 21
 Pasadena Area Community College District,UCSD,CSE 29
@@ -544,6 +581,9 @@ Peralta Community College District,UCSD,CSE 29
 Peralta Community College District,UCSD,CSE 30
 Rancho Santiago Community College District,UCD,ECS 020
 Rancho Santiago Community College District,UCD,ECS 036C
+Rancho Santiago Community College District,UCD,MAT 021A
+Rancho Santiago Community College District,UCD,MAT 021B
+Rancho Santiago Community College District,UCD,MAT 021C
 Rancho Santiago Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Rancho Santiago Community College District,UCLA,COM SCI 35L
 Rancho Santiago Community College District,UCLA,MATH 61
@@ -580,6 +620,7 @@ Redwoods Community College District,UCSD,CSE 30
 Rio Hondo Community College District,UCD,ECS 020
 Rio Hondo Community College District,UCD,ECS 036C
 Rio Hondo Community College District,UCD,ECS 050
+Rio Hondo Community College District,UCD,MAT 021C
 Rio Hondo Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Rio Hondo Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Rio Hondo Community College District,UCLA,COM SCI 32
@@ -596,6 +637,9 @@ Riverside Community College District,UCSD,CSE 12
 Riverside Community College District,UCSD,CSE 21
 Riverside Community College District,UCSD,CSE 29
 Riverside Community College District,UCSD,CSE 30
+San Bernardino Community College District,UCB,PHYSICS 7B
+San Bernardino Community College District,UCD,MAT 021B
+San Bernardino Community College District,UCD,MAT 021C
 San Bernardino Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 San Bernardino Community College District,UCLA,COM SCI 33
 San Bernardino Community College District,UCLA,COM SCI 35L
@@ -606,17 +650,22 @@ San Bernardino Community College District,UCSD,CSE 29
 San Bernardino Community College District,UCSD,CSE 30
 San Diego Community College District,UCD,ECS 036C
 San Diego Community College District,UCD,ECS 050
+San Diego Community College District,UCD,MAT 021C
 San Diego Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 San Diego Community College District,UCLA,COM SCI 35L
 San Diego Community College District,UCSC,CSE 30
 San Diego Community College District,UCSD,CSE 21
 San Diego Community College District,UCSD,CSE 29
+San Francisco Community College District,UCD,ECS 036A
+San Francisco Community College District,UCD,ECS 036B
+San Francisco Community College District,UCD,ECS 036C
 San Francisco Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 San Francisco Community College District,UCLA,COM SCI 35L
 San Francisco Community College District,UCSD,CSE 21
 San Francisco Community College District,UCSD,CSE 29
 San Joaquin Delta Community College District,UCD,ECS 036A
 San Joaquin Delta Community College District,UCD,ECS 036C
+San Joaquin Delta Community College District,UCD,MAT 021C
 San Joaquin Delta Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 San Joaquin Delta Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 San Joaquin Delta Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -629,11 +678,17 @@ San Joaquin Delta Community College District,UCSD,CSE 20
 San Joaquin Delta Community College District,UCSD,CSE 21
 San Joaquin Delta Community College District,UCSD,CSE 29
 San Jose-Evergreen Community College District,UCD,ECS 036C
+San Jose-Evergreen Community College District,UCD,MAT 021C
 San Jose-Evergreen Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 San Jose-Evergreen Community College District,UCLA,COM SCI 35L
 San Jose-Evergreen Community College District,UCSD,CSE 12
 San Jose-Evergreen Community College District,UCSD,CSE 21
 San Jose-Evergreen Community College District,UCSD,CSE 29
+San Luis Obispo County Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
+San Luis Obispo County Community College District,UCD,ECS 036A
+San Luis Obispo County Community College District,UCD,ECS 036B
+San Luis Obispo County Community College District,UCD,ECS 036C
+San Luis Obispo County Community College District,UCD,MAT 021C
 San Luis Obispo County Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 San Luis Obispo County Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 San Luis Obispo County Community College District,UCLA,COM SCI 31
@@ -644,15 +699,20 @@ San Luis Obispo County Community College District,UCSB,CMPSC 24
 San Luis Obispo County Community College District,UCSD,CSE 21
 San Luis Obispo County Community College District,UCSD,CSE 29
 San Luis Obispo County Community College District,UCSD,CSE 30
+San Mateo County Community College District,UCD,MAT 021C
 San Mateo County Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 San Mateo County Community College District,UCLA,COM SCI 35L
 San Mateo County Community College District,UCSD,CSE 21
 San Mateo County Community College District,UCSD,CSE 29
+Santa Barbara Community College District,UCD,ECS 036B
 Santa Barbara Community College District,UCLA,COM SCI 35L
 Santa Barbara Community College District,UCSD,CSE 21
 Santa Barbara Community College District,UCSD,CSE 29
 Santa Clarita Community College District,UCD,ECS 036C
 Santa Clarita Community College District,UCD,ECS 050
+Santa Clarita Community College District,UCD,MAT 021A
+Santa Clarita Community College District,UCD,MAT 021B
+Santa Clarita Community College District,UCD,MAT 021C
 Santa Clarita Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Santa Clarita Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Santa Clarita Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -685,6 +745,7 @@ Sequoias Community College District,UCSD,CSE 21
 Sequoias Community College District,UCSD,CSE 29
 Sequoias Community College District,UCSD,CSE 30
 Shasta-Tehama-Trinity Joint Community College District,UCD,ECS 036C
+Shasta-Tehama-Trinity Joint Community College District,UCD,MAT 021C
 Shasta-Tehama-Trinity Joint Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Shasta-Tehama-Trinity Joint Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Shasta-Tehama-Trinity Joint Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -700,6 +761,7 @@ Shasta-Tehama-Trinity Joint Community College District,UCSD,CSE 20
 Shasta-Tehama-Trinity Joint Community College District,UCSD,CSE 21
 Shasta-Tehama-Trinity Joint Community College District,UCSD,CSE 29
 Shasta-Tehama-Trinity Joint Community College District,UCSD,CSE 30
+Sierra Joint Community College District,UCD,1 of [MAT 022A / MAT 027A / MAT 067]
 Sierra Joint Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Sierra Joint Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Sierra Joint Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -708,6 +770,7 @@ Sierra Joint Community College District,UCSD,CSE 21
 Sierra Joint Community College District,UCSD,CSE 29
 Siskiyou Joint Community College District,UCD,ECS 020
 Siskiyou Joint Community College District,UCD,ECS 036C
+Siskiyou Joint Community College District,UCD,MAT 021C
 Siskiyou Joint Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Siskiyou Joint Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Siskiyou Joint Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -726,6 +789,7 @@ Siskiyou Joint Community College District,UCSD,CSE 20
 Siskiyou Joint Community College District,UCSD,CSE 21
 Siskiyou Joint Community College District,UCSD,CSE 29
 Siskiyou Joint Community College District,UCSD,CSE 30
+Solano Community College District,UCD,MAT 021C
 Solano Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Solano Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Solano Community College District,UCLA,COM SCI 33
@@ -740,6 +804,7 @@ Solano Community College District,UCSD,CSE 21
 Solano Community College District,UCSD,CSE 29
 Solano Community College District,UCSD,CSE 30
 Sonoma County Junior College District,UCD,ECS 036C
+Sonoma County Junior College District,UCD,MAT 021C
 Sonoma County Junior College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Sonoma County Junior College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Sonoma County Junior College District,UCLA,COM SCI 31
@@ -769,6 +834,7 @@ Ventura County Community College District,UCSD,CSE 29
 Victor Valley Community College District,UCD,ECS 020
 Victor Valley Community College District,UCD,ECS 036A
 Victor Valley Community College District,UCD,ECS 036C
+Victor Valley Community College District,UCD,MAT 021C
 Victor Valley Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Victor Valley Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Victor Valley Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
@@ -837,11 +903,14 @@ West Kern Community College District,UCSD,CSE 21
 West Kern Community College District,UCSD,CSE 29
 West Kern Community College District,UCSD,CSE 30
 West Kern Community College District,UCSD,MATH 18
+West Valley-Mission Community College District,UCD,MAT 021C
 West Valley-Mission Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 West Valley-Mission Community College District,UCLA,COM SCI 35L
 West Valley-Mission Community College District,UCSD,CSE 21
 West Valley-Mission Community College District,UCSD,CSE 29
 Yosemite Community College District,UCD,ECS 036C
+Yosemite Community College District,UCD,MAT 021B
+Yosemite Community College District,UCD,MAT 021C
 Yosemite Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Yosemite Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]
 Yosemite Community College District,UCLA,COM SCI 31
@@ -854,6 +923,9 @@ Yosemite Community College District,UCSD,CSE 21
 Yosemite Community College District,UCSD,CSE 29
 Yosemite Community College District,UCSD,CSE 30
 Yuba Community College District,UCD,ECS 036C
+Yuba Community College District,UCD,MAT 021A
+Yuba Community College District,UCD,MAT 021B
+Yuba Community College District,UCD,MAT 021C
 Yuba Community College District,UCI,1 of [I&C SCI 45C / I&C SCI 46 / I&C SCI 51 / I&C SCI 53 / I&C SCI 6B / I&C SCI 6D / IN4MATX 43 / STATS 67]
 Yuba Community College District,UCI,I&C SCI 31 + I&C SCI 32 + I&C SCI 33
 Yuba Community College District,UCLA,1 of [COM SCI M51A / EC ENGR M16]

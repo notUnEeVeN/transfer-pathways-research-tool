@@ -2,7 +2,11 @@
 
 import paper_credit_loss as credit
 import paper_district_heatmap as district
-from major_pins import major_document_filter
+from major_pins import (
+    canonical_major_query,
+    canonical_major_scope_metadata,
+    major_document_filter,
+)
 
 
 def _matches_major_clause(row, query):
@@ -64,6 +68,21 @@ def test_major_document_filter_matches_the_server_legacy_cs_rule():
     assert major_document_filter("") == {}
 
 
+def test_biology_and_economics_use_exact_configured_program_pairs():
+    bio = canonical_major_scope_metadata("bio")
+    econ = canonical_major_scope_metadata("econ")
+    assert bio["label"] == "Biology"
+    assert econ["label"] == "Economics"
+    assert len(bio["program_pins"]) == len(econ["program_pins"]) == 9
+    assert {"uc_school_id": 79, "major": "Molecular and Cell Biology, B.A."} \
+        in canonical_major_query("bio")["$or"]
+    assert {"uc_school_id": 89, "major": "Economics A.B."} \
+        in canonical_major_query("econ")["$or"]
+    provenance = credit.result_provenance("2026-07-23T00:00:00Z", "bio", artifact_version=2)
+    assert provenance["dataset_version"] == "2026-07-23-canonical-bio-v2"
+    assert provenance["major_scope"]["slug"] == "bio"
+
+
 def test_both_paper_requirement_loaders_reject_other_major_rows():
     rows = [
         requirement(7, "cs-stamped", 101, major_slug="cs"),
@@ -101,4 +120,11 @@ def test_receiver_overrides_are_scoped_to_cs_and_legacy_rows():
     assert db.curated_mappings.queries == [{
         "kind": "receiver_override",
         **major_document_filter("cs"),
+    }]
+
+    bio_db = FakeDB(mappings=rows)
+    assert set(credit.load_curation(bio_db, "bio")["override_by_hash"]) == {"bio"}
+    assert bio_db.curated_mappings.queries == [{
+        "kind": "receiver_override",
+        **major_document_filter("bio"),
     }]

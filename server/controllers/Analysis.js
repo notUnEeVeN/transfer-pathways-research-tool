@@ -71,7 +71,23 @@ function resolveMajorScope(query = {}) {
   });
 }
 
+function requiresCompleteDistrictMatrix(scope, { groupBy, requirements }) {
+  return Boolean(
+    scope.slug
+    && groupBy === 'district'
+    && requirements === 'assist'
+    && programPairs(scope.majorPrograms).length
+  );
+}
+
 async function parseParams(req, scope) {
+  const groupBy = ['college', 'district', 'county'].includes(req.query.groupBy)
+    ? req.query.groupBy
+    : 'college';
+  const requirements = ['degree', 'assist', 'paper'].includes(req.query.requirements)
+    ? req.query.requirements
+    : 'assist';
+  const visiblePairs = await majorScope(req);
   return {
     majorSlug: scope.slug,
     majorPrograms: scope.majorPrograms,
@@ -80,19 +96,22 @@ async function parseParams(req, scope) {
       .split(',')
       .map((s) => Number(s.trim()))
       .filter(Number.isFinite),
-    groupBy: ['college', 'district', 'county'].includes(req.query.groupBy)
-      ? req.query.groupBy
-      : 'college',
-    requirements: ['degree', 'assist', 'paper'].includes(req.query.requirements)
-      ? req.query.requirements
-      : 'assist',
+    groupBy,
+    requirements,
     // Compatibility aliases retained for existing figure URLs. Both resolve
     // to the configured canonical major; neither reads a historical union or
     // mutable settings selection anymore.
     pin: ['paper', 'settings'].includes(req.query.pin) ? req.query.pin : null,
     // Partner visibility (null = admin, unrestricted). Applied inside every
     // pathways query, so partners' analyses cover exactly the granted subset.
-    visiblePairs: await majorScope(req),
+    visiblePairs,
+    // Built-in district figures must never paint a partial configured-major
+    // matrix as genuine zero coverage. This remains fail-closed when a
+    // partner's visible scope is partial; only the legacy free-text query keeps
+    // its generic sparse-response behavior.
+    requireCompleteDistrictMatrix: requiresCompleteDistrictMatrix(scope, {
+      groupBy, requirements, visiblePairs,
+    }),
   };
 }
 
@@ -120,7 +139,7 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
     }
     const exactScope = programPairs(params.majorPrograms)
       .map((pair) => `${pair.school_id}:${pair.major}`).join(',');
-    const key = `${name}|${params.majorSlug || ''}|x:${exactScope}|q:${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|v:${scopeTag(params.visiblePairs)}`;
+    const key = `${name}|${params.majorSlug || ''}|x:${exactScope}|q:${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|complete:${params.requireCompleteDistrictMatrix ? 1 : 0}|v:${scopeTag(params.visiblePairs)}`;
     // Degree templates are editable in the Data tab. The frontend invalidates
     // its query after a save; bypassing the short analysis cache here makes the
     // next request reflect that edit immediately.
@@ -375,4 +394,5 @@ exports.exportLocalCsAsDegrees = makeEndpoint(
 
 exports._toCsv = toCsv;
 exports._parseMultiCampusPathwayParams = parseMultiCampusPathwayParams;
+exports._requiresCompleteDistrictMatrix = requiresCompleteDistrictMatrix;
 exports._resolveMajorScope = resolveMajorScope;

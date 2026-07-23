@@ -123,6 +123,19 @@ function normalizeAgreement(row) {
 
 function normalizeRequirement(row, kind, extra = {}) {
   const prefix = `${kind}:`;
+  if (kind === 'degree') {
+    const schoolId = Number(row.school_id);
+    const majorSlug = String(row.major_slug || 'cs').trim();
+    const legacyId = `${schoolId}:${majorSlug}`;
+    return {
+      ...withoutId(row),
+      ...extra,
+      _id: `${prefix}${legacyId}`,
+      legacy_id: legacyId,
+      major_slug: majorSlug,
+      kind,
+    };
+  }
   let legacyId = String(row.legacy_id ?? row._id);
   while (legacyId.startsWith(prefix)) legacyId = legacyId.slice(prefix.length);
   return {

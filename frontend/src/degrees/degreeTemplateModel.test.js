@@ -77,6 +77,9 @@ describe('degree template section model', () => {
 describe('degree template document validation', () => {
   it('requires a named program and complete structured groups', () => {
     const doc = createDegreeDocument({ schoolId: 79, school: 'UC Berkeley' })
+    expect(doc).toMatchObject({
+      _id: 'degree:79:cs', legacy_id: '79:cs', major_slug: 'cs',
+    })
     expect(validateDegreeDocument(doc)).toBe('Program name is required.')
     doc.program = 'EECS, B.S.'
     expect(validateDegreeDocument(doc)).toBe('Add at least one requirement group.')

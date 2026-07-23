@@ -4,6 +4,8 @@ import {
   coverageData, requirementComparisonData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData, agreementsExportData,
   receiversExportData, _settingsMajors, _canonicalCsPrograms,
+  _normalizedAssistRequirementStructure, _assistRequirementDemand,
+  _selectCanonicalAssistTemplate,
 } from './pathways';
 import { getMajor } from '../../config/majors';
 
@@ -27,6 +29,60 @@ const oneGroup = (receivers, isRequired = true) => [{
   group_unit_advisement: null,
   sections: [{ section_advisement: receivers.length, unit_advisement: null, receivers }],
 }];
+
+describe('canonical ASSIST template selection', () => {
+  const agreement = (groups) => ({ requirement_groups: groups });
+
+  it('normalizes after exclusions and measures true receiver-slot demand', () => {
+    const groups = [
+      ...oneGroup([
+        recv([], { hash: 'kept', parentId: 1 }),
+        recv([], { hash: 'excluded', parentId: 2 }),
+      ]),
+      ...oneGroup([recv([], { hash: 'recommended', parentId: 3 })], false),
+    ];
+    // The parsed advisement still says 2, but exclusion leaves one available
+    // receiver, so the true capped demand is one.
+    const normalized = _normalizedAssistRequirementStructure(
+      groups, (receiver) => receiver.hash_id === 'excluded'
+    );
+
+    expect(normalized).toHaveLength(1);
+    expect(normalized[0].sections[0].receivers.map((receiver) => receiver.hash_id))
+      .toEqual(['kept']);
+    expect(_assistRequirementDemand(normalized)).toBe(1);
+  });
+
+  it('breaks demand and structure ties deterministically regardless of input order', () => {
+    const demandOneA = agreement(oneGroup([
+      recv([], { hash: 'one-a', parentId: 11 }),
+    ]));
+    const demandOneB = agreement(oneGroup([
+      recv([], { hash: 'one-b', parentId: 12 }),
+    ]));
+    const demandTwoA = agreement(oneGroup([
+      recv([], { hash: 'two-a1', parentId: 21 }),
+      recv([], { hash: 'two-a2', parentId: 22 }),
+    ]));
+    const demandTwoB = agreement(oneGroup([
+      recv([], { hash: 'two-b1', parentId: 23 }),
+      recv([], { hash: 'two-b2', parentId: 24 }),
+    ]));
+    const fingerprintA = _selectCanonicalAssistTemplate([demandOneA]).structureFingerprint;
+    const fingerprintB = _selectCanonicalAssistTemplate([demandOneB]).structureFingerprint;
+    const expectedFingerprint = [fingerprintA, fingerprintB].sort()[0];
+    const candidates = [demandTwoB, demandOneB, demandTwoA, demandOneA];
+
+    const forward = _selectCanonicalAssistTemplate(candidates);
+    const reverse = _selectCanonicalAssistTemplate([...candidates].reverse());
+
+    // Demand frequencies tie 2–2, so the smaller true demand wins. Its two
+    // structures also tie 1–1, so fingerprint—not source order—decides.
+    expect(forward.nativeDemand).toBe(1);
+    expect(forward.structureFingerprint).toBe(expectedFingerprint);
+    expect(reverse).toEqual(forward);
+  });
+});
 
 beforeAll(async () => {
   mongo = await startInMemoryMongo();
@@ -224,6 +280,98 @@ describe('coverageData', () => {
     const betaCounty = countyRows.find((r) => r.row_group_label === 'Beta' && r.school_id === 1);
     expect(betaCounty.community_college_ids).toEqual([20]);
     expect(betaCounty.pct_articulated).toBe(50);
+  });
+
+  it('uses the systemwide canonical template even in a district containing only an outlier', async () => {
+    const major = 'Canonical Template Audit B.S.';
+    const agreements = [
+      {
+        _id: 'canonical-template:a', uc_school: 'UC Canonical', uc_school_id: 901,
+        community_college: 'Canonical College A', community_college_id: 9011,
+        major,
+        requirement_groups: oneGroup([
+          recv([opt(['canonical-a'])], { hash: 'canonical-core', parentId: 9101 }),
+        ]),
+      },
+      {
+        _id: 'canonical-template:b', uc_school: 'UC Canonical', uc_school_id: 901,
+        community_college: 'Canonical College B', community_college_id: 9012,
+        major,
+        requirement_groups: oneGroup([
+          recv([], {
+            status: 'not_articulated', hash: 'canonical-core', parentId: 9101,
+          }),
+        ]),
+      },
+      {
+        _id: 'canonical-template:outlier', uc_school: 'UC Canonical', uc_school_id: 901,
+        community_college: 'Outlier College', community_college_id: 9013,
+        major,
+        requirement_groups: oneGroup([
+          recv([opt(['outlier-a'])], { hash: 'outlier-a', parentId: 9201 }),
+          recv([opt(['outlier-b'])], { hash: 'outlier-b', parentId: 9202 }),
+        ]),
+      },
+    ];
+    const institutions = [
+      { _id: 'cc:9011', source_id: 9011, kind: 'community_college',
+        name: 'Canonical College A', district: 'Canonical District A', counties_served: ['A'] },
+      { _id: 'cc:9012', source_id: 9012, kind: 'community_college',
+        name: 'Canonical College B', district: 'Canonical District B', counties_served: ['B'] },
+      { _id: 'cc:9013', source_id: 9013, kind: 'community_college',
+        name: 'Outlier College', district: 'Outlier District', counties_served: ['C'] },
+    ];
+
+    await db.collection('assist_agreements').insertMany(agreements);
+    await db.collection('assist_institutions').insertMany(institutions);
+    try {
+      const selected = _selectCanonicalAssistTemplate(agreements);
+      expect(selected.nativeDemand).toBe(1);
+      expect(selected.requirementGroups[0].sections[0].receivers
+        .map((receiver) => receiver.hash_id)).toEqual(['canonical-core']);
+
+      const rows = await coverageData(db, db, {
+        majorContains: 'Canonical Template Audit', groupBy: 'district',
+      });
+      const canonical = rows.find((row) => row.row_group_label === 'Canonical District A');
+      const outlier = rows.find((row) => row.row_group_label === 'Outlier District');
+
+      expect(canonical).toMatchObject({
+        receivers_required: 1,
+        receivers_articulated: 1,
+        pct_articulated: 100,
+        fully_articulated: true,
+      });
+      // The two articulated outlier hashes are not part of the canonical UC
+      // structure. The absent canonical-core identity stays unarticulated.
+      expect(outlier).toMatchObject({
+        receivers_required: 1,
+        receivers_articulated: 0,
+        pct_articulated: 0,
+        fully_articulated: false,
+      });
+
+      await expect(coverageData(db, db, {
+        majorSlug: 'cs',
+        majorPrograms: {
+          901: [major],
+          902: ['Missing Configured Program B.S.'],
+        },
+        groupBy: 'district',
+        requireCompleteDistrictMatrix: true,
+      })).rejects.toMatchObject({
+        code: 'incomplete_coverage_matrix',
+        statusCode: 409,
+        missingTemplates: ['uc|902|Missing Configured Program B.S.'],
+      });
+    } finally {
+      await db.collection('assist_agreements').deleteMany({
+        _id: { $in: agreements.map((agreementRow) => agreementRow._id) },
+      });
+      await db.collection('assist_institutions').deleteMany({
+        _id: { $in: institutions.map((institution) => institution._id) },
+      });
+    }
   });
 
   it('can evaluate curated paper requirements instead of all ASSIST-required receivers', async () => {

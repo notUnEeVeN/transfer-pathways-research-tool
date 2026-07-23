@@ -40,15 +40,15 @@ export function createDegreeDocument({
   defaultProgram = '',
 }) {
   const id = Number(schoolId)
-  const slug = String(majorSlug || '').trim()
+  const slug = String(majorSlug || 'cs').trim()
   return {
-    _id: slug ? `degree:${id}:${slug}` : `degree:${id}`,
-    legacy_id: slug ? `${id}:${slug}` : String(id),
+    _id: `degree:${id}:${slug}`,
+    legacy_id: `${id}:${slug}`,
     kind: 'degree',
     institution_id: `uc:${id}`,
     school_id: id,
     school: school || `UC campus ${id}`,
-    ...(slug ? { major_slug: slug } : {}),
+    major_slug: slug,
     program: defaultProgram,
     total_units: null,
     source_url: '',

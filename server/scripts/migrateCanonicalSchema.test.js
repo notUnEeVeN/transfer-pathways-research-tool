@@ -75,8 +75,8 @@ describe('canonical schema migration', () => {
     expect(await db.collection('assist_courses').countDocuments()).toBe(2);
     expect(await db.collection('assist_agreements').countDocuments()).toBe(1);
     expect(await db.collection('agreement_reviews').countDocuments()).toBe(1);
-    expect(await db.collection('curated_requirements').findOne({ _id: 'degree:20' }))
-      .toMatchObject({ kind: 'degree', legacy_id: '20' });
+    expect(await db.collection('curated_requirements').findOne({ _id: 'degree:20:cs' }))
+      .toMatchObject({ kind: 'degree', legacy_id: '20:cs', major_slug: 'cs' });
     expect(await db.collection('curated_requirements').countDocuments({ _id: 'degree:degree:20' }))
       .toBe(0);
     expect(await db.collection('team_members').findOne({ _id: 'user-1' }))

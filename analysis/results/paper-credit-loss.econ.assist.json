@@ -1,0 +1,468 @@
+{
+  "schema_version": 2,
+  "method_version": "paper-choice-cost-assist-canonical-template-v2",
+  "generated_by": "analysis/paper_credit_loss.py",
+  "generated_at": "2026-07-23T18:07:19+00:00",
+  "data_refreshed_at": "2026-07-23T06:51:44.716000",
+  "requirements": "assist",
+  "dataset_version": "2026-07-23-canonical-econ-v2",
+  "major_scope": {
+    "slug": "econ",
+    "label": "Economics",
+    "program_pins": [
+      {
+        "school_id": 7,
+        "program": "Economics B.A."
+      },
+      {
+        "school_id": 46,
+        "program": "Economics, B.A."
+      },
+      {
+        "school_id": 79,
+        "program": "Economics, B.A."
+      },
+      {
+        "school_id": 89,
+        "program": "Economics A.B."
+      },
+      {
+        "school_id": 117,
+        "program": "Economics/B.A."
+      },
+      {
+        "school_id": 120,
+        "program": "Economics, B.A."
+      },
+      {
+        "school_id": 128,
+        "program": "Economics, B.A."
+      },
+      {
+        "school_id": 132,
+        "program": "Economics B.A."
+      },
+      {
+        "school_id": 144,
+        "program": "ECONOMICS, B.A."
+      }
+    ]
+  },
+  "major_scope_fingerprint": "c49af744935e6fd3de55eba426c88b729b2cee9b343444f90a355531da683f1c",
+  "districts_total": 72,
+  "requirement_measure": "ASSIST required receiver slots; a series or named requirement is one slot unless ASSIST models it as separate receivers",
+  "method": "the paper's credit-loss method with ASSIST demand: one deterministic, systemwide canonical UC-side template per campus is selected as the most frequent normalized structure at the modal receiver-slot demand; the code-pinned canonical Economics major at each campus states the required groups; its articulations are pooled per receiver across sibling colleges (best college per requirement, the paper's rule); minimum CC courses from the ported PMT branch-and-bound optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations + transferable-average; see docs/figures/paper-credit-loss.md",
+  "campuses": [
+    {
+      "code": "UCD",
+      "id": "UC1*",
+      "school_id": 89,
+      "quarter": true,
+      "requirement": {
+        "native_count": 4,
+        "semester_equiv": 2.67,
+        "quarter_count": 4,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 10
+        },
+        "template_fingerprint": "ee91d3ce98738b7d25c639e3876dc6b413502731c6e8db7267ba7050437b6eeb",
+        "template_agreements": 85,
+        "demand_distribution": [
+          {
+            "native_count": 3,
+            "agreements": 21
+          },
+          {
+            "native_count": 4,
+            "agreements": 94
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 3.98,
+          "districts_included": 61
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.99,
+          "districts_included": 61
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.43,
+          "districts_included": 61
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.29,
+          "districts_included": 61
+        }
+      ]
+    },
+    {
+      "code": "UCM",
+      "id": "UC2",
+      "school_id": 144,
+      "quarter": false,
+      "requirement": {
+        "native_count": 4,
+        "semester_equiv": 4,
+        "quarter_count": null,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 5
+        },
+        "template_fingerprint": "94fd63f501e166a39c58ead137efb3c137e2e28de492ba27e9376c873b0bb54a",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 4,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 4.93,
+          "districts_included": 71
+        },
+        {
+          "order": 2,
+          "transferable_average": 2.43,
+          "districts_included": 71
+        },
+        {
+          "order": 3,
+          "transferable_average": 2.09,
+          "districts_included": 71
+        },
+        {
+          "order": 4,
+          "transferable_average": 2.03,
+          "districts_included": 71
+        }
+      ]
+    },
+    {
+      "code": "UCSD",
+      "id": "UC3*",
+      "school_id": 7,
+      "quarter": true,
+      "requirement": {
+        "native_count": 5,
+        "semester_equiv": 3.33,
+        "quarter_count": 5,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 8
+        },
+        "template_fingerprint": "6350fc87be506375f687debe03114815e7d76a1d60fc6537e831cada39999800",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 5,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 4.42,
+          "districts_included": 64
+        },
+        {
+          "order": 2,
+          "transferable_average": 1.53,
+          "districts_included": 64
+        },
+        {
+          "order": 3,
+          "transferable_average": 1.03,
+          "districts_included": 64
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.93,
+          "districts_included": 64
+        }
+      ]
+    },
+    {
+      "code": "UCSB",
+      "id": "UC4*",
+      "school_id": 128,
+      "quarter": true,
+      "requirement": {
+        "native_count": 4,
+        "semester_equiv": 2.67,
+        "quarter_count": 4,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 6
+        },
+        "template_fingerprint": "bb518f19e4c04b7855060a7dac50d803ca5d452c0baf0de17f6d5e00a4ed21c9",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 4,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 3.31,
+          "districts_included": 71
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.68,
+          "districts_included": 71
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.21,
+          "districts_included": 71
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.08,
+          "districts_included": 71
+        }
+      ]
+    },
+    {
+      "code": "UCLA",
+      "id": "UC5*",
+      "school_id": 117,
+      "quarter": true,
+      "requirement": {
+        "native_count": 6,
+        "semester_equiv": 4.0,
+        "quarter_count": 6,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 6
+        },
+        "template_fingerprint": "960ee630138fcd3ca7e0270415c9699bcccfa2f0fc88f6cbff0267bfd9c69981",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 6,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 0.0,
+          "districts_included": 0
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.0,
+          "districts_included": 0
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.0,
+          "districts_included": 0
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.0,
+          "districts_included": 0
+        }
+      ]
+    },
+    {
+      "code": "UCB",
+      "id": "UC6",
+      "school_id": 79,
+      "quarter": false,
+      "requirement": {
+        "native_count": 2,
+        "semester_equiv": 2,
+        "quarter_count": null,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 1,
+          "series": 2
+        },
+        "template_fingerprint": "d7ae6c673eb50e4a35a4ac9099364e4d37ed3f3cbc3572808b68181eb9a84fb8",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 2,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 3.93,
+          "districts_included": 71
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.86,
+          "districts_included": 71
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.25,
+          "districts_included": 71
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.1,
+          "districts_included": 71
+        }
+      ]
+    },
+    {
+      "code": "UCSC",
+      "id": "UC7*",
+      "school_id": 132,
+      "quarter": true,
+      "requirement": {
+        "native_count": 3,
+        "semester_equiv": 2.0,
+        "quarter_count": 3,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 5
+        },
+        "template_fingerprint": "dce2a718bb68ea8ea228daf862ca5d9d14ad1d8cfca5089bff26be8ddb5bd89a",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 3,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 3.0,
+          "districts_included": 71
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.32,
+          "districts_included": 71
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.02,
+          "districts_included": 71
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.01,
+          "districts_included": 71
+        }
+      ]
+    },
+    {
+      "code": "UCI",
+      "id": "UC8*",
+      "school_id": 120,
+      "quarter": true,
+      "requirement": {
+        "native_count": 4,
+        "semester_equiv": 2.67,
+        "quarter_count": 4,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 4
+        },
+        "template_fingerprint": "335dd7cebd99d0b70fa4bdf539499947ff45776fac7dbaf379f580eafd6c09e4",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 4,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 4.0,
+          "districts_included": 71
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.89,
+          "districts_included": 71
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.25,
+          "districts_included": 71
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.09,
+          "districts_included": 71
+        }
+      ]
+    },
+    {
+      "code": "UCR",
+      "id": "UC9*",
+      "school_id": 46,
+      "quarter": true,
+      "requirement": {
+        "native_count": 1,
+        "semester_equiv": 0.67,
+        "quarter_count": 1,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 1
+        },
+        "template_fingerprint": "f26d71a6786b1de6ef0aaab5e73c40847482c35d92a1a6a9aabafe3b79a3a45d",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 1,
+            "agreements": 115
+          }
+        ]
+      },
+      "choices": [
+        {
+          "order": 1,
+          "transferable_average": 1.0,
+          "districts_included": 72
+        },
+        {
+          "order": 2,
+          "transferable_average": 0.17,
+          "districts_included": 72
+        },
+        {
+          "order": 3,
+          "transferable_average": 0.08,
+          "districts_included": 72
+        },
+        {
+          "order": 4,
+          "transferable_average": 0.04,
+          "districts_included": 72
+        }
+      ]
+    }
+  ],
+  "artifact_fingerprint": "1d9a2a414d4922c8682d8f9e6c595bb0b0fcbb9108bf0dd31b198205a8c9b0cd"
+}

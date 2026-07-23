@@ -10,6 +10,7 @@
  * receivers. Methodological choices mirror the papers' best-case-scenario
  * framing; see optionSolver.js for the min-set semantics.
  */
+const { createHash } = require('node:crypto');
 const { manyToOneCount } = require('./optionSolver');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
 const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
@@ -82,6 +83,178 @@ function* requiredReceivers(agreement, isExcluded) {
 
 const receiverHashKey = (r) =>
   String(r.hash_id ?? `${r.receiving?.kind || 'receiver'}:${r.receiving?.parent_id || ''}`);
+
+function stableCanonicalSerialize(value) {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableCanonicalSerialize).join(',')}]`;
+  const keys = Object.keys(value).sort();
+  return `{${keys.map((key) => (
+    `${JSON.stringify(key)}:${stableCanonicalSerialize(value[key])}`
+  )).join(',')}}`;
+}
+
+function canonicalStructureFingerprint(value) {
+  return createHash('sha256').update(stableCanonicalSerialize(value)).digest('hex');
+}
+
+/** Articulation-free, order-normalized, required-only UC structure.
+ *
+ * Curation exclusions are applied before both demand and structure selection,
+ * exactly as in analysis/paper_credit_loss.py. Sending-course options and
+ * articulation status are deliberately absent: a district may supply evidence
+ * for a canonical receiver hash, but it can never define the denominator.
+ */
+function normalizedAssistRequirementStructure(requirementGroups, isExcluded = () => false) {
+  const stableSort = (values) => values.sort((left, right) => (
+    stableCanonicalSerialize(left).localeCompare(stableCanonicalSerialize(right))
+  ));
+  const groups = [];
+  for (const group of requirementGroups || []) {
+    if (!group.is_required) continue;
+    const sections = [];
+    for (const section of group.sections || []) {
+      const receivers = stableSort((section.receivers || [])
+        .filter((receiver) => !isExcluded(receiver))
+        .map((receiver) => ({
+          hash_id: receiver.hash_id ?? null,
+          receiving: receiver.receiving || {},
+        })));
+      sections.push({
+        section_advisement: section.section_advisement ?? null,
+        unit_advisement: section.unit_advisement ?? null,
+        receivers,
+      });
+    }
+    stableSort(sections);
+    groups.push({
+      is_required: group.is_required,
+      group_conjunction: group.group_conjunction ?? null,
+      group_advisement: group.group_advisement ?? null,
+      group_unit_advisement: group.group_unit_advisement ?? null,
+      group_min_distinct_sections: group.group_min_distinct_sections ?? null,
+      group_max_distinct_sections: group.group_max_distinct_sections ?? null,
+      group_section_min_courses: group.group_section_min_courses ?? null,
+      sections,
+    });
+  }
+  return stableSort(groups);
+}
+
+function advisementCount(value, fallback) {
+  if (value == null) return fallback;
+  if (typeof value === 'string' && !/^[+-]?\d+$/.test(value.trim())) return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? Math.max(0, Math.trunc(parsed)) : fallback;
+}
+
+/** True required receiver-slot demand under the eligibility engine's course
+ * semantics. Unit and distinct-section shapes cannot honestly be expressed as
+ * receiver counts, so—as in the Python generator—they fail loudly. */
+function assistRequirementDemand(requirementGroups) {
+  let demand = 0;
+  for (const group of requirementGroups || []) {
+    if (!group.is_required) continue;
+    if (group.group_unit_advisement != null) {
+      throw new Error('group_unit_advisement cannot be expressed as a course count');
+    }
+    if (group.group_min_distinct_sections != null
+      || group.group_section_min_courses != null) {
+      throw new Error('distinct-section requirements need an explicit course-count model');
+    }
+
+    const sections = group.sections || [];
+    const sectionNeeds = [];
+    const sectionCapacities = [];
+    for (const section of sections) {
+      if (section.unit_advisement != null) {
+        throw new Error('unit_advisement cannot be expressed as a course count');
+      }
+      const receiverCount = (section.receivers || []).length;
+      sectionNeeds.push(Math.min(
+        advisementCount(section.section_advisement, 1), receiverCount
+      ));
+      sectionCapacities.push(Math.min(
+        advisementCount(section.section_advisement, receiverCount), receiverCount
+      ));
+    }
+
+    const conjunction = String(group.group_conjunction || 'And').toLowerCase();
+    if (group.group_advisement != null) {
+      const bareOrBuckets = conjunction === 'or' && sections.every((section) => (
+        section.section_advisement == null && section.unit_advisement == null
+      ));
+      if (conjunction === 'or' && !bareOrBuckets) {
+        const positiveNeeds = sectionNeeds.filter((need) => need > 0);
+        demand += positiveNeeds.length ? Math.min(...positiveNeeds) : 0;
+      } else {
+        let capacities = sectionCapacities;
+        if (group.group_max_distinct_sections != null) {
+          const maxSections = advisementCount(group.group_max_distinct_sections, capacities.length);
+          capacities = [...capacities].sort((left, right) => right - left).slice(0, maxSections);
+        }
+        const capacity = capacities.reduce((sum, value) => sum + value, 0);
+        demand += Math.min(advisementCount(group.group_advisement, capacity), capacity);
+      }
+    } else if (conjunction === 'or') {
+      const positiveNeeds = sectionNeeds.filter((need) => need > 0);
+      demand += positiveNeeds.length ? Math.min(...positiveNeeds) : 0;
+    } else {
+      demand += sectionNeeds.reduce((sum, value) => sum + value, 0);
+    }
+  }
+  return demand;
+}
+
+/** Pick the systemwide canonical UC-side template for one campus + exact
+ * program: modal true demand, then modal normalized structure at that demand,
+ * then deterministic fingerprint. */
+function selectCanonicalAssistTemplate(agreements, isExcluded = () => false) {
+  const candidates = (agreements || []).map((agreement) => {
+    const requirementGroups = normalizedAssistRequirementStructure(
+      agreement.requirement_groups, isExcluded
+    );
+    return {
+      demand: assistRequirementDemand(requirementGroups),
+      fingerprint: canonicalStructureFingerprint(requirementGroups),
+      requirementGroups,
+    };
+  });
+  if (!candidates.length) return null;
+
+  const demandCounts = new Map();
+  for (const candidate of candidates) {
+    demandCounts.set(candidate.demand, (demandCounts.get(candidate.demand) || 0) + 1);
+  }
+  const topDemandCount = Math.max(...demandCounts.values());
+  const modalDemand = [...demandCounts.entries()]
+    .filter(([, count]) => count === topDemandCount)
+    .map(([demand]) => demand)
+    .sort((left, right) => left - right)[0];
+
+  const structures = new Map();
+  for (const candidate of candidates) {
+    if (candidate.demand !== modalDemand) continue;
+    const current = structures.get(candidate.fingerprint);
+    structures.set(candidate.fingerprint, {
+      count: (current?.count || 0) + 1,
+      requirementGroups: current?.requirementGroups || candidate.requirementGroups,
+    });
+  }
+  const selectedFingerprint = [...structures.entries()]
+    .sort(([leftFingerprint, left], [rightFingerprint, right]) => (
+      right.count - left.count || leftFingerprint.localeCompare(rightFingerprint)
+    ))[0][0];
+  const selected = structures.get(selectedFingerprint);
+  return {
+    requirementGroups: selected.requirementGroups,
+    nativeDemand: modalDemand,
+    structureFingerprint: selectedFingerprint,
+    structureAgreements: selected.count,
+    demandDistribution: [...demandCounts.entries()]
+      .sort(([left], [right]) => left - right)
+      .map(([nativeDemand, agreementsCount]) => ({ nativeDemand, agreements: agreementsCount })),
+  };
+}
 
 // Build a poolable "major" for isMajorArticulable: the campus's requirement
 // structure (group/section advisements preserved) with each receiver's
@@ -413,6 +586,59 @@ function membershipsFor(doc, refs, mode) {
     label: county,
     county,
   }));
+}
+
+const EXPECTED_CA_DISTRICT_COUNT = 72;
+
+function incompleteCoverageMatrixError({
+  missingTemplates, missingCells, expectedDistricts, expectedPrograms,
+}) {
+  const error = new Error(
+    'Configured-major ASSIST district coverage is incomplete; refusing to return a partial matrix.'
+  );
+  error.code = 'incomplete_coverage_matrix';
+  error.statusCode = 409;
+  error.expose = true;
+  error.missingTemplates = missingTemplates;
+  error.missingCells = missingCells;
+  error.expectedDistricts = expectedDistricts;
+  error.expectedPrograms = expectedPrograms;
+  return error;
+}
+
+function validateCompleteAssistDistrictMatrix(rows, {
+  majorPrograms, refs, canonicalProgramKeys,
+}) {
+  const expectedPairs = programPairs(majorPrograms);
+  const expectedProgramKeys = expectedPairs.map((pair) => (
+    `uc|${pair.school_id}|${pair.major}`
+  ));
+  const missingTemplates = expectedProgramKeys
+    .filter((key) => !canonicalProgramKeys.has(key));
+  const districts = [...new Set(refs.communityColleges
+    .map((college) => String(college.district || '').trim())
+    .filter(Boolean))].sort();
+  const actualCells = new Set(rows.map((row) => (
+    `${row.row_group_label}|${row.system}|${row.school_id}|${row.major}`
+  )));
+  const missingCells = [];
+  for (const district of districts) {
+    for (const programKey of expectedProgramKeys) {
+      if (!actualCells.has(`${district}|${programKey}`)) {
+        missingCells.push(`${district}|${programKey}`);
+      }
+    }
+  }
+  const districtUniverseIncomplete = expectedPairs.length === 9
+    && districts.length !== EXPECTED_CA_DISTRICT_COUNT;
+  if (missingTemplates.length || missingCells.length || districtUniverseIncomplete) {
+    throw incompleteCoverageMatrixError({
+      missingTemplates,
+      missingCells,
+      expectedDistricts: expectedPairs.length === 9 ? EXPECTED_CA_DISTRICT_COUNT : districts.length,
+      expectedPrograms: expectedPairs.length,
+    });
+  }
 }
 
 function evaluateTransferRequirementModel(model, articulatedParentIds) {
@@ -832,6 +1058,7 @@ async function degreeRequirementCoverageData(db, {
 async function coverageData(db, auditDb, {
   majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
   groupBy = 'college', requirements = 'assist', pin = null,
+  requireCompleteDistrictMatrix = false,
 } = {}) {
   const refs = await loadRefs(db);
   if (requirements === 'degree') {
@@ -848,6 +1075,7 @@ async function coverageData(db, auditDb, {
   const curation = await loadCuration(auditDb, majorSlug || (pin ? 'cs' : null));
   const isExcluded = makeIsExcluded(curation);
   const buckets = new Map();
+  const canonicalProgramKeys = new Set();
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
 
   for (const sys of systemsFor()) {
@@ -855,9 +1083,38 @@ async function coverageData(db, auditDb, {
       pin, majorSlug, majorPrograms, majorContains, visiblePairs,
     }, sys.idField);
     const docs = await db.collection(sys.coll).find(query).toArray();
+
+    // Select one UC-side denominator per campus + exact program over the full
+    // queried corpus before creating any district/college/county bucket. The
+    // same template is then reused everywhere; local agreements can only
+    // contribute articulation to receiver hashes that template contains.
+    const docsByProgram = new Map();
+    for (const doc of docs) {
+      const programKey = `${sys.key}|${doc[sys.idField]}|${doc.major}`;
+      if (!docsByProgram.has(programKey)) docsByProgram.set(programKey, []);
+      docsByProgram.get(programKey).push(doc);
+    }
+    const canonicalByProgram = new Map();
+    for (const [programKey, programDocs] of docsByProgram) {
+      const selected = selectCanonicalAssistTemplate(programDocs, isExcluded);
+      canonicalProgramKeys.add(programKey);
+      const requirementReceivers = [...requiredReceivers(
+        { requirement_groups: selected.requirementGroups }, () => false
+      )];
+      const receiverHashes = [...new Set(requirementReceivers
+        .filter((receiver) => receiver.hash_id != null && String(receiver.hash_id).length > 0)
+        .map((receiver) => String(receiver.hash_id)))];
+      canonicalByProgram.set(programKey, {
+        ...selected,
+        requirementReceivers,
+        receiverHashes,
+      });
+    }
+
     for (const doc of docs) {
       const memberships = membershipsFor(doc, refs, mode);
       const programKey = `${sys.key}|${doc[sys.idField]}|${doc.major}`;
+      const canonical = canonicalByProgram.get(programKey);
       for (const m of memberships) {
         const key = `${m.key}|${programKey}`;
         if (!buckets.has(key)) {
@@ -872,8 +1129,9 @@ async function coverageData(db, auditDb, {
             // Structure template for choose-N articulability (advisements live
             // here). Same campus×major structure across pooled sibling colleges;
             // per-receiver articulation is OR'd into receiverByHash below.
-            requirementGroups: doc.requirement_groups,
-            receiverByHash: new Map(),
+            requirementGroups: canonical.requirementGroups,
+            requirementReceivers: canonical.requirementReceivers,
+            receiverByHash: new Map(canonical.receiverHashes.map((hash) => [hash, false])),
             communityCollegeIds: new Set(),
             communityColleges: new Set(),
             districts: new Set(),
@@ -889,19 +1147,23 @@ async function coverageData(db, auditDb, {
         for (const county of m.counties_served || []) bucket.counties.add(county);
       }
       for (const r of requiredReceivers(doc, isExcluded)) {
-        const hash = receiverHashKey(r);
+        if (r.hash_id == null || !String(r.hash_id).length) continue;
+        const hash = String(r.hash_id);
         for (const m of memberships) {
           const bucket = buckets.get(`${m.key}|${programKey}`);
-          const cur = bucket.receiverByHash.get(hash) || false;
+          if (!bucket.receiverByHash.has(hash)) continue;
+          const cur = bucket.receiverByHash.get(hash);
           bucket.receiverByHash.set(hash, cur || r.articulation_status === 'articulated');
         }
       }
     }
   }
-  return [...buckets.values()].map((b) => {
-    const receiverValues = [...b.receiverByHash.values()];
-    const total = receiverValues.length;
-    const articulated = receiverValues.filter(Boolean).length;
+  const rows = [...buckets.values()].map((b) => {
+    const total = b.requirementReceivers.length;
+    const articulated = b.requirementReceivers.filter((receiver) => (
+      receiver.hash_id != null
+      && b.receiverByHash.get(String(receiver.hash_id)) === true
+    )).length;
     // Choose-N-correct coverage via the eligibility engine (pooling sibling
     // colleges through receiverByHash). `fully_articulated` = can you meet the
     // stated minimum at all; `pct_articulated` = what FRACTION of the true
@@ -945,6 +1207,12 @@ async function coverageData(db, auditDb, {
       fully_articulated,
     };
   });
+  if (requireCompleteDistrictMatrix) {
+    validateCompleteAssistDistrictMatrix(rows, {
+      majorPrograms, refs, canonicalProgramKeys,
+    });
+  }
+  return rows;
 }
 
 /**
@@ -1590,6 +1858,9 @@ module.exports = {
   _categoryOfReceiver: categoryOfReceiver,
   _chooseNMinimum: chooseNMinimum,
   _agreementMinSetExact: agreementMinSetExact,
+  _normalizedAssistRequirementStructure: normalizedAssistRequirementStructure,
+  _assistRequirementDemand: assistRequirementDemand,
+  _selectCanonicalAssistTemplate: selectCanonicalAssistTemplate,
   _settingsMajors: settingsMajors,
   _canonicalCsPrograms: CANONICAL_CS_PROGRAMS,
   // Temporary private alias for downstream tests/tools that imported the old

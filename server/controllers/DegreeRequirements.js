@@ -43,6 +43,18 @@ exports.list = asyncHandler(async (req, res) => {
       total_units: doc.total_units ?? null,
       unit_system: degreeUnitSystem(doc, calendarBySchool.get(Number(doc.school_id))),
       source_url: doc.source_url || null,
+      // New major-dimensional templates carry their own official verification
+      // trail instead of using the historical CS-only static source map.
+      sources: Array.isArray(doc.sources) ? doc.sources : [],
+      catalog_year: doc.catalog_year || null,
+      college: doc.college || null,
+      academic_unit: doc.academic_unit || null,
+      ge_authority: doc.ge_authority || null,
+      degree_variant: doc.degree_variant || null,
+      research_status: doc.research_status || null,
+      source_method: doc.source_method || null,
+      unit_audit: doc.unit_audit || null,
+      modeling_notes: Array.isArray(doc.modeling_notes) ? doc.modeling_notes : [],
       verification_notes: doc.verification_notes || [],
       units_summary: computeUnitBudget(doc.requirement_groups),
       updated_at: doc.updated_at || null,

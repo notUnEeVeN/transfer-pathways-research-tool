@@ -16,8 +16,8 @@ vi.mock('@frontend/query/hooks/useData', () => ({
 }))
 
 const document = {
-  _id: 'degree:79',
-  legacy_id: '79',
+  _id: 'degree:79:cs',
+  legacy_id: '79:cs',
   kind: 'degree',
   institution_id: 'uc:79',
   school_id: 79,
@@ -69,7 +69,7 @@ describe('DegreeTemplateEditor', () => {
     fireEvent.click(getByRole('button', { name: 'Save changes' }))
     await waitFor(() => expect(hooks.save).toHaveBeenCalledTimes(1))
     expect(hooks.save.mock.calls[0][0]).toMatchObject({
-      _id: 'degree:79',
+      _id: 'degree:79:cs',
       major_slug: 'cs',
       program: 'EECS, B.S.',
       requirement_groups: [{ title: 'Lower-division mathematics' }],

@@ -139,9 +139,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pmt_eligibility as pmt_elig  # noqa: E402  faithful PMT eligibility port + our one modification
 import pmt_min_courses as pmt_min  # noqa: E402  faithful PMT minimum-course optimizer port
 from major_pins import (  # noqa: E402
-    canonical_cs_scope_fingerprint,
+    MAJOR_SCOPES,
+    canonical_major_query,
+    canonical_major_scope,
+    canonical_major_scope_fingerprint,
+    canonical_major_scope_metadata,
     canonical_cs_query,
-    canonical_cs_scope_metadata,
     canonical_json_fingerprint,
     major_document_filter,
 )
@@ -190,12 +193,12 @@ def connect():
     return MongoClient(uri, compressors="zlib")[name]
 
 
-def result_provenance(data_refreshed_at):
+def result_provenance(data_refreshed_at, major_slug="cs", artifact_version=1):
     date = str(data_refreshed_at or "unknown")[:10]
     return {
-        "dataset_version": f"{date}-canonical-cs-v1",
-        "major_scope": canonical_cs_scope_metadata(),
-        "major_scope_fingerprint": canonical_cs_scope_fingerprint(),
+        "dataset_version": f"{date}-canonical-{major_slug}-v{artifact_version}",
+        "major_scope": canonical_major_scope_metadata(major_slug),
+        "major_scope_fingerprint": canonical_major_scope_fingerprint(major_slug),
     }
 
 
@@ -565,13 +568,13 @@ def district_totals(args):
 
 # ── ASSIST-stated-minimums variant ───────────────────────────────────────────
 
-def load_curation(db):
+def load_curation(db, major_slug="cs"):
     return {
         "override_by_hash": {
             str(o["receiver_hash"]): o
             for o in db.curated_mappings.find({
                 "kind": "receiver_override",
-                **major_document_filter("cs"),
+                **major_document_filter(major_slug),
             })
         }
     }
@@ -740,23 +743,60 @@ def referenced_option_ids(groups):
 
 
 def agreement_demand_count(doc, is_excluded):
-    """Number of required receivers the ASSIST agreement asks for, honoring
-    choose-N (section/group advisements, OR sections) — the campus's ASSIST-
-    stated minimum, feeding the gold bar. Excluded receivers don't count."""
+    """Required receiver slots under the eligibility engine's course semantics.
+
+    The Figure 1 gold bar is a course/receiver-slot count, so unit-advisement
+    requirements cannot be converted honestly here and fail loudly. The three
+    configured scopes currently contain no unit or distinct-section shapes.
+    """
     demand = 0
     for group in doc.get("requirement_groups") or []:
-        if group.get("is_required") is False:
+        if not group.get("is_required"):
             continue
+        if group.get("group_unit_advisement") is not None:
+            raise ValueError("group_unit_advisement cannot be expressed as a course count")
+        if (group.get("group_min_distinct_sections") is not None
+                or group.get("group_section_min_courses") is not None):
+            raise ValueError("distinct-section requirements need an explicit course-count model")
+
         section_needs = []
+        section_capacities = []
         for section in group.get("sections") or []:
-            n_recv = sum(1 for r in (section.get("receivers") or []) if not is_excluded(r))
-            section_needs.append(min(advisement_value(section.get("section_advisement"), n_recv), n_recv))
+            if section.get("unit_advisement") is not None:
+                raise ValueError("unit_advisement cannot be expressed as a course count")
+            n_recv = sum(
+                1 for r in (section.get("receivers") or []) if not is_excluded(r)
+            )
+            # PMT eligibility treats a no-advisement section as any-one. When
+            # group_advisement caps a bare bucket, however, every receiver is
+            # available to contribute toward that group-level ask.
+            section_needs.append(
+                min(advisement_value(section.get("section_advisement"), 1), n_recv)
+            )
+            section_capacities.append(
+                min(advisement_value(section.get("section_advisement"), n_recv), n_recv)
+            )
+
+        conjunction = str(group.get("group_conjunction") or "And").lower()
         if group.get("group_advisement") is not None:
-            flat = sum(1 for section in group.get("sections") or []
-                       for r in (section.get("receivers") or []) if not is_excluded(r))
-            demand += min(advisement_value(group.get("group_advisement"), flat), flat)
-        elif group.get("group_conjunction") == "Or" and len(group.get("sections") or []) > 1:
-            demand += min(section_needs, default=0)
+            bare_or_buckets = conjunction == "or" and all(
+                section.get("section_advisement") is None
+                and section.get("unit_advisement") is None
+                for section in group.get("sections") or []
+            )
+            if conjunction == "or" and not bare_or_buckets:
+                # A structured OR group asks for one complete section; the
+                # group_advisement does not flatten those alternatives.
+                demand += min((n for n in section_needs if n > 0), default=0)
+            else:
+                capacities = section_capacities
+                max_sections = group.get("group_max_distinct_sections")
+                if max_sections is not None:
+                    capacities = sorted(capacities, reverse=True)[:max(0, int(max_sections))]
+                capacity = sum(capacities)
+                demand += min(advisement_value(group.get("group_advisement"), capacity), capacity)
+        elif conjunction == "or":
+            demand += min((n for n in section_needs if n > 0), default=0)
         else:
             demand += sum(section_needs)
     return demand
@@ -783,84 +823,153 @@ def id_alternatives(receiver):
     return receiver_alternatives(receiver, str)
 
 
-def pool_campus_model(agreements):
-    """Pool one campus's canonical-major agreements across sibling colleges into one
-    requirement_groups — the paper's district pooling, done per UC receiver.
+def normalized_requirement_structure(groups):
+    """Articulation-free, order-normalized UC-side requirement structure."""
+    def stable_key(value):
+        return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
-    The UC-side structure is uniform across colleges for a (campus, major) (verified:
-    same required-receiver hash set), so we take it from the most complete agreement
-    and, for each receiver (keyed by hash_id), keep the SINGLE BEST COLLEGE's CC-course
-    alternatives — the college whose smallest alternative has the fewest courses, ties
-    by college name. This is exactly the paper's per-row pooling (creating_district_csvs
-    kept one college per requirement); unioning every college's alternatives is both
-    wrong (the paper doesn't) and pathologically slow for the optimizer.
+    normalized_groups = []
+    for group in groups or []:
+        if not group.get("is_required"):
+            continue
+        sections = []
+        for section in group.get("sections") or []:
+            receivers = [{
+                "hash_id": receiver.get("hash_id"),
+                "receiving": receiver.get("receiving") or {},
+            } for receiver in section.get("receivers") or []]
+            receivers.sort(key=stable_key)
+            sections.append({
+                "section_advisement": section.get("section_advisement"),
+                "unit_advisement": section.get("unit_advisement"),
+                "receivers": receivers,
+            })
+        sections.sort(key=stable_key)
+        normalized_groups.append({
+            "is_required": group.get("is_required"),
+            "group_conjunction": group.get("group_conjunction"),
+            "group_advisement": group.get("group_advisement"),
+            "group_unit_advisement": group.get("group_unit_advisement"),
+            "group_min_distinct_sections": group.get("group_min_distinct_sections"),
+            "group_max_distinct_sections": group.get("group_max_distinct_sections"),
+            "group_section_min_courses": group.get("group_section_min_courses"),
+            "sections": sections,
+        })
+    normalized_groups.sort(key=stable_key)
+    return normalized_groups
+
+
+def select_canonical_template(agreements):
+    """Pick one deterministic UC-side template per exact program.
+
+    We first select the modal true demand, then the most frequent normalized
+    requirement structure among agreements with that demand. Ties break by
+    the structure fingerprint. This prevents a district's member-college mix
+    from changing the UC requirement denominator.
     """
     by_major = defaultdict(list)
     for a in agreements:
         by_major[a["major"]].append(a)
 
-    def receiver_count(a):
-        return sum(len(s.get("receivers") or [])
-                   for g in a["requirement_groups"] for s in g.get("sections") or [])
+    out_groups = []
+    audit = []
+    for major in sorted(by_major):
+        candidates = []
+        demand_distribution = Counter()
+        for agreement in by_major[major]:
+            demand = agreement_demand_count(agreement, lambda _receiver: False)
+            structure = normalized_requirement_structure(agreement["requirement_groups"])
+            fingerprint = canonical_json_fingerprint(structure)
+            candidates.append((demand, fingerprint, structure))
+            demand_distribution[demand] += 1
+        modal_demand = modal_count([demand for demand, _, _ in candidates])
+        structure_counts = Counter(
+            fingerprint for demand, fingerprint, _ in candidates if demand == modal_demand
+        )
+        selected_fingerprint = min(
+            structure_counts,
+            key=lambda fingerprint: (-structure_counts[fingerprint], fingerprint),
+        )
+        selected = next(
+            structure for demand, fingerprint, structure in candidates
+            if demand == modal_demand and fingerprint == selected_fingerprint
+        )
+        out_groups.extend(selected)
+        audit.append({
+            "major": major,
+            "native_count": modal_demand,
+            "structure_fingerprint": selected_fingerprint,
+            "structure_agreements": structure_counts[selected_fingerprint],
+            "demand_distribution": [
+                {"native_count": value, "agreements": count}
+                for value, count in sorted(demand_distribution.items())
+            ],
+        })
+    return out_groups, audit
+
+
+def pool_campus_model(agreements, canonical_groups=None):
+    """Pool district articulation options into one fixed UC-side template.
+
+    The canonical template is selected systemwide by ``load_assist_inputs``
+    and reused for every district. Only paths for matching receiver hashes are
+    pooled; an unknown or absent hash remains unarticulated.
+    """
+    if canonical_groups is None:
+        canonical_groups, _ = select_canonical_template(agreements)
+
+    # Per receiver hash: {college name -> set of that college's alternatives}.
+    by_hash = defaultdict(lambda: defaultdict(set))
+    for agreement in agreements:
+        for group in agreement["requirement_groups"]:
+            for section in group.get("sections") or []:
+                for receiver in section.get("receivers") or []:
+                    receiver_id = receiver.get("hash_id")
+                    if not receiver_id:
+                        continue
+                    alternatives = set(id_alternatives(receiver))
+                    if alternatives:
+                        by_hash[receiver_id][agreement["college"]] |= alternatives
+
+    # Keep the best college's alternatives per receiver (paper's per-row rule).
+    pooled = {}
+    for receiver_id, college_map in by_hash.items():
+        best_college = min(
+            college_map,
+            key=lambda college: (min(len(bundle) for bundle in college_map[college]), college),
+        )
+        pooled[receiver_id] = college_map[best_college]
 
     out_groups = []
-    for major in sorted(by_major):
-        ags = by_major[major]
-        # per receiver hash: {college name -> set of that college's alternatives}
-        by_hash = defaultdict(lambda: defaultdict(set))
-        for a in ags:
-            for g in a["requirement_groups"]:
-                for s in g.get("sections") or []:
-                    for r in s.get("receivers") or []:
-                        alts = set(id_alternatives(r))
-                        if alts:
-                            by_hash[r.get("hash_id")][a["college"]] |= alts
-        # keep the best college's alternatives per receiver (paper's per-row rule)
-        pooled = {}
-        for h, colmap in by_hash.items():
-            best_col = min(colmap, key=lambda c: (min(len(b) for b in colmap[c]), c))
-            pooled[h] = colmap[best_col]
-        rep = max(ags, key=receiver_count)
-        for g in rep["requirement_groups"]:
-            sections = []
-            for s in g.get("sections") or []:
-                receivers = []
-                for r in s.get("receivers") or []:
-                    alts = pooled.get(r.get("hash_id")) or set()
-                    if alts:
-                        options = [{"course_ids": sorted(b), "course_conjunction": "and"}
-                                   for b in sorted(alts, key=lambda x: (len(x), sorted(x)))]
-                        receivers.append({**r, "articulation_status": "articulated",
-                                          "options_conjunction": "or", "options": options})
-                    else:
-                        receivers.append({**r, "articulation_status": "not_articulated", "options": []})
-                sections.append({**s, "receivers": receivers})
-            out_groups.append({**g, "sections": sections})
+    for group in canonical_groups:
+        sections = []
+        for section in group.get("sections") or []:
+            receivers = []
+            for receiver in section.get("receivers") or []:
+                alternatives = pooled.get(receiver.get("hash_id")) or set()
+                if alternatives:
+                    options = [
+                        {"course_ids": sorted(bundle), "course_conjunction": "and"}
+                        for bundle in sorted(alternatives, key=lambda item: (len(item), sorted(item)))
+                    ]
+                    receivers.append({
+                        **receiver,
+                        "articulation_status": "articulated",
+                        "not_articulated_reason": None,
+                        "options_conjunction": "or",
+                        "options": options,
+                    })
+                else:
+                    receivers.append({
+                        **receiver,
+                        "articulation_status": "not_articulated",
+                        "not_articulated_reason": "No complete articulation path in district",
+                        "options_conjunction": "or",
+                        "options": [],
+                    })
+            sections.append({**section, "receivers": receivers})
+        out_groups.append({**group, "sections": sections})
     return out_groups
-
-
-def pooled_gold_count(groups):
-    """Distinct required UC courses the pooled model asks for — choose-N aware and
-    dedup'd by UC receiving, so requirements shared across the campus's CS programs
-    count once. The figure's gold bar (before quarter→semester conversion)."""
-    required = set()
-    for g in groups:
-        if not g.get("is_required"):
-            continue
-        for s in g.get("sections") or []:
-            pids, seen = [], []
-            for r in s.get("receivers") or []:
-                p = (r.get("receiving") or {}).get("parent_id")
-                pids.append(p if p is not None else r.get("hash_id"))
-            adv = s.get("section_advisement")
-            need = min(adv, len(pids)) if adv is not None else len(pids)
-            for p in pids:
-                if p not in seen:
-                    seen.append(p)
-                if len(seen) >= need:
-                    break
-            required.update(seen)
-    return len(required)
 
 
 def modal_count(values):
@@ -871,17 +980,18 @@ def modal_count(values):
     return min(v for v, n in counts.items() if n == top)
 
 
-def load_assist_inputs(db):
+def load_assist_inputs(db, major_slug="cs"):
     """Build the pooled per-(campus, district) requirement models the ASSIST figure
     needs — the paper's method with ASSIST demand.
 
-    Demand = the one code-pinned canonical CS major per campus; its ASSIST
+    Demand = the one code-pinned canonical major per campus; its ASSIST
     required groups define the minimum, and its articulations are pooled per UC receiver
     across sibling colleges within a district — exactly the paper's college pooling.
     Returns district_models[district] = {campus_sid: pooled_requirement_groups}, the
-    per-campus gold (required UC course count), and the CC-course catalog.
+    per-campus gold (required ASSIST receiver-slot count), and the CC-course catalog.
     """
-    is_excluded = make_is_excluded(load_curation(db))
+    canonical_major_scope(major_slug)  # reject unknown slugs before touching Mongo
+    is_excluded = make_is_excluded(load_curation(db, major_slug))
     code_of_parent = university_course_codes(db)
     # course_id -> {course_id, units, same_as, name} for the optimizer (str ids, to
     # match the stringified option ids in prep_requirement_groups).
@@ -914,7 +1024,7 @@ def load_assist_inputs(db):
     by_district_campus = defaultdict(lambda: defaultdict(list))
     by_campus = defaultdict(list)
     n_agreements = 0
-    for doc in db.assist_agreements.find(canonical_cs_query(), fields):
+    for doc in db.assist_agreements.find(canonical_major_query(major_slug), fields):
         ref = ref_by_cc.get(int(doc["community_college_id"]))
         if not ref or not ref.get("district"):
             continue
@@ -930,24 +1040,78 @@ def load_assist_inputs(db):
         by_campus[m["school_id"]].append(m)
         n_agreements += 1
 
-    # Pool per (campus, district). A district with no agreement for a campus just
-    # omits it (that campus counts as all-unarticulated in the cover).
-    district_models = {
-        district: {sid: pool_campus_model(ags)
-                   for sid, ags in by_district_campus.get(district, {}).items()}
-        for district in all_districts
-    }
+    missing_campuses = [
+        c["code"] for c in CAMPUSES if not by_campus.get(c["school_id"])
+    ]
+    if missing_campuses:
+        raise RuntimeError(
+            f"{major_slug} has no exact-pinned ASSIST agreements for: "
+            + ", ".join(missing_campuses)
+        )
 
-    # Gold bar: the campus's required UC course count. The UC-side structure is
-    # uniform across districts, so compute once from the campus's union structure.
+    # Select one deterministic UC-side template per campus systemwide. Districts
+    # may change only its articulation options, never its requirement structure.
+    canonical_groups = {}
     gold = {}
     for c in CAMPUSES:
-        native = pooled_gold_count(pool_campus_model(by_campus.get(c["school_id"], [])))
+        sid = c["school_id"]
+        groups, audit = select_canonical_template(by_campus[sid])
+        if len(audit) != 1:
+            raise RuntimeError(
+                f"{major_slug} campus {c['code']} resolved {len(audit)} exact program titles"
+            )
+        canonical_groups[sid] = groups
+        template = audit[0]
+        native = agreement_demand_count(
+            {"requirement_groups": groups}, lambda _receiver: False
+        )
+        if native != template["native_count"]:
+            raise RuntimeError(
+                f"canonical demand mismatch for {major_slug} {c['code']}: "
+                f"template={native}, mode={template['native_count']}"
+            )
         gold[c["school_id"]] = {
             "native_count": native,
             "semester_equiv": round(native / 1.5, 2) if c["quarter"] else native,
             "quarter_count": native if c["quarter"] else None,
+            "measure": "ASSIST required receiver slots",
+            "receiving_kinds": dict(sorted(Counter(
+                str((receiver.get("receiving") or {}).get("kind") or "unknown")
+                for group in groups
+                for section in group.get("sections") or []
+                for receiver in section.get("receivers") or []
+                if group.get("is_required")
+            ).items())),
+            "template_fingerprint": template["structure_fingerprint"],
+            "template_agreements": template["structure_agreements"],
+            "demand_distribution": template["demand_distribution"],
         }
+
+    # Pool per (campus, district). A district with no agreement for a campus
+    # omits it and uses the same gold demand in no_agreement_unarticulated().
+    district_models = {
+        district: {
+            sid: pool_campus_model(ags, canonical_groups[sid])
+            for sid, ags in by_district_campus.get(district, {}).items()
+        }
+        for district in all_districts
+    }
+
+    # Loop-close the denominator: every present district model must retain the
+    # exact canonical structure and therefore the same native demand as gold.
+    for district, models in district_models.items():
+        for sid, groups in models.items():
+            actual_fp = canonical_json_fingerprint(normalized_requirement_structure(groups))
+            expected_fp = gold[sid]["template_fingerprint"]
+            actual_demand = agreement_demand_count(
+                {"requirement_groups": groups}, lambda _receiver: False
+            )
+            if actual_fp != expected_fp or actual_demand != gold[sid]["native_count"]:
+                raise RuntimeError(
+                    f"district template drift for {major_slug} {CODE_BY_SCHOOL[sid]} × "
+                    f"{district}: fp={actual_fp}/{expected_fp}, "
+                    f"demand={actual_demand}/{gold[sid]['native_count']}"
+                )
 
     return {
         "district_models": district_models,
@@ -961,7 +1125,7 @@ def load_assist_inputs(db):
 
 def no_agreement_unarticulated(sid, gold):
     """A campus with no agreement in a district counts as all-unarticulated, using
-    its required UC course count (the gold native count)."""
+    its canonical required receiver-slot count (the gold native count)."""
     code = CODE_BY_SCHOOL[sid]
     return {f"{code} no agreement #{i + 1}" for i in range(gold[sid]["native_count"])}
 
@@ -1100,7 +1264,7 @@ def preserve_generated_at_if_unchanged(path, out):
     return out
 
 
-def write_assist_blockers(root, singles_by_district):
+def write_assist_blockers(root, singles_by_district, major_slug="cs"):
     detailed = []
     counts = defaultdict(lambda: {"count": 0, "districts": []})
     complete = []
@@ -1136,10 +1300,11 @@ def write_assist_blockers(root, singles_by_district):
     ]
 
     paths = {}
+    slug_part = "" if major_slug == "cs" else f"_{major_slug}"
     for name, rows in {
-        "paper_credit_loss_assist_blockers.csv": detailed,
-        "paper_credit_loss_assist_blocker_summary.csv": summary,
-        "paper_credit_loss_assist_complete_districts.csv": complete,
+        f"paper_credit_loss{slug_part}_assist_blockers.csv": detailed,
+        f"paper_credit_loss{slug_part}_assist_blocker_summary.csv": summary,
+        f"paper_credit_loss{slug_part}_assist_complete_districts.csv": complete,
     }.items():
         path = root / "results" / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -1385,6 +1550,8 @@ def validate_on_paper_data(paper_repo, workers):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--major", choices=sorted(MAJOR_SCOPES), default="cs",
+                    help="configured exact major scope (default: cs)")
     ap.add_argument("--requirements", choices=("website", "assist"), default="website",
                     help="demand model: curated website minimums (default) "
                          "or ASSIST-stated required groups")
@@ -1404,6 +1571,11 @@ def main():
                          "articulation differs between the paper's district CSVs and our data")
     args = ap.parse_args()
 
+    if args.major != "cs" and args.requirements != "assist":
+        ap.error("non-CS majors support only --requirements assist; website and paper baselines are CS-only")
+    if args.major != "cs" and (args.diff or args.validate_paper or args.articulation_diff):
+        ap.error("--diff/--validate-paper/--articulation-diff are CS-paper comparisons")
+
     if args.validate_paper:
         validate_on_paper_data(args.validate_paper, args.workers)
         return
@@ -1415,18 +1587,17 @@ def main():
     data_refreshed_at = (db.settings.find_one({"_id": "app"}) or {}).get(
         "last_data_refresh_at")
     data_refreshed_at = data_refreshed_at.isoformat() if data_refreshed_at else None
-    models = load_requirement_models(db)
-
     if args.requirements == "assist":
         root = Path(__file__).resolve().parent
+        major_label = canonical_major_scope(args.major)["label"]
         print(f"data refreshed {data_refreshed_at or 'unknown'} · loading ASSIST-stated requirements …")
-        assist = load_assist_inputs(db)
+        assist = load_assist_inputs(db, args.major)
         gold = assist["gold"]
         district_models = assist["district_models"]
         courses_by_id = assist["courses_by_id"]
         code_of_parent = assist["code_of_parent"]
         print(f"{len(assist['all_districts'])} districts · {assist['agreement_count']} "
-              f"campus×college agreements (one canonical CS major per campus)")
+              f"campus×college agreements (one canonical {major_label} major per campus)")
 
         work = [(district, models, courses_by_id, code_of_parent, gold)
                 for district, models in sorted(district_models.items())]
@@ -1478,14 +1649,19 @@ def main():
             })
 
         out = {
+            "schema_version": 2,
+            "method_version": "paper-choice-cost-assist-canonical-template-v2",
             "generated_by": "analysis/paper_credit_loss.py",
             "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "data_refreshed_at": data_refreshed_at,
             "requirements": "assist",
-            **result_provenance(data_refreshed_at),
+            **result_provenance(data_refreshed_at, args.major, artifact_version=2),
             "districts_total": len(assist["all_districts"]),
-            "method": "the paper's credit-loss method with ASSIST demand: the code-pinned canonical "
-                      "CS major at each campus states the required groups; its articulations "
+            "requirement_measure": "ASSIST required receiver slots; a series or named requirement is one slot unless ASSIST models it as separate receivers",
+            "method": "the paper's credit-loss method with ASSIST demand: one deterministic, "
+                      "systemwide canonical UC-side template per campus is selected as the most "
+                      "frequent normalized structure at the modal receiver-slot demand; the code-pinned canonical "
+                      f"{major_label} major at each campus states the required groups; its articulations "
                       "are pooled per receiver across sibling colleges (best college per requirement, "
                       "the paper's rule); minimum CC courses from the ported PMT branch-and-bound "
                       "optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations "
@@ -1494,7 +1670,9 @@ def main():
         }
         stamp_artifact_fingerprint(out)
 
-        json_path = root / "results" / "paper-credit-loss.assist.json"
+        json_name = ("paper-credit-loss.assist.json" if args.major == "cs"
+                     else f"paper-credit-loss.{args.major}.assist.json")
+        json_path = root / "results" / json_name
         json_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Re-baseline diff: what moved vs the committed assist.json. The optimizer +
@@ -1526,7 +1704,9 @@ def main():
         out = preserve_generated_at_if_unchanged(json_path, out)
         json_path.write_text(json.dumps(out, indent=2) + "\n")
 
-        csv_path = root / "results" / "paper_credit_loss_assist_districts.csv"
+        csv_name = ("paper_credit_loss_assist_districts.csv" if args.major == "cs"
+                    else f"paper_credit_loss_{args.major}_assist_districts.csv")
+        csv_path = root / "results" / csv_name
         csv_path.parent.mkdir(parents=True, exist_ok=True)
         with open(csv_path, "w", newline="") as f:
             w = csv.DictWriter(
@@ -1535,7 +1715,7 @@ def main():
             w.writeheader()
             w.writerows(district_rows_out)
 
-        blocker_paths = write_assist_blockers(root, singles_by_district)
+        blocker_paths = write_assist_blockers(root, singles_by_district, args.major)
         print(f"wrote {json_path.relative_to(root.parent)} and {csv_path.relative_to(root.parent)}")
         print("wrote " + ", ".join(str(p.relative_to(root.parent)) for p in blocker_paths.values()))
 
@@ -1560,6 +1740,8 @@ def main():
                     for i, (d, ch) in enumerate(zip(choice_deltas, c["choices"]))
                 ))
         return
+
+    models = load_requirement_models(db)
 
     # gold bars, asserted against the paper's constants
     gold = {}

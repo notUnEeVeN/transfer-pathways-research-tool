@@ -4,9 +4,11 @@ import { createRequire } from 'node:module';
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const {
+  coverage: coverageEndpoint,
   exportCsAstDegrees,
   exportLocalCsAsDegrees,
   _parseMultiCampusPathwayParams,
+  _requiresCompleteDistrictMatrix,
   _resolveMajorScope,
 } = cjs('./Analysis');
 const { getMajor } = cjs('../config/majors');
@@ -104,6 +106,35 @@ describe('major scope resolution', () => {
   it('reports unknown slugs with the onboarded list', () => {
     expect(_resolveMajorScope({ majorSlug: 'underwater-basket-weaving' }))
       .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs', 'bio', 'econ'] });
+  });
+});
+
+describe('configured-major district coverage completeness', () => {
+  it('requires completeness for exact district ASSIST even with partial visibility', () => {
+    expect(_requiresCompleteDistrictMatrix(
+      { slug: 'bio', majorPrograms: getMajor('bio').programs },
+      { groupBy: 'district', requirements: 'assist', visiblePairs: [
+        { school_id: 1, major: 'one visible program' },
+      ] },
+    )).toBe(true);
+  });
+
+  it('fails closed when an exact configured major is missing canonical campus templates', async () => {
+    await expect(run(coverageEndpoint, {
+      majorSlug: 'bio', groupBy: 'district', requirements: 'assist',
+    })).rejects.toMatchObject({
+      code: 'incomplete_coverage_matrix',
+      statusCode: 409,
+    });
+  });
+
+  it('keeps legacy free-text district coverage sparse-compatible', async () => {
+    const response = await run(coverageEndpoint, {
+      majorContains: 'not-present', groupBy: 'district', requirements: 'assist',
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({ n: 0, rows: [] });
   });
 });
 

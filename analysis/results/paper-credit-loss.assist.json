@@ -1,9 +1,11 @@
 {
+  "schema_version": 2,
+  "method_version": "paper-choice-cost-assist-canonical-template-v2",
   "generated_by": "analysis/paper_credit_loss.py",
-  "generated_at": "2026-07-23T06:35:33+00:00",
-  "data_refreshed_at": "2026-07-22T23:40:04.400000",
+  "generated_at": "2026-07-23T18:29:57+00:00",
+  "data_refreshed_at": "2026-07-23T06:51:44.716000",
   "requirements": "assist",
-  "dataset_version": "2026-07-22-canonical-cs-v1",
+  "dataset_version": "2026-07-23-canonical-cs-v2",
   "major_scope": {
     "slug": "cs",
     "label": "Computer Science",
@@ -48,7 +50,8 @@
   },
   "major_scope_fingerprint": "a11075a5c54fa1249316f91f8806dd991276cdccd34a2ffff9110ddeb7bc05f9",
   "districts_total": 72,
-  "method": "the paper's credit-loss method with ASSIST demand: the code-pinned canonical CS major at each campus states the required groups; its articulations are pooled per receiver across sibling colleges (best college per requirement, the paper's rule); minimum CC courses from the ported PMT branch-and-bound optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations + transferable-average; see docs/figures/paper-credit-loss.md",
+  "requirement_measure": "ASSIST required receiver slots; a series or named requirement is one slot unless ASSIST models it as separate receivers",
+  "method": "the paper's credit-loss method with ASSIST demand: one deterministic, systemwide canonical UC-side template per campus is selected as the most frequent normalized structure at the modal receiver-slot demand; the code-pinned canonical Computer Science major at each campus states the required groups; its articulations are pooled per receiver across sibling colleges (best college per requirement, the paper's rule); minimum CC courses from the ported PMT branch-and-bound optimizer, strict-mode eligibility blockers, the paper's P(9,4) permutations + transferable-average; see docs/figures/paper-credit-loss.md",
   "campuses": [
     {
       "code": "UCD",
@@ -56,30 +59,50 @@
       "school_id": 89,
       "quarter": true,
       "requirement": {
-        "native_count": 12,
-        "semester_equiv": 8.0,
-        "quarter_count": 12
+        "native_count": 9,
+        "semester_equiv": 6.0,
+        "quarter_count": 9,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 11
+        },
+        "template_fingerprint": "3372350d340fa5a48ae4b443ea54412ece19e77e609fe6a889e16b98b1273fd3",
+        "template_agreements": 46,
+        "demand_distribution": [
+          {
+            "native_count": 7,
+            "agreements": 9
+          },
+          {
+            "native_count": 8,
+            "agreements": 24
+          },
+          {
+            "native_count": 9,
+            "agreements": 82
+          }
+        ]
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 8.93,
-          "districts_included": 30
+          "transferable_average": 9.07,
+          "districts_included": 14
         },
         {
           "order": 2,
-          "transferable_average": 3.83,
-          "districts_included": 30
+          "transferable_average": 4.37,
+          "districts_included": 14
         },
         {
           "order": 3,
-          "transferable_average": 2.38,
-          "districts_included": 30
+          "transferable_average": 3.07,
+          "districts_included": 14
         },
         {
           "order": 4,
-          "transferable_average": 1.65,
-          "districts_included": 30
+          "transferable_average": 2.42,
+          "districts_included": 14
         }
       ]
     },
@@ -91,7 +114,20 @@
       "requirement": {
         "native_count": 10,
         "semester_equiv": 10,
-        "quarter_count": null
+        "quarter_count": null,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 8,
+          "series": 2
+        },
+        "template_fingerprint": "e32b35c28b4b8451ae4d9c06fbf16fd71ef3c3171c7e016a9a0215a7660445ab",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 10,
+            "agreements": 115
+          }
+        ]
       },
       "choices": [
         {
@@ -101,17 +137,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 5.15,
+          "transferable_average": 5.28,
           "districts_included": 64
         },
         {
           "order": 3,
-          "transferable_average": 3.05,
+          "transferable_average": 3.11,
           "districts_included": 64
         },
         {
           "order": 4,
-          "transferable_average": 1.79,
+          "transferable_average": 1.83,
           "districts_included": 64
         }
       ]
@@ -124,7 +160,19 @@
       "requirement": {
         "native_count": 11,
         "semester_equiv": 7.33,
-        "quarter_count": 11
+        "quarter_count": 11,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 19
+        },
+        "template_fingerprint": "24ba9fe7259d233eb9b364cddb529ac3b33cdd8110f074312489c5b9a051246c",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 11,
+            "agreements": 115
+          }
+        ]
       },
       "choices": [
         {
@@ -157,7 +205,19 @@
       "requirement": {
         "native_count": 7,
         "semester_equiv": 4.67,
-        "quarter_count": 7
+        "quarter_count": 7,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 7
+        },
+        "template_fingerprint": "7c495e4d986c36f4ec9ab787df119006a4e5700599e2f0277da38dac56c06b1b",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 7,
+            "agreements": 115
+          }
+        ]
       },
       "choices": [
         {
@@ -167,17 +227,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 2.49,
+          "transferable_average": 2.55,
           "districts_included": 50
         },
         {
           "order": 3,
-          "transferable_average": 1.36,
+          "transferable_average": 1.37,
           "districts_included": 50
         },
         {
           "order": 4,
-          "transferable_average": 0.8,
+          "transferable_average": 0.81,
           "districts_included": 50
         }
       ]
@@ -188,9 +248,27 @@
       "school_id": 117,
       "quarter": true,
       "requirement": {
-        "native_count": 17,
-        "semester_equiv": 11.33,
-        "quarter_count": 17
+        "native_count": 16,
+        "semester_equiv": 10.67,
+        "quarter_count": 16,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 14,
+          "requirement": 2,
+          "series": 1
+        },
+        "template_fingerprint": "a3ea61d0add940151ae8e73f66892aafba5703cd4dfb98ec81333e6afc9d6245",
+        "template_agreements": 114,
+        "demand_distribution": [
+          {
+            "native_count": 16,
+            "agreements": 114
+          },
+          {
+            "native_count": 17,
+            "agreements": 1
+          }
+        ]
       },
       "choices": [
         {
@@ -221,30 +299,48 @@
       "school_id": 79,
       "quarter": false,
       "requirement": {
-        "native_count": 10,
-        "semester_equiv": 10,
-        "quarter_count": null
+        "native_count": 9,
+        "semester_equiv": 9,
+        "quarter_count": null,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 11,
+          "requirement": 2,
+          "series": 5
+        },
+        "template_fingerprint": "e45253dde3625882724a0722908127ebe8e991ee3f266f026d476e8c2039ac8c",
+        "template_agreements": 50,
+        "demand_distribution": [
+          {
+            "native_count": 8,
+            "agreements": 6
+          },
+          {
+            "native_count": 9,
+            "agreements": 109
+          }
+        ]
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 10.09,
-          "districts_included": 69
+          "transferable_average": 10.12,
+          "districts_included": 65
         },
         {
           "order": 2,
-          "transferable_average": 5.12,
-          "districts_included": 69
+          "transferable_average": 5.26,
+          "districts_included": 65
         },
         {
           "order": 3,
-          "transferable_average": 3.38,
-          "districts_included": 69
+          "transferable_average": 3.47,
+          "districts_included": 65
         },
         {
           "order": 4,
-          "transferable_average": 2.26,
-          "districts_included": 69
+          "transferable_average": 2.34,
+          "districts_included": 65
         }
       ]
     },
@@ -256,7 +352,19 @@
       "requirement": {
         "native_count": 5,
         "semester_equiv": 3.33,
-        "quarter_count": 5
+        "quarter_count": 5,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 5
+        },
+        "template_fingerprint": "3a78d8128afb30e6dec910e8a9c5f305bba404f063643a537b5cdaec07a2f1d6",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 5,
+            "agreements": 115
+          }
+        ]
       },
       "choices": [
         {
@@ -266,17 +374,17 @@
         },
         {
           "order": 2,
-          "transferable_average": 1.61,
+          "transferable_average": 1.67,
           "districts_included": 47
         },
         {
           "order": 3,
-          "transferable_average": 1.0,
+          "transferable_average": 1.01,
           "districts_included": 47
         },
         {
           "order": 4,
-          "transferable_average": 0.66,
+          "transferable_average": 0.67,
           "districts_included": 47
         }
       ]
@@ -287,29 +395,46 @@
       "school_id": 120,
       "quarter": true,
       "requirement": {
-        "native_count": 12,
-        "semester_equiv": 8.0,
-        "quarter_count": 12
+        "native_count": 4,
+        "semester_equiv": 2.67,
+        "quarter_count": 4,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 10,
+          "series": 1
+        },
+        "template_fingerprint": "c6fbec1abbe2b55d05d94e2678f2600abb841aa0e075a6358f330d3d7125db0d",
+        "template_agreements": 106,
+        "demand_distribution": [
+          {
+            "native_count": 4,
+            "agreements": 106
+          },
+          {
+            "native_count": 5,
+            "agreements": 9
+          }
+        ]
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 5.36,
+          "transferable_average": 4.92,
           "districts_included": 39
         },
         {
           "order": 2,
-          "transferable_average": 2.11,
+          "transferable_average": 1.76,
           "districts_included": 39
         },
         {
           "order": 3,
-          "transferable_average": 1.67,
+          "transferable_average": 1.29,
           "districts_included": 39
         },
         {
           "order": 4,
-          "transferable_average": 1.46,
+          "transferable_average": 1.11,
           "districts_included": 39
         }
       ]
@@ -322,31 +447,44 @@
       "requirement": {
         "native_count": 7,
         "semester_equiv": 4.67,
-        "quarter_count": 7
+        "quarter_count": 7,
+        "measure": "ASSIST required receiver slots",
+        "receiving_kinds": {
+          "course": 9,
+          "series": 1
+        },
+        "template_fingerprint": "337f4642aa7bc2d4e11ed08f433855b4143f294448d68425b743ec7c1a62705a",
+        "template_agreements": 115,
+        "demand_distribution": [
+          {
+            "native_count": 7,
+            "agreements": 115
+          }
+        ]
       },
       "choices": [
         {
           "order": 1,
-          "transferable_average": 7.67,
+          "transferable_average": 7.68,
           "districts_included": 57
         },
         {
           "order": 2,
-          "transferable_average": 2.61,
+          "transferable_average": 2.76,
           "districts_included": 57
         },
         {
           "order": 3,
-          "transferable_average": 1.36,
+          "transferable_average": 1.42,
           "districts_included": 57
         },
         {
           "order": 4,
-          "transferable_average": 0.77,
+          "transferable_average": 0.79,
           "districts_included": 57
         }
       ]
     }
   ],
-  "artifact_fingerprint": "51e97da43c480e73eff5f6c0cb5507a17f4d136ae936138170b0c2d41550497d"
+  "artifact_fingerprint": "fd852ae1bed429755ca52061a6621965e2864ef28aa3c35916173cbc4d8ad402"
 }
