@@ -23,6 +23,8 @@ const {
 } = require('./eligibility');
 const { minimumTermSchedule } = require('./termScheduler');
 const { projectGroups } = require('../prereqGraph');
+const { majorDocumentClause } = require('../../config/majorDocumentScope');
+const { defaultMajor } = require('../../config/majors');
 
 const METHOD_ID = 'joint_major_preparation_v2';
 const SINGLETON_CACHE_TTL_MS = 60 * 1000;
@@ -41,18 +43,11 @@ const round1 = (value) => (Number.isFinite(Number(value)) ? +Number(value).toFix
 const uniq = (values) => [...new Set(values)];
 const stripCourseKey = (value) => String(value ?? '').replace(/^cc:/, '');
 
-function majorDocumentFilter(majorSlug = 'cs') {
-  const slug = String(majorSlug || 'cs').trim() || 'cs';
-  // Unstamped curation is the historical CS corpus. Every later major must be
-  // explicitly stamped so an equal receiver hash cannot alter a CS plan.
-  if (slug === 'cs') {
-    return { $or: [
-      { major_slug: slug },
-      { major_slug: { $exists: false } },
-      { major_slug: null },
-    ] };
-  }
-  return { major_slug: slug };
+// A plan is always for a definite major, so default a blank slug to the legacy
+// owner (never the empty, load-everything clause). The rule itself lives in
+// config/majorDocumentScope, shared with pathways and curation.
+function majorDocumentFilter(majorSlug = defaultMajor().slug) {
+  return majorDocumentClause(String(majorSlug || '').trim() || defaultMajor().slug);
 }
 
 function stableSerialize(value) {

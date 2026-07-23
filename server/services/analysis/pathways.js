@@ -16,6 +16,7 @@ const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingC
 const { buildDegreeGroups, degreeUnitSystem } = require('../degreeSlots');
 const { COURSE_TYPES, degreeCategoryOf } = require('../courseTypes');
 const { projectPrereqEdges } = require('../prereqGraph');
+const { majorDocumentClause } = require('../../config/majorDocumentScope');
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
@@ -26,15 +27,11 @@ const systemsFor = () => SYSTEMS;
 
 // ── curation joins ──
 
+// Scope curated documents to a major. The rule (unstamped rows belong to the
+// legacy owner) lives in config/majorDocumentScope so pathways, the planner and
+// curation cannot drift apart; here a blank major deliberately loads none of it.
 function majorDocumentFilter(majorSlug) {
-  const slug = String(majorSlug || '').trim();
-  if (!slug) return {};
-  // Existing CS curation predates major_slug. Treat only those legacy rows as
-  // CS; every newly onboarded major must be explicitly stamped.
-  if (slug === 'cs') {
-    return { $or: [{ major_slug: slug }, { major_slug: { $exists: false } }, { major_slug: null }] };
-  }
-  return { major_slug: slug };
+  return majorDocumentClause(majorSlug);
 }
 
 async function loadCuration(auditDb, majorSlug = null) {

@@ -2,6 +2,7 @@
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { getValidationCohort, setValidationCohort } = require('../services/asDegreeValidation');
 const { getMajor, defaultMajor } = require('../config/majors');
+const { majorDocumentClause } = require('../config/majorDocumentScope');
 
 const MAPPINGS = 'curated_mappings';
 const REQUIREMENTS = 'curated_requirements';
@@ -13,18 +14,12 @@ function majorFromQuery(req) {
   return getMajor(slug) || { error: `unknown major: ${slug}` };
 }
 
-// Existing mapping ids/documents predate the major dimension and belong to
-// CS. Keep those ids readable for CS while giving every additional major its
-// own collision-proof key and requiring an explicit stamp.
+// Existing mapping documents predate the major dimension and belong to the
+// legacy owner. The scoping rule is shared with pathways and the planner in
+// config/majorDocumentScope; mapping ids keep their own legacy-readable form
+// in mappingId below.
 function majorMappingClause(slug) {
-  if (slug === defaultMajor().slug) {
-    return { $or: [
-      { major_slug: slug },
-      { major_slug: { $exists: false } },
-      { major_slug: null },
-    ] };
-  }
-  return { major_slug: slug };
+  return majorDocumentClause(slug);
 }
 
 function mappingId(kind, key, slug) {
