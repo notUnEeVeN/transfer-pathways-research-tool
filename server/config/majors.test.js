@@ -5,9 +5,9 @@ import {
 import { _paperMajors as PAPER_MAJORS } from '../services/analysis/pathways';
 
 describe('majors config', () => {
-  it('cs is the default and the only onboarded major', () => {
+  it('cs is the default; bio and econ are onboarded alongside it', () => {
     expect(defaultMajor().slug).toBe('cs');
-    expect(listMajors().map((m) => m.slug)).toEqual(['cs']);
+    expect(listMajors().map((m) => m.slug)).toEqual(['cs', 'bio', 'econ']);
   });
 
   it('cs program pins are byte-identical to the paper pins', () => {
@@ -27,7 +27,7 @@ describe('majors config', () => {
   });
 
   it('unknown slug returns null', () => {
-    expect(getMajor('bio')).toBeNull();
+    expect(getMajor('nope')).toBeNull();
     expect(getMajor('')).toBeNull();
     expect(getMajor(undefined)).toBeNull();
   });
@@ -50,7 +50,7 @@ describe('majors config', () => {
       .toEqual({ slug: null, majorContains: 'econom' });
     expect(majorScopeFromQuery({})).toEqual({ slug: null, majorContains: '' });
     expect(majorScopeFromQuery({ major: 'nope' }))
-      .toEqual({ error: 'unknown major: nope', known: ['cs'] });
+      .toEqual({ error: 'unknown major: nope', known: ['cs', 'bio', 'econ'] });
   });
 
   it('majorScopeFromQuery prefers the slug when both are supplied', () => {

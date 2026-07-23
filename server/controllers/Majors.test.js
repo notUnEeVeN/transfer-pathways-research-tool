@@ -7,7 +7,7 @@ describe('GET /majors', () => {
     await listMajorsEndpoint({}, { json }, vi.fn());
     const payload = json.mock.calls[0][0];
     expect(payload.default).toBe('cs');
-    expect(payload.majors.map((m) => m.slug)).toEqual(['cs']);
+    expect(payload.majors.map((m) => m.slug)).toEqual(['cs', 'bio', 'econ']);
   });
 
   it('payload survives a JSON round-trip', async () => {

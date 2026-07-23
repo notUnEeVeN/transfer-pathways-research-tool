@@ -27,7 +27,7 @@ import {
   useSaveDegreeRequirement, useAsDegreeAvailability,
 } from '@frontend/query/hooks/useData'
 import { useAuth } from '@frontend/hooks/useAuth'
-import MajorPicker from './shared/majors/MajorPicker'
+import MajorPicker, { ALL_MAJORS } from './shared/majors/MajorPicker'
 import { useMajorSelection } from './shared/majors/MajorContext'
 
 /**
@@ -407,7 +407,11 @@ function CampusAgreements({
   onBack,
 }) {
   const batch = useAgreementsBatch(collegeId, campus.school_id)
-  const { slug: majorSlug, setSlug, major } = useMajorSelection()
+  const { setSlug, majors } = useMajorSelection()
+  // Browsing a college defaults to showing every major's agreements; narrowing
+  // to one is a click away.
+  const [majorSlug, setMajorSlug] = useState(ALL_MAJORS)
+  const major = majors.find((m) => m.slug === majorSlug) || null
   const [selectedSection, setSelectedSection] = useState(null)
   const agreements = useMemo(() => {
     const group = (batch.data || []).find((g) => Number(g.school_id) === Number(campus.school_id))
@@ -476,7 +480,13 @@ function CampusAgreements({
       ) : (
         <Stack gap='comfortable'>
           <ReceivingCampusPicker campuses={campuses} campusId={campus.school_id} onSelect={changeCampus} />
-          <MajorPicker value={majorSlug} onChange={setSlug} className='w-60 max-w-full' />
+          <MajorPicker value={majorSlug} allowAll className='w-60 max-w-full'
+            onChange={(next) => {
+              setMajorSlug(next)
+              // Picking a specific major here also sets the console-wide
+              // selection, so the analyses follow what you were just browsing.
+              if (next !== ALL_MAJORS) setSlug(next)
+            }} />
           {batch.isLoading ? (
             <div className='flex justify-center py-10'><LoadingLogo size={48} /></div>
           ) : !agreements.length ? (

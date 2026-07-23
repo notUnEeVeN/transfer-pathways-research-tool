@@ -77,6 +77,85 @@ const MAJORS = [
         'district-portfolio-subsets'],
     },
   },
+  {
+    slug: 'bio',
+    label: 'Biology',
+    match: 'biolog',
+    // One program per campus: each campus's umbrella / general biology degree,
+    // B.S. where a campus offers both awards. Berkeley has no umbrella degree,
+    // so it takes MCB — the larger department and the closest prerequisite
+    // match to the other eight. Pins confirmed 2026-07-22; the excluded
+    // specializations and the reasoning are in docs/major-pins.md.
+    programs: {
+      79: ['Molecular and Cell Biology, B.A.'],
+      89: ['Biological Sciences B.S.'],
+      120: ['Biological Sciences, B.S.'],
+      117: ['Biology/B.S.'],
+      144: ['BIOLOGICAL SCIENCES, General Biology Emphasis, B.S.'],
+      46: ['Biology, B.A. or B.S.'],
+      7: ['Biology: General Biology B.S.'],
+      128: ['Biological Sciences, B.A. & B.S.'],
+      132: ['Biology B.S.'],
+    },
+    // Provisional until the Phase 3 mapping pass confirms them against the
+    // ported receivers (docs/superpowers/plans/2026-07-22-bio-econ-onboarding.md).
+    categories: [
+      { key: 'calculus', axis: 'math' },
+      { key: 'statistics', axis: 'math' },
+      { key: 'gen_chem', axis: 'science' },
+      { key: 'organic_chem', axis: 'science' },
+      { key: 'bio_series', axis: 'science' },
+      { key: 'physics', axis: 'science' },
+      { key: 'other_science', axis: 'science' },
+      { key: 'non_stem', axis: 'non_stem' },
+    ],
+    broadAxes: ['science', 'math', 'non_stem'],
+    conceptDisciplines: ['math', 'chem', 'bio', 'physics', 'stats'],
+    capabilities: {
+      asDegrees: false,
+      paperBaselines: false,
+      transferMinimums: false,
+      snapshots: [],
+    },
+  },
+  {
+    slug: 'econ',
+    label: 'Economics',
+    match: 'econom',
+    // The flagship Economics degree per campus, excluding business,
+    // managerial, joint-math and policy variants — they carry different
+    // lower-division requirements. Economics is a letters-and-science degree
+    // system-wide, so the flagship is the B.A. everywhere.
+    programs: {
+      79: ['Economics, B.A.'],
+      89: ['Economics A.B.'],
+      120: ['Economics, B.A.'],
+      117: ['Economics/B.A.'],
+      144: ['ECONOMICS, B.A.'],
+      46: ['Economics, B.A.'],
+      7: ['Economics B.A.'],
+      128: ['Economics, B.A.'],
+      132: ['Economics B.A.'],
+    },
+    // Provisional — see the bio note above.
+    categories: [
+      { key: 'micro_principles', axis: 'economics' },
+      { key: 'macro_principles', axis: 'economics' },
+      { key: 'calculus', axis: 'math' },
+      { key: 'statistics', axis: 'math' },
+      { key: 'other_math', axis: 'math' },
+      { key: 'other_social', axis: 'non_stem' },
+      { key: 'non_stem', axis: 'non_stem' },
+    ],
+    broadAxes: ['economics', 'math', 'non_stem'],
+    conceptDisciplines: ['math', 'stats', 'other'],
+    capabilities: {
+      asDegrees: false,
+      paperBaselines: false,
+      transferMinimums: false,
+      snapshots: [],
+    },
+  },
 ];
 
 const bySlug = new Map(MAJORS.map((m) => [m.slug, m]));

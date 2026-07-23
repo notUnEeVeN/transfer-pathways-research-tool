@@ -100,7 +100,7 @@ describe('major scope resolution', () => {
 
   it('reports unknown slugs with the onboarded list', () => {
     expect(_resolveMajorScope({ majorSlug: 'underwater-basket-weaving' }))
-      .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs'] });
+      .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs', 'bio', 'econ'] });
   });
 });
 

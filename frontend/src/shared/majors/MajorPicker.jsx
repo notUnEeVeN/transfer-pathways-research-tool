@@ -2,6 +2,9 @@ import React from 'react'
 import { Select } from '../../components/ui'
 import { useMajorSelection } from './MajorContext'
 
+// Sentinel for "don't filter by major" on browsing surfaces.
+export const ALL_MAJORS = '__all__'
+
 /**
  * Choose the major a surface is showing.
  *
@@ -18,6 +21,9 @@ export default function MajorPicker({
   capability = null,
   caption = null,
   className = '',
+  // Browsing surfaces can show every major at once; analyses compute one at a
+  // time and leave this off.
+  allowAll = false,
 }) {
   const { majors } = useMajorSelection()
   const eligible = capability
@@ -37,11 +43,12 @@ export default function MajorPicker({
     )
   }
 
+  const options = eligible.map((m) => ({ value: m.slug, label: m.label }))
   return (
     <Select
       value={value}
       onChange={onChange}
-      options={eligible.map((m) => ({ value: m.slug, label: m.label }))}
+      options={allowAll ? [{ value: ALL_MAJORS, label: 'All majors' }, ...options] : options}
       aria-label='Major'
       className={className}
     />
