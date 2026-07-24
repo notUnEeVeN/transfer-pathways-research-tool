@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 import {
   Alert, Button, Spinner, Stack, Textarea,
 } from '../../components/ui'
 import { useAsDegreeDetail, useCcCourses, useSaveAsDegree } from '../../shared/query/hooks/useData'
+import RevisionHistory from '../../components/RevisionHistory'
 import { DegreePanel } from '../AsDegreeSchoolView'
 import AsDegreeHeaderFields from './AsDegreeHeaderFields'
 import { buildScaffold, saveBlockers } from './asDegreeScaffold'
@@ -104,14 +106,26 @@ export default function AsDegreeReview({ collegeId, major = 'cs', slot }) {
   }
 
   const verified = !!doc.verification?.verified
+  const verifiedAt = doc.verification?.verified_at || null
+  const verifiedBy = doc.verification?.verified_by_label || null
 
   return (
     <Stack gap='comfortable'>
-      <div className='flex flex-wrap items-center gap-3'>
-        <span className={`ml-auto text-caption ${verified ? 'text-primary' : 'text-ink-subtle'}`}>
-          {verified ? 'Verified' : 'Not yet verified'}
-        </span>
-      </div>
+      {verified && !creating && (
+        <div className='surface-card border-l-4 border-success bg-success-soft px-4 py-3 flex items-center gap-2.5'>
+          <CheckBadgeIcon className='w-5 h-5 text-success shrink-0' />
+          <div className='min-w-0'>
+            <p className='text-body-strong text-success'>
+              Verified{verifiedBy ? ` by ${verifiedBy}` : ''}
+            </p>
+            <p className='text-caption text-ink-muted'>
+              This record has been checked against the catalog
+              {verifiedAt ? ` · ${new Date(verifiedAt).toLocaleDateString()}` : ''}.
+              Use Unverify below to flag it for another look.
+            </p>
+          </div>
+        </div>
+      )}
 
       {creating && (
         <>
@@ -147,7 +161,7 @@ export default function AsDegreeReview({ collegeId, major = 'cs', slot }) {
             {creating ? 'Create record' : 'Save changes'}
           </Button>
         )}
-        {!creating && (
+        {!creating && !verified && (
           <>
             <Button onClick={() => persist(true)}
               disabled={save.isPending || blockers.length > 0}>
@@ -159,12 +173,21 @@ export default function AsDegreeReview({ collegeId, major = 'cs', slot }) {
             </Button>
           </>
         )}
+        {/* Already verified: the verdict can't be re-applied — only reopened. */}
+        {!creating && verified && (
+          <Button variant='secondary' onClick={() => persist(false)}
+            disabled={save.isPending}>
+            {save.isPending ? 'Saving…' : 'Unverify'}
+          </Button>
+        )}
         {blockers.length > 0 && (
           <span className='text-caption text-ink-subtle'>
             Still needs {blockers.join(', ')}.
           </span>
         )}
       </div>
+
+      {!creating && stored?._id && <RevisionHistory kind='as_degree' id={stored._id} />}
     </Stack>
   )
 }

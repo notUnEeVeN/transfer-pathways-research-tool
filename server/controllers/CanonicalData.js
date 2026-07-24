@@ -4,6 +4,7 @@ const { majorScope, pairClause } = require('../services/majorVisibility');
 const { prerequisiteGraphData } = require('../services/prereqGraph');
 const asDegreeView = require('../services/asDegreeView');
 const { recomputeAsDegreeCoveredConcepts } = require('../services/asDegreeConcepts');
+const { diffDocs } = require('../services/docDiff');
 const { defaultMajor, getMajor, listMajors } = require('../config/majors');
 const { AS_DEGREE_SLOTS, parseAsDegreeRowId } = require('../config/asDegreeSlots');
 
@@ -14,7 +15,14 @@ const COLLECTIONS = Object.freeze({
   admissions: 'admissions',
   requirements: 'curated_requirements',
   prerequisites: 'curated_prerequisites',
+  revisions: 'curated_revisions',
 });
+
+// The kinds whose hand edits we log. AI-scraped data enters through the import
+// scripts, never this endpoint, so a revision here is always a human change —
+// exactly the hand-verification trail we want to review. Kept to the verified
+// artefacts (records + four-year templates) for now.
+const REVISIONED_KINDS = new Set(['as_degree', 'degree']);
 
 const REQUIREMENT_PREFIX = Object.freeze({
   transfer_minimum: 'transfer_minimum',
@@ -513,6 +521,14 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     const invalid = await validateAsDegree(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
     canonical.covered_concepts = await recomputeAsDegreeCoveredConcepts(db, canonical);
+    // Stamp who applied the verdict, authoritatively from the signed-in user —
+    // cleared when the record is reopened so a stale name can't linger.
+    if (canonical.verification) {
+      const verified = !!canonical.verification.verified;
+      canonical.verification.verified_by = verified ? (req.user?.uid ?? null) : null;
+      canonical.verification.verified_by_label = verified
+        ? (req.user?.name || req.user?.email || null) : null;
+    }
     // Group-level curation stamp: the doc-level curated_by above records who
     // last saved; group-level curated_by records who confirmed THIS group.
     for (const g of canonical.requirement_groups || []) {
@@ -522,11 +538,39 @@ exports.putRequirement = asyncHandler(async (req, res) => {
       }
     }
   }
+  // Read the pre-save state before overwriting it, so the hand-edit revision
+  // log can diff what actually changed (imports bypass this endpoint).
+  const before = REVISIONED_KINDS.has(kind)
+    ? await db.collection(COLLECTIONS.requirements).findOne({ _id: canonicalId })
+    : null;
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
   );
+  if (REVISIONED_KINDS.has(kind)) {
+    await recordRevision(db, {
+      docId: canonicalId, kind, before, after: canonical, user: req.user,
+    });
+  }
   res.json({ ok: true, id: canonicalId });
 });
+
+// Append a hand-edit revision for a verified artefact. A save that changed no
+// human-meaningful field (only auto-stamped bookkeeping) writes nothing, so the
+// history stays a list of real edits.
+async function recordRevision(db, { docId, kind, before, after, user }) {
+  const changes = diffDocs(before, after);
+  if (before && changes.length === 0) return;
+  await db.collection(COLLECTIONS.revisions).insertOne({
+    doc_id: docId,
+    kind,
+    at: new Date(),
+    by_uid: user?.uid ?? null,
+    by_label: user?.name || user?.email || null,
+    created: !before,
+    verified: !!after?.verification?.verified,
+    changes,
+  });
+}
 
 exports.deleteRequirement = asyncHandler(async (req, res) => {
   const kind = String(req.params.kind || '').trim();
@@ -707,6 +751,43 @@ exports.asDegrees = asyncHandler(async (req, res) => {
 // absence from the catalog, so this joins the completed statewide inventory.
 exports.asDegreeAvailability = asyncHandler(async (req, res) => {
   res.json(await asDegreeView.asDegreeAvailability(req.app.locals.db));
+});
+
+// One row per college with every asDegrees-capable major's rolled-up
+// verification state (verified / present / absent), derived from the stored
+// docs alone — the multi-major counterpart to asDegreeAvailability, which the
+// statewide survey confines to Computer Science.
+exports.asDegreeVerification = asyncHandler(async (req, res) => {
+  res.json(await asDegreeView.asDegreeVerification(req.app.locals.db));
+});
+
+// Admin-only: the hand-edit history for one verified document, newest first —
+// each entry is who saved, when, and the field-level changes they made.
+exports.requirementRevisions = asyncHandler(async (req, res) => {
+  const db = req.app.locals.db;
+  const kind = String(req.params.kind || '').trim();
+  const prefix = REQUIREMENT_PREFIX[kind];
+  if (!REVISIONED_KINDS.has(kind) || !prefix) {
+    return res.status(404).json({ error: 'no revision history for this kind' });
+  }
+  const rawId = String(req.params.id || '').trim();
+  if (!rawId) return res.status(400).json({ error: 'id required' });
+  const docId = rawId.startsWith(`${prefix}:`) ? rawId : `${prefix}:${rawId}`;
+  const rows = await db.collection(COLLECTIONS.revisions)
+    .find({ doc_id: docId }).sort({ at: -1 }).limit(200).toArray();
+  res.json({
+    doc_id: docId,
+    kind,
+    revisions: rows.map((r) => ({
+      id: String(r._id),
+      at: r.at,
+      by_uid: r.by_uid ?? null,
+      by_label: r.by_label ?? null,
+      created: !!r.created,
+      verified: !!r.verified,
+      changes: Array.isArray(r.changes) ? r.changes : [],
+    })),
+  });
 });
 
 exports.COLLECTIONS = COLLECTIONS;

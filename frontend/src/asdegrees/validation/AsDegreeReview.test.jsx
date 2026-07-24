@@ -17,6 +17,13 @@ vi.mock('../../shared/query/hooks/useData', () => ({
   }),
   useCcCourses: () => ({ data: { rows: [] }, isLoading: false }),
   useSaveAsDegree: () => ({ mutateAsync: mocks.save, isPending: false }),
+  useRequirementRevisions: () => ({ data: { revisions: [] }, isLoading: false, isError: false }),
+}))
+
+// The review embeds the admin-only RevisionHistory; render as a non-admin so it
+// stays hidden and these tests stay focused on the review itself.
+vi.mock('../../shared/query/hooks/useAccess', () => ({
+  useAccessMe: () => ({ data: { role: 'partner' }, isLoading: false, isError: false }),
 }))
 
 const astDoc = {
@@ -99,7 +106,7 @@ describe('AsDegreeReview', () => {
     expect(screen.queryByRole('button', { name: 'Needs work' })).not.toBeInTheDocument()
   })
 
-  it('keeps the verdict buttons for an already-stored record', () => {
+  it('keeps the verdict buttons for an already-stored, unverified record', () => {
     mocks.detail = {
       college_name: 'Test College',
       degrees: [{ degree_type: 'ast', doc: astDoc }],
@@ -109,5 +116,28 @@ describe('AsDegreeReview', () => {
 
     expect(screen.getByRole('button', { name: 'Mark verified' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Needs work' })).toBeInTheDocument()
+    // No premature verified banner while the record is still unverified.
+    expect(screen.queryByText('Verified')).not.toBeInTheDocument()
+  })
+
+  it('shows a verified banner and only an Unverify toggle once verified', () => {
+    const verifiedDoc = { ...astDoc, verification: { verified: true, verified_at: '2026-07-01T00:00:00Z' } }
+    mocks.detail = {
+      college_name: 'Test College',
+      degrees: [{ degree_type: 'ast', doc: verifiedDoc }],
+    }
+
+    render(<AsDegreeReview collegeId={110} major='cs' slot='ast' />)
+
+    // A clear verified distinction...
+    expect(screen.getByText('Verified')).toBeInTheDocument()
+    // ...and the verdict can't be re-applied — only reopened.
+    expect(screen.queryByRole('button', { name: 'Mark verified' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Needs work' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Unverify' }))
+    expect(mocks.save).toHaveBeenCalledWith(expect.objectContaining({
+      verification: expect.objectContaining({ verified: false }),
+    }))
   })
 })

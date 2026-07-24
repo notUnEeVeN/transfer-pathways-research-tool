@@ -21,12 +21,12 @@ beforeEach(async () => {
   await Promise.all([db.dropDatabase(), auditDb.dropDatabase()]);
 });
 
-function request({ body = {}, params = {}, query = {} } = {}) {
+function request({ body = {}, params = {}, query = {}, user = {} } = {}) {
   return {
     body,
     params,
     query,
-    user: { uid: 'curator-1' },
+    user: { uid: 'curator-1', ...user },
     app: { locals: { db, auditDb } },
   };
 }
@@ -460,6 +460,60 @@ describe('as_degree kind', () => {
     const res = await run(putRequirement, request({ params: { kind: 'as_degree' }, body: degreeDoc() }));
     expect(res.statusCode).toBe(200);
     expect(res.body.id).toBe('as_degree:110:cs:local_as');
+  });
+
+  it('stamps the signed-in user as verifier when the verdict is verified, and clears it on unverify', async () => {
+    await seedForDegree();
+    const verified = { ...degreeDoc(), verification: { verified: true, note: 'checked' } };
+    // request() defaults uid to curator-1; add a display name for the label.
+    await run(putRequirement, request({
+      params: { kind: 'as_degree' }, body: verified, user: { name: 'Tybalt Mallet' },
+    }));
+    let stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:cs:local_as' });
+    expect(stored.verification.verified_by).toBe('curator-1');
+    expect(stored.verification.verified_by_label).toBe('Tybalt Mallet');
+
+    // Reopening (verified:false) must not leave a stale verifier behind.
+    const reopened = { ...degreeDoc(), verification: { verified: false, note: 'reopened' } };
+    await run(putRequirement, request({ params: { kind: 'as_degree' }, body: reopened }));
+    stored = await db.collection('curated_requirements').findOne({ _id: 'as_degree:110:cs:local_as' });
+    expect(stored.verification.verified_by).toBeNull();
+    expect(stored.verification.verified_by_label).toBeNull();
+  });
+
+  it('logs a hand-edit revision with the field diff, but nothing for a no-op save', async () => {
+    await seedForDegree();
+    // First save creates the record (imports normally do this; here it seeds).
+    await run(putRequirement, request({ params: { kind: 'as_degree' }, body: degreeDoc() }));
+
+    // A human corrects the title and marks it verified.
+    const edited = {
+      ...degreeDoc(),
+      degree_title_seen: 'Computer Science, A.S. (corrected)',
+      verification: { verified: true, note: 'walked the catalog' },
+    };
+    await run(putRequirement, request({ params: { kind: 'as_degree' }, body: edited }));
+
+    const revisions = await db.collection('curated_revisions')
+      .find({ doc_id: 'as_degree:110:cs:local_as' }).toArray();
+    // The creation plus the one edit; identify the edit by its non-creation flag
+    // so the assertion never depends on same-millisecond timestamp ordering.
+    expect(revisions.some((r) => r.created)).toBe(true);
+    const edit = revisions.find((r) => !r.created);
+    expect(edit.by_uid).toBe('curator-1');
+    expect(edit.verified).toBe(true);
+    const paths = edit.changes.map((c) => c.path);
+    expect(paths).toContain('degree_title_seen');
+    expect(paths).toContain('verification.verified');
+    // verified_at / verified_by are auto-stamped bookkeeping — never in the diff.
+    expect(paths.some((p) => p.includes('verified_at') || p.includes('verified_by'))).toBe(false);
+
+    const countBefore = revisions.length;
+    // Re-saving the identical document changes no human field → no new revision.
+    await run(putRequirement, request({ params: { kind: 'as_degree' }, body: edited }));
+    const after = await db.collection('curated_revisions')
+      .countDocuments({ doc_id: 'as_degree:110:cs:local_as' });
+    expect(after).toBe(countBefore);
   });
 
   it('accepts a doc with covered_concepts as an array of strings', async () => {
