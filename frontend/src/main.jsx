@@ -4,7 +4,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { ToastProvider } from './components/ui'
 import { AuthProvider } from '@frontend/hooks/AuthProvider'
 import { MajorProvider } from './shared/majors/MajorContext'
-import { queryClient, queryPersister } from '@frontend/query/client'
+import { queryClient, queryPersister, shouldPersistQuery } from '@frontend/query/client'
 import App from './App.jsx'
 import packagejson from '../package.json'
 import './styles/console.css'
@@ -21,15 +21,11 @@ createRoot(document.getElementById('root')).render(
       // a stale "granted" from before a revoke would otherwise let a removed
       // account render the console from cache instead of hitting the gate.
       maxAge: 24 * 60 * 60 * 1000,
-      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2`,
+      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2-analysis-v3`,
       dehydrateOptions: {
-        // NEVER persist the access check (the security gate) or the majors
-        // config. Both describe what the SERVER currently allows; a rehydrated
-        // copy silently misreports it — a stale majors payload hides newly
-        // onboarded majors and misstates their capabilities.
-        shouldDehydrateQuery: (query) =>
-          query.state.status === 'success'
-          && !['access-me', 'majors'].includes(query.queryKey?.[0]),
+        // Security/config state and computed analyses must always come from
+        // the current server. Catalog/source records still hydrate instantly.
+        shouldDehydrateQuery: shouldPersistQuery,
       },
     }}
   >

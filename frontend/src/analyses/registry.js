@@ -152,12 +152,13 @@ export const ANALYSES = [
   },
   {
     id: 'paper-course-barriers',
-    ...fixedComputerScience({
-      reason: 'This course-level figure needs a redesigned major-specific course organization before it can move beyond Computer Science.',
-      datasets: ['committed California-paper baseline', 'Computer Science course-group mapping'],
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'courseTypeFigures'],
+      datasets: ['ASSIST articulation agreements', 'course-type rules'],
+      pendingReason: 'Course-type rules must be written and validated against this major’s ASSIST requirements before its course gaps can be compared.',
     }),
     title: 'Course gaps by campus',
-    description: 'Shows the share of community college districts with no articulated equivalent for each math and computer science course a University of California campus requires for transfer admission.',
+    description: 'Shows the share of community college districts with no articulated equivalent for each subject a University of California campus requires for transfer admission.',
     provenance: 'ca',
     figureNo: 5,
     author_label: ANALYSIS_AUTHOR,
@@ -167,12 +168,13 @@ export const ANALYSES = [
   },
   {
     id: 'course-type-coverage',
-    ...fixedComputerScience({
-      reason: 'Course-type rules have only been validated for Computer Science.',
-      datasets: ['articulation agreements', 'Computer Science course-type rules'],
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'degreeTemplates', 'courseTypeFigures'],
+      datasets: ['articulation agreements', 'four-year degree templates', 'course-type rules'],
+      pendingReason: 'Course-type rules must be written and validated against this major’s degree templates before its requirements can be separated by type.',
     }),
     title: 'Transferable requirements by course type',
-    description: 'Shows what share of each university computer science degree’s requirements has a community college equivalent, separated into computing, math, science, and other coursework.',
+    description: 'Shows what share of each university degree’s requirements has a community college equivalent, separated by the kind of course it is — the major’s own discipline, math, supporting science, and everything else.',
     provenance: 'ma',
     figureNo: 2,
     author_label: ANALYSIS_AUTHOR,
@@ -181,12 +183,13 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-credit-rate',
-    ...fixedComputerScience({
-      reason: 'Associate-degree inputs are currently available only for Computer Science.',
-      datasets: ['associate degrees', 'four-year degree templates'],
+    ...selectedMajor({
+      requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
+      datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates'],
+      pendingReason: 'Associate-degree requirements and four-year graduation templates must be present before degree credit can be modeled.',
     }),
     title: 'Degree credit toward graduation',
-    description: 'Shows what share of complete or lower-division bachelor’s requirements is fulfilled by a computer science associate degree.',
+    description: 'Shows what share of complete or lower-division bachelor’s requirements is fulfilled by the selected associate degree.',
     provenance: 'ma',
     figureNo: 3,
     author_label: ANALYSIS_AUTHOR,
@@ -195,9 +198,10 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-extra-units',
-    ...fixedComputerScience({
-      reason: 'Associate-degree inputs are currently available only for Computer Science.',
-      datasets: ['associate degrees', 'four-year degree templates'],
+    ...selectedMajor({
+      requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
+      datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates'],
+      pendingReason: 'Associate-degree requirements and four-year graduation templates must be present before replacement coursework can be modeled.',
     }),
     title: 'Modeled replacement coursework',
     description: 'Estimates how many associate-degree units may need to be replaced because they do not apply to university graduation requirements.',
@@ -308,9 +312,10 @@ export const ANALYSES = [
   },
   {
     id: 'time-to-degree',
-    ...fixedComputerScience({
-      reason: 'Associate-degree inputs are currently available only for Computer Science.',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements', 'asDegrees'],
       datasets: ['associate degrees', 'articulation agreements'],
+      pendingReason: 'Associate-degree records must be gathered for this major before transfer credit can be modeled.',
     }),
     title: 'Associate degree transfer credit',
     description: 'Shows how much of an associate degree counts toward transfer requirements and estimates the cost of units that do not count.',

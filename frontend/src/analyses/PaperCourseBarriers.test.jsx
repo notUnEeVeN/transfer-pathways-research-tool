@@ -2,7 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import PaperCourseBarriers, {
-  PaperCourseBarriersPreview, buildCourseBarriersModel,
+  PaperCourseBarriersPreview, buildCourseBarriersModel, modernBarrierScale,
 } from './PaperCourseBarriers'
 import {
   CAMPUSES, buildPaperCourseBarriersModel, categoryOfGroupId,
@@ -11,6 +11,24 @@ import { DISTRICTS } from './paperDistrictBaseline'
 import { useCoverage } from '../shared/query/hooks/useData'
 
 vi.mock('../shared/query/hooks/useData', () => ({ useCoverage: vi.fn() }))
+
+vi.mock('../shared/majors/useMajors', () => ({
+  useMajors: () => ({ bySlug: new Map([
+    ['cs', { slug: 'cs', label: 'Computer Science' }],
+    ['bio', {
+      slug: 'bio',
+      label: 'Biology',
+      courseTypes: { barrierPanels: [
+        { key: 'bio_series', label: 'Intro Biology' },
+        { key: 'gen_chem', label: 'General Chemistry' },
+        { key: 'organic_chem', label: 'Organic Chemistry' },
+        { key: 'calculus', label: 'Calculus' },
+        { key: 'statistics', label: 'Statistics' },
+        { key: 'physics', label: 'Physics' },
+      ] },
+    }],
+  ]) }),
+}))
 
 // The curated transfer minimums as stored: campus -> requirement group ids.
 const GROUPS_BY_CAMPUS = {
@@ -79,6 +97,14 @@ describe('paper course barriers', () => {
       .campuses.every((campus) => campus.required)).toBe(true)
   })
 
+  it('extends the publication scale through 100 when a selected major needs it', () => {
+    const scale = modernBarrierScale({
+      categories: [{ campuses: [{ pct: 0 }, { pct: 87.5 }, { pct: 100 }] }],
+    })
+
+    expect(scale).toEqual({ yMax: 100, ticks: [0, 20, 40, 60, 80, 100] })
+  })
+
   it('recomputes each course panel from current district coverage', () => {
     const model = buildCourseBarriersModel(currentRows())
     const byKey = Object.fromEntries(model.categories.map((category) => [category.key, category]))
@@ -130,6 +156,7 @@ describe('paper course barriers', () => {
 
     expect(modern).toBeTruthy()
     expect(modern.getAttribute('viewBox')).toBe('0 0 1240 804')
+    expect(modern.dataset.modernYMax).toBe('60')
     expect(modern.style.fontFamily).toContain('Hanken Grotesk')
     expect(modern.querySelector('path[fill="#E69F00"]')).toBeTruthy()
     expect(modern.querySelector('path[fill="#009E73"]')).toBeTruthy()
@@ -157,5 +184,38 @@ describe('paper course barriers', () => {
     expect(container.querySelector('[data-export-exclude]')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Refresh data' })).not.toBeInTheDocument()
+  })
+
+  it('loads newer majors from categorized ASSIST admission requirements', () => {
+    useCoverage.mockReturnValue({
+      data: { rows: [{
+        school_id: 89,
+        row_group_label: 'Alpha District',
+        assist_requirements_by_course_category: {
+          bio_series: { required: true, satisfied: false },
+          gen_chem: { required: true, satisfied: true },
+          organic_chem: { required: false, satisfied: null },
+          calculus: { required: true, satisfied: true },
+          statistics: { required: false, satisfied: null },
+          physics: { required: false, satisfied: null },
+        },
+      }] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch,
+    })
+
+    const { container } = render(<PaperCourseBarriers majorSlug='bio' />)
+
+    expect(useCoverage).toHaveBeenCalledWith(
+      { majorSlug: 'bio', groupBy: 'district', requirements: 'assist' },
+      expect.objectContaining({ refetchOnWindowFocus: false, refetchInterval: false })
+    )
+    expect(container.querySelector('[data-modern-california-figure]')?.dataset.modernYMax)
+      .toBe('100')
+    expect(container.querySelector('[data-bar="bio_series|UC1*"]')?.dataset.barState)
+      .toBe('gaps')
+    expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
   })
 })

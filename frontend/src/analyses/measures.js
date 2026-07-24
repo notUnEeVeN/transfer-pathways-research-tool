@@ -23,7 +23,7 @@ export const MEASURES = {
   'paper-district-heatmap': {
     expression: 'district is complete ⇔ every required group or section meets its stated completion rule, including any choose-N minimum, using articulated options pooled across the district',
     grain: 'One yes or no per community college district × UC campus × selected major.',
-    watchFor: 'Biology and Economics use the ASSIST requirement model only; Computer Science also exposes its historical paper and hand-curated comparison states. Articulation pools across every college in the district, so a complete district is not a promise that any single college offers the whole path.',
+    watchFor: 'The ASSIST state uses the same strict PMT eligibility predicates for Computer Science, Biology, and Economics. Each college’s exact stored required-group tree is evaluated without campus course allowlists, curation exclusions, a modal template, or evidence from another major; sibling colleges contribute only PMT’s exact receiving-side hash match. Computer Science also exposes its historical paper and hand-curated comparison states.',
   },
   'paper-articulation-histogram': {
     expression: 'bar height at n = number of districts that are complete for exactly n of the nine UC campuses',
@@ -38,17 +38,17 @@ export const MEASURES = {
   'paper-course-barriers': {
     expression: 'bar height = districts with no articulated equivalent for that course ÷ all 72 districts',
     grain: 'One percentage per UC campus × course category; a campus that does not require the course has no percentage.',
-    watchFor: 'The denominator is every district, including the ones that already articulate the course and the ones that require nothing else from that campus, so bars are comparable across panels but understate the burden on districts that use the campus. A district counts as missing whenever any one requirement group in the category fails, so a panel can be driven by a single course in a multi-course sequence.',
+    watchFor: 'The denominator is every district. “Required” means unavoidable in the exact stored ASSIST groups whose is_required flag is true; no campus-specific course selection or waiver is applied. Alternative routes are honored by the shared PMT group logic. A district counts as missing when it cannot complete every unavoidable group in the category, so a panel can still be driven by one course in a mandatory sequence.',
   },
   'course-type-coverage': {
     expression: 'point = required courses of one course type with a community college equivalent ÷ required courses of that type, averaged across community colleges',
     grain: 'One point per university campus per course type; a campus that requires nothing of a type contributes no point.',
-    watchFor: 'Read the scope control first. The default counts the whole degree, including upper-division work no community college can offer — that suppresses the computing column for a structural reason true of any major in its own subject, not because of articulation. The lower-division scope compares the types on coursework a community college can actually teach. Each point weights every community college equally, and the diamond averages the campus points, not the underlying pairs.',
+    watchFor: 'Read the scope control first. The default lower-division scope compares the types on coursework a community college can actually teach. The whole-degree scope also counts upper-division work no community college can offer, which suppresses a major’s own-discipline column for a structural reason, not because of articulation. Each point weights every community college equally, and the diamond averages the campus points, not the underlying pairs.',
   },
   'transfer-credit-rate': {
     expression: 'completion = bachelor’s requirement units fulfilled by the associate degree ÷ bachelor’s requirement units in the selected scope',
     grain: 'One value per community college × UC campus, for one associate degree type.',
-    watchFor: 'Read the scope control first. The full view includes upper-division and other university-only work; the lower-division view excludes the nontransferable tier. Associate-degree units apply at most once, while general education and elective room use an optimal-student assumption rather than observed transcripts.',
+    watchFor: 'Read the scope control first. The default lower-division view excludes the nontransferable tier; the full view includes upper-division and other university-only work. Associate-degree units apply at most once, while general education and elective room use an optimal-student assumption rather than observed transcripts.',
   },
   'transfer-extra-units': {
     expression: 'replacement units = total units in the associate degree − associate degree units that apply to the UC degree',

@@ -215,7 +215,7 @@ function cellTitle(row, col, cell, value, reqMode) {
       }
       bits.push(`Secondary slot count: ${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} requirements have an equivalent`)
     } else {
-      bits.push(`${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} required receivers articulated`)
+      bits.push(`${intFmt.format(cell.receiversArticulated)} of ${intFmt.format(cell.receiversRequired)} listed receivers are satisfied (the percentage follows the requirement’s choose-N rule)`)
     }
   }
   return bits.join('\n')

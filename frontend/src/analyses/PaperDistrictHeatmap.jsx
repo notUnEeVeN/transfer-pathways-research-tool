@@ -26,9 +26,11 @@ const VERSIONS = [
 //   paper  — the hand-curated university-website hard minimums
 //            (curated transfer-minimum requirements), the paper's methodology.
 //   assist — ASSIST's own stated requirement surface: a cell is complete when
-//            the configured program at the campus has every required receiver
-//            satisfied under the eligibility engine (curation overrides
-//            honored). This is the sole state used for newer majors.
+//            the configured program at the campus satisfies every group whose
+//            stored `is_required` flag is true under the strict PMT eligibility
+//            engine. CS, Biology, and Economics use this identical path. No
+//            curation exclusions, campus allowlists, or cross-major evidence
+//            alter the stored agreement. This is the sole state for newer majors.
 
 // Row label under each mode. Campus names keep the paper's `*` annotation
 // (selective-admission majors) so the two modes stay comparable.
@@ -535,8 +537,9 @@ export default function PaperDistrictHeatmap({
   const diffOn = isComputerScience && showDiff && activeVersion !== 'paper'
   const view = activeVersion === 'paper' ? 'paper' : (diffOn ? 'diff' : 'live')
   // Fetch on mount, no polling (data is stagnant); Refresh re-fetches on
-  // demand. The ASSIST-minimums variant fetches lazily on first selection and
-  // then stays cached, so flipping the toggle is instant afterwards.
+  // demand. Coverage responses are discarded when the visual unmounts and all
+  // computed analyses are excluded from IndexedDB persistence, so a prior
+  // result cannot paint before this request completes.
   // Both compatibility pins resolve to the exact nine campus/program pairs in
   // the canonical CS config and ignore partner-visibility settings. The two
   // requests differ only in their requirement source: hand-curated paper

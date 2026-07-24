@@ -4,10 +4,8 @@ import {
   coverageData, requirementComparisonData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData, agreementsExportData,
   receiversExportData, _settingsMajors, _canonicalCsPrograms,
-  _normalizedAssistRequirementStructure, _assistRequirementDemand,
-  _selectCanonicalAssistTemplate,
 } from './pathways';
-import { getMajor } from '../../config/majors';
+import { getMajor, programPairs } from '../../config/majors';
 
 let mongo;
 let db;
@@ -29,60 +27,6 @@ const oneGroup = (receivers, isRequired = true) => [{
   group_unit_advisement: null,
   sections: [{ section_advisement: receivers.length, unit_advisement: null, receivers }],
 }];
-
-describe('canonical ASSIST template selection', () => {
-  const agreement = (groups) => ({ requirement_groups: groups });
-
-  it('normalizes after exclusions and measures true receiver-slot demand', () => {
-    const groups = [
-      ...oneGroup([
-        recv([], { hash: 'kept', parentId: 1 }),
-        recv([], { hash: 'excluded', parentId: 2 }),
-      ]),
-      ...oneGroup([recv([], { hash: 'recommended', parentId: 3 })], false),
-    ];
-    // The parsed advisement still says 2, but exclusion leaves one available
-    // receiver, so the true capped demand is one.
-    const normalized = _normalizedAssistRequirementStructure(
-      groups, (receiver) => receiver.hash_id === 'excluded'
-    );
-
-    expect(normalized).toHaveLength(1);
-    expect(normalized[0].sections[0].receivers.map((receiver) => receiver.hash_id))
-      .toEqual(['kept']);
-    expect(_assistRequirementDemand(normalized)).toBe(1);
-  });
-
-  it('breaks demand and structure ties deterministically regardless of input order', () => {
-    const demandOneA = agreement(oneGroup([
-      recv([], { hash: 'one-a', parentId: 11 }),
-    ]));
-    const demandOneB = agreement(oneGroup([
-      recv([], { hash: 'one-b', parentId: 12 }),
-    ]));
-    const demandTwoA = agreement(oneGroup([
-      recv([], { hash: 'two-a1', parentId: 21 }),
-      recv([], { hash: 'two-a2', parentId: 22 }),
-    ]));
-    const demandTwoB = agreement(oneGroup([
-      recv([], { hash: 'two-b1', parentId: 23 }),
-      recv([], { hash: 'two-b2', parentId: 24 }),
-    ]));
-    const fingerprintA = _selectCanonicalAssistTemplate([demandOneA]).structureFingerprint;
-    const fingerprintB = _selectCanonicalAssistTemplate([demandOneB]).structureFingerprint;
-    const expectedFingerprint = [fingerprintA, fingerprintB].sort()[0];
-    const candidates = [demandTwoB, demandOneB, demandTwoA, demandOneA];
-
-    const forward = _selectCanonicalAssistTemplate(candidates);
-    const reverse = _selectCanonicalAssistTemplate([...candidates].reverse());
-
-    // Demand frequencies tie 2–2, so the smaller true demand wins. Its two
-    // structures also tie 1–1, so fingerprint—not source order—decides.
-    expect(forward.nativeDemand).toBe(1);
-    expect(forward.structureFingerprint).toBe(expectedFingerprint);
-    expect(reverse).toEqual(forward);
-  });
-});
 
 beforeAll(async () => {
   mongo = await startInMemoryMongo();
@@ -246,11 +190,11 @@ afterAll(async () => { await mongo.stop(); });
 const P = { scope: 'uc', majorContains: 'computer science' };
 
 describe('coverageData', () => {
-  it('counts required receivers minus curation exclusions', async () => {
+  it('evaluates the raw ASSIST required tree without curation exclusions', async () => {
     const rows = await coverageData(db, db, P);
     const alpha = rows.find((r) => r.community_college_id === 10 && r.school_id === 1);
-    expect(alpha.receivers_required).toBe(2); // r-reco excluded
-    expect(alpha.receivers_articulated).toBe(2);
+    expect(alpha.receivers_required).toBe(3);
+    expect(alpha.receivers_articulated).toBe(3);
     expect(alpha.fully_articulated).toBe(true);
     expect(alpha.community_college_district).toBe('North');
     expect(alpha.community_college_counties).toEqual(['Alpha']);
@@ -268,12 +212,140 @@ describe('coverageData', () => {
     expect(gamma.fully_articulated).toBe(true);
   });
 
+  it('runs CS, Biology, and Economics through the identical strict evaluator', async () => {
+    const agreements = ['cs', 'bio', 'econ'].map((slug) => {
+      const program = programPairs(getMajor(slug)).find((pair) => pair.school_id === 7);
+      return {
+        _id: `strict-parity:${slug}`,
+        uc_school: 'UC San Diego',
+        uc_school_id: 7,
+        community_college: 'CC Gamma',
+        community_college_id: 30,
+        major: program.major,
+        requirement_groups: oneGroup([
+          recv([], {
+            status: 'not_articulated', hash: `strict-parity-${slug}`, parentId: 7700,
+          }),
+        ]),
+      };
+    });
+    await db.collection('assist_agreements').insertMany(agreements);
+    try {
+      const results = [];
+      for (const slug of ['cs', 'bio', 'econ']) {
+        const rows = await coverageData(db, db, { majorSlug: slug, groupBy: 'college' });
+        results.push(rows.find((row) => (
+          row.school_id === 7 && row.community_college_id === 30
+        )));
+      }
+
+      for (const row of results) {
+        expect(row).toMatchObject({
+          receivers_required: 1,
+          receivers_articulated: 0,
+          pct_articulated: 0,
+          fully_articulated: false,
+        });
+      }
+    } finally {
+      await db.collection('assist_agreements').deleteMany({
+        _id: { $in: agreements.map((agreement) => agreement._id) },
+      });
+    }
+  });
+
+  it('does not remove an unarticulated Biology requirement before eligibility', async () => {
+    const agreement = {
+      _id: 'figure5:bio-ucsd',
+      uc_school: 'UC San Diego',
+      uc_school_id: 7,
+      community_college: 'CC Alpha',
+      community_college_id: 10,
+      major: 'Biology: General Biology B.S.',
+      requirement_groups: oneGroup([
+        recv([opt(['bio-1'])], { hash: 'bio-bild-1', parentId: 7101 }),
+        recv([], { status: 'not_articulated', hash: 'bio-bild-5', parentId: 7105 }),
+      ]),
+    };
+    const courses = [
+      { _id: 'uc-course:7101', side: 'receiving', parent_id: 7101,
+        prefix: 'BILD', number: '1', title: 'The Cell' },
+      { _id: 'uc-course:7105', side: 'receiving', parent_id: 7105,
+        prefix: 'BILD', number: '5', title: 'Data Analysis and Design' },
+    ];
+    await db.collection('assist_agreements').insertOne(agreement);
+    await db.collection('assist_courses').insertMany(courses);
+    try {
+      const rows = await coverageData(db, db, {
+        majorSlug: 'bio', groupBy: 'district', requirements: 'assist',
+      });
+      const north = rows.find((row) => row.row_group_label === 'North');
+
+      expect(north.fully_articulated).toBe(false);
+      expect(north.assist_requirements_by_course_category.bio_series)
+        .toMatchObject({ required: true, satisfied: false, missing_groups: 1 });
+    } finally {
+      await db.collection('assist_agreements').deleteOne({ _id: agreement._id });
+      await db.collection('assist_courses').deleteMany({ _id: { $in: courses.map((c) => c._id) } });
+    }
+  });
+
+  it('does not borrow parent-id evidence from an unrelated major', async () => {
+    const biology = {
+      _id: 'figure5:bio-davis',
+      uc_school: 'UC Davis',
+      uc_school_id: 89,
+      community_college: 'CC Alpha',
+      community_college_id: 10,
+      major: 'Biological Sciences B.S.',
+      requirement_groups: oneGroup([
+        recv([], { status: 'not_articulated', hash: 'bio-mat-21a', parentId: 8921 }),
+        recv([], { status: 'not_articulated', hash: 'bio-mat-21b', parentId: 8922 }),
+      ]),
+    };
+    const otherAgreement = {
+      _id: 'figure5:davis-other-major',
+      uc_school: 'UC Davis',
+      uc_school_id: 89,
+      community_college: 'CC Alpha',
+      community_college_id: 10,
+      major: 'Other Current Major B.S.',
+      requirement_groups: oneGroup([
+        recv([opt(['calc-a'])], { hash: 'other-mat-21a', parentId: 8921 }),
+        recv([opt(['calc-b'])], { hash: 'other-mat-21b', parentId: 8922 }),
+      ]),
+    };
+    const courses = [
+      { _id: 'uc-course:8921', side: 'receiving', parent_id: 8921,
+        prefix: 'MAT', number: '021A', title: 'Calculus' },
+      { _id: 'uc-course:8922', side: 'receiving', parent_id: 8922,
+        prefix: 'MAT', number: '021B', title: 'Calculus' },
+    ];
+    await db.collection('assist_agreements').insertMany([biology, otherAgreement]);
+    await db.collection('assist_courses').insertMany(courses);
+    try {
+      const rows = await coverageData(db, db, {
+        majorSlug: 'bio', groupBy: 'district', requirements: 'assist',
+      });
+      const north = rows.find((row) => row.row_group_label === 'North');
+
+      expect(north.fully_articulated).toBe(false);
+      expect(north.assist_requirements_by_course_category.calculus)
+        .toMatchObject({ required: true, satisfied: false, missing_groups: 1 });
+    } finally {
+      await db.collection('assist_agreements').deleteMany({
+        _id: { $in: [biology._id, otherAgreement._id] },
+      });
+      await db.collection('assist_courses').deleteMany({ _id: { $in: courses.map((c) => c._id) } });
+    }
+  });
+
   it('groups by district/county using best-of articulation across member colleges', async () => {
     const districtRows = await coverageData(db, db, { ...P, groupBy: 'district' });
     const district = districtRows.find((r) => r.row_group_label === 'North' && r.school_id === 1);
     expect(district.community_college_ids).toEqual([10, 20]);
-    expect(district.receivers_required).toBe(2);
-    expect(district.receivers_articulated).toBe(2);
+    expect(district.receivers_required).toBe(3);
+    expect(district.receivers_articulated).toBe(3);
     expect(district.fully_articulated).toBe(true);
 
     const countyRows = await coverageData(db, db, { ...P, groupBy: 'county' });
@@ -282,7 +354,94 @@ describe('coverageData', () => {
     expect(betaCounty.pct_articulated).toBe(50);
   });
 
-  it('uses the systemwide canonical template even in a district containing only an outlier', async () => {
+  it('pools only exact receiver hashes across complementary district colleges', async () => {
+    const major = 'Cross College Hash Audit B.S.';
+    const agreements = [
+      {
+        _id: 'cross-cc:match-a', uc_school: 'UC Cross', uc_school_id: 902,
+        community_college: 'Match College A', community_college_id: 9021, major,
+        requirement_groups: oneGroup([
+          recv([opt(['match-a'])], { hash: 'match-hash-a', parentId: 9301 }),
+          recv([], { status: 'not_articulated', hash: 'match-hash-b', parentId: 9302 }),
+        ]),
+      },
+      {
+        _id: 'cross-cc:match-b', uc_school: 'UC Cross', uc_school_id: 902,
+        community_college: 'Match College B', community_college_id: 9022, major,
+        requirement_groups: oneGroup([
+          recv([], { status: 'not_articulated', hash: 'match-hash-a', parentId: 9301 }),
+          recv([opt(['match-b'])], { hash: 'match-hash-b', parentId: 9302 }),
+        ]),
+      },
+      {
+        _id: 'cross-cc:mismatch-a', uc_school: 'UC Cross', uc_school_id: 902,
+        community_college: 'Mismatch College A', community_college_id: 9023, major,
+        requirement_groups: oneGroup([
+          recv([opt(['mismatch-a'])], { hash: 'mismatch-a-have', parentId: 9401 }),
+          recv([], { status: 'not_articulated', hash: 'mismatch-a-need', parentId: 9402 }),
+        ]),
+      },
+      {
+        _id: 'cross-cc:mismatch-b', uc_school: 'UC Cross', uc_school_id: 902,
+        community_college: 'Mismatch College B', community_college_id: 9024, major,
+        requirement_groups: oneGroup([
+          // Same parent ids, deliberately different receiving-side hashes.
+          // Parent-id or cross-major evidence would incorrectly complete this district.
+          recv([], { status: 'not_articulated', hash: 'mismatch-b-need', parentId: 9401 }),
+          recv([opt(['mismatch-b'])], { hash: 'mismatch-b-have', parentId: 9402 }),
+        ]),
+      },
+    ];
+    const institutions = [
+      { _id: 'cc:9021', source_id: 9021, kind: 'community_college',
+        name: 'Match College A', district: 'Hash Match District', counties_served: ['Match'] },
+      { _id: 'cc:9022', source_id: 9022, kind: 'community_college',
+        name: 'Match College B', district: 'Hash Match District', counties_served: ['Match'] },
+      { _id: 'cc:9023', source_id: 9023, kind: 'community_college',
+        name: 'Mismatch College A', district: 'Hash Mismatch District', counties_served: ['Mismatch'] },
+      { _id: 'cc:9024', source_id: 9024, kind: 'community_college',
+        name: 'Mismatch College B', district: 'Hash Mismatch District', counties_served: ['Mismatch'] },
+    ];
+
+    await db.collection('assist_agreements').insertMany(agreements);
+    await db.collection('assist_institutions').insertMany(institutions);
+    try {
+      const collegeRows = await coverageData(db, db, {
+        majorContains: 'Cross College Hash Audit', groupBy: 'college',
+      });
+      expect(collegeRows).toHaveLength(4);
+      expect(collegeRows.every((row) => row.fully_articulated === false)).toBe(true);
+
+      const districtRows = await coverageData(db, db, {
+        majorContains: 'Cross College Hash Audit', groupBy: 'district',
+      });
+      const matching = districtRows.find((row) => row.row_group_label === 'Hash Match District');
+      const mismatching = districtRows.find((row) => row.row_group_label === 'Hash Mismatch District');
+
+      expect(matching).toMatchObject({
+        receivers_required: 2,
+        receivers_articulated: 2,
+        pct_articulated: 100,
+        fully_articulated: true,
+      });
+      expect(matching.assist_base_agreement_id).toMatch(/^cross-cc:match-/);
+      expect(mismatching).toMatchObject({
+        receivers_required: 2,
+        receivers_articulated: 1,
+        pct_articulated: 50,
+        fully_articulated: false,
+      });
+    } finally {
+      await db.collection('assist_agreements').deleteMany({
+        _id: { $in: agreements.map((agreement) => agreement._id) },
+      });
+      await db.collection('assist_institutions').deleteMany({
+        _id: { $in: institutions.map((institution) => institution._id) },
+      });
+    }
+  });
+
+  it('evaluates each district against its own stored ASSIST tree', async () => {
     const major = 'Canonical Template Audit B.S.';
     const agreements = [
       {
@@ -325,11 +484,6 @@ describe('coverageData', () => {
     await db.collection('assist_agreements').insertMany(agreements);
     await db.collection('assist_institutions').insertMany(institutions);
     try {
-      const selected = _selectCanonicalAssistTemplate(agreements);
-      expect(selected.nativeDemand).toBe(1);
-      expect(selected.requirementGroups[0].sections[0].receivers
-        .map((receiver) => receiver.hash_id)).toEqual(['canonical-core']);
-
       const rows = await coverageData(db, db, {
         majorContains: 'Canonical Template Audit', groupBy: 'district',
       });
@@ -342,13 +496,11 @@ describe('coverageData', () => {
         pct_articulated: 100,
         fully_articulated: true,
       });
-      // The two articulated outlier hashes are not part of the canonical UC
-      // structure. The absent canonical-core identity stays unarticulated.
       expect(outlier).toMatchObject({
-        receivers_required: 1,
-        receivers_articulated: 0,
-        pct_articulated: 0,
-        fully_articulated: false,
+        receivers_required: 2,
+        receivers_articulated: 2,
+        pct_articulated: 100,
+        fully_articulated: true,
       });
 
       await expect(coverageData(db, db, {
@@ -869,5 +1021,46 @@ describe('exact configured major isolation', () => {
       degree_requirements_with_equivalent: 0,
       pct_degree_requirement_slots: 0,
     });
+  });
+});
+
+describe('coverageData named ASSIST blocks and not-modelable groups', () => {
+  it('flags a group that covers nothing at any college, ignoring upper-division', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'degree' });
+    const flagged = rows[0].degree_groups_not_modelable;
+
+    // The fixture's lower-division group is partly covered, and the
+    // upper-division group is 0% everywhere BY DESIGN — a community college
+    // cannot teach it, so it is a structural zero, not a modelling failure.
+    expect(flagged.map((group) => group.label))
+      .not.toContain('Upper-division coursework');
+    expect(flagged.map((group) => group.label))
+      .not.toContain('Lower-division major preparation');
+  });
+
+  it('carries one flag list per degree, identical across that degree\'s rows', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'degree' });
+    const byDegree = new Map();
+    for (const row of rows) {
+      const key = row.degree_template_id;
+      if (!byDegree.has(key)) byDegree.set(key, new Set());
+      byDegree.get(key).add(JSON.stringify(row.degree_groups_not_modelable));
+    }
+
+    expect(byDegree.size).toBeGreaterThan(1);
+    for (const [, lists] of byDegree) expect(lists.size).toBe(1);
+  });
+
+  it('names every flagged group, or records its position when it has no title', async () => {
+    const rows = await coverageData(db, db, { ...P, requirements: 'degree' });
+    const flagged = rows.flatMap((row) => row.degree_groups_not_modelable || []);
+
+    expect(flagged.length).toBeGreaterThan(0);
+    // An untitled group must still be identifiable — otherwise two of them
+    // collapse into one bucket and the flag silently under-reports.
+    for (const group of flagged) {
+      expect(group).toHaveProperty('label');
+      expect(Number.isInteger(group.index)).toBe(true);
+    }
   });
 });

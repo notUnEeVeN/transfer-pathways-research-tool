@@ -53,12 +53,24 @@ describe('majors config', () => {
       expect(capabilities.courseCategories).toBe(false);
       expect(capabilities.prerequisites).toBe(false);
     }
+    // Both new majors now have imported associate-degree records; the
+    // capabilities that remain false are the ones still awaiting validation.
+    expect(getMajor('bio').capabilities.asDegrees).toBe(true);
+    expect(getMajor('econ').capabilities.asDegrees).toBe(true);
   });
 
-  it('publishes the Economics AA-T label for the major-neutral transfer slot', () => {
-    expect(getMajor('econ').degreeSlotLabels).toEqual({ ast: 'A.A.-T' });
-    expect(JSON.parse(JSON.stringify(serializeMajors()))
-      .find((major) => major.slug === 'econ').degreeSlotLabels.ast).toBe('A.A.-T');
+  it('publishes the researched associate-degree cohorts and labels per major', () => {
+    expect(getMajor('cs').degreeAnalysisSlots).toEqual(['local_as', 'ast']);
+    expect(getMajor('bio').degreeAnalysisSlots).toEqual(['local_as', 'ast']);
+    expect(getMajor('econ').degreeAnalysisSlots).toEqual(['ast', 'local_other']);
+    expect(getMajor('econ').degreeSlotLabels).toEqual({
+      ast: 'A.A.-T / A.S.-T',
+      local_other: 'Local A.A.',
+    });
+    const serializedEcon = JSON.parse(JSON.stringify(serializeMajors()))
+      .find((major) => major.slug === 'econ');
+    expect(serializedEcon.degreeAnalysisSlots).toEqual(['ast', 'local_other']);
+    expect(serializedEcon.degreeSlotLabels.local_other).toBe('Local A.A.');
   });
 
   it('unknown slug returns null', () => {

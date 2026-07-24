@@ -28,12 +28,26 @@ export const CS_FALLBACK = [{
     132: ['Computer Science B.S.'],
     144: ['COMPUTER SCIENCE AND ENGINEERING, B.S. '],
   },
+  // Identity rollup: the Computer Science typing module's four categories are
+  // already the MA figure's four columns, and there is no extended variant.
+  courseTypes: {
+    module: 'cs',
+    axes: {
+      faithful: [
+        { key: 'computing', label: 'Computing', categories: ['computing'] },
+        { key: 'math', label: 'Math', categories: ['math'] },
+        { key: 'science', label: 'Science', categories: ['science'] },
+        { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+      ],
+    },
+  },
   capabilities: {
     assistAgreements: true,
     caCreditLossArtifact: true,
     agreementPathways: true,
     asDegrees: true, paperBaselines: true, transferMinimums: true,
-    degreeTemplates: true, courseCategories: true, prerequisites: true,
+    degreeTemplates: true, courseCategories: true, courseTypeFigures: true,
+    prerequisites: true,
     snapshots: [],
   },
 }]

@@ -2,22 +2,78 @@ import React, { useId, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { useMajors } from '../shared/majors/useMajors'
 
 // Whole curated degree template per campus, visibility-independent: this is an
 // aggregate research figure, so an admin's major selection must not move it.
-const COVERAGE_PARAMS = {
-  majorSlug: 'cs',
+const coverageParams = (majorSlug) => ({
+  majorSlug,
   groupBy: 'college',
   requirements: 'degree',
   pin: 'settings',
+})
+
+/**
+ * Column colors by axis key.
+ *
+ * The four `faithful` keys of each major are the SOURCE FIGURE's colors, in the
+ * source figure's slot order — own discipline, quantitative, supporting
+ * science, everything else. Keeping a slot's color constant across majors is
+ * what lets the Computer Science and Biology figures be read as an overlay.
+ * They are deliberately not re-derived: this view is a reproduction, and a
+ * palette validator would flag contrast defects that belong to the published
+ * figure rather than to us.
+ *
+ * The `extended` keys are ours, so they are held to the usual standard —
+ * validated for colorblind separation, chroma, lightness and contrast against
+ * the figure's white surface (worst adjacent pair ΔE 11.9 deutan, 19.3 normal).
+ */
+const AXIS_COLORS = {
+  // Source-figure slots.
+  computing: '#E8443A',
+  math: '#4C7FA0',
+  science: '#8FA23F',
+  non_stem: '#F0B537',
+  // Biology's faithful columns reuse the same four slots in the same order.
+  biology: '#E8443A',
+  chem_physics: '#8FA23F',
 }
 
-export const COURSE_TYPES = [
-  { key: 'computing', label: 'Computing', color: '#E8443A' },
-  { key: 'math', label: 'Math', color: '#4C7FA0' },
-  { key: 'science', label: 'Science', color: '#8FA23F' },
-  { key: 'non_stem', label: 'Non-STEM', color: '#F0B537' },
+const EXTENDED_COLORS = {
+  biology: '#5E8C2A',
+  chemistry: '#A0446E',
+  physics: '#B8860B',
+  math: '#2C6FB5',
+  computing: '#B03A2E',
+  non_stem: '#6A4C93',
+}
+
+const FALLBACK_COLOR = '#6B7280'
+
+export const VARIANTS = [
+  { value: 'faithful', label: 'Paper course types' },
+  { value: 'extended', label: 'By discipline' },
 ]
+
+/**
+ * The columns to plot: the major's declared axis set for this variant, each
+ * carrying the fine categories it rolls up and the color for its slot.
+ *
+ * Returns an empty list when the major declares no such axis set, which is how
+ * a major without course typing renders nothing rather than silently borrowing
+ * another major's vocabulary.
+ */
+export function columnsFor(major, variant = 'faithful') {
+  const axes = major?.courseTypes?.axes?.[variant]
+  if (!Array.isArray(axes)) return []
+  const palette = variant === 'extended' ? EXTENDED_COLORS : AXIS_COLORS
+  return axes.map((axis) => ({
+    key: axis.key,
+    label: axis.label,
+    categories: Array.isArray(axis.categories) ? axis.categories : [axis.key],
+    color: palette[axis.key] || AXIS_COLORS[axis.key] || FALLBACK_COLOR,
+  }))
+}
 
 // Which slots the percentage is taken over. Upper-division coursework can
 // never be taught at a community college, so counting it makes a computing
@@ -55,7 +111,7 @@ function shortenCampus(name) {
  * the source figure, where the Non-STEM column carries fewer points than the
  * others.
  */
-export function buildCourseTypeModel(rows = [], scope = 'whole-degree') {
+export function buildCourseTypeModel(rows = [], scope = 'lower-division', columnSpecs = []) {
   const wholeDegree = scope === 'whole-degree'
   const campuses = new Map()
   for (const row of rows) {
@@ -66,11 +122,18 @@ export function buildCourseTypeModel(rows = [], scope = 'whole-degree') {
       campuses.set(key, { key, campus: shortenCampus(row.school), samples: new Map() })
     }
     const campus = campuses.get(key)
-    for (const type of COURSE_TYPES) {
-      const slots = types[type.key]
-      if (!slots) continue
-      const total = wholeDegree ? slots.total : (slots.lower_division_total ?? slots.total)
-      const covered = wholeDegree ? slots.covered : (slots.lower_division_covered ?? slots.covered)
+    for (const type of columnSpecs) {
+      // A column sums the fine categories it rolls up. The server sends one
+      // PRIMARY category per requirement in this field, so a requirement can
+      // never land in the same column twice.
+      let total = 0
+      let covered = 0
+      for (const category of type.categories) {
+        const slots = types[category]
+        if (!slots) continue
+        total += wholeDegree ? slots.total : (slots.lower_division_total ?? slots.total)
+        covered += wholeDegree ? slots.covered : (slots.lower_division_covered ?? slots.covered)
+      }
       if (!total) continue
       if (!campus.samples.has(type.key)) campus.samples.set(type.key, [])
       campus.samples.get(type.key).push((covered / total) * 100)
@@ -78,7 +141,7 @@ export function buildCourseTypeModel(rows = [], scope = 'whole-degree') {
   }
 
   const campusList = [...campuses.values()].sort((a, b) => a.campus.localeCompare(b.campus))
-  const columns = COURSE_TYPES.map((type) => {
+  const columns = columnSpecs.map((type) => {
     const points = campusList
       .map((campus) => {
         const values = campus.samples.get(type.key) || []
@@ -134,10 +197,11 @@ function swarm(points) {
   })
 }
 
-function CourseTypeFigure({ model }) {
+function CourseTypeFigure({ model, majorLabel = 'degree', variant = 'faithful' }) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-course-type-title`
   const descriptionId = `${id}-course-type-description`
+  const columnCount = model.columns.length
   const columnWidth = (WIDTH - PLOT.left - PLOT.right) / model.columns.length
   const ticks = [0, 20, 40, 60, 80, 100]
 
@@ -146,12 +210,21 @@ function CourseTypeFigure({ model }) {
       <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role='img'
         aria-labelledby={`${titleId} ${descriptionId}`}
         className='block h-auto w-full' data-export-width={WIDTH}>
-        <title id={titleId}>Transferable requirements by course type</title>
+        <title id={titleId}>
+          {variant === 'extended'
+            ? `Transferable ${majorLabel} requirements by discipline`
+            : 'Transferable requirements by course type'}
+        </title>
         <desc id={descriptionId}>
-          One point per University of California campus in each of four course types,
-          showing the share of that campus&apos;s computer science degree requirements of
-          that type with a community college equivalent. A black diamond marks the
-          average of the points in each column.
+          One point per University of California campus in each of {columnCount}
+          {variant === 'extended' ? ' disciplines' : ' course types'}, showing the share
+          of that campus&apos;s {majorLabel} degree requirements of that
+          {variant === 'extended' ? ' discipline' : ' type'} with a community college
+          equivalent. A black diamond marks the average of the points in each column.
+          {variant === 'extended'
+            ? ' This breakdown is not the source paper’s; it separates the disciplines'
+              + ' that the paper’s four course types combine.'
+            : ''}
         </desc>
         <rect width={WIDTH} height={HEIGHT} fill='#ffffff' />
 
@@ -228,15 +301,28 @@ function diamond(x, y, size) {
   return `M${x} ${y - size} L${x + size} ${y} L${x} ${y + size} L${x - size} ${y} Z`
 }
 
-export default function CourseTypeCoverage() {
-  const [scope, setScope] = useState('whole-degree')
-  const coverage = useCoverage(COVERAGE_PARAMS, {
+export default function CourseTypeCoverage({ majorSlug = 'cs', majorLabel = '' }) {
+  const [scope, setScope] = useState('lower-division')
+  const [variant, setVariant] = useState('faithful')
+  const { bySlug } = useMajors()
+  const major = bySlug.get(majorSlug) || null
+  // A major with no extended axis set renders the port and nothing else, so
+  // Computer Science keeps exactly the controls it had.
+  const hasExtended = Boolean(major?.courseTypes?.axes?.extended)
+  const activeVariant = hasExtended ? variant : 'faithful'
+  const columnSpecs = useMemo(
+    () => columnsFor(major, activeVariant), [major, activeVariant]
+  )
+  const coverage = useCoverage(coverageParams(majorSlug), {
     staleTime: 0,
     refetchOnWindowFocus: false,
     refetchInterval: false,
   })
   const rows = coverage.data?.rows || []
-  const model = useMemo(() => buildCourseTypeModel(rows, scope), [rows, scope])
+  const model = useMemo(
+    () => buildCourseTypeModel(rows, scope, columnSpecs), [rows, scope, columnSpecs]
+  )
+  const label = majorLabel || major?.label || 'degree'
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -263,6 +349,23 @@ export default function CourseTypeCoverage() {
             ))}
           </div>
         </div>
+        {hasExtended && (
+          <div className='flex flex-col' data-control-group='variant'>
+            <span className='field-label'>Course grouping</span>
+            <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
+              {VARIANTS.map((item) => (
+                <button key={item.value} type='button' onClick={() => setVariant(item.value)}
+                  className={`px-3 text-button border-r border-border last:border-r-0 ${
+                    activeVariant === item.value
+                      ? 'bg-primary-soft text-primary'
+                      : 'text-ink-muted hover:bg-surface-hover'
+                  }`}>
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <Button className='ml-auto' variant='secondary' leadingIcon={ArrowPathIcon}
           loading={coverage.isFetching && !coverage.isLoading}
           onClick={() => coverage.refetch()}>
@@ -270,7 +373,7 @@ export default function CourseTypeCoverage() {
         </Button>
       </div>
       <div data-export-root>
-        <CourseTypeFigure model={model} />
+        <CourseTypeFigure model={model} majorLabel={label} variant={activeVariant} />
       </div>
     </Stack>
   )

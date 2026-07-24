@@ -5,6 +5,8 @@
  * mutates the user doc; the new query key becomes a different cache entry
  * and the new fetch fires automatically.
  */
+export const COVERAGE_QUERY_VERSION = 'strict-pmt-v3'
+
 export const qk = {
   userData: (uid) => ['userData', uid],
   colleges: () => ['colleges'],
@@ -39,6 +41,20 @@ export const qk = {
   // from painting — it only feeds the receiving-side course names in the
   // major-detail modal.
   universityCourses: (uid, schoolIds) => ['universityCourses', uid, [...(schoolIds || [])].join(',')],
+
+  // Computed analysis keys include a method version. This prevents a live
+  // calculation made with a new coverage definition from sharing in-memory
+  // cache state with a result produced by an older definition.
+  coverage: (uid, majorSlug, majorContains, groupBy, requirements, pin) => [
+    'analysis-coverage',
+    COVERAGE_QUERY_VERSION,
+    uid,
+    majorSlug,
+    majorContains,
+    groupBy,
+    requirements,
+    pin,
+  ],
 
   // Internal desktop audit. Bucketed by (scope, schoolIds, majorContains, groupingId)
   // via _filterKey; bootstrap drops scope on purpose since one fetch covers

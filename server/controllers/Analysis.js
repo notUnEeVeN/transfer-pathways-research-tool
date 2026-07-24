@@ -21,6 +21,7 @@ const { asyncHandler } = require('../middleware/asyncHandler');
 const {
   majorScopeFromQuery, getMajor, listMajors, defaultMajor, programPairs,
 } = require('../config/majors');
+const { AS_DEGREE_SLOTS } = require('../config/asDegreeSlots');
 const { asDegreesExportData } = require('../services/asDegreeView');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
 const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
@@ -184,7 +185,7 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   res.json(data);
 });
 
-// Associate-degree contribution model: per (college with a CS associate degree ×
+// Associate-degree contribution model: per (college with an associate degree ×
 // campus), the share of the full bachelor's plan and of its lower-division
 // requirements fulfilled by that associate degree. Legacy AS-unit utilization
 // fields remain for the separate replacement-coursework figure. Both degree
@@ -192,9 +193,8 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
 // bypasses the short analysis cache;
 // an explicit frontend refresh must never receive a pre-edit result.
 exports.transferCreditRate = asyncHandler(async (req, res) => {
-  // The AS-degree layer exists only for majors whose associate-degree data has
-  // been gathered (cs today). Asking for one without it is a client bug, not an
-  // empty result, so say so plainly.
+  // Asking for a major whose associate-degree layer has not been gathered is
+  // a client bug, not an empty result, so say so plainly.
   const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
   const major = getMajor(slug);
   if (!major) return res.status(400).json({ error: `unknown major: ${slug}` });
@@ -205,9 +205,15 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
       major: major.slug,
     });
   }
-  const degreeType = ['ast', 'local_as'].includes(req.query.degree_type)
-    ? req.query.degree_type
-    : 'local_as';
+  const requestedType = String(req.query.degree_type || '').trim();
+  if (requestedType && !AS_DEGREE_SLOTS.includes(requestedType)) {
+    return res.status(400).json({
+      error: `degree_type must be one of ${AS_DEGREE_SLOTS.join(', ')}`,
+    });
+  }
+  const configuredDefault = (major.degreeAnalysisSlots || [])
+    .find((slot) => AS_DEGREE_SLOTS.includes(slot));
+  const degreeType = requestedType || configuredDefault || 'local_as';
   const db = req.app.locals.db;
   const rows = await transferCreditRateData(db, null, {
     degreeType,
@@ -220,7 +226,7 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
     return res.send(toCsv(rows));
   }
   res.json({
-    params: { degree_type: degreeType, majorSlug: major.slug, method: 'bachelors_completion_v3' },
+    params: { degree_type: degreeType, majorSlug: major.slug, method: 'bachelors_completion_v4' },
     n: rows.length,
     rows,
   });

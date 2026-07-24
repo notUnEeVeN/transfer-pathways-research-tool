@@ -8,6 +8,8 @@ import {
 import {
   CAMPUSES, COURSE_CATEGORIES, buildPaperCourseBarriersModel, categoryOfGroupId,
 } from './paperCourseBarriersBaseline'
+import { buildAssistBarriersModel, panelsFor } from './degreeCourseBarriers'
+import { useMajors } from '../shared/majors/useMajors'
 
 const COVERAGE_PARAMS = {
   majorSlug: 'cs',
@@ -432,7 +434,19 @@ function modernSigned(value) {
   return `${value > 0 ? '+' : '−'}${pctFmt.format(Math.abs(value))}`
 }
 
-function ModernCoursePanel({ category, paperCategory, index, differences, hatchId }) {
+export function modernBarrierScale(model) {
+  const values = (model?.categories || []).flatMap((category) =>
+    (category.campuses || []).map((campus) => campus.pct).filter(Number.isFinite))
+  const yMax = values.some((value) => value > Y_MAX) ? 100 : Y_MAX
+  return {
+    yMax,
+    ticks: yMax === 100 ? [0, 20, 40, 60, 80, 100] : [0, 20, 40, 60],
+  }
+}
+
+function ModernCoursePanel({
+  category, paperCategory, index, differences, hatchId, yMax, yTicks,
+}) {
   const frame = modernPanelFrame(index)
   const plotX = frame.x + MODERN_BARRIERS.yGutter
   const plotTop = frame.top + MODERN_BARRIERS.plotTopOffset
@@ -440,9 +454,11 @@ function ModernCoursePanel({ category, paperCategory, index, differences, hatchI
   const plotWidth = frame.width - MODERN_BARRIERS.yGutter - MODERN_BARRIERS.rightInset
   const slotWidth = plotWidth / CAMPUSES.length
   const barWidth = slotWidth * 0.7
-  const color = modernCourseColor(category.key)
+  // A major with no published baseline supplies its own panel color; Computer
+  // Science has none of these and keeps resolving through the figure's lookup.
+  const color = category.panelColor || modernCourseColor(category.key)
   const valueY = (value) => plotBottom
-    - (Math.min(value, Y_MAX) / Y_MAX)
+    - (Math.min(value, yMax) / yMax)
       * MODERN_BARRIERS.fillFraction * MODERN_BARRIERS.plotHeight
 
   return (
@@ -458,7 +474,7 @@ function ModernCoursePanel({ category, paperCategory, index, differences, hatchI
       </text>
 
       <g aria-hidden='true'>
-        {[0, 20, 40, 60].map((tick) => {
+        {yTicks.map((tick) => {
           const y = valueY(tick)
           return (
             <g key={tick}>
@@ -598,17 +614,19 @@ function ModernCourseBarriersFigure({ model, paperModel, differences = false }) 
   const titleId = `${id}-modern-course-barriers-title`
   const descriptionId = `${id}-modern-course-barriers-description`
   const hatchId = `${id}-modern-not-required-hatch`
+  const { yMax, ticks: yTicks } = modernBarrierScale(model)
 
   return (
     <div className='overflow-hidden bg-white'>
       <svg viewBox={`0 0 ${MODERN_BARRIERS.width} ${MODERN_BARRIERS.height}`}
         role='img' aria-labelledby={`${titleId} ${descriptionId}`}
         data-modern-california-figure='articulation-gaps'
+        data-modern-y-max={yMax}
         className='block h-auto w-full' data-export-width={MODERN_BARRIERS.width}
         style={{ fontFamily: CA_FIGURE.fontFamily }}>
         <title id={titleId}>Districts missing course articulation, by campus and course</title>
         <desc id={descriptionId}>
-          Six current-data panels showing the percentage of California community college
+          {model.categories.length} current-data panels showing the percentage of California community college
           districts missing each required course articulation at each UC campus.
         </desc>
         <defs>
@@ -622,7 +640,8 @@ function ModernCourseBarriersFigure({ model, paperModel, differences = false }) 
         {model.categories.map((category, index) => (
           <ModernCoursePanel key={category.key} category={category}
             paperCategory={paperModel.categories[index]} index={index}
-            differences={differences} hatchId={hatchId} />
+            differences={differences} hatchId={hatchId}
+            yMax={yMax} yTicks={yTicks} />
         ))}
         <ModernCourseBarrierFooter hatchId={hatchId} differences={differences} />
       </svg>
@@ -630,32 +649,60 @@ function ModernCourseBarriersFigure({ model, paperModel, differences = false }) 
   )
 }
 
-function useCourseBarrierModels() {
-  const coverage = useCoverage(COVERAGE_PARAMS, {
+const EMPTY_PAPER_MODEL = { districtCount: 0, categories: [] }
+
+/**
+ * Computer Science reads the paper-matched transfer minimums and compares them
+ * with the published baseline. A newer major categorizes each college's exact
+ * stored ASSIST required groups and has no baseline to compare against, so it
+ * renders one live state.
+ */
+function useCourseBarrierModels(majorSlug = 'cs', panels = []) {
+  const usesAssistCategories = panels.length > 0
+  const coverage = useCoverage(usesAssistCategories
+    ? { majorSlug, groupBy: 'district', requirements: 'assist' }
+    : COVERAGE_PARAMS, {
     staleTime: 0,
     refetchOnWindowFocus: false,
     refetchInterval: false,
   })
   const rows = coverage.data?.rows || []
-  const paperModel = useMemo(() => buildPaperCourseBarriersModel(), [])
-  const currentModel = useMemo(() => buildCourseBarriersModel(rows), [rows])
-  return { coverage, rows, paperModel, currentModel }
+  const paperModel = useMemo(
+    () => (usesAssistCategories ? EMPTY_PAPER_MODEL : buildPaperCourseBarriersModel()),
+    [usesAssistCategories]
+  )
+  const currentModel = useMemo(
+    () => (usesAssistCategories
+      ? buildAssistBarriersModel(rows, panels, CAMPUSES)
+      : buildCourseBarriersModel(rows)),
+    [rows, panels, usesAssistCategories]
+  )
+  return { coverage, rows, paperModel, currentModel, usesAssistCategories }
 }
 
 /** Figure-only gallery thumbnail, intentionally pinned to current data. */
-export function PaperCourseBarriersPreview() {
-  const { coverage, paperModel, currentModel } = useCourseBarrierModels()
+export function PaperCourseBarriersPreview({ majorSlug = 'cs' }) {
+  const { bySlug } = useMajors()
+  const panels = useMemo(() => panelsFor(bySlug.get(majorSlug)), [bySlug, majorSlug])
+  const { coverage, paperModel, currentModel } = useCourseBarrierModels(majorSlug, panels)
   if (coverage.isLoading) return <div className='h-full grid place-items-center'><Spinner /></div>
   if (coverage.isError) return <Alert type='error'>Could not load district articulation coverage.</Alert>
   return <ModernCourseBarriersFigure model={currentModel} paperModel={paperModel} />
 }
 
-export default function PaperCourseBarriers() {
+export default function PaperCourseBarriers({ majorSlug = 'cs' }) {
   const [version, setVersion] = useState('current')
   const [showDiff, setShowDiff] = useState(false)
-  const { coverage, rows, paperModel, currentModel } = useCourseBarrierModels()
-  const model = version === 'paper' ? paperModel : currentModel
-  const diffOn = version === 'current' && showDiff
+  const { bySlug } = useMajors()
+  const panels = useMemo(() => panelsFor(bySlug.get(majorSlug)), [bySlug, majorSlug])
+  const {
+    coverage, rows, paperModel, currentModel, usesAssistCategories,
+  } = useCourseBarrierModels(majorSlug, panels)
+  // Without a published baseline there is nothing to switch between and nothing
+  // to difference against, so those controls do not render at all rather than
+  // offering a comparison this major cannot make.
+  const model = version === 'paper' && !usesAssistCategories ? paperModel : currentModel
+  const diffOn = !usesAssistCategories && version === 'current' && showDiff
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -668,30 +715,32 @@ export default function PaperCourseBarriers() {
     <Stack gap='section'>
       <div className='surface-card p-4' data-export-exclude>
         <div className='flex flex-col gap-4 lg:flex-row lg:items-end'>
-          <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6'>
-            <div className='flex flex-col' data-control-group='version'>
-              <span className='field-label'>Version</span>
-              <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
-                {VERSIONS.map((item) => (
-                  <button key={item.value} type='button' onClick={() => setVersion(item.value)}
-                    className={`px-3 text-button border-r border-border last:border-r-0 ${
-                      version === item.value
-                        ? 'bg-primary-soft text-primary'
-                        : 'text-ink-muted hover:bg-surface-hover'
-                    }`}>
-                    {item.label}
-                  </button>
-                ))}
+          {!usesAssistCategories && (
+            <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6'>
+              <div className='flex flex-col' data-control-group='version'>
+                <span className='field-label'>Version</span>
+                <div className='inline-flex h-9 self-start rounded-lg border border-border-strong bg-surface overflow-hidden'>
+                  {VERSIONS.map((item) => (
+                    <button key={item.value} type='button' onClick={() => setVersion(item.value)}
+                      className={`px-3 text-button border-r border-border last:border-r-0 ${
+                        version === item.value
+                          ? 'bg-primary-soft text-primary'
+                          : 'text-ink-muted hover:bg-surface-hover'
+                      }`}>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className='flex flex-col' data-control-group='comparison'>
+                <span className='field-label'>Comparison</span>
+                <div className='flex h-9 items-center'>
+                  <SwitchField label='Show differences' checked={diffOn}
+                    onChange={() => setShowDiff((shown) => !shown)} disabled={version === 'paper'} />
+                </div>
               </div>
             </div>
-            <div className='flex flex-col' data-control-group='comparison'>
-              <span className='field-label'>Comparison</span>
-              <div className='flex h-9 items-center'>
-                <SwitchField label='Show differences' checked={diffOn}
-                  onChange={() => setShowDiff((shown) => !shown)} disabled={version === 'paper'} />
-              </div>
-            </div>
-          </div>
+          )}
           <div className='flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-end lg:ml-auto lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0'
             data-control-group='data'>
             <Button className='self-start sm:self-auto' variant='secondary'
@@ -703,7 +752,7 @@ export default function PaperCourseBarriers() {
         </div>
       </div>
       <div data-export-root>
-        {version === 'paper'
+        {version === 'paper' && !usesAssistCategories
           ? <CourseBarriersFigure model={model} paperModel={paperModel}
               version={version} differences={false} />
           : <ModernCourseBarriersFigure model={model} paperModel={paperModel}

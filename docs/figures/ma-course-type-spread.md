@@ -16,23 +16,23 @@ California says the same thing, more starkly. The figure has a **Requirements
 counted** toggle, because the answer depends on whether coursework a community
 college cannot legally teach counts against it:
 
-| Course type | Whole degree (default) | Lower-division only | MA paper |
+| Course type | Whole degree | Lower-division only (default) | MA paper |
 | --- | ---: | ---: | ---: |
-| Computing | **11.4%** | 47.4% | 22% |
-| Math | **79.9%** | 83.9% | 60% |
-| Science | **87.4%** | 91.1% | 93% |
-| Non-STEM | **78.2%** | 100% | 76% |
+| Computing | 11.4% | **47.4%** | 22% |
+| Math | 79.9% | **83.9%** | 60% |
+| Science | 87.4% | **91.1%** | 93% |
+| Non-STEM | 78.2% | **100%** | 76% |
 
-The figure opens on the whole degree, which is the MA paper's question: how
-much of the bachelor's can be finished before transferring. Read the
-lower-division view when the question is articulation quality instead. Counting
+The figure opens on the lower-division view, where the question is articulation
+quality. Switch to the whole degree for the MA paper's question: how much of the
+bachelor's can be finished before transferring. Counting
 upper-division work suppresses the computing column for a reason that has
 nothing to do with articulation — a computer science degree's upper division is
 computer science, so the same pattern would appear in any state, and a
 mathematics degree would show it in math. Restricted to lower-division
 coursework, where all four types can be taught at a community college,
 computing still articulates at roughly half the rate of math. That gap is the
-finding; the whole-degree number is the headline.
+finding; the whole-degree view provides the broader graduation context.
 
 **This is a recreation, not a port.** The MA authors' code and data are not
 available to us, so there is no paper-baseline view to switch to and no
@@ -43,10 +43,10 @@ difference view — one state only. The two columns above are not like-for-like
 
 One point per UC campus per course type: the share of that campus's degree
 requirements of that type that have a community college equivalent, averaged
-over all 115 community colleges. The default scope counts every requirement in
-the template. The lower-division scope keeps only the transferable and breadth
-tiers, dropping upper-division and residency work that is never satisfiable at
-a community college. The black diamond is the mean of the points
+over all 115 community colleges. The default lower-division scope keeps only
+the transferable and breadth tiers, dropping upper-division and residency work
+that is never satisfiable at a community college. The whole-degree scope counts
+every requirement in the template. The black diamond is the mean of the points
 in the column — an average of campuses, not of the 1,035 campus–college pairs,
 matching the MA figure's per-four-year points.
 
@@ -70,7 +70,7 @@ columns carry nine points.
 | UCLA | 5/26 | 7/7 | 5/5 | 7/8 | 7.7 | 92.7 | 98.4 | 87.5 |
 
 Slots read *lower-division / whole degree*; percentages are the plotted points
-in the default whole-degree scope. The same table under the lower-division
+in the whole-degree scope. The default lower-division
 scope reads 18.4 (Berkeley), 50.4 (Davis), 40.2 (Irvine), 68.5 (Merced), 72.6
 (Riverside), 28.4 (San Diego), 64.3 (Santa Barbara), 43.9 (Santa Cruz) and 40.0
 (UCLA) for computing, with Non-STEM at 100% everywhere.

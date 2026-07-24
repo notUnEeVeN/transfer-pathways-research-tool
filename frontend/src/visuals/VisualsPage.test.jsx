@@ -148,12 +148,17 @@ describe('built-in visual registry', () => {
       'paper-district-heatmap',
       'paper-articulation-histogram',
       'paper-articulation-map',
+      'paper-course-barriers',
+      'course-type-coverage',
+      'transfer-credit-rate',
+      'transfer-extra-units',
       'coverage-heatmap',
       'income-access',
       'credit-loss',
       'choice-cost',
       'category-gaps',
       'complexity',
+      'time-to-degree',
     ])
 
     const fixed = ANALYSES.filter((analysis) => analysis.majorScope.mode === 'fixed')
@@ -229,6 +234,8 @@ describe('visual gallery thumbnails', () => {
   const biology = {
     slug: 'bio',
     label: 'Biology',
+    degreeAnalysisSlots: ['ast', 'local_as'],
+    degreeSlotLabels: { ast: 'A.S.-T' },
     capabilities: { degreeTemplates: true, courseCategories: false, prerequisites: false },
   }
 
@@ -316,9 +323,13 @@ describe('visual gallery thumbnails', () => {
   })
 
   it('passes the selected major through the full detail renderer', () => {
-    const Renderer = vi.fn(({ majorSlug, majorCapabilities }) => (
+    const Renderer = vi.fn(({
+      majorSlug, majorCapabilities, degreeAnalysisSlots, degreeSlotLabels,
+    }) => (
       <div data-testid='major-detail' data-major={majorSlug}
-        data-templates={String(majorCapabilities.degreeTemplates)} />
+        data-templates={String(majorCapabilities.degreeTemplates)}
+        data-degree-slots={degreeAnalysisSlots.join(',')}
+        data-transfer-label={degreeSlotLabels.ast} />
     ))
     const analysis = {
       id: 'dynamic-detail',
@@ -334,6 +345,8 @@ describe('visual gallery thumbnails', () => {
 
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-major', 'bio')
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-templates', 'true')
+    expect(screen.getByTestId('major-detail')).toHaveAttribute('data-degree-slots', 'ast,local_as')
+    expect(screen.getByTestId('major-detail')).toHaveAttribute('data-transfer-label', 'A.S.-T')
     expect(screen.getByText('Biology')).toBeTruthy()
   })
 

@@ -68,6 +68,24 @@ behind Figures 2, 3 and 4. The server now returns a per-group verdict
 course panels read the heatmap's own evaluation rather than running a second
 articulation model.
 
+### Biology and Economics
+
+The selected-major extension has no hand-curated paper baseline. It reads each
+college's exact stored ASSIST required-group structure (`requirements=assist`)
+and returns an explicit required/satisfied verdict for every panel. It does
+**not** read the four-year graduation template, substitute a canonical/modal
+agreement tree, or apply campus-specific course selections.
+
+Alternatives retain their published meaning. If every accepted route is a
+calculus route, calculus is required and any complete route satisfies it. If a
+campus permits one of biology, organic chemistry, or physics, none of those
+three is independently labeled mandatory. The truthy `is_required` flag is the
+only required/recommended distinction; the visual adds no waiver or exclusion.
+
+The publication renderer remains the CS template. Its usual 0–60% scale is
+retained whenever the data fit; if a valid bar exceeds 60%, the same renderer
+extends to 100% so a 100% bar and value label cannot be clipped by the panel.
+
 The **Paper baseline** view is transcribed, not recomputed: the percentages
 printed on the published figure are stored verbatim in
 `frontend/src/analyses/paperCourseBarriersBaseline.js`. Every printed value is

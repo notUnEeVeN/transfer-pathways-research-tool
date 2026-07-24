@@ -309,9 +309,9 @@ const allArticulatingCourses = (major) => {
 };
 
 /**
- * Does this college fully satisfy the campus's ASSIST-stated minimums? strict
- * defaults true (shipped behavior): unmet stated demand is a gap. strict=false
- * reproduces PMT's default-ACCEPT.
+ * Does this college fully satisfy the campus's ASSIST groups marked required?
+ * strict defaults true (shipped behavior): unmet stated demand is a gap.
+ * strict=false reproduces PMT's default-ACCEPT.
  */
 const isMajorArticulable = (major, strict = true) =>
   isMajorCompleted(major, allArticulatingCourses(major), [], strict);

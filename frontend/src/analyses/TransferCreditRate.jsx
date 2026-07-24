@@ -1,7 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
+import { AS_DEGREE_SLOTS, slotLabel } from '../asdegrees/asDegreeSlots'
+import { majorShortLabelFor } from '../shared/majors/majorLabel'
 import { createCoverageColorScale } from './CoverageHeatmap'
 import { paperRedCellColor } from './maHeatmapColors'
 
@@ -13,10 +15,39 @@ export { paperRedCellColor } from './maHeatmapColors'
  * The scope control compares the complete four-year model with only the work a
  * community college can perform (transferable + breadth tiers).
  */
-export const DEGREE_MODES = [
-  { value: 'local_as', label: 'Local CS A.S.' },
-  { value: 'ast', label: 'CS A.S.-T' },
-]
+const DEFAULT_DEGREE_ANALYSIS_SLOTS = ['local_as', 'ast']
+
+function degreeModeLabel(slot, awardLabel, majorSlug, configuredMajorLabel) {
+  const subject = majorShortLabelFor(majorSlug, configuredMajorLabel)
+  if (/^local\s+/i.test(awardLabel)) {
+    return `Local ${subject} ${awardLabel.replace(/^local\s+/i, '')}`
+  }
+  if (slot === 'local_other' && awardLabel === 'Other') {
+    return `${subject} other degree`
+  }
+  return `${subject} ${awardLabel}`
+}
+
+export function degreeModesForMajor({
+  majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
+  degreeSlotLabels = null,
+} = {}) {
+  const configured = Array.isArray(degreeAnalysisSlots)
+    ? [...new Set(degreeAnalysisSlots.filter((slot) => AS_DEGREE_SLOTS.includes(slot)))]
+    : []
+  const slots = configured.length ? configured : DEFAULT_DEGREE_ANALYSIS_SLOTS
+  return slots.map((slot) => {
+    const award = slotLabel(slot, degreeSlotLabels)
+    return {
+      value: slot,
+      label: degreeModeLabel(slot, award, majorSlug, majorLabel),
+    }
+  })
+}
+
+// Backward-compatible export for figure manifests/tests that still consume
+// the original CS modes directly.
+export const DEGREE_MODES = degreeModesForMajor()
 
 export const REQUIREMENT_SCOPES = [
   { value: 'full-degree', label: 'All bachelor’s requirements' },
@@ -145,7 +176,7 @@ function applicationNote(cell) {
     ['free electives', cell.elective_counted_units],
   ].filter(([, value]) => Number.isFinite(value))
   if (!buckets.length) return null
-  return `AS units applied once: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')} ${unitSystemName(cell.as_unit_system)}`
+  return `Associate-degree units applied once: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')} ${unitSystemName(cell.as_unit_system)}`
 }
 
 function cellTitle(row, col, cell, scope) {
@@ -247,11 +278,21 @@ function RateTable({ model, scope }) {
   )
 }
 
-export default function TransferCreditRate() {
-  // Local CS A.S. is the headline cohort; A.S.-T is the standardized benchmark.
-  const [degreeType, setDegreeType] = useState('local_as')
-  const [scope, setScope] = useState('full-degree')
-  const query = useTransferCreditRate(degreeType)
+export default function TransferCreditRate({
+  majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
+  degreeSlotLabels = null,
+}) {
+  const degreeModes = useMemo(() => degreeModesForMajor({
+    majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
+  }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
+  const [degreeType, setDegreeType] = useState(() => degreeModes[0]?.value || 'local_as')
+  const [scope, setScope] = useState('lower-division')
+  useEffect(() => {
+    if (!degreeModes.some((mode) => mode.value === degreeType)) {
+      setDegreeType(degreeModes[0]?.value || 'local_as')
+    }
+  }, [degreeModes, degreeType])
+  const query = useTransferCreditRate(degreeType, { majorSlug })
   const rows = query.data?.rows || []
   const model = useMemo(
     () => buildRateMatrix(rows, (row) => rateForScope(row, scope)),
@@ -271,7 +312,7 @@ export default function TransferCreditRate() {
       <div className='flex flex-col'>
         <span className='field-label'>Degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-          {DEGREE_MODES.map((mode) => (
+          {degreeModes.map((mode) => (
             <button key={mode.value} type='button' onClick={() => setDegreeType(mode.value)}
               className={`px-3 text-button border-r border-border last:border-r-0 ${
                 degreeType === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
@@ -325,6 +366,9 @@ export default function TransferCreditRate() {
         <RateTable model={model} scope={scope} />
         <TransferMethodNote warningCount={warningCount}>
           The denominator is the receiving bachelor’s requirements, not the associate degree. The full view includes university-only upper-division work; the lower-division view excludes that tier. Associate-degree units are applied at most once to articulated courses, general education or breadth, and documented elective room. Blank cells lack enough curated information.
+          {rows.some((row) => row.source_analysis_ready === false
+            || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
+            && ' Results marked with source-review warnings are exploratory until both degree structures are hand-verified.'}
         </TransferMethodNote>
       </div>
     </Stack>

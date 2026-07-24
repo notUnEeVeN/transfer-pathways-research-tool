@@ -182,3 +182,63 @@ class MajorScopedDegreeIdentityTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_group_level_assist_requirement_survives_the_import():
+    """A named ASSIST block declared on a group must reach the stored document.
+
+    UC Irvine states its whole biology math requirement as one named block with
+    no course id. Without this passthrough the link lives only in the database
+    and a re-import silently returns the group to 0% coverage.
+    """
+    campus = {
+        "school_id": 120, "school": "UC Irvine", "program": "Biology",
+        "groups": [{
+            "title": "Lower-division mathematics and statistics",
+            "tier": "transferable",
+            "assist_requirement": "Mathematics Requirement",
+            "requirements": [{"select": 1, "from": None}],
+        }],
+    }
+    doc = importer.build_doc("UCI", campus, {}, {}, empty_report(), major_slug="bio")
+
+    assert doc["requirement_groups"][0]["assist_requirement"] == "Mathematics Requirement"
+
+
+def test_a_combination_of_blocks_survives_as_a_list():
+    """Berkeley accepts its introductory-physics alternative only in full."""
+    levels = ["Level I Physics", "Level II Physics", "Level III Physics"]
+    campus = {
+        "school_id": 79, "school": "UC Berkeley", "program": "EECS",
+        "groups": [{
+            "title": "Physics", "tier": "transferable",
+            "assist_requirement": levels,
+            "requirements": [{"select": 1, "from": None}],
+        }],
+    }
+    doc = importer.build_doc("UCB", campus, {}, {}, empty_report())
+
+    assert doc["requirement_groups"][0]["assist_requirement"] == levels
+
+
+def test_a_block_can_attach_to_one_course_of_a_section():
+    """UCLA states one course of its CS section as a block, the rest by id."""
+    by_code = {
+        "COM SCI 31": {"parent_id": 1, "units": 4, "prefix": "COM SCI", "number": "31"},
+        "COM SCI 32": {"parent_id": 2, "units": 4, "prefix": "COM SCI", "number": "32"},
+    }
+    campus = {
+        "school_id": 117, "school": "UCLA", "program": "Computer Science",
+        "groups": [{
+            "title": "Lower-division computer science", "tier": "transferable",
+            "assist_requirements": {"COM SCI 31": "Computer programming courses: C++ preferred"},
+            "requirements": [{"select": 2, "from": ["COM SCI 31", "COM SCI 32"]}],
+        }],
+    }
+    doc = importer.build_doc("UCLA", campus, by_code, {}, empty_report())
+    receivers = doc["requirement_groups"][0]["sections"][0]["receivers"]
+
+    # Only the declared course carries the block; the other stands on its own
+    # articulation, or a group-level link would over-credit the whole section.
+    assert receivers[0]["assist_requirement"] == "Computer programming courses: C++ preferred"
+    assert "assist_requirement" not in receivers[1]

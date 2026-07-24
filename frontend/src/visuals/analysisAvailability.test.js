@@ -141,11 +141,16 @@ describe('analysis registry major scopes', () => {
       'paper-articulation-histogram': ['assistAgreements'],
       'paper-articulation-map': ['assistAgreements'],
       'coverage-heatmap': ['assistAgreements', 'degreeTemplates'],
+      'paper-course-barriers': ['assistAgreements', 'courseTypeFigures'],
+      'course-type-coverage': ['assistAgreements', 'degreeTemplates', 'courseTypeFigures'],
+      'transfer-credit-rate': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
+      'transfer-extra-units': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'income-access': ['assistAgreements'],
       'credit-loss': ['assistAgreements', 'agreementPathways'],
       'choice-cost': ['assistAgreements', 'agreementPathways'],
       'category-gaps': ['assistAgreements', 'courseCategories'],
       complexity: ['assistAgreements', 'prerequisites'],
+      'time-to-degree': ['assistAgreements', 'asDegrees'],
     })
   })
 
@@ -162,5 +167,27 @@ describe('analysis registry major scopes', () => {
       'coverage-heatmap',
       'income-access',
     ])
+  })
+
+  it('makes both associate-degree models available for Economics without enabling them for Biology', () => {
+    const economics = major({
+      slug: 'econ',
+      label: 'Economics',
+      capabilities: {
+        assistAgreements: true,
+        degreeTemplates: true,
+        asDegrees: true,
+      },
+    })
+    const ids = ['transfer-credit-rate', 'transfer-extra-units']
+
+    for (const id of ids) {
+      const analysis = ANALYSES.find((item) => item.id === id)
+      expect(resolveAnalysisAvailability(analysis, economics)).toMatchObject({
+        available: true,
+        effectiveMajorSlug: 'econ',
+      })
+      expect(resolveAnalysisAvailability(analysis, major()).available).toBe(false)
+    }
   })
 })

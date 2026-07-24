@@ -76,7 +76,7 @@ describe('course categories', () => {
     await run(putCategory, fakeReq({
       query: { majorSlug: 'bio' },
       params: { parentId: '42' },
-      body: { category: 'gen_chem', broad: 'science' },
+      body: { category: 'gen_chem', broad: 'chem_physics' },
       capture: (doc) => { saved = doc; },
     }));
     expect(saved).toMatchObject({

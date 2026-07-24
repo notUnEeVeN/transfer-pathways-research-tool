@@ -1,7 +1,7 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import TransferCreditRate, { buildRateMatrix } from './TransferCreditRate'
+import TransferCreditRate, { buildRateMatrix, degreeModesForMajor } from './TransferCreditRate'
 
 const mockRate = vi.fn()
 vi.mock('../shared/query/hooks/useData', () => ({
@@ -49,36 +49,51 @@ describe('buildRateMatrix', () => {
   })
 })
 
+describe('degreeModesForMajor', () => {
+  it('builds ordered, major-specific analysis cohorts without inventing an empty local A.S.', () => {
+    expect(degreeModesForMajor({
+      majorSlug: 'econ',
+      majorLabel: 'Economics',
+      degreeAnalysisSlots: ['ast', 'local_other'],
+      degreeSlotLabels: { ast: 'A.A.-T / A.S.-T', local_other: 'Local A.A.' },
+    })).toEqual([
+      { value: 'ast', label: 'Economics A.A.-T / A.S.-T' },
+      { value: 'local_other', label: 'Local Economics A.A.' },
+    ])
+  })
+})
+
 describe('TransferCreditRate', () => {
-  it('defaults to the local CS A.S. cohort and renders the matrix', () => {
+  it('defaults to the local CS A.S. cohort and lower-division requirements', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
-    expect(mockRate).toHaveBeenCalledWith('local_as')
+    expect(mockRate).toHaveBeenCalledWith('local_as', { majorSlug: 'cs' })
     expect(screen.getByText('CC Alpha')).toBeInTheDocument()
     // The cell value repeats in the column-average row (one computable cell).
-    expect(screen.getAllByText('45.2%').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('90.5%').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Average')).toHaveLength(2)
     expect(screen.queryByText('Mean degree applied')).not.toBeInTheDocument()
     expect(screen.queryByText('Whole degree applies')).not.toBeInTheDocument()
-    expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Bachelor’s requirements fulfilled: 45.2%/i)).toHaveAttribute(
-      'aria-label', expect.stringMatching(/AS units applied once: named requirements 20 · GE and breadth 30 · free electives 4.3 semester units/i)
+    expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Lower-division requirements fulfilled: 90.5%/i)).toHaveAttribute(
+      'aria-label', expect.stringMatching(/Associate-degree units applied once: named requirements 20 · GE and breadth 30 · free electives 4.3 semester units/i)
     )
-    expect(screen.getByLabelText(/CC Beta\s+UC Merced\s+Bachelor’s requirements fulfilled: 30%/i))
+    expect(screen.getByLabelText(/CC Beta\s+UC Merced\s+Lower-division requirements fulfilled: 60%/i))
       .toHaveStyle({ backgroundColor: 'rgb(255 255 255)' })
-    expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Bachelor’s requirements fulfilled: 50%/i))
+    expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Lower-division requirements fulfilled: 100%/i))
       .toHaveStyle({ backgroundColor: 'rgb(103 0 13)' })
+    expect(screen.getByText(/Transferable and breadth requirements; university-only work is excluded/i)).toBeInTheDocument()
     expect(screen.getByRole('note')).toHaveTextContent('The denominator is the receiving bachelor’s requirements')
     expect(screen.getByRole('note')).toHaveTextContent('1 cell includes a method warning')
   })
 
-  it('switches from all bachelor’s requirements to lower-division requirements', () => {
+  it('switches from lower-division to all bachelor’s requirements', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
-    fireEvent.click(screen.getByRole('button', { name: 'Lower-division only' }))
-    expect(screen.getByText(/Transferable and breadth requirements; university-only work is excluded/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Lower-division requirements fulfilled: 90.5%/i))
-      .toHaveAttribute('aria-label', expect.stringMatching(/54.3 of 60 semester units/i))
-    expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Lower-division requirements fulfilled: 100%/i))
+    fireEvent.click(screen.getByRole('button', { name: 'All bachelor’s requirements' }))
+    expect(screen.getByText(/complete modeled graduation plan, including upper-division and university-only work/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Bachelor’s requirements fulfilled: 45.2%/i))
+      .toHaveAttribute('aria-label', expect.stringMatching(/54.2 of 120 semester units/i))
+    expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Bachelor’s requirements fulfilled: 50%/i))
       .toHaveStyle({ backgroundColor: 'rgb(103 0 13)' })
   })
 
@@ -86,7 +101,25 @@ describe('TransferCreditRate', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
     fireEvent.click(screen.getByRole('button', { name: 'CS A.S.-T' }))
-    expect(mockRate).toHaveBeenLastCalledWith('ast')
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs' })
+  })
+
+  it('uses the Economics transfer and local A.A. cohorts and exposes source-review status', () => {
+    const reviewRows = rows.map((item) => ({
+      ...item,
+      source_analysis_ready: false,
+      degree_research_status: 'ai_researched_needs_human_verification',
+    }))
+    mockRate.mockReturnValue({ data: { rows: reviewRows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
+    render(<TransferCreditRate majorSlug='econ' majorLabel='Economics'
+      degreeAnalysisSlots={['ast', 'local_other']}
+      degreeSlotLabels={{ ast: 'A.A.-T / A.S.-T', local_other: 'Local A.A.' }} />)
+
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'econ' })
+    expect(screen.getByRole('button', { name: 'Economics A.A.-T / A.S.-T' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Local Economics A.A.' }))
+    expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ' })
+    expect(screen.getByRole('note')).toHaveTextContent(/exploratory until both degree structures are hand-verified/i)
   })
 
   it('shows an empty state when the cohort has no records', () => {

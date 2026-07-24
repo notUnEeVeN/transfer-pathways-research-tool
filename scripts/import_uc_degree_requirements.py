@@ -203,8 +203,16 @@ def ge_area_receiver(code, name, seq, ge_areas=None, assume=False,
     }
 
 
-def build_section(req, tier, title, by_code, by_prefix, report, seq):
-    """One authored requirement -> one section {section_advisement, receivers[]}."""
+def build_section(req, tier, title, by_code, by_prefix, report, seq,
+                  assist_requirements=None):
+    """One authored requirement -> one section {section_advisement, receivers[]}.
+
+    `assist_requirements` maps an authored course code to the named ASSIST block
+    that stands for it, for the case where a campus states ONE course of a
+    section as a block while listing the rest by id (UCLA's "Computer
+    programming courses: C++ preferred" alongside COM SCI 32/33/35L).
+    """
+    blocks = assist_requirements or {}
     select = int(req["select"])
     frm = req.get("from")
     ge_area = req.get("ge_area")  # single IGETC area a specific course also satisfies
@@ -246,6 +254,9 @@ def build_section(req, tier, title, by_code, by_prefix, report, seq):
                 r = course_receiver(info, tier, seq())
                 if ge_area:
                     r["ge_areas"] = [ge_area]
+                block = blocks.get(code) or blocks.get(norm)
+                if block:
+                    r["assist_requirement"] = block
                 section["receivers"].append(r)
                 report["resolved"].append((code, norm, info["parent_id"]))
             else:
@@ -402,7 +413,11 @@ def build_doc(campus_key, campus, by_code, by_prefix, report,
     groups = []
     for g in campus["groups"]:
         tier = g["tier"]
-        sections = [build_section(req, tier, g["title"], by_code, by_prefix, report, seq) for req in g["requirements"]]
+        sections = [
+            build_section(req, tier, g["title"], by_code, by_prefix, report, seq,
+                          assist_requirements=g.get("assist_requirements"))
+            for req in g["requirements"]
+        ]
         groups.append({
             "is_required": True,
             "group_conjunction": "And",
@@ -414,6 +429,12 @@ def build_doc(campus_key, campus, by_code, by_prefix, report,
             "cc_articulable": g.get("cc_articulable"),
             "overlap_key": g.get("overlap_key"),
             "human_review": g.get("human_review"),
+            # ASSIST sometimes states a requirement as a NAMED block carrying no
+            # course id (UC Irvine's "Mathematics Requirement"). A group may
+            # declare the block(s) that satisfy it; several names mean a
+            # combination where all must articulate. Without this passthrough the
+            # link exists only in the database and a re-import silently drops it.
+            "assist_requirement": g.get("assist_requirement"),
             "sections": sections,
         })
     school_id = int(campus["school_id"])

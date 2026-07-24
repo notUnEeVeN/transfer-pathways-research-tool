@@ -59,12 +59,14 @@ async function seedTemplate({
   schoolId,
   school = `UC ${schoolId}`,
   program = 'Computer Science, B.S.',
+  majorSlug = null,
   totalUnits = 120,
   groups,
 }) {
   await db.collection('curated_requirements').insertOne({
     _id: `degree:${schoolId}`,
     kind: 'degree',
+    ...(majorSlug ? { major_slug: majorSlug } : {}),
     school_id: schoolId,
     school,
     program,
@@ -146,7 +148,7 @@ afterAll(async () => {
   await mongo.stop();
 });
 
-describe('transferCreditRateData v3', () => {
+describe('transferCreditRateData v4', () => {
   it('reports the share of all bachelor requirements and lower-division requirements fulfilled by the AS degree', async () => {
     await seedTemplate({
       schoolId: 1,
@@ -339,6 +341,94 @@ describe('transferCreditRateData v3', () => {
     expect(cell).toMatchObject({ major_slug: 'cs', named_transferred_units: 0 });
   });
 
+  it('models an Economics local A.A. and does not mistake repeated internal option wording for alternative degrees', async () => {
+    await seedTemplate({
+      schoolId: 79,
+      school: 'UC Berkeley',
+      program: 'Economics, B.A.',
+      majorSlug: 'econ',
+      groups: [namedGroup([{
+        section_advisement: 2,
+        receivers: [ucCourse(7901), ucCourse(7902)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 790,
+      degreeType: 'local_other',
+      majorSlug: 'econ',
+      groups: [
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(7901)],
+        }], 'Calculus - complete one option'),
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(7902)],
+        }], 'List A - select one option'),
+      ],
+    });
+    await seedCourses([[7901, 4], [7902, 4]]);
+    await seedAgreement({
+      schoolId: 79,
+      collegeId: 790,
+      major: 'Economics, B.A.',
+      receivers: [
+        articulated({ kind: 'course', parent_id: 7901 }, [7901]),
+        articulated({ kind: 'course', parent_id: 7902 }, [7902]),
+      ],
+    });
+
+    const rows = await transferCreditRateData(db, null, {
+      degreeType: 'local_other',
+      majorSlug: 'econ',
+      majorPrograms: { 79: ['Economics, B.A.'] },
+    });
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      major_slug: 'econ',
+      degree_type: 'local_other',
+      named_transferred_units: 8,
+      transferred_units: 8,
+    });
+    expect(rows[0].full_degree_completion_pct).toBeGreaterThan(0);
+    expect(rows[0].method_warning || '').not.toMatch(/group-level choose-one/i);
+  });
+
+  it('still excludes source groups that are explicitly separate named options', async () => {
+    await seedTemplate({
+      schoolId: 80,
+      groups: [namedGroup([{
+        section_advisement: 1,
+        receivers: [ucCourse(8001)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 800,
+      groups: [
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(8001)],
+        }], 'Networking Option (18 units)'),
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(8002)],
+        }], 'Programming Option (18 units)'),
+      ],
+    });
+    await seedCourses([[8001, 4], [8002, 4]]);
+    await seedAgreement({
+      schoolId: 80,
+      collegeId: 800,
+      receivers: [articulated({ kind: 'course', parent_id: 8001 }, [8001])],
+    });
+
+    const cell = await cellFor({ collegeId: 800, schoolId: 80 });
+    expect(cell.full_degree_completion_pct).toBeNull();
+    expect(cell.method_status).toBe('excluded');
+    expect(cell.method_warning).toMatch(/group-level choose-one/i);
+  });
+
   it('enforces UC choose-N capacity and requires the complete sending option for a series', async () => {
     await seedTemplate({
       schoolId: 4,
@@ -457,6 +547,168 @@ describe('transferCreditRateData v3', () => {
     expect(cell.elective_counted_units).toBeCloseTo(10, 1);
     expect(cell.transferred_units).toBeCloseTo(36.7, 1);
     expect(cell.extra_units).toBeCloseTo(23.3, 1);
+  });
+
+  it('does not sweep an explicitly non-UC-transferable selected course into elective capacity', async () => {
+    await seedTemplate({
+      schoolId: 55,
+      groups: [{
+        title: 'Unrestricted electives', tier: 'transferable', sections: [{
+          section_advisement: 1,
+          unit_advisement: 60,
+          receivers: [geReceiver('ELECTIVE', { assume: true })],
+        }],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 550,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        receivers: [asReceiver(5501)],
+      }])],
+    });
+    await seedCourses([[5501, 4, false]]);
+    await seedAgreement({ schoolId: 55, collegeId: 550, receivers: [] });
+
+    const cell = await cellFor({ collegeId: 550, schoolId: 55 });
+    expect(cell.known_nontransferable_units).toBe(4);
+    expect(cell.elective_counted_units).toBe(56);
+    expect(cell.transferred_units).toBe(56);
+    expect(cell.extra_units).toBe(4);
+    expect(cell.method_warning).toMatch(/explicitly not UC-transferable/i);
+  });
+
+  it('prefers a UC-transferable associate-degree option before counting replacement coursework', async () => {
+    await seedTemplate({
+      schoolId: 56,
+      groups: [{
+        title: 'Unrestricted electives', tier: 'transferable', sections: [{
+          section_advisement: 1,
+          unit_advisement: 60,
+          receivers: [geReceiver('ELECTIVE', { assume: true })],
+        }],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 560,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        receivers: [asReceiver(5601, 5602)],
+      }])],
+    });
+    await seedCourses([
+      [5601, 4, false],
+      [5602, 4, true],
+    ]);
+    await seedAgreement({ schoolId: 56, collegeId: 560, receivers: [] });
+
+    const cell = await cellFor({ collegeId: 560, schoolId: 56 });
+    expect(cell.known_nontransferable_units).toBe(0);
+    expect(cell.elective_counted_units).toBe(60);
+    expect(cell.transferred_units).toBe(60);
+    expect(cell.extra_units).toBe(0);
+  });
+
+  it('allows a small unit-pool overshoot to avoid known nontransferable coursework', async () => {
+    await seedTemplate({
+      schoolId: 57,
+      groups: [{
+        title: 'Unrestricted electives', tier: 'transferable', sections: [{
+          section_advisement: 1,
+          unit_advisement: 60,
+          receivers: [geReceiver('ELECTIVE', { assume: true })],
+        }],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 570,
+      groups: [asNamedGroup([{
+        section_advisement: null,
+        unit_advisement: 3,
+        receivers: [asReceiver(5701), asReceiver(5702)],
+      }], 'Support courses - select at least 3 units')],
+    });
+    await seedCourses([
+      [5701, 3, false],
+      [5702, 4, true],
+    ]);
+    await seedAgreement({ schoolId: 57, collegeId: 570, receivers: [] });
+
+    const cell = await cellFor({ collegeId: 570, schoolId: 57 });
+    expect(cell.named_units).toBe(4);
+    expect(cell.known_nontransferable_units).toBe(0);
+    expect(cell.extra_units).toBe(0);
+  });
+
+  it('uses distinct courses across independently required associate-degree lists', async () => {
+    await seedTemplate({
+      schoolId: 58,
+      groups: [namedGroup([{
+        section_advisement: 2,
+        receivers: [ucCourse(58001), ucCourse(58002)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 580,
+      groups: [
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(5801)],
+        }], 'List A - select one course'),
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(5801, 5802)],
+        }], 'List B - select one course or an unused List A course'),
+      ],
+    });
+    await seedCourses([[5801, 4], [5802, 4]]);
+    await seedAgreement({
+      schoolId: 58,
+      collegeId: 580,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 58001 }, [5801]),
+        articulated({ kind: 'course', parent_id: 58002 }, [5802]),
+      ],
+    });
+
+    const cell = await cellFor({ collegeId: 580, schoolId: 58 });
+    expect(cell.named_units).toBe(8);
+    expect(cell.named_transferred_units).toBe(8);
+    expect(cell.method_status).not.toBe('excluded');
+  });
+
+  it('excludes a degree when two required lists only resolve to the same course', async () => {
+    await seedTemplate({
+      schoolId: 59,
+      groups: [namedGroup([{
+        section_advisement: 1,
+        receivers: [ucCourse(59001)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 590,
+      groups: [
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(5901)],
+        }], 'List A - select one course'),
+        asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(5901)],
+        }], 'List B - select one course not used above'),
+      ],
+    });
+    await seedCourses([[5901, 4]]);
+    await seedAgreement({
+      schoolId: 59,
+      collegeId: 590,
+      receivers: [articulated({ kind: 'course', parent_id: 59001 }, [5901])],
+    });
+
+    const cell = await cellFor({ collegeId: 590, schoolId: 59 });
+    expect(cell.method_status).toBe('excluded');
+    expect(cell.full_degree_completion_pct).toBeNull();
+    expect(cell.method_warning).toMatch(/distinct resolved choices/i);
   });
 
   it('counts a GE fallback authored on a Berkeley-style course receiver', async () => {

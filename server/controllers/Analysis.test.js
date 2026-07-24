@@ -5,6 +5,7 @@ const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const {
   coverage: coverageEndpoint,
+  transferCreditRate: transferCreditRateEndpoint,
   exportCsAstDegrees,
   exportLocalCsAsDegrees,
   _parseMultiCampusPathwayParams,
@@ -106,6 +107,63 @@ describe('major scope resolution', () => {
   it('reports unknown slugs with the onboarded list', () => {
     expect(_resolveMajorScope({ majorSlug: 'underwater-basket-weaving' }))
       .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs', 'bio', 'econ'] });
+  });
+});
+
+describe('associate-degree analysis request scope', () => {
+  it('uses the configured Economics transfer cohort by default', async () => {
+    const response = await run(transferCreditRateEndpoint, { majorSlug: 'econ' });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.params).toMatchObject({
+      majorSlug: 'econ',
+      degree_type: 'ast',
+      method: 'bachelors_completion_v4',
+    });
+  });
+
+  it('accepts the researched Economics local A.A. slot', async () => {
+    const response = await run(transferCreditRateEndpoint, {
+      majorSlug: 'econ', degree_type: 'local_other',
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.params.degree_type).toBe('local_other');
+  });
+
+  it('rejects an unknown associate-degree slot instead of silently changing cohorts', async () => {
+    const response = await run(transferCreditRateEndpoint, {
+      majorSlug: 'econ', degree_type: 'certificate',
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toMatch(/degree_type must be one of/i);
+  });
+
+  it('keeps a major without analysis-ready associate-degree inputs gated', async () => {
+    // Every configured major now has imported associate-degree records, so the
+    // gate is exercised against a major whose capability is switched off rather
+    // than against whichever one happens to be pending. The guard is what is
+    // under test; which major trips it is incidental and changes as data lands.
+    const bio = getMajor('bio');
+    const original = bio.capabilities.asDegrees;
+    bio.capabilities.asDegrees = false;
+    try {
+      const response = await run(transferCreditRateEndpoint, { majorSlug: 'bio' });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toMatchObject({
+        error: 'capability_required', capability: 'asDegrees', major: 'bio',
+      });
+    } finally {
+      bio.capabilities.asDegrees = original;
+    }
+  });
+
+  it('serves the associate-degree model for a major whose records are in', async () => {
+    const response = await run(transferCreditRateEndpoint, { majorSlug: 'bio' });
+
+    expect(response.statusCode).toBe(200);
   });
 });
 

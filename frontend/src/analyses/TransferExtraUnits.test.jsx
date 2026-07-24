@@ -38,7 +38,7 @@ describe('TransferExtraUnits', () => {
   it('uses semester-equivalent units for the heatmap and keeps native units in the tooltip', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferExtraUnits />)
-    expect(mockRate).toHaveBeenCalledWith('local_as')
+    expect(mockRate).toHaveBeenCalledWith('local_as', { majorSlug: 'cs' })
     expect(screen.getAllByText('+20').length).toBeGreaterThan(0)
     expect(screen.getAllByText('+0').length).toBeGreaterThan(0)
     expect(screen.queryByText('Mean replacement units')).not.toBeInTheDocument()
@@ -56,6 +56,18 @@ describe('TransferExtraUnits', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferExtraUnits />)
     fireEvent.click(screen.getByRole('button', { name: 'CS A.S.-T' }))
-    expect(mockRate).toHaveBeenLastCalledWith('ast')
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs' })
+  })
+
+  it('defaults Economics to its transfer cohort and exposes the regular local A.A.', () => {
+    mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
+    render(<TransferExtraUnits majorSlug='econ' majorLabel='Economics'
+      degreeAnalysisSlots={['ast', 'local_other']}
+      degreeSlotLabels={{ ast: 'A.A.-T / A.S.-T', local_other: 'Local A.A.' }} />)
+
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'econ' })
+    expect(screen.getByRole('button', { name: 'Economics A.A.-T / A.S.-T' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Local Economics A.A.' }))
+    expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ' })
   })
 })

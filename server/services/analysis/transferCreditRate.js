@@ -36,12 +36,26 @@ const GE_UC_VERIFIED = new Set(['calgetc', 'igetc']);
 const GE_DEFAULT_SEMESTER_UNITS = { calgetc: 34, igetc: 37, csu_ge: 39 };
 const GE_STATUTORY_MINIMUM_SEMESTER_UNITS = 18;
 const ASSUMED_UNITS_PER_COURSE = 4;
-const DEGREE_TYPES = ['local_as', 'ast'];
 const EPSILON = 1e-7;
 const { defaultMajor, getMajor, programPairClause, programPairs } = require('../../config/majors');
+const { AS_DEGREE_SLOTS: DEGREE_TYPES } = require('../../config/asDegreeSlots');
 const { computeUnitBudget } = require('../degreeSlots');
 
 const round1 = (value) => +(Number(value) || 0).toFixed(1);
+
+function catalogCohorts(value) {
+  const matches = String(value || '').matchAll(/\b(20\d{2})\s*[-–/]\s*(?:20)?(\d{2})\b/g);
+  return new Set([...matches].map((match) => `${match[1]}-${match[2]}`));
+}
+
+function catalogCohortsDiffer(associateYear, bachelorYear) {
+  const associate = catalogCohorts(associateYear);
+  const bachelor = catalogCohorts(bachelorYear);
+  if (associate.size !== 1 || bachelor.size !== 1) {
+    return associate.size > 0 && bachelor.size > 0;
+  }
+  return [...associate][0] !== [...bachelor][0];
+}
 
 function unitSystemOfTemplate(template) {
   if (template.unit_system === 'quarter' || template.unit_system === 'semester') {
@@ -128,35 +142,53 @@ function unitsForIds(ids, unitsById) {
   return ids.reduce((total, id) => total + (unitsById.get(id) || 0), 0);
 }
 
-function scoredOption(option, transferable, unitsById) {
+function scoredOption(option, directlyEligible, generallyTransferable, unitsById) {
   const ids = optionIds(option);
   const total = unitsForIds(ids, unitsById);
-  const transferred = unitsForIds(ids.filter((id) => transferable.has(id)), unitsById);
-  return { ids, total, transferred };
+  const transferred = unitsForIds(ids.filter((id) => directlyEligible.has(id)), unitsById);
+  const applicable = unitsForIds(ids.filter((id) => (
+    directlyEligible.has(id) || generallyTransferable.has(id)
+  )), unitsById);
+  return { ids, total, transferred, applicable };
 }
 
 function compareTransferChoice(a, b) {
   const ratioA = a.total > 0 ? a.transferred / a.total : 0;
   const ratioB = b.total > 0 ? b.transferred / b.total : 0;
+  const applicableRatioA = a.total > 0 ? a.applicable / a.total : 0;
+  const applicableRatioB = b.total > 0 ? b.applicable / b.total : 0;
   return ratioB - ratioA
     || b.transferred - a.transferred
+    || applicableRatioB - applicableRatioA
+    || b.applicable - a.applicable
     || a.total - b.total
     || a.ids.join(',').localeCompare(b.ids.join(','));
 }
 
-function receiverChoices(receiver, transferable, unitsById) {
+function receiverChoices(
+  receiver,
+  directlyEligible,
+  generallyTransferable,
+  unitsById,
+  excludedIds = null,
+) {
   return (receiver.options || [])
-    .map((option) => scoredOption(option, transferable, unitsById))
-    .filter((option) => option.ids.length && option.total > 0)
+    .map((option) => scoredOption(option, directlyEligible, generallyTransferable, unitsById))
+    .filter((option) => option.ids.length
+      && option.total > 0
+      && !option.ids.some((id) => excludedIds?.has(id)))
     .sort(compareTransferChoice);
 }
 
-function stateForIds(ids, transferable, unitsById) {
+function stateForIds(ids, directlyEligible, generallyTransferable, unitsById) {
   const unique = [...new Set(ids)].sort((a, b) => a - b);
   return {
     ids: unique,
     total: unitsForIds(unique, unitsById),
-    transferred: unitsForIds(unique.filter((id) => transferable.has(id)), unitsById),
+    transferred: unitsForIds(unique.filter((id) => directlyEligible.has(id)), unitsById),
+    applicable: unitsForIds(unique.filter((id) => (
+      directlyEligible.has(id) || generallyTransferable.has(id)
+    )), unitsById),
   };
 }
 
@@ -164,25 +196,47 @@ function betterUnitState(candidate, incumbent) {
   if (!incumbent) return true;
   return candidate.transferred > incumbent.transferred + EPSILON
     || (Math.abs(candidate.transferred - incumbent.transferred) <= EPSILON
-      && candidate.ids.join(',').localeCompare(incumbent.ids.join(',')) < 0);
+      && (candidate.applicable > incumbent.applicable + EPSILON
+        || (Math.abs(candidate.applicable - incumbent.applicable) <= EPSILON
+          && candidate.ids.join(',').localeCompare(incumbent.ids.join(',')) < 0)));
 }
 
-// Exact subset search for a choose-by-units section. A completion plan uses
-// the smallest attainable unit total at/above the catalog floor; among plans
-// at that total, the transfer-oriented option wins. One option per receiver.
-function chooseUnitPlan(section, transferable, unitsById) {
+// Exact subset search for a choose-by-units section. A completion plan first
+// avoids coursework known not to transfer, then uses the smallest attainable
+// unit total at/above the catalog floor; direct articulation breaks remaining
+// ties. One option per receiver.
+function chooseUnitPlan(
+  section,
+  directlyEligible,
+  generallyTransferable,
+  unitsById,
+  excludedIds,
+) {
   const target = Number(section.unit_advisement) || 0;
   const choices = (section.receivers || []).map((receiver) =>
-    receiverChoices(receiver, transferable, unitsById));
+    receiverChoices(
+      receiver,
+      directlyEligible,
+      generallyTransferable,
+      unitsById,
+      excludedIds,
+    ));
   const maxOption = Math.max(0, ...choices.flat().map((option) => option.total));
   const cap = target + maxOption + EPSILON;
-  let states = new Map([[0, { ids: [], total: 0, transferred: 0 }]]);
+  let states = new Map([[0, {
+    ids: [], total: 0, transferred: 0, applicable: 0,
+  }]]);
 
   for (const receiverOptions of choices) {
     const next = new Map(states);
     for (const state of states.values()) {
       for (const option of receiverOptions) {
-        const candidate = stateForIds([...state.ids, ...option.ids], transferable, unitsById);
+        const candidate = stateForIds(
+          [...state.ids, ...option.ids],
+          directlyEligible,
+          generallyTransferable,
+          unitsById,
+        );
         if (candidate.total > cap) continue;
         const key = Math.round(candidate.total * 100);
         if (betterUnitState(candidate, next.get(key))) next.set(key, candidate);
@@ -193,15 +247,83 @@ function chooseUnitPlan(section, transferable, unitsById) {
 
   const feasible = [...states.values()]
     .filter((state) => state.total + EPSILON >= target)
-    .sort((a, b) => a.total - b.total
+    .sort((a, b) => (a.total - a.applicable) - (b.total - b.applicable)
+      || a.total - b.total
       || b.transferred - a.transferred
+      || b.applicable - a.applicable
       || a.ids.join(',').localeCompare(b.ids.join(',')));
   if (feasible.length) return { ...feasible[0], complete: true };
 
   const partial = [...states.values()].sort((a, b) => b.total - a.total
     || b.transferred - a.transferred
-    || a.ids.join(',').localeCompare(b.ids.join(',')))[0] || { ids: [], total: 0, transferred: 0 };
+    || b.applicable - a.applicable
+    || a.ids.join(',').localeCompare(b.ids.join(',')))[0] || {
+    ids: [], total: 0, transferred: 0, applicable: 0,
+  };
   return { ...partial, complete: false };
+}
+
+// Choose a distinct option for each required course slot. Associate-degree
+// lists frequently repeat List A courses under List B with explicit "unused"
+// language; a single course cannot silently satisfy both named requirements.
+// Mandatory receiver sets are handled most-constrained-first, while choose-N
+// pools retain the transfer-oriented ranking used by the historical model.
+function chooseCoursePlan(
+  section,
+  directlyEligible,
+  generallyTransferable,
+  unitsById,
+  excludedIds,
+) {
+  const receivers = section.receivers || [];
+  const statedAsk = section.section_advisement == null
+    ? receivers.length
+    : Math.max(0, Number(section.section_advisement) || 0);
+  const requiredCount = statedAsk;
+  const usedIds = new Set(excludedIds || []);
+  const usedReceivers = new Set();
+  const selectedIds = [];
+
+  while (usedReceivers.size < requiredCount) {
+    const candidates = receivers
+      .map((receiver, receiverIndex) => ({
+        receiverIndex,
+        options: usedReceivers.has(receiverIndex)
+          ? []
+          : receiverChoices(
+            receiver,
+            directlyEligible,
+            generallyTransferable,
+            unitsById,
+            usedIds,
+          ),
+      }))
+      .filter((candidate) => candidate.options.length);
+    if (!candidates.length) break;
+
+    const mandatoryAll = requiredCount >= receivers.length;
+    candidates.sort((a, b) => {
+      if (mandatoryAll && a.options.length !== b.options.length) {
+        return a.options.length - b.options.length;
+      }
+      return compareTransferChoice(a.options[0], b.options[0])
+        || a.receiverIndex - b.receiverIndex;
+    });
+    const selected = candidates[0];
+    const option = selected.options[0];
+    usedReceivers.add(selected.receiverIndex);
+    for (const id of option.ids) {
+      usedIds.add(id);
+      selectedIds.push(id);
+    }
+  }
+
+  return {
+    ...stateForIds(selectedIds, directlyEligible, generallyTransferable, unitsById),
+    complete: usedReceivers.size >= requiredCount,
+    selectedCount: usedReceivers.size,
+    requiredCount,
+  };
 }
 
 function associateNamedSections(doc) {
@@ -228,7 +350,7 @@ function candidateCourseSet(sections) {
   return ids;
 }
 
-function planAssociateDegree(sections, transferable, unitsById) {
+function planAssociateDegree(sections, directlyEligible, generallyTransferable, unitsById) {
   const chosen = new Set();
   const warnings = [];
   let complete = true;
@@ -236,7 +358,13 @@ function planAssociateDegree(sections, transferable, unitsById) {
   for (const section of sections) {
     let pick;
     if (section.unit_advisement != null) {
-      pick = chooseUnitPlan(section, transferable, unitsById);
+      pick = chooseUnitPlan(
+        section,
+        directlyEligible,
+        generallyTransferable,
+        unitsById,
+        chosen,
+      );
       if (!pick.complete) {
         complete = false;
         warnings.push(`${section.groupLabel} cannot reach its ${section.unit_advisement}-unit minimum with resolved courses.`);
@@ -245,24 +373,27 @@ function planAssociateDegree(sections, transferable, unitsById) {
         warnings.push(`${section.groupLabel} is stored as a unit pool; sequence or pathway combinations remain an estimate.`);
       }
     } else {
-      const candidates = (section.receivers || [])
-        .map((receiver) => receiverChoices(receiver, transferable, unitsById)[0])
-        .filter(Boolean)
-        .sort(compareTransferChoice);
-      const ask = section.section_advisement != null
-        ? Math.min(Number(section.section_advisement), candidates.length)
-        : candidates.length;
-      const selected = candidates.slice(0, Math.max(0, ask));
-      pick = stateForIds(selected.flatMap((option) => option.ids), transferable, unitsById);
-      if (section.section_advisement != null && candidates.length < Number(section.section_advisement)) {
+      pick = chooseCoursePlan(
+        section,
+        directlyEligible,
+        generallyTransferable,
+        unitsById,
+        chosen,
+      );
+      if (!pick.complete) {
         complete = false;
-        warnings.push(`${section.groupLabel} has fewer resolved choices than its course requirement.`);
+        warnings.push(`${section.groupLabel} cannot satisfy its ${pick.requiredCount}-course requirement with distinct resolved choices.`);
       }
     }
     for (const id of pick.ids || []) chosen.add(id);
   }
 
-  const state = stateForIds([...chosen], transferable, unitsById);
+  const state = stateForIds(
+    [...chosen],
+    directlyEligible,
+    generallyTransferable,
+    unitsById,
+  );
   return { ...state, complete, warnings: [...new Set(warnings)] };
 }
 
@@ -299,13 +430,17 @@ function unresolvedCount(doc) {
 // records describe mutually exclusive pathways as separate requirement
 // groups. Summing those groups would invent a degree no student completes.
 // Keep these records visible but uncomputed until the source is normalized to
-// an explicit group-level OR. Sequence-shaped unit pools are less severe: the
-// unit solver can estimate them and labels that estimate separately.
+// an explicit group-level OR. A phrase such as “complete one option” inside an
+// ordinary required block is *not* enough evidence: Economics degrees repeat
+// that wording across independently required calculus/List A/List B blocks.
 function groupChoiceAmbiguity(doc) {
   const labels = (doc.requirement_groups || [])
     .filter((group) => !group.units_fill && !group.ge_area)
     .map((group) => String(group.label_seen || group.title || ''));
-  const optionGroups = labels.filter((label) => /\boption(?:al)?\b/i.test(label));
+  const optionGroups = labels.filter((label) => (
+    /\boption\b\s*(?:\(|:|[-—])/i.test(label)
+    || /^\s*option\s+[a-z0-9]/i.test(label)
+  ));
   const emphasisGroups = labels.filter((label) => /\bemphasis\b/i.test(label));
   const explicitAlternative = labels.find((label) =>
     /\balternative\b.*\b(pathway|track)\b|\b(pathway|track)\b.*\balternative\b/i.test(label));
@@ -412,6 +547,7 @@ function hasGeFallback(section, receivers) {
 function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem, collegeSystem) {
   const optionsByPid = agreementOptionsByPid(agreements);
   const directIds = new Set();
+  const lowerDirectIds = new Set();
   let directAppliedUnits = 0;
   let lowerDirectAppliedUnits = 0;
   let geCampusUnits = 0;
@@ -478,7 +614,10 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
         sectionAppliedUnits += appliedHere;
         directAppliedUnits += appliedHere;
         if (isLowerDivision) lowerDirectAppliedUnits += appliedHere;
-        for (const id of candidate.ids) directIds.add(id);
+        for (const id of candidate.ids) {
+          directIds.add(id);
+          if (isLowerDivision) lowerDirectIds.add(id);
+        }
       }
 
       if (hasGeFallback(section, receivers) && selected.length < ask) {
@@ -491,6 +630,7 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
 
   return {
     directIds,
+    lowerDirectIds,
     directAppliedUnits,
     lowerDirectAppliedUnits,
     geCampusUnits,
@@ -502,9 +642,10 @@ function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem
 
 function applyAssociateUnits({
   asTotal, directApplied, geUnits, geDemand, electiveDemand,
+  knownIneligibleUnits = 0,
 }) {
   const direct = Math.min(asTotal, directApplied);
-  let remaining = Math.max(0, asTotal - direct);
+  let remaining = Math.max(0, asTotal - direct - knownIneligibleUnits);
   const geCounted = Math.min(geUnits, geDemand, remaining);
   remaining -= geCounted;
   const electiveCounted = Math.min(electiveDemand, remaining);
@@ -514,6 +655,15 @@ function applyAssociateUnits({
     electiveCounted,
     applied: Math.min(asTotal, direct + geCounted + electiveCounted),
   };
+}
+
+function knownIneligibleUnits(planIds, directlyAppliedIds, transferabilityById, unitsById) {
+  return unitsForIds(
+    planIds.filter((id) => (
+      transferabilityById.get(id) === false && !directlyAppliedIds.has(id)
+    )),
+    unitsById,
+  );
 }
 
 function completionMetric(appliedCollegeUnits, requiredCampusUnits, collegeSystem, campusSystem) {
@@ -540,6 +690,7 @@ function nullMetrics(row, status, warning, namedUnits = null) {
     named_units: namedUnits,
     named_transferred_units: null,
     elective_counted_units: null,
+    known_nontransferable_units: null,
     extra_units: null,
     extra_units_semester: null,
     method_status: status,
@@ -629,21 +780,39 @@ async function transferCreditRateData(db, _auditDb, {
       courseSet: candidateCourseSet(sections),
       ge: geBlocks(doc),
       unresolved: unresolvedCount(doc),
+      modelingWarningCount: Array.isArray(doc.extraction?.modeling_warnings)
+        ? doc.extraction.modeling_warnings.length
+        : 0,
     };
   });
   const allCourseIds = [...new Set(parsedDegrees.flatMap(({ courseSet }) => [...courseSet]))];
   const unitsById = new Map();
+  const transferabilityById = new Map();
   if (allCourseIds.length) {
     const courses = await db.collection('assist_courses').find(
       { side: 'sending', course_id: { $in: allCourseIds } },
       { projection: { course_id: 1, units: 1, uc_transferable: 1, _id: 0 } }
     ).toArray();
-    for (const course of courses) unitsById.set(Number(course.course_id), Number(course.units) || 0);
+    for (const course of courses) {
+      const courseId = Number(course.course_id);
+      unitsById.set(courseId, Number(course.units) || 0);
+      if (typeof course.uc_transferable === 'boolean') {
+        transferabilityById.set(courseId, course.uc_transferable);
+      }
+    }
   }
+  // Unknown transferability remains part of the documented optimistic
+  // assumption, but an explicitly false course must lose to a known/assumed
+  // transferable alternative when neither option articulates directly.
+  const generallyTransferable = new Set(
+    allCourseIds.filter((courseId) => transferabilityById.get(courseId) !== false),
+  );
 
   const nameById = new Map(institutions.map((institution) => [Number(institution.source_id), institution.name]));
   const rows = [];
-  for (const { doc, sections, courseSet, ge, unresolved } of parsedDegrees) {
+  for (const {
+    doc, sections, courseSet, ge, unresolved, modelingWarningCount,
+  } of parsedDegrees) {
     const collegeId = Number(doc.community_college_id);
     const collegeSystem = doc.unit_system === 'quarter' ? 'quarter' : 'semester';
     const asTotal = Number(doc.total_units)
@@ -664,21 +833,50 @@ async function transferCreditRateData(db, _auditDb, {
         record_id: doc._id,
         as_total_units: round1(asTotal),
         as_unit_system: collegeSystem,
+        as_catalog_year: doc.catalog_year || null,
         degree_unit_system: campus.unitSystem,
+        degree_catalog_year: campus.template.catalog_year || null,
+        degree_research_status: campus.template.research_status || null,
         full_degree_required_units: round1(campus.fullRequiredUnits),
         lower_division_required_units: round1(campus.lowerRequiredUnits),
         ge_units: round1(geUnits),
         unresolved_count: unresolved,
+        source_analysis_ready: doc.analysis_ready === true
+          ? true
+          : (doc.analysis_ready === false ? false : null),
+        source_verified: doc.verification?.verified === true,
+        source_modeling_warning_count: modelingWarningCount,
       };
 
+      const sourceWarnings = [];
+      if (doc.analysis_ready === false) {
+        sourceWarnings.push('The associate-degree source is not marked analysis-ready and still requires human verification.');
+      }
+      if (/needs[_\s-]+human[_\s-]+verification/i.test(String(campus.template.research_status || ''))) {
+        sourceWarnings.push('The four-year graduation template still requires human verification.');
+      }
+      if (catalogCohortsDiffer(doc.catalog_year, campus.template.catalog_year)) {
+        sourceWarnings.push(`Source cohorts differ: the associate degree is ${doc.catalog_year}, while the bachelor template is ${campus.template.catalog_year}.`);
+      }
+      if (unresolved > 0) {
+        sourceWarnings.push(`${unresolved} catalog course citation${unresolved === 1 ? '' : 's'} remain unresolved in the associate-degree source.`);
+      }
+      if (modelingWarningCount > 0) {
+        sourceWarnings.push(`${modelingWarningCount} catalog choice or alternative warning${modelingWarningCount === 1 ? '' : 's'} remain in the associate-degree source.`);
+      }
+
       if (!matched.agreements.length) {
-        rows.push(nullMetrics(base, 'unavailable', matched.warning));
+        rows.push(nullMetrics(
+          base,
+          'unavailable',
+          [matched.warning, ...sourceWarnings].filter(Boolean).join(' '),
+        ));
         continue;
       }
 
       const eligible = broadlyEligibleCourseIds(campus.template, matched.agreements, courseSet);
-      const plan = planAssociateDegree(sections, eligible, unitsById);
-      const warnings = [...plan.warnings];
+      const plan = planAssociateDegree(sections, eligible, generallyTransferable, unitsById);
+      const warnings = [...sourceWarnings, ...plan.warnings];
       const groupAmbiguity = groupChoiceAmbiguity(doc);
       if (groupAmbiguity) warnings.push(groupAmbiguity);
       if (matched.warning) warnings.push(matched.warning);
@@ -704,6 +902,21 @@ async function transferCreditRateData(db, _auditDb, {
         campus.unitSystem,
         collegeSystem
       );
+      const fullKnownIneligibleUnits = knownIneligibleUnits(
+        plan.ids,
+        evaluated.directIds,
+        transferabilityById,
+        unitsById,
+      );
+      const lowerKnownIneligibleUnits = knownIneligibleUnits(
+        plan.ids,
+        evaluated.lowerDirectIds,
+        transferabilityById,
+        unitsById,
+      );
+      if (fullKnownIneligibleUnits > EPSILON) {
+        warnings.push(`${round1(fullKnownIneligibleUnits)} selected ${collegeSystem} units are explicitly not UC-transferable and are counted as replacement coursework unless directly articulated.`);
+      }
       const geDemand = campusUnitsToCollege(
         evaluated.geCampusUnits,
         campus.unitSystem,
@@ -720,6 +933,7 @@ async function transferCreditRateData(db, _auditDb, {
         geUnits,
         geDemand,
         electiveDemand,
+        knownIneligibleUnits: fullKnownIneligibleUnits,
       });
       const lowerGeDemand = campusUnitsToCollege(
         evaluated.lowerGeCampusUnits,
@@ -737,6 +951,7 @@ async function transferCreditRateData(db, _auditDb, {
         geUnits,
         geDemand: lowerGeDemand,
         electiveDemand: lowerElectiveDemand,
+        knownIneligibleUnits: lowerKnownIneligibleUnits,
       });
       const { direct: directApplied, geCounted, electiveCounted, applied } = fullApplication;
       const extra = Math.max(0, asTotal - applied);
@@ -784,6 +999,7 @@ async function transferCreditRateData(db, _auditDb, {
         ge_assumed_units: round1(geCountedAssumed),
         elective_demand_units: round1(electiveDemand),
         elective_counted_units: round1(electiveCounted),
+        known_nontransferable_units: round1(fullKnownIneligibleUnits),
         extra_units: round1(extra),
         extra_units_semester: round1(toSemesterUnits(extra, collegeSystem)),
         method_status: warnings.length ? 'estimated' : 'ok',

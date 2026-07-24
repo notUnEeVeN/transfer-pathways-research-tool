@@ -39,6 +39,10 @@ const MAJORS = [
       120: ['Computer Science, B.S.'],
       46: ['Computer Science, B.S.'],
     },
+    // Ordered cohorts shown by the two associate-degree analysis figures.
+    // The local A.S. remains the historical CS headline; A.S.-T is its
+    // statewide comparison.
+    degreeAnalysisSlots: ['local_as', 'ast'],
     // Canonical course categories for the gap figures, and the broad axes they
     // roll up into. Consumed by controllers/Curation.js.
     categories: [
@@ -54,12 +58,27 @@ const MAJORS = [
       { key: 'non_stem', axis: 'non_stem' },
     ],
     broadAxes: ['computing', 'math', 'science', 'non_stem'],
+    // Course-type figure taxonomy (MA Figure 2 columns, CA Figure 5 panels).
+    // Computer Science types through services/courseTypes.js, whose four
+    // categories are already the paper's four columns, so the rollup is the
+    // identity and there is no extended variant to toggle into.
+    courseTypes: {
+      module: 'cs',
+      axes: {
+        faithful: [
+          { key: 'computing', label: 'Computing', categories: ['computing'] },
+          { key: 'math', label: 'Math', categories: ['math'] },
+          { key: 'science', label: 'Science', categories: ['science'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+      },
+    },
     // Which prereq-concept disciplines this major's chains draw on.
     conceptDisciplines: ['math', 'cs', 'physics', 'engr', 'stats'],
-    // Course-code typing rules are NOT here: the only analysis that types
-    // courses (MA Figure 2) is a paper-baseline figure, and those stay
-    // CS-only. Its rules live in services/courseTypes.js. Give this config a
-    // coursePatterns field when a second major actually needs course typing.
+    // The typing RULES stay in code — they are regexes and prefix sets, and a
+    // major's rules are a module (services/courseTypes.js here,
+    // services/courseTypesBio.js for Biology) named by `courseTypes.module`
+    // above. This config carries only the rollups the figures render.
     //
     // What this major's data supports. Everything defaults false for a new
     // major; cs has the full historical dataset.
@@ -72,6 +91,9 @@ const MAJORS = [
       transferMinimums: true,
       degreeTemplates: true,
       courseCategories: true,
+      // Rule-based receiver typing for MA Figure 2 / CA Figure 5. Distinct
+      // from courseCategories, which needs hand-curated per-course tags.
+      courseTypeFigures: true,
       prerequisites: true,
       snapshots: ['district-multi-campus-pathways', 'multi-campus-pathways',
         'district-portfolio-subsets'],
@@ -97,19 +119,60 @@ const MAJORS = [
       128: ['Biological Sciences, B.A. & B.S.'],
       132: ['Biology B.S.'],
     },
-    // Provisional until the Phase 3 mapping pass confirms them against the
-    // ported receivers (docs/superpowers/plans/2026-07-22-bio-econ-onboarding.md).
+    // Confirmed against the nine ported templates on 2026-07-23; these are the
+    // fine categories services/courseTypesBio.js assigns, so the curated
+    // tagging vocabulary and the figure taxonomy are one list. `axis` is the
+    // faithful (four-column) rollup. See docs/figures/bio-course-types.md.
     categories: [
+      { key: 'bio_series', axis: 'biology' },
       { key: 'calculus', axis: 'math' },
       { key: 'statistics', axis: 'math' },
-      { key: 'gen_chem', axis: 'science' },
-      { key: 'organic_chem', axis: 'science' },
-      { key: 'bio_series', axis: 'science' },
-      { key: 'physics', axis: 'science' },
-      { key: 'other_science', axis: 'science' },
+      { key: 'computing', axis: 'math' },
+      { key: 'gen_chem', axis: 'chem_physics' },
+      { key: 'organic_chem', axis: 'chem_physics' },
+      { key: 'physics', axis: 'chem_physics' },
       { key: 'non_stem', axis: 'non_stem' },
     ],
-    broadAxes: ['science', 'math', 'non_stem'],
+    // The cohorts the associate-degree figures compare. Biology is a science
+    // award like Computer Science, so it uses the same two: 108 A.S.-T records
+    // and 67 local A.S. records were found across 115 colleges. The 21
+    // local_other records are too thin a cohort to stand as their own series.
+    degreeAnalysisSlots: ['local_as', 'ast'],
+    broadAxes: ['biology', 'math', 'chem_physics', 'non_stem'],
+    // Column order mirrors the Computer Science figure's: own discipline,
+    // quantitative, supporting science, everything else. The extended variant
+    // exists because the faithful rollup necessarily hides that chemistry is
+    // the largest block of a biology degree — 87 course references against
+    // biology's ~45 — and the ported figure must not carry an annotation the
+    // source figure does not have.
+    courseTypes: {
+      module: 'bio',
+      axes: {
+        faithful: [
+          { key: 'biology', label: 'Biology', categories: ['bio_series'] },
+          { key: 'math', label: 'Math', categories: ['calculus', 'statistics', 'computing'] },
+          { key: 'chem_physics', label: 'Chemistry & Physics', categories: ['gen_chem', 'organic_chem', 'physics'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+        extended: [
+          { key: 'biology', label: 'Biology', categories: ['bio_series'] },
+          { key: 'chemistry', label: 'Chemistry', categories: ['gen_chem', 'organic_chem'] },
+          { key: 'physics', label: 'Physics', categories: ['physics'] },
+          { key: 'math', label: 'Math', categories: ['calculus', 'statistics'] },
+          { key: 'computing', label: 'Computing', categories: ['computing'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+      },
+      // CA Figure 5's 2x3 panel grid, in reading order.
+      barrierPanels: [
+        { key: 'bio_series', label: 'Intro Biology' },
+        { key: 'gen_chem', label: 'General Chemistry' },
+        { key: 'organic_chem', label: 'Organic Chemistry' },
+        { key: 'calculus', label: 'Calculus' },
+        { key: 'statistics', label: 'Statistics' },
+        { key: 'physics', label: 'Physics' },
+      ],
+    },
     conceptDisciplines: ['math', 'chem', 'bio', 'physics', 'stats'],
     capabilities: {
       assistAgreements: true,
@@ -118,7 +181,8 @@ const MAJORS = [
       // proof metadata before the exploratory minimum/choice-cost cards are
       // honest for this larger corpus.
       agreementPathways: false,
-      asDegrees: false,
+      // 166 found AS/AS-T records across 105 colleges, imported 2026-07-23.
+      asDegrees: true,
       paperBaselines: false,
       // Deliberately permanent: new majors are ASSIST-driven end to end, so
       // there are no hand-curated website minimums to gather.
@@ -127,6 +191,7 @@ const MAJORS = [
       // Category names and prerequisite concepts are provisional until their
       // dedicated validation passes are complete.
       courseCategories: false,
+      courseTypeFigures: true,
       prerequisites: false,
       snapshots: [],
     },
@@ -136,10 +201,10 @@ const MAJORS = [
     label: 'Economics',
     match: 'econom',
     // `ast` is the major-neutral internal slot for an Associate Degree for
-    // Transfer. Economics uses the arts award, unlike the science award used
-    // by the currently onboarded CS and Biology programs. Keep display copy
-    // with the major so later AA-T subjects do not require frontend branches.
-    degreeSlotLabels: { ast: 'A.A.-T' },
+    // Transfer. Nearly every Economics catalog prints an arts award, while one
+    // prints A.S.-T and two have conflicting A.A.-T/A.S.-T headings. The
+    // aggregate control names both without rewriting the source-specific award.
+    degreeSlotLabels: { ast: 'A.A.-T / A.S.-T', local_other: 'Local A.A.' },
     // The flagship Economics degree per campus, excluding business,
     // managerial, joint-math and policy variants — they carry different
     // lower-division requirements. Economics is a letters-and-science degree
@@ -155,23 +220,64 @@ const MAJORS = [
       128: ['Economics, B.A.'],
       132: ['Economics B.A.'],
     },
-    // Provisional — see the bio note above.
+    // Economics has a statewide A.A.-T and local A.A. cohort. No researched
+    // college publishes a general local Economics A.S. in the pinned corpus,
+    // so an empty A.S. control would be misleading.
+    degreeAnalysisSlots: ['ast', 'local_other'],
+    // Confirmed against the nine ported templates on 2026-07-23. Principles are
+    // NOT split into micro and macro: seven campuses name them, but Berkeley
+    // states ECON 1/2 as "Introduction to Economics" and Irvine states
+    // ECON 20A/20B as "Basic Economics I/II", so a split would print a "not
+    // required" bar at two campuses that plainly require both halves.
     categories: [
-      { key: 'micro_principles', axis: 'economics' },
-      { key: 'macro_principles', axis: 'economics' },
+      { key: 'econ_principles', axis: 'economics' },
+      { key: 'econ_theory', axis: 'economics' },
       { key: 'calculus', axis: 'math' },
       { key: 'statistics', axis: 'math' },
-      { key: 'other_math', axis: 'math' },
-      { key: 'other_social', axis: 'non_stem' },
+      { key: 'computing', axis: 'math' },
+      { key: 'other_social', axis: 'other_social' },
       { key: 'non_stem', axis: 'non_stem' },
     ],
-    broadAxes: ['economics', 'math', 'non_stem'],
+    broadAxes: ['economics', 'math', 'other_social', 'non_stem'],
+    // Same four-column shape as Computer Science and Biology: own discipline,
+    // quantitative, the supporting discipline, everything else. Economics fills
+    // the supporting slot with other social sciences rather than lab science.
+    courseTypes: {
+      module: 'econ',
+      axes: {
+        faithful: [
+          { key: 'economics', label: 'Economics', categories: ['econ_principles', 'econ_theory'] },
+          { key: 'math', label: 'Math', categories: ['calculus', 'statistics', 'computing'] },
+          { key: 'other_social', label: 'Other Social Science', categories: ['other_social'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+        extended: [
+          { key: 'economics', label: 'Economics', categories: ['econ_principles', 'econ_theory'] },
+          { key: 'calculus', label: 'Calculus', categories: ['calculus'] },
+          { key: 'statistics', label: 'Statistics', categories: ['statistics'] },
+          { key: 'computing', label: 'Computing', categories: ['computing'] },
+          { key: 'other_social', label: 'Other Social Science', categories: ['other_social'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+      },
+      barrierPanels: [
+        { key: 'econ_principles', label: 'Economics Principles' },
+        { key: 'econ_theory', label: 'Intermediate Theory' },
+        { key: 'calculus', label: 'Calculus' },
+        { key: 'statistics', label: 'Statistics' },
+        { key: 'computing', label: 'Computing' },
+        { key: 'other_social', label: 'Other Social Science' },
+      ],
+    },
     conceptDisciplines: ['math', 'stats', 'other'],
     capabilities: {
       assistAgreements: true,
       caCreditLossArtifact: true,
       agreementPathways: false,
-      asDegrees: false,
+      // The 2025-2026 statewide associate-degree corpus and all nine
+      // four-year templates are present. Source-review warnings remain visible
+      // in the analysis payload until the extracted rows are hand-verified.
+      asDegrees: true,
       paperBaselines: false,
       // Deliberately permanent: new majors are ASSIST-driven end to end, so
       // there are no hand-curated website minimums to gather.
@@ -180,6 +286,7 @@ const MAJORS = [
       // Category names and prerequisite concepts are provisional until their
       // dedicated validation passes are complete.
       courseCategories: false,
+      courseTypeFigures: true,
       prerequisites: false,
       snapshots: [],
     },

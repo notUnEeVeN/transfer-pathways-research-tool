@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
-  DEGREE_MODES, TransferMethodNote, buildRateMatrix, methodDetail,
+  TransferMethodNote, buildRateMatrix, degreeModesForMajor, methodDetail,
   methodWarningCount, paperRedCellColor, shortenSchool, unitSystemName,
 } from './TransferCreditRate'
 
@@ -108,9 +108,20 @@ function ExtraTable({ model }) {
   )
 }
 
-export default function TransferExtraUnits() {
-  const [degreeType, setDegreeType] = useState('local_as')
-  const query = useTransferCreditRate(degreeType)
+export default function TransferExtraUnits({
+  majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
+  degreeSlotLabels = null,
+}) {
+  const degreeModes = useMemo(() => degreeModesForMajor({
+    majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
+  }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
+  const [degreeType, setDegreeType] = useState(() => degreeModes[0]?.value || 'local_as')
+  useEffect(() => {
+    if (!degreeModes.some((mode) => mode.value === degreeType)) {
+      setDegreeType(degreeModes[0]?.value || 'local_as')
+    }
+  }, [degreeModes, degreeType])
+  const query = useTransferCreditRate(degreeType, { majorSlug })
   const rows = query.data?.rows || []
   const model = useMemo(
     () => buildRateMatrix(rows, (r) => r.extra_units_semester, extraScale),
@@ -130,7 +141,7 @@ export default function TransferExtraUnits() {
       <div className='flex flex-col'>
         <span className='field-label'>Degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-          {DEGREE_MODES.map((mode) => (
+          {degreeModes.map((mode) => (
             <button key={mode.value} type='button' onClick={() => setDegreeType(mode.value)}
               className={`px-3 text-button border-r border-border last:border-r-0 ${
                 degreeType === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
@@ -167,6 +178,9 @@ export default function TransferExtraUnits() {
         <ExtraTable model={model} />
         <TransferMethodNote warningCount={warningCount}>
           Each cell shows associate-degree units that do not apply through a named course, general education or breadth, or documented elective requirement in the curated graduation model. Quarter-unit results are converted to semester-equivalent units for comparison; these are modeled replacement units, not observed student outcomes.
+          {rows.some((row) => row.source_analysis_ready === false
+            || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
+            && ' Results marked with source-review warnings are exploratory until both degree structures are hand-verified.'}
         </TransferMethodNote>
       </div>
     </Stack>

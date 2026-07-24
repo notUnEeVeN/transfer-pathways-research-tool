@@ -83,11 +83,20 @@ async function loadUniversityCourses(db, requirementGroups) {
   return out;
 }
 
+/**
+ * ASSIST block names as a comparison key. Whitespace and case vary between a
+ * curated template and the parsed agreement, and neither is meaningful.
+ */
+function normalizeRequirementName(value) {
+  const text = String(value ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+  return text || null;
+}
+
 function buildDegreeGroups(requirementGroups, ctx = {}) {
   const {
     articulated = null, optionsByParent = new Map(),
     universityCoursesById = {}, coursesById = new Map(), ccGeAreas = null,
-    categoryOf = null,
+    categoryOf = null, articulatedRequirements = null,
   } = ctx;
   const evaluated = articulated != null;
 
@@ -95,15 +104,22 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   // MA paper's Figure 2. Off unless the caller supplies a categoryOf callback,
   // so every other consumer of this function is unaffected.
   const byCategory = categoryOf ? {} : null;
+  // A receiver can belong to more than one category: a chemistry series
+  // spanning general and organic courses is satisfied only when all of it
+  // articulates, so it counts against both disciplines. `by_category` keeps the
+  // PRIMARY (first) category only, so its slots still sum to the degree total
+  // and a rollup into figure columns cannot double-count. `by_category_multi`
+  // keeps every category, for figures that judge each category independently
+  // and never sum across them (CA Figure 5's panels).
+  const byCategoryMulti = categoryOf ? {} : null;
   let bumpTier = 'transferable';
-  const bump = (category, total, covered) => {
-    if (!byCategory || !category) return;
-    if (!byCategory[category]) {
-      byCategory[category] = {
+  const addTo = (store, category, total, covered) => {
+    if (!store[category]) {
+      store[category] = {
         total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
       };
     }
-    const bucket = byCategory[category];
+    const bucket = store[category];
     bucket.total += total;
     bucket.covered += evaluated ? covered : 0;
     // Upper-division / residency work is separated out so a figure can choose
@@ -113,6 +129,13 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       bucket.lower_division_total += total;
       bucket.lower_division_covered += evaluated ? covered : 0;
     }
+  };
+  const bump = (category, total, covered) => {
+    if (!byCategory) return;
+    const categories = (Array.isArray(category) ? category : [category]).filter(Boolean);
+    if (!categories.length) return;
+    addTo(byCategory, categories[0], total, covered);
+    for (const one of categories) addTo(byCategoryMulti, one, total, covered);
   };
 
   const byTier = {};
@@ -133,6 +156,42 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     let gCovered = 0;
     const lines = [];
 
+    // ASSIST does not always state a requirement as course rows. A campus may
+    // publish one NAMED block instead — UC Irvine's biology "Mathematics
+    // Requirement" is articulated at 114 of 115 colleges but carries no course
+    // id, so matching template course ids against articulated ids reports 0%
+    // for the whole discipline. A template group names the block that satisfies
+    // it, and an articulated block covers the group's sections.
+    //
+    // The link is declared, never inferred: if ASSIST renames the block the
+    // group returns to uncovered and the not-modelable check in the coverage
+    // layer flags it, rather than the figure quietly showing a false zero.
+    // A declared link may name SEVERAL blocks, and they are a combination: all
+    // of them must be articulated. Berkeley's engineering physics alternative
+    // is a community college's introductory physics sequence, which it accepts
+    // only in its entirety and publishes as three separate Level blocks — a
+    // college carrying two of the three has not completed the alternative.
+    // A bare string is simply a combination of one.
+    const blocksSatisfied = (declared) => {
+      const names = (Array.isArray(declared) ? declared : [declared])
+        .map(normalizeRequirementName)
+        .filter(Boolean);
+      return names.length > 0
+        && names.every((name) => articulatedRequirements?.has(name));
+    };
+
+    const namedBlockSatisfied = Boolean(evaluated && blocksSatisfied(g.assist_requirement));
+
+    // A block may also stand for ONE course rather than a whole group. UCLA
+    // states its intro programming requirement as "Computer programming
+    // courses: C++ preferred" inside a section that also lists three other
+    // computer science courses by id; only the first is that block. Declaring
+    // the link on the receiver keeps the other three counted on their own
+    // articulation.
+    const receiverBlockSatisfied = (r) => Boolean(
+      evaluated && r?.assist_requirement && blocksSatisfied(r.assist_requirement)
+    );
+
     for (const s of g.sections || []) {
       const ask = s.section_advisement ?? 1;
       const recvs = s.receivers || [];
@@ -141,6 +200,22 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       const sectionCoveredBefore = gCovered;
       const sectionUnits = s.unit_advisement != null ? Number(s.unit_advisement) : ask * 4;
       unitsTotal += sectionUnits;
+
+      // The group's named ASSIST block is articulated here, so every slot it
+      // covers is met however the campus chose to enumerate the courses.
+      if (namedBlockSatisfied) {
+        gCovered += ask;
+        bump(categoryOf && categoryOf({ section: s, group: g }), ask, ask);
+        unitsCovered += sectionUnits;
+        lines.push({
+          title: recvs[0]?.receiving?.name || g.title,
+          detail: `articulated as “${g.assist_requirement}” in ASSIST`,
+          need: ask,
+          covered: ask,
+          status: 'covered',
+        });
+        continue;
+      }
 
       // Assumed satisfiable at every college (AH&I, Cal-GETC, capped electives).
       if (recvs[0]?.assume_satisfiable) {
@@ -180,7 +255,8 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         for (const r of recvs) {
           if (r.receiving?.kind === 'course' || r.receiving?.kind === 'series') {
             const pids = receiverPids(r.receiving);
-            let isCovered = evaluated && receiverArticulated(r.receiving, articulated);
+            let isCovered = evaluated
+              && (receiverArticulated(r.receiving, articulated) || receiverBlockSatisfied(r));
             let cc = isCovered
               ? pids.flatMap((pid) => ccCodes(optionsByParent.get(pid) || r.options || [], coursesById))
               : [];
@@ -214,7 +290,10 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       } else {
         // Choose `ask` of many (e.g. the natural-science elective, 1 of 10;
         // or "pick one series in its entirety" where each option is a series).
-        const artRecvs = evaluated ? recvs.filter((r) => receiverArticulated(r.receiving, articulated)) : [];
+        const artRecvs = evaluated
+          ? recvs.filter((r) => receiverArticulated(r.receiving, articulated)
+            || receiverBlockSatisfied(r))
+          : [];
         let cov = Math.min(artRecvs.length, ask);
         // GE fallback, same semantic as the distinct-courses branch: an authored
         // ge_area on the requirement means a CC course in that IGETC area fills
@@ -253,7 +332,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   return {
     total,
     covered: evaluated ? covered : null,
-    ...(byCategory ? { by_category: byCategory } : {}),
+    ...(byCategory ? { by_category: byCategory, by_category_multi: byCategoryMulti } : {}),
     by_tier: evaluated ? byTier : Object.fromEntries(TIERS.map((t) => [t, { total: byTier[t].total, covered: null }])),
     units: {
       total: unitsTotal,
@@ -425,6 +504,7 @@ function degreeUnitSystem(degree, fallback = null) {
 
 module.exports = {
   buildDegreeGroups,
+  normalizeRequirementName,
   buildLedgerGroups,
   loadUniversityCourses,
   loadCollegeGeAreas,

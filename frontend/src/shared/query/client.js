@@ -33,6 +33,20 @@ export const queryClient = new QueryClient({
   }
 })
 
+/**
+ * Persist source/catalog queries, but never computed analyses. Analysis
+ * results depend on the current algorithm and canonical dataset; rehydrating
+ * an old result can otherwise paint one answer before the live request paints
+ * another. Individual hooks may still retain them briefly in memory when that
+ * is safe; coverage snapshots are discarded as soon as their visual unmounts.
+ */
+export function shouldPersistQuery(query) {
+  const rootKey = String(query?.queryKey?.[0] || '')
+  return query?.state?.status === 'success'
+    && !['access-me', 'majors'].includes(rootKey)
+    && !rootKey.startsWith('analysis-')
+}
+
 const idbStorage = {
   getItem: (key) => get(key),
   setItem: (key, value) => set(key, value),

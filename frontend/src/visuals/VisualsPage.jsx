@@ -112,6 +112,8 @@ function LiveThumbnail({
   majorSlug = 'cs',
   majorLabel = '',
   majorCapabilities = null,
+  degreeAnalysisSlots = null,
+  degreeSlotLabels = null,
   unavailableMessage = 'Interactive preview unavailable',
 }) {
   if (!Component) {
@@ -131,7 +133,9 @@ function LiveThumbnail({
         style={figureOnly ? { display: 'grid', alignItems: 'center' } : undefined}>
         <Component publicationOptions={publicationOptions || {}}
           majorSlug={majorSlug} majorLabel={majorLabel}
-          majorCapabilities={majorCapabilities} />
+          majorCapabilities={majorCapabilities}
+          degreeAnalysisSlots={degreeAnalysisSlots}
+          degreeSlotLabels={degreeSlotLabels} />
       </div>
     </div>
   )
@@ -211,6 +215,8 @@ export function VisualThumbnailCard({
               figureOnly={figureOnlyPreview} majorSlug={previewMajorSlug}
               majorLabel={previewMajorLabel}
               majorCapabilities={item.kind === 'analysis' ? selectedMajor?.capabilities : null}
+              degreeAnalysisSlots={item.kind === 'analysis' ? selectedMajor?.degreeAnalysisSlots : null}
+              degreeSlotLabels={item.kind === 'analysis' ? selectedMajor?.degreeSlotLabels : null}
               unavailableMessage={unavailableMessage} />)}
         {!ready && <div className='absolute inset-0 grid place-items-center'><Spinner /></div>}
         <div className='absolute inset-0 z-10 grid place-items-center bg-primary/0 transition-colors
@@ -501,7 +507,9 @@ export function InteractiveFigureCard({ fig, canModify, onDelete, deleting, onSa
           </p>
           <Component publicationOptions={fig.visual?.options || {}}
             majorSlug={frozenMajorSlug}
-            majorLabel={fig.visual?.options?.majorLabel || ''} />
+            majorLabel={fig.visual?.options?.majorLabel || ''}
+            degreeAnalysisSlots={fig.visual?.options?.degreeAnalysisSlots || null}
+            degreeSlotLabels={fig.visual?.options?.degreeSlotLabels || null} />
         </>
       )}
     </PublicationCard>
@@ -555,7 +563,9 @@ export function BuiltInAnalysisCard({
           <Component key={`${analysis.id}:${availability.effectiveMajorSlug}`}
             majorSlug={availability.effectiveMajorSlug}
             majorLabel={selectedMajor?.label || ''}
-            majorCapabilities={selectedMajor?.capabilities || null} />
+            majorCapabilities={selectedMajor?.capabilities || null}
+            degreeAnalysisSlots={selectedMajor?.degreeAnalysisSlots || null}
+            degreeSlotLabels={selectedMajor?.degreeSlotLabels || null} />
           {/* Kept out of exports — a downloaded figure should read as a figure. */}
           <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />
         </>

@@ -3,21 +3,40 @@
  * research project replicates from the CA/MA SIGCSE papers, over the research
  * dataset + the curation layer.
  *
- * Everything here works on REQUIRED requirement groups by default, honors
- * curation receiver-overrides (exclude), and reports course categories via
- * `curated_mappings` course categories (university parent_id → canonical
- * category), with receiver overrides as the fallback for non-course
- * receivers. Methodological choices mirror the papers' best-case-scenario
+ * Requirement source and curation behavior are explicit per analysis. In
+ * particular, ASSIST coverage evaluates the exact stored required tree with no
+ * curation exclusions, while the historical paper analyses retain their
+ * curated inputs. Methodological choices mirror the papers' best-case-scenario
  * framing; see optionSolver.js for the min-set semantics.
  */
-const { createHash } = require('node:crypto');
 const { manyToOneCount } = require('./optionSolver');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
-const { isMajorArticulable, calculateMajorCompletionPercentage, allArticulatingCourses } = require('./eligibility');
-const { buildDegreeGroups, degreeUnitSystem } = require('../degreeSlots');
-const { COURSE_TYPES, degreeCategoryOf } = require('../courseTypes');
+const {
+  isMajorArticulable, isMajorCompleted, isReceiverCompleted,
+  calculateMajorCompletionPercentage, allArticulatingCourses,
+} = require('./eligibility');
+const {
+  buildDegreeGroups, degreeUnitSystem, normalizeRequirementName,
+} = require('../degreeSlots');
+const { categoryOfFor, fineCategoriesFor } = require('../majorCourseTypes');
+const { assistCourseCategoryCoverage } = require('../assistCourseBarriers');
 const { projectPrereqEdges } = require('../prereqGraph');
 const { majorDocumentClause } = require('../../config/majorDocumentScope');
+
+const EMPTY_CATEGORY_SLOTS = {
+  total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
+};
+
+/**
+ * A category -> slot-counts map with every expected key present. Absent keys
+ * become explicit zeroes so a figure can distinguish "required and covered"
+ * from "not required at this campus" instead of reading a hole as either.
+ */
+function emptyFilled(keys, counts) {
+  return Object.fromEntries((keys || []).map((key) => [
+    key, counts?.[key] || { ...EMPTY_CATEGORY_SLOTS },
+  ]));
+}
 
 // UC-only: the research project studies UC transfer pathways exclusively.
 const SYSTEMS = [
@@ -72,7 +91,7 @@ function categoryOfReceiver(receiver, curation) {
 // Iterate required receivers (minus excluded) of one agreement.
 function* requiredReceivers(agreement, isExcluded) {
   for (const group of agreement.requirement_groups || []) {
-    if (group.is_required === false) continue;
+    if (!group.is_required) continue;
     for (const section of group.sections || []) {
       for (const r of section.receivers || []) {
         if (!isExcluded(r)) yield r;
@@ -81,210 +100,63 @@ function* requiredReceivers(agreement, isExcluded) {
   }
 }
 
-const receiverHashKey = (r) =>
-  String(r.hash_id ?? `${r.receiving?.kind || 'receiver'}:${r.receiving?.parent_id || ''}`);
-
-function stableCanonicalSerialize(value) {
-  if (value === null || typeof value !== 'object') return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(stableCanonicalSerialize).join(',')}]`;
-  const keys = Object.keys(value).sort();
-  return `{${keys.map((key) => (
-    `${JSON.stringify(key)}:${stableCanonicalSerialize(value[key])}`
-  )).join(',')}}`;
-}
-
-function canonicalStructureFingerprint(value) {
-  return createHash('sha256').update(stableCanonicalSerialize(value)).digest('hex');
-}
-
-/** Articulation-free, order-normalized, required-only UC structure.
+/**
+ * Evaluate one stored ASSIST agreement with the PMT eligibility engine.
  *
- * Curation exclusions are applied before both demand and structure selection,
- * exactly as in analysis/paper_credit_loss.py. Sending-course options and
- * articulation status are deliberately absent: a district may supply evidence
- * for a canonical receiver hash, but it can never define the denominator.
+ * There is deliberately no canonical-template substitution, receiver
+ * exclusion, campus-specific course projection, or parent-id equivalence here.
+ * The agreement's own truthy `is_required` groups are the demand. Whether the
+ * upstream parser classified that source tree correctly is deliberately not
+ * reinterpreted here. `crossCc` is PMT's native hash-based secondary-college
+ * evidence and is the only augmentation used when a row pools colleges.
  */
-function normalizedAssistRequirementStructure(requirementGroups, isExcluded = () => false) {
-  const stableSort = (values) => values.sort((left, right) => (
-    stableCanonicalSerialize(left).localeCompare(stableCanonicalSerialize(right))
-  ));
-  const groups = [];
-  for (const group of requirementGroups || []) {
-    if (!group.is_required) continue;
-    const sections = [];
-    for (const section of group.sections || []) {
-      const receivers = stableSort((section.receivers || [])
-        .filter((receiver) => !isExcluded(receiver))
-        .map((receiver) => ({
-          hash_id: receiver.hash_id ?? null,
-          receiving: receiver.receiving || {},
-        })));
-      sections.push({
-        section_advisement: section.section_advisement ?? null,
-        unit_advisement: section.unit_advisement ?? null,
-        receivers,
-      });
-    }
-    stableSort(sections);
-    groups.push({
-      is_required: group.is_required,
-      group_conjunction: group.group_conjunction ?? null,
-      group_advisement: group.group_advisement ?? null,
-      group_unit_advisement: group.group_unit_advisement ?? null,
-      group_min_distinct_sections: group.group_min_distinct_sections ?? null,
-      group_max_distinct_sections: group.group_max_distinct_sections ?? null,
-      group_section_min_courses: group.group_section_min_courses ?? null,
-      sections,
-    });
-  }
-  return stableSort(groups);
-}
-
-function advisementCount(value, fallback) {
-  if (value == null) return fallback;
-  if (typeof value === 'string' && !/^[+-]?\d+$/.test(value.trim())) return fallback;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? Math.max(0, Math.trunc(parsed)) : fallback;
-}
-
-/** True required receiver-slot demand under the eligibility engine's course
- * semantics. Unit and distinct-section shapes cannot honestly be expressed as
- * receiver counts, so—as in the Python generator—they fail loudly. */
-function assistRequirementDemand(requirementGroups) {
-  let demand = 0;
-  for (const group of requirementGroups || []) {
-    if (!group.is_required) continue;
-    if (group.group_unit_advisement != null) {
-      throw new Error('group_unit_advisement cannot be expressed as a course count');
-    }
-    if (group.group_min_distinct_sections != null
-      || group.group_section_min_courses != null) {
-      throw new Error('distinct-section requirements need an explicit course-count model');
-    }
-
-    const sections = group.sections || [];
-    const sectionNeeds = [];
-    const sectionCapacities = [];
-    for (const section of sections) {
-      if (section.unit_advisement != null) {
-        throw new Error('unit_advisement cannot be expressed as a course count');
-      }
-      const receiverCount = (section.receivers || []).length;
-      sectionNeeds.push(Math.min(
-        advisementCount(section.section_advisement, 1), receiverCount
-      ));
-      sectionCapacities.push(Math.min(
-        advisementCount(section.section_advisement, receiverCount), receiverCount
-      ));
-    }
-
-    const conjunction = String(group.group_conjunction || 'And').toLowerCase();
-    if (group.group_advisement != null) {
-      const bareOrBuckets = conjunction === 'or' && sections.every((section) => (
-        section.section_advisement == null && section.unit_advisement == null
-      ));
-      if (conjunction === 'or' && !bareOrBuckets) {
-        const positiveNeeds = sectionNeeds.filter((need) => need > 0);
-        demand += positiveNeeds.length ? Math.min(...positiveNeeds) : 0;
-      } else {
-        let capacities = sectionCapacities;
-        if (group.group_max_distinct_sections != null) {
-          const maxSections = advisementCount(group.group_max_distinct_sections, capacities.length);
-          capacities = [...capacities].sort((left, right) => right - left).slice(0, maxSections);
-        }
-        const capacity = capacities.reduce((sum, value) => sum + value, 0);
-        demand += Math.min(advisementCount(group.group_advisement, capacity), capacity);
-      }
-    } else if (conjunction === 'or') {
-      const positiveNeeds = sectionNeeds.filter((need) => need > 0);
-      demand += positiveNeeds.length ? Math.min(...positiveNeeds) : 0;
-    } else {
-      demand += sectionNeeds.reduce((sum, value) => sum + value, 0);
-    }
-  }
-  return demand;
-}
-
-/** Pick the systemwide canonical UC-side template for one campus + exact
- * program: modal true demand, then modal normalized structure at that demand,
- * then deterministic fingerprint. */
-function selectCanonicalAssistTemplate(agreements, isExcluded = () => false) {
-  const candidates = (agreements || []).map((agreement) => {
-    const requirementGroups = normalizedAssistRequirementStructure(
-      agreement.requirement_groups, isExcluded
-    );
-    return {
-      demand: assistRequirementDemand(requirementGroups),
-      fingerprint: canonicalStructureFingerprint(requirementGroups),
-      requirementGroups,
-    };
-  });
-  if (!candidates.length) return null;
-
-  const demandCounts = new Map();
-  for (const candidate of candidates) {
-    demandCounts.set(candidate.demand, (demandCounts.get(candidate.demand) || 0) + 1);
-  }
-  const topDemandCount = Math.max(...demandCounts.values());
-  const modalDemand = [...demandCounts.entries()]
-    .filter(([, count]) => count === topDemandCount)
-    .map(([demand]) => demand)
-    .sort((left, right) => left - right)[0];
-
-  const structures = new Map();
-  for (const candidate of candidates) {
-    if (candidate.demand !== modalDemand) continue;
-    const current = structures.get(candidate.fingerprint);
-    structures.set(candidate.fingerprint, {
-      count: (current?.count || 0) + 1,
-      requirementGroups: current?.requirementGroups || candidate.requirementGroups,
-    });
-  }
-  const selectedFingerprint = [...structures.entries()]
-    .sort(([leftFingerprint, left], [rightFingerprint, right]) => (
-      right.count - left.count || leftFingerprint.localeCompare(rightFingerprint)
-    ))[0][0];
-  const selected = structures.get(selectedFingerprint);
+function evaluateAssistAgreement(agreement, crossCc = []) {
+  const major = { requirement_groups: agreement.requirement_groups || [] };
+  const userCourses = allArticulatingCourses(major);
+  const receivers = [...requiredReceivers(agreement, () => false)];
+  const articulated = receivers.filter((receiver) => (
+    isReceiverCompleted(receiver, userCourses, crossCc)
+  )).length;
+  const hasRequired = (major.requirement_groups || []).some((group) => group.is_required);
   return {
-    requirementGroups: selected.requirementGroups,
-    nativeDemand: modalDemand,
-    structureFingerprint: selectedFingerprint,
-    structureAgreements: selected.count,
-    demandDistribution: [...demandCounts.entries()]
-      .sort(([left], [right]) => left - right)
-      .map(([nativeDemand, agreementsCount]) => ({ nativeDemand, agreements: agreementsCount })),
+    agreement,
+    major,
+    userCourses,
+    crossCc,
+    receivers,
+    receivers_required: receivers.length,
+    receivers_articulated: articulated,
+    fully_articulated: isMajorCompleted(major, userCourses, crossCc, true),
+    pct_articulated: hasRequired
+      ? +calculateMajorCompletionPercentage(major, userCourses, crossCc, true).toFixed(1)
+      : null,
   };
 }
 
-// Build a poolable "major" for isMajorArticulable: the campus's requirement
-// structure (group/section advisements preserved) with each receiver's
-// articulation set to the OR across the bucket's colleges (articulatedByHash).
-// An articulated receiver gets a synthetic satisfiable option so the ported
-// eligibility adapter can evaluate it; unarticulated receivers stay optionless.
-// This makes fully_articulated honor choose-N (section/group advisement) instead
-// of demanding every receiver, while preserving the heatmap's cross-college
-// pooling (articulatedByHash already ORs sibling colleges).
-function assistCombinedMajor(requirementGroups, articulatedByHash, isExcluded) {
-  let synthId = 0;
-  return {
-    requirement_groups: (requirementGroups || []).map((g) => ({
-      ...g,
-      sections: (g.sections || []).map((s) => ({
-        ...s,
-        receivers: (s.receivers || []).filter((r) => !isExcluded(r)).map((r) => {
-          const articulated = articulatedByHash.get(receiverHashKey(r)) === true;
-          synthId += 1;
-          return {
-            receiving: r.receiving,
-            hash_id: r.hash_id,
-            articulation_status: articulated ? 'articulated' : 'not_articulated',
-            options: articulated ? [{ course_ids: [`elig-${synthId}`], course_conjunction: 'and' }] : [],
-            options_conjunction: 'and',
-          };
-        }),
-      })),
-    })),
-  };
+function articulatedReceiverHashes(agreement) {
+  return new Set([...allReceivers(agreement)]
+    .filter((receiver) => (
+      receiver.hash_id != null
+      && receiver.articulation_status !== 'not_articulated'
+      // PMT's computeCrossCcEquivalents records a hash only after finding a
+      // satisfiable option. Our synthetic district student takes every listed
+      // articulated course, so any nonempty option is satisfiable; an empty or
+      // malformed option must not become cross-college evidence.
+      && (receiver.options || []).some((option) => (
+        Array.isArray(option?.course_ids) && option.course_ids.length > 0
+      ))
+    ))
+    .map((receiver) => String(receiver.hash_id)));
+}
+
+function bestAssistEvaluation(evaluations) {
+  return [...evaluations].sort((left, right) => (
+    Number(right.fully_articulated) - Number(left.fully_articulated)
+    || (right.pct_articulated ?? -1) - (left.pct_articulated ?? -1)
+    || right.receivers_articulated - left.receivers_articulated
+    || left.receivers_required - right.receivers_required
+    || String(left.agreement?._id || '').localeCompare(String(right.agreement?._id || ''))
+  ))[0] || null;
 }
 
 // Iterate every receiver in an agreement. Paper-style hard-requirement
@@ -927,6 +799,31 @@ async function degreeRequirementCoverageData(db, {
     } },
   ];
 
+  // ASSIST also publishes requirements as NAMED blocks carrying no course id
+  // (UC Irvine's biology "Mathematics Requirement"). Those receivers are
+  // dropped by the pipeline above, because it keys on parent_id. Collect their
+  // names separately so a template group can declare which block satisfies it.
+  const namedRequirementPipeline = [
+    { $match: articulationMatch },
+    { $unwind: '$requirement_groups' },
+    { $unwind: '$requirement_groups.sections' },
+    { $unwind: '$requirement_groups.sections.receivers' },
+    { $replaceWith: {
+      uc_school_id: '$uc_school_id',
+      community_college_id: '$community_college_id',
+      receiver: '$requirement_groups.sections.receivers',
+    } },
+    { $match: {
+      'receiver.articulation_status': 'articulated',
+      'receiver.receiving.kind': 'requirement',
+      'receiver.receiving.name': { $type: 'string' },
+    } },
+    { $group: {
+      _id: { school_id: '$uc_school_id', community_college_id: '$community_college_id' },
+      names: { $addToSet: '$receiver.receiving.name' },
+    } },
+  ];
+
   // GE/breadth requirements use the college catalog rather than major-prep
   // agreements. Only IDs are needed because slot coverage depends on the count.
   const gePipeline = [
@@ -945,21 +842,32 @@ async function degreeRequirementCoverageData(db, {
     { $project: { _id: 0, parent_id: 1, prefix: 1, number: 1, title: 1 } },
   ];
 
-  const [articulationRows, geRows, universityCourseRows] = await Promise.all([
+  const [articulationRows, geRows, universityCourseRows, namedRequirementRows] = await Promise.all([
     db.collection('assist_agreements').aggregate(articulationPipeline).toArray(),
     db.collection('assist_courses').aggregate(gePipeline).toArray(),
     db.collection('assist_courses').aggregate(universityCoursePipeline).toArray(),
+    db.collection('assist_agreements').aggregate(namedRequirementPipeline).toArray(),
   ]);
   const universityCoursesById = Object.fromEntries(
     universityCourseRows.map((course) => [Number(course.parent_id), course])
   );
-  const categoryOf = degreeCategoryOf(universityCoursesById);
+  // Course typing is per major AND per campus: the rules differ by major, and
+  // course numbering collides across campuses within a major (CHEM 3A is
+  // organic chemistry at Berkeley and general chemistry at Santa Cruz), so the
+  // callback is rebuilt inside the degree loop below.
 
   const articulatedByPair = new Map();
   for (const row of articulationRows) {
     articulatedByPair.set(
       `${Number(row._id.school_id)}|${Number(row._id.community_college_id)}`,
       new Set((row.parent_ids || []).map(Number))
+    );
+  }
+  const namedRequirementsByPair = new Map();
+  for (const row of namedRequirementRows) {
+    namedRequirementsByPair.set(
+      `${Number(row._id.school_id)}|${Number(row._id.community_college_id)}`,
+      new Set((row.names || []).map(normalizeRequirementName).filter(Boolean))
     );
   }
   const geAreasByCollege = new Map();
@@ -973,9 +881,18 @@ async function degreeRequirementCoverageData(db, {
   }
 
   const rowGroups = degreeRowGroups(refs.communityColleges, refs, mode);
+  const courseCategoryKeys = fineCategoriesFor(majorSlug);
   const rows = [];
   for (const degree of degrees) {
     const schoolId = Number(degree.school_id);
+    const categoryOf = categoryOfFor(majorSlug, schoolId, universityCoursesById);
+    // A requirement group that covers ZERO at every single college is almost
+    // never a finding — it is the signature of a representation the model
+    // cannot see, such as a named ASSIST block with no declared link. Tracked
+    // per degree so the rows can carry it and a figure can decline to draw a
+    // confident zero. See docs/figures/bio-course-types.md.
+    const groupCoverage = new Map();
+    const degreeRows = [];
     for (const rowGroup of rowGroups) {
       const collegeIds = [...rowGroup.communityCollegeIds].sort((a, b) => a - b);
       const articulated = new Set();
@@ -984,22 +901,43 @@ async function degreeRequirementCoverageData(db, {
           articulated.add(parentId);
         }
       }
+      // Named ASSIST blocks merge the same way articulations do: a district row
+      // is satisfied when any of its colleges carries the block.
+      const articulatedRequirements = new Set();
+      for (const collegeId of collegeIds) {
+        for (const name of namedRequirementsByPair.get(`${schoolId}|${collegeId}`) || []) {
+          articulatedRequirements.add(name);
+        }
+      }
       const ccGeAreas = mergeGeAreas(collegeIds, geAreasByCollege);
       const evaluated = buildDegreeGroups(degree.requirement_groups,
-        { articulated, ccGeAreas, universityCoursesById, categoryOf });
+        { articulated, articulatedRequirements, ccGeAreas, universityCoursesById, categoryOf });
       const pctSlots = evaluated.total
         ? +((evaluated.covered / evaluated.total) * 100).toFixed(1)
         : null;
       const pctUnits = evaluated.units.total
         ? +((evaluated.units.covered / evaluated.units.total) * 100).toFixed(1)
         : null;
+      // Keyed by position, not title: a template group may carry no title, and
+      // several untitled groups must not collapse into one bucket.
+      (evaluated.groups || []).forEach((group, index) => {
+        // Upper-division and residency work is 0% everywhere by construction —
+        // a community college cannot teach it. Only coursework that COULD have
+        // been covered says anything about whether the model can see it.
+        if (!group.total || group.tier === 'nontransferable') return;
+        const seen = groupCoverage.get(index)
+          || { label: group.label ?? null, covered: 0, total: 0 };
+        seen.covered += group.covered || 0;
+        seen.total += group.total;
+        groupCoverage.set(index, seen);
+      });
       const unitSystem = degreeUnitSystem(degree, refs.calendarByUniversity.get(schoolId));
       const collegeNames = [...rowGroup.communityColleges].sort();
       const districts = [...rowGroup.districts].sort();
       const regions = [...rowGroup.regions].sort();
       const counties = [...rowGroup.counties].sort();
 
-      rows.push({
+      degreeRows.push({
         system: 'uc',
         school_id: schoolId,
         school: degree.school,
@@ -1030,13 +968,22 @@ async function degreeRequirementCoverageData(db, {
         degree_requirements_total: evaluated.total,
         degree_requirements_with_equivalent: evaluated.covered,
         degree_requirements_by_tier: evaluated.by_tier,
-        // Slots by course type, for the MA paper's Figure 2 breakdown. Every
-        // type is present even when a campus requires nothing in it.
-        degree_requirements_by_course_type: Object.fromEntries(COURSE_TYPES.map((type) => [
-          type,
-          evaluated.by_category?.[type]
-            || { total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0 },
-        ])),
+        // Slots by course type, for the MA paper's Figure 2 breakdown and the
+        // CA paper's Figure 5 panels. The keys are the selected major's fine
+        // categories; the figures roll them into columns and panels using the
+        // axis sets on the major's config entry. Every category is present even
+        // when a campus requires nothing in it, so a figure can tell "required
+        // and fully covered" from "not required" (the gray bar in Figure 5).
+        //
+        // `_by_course_type` holds one primary category per requirement, so its
+        // slots sum to the degree total. `_by_course_category` holds every
+        // category a requirement touches, which is how a combined general-plus-
+        // organic chemistry series counts against both — read it only for
+        // per-category judgments that are never summed across categories.
+        degree_requirements_by_course_type: emptyFilled(courseCategoryKeys,
+          evaluated.by_category),
+        degree_requirements_by_course_category: emptyFilled(courseCategoryKeys,
+          evaluated.by_category_multi),
         pct_degree_requirements: pctSlots,
         degree_requirement_slots_total: evaluated.total,
         degree_requirement_slots_with_equivalent: evaluated.covered,
@@ -1051,6 +998,18 @@ async function degreeRequirementCoverageData(db, {
           && evaluated.units.covered >= evaluated.units.total,
       });
     }
+    // Groups that never cleared a single slot anywhere. Attached to every row
+    // of this degree so a consumer can mark them rather than draw a zero it
+    // cannot stand behind.
+    const notModelable = [...groupCoverage.entries()]
+      .filter(([, seen]) => seen.total > 0 && seen.covered === 0)
+      .map(([index, seen]) => ({
+        index,
+        label: seen.label,
+        slots: seen.total / rowGroups.length,
+      }));
+    for (const row of degreeRows) row.degree_groups_not_modelable = notModelable;
+    rows.push(...degreeRows);
   }
   return rows;
 }
@@ -1072,10 +1031,8 @@ async function coverageData(db, auditDb, {
     }, refs);
   }
 
-  const curation = await loadCuration(auditDb, majorSlug || (pin ? 'cs' : null));
-  const isExcluded = makeIsExcluded(curation);
   const buckets = new Map();
-  const canonicalProgramKeys = new Set();
+  const programKeysSeen = new Set();
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
 
   for (const sys of systemsFor()) {
@@ -1084,37 +1041,10 @@ async function coverageData(db, auditDb, {
     }, sys.idField);
     const docs = await db.collection(sys.coll).find(query).toArray();
 
-    // Select one UC-side denominator per campus + exact program over the full
-    // queried corpus before creating any district/college/county bucket. The
-    // same template is then reused everywhere; local agreements can only
-    // contribute articulation to receiver hashes that template contains.
-    const docsByProgram = new Map();
     for (const doc of docs) {
       const programKey = `${sys.key}|${doc[sys.idField]}|${doc.major}`;
-      if (!docsByProgram.has(programKey)) docsByProgram.set(programKey, []);
-      docsByProgram.get(programKey).push(doc);
-    }
-    const canonicalByProgram = new Map();
-    for (const [programKey, programDocs] of docsByProgram) {
-      const selected = selectCanonicalAssistTemplate(programDocs, isExcluded);
-      canonicalProgramKeys.add(programKey);
-      const requirementReceivers = [...requiredReceivers(
-        { requirement_groups: selected.requirementGroups }, () => false
-      )];
-      const receiverHashes = [...new Set(requirementReceivers
-        .filter((receiver) => receiver.hash_id != null && String(receiver.hash_id).length > 0)
-        .map((receiver) => String(receiver.hash_id)))];
-      canonicalByProgram.set(programKey, {
-        ...selected,
-        requirementReceivers,
-        receiverHashes,
-      });
-    }
-
-    for (const doc of docs) {
+      programKeysSeen.add(programKey);
       const memberships = membershipsFor(doc, refs, mode);
-      const programKey = `${sys.key}|${doc[sys.idField]}|${doc.major}`;
-      const canonical = canonicalByProgram.get(programKey);
       for (const m of memberships) {
         const key = `${m.key}|${programKey}`;
         if (!buckets.has(key)) {
@@ -1126,12 +1056,7 @@ async function coverageData(db, auditDb, {
             row_group_kind: m.kind,
             row_group_key: m.key,
             row_group_label: m.label,
-            // Structure template for choose-N articulability (advisements live
-            // here). Same campus×major structure across pooled sibling colleges;
-            // per-receiver articulation is OR'd into receiverByHash below.
-            requirementGroups: canonical.requirementGroups,
-            requirementReceivers: canonical.requirementReceivers,
-            receiverByHash: new Map(canonical.receiverHashes.map((hash) => [hash, false])),
+            agreements: [],
             communityCollegeIds: new Set(),
             communityColleges: new Set(),
             districts: new Set(),
@@ -1140,48 +1065,65 @@ async function coverageData(db, auditDb, {
           });
         }
         const bucket = buckets.get(key);
+        bucket.agreements.push(doc);
         bucket.communityCollegeIds.add(Number(doc.community_college_id));
         bucket.communityColleges.add(doc.community_college);
         if (m.district) bucket.districts.add(m.district);
         if (m.region) bucket.regions.add(m.region);
         for (const county of m.counties_served || []) bucket.counties.add(county);
       }
-      for (const r of requiredReceivers(doc, isExcluded)) {
-        if (r.hash_id == null || !String(r.hash_id).length) continue;
-        const hash = String(r.hash_id);
-        for (const m of memberships) {
-          const bucket = buckets.get(`${m.key}|${programKey}`);
-          if (!bucket.receiverByHash.has(hash)) continue;
-          const cur = bucket.receiverByHash.get(hash);
-          bucket.receiverByHash.set(hash, cur || r.articulation_status === 'articulated');
-        }
-      }
     }
   }
+  // Figure 5 categorizes the SAME raw ASSIST requirements evaluated above.
+  // Course catalog rows provide labels/categories only; they never change the
+  // requirement tree or provide extra articulation evidence.
+  const barrierCategoryKeys = (getMajor(majorSlug)?.courseTypes?.barrierPanels || [])
+    .map((panel) => panel.key);
+  let universityCoursesById = {};
+  if (barrierCategoryKeys.length) {
+    const parentIds = [...new Set([...buckets.values()].flatMap((bucket) =>
+      bucket.agreements.flatMap((agreement) => (
+        [...requiredReceivers(agreement, () => false)].flatMap(receiverParentIds)
+      ))))];
+    const universityCourses = parentIds.length
+      ? await db.collection('assist_courses').find({
+        side: 'receiving', parent_id: { $in: parentIds },
+      }, { projection: { _id: 0, parent_id: 1, prefix: 1, number: 1, title: 1 } }).toArray()
+      : [];
+    universityCoursesById = Object.fromEntries(
+      universityCourses.map((course) => [Number(course.parent_id), course])
+    );
+  }
+
   const rows = [...buckets.values()].map((b) => {
-    const total = b.requirementReceivers.length;
-    const articulated = b.requirementReceivers.filter((receiver) => (
-      receiver.hash_id != null
-      && b.receiverByHash.get(String(receiver.hash_id)) === true
-    )).length;
-    // Choose-N-correct coverage via the eligibility engine (pooling sibling
-    // colleges through receiverByHash). `fully_articulated` = can you meet the
-    // stated minimum at all; `pct_articulated` = what FRACTION of the true
-    // choose-N minimum articulates (strict asks = the stated need, not the
-    // advisement-blind "every listed receiver must articulate" count). So a
-    // "Complete 1 of {A,B,C}" section counts as one requirement, satisfied when
-    // any one articulates — e.g. Allan Hancock → UCB CS B.A. reads 100%, not 4/5.
-    const combined = assistCombinedMajor(b.requirementGroups, b.receiverByHash, isExcluded);
-    const fully_articulated = isMajorArticulable(combined, true);
-    const hasRequired = (combined.requirement_groups || []).some((g) => g.is_required);
-    const pctArticulated = hasRequired
-      ? +calculateMajorCompletionPercentage(combined, allArticulatingCourses(combined), [], true).toFixed(1)
-      : null;
+    // Evaluate every college's own ASSIST tree. For a multi-college row, PMT's
+    // normal crossCc hash mechanism supplies articulated receivers from sibling
+    // colleges; it does not replace the tree with a modal/canonical structure.
+    const evaluations = b.agreements.map((agreement) => {
+      const siblingHashes = new Set();
+      for (const sibling of b.agreements) {
+        if (Number(sibling.community_college_id) === Number(agreement.community_college_id)) continue;
+        for (const hash of articulatedReceiverHashes(sibling)) siblingHashes.add(hash);
+      }
+      return evaluateAssistAgreement(
+        agreement, [...siblingHashes].map((hash_id) => ({ hash_id }))
+      );
+    });
+    const best = bestAssistEvaluation(evaluations);
     const community_college_ids = [...b.communityCollegeIds].sort((a, b) => a - b);
     const community_colleges = [...b.communityColleges].sort();
     const districts = [...b.districts].sort();
     const regions = [...b.regions].sort();
     const counties = [...b.counties].sort();
+    const categoryOf = barrierCategoryKeys.length
+      ? categoryOfFor(majorSlug, Number(b.school_id), universityCoursesById)
+      : null;
+    const assistRequirementsByCourseCategory = categoryOf && best
+      ? assistCourseCategoryCoverage(
+        best.major.requirement_groups, barrierCategoryKeys, categoryOf, new Map(),
+        (receiver) => isReceiverCompleted(receiver, best.userCourses, best.crossCc)
+      )
+      : null;
     return {
       system: b.system,
       school_id: b.school_id,
@@ -1198,18 +1140,29 @@ async function coverageData(db, auditDb, {
       row_group_kind: b.row_group_kind,
       row_group_key: b.row_group_key,
       row_group_label: b.row_group_label,
-      receivers_required: total,
-      receivers_articulated: articulated,
+      // District/county rows may have several possible home-college trees.
+      // Make the best-case base agreement explicit so diagnostics and Figure 5
+      // can always be traced back to the exact stored document they evaluated.
+      assist_base_agreement_id: best?.agreement?._id != null
+        ? String(best.agreement._id)
+        : null,
+      assist_base_community_college_id: best?.agreement?.community_college_id ?? null,
+      assist_base_community_college: best?.agreement?.community_college ?? null,
+      receivers_required: best?.receivers_required ?? 0,
+      receivers_articulated: best?.receivers_articulated ?? 0,
       // Engine-based coverage: fraction of the true choose-N minimum that
       // articulates (100 ⟺ fully_articulated). receivers_* above are the raw
       // per-receiver counts kept for context, not the displayed percentage.
-      pct_articulated: pctArticulated,
-      fully_articulated,
+      pct_articulated: best?.pct_articulated ?? null,
+      fully_articulated: best?.fully_articulated ?? false,
+      ...(assistRequirementsByCourseCategory
+        ? { assist_requirements_by_course_category: assistRequirementsByCourseCategory }
+        : {}),
     };
   });
   if (requireCompleteDistrictMatrix) {
     validateCompleteAssistDistrictMatrix(rows, {
-      majorPrograms, refs, canonicalProgramKeys,
+      majorPrograms, refs, canonicalProgramKeys: programKeysSeen,
     });
   }
   return rows;
@@ -1858,9 +1811,6 @@ module.exports = {
   _categoryOfReceiver: categoryOfReceiver,
   _chooseNMinimum: chooseNMinimum,
   _agreementMinSetExact: agreementMinSetExact,
-  _normalizedAssistRequirementStructure: normalizedAssistRequirementStructure,
-  _assistRequirementDemand: assistRequirementDemand,
-  _selectCanonicalAssistTemplate: selectCanonicalAssistTemplate,
   _settingsMajors: settingsMajors,
   _canonicalCsPrograms: CANONICAL_CS_PROGRAMS,
   // Temporary private alias for downstream tests/tools that imported the old
