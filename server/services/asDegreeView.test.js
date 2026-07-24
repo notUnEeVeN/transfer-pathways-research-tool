@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const {
-  asDegreeOverview, asDegreeAvailability, asDegreesExportData,
+  asDegreeOverview, asDegreeAvailability, asDegreeVerification, asDegreesExportData,
   asDegreeDetail, duplicateLocalOtherIds, templateRequiredSlots,
 } = cjs('./asDegreeView');
 
@@ -224,6 +224,60 @@ describe('asDegreeAvailability', () => {
     expect(evergreen.types.ast.status).toBe('data_gap');
     expect(evergreen.types.local_as.status).toBe('confirmed_none');
     expect(result.counts.ast).toMatchObject({ available: 1, data_gap: 1, confirmed_none: 0 });
+  });
+});
+
+describe('asDegreeVerification', () => {
+  it('rolls each major up to verified / present / absent from the docs alone', async () => {
+    await db.collection('assist_institutions').insertMany([
+      { _id: 'cc:2', kind: 'community_college', source_id: 2, name: 'Evergreen Valley College',
+        district: 'San Jose', region: 'Bay Area' },
+      { _id: 'cc:110', kind: 'community_college', source_id: 110, name: 'Allan Hancock College' },
+      { _id: 'cc:5', kind: 'community_college', source_id: 5, name: 'Cabrillo College' },
+    ]);
+    await db.collection('curated_requirements').insertMany([
+      // Evergreen: CS verified, Bio present-but-unverified, Econ confirmed-none.
+      { _id: 'as_degree:2:cs:ast', kind: 'as_degree', community_college_id: 2, major_slug: 'cs',
+        degree_type: 'ast', status: 'found', verification: { verified: true },
+        degree_title_seen: 'Computer Science AS-T', catalog_year: '2025-2026' },
+      { _id: 'as_degree:2:bio:ast', kind: 'as_degree', community_college_id: 2, major_slug: 'bio',
+        degree_type: 'ast', status: 'found', verification: { verified: false } },
+      { _id: 'as_degree:2:econ:ast', kind: 'as_degree', community_college_id: 2, major_slug: 'econ',
+        degree_type: 'ast', status: 'none_found', verification: { verified: false } },
+      // Hancock: a verified slot anywhere lifts the whole major to verified.
+      { _id: 'as_degree:110:cs:ast', kind: 'as_degree', community_college_id: 110, major_slug: 'cs',
+        degree_type: 'ast', status: 'none_found', verification: { verified: false } },
+      { _id: 'as_degree:110:cs:local_as', kind: 'as_degree', community_college_id: 110, major_slug: 'cs',
+        degree_type: 'local_as', status: 'found', verification: { verified: true } },
+    ]);
+    const result = await asDegreeVerification(db);
+
+    // Majors are the asDegrees-capable registry entries, in registry order.
+    expect(result.majors.map((m) => m.slug)).toEqual(['cs', 'bio', 'econ']);
+
+    const evergreen = result.rows.find((r) => r.community_college_id === 2);
+    expect(evergreen.majors.cs.state).toBe('verified');
+    expect(evergreen.majors.bio.state).toBe('present');
+    expect(evergreen.majors.econ.state).toBe('absent');
+    expect(evergreen.majors.cs.slots.ast).toMatchObject({
+      verified: true, degree_title_seen: 'Computer Science AS-T', catalog_year: '2025-2026',
+    });
+    expect(evergreen.district).toBe('San Jose');
+
+    const hancock = result.rows.find((r) => r.community_college_id === 110);
+    expect(hancock.majors.cs.state).toBe('verified');
+
+    // A college with no docs at all is present as all-absent, not dropped.
+    const cabrillo = result.rows.find((r) => r.community_college_id === 5);
+    expect(cabrillo.majors.cs.state).toBe('absent');
+    expect(cabrillo.majors.bio.slots.ast).toBe(null);
+
+    // Rows sort by college name; counts roll up the per-major landscape.
+    expect(result.rows.map((r) => r.college_name)).toEqual(
+      ['Allan Hancock College', 'Cabrillo College', 'Evergreen Valley College']);
+    expect(result.counts.cs).toEqual({ verified: 2, present: 0, absent: 1 });
+    expect(result.counts.bio).toEqual({ verified: 0, present: 1, absent: 2 });
+    expect(result.counts.econ).toEqual({ verified: 0, present: 0, absent: 3 });
   });
 });
 

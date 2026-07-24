@@ -48,6 +48,10 @@ router.get('/curated/degrees', ...guarded, degreeRequirementsController.list);
 router.get('/curated/degree-evaluation', ...guarded, degreeRequirementsController.evaluate);
 router.get('/curated/as-degrees', ...guarded, canonicalDataController.asDegrees);
 router.get('/curated/as-degree-availability', ...guarded, canonicalDataController.asDegreeAvailability);
+router.get('/curated/as-degree-verification', ...guarded, canonicalDataController.asDegreeVerification);
+// Admin-only hand-edit history for a verified document.
+router.get('/curated/requirements/:kind/:id/revisions',
+  authenticateToken, requireAdmin, userLimiter, canonicalDataController.requirementRevisions);
 router.get('/curated/as-degree-validation-cohort', ...guarded, curationController.getAsDegreeValidationCohort);
 router.put('/curated/as-degree-validation-cohort', ...guarded, jsonBody, curationController.putAsDegreeValidationCohort);
 

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 
 // Same mocking approach as DataApiDocs.test.jsx: replace the data hooks
@@ -110,38 +110,33 @@ vi.mock('@frontend/query/hooks/useData', () => ({
   useDegreeRequirements: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
   useDegreeRequirementDocuments: () => ({ data: { rows: [] }, isLoading: false, isError: false }),
   useSaveDegreeRequirement: () => ({ mutateAsync: async () => ({}), isPending: false }),
-  useAsDegreeAvailability: () => ({
+  useAsDegreeVerification: () => ({
     data: {
-      counts: {
-        total_colleges: 115,
-        ast: { available: 69, confirmed_none: 43, data_gap: 3 },
-        local_as: { available: 10 },
-        local_other: { available: 20, duplicate_candidate: 2 },
-      },
+      majors: [{ slug: 'cs', label: 'Computer Science' }],
+      counts: { cs: { verified: 1, present: 1, absent: 1 } },
       rows: [
+        // Marin has an unverified local record but no A.S.-T → present.
         {
           college_id: 'cc:4', community_college_id: 4, college_name: 'College of Marin',
-          types: {
-            ast: { status: 'confirmed_none', record_id: null },
-            local_as: { status: 'available', record_id: 'as_degree:4:local_as', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
-            local_other: { status: 'duplicate_candidate', record_id: 'as_degree:4:local_other', degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
-          },
+          majors: { cs: { state: 'present', slots: {
+            ast: { status: 'confirmed_none', verified: false, degree_title_seen: null, catalog_year: null },
+            local_as: { status: 'found', verified: false, degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
+            local_other: { status: 'found', verified: false, degree_title_seen: 'A.S. in Computer Science', catalog_year: '2024-2025' },
+          } } },
         },
+        // Diablo carries a verified A.S.-T → verified.
         {
           college_id: 'cc:101', community_college_id: 101, college_name: 'Diablo Valley College',
-          types: {
-            ast: { status: 'available', record_id: 'as_degree:101:ast', degree_title_seen: 'Computer Science A.S.-T', catalog_year: '2025-2026' },
-            local_as: { status: 'available', record_id: 'as_degree:101:local_as', degree_title_seen: 'Computer Science A.S.', catalog_year: '2025-2026' },
-            local_other: { status: 'data_gap', record_id: null },
-          },
+          majors: { cs: { state: 'verified', slots: {
+            ast: { status: 'found', verified: true, degree_title_seen: 'Computer Science A.S.-T', catalog_year: '2025-2026' },
+            local_as: { status: 'found', verified: false, degree_title_seen: 'Computer Science A.S.', catalog_year: '2025-2026' },
+            local_other: { status: 'none_found', verified: false, degree_title_seen: null, catalog_year: null },
+          } } },
         },
+        // Santa Monica has no records at all → absent.
         {
           college_id: 'cc:202', community_college_id: 202, college_name: 'Santa Monica College',
-          types: {
-            ast: { status: 'confirmed_none', record_id: null },
-            local_as: { status: 'confirmed_none', record_id: null },
-            local_other: { status: 'confirmed_none', record_id: null },
-          },
+          majors: { cs: { state: 'absent', slots: { ast: null, local_as: null, local_other: null } } },
         },
       ],
     },
@@ -149,6 +144,13 @@ vi.mock('@frontend/query/hooks/useData', () => ({
     isError: false,
   }),
   useAsDegrees: () => ({ data: { n: 0, rows: [] }, isLoading: false, isError: false }),
+  useRequirementRevisions: () => ({ data: { revisions: [] }, isLoading: false, isError: false }),
+}))
+
+// RevisionHistory (in the AS review + template panes) reads the caller's role;
+// these panes render as a non-admin partner here, so the history stays hidden.
+vi.mock('@frontend/query/hooks/useAccess', () => ({
+  useAccessMe: () => ({ data: { role: 'partner' }, isLoading: false, isError: false }),
 }))
 
 vi.mock('@frontend/query/hooks/useAudit', () => ({
@@ -208,6 +210,17 @@ vi.mock('./shared/majors/useMajors', async (importOriginal) => ({
 import DataPage, { AgreementsBrowser } from './DataPage'
 import { MajorProvider } from './shared/majors/MajorContext'
 import { CS_FALLBACK } from './shared/majors/useMajors'
+
+// The Overview tab's CampusTable now reads useMajors directly, so every render
+// needs a valid registry even when no MajorProvider wraps the tree. Default to
+// the CS fallback; renderCollegePane overrides it with the case's major.
+beforeEach(() => {
+  mockMajors.mockReturnValue({
+    majors: CS_FALLBACK, defaultSlug: CS_FALLBACK[0].slug,
+    bySlug: new Map(CS_FALLBACK.map((m) => [m.slug, m])),
+    isLoading: false, isError: false, error: null,
+  })
+})
 
 // Renders the Community Colleges pane, drills into one college, and opens its
 // Associate degrees tab — the setup every degree-section test below shares.
@@ -409,38 +422,60 @@ describe('UC Campuses tab', () => {
 })
 
 describe('Community Colleges degree integration', () => {
-  it('uses only district and CS A.S.-T filters and removes the standalone degree page', () => {
+  it('filters by per-major verification and shows dots instead of a CS-only badge', () => {
     render(<DataPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
 
     expect(screen.queryByRole('tab', { name: 'Associate Degrees' })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Filter by district' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Filter by CS A.S.-T status' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Filter by verification' })).toBeInTheDocument()
     expect(screen.queryByText('All regions')).not.toBeInTheDocument()
-    expect(screen.queryByText('All counties')).not.toBeInTheDocument()
-    expect(screen.getByText('CS A.S.-T')).toBeInTheDocument()
-    expect(screen.getAllByText('No CS A.S.-T').length).toBeGreaterThan(0)
+    // Per-major dots, not a "CS A.S.-T" badge — one per major, labelled by state.
+    expect(screen.queryByText('CS A.S.-T')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Computer Science: verified')).toBeInTheDocument()
+    expect(screen.getByLabelText('Computer Science: present, unverified')).toBeInTheDocument()
+    expect(screen.getByLabelText('Computer Science: not offered')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Filter by CS A.S.-T status' }))
-    expect(screen.getByRole('option', { name: 'All CS A.S.-T statuses' })).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'No CS A.S.-T' })).toBeInTheDocument()
-    expect(screen.getByRole('option', {
-      name: 'Has CS A.S.-T — requirements missing',
-    })).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('option', { name: 'Has CS A.S.-T' }))
-    expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
+    // "Has unverified" keeps only the college with a present-but-unverified record.
+    fireEvent.click(screen.getByRole('button', { name: 'Filter by verification' }))
+    expect(screen.getByRole('option', { name: 'All verification' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Fully verified' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'No records' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('option', { name: 'Has unverified' }))
+    expect(screen.getByText('College of Marin')).toBeInTheDocument()
+    expect(screen.queryByText('Diablo Valley College')).not.toBeInTheDocument()
     expect(screen.queryByText('Santa Monica College')).not.toBeInTheDocument()
     expect(screen.getByRole('button', {
-      name: 'GET /api/exports/cs-ast-degrees',
+      name: 'GET /api/curated/as-degree-verification',
     })).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Filter by CS A.S.-T status' }))
-    fireEvent.click(screen.getByRole('option', { name: 'No CS A.S.-T' }))
-    expect(screen.queryByText('Diablo Valley College')).not.toBeInTheDocument()
+    // "Fully verified" keeps only the college whose records are all verified.
+    fireEvent.click(screen.getByRole('button', { name: 'Filter by verification' }))
+    fireEvent.click(screen.getByRole('option', { name: 'Fully verified' }))
+    expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
+    expect(screen.queryByText('College of Marin')).not.toBeInTheDocument()
+
+    // "No records" keeps only the college with nothing on file.
+    fireEvent.click(screen.getByRole('button', { name: 'Filter by verification' }))
+    fireEvent.click(screen.getByRole('option', { name: 'No records' }))
     expect(screen.getByText('Santa Monica College')).toBeInTheDocument()
-    expect(screen.getByRole('button', {
-      name: 'GET /api/curated/as-degree-availability',
-    })).toBeInTheDocument()
+    expect(screen.queryByText('Diablo Valley College')).not.toBeInTheDocument()
+  })
+
+  it('sorts unverified colleges to the top when the Associate degrees header is clicked', () => {
+    render(<DataPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+
+    const sortButton = screen.getByRole('button', { name: /Associate degrees/ })
+    expect(sortButton).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(sortButton)
+    expect(sortButton).toHaveAttribute('aria-pressed', 'true')
+
+    // College of Marin (present/unverified) now leads Diablo Valley (verified),
+    // even though it sorts later alphabetically.
+    const marin = screen.getByText('College of Marin')
+    const diablo = screen.getByText('Diablo Valley College')
+    expect(marin.compareDocumentPosition(diablo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
   it('opens degree information even when a college has no ASSIST agreement', async () => {

@@ -13,6 +13,8 @@ describe('research API router', () => {
     expect(paths).toContain('/curated/prerequisites');
     expect(paths).toContain('/curated/as-degrees');
     expect(paths).toContain('/curated/as-degree-availability');
+    expect(paths).toContain('/curated/as-degree-verification');
+    expect(paths).toContain('/curated/requirements/:kind/:id/revisions');
     expect(paths).toContain('/curated/as-degree-validation-cohort');
     expect(paths).toContain('/exports/courses');
     expect(paths).toContain('/exports/cs-ast-degrees');

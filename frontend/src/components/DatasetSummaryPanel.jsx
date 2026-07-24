@@ -1,19 +1,24 @@
 import React from 'react'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, Spinner, Stack, StatStrip } from './ui'
+import { Alert, Button, Spinner, Stack, StatStrip } from './ui'
 import {
-  useAsDegreeAvailability, useCoverage, useDataSummary, useDegreeRequirements,
+  useAsDegreeVerification, useDataSummary, useDegreeRequirements,
 } from '@frontend/query/hooks/useData'
+import { useMajors } from '@frontend/majors/useMajors'
+import MajorVerificationDots, {
+  MajorVerificationLegend, VERIFICATION_STATE_META,
+} from '@frontend/majors/MajorVerificationDots'
 
 /**
  * Dataset overview — the landing map:
  *
  *   ported layer   — refresh chip strip (agreements / majors / campuses /
  *                    colleges / CC + UC courses)
- *   CS degrees     — the interesting statewide finding: which colleges offer a
- *                    local CS A.S., a CS A.S.-T, both, or neither
- *   campus table   — majors · agreements · graduation-template verification ·
- *                    mean coverage under BOTH minimum sources
+ *   AS landscape   — per-major associate-degree verification: how many colleges
+ *                    are verified / present-but-unverified / not offering, for
+ *                    each onboarded major
+ *   campus table   — one row per campus with its per-major graduation-template
+ *                    verification dots (one dot per template-capable major)
  *
  * Server-scoped: ported numbers reflect the caller's granted subset. `compact`
  * renders only the chip strip (used atop the audit Stats page).
@@ -61,12 +66,11 @@ export default function DatasetSummaryPanel({ compact = false, onNavigate = null
   return (
     <Stack gap='comfortable'>
       <StatStrip tiles={tiles} />
-      <CsDegreeLandscapePanel onNavigate={onNavigate} />
+      <DegreeLandscapePanel onNavigate={onNavigate} />
       <CampusTable schools={schools} onNavigate={onNavigate} />
     </Stack>
   )
 }
-
 // Reused section chrome: label-weight heading + optional hub jump on the right.
 function SectionHeader({ title, sub = null, hub = null, hubLabel = null, onNavigate = null }) {
   return (
@@ -81,111 +85,81 @@ function SectionHeader({ title, sub = null, hub = null, hubLabel = null, onNavig
   )
 }
 
-// The statewide CS-degree landscape, using distinct requirement records that
-// are available for analysis. Headline figures are inclusive totals; the
-// compact row below them is the mutually exclusive, one-college-per-group
-// breakdown. Catalog-only data gaps and duplicate candidates stay out so the
-// Overview agrees with the degree detail and export views.
-function CsDegreeLandscapePanel({ onNavigate }) {
-  const availability = useAsDegreeAvailability()
-  if (availability.isError) return null // the Community Colleges hub reports the failure
-  const rows = availability.data?.rows || []
-  const seg = { both: 0, astOnly: 0, localOnly: 0, otherOnly: 0, none: 0 }
-  const totals = { ast: 0, local: 0, other: 0 }
-  for (const row of rows) {
-    const ast = row.types?.ast?.status === 'available'
-    const local = row.types?.local_as?.status === 'available'
-    const other = row.types?.local_other?.status === 'available'
-    if (ast) totals.ast += 1
-    if (local) totals.local += 1
-    if (other) totals.other += 1
-    if (ast && local) seg.both += 1
-    else if (ast) seg.astOnly += 1
-    else if (local) seg.localOnly += 1
-    else if (other) seg.otherOnly += 1
-    else seg.none += 1
-  }
-  const loading = availability.isLoading
-  const n = (v) => (loading ? '—' : <span className='tabular'>{v}</span>)
-  const breakdown = [
-    [seg.astOnly, 'A.S.-T only'],
-    [seg.localOnly, 'local A.S. only'],
-    [seg.both, 'both CS degrees'],
-    [seg.otherOnly, 'other computing only'],
-    [seg.none, 'no degree record'],
-  ]
+// Per-major associate-degree verification landscape. For every onboarded
+// major, how many of the surveyed colleges carry a verified record, a present-
+// but-unverified record, or none at all — derived from the stored docs alone,
+// so a new major appears here the moment it has records (no CS-only survey).
+function LandscapeCount({ state, value, label }) {
   return (
-    <section aria-label='CS associate-degree landscape'>
-      <SectionHeader title='CS associate-degree landscape'
-        sub={loading ? null : `${rows.length} colleges · totals may overlap`}
+    <span className='inline-flex items-center gap-2 text-caption text-ink-muted whitespace-nowrap'>
+      <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${VERIFICATION_STATE_META[state].dot}`} />
+      <span className='tabular text-ink font-[550]'>{value}</span> {label}
+    </span>
+  )
+}
+
+function DegreeLandscapePanel({ onNavigate }) {
+  const verification = useAsDegreeVerification()
+  if (verification.isError) return null // the Community Colleges hub reports the failure
+  const loading = verification.isLoading
+  const majors = verification.data?.majors || []
+  const counts = verification.data?.counts || {}
+  const total = verification.data?.rows?.length ?? null
+  return (
+    <section aria-label='Associate-degree landscape'>
+      <SectionHeader title='Associate-degree landscape'
+        sub={loading || total == null ? null : `${total} colleges · verification by major`}
         hub='articulation' hubLabel='Open Community Colleges' onNavigate={onNavigate} />
       <div className='surface-card overflow-hidden'>
-        <StatStrip bare tiles={[
-          {
-            label: 'Schools with CS A.S.-T',
-            value: n(totals.ast),
-            accent: true,
-          },
-          {
-            label: 'Schools with local CS A.S.',
-            value: n(totals.local),
-          },
-          {
-            label: 'Schools with another computing degree',
-            value: n(totals.other),
-          },
-        ]} />
-        <div className='border-t border-border px-[22px] py-3.5'>
-          <p className='text-label'>One-school-per-group breakdown</p>
-          <div className='mt-2 flex flex-wrap gap-x-5 gap-y-1.5'>
-            {breakdown.map(([value, label]) => (
-              <span key={label} className='text-caption whitespace-nowrap'>
-                <strong className='font-semibold tabular text-ink'>{loading ? '—' : value}</strong> {label}
-              </span>
-            ))}
-          </div>
-        </div>
+        {loading ? (
+          <div className='px-[22px] py-6 flex justify-center'><Spinner /></div>
+        ) : !majors.length ? (
+          <p className='px-[22px] py-5 text-caption text-ink-subtle'>No associate-degree records yet.</p>
+        ) : majors.map((m, i) => {
+          const c = counts[m.slug] || { verified: 0, present: 0, absent: 0 }
+          return (
+            <div key={m.slug}
+              className={`grid grid-cols-[minmax(0,1.3fr)_1fr_1.15fr_1.15fr] gap-3.5 items-center px-[22px] py-3 ${i ? 'border-t border-border' : ''}`}>
+              <p className='text-body-strong truncate min-w-0'>{m.label}</p>
+              <LandscapeCount state='verified' value={c.verified} label='verified' />
+              <LandscapeCount state='present' value={c.present} label='unverified' />
+              <LandscapeCount state='absent' value={c.absent} label='not offered' />
+            </div>
+          )
+        })}
       </div>
     </section>
   )
 }
 
-// Mean pct_articulated per school across a coverage query's rows.
-function meanBySchoolOf(data) {
-  const acc = new Map()
-  for (const r of data?.rows || []) {
-    if (r.pct_articulated == null) continue
-    const cur = acc.get(r.school_id) || { sum: 0, n: 0 }
-    cur.sum += r.pct_articulated
-    cur.n += 1
-    acc.set(r.school_id, cur)
-  }
-  const out = new Map()
-  for (const [k, { sum, n }] of acc) out.set(k, n ? +(sum / n).toFixed(1) : null)
-  return out
-}
-
-// Campus | Majors | Agreements | Graduation template | Mean hand-curated
-// coverage | Mean ASSIST coverage. Hairline div-grid table (mockup v2:124-151)
-// — shares its column template between the header row and every data row so
-// the two can't drift apart.
-const CAMPUS_TABLE_COLS = 'grid grid-cols-[2.2fr_1fr_1fr_1.3fr_2.4fr_2.4fr] gap-3.5'
+// Campus | Graduation templates. There is one four-year template per major, so
+// the status is three dots (one per template-capable major, in registry order)
+// rather than a per-major-scoped coverage table — a plain at-a-glance read of
+// which campus × major templates are still unverified. Header and rows share
+// the column template so they can't drift apart.
+const CAMPUS_TABLE_COLS = 'grid grid-cols-[minmax(0,1fr)_220px] gap-3.5'
 
 function CampusTable({ schools, onNavigate = null }) {
-  // This table reports the computer-science study's coverage. It used to rely
-  // on the console being globally scoped to CS; now that every ported major is
-  // in the corpus, it has to say so.
-  const assistCoverage = useCoverage({ majorSlug: 'cs' })
-  const websiteCoverage = useCoverage({ majorSlug: 'cs', requirements: 'paper' })
+  const { majors, defaultSlug } = useMajors()
   const degreeTemplates = useDegreeRequirements()
-  const meanAssist = React.useMemo(() => meanBySchoolOf(assistCoverage.data), [assistCoverage.data])
-  const meanWebsite = React.useMemo(() => meanBySchoolOf(websiteCoverage.data), [websiteCoverage.data])
-  const templateBySchool = React.useMemo(
-    () => new Map((degreeTemplates.data?.rows || [])
-      .filter((row) => row.major_slug === 'cs' || !row.major_slug)
-      .map((row) => [Number(row.school_id), row])),
-    [degreeTemplates.data]
+  const templateMajors = React.useMemo(
+    () => majors.filter((m) => m.capabilities?.degreeTemplates),
+    [majors]
   )
+  // (school_id:major_slug) -> template row. Legacy rows without a slug are CS.
+  const templateBySchoolMajor = React.useMemo(
+    () => new Map((degreeTemplates.data?.rows || [])
+      .map((row) => [`${Number(row.school_id)}:${row.major_slug || defaultSlug}`, row])),
+    [degreeTemplates.data, defaultSlug]
+  )
+
+  const templateStates = React.useCallback((schoolId) => templateMajors.map((m) => {
+    const row = templateBySchoolMajor.get(`${Number(schoolId)}:${m.slug}`)
+    // Verified via an explicit verdict flag or recorded verification notes.
+    const isVerified = !!row && (row.verification?.verified || (row.verification_notes || []).length > 0)
+    const state = !row ? 'absent' : (isVerified ? 'verified' : 'present')
+    return { slug: m.slug, label: m.label, state }
+  }), [templateBySchoolMajor, templateMajors])
 
   if (!schools.length) {
     return <p className='text-caption text-ink-subtle'>No majors in the dataset yet.</p>
@@ -193,8 +167,8 @@ function CampusTable({ schools, onNavigate = null }) {
 
   return (
     <div className='surface-card overflow-hidden'>
-      <div className='px-[22px] pt-[18px] pb-1.5 flex items-baseline gap-2.5'>
-        <p className='text-label'>Majors tracked per receiving campus</p>
+      <div className='px-[22px] pt-[18px] pb-1.5 flex flex-wrap items-baseline gap-2.5'>
+        <p className='text-label'>Graduation-template verification per campus</p>
         <span className='text-tag text-ink-subtle'>{schools.length} campus{schools.length === 1 ? '' : 'es'}</span>
         {onNavigate && (
           <Button variant='ghost' className='ml-auto' trailingIcon={ArrowRightIcon}
@@ -203,52 +177,20 @@ function CampusTable({ schools, onNavigate = null }) {
       </div>
       <div className={`${CAMPUS_TABLE_COLS} px-[22px] py-2.5 border-b border-border`}>
         <span className='text-label'>Campus</span>
-        <span className='text-label'>Majors</span>
-        <span className='text-label'>Agreements</span>
-        <span className='text-label'>Graduation template</span>
-        <span className='text-label'>Mean hand-curated coverage</span>
-        <span className='text-label'>Mean ASSIST coverage</span>
+        <span className='text-label'>Graduation templates</span>
       </div>
       {schools.map((s) => (
         <div key={s.school_id}
           className={`${CAMPUS_TABLE_COLS} items-center px-[22px] py-[13px] border-b border-border last:border-0 hover:bg-surface-hover`}>
           <p className='text-body-strong truncate min-w-0'>{s.school}</p>
-          <p className='text-caption tabular ink-muted'>{s.majors.length}</p>
-          <p className='text-caption tabular ink-muted'>{s.n_agreements}</p>
-          <TemplateStatusCell row={templateBySchool.get(Number(s.school_id))}
-            loading={degreeTemplates.isLoading} />
-          <CampusCoverageCell pct={meanWebsite.get(s.school_id)} loading={websiteCoverage.isLoading} />
-          <CampusCoverageCell pct={meanAssist.get(s.school_id)} loading={assistCoverage.isLoading} />
+          {degreeTemplates.isLoading
+            ? <span className='text-caption text-ink-subtle'>…</span>
+            : <MajorVerificationDots states={templateStates(s.school_id)} />}
         </div>
       ))}
+      <div className='px-[22px] py-3 border-t border-border'>
+        <MajorVerificationLegend majors={templateMajors} />
+      </div>
     </div>
-  )
-}
-
-// The campus's four-year-template status. Verification notes are authored
-// only while walking the official pages, so notes present ⇒ the campus has
-// been verified: none stored → dash, imported but unreviewed → neutral,
-// notes present → Verified.
-function TemplateStatusCell({ row, loading }) {
-  if (loading) return <span className='text-caption text-ink-subtle'>…</span>
-  if (!row) return <span className='text-caption text-ink-subtle'>—</span>
-  const verified = (row.verification_notes || []).length > 0
-  return <span><Badge variant={verified ? 'success' : 'neutral'}>{verified ? 'Verified' : 'Imported'}</Badge></span>
-}
-
-// One coverage bar + value: success fill at/above the "essentially complete"
-// threshold, primary fill below it — mirrors AgreementsBrowser's per-college
-// coverage bars, just with its own ≥90 threshold (mockup v2:141-148).
-function CampusCoverageCell({ pct, loading }) {
-  if (loading) return <span className='text-caption text-ink-subtle'>…</span>
-  if (pct == null) return <span className='text-caption text-ink-subtle'>—</span>
-  const v = Math.max(0, Math.min(100, pct))
-  return (
-    <span className='inline-flex items-center gap-2.5'>
-      <span className='inline-block w-[110px] h-1.5 rounded-pill bg-surface-sunken overflow-hidden'>
-        <span className={`block h-full rounded-pill ${v >= 90 ? 'bg-success' : 'bg-primary'}`} style={{ width: `${v}%` }} />
-      </span>
-      <span className='text-caption ink-default font-[550]'>{pct}%</span>
-    </span>
   )
 }

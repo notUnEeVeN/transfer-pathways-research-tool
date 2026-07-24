@@ -2,64 +2,52 @@ import React from 'react'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import DatasetSummaryPanel from './DatasetSummaryPanel'
+import { MajorProvider } from '@frontend/majors/MajorContext'
 
 const mocks = {
   useDataSummary: vi.fn(),
   useCoverage: vi.fn(),
   useDegreeRequirements: vi.fn(),
-  useAsDegreeAvailability: vi.fn(),
+  useAsDegreeVerification: vi.fn(),
+  useMajors: vi.fn(),
 }
 vi.mock('@frontend/query/hooks/useData', () => ({
   useDataSummary: (...a) => mocks.useDataSummary(...a),
   useCoverage: (...a) => mocks.useCoverage(...a),
   useDegreeRequirements: (...a) => mocks.useDegreeRequirements(...a),
-  useAsDegreeAvailability: (...a) => mocks.useAsDegreeAvailability(...a),
+  useAsDegreeVerification: (...a) => mocks.useAsDegreeVerification(...a),
 }))
+vi.mock('@frontend/majors/useMajors', async (importOriginal) => ({
+  ...(await importOriginal()),
+  useMajors: (...a) => mocks.useMajors(...a),
+}))
+
+const MAJORS = [
+  { slug: 'cs', label: 'Computer Science',
+    capabilities: { asDegrees: true, degreeTemplates: true, paperBaselines: true } },
+  { slug: 'bio', label: 'Biology',
+    capabilities: { asDegrees: true, degreeTemplates: true, paperBaselines: false } },
+  { slug: 'econ', label: 'Economics',
+    capabilities: { asDegrees: true, degreeTemplates: true, paperBaselines: false } },
+]
 
 const summary = {
   last_data_refresh_at: '2026-07-01T00:00:00Z',
   schools: [
-    { school_id: 1, school: 'UC Berkeley', majors: ['CS'], n_agreements: 90 },
+    { school_id: 1, school: 'UC Berkeley', majors: ['CS', 'Biology'], n_agreements: 90 },
     { school_id: 2, school: 'UC Merced', majors: ['CSE'], n_agreements: 80 },
   ],
-  counts: { agreements: 170, majors: 2, courses: 500, university_courses: 60, community_colleges: 115 },
+  counts: { agreements: 170, majors: 3, courses: 500, university_courses: 60, community_colleges: 115 },
 }
 
-// One college per landscape segment: both, A.S.-T only, local only, other
-// computing only, and no degree record.
-const offered = (ast, local, computing = false) => ({
-  types: {
-    ast: { inventory_offered: ast, status: ast ? 'available' : 'confirmed_none' },
-    local_as: { inventory_offered: local, status: local ? 'available' : 'confirmed_none' },
-    local_other: { inventory_offered: computing, status: computing ? 'available' : 'confirmed_none' },
+const verification = {
+  majors: MAJORS.map((m) => ({ slug: m.slug, label: m.label })),
+  counts: {
+    cs: { verified: 112, present: 3, absent: 0 },
+    bio: { verified: 0, present: 40, absent: 75 },
+    econ: { verified: 0, present: 30, absent: 85 },
   },
-})
-const availability = {
-  rows: [
-    offered(true, true),
-    offered(true, false),
-    offered(false, true),
-    offered(false, false, true),
-    offered(false, false),
-    // Inventory alone must not count as an analyzable A.S.-T record. This
-    // college instead belongs in "other computing only".
-    {
-      types: {
-        ast: { inventory_offered: true, status: 'data_gap' },
-        local_as: { inventory_offered: false, status: 'confirmed_none' },
-        local_other: { inventory_offered: true, status: 'available' },
-      },
-    },
-    // Duplicate candidates are not distinct degrees, so this college belongs
-    // in "no degree record".
-    {
-      types: {
-        ast: { inventory_offered: false, status: 'confirmed_none' },
-        local_as: { inventory_offered: false, status: 'confirmed_none' },
-        local_other: { inventory_offered: true, status: 'duplicate_candidate' },
-      },
-    },
-  ],
+  rows: new Array(115).fill(null).map((_, i) => ({ community_college_id: i })),
 }
 
 const wire = () => {
@@ -67,46 +55,74 @@ const wire = () => {
   mocks.useCoverage.mockReturnValue({ data: { rows: [] }, isLoading: false })
   mocks.useDegreeRequirements.mockReturnValue({
     data: { rows: [
-      { school_id: 1, verification_notes: [{ text: 'walked the official pages' }] },
-      { school_id: 2, verification_notes: [] },
+      // Berkeley: CS verified (has notes), Bio present (imported, no notes).
+      { school_id: 1, major_slug: 'cs', verification_notes: [{ text: 'walked the official pages' }] },
+      { school_id: 1, major_slug: 'bio', verification_notes: [] },
+      // Merced: only a CS template, unverified. Bio/Econ absent (no row).
+      { school_id: 2, major_slug: 'cs', verification_notes: [] },
     ] },
     isLoading: false,
   })
-  mocks.useAsDegreeAvailability.mockReturnValue({ data: availability, isLoading: false, isError: false })
+  mocks.useAsDegreeVerification.mockReturnValue({ data: verification, isLoading: false, isError: false })
+  mocks.useMajors.mockReturnValue({
+    majors: MAJORS,
+    defaultSlug: 'cs',
+    bySlug: new Map(MAJORS.map((m) => [m.slug, m])),
+    isLoading: false,
+    isError: false,
+    error: null,
+  })
 }
 
-describe('DatasetSummaryPanel', () => {
-  it('leads with inclusive degree totals and separately explains their overlap', () => {
-    wire()
-    render(<DatasetSummaryPanel />)
-    expect(screen.getByText('CS associate-degree landscape')).toBeInTheDocument()
-    expect(screen.getByText('7 colleges · totals may overlap')).toBeInTheDocument()
-    const valueFor = (label) => within(screen.getByText(label).parentElement).getByText(/^\d+$/)
-    expect(valueFor('Schools with CS A.S.-T')).toHaveTextContent('2')
-    expect(valueFor('Schools with local CS A.S.')).toHaveTextContent('2')
-    expect(valueFor('Schools with another computing degree')).toHaveTextContent('2')
+const renderPanel = (props) =>
+  render(<MajorProvider><DatasetSummaryPanel {...props} /></MajorProvider>)
 
-    const breakdown = screen.getByText('One-school-per-group breakdown').parentElement
-    expect(within(breakdown).getByText('A.S.-T only').parentElement).toHaveTextContent('1 A.S.-T only')
-    expect(within(breakdown).getByText('local A.S. only').parentElement).toHaveTextContent('1 local A.S. only')
-    expect(within(breakdown).getByText('both CS degrees').parentElement).toHaveTextContent('1 both CS degrees')
-    expect(within(breakdown).getByText('other computing only').parentElement).toHaveTextContent('2 other computing only')
-    expect(within(breakdown).getByText('no degree record').parentElement).toHaveTextContent('2 no degree record')
+describe('DatasetSummaryPanel', () => {
+  it('shows a per-major associate-degree verification landscape', () => {
+    wire()
+    renderPanel()
+    expect(screen.getByText('Associate-degree landscape')).toBeInTheDocument()
+    expect(screen.getByText('115 colleges · verification by major')).toBeInTheDocument()
+    const landscape = screen.getByLabelText('Associate-degree landscape')
+    // Computer Science: 112 verified · 3 unverified · 0 not offered.
+    const csRow = within(landscape).getByText('Computer Science').parentElement
+    expect(csRow).toHaveTextContent('112 verified')
+    expect(csRow).toHaveTextContent('3 unverified')
+    expect(csRow).toHaveTextContent('0 not offered')
+    const bioRow = within(landscape).getByText('Biology').parentElement
+    expect(bioRow).toHaveTextContent('40 unverified')
+    expect(bioRow).toHaveTextContent('75 not offered')
   })
 
-  it('marks a campus template Verified when it carries notes, Imported otherwise', () => {
+  it('renders per-major graduation-template dots, verified vs imported vs absent', () => {
     wire()
-    render(<DatasetSummaryPanel />)
-    expect(screen.getByText('Graduation template')).toBeInTheDocument()
-    expect(screen.getByText('Verified')).toBeInTheDocument()
-    expect(screen.getByText('Imported')).toBeInTheDocument()
+    renderPanel()
+    expect(screen.getByText('Graduation templates')).toBeInTheDocument()
+    // Berkeley's row carries CS verified, Bio present, Econ absent.
+    expect(screen.getByLabelText('Computer Science: verified')).toBeInTheDocument()
+    expect(screen.getByLabelText('Biology: present, unverified')).toBeInTheDocument()
+    expect(screen.getAllByLabelText('Economics: not offered').length).toBeGreaterThan(0)
+  })
+
+  it('drops the per-campus coverage columns, count columns, and major picker', () => {
+    wire()
+    renderPanel()
+    // One row per campus is just campus + template dots now — no repeated
+    // major/agreement counts, no per-major coverage, no scoping picker.
+    expect(screen.queryByText('Mean hand-curated coverage')).not.toBeInTheDocument()
+    expect(screen.queryByText('Mean ASSIST coverage')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Major')).not.toBeInTheDocument()
+    // The campus table's column headers are exactly Campus + Graduation templates.
+    const campusLabel = screen.getByText('Campus')
+    const headerRow = campusLabel.parentElement
+    const headers = within(headerRow).getAllByText(/.+/).map((n) => n.textContent)
+    expect(headers).toEqual(['Campus', 'Graduation templates'])
   })
 
   it('carries no fixed-population counts: no curated strip, no colleges-surveyed tile', () => {
     wire()
-    render(<DatasetSummaryPanel />)
+    renderPanel()
     expect(screen.queryByText('Hand-curated layer')).not.toBeInTheDocument()
-    expect(screen.queryByText('Graduation templates')).not.toBeInTheDocument()
     expect(screen.queryByText('Transfer minimums')).not.toBeInTheDocument()
     expect(screen.queryByText('Colleges surveyed')).not.toBeInTheDocument()
   })
@@ -114,21 +130,21 @@ describe('DatasetSummaryPanel', () => {
   it('jumps to the hubs through onNavigate; buttons hide without it', () => {
     wire()
     const onNavigate = vi.fn()
-    const { unmount } = render(<DatasetSummaryPanel onNavigate={onNavigate} />)
+    const { unmount } = renderPanel({ onNavigate })
     fireEvent.click(screen.getByRole('button', { name: /Open Community Colleges/ }))
     expect(onNavigate).toHaveBeenCalledWith('articulation')
     fireEvent.click(screen.getByRole('button', { name: /Open UC Campuses/ }))
     expect(onNavigate).toHaveBeenCalledWith('institutions')
     unmount()
 
-    render(<DatasetSummaryPanel />)
+    renderPanel()
     expect(screen.queryByRole('button', { name: /Open Community Colleges/ })).not.toBeInTheDocument()
   })
 
   it('compact mode stays the plain chip strip with no landscape section', () => {
     wire()
-    render(<DatasetSummaryPanel compact />)
+    renderPanel({ compact: true })
     expect(screen.getAllByText('Agreements').length).toBeGreaterThan(0)
-    expect(screen.queryByText('CS associate-degree landscape')).not.toBeInTheDocument()
+    expect(screen.queryByText('Associate-degree landscape')).not.toBeInTheDocument()
   })
 })

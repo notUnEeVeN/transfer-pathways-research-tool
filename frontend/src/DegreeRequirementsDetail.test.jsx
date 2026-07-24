@@ -26,4 +26,23 @@ describe('DegreeRequirementsDetail (ledger-rendered template)', () => {
     const stale = { school: 'UC Berkeley', program: 'EECS, B.S.', total: 29, groups: [{ label: 'x', lines: [] }] }
     expect(() => render(<DegreeRequirementsDetail doc={stale} />)).not.toThrow()
   })
+
+  it('flags a template as Verified once it carries verification notes', () => {
+    const verified = { ...tmpl, verification_notes: [{ text: 'walked the official pages', author_label: 'Tybalt Mallet' }] }
+    const { container } = render(<DegreeRequirementsDetail doc={verified} />)
+    expect(container.textContent).toContain('checked against the official pages')
+    expect(container.textContent).toContain('Verified by Tybalt Mallet')
+  })
+
+  it('flags a template as Verified from an explicit verdict flag, even with no notes', () => {
+    const verified = { ...tmpl, verification_notes: [], verification: { verified: true, verified_by_label: 'Tybalt Mallet' } }
+    const { container } = render(<DegreeRequirementsDetail doc={verified} />)
+    expect(container.textContent).toContain('Verified by Tybalt Mallet')
+  })
+
+  it('shows no verified banner for a template with no notes and no verdict flag', () => {
+    const unverified = { ...tmpl, verification_notes: [], verification: null }
+    const { container } = render(<DegreeRequirementsDetail doc={unverified} />)
+    expect(container.textContent).not.toContain('checked against the official pages')
+  })
 })

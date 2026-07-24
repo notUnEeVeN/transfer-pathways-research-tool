@@ -122,6 +122,18 @@ export const ENDPOINT_GROUPS = [
       },
       {
         method: 'GET',
+        path: '/curated/as-degree-verification',
+        title: 'Associate-degree verification by college',
+        plain: 'One row per community college with each major\'s rolled-up verification state, derived from the stored records alone so every major is covered rather than only Computer Science.',
+        returns: '{ majors, counts, rows: [ { college_id, college_name, majors: { <slug>: { state, slots } } } ] }',
+        fields: [
+          ['majors.<slug>.state', 'verified (a record is human-verified), present (a record exists but is unverified), or absent (no record).'],
+          ['majors.<slug>.slots.<type>', 'Per-slot record detail (status, verified, degree_title_seen, catalog_year), or null when that slot has no record.'],
+          ['counts.<slug>', 'How many colleges are verified / present / absent for that major — the multi-major landscape rollup.'],
+        ],
+      },
+      {
+        method: 'GET',
         path: '/curated/as-degrees?degree_type=ast',
         title: 'Associate-degree QA records',
         plain: 'Summarized associate-degree records, optionally filtered to ast, local_as, or local_other; use ast for the standardized transfer-analysis cohort. Add major=<slug> to read a different major\'s slots (default cs; also bio, econ) — an unconfigured slug 400s.',

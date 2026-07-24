@@ -56,6 +56,10 @@ exports.list = asyncHandler(async (req, res) => {
       unit_audit: doc.unit_audit || null,
       modeling_notes: Array.isArray(doc.modeling_notes) ? doc.modeling_notes : [],
       verification_notes: doc.verification_notes || [],
+      // A template is verified when its official pages have been walked. That is
+      // usually recorded as notes, but may also be an explicit verdict flag
+      // (verified + verified_by) for verification done outside the notes flow.
+      verification: doc.verification || null,
       units_summary: computeUnitBudget(doc.requirement_groups),
       updated_at: doc.updated_at || null,
       total,

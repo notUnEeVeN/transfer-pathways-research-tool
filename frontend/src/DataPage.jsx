@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   MagnifyingGlassIcon, ArrowDownTrayIcon, ClipboardIcon, ArrowLeftIcon, ArrowRightIcon,
-  ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon,
+  ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon, ArrowsUpDownIcon,
 } from '@heroicons/react/24/outline'
-import { Alert, Badge, Button, EmptyState, Input, LoadingLogo, PageContainer, Select, Spinner, Stack, StatStrip, Tabs, Textarea } from './components/ui'
+import { CheckBadgeIcon } from '@heroicons/react/24/solid'
+import { Alert, Button, EmptyState, Input, LoadingLogo, PageContainer, Select, Spinner, Stack, StatStrip, Tabs, Textarea } from './components/ui'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SubNav from './components/SubNav'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
@@ -27,10 +28,12 @@ import {
   useRawAssist, useDataSummary, useRequirementComparison,
   useFigures, useDeleteFigure, useEditFigure, downloadFigure,
   useDegreeRequirements, useDegreeRequirementDocuments, useDegreeEvaluation,
-  useSaveDegreeRequirement, useAsDegreeAvailability,
+  useSaveDegreeRequirement, useAsDegreeVerification,
 } from '@frontend/query/hooks/useData'
 import MajorPicker from './shared/majors/MajorPicker'
 import { useMajorChoice } from './shared/majors/MajorContext'
+import MajorVerificationDots, { MajorVerificationLegend } from './shared/majors/MajorVerificationDots'
+import RevisionHistory from './components/RevisionHistory'
 
 /**
  * Data explorer — the partners' access point into the research database.
@@ -122,13 +125,13 @@ export default function DataPage({ onNavigate = () => {} }) {
 
 // ───────── pathways (college-first) ─────────
 //
-// The main list stays focused on community colleges and CS A.S.-T status.
-// Once a college is open, the Transfer articulation tab owns the receiving-
-// campus picker so campus changes keep the college context in place.
+// The main list is community colleges and their per-major associate-degree
+// verification. Once a college is open, the Transfer articulation tab owns the
+// receiving-campus picker so campus changes keep the college context in place.
 
 export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
   const summary = useDataSummary()
-  const degreeAvailability = useAsDegreeAvailability()
+  const degreeVerification = useAsDegreeVerification()
   const [campus, setCampus] = useState(null) // { school_id, school }
   const [collegeId, setCollegeId] = useState(null)
 
@@ -155,12 +158,13 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
     // that selected college.
   }
 
-  // Degree availability is college-level rather than campus-level.
-  const degreeAvailabilityByCc = useMemo(
-    () => new Map((degreeAvailability.data?.rows || []).map((row) => [
+  // Associate-degree verification is college-level rather than campus-level.
+  const majors = degreeVerification.data?.majors || []
+  const verificationByCc = useMemo(
+    () => new Map((degreeVerification.data?.rows || []).map((row) => [
       Number(row.community_college_id), row,
     ])),
-    [degreeAvailability.data]
+    [degreeVerification.data]
   )
 
   // The route fetching whatever the right-hand pane currently shows — the
@@ -192,11 +196,11 @@ export function AgreementsBrowser({ onRoute = () => {}, homeRequest = 0 }) {
     <Stack gap='cozy'>
       {collegeId != null ? (
         <CampusAgreements campus={campus} campuses={campuses} collegeId={collegeId}
-          degreeAvailability={degreeAvailabilityByCc.get(Number(collegeId)) || null}
+          degreeAvailability={verificationByCc.get(Number(collegeId)) || null}
           onCampusChange={selectCampus} onRoute={onRoute} onBack={() => setCollegeId(null)} />
       ) : (
-        <CampusColleges degreeAvailabilityByCc={degreeAvailabilityByCc}
-          dataLoading={degreeAvailability.isLoading} onPick={setCollegeId} onRoute={onRoute} />
+        <CampusColleges verificationByCc={verificationByCc} majors={majors}
+          dataLoading={degreeVerification.isLoading} onPick={setCollegeId} onRoute={onRoute} />
       )}
     </Stack>
   )
@@ -221,30 +225,44 @@ export function summarizeCoverageRows(rows = []) {
 // data row so the two can never drift out of alignment.
 const COLLEGE_TABLE_COLS = 'grid grid-cols-[minmax(0,1fr)_180px_68px] gap-3.5'
 
-const AST_STATUS_OPTIONS = [
-  { value: '', label: 'All CS A.S.-T statuses' },
-  { value: 'available', label: 'Has CS A.S.-T' },
-  { value: 'confirmed_none', label: 'No CS A.S.-T' },
-  { value: 'data_gap', label: 'Has CS A.S.-T — requirements missing' },
+const VERIFICATION_FILTERS = [
+  { value: '', label: 'All verification' },
+  { value: 'has_unverified', label: 'Has unverified' },
+  { value: 'fully_verified', label: 'Fully verified' },
+  { value: 'no_records', label: 'No records' },
 ]
 
-const AST_STATUS_META = {
-  available: { label: 'CS A.S.-T', variant: 'success' },
-  confirmed_none: { label: 'No CS A.S.-T', variant: 'neutral' },
-  data_gap: { label: 'A.S.-T data gap', variant: 'conservative' },
+// A college's per-major states, in the endpoint's (registry) major order, plus
+// the derived signals the filter and sort read.
+function collegeVerification(row, majors) {
+  const states = majors.map((m) => ({
+    slug: m.slug, label: m.label, state: row?.majors?.[m.slug]?.state || 'absent',
+  }))
+  const presentCount = states.filter((s) => s.state === 'present').length
+  const verifiedCount = states.filter((s) => s.state === 'verified').length
+  return {
+    states,
+    presentCount,
+    verifiedCount,
+    allAbsent: states.every((s) => s.state === 'absent'),
+  }
 }
 
-function AstStatusBadge({ availability }) {
-  const status = availability?.types?.ast?.status
-  const meta = AST_STATUS_META[status] || { label: 'Not checked', variant: 'neutral' }
-  return <Badge variant={meta.variant}>{meta.label}</Badge>
+function matchesVerificationFilter(v, filter) {
+  if (filter === 'has_unverified') return v.presentCount > 0
+  if (filter === 'fully_verified') return v.verifiedCount > 0 && v.presentCount === 0
+  if (filter === 'no_records') return v.allAbsent
+  return true
 }
 
-function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }) {
+function CampusColleges({ verificationByCc, majors, dataLoading, onPick, onRoute }) {
   const colleges = useColleges()
   const [q, setQ] = useState('')
   const [district, setDistrict] = useState('')
-  const [astStatus, setAstStatus] = useState('')
+  const [verifyFilter, setVerifyFilter] = useState('')
+  // Default order is alphabetical; one click sorts the colleges that still
+  // carry unverified records to the top, so gaps are obvious at a glance.
+  const [sortByVerification, setSortByVerification] = useState(false)
 
   const districtOptions = useMemo(() => [
     { value: '', label: 'All districts' },
@@ -253,26 +271,32 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
       .map((value) => ({ value, label: value })),
   ], [colleges.data])
 
-  const changeAstStatus = (next) => {
-    setAstStatus(next)
-    onRoute({ path: next === 'available'
-      ? '/api/exports/cs-ast-degrees'
-      : next
-        ? '/api/curated/as-degree-availability'
-        : '/api/assist/coverage' })
+  const changeVerifyFilter = (next) => {
+    setVerifyFilter(next)
+    onRoute({ path: next ? '/api/curated/as-degree-verification' : '/api/assist/coverage' })
+  }
+
+  const toggleSort = () => {
+    const next = !sortByVerification
+    setSortByVerification(next)
+    onRoute({ path: next ? '/api/curated/as-degree-verification' : '/api/assist/coverage' })
   }
 
   const rows = useMemo(() => {
-    const all = (colleges.data || []).map((c) => {
-      const degreeAvailability = degreeAvailabilityByCc.get(Number(c.id)) || null
-      return { ...c, degreeAvailability }
-    }).filter((c) => !district || c.district === district)
-      .filter((c) => !astStatus || c.degreeAvailability?.types?.ast?.status === astStatus)
-      .sort((a, b) => a.name.localeCompare(b.name))
+    const all = (colleges.data || []).map((c) => ({
+      ...c, verification: collegeVerification(verificationByCc.get(Number(c.id)) || null, majors),
+    })).filter((c) => !district || c.district === district)
+      .filter((c) => matchesVerificationFilter(c.verification, verifyFilter))
+      .sort((a, b) => (sortByVerification
+        // Most unverified records first, then most verified, then name.
+        ? b.verification.presentCount - a.verification.presentCount
+          || b.verification.verifiedCount - a.verification.verifiedCount
+          || a.name.localeCompare(b.name)
+        : a.name.localeCompare(b.name)))
     if (!q.trim()) return all
     const s = q.toLowerCase()
     return all.filter((c) => `${c.name} ${c.district || ''}`.toLowerCase().includes(s))
-  }, [astStatus, colleges.data, degreeAvailabilityByCc, district, q])
+  }, [colleges.data, district, majors, q, sortByVerification, verifyFilter, verificationByCc])
 
   return (
     <Stack gap='comfortable'>
@@ -285,8 +309,8 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
         </label>
         <Select pill className='w-[210px]' value={district} onChange={setDistrict}
           options={districtOptions} aria-label='Filter by district' />
-        <Select pill className='w-[270px]' value={astStatus} onChange={changeAstStatus}
-          options={AST_STATUS_OPTIONS} aria-label='Filter by CS A.S.-T status' />
+        <Select pill className='w-[210px]' value={verifyFilter} onChange={changeVerifyFilter}
+          options={VERIFICATION_FILTERS} aria-label='Filter by verification' />
       </div>
       {colleges.isLoading || dataLoading ? (
         <div className='flex justify-center py-8'><Spinner /></div>
@@ -294,7 +318,11 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
         <div className='surface-card overflow-auto max-h-[65vh]'>
           <div className={`${COLLEGE_TABLE_COLS} px-5 py-3 border-b border-border sticky top-0 bg-surface`}>
             <span className='text-label'>Community college</span>
-            <span className='text-label whitespace-nowrap'>Associate degree</span>
+            <button type='button' onClick={toggleSort} aria-pressed={sortByVerification}
+              className='text-label whitespace-nowrap inline-flex items-center gap-1 hover:text-ink text-left'>
+              Associate degrees
+              <ArrowsUpDownIcon className={`w-3.5 h-3.5 ${sortByVerification ? 'text-primary' : 'text-ink-subtle'}`} />
+            </button>
             <span className='text-label' />
           </div>
           {rows.map((c) => (
@@ -305,7 +333,7 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
                 <p className='text-body-strong truncate'>{c.name}</p>
                 {c.district && <p className='text-tag text-ink-subtle truncate'>{c.district}</p>}
               </div>
-              <div><AstStatusBadge availability={c.degreeAvailability} /></div>
+              <div><MajorVerificationDots states={c.verification.states} /></div>
               <div>
                 <span className='flex items-center gap-1 text-caption font-[550] text-success'>
                   view <ArrowRightIcon className='w-[13px] h-[13px]' />
@@ -317,6 +345,11 @@ function CampusColleges({ degreeAvailabilityByCc, dataLoading, onPick, onRoute }
             <p className='px-5 py-8 text-body text-ink-muted text-center'>
               No colleges match these filters.
             </p>
+          )}
+          {rows.length > 0 && (
+            <div className='px-5 py-3 border-t border-border sticky bottom-0 bg-surface'>
+              <MajorVerificationLegend majors={majors} />
+            </div>
           )}
         </div>
       )}
@@ -335,11 +368,10 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
     && AS_DEGREE_SLOTS.includes(selection.slot)
     ? selection.slot
     : AS_DEGREE_SLOTS[0]
-  // The availability survey is Computer Science only, so its record details
-  // (title seen, catalog year) belong to a CS header alone. For any other
-  // major the line stays the subject and the slot until that major has its
-  // own survey — never CS's data under another major's name.
-  const record = majorSlug === 'cs' ? (availability?.types?.[selectedSlot] || null) : null
+  // Verification carries each major's own record detail (title seen, catalog
+  // year) per slot, so the header speaks for the selected major rather than
+  // showing CS's data under another major's name.
+  const record = availability?.majors?.[majorSlug]?.slots?.[selectedSlot] || null
   const subject = major?.label || 'Computer Science'
   const programLine = [subject, record?.degree_title_seen
     || slotLabel(selectedSlot, major?.degreeSlotLabels),
@@ -600,6 +632,7 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
             <EmptyState title={major ? `No ${major.label} graduation requirements yet` : 'No graduation requirements yet'}
               description={`Fill in the document below — by hand or with the AI briefing — to add the four-year ${major?.label || ''} template for this campus.`} />
           )}
+          {rawDoc?._id && <RevisionHistory kind='degree' id={rawDoc._id} />}
           <JsonDocumentPanel doc={editDoc} onChange={setDraft}
             ariaLabel='Graduation requirements JSON'
             redrawNote='The template above redraws as you type.'
@@ -1296,10 +1329,39 @@ export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = nul
   // may lack `requirement_groups` — never crash the tab; the refetch replaces it.
   const groups = Array.isArray(doc.requirement_groups) ? doc.requirement_groups : []
   const sources = degreeSourcesFor(doc)
+  // A template is verified once its official pages have been walked — recorded
+  // as verification notes or, for verification done outside that flow, an
+  // explicit verdict flag. One template per major, so this reads for the shown
+  // major alone. The verifier is the flag's author, else the note authors.
+  const notes = Array.isArray(doc.verification_notes) ? doc.verification_notes : []
+  const verified = !!doc.verification?.verified || notes.length > 0
+  const verifiers = doc.verification?.verified_by_label
+    ? [doc.verification.verified_by_label]
+    : [...new Set(notes.map((n) => n.author_label).filter(Boolean))]
   return (
     <Stack gap='cozy'>
+      {verified && (
+        <div className='surface-card border-l-4 border-success bg-success-soft px-4 py-3 flex items-center gap-2.5'>
+          <CheckBadgeIcon className='w-5 h-5 text-success shrink-0' />
+          <div className='min-w-0'>
+            <p className='text-body-strong text-success'>
+              Verified{verifiers.length ? ` by ${verifiers.join(', ')}` : ''}
+            </p>
+            <p className='text-caption text-ink-muted'>
+              These four-year requirements have been checked against the official pages.
+            </p>
+          </div>
+        </div>
+      )}
       <div className='surface-card px-5 py-[18px]'>
-        <p className='text-label'>Hand-curated four-year graduation requirements</p>
+        <div className='flex items-center gap-2'>
+          <p className='text-label'>Hand-curated four-year graduation requirements</p>
+          {verified && (
+            <span className='inline-flex items-center gap-1 text-caption font-[650] text-success'>
+              <CheckBadgeIcon className='w-4 h-4' /> Verified
+            </span>
+          )}
+        </div>
         <div className='mt-1.5 flex items-center gap-4'>
           <p className='min-w-0 flex-1 heading-card break-words'>
             {doc.school} <span className='text-ink-subtle'>·</span> {doc.program}

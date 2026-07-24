@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import apiClient from '../../api/apiClient'
 import { useAuth } from '../../hooks/useAuth'
+import { qk } from '../keys'
 
 // Data-explorer hooks. Everything the server returns here is already scoped
 // to the caller's visibility (admins: everything ported; partners: the
@@ -95,7 +96,9 @@ export function useCoverage(params = {}, options = {}) {
   const pin = ['paper', 'settings'].includes(params.pin) ? params.pin : null
   const { enabled = true, ...queryOptions } = options
   return useQuery({
-    queryKey: ['analysis-coverage', user?.uid, majorSlug, majorContains, groupBy, requirements, pin],
+    queryKey: qk.coverage(
+      user?.uid, majorSlug, majorContains, groupBy, requirements, pin
+    ),
     queryFn: () =>
       apiClient
         .get('/analysis/coverage', {
@@ -109,28 +112,36 @@ export function useCoverage(params = {}, options = {}) {
         })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
+    // Coverage is a computed snapshot, not source data. Drop it as soon as no
+    // visual observes it so navigating away and back always waits for one
+    // current response instead of painting an older in-memory result first.
+    gcTime: 0,
     staleTime: 5 * 60 * 1000,
     ...queryOptions,
   })
 }
 
 // Per college × campus, the share of all bachelor's requirements and of only
-// lower-division requirements fulfilled by the selected CS associate degree.
-// The result is edited frequently, so a persisted response may paint immediately
-// but every mount must still fetch the current calculation.
-// degree_type: 'local_as' | 'ast'.
+// lower-division requirements fulfilled by the selected major's associate
+// degree.
+// The result is edited frequently, so it is never persisted and every mount
+// fetches the current calculation (an in-memory result may bridge that fetch).
+// degree_type: 'ast' | 'local_as' | 'local_other'.
 export function useTransferCreditRate(degreeType = 'local_as', options = {}) {
   const { user } = useAuth()
-  const type = ['ast', 'local_as'].includes(degreeType) ? degreeType : 'local_as'
-  const majorSlug = 'cs'
-  const { enabled = true, ...queryOptions } = options
+  const type = ['ast', 'local_as', 'local_other'].includes(degreeType) ? degreeType : 'local_as'
+  const { enabled = true, majorSlug = 'cs', ...queryOptions } = options
+  const scopedMajor = String(majorSlug || '').trim() || 'cs'
   return useQuery({
-    // v4 prevents the old AS-denominator payload from rendering against the
-    // bachelor's-requirement completion field contract during hydration.
-    queryKey: ['analysis-transfer-credit-rate', 'v4', user?.uid, majorSlug, type],
+    // v5 adds major-selected cohorts (including local A.A.) and source-review
+    // metadata; never share one major or method version's memory cache with
+    // another.
+    queryKey: ['analysis-transfer-credit-rate', 'v5', user?.uid, scopedMajor, type],
     queryFn: () =>
       apiClient
-        .get('/analysis/transfer-credit-rate', { params: { degree_type: type, majorSlug } })
+        .get('/analysis/transfer-credit-rate', {
+          params: { degree_type: type, majorSlug: scopedMajor },
+        })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
     ...queryOptions,
@@ -501,6 +512,20 @@ export function useAsDegreeAvailability() {
   })
 }
 
+// Per-college, per-major associate-degree verification state (verified /
+// present / absent), derived from the stored records alone so every major is
+// covered — powers the Overview landscape, the Community Colleges list dots,
+// and the college drill-in header.
+export function useAsDegreeVerification() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['as-degree-verification', user?.uid],
+    queryFn: () => apiClient.get('/curated/as-degree-verification').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: 60 * 1000,
+  })
+}
+
 export function useAsDegreeDetail(collegeId, major = 'cs') {
   const { user } = useAuth()
   return useQuery({
@@ -513,6 +538,21 @@ export function useAsDegreeDetail(collegeId, major = 'cs') {
   })
 }
 
+// Admin-only hand-edit history for one verified document (as_degree or degree),
+// newest first — who saved, when, and the field-level changes. Gate the call on
+// the caller's admin role via `enabled`.
+export function useRequirementRevisions(kind, id, { enabled = true } = {}) {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['requirement-revisions', user?.uid, kind, id],
+    queryFn: () => apiClient
+      .get(`/curated/requirements/${kind}/${encodeURIComponent(id)}/revisions`)
+      .then((r) => r.data),
+    enabled: !!user?.uid && enabled && !!kind && !!id,
+    staleTime: 30 * 1000,
+  })
+}
+
 export function useSaveAsDegree() {
   const qc = useQueryClient()
   return useMutation({
@@ -520,6 +560,7 @@ export function useSaveAsDegree() {
     onSuccess: () => Promise.all([
       qc.invalidateQueries({ queryKey: ['as-degrees'] }),
       qc.invalidateQueries({ queryKey: ['as-degree-availability'] }),
+      qc.invalidateQueries({ queryKey: ['as-degree-verification'] }),
       qc.invalidateQueries({ queryKey: ['as-degree-detail'] }),
     ]),
   })

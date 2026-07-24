@@ -6,6 +6,7 @@
 
 const DEFAULT_INVENTORY = require('../../scripts/data/as_degrees_cs_extraction.json').survey;
 const { AS_DEGREE_SLOTS, LEGACY_TYPE_TO_SLOT } = require('../config/asDegreeSlots');
+const { listMajors } = require('../config/majors');
 
 const LOW_CONFIDENCE = 0.7;
 
@@ -423,6 +424,73 @@ async function asDegreeAvailability(db, inventory = DEFAULT_INVENTORY) {
   return { counts, rows };
 }
 
+// A major's associate-degree state at one college, rolled up across its slots:
+// `verified` when any slot record is human-verified, else `present` when any
+// slot has a `found` record, else `absent`. Slot docs may be undefined.
+function rollUpMajorState(slotDocs) {
+  if (slotDocs.some((doc) => doc?.verification?.verified)) return 'verified';
+  if (slotDocs.some((doc) => doc?.status === 'found')) return 'present';
+  return 'absent';
+}
+
+// One row per community college carrying each capable major's verification
+// state — derived purely from the stored as_degree docs, so every major is
+// covered rather than only Computer Science (whose statewide survey powers
+// asDegreeAvailability above). Slot-level detail rides along for the college
+// drill-in header; the `counts` block is the multi-major landscape rollup.
+async function asDegreeVerification(db) {
+  const majors = listMajors().filter((major) => major.capabilities?.asDegrees);
+  const [docs, institutions] = await Promise.all([
+    db.collection('curated_requirements').find({ kind: 'as_degree' }).toArray(),
+    db.collection('assist_institutions')
+      .find({ kind: 'community_college' },
+        { projection: { name: 1, district: 1, region: 1, source_id: 1 } })
+      .toArray(),
+  ]);
+  // `${community_college_id}:${major_slug}` -> { [slot]: doc }
+  const bySchoolMajor = new Map();
+  for (const doc of docs) {
+    const key = `${doc.community_college_id}:${doc.major_slug}`;
+    const slots = bySchoolMajor.get(key) || {};
+    slots[doc.degree_type] = doc;
+    bySchoolMajor.set(key, slots);
+  }
+  const rows = institutions.map((inst) => {
+    const ccId = Number(inst.source_id);
+    const majorsView = {};
+    for (const major of majors) {
+      const slotDocs = bySchoolMajor.get(`${ccId}:${major.slug}`) || {};
+      majorsView[major.slug] = {
+        state: rollUpMajorState(AS_DEGREE_SLOTS.map((slot) => slotDocs[slot])),
+        slots: Object.fromEntries(AS_DEGREE_SLOTS.map((slot) => {
+          const doc = slotDocs[slot];
+          return [slot, doc ? {
+            status: doc.status || null,
+            verified: !!doc.verification?.verified,
+            degree_title_seen: doc.degree_title_seen || null,
+            catalog_year: doc.catalog_year || null,
+          } : null];
+        })),
+      };
+    }
+    return {
+      college_id: `cc:${ccId}`,
+      community_college_id: ccId,
+      college_name: inst.name || null,
+      district: inst.district || null,
+      region: inst.region || null,
+      majors: majorsView,
+    };
+  }).sort((a, b) => String(a.college_name).localeCompare(String(b.college_name)));
+
+  const counts = {};
+  for (const major of majors) {
+    counts[major.slug] = { verified: 0, present: 0, absent: 0 };
+    for (const row of rows) counts[major.slug][row.majors[major.slug].state] += 1;
+  }
+  return { majors: majors.map((m) => ({ slug: m.slug, label: m.label })), counts, rows };
+}
+
 function courseView(course) {
   return {
     course_id: course.course_id,
@@ -508,6 +576,7 @@ async function asDegreeDetail(db, collegeId, { major = 'cs' } = {}) {
 module.exports = {
   asDegreeOverview,
   asDegreeAvailability,
+  asDegreeVerification,
   asDegreesExportData,
   asDegreeDetail,
   duplicateLocalOtherIds,
