@@ -1,0 +1,159 @@
+{
+  "_meta": {
+    "community_college_id": 104,
+    "college_name": "Cerritos College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:02+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "Pinned to Cerritos College's official 2025-2026 catalog. Both the Biology AA and Biology AS-T requirement tables are fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=330&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47550",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35686-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Biology (A.A.)",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "tmc_version_basis": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 28,
+      "major_units_max": 28,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 119 / printed catalog page 117, Biology (A.A.)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "120", "title_seen": "Introduction To Biological Science", "units_seen": 4},
+            {"prefix": "BIOL", "number": "200", "title_seen": "Principles of Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "201", "title_seen": "Principles of Biology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "111", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "112", "title_seen": "General Chemistry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select one of the following two courses",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "116", "title_seen": "Calculus for Managerial, Biological and Social Sciences", "units_seen": 4, "alternative_seen": "MATH 116 or MATH 170"},
+            {"prefix": "MATH", "number": "170", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 4, "alternative_seen": "MATH 116 or MATH 170"}
+          ]
+        },
+        {
+          "label_seen": "General Education and electives as needed",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 32,
+          "ge_area": "Cerritos associate-degree general education and electives combined",
+          "courses": []
+        }
+      ],
+      "notes": "The catalog states that the 60-unit AA includes the 28-unit major, general education, and electives as needed."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology (AS-T)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 119 / printed catalog page 117, Biology (AS-T)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 28,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "200", "title_seen": "Principles of Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "201", "title_seen": "Principles of Biology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "111", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "112", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "PHYS", "number": "101", "title_seen": "General Physics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "102", "title_seen": "General Physics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Calculus selection",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "116", "title_seen": "Calculus for Managerial, Biological and Social Sciences", "units_seen": 4, "alternative_seen": "MATH 116 or MATH 170"},
+            {"prefix": "MATH", "number": "170", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 4, "alternative_seen": "MATH 116 or MATH 170"}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The alternative MATH 170 row does not repeat its units in the typeset table; the printed 32-unit major total confirms the alternative is the same four-unit selection."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete official 2025-2026 Biology section publishes two in-scope broad Biology awards. Biotechnology awards are outside this pass and are not retained as candidates."
+}

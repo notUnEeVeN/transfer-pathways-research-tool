@@ -1,0 +1,196 @@
+{
+  "_meta": {
+    "community_college_id": 62,
+    "college_name": "Mount San Antonio College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to Mt. SAC's official 2025-2026 catalog PDF. Biology AS-T and Biology AS are fully extracted; preserve the local AS's three nested elective tracks."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1040&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [{"statewide_program_id": "6d28d46d-111e-4195-90c3-951d36985673", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/45453-biology"}]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology (AS-T Degree S0979)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree includes an 8-unit physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as Degree S0979 in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.mtsac.edu/catalog/pdf_ada/Mt_San_Antonio_College_PDF_25-26_82225_ADA.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 34,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.mtsac.edu/catalog/pdf_ada/Mt_San_Antonio_College_PDF_25-26_82225_ADA.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog pages 357-358, Biology (AS-T Degree S0979)"}],
+      "major_groups": [
+        {
+          "label_seen": "Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "2", "title_seen": "Plant and Animal Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "8", "title_seen": "Cell and Molecular Biology", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A — select General Chemistry I or Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "50", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "50H", "title_seen": "General Chemistry I - Honors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select General Chemistry II or Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "51", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "51H", "title_seen": "General Chemistry II - Honors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — required calculus and physics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 12,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "180", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2AG", "title_seen": "General Physics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2BG", "title_seen": "General Physics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B — select Biology for Majors or Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "4", "title_seen": "Biology for Majors", "units_seen": 4},
+            {"prefix": "BIOL", "number": "4H", "title_seen": "Biology for Majors - Honors", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "General Education (Cal-GETC)", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "Courses may double-count between the major and Cal-GETC but may not double-count between Cal-GETC areas, as stated in the catalog footnote."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology (AS Degree S0652)",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as Degree S0652 in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.mtsac.edu/catalog/pdf_ada/Mt_San_Antonio_College_PDF_25-26_82225_ADA.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 37,
+      "extraction_confidence": 0.95,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.mtsac.edu/catalog/pdf_ada/Mt_San_Antonio_College_PDF_25-26_82225_ADA.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog pages 231-232, Biology (AS Degree S0652)"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — Plant and Animal Biology, calculus, and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "2", "title_seen": "Plant and Animal Biology", "units_seen": 4},
+            {"prefix": "MATH", "number": "180", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Courses — select Biology for Majors or Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "4", "title_seen": "Biology for Majors", "units_seen": 4},
+            {"prefix": "BIOL", "number": "4H", "title_seen": "Biology for Majors - Honors", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Courses — select General Chemistry I or Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "50", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "50H", "title_seen": "General Chemistry I - Honors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Courses — select General Chemistry II or Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "51", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "51H", "title_seen": "General Chemistry II - Honors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Electives — choose one complete track",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 11,
+          "units_max": 15,
+          "ge_area": null,
+          "choice_structure_seen": "Choose one track. Biodiversity: select three courses totaling at least 11 units from BIOL 3; BIOL 8; BIOL 20 with BIOL 21; BIOL 25; BIOL 34 with BIOL 34L; BTNY 3; MICR 1 or MICR 22; ZOOL 3. Cell and Molecular Biology: select BIOL 8 plus two other choices totaling at least 11 units from BIOL 34 with BIOL 34L; CHEM 80; CHEM 81; MICR 1 or MICR 22; MICR 26. Pre-Health Professions: select three courses totaling at least 11 units from ANAT 35 with ANAT 36; ANAT 38; BIOL 8; BIOL 34 with BIOL 34L; MICR 1 or MICR 22.",
+          "courses": [
+            {"prefix": "BIOL", "number": "3", "title_seen": "Ecology and Field Biology", "units_seen": null},
+            {"prefix": "BIOL", "number": "8", "title_seen": "Cell and Molecular Biology", "units_seen": null},
+            {"prefix": "BIOL", "number": "20", "title_seen": "Marine Biology", "units_seen": null},
+            {"prefix": "BIOL", "number": "21", "title_seen": "Marine Biology Laboratory", "units_seen": null},
+            {"prefix": "BIOL", "number": "25", "title_seen": "Conservation Biology", "units_seen": null},
+            {"prefix": "BIOL", "number": "34", "title_seen": "Fundamentals of Genetics", "units_seen": null},
+            {"prefix": "BIOL", "number": "34L", "title_seen": "Fundamentals of Genetics Laboratory", "units_seen": null},
+            {"prefix": "BTNY", "number": "3", "title_seen": "Plant Structures, Functions, and Diversity", "units_seen": null},
+            {"prefix": "MICR", "number": "1", "title_seen": "Principles of Microbiology", "units_seen": null},
+            {"prefix": "MICR", "number": "22", "title_seen": "Microbiology", "units_seen": null},
+            {"prefix": "ZOOL", "number": "3", "title_seen": "Fundamentals of Zoology", "units_seen": null},
+            {"prefix": "CHEM", "number": "80", "title_seen": "Organic Chemistry I", "units_seen": null},
+            {"prefix": "CHEM", "number": "81", "title_seen": "Organic Chemistry II", "units_seen": null},
+            {"prefix": "MICR", "number": "26", "title_seen": "Introduction to Immunology", "units_seen": null},
+            {"prefix": "ANAT", "number": "35", "title_seen": "Human Anatomy", "units_seen": null},
+            {"prefix": "ANAT", "number": "36", "title_seen": "Human Physiology", "units_seen": null},
+            {"prefix": "ANAT", "number": "38", "title_seen": "Pathophysiology", "units_seen": null}
+          ]
+        },
+        {"label_seen": "Mt. SAC associate-degree general education", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "Mt. SAC associate-degree general education", "courses": []},
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The local A.S. requires exactly one of three nested tracks. Individual elective units are not printed in the program table, so units_seen remains null rather than being inferred; the exact printed 11-15 unit range and all pairings are retained in choice_structure_seen. PHYS 2AG and PHYS 2BG are recommended electives, not requirements, and are omitted from required groups."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one broad Biology AS-T and one broad Biology AS."
+}

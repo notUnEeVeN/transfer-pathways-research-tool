@@ -1,0 +1,109 @@
+{
+  "_meta": {
+    "community_college_id": 125,
+    "college_name": "Porterville College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:43:16+00:00",
+    "updated_at": "2026-07-23T21:54:00+00:00",
+    "resume_note": "First-pass extraction is complete from Porterville College's official 2025-2026 catalog. The general Biology AS-T is modeled; the adjacent Biological and Physical Science AA is intentionally outside scope."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1302&search_string=biology",
+    "checked_at": "2026-07-23T19:29:51+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50128",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/38309-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Effective Summer 2025 and listed without inactive or teach-out language in the official 2025-2026 catalog.",
+      "catalog_url": "https://www.portervillecollege.edu/_resources/assets/pdfs/Academics/Catalog/2025-2026_Catalog_Updated_Meta_Data.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.portervillecollege.edu/_resources/assets/pdfs/Academics/Catalog/2025-2026_Catalog_Updated_Meta_Data.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 76-77, Biology — Associate in Science for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "P135", "title_seen": "General Biology I", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "P136", "title_seen": "General Biology II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A: Supporting Science and Mathematics — required chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "P101A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "P101B", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "P103", "title_seen": "Calculus 1 with Analytic Geometry", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List A: complete one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS P102A and P102B, or complete PHYS P104A and P104B; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "P102A", "title_seen": "General College Physics", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "P102B", "title_seen": "General College Physics", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "P104A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "P104B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "General Education (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Elective Units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 32 major units, 10 units that may be double-counted, 34 Cal-GETC units, and 4 elective units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The 2025-2026 catalog also publishes a Biological and Physical Science AA. It is a combined adjacent science award rather than a general Biology/Biological Sciences degree and is excluded by this pass."
+}

@@ -1,0 +1,154 @@
+{
+  "_meta": {
+    "community_college_id": 3,
+    "college_name": "Los Angeles City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:17+00:00",
+    "updated_at": "2026-07-23T19:45:00+00:00",
+    "resume_note": "First-pass extraction complete from the current 2025-2026 LACC catalog. Preserve the two intact physics-sequence alternatives when compiling the flat raw groups."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=790&search_string=biology",
+    "checked_at": "2026-07-23T19:29:44+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49388",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36049-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Associate in Science (AS-T) Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The current catalog requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the current 2025-2026 catalog as academic plan C036049H; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.lacc.edu/sites/lacc.edu/files/2025-08/Complete%20LACC%202025-26%20College%20Catalog_0.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lacc.edu/sites/lacc.edu/files/2025-08/Complete%20LACC%202025-26%20College%20Catalog_0.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 147, Biology Associate in Science (AS-T) Degree; academic plan C036049H"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major Core Courses (10 Units)",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOLOGY",
+              "number": "006",
+              "title_seen": "General Biology I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOLOGY",
+              "number": "007",
+              "title_seen": "General Biology II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "List A — required chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "CHEM",
+              "number": "101",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "102",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "261",
+              "title_seen": "Calculus I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "List A — one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSICS 006 and PHYSICS 007 (8 units), or complete PHYSICS 101 and PHYSICS 102 (10 units); courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYSICS",
+              "number": "006",
+              "title_seen": "General Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYSICS",
+              "number": "007",
+              "title_seen": "General Physics II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYSICS",
+              "number": "101",
+              "title_seen": "Physics for Engineers and Scientists I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYSICS",
+              "number": "102",
+              "title_seen": "Physics for Engineers and Scientists II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The flat choose_units vocabulary cannot enforce intact physics sequences by itself; preserve choice_structure_seen during compilation."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The current catalog lists the general Biology AS-T and no general local Biology/Biological Sciences A.S. or A.A. Specialized programs were intentionally ignored under this batch's scope."
+}

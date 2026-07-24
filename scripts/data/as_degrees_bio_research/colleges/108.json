@@ -1,0 +1,112 @@
+{
+  "_meta": {
+    "community_college_id": 108,
+    "college_name": "MiraCosta College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:03+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "Pinned to MiraCosta College's official archived 2025-2026 catalog. The Biology for Transfer AS-T requirement table is fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=965&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50284",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37240-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official archived 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://publication.miracosta.edu/books/gdho",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 31,
+      "major_units_max": 33,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_flipbook",
+          "url": "https://publication.miracosta.edu/books/gdho",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Flipbook/PDF pages 131-132 / printed catalog pages 130-131, Biology - Biology for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "202", "title_seen": "Foundations of Biology: Evolution, Biodiversity, and Organismal Biology", "units_seen": 4},
+            {"prefix": "BIO", "number": "204", "title_seen": "Foundations of Biology: Biochemistry, Cell Biology, Genetics, and Molecular Biology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "150", "title_seen": "General Chemistry I: For Science Majors", "units_seen": 5},
+            {"prefix": "CHEM", "number": "151", "title_seen": "General Chemistry II: For Science Majors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - Calculus selection",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 7,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "150", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 5},
+            {"prefix": "MATH", "number": "150H", "title_seen": "Calculus and Analytic Geometry I (Honors)", "units_seen": 5},
+            {"prefix": "MATH", "number": "150S", "title_seen": "Calculus and Analytical Geometry I with Integrated Support", "units_seen": 7}
+          ]
+        },
+        {
+          "label_seen": "List A - Choose one physics sequence below",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Choose the intact two-course sequence PHYS 111 + PHYS 112 or the intact two-course sequence PHYS 151 + PHYS 152; each sequence is 8 units.",
+          "courses": [
+            {"prefix": "PHYS", "number": "111", "title_seen": "Introductory Physics I", "units_seen": 4, "alternative_seen": "Pair with PHYS 112"},
+            {"prefix": "PHYS", "number": "112", "title_seen": "Introductory Physics II", "units_seen": 4, "alternative_seen": "Pair with PHYS 111"},
+            {"prefix": "PHYS", "number": "151", "title_seen": "Principles of Physics I", "units_seen": 4, "alternative_seen": "Pair with PHYS 152"},
+            {"prefix": "PHYS", "number": "152", "title_seen": "Principles of Physics II", "units_seen": 4, "alternative_seen": "Pair with PHYS 151"}
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC general education pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The five- or seven-unit calculus selection produces the catalog's printed 31-33 unit major range. The physics sequence structure is preserved explicitly."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete official 2025-2026 Biology section publishes one in-scope broad Biology award and no separate Biology AA or local AS."
+}

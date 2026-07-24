@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 56,
+    "college_name": "Palomar College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T02:20:00+00:00",
+    "resume_note": "First-pass extraction of Palomar's local Economics AA and Economics AA-T from the official 2025-2026 catalog, pages 132-133."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1201&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47270",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35206-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics","award_seen":"AA","tmc_version_seen":null,"tmc_version_basis":"Local Economics Associate in Arts degree.","catalog_status_seen":"Active in Palomar College's official 2025-2026 catalog.","catalog_url":"https://www.palomar.edu/catalog/wp-content/uploads/sites/8/2025/06/2025-2026-College-Catalog-Volume-LXXIV.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":23,"major_units_max":23,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.palomar.edu/catalog/wp-content/uploads/sites/8/2025/06/2025-2026-College-Catalog-Volume-LXXIV.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 132-133, Economics AA requirements"}],
+      "major_groups":[
+        {"label_seen":"Required economics courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Economics (Macro)","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Economics (Micro)","units_seen":3}]},
+        {"label_seen":"Group I - select 6 units","rule":"choose_units","choose_n":null,"units_min":6,"units_max":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"110","title_seen":"Comparative Economic Systems","units_seen":3},{"prefix":"ECON","number":"115","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"ECON","number":"120","title_seen":"Labor Economics","units_seen":3},{"prefix":"ECON","number":"125","title_seen":"Economics of Poverty and Discrimination","units_seen":3},{"prefix":"ECON","number":"295","title_seen":"Directed Study in Economics","units_seen":3},{"prefix":"IBUS","number":"100","title_seen":"Introduction to International Business","units_seen":3}]},
+        {"label_seen":"Group II - select 8 units","rule":"choose_units","choose_n":null,"units_min":8,"units_max":8,"ge_area":null,"courses":[{"prefix":"MATH","number":"110","title_seen":"College Algebra","units_seen":4},{"prefix":"MATH","number":"110E","title_seen":"College Algebra with Support","units_seen":4},{"prefix":"MATH","number":"130","title_seen":"Calculus for Business and the Social Sciences","units_seen":4},{"prefix":"MATH","number":"130E","title_seen":"Calculus for Business and the Social Sciences with Support","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics with Support","units_seen":4}]},
+        {"label_seen":"Group III - select 3 units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":3,"ge_area":null,"courses":[{"prefix":"CSIT","number":"105","title_seen":"Computer Concepts and Applications","units_seen":3},{"prefix":"PHIL","number":"200","title_seen":"Critical Thinking","units_seen":3}]},
+        {"label_seen":"Palomar Associate Degree General Education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Palomar GE","courses":[]},
+        {"label_seen":"Electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The official catalog publishes an exact 23-unit local major."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as the Economics AA-T.","catalog_status_seen":"Active in Palomar College's official 2025-2026 catalog.","catalog_url":"https://www.palomar.edu/catalog/wp-content/uploads/sites/8/2025/06/2025-2026-College-Catalog-Volume-LXXIV.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":21,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.palomar.edu/catalog/wp-content/uploads/sites/8/2025/06/2025-2026-College-Catalog-Volume-LXXIV.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 132-133, Economics AA-T requirements"}],
+      "major_groups":[
+        {"label_seen":"Required economics courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Economics (Macro)","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Economics (Micro)","units_seen":3}]},
+        {"label_seen":"Required statistics - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics with Support","units_seen":4}]},
+        {"label_seen":"Required calculus - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"130","title_seen":"Calculus for Business and the Social Sciences","units_seen":4},{"prefix":"MATH","number":"130E","title_seen":"Calculus for Business and the Social Sciences with Support","units_seen":4},{"prefix":"MATH","number":"140","title_seen":"Calculus with Analytic Geometry I","units_seen":5},{"prefix":"MATH","number":"140E","title_seen":"Calculus with Analytic Geometry I with Support","units_seen":5}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":3,"ge_area":null,"courses":[{"prefix":"BUS","number":"205","title_seen":"Business Communication","units_seen":3},{"prefix":"BUS","number":"104","title_seen":"Business Information Systems","units_seen":3},{"prefix":"CSIT","number":"105","title_seen":"Computer Concepts","units_seen":3},{"prefix":"CSIT","number":"125","title_seen":"Computer Information Systems","units_seen":3}]},
+        {"label_seen":"List B - select one or an unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":3,"ge_area":null,"choice_structure_seen":"Select an explicit Economics course or any List A course not already used.","courses":[{"prefix":"ECON","number":"110","title_seen":"Comparative Economic Systems","units_seen":3},{"prefix":"ECON","number":"115","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"ECON","number":"120","title_seen":"Labor Economics","units_seen":3},{"prefix":"ECON","number":"125","title_seen":"Economics of Poverty and Discrimination","units_seen":3},{"prefix":"ECON","number":"295","title_seen":"Directed Study in Economics","units_seen":3},{"prefix":"BUS","number":"205","title_seen":"Business Communication","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"104","title_seen":"Business Information Systems","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"CSIT","number":"105","title_seen":"Computer Concepts","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"CSIT","number":"125","title_seen":"Computer Information Systems","units_seen":3,"alternative_seen":"Any unused List A course"}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The official catalog publishes a 20-21 unit transfer major."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Palomar's official 2025-2026 catalog publishes both a local Economics AA and an Economics AA-T."
+}

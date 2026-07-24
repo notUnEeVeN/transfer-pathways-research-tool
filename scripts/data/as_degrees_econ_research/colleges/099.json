@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "community_college_id": 99,
+    "college_name": "Cuyamaca College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:32:00+00:00",
+    "resume_note": "Extracted from Cuyamaca College's official 2025-2026 catalog PDF, page 108."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=439&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49182",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35872-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the official 2025-2026 catalog.",
+      "catalog_url": "https://www.cuyamaca.edu/academics/class-schedules-catalog-and-calendars/files/2025-26-catalog/cuyamaca-2025-2026-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.cuyamaca.edu/academics/class-schedules-catalog-and-calendars/files/2025-26-catalog/cuyamaca-2025-2026-catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Cuyamaca College Catalog 2025-2026 page 108: Economics for Transfer (AA-T), degree requirements"}],
+      "major_groups": [
+        {"label_seen": "Required Core — economics and statistics", "rule": "all", "choose_n": null, "units_min": 10, "ge_area": null, "courses": [
+          {"prefix": "ECON", "number": "120", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+          {"prefix": "ECON", "number": "121", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+          {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+        ]},
+        {"label_seen": "Required Core — calculus: select one", "rule": "choose_courses", "choose_n": 1, "units_min": 4, "units_max": 5, "ge_area": null, "courses": [
+          {"prefix": "MATH", "number": "178", "title_seen": "Calculus for Business, Social and Behavioral Sciences", "units_seen": 4},
+          {"prefix": "MATH", "number": "180", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5}
+        ]},
+        {"label_seen": "List A: select one", "rule": "choose_courses", "choose_n": 1, "units_min": 3, "units_max": 4, "ge_area": null, "courses": [
+          {"prefix": "BUS", "number": "120", "title_seen": "Financial Accounting", "units_seen": 4},
+          {"prefix": "BUS", "number": "121", "title_seen": "Managerial Accounting", "units_seen": 4},
+          {"prefix": "BUS", "number": "128", "title_seen": "Business Communication", "units_seen": 3},
+          {"prefix": "CIS", "number": "110", "title_seen": "Principles of Information Systems", "units_seen": 4},
+          {"prefix": "MATH", "number": "280", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 4}
+        ]},
+        {"label_seen": "List B: select any List A course not used", "rule": "choose_courses", "choose_n": 1, "units_min": 3, "units_max": 4, "ge_area": null, "courses": [
+          {"prefix": "BUS", "number": "120", "title_seen": "Financial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "BUS", "number": "121", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "BUS", "number": "128", "title_seen": "Business Communication", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "CIS", "number": "110", "title_seen": "Principles of Information Systems", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "MATH", "number": "280", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 4, "alternative_seen": "Any unused List A course"}
+        ]},
+        {"label_seen": "General Education Requirements (Cal-GETC)", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Total transferable elective units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog prints 21-23 major units, six double-counted units, 34 Cal-GETC units, and 9-11 transferable elective units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists one general Economics award: Economics for Transfer AA-T."
+}

@@ -1,0 +1,158 @@
+{
+  "_meta": {
+    "community_college_id": 149,
+    "college_name": "Moreno Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:44+00:00",
+    "updated_at": "2026-07-23T23:55:00+00:00",
+    "resume_note": "First-pass extraction complete from Moreno Valley College's official archived 2025-2026 catalog page."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1015&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "99c63d65-6fd8-4528-bac0-811136f179da",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/42794-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - Associate in Arts for Transfer (ADT) - MAA757 (Cal-GETC)",
+      "award_seen": "Associate in Arts for Transfer (ADT)",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the Economics transfer degree and prints the economics, calculus, statistics, List A, and List B structure.",
+      "catalog_status_seen": "Published in Moreno Valley College's official archived 2025-2026 catalog.",
+      "catalog_url": "https://rccd.curriqunet.com/Catalog/archive/70/iq/3247/3260/3046",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 22,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive_page",
+          "url": "https://rccd.curriqunet.com/Catalog/archive/70/iq/3247/3260/3046",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics - Associate in Arts for Transfer (ADT) - MAA757 (Cal-GETC): Required Courses, List A, List B; 20-22 major units"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses - macroeconomics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "7", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECO", "number": "7H", "title_seen": "Honors Principles of Macroeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Courses - microeconomics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "8", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "ECO", "number": "8H", "title_seen": "Honors Principles of Microeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Courses - statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000H", "title_seen": "Introduction to Statistics - Honors", "units_seen": 4},
+            {"prefix": "PSYC", "number": "48", "title_seen": "Statistics for the Behavioral Sciences", "units_seen": 4},
+            {"prefix": "SOC", "number": "48", "title_seen": "Statistics for the Behavioral Sciences", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Courses - calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "1A", "title_seen": "Calculus I", "units_seen": 4},
+            {"prefix": "MAT", "number": "1AH", "title_seen": "Honors Calculus I", "units_seen": 4},
+            {"prefix": "MAT", "number": "5", "title_seen": "Calculus for Business and Life Science", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACC", "number": "1A", "title_seen": "Principles of Accounting I", "units_seen": 3},
+            {"prefix": "ACC", "number": "1B", "title_seen": "Principles of Accounting II", "units_seen": 3},
+            {"prefix": "BUS", "number": "24", "title_seen": "Business Communication", "units_seen": 3},
+            {"prefix": "MAT", "number": "1B", "title_seen": "Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog displays ECO-6, POLS-6, POLS-C1000, POLS-C1000H, PSYC-C1000, and PSYC-C1000H as a nested select-one cluster inside List B; the overall List B requirement is one course.",
+          "courses": [
+            {"prefix": "ECO", "number": "4", "title_seen": "Introduction to Economics", "units_seen": 3},
+            {"prefix": "ECO", "number": "5", "title_seen": "Economics of the Environment", "units_seen": 3},
+            {"prefix": "MAT", "number": "1C", "title_seen": "Calculus III", "units_seen": 4},
+            {"prefix": "MAT", "number": "3", "title_seen": "Linear Algebra", "units_seen": 3},
+            {"prefix": "SOC", "number": "1", "title_seen": "Introduction to Sociology", "units_seen": 3},
+            {"prefix": "ECO", "number": "6", "title_seen": "Introduction to Political Economy", "units_seen": 3, "alternative_seen": "Nested select-one cluster"},
+            {"prefix": "POLS", "number": "6", "title_seen": "Introduction to Political Economy", "units_seen": 3, "alternative_seen": "Nested select-one cluster"},
+            {"prefix": "POLS", "number": "C1000", "title_seen": "American Government and Politics", "units_seen": 3, "alternative_seen": "Nested select-one cluster"},
+            {"prefix": "POLS", "number": "C1000H", "title_seen": "American Government and Politics - Honors", "units_seen": 3, "alternative_seen": "Nested select-one cluster"},
+            {"prefix": "PSYC", "number": "C1000", "title_seen": "Introduction to Psychology", "units_seen": 3, "alternative_seen": "Nested select-one cluster"},
+            {"prefix": "PSYC", "number": "C1000H", "title_seen": "Introduction to Psychology - Honors", "units_seen": 3, "alternative_seen": "Nested select-one cluster"}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The archived 2025-2026 catalog prints 20-22 major units. The nested structure displayed within List B is preserved in choice_structure_seen rather than flattened without qualification."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

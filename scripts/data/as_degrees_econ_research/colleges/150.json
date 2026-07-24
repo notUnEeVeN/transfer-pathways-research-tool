@@ -1,0 +1,131 @@
+{
+  "_meta": {
+    "community_college_id": 150,
+    "college_name": "Clovis Community College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:44+00:00",
+    "updated_at": "2026-07-23T23:55:00+00:00",
+    "resume_note": "First-pass extraction complete from page 156 of Clovis Community College's official 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2585&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47801",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35535-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Arts in Economics for Transfer Degree (Major #C.7200.AA-T)",
+      "award_seen": "Associate in Arts for Transfer Degree",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the Economics AA-T and prints the standard economics, calculus, statistics, List A, and List B structure.",
+      "catalog_status_seen": "Published in Clovis Community College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.cloviscollege.edu/catalog/assets/docs/catalog-2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.cloviscollege.edu/catalog/assets/docs/catalog-2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 156: Associate in Arts in Economics for Transfer Degree (Major #C.7200.AA-T), Total Units for the Major 21-24"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses - economics and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 11,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "1A", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "1B", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "MATH", "number": "5A", "title_seen": "Math Analysis I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Core Courses - statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "BA", "number": "23", "title_seen": "Elementary Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: Select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCTG", "number": "4A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCTG", "number": "4B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "BA", "number": "5", "title_seen": "Business Communications", "units_seen": 3},
+            {"prefix": "BA", "number": "39", "title_seen": "Finite Mathematics", "units_seen": 3},
+            {"prefix": "IS", "number": "15", "title_seen": "Computer Concepts", "units_seen": 3},
+            {"prefix": "MATH", "number": "5B", "title_seen": "Math Analysis II", "units_seen": 4},
+            {"prefix": "MATH", "number": "17", "title_seen": "Differential Equations and Linear Algebra", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List B: Select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select an unused List A course or MATH 6.",
+          "courses": [
+            {"prefix": "ACCTG", "number": "4A", "title_seen": "Financial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "ACCTG", "number": "4B", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "BA", "number": "5", "title_seen": "Business Communications", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "BA", "number": "39", "title_seen": "Finite Mathematics", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "IS", "number": "15", "title_seen": "Computer Concepts", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MATH", "number": "5B", "title_seen": "Math Analysis II", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MATH", "number": "17", "title_seen": "Differential Equations and Linear Algebra", "units_seen": 5, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MATH", "number": "6", "title_seen": "Math Analysis III", "units_seen": 5, "alternative_seen": "List B"}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints Total Units for the Major as 21-24. Course-level arithmetic can reach 25 when a 5-unit List A choice and a different 5-unit List B choice are selected; the official printed major range is preserved, and the broader choice-unit range remains visible in the groups."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

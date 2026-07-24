@@ -1,0 +1,144 @@
+{
+  "_meta": {
+    "community_college_id": 4,
+    "college_name": "College of Marin",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:17+00:00",
+    "updated_at": "2026-07-23T19:46:00+00:00",
+    "resume_note": "First-pass extraction complete from the current 2025-2026 College of Marin catalog. The catalog only labels Biology AS-T as pending and publishes no AS-T requirements, so the active local Biology A.S. is the sole included degree."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=904&search_string=biology",
+    "checked_at": "2026-07-23T19:29:44+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "adcdbc14-1498-4587-b30c-fbd2d071a458",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/46068-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "A.S. in Biology",
+      "award_seen": "A.S.",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "The general Biology A.S. has a complete requirements block in the current 2025-2026 catalog.",
+      "catalog_url": "https://www1.marin.edu/sites/default/files/Catalog-2025-2026-F.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 36,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www1.marin.edu/sites/default/files/Catalog-2025-2026-F.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 100, A.S. in Biology Program Requirements; associate-degree total and GE requirements in the same catalog"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses (Total 26 Units)",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 26,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "112A",
+              "title_seen": "Majors' Biology: Animals, Protozoa, Evolution and Classification",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "112B",
+              "title_seen": "Majors' Biology: Plants, Algae, Fungi & Ecology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "112C",
+              "title_seen": "Majors' Biology: Molecules, Cells, Prokaryotes and Genetics",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "104",
+              "title_seen": "Plane Trigonometry",
+              "units_seen": 3
+            },
+            {
+              "prefix": "PHYS",
+              "number": "108A",
+              "title_seen": "General Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "108B",
+              "title_seen": "General Physics II",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Chemistry Requirement (Total 4 - 10 Units)",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 4,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete CHEM 115 (4 units), or complete both CHEM 131 and CHEM 132 (10 units).",
+          "courses": [
+            {
+              "prefix": "CHEM",
+              "number": "115",
+              "title_seen": "Survey of Organic and Biochemistry",
+              "units_seen": 4
+            },
+            {
+              "prefix": "CHEM",
+              "number": "131",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "132",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Additional general education and graduation requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "College of Marin General Education or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog notes that MATH 104 is not offered and students should contact the department for a substitution. The flat choose_units vocabulary cannot enforce CHEM 115 versus the CHEM 131+132 sequence by itself; preserve choice_structure_seen during compilation."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The current catalog's ADT list says 'AS-T in Biology (pending)' but provides no active degree requirements; it is not included as a current award. Specialized and adjacent programs were intentionally ignored, and out_of_scope_candidates remains empty."
+}

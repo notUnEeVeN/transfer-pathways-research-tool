@@ -1,0 +1,122 @@
+{
+  "_meta": {
+    "community_college_id": 13,
+    "college_name": "Merritt College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:13+00:00",
+    "resume_note": "Pinned to Merritt College's official archived 2025-2026 CurriQunet catalog. Preserve the dependency allowing an unused List A course to satisfy List B."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=960&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46109",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33540-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - AA-T Degree - ECON",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the program as the Associate in Arts for Transfer in Economics and prints the Economics transfer core and elective lists.",
+      "catalog_status_seen": "Published in the official archived 2025-2026 catalog. CurriQunet labels the entire archived award presentation Historical, while several pre-CCN course rows also display Historical; this reflects the archived/current-status interface and needs human review rather than an inferred inactive award.",
+      "catalog_url": "https://mc.curriqunet.com/catalog/archive/9900/iq/36004/36333/36378/36663",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 25,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://mc.curriqunet.com/catalog/archive/9900/iq/36004/36333/36378/36663",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 archived catalog, Courses and Programs > Programs by Alphabetical Order > Economics - AA-T Degree > Requirements; Required Courses, Core Courses, List A, List B, and Major Requirement Units"
+        },
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://mc.curriqunet.com/catalog/archive/9900/iq/36004/36333/36378/36568",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics - AA-T Degree > Summary; 60 CSU-transferable semester units, Cal-GETC, residency, GPA, and major-grade requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "units_max": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "001", "title_seen": "Principles of Economics (Macro-Economics)", "units_seen": 3},
+            {"prefix": "ECON", "number": "002", "title_seen": "Principles of Economics (Micro-Economics)", "units_seen": 3},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "MATH", "number": "003A", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — Select one course for 4-5 units",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BUS", "number": "001A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "001B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "003B", "title_seen": "Calculus II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List B — Select one course for 4-5 units or any course in List A not already used",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select MATH 003C or one course from List A that was not already used to satisfy List A.",
+          "courses": [
+            {"prefix": "MATH", "number": "003C", "title_seen": "Calculus III", "units_seen": 5},
+            {"prefix": "BUS", "number": "001A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "001B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "003B", "title_seen": "Calculus II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "units_max": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "units_max": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The flat first-pass schema cannot enforce that a List A course reused in List B must be a different course; the exact dependency is preserved in choice_structure_seen. The archived CurriQunet presentation marks ECON 001, ECON 002, BUS 001A, and BUS 001B as Historical while the 2025-2026 award itself is present; likely later common-course-number replacements should be checked during human validation."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 associate-award table and alphabetical program index list one general Economics award, the AA-T, and no local Economics AA or AS."
+}

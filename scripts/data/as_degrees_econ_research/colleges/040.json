@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "community_college_id": 40,
+    "college_name": "Lake Tahoe Community College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-23T23:55:28+00:00",
+    "resume_note": "Audited LTCC's year-pinned official 2025-2026 Programs and Associate Degrees for Transfer indexes. Economics exists only as a course department, not an award program."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_program_index",
+      "url": "https://ltcc.elumenapp.com/catalog/2025-2026/program",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete 2025-2026 Programs index; no Economics program appears"
+    },
+    {
+      "source_type": "official_college_catalog_degree_index",
+      "url": "https://ltcc.elumenapp.com/catalog/2025-2026/associate-degrees-for-transfer",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete 2025-2026 Associate Degrees for Transfer index; no Economics AA-T or AS-T appears"
+    },
+    {
+      "source_type": "official_college_catalog_course_department",
+      "url": "https://ltcc.elumenapp.com/catalog/2025-2026/department/economics",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Economics department page lists only ECO 101 and ECO 102 course descriptions and no degree or program"
+    }
+  ],
+  "notes": "LTCC's catalog distinguishes award-bearing Program pages from course-only Department pages. Economics appears only in the course department, while the complete Programs and ADT indexes contain no Economics award. Business and Social Science awards remain out of scope."
+}

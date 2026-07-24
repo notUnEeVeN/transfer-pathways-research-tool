@@ -1,0 +1,156 @@
+{
+  "_meta": {
+    "community_college_id": 64,
+    "college_name": "Rio Hondo College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to Río Hondo's official 2025-2026 catalog. Biology AS-T and Biology AS are extracted; preserve the catalog's internally ambiguous physics OR formatting for human review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1350&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [{"statewide_program_id": "46145", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/35399-biology"}]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology — Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The printed 2025-2026 major assigns 8 units to physics, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.riohondo.edu/wp-content/uploads/2025/07/2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.93,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.riohondo.edu/wp-content/uploads/2025/07/2025-2026-Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog page 95, Biology — Associate in Science for Transfer"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — biology, chemistry, and Calculus II",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "200", "title_seen": "Principles of Biology 1 (Molecular and Cellular Biology)", "units_seen": 5},
+            {"prefix": "BIOL", "number": "201", "title_seen": "Principles of Biology 2 (Diversity and Ecology)", "units_seen": 5},
+            {"prefix": "CHEM", "number": "130", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "140", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "191", "title_seen": "Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select Calculus I or Calculus I Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "190", "title_seen": "Calculus I", "units_seen": 4},
+            {"prefix": "MATH", "number": "190H", "title_seen": "Calculus I Honors", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required physics block",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog prints an 8-unit physics heading, followed by PHY 150 AND PHY 160 OR PHY 211 OR PHY 213. The page does not show an AND between PHY 211 and PHY 213, even though either course alone is only 4 units; retain this exact ambiguity for human validation rather than inferring a sequence.",
+          "courses": [
+            {"prefix": "PHY", "number": "150", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHY", "number": "160", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHY", "number": "211", "title_seen": "Physics for Scientists & Engineers - I", "units_seen": 4},
+            {"prefix": "PHY", "number": "213", "title_seen": "Physics for Scientists & Engineers - III", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "Cal-GETC Pattern (units will vary)", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Transferable electives as needed to reach 60 transferable units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog's physics typography is internally inconsistent: the block total is 8 units, but it places OR between PHY 211 and PHY 213. No unprinted AND was inferred."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology — Associate of Science Degree",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.riohondo.edu/wp-content/uploads/2025/07/2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.93,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.riohondo.edu/wp-content/uploads/2025/07/2025-2026-Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog page 96, Biology — Associate of Science Degree"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "200", "title_seen": "Principles of Biology 1 (Molecular and Cellular Biology)", "units_seen": 5},
+            {"prefix": "BIOL", "number": "201", "title_seen": "Principles of Biology 2 (Diversity and Ecology)", "units_seen": 5},
+            {"prefix": "CHEM", "number": "130", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "140", "title_seen": "General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select Calculus I or Calculus I Honors",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "190", "title_seen": "Calculus I", "units_seen": 4},
+            {"prefix": "MATH", "number": "190H", "title_seen": "Calculus I Honors", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select Calculus II, Statistics, or Honors Statistics",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "191", "title_seen": "Calculus II", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics (formerly MATH 130)", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000H", "title_seen": "Introduction to Statistics - Honors (formerly MATH 130H)", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required physics block",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog prints an 8-unit physics heading, followed by PHY 150 AND PHY 160 OR PHY 211 OR PHY 213. The page does not show an AND between PHY 211 and PHY 213, even though either course alone is only 4 units; retain this exact ambiguity for human validation rather than inferring a sequence.",
+          "courses": [
+            {"prefix": "PHY", "number": "150", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHY", "number": "160", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHY", "number": "211", "title_seen": "Physics for Scientists & Engineers - I", "units_seen": 4},
+            {"prefix": "PHY", "number": "213", "title_seen": "Physics for Scientists & Engineers - III", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "Río Hondo College General Education or Cal-GETC", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "RHC GE or Cal-GETC; older CSU GE/IGETC may apply in some cases", "courses": []},
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The same internally inconsistent physics typography appears in the local A.S. table and is preserved without inference."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes two in-scope broad Biology associate awards."
+}

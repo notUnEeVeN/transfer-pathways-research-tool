@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 31,
+    "college_name": "Los Angeles Harbor College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-24T00:45:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; all printed statistics alternatives and list choices are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=798&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51936",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/40037-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer (AA-T) Degree","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog labels academic plan H040037G as the Economics AA-T and publishes its transfer-model core and lists.","catalog_status_seen":"Active in Los Angeles Harbor College's official 2025-2026 catalog.","catalog_url":"https://www.lahc.edu/sites/lahc.edu/files/2025-12/LAHC%20Master%20Catalog%20File%202025%20Final%20Draft%C2%A0%281%29%20-%20Updated%2012.17.25.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":25,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.lahc.edu/sites/lahc.edu/files/2025-12/LAHC%20Master%20Catalog%20File%202025%20Final%20Draft%C2%A0%281%29%20-%20Updated%2012.17.25.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 58-59, Academic Plan H040037G"}],
+      "major_groups":[
+        {"label_seen":"Required Core Courses - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Macroeconomics","units_seen":3}]},
+        {"label_seen":"Required Core Courses - select one statistics course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"BUS","number":"015","title_seen":"Business Statistics","units_seen":3},{"prefix":"MATH","number":"229","title_seen":"Statistics for Data Science","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"001","title_seen":"Elementary Statistics I for the Social Sciences","units_seen":3},{"prefix":"STAT","number":"001S","title_seen":"Elementary Statistics I for the Social Sciences with Support","units_seen":3},{"prefix":"STAT","number":"101","title_seen":"Statistics for the Social Sciences","units_seen":4}]},
+        {"label_seen":"Required Core Courses - select one calculus course","rule":"choose_courses","choose_n":1,"units_min":5,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"236","title_seen":"Calculus for Business and Social Science","units_seen":5},{"prefix":"MATH","number":"265","title_seen":"Calculus with Analytic Geometry I","units_seen":5},{"prefix":"MATH","number":"265S","title_seen":"Calculus with Analytic Geometry I with Support","units_seen":5}]},
+        {"label_seen":"List A, select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5},{"prefix":"BUS","number":"032","title_seen":"Business Communications","units_seen":3},{"prefix":"CIS","number":"101","title_seen":"Introduction to Computer and Their Uses","units_seen":3},{"prefix":"CS","number":"131","title_seen":"Discrete Structure for Computer Science","units_seen":3},{"prefix":"MATH","number":"266","title_seen":"Calculus with Analytic Geometry II","units_seen":5}]},
+        {"label_seen":"List B, select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select MATH 267, MATH 270, or any List A course not already used.","courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"032","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"CIS","number":"101","title_seen":"Introduction to Computer and Their Uses","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"CS","number":"131","title_seen":"Discrete Structure for Computer Science","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"266","title_seen":"Calculus with Analytic Geometry II","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"267","title_seen":"Calculus with Analytic Geometry III","units_seen":5},{"prefix":"MATH","number":"270","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Additional CSU electives required to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints 20-25 required major units, 28 additional Cal-GETC units after double counting, and 7-12 CSU-elective units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed in the official 2025-2026 catalog."
+}

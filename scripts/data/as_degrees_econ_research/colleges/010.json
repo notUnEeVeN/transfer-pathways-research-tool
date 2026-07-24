@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "community_college_id": 10,
+    "college_name": "Columbia College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:13+00:00",
+    "resume_note": "Pinned to Columbia College's official 2025-2026 eLumen catalog. Preserve the dependency allowing an unused Group I course to satisfy Group II."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=367&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49803",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36637-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics AA-T",
+      "award_seen": "A.A. Degree for Transfer",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog states that the major requirements align with the Transfer Model Curriculum.",
+      "catalog_status_seen": "Published with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://gocolumbia.elumenapp.com/catalog/2025-2026-Catalog/program/economics-aa-t-cc-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://gocolumbia.elumenapp.com/catalog/2025-2026-Catalog/program/economics-aa-t-cc-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Unit Requirements, degree completion instructions, and Award Requirements: Required Courses, Group I, and Group II"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "units_max": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "10", "title_seen": "Principles of Economics - Macro", "units_seen": 3},
+            {"prefix": "ECON", "number": "11", "title_seen": "Principles of Economics - Micro", "units_seen": 3},
+            {"prefix": "MATH", "number": "18A", "title_seen": "Calculus I", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Group I — complete 3-4 units",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BUSAD", "number": "2A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUSAD", "number": "2B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "12", "title_seen": "Finite Mathematics", "units_seen": 3},
+            {"prefix": "MATH", "number": "18B", "title_seen": "Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Group II — complete 3-5 units, including any course not already used from Group I",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select MATH 18C, MATH 26, or one course from Group I that was not already used to satisfy Group I.",
+          "courses": [
+            {"prefix": "MATH", "number": "18C", "title_seen": "Calculus III", "units_seen": 5},
+            {"prefix": "MATH", "number": "26", "title_seen": "Linear Algebra", "units_seen": 3},
+            {"prefix": "BUSAD", "number": "2A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUSAD", "number": "2B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "12", "title_seen": "Finite Mathematics", "units_seen": 3},
+            {"prefix": "MATH", "number": "18B", "title_seen": "Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) Pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "units_max": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Any CSU-transferable electives needed to bring the total units to 60",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "units_max": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The flat first-pass schema cannot enforce that a Group I course reused in Group II must be a different course; the exact dependency is preserved in choice_structure_seen for human structuring before analysis."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Economics program page lists the general Economics AA-T and no local general Economics AA or AS."
+}

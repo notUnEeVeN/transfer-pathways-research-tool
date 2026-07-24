@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "community_college_id": 103,
+    "college_name": "El Camino College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:02+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "Pinned to El Camino College's official 2025-2026 catalog. Biology, AS is published as a transfer-major degree without a fixed institutional course table; that source limitation is preserved explicitly."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=530&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": []
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology, AS",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://catalog.elcamino.edu/mime/media/view/12/721/2025-2026%2BCatalog%2BPDF_FINAL.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": null,
+      "major_units_max": null,
+      "extraction_confidence": 0.9,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.elcamino.edu/mime/media/view/12/721/2025-2026%2BCatalog%2BPDF_FINAL.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 136, Biology, AS"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Preparation for the Biology Transfer Major",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog does not publish a fixed El Camino course list. It requires completion of the requirements of a biology transfer major and directs students to a transfer curriculum guide, counselor, or Transfer Center for the destination-specific courses.",
+          "courses": []
+        },
+        {
+          "label_seen": "Associate degree general education and electives to reach 60 units",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Applicable El Camino associate-degree or transfer general education pattern",
+          "courses": []
+        }
+      ],
+      "notes": "This is a real published AS, but the 2025-2026 catalog intentionally defines its major by the selected four-year destination's biology transfer requirements rather than an El Camino-wide fixed course block. No courses were inferred from a different catalog year or destination. Human review should attach the intended transfer-major guide before using this row for course-level coverage."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope Biology award and no Biology AS-T or AA. General Science and Human Biosciences awards are outside this pass."
+}

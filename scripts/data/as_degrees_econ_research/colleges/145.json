@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 145,
+    "college_name": "Folsom Lake College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:16:00+00:00",
+    "resume_note": "First-pass extraction complete from page 251 of Folsom Lake College's official August 2025 edition of the 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=574&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45610",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35523-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.A.-T. in Economics",
+      "award_seen": "A.A.-T.",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies this as the Economics Associate Degree for Transfer and prints economics, calculus, statistics, List A, and List B requirements.",
+      "catalog_status_seen": "Published in Folsom Lake College's official 2025-2026 catalog.",
+      "catalog_url": "https://flc.losrios.edu/flc/main/doc/instruction/catalog-archive/2025-26-catalog-20250801.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 21,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://flc.losrios.edu/flc/main/doc/instruction/catalog-archive/2025-26-catalog-20250801.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog page 251: Economics, A.A.-T. in Economics; Degree Requirements and Total Units 19-21"}],
+      "major_groups": [
+        {"label_seen":"Degree Requirements - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"302","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"304","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Degree Requirements - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"341","title_seen":"Calculus for Business and Economics","units_seen":4},{"prefix":"MATH","number":"400","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"Degree Requirements - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"310","title_seen":"Statistics for Business and Economics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"PSYC","number":"330","title_seen":"Introductory Statistics for the Behavioral Sciences","units_seen":3}]},
+        {"label_seen":"A minimum of 6 units: one course from List A and one additional course from List A or List B","rule":"choose_units","choose_n":null,"units_min":6,"ge_area":null,"choice_structure_seen":"At least one selected course must come from List A; the second may be an unused List A course or a List B course.","courses":[{"prefix":"ACCT","number":"301","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"List A"},{"prefix":"ACCT","number":"311","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"List A"},{"prefix":"BUS","number":"300","title_seen":"Introduction to Business","units_seen":3,"alternative_seen":"List A"},{"prefix":"BUS","number":"310","title_seen":"Business Communications","units_seen":3,"alternative_seen":"List A"},{"prefix":"CISP","number":"360","title_seen":"Introduction to Structured Programming","units_seen":4,"alternative_seen":"List A"},{"prefix":"CISC","number":"310","title_seen":"Introduction to Computer Information Science","units_seen":3,"alternative_seen":"List A"},{"prefix":"MATH","number":"401","title_seen":"Calculus II","units_seen":5,"alternative_seen":"List A"},{"prefix":"BUS","number":"320","title_seen":"Concepts in Personal Finance","units_seen":3,"alternative_seen":"List B"},{"prefix":"ECON","number":"320","title_seen":"Concepts in Personal Finance","units_seen":3,"alternative_seen":"List B"},{"prefix":"MATH","number":"402","title_seen":"Calculus III","units_seen":5,"alternative_seen":"List B"},{"prefix":"MATH","number":"410","title_seen":"Introduction to Linear Algebra","units_seen":3,"alternative_seen":"List B"}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog requires a minimum of 6 units from the combined list structure and prints Total Units 19-21. Some allowed two-course combinations may earn more than 6 elective-list units; the official printed total is preserved."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

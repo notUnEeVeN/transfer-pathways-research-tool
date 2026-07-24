@@ -1,0 +1,108 @@
+{
+  "_meta": {
+    "community_college_id": 25,
+    "college_name": "Los Angeles Trade Technical College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:27+00:00",
+    "updated_at": "2026-07-23T19:55:00+00:00",
+    "resume_note": "Complete first-pass extraction from page 179 of the current 2025-2026 LATTC catalog. The current complete academic-program index lists only the general Biology AS-T."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=816&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50241",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37241-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology — Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The current catalog requires one of two two-course physics sequences, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Academic plan T037241H is listed in the current 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.lattc.edu/sites/lattc.edu/files/2025-11/2025-26%20Catalog-web.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lattc.edu/sites/lattc.edu/files/2025-11/2025-26%20Catalog-web.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 179, Health & Related Sciences Pathway — Biology, Associate in Science for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOLOGY", "number": "006", "title_seen": "General Biology I", "units_seen": 5 },
+            { "prefix": "BIOLOGY", "number": "007", "title_seen": "General Biology II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — required chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "101", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "102", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "261", "title_seen": "Calculus I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSICS 006 and PHYSICS 007 (8 units), or complete PHYSICS 101 and PHYSICS 102 (10 units); courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYSICS", "number": "006", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYSICS", "number": "007", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYSICS", "number": "101", "title_seen": "Physics for Engineers and Scientists I", "units_seen": 5 },
+            { "prefix": "PHYSICS", "number": "102", "title_seen": "Physics for Engineers and Scientists II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "IGETC for STEM",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 31,
+          "ge_area": "IGETC for STEM",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU Transferable Elective units (as needed to reach 60 units)",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 33-35 unit range is produced by the 8-unit general-physics sequence or the 10-unit engineering-physics sequence. The catalog still prints IGETC for STEM as the required GE pattern; this is retained verbatim rather than silently converted to Cal-GETC. The flat choose_units vocabulary cannot enforce paired sequences by itself, so preserve choice_structure_seen during compilation."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The current complete LATTC Academic Programs pathway index lists Biology only as an AS-T. Local Biology AS/AA awards are not listed. Specialized and adjacent programs and all certificates were ignored, and out_of_scope_candidates remains empty by batch instruction. Program index: https://www.lattc.edu/academics/academic-programs/pathway-view."
+}

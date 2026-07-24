@@ -1,0 +1,115 @@
+{
+  "_meta": {
+    "community_college_id": 33,
+    "college_name": "City College of San Francisco",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to the official CCSF 2025-2026 catalog. The general Biology A.S.-T. is extracted from printed pages 128-129, including the four-course laboratory physics option; the health-science-emphasis local degree is outside this general-degree scope."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1567&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45898",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33623-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Major (AS-T)",
+      "award_seen": "Associate of Science in Biology for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-semester physics sequence with laboratories, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.ccsf.edu/sites/default/files/2026/document/ccsf-catalog-2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 34,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.ccsf.edu/sites/default/files/2026/document/ccsf-catalog-2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 128-129, Biology Major (AS-T)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 21,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "100A", "title_seen": "General Biology", "units_seen": 5},
+            {"prefix": "BIO", "number": "100B", "title_seen": "General Biology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "101A", "title_seen": "General College Chemistry", "units_seen": 6},
+            {"prefix": "CHEM", "number": "101B", "title_seen": "General College Chemistry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Major Core — calculus choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "100A", "title_seen": "Short Calculus I", "units_seen": 3},
+            {"prefix": "MATH", "number": "110A", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Major Core — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYC 2A, 2AL, 2B, and 2BL, or complete PHYC 4A, 4AL, 4B, and 4BL; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYC", "number": "2A", "title_seen": "Introductory Physics I", "units_seen": 3},
+            {"prefix": "PHYC", "number": "2AL", "title_seen": "Introductory Physics Laboratory I", "units_seen": 1},
+            {"prefix": "PHYC", "number": "2B", "title_seen": "Introductory Physics II", "units_seen": 3},
+            {"prefix": "PHYC", "number": "2BL", "title_seen": "Introductory Physics Laboratory II", "units_seen": 1},
+            {"prefix": "PHYC", "number": "4A", "title_seen": "Classical Mechanics for Scientists and Engineers", "units_seen": 3},
+            {"prefix": "PHYC", "number": "4AL", "title_seen": "Mechanics Laboratory", "units_seen": 1},
+            {"prefix": "PHYC", "number": "4B", "title_seen": "Electromagnetism for Scientists and Engineers", "units_seen": 3},
+            {"prefix": "PHYC", "number": "4BL", "title_seen": "Electromagnetism Laboratory", "units_seen": 1}
+          ]
+        },
+        {
+          "label_seen": "Full California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 32-34 major units and a 60-unit degree total. It requires full Cal-GETC and permits double counting but does not restate Cal-GETC's unit subtotal on the program pages, so units_min is left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "CCSF's Biological Sciences A.S. with a Health Science emphasis is a specialization and was ignored by scope; only the general Biology A.S.-T. is included."
+}

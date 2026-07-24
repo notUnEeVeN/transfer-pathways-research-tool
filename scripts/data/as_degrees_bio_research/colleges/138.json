@@ -1,0 +1,223 @@
+{
+  "_meta": {
+    "community_college_id": 138,
+    "college_name": "Southwestern College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "Pinned to Southwestern College's official archived 2025-2026 catalog. Both the Biology AS-T (major code 01514) and local Biology AS, Transfer Preparation (major code 01510), are extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1921&search_string=biology",
+    "checked_at": "2026-07-23T19:29:52+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51710",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39578-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology — Associate in Science, Transfer Preparation (Major Code: 01514)",
+      "award_seen": "Associate in Science for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and a complete two-course physics sequence with laboratories, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as an active degree under the Student Transfer Achievement Reform Act in the official archived 2025-2026 catalog.",
+      "catalog_url": "https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/biology/biology-ast/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 36,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/biology/biology-ast/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Southwestern College archived 2025-2026 catalog > Biology > Biology AS-T, major code 01514"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — biology",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 12,
+          "units_max": 12,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "210", "title_seen": "General Zoology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "211", "title_seen": "Introduction to Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "212", "title_seen": "Biology of Plants", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A — general chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "200", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "210", "title_seen": "General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — calculus sequence option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 5,
+          "units_max": 6,
+          "ge_area": null,
+          "choice_structure_seen": "Complete MATH 250 (5 units), or complete the paired MATH 121 and MATH 122 sequence (6 units).",
+          "courses": [
+            {"prefix": "MATH", "number": "250", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "121", "title_seen": "Applied Calculus I", "units_seen": 3},
+            {"prefix": "MATH", "number": "122", "title_seen": "Applied Calculus II", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "List A — physics sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "PHYS", "number": "150", "title_seen": "Fundamentals of Physics I", "units_seen": 3},
+            {"prefix": "PHYS", "number": "151", "title_seen": "Fundamentals of Physics Laboratory I", "units_seen": 1},
+            {"prefix": "PHYS", "number": "152", "title_seen": "Fundamentals of Physics II", "units_seen": 3},
+            {"prefix": "PHYS", "number": "153", "title_seen": "Fundamentals of Physics Laboratory II", "units_seen": 1}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 35-36 major units and 60 total units. It requires Cal-GETC but does not state a fixed Cal-GETC or elective subtotal on the program page, so those units_min values are left null."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology — Associate in Science, Transfer Preparation (Major Code: 01510)",
+      "award_seen": "Associate in Science Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as an active degree in the official archived 2025-2026 catalog.",
+      "catalog_url": "https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/biology/biology-bs/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 48,
+      "major_units_max": 51,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/biology/biology-bs/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Southwestern College archived 2025-2026 catalog > Biology > Biology AS, Transfer Preparation, major code 01510"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biology courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "units_max": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "210", "title_seen": "General Zoology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "211", "title_seen": "Introduction to Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "212", "title_seen": "Biology of Plants", "units_seen": 4},
+            {"prefix": "BIOL", "number": "215", "title_seen": "Biostatistics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Chemistry courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 19,
+          "units_max": 19,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "170", "title_seen": "Preparation for General Chemistry", "units_seen": 4},
+            {"prefix": "CHEM", "number": "200", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "210", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "240", "title_seen": "Organic Chemistry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Mathematics — select one complete sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 6,
+          "units_max": 9,
+          "ge_area": null,
+          "choice_structure_seen": "Complete MATH 121 and MATH 122 (6 units), or complete MATH 250 and MATH 251 (9 units); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "MATH", "number": "121", "title_seen": "Applied Calculus I", "units_seen": 3},
+            {"prefix": "MATH", "number": "122", "title_seen": "Applied Calculus II", "units_seen": 3},
+            {"prefix": "MATH", "number": "250", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "251", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Physics sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "PHYS", "number": "150", "title_seen": "Fundamentals of Physics I", "units_seen": 3},
+            {"prefix": "PHYS", "number": "151", "title_seen": "Fundamentals of Physics Laboratory I", "units_seen": 1},
+            {"prefix": "PHYS", "number": "152", "title_seen": "Fundamentals of Physics II", "units_seen": 3},
+            {"prefix": "PHYS", "number": "153", "title_seen": "Fundamentals of Physics Laboratory II", "units_seen": 1}
+          ]
+        },
+        {
+          "label_seen": "Southwestern College associate-degree general education and graduation requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Southwestern College Associate Degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 48-51 major units and 60 total units. Its footnote says students who already satisfy the CHEM 200 prerequisite need not take CHEM 170, although the displayed degree total includes CHEM 170; the published 48-51 range is retained for human review. General-education and elective subtotals are not fixed on the program page and are left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Biology program index explicitly lists both included general degrees. Specialized and certificate awards were ignored by scope."
+}

@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 109,
+    "college_name": "San Joaquin Delta College",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:48:51+00:00",
+    "updated_at": "2026-07-23T22:00:00+00:00",
+    "resume_note": "The official 2025-2026 catalog's complete Certificates and Degrees A-Z inventory contains no general Biology/Biological Sciences AS-T, AS, or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://catalog.deltacollege.edu/content.php?catoid=12&navoid=1117",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "2025-2026 San Joaquin Delta College Catalog, Certificates and Degrees (A-Z); no Biology or Biological Sciences award entry"
+    },
+    {
+      "source_type": "official_college_catalog_landing_html",
+      "url": "https://catalog.deltacollege.edu/index.php?catoid=12",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Official archived 2025-2026 catalog landing page and program navigation"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Delta publishes Biology coursework and transfer preparation, but no in-scope Biology award in the official 2025-2026 degree inventory. Its broad Interdisciplinary Studies: Mathematics and Science AS is outside this pass."
+}

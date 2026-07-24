@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "community_college_id": 135,
+    "college_name": "Long Beach City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:22:00+00:00",
+    "resume_note": "First-pass extraction complete from Long Beach City College's official 2025-2026 CourseLeaf program PDF; retain its printed unit-range inconsistency for review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=887&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53160",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35914-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - Associate in Arts Transfer Degree",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog describes the award as the Economics AA-T and prints the standard core, List A, and List B.",
+      "catalog_status_seen": "Active in Long Beach City College's official 2025-2026 catalog.",
+      "catalog_url": "https://lbcc-public.courseleaf.com/degrees-certificates/business/economics-aat/economics-aat.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 23,
+      "extraction_confidence": 0.97,
+      "sources": [{"source_type":"official_college_catalog_program_pdf","url":"https://lbcc-public.courseleaf.com/degrees-certificates/business/economics-aat/economics-aat.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics - Associate in Arts Transfer Degree, Plan Code 5018C: Program Requirements and Degree Total"}],
+      "major_groups": [
+        {"label_seen":"Required Core - macroeconomics: select regular or Honors","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"1","title_seen":"Macro Economic Analysis","units_seen":3},{"prefix":"ECON","number":"1H","title_seen":"Honors Macro Economic Analysis","units_seen":3}]},
+        {"label_seen":"Required Core - microeconomics: select regular or Honors","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"2","title_seen":"Micro Economic Analysis","units_seen":3},{"prefix":"ECON","number":"2H","title_seen":"Honors Micro Economic Analysis","units_seen":3}]},
+        {"label_seen":"Required Core - calculus","rule":"all","choose_n":null,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"60","title_seen":"First Calculus Course","units_seen":5}]},
+        {"label_seen":"Required Core - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics with Support","units_seen":5}]},
+        {"label_seen":"List A - complete 3-5 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"1A","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCTG","number":"1B","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"BCOM","number":"20","title_seen":"Business Writing","units_seen":3},{"prefix":"MATH","number":"70","title_seen":"Second Calculus Course","units_seen":5}]},
+        {"label_seen":"List B - complete 3-5 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Any unused List A course may satisfy List B, or ECON 4 or ECON 5; the List A pool is repeated to preserve the complete option set.","courses":[{"prefix":"ACCTG","number":"1A","title_seen":"Financial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCTG","number":"1B","title_seen":"Managerial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"BCOM","number":"20","title_seen":"Business Writing","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"70","title_seen":"Second Calculus Course","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ECON","number":"4","title_seen":"Contemporary Economic Issues","units_seen":3},{"prefix":"ECON","number":"5","title_seen":"The Global Economy","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints Required Core subtotal 15-16, each list as 3-5 units, but prints Required Subtotal 21-23. The displayed course choices can arithmetically reach 26 units; the official printed 21-23 range is preserved for human review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the Economics AA-T is an in-scope associate award; Economics certificates are excluded."
+}

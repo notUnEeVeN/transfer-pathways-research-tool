@@ -1,0 +1,180 @@
+{
+  "_meta": {
+    "community_college_id": 114,
+    "college_name": "Diablo Valley College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:11+00:00",
+    "updated_at": "2026-07-23T21:45:00+00:00",
+    "resume_note": "Complete first-pass extraction of the Biology AS and fall-2025 Biology AS-T from DVC's official 2025-2026 eLumen catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=506&search_string=biology",
+    "checked_at": "2026-07-23T19:29:51+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46061",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33771-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "A.S. in Biology",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": "Local degree; no Transfer Model Curriculum claim is made.",
+      "catalog_status_seen": "Active local A.S. in the 2025-2026 catalog; catalog route identifies the curriculum as effective fall 2020.",
+      "catalog_url": "https://dvc.elumenapp.com/catalog/DVC2025-2026Catalog/program/a-s-in-biology-fall-2020",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 20,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://dvc.elumenapp.com/catalog/DVC2025-2026Catalog/program/a-s-in-biology-fall-2020",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Program Requirements, Biology (Total 20)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biology",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOSC", "number": "130", "title_seen": "Principles of Cellular and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOSC", "number": "131", "title_seen": "Principles of Organismal Biology, Evolution and Ecology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "120", "title_seen": "General College Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "121", "title_seen": "General College Chemistry II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "DVC associate-degree general education requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "DVC GE, Cal-GETC, or applicable transfer GE option",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog recommends a transfer GE option and warns students to consult a counselor about additional mathematics, chemistry, and physics needed by their destination institution."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.S. in Biology for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The catalog identifies the award as effective fall 2025; its biology, chemistry, calculus, physics and additional-list structure is preserved exactly.",
+      "catalog_status_seen": "Active A.S. Degree for Transfer in the 2025-2026 catalog, effective fall 2025.",
+      "catalog_url": "https://dvc.elumenapp.com/catalog/DVC2025-2026Catalog/program/a-s-in-biology-for-transfer-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://dvc.elumenapp.com/catalog/DVC2025-2026Catalog/program/a-s-in-biology-for-transfer-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Program Requirements, Biology for Transfer (Total 35)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major requirements",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOSC", "number": "130", "title_seen": "Principles of Cellular and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOSC", "number": "131", "title_seen": "Principles of Organismal Biology, Evolution, and Ecology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "120", "title_seen": "General College Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "121", "title_seen": "General College Chemistry II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Plus at least 4 units from mathematics",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 4,
+          "ge_area": null,
+          "choice_structure_seen": "Complete at least 4 units by selecting MATH 182 or MATH 192.",
+          "courses": [
+            { "prefix": "MATH", "number": "182", "title_seen": "Calculus for Management, Life Science, and Social Science I", "units_seen": 4 },
+            { "prefix": "MATH", "number": "192", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Plus at least 8 units from physics",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 120 and PHYS 121, or complete PHYS 130 and PHYS 230; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "120", "title_seen": "General College Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "121", "title_seen": "General College Physics II", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "130", "title_seen": "Physics for Engineers and Scientists A: Mechanics and Wave Motion", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "230", "title_seen": "Physics for Engineers and Scientists B: Heat and Electro-Magnetism", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Plus at least 3 units from additional science/statistics",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOSC", "number": "119", "title_seen": "Fundamentals of Microbiology", "units_seen": 4 },
+            { "prefix": "BIOSC", "number": "146", "title_seen": "Principles of Microbiology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "226", "title_seen": "Organic Chemistry I", "units_seen": 5 },
+            { "prefix": "PSYC", "number": "C1000", "title_seen": "Introduction to Psychology", "units_seen": 3 },
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The program prints a fixed 35-unit major minimum. Choosing a higher-unit option still satisfies the listed minimum; no unprinted normalization was applied."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Adjacent Allied Health, Environmental Science, Life Science, and Natural Science awards were excluded."
+}

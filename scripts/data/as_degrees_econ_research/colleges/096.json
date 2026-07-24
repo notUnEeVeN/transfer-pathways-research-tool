@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "community_college_id": 96,
+    "college_name": "Chabot College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:31:00+00:00",
+    "resume_note": "Extracted from Chabot College's official 2025-2026 catalog PDF, pages 224-225."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=312&search_string=economics",
+    "checked_at": "2026-07-23T22:30:34+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45756",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33274-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics",
+      "award_seen": "Associate in Arts for Transfer",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the official 2025-2026 catalog.",
+      "catalog_url": "https://chabotcollege.edu/academics/docs/catalogs/2025-2026%20Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://chabotcollege.edu/academics/docs/catalogs/2025-2026%20Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Chabot College 2025-2026 catalog pages 224-225: Economics, Associate in Arts for Transfer"}],
+      "major_groups": [
+        {"label_seen": "Required Core — economics", "rule": "all", "choose_n": null, "units_min": 6, "ge_area": null, "courses": [
+          {"prefix": "ECN", "number": "1", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+          {"prefix": "ECN", "number": "2", "title_seen": "Principles of Macroeconomics", "units_seen": 3}
+        ]},
+        {"label_seen": "Required Core — statistics: select one", "rule": "choose_courses", "choose_n": 1, "units_min": 4, "units_max": 4, "ge_area": null, "courses": [
+          {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+          {"prefix": "PSY", "number": "5", "title_seen": "Introductory Statistics for the Behavioral and Social Sciences", "units_seen": 4},
+          {"prefix": "BUS", "number": "19", "title_seen": "Business Statistics", "units_seen": 4}
+        ]},
+        {"label_seen": "Required Core — calculus: select one", "rule": "choose_courses", "choose_n": 1, "units_min": 3, "units_max": 5, "ge_area": null, "courses": [
+          {"prefix": "MTH", "number": "15", "title_seen": "Applied Calculus I", "units_seen": 3},
+          {"prefix": "MTH", "number": "1", "title_seen": "Calculus I", "units_seen": 5}
+        ]},
+        {"label_seen": "List A: select one course", "rule": "choose_courses", "choose_n": 1, "units_min": 3, "units_max": 5, "ge_area": null, "courses": [
+          {"prefix": "BUS", "number": "1A", "title_seen": "Financial Accounting", "units_seen": 4},
+          {"prefix": "BUS", "number": "1B", "title_seen": "Managerial Accounting", "units_seen": 4},
+          {"prefix": "BUS", "number": "10", "title_seen": "Business Law", "units_seen": 4},
+          {"prefix": "BUS", "number": "12", "title_seen": "Introduction to Business", "units_seen": 3},
+          {"prefix": "BUS", "number": "14", "title_seen": "Business Communications", "units_seen": 3},
+          {"prefix": "CAS", "number": "50", "title_seen": "Introduction to Computer Application Systems", "units_seen": 3},
+          {"prefix": "CSCI", "number": "8", "title_seen": "Computer Literacy", "units_seen": 3},
+          {"prefix": "CSCI", "number": "10", "title_seen": "Introduction to Programming Using Visual BASIC.NET", "units_seen": 4},
+          {"prefix": "CSCI", "number": "14", "title_seen": "Introduction to Structured Programming In C++", "units_seen": 4},
+          {"prefix": "CSCI", "number": "19A", "title_seen": "Object-Oriented Programming Methods in Java", "units_seen": 4},
+          {"prefix": "MTH", "number": "2", "title_seen": "Calculus II", "units_seen": 5},
+          {"prefix": "MTH", "number": "4", "title_seen": "Elementary Differential Equations", "units_seen": 3},
+          {"prefix": "MTH", "number": "16", "title_seen": "Applied Calculus II", "units_seen": 3},
+          {"prefix": "MTH", "number": "33", "title_seen": "Finite Mathematics", "units_seen": 4}
+        ]},
+        {"label_seen": "List B", "rule": "choose_courses", "choose_n": 1, "units_min": 3, "units_max": 5, "ge_area": null, "choice_structure_seen": "Any course not used in List A, or MTH 3, or MTH 6.", "courses": [
+          {"prefix": "MTH", "number": "3", "title_seen": "Multivariable Calculus", "units_seen": 5},
+          {"prefix": "MTH", "number": "6", "title_seen": "Elementary Linear Algebra", "units_seen": 3},
+          {"prefix": "BUS", "number": "1A", "title_seen": "Financial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "BUS", "number": "1B", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "BUS", "number": "10", "title_seen": "Business Law", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "BUS", "number": "12", "title_seen": "Introduction to Business", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "BUS", "number": "14", "title_seen": "Business Communications", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "CAS", "number": "50", "title_seen": "Introduction to Computer Application Systems", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "CSCI", "number": "8", "title_seen": "Computer Literacy", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "CSCI", "number": "10", "title_seen": "Introduction to Programming Using Visual BASIC.NET", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "CSCI", "number": "14", "title_seen": "Introduction to Structured Programming In C++", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "CSCI", "number": "19A", "title_seen": "Object-Oriented Programming Methods in Java", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+          {"prefix": "MTH", "number": "2", "title_seen": "Calculus II", "units_seen": 5, "alternative_seen": "Any unused List A course"},
+          {"prefix": "MTH", "number": "4", "title_seen": "Elementary Differential Equations", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "MTH", "number": "16", "title_seen": "Applied Calculus II", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+          {"prefix": "MTH", "number": "33", "title_seen": "Finite Mathematics", "units_seen": 4, "alternative_seen": "Any unused List A course"}
+        ]},
+        {"label_seen": "General Education Cal-GETC", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Electives as needed, minimum 60 CSU-transferable units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The List A table visually prints 'CAS 50 ... or' before CSCI 8; both are retained as separate catalog alternatives. The printed major range is 19-25 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists one general Economics award: Economics AA-T."
+}

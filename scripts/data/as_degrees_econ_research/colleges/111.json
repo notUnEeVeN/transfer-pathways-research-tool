@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 111,
+    "college_name": "College of Alameda",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted the Economics AA-T from College of Alameda's official 2025-2026 catalog PDF, printed pages 291-293."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=6bbc883b-f2e3-479a-8a45-cb5b02f7b8e1&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "31e697ab-2b1d-4a39-ade4-fc5cc70878bf",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37047-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics - AA-T Degree","award_seen":"Associate in Arts for Transfer in Economics (AA-T)","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://6398505.fs1.hubspotusercontent-na2.net/hubfs/6398505/2025-2026%20Catalog_FINAL_rev2_8.18.25.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":25,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://6398505.fs1.hubspotusercontent-na2.net/hubfs/6398505/2025-2026%20Catalog_FINAL_rev2_8.18.25.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"College of Alameda 2025-2026 Catalog, printed pages 291-293, Economics - AA-T Degree"},{"source_type":"official_college_catalog_archive_index","url":"https://alameda.edu/class-schedule-and-course-catalog","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Archive of Previous Course Catalogs, 2025-26 catalog link"}],
+      "major_groups":[
+        {"label_seen":"Core Courses - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Economics (Macro-Economics)","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Economics (Micro-Economics)","units_seen":3}]},
+        {"label_seen":"Core Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"MATH","number":"013","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Core Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"016A","title_seen":"Calculus for Business and the Life and Social Sciences","units_seen":4},{"prefix":"MATH","number":"003A","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"003B","title_seen":"Calculus II","units_seen":5},{"prefix":"BUS","number":"001A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BUS","number":"001B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"CIS","number":"001","title_seen":"Introduction to Computer Information Systems","units_seen":4}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select MATH 003C, MATH 003E, or any unused List A course.","courses":[{"prefix":"MATH","number":"003C","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"003E","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Electives to meet 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog's introductory paragraph accidentally refers to Laney College, but the College of Alameda catalog program table and award heading clearly identify this Economics AA-T; requirements are repeated on printed pages 292-293."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope general Economics award, the Economics AA-T."
+}

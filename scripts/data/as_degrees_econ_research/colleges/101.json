@@ -1,0 +1,161 @@
+{
+  "_meta": {
+    "community_college_id": 101,
+    "college_name": "San Diego Mesa College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted both in-scope Economics awards from San Diego Mesa College's official 2025-2026 catalog PDF, printed pages 234-235 and 303-304."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1521&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46122",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33617-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - Associate in Arts for Transfer Degree: Mesa",
+      "award_seen": "Associate in Arts in Economics for Transfer (AA-T)",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the official 2025-2026 catalog.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 24,
+      "extraction_confidence": 0.98,
+      "sources": [{"source_type":"official_college_catalog_pdf","url":"https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"San Diego Mesa College Catalog 2025-2026, printed pages 234-235, Economics AA-T requirements"}],
+      "major_groups": [
+        {"label_seen":"Courses Required for the Major - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[
+          {"prefix":"ECON","number":"120","title_seen":"Principles of Macroeconomics","units_seen":3},
+          {"prefix":"ECON","number":"121","title_seen":"Principles of Microeconomics","units_seen":3}
+        ]},
+        {"label_seen":"Courses Required for the Major - statistics alternative","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select BUSE 115, STAT C1000, or the bundled PSYC 258 AND PSYC 259 option.","courses":[
+          {"prefix":"BUSE","number":"115","title_seen":"Statistics for Business","units_seen":3},
+          {"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":3},
+          {"prefix":"PSYC","number":"258","title_seen":"Behavioral Science Statistics","units_seen":3,"bundle_id":"psyc_stats"},
+          {"prefix":"PSYC","number":"259","title_seen":"Behavioral Science Statistics Laboratory","units_seen":1,"bundle_id":"psyc_stats"}
+        ]},
+        {"label_seen":"Courses Required for the Major - calculus alternative","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[
+          {"prefix":"MATH","number":"121","title_seen":"Basic Techniques of Applied Calculus I","units_seen":3},
+          {"prefix":"MATH","number":"150","title_seen":"Calculus with Analytic Geometry I","units_seen":5}
+        ]},
+        {"label_seen":"Category A: select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select one listed course; Category A may also be satisfied by any listed 5-unit language course other than English, including ASL.","courses":[
+          {"prefix":"ACCT","number":"116A","title_seen":"Financial Accounting","units_seen":4},
+          {"prefix":"ACCT","number":"116B","title_seen":"Managerial Accounting","units_seen":4},
+          {"prefix":"BUSE","number":"119","title_seen":"Business Communications","units_seen":3},
+          {"prefix":"BUSE","number":"140","title_seen":"Business Law and the Legal Environment","units_seen":3},
+          {"prefix":"CISC","number":"181","title_seen":"Principles of Information Systems","units_seen":4},
+          {"prefix":"COMS","number":"160","title_seen":"Argumentation and Critical Thinking","units_seen":3},
+          {"prefix":"ENGL","number":"C1001","title_seen":"Critical Thinking and Writing","units_seen":3},
+          {"prefix":"MATH","number":"104","title_seen":"Trigonometry","units_seen":3},
+          {"prefix":"MATH","number":"116","title_seen":"College and Matrix Algebra","units_seen":3},
+          {"prefix":"MATH","number":"122","title_seen":"Basic Techniques of Calculus II","units_seen":3},
+          {"prefix":"MATH","number":"141","title_seen":"Precalculus","units_seen":5},
+          {"prefix":"MATH","number":"255","title_seen":"Differential Equations","units_seen":3},
+          {"prefix":"PHIL","number":"205","title_seen":"Critical Thinking and Writing in Philosophy","units_seen":3},
+          {"prefix":"SOCO","number":"101","title_seen":"Principles of Sociology","units_seen":3},
+          {"prefix":"AMSL","number":"120","title_seen":"American Sign Language Level I","units_seen":5},
+          {"prefix":"AMSL","number":"121","title_seen":"American Sign Language Level II","units_seen":5},
+          {"prefix":"AMSL","number":"220","title_seen":"American Sign Language Level III","units_seen":5},
+          {"prefix":"AMSL","number":"221","title_seen":"American Sign Language Level IV","units_seen":5},
+          {"prefix":"CHIN","number":"101","title_seen":"First Course in Mandarin Chinese","units_seen":5},
+          {"prefix":"CHIN","number":"102","title_seen":"Second Course in Mandarin Chinese","units_seen":5},
+          {"prefix":"CHIN","number":"201","title_seen":"Third Course in Mandarin Chinese","units_seen":5},
+          {"prefix":"CHIN","number":"202","title_seen":"Fourth Course in Mandarin Chinese","units_seen":5},
+          {"prefix":"FREN","number":"101","title_seen":"First Course in French","units_seen":5},
+          {"prefix":"FREN","number":"102","title_seen":"Second Course in French","units_seen":5},
+          {"prefix":"FREN","number":"201","title_seen":"Third Course in French","units_seen":5},
+          {"prefix":"FREN","number":"202","title_seen":"Fourth Course in French","units_seen":5},
+          {"prefix":"GERM","number":"101","title_seen":"First Course in German","units_seen":5},
+          {"prefix":"GERM","number":"102","title_seen":"Second Course in German","units_seen":5},
+          {"prefix":"GERM","number":"201","title_seen":"Third Course in German","units_seen":5},
+          {"prefix":"ITAL","number":"101","title_seen":"First Course in Italian","units_seen":5},
+          {"prefix":"ITAL","number":"102","title_seen":"Second Course in Italian","units_seen":5},
+          {"prefix":"ITAL","number":"201","title_seen":"Third Course in Italian","units_seen":5},
+          {"prefix":"JAPN","number":"101","title_seen":"First Course in Japanese","units_seen":5},
+          {"prefix":"JAPN","number":"102","title_seen":"Second Course in Japanese","units_seen":5},
+          {"prefix":"JAPN","number":"201","title_seen":"Third Course in Japanese","units_seen":5},
+          {"prefix":"JAPN","number":"202","title_seen":"Fourth Course in Japanese","units_seen":5},
+          {"prefix":"RUSS","number":"101","title_seen":"First Course in Russian","units_seen":5},
+          {"prefix":"RUSS","number":"102","title_seen":"Second Course in Russian","units_seen":5},
+          {"prefix":"RUSS","number":"201","title_seen":"Third Course in Russian","units_seen":5},
+          {"prefix":"SPAN","number":"101","title_seen":"First Course in Spanish","units_seen":5},
+          {"prefix":"SPAN","number":"102","title_seen":"Second Course in Spanish","units_seen":5},
+          {"prefix":"SPAN","number":"201","title_seen":"Third Course in Spanish","units_seen":5},
+          {"prefix":"SPAN","number":"202","title_seen":"Fourth Course in Spanish","units_seen":5},
+          {"prefix":"SPAN","number":"215","title_seen":"Spanish for Spanish Speakers I","units_seen":5},
+          {"prefix":"SPAN","number":"216","title_seen":"Spanish for Spanish Speakers II","units_seen":5},
+          {"prefix":"VIET","number":"101","title_seen":"First Course in Vietnamese","units_seen":5},
+          {"prefix":"VIET","number":"102","title_seen":"Second Course in Vietnamese","units_seen":5},
+          {"prefix":"VIET","number":"201","title_seen":"Third Course in Vietnamese","units_seen":5}
+        ]},
+        {"label_seen":"Category B: select one course or unused Category A course(s)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select ECON 220, MATH 252, or course(s) not selected in Category A totaling 3-4 units.","courses":[
+          {"prefix":"ECON","number":"220","title_seen":"Economics of the Environment","units_seen":3},
+          {"prefix":"MATH","number":"252","title_seen":"Calculus with Analytic Geometry III","units_seen":4}
+        ]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The program table prints STAT C1000 as 3 units and the major total as 18-24; those source values are preserved even though the statewide common-numbered statistics course is often 4 units elsewhere."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Liberal Arts and Sciences: Social and Behavioral Sciences-Economics - Associate of Arts Degree: Mesa",
+      "award_seen": "Associate of Arts Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Active in the official 2025-2026 catalog.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.98,
+      "sources": [{"source_type":"official_college_catalog_pdf","url":"https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"San Diego Mesa College Catalog 2025-2026, printed pages 303-304, Liberal Arts and Sciences: Social and Behavioral Sciences-Economics AA requirements"}],
+      "major_groups": [
+        {"label_seen":"Courses Required for the Major","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[
+          {"prefix":"ECON","number":"120","title_seen":"Principles of Macroeconomics","units_seen":3},
+          {"prefix":"ECON","number":"121","title_seen":"Principles of Microeconomics","units_seen":3}
+        ]},
+        {"label_seen":"Select a minimum of 12 units","rule":"choose_units","choose_n":null,"units_min":12,"ge_area":null,"choice_structure_seen":"Select at least 12 units from the published pool; any foreign-language course, including AMSL, may also be used.","courses":[
+          {"prefix":"ACCT","number":"116A","title_seen":"Financial Accounting","units_seen":4},
+          {"prefix":"ACCT","number":"116B","title_seen":"Managerial Accounting","units_seen":4},
+          {"prefix":"BUSE","number":"120","title_seen":"Personal Financial Management","units_seen":3},
+          {"prefix":"BUSE","number":"190","title_seen":"Academic and Career Opportunities in Business","units_seen":1},
+          {"prefix":"BUSE","number":"115","title_seen":"Statistics for Business","units_seen":3},
+          {"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":3},
+          {"prefix":"PSYC","number":"258","title_seen":"Behavioral Science Statistics","units_seen":3},
+          {"prefix":"CBTE","number":"140","title_seen":"Beginning Microsoft Excel","units_seen":2},
+          {"prefix":"CBTE","number":"151","title_seen":"Microsoft Access: Basic","units_seen":1},
+          {"prefix":"CISC","number":"181","title_seen":"Principles of Information Systems","units_seen":4},
+          {"prefix":"COMS","number":"160","title_seen":"Argumentation and Critical Thinking","units_seen":3},
+          {"prefix":"LIBS","number":"101","title_seen":"Information Literacy and Research Skills","units_seen":1},
+          {"prefix":"MATH","number":"121","title_seen":"Basic Techniques of Applied Calculus I","units_seen":3},
+          {"prefix":"MATH","number":"122","title_seen":"Basic Techniques of Calculus II","units_seen":3},
+          {"prefix":"MATH","number":"150","title_seen":"Calculus with Analytic Geometry I","units_seen":5},
+          {"prefix":"MATH","number":"151","title_seen":"Calculus with Analytic Geometry II","units_seen":4},
+          {"prefix":"MATH","number":"252","title_seen":"Calculus with Analytic Geometry III","units_seen":4},
+          {"prefix":"MATH","number":"254","title_seen":"Introduction to Linear Algebra","units_seen":3},
+          {"prefix":"MATH","number":"255","title_seen":"Differential Equations","units_seen":3}
+        ]},
+        {"label_seen":"Mesa associate-degree general education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"San Diego Mesa College associate-degree general education","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "This is the catalog's Economics-designated local Liberal Arts and Sciences AA. The open-ended foreign-language option is preserved in choice_structure_seen because the table does not enumerate that entire catalog-wide pool."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes two in-scope Economics awards: an Economics AA-T and a local Liberal Arts and Sciences-Economics AA."
+}

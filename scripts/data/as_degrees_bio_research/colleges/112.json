@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "community_college_id": 112,
+    "college_name": "Copper Mountain College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:11+00:00",
+    "updated_at": "2026-07-23T21:45:00+00:00",
+    "resume_note": "Complete first-pass extraction of the one general Biology AS-T from the official 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=495&search_string=biology",
+    "checked_at": "2026-07-23T19:29:51+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "62612",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/42178-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Science in Biology for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The two-course majors-biology core, general chemistry sequence, calculus, and intact two-course physics choice match the pinned Biology TMC.",
+      "catalog_status_seen": "Listed as active in the official 2025-2026 catalog and its effective-Fall-2025 addendum.",
+      "catalog_url": "https://www.cmccd.edu/wp-content/uploads/2026/01/Catalog-2025-26-Final-01.22.26.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 33,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.cmccd.edu/wp-content/uploads/2026/01/Catalog-2025-26-Final-01.22.26.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 82 / printed page 72, Biology AS-T"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BI", "number": "005", "title_seen": "Molecular and Cellular Biology", "units_seen": 5 },
+            { "prefix": "BI", "number": "006", "title_seen": "Biology of Organisms", "units_seen": 5 },
+            { "prefix": "CH", "number": "001A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CH", "number": "001B", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "MATH", "number": "001A", "title_seen": "Calculus", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Physics Requirement — choose one series",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PH 002A and PH 002B, or complete PH 004A and PH 004B; courses may not be mixed across series.",
+          "courses": [
+            { "prefix": "PH", "number": "002A", "title_seen": "College Physics", "units_seen": 4 },
+            { "prefix": "PH", "number": "002B", "title_seen": "College Physics", "units_seen": 4 },
+            { "prefix": "PH", "number": "004A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PH", "number": "004B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC for STEM General Education Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 31,
+          "ge_area": "Cal-GETC for STEM",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable elective units as needed",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints Required Courses as 32-33 units although the displayed course units total 32 for either physics sequence; that official range is retained for review. The same page anomalously prints a 66-unit minimum while the statutory degree text says completion of 60 transferable units, so total_units remains 60 and the discrepancy is flagged rather than normalized away."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No separate general Biology AS or AA is listed in the official 2025-2026 degree inventory."
+}

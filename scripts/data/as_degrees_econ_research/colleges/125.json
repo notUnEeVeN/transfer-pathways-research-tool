@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 125,
+    "college_name": "Porterville College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:10:00+00:00",
+    "resume_note": "Negative result audited against Porterville College's complete official 2025-2026 program inventory and the updated inventory in its latest catalog addendum."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_complete_program_inventory",
+      "url": "https://www.portervillecollege.edu/_resources/assets/pdfs/Academics/Catalog/2025-2026_Catalog_Updated_Meta_Data.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Catalog page 72: Programs, Certificates and Degrees complete inventory"
+    },
+    {
+      "source_type": "official_college_catalog_latest_addendum_program_inventory",
+      "url": "https://www.portervillecollege.edu/_resources/assets/pdfs/Academics/Catalog/2025-2026_Catalog_addendum_3.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Third Addendum page 4: All Programs, Certificates, and Degrees updated inventory"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No general Economics AA-T, AS-T, AA, or AS appears in the base catalog's complete program inventory or the updated all-program inventory in the third addendum. The first and second 2025-2026 addenda were also checked and do not add an Economics associate award. Agribusiness, Business, and Social Science awards that include economics coursework are outside this pass."
+}

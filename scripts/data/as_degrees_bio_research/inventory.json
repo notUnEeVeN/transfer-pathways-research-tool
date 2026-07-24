@@ -1,0 +1,2233 @@
+{
+  "_meta": {
+    "major_slug": "bio",
+    "source_academic_year": "2025-2026",
+    "purpose": "Resumable statewide inventory for Biology associate-degree research.",
+    "created_at": "2026-07-23T19:29:42+00:00",
+    "last_checkpoint_at": "2026-07-23T19:29:53+00:00",
+    "statewide_category_id": "7030",
+    "statewide_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+    "statewide_source_name": "I Can Go to College — California Community Colleges",
+    "source_role": "Fast official discovery index only. Each included degree still needs one college-catalog source for title, award, units, and requirements.",
+    "college_count": 115,
+    "college_universe_source": "scripts/data/as_degrees_cs_extraction.json#survey",
+    "canonical_college_ids_sha256": "1de245dee546d9bc0e2c52925516bd60a96f58fb7d023a5532f7ab620d06f2a0",
+    "completed_discovery_count": 115,
+    "unmatched_statewide_colleges": [],
+    "statewide_listing_count": 106
+  },
+  "colleges": [
+    {
+      "community_college_id": 2,
+      "college_name": "Evergreen Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "555",
+      "statewide_college_uri": "/colleges/evergreen-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=555&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47521",
+          "title": "Associate In Science In Biology For Transfer",
+          "degree_type_hint": "ast",
+          "source_url": "https://icangotocollege.com/college-courses/35478-associate-in-science-in-biology-for-transfer"
+        },
+        {
+          "statewide_program_id": "80718",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35478-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 3,
+      "college_name": "Los Angeles City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "790",
+      "statewide_college_uri": "/colleges/la-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=790&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "49388",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36049-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 4,
+      "college_name": "College of Marin",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "904",
+      "statewide_college_uri": "/colleges/marin",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=904&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "adcdbc14-1498-4587-b30c-fbd2d071a458",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/46068-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 5,
+      "college_name": "College of San Mateo",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1667",
+      "statewide_college_uri": "/colleges/san-mateo",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1667&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46174",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33912-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 6,
+      "college_name": "College of the Sequoias",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1798",
+      "statewide_college_uri": "/colleges/sequoias",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1798&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "53074",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35305-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 8,
+      "college_name": "Butte College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "177",
+      "statewide_college_uri": "/colleges/butte",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=177&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46566",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35022-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 9,
+      "college_name": "Cerro Coso Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 10,
+      "college_name": "Columbia College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "367",
+      "statewide_college_uri": "/colleges/columbia",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=367&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46494",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35150-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 13,
+      "college_name": "Merritt College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 14,
+      "college_name": "Santa Ana College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1688",
+      "statewide_college_uri": "/colleges/santa-ana",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1688&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46773",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35134-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 16,
+      "college_name": "Cuesta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2364",
+      "statewide_college_uri": "/colleges/cuesta",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2364&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46196",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33963-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 17,
+      "college_name": "Merced College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "953",
+      "statewide_college_uri": "/colleges/merced",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=953&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47034",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35569-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 18,
+      "college_name": "Las Positas College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "871",
+      "statewide_college_uri": "/colleges/las-positas",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=871&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47296",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35245-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 19,
+      "college_name": "Victor Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1997",
+      "statewide_college_uri": "/colleges/victor-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1997&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "52205",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/41089-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:44+00:00"
+    },
+    {
+      "community_college_id": 20,
+      "college_name": "Barstow Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "157",
+      "statewide_college_uri": "/colleges/barstow",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=157&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51953",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/40021-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 25,
+      "college_name": "Los Angeles Trade Technical College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "816",
+      "statewide_college_uri": "/colleges/la-trade-tech",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=816&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50241",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37241-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 27,
+      "college_name": "American River College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "62",
+      "statewide_college_uri": "/colleges/american-river",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=62&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "48679",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35620-biology"
+        },
+        {
+          "statewide_program_id": "caa714d5-7388-4b43-a5a8-cb8f64baa8e0",
+          "title": "Biology 2.0",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/46503-biology-20"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 28,
+      "college_name": "Contra Costa College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "372",
+      "statewide_college_uri": "/colleges/contra-costa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=372&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46365",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35208-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 30,
+      "college_name": "College of the Desert",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "499",
+      "statewide_college_uri": "/colleges/desert",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=499&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46625",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35125-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 31,
+      "college_name": "Los Angeles Harbor College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "798",
+      "statewide_college_uri": "/colleges/la-harbor",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=798&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "52097",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/40145-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 32,
+      "college_name": "Mission College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "968",
+      "statewide_college_uri": "/colleges/mission",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=968&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47116",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35604-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 33,
+      "college_name": "City College of San Francisco",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1567",
+      "statewide_college_uri": "/colleges/san-francisco-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1567&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "45898",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33623-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 35,
+      "college_name": "Fresno City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "599",
+      "statewide_college_uri": "/colleges/fresno-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=599&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47195",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35161-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 36,
+      "college_name": "Reedley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1316",
+      "statewide_college_uri": "/colleges/reedley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1316&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "45806",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33833-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:45+00:00"
+    },
+    {
+      "community_college_id": 38,
+      "college_name": "Shasta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 40,
+      "college_name": "Lake Tahoe Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 41,
+      "college_name": "Cabrillo College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "243",
+      "statewide_college_uri": "/colleges/cabrillo",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=243&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "53086",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35130-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 43,
+      "college_name": "Glendale Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "670",
+      "statewide_college_uri": "/colleges/glendale",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=670&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46542",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35283-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 44,
+      "college_name": "Los Angeles Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "840",
+      "statewide_college_uri": "/colleges/la-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=840&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47145",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35395-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 45,
+      "college_name": "San Diego Miramar College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1549",
+      "statewide_college_uri": "/colleges/san-diego-miramar",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1549&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46119",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33878-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 47,
+      "college_name": "Los Angeles Mission College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "801",
+      "statewide_college_uri": "/colleges/la-mission",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=801&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46012",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33950-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 48,
+      "college_name": "Ohlone College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1125",
+      "statewide_college_uri": "/colleges/ohlone",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1125&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47909",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35532-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 49,
+      "college_name": "Pasadena City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1282",
+      "statewide_college_uri": "/colleges/pasadena-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1282&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50792",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37954-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 51,
+      "college_name": "Foothill College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "577",
+      "statewide_college_uri": "/colleges/foothill",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=577&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46675",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35594-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 52,
+      "college_name": "Modesto Junior College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "984",
+      "statewide_college_uri": "/colleges/modesto",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=984&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "ff5b1157-d94f-44c5-ba66-6bb778588232",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/43651-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 53,
+      "college_name": "Mt. San Jacinto College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1060",
+      "statewide_college_uri": "/colleges/mt-san-jacinto",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1060&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "53205",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/38847-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:46+00:00"
+    },
+    {
+      "community_college_id": 54,
+      "college_name": "San Diego City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1490",
+      "statewide_college_uri": "/colleges/san-diego-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1490&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46080",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33825-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 55,
+      "college_name": "Golden West College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3149",
+      "statewide_college_uri": "/colleges/golden-west",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3149&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "62757",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/41897-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 56,
+      "college_name": "Palomar College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1201",
+      "statewide_college_uri": "/colleges/palomar",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1201&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47292",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35560-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 57,
+      "college_name": "Santa Rosa Junior College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1752",
+      "statewide_college_uri": "/colleges/santa-rosa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1752&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51207",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/38700-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 58,
+      "college_name": "Berkeley City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2472",
+      "statewide_college_uri": "/colleges/berkeley-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2472&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "62686",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/41902-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 61,
+      "college_name": "Los Medanos College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "892",
+      "statewide_college_uri": "/colleges/los-medanos",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=892&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46125",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35128-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 62,
+      "college_name": "Mount San Antonio College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1040",
+      "statewide_college_uri": "/colleges/mt-san-antonio",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1040&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "6d28d46d-111e-4195-90c3-951d36985673",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/45453-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 63,
+      "college_name": "Palo Verde College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 64,
+      "college_name": "Rio Hondo College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1350",
+      "statewide_college_uri": "/colleges/rio-hondo",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1350&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46145",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35399-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 65,
+      "college_name": "Saddleback College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1443",
+      "statewide_college_uri": "/colleges/saddleback",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1443&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47175",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35437-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 66,
+      "college_name": "Santiago Canyon College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1768",
+      "statewide_college_uri": "/colleges/santiago-canyon",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1768&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46555",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35110-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 67,
+      "college_name": "Coalinga College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "a2e89e1e-1cc6-416c-bff5-a927edb1782c",
+      "statewide_college_uri": "/colleges/coalinga-college",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=a2e89e1e-1cc6-416c-bff5-a927edb1782c&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "4d85387f-fee6-4e54-ba20-85d5a66ff7ef",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/43126-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 68,
+      "college_name": "Cañada College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "260",
+      "statewide_college_uri": "/colleges/canada",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=260&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "45741",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33608-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 69,
+      "college_name": "Chaffey College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "332",
+      "statewide_college_uri": "/colleges/chaffey",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=332&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "53149",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35060-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:47+00:00"
+    },
+    {
+      "community_college_id": 70,
+      "college_name": "Crafton Hills College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "423",
+      "statewide_college_uri": "/colleges/crafton-hills",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=423&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46864",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35149-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 71,
+      "college_name": "Cypress College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "487",
+      "statewide_college_uri": "/colleges/cypress",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=487&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50059",
+          "title": "Associate In Science In Biology",
+          "degree_type_hint": "local_as",
+          "source_url": "https://icangotocollege.com/college-courses/37120-associate-in-science-in-biology"
+        },
+        {
+          "statewide_program_id": "a9903f52-85b4-4694-9a0b-7ed124dbae62",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37120-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 72,
+      "college_name": "Gavilan College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "661",
+      "statewide_college_uri": "/colleges/gavilan",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=661&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50634",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37750-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 73,
+      "college_name": "Napa Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1087",
+      "statewide_college_uri": "/colleges/napa-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1087&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 74,
+      "college_name": "Orange Coast College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1139",
+      "statewide_college_uri": "/colleges/orange-coast",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1139&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47004",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35918-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 77,
+      "college_name": "Laney College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 78,
+      "college_name": "Riverside City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1370",
+      "statewide_college_uri": "/colleges/riverside-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1370&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50139",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37465-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 80,
+      "college_name": "West Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2050",
+      "statewide_college_uri": "/colleges/west-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2050&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47653",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36700-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 82,
+      "college_name": "Lassen Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "883",
+      "statewide_college_uri": "/colleges/lassen",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=883&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 83,
+      "college_name": "College of the Redwoods",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1305",
+      "statewide_college_uri": "/colleges/redwoods",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1305&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "49291",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35895-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 84,
+      "college_name": "Bakersfield College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "133",
+      "statewide_college_uri": "/colleges/bakersfield",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=133&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47057",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35302-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 86,
+      "college_name": "Los Angeles Pierce College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "804",
+      "statewide_college_uri": "/colleges/la-pierce",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=804&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "49308",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35979-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 87,
+      "college_name": "Oxnard College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1194",
+      "statewide_college_uri": "/colleges/oxnard",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1194&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46616",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35104-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:48+00:00"
+    },
+    {
+      "community_college_id": 90,
+      "college_name": "Yuba College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2068",
+      "statewide_college_uri": "/colleges/yuba",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2068&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "48966",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35801-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 91,
+      "college_name": "West Los Angeles College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2043",
+      "statewide_college_uri": "/colleges/west-la",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2043&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46869",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35761-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 92,
+      "college_name": "Santa Barbara City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1714",
+      "statewide_college_uri": "/colleges/santa-barbara-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1714&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47103",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35241-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 93,
+      "college_name": "Sierra College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1818",
+      "statewide_college_uri": "/colleges/sierra",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1818&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "45992",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33639-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 94,
+      "college_name": "Solano Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1900",
+      "statewide_college_uri": "/colleges/solano",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1900&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47971",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36511-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 95,
+      "college_name": "Ventura College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1986",
+      "statewide_college_uri": "/colleges/ventura",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1986&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "48764",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35652-biology"
+        },
+        {
+          "statewide_program_id": "133cd95a-a627-4220-8488-ad2655be1b87",
+          "title": "Biology 2.0",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/46542-biology-20"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 96,
+      "college_name": "Chabot College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "312",
+      "statewide_college_uri": "/colleges/chabot",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=312&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46647",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35242-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 97,
+      "college_name": "Citrus College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "348",
+      "statewide_college_uri": "/colleges/citrus",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=348&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46143",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35078-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 99,
+      "college_name": "Cuyamaca College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "439",
+      "statewide_college_uri": "/colleges/cuyamaca",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=439&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46883",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35159-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 100,
+      "college_name": "Mendocino College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "944",
+      "statewide_college_uri": "/colleges/mendocino",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=944&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "53041",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33886-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 101,
+      "college_name": "San Diego Mesa College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1521",
+      "statewide_college_uri": "/colleges/san-diego-mesa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1521&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "49850",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/38658-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:49+00:00"
+    },
+    {
+      "community_college_id": 102,
+      "college_name": "College of the Siskiyous",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1855",
+      "statewide_college_uri": "/colleges/siskiyous",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1855&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 103,
+      "college_name": "El Camino College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "530",
+      "statewide_college_uri": "/colleges/el-camino",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=530&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 104,
+      "college_name": "Cerritos College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "330",
+      "statewide_college_uri": "/colleges/cerritos",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=330&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47550",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35686-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 105,
+      "college_name": "Coastline Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "362",
+      "statewide_college_uri": "/colleges/coastline",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=362&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "44555",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37925-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 106,
+      "college_name": "Grossmont College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "704",
+      "statewide_college_uri": "/colleges/grossmont",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=704&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47530",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36759-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 107,
+      "college_name": "Imperial Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "752",
+      "statewide_college_uri": "/colleges/imperial-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=752&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47390",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35417-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 108,
+      "college_name": "MiraCosta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "965",
+      "statewide_college_uri": "/colleges/mira-costa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=965&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50284",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37240-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 109,
+      "college_name": "San Joaquin Delta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 110,
+      "college_name": "Allan Hancock College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "16",
+      "statewide_college_uri": "/colleges/allan-hancock",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=16&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46830",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36262-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 111,
+      "college_name": "College of Alameda",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "6bbc883b-f2e3-479a-8a45-cb5b02f7b8e1",
+      "statewide_college_uri": "/colleges/alameda",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=6bbc883b-f2e3-479a-8a45-cb5b02f7b8e1&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:50+00:00"
+    },
+    {
+      "community_college_id": 112,
+      "college_name": "Copper Mountain College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "495",
+      "statewide_college_uri": "/colleges/copper-mountain",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=495&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "62612",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42178-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 113,
+      "college_name": "De Anza College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3000",
+      "statewide_college_uri": "/colleges/de-anza",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3000&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51562",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39283-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 114,
+      "college_name": "Diablo Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "506",
+      "statewide_college_uri": "/colleges/diablo-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=506&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46061",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33771-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 118,
+      "college_name": "East Los Angeles College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "517",
+      "statewide_college_uri": "/colleges/east-la",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=517&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50614",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37923-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 119,
+      "college_name": "Taft College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1978",
+      "statewide_college_uri": "/colleges/taft",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1978&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47953",
+          "title": "As-T In Biology",
+          "degree_type_hint": "ast",
+          "source_url": "https://icangotocollege.com/college-courses/35547-as-t-in-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 121,
+      "college_name": "Antelope Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "94",
+      "statewide_college_uri": "/colleges/antelope-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=94&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "49082",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35809-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 122,
+      "college_name": "Feather River College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "567",
+      "statewide_college_uri": "/colleges/feather-river",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=567&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 123,
+      "college_name": "Hartnell College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "747",
+      "statewide_college_uri": "/colleges/hartnell",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=747&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46493",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35107-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 124,
+      "college_name": "Irvine Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "775",
+      "statewide_college_uri": "/colleges/irvine-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=775&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47592",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35501-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 125,
+      "college_name": "Porterville College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1302",
+      "statewide_college_uri": "/colleges/porterville",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1302&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50128",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/38309-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 126,
+      "college_name": "Sacramento City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1404",
+      "statewide_college_uri": "/colleges/sacramento-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1404&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46497",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35392-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:51+00:00"
+    },
+    {
+      "community_college_id": 127,
+      "college_name": "Skyline College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1868",
+      "statewide_college_uri": "/colleges/skyline",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1868&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51597",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39660-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 130,
+      "college_name": "Los Angeles Southwest College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "806",
+      "statewide_college_uri": "/colleges/la-southwest",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=806&search_string=biology",
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 131,
+      "college_name": "San Bernardino Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1488",
+      "statewide_college_uri": "/colleges/san-bernardino",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1488&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47979",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35893-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 133,
+      "college_name": "Monterey Peninsula College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "991",
+      "statewide_college_uri": "/colleges/monterey-peninsula",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=991&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46402",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35218-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 134,
+      "college_name": "Fullerton College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "635",
+      "statewide_college_uri": "/colleges/fullerton",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=635&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "49864",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37174-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 135,
+      "college_name": "Long Beach City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "887",
+      "statewide_college_uri": "/colleges/long-beach-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=887&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47491",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35556-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 136,
+      "college_name": "San Jose City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1642",
+      "statewide_college_uri": "/colleges/san-jose-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1642&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51605",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39247-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 137,
+      "college_name": "Santa Monica College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 138,
+      "college_name": "Southwestern College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1921",
+      "statewide_college_uri": "/colleges/southwestern",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1921&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51710",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39578-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 139,
+      "college_name": "Moorpark College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1010",
+      "statewide_college_uri": "/colleges/moorpark",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1010&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "45962",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33647-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 140,
+      "college_name": "College of the Canyons",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "282",
+      "statewide_college_uri": "/colleges/canyons",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=282&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "48779",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35653-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 142,
+      "college_name": "Cosumnes River College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "389",
+      "statewide_college_uri": "/colleges/cosumnes-river",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=389&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "48455",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35303-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 145,
+      "college_name": "Folsom Lake College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "574",
+      "statewide_college_uri": "/colleges/folsom-lake",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=574&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "48284",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35158-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:52+00:00"
+    },
+    {
+      "community_college_id": 146,
+      "college_name": "Lemoore College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "59898c13-cad9-4213-b036-2a5cc4b5fb2b",
+      "statewide_college_uri": "/colleges/lemoore-college",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=59898c13-cad9-4213-b036-2a5cc4b5fb2b&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "50058",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/40166-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 147,
+      "college_name": "Woodland Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2059",
+      "statewide_college_uri": "/colleges/woodland",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2059&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "47591",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35369-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 148,
+      "college_name": "Norco College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1106",
+      "statewide_college_uri": "/colleges/norco",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1106&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46152",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35027-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 149,
+      "college_name": "Moreno Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1015",
+      "statewide_college_uri": "/colleges/moreno-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1015&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46173",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33953-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 150,
+      "college_name": "Clovis Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2585",
+      "statewide_college_uri": "/colleges/clovis",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2585&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "46444",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35129-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    },
+    {
+      "community_college_id": 153,
+      "college_name": "Compton College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:43+00:00"
+    },
+    {
+      "community_college_id": 200,
+      "college_name": "Madera Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=7030&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3824",
+      "statewide_college_uri": "/colleges/madera",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3824&search_string=biology",
+      "programs": [
+        {
+          "statewide_program_id": "51675",
+          "title": "Biology",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39809-biology"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T19:29:53+00:00"
+    }
+  ]
+}

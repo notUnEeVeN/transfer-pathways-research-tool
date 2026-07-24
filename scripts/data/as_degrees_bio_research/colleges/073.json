@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 73,
+    "college_name": "Napa Valley College",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:03:18+00:00",
+    "updated_at": "2026-07-23T21:40:00+00:00",
+    "resume_note": "Pinned to Napa Valley College's official 2025-2026 catalog. The Biology section lists only Natural Science AS and Pre-Health Science AS, so no general Biology/Biological Sciences AS-T, AS, or AA qualifies under the agreed scope."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1087&search_string=biology",
+    "checked_at": "2026-07-23T19:29:48+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://www.napavalley.edu/programs-and-academics/academic-affairs/documents/Napa%20Valley%20College%20Catalog%202025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "PDF pages 92-94, complete Biology program section; degrees listed are Natural Science AS and Pre-Health Science AS only"
+    },
+    {
+      "source_type": "official_college_catalog_archive_index",
+      "url": "https://www.napavalley.edu/programs-and-academics/catalog.html",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Archived Catalogs, official 2025-2026 catalog link"
+    }
+  ],
+  "notes": "Natural Science AS and Pre-Health Science AS are adjacent interdisciplinary or pre-professional awards rather than general Biology/Biological Sciences awards, so both are excluded. The 2025-2026 catalog contains no Biology AS-T and no degree titled Biology or Biological Sciences."
+}

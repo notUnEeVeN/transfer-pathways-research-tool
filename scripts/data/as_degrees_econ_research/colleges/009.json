@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 9,
+    "college_name": "Cerro Coso Community College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-23T23:55:28+00:00",
+    "resume_note": "Audited the official 2025-2026 catalog's complete Programs Offered table and catalog addendum. Neither contains a general Economics AA-T, AS-T, AA, or AS."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://www.cerrocoso.edu/_resources/assets/documents/general-information/2025-2026_catalog.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Programs Offered, catalog pages 61-62; the complete award table has no Economics program"
+    },
+    {
+      "source_type": "official_college_catalog_addendum_pdf",
+      "url": "https://www.cerrocoso.edu/_resources/assets/documents/general-information/2025-2026-catalog-addendum.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "New Programs, catalog addendum page 16; no Economics award is added"
+    }
+  ],
+  "notes": "The complete 2025-2026 Programs Offered matrix lists every AA, AS, AA-T, and AS-T but no Economics award. Economics appears only as coursework and within adjacent programs such as Business and Liberal Arts: Social & Behavioral Sciences, which are outside this pass."
+}

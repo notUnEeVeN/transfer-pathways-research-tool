@@ -1,0 +1,75 @@
+{
+  "_meta": {
+    "community_college_id": 138,
+    "college_name": "Southwestern College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:12:00+00:00",
+    "resume_note": "First-pass extraction complete for Southwestern College's Economics AA-T and local AA from its official archived 2025-2026 catalog pages."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1921&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48620",
+        "title": "Associate In Arts In Economics For Transfer ",
+        "degree_type_hint": "ast",
+        "source_url": "https://icangotocollege.com/college-courses/35846-associate-in-arts-in-economics-for-transfer"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics",
+      "award_seen": "Associate in Arts for Transfer (AA-T)",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The archived program page identifies the STAR Act transfer award and prints the standard Required Core, List A, and List B.",
+      "catalog_status_seen": "Published in Southwestern College's official archived 2025-2026 catalog.",
+      "catalog_url": "https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/economics/economics-aat/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_html_archive","url":"https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/economics/economics-aat/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics, Student Transfer Achievement Reform (STAR) Act, Major Code 01195; course table and Total Units 20-23"}],
+      "major_groups": [
+        {"label_seen":"Required Core - economics and statistics","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"120","title_seen":"Calculus for Business Analysis","units_seen":4},{"prefix":"MATH","number":"250","title_seen":"Analytic Geometry and Calculus I","units_seen":5}]},
+        {"label_seen":"LIST A: Select one course of the following","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ACCT","number":"101","title_seen":"Principles of Accounting I","units_seen":4},{"prefix":"ACCT","number":"102","title_seen":"Principles of Accounting II--- Managerial","units_seen":4},{"prefix":"BUS","number":"212","title_seen":"Business Communication","units_seen":3},{"prefix":"CIS","number":"101","title_seen":"Introduction to Business Information Systems","units_seen":4},{"prefix":"MATH","number":"251","title_seen":"Analytic Geometry and Calculus II","units_seen":4}]},
+        {"label_seen":"LIST B: Select one course of the following","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Any course from List A not already used may satisfy List B; the List A pool is repeated to preserve the complete option set.","courses":[{"prefix":"ACCT","number":"101","title_seen":"Principles of Accounting I","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"102","title_seen":"Principles of Accounting II--- Managerial","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"212","title_seen":"Business Communication","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"CIS","number":"101","title_seen":"Introduction to Business Information Systems","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"251","title_seen":"Analytic Geometry and Calculus II","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"252","title_seen":"Analytic Geometry and Calculus III","units_seen":4},{"prefix":"MATH","number":"254","title_seen":"Introduction to Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The archived page prints Required Core 14-15, List A 3-4, List B 3-4, and Total Units 20-23."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Economics",
+      "award_seen": "Associate in Arts (AA)",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in Southwestern College's official archived 2025-2026 catalog.",
+      "catalog_url": "https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/economics/economics-aa/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 24,
+      "major_units_max": 29,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_html_archive","url":"https://catalog.swccd.edu/archives/2025-2026/associate-degree-certificate-programs/economics/economics-aa/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics, Associate in Arts, Transfer Preparation, Major Code 01190; Program Requirements and Total Units 24-29"}],
+      "major_groups": [
+        {"label_seen":"Program Requirements - required courses","rule":"all","choose_n":null,"units_min":14,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"MATH","number":"120","title_seen":"Calculus for Business Analysis","units_seen":4}]},
+        {"label_seen":"Select 10-15 units of Foreign Language","rule":"choose_units","choose_n":null,"units_min":10,"units_max":15,"ge_area":null,"choice_structure_seen":"The program page specifies a Foreign Language unit block but does not enumerate the eligible courses.","courses":[]},
+        {"label_seen":"Additional general education and graduation requirements","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Southwestern College associate-degree general education","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The local AA page prints a 24-29-unit program total and links separately to the college's additional general education and graduation requirements."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both the general Economics AA-T and a local Economics AA; both are in scope."
+}

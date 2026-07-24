@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 38,
+    "college_name": "Shasta College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-23T23:55:28+00:00",
+    "resume_note": "Audited Shasta College's complete 2025-2026 Interest Areas award inventory and the Spring 2026 catalog addendum. Neither contains a general Economics award."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://scmainweb.s3.us-west-1.amazonaws.com/files/resources/2025-26-college-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Interest Areas, catalog pages 21-26; complete Degrees and Certificates inventory contains no Economics award"
+    },
+    {
+      "source_type": "official_college_catalog_addendum_pdf",
+      "url": "https://scmainweb.s3.us-west-1.amazonaws.com/files/resources/2025-26-spring-catalog-addendum.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Chapter 3: Programs of Study, addendum page 2; explicitly reports no program updates"
+    }
+  ],
+  "notes": "The complete 2025-2026 award inventory includes Business, Marketing and Finance, and broad Social Sciences pathways but no Economics AA-T, AS-T, AA, or AS. Those adjacent awards are outside this pass, and the Spring addendum makes no program changes."
+}

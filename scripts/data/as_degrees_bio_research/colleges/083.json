@@ -1,0 +1,110 @@
+{
+  "_meta": {
+    "community_college_id": 83,
+    "college_name": "College of the Redwoods",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:17+00:00",
+    "updated_at": "2026-07-23T22:05:00+00:00",
+    "resume_note": "Pinned to College of the Redwoods' official 2025-2026 catalog with addendum. The Biology for Transfer A.S.-T. is extracted; MATH 25 and MATH 30 shown below the requirement table are prerequisite preparation, not major units."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1305&search_string=biology",
+    "checked_at": "2026-07-23T19:29:48+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49291",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35895-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer",
+      "award_seen": "A.S. Degree for Transfer",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires differential calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as a credit transfer degree in the official 2025-2026 catalog with addendum; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.redwoods.edu/academics/catalog/2025-2026_Catalog_WithAddendum.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 34,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.redwoods.edu/academics/catalog/2025-2026_Catalog_WithAddendum.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "College of the Redwoods 2025-2026 Catalog with Addendum, printed page 96, Biology for Transfer, A.S. Degree for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 12,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "3", "title_seen": "Fundamental Cell Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "4", "title_seen": "General Zoology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "5", "title_seen": "General Botany with Lab", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select one complete physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and PHYS 2B, or complete PHYS 4A and PHYS 4B; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Calculus-Based Physics: Mechanics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Calculus-Based Physics: Electricity and Magnetism", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "MATH", "number": "50A", "title_seen": "Differential Calculus", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 34 major units and requires Cal-GETC. MATH 25 College Trigonometry and MATH 30 College Algebra appear as prerequisite preparation beneath MATH 50A and are not included in the 34-unit major. The catalog does not restate fixed Cal-GETC or elective subtotals on this program page, so they are left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 program inventory lists the general Biology for Transfer A.S.-T. but no separate general local Biology/Biological Sciences AS or AA; specialty and certificate awards were ignored by scope."
+}

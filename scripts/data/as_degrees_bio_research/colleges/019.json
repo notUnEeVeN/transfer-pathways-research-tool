@@ -1,0 +1,113 @@
+{
+  "_meta": {
+    "community_college_id": 19,
+    "college_name": "Victor Valley College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:27+00:00",
+    "updated_at": "2026-07-23T20:15:00+00:00",
+    "resume_note": "Pinned to the official 2025-2026 Victor Valley College whole-catalog PDF. The catalog lists one in-scope Biology AS-T and no general local Biology associate degree; requirements are extracted from catalog page 143."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1997&search_string=biology",
+    "checked_at": "2026-07-23T19:29:44+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "52205",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/41089-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, AS-T",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires one of two physics sequences, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "State control number 41089 and program code BIOL.CALGETC.AS-T are listed in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.vvc.edu/pdf/2025-26.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 40,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.vvc.edu/pdf/2025-26.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF catalog page 143, Biology, AS-T: Degree Requirements, Required Core, List A, List B, and Total Units table"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core (14.0 units)",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "201", "title_seen": "Biology of Cells", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "202", "title_seen": "Biology of Organisms", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "200", "title_seen": "Botany: Plant Diversity and Ecology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List A (22.0 units)",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 22,
+          "ge_area": null,
+          "choice_structure_seen": "Complete CHEM 201 and CHEM 202; choose MATH 226 or MATH 226H; and complete either PHYS 221 and PHYS 222 or PHYS 202 and PHYS 203.",
+          "courses": [
+            { "prefix": "CHEM", "number": "201", "title_seen": "General Chemistry", "units_seen": null },
+            { "prefix": "CHEM", "number": "202", "title_seen": "General Chemistry", "units_seen": null },
+            { "prefix": "MATH", "number": "226", "title_seen": "Analytic Geometry and Calculus I", "units_seen": null },
+            { "prefix": "MATH", "number": "226H", "title_seen": "Honors Analytic Geometry and Calculus I", "units_seen": null },
+            { "prefix": "PHYS", "number": "221", "title_seen": "General Physics I", "units_seen": null },
+            { "prefix": "PHYS", "number": "222", "title_seen": "General Physics II", "units_seen": null },
+            { "prefix": "PHYS", "number": "202", "title_seen": "Engineering Physics II - Fluids, Sound, and Thermodynamics", "units_seen": null },
+            { "prefix": "PHYS", "number": "203", "title_seen": "Engineering Physics III Electricity and Magnetism", "units_seen": null }
+          ]
+        },
+        {
+          "label_seen": "List B (0.0-4.0 units)",
+          "rule": "choose_courses",
+          "choose_n": null,
+          "units_min": 0,
+          "units_max": 4,
+          "ge_area": null,
+          "choice_structure_seen": "Select zero to one course of additional major preparation if required articulation exists.",
+          "courses": [
+            { "prefix": "BIOL", "number": "203", "title_seen": "Population and Environmental Biology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 2025-2026 degree table prints List A as a 22-unit block but does not print individual course units; those course-level units remain null rather than being inferred. The page contains an older sentence naming IGETC, followed by the operative graduation list requiring Cal-GETC. The exact program code also contains CALGETC. No material major-requirement or printed-total difference was found versus the 2026-2027 record."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 whole-catalog PDF lists Biology AS-T as the only general Biology associate degree. Certificates and adjacent science programs were ignored, and out_of_scope_candidates remains empty by batch instruction."
+}

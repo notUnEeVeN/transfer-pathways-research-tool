@@ -1,0 +1,141 @@
+{
+  "_meta": {
+    "community_college_id": 2,
+    "college_name": "Evergreen Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:36:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; source and variable-unit choices are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=555&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49194",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35854-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - Associate in Arts for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog identifies this as the Economics AA-T and publishes the Economics transfer-model core and elective lists.",
+      "catalog_status_seen": "Active in Evergreen Valley College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.evc.edu/degrees-certificates/economics/economics-associate-in-arts-for-transfer/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://catalog.evc.edu/degrees-certificates/economics/economics-associate-in-arts-for-transfer/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics - Associate in Arts for Transfer, Major Requirements and Total Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core - Principles of Economics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "ECON", "number": "010A", "title_seen": "Principles of Macroeconomic Theory", "units_seen": 3 },
+            { "prefix": "ECON", "number": "010B", "title_seen": "Introduction to Microeconomic Theory", "units_seen": 3 }
+          ]
+        },
+        {
+          "label_seen": "Required Core - select one statistics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BUS", "number": "060", "title_seen": "Fundamentals of Business Statistics", "units_seen": 3 },
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 3 }
+          ]
+        },
+        {
+          "label_seen": "Required Core - select one mathematics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "062", "title_seen": "Calculus for Business and Social Science", "units_seen": 3 },
+            { "prefix": "MATH", "number": "066", "title_seen": "Calculus I Late Transcendentals for STEM", "units_seen": 4 },
+            { "prefix": "MATH", "number": "071", "title_seen": "Calculus I With Analytic Geometry", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A - select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "ACCTG", "number": "001A", "title_seen": "Principles of Financial Accounting", "units_seen": 4 },
+            { "prefix": "ACCTG", "number": "001B", "title_seen": "Managerial Accounting", "units_seen": 4 },
+            { "prefix": "CIT", "number": "010", "title_seen": "Computer and Information Technology", "units_seen": 3 },
+            { "prefix": "MATH", "number": "061", "title_seen": "Finite Mathematics", "units_seen": 3 },
+            { "prefix": "MATH", "number": "067", "title_seen": "Calculus II Late Transcendentals for STEM", "units_seen": 4 },
+            { "prefix": "MATH", "number": "072", "title_seen": "Calculus II With Analytic Geometry", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List B - select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select any unused List A course, or MATH 073, or MATH 079.",
+          "courses": [
+            { "prefix": "ACCTG", "number": "001A", "title_seen": "Principles of Financial Accounting", "units_seen": 4, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "ACCTG", "number": "001B", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "CIT", "number": "010", "title_seen": "Computer and Information Technology", "units_seen": 3, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "MATH", "number": "061", "title_seen": "Finite Mathematics", "units_seen": 3, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "MATH", "number": "067", "title_seen": "Calculus II Late Transcendentals for STEM", "units_seen": 4, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "MATH", "number": "072", "title_seen": "Calculus II With Analytic Geometry", "units_seen": 5, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "MATH", "number": "073", "title_seen": "Multivariable Calculus", "units_seen": 5 },
+            { "prefix": "MATH", "number": "079", "title_seen": "Linear Algebra", "units_seen": 3 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog summary prints 18 major units, the minimum path. Higher-unit math/accounting selections can raise the completed major total to 24; this range is preserved for comparison."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the Economics AA-T is listed in the official 2025-2026 Economics program inventory."
+}

@@ -1,0 +1,86 @@
+{
+  "_meta": {
+    "community_college_id": 124,
+    "college_name": "Irvine Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:10:00+00:00",
+    "resume_note": "First-pass extraction complete from Irvine Valley College's official archived 2025-2026 CurriQunet catalog; the catalog itself labels the transfer award AS-T."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=775&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47177",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32863-economics"
+      },
+      {
+        "statewide_program_id": "8c12528e-6289-4abe-a307-29aa4a64eaf5",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/45857-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics for Transfer - AS-T",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog identifies the award as an Economics degree for transfer and publishes the standard Economics transfer core and lists.",
+      "catalog_status_seen": "Active program shown in the official archived 2025-2026 catalog.",
+      "catalog_url": "https://irvine.curriqunet.com/Catalog/archive/7/iq/19496/19499/19787/19790",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 24,
+      "extraction_confidence": 0.98,
+      "sources": [{"source_type":"official_college_catalog_html_archive","url":"https://irvine.curriqunet.com/Catalog/archive/7/iq/19496/19499/19787/19790","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Degrees & Certificates > Economics for Transfer - AS-T > Requirements; Irvine 2025-2026 archive ID 7"}],
+      "major_groups": [
+        {"label_seen":"Required Core - microeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"1","title_seen":"Principles of Economics-Micro","units_seen":3},{"prefix":"ECON","number":"1H","title_seen":"Principles of Economics-Micro Honors","units_seen":3}]},
+        {"label_seen":"Required Core - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"2","title_seen":"Principles of Economics-Macro","units_seen":3},{"prefix":"ECON","number":"2H","title_seen":"Principles of Economics-Macro Honors","units_seen":3}]},
+        {"label_seen":"Required Core - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"choice_structure_seen":"ECON 10 and MGT 10 are cross-listed; the Honors versions are also cross-listed alternatives.","courses":[{"prefix":"ECON","number":"10","title_seen":"Statistics for Business and Economics","units_seen":3},{"prefix":"ECON","number":"10H","title_seen":"Statistics for Business and Economics Honors","units_seen":3},{"prefix":"MGT","number":"10","title_seen":"Statistics for Business and Economics","units_seen":3},{"prefix":"MGT","number":"10H","title_seen":"Statistics for Business and Economics Honors","units_seen":3}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"11","title_seen":"A Brief Course in Calculus","units_seen":4},{"prefix":"MATH","number":"3A","title_seen":"Analytic Geometry and Calculus I","units_seen":5},{"prefix":"MATH","number":"3AH","title_seen":"Analytic Geometry and Calculus I Honors","units_seen":5}]},
+        {"label_seen":"List A: Select one course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"3B","title_seen":"Analytic Geometry and Calculus II","units_seen":5},{"prefix":"MATH","number":"3BH","title_seen":"Analytic Geometry and Calculus II Honors","units_seen":5},{"prefix":"ACCT","number":"1A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"1B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"ACCT","number":"1BH","title_seen":"Managerial Accounting Honors","units_seen":4},{"prefix":"CS","number":"1","title_seen":"Introduction to Computer Systems","units_seen":3},{"prefix":"CS","number":"1H","title_seen":"Introduction to Computer Systems Honors","units_seen":3},{"prefix":"MGT","number":"104","title_seen":"Business Communication","units_seen":3}]},
+        {"label_seen":"List B: Select one course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"The rendered 2025-2026 requirements list these four courses; unlike many TMC renderings, the page does not explicitly print that an unused List A course may also be selected.","courses":[{"prefix":"ECON","number":"6","title_seen":"Environmental and Resource Economics","units_seen":3},{"prefix":"ECON","number":"13","title_seen":"Global Economics","units_seen":3},{"prefix":"MATH","number":"4A","title_seen":"Analytic Geometry and Calculus III","units_seen":5},{"prefix":"MATH","number":"26","title_seen":"Introduction to Linear Algebra","units_seen":4}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The official 2025-2026 catalog unusually labels the Economics transfer award AS-T rather than AA-T; that source wording is preserved without relabeling."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Economics - A.A. Degree",
+      "award_seen": "A.A. Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Active program shown in the official archived 2025-2026 catalog.",
+      "catalog_url": "https://irvine.curriqunet.com/Catalog/archive/7/iq/19496/19499/19783/19786",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 25,
+      "extraction_confidence": 0.98,
+      "sources": [{"source_type":"official_college_catalog_html_archive","url":"https://irvine.curriqunet.com/Catalog/archive/7/iq/19496/19499/19783/19786","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Degrees & Certificates > Economics - A.A. Degree > Requirements; Irvine 2025-2026 archive ID 7"}],
+      "major_groups": [
+        {"label_seen":"Complete the following courses - microeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"1","title_seen":"Principles of Economics-Micro","units_seen":3},{"prefix":"ECON","number":"1H","title_seen":"Principles of Economics-Micro Honors","units_seen":3}]},
+        {"label_seen":"Complete the following courses - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"2","title_seen":"Principles of Economics-Macro","units_seen":3},{"prefix":"ECON","number":"2H","title_seen":"Principles of Economics-Macro Honors","units_seen":3}]},
+        {"label_seen":"Complete the following courses - additional economics","rule":"all","choose_n":null,"units_min":9,"ge_area":null,"courses":[{"prefix":"ECON","number":"6","title_seen":"Environmental and Resource Economics","units_seen":3},{"prefix":"ECON","number":"10","title_seen":"Statistics for Business and Economics","units_seen":3},{"prefix":"ECON","number":"13","title_seen":"Global Economics","units_seen":3}]},
+        {"label_seen":"Complete one calculus course","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"3A","title_seen":"Analytic Geometry and Calculus I","units_seen":5},{"prefix":"MATH","number":"3AH","title_seen":"Analytic Geometry and Calculus I Honors","units_seen":5},{"prefix":"MATH","number":"11","title_seen":"A Brief Course in Calculus","units_seen":4}]},
+        {"label_seen":"Complete one additional course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"1A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"CS","number":"1","title_seen":"Introduction to Computer Systems","units_seen":3},{"prefix":"CS","number":"1H","title_seen":"Introduction to Computer Systems Honors","units_seen":3},{"prefix":"ECON","number":"5","title_seen":"Personal Financial Planning","units_seen":3},{"prefix":"MATH","number":"3B","title_seen":"Analytic Geometry and Calculus II","units_seen":5},{"prefix":"MATH","number":"3BH","title_seen":"Analytic Geometry and Calculus II Honors","units_seen":5}]},
+        {"label_seen":"Irvine Valley College Associate Degree General Education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Irvine Valley College AA General Education","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog separately prints recommended electives (ACCT 1B/1BH, MATH 26, MGT 104, ENGL C1001/C1001H); they are recommendations rather than major requirements and are not modeled as required choices."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Two in-scope Economics awards are published in the official 2025-2026 catalog."
+}

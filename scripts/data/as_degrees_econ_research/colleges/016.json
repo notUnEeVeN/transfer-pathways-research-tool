@@ -1,0 +1,136 @@
+{
+  "_meta": {
+    "community_college_id": 16,
+    "college_name": "Cuesta College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:58:00+00:00",
+    "resume_note": "First-pass extraction complete from the archived module-12 Cuesta College Catalog 2025-2026; durable program-requirement and program-summary URLs are preserved for verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2364&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45249",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33041-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "ECONOMICS - Associate in Arts for Transfer",
+      "award_seen": "Associate in Arts for Transfer",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies this as Cuesta's Economics AA-T; no separate local TMC revision is printed.",
+      "catalog_status_seen": "Included in archived catalog module 12, identified by CurriQunet as Cuesta College Catalog 2025-2026 with the 2025-2026 October 2025 Addendum; the archived catalog marks the module Historical.",
+      "catalog_url": "https://cuesta.curriqunet.com/Catalog/archive/12/iq/21290/21292/21354/21987",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 25,
+      "extraction_confidence": 0.9,
+      "sources": [
+        {
+          "source_type": "official_college_online_catalog",
+          "url": "https://cuesta.curriqunet.com/Catalog/archive/12/iq/21290/21292/21354/21987",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Archived module 12, Cuesta College Catalog 2025-2026 > Economics, Associate in Arts for Transfer > Program Requirements: Required Core, List A, List B, and 21-25 total"
+        },
+        {
+          "source_type": "official_college_online_catalog",
+          "url": "https://cuesta.curriqunet.com/Catalog/archive/12/iq/21290/21292/21354/21776",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Archived module 12, Cuesta College Catalog 2025-2026 > Economics, Associate in Arts for Transfer > Program Summary: 60 CSU-transferable units and Cal-GETC"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — economics and statistics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "201A", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "201B", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "STAT", "number": "C1000", "former_number_seen": "MATH 247", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core — calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "255", "title_seen": "Calculus for Business and Management", "units_seen": 3},
+            {"prefix": "MATH", "number": "265A", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A: Select one course (4-5 units)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCT", "number": "201A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "201B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "218", "title_seen": "Business Law", "units_seen": 4},
+            {"prefix": "BUS", "number": "227", "title_seen": "Business Communications", "units_seen": 4},
+            {"prefix": "CIS", "number": "210", "title_seen": "Introduction to Computer Applications", "units_seen": 4},
+            {"prefix": "MATH", "number": "265B", "title_seen": "Calculus II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List B: Select one course (4-5 units) — any unused List A course or MATH 283",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Any List A course not already used may satisfy List B; the List A pool is repeated here so the complete raw choice set remains explicit.",
+          "courses": [
+            {"prefix": "ACCT", "number": "201A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "201B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "218", "title_seen": "Business Law", "units_seen": 4},
+            {"prefix": "BUS", "number": "227", "title_seen": "Business Communications", "units_seen": 4},
+            {"prefix": "CIS", "number": "210", "title_seen": "Introduction to Computer Applications", "units_seen": 4},
+            {"prefix": "MATH", "number": "265B", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "MATH", "number": "283", "title_seen": "Calculus III: Multivariable Calculus", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The durable archive links are pinned to CurriQunet module 12; the former unversioned catalog link now resolves to 2026-2027 and is deliberately not used. STAT C1000 is the 2025-2026 common-course-number replacement for MATH 247; later ECON C2001/C2002 numbering belongs to the next catalog year and was not used."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists the Economics AA-T. No general local Economics AA or AS was identified; adjacent business and liberal-arts awards were excluded."
+}

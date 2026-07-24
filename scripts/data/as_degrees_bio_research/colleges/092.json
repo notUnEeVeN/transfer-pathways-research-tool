@@ -1,0 +1,247 @@
+{
+  "_meta": {
+    "community_college_id": 92,
+    "college_name": "Santa Barbara City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:29+00:00",
+    "updated_at": "2026-07-23T20:05:00+00:00",
+    "resume_note": "Complete first-pass extraction from the 2025-2026 SBCC catalog. Keep the broad Biological Sciences A.A. in scope and ignore specialized biomedical, natural-history, and nutrition variants."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1714&search_string=biology",
+    "checked_at": "2026-07-23T19:22:07+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47103",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35241-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer (AS-T)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The current catalog requires a physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the current 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.sbcc.edu/academic-departments/biological-sciences/biological-sciences-as-t/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 37,
+      "major_units_max": 37,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://catalog.sbcc.edu/academic-departments/biological-sciences/biological-sciences-as-t/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Associate Degree for Transfer Graduation Requirements and Major Requirements table"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major Requirements — Required Core biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "101",
+              "title_seen": "Plant Biology",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "102",
+              "title_seen": "Animal Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "103",
+              "title_seen": "Cell and Molecular Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "155",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "156",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Major Requirements — calculus choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "150",
+              "title_seen": "Calculus with Analytic Geometry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "130",
+              "title_seen": "Calculus for Biological Sciences, Social Sciences and Business I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Major Requirements — one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 105 and PHYS 106, or complete PHYS 110 and PHYS 111; courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "105",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "106",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "110",
+              "title_seen": "Introductory Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "111",
+              "title_seen": "Introductory Physics",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC Pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog table uses shared unit cells for each OR alternative; MATH 130 is the same 5-unit choice as MATH 150, and PHYS 110/111 form the same 8-unit sequence total as PHYS 105/106. The flat choose_units vocabulary cannot enforce paired physics sequences by itself; preserve choice_structure_seen during compilation."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Biological Sciences, Associate of Arts (AA)",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed in the current 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.sbcc.edu/academic-departments/biological-sciences/biological-sciences-aa/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 24,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://catalog.sbcc.edu/academic-departments/biological-sciences/biological-sciences-aa/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Associate Degree Graduation Requirements and Major Requirements table"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major Requirements — Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "101",
+              "title_seen": "Plant Biology",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "102",
+              "title_seen": "Animal Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "103",
+              "title_seen": "Cell and Molecular Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "155",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "156",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "One of the following General Education options",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "SBCC General Education or Cal-GETC",
+          "choice_structure_seen": "Complete either Option 1, the SBCC General Education pattern, or Option 2, the Cal-GETC pattern.",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog's separate Recommended for Transfer list is advisory, not required, and is intentionally excluded from major_groups."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The current Biological Sciences department index lists five associate degrees. The general Biology AS-T and Biological Sciences A.A. are included; the three specialized associate degrees remain visible for later scope review. The catalog exposes a second legacy AS-T slug that still references IGETC; this extraction uses the current Cal-GETC page at biological-sciences-as-t/. No general local Biology A.S. is listed."
+}

@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "community_college_id": 77,
+    "college_name": "Laney College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:51+00:00",
+    "updated_at": "2026-07-23T22:42:00+00:00",
+    "resume_note": "Pinned to Laney College's official 2025-2026 catalog. The Science AS is included because the Biology department explicitly identifies it as the AS pathway for students transferring as Biology majors."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Science - A.S. Degree",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://laney.edu/hubfs/2025-2026%20Catalog_FINAL_rev2_8.18.25.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 20,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://laney.edu/hubfs/2025-2026%20Catalog_FINAL_rev2_8.18.25.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF pages 153-155 / printed catalog pages 157-159, Biology (BIOL), Science - A.S. Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Select a minimum of 18 units from at least two disciplines",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 18,
+          "units_max": 20,
+          "ge_area": null,
+          "choice_structure_seen": "Select at least 18 units from at least two of the four listed disciplines: Biology, Chemistry, Mathematics, and Physics. STAT C1000 and MATH 013 are alternative statistics listings.",
+          "courses": [
+            {"prefix": "BIOL", "number": "001A", "title_seen": "General Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "001B", "title_seen": "General Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "002", "title_seen": "Human Anatomy", "units_seen": 5},
+            {"prefix": "BIOL", "number": "003", "title_seen": "Microbiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "004", "title_seen": "Human Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "020A", "title_seen": "Human Anatomy and Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "020B", "title_seen": "Human Anatomy and Physiology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "001A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "001B", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "030A", "title_seen": "Introductory General Chemistry", "units_seen": 4},
+            {"prefix": "CHEM", "number": "030B", "title_seen": "Introductory Organic and Biochemistry", "units_seen": 4},
+            {"prefix": "MATH", "number": "003A", "title_seen": "Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "003B", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4, "alternative_seen": "STAT C1000 or MATH 013"},
+            {"prefix": "MATH", "number": "013", "title_seen": "Introduction to Statistics", "units_seen": 4, "alternative_seen": "STAT C1000 or MATH 013"},
+            {"prefix": "PHYS", "number": "003A", "title_seen": "General Physics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "003B", "title_seen": "General Physics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "004A", "title_seen": "General Physics with Calculus", "units_seen": 5},
+            {"prefix": "PHYS", "number": "004B", "title_seen": "General Physics with Calculus", "units_seen": 5},
+            {"prefix": "PHYS", "number": "004C", "title_seen": "General Physics with Calculus", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "General Education Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 21,
+          "ge_area": "local_pattern",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives to meet 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The award title is broad, but the official Biology department states that students can earn this AS by completing prerequisites for transfer as a Biology major. The catalog also warns that the degree alone may not complete every UC/CSU transfer requirement, so destination-specific counseling remains necessary."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No Biology-titled AS-T, AS, or AA appears separately. The catalog-framed Science AS is retained as Laney's broad Biology pathway; the discontinued Biomanufacturing Production AS is specialized and outside this pass."
+}

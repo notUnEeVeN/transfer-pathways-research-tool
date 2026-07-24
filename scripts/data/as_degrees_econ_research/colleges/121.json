@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "community_college_id": 121,
+    "college_name": "Antelope Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:55:00+00:00",
+    "resume_note": "Extracted Antelope Valley College's Economics AA-T from printed pages 191-192 of the official 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=94&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46708",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33228-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics AA-T","award_seen":"Associate in Arts in Economics for Transfer (AA-T)","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://www.avc.edu/sites/default/files/catalog/2526/2025-2026%20Catalog%20with%20cover.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":23,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.avc.edu/sites/default/files/catalog/2526/2025-2026%20Catalog%20with%20cover.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"AVC College Catalog 2025-2026, printed pages 191-192, Economics AA-T"}],
+      "major_groups":[
+        {"label_seen":"Required Core - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"101H","title_seen":"Principles of Macroeconomics Honors","units_seen":3}]},
+        {"label_seen":"Required Core - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"102","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"102H","title_seen":"Principles of Microeconomics Honors","units_seen":3}]},
+        {"label_seen":"Required Core - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4},{"prefix":"MATH","number":"116","title_seen":"Introduction to Statistics Using R","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"148","title_seen":"Calculus for Business and Economics","units_seen":4},{"prefix":"MATH","number":"150","title_seen":"Calculus and Analytic Geometry","units_seen":5},{"prefix":"MATH","number":"150H","title_seen":"Calculus and Analytic Geometry Honors","units_seen":5}]},
+        {"label_seen":"List A","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ACCT","number":"201","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"205","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"113","title_seen":"Business Communications","units_seen":3},{"prefix":"BUS","number":"201","title_seen":"Business Law","units_seen":3},{"prefix":"BUS","number":"201H","title_seen":"Business Law Honors","units_seen":3},{"prefix":"CA","number":"221","title_seen":"Computer Concepts and Applications in Business","units_seen":4},{"prefix":"MATH","number":"124","title_seen":"Finite Math","units_seen":4},{"prefix":"MATH","number":"160","title_seen":"Calculus and Analytic Geometry","units_seen":4}]},
+        {"label_seen":"List B or any unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"100","title_seen":"Survey of Economics","units_seen":3},{"prefix":"ECON","number":"110","title_seen":"Economics of the Underclass","units_seen":3},{"prefix":"MATH","number":"220","title_seen":"Linear Algebra","units_seen":4},{"prefix":"MATH","number":"250","title_seen":"Calculus and Analytic Geometry","units_seen":4},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},{"prefix":"POLS","number":"C1000H","title_seen":"American Government and Politics - Honors","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"PSYC","number":"C1000H","title_seen":"Introduction to Psychology - Honors","units_seen":3},{"prefix":"SOC","number":"101","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"SOC","number":"101H","title_seen":"Introduction to Sociology - Honors","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints a 20-23-unit major range and a four-term sample path totaling 60 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope general Economics award, the Economics AA-T."
+}

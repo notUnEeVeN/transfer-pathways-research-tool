@@ -1,0 +1,190 @@
+{
+  "_meta": {
+    "community_college_id": 126,
+    "college_name": "Sacramento City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:43:16+00:00",
+    "updated_at": "2026-07-23T21:54:00+00:00",
+    "resume_note": "First-pass extraction is complete from Sacramento City College's official archived 2025-2026 catalog. Both the Biology AS-T and flexible local Biology AS are modeled."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1404&search_string=biology",
+    "checked_at": "2026-07-23T19:29:51+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46497",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35392-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.S.-T. in Biology",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed without inactive or teach-out language in Sacramento City College's official 2025-2026 catalog.",
+      "catalog_url": "https://scc.losrios.edu/scc/main/doc/3-Academics/2-Programs-and-Majors/Catalog-Archive/25-26-catalog-20250801.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 37,
+      "major_units_max": 37,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive_pdf",
+          "url": "https://scc.losrios.edu/scc/main/doc/3-Academics/2-Programs-and-Majors/Catalog-Archive/25-26-catalog-20250801.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 194-195, A.S.-T. in Biology"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Degree Requirements",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 37,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "402", "title_seen": "Cell and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "412", "title_seen": "Plant Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "422", "title_seen": "Animal Biology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "400", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "401", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "355", "title_seen": "Calculus for Biology and Medicine I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "350", "title_seen": "General Physics", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "360", "title_seen": "General Physics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog footnote permits MATH 350 or another equivalent calculus course in place of MATH 355; MATH 355 is retained as the printed requirement and the substitution remains a human-review rule."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "A.S. in Biology",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed without inactive or teach-out language in Sacramento City College's official 2025-2026 catalog.",
+      "catalog_url": "https://scc.losrios.edu/scc/main/doc/3-Academics/2-Programs-and-Majors/Catalog-Archive/25-26-catalog-20250801.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive_pdf",
+          "url": "https://scc.losrios.edu/scc/main/doc/3-Academics/2-Programs-and-Majors/Catalog-Archive/25-26-catalog-20250801.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 195-196, A.S. in Biology"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Complete one chemistry course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "400", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "305", "title_seen": "Introduction to Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "309", "title_seen": "Integrated General, Organic, and Biological Chemistry", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "A minimum of 10 units from the following major-biology courses",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "402", "title_seen": "Cell and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "412", "title_seen": "Plant Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "422", "title_seen": "Animal Biology", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "A minimum of 8 units from the following",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "100", "title_seen": "Introduction to Concepts of Human Anatomy and Physiology", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "305", "title_seen": "Natural History", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "308", "title_seen": "Contemporary Biology", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "309", "title_seen": "Contemporary Biology Laboratory", "units_seen": 1 },
+            { "prefix": "BIOL", "number": "314", "title_seen": "Dinosaurs and the Science of Life", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "315", "title_seen": "Dinosaurs and the Science of Life Laboratory", "units_seen": 1 },
+            { "prefix": "BIOL", "number": "320", "title_seen": "Field Botany", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "326", "title_seen": "Ethnobotany", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "327", "title_seen": "Ethnobotany Laboratory", "units_seen": 1 },
+            { "prefix": "BIOL", "number": "330", "title_seen": "Introduction to Entomology", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "332", "title_seen": "Introduction to Ornithology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "342", "title_seen": "The New Plagues: New and Ancient Infectious Diseases Threatening World Health", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "350", "title_seen": "Environmental Biology", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "360", "title_seen": "Environmental Regulations", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "362", "title_seen": "Field Methods in Ecology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "364", "title_seen": "Restoration Ecology", "units_seen": 2 },
+            { "prefix": "BIOL", "number": "370", "title_seen": "Marine Biology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "402", "title_seen": "Cell and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "412", "title_seen": "Plant Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "422", "title_seen": "Animal Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "430", "title_seen": "Anatomy and Physiology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "431", "title_seen": "Anatomy and Physiology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "434", "title_seen": "Pathology: The Study of Disease", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "440", "title_seen": "General Microbiology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Local General Education Pattern or California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "SCC Local GE or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Sufficient electives for a total of at least 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints three requirement blocks totaling 23 units: one 5-unit chemistry course, 10 units from BIOL 402/412/422, and 8 further biology units. A course already applied to the 10-unit block should not be double-counted in the 8-unit block."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Sacramento City College's 2025-2026 Biology section lists both qualifying general awards. The Field Ecology certificate is excluded by scope."
+}

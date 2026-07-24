@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 67,
+    "college_name": "Coalinga College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-23T23:58:00+00:00",
+    "resume_note": "The complete official 2025-2026 Programs of Study inventory contains no general Economics AA-T, AS-T, AA, or AS."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_webpage",
+      "url": "https://coalingacollege.edu/catalog/2025-2026/",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Programs of Study table, including all AA, AS, AA-T, and AS-T awards; no Economics award is listed"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Coalinga's complete 2025-2026 award inventory does not publish an Economics-titled associate degree. Business Administration 2.0, Business Management, and Liberal Arts: Social and Behavioral Science are umbrella or adjacent awards and are outside this pass."
+}

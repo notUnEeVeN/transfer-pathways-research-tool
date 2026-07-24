@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "community_college_id": 63,
+    "college_name": "Palo Verde College",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:48:51+00:00",
+    "updated_at": "2026-07-23T22:42:00+00:00",
+    "resume_note": "The official 2025-2026 ADT, AA, and AS inventories contain no general Biology/Biological Sciences associate degree. The only Biology-titled AS is an allied-health-specific specialization and is outside this pass."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/adt",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Associate Degrees for Transfer list; no Biology or Biological Sciences ADT is listed"
+    },
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/associate-of-arts-degrees",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Associate of Arts Degrees list; no Biology or Biological Sciences AA is listed"
+    },
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/associate-of-science-degrees",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Associate of Science Degrees list; the only Biology-titled award is Biological Sciences AS (Emphasis Health Science)"
+    },
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/program/biological-sciences-associate-of-science-emphasis-health-science-2025-2026-fall-2025fa",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Program description and requirements identify the 65-70 unit award as allied-health and nursing preparation"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Biological Sciences Associate of Science (Emphasis Health Science) is excluded as a specialized allied-health pathway: its published core centers on microbiology, anatomy, physiology, psychology, communication, and nursing/health-program prerequisites rather than the general Biology major sequence. Liberal Arts, Emphasis in Mathematics and Science is also not a Biology award."
+}

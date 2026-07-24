@@ -1,0 +1,215 @@
+{
+  "_meta": {
+    "community_college_id": 135,
+    "college_name": "Long Beach City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "Pinned to Long Beach City College's official archived 2025-2026 catalog. Both the Biology AS-T (plan code 5505C) and local Biological Sciences AS (plan code 2500) are extracted; preserve the local degree's three complete emphasis options."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=887&search_string=biology",
+    "checked_at": "2026-07-23T19:29:52+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47491",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35556-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science Transfer Degree (Plan Code 5505C)",
+      "award_seen": "Associate in Science for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as an active degree in the official archived 2025-2026 catalog.",
+      "catalog_url": "https://www.lbcc.edu/sites/main/files/file-attachments/lbcc_2025-2026_catalog.pdf?1783617545=",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lbcc.edu/sites/main/files/file-attachments/lbcc_2025-2026_catalog.pdf?1783617545=",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Long Beach City College 2025-2026 Catalog, printed pages 120-121, Biology AS-T, plan code 5505C"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "1A", "title_seen": "Biology for Science Majors", "units_seen": 5},
+            {"prefix": "BIO", "number": "1B", "title_seen": "Biology for Science Majors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — general chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 11,
+          "units_max": 11,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5.5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5.5}
+          ]
+        },
+        {
+          "label_seen": "List A — calculus",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "60", "title_seen": "First Calculus Course", "units_seen": 5},
+            {"prefix": "MATH", "number": "60H", "title_seen": "First Calculus Course — Honors", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — physics sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 9,
+          "units_max": 9,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "PHYS", "number": "2A", "title_seen": "General Physics", "units_seen": 4.5},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "General Physics", "units_seen": 4.5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "units_max": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 35 major units, 34 Cal-GETC units, and 60 total units. Because major and Cal-GETC courses can double-count and the catalog does not state a fixed elective subtotal, electives units_min is left null."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Sciences - Associate in Science (Plan Code 2500)",
+      "award_seen": "Associate in Science Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as an active degree in the official archived 2025-2026 catalog.",
+      "catalog_url": "https://www.lbcc.edu/sites/main/files/file-attachments/lbcc_2025-2026_catalog.pdf?1783617545=",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 26.5,
+      "major_units_max": 35,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lbcc.edu/sites/main/files/file-attachments/lbcc_2025-2026_catalog.pdf?1783617545=",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Long Beach City College 2025-2026 Catalog, printed pages 120-121, Biological Sciences AS, plan code 2500"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 11.5,
+          "units_max": 12,
+          "ge_area": null,
+          "choice_structure_seen": "Complete either CHEM 2 (4.5 units) or CHEM 3 (5 units); complete one of LEARN 11, LEARN 11H, or READ 84 (3 units); and complete either STAT C1000 or STAT C1000H (4 units).",
+          "courses": [
+            {"prefix": "CHEM", "number": "2", "title_seen": "Elementary Chemistry", "units_seen": 4.5},
+            {"prefix": "CHEM", "number": "3", "title_seen": "Introduction to General, Organic and Biochemistry", "units_seen": 5},
+            {"prefix": "LEARN", "number": "11", "title_seen": "Learning and Academic Strategies", "units_seen": 3},
+            {"prefix": "LEARN", "number": "11H", "title_seen": "Learning and Academic Strategies — Honors", "units_seen": 3},
+            {"prefix": "READ", "number": "84", "title_seen": "Analytical Reading", "units_seen": 3},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000H", "title_seen": "Introduction to Statistics — Honors", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Complete one emphasis: Marine Science, Terrestrial/Sustainability, or Health Science",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 15,
+          "units_max": 23,
+          "ge_area": null,
+          "choice_structure_seen": "Complete one entire emphasis. Marine Science (16 units): BIO 11, BIO 20 or 20H, BIO 22, GEOL 2, and PGEOG 2. Terrestrial/Sustainability (21.5 units): BIO 5, BIO 11, BIO 30, GEOL 1 or 1H, GEOG 10, and PGEOG 2. Health Science (15-23 units): select 9-14 units from ANAT 1, ANAT 41, BIO 2, BIO 60, and PHYSI 1, then select 6-9 units from AH 60, BIO 25, BIO 61, COMM 25, and PSYC C1000 or C1000H. The alternatives are nested and must not be treated as one flat elective pool.",
+          "courses": [
+            {"prefix": "BIO", "number": "11", "title_seen": "Environmental Problems of Man", "units_seen": 3},
+            {"prefix": "BIO", "number": "20", "title_seen": "Marine Biology", "units_seen": 4},
+            {"prefix": "BIO", "number": "20H", "title_seen": "Marine Biology — Honors", "units_seen": 4},
+            {"prefix": "BIO", "number": "22", "title_seen": "The Marine Environment", "units_seen": 3},
+            {"prefix": "GEOL", "number": "2", "title_seen": "General Geology, Physical", "units_seen": 3},
+            {"prefix": "PGEOG", "number": "2", "title_seen": "Weather and Climate", "units_seen": 3},
+            {"prefix": "BIO", "number": "5", "title_seen": "Plant Biology", "units_seen": 4},
+            {"prefix": "BIO", "number": "30", "title_seen": "Wildlife Biology", "units_seen": 4},
+            {"prefix": "GEOL", "number": "1", "title_seen": "General Physical Geology", "units_seen": 4.5},
+            {"prefix": "GEOL", "number": "1H", "title_seen": "General Physical Geology — Honors", "units_seen": 4.5},
+            {"prefix": "GEOG", "number": "10", "title_seen": "Introduction to Geographic Information Systems", "units_seen": 3},
+            {"prefix": "ANAT", "number": "1", "title_seen": "Human Anatomy", "units_seen": 4},
+            {"prefix": "ANAT", "number": "41", "title_seen": "Anatomy and Physiology", "units_seen": 5},
+            {"prefix": "BIO", "number": "2", "title_seen": "General Microbiology", "units_seen": 5},
+            {"prefix": "BIO", "number": "60", "title_seen": "Human Biology", "units_seen": 4},
+            {"prefix": "PHYSI", "number": "1", "title_seen": "Human Physiology", "units_seen": 5},
+            {"prefix": "AH", "number": "60", "title_seen": "Medical Terminology", "units_seen": 3},
+            {"prefix": "BIO", "number": "25", "title_seen": "Biology and Society", "units_seen": 3},
+            {"prefix": "BIO", "number": "61", "title_seen": "Introduction to Pathophysiology", "units_seen": 3},
+            {"prefix": "COMM", "number": "25", "title_seen": "Elements of Intercultural Communication", "units_seen": 3},
+            {"prefix": "PSYC", "number": "C1000", "title_seen": "Introduction to Psychology", "units_seen": 3},
+            {"prefix": "PSYC", "number": "C1000H", "title_seen": "Introduction to Psychology — Honors", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "LBCC-GE or Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 27,
+          "units_max": 34,
+          "ge_area": "LBCC-GE or Cal-GETC",
+          "choice_structure_seen": "Complete the LBCC General Education pattern or the Cal-GETC pattern; the catalog displays a 27-34 unit range.",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 26.5-35 major units and 60 total units. The emphasis is a nested all-or-nothing choice that the importer cannot fully encode, so the exact Marine Science, Terrestrial/Sustainability, and Health Science structures are preserved in choice_structure_seen for human review. Elective units vary with emphasis and GE selection and are left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Biology AS-T and Biological Sciences AS are included; specialized and certificate awards were ignored by scope."
+}

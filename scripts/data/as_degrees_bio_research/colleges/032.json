@@ -1,0 +1,243 @@
+{
+  "_meta": {
+    "community_college_id": 32,
+    "college_name": "Mission College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to the official Mission College 2025-2026 catalog. Both the Biology A.S.-T. and general Biological Sciences A.S. are extracted from printed pages 134-135; honors alternatives and paired physics sequences are preserved."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=968&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47116",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35604-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology: Associate in Science Degree for Transfer",
+      "award_seen": "A.S.-T.",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://missioncollege.edu/office-of-instruction/academic-services/catalogs/2025-26-catalog-mission.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://missioncollege.edu/office-of-instruction/academic-services/catalogs/2025-26-catalog-mission.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 134-135, Biology: Associate in Science Degree for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — BIO 001A choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "001A", "title_seen": "General Biology: Cells", "units_seen": 5},
+            {"prefix": "BIO", "number": "001AH", "title_seen": "Honors General Biology: Cells", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Core — BIO 001B choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "001B", "title_seen": "General Biology: Organisms", "units_seen": 5},
+            {"prefix": "BIO", "number": "001BH", "title_seen": "Honors General Biology: Organisms", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — CHM 001A choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHM", "number": "001A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHM", "number": "001AH", "title_seen": "Honors General Chemistry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — CHM 001B choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHM", "number": "001B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHM", "number": "001BH", "title_seen": "Honors General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — MAT 003A choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "003A", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5},
+            {"prefix": "MAT", "number": "003AH", "title_seen": "Honors Analytic Geometry and Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — complete one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 9,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHY 002A and PHY 002B (10 units), or complete PHY 004A and PHY 004B (9 units); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHY", "number": "002A", "title_seen": "General Physics - Mechanics and Thermodynamics", "units_seen": 5},
+            {"prefix": "PHY", "number": "002B", "title_seen": "General Physics - Electricity, Magnetism and Optics", "units_seen": 5},
+            {"prefix": "PHY", "number": "004A", "title_seen": "Engineering Physics-Mechanics", "units_seen": 5},
+            {"prefix": "PHY", "number": "004B", "title_seen": "Engineering Physics-Electricity and Magnetism", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports a 34-35-unit major and a 60-unit transfer degree. Cal-GETC is required; major and Cal-GETC courses may double count under ADT rules."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Sciences: Associate in Science Degree",
+      "award_seen": "A.S.",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as the general Biological Sciences local degree in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://missioncollege.edu/office-of-instruction/academic-services/catalogs/2025-26-catalog-mission.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://missioncollege.edu/office-of-instruction/academic-services/catalogs/2025-26-catalog-mission.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 135, Biological Sciences: Associate in Science Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Core Curriculum — BIO 001A choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "001A", "title_seen": "General Biology: Cells", "units_seen": 5},
+            {"prefix": "BIO", "number": "001AH", "title_seen": "Honors General Biology: Cells", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Core Curriculum — BIO 001B choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "001B", "title_seen": "General Biology: Organisms", "units_seen": 5},
+            {"prefix": "BIO", "number": "001BH", "title_seen": "Honors General Biology: Organisms", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Electives — complete 8 units",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete 8 units from the printed elective list. Where an honors alternative is shown, the standard and honors versions are alternatives rather than independently required courses.",
+          "courses": [
+            {"prefix": "ANT", "number": "001", "title_seen": "Biological Anthropology", "units_seen": 3},
+            {"prefix": "BIO", "number": "004", "title_seen": "Microbiology", "units_seen": 5},
+            {"prefix": "BIO", "number": "010", "title_seen": "Introduction to Biology", "units_seen": 3},
+            {"prefix": "BIO", "number": "010L", "title_seen": "Introduction to Biology Lab", "units_seen": 1},
+            {"prefix": "BIO", "number": "011", "title_seen": "Human Biology", "units_seen": 4},
+            {"prefix": "BIO", "number": "012", "title_seen": "Emerging Infectious Diseases", "units_seen": 3, "alternative_seen": "BIO 012H Honors Emerging Infectious Diseases"},
+            {"prefix": "BIO", "number": "014", "title_seen": "Introductory Neuroscience", "units_seen": 3, "alternative_seen": "BIO 014H Honors Introductory Neuroscience"},
+            {"prefix": "BIO", "number": "016", "title_seen": "Marine Biology", "units_seen": 4},
+            {"prefix": "BIO", "number": "017", "title_seen": "Genetics and Society", "units_seen": 3, "alternative_seen": "BIO 017H Honors Genetics and Society"},
+            {"prefix": "BIO", "number": "018", "title_seen": "The Biology of Cancer", "units_seen": 3, "alternative_seen": "BIO 018H Honors The Biology of Cancer"},
+            {"prefix": "BIO", "number": "019", "title_seen": "Oceans: Life in the Sea", "units_seen": 3},
+            {"prefix": "BIO", "number": "025", "title_seen": "Environmental Biology", "units_seen": 3, "alternative_seen": "BIO 025H Honors Environmental Biology"},
+            {"prefix": "BIO", "number": "030", "title_seen": "Tropical Ecology", "units_seen": 3},
+            {"prefix": "BIO", "number": "030L", "title_seen": "Tropical Ecology Field Studies", "units_seen": 1},
+            {"prefix": "BIO", "number": "047", "title_seen": "Human Anatomy", "units_seen": 5},
+            {"prefix": "BIO", "number": "048", "title_seen": "Human Physiology", "units_seen": 5, "alternative_seen": "BIO 048H Honors Human Physiology"},
+            {"prefix": "CHM", "number": "001A", "title_seen": "General Chemistry I", "units_seen": 5, "alternative_seen": "CHM 001AH Honors General Chemistry I"},
+            {"prefix": "NTR", "number": "015", "title_seen": "Human Nutrition", "units_seen": 3, "alternative_seen": "NTR 015H Honors Human Nutrition"},
+            {"prefix": "NTR", "number": "040", "title_seen": "Nutrition and Disease", "units_seen": 3, "alternative_seen": "NTR 040H Honors Nutrition and Disease"}
+          ]
+        },
+        {
+          "label_seen": "AA/AS General Education, IGETC, or CSU GE-Breadth",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Mission College local or transfer general education",
+          "choice_structure_seen": "The degree page permits Mission AA/AS General Education, IGETC, or CSU GE-Breadth; it does not print a single common unit subtotal.",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 18 major units and 60 total degree units. Because the program page allows multiple general-education patterns without one shared unit subtotal, the GE group's units_min is left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Mission's separate Human Biology A.S. and other specialty or certificate awards were ignored by scope."
+}

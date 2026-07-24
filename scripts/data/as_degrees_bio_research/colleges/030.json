@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "community_college_id": 30,
+    "college_name": "College of the Desert",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to the official College of the Desert 2025-2026 catalog program PDF. The general Biology A.S.-T. is fully extracted, including all three paired physics-sequence options; no general local Biology A.S. or A.A. was found in the department's degree inventory."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=499&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46625",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35125-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology AS-T Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.collegeofthedesert.edu/programs/sciences/ast-biology/ast-biology.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.collegeofthedesert.edu/programs/sciences/ast-biology/ast-biology.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "College of the Desert 2025-2026 Catalog > Biology AS-T Degree > Required Courses"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 28,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BI", "number": "005", "title_seen": "Molecular and Cell Biology", "units_seen": 5},
+            {"prefix": "BI", "number": "006", "title_seen": "Biology of Organisms", "units_seen": 5},
+            {"prefix": "CH", "number": "001A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CH", "number": "001B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "001A", "title_seen": "Calculus", "units_seen": 4},
+            {"prefix": "MATH", "number": "001B", "title_seen": "Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PH 020A and PH 020B, or PH 002A and PH 002B, or PH 003A and PH 003B; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PH", "number": "020A", "title_seen": "Physics for Life Sciences Majors I", "units_seen": 4},
+            {"prefix": "PH", "number": "020B", "title_seen": "Physics for Life Sciences Majors II", "units_seen": 4},
+            {"prefix": "PH", "number": "002A", "title_seen": "College Physics I", "units_seen": 4},
+            {"prefix": "PH", "number": "002B", "title_seen": "College Physics II", "units_seen": 4},
+            {"prefix": "PH", "number": "003A", "title_seen": "Engineering Physics", "units_seen": 4},
+            {"prefix": "PH", "number": "003B", "title_seen": "Engineering Physics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The program table prints a 36-unit major subtotal, 34 Cal-GETC units, and transferable electives as needed to reach the 60-unit degree total. Major and Cal-GETC courses may overlap under ADT rules."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Sciences catalog inventory identifies the Biology A.S.-T. as the general Biology associate degree; no general local Biology A.S. or A.A. is listed."
+}

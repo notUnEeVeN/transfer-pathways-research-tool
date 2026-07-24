@@ -1,0 +1,171 @@
+{
+  "_meta": {
+    "community_college_id": 200,
+    "college_name": "Madera Community College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:52+00:00",
+    "updated_at": "2026-07-23T22:00:00+00:00",
+    "resume_note": "First-pass extraction of both in-scope awards from the official 2025-2026 catalog; retain source locators for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3824&search_string=biology",
+    "checked_at": "2026-07-23T19:29:53+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51675",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39809-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology (Major #M.6110.AS-T)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The published course pattern matches the Biology TMC core and intact physics-sequence choice.",
+      "catalog_status_seen": "Active in Madera Community College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.maderacollege.edu/_documents/admissions-and-aid/college-catalog/catalog_2025_2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 33,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.maderacollege.edu/_documents/admissions-and-aid/college-catalog/catalog_2025_2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 68, Biology (Major M.6110.AS-T)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required biology, chemistry, and mathematics courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 25,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5 },
+            { "prefix": "MATH", "number": "5A", "title_seen": "Math Analysis I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and 2B, or complete PHYS 4A and 4B; either sequence is 8 units.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The official table prints 33 total units for the major."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Science (Major #M.6100.AS)",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": "Local degree; no Transfer Model Curriculum claim is made.",
+      "catalog_status_seen": "Active in Madera Community College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.maderacollege.edu/_documents/admissions-and-aid/college-catalog/catalog_2025_2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.maderacollege.edu/_documents/admissions-and-aid/college-catalog/catalog_2025_2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 87-88, Biological Science (Major M.6100.AS)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Take 18 units, including at least 8 Biology units and at least 4 Chemistry or Physics units",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "choice_structure_seen": "Select 18 total units from the published Biology, Chemistry, and Physics lists; at least 8 units must be Biology and at least 4 units must be Chemistry or Physics.",
+          "courses": [
+            { "prefix": "BIOL", "number": "1", "title_seen": "Principles of Biology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "2", "title_seen": "Environmental Science", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "5", "title_seen": "Human Biology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "10", "title_seen": "Introduction to Life Science Lecture", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "10L", "title_seen": "Introduction to Life Science Lab", "units_seen": 1 },
+            { "prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "20", "title_seen": "Human Anatomy", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "22", "title_seen": "Human Physiology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "31", "title_seen": "Microbiology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "3A", "title_seen": "Introductory General Chemistry", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "3B", "title_seen": "Introductory Organic and Biological Chemistry", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4C", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Madera Community College associate-degree general education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "local_pattern",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The single choose-units group preserves the catalog's nested constraints in choice_structure_seen; automated path comparison should remain review-gated until those constraints are modeled structurally."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official catalog publishes one Biology AS-T and one Biological Science AS."
+}

@@ -1,0 +1,194 @@
+{
+  "_meta": {
+    "community_college_id": 41,
+    "college_name": "Cabrillo College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to Cabrillo College's official 2025-2026 eLumen catalog. Both the general Biology A.S. and Biology A.S.-T. are fully extracted; preserve the local A.S.'s mutually exclusive 15-credit recommended-major versus Biotechnology Focus paths and the A.S.-T.'s paired physics sequences."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=243&search_string=biology",
+    "checked_at": "2026-07-23T19:29:46+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53086",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35130-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology - Associate in Science (A.S.)",
+      "award_seen": "Associate in Science (A.S.)",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://cabrillo.elumenapp.com/catalog/2025-2026/program/biology-associate-in-science-a-s-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 30,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://cabrillo.elumenapp.com/catalog/2025-2026/program/biology-associate-in-science-a-s-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 eLumen catalog > Biology - Associate in Science (A.S.) > Program Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Recommended Major Requirements — core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "9A", "title_seen": "Molecular, Cellular, and Animal Biology", "units_seen": 5},
+            {"prefix": "BIO", "number": "9B", "title_seen": "Ecology, Evolution, and Plant Biology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Complete an additional 15 credits through Recommended Major Requirements or Biotechnology Focus",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 15,
+          "units_max": 15,
+          "ge_area": null,
+          "choice_structure_seen": "Complete one 15-credit path: either select 15 credits from the Recommended Major Requirements pool, or complete all four Biotechnology Focus courses (BIO 41T, BIO 42T, PHILO 23, and MATH 20). The catalog layout does not authorize mixing the two paths. A different statistics course may substitute for MATH 20 after consultation with a counselor.",
+          "courses": [
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "12A", "title_seen": "Organic Chemistry I", "units_seen": 3},
+            {"prefix": "CHEM", "number": "12AL", "title_seen": "Organic Chemistry Laboratory I", "units_seen": 2},
+            {"prefix": "CHEM", "number": "12B", "title_seen": "Organic Chemistry II", "units_seen": 3},
+            {"prefix": "CHEM", "number": "12BL", "title_seen": "Organic Chemistry Laboratory II", "units_seen": 2},
+            {"prefix": "MATH", "number": "5A", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "5B", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 5},
+            {"prefix": "MATH", "number": "5C", "title_seen": "Analytic Geometry and Calculus III", "units_seen": 5},
+            {"prefix": "PHYS", "number": "2A", "title_seen": "Physics for Life Sciences I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "Physics for Life Sciences II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 5},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 5},
+            {"prefix": "PHYS", "number": "4C", "title_seen": "Physics for Scientists and Engineers III", "units_seen": 5},
+            {"prefix": "BIO", "number": "41T", "title_seen": "Biotechnology Fundamentals", "units_seen": 4},
+            {"prefix": "BIO", "number": "42T", "title_seen": "Advanced Biotechnology", "units_seen": 4},
+            {"prefix": "PHILO", "number": "23", "title_seen": "Introduction to Bioethics", "units_seen": 3},
+            {"prefix": "MATH", "number": "20", "title_seen": "Statistics for Biology", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Cabrillo College General Education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": "Cabrillo College GE",
+          "courses": []
+        },
+        {
+          "label_seen": "General Electives",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 6,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 30 major credits, 24 Cabrillo College GE credits, 6 general elective credits, and 60 total credits. The optional Biotechnology Focus is retained because it is an internal pathway within the otherwise general Biology A.S., not a separately titled specialty award."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Associate in Science for Transfer (A.S.-T)",
+      "award_seen": "Associate in Science for Transfer (A.S.-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://cabrillo.elumenapp.com/catalog/2025-2026/program/biology-associate-in-science-for-transfer-a-s-t-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://cabrillo.elumenapp.com/catalog/2025-2026/program/biology-associate-in-science-for-transfer-a-s-t-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 eLumen catalog > Biology Associate in Science for Transfer (A.S.-T) > Program Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog notes that the prior BIO 1A, BIO 1B, and BIO 1C series may substitute for BIO 9A and BIO 9B; the superseded series is preserved here as prose because the program page does not print its units in the current table.",
+          "courses": [
+            {"prefix": "BIO", "number": "9A", "title_seen": "Molecular, Cellular, and Animal Biology", "units_seen": 5},
+            {"prefix": "BIO", "number": "9B", "title_seen": "Ecology, Evolution, and Plant Biology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "5A", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and PHYS 2B (8 credits), or complete PHYS 4A and PHYS 4B (10 credits); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "2A", "title_seen": "Physics for Life Sciences I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "Physics for Life Sciences II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 5},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "General Electives",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 3,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 33-35 major credits, 34 Cal-GETC credits, 3 general elective credits, and 60 total credits. Major and Cal-GETC courses may overlap."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Biology A.S. and Biology A.S.-T. are included; separately titled specialties and certificates were ignored by scope."
+}

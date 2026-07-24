@@ -1,0 +1,206 @@
+{
+  "_meta": {
+    "community_college_id": 65,
+    "college_name": "Saddleback College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:18+00:00",
+    "updated_at": "2026-07-23T21:25:00+00:00",
+    "resume_note": "Complete first-pass extraction from pages 88-90 of Saddleback's official 2025-2026 Fall Catalog. The catalog contains one general Biology AS and one Biology AS-T."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1443&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47175",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35437-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology Associate in Science Degree",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": "Local degree; no Transfer Model Curriculum claim is made.",
+      "catalog_status_seen": "Listed as an active degree in the 2025-2026 Fall Catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.saddleback.edu/sites/default/files/2025-05/2025-2026_Saddleback_FallCatalog_v1.0_2025.04.25_ReducedSize.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.saddleback.edu/sites/default/files/2025-05/2025-2026_Saddleback_FallCatalog_v1.0_2025.04.25_ReducedSize.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF pages 88-90, Biology - A.S. Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 13,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "BIO", "number": "4A", "title_seen": "Principles of Cellular Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "4B", "title_seen": "Principles of Organismal Biology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Restricted Electives",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete 10 units from the listed restricted electives. BIO 49/BIO 49H, BIO 50/BIO 50H, MATH 3A/MATH 3AH, and PHYS 2A/PHYS 4A are printed as internal either-or choices; each honors/non-honors pair may count only once.",
+          "courses": [
+            { "prefix": "BIO", "number": "3C", "title_seen": "Biochemistry and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIO", "number": "11", "title_seen": "Human Anatomy", "units_seen": 4 },
+            { "prefix": "BIO", "number": "12", "title_seen": "Human Physiology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "15", "title_seen": "General Microbiology", "units_seen": 5 },
+            { "prefix": "BIO", "number": "19", "title_seen": "Marine Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "20", "title_seen": "Introduction to Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "22", "title_seen": "Human Genetics", "units_seen": 3 },
+            { "prefix": "BIO", "number": "28", "title_seen": "Plants and Human Affairs", "units_seen": 3 },
+            { "prefix": "BIO", "number": "30", "title_seen": "Human Biology", "units_seen": 3 },
+            { "prefix": "BIO", "number": "31", "title_seen": "Biology of Plants", "units_seen": 4 },
+            { "prefix": "BIO", "number": "40", "title_seen": "Evolution", "units_seen": 3 },
+            { "prefix": "BIO", "number": "43", "title_seen": "Animal Behavior", "units_seen": 3 },
+            { "prefix": "BIO", "number": "45", "title_seen": "Biology of Human Disease", "units_seen": 3 },
+            { "prefix": "BIO", "number": "49", "title_seen": "Research in Biology and Biochemistry A", "units_seen": 1.5 },
+            { "prefix": "BIO", "number": "49H", "title_seen": "Honors Research in Biology and Biochemistry A", "units_seen": 1.5 },
+            { "prefix": "BIO", "number": "50", "title_seen": "Research in Biology and Biochemistry B", "units_seen": 1.5 },
+            { "prefix": "BIO", "number": "50H", "title_seen": "Honors Research in Biology and Biochemistry B", "units_seen": 1.5 },
+            { "prefix": "BIO", "number": "112", "title_seen": "Pathophysiology", "units_seen": 3 },
+            { "prefix": "MATH", "number": "3A", "title_seen": "Analytic Geometry and Calculus", "units_seen": 5 },
+            { "prefix": "MATH", "number": "3AH", "title_seen": "Honors Analytic Geometry and Calculus", "units_seen": 5 },
+            { "prefix": "MS", "number": "20", "title_seen": "Introduction to Oceanography", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2A", "title_seen": "Introduction to Physics", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "General Physics", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "General Education Requirements for Associate Degrees",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Saddleback College local GE or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog explicitly says the printed 23-unit total does not include all units required for the degree. The degree requires at least 60 units overall, a 2.0 GPA, and 12 units in residence."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Associate in Science for Transfer Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The catalog's two-course biology core, general chemistry sequence, calculus course, and one intact two-course physics sequence match the prior Biology TMC.",
+      "catalog_status_seen": "Listed as an active degree in the 2025-2026 Fall Catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.saddleback.edu/sites/default/files/2025-05/2025-2026_Saddleback_FallCatalog_v1.0_2025.04.25_ReducedSize.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 33,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.saddleback.edu/sites/default/files/2025-05/2025-2026_Saddleback_FallCatalog_v1.0_2025.04.25_ReducedSize.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF pages 90-91, Biology - AS-T Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "4A", "title_seen": "Principles of Cellular Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "4B", "title_seen": "Principles of Organismal Biology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List A — chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "3A", "title_seen": "Analytic Geometry and Calculus", "units_seen": 5 },
+            { "prefix": "MATH", "number": "3AH", "title_seen": "Honors Analytic Geometry and Calculus", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and PHYS 2B, or complete PHYS 4A and PHYS 4B; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "Introduction to Physics", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "Introduction to Physics", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "General Physics", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "General Physics", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog states the standard 60-unit Associate Degree for Transfer total and prints 33 major units. The paired physics choice is preserved in choice_structure_seen."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The current catalog lists both the general Biology AS and Biology AS-T. Specialized certificates and adjacent programs were ignored."
+}

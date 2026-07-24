@@ -1,0 +1,138 @@
+{
+  "_meta": {
+    "community_college_id": 17,
+    "college_name": "Merced College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:38+00:00",
+    "resume_note": "First-pass extraction complete from official 2025-2026 catalog page 245. Keep the 2025-2026 course numbers rather than the later 2026-2027 common-number revisions."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=953&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47181",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35530-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics A.A.-T. Degree (22200.AAT)",
+      "award_seen": "A.A.-T. Degree",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The program is identified as the Economics Associate Degree for Transfer; no local TMC revision is printed.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog addendum; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.mccd.edu/wp-content/uploads/2025/12/Catalog-PDF-2025-26-Addendum-12.23.2025-1.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 21,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.mccd.edu/wp-content/uploads/2025/12/Catalog-PDF-2025-26-Addendum-12.23.2025-1.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF catalog page 245: Economics A.A.-T. Degree (22200.AAT), Program Requirements, 19-21 major units, Cal-GETC, electives, and 60-unit total"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Program Core — economics courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "01", "title_seen": "Introduction to Microeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "02", "title_seen": "Introduction to Macroeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Program Core — Calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "03", "title_seen": "Calculus for Business", "units_seen": 4},
+            {"prefix": "MATH", "number": "04A", "title_seen": "Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Program Core — Statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "former_number_seen": "MATH-10", "title_seen": "Introduction to Statistics", "units_seen": 3},
+            {"prefix": "PSYC", "number": "05", "title_seen": "Introduction to Statistics in Psychology", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "List A: Select 1 course (3-4 units)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACTG", "number": "04A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACTG", "number": "04B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "04B", "title_seen": "Calculus II", "units_seen": 4},
+            {"prefix": "MATH", "number": "15", "title_seen": "Finite Mathematics", "units_seen": 3},
+            {"prefix": "SOC", "number": "01", "title_seen": "Introduction to Sociology", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "List B: Select 1 course (3-4 units) — any unused List A course or one listed below",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "choice_structure_seen": "Any course in List A not already used may satisfy List B; the List A pool is repeated here so the complete raw choice set remains explicit.",
+          "courses": [
+            {"prefix": "ACTG", "number": "04A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACTG", "number": "04B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "04B", "title_seen": "Calculus II", "units_seen": 4},
+            {"prefix": "MATH", "number": "15", "title_seen": "Finite Mathematics", "units_seen": 3},
+            {"prefix": "SOC", "number": "01", "title_seen": "Introduction to Sociology", "units_seen": 3},
+            {"prefix": "MATH", "number": "04C", "title_seen": "Multivariable Calculus", "units_seen": 4},
+            {"prefix": "MATH", "number": "08", "title_seen": "Linear Algebra", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "General Education (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Elective (CSU Transferable) Units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 11,
+          "units_max": 16,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 19-21 major units, 6-9 units that may be double counted, 34 Cal-GETC units, 11-16 CSU-transferable elective units, and 60 total degree units. Course numbers are preserved from the 2025-2026 catalog; later ECON C2001/C2002 and MATH C2210/C2220 revisions were intentionally not substituted."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists the Economics AA-T. No general local Economics AA or AS was identified; business and other adjacent awards were excluded."
+}

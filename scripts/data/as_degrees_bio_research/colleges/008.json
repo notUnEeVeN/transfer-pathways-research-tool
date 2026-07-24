@@ -1,0 +1,249 @@
+{
+  "_meta": {
+    "community_college_id": 8,
+    "college_name": "Butte College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:17+00:00",
+    "updated_at": "2026-07-23T20:08:00+00:00",
+    "resume_note": "Pinned to the official complete 2025-2026 Butte College catalog. Preserve the two intact physics-sequence alternatives in the AS-T when compiling the flat raw groups."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=177&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46566",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35022-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "AS-T Degree in Biology",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and an intact two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.butte.edu/student-resources/academic-resources/curriculum-tools/_documents/2025-2026-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 38,
+      "major_units_max": 38,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.butte.edu/student-resources/academic-resources/curriculum-tools/_documents/2025-2026-catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 166, AS-T Degree in Biology (program code 35022.30AS-T), for the printed 38-unit major total; printed pages 53 and 58 for the 34-unit Cal-GETC and 60-unit ADT requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required courses — fixed biology and chemistry courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 25,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "41",
+              "title_seen": "Cell and Molecular Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "42",
+              "title_seen": "Organismal Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "43",
+              "title_seen": "Ecology and Evolution",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "1",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "2",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "30",
+              "title_seen": "Analytic Geometry and Calculus I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "30s",
+              "title_seen": "Analytic Geometry and Calculus I with Support",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Select one physics group",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 21 and PHYS 22, or complete PHYS 41 and PHYS 42; courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "21",
+              "title_seen": "College Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "22",
+              "title_seen": "College Physics II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "41",
+              "title_seen": "Physics for Scientists and Engineers I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "42",
+              "title_seen": "Physics for Scientists and Engineers II",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The flat choose_units vocabulary cannot enforce intact physics sequences by itself; preserve choice_structure_seen during compilation. Major and Cal-GETC courses may overlap toward the 60-unit degree total."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "AS Degree in Biological Science",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.butte.edu/student-resources/academic-resources/curriculum-tools/_documents/2025-2026-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 25,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.butte.edu/student-resources/academic-resources/curriculum-tools/_documents/2025-2026-catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 166-167, AS Degree in Biological Science (program code 01306.00AS), for the printed 25-unit major total; printed pages 50 and 58 for 21-unit local GE, 34-unit Cal-GETC, and 60-unit associate-degree requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 25,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "41",
+              "title_seen": "Cell and Molecular Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "42",
+              "title_seen": "Organismal Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "43",
+              "title_seen": "Ecology and Evolution",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "1",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "2",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "GE Pattern(s): Butte Local, Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 21,
+          "units_max": 34,
+          "ge_area": "Butte Local or Cal-GETC",
+          "choice_structure_seen": "Complete the Butte College Local GE pattern (minimum 21 units) or Cal-GETC (minimum 34 units).",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog separately lists CHEM 21, MATH 13, PHYS 21, and PHYS 22 as courses that articulate with CSU Chico but are not required for this degree; they are intentionally excluded from major_groups. Students using the Butte Local GE pattern also complete the catalog's two-unit local graduation requirement; students using Cal-GETC are exempt from that local requirement."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both the general Biology AS-T and the local Biological Science AS. Specialized and adjacent programs and all certificates were intentionally ignored, and out_of_scope_candidates remains empty by batch instruction."
+}

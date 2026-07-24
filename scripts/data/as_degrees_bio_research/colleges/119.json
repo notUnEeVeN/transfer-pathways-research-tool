@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "community_college_id": 119,
+    "college_name": "Taft College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:11+00:00",
+    "updated_at": "2026-07-23T21:45:00+00:00",
+    "resume_note": "Complete first-pass extraction of Taft's Biology AS-T from the official 2025-2026 catalog with addendum."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1978&search_string=biology",
+    "checked_at": "2026-07-23T19:29:51+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47953",
+        "title": "As-T In Biology",
+        "degree_type_hint": "ast",
+        "source_url": "https://icangotocollege.com/college-courses/35547-as-t-in-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology: Associate in Science Degree for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The catalog explicitly labels the curriculum TMC and includes the required biology, chemistry, calculus and physics sequence.",
+      "catalog_status_seen": "Active in the official 2025-2026 Taft College Catalog with Addendum.",
+      "catalog_url": "https://files-backend.assets.thrillshare.com/documents/asset/uploaded_file/5913/Academics/7deb508a-82e1-418d-9185-65bb8dd56525/2025-2026-Taft-College-Catalog-with-Addendum.docx?disposition=inline",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_docx",
+          "url": "https://files-backend.assets.thrillshare.com/documents/asset/uploaded_file/5913/Academics/7deb508a-82e1-418d-9185-65bb8dd56525/2025-2026-Taft-College-Catalog-with-Addendum.docx?disposition=inline",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Degrees and Certificates, Biology for Transfer; Biology: Associate in Science Degree for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 13,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "2201", "title_seen": "Introductory Biology - Cells", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "2202", "title_seen": "General Zoology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "2203", "title_seen": "General Botany", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List A",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 22,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "2211", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "2212", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5 },
+            { "prefix": "MATH", "number": "2100", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "2221", "title_seen": "General Physics (Calculus)", "units_seen": 3 },
+            { "prefix": "PHYS", "number": "2222", "title_seen": "General Physics II (Calculus)", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Additional transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints a 36-unit subtotal, while the individually printed course values add to 35 (13 core + 22 List A). The official subtotal is retained as major_units and the one-unit arithmetic discrepancy is explicitly flagged for human review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No separate general Biology AS or AA appears in the 2025-2026 catalog."
+}

@@ -1,0 +1,227 @@
+{
+  "_meta": {
+    "community_college_id": 74,
+    "college_name": "Orange Coast College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:17+00:00",
+    "updated_at": "2026-07-23T22:05:00+00:00",
+    "resume_note": "Pinned to the official Orange Coast College 2025-2026 catalog. Both the Biology A.S.-T. and local Biology A.S. are extracted; preserve the A.S.-T. biology/physics alternatives and the local A.S. paired BIOL A281/A282 option."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1139&search_string=biology",
+    "checked_at": "2026-07-23T19:29:48+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47004",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35918-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science Degree for Transfer (AS-T)",
+      "award_seen": "Associate in Science Degree for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as an active credit transfer degree (banner 1_AST_BIOL; control number 35918) in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.cccd.edu/pdf/OCC-2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.cccd.edu/pdf/OCC-2025-2026-Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Orange Coast College 2025-2026 Catalog, printed pages 204-205, Biology, Associate in Science Degree for Transfer (AS-T)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — biology sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 9,
+          "units_max": 12,
+          "ge_area": null,
+          "choice_structure_seen": "Complete BIOL A180 and BIOL A185 (9 units), or complete BIOL A180 plus BIOL A182 or A182H, BIOL A182L, BIOL A183, and BIOL A183L (12 units).",
+          "courses": [
+            {"prefix": "BIOL", "number": "A180", "title_seen": "Introduction to Biology for Majors 1: Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "A185", "title_seen": "Introduction to Biology for Majors 2: Ecology, Evolution, Diversity, and Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "A182", "title_seen": "Zoology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "A182H", "title_seen": "Honors Zoology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "A182L", "title_seen": "Zoology Lab", "units_seen": 1},
+            {"prefix": "BIOL", "number": "A183", "title_seen": "Botany", "units_seen": 3},
+            {"prefix": "BIOL", "number": "A183L", "title_seen": "Botany Lab", "units_seen": 1}
+          ]
+        },
+        {
+          "label_seen": "List A — chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "choice_structure_seen": "Complete CHEM A180, CHEM A185, and either MATH A180 or MATH A180H.",
+          "courses": [
+            {"prefix": "CHEM", "number": "A180", "title_seen": "General Chemistry A", "units_seen": 5},
+            {"prefix": "CHEM", "number": "A185", "title_seen": "General Chemistry B", "units_seen": 5},
+            {"prefix": "MATH", "number": "A180", "title_seen": "Calculus 1", "units_seen": 5},
+            {"prefix": "MATH", "number": "A180H", "title_seen": "Honors Calculus 1", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select one complete physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS A120 and PHYS A125, or PHYS A130 and PHYS A135. The catalog also permits the previously completed PHYS A185 and PHYS A280 sequence (10 units), but warns that this substitution can prevent completion within the recommended 60-unit sequence.",
+          "courses": [
+            {"prefix": "PHYS", "number": "A120", "title_seen": "Algebra-Based Physics 1: Mechanics with Lab", "units_seen": 4},
+            {"prefix": "PHYS", "number": "A125", "title_seen": "Algebra-Based Physics 2: Electricity and Magnetism with Lab", "units_seen": 4},
+            {"prefix": "PHYS", "number": "A130", "title_seen": "University Physics 1: Mechanics with Lab", "units_seen": 4},
+            {"prefix": "PHYS", "number": "A135", "title_seen": "University Physics 2: Electricity and Magnetism with Lab", "units_seen": 4},
+            {"prefix": "PHYS", "number": "A185", "title_seen": "Calculus-Based Physics: Mechanics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "A280", "title_seen": "Calculus-Based Physics: Electricity and Magnetism", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 1,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 32-35 major units, 34 Cal-GETC units, 10 double-counted units, 1-4 transferable elective units, and 60 total units. Its grandfathered 10-unit PHYS A185/A280 substitution can produce a computed major total above the displayed 32-35 range; the reported range is retained and the catalog warning is preserved for human review."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology, Associate in Science Degree",
+      "award_seen": "Associate in Science Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as an active credit degree (banner 1_AS_BIOL; control number 03957) in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.cccd.edu/pdf/OCC-2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 27,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.cccd.edu/pdf/OCC-2025-2026-Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Orange Coast College 2025-2026 Catalog, printed pages 205-206, Biology, Associate in Science Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — select one biology option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 9,
+          "units_max": 12,
+          "ge_area": null,
+          "choice_structure_seen": "Complete BIOL A180 and BIOL A185 (9 units), or complete BIOL A180 plus BIOL A182 or A182H, BIOL A182L, BIOL A183, and BIOL A183L (12 units).",
+          "courses": [
+            {"prefix": "BIOL", "number": "A180", "title_seen": "Introduction to Biology for Majors 1: Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "A185", "title_seen": "Introduction to Biology for Majors 2: Ecology, Evolution, Diversity, and Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "A182", "title_seen": "Zoology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "A182H", "title_seen": "Honors Zoology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "A182L", "title_seen": "Zoology Lab", "units_seen": 1},
+            {"prefix": "BIOL", "number": "A183", "title_seen": "Botany", "units_seen": 3},
+            {"prefix": "BIOL", "number": "A183L", "title_seen": "Botany Lab", "units_seen": 1}
+          ]
+        },
+        {
+          "label_seen": "Restricted Electives A",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Complete 4-5 units from the printed list. BIOL A281 and BIOL A282 form one paired four-unit option and are not independently selectable.",
+          "courses": [
+            {"prefix": "BIOL", "number": "A201", "title_seen": "Human Cadaver Prosection", "units_seen": 1},
+            {"prefix": "BIOL", "number": "A210", "title_seen": "General Microbiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "A220", "title_seen": "Human Anatomy", "units_seen": 5},
+            {"prefix": "BIOL", "number": "A221", "title_seen": "Anatomy-Physiology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "A225", "title_seen": "Human Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "A280", "title_seen": "Evolutionary Ecology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "A281", "title_seen": "Biochemistry", "units_seen": 2},
+            {"prefix": "BIOL", "number": "A282", "title_seen": "Molecular Biology", "units_seen": 2},
+            {"prefix": "BIOL", "number": "A283", "title_seen": "Genetics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Restricted Electives B",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete at least five units of chemistry and five units of mathematics from the printed lists. The two-unit laboratory courses belong with their corresponding three-unit organic-chemistry lectures.",
+          "courses": [
+            {"prefix": "CHEM", "number": "A180", "title_seen": "General Chemistry A", "units_seen": 5},
+            {"prefix": "CHEM", "number": "A185", "title_seen": "General Chemistry B", "units_seen": 5},
+            {"prefix": "CHEM", "number": "A220", "title_seen": "Organic Chemistry A", "units_seen": 3},
+            {"prefix": "CHEM", "number": "A220L", "title_seen": "Organic Chemistry A Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "A225", "title_seen": "Organic Chemistry B", "units_seen": 3},
+            {"prefix": "CHEM", "number": "A225L", "title_seen": "Organic Chemistry B Laboratory", "units_seen": 2},
+            {"prefix": "MATH", "number": "A180", "title_seen": "Calculus 1", "units_seen": 5},
+            {"prefix": "MATH", "number": "A180H", "title_seen": "Honors Calculus 1", "units_seen": 5},
+            {"prefix": "MATH", "number": "A185", "title_seen": "Calculus 2", "units_seen": 5},
+            {"prefix": "MATH", "number": "A185H", "title_seen": "Honors Calculus 2", "units_seen": 5},
+            {"prefix": "MATH", "number": "A280", "title_seen": "Calculus 3", "units_seen": 5},
+            {"prefix": "MATH", "number": "A280H", "title_seen": "Honors Calculus 3", "units_seen": 5},
+            {"prefix": "MATH", "number": "A285", "title_seen": "Introduction to Linear Algebra and Differential Equations", "units_seen": 5},
+            {"prefix": "MATH", "number": "A285H", "title_seen": "Honors Introduction to Linear Algebra and Differential Equations", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Orange Coast College associate-degree general education or Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "OCC AS GE or Cal-GETC",
+          "choice_structure_seen": "Complete the OCC Associate Degree General Education pattern (up to 21 units), or substitute the Cal-GETC pattern (up to 34 units).",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 23-27 major units and 60 total units. The general-education subtotal varies with the selected OCC AS GE or Cal-GETC pattern, so units_min is left null and the printed alternatives are preserved in choice_structure_seen."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Biology A.S.-T. and Biology A.S. are included; specialty and certificate awards were ignored by scope."
+}

@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 64,
+    "college_name": "Rio Hondo College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T00:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; source and choice structure are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1350&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46147",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33628-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics - Associate in Arts for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as the Economics AA-T.","catalog_status_seen":"Active in Río Hondo College's official 2025-2026 catalog.","catalog_url":"https://www.riohondo.edu/wp-content/uploads/2025/07/2025-2026-Catalog.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":21,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.riohondo.edu/wp-content/uploads/2025/07/2025-2026-Catalog.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 135-136, Economics Associate in Arts for Transfer"}],
+      "major_groups":[
+        {"label_seen":"Required Courses - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"101H","title_seen":"Principles of Macroeconomics Honors","units_seen":3}]},
+        {"label_seen":"Required Courses - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"102","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"102H","title_seen":"Principles of Microeconomics Honors","units_seen":3}]},
+        {"label_seen":"Required Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics (formerly MATH 130)","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors (formerly MATH 130H)","units_seen":4}]},
+        {"label_seen":"Required Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"170","title_seen":"Elements of Calculus","units_seen":4},{"prefix":"MATH","number":"190","title_seen":"Calculus I","units_seen":4},{"prefix":"MATH","number":"190H","title_seen":"Calculus I Honors","units_seen":4}]},
+        {"label_seen":"List A: Choose one course from the following list","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ACCT","number":"101","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"101H","title_seen":"Financial Accounting Honors","units_seen":4},{"prefix":"ACCT","number":"102","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"ACCT","number":"102H","title_seen":"Managerial Accounting Honors","units_seen":4},{"prefix":"CIT","number":"101","title_seen":"Introduction to Computer Information Technology","units_seen":3}]},
+        {"label_seen":"List B: Choose one course from the following list or one not used above","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Choose ECON 135/POLS 135 or one unused List A course.","courses":[{"prefix":"ECON","number":"135","title_seen":"International Political Economy","units_seen":3},{"prefix":"POLS","number":"135","title_seen":"International Political Economy","units_seen":3},{"prefix":"ACCT","number":"101","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"101H","title_seen":"Financial Accounting Honors","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"102","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"102H","title_seen":"Managerial Accounting Honors","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"CIT","number":"101","title_seen":"Introduction to Computer Information Technology","units_seen":3,"alternative_seen":"Any List A course not already used"}]},
+        {"label_seen":"Cal-GETC Pattern","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},{"label_seen":"Transferable Electives as needed to reach 60 transferable units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints a 20-21 unit major range. List B also permits an unused 4-unit List A course, an internal maximum inconsistency preserved here for review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T was found in the official 2025-2026 catalog."
+}

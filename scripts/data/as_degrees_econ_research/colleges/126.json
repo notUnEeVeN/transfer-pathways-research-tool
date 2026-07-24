@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "community_college_id": 126,
+    "college_name": "Sacramento City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:12:00+00:00",
+    "resume_note": "First-pass extraction complete from page 320 of Sacramento City College's official January 2026 edition of the 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1404&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48160",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35463-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.A.-T. in Economics",
+      "award_seen": "A.A.-T.",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies this as an Associate Degree for Transfer in Economics and prints the Economics core and elective pool.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is shown.",
+      "catalog_url": "https://scc.losrios.edu/scc/main/doc/3-Academics/2-Programs-and-Majors/Catalog-Archive/25-26-catalog-20260101.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 21,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://scc.losrios.edu/scc/main/doc/3-Academics/2-Programs-and-Majors/Catalog-Archive/25-26-catalog-20260101.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog page 320: Economics, A.A.-T. in Economics, Degree Requirements and printed Total Units 21"}],
+      "major_groups": [
+        {"label_seen":"Degree Requirements - economics and calculus","rule":"all","choose_n":null,"units_min":11,"ge_area":null,"courses":[{"prefix":"ECON","number":"302","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"304","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"MATH","number":"400","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"Degree Requirements - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"A minimum of 6 units from the following","rule":"choose_units","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ACCT","number":"301","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"311","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"CISC","number":"310","title_seen":"Introduction to Computer Information Science","units_seen":3},{"prefix":"CISP","number":"360","title_seen":"Introduction to Structured Programming","units_seen":4},{"prefix":"MATH","number":"355","title_seen":"Calculus for Biology and Medicine I","units_seen":4},{"prefix":"MATH","number":"372","title_seen":"College Algebra for Calculus","units_seen":4},{"prefix":"MATH","number":"401","title_seen":"Calculus II","units_seen":5},{"prefix":"MATH","number":"402","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"410","title_seen":"Introduction to Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog sets a six-unit minimum for the final pool and prints the resulting major total as 21 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is in scope; the adjacent Global Business Economics certificate is excluded."
+}

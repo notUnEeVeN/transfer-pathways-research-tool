@@ -1,0 +1,284 @@
+{
+  "_meta": {
+    "community_college_id": 113,
+    "college_name": "De Anza College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:22+00:00",
+    "updated_at": "2026-07-23T19:30:30+00:00",
+    "resume_note": "First-pass extraction complete from the 2025-2026 De Anza eLumen catalog. Later review should resolve the page's contradictory Approved versus Pending state approval text and compile paired physics/chemistry options."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3000&search_string=biology",
+    "checked_at": "2026-07-23T19:22:09+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51562",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39283-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer",
+      "award_seen": "Associate in Science for Transfer (A.S.-T.) Degree",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The current catalog requires calculus and a physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Program metadata says Approved with Proposal Start Fall 2025; the same page body also displays 'Pending state approval.'",
+      "catalog_url": "https://deanza.elumenapp.com/catalog/2025-2026/program%2Cbiology-for-transfer-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "quarter",
+      "total_units": 90,
+      "major_units_min": 55,
+      "major_units_max": 58,
+      "extraction_confidence": 0.96,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://deanza.elumenapp.com/catalog/2025-2026/program%2Cbiology-for-transfer-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Program Requirements, Major Required/Total Required, and program metadata"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — BIOL D006A or BIOL D06AH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "D006A", "title_seen": "Form and Function in the Biological World", "units_seen": 6},
+            {"prefix": "BIOL", "number": "D06AH", "title_seen": "Form and Function in the Biological World - HONORS", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Required Core — BIOL D006B",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "D006B", "title_seen": "Cell and Molecular Biology", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Required Core — BIOL D006C or BIOL D06CH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "D006C", "title_seen": "Ecology and Evolution", "units_seen": 6},
+            {"prefix": "BIOL", "number": "D06CH", "title_seen": "Ecology and Evolution - HONORS", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "List A — CHEM D001A or CHEM D01AH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "D001A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D01AH", "title_seen": "General Chemistry I - HONORS", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — CHEM D001B or CHEM D01BH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "D001B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D01BH", "title_seen": "General Chemistry II - HONORS", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — CHEM D001C or CHEM D01CH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "D001C", "title_seen": "General Chemistry III", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D01CH", "title_seen": "General Chemistry III - HONORS", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — MATH D001A or MATH D01AH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "D001A", "title_seen": "Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "D01AH", "title_seen": "Calculus I - HONORS", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — MATH D001B or MATH D01BH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "D001B", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "MATH", "number": "D01BH", "title_seen": "Calculus II - HONORS", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — complete one physics option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 12,
+          "units_max": 15,
+          "ge_area": null,
+          "choice_structure_seen": "Complete Physics Option 1 (PHYS D002A, D002B, and D002C; 15 units), or Physics Option 2 (PHYS D004A and D004B; 12 units).",
+          "courses": [
+            {"prefix": "PHYS", "number": "D002A", "title_seen": "General Physics I", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D002B", "title_seen": "General Physics II", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D002C", "title_seen": "General Physics III", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D004A", "title_seen": "Physics for Scientists and Engineers: Mechanics", "units_seen": 6},
+            {"prefix": "PHYS", "number": "D004B", "title_seen": "Physics for Scientists and Engineers: Electricity and Magnetism", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Additional California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach at least 90 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The statewide listing program ID 39283 matches the catalog control number. Preserve the Approved/Pending contradiction for human verification."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Sciences",
+      "award_seen": "Associate in Science (A.S.) Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Program metadata says Approved with Proposal Start Fall 2025; the same page body also displays 'Pending state approval.'",
+      "catalog_url": "https://deanza.elumenapp.com/catalog/2025-2026/program%2Cbiological-sciences-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "quarter",
+      "total_units": 90,
+      "major_units_min": 48,
+      "major_units_max": 51,
+      "extraction_confidence": 0.96,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://deanza.elumenapp.com/catalog/2025-2026/program%2Cbiological-sciences-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Program Requirements, Major Required/Total Required, and program metadata"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — BIOL D006A or BIOL D06AH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "D006A", "title_seen": "Form and Function in the Biological World", "units_seen": 6},
+            {"prefix": "BIOL", "number": "D06AH", "title_seen": "Form and Function in the Biological World - HONORS", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Required Core — BIOL D006B",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "D006B", "title_seen": "Cell and Molecular Biology", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Required Core — BIOL D006C or BIOL D06CH",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "D006C", "title_seen": "Ecology and Evolution", "units_seen": 6},
+            {"prefix": "BIOL", "number": "D06CH", "title_seen": "Ecology and Evolution - HONORS", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Required Core — General Chemistry I, II, and III with honors alternatives",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "choice_structure_seen": "Complete one version of each course: CHEM D001A or D01AH, CHEM D001B or D01BH, and CHEM D001C or D01CH.",
+          "courses": [
+            {"prefix": "CHEM", "number": "D001A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D01AH", "title_seen": "General Chemistry I - HONORS", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D001B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D01BH", "title_seen": "General Chemistry II - HONORS", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D001C", "title_seen": "General Chemistry III", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D01CH", "title_seen": "General Chemistry III - HONORS", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - Complete one option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 15,
+          "units_max": 18,
+          "ge_area": null,
+          "choice_structure_seen": "Complete Organic Chemistry (CHEM D012A/D012B/D012C; 15 units), Physics-General (PHYS D002A/D002B/D002C; 15 units), or Physics for Scientists and Engineers (PHYS D004A/D004B/D004C; 18 units).",
+          "courses": [
+            {"prefix": "CHEM", "number": "D012A", "title_seen": "Organic Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D012B", "title_seen": "Organic Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "D012C", "title_seen": "Organic Chemistry III", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D002A", "title_seen": "General Physics I", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D002B", "title_seen": "General Physics II", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D002C", "title_seen": "General Physics III", "units_seen": 5},
+            {"prefix": "PHYS", "number": "D004A", "title_seen": "Physics for Scientists and Engineers: Mechanics", "units_seen": 6},
+            {"prefix": "PHYS", "number": "D004B", "title_seen": "Physics for Scientists and Engineers: Electricity and Magnetism", "units_seen": 6},
+            {"prefix": "PHYS", "number": "D004C", "title_seen": "Physics for Scientists and Engineers: Fluids, Waves, Optics and Thermodynamics", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Additional completion of one general education pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "De Anza General Education or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to reach at least 90 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog advises students seeking a B.S. in Biology to complete both Organic Chemistry and either Physics option, but the degree itself requires only one List A option. Preserve the Approved/Pending contradiction for human verification."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No general local Biology AA was observed in the current Biological Sciences program list. Both in-scope programs are marked New for the 2025-2026 catalog."
+}

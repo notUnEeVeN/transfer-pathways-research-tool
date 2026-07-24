@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "community_college_id": 6,
+    "college_name": "College of the Sequoias",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:13+00:00",
+    "resume_note": "Pinned to the official archived 2025-2026 College of the Sequoias catalog. The Economics area lists one general award, the AA-T."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1798&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45545",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33344-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Arts in Economics for Transfer (AA-T)",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the award as an Economics AA-T and prints the standard economics core plus restricted electives.",
+      "catalog_status_seen": "Published with complete requirements in the official archived 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.cos.edu/archives/2025-2026/areas-study/economics/associate-arts-economics-transfer-aa-t/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 22,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://catalog.cos.edu/archives/2025-2026/areas-study/economics/associate-arts-economics-transfer-aa-t/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Program Requirements table: General Education, Required Major Courses, Restricted Electives, Electives, Total, and double-counting footnote"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "REQUIRED MAJOR COURSES",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "units_max": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "040", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "050", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "MATH", "number": "065", "title_seen": "Calculus 1", "units_seen": 4},
+            {"prefix": "SSCI", "number": "025", "title_seen": "Statistics - Social Sciences", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "RESTRICTED ELECTIVES — Select two of the following courses",
+          "rule": "choose_courses",
+          "choose_n": 2,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCT", "number": "001", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "002", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "066", "title_seen": "Calculus 2", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California-General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "units_max": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "ELECTIVES — Select additional transferable courses numbered 1-199 to achieve 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 34 Cal-GETC units, 22 major units, and 10 elective units. ECON 040 and SSCI 025 satisfy GE, so six units may be double counted and the degree total remains 60. Course codes are preserved exactly as printed for 2025-2026, before the catalog's later common-course-number changes."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Economics area and award index list only the general Economics AA-T; no local Economics AA or AS is published."
+}

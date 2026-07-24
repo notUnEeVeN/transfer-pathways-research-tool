@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "community_college_id": 146,
+    "college_name": "Lemoore College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-23T23:55:00+00:00",
+    "resume_note": "First-pass extraction complete from Lemoore College's official eLumen 2025-2026 catalog program page."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=59898c13-cad9-4213-b036-2a5cc4b5fb2b&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "07d4d91b-ecd9-449d-bad0-e69238c9814d",
+        "title": "Economics ",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/42563-economics"
+      },
+      {
+        "statewide_program_id": "fad8cd67-39b8-4ead-bdad-912936411716",
+        "title": "Economics (Aat)",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/42563-economics-aat"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics (AAT)",
+      "award_seen": "A.A-T Degree",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the award as an AA-T in Economics and prints the standard economics, calculus, statistics, List A, and List B structure.",
+      "catalog_status_seen": "Published in Lemoore College's official 2025-2026 eLumen catalog.",
+      "catalog_url": "https://westhillslemoore.elumenapp.com/catalog/25-26/program/economics-aat-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_program_page",
+          "url": "https://westhillslemoore.elumenapp.com/catalog/25-26/program/economics-aat-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics (AAT), A.A-T Degree (60.0 units): Program Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "001A", "title_seen": "Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "001B", "title_seen": "Microeconomics", "units_seen": 3},
+            {"prefix": "MATH", "number": "001A", "title_seen": "Introduction to Calculus", "units_seen": 5},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Program Elective List A",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BUS", "number": "001A", "title_seen": "Beginning Principles of Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "001B", "title_seen": "Elementary Principles of Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "039", "title_seen": "Quantitative Analysis", "units_seen": 3},
+            {"prefix": "CIS", "number": "007", "title_seen": "Computer Concepts", "units_seen": 3},
+            {"prefix": "MATH", "number": "001B", "title_seen": "Calculus With Applications", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Program Elective List B",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "002A", "title_seen": "Multivariate Calculus", "units_seen": 4},
+            {"prefix": "MATH", "number": "003A", "title_seen": "Linear Algebra I", "units_seen": 4},
+            {"prefix": "SOC", "number": "001", "title_seen": "Introduction to Sociology", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable elective units for total of 60 degree applicable semester units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 11,
+          "units_max": 14,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 15 core units, 3-5 List A units, and 3-4 List B units, yielding 21-24 major units. It separately prints 11-14 transferable elective units and explicitly permits double counting between the major and Cal-GETC."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog program list contains one in-scope Economics award, the AA-T. The statewide inventory's second generic Economics listing does not correspond to a second current catalog award."
+}

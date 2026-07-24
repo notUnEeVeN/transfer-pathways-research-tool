@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 27,
+    "college_name": "American River College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-24T00:40:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; the catalog's variable-unit choices are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=62&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45177",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32720-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.A.-T. in Economics",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog identifies the award as the Economics AA-T and publishes its transfer-model core and elective list.",
+      "catalog_status_seen": "Active in American River College's official 2025-2026 catalog.",
+      "catalog_url": "https://arc.losrios.edu/arc/main/doc/ARC03-Academics/ARC-Programs-and-Majors/catalog-archive/2025-26-catalog-20250801.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 21,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf","url":"https://arc.losrios.edu/arc/main/doc/ARC03-Academics/ARC-Programs-and-Majors/catalog-archive/2025-26-catalog-20250801.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog page 359, A.A.-T. in Economics"}],
+      "major_groups": [
+        {"label_seen":"Required Core - Principles of Economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"302","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"304","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - select one statistics course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"310","title_seen":"Statistics for Business and Economics","units_seen":3},{"prefix":"PSYC","number":"330","title_seen":"Introductory Statistics for the Behavioral Sciences","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"Required Core - select one calculus course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"340","title_seen":"Calculus for Business and Economics","units_seen":3},{"prefix":"MATH","number":"341","title_seen":"Calculus for Business and Economics","units_seen":4},{"prefix":"MATH","number":"400","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select a minimum of 6 units","rule":"choose_units","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ACCT","number":"301","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"311","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"300","title_seen":"Introduction to Business","units_seen":3},{"prefix":"BUS","number":"310","title_seen":"Business Communications","units_seen":3},{"prefix":"CISC","number":"310","title_seen":"Introduction to Computer Information Science","units_seen":3},{"prefix":"CISP","number":"360","title_seen":"Introduction to Structured Programming","units_seen":4},{"prefix":"CISP","number":"400","title_seen":"Object Oriented Programming with C++","units_seen":4},{"prefix":"CISP","number":"440","title_seen":"Discrete Structures for Computer Science","units_seen":3},{"prefix":"MATH","number":"355","title_seen":"Discrete Mathematics","units_seen":4},{"prefix":"MATH","number":"375","title_seen":"Introduction to Mathematics and Linear Algebra","units_seen":6},{"prefix":"MATH","number":"401","title_seen":"Calculus II","units_seen":5},{"prefix":"MATH","number":"402","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"410","title_seen":"Introduction to Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The official catalog prints an 18-21 unit major range and requires at least 6 units from List A."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T appears in the official 2025-2026 catalog program listing."
+}

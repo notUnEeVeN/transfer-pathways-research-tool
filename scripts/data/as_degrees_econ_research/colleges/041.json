@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 41,
+    "college_name": "Cabrillo College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T01:25:00+00:00",
+    "resume_note": "First-pass extraction of both official 2025-2026 Economics awards; alternative and unused-course rules are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=243&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53058",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35570-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics Associate in Arts","award_seen":"AA","tmc_version_seen":null,"tmc_version_basis":"Local Economics associate degree in the official catalog.","catalog_status_seen":"Active in Cabrillo College's official 2025-2026 catalog.","catalog_url":"https://cabrillo.elumenapp.com/catalog/2025-2026/program/economics-associate-in-arts-a-a-fall-2025","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":19,"major_units_max":26,"extraction_confidence":0.98,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://cabrillo.elumenapp.com/catalog/2025-2026/program/economics-associate-in-arts-a-a-fall-2025","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics Associate in Arts (A.A.), Fall 2025 requirements table"}],
+      "major_groups":[
+        {"label_seen":"Required economics courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"1A","title_seen":"Introduction to Macroeconomics","units_seen":3},{"prefix":"ECON","number":"1B","title_seen":"Introduction to Microeconomics","units_seen":3}]},
+        {"label_seen":"Mathematics sequence - complete one option","rule":"choose_units","choose_n":null,"units_min":7,"units_max":10,"ge_area":null,"choice_structure_seen":"Complete MATH 13 and MATH 18 (7 units), or MATH 5A and MATH 5B (10 units).","courses":[{"prefix":"MATH","number":"13","title_seen":"Finite Mathematics","units_seen":3,"bundle_id":"finite_business_calc"},{"prefix":"MATH","number":"18","title_seen":"Business Calculus","units_seen":4,"bundle_id":"finite_business_calc"},{"prefix":"MATH","number":"5A","title_seen":"Analytic Geometry and Calculus I","units_seen":5,"bundle_id":"calculus_sequence"},{"prefix":"MATH","number":"5B","title_seen":"Analytic Geometry and Calculus II","units_seen":5,"bundle_id":"calculus_sequence"}]},
+        {"label_seen":"Statistics - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUS","number":"9","title_seen":"Business Statistics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":5},{"prefix":"PSYCH","number":"2A","title_seen":"Statistics for Behavioral Sciences","units_seen":3}]},
+        {"label_seen":"Additional courses - select 3-5 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"1A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"1B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"ANTHR","number":"2","title_seen":"Introduction to Cultural Anthropology","units_seen":3},{"prefix":"ANTHR","number":"2H","title_seen":"Honors Introduction to Cultural Anthropology","units_seen":3},{"prefix":"BUS","number":"18","title_seen":"Business Law","units_seen":4},{"prefix":"ES","number":"10","title_seen":"Environmental Science","units_seen":3},{"prefix":"FIN","number":"10","title_seen":"Personal Finance","units_seen":4},{"prefix":"GEOG","number":"2","title_seen":"Cultural Geography","units_seen":3},{"prefix":"MATH","number":"5C","title_seen":"Analytic Geometry and Calculus III","units_seen":5},{"prefix":"MATH","number":"6","title_seen":"Introduction to Linear Algebra","units_seen":3},{"prefix":"MATH","number":"7","title_seen":"Introduction to Differential Equations","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"PSYCH","number":"1H","title_seen":"Honors General Psychology","units_seen":3},{"prefix":"PSYCH","number":"6","title_seen":"Introduction to Social Psychology","units_seen":3},{"prefix":"PSYCH","number":"12","title_seen":"Human Sexuality","units_seen":3},{"prefix":"SOC","number":"1","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"SOC","number":"1H","title_seen":"Honors Introduction to Sociology","units_seen":3},{"prefix":"SOC","number":"2","title_seen":"Contemporary Social Problems","units_seen":3},{"prefix":"SOC","number":"2H","title_seen":"Honors Contemporary Social Problems","units_seen":3}]},
+        {"label_seen":"Cabrillo General Education","rule":"ge_area","choose_n":null,"units_min":24,"ge_area":"Cabrillo GE","courses":[]},
+        {"label_seen":"Electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":10,"units_max":17,"ge_area":null,"courses":[]}
+      ],"notes":"The official catalog publishes a 19-26 unit major and a 60-unit degree."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as an Associate in Arts for Transfer.","catalog_status_seen":"Active in Cabrillo College's official 2025-2026 catalog.","catalog_url":"https://cabrillo.elumenapp.com/catalog/2025-2026/program/economics-associate-in-arts-for-transfer-a-a-t-fall-2025","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":19,"major_units_max":26,"extraction_confidence":0.98,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://cabrillo.elumenapp.com/catalog/2025-2026/program/economics-associate-in-arts-for-transfer-a-a-t-fall-2025","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics Associate in Arts for Transfer (A.A.-T), Fall 2025 requirements table"}],
+      "major_groups":[
+        {"label_seen":"Required economics courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"1A","title_seen":"Introduction to Macroeconomics","units_seen":3},{"prefix":"ECON","number":"1B","title_seen":"Introduction to Microeconomics","units_seen":3}]},
+        {"label_seen":"Statistics - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":5},{"prefix":"PSYCH","number":"2A","title_seen":"Statistics for Behavioral Sciences","units_seen":3},{"prefix":"BUS","number":"9","title_seen":"Business Statistics","units_seen":3}]},
+        {"label_seen":"Calculus - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"18","title_seen":"Business Calculus","units_seen":4},{"prefix":"MATH","number":"5A","title_seen":"Analytic Geometry and Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"1A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"1B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"5","title_seen":"Business Information Systems","units_seen":4},{"prefix":"BUS","number":"52","title_seen":"Business Communications","units_seen":3},{"prefix":"BUS","number":"18","title_seen":"Business Law","units_seen":4},{"prefix":"MATH","number":"5B","title_seen":"Analytic Geometry and Calculus II","units_seen":5},{"prefix":"MATH","number":"13","title_seen":"Finite Mathematics","units_seen":3},{"prefix":"CS","number":"11","title_seen":"Introduction to Programming Concepts and Methodologies","units_seen":4}]},
+        {"label_seen":"List B - select one or an unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select MATH 5C, MATH 6, MATH 7, or one List A course not already used.","courses":[{"prefix":"MATH","number":"5C","title_seen":"Analytic Geometry and Calculus III","units_seen":5},{"prefix":"MATH","number":"6","title_seen":"Introduction to Linear Algebra","units_seen":3},{"prefix":"MATH","number":"7","title_seen":"Introduction to Differential Equations","units_seen":3},{"prefix":"ACCT","number":"1A","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"1B","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"5","title_seen":"Business Information Systems","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"52","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"18","title_seen":"Business Law","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"5B","title_seen":"Analytic Geometry and Calculus II","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"13","title_seen":"Finite Mathematics","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"CS","number":"11","title_seen":"Introduction to Programming Concepts and Methodologies","units_seen":4,"alternative_seen":"Any unused List A course"}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":0,"units_max":7,"ge_area":null,"courses":[]}
+      ],"notes":"The major total is calculated from the official choice ranges as 19-26 semester units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes both a local Economics AA and an Economics AA-T."
+}

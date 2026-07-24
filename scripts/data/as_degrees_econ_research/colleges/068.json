@@ -1,0 +1,48 @@
+{
+  "_meta": {
+    "community_college_id": 68,
+    "college_name": "Cañada College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T00:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; both the local AA and AA-T are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=260&search_string=economics",
+    "checked_at": "2026-07-23T22:30:33+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45044",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32716-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics Associate in Arts Degree Program","award_seen":"AA","tmc_version_seen":null,"tmc_version_basis":null,"catalog_status_seen":"Active in Cañada College's official 2025-2026 catalog.","catalog_url":"https://catalog.canadacollege.edu/current/programs/economics-aa.php","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":18,"major_units_max":18,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://catalog.canadacollege.edu/current/programs/economics-aa.php","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics Associate in Arts Degree Program, Requirements"}],
+      "major_groups":[
+        {"label_seen":"Complete Core Courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"100","title_seen":"Principles of Macro Economics","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Micro Economics","units_seen":3}]},
+        {"label_seen":"Selective Courses, choose a minimum of 12 units","rule":"choose_units","choose_n":null,"units_min":12,"ge_area":null,"courses":[{"prefix":"ACTG","number":"121","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACTG","number":"131","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"ANTH","number":"110","title_seen":"Cultural Anthropology","units_seen":3},{"prefix":"ECON","number":"230","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"HIST","number":"101","title_seen":"History of Western Civilization II","units_seen":3},{"prefix":"HIST","number":"201","title_seen":"U.S. History through 1877","units_seen":3},{"prefix":"HIST","number":"202","title_seen":"U.S. History from 1877 to the Present","units_seen":3},{"prefix":"IDST","number":"150","title_seen":"Honors Research Seminar","units_seen":1},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"MATH","number":"241","title_seen":"Business Calculus I","units_seen":5},{"prefix":"MATH","number":"251","title_seen":"Analytical Geometry and Calculus I","units_seen":5},{"prefix":"PHIL","number":"100","title_seen":"Introduction to Philosophy","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3}]},
+        {"label_seen":"Required General Education coursework","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cañada AA GE","courses":[]},{"label_seen":"Electives as needed to meet 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"HIST 201 or HIST 202 and MATH 241 or MATH 251 are catalog alternatives within the 12-unit selective pool; a course cannot be double counted."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts Degree for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as the Economics AA-T and publishes its transfer-model core and lists.","catalog_status_seen":"Active in Cañada College's official 2025-2026 catalog.","catalog_url":"https://catalog.canadacollege.edu/current/programs/economics-aa-t.php","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":25,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://catalog.canadacollege.edu/current/programs/economics-aa-t.php","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics Associate in Arts Degree for Transfer, Requirements"}],
+      "major_groups":[
+        {"label_seen":"Complete Core Courses","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"100","title_seen":"Principles of Macro Economics","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Micro Economics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Complete Core Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"241","title_seen":"Business Calculus I","units_seen":5},{"prefix":"MATH","number":"251","title_seen":"Analytical Geometry and Calculus I","units_seen":5}]},
+        {"label_seen":"List A, select 3-5 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACTG","number":"121","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACTG","number":"131","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"103","title_seen":"Introduction to Business Information Systems","units_seen":3},{"prefix":"BUS","number":"401","title_seen":"Business Communications","units_seen":3},{"prefix":"MATH","number":"125","title_seen":"Elementary Finite Mathematics","units_seen":3},{"prefix":"MATH","number":"252","title_seen":"Analytical Geometry and Calculus II","units_seen":5}]},
+        {"label_seen":"List B, select 3-5 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select an unused List A course or an explicitly listed List B course.","courses":[{"prefix":"ACTG","number":"121","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACTG","number":"131","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"103","title_seen":"Introduction to Business Information Systems","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"401","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"125","title_seen":"Elementary Finite Mathematics","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"252","title_seen":"Analytical Geometry and Calculus II","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"ECON","number":"230","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"MATH","number":"253","title_seen":"Analytic Geometry and Calculus III","units_seen":5},{"prefix":"MATH","number":"270","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"Completion of Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},{"label_seen":"Additional CSU or UC transferable courses needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The official catalog prints 21-25 major units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both a local Economics AA and Economics AA-T."
+}

@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 114,
+    "college_name": "Diablo Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:55:00+00:00",
+    "resume_note": "Extracted DVC's A.A. in Economics for Transfer from the official 2025-2026 eLumen catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=506&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45786",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33292-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"A.A. in Economics for Transfer","award_seen":"A.A. Degree for Transfer","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://dvc.elumenapp.com/catalog/DVC2025-2026Catalog/program/a-a-in-economics-for-transfer-fall-2025","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":19,"major_units_max":25,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://dvc.elumenapp.com/catalog/DVC2025-2026Catalog/program/a-a-in-economics-for-transfer-fall-2025","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Program Requirements > Economics for Transfer; catalog displays Total 19 as the minimum major path"}],
+      "major_groups":[
+        {"label_seen":"Major requirements","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"220","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"221","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Plus at least 3 units from statistics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"BUS","number":"240","title_seen":"Business Statistics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Plus at least 4 units from calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"182","title_seen":"Calculus for Management, Life Science, and Social Science I","units_seen":4},{"prefix":"MATH","number":"192","title_seen":"Analytic Geometry and Calculus I","units_seen":5}]},
+        {"label_seen":"List A - plus at least 3 units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUSAC","number":"186","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BUSAC","number":"187","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"MATH","number":"181","title_seen":"Finite Mathematics","units_seen":3},{"prefix":"MATH","number":"193","title_seen":"Analytic Geometry and Calculus II","units_seen":5}]},
+        {"label_seen":"List B - plus at least 3 units from any unused course above or listed course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select any preceding course not already used or one of the four listed courses.","courses":[{"prefix":"ECON","number":"101","title_seen":"Economics of Public Issues","units_seen":3},{"prefix":"ECON","number":"210","title_seen":"Economic Justice","units_seen":3},{"prefix":"MATH","number":"194","title_seen":"Linear Algebra","units_seen":3},{"prefix":"MATH","number":"292","title_seen":"Analytic Geometry and Calculus III","units_seen":5}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"DVC displays Total 19, the minimum-credit path. Actual published choices can yield up to 25 major units, so the range is preserved for coverage calculations."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog and DVC program page publish one in-scope general Economics award, the Economics AA-T."
+}

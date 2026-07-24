@@ -135,6 +135,11 @@ const MAJORS = [
     slug: 'econ',
     label: 'Economics',
     match: 'econom',
+    // `ast` is the major-neutral internal slot for an Associate Degree for
+    // Transfer. Economics uses the arts award, unlike the science award used
+    // by the currently onboarded CS and Biology programs. Keep display copy
+    // with the major so later AA-T subjects do not require frontend branches.
+    degreeSlotLabels: { ast: 'A.A.-T' },
     // The flagship Economics degree per campus, excluding business,
     // managerial, joint-math and policy variants — they carry different
     // lower-division requirements. Economics is a letters-and-science degree

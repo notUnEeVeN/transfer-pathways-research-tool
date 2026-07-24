@@ -1,0 +1,441 @@
+{
+  "_meta": {
+    "community_college_id": 101,
+    "college_name": "San Diego Mesa College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:30+00:00",
+    "updated_at": "2026-07-23T20:07:53+00:00",
+    "resume_note": "Pinned to the official 2025-2026 Mesa College catalog. The Biological Science A.A. elective table explicitly includes CISC 189A and CISC 189B; both are preserved in the extraction."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1521&search_string=biology",
+    "checked_at": "2026-07-23T19:22:08+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49850",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/38658-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science for Transfer Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires a 10-unit physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 Mesa College catalog; requirements are marked Active and no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 38,
+      "extraction_confidence": 0.96,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 196-197, Biology - Associate in Science for Transfer Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Courses Required for the Major — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "210A",
+              "title_seen": "Introduction to the Biological Sciences I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "210B",
+              "title_seen": "Introduction to the Biological Sciences II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "CHEM",
+              "number": "200",
+              "title_seen": "General Chemistry I - Lecture",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CHEM",
+              "number": "200L",
+              "title_seen": "General Chemistry I - Laboratory",
+              "units_seen": 2
+            },
+            {
+              "prefix": "CHEM",
+              "number": "201",
+              "title_seen": "General Chemistry II - Lecture",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CHEM",
+              "number": "201L",
+              "title_seen": "General Chemistry II - Laboratory",
+              "units_seen": 2
+            }
+          ]
+        },
+        {
+          "label_seen": "Select 3-5 units from the following calculus courses",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "121",
+              "title_seen": "Basic Techniques of Applied Calculus I",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "150",
+              "title_seen": "Calculus with Analytic Geometry I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Select 10 units from one of the following physics groups",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete Group 1 (PHYS 125 and 126), Group 2 (PHYS 180A, 181A, 180B, and 181B), or Group 3 (PHYS 195 and 196); courses may not be mixed across groups.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "125",
+              "title_seen": "General Physics",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYS",
+              "number": "126",
+              "title_seen": "General Physics II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYS",
+              "number": "180A",
+              "title_seen": "General Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "181A",
+              "title_seen": "General Physics Laboratory I",
+              "units_seen": 1
+            },
+            {
+              "prefix": "PHYS",
+              "number": "180B",
+              "title_seen": "General Physics II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "181B",
+              "title_seen": "General Physics Laboratory II",
+              "units_seen": 1
+            },
+            {
+              "prefix": "PHYS",
+              "number": "195",
+              "title_seen": "Mechanics",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYS",
+              "number": "196",
+              "title_seen": "Electricity and Magnetism",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Select 3-5 units from the following additional major-preparation options",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "ge_area": null,
+          "choice_structure_seen": "Complete CHEM 231 and CHEM 231L (5 units), or MATH 122 (3 units), or MATH 151 (4 units).",
+          "courses": [
+            {
+              "prefix": "CHEM",
+              "number": "231",
+              "title_seen": "Organic Chemistry I - Lecture",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CHEM",
+              "number": "231L",
+              "title_seen": "Organic Chemistry I - Laboratory",
+              "units_seen": 2
+            },
+            {
+              "prefix": "MATH",
+              "number": "122",
+              "title_seen": "Basic Techniques of Calculus II",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "151",
+              "title_seen": "Calculus with Analytic Geometry II",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 31-33 units beside the first requirements block, then a separate required 3-5 unit selection immediately below it. Mesa's program page advertises the resulting 34-38 units; this extraction preserves both raw blocks and records the combined 34-38 unit major. Flat choose_units cannot enforce the intact physics or chemistry pairing, so preserve choice_structure_seen during compilation."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology - Associate of Science: Mesa",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 Mesa College catalog; requirements are marked Active and no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 195-196, Biology - Associate of Science: Mesa"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Courses Required for the Major — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "210A",
+              "title_seen": "Introduction to the Biological Sciences I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "210B",
+              "title_seen": "Introduction to the Biological Sciences II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "CHEM",
+              "number": "200",
+              "title_seen": "General Chemistry I - Lecture",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CHEM",
+              "number": "200L",
+              "title_seen": "General Chemistry I - Laboratory",
+              "units_seen": 2
+            },
+            {
+              "prefix": "CHEM",
+              "number": "201",
+              "title_seen": "General Chemistry II - Lecture",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CHEM",
+              "number": "201L",
+              "title_seen": "General Chemistry II - Laboratory",
+              "units_seen": 2
+            }
+          ]
+        },
+        {
+          "label_seen": "Calculus sequence choice (5-6 units)",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Complete MATH 121 and MATH 122 (6 units), or complete MATH 150 (5 units).",
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "121",
+              "title_seen": "Basic Techniques of Applied Calculus I",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "122",
+              "title_seen": "Basic Techniques of Calculus II",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "150",
+              "title_seen": "Calculus with Analytic Geometry I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Additional general education and graduation requirements for the associate degree",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Mesa associate-degree general education",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "Mesa's public program page calls this the Transfer Track A.S.; the official catalog title is Biology - Associate of Science: Mesa. Preserve the catalog title."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Liberal Arts and Sciences: Science Studies-Biological Science - Associate of Arts Degree: Mesa",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 Mesa College catalog; requirements are marked Active and no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.94,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/Mesa20252026_Final.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 320-321, Liberal Arts and Sciences: Science Studies-Biological Science - Associate of Arts Degree: Mesa"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Courses Required for the Major (8 units)",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "210A",
+              "title_seen": "Introduction to the Biological Sciences I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "210B",
+              "title_seen": "Introduction to the Biological Sciences II",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Select a minimum of 10 units",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "200", "title_seen": "General Chemistry I - Lecture", "units_seen": 3 },
+            { "prefix": "CHEM", "number": "200L", "title_seen": "General Chemistry I - Laboratory", "units_seen": 2 },
+            { "prefix": "CHEM", "number": "201", "title_seen": "General Chemistry II - Lecture", "units_seen": 3 },
+            { "prefix": "CHEM", "number": "201L", "title_seen": "General Chemistry II - Laboratory", "units_seen": 2 },
+            { "prefix": "CHEM", "number": "231", "title_seen": "Organic Chemistry I - Lecture", "units_seen": 3 },
+            { "prefix": "CHEM", "number": "231L", "title_seen": "Organic Chemistry I - Laboratory", "units_seen": 2 },
+            { "prefix": "CHEM", "number": "233", "title_seen": "Organic Chemistry II - Lecture", "units_seen": 3 },
+            { "prefix": "CHEM", "number": "233L", "title_seen": "Organic Chemistry II - Laboratory", "units_seen": 2 },
+            { "prefix": "CHEM", "number": "251", "title_seen": "Quantitative Analytical Chemistry", "units_seen": 5 },
+            { "prefix": "CISC", "number": "186", "title_seen": "Visual Basic Programming", "units_seen": 4 },
+            { "prefix": "CISC", "number": "190", "title_seen": "Java Programming", "units_seen": 4 },
+            { "prefix": "CISC", "number": "192", "title_seen": "C/C++ Programming", "units_seen": 4 },
+            { "prefix": "CISC", "number": "189A", "title_seen": "Introduction to Programming I", "units_seen": 4 },
+            { "prefix": "CISC", "number": "189B", "title_seen": "Introduction to Programming II", "units_seen": 4 },
+            { "prefix": "MATH", "number": "121", "title_seen": "Basic Techniques of Applied Calculus I", "units_seen": 3 },
+            { "prefix": "MATH", "number": "122", "title_seen": "Basic Techniques of Calculus II", "units_seen": 3 },
+            { "prefix": "MATH", "number": "150", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5 },
+            { "prefix": "MATH", "number": "151", "title_seen": "Calculus with Analytic Geometry II", "units_seen": 4 },
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 3 },
+            { "prefix": "BIOL", "number": "200", "title_seen": "Biological Statistics", "units_seen": 3 },
+            { "prefix": "PHYS", "number": "125", "title_seen": "General Physics", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "126", "title_seen": "General Physics II", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "195", "title_seen": "Mechanics", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "196", "title_seen": "Electricity and Magnetism", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "197", "title_seen": "Waves, Optics and Modern Physics", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Additional general education and graduation requirements for the associate degree",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Mesa associate-degree general education",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 2025-2026 catalog explicitly labels the two 4-unit elective rows as CISC 189A and CISC 189B; both are included with all other printed elective choices."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog contains three in-scope broad Biology/Biological Science degrees. Other awards are intentionally excluded from this pinned in-scope batch. Mesa's public program page labels the local Biology A.S. as Transfer Track, but the official catalog title is preserved. The AS-T uses the prior physics-bearing Biology TMC."
+}

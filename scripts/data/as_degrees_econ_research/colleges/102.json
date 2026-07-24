@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 102,
+    "college_name": "College of the Siskiyous",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:58:00+00:00",
+    "resume_note": "The complete official 2025-2026 Degrees and Certificates A-Z catalog page contains no general Economics AA-T, AS-T, AA, or AS."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://siskiyous.elumenapp.com/catalog/cos25-26catalog/degreesandcertificatesa-z",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Degrees and Certificates A-Z page; no Economics award is listed"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "College of the Siskiyous publishes no Economics-titled associate award in its complete 2025-2026 inventory. Business Administration, Liberal Arts & Sciences: Social Science, and Social Science awards are umbrella or adjacent awards and are outside this pass."
+}

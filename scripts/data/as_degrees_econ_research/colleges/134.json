@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "community_college_id": 134,
+    "college_name": "Fullerton College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:20:00+00:00",
+    "resume_note": "First-pass extraction complete from Fullerton College's official 2025-2026 catalog pages for the AA-T and local AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=635&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49909",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36961-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts Degree for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog calls the award the Economics AA-T and publishes the transfer core, List A, and List B.",
+      "catalog_status_seen": "Active in Fullerton College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.nocccd.edu/fullerton-college/degrees-certificates/economics/economics-associate-arts-degree-transfer/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_html","url":"https://catalog.nocccd.edu/fullerton-college/degrees-certificates/economics/economics-associate-arts-degree-transfer/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Program code 2A36961: Requirements and Total Units"}],
+      "major_groups": [
+        {"label_seen":"Required Core - microeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"101 F","title_seen":"Principles of Economics - Micro","units_seen":3},{"prefix":"ECON","number":"101HF","title_seen":"Honors Principles of Economics - Micro","units_seen":3}]},
+        {"label_seen":"Required Core - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"102 F","title_seen":"Principles of Economics - Macro","units_seen":3},{"prefix":"ECON","number":"102HF","title_seen":"Honors Principles of Economics-Macro","units_seen":3}]},
+        {"label_seen":"Required Core - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":5},{"prefix":"PSY","number":"161 F","title_seen":"Elementary Statistics for Behavioral Science","units_seen":4},{"prefix":"PSY","number":"161HF","title_seen":"Honors Elementary Statistics for Behavioral Science","units_seen":4},{"prefix":"SOSC","number":"120 F","title_seen":"Introduction to Probability and Statistics","units_seen":4}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"130 F","title_seen":"Calculus for Business","units_seen":4},{"prefix":"MATH","number":"151 F","title_seen":"Calculus I","units_seen":4},{"prefix":"MATH","number":"151HF","title_seen":"Honors Calculus I","units_seen":4}]},
+        {"label_seen":"List A - select one course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"152 F","title_seen":"Calculus II","units_seen":4},{"prefix":"MATH","number":"152HF","title_seen":"Honors Calculus II","units_seen":4},{"prefix":"ACCT","number":"101AF","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCT","number":"102HF","title_seen":"Honors Financial Accounting","units_seen":5},{"prefix":"ACCT","number":"101BF","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"CIS","number":"111 F","title_seen":"Introduction to Information Systems","units_seen":4},{"prefix":"CIS","number":"111HF","title_seen":"Honors Introduction to Information Systems","units_seen":4},{"prefix":"BUS","number":"211 F","title_seen":"Critical Reasoning and Writing for Business","units_seen":3},{"prefix":"BUS","number":"211HF","title_seen":"Honors Critical Reasoning and Writing for Business","units_seen":3}]},
+        {"label_seen":"List B - select one course or any unused List A course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Any List A course not already selected may satisfy List B; the List A pool is repeated to preserve the complete choice set.","courses":[{"prefix":"MATH","number":"152 F","title_seen":"Calculus II","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"152HF","title_seen":"Honors Calculus II","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"101AF","title_seen":"Financial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"102HF","title_seen":"Honors Financial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"101BF","title_seen":"Managerial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"CIS","number":"111 F","title_seen":"Introduction to Information Systems","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"CIS","number":"111HF","title_seen":"Honors Introduction to Information Systems","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"211 F","title_seen":"Critical Reasoning and Writing for Business","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"211HF","title_seen":"Honors Critical Reasoning and Writing for Business","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"251 F","title_seen":"Multivariable Calculus","units_seen":4},{"prefix":"MATH","number":"255 F","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The page's introductory boilerplate still names the retired CSU GE/IGETC choices, while the 2025-2026 catalog's graduation section establishes Cal-GETC for new students; the source inconsistency is preserved in this note."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Economics Associate in Arts Degree",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Active in Fullerton College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.nocccd.edu/fullerton-college/degrees-certificates/economics/economics-associate-arts-degree/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_html","url":"https://catalog.nocccd.edu/fullerton-college/degrees-certificates/economics/economics-associate-arts-degree/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Program code 2A03882: Requirements and Total Units"}],
+      "major_groups": [
+        {"label_seen":"Required Courses - microeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"101 F","title_seen":"Principles of Economics - Micro","units_seen":3},{"prefix":"ECON","number":"101HF","title_seen":"Honors Principles of Economics - Micro","units_seen":3}]},
+        {"label_seen":"Required Courses - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"102 F","title_seen":"Principles of Economics - Macro","units_seen":3},{"prefix":"ECON","number":"102HF","title_seen":"Honors Principles of Economics-Macro","units_seen":3}]},
+        {"label_seen":"Required Courses - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":5},{"prefix":"PSY","number":"161 F","title_seen":"Elementary Statistics for Behavioral Science","units_seen":4},{"prefix":"PSY","number":"161HF","title_seen":"Honors Elementary Statistics for Behavioral Science","units_seen":4},{"prefix":"SOSC","number":"120 F","title_seen":"Introduction to Probability and Statistics","units_seen":4}]},
+        {"label_seen":"Required Courses - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"130 F","title_seen":"Calculus for Business","units_seen":4},{"prefix":"MATH","number":"151 F","title_seen":"Calculus I","units_seen":4},{"prefix":"MATH","number":"151HF","title_seen":"Honors Calculus I","units_seen":4}]},
+        {"label_seen":"List A: select one course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"101AF","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCT","number":"102HF","title_seen":"Honors Financial Accounting","units_seen":5},{"prefix":"ACCT","number":"101BF","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"BUS","number":"211 F","title_seen":"Critical Reasoning and Writing for Business","units_seen":3},{"prefix":"BUS","number":"211HF","title_seen":"Honors Critical Reasoning and Writing for Business","units_seen":3},{"prefix":"CIS","number":"111 F","title_seen":"Introduction to Information Systems","units_seen":4},{"prefix":"CIS","number":"111HF","title_seen":"Honors Introduction to Information Systems","units_seen":4},{"prefix":"MATH","number":"152 F","title_seen":"Calculus II","units_seen":4},{"prefix":"MATH","number":"152HF","title_seen":"Honors Calculus II","units_seen":4}]},
+        {"label_seen":"List B: select one course or an unused List A course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Any List A course not already used may satisfy List B; only the additional List B courses are separately enumerated here.","courses":[{"prefix":"MATH","number":"251 F","title_seen":"Multivariable Calculus","units_seen":4},{"prefix":"MATH","number":"255 F","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"Fullerton College Associate Degree General Education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Fullerton College AA General Education","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The local AA prints the same 20-25 major-unit range as the AA-T and is subject to Fullerton College's local graduation requirements."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Both the Economics AA-T and local Economics AA are in scope and included."
+}

@@ -1,0 +1,189 @@
+{
+  "_meta": {
+    "community_college_id": 90,
+    "college_name": "Yuba College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:26:53+00:00",
+    "updated_at": "2026-07-23T21:33:00+00:00",
+    "resume_note": "First-pass extraction is complete from Yuba College's official 2025-2026 catalog. The general Biology AS-T and Biology AS are both modeled; adjacent Allied Health awards are outside this pass."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2068&search_string=biology",
+    "checked_at": "2026-07-23T19:29:49+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48966",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35801-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://yc.yccd.edu/wp-content/uploads/2025/08/Yuba-College-Catalog-25.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://yc.yccd.edu/wp-content/uploads/2025/08/Yuba-College-Catalog-25.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF pages 73-74, Biology — Associate in Science for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 27,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "1", "title_seen": "Principles of Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "2", "title_seen": "General Zoology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "3", "title_seen": "General Botany", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "MATH", "number": "1A", "title_seen": "Single Variable Calculus I - Early Transcendentals", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Complete 8 units from one of the following physics groups",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A, 3A, 2B, and 3B, or complete PHYS 4A and 4B; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 3 },
+            { "prefix": "PHYS", "number": "3A", "title_seen": "General Physics Laboratory I", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 3 },
+            { "prefix": "PHYS", "number": "3B", "title_seen": "General Physics Laboratory II", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "Mechanics", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "Electromagnetism", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC Pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints a fixed 35-unit major. Its flat course table uses OR between the two complete physics sequences; choice_structure_seen preserves that pairing."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology, Associate in Science",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://yc.yccd.edu/wp-content/uploads/2025/08/Yuba-College-Catalog-25.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://yc.yccd.edu/wp-content/uploads/2025/08/Yuba-College-Catalog-25.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF pages 73-74, Biology — Associate in Science"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 23,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "1", "title_seen": "Principles of Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "2", "title_seen": "General Zoology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "3", "title_seen": "General Botany", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Complete eight units from one of the following physics groups",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A, 3A, 2B, and 3B, or complete PHYS 4A and 4B; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics", "units_seen": 3 },
+            { "prefix": "PHYS", "number": "3A", "title_seen": "General Physics Laboratory", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics", "units_seen": 3 },
+            { "prefix": "PHYS", "number": "3B", "title_seen": "General Physics Laboratory", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "Mechanics", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "Electromagnetism", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Complete one mathematics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "1A", "title_seen": "Single Variable Calculus I - Early Transcendentals", "units_seen": 4 },
+            { "prefix": "MATH", "number": "9", "title_seen": "Calculus for Business, Social and Life Science", "units_seen": 4 },
+            { "prefix": "STAT", "number": "1", "title_seen": "Introduction to Statistical Methods", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Yuba College General Education and health graduation requirement",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 21,
+          "ge_area": "Yuba College associate-degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog requires at least 21 GE units plus the health graduation requirement in addition to the printed 35-unit major."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The 2025-2026 Biology section lists the general Biology AS-T and Biology AS. Biology-Allied Health is specialized and intentionally excluded."
+}

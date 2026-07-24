@@ -1,0 +1,142 @@
+{
+  "_meta": {
+    "community_college_id": 55,
+    "college_name": "Golden West College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to Golden West's official original 2025-2026 catalog PDF. Biology AS-T and General Biology AA are fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3149&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [{"statewide_program_id": "62757", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/41897-biology"}]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science Degree for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree includes an 8-unit physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official original 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://catalog.cccd.edu/pdf/GWC-2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://catalog.cccd.edu/pdf/GWC-2025-2026-Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog page 68, Biology, Associate in Science Degree for Transfer"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — select one biology option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 13,
+          "ge_area": null,
+          "choice_structure_seen": "Option 1: BIOL G180 and BIOL G186 (10 units). Option 2: BIOL G180, BIOL G182, and BIOL G183 (13 units).",
+          "courses": [
+            {"prefix": "BIOL", "number": "G180", "title_seen": "Cell and Molecular Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "G186", "title_seen": "Diversity of Organisms", "units_seen": 5},
+            {"prefix": "BIOL", "number": "G182", "title_seen": "Zoology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "G183", "title_seen": "Botany", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A — required chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "G180", "title_seen": "General Chemistry A", "units_seen": 5},
+            {"prefix": "CHEM", "number": "G185", "title_seen": "General Chemistry B", "units_seen": 5},
+            {"prefix": "MATH", "number": "G180", "title_seen": "Calculus 1", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS G120 and G125, or PHYS G185 and G280; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "G120", "title_seen": "Algebra Based Physics: Mechanics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "G125", "title_seen": "Algebra Based Physics: Electricity/Magnetism", "units_seen": 4},
+            {"prefix": "PHYS", "number": "G185", "title_seen": "Calculus Based Physics: Mechanics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "G280", "title_seen": "Calculus Based Physics: Electricity/Magnetism", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "GE Pattern (Cal-GETC)", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The shared BIOL G180 appears in both biology options. Flat choose_units cannot enforce the two intact biology or physics sequences; choice_structure_seen is authoritative."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "General Biology, Associate in Arts Degree",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official original 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://catalog.cccd.edu/pdf/GWC-2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 24,
+      "major_units_max": 27,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://catalog.cccd.edu/pdf/GWC-2025-2026-Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog pages 68-69, General Biology, Associate in Arts Degree"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "G180", "title_seen": "Cell and Molecular Biology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "G180", "title_seen": "General Chemistry A", "units_seen": 5},
+            {"prefix": "CHEM", "number": "G185", "title_seen": "General Chemistry B", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select one organismal biology option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 5,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete BIOL G186 (5 units), or complete BIOL G182 and BIOL G183 (8 units).",
+          "courses": [
+            {"prefix": "BIOL", "number": "G186", "title_seen": "Diversity of Organisms", "units_seen": 5},
+            {"prefix": "BIOL", "number": "G182", "title_seen": "Zoology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "G183", "title_seen": "Botany", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select one mathematics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "G170", "title_seen": "Precalculus", "units_seen": 4},
+            {"prefix": "MATH", "number": "G180", "title_seen": "Calculus 1", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "GE Pattern (Local or Cal-GETC)", "rule": "ge_area", "choose_n": null, "units_min": 24, "units_max": 34, "ge_area": "Golden West local GE or Cal-GETC", "courses": []},
+        {"label_seen": "Electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The printed catalog major total is 24-27 units and GE range is 24-34 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The original 2025-2026 catalog publishes two in-scope broad Biology awards. The live catalog has advanced to 2026-2027 and was not used."
+}

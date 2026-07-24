@@ -1,0 +1,204 @@
+{
+  "_meta": {
+    "purpose": "Research-only transcription of the Biology AS-T Transfer Model Curriculum used by the 2025-2026 catalog cohort.",
+    "major_slug": "bio",
+    "source_academic_year": "2025-2026",
+    "authored": "2026-07-23",
+    "status": "source_transcribed_needs_human_verification",
+    "warning": "The 2026 Biology 2.0 TMC is deliberately excluded from this pinned cohort; use only what each 2025-2026 college catalog prints.",
+    "sources": [
+      {
+        "title": "Prior Biology TMC, Rev. 2",
+        "url": "https://www.cccco.edu/-/media/CCCCO-Website/Files/Educational-Services-and-Support/TMC-Templates/tmc-biology-template-rev-2-ada.pdf",
+        "checked_at": "2026-07-23"
+      }
+    ]
+  },
+  "versions": [
+    {
+      "key": "biology_2015_rev2",
+      "official_title": "Associate in Science in Biology for Transfer",
+      "submission_form_number": "2014",
+      "release_or_revision_date": "2015-05-18",
+      "degree_award": "A.S.-T.",
+      "major_units_min": 29,
+      "major_units_max": 38,
+      "degree_units_max": 60,
+      "ge_seen": "IGETC or CSU-GE Breadth for STEM",
+      "groups": [
+        {
+          "group_id": "biology_sequence",
+          "label_seen": "Required Core — select one biology sequence",
+          "rule": "choose_sequence",
+          "units_min": 8,
+          "units_max": 12,
+          "options": [
+            {
+              "label": "Biology Sequence for Majors",
+              "courses": [
+                {
+                  "title": "Biology Sequence for Majors",
+                  "cid": "BIOL 135S",
+                  "units": 8
+                }
+              ]
+            },
+            {
+              "label": "Cell and Molecular Biology plus Organismal Biology",
+              "courses": [
+                {
+                  "title": "Cell and Molecular Biology",
+                  "cid": "BIOL 190",
+                  "units": 4
+                },
+                {
+                  "title": "Organismal Biology",
+                  "cid": "BIOL 140",
+                  "units": 4
+                }
+              ]
+            },
+            {
+              "label": "Cell and Molecular Biology plus Organismal Biology, Ecology and Evolution",
+              "courses": [
+                {
+                  "title": "Cell and Molecular Biology",
+                  "cid": "BIOL 190",
+                  "units": 4
+                },
+                {
+                  "title": "Organismal Biology, Ecology and Evolution",
+                  "cid": "BIOL 130S",
+                  "units": 8
+                }
+              ]
+            },
+            {
+              "label": "Cell and Molecular Biology plus Zoology plus Botany",
+              "courses": [
+                {
+                  "title": "Cell and Molecular Biology",
+                  "cid": "BIOL 190",
+                  "units": 4
+                },
+                {
+                  "title": "Zoology/Animal Diversity and Evolution",
+                  "cid": "BIOL 150",
+                  "units": 4
+                },
+                {
+                  "title": "Botany/Plant Diversity and Ecology",
+                  "cid": "BIOL 155",
+                  "units": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "group_id": "chemistry_sequence",
+          "label_seen": "List A — General Chemistry for Science Majors Sequence A",
+          "rule": "all",
+          "units_min": 10,
+          "courses": [
+            {
+              "title": "General Chemistry for Science Majors Sequence A",
+              "cid": "CHEM 120S",
+              "units": 10
+            }
+          ]
+        },
+        {
+          "group_id": "calculus",
+          "label_seen": "List A — select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "courses": [
+            {
+              "title": "Single Variable Calculus I — Early Transcendentals",
+              "cid": "MATH 210",
+              "units": 4
+            },
+            {
+              "title": "Single Variable Calculus I — Late Transcendentals",
+              "cid": "MATH 211",
+              "units": 4
+            },
+            {
+              "title": "Calculus for Life and Social Sciences",
+              "cid": "AAM",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "group_id": "physics_sequence",
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_sequence",
+          "units_min": 8,
+          "units_max": 8,
+          "options": [
+            {
+              "label": "Algebra/Trigonometry-Based Physics A and B",
+              "courses": [
+                {
+                  "title": "Algebra/Trigonometry-Based Physics A",
+                  "cid": "PHYS 105",
+                  "units": 4
+                },
+                {
+                  "title": "Algebra/Trigonometry-Based Physics B",
+                  "cid": "PHYS 110",
+                  "units": 4
+                }
+              ]
+            },
+            {
+              "label": "Calculus-Based Physics for Scientists and Engineers A and B",
+              "courses": [
+                {
+                  "title": "Calculus-Based Physics for Scientists and Engineers A",
+                  "cid": "PHYS 205",
+                  "units": 4
+                },
+                {
+                  "title": "Calculus-Based Physics for Scientists and Engineers B",
+                  "cid": "PHYS 210",
+                  "units": 4
+                }
+              ]
+            },
+            {
+              "label": "Algebra/Trigonometry-Based Physics AB",
+              "courses": [
+                {
+                  "title": "Algebra/Trigonometry-Based Physics AB",
+                  "cid": "PHYS 100S",
+                  "units": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "group_id": "additional_major_preparation",
+          "label_seen": "List B — additional major preparation if possible",
+          "rule": "choose_courses",
+          "choose_n_min": 0,
+          "choose_n_max": 1,
+          "units_min": 0,
+          "units_max": 4,
+          "courses": [
+            {
+              "title": "Course articulated as lower-division Biology major preparation at a CSU",
+              "cid": "AAM",
+              "units": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

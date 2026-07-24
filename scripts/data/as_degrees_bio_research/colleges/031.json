@@ -1,0 +1,122 @@
+{
+  "_meta": {
+    "community_college_id": 31,
+    "college_name": "Los Angeles Harbor College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to Los Angeles Harbor College's official 2025-2026 master catalog. The Biology A.S.-T. (Academic Plan H040145H) is extracted from printed pages 40-41, including its paired physics options and the catalog's Cal-GETC overlap arithmetic."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=798&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "52097",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/40145-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer (AS-T) Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as Academic Plan H040145H in the official 2025-2026 master catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.lahc.edu/sites/lahc.edu/files/2025-12/LAHC%20Master%20Catalog%20File%202025%20Final%20Draft%C2%A0%281%29%20-%20Updated%2012.17.25.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lahc.edu/sites/lahc.edu/files/2025-12/LAHC%20Master%20Catalog%20File%202025%20Final%20Draft%C2%A0%281%29%20-%20Updated%2012.17.25.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 40-41, Biology, Associate in Science for Transfer (AS-T) Degree, Academic Plan H040145H"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOLOGY", "number": "006", "title_seen": "General Biology I", "units_seen": 5},
+            {"prefix": "BIOLOGY", "number": "007", "title_seen": "General Biology II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "101", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "102", "title_seen": "General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — calculus choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "265", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5},
+            {"prefix": "MATH", "number": "265S", "title_seen": "Calculus with Analytic Geometry I with Support", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSICS 006 and PHYSICS 007 (8 units), or complete PHYSICS 037 and PHYSICS 038 (10 units); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYSICS", "number": "006", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYSICS", "number": "007", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYSICS", "number": "037", "title_seen": "Physics for Engineers and Scientists I", "units_seen": 5},
+            {"prefix": "PHYSICS", "number": "038", "title_seen": "Physics for Engineers and Scientists II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "choice_structure_seen": "The catalog identifies 10 major units as double-countable and therefore shows 24 additional Cal-GETC units beyond the major.",
+          "courses": []
+        },
+        {
+          "label_seen": "Additional CSU-transferable units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 1,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 33-35 major units, 34 Cal-GETC units, 10 double-counted units, 24 additional Cal-GETC units, and 1-3 additional CSU-transferable units for a 60-unit total."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 STEM degree inventory lists the general Biology A.S.-T.; no general local Biology A.S. or A.A. is listed."
+}

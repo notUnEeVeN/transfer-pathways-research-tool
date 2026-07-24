@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "community_college_id": 53,
+    "college_name": "Mt. San Jacinto College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T02:20:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog, pages 200-202; multi-course calculus options are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1060&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45772",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33297-economics"
+      }
+    ]
+  },
+  "degrees": [{
+    "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as an Economics AA-T.","catalog_status_seen":"Active in Mt. San Jacinto College's official 2025-2026 catalog.","catalog_url":"https://catalog.msjc.edu/pdf/MSJC%202025-2026%20Catalog_100925.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":18,"major_units_max":25,"extraction_confidence":0.98,
+    "sources":[{"source_type":"official_college_catalog_pdf","url":"https://catalog.msjc.edu/pdf/MSJC%202025-2026%20Catalog_100925.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 200-202, Economics AA-T requirements"}],
+    "major_groups":[
+      {"label_seen":"Required economics and statistics core","rule":"choose_units","choose_n":null,"units_min":9,"units_max":9,"ge_area":null,"choice_structure_seen":"Complete one macroeconomics version, one microeconomics version, and one statistics version; honors and regular variants are mutually exclusive.","courses":[{"prefix":"ECON","number":"201","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"201H","title_seen":"Honors Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"202","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"202H","title_seen":"Honors Principles of Microeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":3},{"prefix":"STAT","number":"C1000H","title_seen":"Honors Introduction to Statistics","units_seen":3}]},
+      {"label_seen":"Calculus requirement - select one published option","rule":"choose_units","choose_n":null,"units_min":3,"units_max":8,"ge_area":null,"choice_structure_seen":"Complete MATH 135 alone, MATH 211/211H alone, or the two-course MATH 211-212 regular or honors sequence.","courses":[{"prefix":"MATH","number":"135","title_seen":"Calculus for Social Science and Business","units_seen":3},{"prefix":"MATH","number":"211","title_seen":"Calculus I","units_seen":4,"bundle_id":"calc_sequence"},{"prefix":"MATH","number":"211H","title_seen":"Honors Calculus I","units_seen":4,"bundle_id":"calc_sequence_h"},{"prefix":"MATH","number":"212","title_seen":"Calculus II","units_seen":4,"bundle_id":"calc_sequence"},{"prefix":"MATH","number":"212H","title_seen":"Honors Calculus II","units_seen":4,"bundle_id":"calc_sequence_h"}]},
+      {"label_seen":"List A - select one option","rule":"choose_units","choose_n":null,"units_min":3,"units_max":8,"ge_area":null,"choice_structure_seen":"Select a listed 3-4 unit course, a published calculus sequence, or an eligible unused required-core option as printed.","courses":[{"prefix":"ACCT","number":"124","title_seen":"Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"124H","title_seen":"Honors Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"125","title_seen":"Managerial Accounting","units_seen":3},{"prefix":"ACCT","number":"125H","title_seen":"Honors Managerial Accounting","units_seen":3},{"prefix":"BADM","number":"104","title_seen":"Business Communication","units_seen":3},{"prefix":"BADM","number":"104H","title_seen":"Honors Business Communication","units_seen":3},{"prefix":"MATH","number":"212","title_seen":"Calculus II","units_seen":4},{"prefix":"MATH","number":"212H","title_seen":"Honors Calculus II","units_seen":4},{"prefix":"MATH","number":"211","title_seen":"Calculus I","units_seen":4,"bundle_id":"calc_i_ii"},{"prefix":"MATH","number":"212","title_seen":"Calculus II","units_seen":4,"bundle_id":"calc_i_ii"},{"prefix":"MATH","number":"211H","title_seen":"Honors Calculus I","units_seen":4,"bundle_id":"calc_i_ii_h"},{"prefix":"MATH","number":"212H","title_seen":"Honors Calculus II","units_seen":4,"bundle_id":"calc_i_ii_h"}]},
+      {"label_seen":"List B - select one or an unused List A option","rule":"choose_units","choose_n":null,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select MATH 213/213H, MATH 218, or any List A option not already used.","courses":[{"prefix":"MATH","number":"213","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"213H","title_seen":"Honors Calculus III","units_seen":5},{"prefix":"MATH","number":"218","title_seen":"Linear Algebra","units_seen":3}]},
+      {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+      {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+    ],"notes":"The catalog prints an 18-25 unit major. Some calculus and unused-list options overlap, so the printed range controls over naive group arithmetic."
+  }],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope Economics AA-T."
+}

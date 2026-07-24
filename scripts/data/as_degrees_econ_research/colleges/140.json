@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "community_college_id": 140,
+    "college_name": "College of the Canyons",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:14:00+00:00",
+    "resume_note": "First-pass extraction complete from pages 130-131 of College of the Canyons' official revised 2025-2026 catalog PDF."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=282&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50693",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37867-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Arts for Transfer Degree: Economics",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the Economics AA-T and prints its economics, statistics, calculus, and two elective-list requirements.",
+      "catalog_status_seen": "Published in College of the Canyons' official 2025-2026 catalog; the catalog states that an associate degree other than this transfer award is not available in Economics.",
+      "catalog_url": "https://www.canyons.edu/_documents/administration/academicaffairs/collegecatalog/2025-26-Catalog-Rev110625-508.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 26,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://www.canyons.edu/_documents/administration/academicaffairs/collegecatalog/2025-26-Catalog-Rev110625-508.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 130-131: Associate in Arts for Transfer Degree: Economics; Program Requirements, Units Required 21-26"}],
+      "major_groups": [
+        {"label_seen":"Program Requirements - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"201","title_seen":"Macroeconomics","units_seen":3},{"prefix":"ECON","number":"201H","title_seen":"Macroeconomics - Honors","units_seen":3}]},
+        {"label_seen":"Program Requirements - microeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"202","title_seen":"Microeconomics","units_seen":3},{"prefix":"ECON","number":"202H","title_seen":"Microeconomics - Honors","units_seen":3}]},
+        {"label_seen":"Plus one statistics course from the following","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"ECON","number":"291","title_seen":"Statistical Methods in Business and Economics","units_seen":4},{"prefix":"PSYCH","number":"104","title_seen":"Statistics for the Behavioral Sciences","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":5}]},
+        {"label_seen":"Plus one calculus course from the following","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"211","title_seen":"Calculus I","units_seen":5},{"prefix":"MATH","number":"240","title_seen":"Calculus for Business and Social Science","units_seen":5}]},
+        {"label_seen":"Plus one course from the following for three to five units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUS","number":"201","title_seen":"Principles of Accounting I","units_seen":5},{"prefix":"BUS","number":"202","title_seen":"Principles of Accounting II","units_seen":5},{"prefix":"CAWT","number":"101","title_seen":"Introduction to Computers","units_seen":3},{"prefix":"CAWT","number":"116","title_seen":"Business Communications","units_seen":3},{"prefix":"CAWT","number":"140","title_seen":"Microsoft Office","units_seen":3},{"prefix":"ENGL","number":"204","title_seen":"Technical Report Writing","units_seen":3},{"prefix":"MATH","number":"212","title_seen":"Calculus II","units_seen":5}]},
+        {"label_seen":"Plus one course from the following that has not already been used above for three to five units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"The catalog repeats the first elective pool and adds ECON 170/170H, MATH 213, and MATH 214; an option already used above cannot be reused.","courses":[{"prefix":"BUS","number":"201","title_seen":"Principles of Accounting I","units_seen":5},{"prefix":"BUS","number":"202","title_seen":"Principles of Accounting II","units_seen":5},{"prefix":"CAWT","number":"101","title_seen":"Introduction to Computers","units_seen":3},{"prefix":"CAWT","number":"116","title_seen":"Business Communications","units_seen":3},{"prefix":"CAWT","number":"140","title_seen":"Microsoft Office","units_seen":3},{"prefix":"ECON","number":"170","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"ECON","number":"170H","title_seen":"Economic History of the United States - Honors","units_seen":3},{"prefix":"ENGL","number":"204","title_seen":"Technical Report Writing","units_seen":3},{"prefix":"MATH","number":"212","title_seen":"Calculus II","units_seen":5},{"prefix":"MATH","number":"213","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"214","title_seen":"Linear Algebra","units_seen":4}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints Units Required 21-26. STAT C1000H is printed as 5 units, while STAT C1000E is printed as 4 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The catalog explicitly says an associate degree is not available in Economics apart from the listed Economics AA-T."
+}

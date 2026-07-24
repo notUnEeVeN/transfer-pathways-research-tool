@@ -1,0 +1,363 @@
+{
+  "_meta": {
+    "community_college_id": 145,
+    "college_name": "Folsom Lake College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:09+00:00",
+    "updated_at": "2026-07-23T20:07:53+00:00",
+    "resume_note": "Pinned to FLC's official August 1, 2025 archive of the 2025-2026 catalog. Preserve paired physics choices in the AS-T when this research is compiled into the runtime schema."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=574&search_string=biology",
+    "checked_at": "2026-07-23T19:22:11+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48284",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35158-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.S.-T. in Biology",
+      "award_seen": "A.S.-T.",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires a physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in FLC's official August 1, 2025 archive of the 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://flc.losrios.edu/flc/main/doc/instruction/catalog-archive/2025-26-catalog-20250801.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://flc.losrios.edu/flc/main/doc/instruction/catalog-archive/2025-26-catalog-20250801.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 168, A.S.-T. in Biology"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Degree Requirements — required biology, chemistry, and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 28,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "400",
+              "title_seen": "Principles of Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "411",
+              "title_seen": "Plant Science",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "420",
+              "title_seen": "Principles of Zoology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "400",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "401",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "355",
+              "title_seen": "Calculus for Biology and Medicine I",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Degree Requirements — one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 350 and PHYS 360, or complete PHYS 411 and PHYS 421; courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "350",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "360",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "411",
+              "title_seen": "Mechanics of Solids and Fluids",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "421",
+              "title_seen": "Electricity and Magnetism",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) Requirement",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The degree page requires Cal-GETC but does not restate its unit minimum, so units_min is left null. The flat choose_units vocabulary cannot enforce paired physics sequences by itself; preserve choice_structure_seen during compilation."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "A.S. in Biological Sciences",
+      "award_seen": "A.S.",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as the general local Biological Sciences A.S. in FLC's official August 1, 2025 archive of the 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://flc.losrios.edu/flc/main/doc/instruction/catalog-archive/2025-26-catalog-20250801.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 33,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://flc.losrios.edu/flc/main/doc/instruction/catalog-archive/2025-26-catalog-20250801.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 172-173, A.S. in Biological Sciences"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Degree Requirements — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "CHEM",
+              "number": "400",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "401",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "400",
+              "title_seen": "Principles of Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "420",
+              "title_seen": "Principles of Zoology",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Degree Requirements — botany or plant science",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "410",
+              "title_seen": "Principles of Botany",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "411",
+              "title_seen": "Plant Science",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "A minimum of 8 units from the following",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "323",
+              "title_seen": "Plants and People",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "350",
+              "title_seen": "Environmental Biology",
+              "units_seen": 3
+            },
+            {
+              "prefix": "BIOL",
+              "number": "380",
+              "title_seen": "Natural History Field Studies: Coastal Ecosystems",
+              "units_seen": 1
+            },
+            {
+              "prefix": "BIOL",
+              "number": "382",
+              "title_seen": "Natural History Field Studies: Desert Ecosystems",
+              "units_seen": 1
+            },
+            {
+              "prefix": "BIOL",
+              "number": "384",
+              "title_seen": "Natural History Field Study of Forest Ecosystems",
+              "units_seen": 1
+            },
+            {
+              "prefix": "BIOL",
+              "number": "386",
+              "title_seen": "Natural History Field Studies: Marine Ecosystems",
+              "units_seen": 1
+            },
+            {
+              "prefix": "BIOL",
+              "number": "388",
+              "title_seen": "Natural History Field Studies: River Ecosystems",
+              "units_seen": 1
+            },
+            {
+              "prefix": "BIOL",
+              "number": "389",
+              "title_seen": "Natural History Field Studies: Wetland Ecosystems",
+              "units_seen": 1
+            },
+            {
+              "prefix": "CHEM",
+              "number": "420",
+              "title_seen": "Organic Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "421",
+              "title_seen": "Organic Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "400",
+              "title_seen": "Calculus I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "401",
+              "title_seen": "Calculus II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYS",
+              "number": "350",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "360",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "411",
+              "title_seen": "Mechanics of Solids and Fluids",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "421",
+              "title_seen": "Electricity and Magnetism",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "431",
+              "title_seen": "Heat, Waves, Light and Modern Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "STAT",
+              "number": "C1000",
+              "title_seen": "Introduction to Statistics",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Local General Education Pattern or California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Local General Education Pattern or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Sufficient electives for a total of at least 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog permits either FLC local GE or Cal-GETC and does not print a GE unit minimum in this degree block."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog provides two in-scope general Biology degrees: a Biology AS-T and a local Biological Sciences A.S.; no general Biology A.A. is listed. Other awards are intentionally excluded from this pinned in-scope batch."
+}

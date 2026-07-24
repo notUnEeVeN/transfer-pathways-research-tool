@@ -341,7 +341,8 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
   // own survey — never CS's data under another major's name.
   const record = majorSlug === 'cs' ? (availability?.types?.[selectedSlot] || null) : null
   const subject = major?.label || 'Computer Science'
-  const programLine = [subject, record?.degree_title_seen || slotLabel(selectedSlot),
+  const programLine = [subject, record?.degree_title_seen
+    || slotLabel(selectedSlot, major?.degreeSlotLabels),
     record?.catalog_year].filter(Boolean).join(' · ')
 
   return (
@@ -356,7 +357,10 @@ function AssociateDegreeSection({ collegeId, availability, major = null }) {
       <div className='mt-4 flex justify-end'>
         <Tabs value={selectedSlot}
           onChange={(slot) => setSelection({ collegeId, slot })}
-          options={AS_DEGREE_SLOTS.map((slot) => ({ value: slot, label: slotLabel(slot) }))} />
+          options={AS_DEGREE_SLOTS.map((slot) => ({
+            value: slot,
+            label: slotLabel(slot, major?.degreeSlotLabels),
+          }))} />
       </div>
       {/* The record, read against the catalog and corrected in place — or, for
           an empty slot, created there. */}

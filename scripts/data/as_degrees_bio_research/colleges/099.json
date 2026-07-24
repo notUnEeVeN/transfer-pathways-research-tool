@@ -1,0 +1,177 @@
+{
+  "_meta": {
+    "community_college_id": 99,
+    "college_name": "Cuyamaca College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:26:53+00:00",
+    "updated_at": "2026-07-23T21:33:00+00:00",
+    "resume_note": "Complete first-pass extraction from Cuyamaca College's official 2025-2026 catalog PDF. Biology for Transfer AS-T and Biological Sciences AS are modeled; Marine Biology and Pre-Allied Health variants remain outside scope."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=439&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46883",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35159-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer (AS-T)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and both courses in a physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.cuyamaca.edu/academics/class-schedules-catalog-and-calendars/files/2025-26-catalog/cuyamaca-2025-2026-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive",
+          "url": "https://www.cuyamaca.edu/academics/class-schedules-catalog-and-calendars/files/2025-26-catalog/cuyamaca-2025-2026-catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 176, Biology for Transfer (AS-T) — Associate in Science for Transfer Degree Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 9,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "230", "title_seen": "Principles of Cellular, Molecular and Evolutionary Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "240", "title_seen": "Principles of Ecology, Evolution and Organismal Biology", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 23,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "141", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "142", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "180", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5 },
+            { "prefix": "PHYC", "number": "130", "title_seen": "Fundamentals of Physics", "units_seen": 4 },
+            { "prefix": "PHYC", "number": "131", "title_seen": "Fundamentals of Physics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List B",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "General Education Requirements (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 0,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "Although the table labels supporting courses as List A and List B, every listed row is included in the printed 36-unit total: 9 required-core units, 23 List A units, and 4 List B units. The catalog prints 10 double-counted units and zero elective units."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Sciences Associate in Science",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.cuyamaca.edu/academics/class-schedules-catalog-and-calendars/files/2025-26-catalog/cuyamaca-2025-2026-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 41,
+      "major_units_max": 41,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive",
+          "url": "https://www.cuyamaca.edu/academics/class-schedules-catalog-and-calendars/files/2025-26-catalog/cuyamaca-2025-2026-catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 176-177, Biological Sciences Associate in Science — Associate in Science Degree Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Associate in Science Degree Requirements — fixed courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 37,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "230", "title_seen": "Principles of Cellular, Molecular and Evolutionary Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "240", "title_seen": "Principles of Ecology, Evolution and Organismal Biology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "141", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "142", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "231", "title_seen": "Organic Chemistry I", "units_seen": 5 },
+            { "prefix": "MATH", "number": "180", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5 },
+            { "prefix": "PHYC", "number": "130", "title_seen": "Fundamentals of Physics", "units_seen": 4 },
+            { "prefix": "PHYC", "number": "131", "title_seen": "Fundamentals of Physics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Statistics choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4 },
+            { "prefix": "PSY", "number": "215", "title_seen": "Statistics for the Behavioral Sciences", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "General Education Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cuyamaca College associate-degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The fixed rows total 37 units, and either four-unit statistics course brings the printed major total to 41."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Marine Biology AS and Biological Sciences: Pre-Allied Health AS are specialized variants and intentionally excluded."
+}

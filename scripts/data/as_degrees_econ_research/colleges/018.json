@@ -1,0 +1,133 @@
+{
+  "_meta": {
+    "community_college_id": 18,
+    "college_name": "Las Positas College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:38+00:00",
+    "resume_note": "First-pass extraction complete from the official 2025-2026 degree page. Human review should note that the title and requirements say AA-T while one introductory sentence says Associate in Science."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=871&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49515",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36227-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts for Transfer (AA-T)",
+      "award_seen": "Associate in Arts for Transfer (AA-T)",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The page states that the major requirements align with the Intersegmental Transfer Model Curriculum for Economics; no local TMC revision is printed.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog and current degree index; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://laspositascollege.edu/catalog/2025-2026/econ/economics-aa-t.php",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 25,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_page",
+          "url": "https://laspositascollege.edu/catalog/2025-2026/econ/economics-aa-t.php",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics AA-T page: Required Core, List A, List B, 20-25 major units, 35-40 additional GE/elective units, and 60-unit total"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — economics and statistics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "1", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "2", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core — calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "1", "title_seen": "Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "34", "title_seen": "Business Calculus", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: Select One (3-5 Units)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BUSN", "number": "1A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUSN", "number": "1B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "CS", "number": "1", "title_seen": "Computing Fundamentals I", "units_seen": 4},
+            {"prefix": "CS", "number": "7", "title_seen": "Introduction to Computer Programming Concepts", "units_seen": 3},
+            {"prefix": "CIS", "number": "50", "title_seen": "Introduction to Computing Information Technology", "units_seen": 3},
+            {"prefix": "MATH", "number": "2", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "MATH", "number": "33", "title_seen": "Finite Mathematics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B: Select One (3-5 Units) — any unused List A course or one listed below",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Any List A course not already used may satisfy List B; the List A pool is repeated here so the complete raw choice set remains explicit.",
+          "courses": [
+            {"prefix": "BUSN", "number": "1A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUSN", "number": "1B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "CS", "number": "1", "title_seen": "Computing Fundamentals I", "units_seen": 4},
+            {"prefix": "CS", "number": "7", "title_seen": "Introduction to Computer Programming Concepts", "units_seen": 3},
+            {"prefix": "CIS", "number": "50", "title_seen": "Introduction to Computing Information Technology", "units_seen": 3},
+            {"prefix": "MATH", "number": "2", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "MATH", "number": "33", "title_seen": "Finite Mathematics", "units_seen": 4},
+            {"prefix": "MATH", "number": "3", "title_seen": "Multivariable Calculus", "units_seen": 5},
+            {"prefix": "MATH", "number": "7", "title_seen": "Elementary Linear Algebra", "units_seen": 3.5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Additional General Education and Elective Units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 35,
+          "units_max": 40,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The degree heading, requirements text, URL, and program index identify an AA-T. One sentence in the program description instead says Associate in Science in Economics for Transfer; this appears to be a catalog copy error and is preserved for human review. The page prints 20-25 major units, 35-40 additional GE/elective units, and 60 total units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 degree index lists only the Economics AA-T. No general local Economics AA or AS was identified; adjacent awards were excluded."
+}

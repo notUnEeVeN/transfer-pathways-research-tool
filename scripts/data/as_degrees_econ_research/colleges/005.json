@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "community_college_id": 5,
+    "college_name": "College of San Mateo",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:36:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 online catalog; all elective choices remain linked for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1667&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45549",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33258-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts Degree for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog identifies the program as the Economics AA-T and publishes the transfer-model core and Lists A/B.",
+      "catalog_status_seen": "Active in College of San Mateo's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.collegeofsanmateo.edu/current/programs/economics-aa-t.php",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://catalog.collegeofsanmateo.edu/current/programs/economics-aa-t.php",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics Associate in Arts Degree for Transfer, Program Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "ECON", "number": "100", "title_seen": "Principles of Macroeconomics", "units_seen": 3 },
+            { "prefix": "ECON", "number": "102", "title_seen": "Principles of Microeconomics", "units_seen": 3 },
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Required Core - select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "241", "title_seen": "Applied Calculus I", "units_seen": 5 },
+            { "prefix": "MATH", "number": "251", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A - select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "125", "title_seen": "Elementary Finite Mathematics", "units_seen": 3 },
+            { "prefix": "MATH", "number": "252", "title_seen": "Calculus with Analytic Geometry II", "units_seen": 5 },
+            { "prefix": "ACTG", "number": "121", "title_seen": "Financial Accounting", "units_seen": 4 },
+            { "prefix": "ACTG", "number": "131", "title_seen": "Managerial Accounting", "units_seen": 4 },
+            { "prefix": "BUS", "number": "103", "title_seen": "Business Information Systems", "units_seen": 3 }
+          ]
+        },
+        {
+          "label_seen": "List B - select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select any List A course not already used, or MATH 253, or MATH 270.",
+          "courses": [
+            { "prefix": "MATH", "number": "125", "title_seen": "Elementary Finite Mathematics", "units_seen": 3, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "MATH", "number": "252", "title_seen": "Calculus with Analytic Geometry II", "units_seen": 5, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "ACTG", "number": "121", "title_seen": "Financial Accounting", "units_seen": 4, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "ACTG", "number": "131", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "BUS", "number": "103", "title_seen": "Business Information Systems", "units_seen": 3, "alternative_seen": "Any List A course not already used" },
+            { "prefix": "MATH", "number": "253", "title_seen": "Calculus with Analytic Geometry III", "units_seen": 5 },
+            { "prefix": "MATH", "number": "270", "title_seen": "Linear Algebra", "units_seen": 3 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Additional CSU- or UC-transferable electives to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The official catalog prints a 21-25 major-unit range based on List A and List B selections."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the Economics AA-T is listed in the official 2025-2026 program page."
+}

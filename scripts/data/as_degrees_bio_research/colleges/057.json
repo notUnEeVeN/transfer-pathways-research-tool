@@ -1,0 +1,156 @@
+{
+  "_meta": {
+    "community_college_id": 57,
+    "college_name": "Santa Rosa Junior College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to SRJC's official 2025-2026 catalog List of Majors. Biology AS and Biology AS-T are fully extracted; preserve the catalog's unusual math note and physics-choice wording."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1752&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [{"statewide_program_id": "51207", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/38700-biology"}]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology (AS-T)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree retains an 8-9 unit physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Program of Study 002077 is listed as term effective Fall 2025 in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog2025-2026.santarosa.edu/catalog-2025-2026/2025-2026-list-majors",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 38,
+      "major_units_max": 38,
+      "extraction_confidence": 0.97,
+      "sources": [{"source_type": "official_college_catalog", "url": "https://catalog2025-2026.santarosa.edu/catalog-2025-2026/2025-2026-list-majors", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Biology (AS-T), Program of Study Code 002077, Term Effective Fall 2025, Biology AS-T Requirements"}],
+      "major_groups": [
+        {
+          "label_seen": "Biology AS-T Requirements — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 25,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "2.1", "title_seen": "Fundamentals of Biology (Cell and Molecular)", "units_seen": 5},
+            {"prefix": "BIO", "number": "2.2", "title_seen": "Fundamentals of Biology (Evolution, Genetics, and Zoology)", "units_seen": 5},
+            {"prefix": "BIO", "number": "2.3", "title_seen": "Fundamentals of Biology (Botany and Ecology)", "units_seen": 5},
+            {"prefix": "CHEM", "number": "3A", "title_seen": "General Chemistry Part 1: Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "3AL", "title_seen": "General Chemistry Part 1: Lab", "units_seen": 2},
+            {"prefix": "CHEM", "number": "3B", "title_seen": "General Chemistry Part 2", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Complete at least 5 units of mathematics",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 5,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "1A", "title_seen": "Calculus, First Course", "units_seen": 5},
+            {"prefix": "MATH", "number": "27", "title_seen": "Precalculus Algebra and Trigonometry", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Complete at least 8 units from one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 9,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 20A and PHYS 20B (8 units), or complete PHYS 40 and PHYS 42 (9 units). Courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "20A", "title_seen": "General Physics Part I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "20B", "title_seen": "General Physics Part II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "40", "title_seen": "Classical Mechanics for Scientists and Engineers", "units_seen": 5},
+            {"prefix": "PHYS", "number": "42", "title_seen": "Electricity and Magnetism for Scientists and Engineers", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "General education required for the Biology AS-T", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "Catalog describes IGETC for STEM; consult the 2025-2026 ADT rules for Fall 2025 Cal-GETC applicability", "courses": []},
+        {"label_seen": "Transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog note says MATH 15, MATH 16, or MATH 25 will also fulfill the AS-T math requirement, but does not place them in the formal 5-unit requirement table. That note is preserved here rather than silently changing the printed group. The program description still says IGETC for STEM while the catalog's general ADT section explains Fall 2025 Cal-GETC applicability; human review should reconcile the GE label."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology (AS)",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Program of Study 002018 is listed as term effective Fall 2025 in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog2025-2026.santarosa.edu/catalog-2025-2026/2025-2026-list-majors",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 41,
+      "major_units_max": 41,
+      "extraction_confidence": 0.95,
+      "sources": [{"source_type": "official_college_catalog", "url": "https://catalog2025-2026.santarosa.edu/catalog-2025-2026/2025-2026-list-majors", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Biology (AS), Program of Study Code 002018, Term Effective Fall 2025, Biology Major Core Requirements and Information Learning Resources Requirement"}],
+      "major_groups": [
+        {
+          "label_seen": "Biology Major Core Requirements — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 29,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIO", "number": "2.1", "title_seen": "Fundamentals of Biology (Cell and Molecular)", "units_seen": 5},
+            {"prefix": "BIO", "number": "2.2", "title_seen": "Fundamentals of Biology (Evolution, Genetics, and Zoology)", "units_seen": 5},
+            {"prefix": "BIO", "number": "2.3", "title_seen": "Fundamentals of Biology (Botany and Ecology)", "units_seen": 5},
+            {"prefix": "BIO", "number": "10", "title_seen": "Introduction to Principles of Biology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "3A", "title_seen": "General Chemistry Part 1: Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "3AL", "title_seen": "General Chemistry Part 1: Lab", "units_seen": 2},
+            {"prefix": "CHEM", "number": "3B", "title_seen": "General Chemistry Part 2", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Complete at least 7 units from the listed physics courses",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 7,
+          "units_max": 9,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog lists PHYS 20A, PHYS 20B, PHYS 40 and PHYS 41 beneath a 7-unit minimum. Typical intact pairs are PHYS 20A + 20B (8 units) or PHYS 40 + 41 (9 units), but the catalog phrases this as any combination totaling at least 7 units.",
+          "courses": [
+            {"prefix": "PHYS", "number": "20A", "title_seen": "General Physics Part I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "20B", "title_seen": "General Physics Part II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "40", "title_seen": "Classical Mechanics for Scientists and Engineers", "units_seen": 5},
+            {"prefix": "PHYS", "number": "41", "title_seen": "Waves, Optics, and Thermodynamics for Scientists & Engineers", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Complete at least 4 units of mathematics",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 4,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "1A", "title_seen": "Calculus, First Course", "units_seen": 5},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "MATH", "number": "27", "title_seen": "Precalculus Algebra and Trigonometry", "units_seen": 6}
+          ]
+        },
+        {
+          "label_seen": "Information Learning Resources Requirement",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 1,
+          "ge_area": null,
+          "courses": [{"prefix": "LIR", "number": "10", "title_seen": "Introduction to Information Literacy", "units_seen": 1}]
+        },
+        {"label_seen": "Additional SRJC associate-degree graduation and general education requirements", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "SRJC associate-degree general education", "courses": []},
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "SRJC prints 40.00 units for the Biology Major Core and 41.00 units for the program including LIR 10. The component minima can produce more than the printed minimum depending on choices; no attempt was made to override the catalog total."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 list of majors publishes one Biology AS-T and one broad Biology AS."
+}

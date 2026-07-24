@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "community_college_id": 104,
+    "college_name": "Cerritos College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted the Economics AA and Economics AA-T from Cerritos College's official 2025-2026 catalog PDF, printed pages 169-170."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=330&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46776",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33534-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics (A.A.)","award_seen":"Associate of Arts","tmc_version_seen":null,"catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":17,"major_units_max":17.5,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Cerritos Catalog 2025-26, printed page 169, Economics (A.A.)"}],
+      "major_groups":[
+        {"label_seen":"Program Requirements - economics","rule":"all","choose_n":null,"units_min":9,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Economic Issues","units_seen":3},{"prefix":"ECON","number":"201M","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"202M","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Program Requirements - statistics alternative","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":4.5,"ge_area":null,"courses":[{"prefix":"ECON","number":"210","title_seen":"Applied Introductory Statistics for Economics","units_seen":"4.0-4.5"},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":"4.0-4.5"},{"prefix":"MATH","number":"112S","title_seen":"Enhanced Elementary Statistics","units_seen":"4.0-4.5"},{"prefix":"PSYC","number":"210","title_seen":"Elementary Statistics","units_seen":"4.0-4.5"}]},
+        {"label_seen":"Program Requirements - calculus","rule":"all","choose_n":null,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"116","title_seen":"Calculus for Managerial, Biological and Social Sciences","units_seen":4}]},
+        {"label_seen":"Cerritos College general education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cerritos College associate-degree general education","courses":[]},
+        {"label_seen":"Electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The program table lists ECON 101 in addition to ECON 201M and ECON 202M and prints a 17-17.5-unit total."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics (AA-T)","award_seen":"Associate of Arts in Economics for Transfer (AA-T); adjacent heading says Associate in Science for Transfer (AS-T)","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":23.5,"extraction_confidence":0.97,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.cerritos.edu/curriculum/_includes/docs/catalog-pdf/2025/DIGITAL_Cerritos-Catalog_2025-26_v8_with-photos.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Cerritos Catalog 2025-26, printed pages 169-170, Economics (AA-T)"}],
+      "major_groups":[
+        {"label_seen":"Required Core Courses - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"201M","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"202M","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Core Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":4.5,"ge_area":null,"courses":[{"prefix":"ECON","number":"210","title_seen":"Applied Introductory Statistics for Economics","units_seen":"4.0-4.5"},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":"4.0-4.5"},{"prefix":"MATH","number":"112S","title_seen":"Enhanced Elementary Statistics","units_seen":"4.0-4.5"},{"prefix":"PSYC","number":"210","title_seen":"Elementary Statistics","units_seen":"4.0-4.5"}]},
+        {"label_seen":"Required Core Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"116","title_seen":"Calculus for Managerial, Biological and Social Sciences","units_seen":4},{"prefix":"MATH","number":"170","title_seen":"Analytic Geometry and Calculus I","units_seen":4}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"115","title_seen":"Finite Mathematics","units_seen":null},{"prefix":"MATH","number":"190","title_seen":"Analytic Geometry and Calculus II","units_seen":null},{"prefix":"ACCT","number":"101","title_seen":"Fundamentals of Accounting I","units_seen":null},{"prefix":"ACCT","number":"102","title_seen":"Fundamentals of Accounting II","units_seen":null},{"prefix":"CIS","number":"101","title_seen":"Introduction to Computer Information Systems","units_seen":null},{"prefix":"BCOT","number":"247","title_seen":"Managerial Business Communications","units_seen":null}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select an unused List A course or any CSU-transferable Economics course; the table specifically prints ECON 101, ECON 102/WGS 206, and MATH 225.","courses":[{"prefix":"ECON","number":"101","title_seen":"Economic Issues and Policy","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Women in the Global Economy","units_seen":3},{"prefix":"WGS","number":"206","title_seen":"Women in the Global Economy","units_seen":3},{"prefix":"MATH","number":"225","title_seen":"Calculus III","units_seen":5}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog contains a source-label inconsistency: the program title and prose say Economics AA-T/Associate of Arts, while the subheading and generic completion block say AS-T/Associate in Science. The title-specific AA-T wording is used for normalization and both forms are preserved in award_seen."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Two in-scope Economics awards are published in the official 2025-2026 catalog."
+}

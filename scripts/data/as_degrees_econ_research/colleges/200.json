@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "community_college_id": 200,
+    "college_name": "Madera Community College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:44+00:00",
+    "updated_at": "2026-07-23T23:55:00+00:00",
+    "resume_note": "First-pass extraction complete from page 71 of Madera Community College's official 2025-2026 catalog; the catalog addendum contains no Economics program revision."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3824&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51751",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39520-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics (Major #M.7200.AA-T) Associate in Arts for Transfer Degree",
+      "award_seen": "Associate in Arts for Transfer Degree",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the Economics AA-T and prints the standard economics, calculus, statistics, List A, and List B structure.",
+      "catalog_status_seen": "Published in Madera Community College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.maderacollege.edu/_documents/admissions-and-aid/college-catalog/catalog_2025_2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.maderacollege.edu/_documents/admissions-and-aid/college-catalog/catalog_2025_2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 71: Economics (Major #M.7200.AA-T), Total Units for the Major 21-25"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core - economics and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 11,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "1A", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "1B", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "MATH", "number": "5A", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Core - select one statistics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BA", "number": "23", "title_seen": "Elementary Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: Select 1 course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCTG", "number": "4A", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCTG", "number": "4B", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "BA", "number": "18", "title_seen": "Business Law and the Legal Environment", "units_seen": 4},
+            {"prefix": "BA", "number": "39", "title_seen": "Finite Mathematics for Business", "units_seen": 3},
+            {"prefix": "CSCI", "number": "40", "title_seen": "Programming Concepts and Methodology I", "units_seen": 4},
+            {"prefix": "IS", "number": "15", "title_seen": "Computer Concepts", "units_seen": 3},
+            {"prefix": "IS", "number": "47", "title_seen": "Visual Basic", "units_seen": 3},
+            {"prefix": "MATH", "number": "5B", "title_seen": "Calculus II", "units_seen": 4},
+            {"prefix": "MATH", "number": "17", "title_seen": "Differential Equations and Linear Algebra", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List B: Select one course (catalog heading prints 3-4 units)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select an unused List A course or MATH 6. Although the heading prints 3-4 units, MATH 6 and MATH 17 are each 5 units and the catalog's total-major maximum is 25.",
+          "courses": [
+            {"prefix": "ACCTG", "number": "4A", "title_seen": "Financial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "ACCTG", "number": "4B", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "BA", "number": "18", "title_seen": "Business Law and the Legal Environment", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "BA", "number": "39", "title_seen": "Finite Mathematics for Business", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "CSCI", "number": "40", "title_seen": "Programming Concepts and Methodology I", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "IS", "number": "15", "title_seen": "Computer Concepts", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "IS", "number": "47", "title_seen": "Visual Basic", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MATH", "number": "5B", "title_seen": "Calculus II", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MATH", "number": "17", "title_seen": "Differential Equations and Linear Algebra", "units_seen": 5, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MATH", "number": "6", "title_seen": "Calculus III", "units_seen": 5, "alternative_seen": "List B"}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints Total Units for the Major as 21-25. Its List B heading prints 3-4 units even though a listed course is 5 units; the course-level maximum and official total-major range are preserved."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

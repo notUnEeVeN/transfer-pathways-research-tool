@@ -1,0 +1,226 @@
+{
+  "_meta": {
+    "community_college_id": 140,
+    "college_name": "College of the Canyons",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "Pinned to College of the Canyons' official 2025-2026 catalog. Both the Biology AS-T and local Biological Sciences AS are extracted; recommended courses are excluded from required groups."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=282&search_string=biology",
+    "checked_at": "2026-07-23T19:29:53+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48779",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35653-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Associate in Science for Transfer Degree",
+      "award_seen": "Associate in Science for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as an active degree in the official revised 2025-2026 catalog.",
+      "catalog_url": "https://www.canyons.edu/_documents/administration/academicaffairs/collegecatalog/2025-26-Catalog-Rev110625-508.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 31,
+      "major_units_max": 31,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.canyons.edu/_documents/administration/academicaffairs/collegecatalog/2025-26-Catalog-Rev110625-508.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "College of the Canyons 2025-2026 Catalog, printed pages 84-85, Biology Associate in Science for Transfer Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — biology",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete either BIOSCI 106 or BIOSCI 106H, and either BIOSCI 107 or BIOSCI 107H.",
+          "courses": [
+            {"prefix": "BIOSCI", "number": "106", "title_seen": "Organismal and Environmental Biology", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "106H", "title_seen": "Organismal and Environmental Biology — Honors", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "107", "title_seen": "Molecular and Cellular Biology", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "107H", "title_seen": "Molecular and Cellular Biology — Honors", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core — chemistry",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete either CHEM 201 or CHEM 201H, plus CHEM 202.",
+          "courses": [
+            {"prefix": "CHEM", "number": "201", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "201H", "title_seen": "General Chemistry I — Honors", "units_seen": 5},
+            {"prefix": "CHEM", "number": "202", "title_seen": "General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Core — calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "211", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Core — select one complete physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSIC 110 and 111, PHYSIC 210 and 211, or PHYSIC 220 and 221; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYSIC", "number": "110", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "111", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "210", "title_seen": "Physics with Calculus for Life Science Majors I", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "211", "title_seen": "Physics with Calculus for Life Science Majors II", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "220", "title_seen": "Physics for Scientists and Engineers: Mechanics of Solids and Fluids", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "221", "title_seen": "Physics for Scientists and Engineers: Electricity, Magnetism, and Waves", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 31 major units and 60 total units. It requires Cal-GETC but does not state a fixed Cal-GETC or elective subtotal on the program page, so those units_min values are left null. PHYSIC 222 is recommended, not required, and is therefore excluded."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Sciences Associate in Science Degree",
+      "award_seen": "Associate in Science Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as an active degree in the official revised 2025-2026 catalog.",
+      "catalog_url": "https://www.canyons.edu/_documents/administration/academicaffairs/collegecatalog/2025-26-Catalog-Rev110625-508.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.canyons.edu/_documents/administration/academicaffairs/collegecatalog/2025-26-Catalog-Rev110625-508.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "College of the Canyons 2025-2026 Catalog, printed page 85, Biological Sciences Associate in Science Degree"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Eight units from — introductory biology sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete either BIOSCI 106 or BIOSCI 106H, and either BIOSCI 107 or BIOSCI 107H.",
+          "courses": [
+            {"prefix": "BIOSCI", "number": "106", "title_seen": "Organismal and Environmental Biology", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "106H", "title_seen": "Organismal and Environmental Biology — Honors", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "107", "title_seen": "Molecular and Cellular Biology", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "107H", "title_seen": "Molecular and Cellular Biology — Honors", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Eight units from — biological sciences electives",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOSCI", "number": "115", "title_seen": "General Zoology", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "116", "title_seen": "General Botany", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "201", "title_seen": "Introduction to Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "202", "title_seen": "Introduction to Human Physiology", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "204", "title_seen": "Human Anatomy and Physiology I", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "205", "title_seen": "Human Anatomy and Physiology II", "units_seen": 4},
+            {"prefix": "BIOSCI", "number": "221", "title_seen": "Introduction to Microbiology", "units_seen": 5},
+            {"prefix": "BIOSCI", "number": "240", "title_seen": "Molecular Genetics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Sixteen units from — chemistry, mathematics, or physics",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 16,
+          "units_max": 16,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "201", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "201H", "title_seen": "General Chemistry I — Honors", "units_seen": 5},
+            {"prefix": "CHEM", "number": "202", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "255", "title_seen": "Organic Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "256", "title_seen": "Organic Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "211", "title_seen": "Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "212", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "PHYSIC", "number": "110", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "111", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "210", "title_seen": "Physics with Calculus for Life Science Majors I", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "211", "title_seen": "Physics with Calculus for Life Science Majors II", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "220", "title_seen": "Physics for Scientists and Engineers: Mechanics of Solids and Fluids", "units_seen": 4},
+            {"prefix": "PHYSIC", "number": "221", "title_seen": "Physics for Scientists and Engineers: Electricity, Magnetism, and Waves", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "College of the Canyons associate-degree general education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "COC Associate Degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 32 program-requirement units and 60 total degree units. It does not state fixed general-education or elective subtotals on the program page, so those units_min values are left null. BIOSCI 130, 132, 140, and 180 are recommended rather than required and are excluded."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Biology AS-T and Biological Sciences AS are included; specialized and certificate awards were ignored by scope."
+}

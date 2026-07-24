@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 137,
+    "college_name": "Santa Monica College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:11:00+00:00",
+    "resume_note": "First-pass extraction complete from Santa Monica College's official 2025-2026 Economics program PDF."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2109&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45380",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33827-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics, Associate Degree for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog calls this the Associate in Arts in Economics for Transfer and prints the Economics core, calculus, List A, and List B.",
+      "catalog_status_seen": "Active in Santa Monica College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.smc.edu/current/degrees-certificates-transfer/economics.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 25,
+      "extraction_confidence": 0.97,
+      "sources": [{"source_type":"official_college_catalog_program_pdf","url":"https://catalog.smc.edu/current/degrees-certificates-transfer/economics.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"SMC Catalog 2025-2026, Economics, Associate Degree for Transfer, Area of Emphasis course list"}],
+      "major_groups": [
+        {"label_seen":"Required Courses","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"1","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"2","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Elementary Statistics (formerly MATH 54)","units_seen":4}]},
+        {"label_seen":"Required Calculus Courses: select one","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"7","title_seen":"Calculus 1","units_seen":5},{"prefix":"MATH","number":"28","title_seen":"Calculus 1 for Business and Social Science","units_seen":5}]},
+        {"label_seen":"LIST A: Select 1 course from the following","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"The catalog also permits other SMC Modern Language courses as substitutions.","courses":[{"prefix":"ACCTG","number":"1","title_seen":"Introduction to Financial Accounting","units_seen":5},{"prefix":"ACCTG","number":"2","title_seen":"Corporate Financial and Managerial Accounting","units_seen":5},{"prefix":"ARABIC","number":"1","title_seen":"Elementary Arabic 1","units_seen":5},{"prefix":"BUS","number":"5","title_seen":"Business Law and the Legal Environment","units_seen":3},{"prefix":"BUS","number":"6","title_seen":"Advanced Business Law","units_seen":3},{"prefix":"BUS","number":"32","title_seen":"Business Communications","units_seen":3},{"prefix":"CHNESE","number":"1","title_seen":"Elementary Chinese 1","units_seen":5},{"prefix":"CHNESE","number":"2","title_seen":"Elementary Chinese 2","units_seen":5},{"prefix":"ENGL","number":"C1001","title_seen":"Critical Thinking and Writing","units_seen":3},{"prefix":"ENGL","number":"70","title_seen":"Technical Communication","units_seen":3},{"prefix":"HIST","number":"47","title_seen":"The Practice of History","units_seen":3},{"prefix":"MATH","number":"2","title_seen":"Precalculus","units_seen":5},{"prefix":"MATH","number":"8","title_seen":"Calculus 2","units_seen":5},{"prefix":"MATH","number":"29","title_seen":"Calculus 2 for Business and Social Science","units_seen":3},{"prefix":"SPAN","number":"1","title_seen":"Elementary Spanish I","units_seen":5},{"prefix":"SPAN","number":"2","title_seen":"Elementary Spanish II","units_seen":5},{"prefix":"SPAN","number":"3","title_seen":"Intermediate Spanish I","units_seen":5},{"prefix":"SPAN","number":"4","title_seen":"Intermediate Spanish II","units_seen":5},{"prefix":"SPAN","number":"11","title_seen":"Spanish for Heritage Speakers I","units_seen":5},{"prefix":"SPAN","number":"12","title_seen":"Spanish for Heritage Speakers II","units_seen":5}]},
+        {"label_seen":"LIST B: Select 1 course from the following","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Any course not used in List A may satisfy List B; only the separately listed List B courses are enumerated here.","courses":[{"prefix":"ECON","number":"5","title_seen":"International Political Economy: Intro. to Global Studies","units_seen":3},{"prefix":"ECON","number":"6","title_seen":"Contemporary Economic Problems","units_seen":3},{"prefix":"ECON","number":"15","title_seen":"Economic History of the U.S.","units_seen":3},{"prefix":"GLOBAL","number":"5","title_seen":"International Political Economy: Intro. to Global Studies","units_seen":3},{"prefix":"HIST","number":"15","title_seen":"Economic History of the U.S.","units_seen":3},{"prefix":"MATH","number":"11","title_seen":"Multivariable Calculus","units_seen":5},{"prefix":"MATH","number":"13","title_seen":"Linear Algebra","units_seen":3},{"prefix":"POL SC","number":"5","title_seen":"International Political Economy: Intro. to Global Studies","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog labels the Area of Emphasis as 18 units, while the listed SMC courses require 21-25 units (10 required, 5 calculus, and one 3-5 unit course from each list). The computed SMC course range is retained and the printed 18-unit label is flagged for human review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an associate award; transfer preparation without an award is excluded."
+}

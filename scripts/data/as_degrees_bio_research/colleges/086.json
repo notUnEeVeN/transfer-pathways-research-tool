@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "community_college_id": 86,
+    "college_name": "Los Angeles Pierce College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:17+00:00",
+    "updated_at": "2026-07-23T22:05:00+00:00",
+    "resume_note": "Pinned to Los Angeles Pierce College's official 2025-2026 General Catalog and June 2025 Biology ADT requirements sheet. The Biology A.S.-T. is extracted with all three complete physics-sequence alternatives."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=804&search_string=biology",
+    "checked_at": "2026-07-23T19:29:49+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49308",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35979-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology",
+      "award_seen": "Associate in Science for Transfer Degree (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires Calculus I and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Effective Spring 2018, revised Fall 2020, and published as an active award (state code 35979; major code P035979H) in the official 2025-2026 catalog.",
+      "catalog_url": "https://www.lapc.edu/sites/lapc.edu/files/2025-08/Los%20Angeles%20Pierce%20College%202025-2026%20General%20Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lapc.edu/sites/lapc.edu/files/2025-08/Los%20Angeles%20Pierce%20College%202025-2026%20General%20Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Los Angeles Pierce College 2025-2026 General Catalog, Educational Programs, printed page 44, Biology, Associate in Science for Transfer Degree"
+        },
+        {
+          "source_type": "official_college_degree_requirements_docx",
+          "url": "https://www.lapc.edu/sites/lapc.edu/files/2025-06/Biology%20ADT%20Degree%20Requirements.docx",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Official Biology ADT Degree Requirements sheet, published June 2025; required courses, List A, 33-35 major units, and 34-unit Cal-GETC requirement"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOLOGY", "number": "006", "title_seen": "General Biology I", "units_seen": 5},
+            {"prefix": "BIOLOGY", "number": "007", "title_seen": "General Biology II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "101", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "102", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "261", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select one complete physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSICS 006 and 007 (8 units), PHYSICS 066 and 067 (10 units), or PHYSICS 101 and 102 (10 units); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYSICS", "number": "006", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYSICS", "number": "007", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYSICS", "number": "066", "title_seen": "Physics with Calculus for Life Science Majors I", "units_seen": 5},
+            {"prefix": "PHYSICS", "number": "067", "title_seen": "Physics with Calculus for Life Science Majors II", "units_seen": 5},
+            {"prefix": "PHYSICS", "number": "101", "title_seen": "Physics for Engineers and Scientists I", "units_seen": 5},
+            {"prefix": "PHYSICS", "number": "102", "title_seen": "Physics for Engineers and Scientists II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 33-35 major units, and the official 2025-2026 requirements sheet reports 34 Cal-GETC units and 60 total CSU-transferable units. The elective subtotal depends on double counting and physics-sequence choice, so it is left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog and major-code inventory list the general Biology AS-T but no separate general local Biology/Biological Sciences AS or AA; specialty and certificate awards were ignored by scope."
+}

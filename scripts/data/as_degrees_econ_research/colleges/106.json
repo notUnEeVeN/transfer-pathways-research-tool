@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "community_college_id": 106,
+    "college_name": "Grossmont College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted the local Economics AA and Economics AA-T from Grossmont College's official 2025-2026 catalog PDF, printed pages 122-124."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=704&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45432",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33279-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics Associate in Arts","award_seen":"Associate in Arts","tmc_version_seen":null,"catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://www.grossmont.edu/academics/catalog/_resources/assets/pdf/2025-2026/2025-2026-catalog-final.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":31,"major_units_max":32,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.grossmont.edu/academics/catalog/_resources/assets/pdf/2025-2026/2025-2026-catalog-final.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Grossmont College Catalog 2025-2026, printed pages 122-123, Economics Associate in Arts"}],
+      "major_groups":[
+        {"label_seen":"Associate Degree Major Requirements - required economics","rule":"all","choose_n":null,"units_min":9,"ge_area":null,"courses":[{"prefix":"ECON","number":"110","title_seen":"Economic Issues and Policies","units_seen":3},{"prefix":"ECON","number":"120","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"121","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Associate Degree Major Requirements - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"215","title_seen":"Statistics for Business and Economics","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Associate Degree Major Requirements - business, information systems, and government","rule":"all","choose_n":null,"units_min":11,"ge_area":null,"courses":[{"prefix":"BUS","number":"120","title_seen":"Financial Accounting","units_seen":4},{"prefix":"CSIS","number":"110","title_seen":"Principles of Information Systems","units_seen":4},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3}]},
+        {"label_seen":"Select one social-science course","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"POSC","number":"130","title_seen":"Introduction to International Relations","units_seen":3},{"prefix":"SOC","number":"120","title_seen":"Introductory Sociology","units_seen":3}]},
+        {"label_seen":"Select one calculus course","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"178","title_seen":"Calculus for Business, Social and Behavioral Sciences","units_seen":"4-5"},{"prefix":"MATH","number":"180","title_seen":"Analytic Geometry and Calculus I","units_seen":"4-5"}]},
+        {"label_seen":"Grossmont associate-degree general education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Grossmont College associate-degree general education","courses":[]},
+        {"label_seen":"Electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The 2025-2026 local AA is a substantial 31-32-unit major. A later 2026-2027 single-program PDF changes course numbering, so only the archived 2025-2026 full catalog was used."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics for Transfer (AA-T)","award_seen":"Associate in Arts in Economics for Transfer","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://www.grossmont.edu/academics/catalog/_resources/assets/pdf/2025-2026/2025-2026-catalog-final.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":22,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.grossmont.edu/academics/catalog/_resources/assets/pdf/2025-2026/2025-2026-catalog-final.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Grossmont College Catalog 2025-2026, printed pages 123-124, Economics for Transfer (AA-T)"}],
+      "major_groups":[
+        {"label_seen":"Required Core - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"120","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"121","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"215","title_seen":"Statistics for Business and Economics","units_seen":4},{"prefix":"ANTH","number":"215","title_seen":"Statistics for the Behavioral Sciences","units_seen":4},{"prefix":"PSY","number":"215","title_seen":"Statistics for the Behavioral Sciences","units_seen":4},{"prefix":"SOC","number":"215","title_seen":"Statistics for the Behavioral Sciences","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"178","title_seen":"Calculus for Business, Social and Behavioral Sciences","units_seen":"4-5"},{"prefix":"MATH","number":"180","title_seen":"Analytic Geometry and Calculus I","units_seen":"4-5"}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"BUS","number":"120","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BUS","number":"121","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"128","title_seen":"Business Communication","units_seen":3},{"prefix":"CSIS","number":"110","title_seen":"Principles of Information Systems","units_seen":4}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"choice_structure_seen":"Select any course not used in List A, ECON 110, or ECON 261.","courses":[{"prefix":"ECON","number":"110","title_seen":"Economic Issues and Policies","units_seen":3},{"prefix":"ECON","number":"261","title_seen":"Economic Relations of the Asia Pacific","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable units as needed to reach 60","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints 20-22 major units and 34 Cal-GETC units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Two in-scope Economics awards are published in the official 2025-2026 catalog."
+}

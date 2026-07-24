@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "community_college_id": 70,
+    "college_name": "Crafton Hills College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:18+00:00",
+    "updated_at": "2026-07-23T21:35:00+00:00",
+    "resume_note": "Complete first-pass extraction from Crafton Hills College's official 2025-2026 SmartCatalog page. The current catalog lists one general Biology AS-T and no general local Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=424&search_string=biology",
+    "checked_at": "2026-07-23T19:29:48+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48088",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36144-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Science in Biology for Transfer (AS-T) Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The two-course biology core, chemistry sequence, calculus, and intact physics sequence match the prior Biology TMC.",
+      "catalog_status_seen": "Listed in the active 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://craftonhills.smartcatalogiq.com/2025-2026/catalog/credit-programs/biology-biol/biology-associate-of-science-for-transfer-degree-as-t",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 30,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_webpage",
+          "url": "https://craftonhills.smartcatalogiq.com/2025-2026/catalog/credit-programs/biology-biol/biology-associate-of-science-for-transfer-degree-as-t",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Associate in Science in Biology for Transfer (AS-T) Degree, required courses"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Cell and Molecular Biology — select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "130", "title_seen": "Cell and Molecular Biology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "130H", "title_seen": "Honors Cell and Molecular Biology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Populations and Organisms — select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "131", "title_seen": "Populations and Organisms", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "131H", "title_seen": "Honors Populations and Organisms", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Required chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "150", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "151", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "250", "title_seen": "Single Variable Calculus I", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSIC 110 and PHYSIC 111, or complete PHYSIC 250 and PHYSIC 251; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYSIC", "number": "110", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYSIC", "number": "111", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYSIC", "number": "250", "title_seen": "College Physics I", "units_seen": 4 },
+            { "prefix": "PHYSIC", "number": "251", "title_seen": "College Physics II", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 30 major units and the standard 60-unit Associate Degree for Transfer total."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Biology program index lists the general award only as an AS-T. Focused certificates and adjacent programs were ignored."
+}

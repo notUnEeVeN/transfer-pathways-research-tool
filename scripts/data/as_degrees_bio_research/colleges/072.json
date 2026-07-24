@@ -1,0 +1,182 @@
+{
+  "_meta": {
+    "community_college_id": 72,
+    "college_name": "Gavilan College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:18+00:00",
+    "updated_at": "2026-07-23T21:40:00+00:00",
+    "resume_note": "Complete first-pass extraction from Gavilan College's official archived 2025-2026 CurriQunet catalog. The Biology AS-T and Biological Science AS were extracted with the catalog's exact active/historical course flags."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=661&search_string=biology",
+    "checked_at": "2026-07-23T19:29:48+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50634",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37750-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - A.S.-T Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The catalog offers two allowed prior-TMC biology sequences, followed by the chemistry, calculus, and intact physics sequences from the prior Biology TMC.",
+      "catalog_status_seen": "The program entity is active in Gavilan's archived 2025-2026 catalog; all listed courses are marked active.",
+      "catalog_url": "https://gavilan.curriqunet.com/Catalog/archive/424/iq/3241/3248/3224",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 35,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_webpage",
+          "url": "https://gavilan.curriqunet.com/Catalog/archive/424/iq/3241/3248/3224",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Gavilan College Catalog 2025-2026, Biology - A.S.-T Degree"
+        },
+        {
+          "source_type": "official_college_catalog_archive_index",
+          "url": "https://www.gavilan.edu/catalog/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Archived Catalogs link for 2025-2026 Gavilan College Catalog, CurriQunet catalog ID 424"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Select one biology sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete BIO 1 and BIO 2 (10 units), or complete BIO 1, BIO 4, and BIO 5 (13 units). BIO 1 is common to both alternatives.",
+          "courses": [
+            { "prefix": "BIO", "number": "1", "title_seen": "Cell and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIO", "number": "2", "title_seen": "Organismal Biology", "units_seen": 5 },
+            { "prefix": "BIO", "number": "4", "title_seen": "General Zoology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "5", "title_seen": "General Botany", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Required chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "MATH", "number": "1A", "title_seen": "Single-Variable Calculus and Analytic Geometry", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and PHYS 2B, or complete PHYS 4A and PHYS 4B; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "General Education Requirements: Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The major is 32 units with BIO 1+2 or 35 units with BIO 1+4+5. The catalog separately states 34 Cal-GETC units, 7 double-counted units, and a 60-unit degree; its generated total line displays 59-69, so the explicit 60-unit degree statement is retained and the renderer anomaly is flagged for human review."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Science - A.S. Degree",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": "Local degree; no Transfer Model Curriculum claim is made.",
+      "catalog_status_seen": "The program page appears in Gavilan's archived 2025-2026 catalog. BIOT 104 is marked Historical inside the otherwise current requirement list, requiring human review.",
+      "catalog_url": "https://gavilan.curriqunet.com/Catalog/archive/424/iq/3241/3248/3316",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 17,
+      "major_units_max": 17,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_webpage",
+          "url": "https://gavilan.curriqunet.com/Catalog/archive/424/iq/3241/3248/3316",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Gavilan College Catalog 2025-2026, Biological Science - A.S. Degree"
+        },
+        {
+          "source_type": "official_college_catalog_archive_index",
+          "url": "https://www.gavilan.edu/catalog/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Archived Catalogs link for 2025-2026 Gavilan College Catalog, CurriQunet catalog ID 424"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Requirements",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 17,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOT", "number": "103", "title_seen": "Biotechnology Lab Skills and Instrumentation", "units_seen": 4 },
+            { "prefix": "BIOT", "number": "104", "title_seen": "Seminar in Biotechnology", "units_seen": 1 },
+            { "prefix": "BIO", "number": "10", "title_seen": "Principles of Biology", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "30A", "title_seen": "Elementary Chemistry", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "30B", "title_seen": "Elementary Organic and Biochemistry", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Associate degree general education requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Gavilan College local AA/AS GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The current archived catalog prints a 17-unit major even though local associate-degree policy generally requires at least 18 major units. BIOT 104 is explicitly marked Historical. Both facts are preserved for human verification rather than silently changed."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog contains one Biology AS-T and one Biological Science AS. Biotechnology certificates and other adjacent awards were ignored."
+}

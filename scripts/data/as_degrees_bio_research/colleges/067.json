@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "community_college_id": 67,
+    "college_name": "Coalinga College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:18+00:00",
+    "updated_at": "2026-07-23T21:25:00+00:00",
+    "resume_note": "Complete first-pass extraction from Coalinga College's official 2025-2026 Biology AS-T catalog page. The current program index contains no additional general Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=228&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50706",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37803-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology AS-T Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires the biology, chemistry, calculus, and intact physics sequences used by the prior Biology TMC.",
+      "catalog_status_seen": "Listed on the active 2025-2026 Programs of Study page; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://coalingacollege.edu/catalog/2025-2026/programs-of-study/biology-ast.php",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 31,
+      "major_units_max": 31,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_webpage",
+          "url": "https://coalingacollege.edu/catalog/2025-2026/programs-of-study/biology-ast.php",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Biology AS-T Degree, required core and physics options table"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 23,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "001A", "title_seen": "Cell and Molecular Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "001B", "title_seen": "Organismal Biology", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "001A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "001B", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "001A", "title_seen": "Introduction to Calculus", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Plus 8 Units — select one physics option",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYSICS 002A and PHYSICS 002B, or complete PHYSICS 004A and PHYSICS 004B; courses may not be mixed across options.",
+          "courses": [
+            { "prefix": "PHYSICS", "number": "002A", "title_seen": "Mechanics and Thermodynamics", "units_seen": 4 },
+            { "prefix": "PHYSICS", "number": "002B", "title_seen": "Electricity, Magnetism, Optics and Modern Physics", "units_seen": 4 },
+            { "prefix": "PHYSICS", "number": "004A", "title_seen": "Classical Mechanics", "units_seen": 4 },
+            { "prefix": "PHYSICS", "number": "004B", "title_seen": "Electricity, Magnetism, and Waves", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "General Education (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Elective Units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog table explicitly reports 31 major units, 34 Cal-GETC units, 10 double-counted GE units, 5 electives, and 60 total units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 program catalog lists the general Biology award only as an AS-T. Certificates and specialized or adjacent awards were ignored."
+}

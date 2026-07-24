@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "community_college_id": 28,
+    "college_name": "Contra Costa College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-24T00:40:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 eLumen catalog; both the local AA and AA-T are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=372&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53046",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33578-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics Associate of Arts Degree","award_seen":"AA","tmc_version_seen":null,"tmc_version_basis":null,"catalog_status_seen":"Active in Contra Costa College's official 2025-2026 catalog.","catalog_url":"https://ccc.elumenapp.com/catalog/current/program/economics-fall-2025v2","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":22,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://ccc.elumenapp.com/catalog/current/program/economics-fall-2025v2","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics A.A. Degree, Program Requirements"}],
+      "major_groups":[
+        {"label_seen":"Required courses","rule":"all","choose_n":null,"units_min":18,"ge_area":null,"courses":[{"prefix":"ECON","number":"220","title_seen":"Introduction to Macroeconomic Principles","units_seen":3},{"prefix":"ECON","number":"221","title_seen":"Introduction to Microeconomic Principles","units_seen":3},{"prefix":"MATH","number":"190","title_seen":"Analytic Geometry and Calculus I","units_seen":5},{"prefix":"MATH","number":"191","title_seen":"Analytic Geometry and Calculus II","units_seen":4},{"prefix":"POLSC","number":"1000","title_seen":"American Government and Politics","units_seen":3}]},
+        {"label_seen":"4th Semester - select one statistics course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"BUS","number":"240","title_seen":"Business Statistics","units_seen":3}]},
+        {"label_seen":"Associate Degree General Education requirements","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Contra Costa College Local GE","courses":[]},
+        {"label_seen":"Electives as needed to meet 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog organizes the 21-22 major units by suggested semester; this record preserves the same required-course structure."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts Degree for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as Economics A.A.-T and publishes the transfer-model core and lists.","catalog_status_seen":"Active in Contra Costa College's official 2025-2026 catalog.","catalog_url":"https://ccc.elumenapp.com/catalog/current/program/economics-fall-2025","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":24,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://ccc.elumenapp.com/catalog/current/program/economics-fall-2025","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics A.A.-T, Program Requirements"}],
+      "major_groups":[
+        {"label_seen":"Required Core Courses - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"220","title_seen":"Introduction to Macroeconomic Principles","units_seen":3},{"prefix":"ECON","number":"221","title_seen":"Introduction to Microeconomic Principles","units_seen":3}]},
+        {"label_seen":"Required Core Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"BUS","number":"240","title_seen":"Business Statistics","units_seen":3}]},
+        {"label_seen":"Required Core Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"180","title_seen":"Applied Calculus","units_seen":4},{"prefix":"MATH","number":"190","title_seen":"Analytic Geometry and Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select 4 units","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"191","title_seen":"Analytic Geometry and Calculus II","units_seen":4},{"prefix":"BUS","number":"186","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BUS","number":"187","title_seen":"Managerial Accounting","units_seen":4}]},
+        {"label_seen":"List B - select 4-5 units","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"choice_structure_seen":"Select MATH 200, MATH 290, or any List A course not already used.","courses":[{"prefix":"MATH","number":"191","title_seen":"Analytic Geometry and Calculus II","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"186","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"187","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"200","title_seen":"Introduction to Linear Algebra","units_seen":4},{"prefix":"MATH","number":"290","title_seen":"Analytc Geometry&Calculus III","units_seen":5}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The 2025-2026 catalog's new three-unit BUS 240 statistics option lowers the requirement arithmetic to a 21-unit minimum; the published choices produce a 21-24 range."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Economics department and catalog list both a local Economics AA and an Economics AA-T."
+}

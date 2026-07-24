@@ -1,0 +1,87 @@
+{
+  "_meta": {
+    "community_college_id": 91,
+    "college_name": "West Los Angeles College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:26:53+00:00",
+    "updated_at": "2026-07-23T21:33:00+00:00",
+    "resume_note": "First-pass extraction is complete for West Los Angeles College's Biology AS-T using the official 2025-2026 catalog cohort and official Biology program page. No general local Biology AS or AA is listed."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2043&search_string=biology",
+    "checked_at": "2026-07-23T19:29:49+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46869",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35761-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Science in Biology for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The award requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed as West Los Angeles College's general Biology transfer degree for the 2025-2026 cohort; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.wlac.edu/academics/aos/biology",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 35,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_program_page",
+          "url": "https://www.wlac.edu/academics/aos/biology",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Degrees Offered — Associate in Science in Biology for Transfer; Required Courses"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 35,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOLOGY", "number": "006", "title_seen": "General Biology I", "units_seen": 5 },
+            { "prefix": "BIOLOGY", "number": "007", "title_seen": "General Biology II", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "101", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "102", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "PHYSICS", "number": "037", "title_seen": "Physics for Engineers and Scientists I", "units_seen": 5 },
+            { "prefix": "PHYSICS", "number": "038", "title_seen": "Physics for Engineers and Scientists II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "261", "title_seen": "Calculus I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "CalGETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The official Biology program page provides the complete seven-course, 35-unit major and the Cal-GETC degree rule. The official catalog PDF is retained at https://www.wlac.edu/sites/wlac.edu/files/2024-08/catalog.pdf for human cohort verification; the college site blocks automated retrieval of that PDF but exposes the same degree requirements on the program page."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No broad local Biology or Biological Sciences AS/AA appears in the official Biology program listing. The separately named Biology — Health Science Option is specialized and intentionally excluded."
+}

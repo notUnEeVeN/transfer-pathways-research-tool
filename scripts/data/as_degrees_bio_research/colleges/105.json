@@ -1,0 +1,124 @@
+{
+  "_meta": {
+    "community_college_id": 105,
+    "college_name": "Coastline Community College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:03+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "Pinned to Coastline College's official 2025-2026 catalog. The Biology AS-T course rules are fully extracted, with the catalog's inconsistent printed major total flagged for human review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=362&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "44555",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37925-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science Degree for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://catalog.cccd.edu/pdf/CCC-2025-2026-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.94,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.cccd.edu/pdf/CCC-2025-2026-Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 92 / printed catalog page 91, Biology, Associate in Science Degree for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 9,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "C180", "title_seen": "Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "C185", "title_seen": "Diversity of Organisms", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - Complete the following chemistry and calculus courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "C180", "title_seen": "General Chemistry A", "units_seen": 4},
+            {"prefix": "CHEM", "number": "C180L", "title_seen": "General Chemistry A Lab", "units_seen": 1},
+            {"prefix": "CHEM", "number": "C185", "title_seen": "General Chemistry B", "units_seen": 4},
+            {"prefix": "CHEM", "number": "C185L", "title_seen": "General Chemistry B Lab", "units_seen": 1},
+            {"prefix": "MATH", "number": "C180", "title_seen": "Calculus 1", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - Physics sequence",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Choose the intact two-course sequence PHYS C120 + PHYS C125 or the intact two-course sequence PHYS C185 + PHYS C280; each sequence is 8 units.",
+          "courses": [
+            {"prefix": "PHYS", "number": "C120", "title_seen": "Algebra Based Physics: Mechanics", "units_seen": 4, "alternative_seen": "Pair with PHYS C125"},
+            {"prefix": "PHYS", "number": "C125", "title_seen": "Algebra Based Physics: Electricity and Magnetism", "units_seen": 4, "alternative_seen": "Pair with PHYS C120"},
+            {"prefix": "PHYS", "number": "C185", "title_seen": "Calculus Based Physics: Mechanics", "units_seen": 4, "alternative_seen": "Pair with PHYS C280"},
+            {"prefix": "PHYS", "number": "C280", "title_seen": "Calculus Based Physics: Electricity and Magnetism", "units_seen": 4, "alternative_seen": "Pair with PHYS C185"}
+          ]
+        },
+        {
+          "label_seen": "List B: Additional major preparation - Choose one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "C225", "title_seen": "Human Physiology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "C283", "title_seen": "Genetics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "CalGETC pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transfer electives as needed to reach 60 transferable units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 2025-2026 PDF prints 'Units Required for Major 32,' but its explicit Required Core, complete List A, and required four-unit List B selection sum to 36. The course rules are modeled as printed and 36 is used for the arithmetic major total; this typesetting inconsistency should receive human verification."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete official 2025-2026 Biology section publishes one in-scope broad Biology award. Allied Health and Pre-Medical certificates are outside this pass and are not retained as candidates."
+}

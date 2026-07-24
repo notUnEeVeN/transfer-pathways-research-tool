@@ -1,0 +1,164 @@
+{
+  "_meta": {
+    "community_college_id": 148,
+    "college_name": "Norco College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:44+00:00",
+    "updated_at": "2026-07-23T23:55:00+00:00",
+    "resume_note": "First-pass extraction complete from Norco College's official archived 2025-2026 catalog page."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1106&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "b1980899-7eca-4a01-adff-7bc528ba8007",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/43937-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - Associate of Arts for Transfer (ADT) - NAA757 (Cal-GETC)",
+      "award_seen": "Associate of Arts for Transfer (ADT)",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the Economics transfer degree and prints the economics, calculus, statistics, List A, and List B structure.",
+      "catalog_status_seen": "Published in Norco College's official archived 2025-2026 catalog.",
+      "catalog_url": "https://rccd.curriqunet.com/Catalog/archive/69/iq/2742/2842/2846",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 22,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive_page",
+          "url": "https://rccd.curriqunet.com/Catalog/archive/69/iq/2742/2842/2846",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics - Associate of Arts for Transfer (ADT) - NAA757 (Cal-GETC): Required Courses, List A, List B; 20-22 major units"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses - macroeconomics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "7", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECO", "number": "7H", "title_seen": "Honors Principles of Macroeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Courses - microeconomics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "8", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "ECO", "number": "8H", "title_seen": "Honors Principles of Microeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Courses - calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "1A", "title_seen": "Calculus I", "units_seen": 4},
+            {"prefix": "MAT", "number": "1AH", "title_seen": "Honors Calculus I", "units_seen": 4},
+            {"prefix": "MAT", "number": "5", "title_seen": "Calculus for Business and Life Science", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Courses - statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000H", "title_seen": "Introduction to Statistics - Honors", "units_seen": 4},
+            {"prefix": "PSYC", "number": "48", "title_seen": "Statistics for the Behavioral Sciences", "units_seen": 4},
+            {"prefix": "SOC", "number": "48", "title_seen": "Statistics for the Behavioral Sciences", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACC", "number": "1A", "title_seen": "Principles of Accounting I", "units_seen": 3},
+            {"prefix": "ACC", "number": "1B", "title_seen": "Principles of Accounting II", "units_seen": 3},
+            {"prefix": "BUS", "number": "24", "title_seen": "Business Communication", "units_seen": 3},
+            {"prefix": "CIS", "number": "1A", "title_seen": "Introduction to Computer Information Systems", "units_seen": 3},
+            {"prefix": "MAT", "number": "1B", "title_seen": "Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog permits any List A course not already used, or one of the separately printed List B courses.",
+          "courses": [
+            {"prefix": "ACC", "number": "1A", "title_seen": "Principles of Accounting I", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "ACC", "number": "1B", "title_seen": "Principles of Accounting II", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "BUS", "number": "24", "title_seen": "Business Communication", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "CIS", "number": "1A", "title_seen": "Introduction to Computer Information Systems", "units_seen": 3, "alternative_seen": "Any unused List A course"},
+            {"prefix": "MAT", "number": "1B", "title_seen": "Calculus II", "units_seen": 4, "alternative_seen": "Any unused List A course"},
+            {"prefix": "ANT", "number": "2", "title_seen": "Cultural Anthropology", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "ANT", "number": "2H", "title_seen": "Honors Cultural Anthropology", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "MAT", "number": "1C", "title_seen": "Calculus III", "units_seen": 4, "alternative_seen": "List B"},
+            {"prefix": "MAT", "number": "3", "title_seen": "Linear Algebra", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "POLS", "number": "2", "title_seen": "Comparative Politics", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "POLS", "number": "11", "title_seen": "Political Theory", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "PSYC", "number": "C1000", "title_seen": "Introduction to Psychology", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "PSYC", "number": "C1000H", "title_seen": "Introduction to Psychology - Honors", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "PSYC", "number": "50", "title_seen": "Research Methods in Psychology", "units_seen": 4, "alternative_seen": "List B"},
+            {"prefix": "SOC", "number": "1", "title_seen": "Introduction to Sociology", "units_seen": 3, "alternative_seen": "List B"},
+            {"prefix": "SOC", "number": "50", "title_seen": "Introduction to Social Research Methods", "units_seen": 3, "alternative_seen": "List B"}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The title displayed by the catalog uses 'Associate of Arts for Transfer'; the program description identifies the award as the Economics AA-T. The official printed major range is 20-22 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

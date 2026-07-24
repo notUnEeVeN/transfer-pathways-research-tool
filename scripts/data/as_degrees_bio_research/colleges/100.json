@@ -1,0 +1,199 @@
+{
+  "_meta": {
+    "community_college_id": 100,
+    "college_name": "Mendocino College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:26:53+00:00",
+    "updated_at": "2026-07-23T21:33:00+00:00",
+    "resume_note": "Complete first-pass extraction from Mendocino College's official amended 2025-2026 catalog. Both A.S.-T Biology and A.S. Biological Science are modeled, including the local degree's three physics pathways and 9-10-unit math/statistics selection."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=944&search_string=biology",
+    "checked_at": "2026-07-23T19:29:49+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53041",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33886-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Science in Biology for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the official amended 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.mendocino.edu/sites/default/files/2026-03/2025-26%20MC%20Catalog%20Amended_0.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive",
+          "url": "https://www.mendocino.edu/sites/default/files/2026-03/2025-26%20MC%20Catalog%20Amended_0.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 109-111, Biological Science — Associate in Science in Biology for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — fixed biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 22,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "250", "title_seen": "Cell and Molecular Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "255", "title_seen": "Botany, Plant Diversity, and Ecology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "257", "title_seen": "Zoology, Animal Diversity and Evolution", "units_seen": 4 },
+            { "prefix": "CHM", "number": "250", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHM", "number": "251", "title_seen": "General Chemistry II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Required Courses — calculus choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MTH", "number": "210", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 5 },
+            { "prefix": "MTH", "number": "230", "title_seen": "Calculus for Business and Economics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "And Either — physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHY 210 and PHY 211, or complete PHY 220 and PHY 221; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHY", "number": "210", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHY", "number": "211", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHY", "number": "220", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 4 },
+            { "prefix": "PHY", "number": "221", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Completion of Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 34-35 total major units because the only variable is the four- or five-unit calculus choice."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Science Associate of Science",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed in the official amended 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.mendocino.edu/sites/default/files/2026-03/2025-26%20MC%20Catalog%20Amended_0.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 39,
+      "major_units_max": 40,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive",
+          "url": "https://www.mendocino.edu/sites/default/files/2026-03/2025-26%20MC%20Catalog%20Amended_0.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 112, Biological Science Associate of Science"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — fixed biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 22,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "250", "title_seen": "Cell and Molecular Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "255", "title_seen": "Botany, Plant Diversity, and Ecology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "257", "title_seen": "Zoology, Animal Diversity and Evolution", "units_seen": 4 },
+            { "prefix": "CHM", "number": "250", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHM", "number": "251", "title_seen": "General Chemistry II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Plus 8 additional units selected from either physics options listed below",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHY 210 and 211, or PHY 220 and 221, or PHY 220 and 222; courses may not be mixed except for the catalog's explicitly printed PHY 220/222 pathway.",
+          "courses": [
+            { "prefix": "PHY", "number": "210", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHY", "number": "211", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHY", "number": "220", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 4 },
+            { "prefix": "PHY", "number": "221", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 4 },
+            { "prefix": "PHY", "number": "222", "title_seen": "Physics for Scientists and Engineers III", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Plus 9-10 additional units selected from the following",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 9,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Select 9-10 units from MTH 200, MTH 210, MTH 211, and STAT C1000; with the printed four- and five-unit values, this is two courses.",
+          "courses": [
+            { "prefix": "MTH", "number": "200", "title_seen": "Precalculus Mathematics", "units_seen": 5 },
+            { "prefix": "MTH", "number": "210", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 5 },
+            { "prefix": "MTH", "number": "211", "title_seen": "Calculus and Analytic Geometry II", "units_seen": 5 },
+            { "prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Associate-degree general education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Mendocino College associate-degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog recommends that transfer-intending students plan to complete Cal-GETC, but it does not state on the program page that Cal-GETC is the only GE route for this local AS. Optional BIO 220/220L, 243, and 245 are explicitly non-required and are not encoded."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official Biological Science section lists exactly the broad Biology AS-T and Biological Science AS in this scope."
+}

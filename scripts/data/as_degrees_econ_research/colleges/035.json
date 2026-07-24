@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "community_college_id": 35,
+    "college_name": "Fresno City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-24T00:50:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 CurriQunet catalog page; embedded Historical course statuses are preserved as a review warning."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=599&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47652",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35316-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics for Transfer - Major #2020, Associate in Arts","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog describes the award as the Associate in Arts in Economics for Transfer and publishes its transfer-model requirements.","catalog_status_seen":"Published in Fresno City College's official 2025-2026 catalog; the embedded curriculum presentation is marked Historical.","catalog_url":"https://fresno.curriqunet.com/Catalog/_getPage?catalogId=1007&id=5969","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":23,"extraction_confidence":0.97,
+      "sources":[{"source_type":"official_college_catalog_api","url":"https://fresno.curriqunet.com/Catalog/_getPage?catalogId=1007&id=5969","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"2025-2026 catalog > Degree and Certificate Programs > Economics > Economics for Transfer, outline 5969 / curriculum entity 2633"},{"source_type":"official_college_catalog_html","url":"https://fresno.curriqunet.com/Catalog/archive/1007","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Official 2025-2026 catalog archive root"}],
+      "major_groups":[
+        {"label_seen":"Required Courses - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"40","title_seen":"Introduction to Microeconomics","units_seen":3},{"prefix":"ECON","number":"40H","title_seen":"Honors Introduction to Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Courses - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"50","title_seen":"Introduction to Macroeconomics","units_seen":3},{"prefix":"ECON","number":"50H","title_seen":"Honors Introduction to Macroeconomics","units_seen":3}]},
+        {"label_seen":"Required Courses - calculus","rule":"all","choose_n":null,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"5A","title_seen":"Mathematical Analysis I","units_seen":5}]},
+        {"label_seen":"Required Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"DS","number":"23","title_seen":"Business Statistics","units_seen":3},{"prefix":"MATH","number":"42","title_seen":"Statistics for the Behavioral Sciences","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"List A: Choose one of the following courses","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"4A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCTG","number":"4B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"MATH","number":"5B","title_seen":"Mathematical Analysis II","units_seen":4},{"prefix":"MATH","number":"21","title_seen":"Finite Mathematics","units_seen":3}]},
+        {"label_seen":"List B: Choose one course or a course not used in List A","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select one explicitly listed List B course or any List A course not already used.","courses":[{"prefix":"ACCTG","number":"4A","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCTG","number":"4B","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"5B","title_seen":"Mathematical Analysis II","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"21","title_seen":"Finite Mathematics","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"ANTHRO","number":"2","title_seen":"Cultural Anthropology","units_seen":3},{"prefix":"GLST","number":"1","title_seen":"Introduction to Global Studies","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"SOC","number":"1A","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"MATH","number":"6","title_seen":"Mathematical Analysis III","units_seen":4},{"prefix":"MATH","number":"26","title_seen":"Elementary Linear Algebra","units_seen":3}]},
+        {"label_seen":"Cal-GETC requirements","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The official 2025-2026 catalog prints 20-23 major units. Its embedded program entity and several legacy course entries are marked Historical even though the program is published in the 2025-2026 degree inventory; this needs targeted human confirmation before analysis_ready can be enabled."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics transfer AA appears in the official 2025-2026 Economics program inventory."
+}

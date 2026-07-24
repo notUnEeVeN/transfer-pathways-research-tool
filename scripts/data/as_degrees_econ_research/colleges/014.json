@@ -1,0 +1,253 @@
+{
+  "_meta": {
+    "community_college_id": 14,
+    "college_name": "Santa Ana College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:38+00:00",
+    "resume_note": "First-pass extraction complete from official 2025-2026 catalog page 138. Human review should retain the catalog's printed unit-total and STAT C1000 Honors numbering inconsistencies."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1688&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45705",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35555-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics: A.A.-T Degree for Transfer",
+      "award_seen": "A.A.-T Degree for Transfer",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the award as an Associate Degree for Transfer aligned to Economics; no local revision label is printed.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 24.5,
+      "extraction_confidence": 0.96,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 138: Economics A.A.-T required core, List A, List B, printed major total, and 60-unit transfer-degree framework"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — economics courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "120", "title_seen": "Principles/Macro", "units_seen": 3},
+            {"prefix": "ECON", "number": "121", "title_seen": "Principles/Micro", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Core — statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4.5,
+          "ge_area": null,
+          "choice_structure_seen": "Select STAT C1000, the Honors option printed as STAT C1000, STAT C1000E, or PSYC 210.",
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics - Honors", "units_seen": 4, "catalog_number_note": "The AA-T table prints C1000 rather than C1000H for Honors."},
+            {"prefix": "STAT", "number": "C1000E", "title_seen": "Introduction to Statistics", "units_seen": 4.5},
+            {"prefix": "PSYC", "number": "210", "title_seen": "Statistics for the Behavioral Sciences", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core — calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "150", "title_seen": "Calculus for Biological, Management and Social Sciences", "units_seen": 5},
+            {"prefix": "MATH", "number": "180", "title_seen": "Single Variable Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: Select one (3-5 units)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "BUS 105 and LAW 105 are the same cross-listed course and are alternative listings, not two separate courses.",
+          "courses": [
+            {"prefix": "MATH", "number": "140", "title_seen": "College Algebra", "units_seen": 4},
+            {"prefix": "MATH", "number": "140S", "title_seen": "College Algebra with Support", "units_seen": 4.5},
+            {"prefix": "MATH", "number": "162", "title_seen": "Trigonometry", "units_seen": 4},
+            {"prefix": "MATH", "number": "145", "title_seen": "Finite Mathematics", "units_seen": 4},
+            {"prefix": "MATH", "number": "170", "title_seen": "Pre-Calculus Mathematics", "units_seen": 4},
+            {"prefix": "MATH", "number": "185", "title_seen": "Single Variable Calculus II", "units_seen": 4},
+            {"prefix": "MATH", "number": "287", "title_seen": "Introduction to Linear Algebra and Differential Equations", "units_seen": 5},
+            {"prefix": "BUS", "number": "105", "title_seen": "Legal Environment of Business", "units_seen": 3},
+            {"prefix": "LAW", "number": "105", "title_seen": "The Legal Environment of Business", "units_seen": 3},
+            {"prefix": "BUS", "number": "150", "title_seen": "Introduction to Information Systems and Applications", "units_seen": 3},
+            {"prefix": "BUS", "number": "222", "title_seen": "Business Writing", "units_seen": 3},
+            {"prefix": "ACCT", "number": "101", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "102", "title_seen": "Managerial Accounting", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B: Select one course (3-5 units) — any unused List A course or one listed below",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Any List A course not already used may satisfy List B; the complete List A pool is repeated here so the raw choice set remains explicit.",
+          "courses": [
+            {"prefix": "MATH", "number": "140", "title_seen": "College Algebra", "units_seen": 4},
+            {"prefix": "MATH", "number": "140S", "title_seen": "College Algebra with Support", "units_seen": 4.5},
+            {"prefix": "MATH", "number": "162", "title_seen": "Trigonometry", "units_seen": 4},
+            {"prefix": "MATH", "number": "145", "title_seen": "Finite Mathematics", "units_seen": 4},
+            {"prefix": "MATH", "number": "170", "title_seen": "Pre-Calculus Mathematics", "units_seen": 4},
+            {"prefix": "MATH", "number": "185", "title_seen": "Single Variable Calculus II", "units_seen": 4},
+            {"prefix": "MATH", "number": "287", "title_seen": "Introduction to Linear Algebra and Differential Equations", "units_seen": 5},
+            {"prefix": "BUS", "number": "105", "title_seen": "Legal Environment of Business", "units_seen": 3},
+            {"prefix": "LAW", "number": "105", "title_seen": "The Legal Environment of Business", "units_seen": 3},
+            {"prefix": "BUS", "number": "150", "title_seen": "Introduction to Information Systems and Applications", "units_seen": 3},
+            {"prefix": "BUS", "number": "222", "title_seen": "Business Writing", "units_seen": 3},
+            {"prefix": "ACCT", "number": "101", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "102", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "GEOG", "number": "100", "title_seen": "World Regional Geography", "units_seen": 3},
+            {"prefix": "GEOG", "number": "100H", "title_seen": "Honors World Regional Geography", "units_seen": 3},
+            {"prefix": "GEOG", "number": "102", "title_seen": "Cultural Geography", "units_seen": 3},
+            {"prefix": "MATH", "number": "280", "title_seen": "Intermediate Calculus", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints Required Core 14.0-14.5 and total major 20.0-24.5, but the displayed calculus and statistics choices can arithmetically produce a 15.5-unit core and 25.5-unit major. It also prints the Honors statistics option as STAT C1000 here, while the local AA table prints STAT C1000H. Printed totals and course numbers are preserved for human review."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Economics: A.A. Degree",
+      "award_seen": "A.A. Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 25,
+      "major_units_max": 26.5,
+      "extraction_confidence": 0.94,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 138: Economics A.A. required courses, recommended-elective choice, and printed 25.0-26.5 total"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Course requirements — required courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCT", "number": "101", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "102", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "ECON", "number": "120", "title_seen": "Principles/Macro", "units_seen": 3},
+            {"prefix": "ECON", "number": "121", "title_seen": "Principles/Micro", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Course requirements — BUS 150 or MATH 145",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BUS", "number": "150", "title_seen": "Introduction to Information Systems and Applications", "units_seen": 3},
+            {"prefix": "MATH", "number": "145", "title_seen": "Finite Mathematics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Course requirements — statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4.5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000H", "title_seen": "Introduction to Statistics - Honors", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000E", "title_seen": "Introduction to Statistics", "units_seen": 4.5}
+          ]
+        },
+        {
+          "label_seen": "Recommended electives: select BUS 101 or BUS 120",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog labels this three-unit choice 'Recommended electives' but includes it in the final printed total of 25.0-26.5 units.",
+          "courses": [
+            {"prefix": "BUS", "number": "101", "title_seen": "Business Law", "units_seen": 3},
+            {"prefix": "BUS", "number": "120", "title_seen": "Principles of Management", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Santa Ana College Associate Degree General Education Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Santa Ana College AA/AS General Education",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to complete the 60-unit associate degree",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints the required-course subtotal as 22.0-23.5, although the displayed required courses sum to 21.0-22.5. It then adds a three-unit choice labeled Recommended electives and prints 25.0-26.5. The recommended choice is retained as a group because it is included in the catalog's final program total; human validation should decide whether it is strictly required."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists one Economics AA-T and one local Economics AA. Business and broader social-science awards were excluded."
+}

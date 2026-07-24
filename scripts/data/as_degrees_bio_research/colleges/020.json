@@ -1,0 +1,87 @@
+{
+  "_meta": {
+    "community_college_id": 20,
+    "college_name": "Barstow Community College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:27+00:00",
+    "updated_at": "2026-07-23T20:15:00+00:00",
+    "resume_note": "Pinned to the official 2025-2026 Barstow Community College catalog. The Biology AS-T requirements and totals are fully extracted from PDF page 126."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=157&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51953",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/40021-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate of Science Degree for Transfer, Biology",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires PHYS 2A and PHYS 2B, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.barstow.edu/sites/default/files/media/pdf_document/2025/2526-Catalog-20250731_2.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 30,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.barstow.edu/sites/default/files/media/pdf_document/2025/2526-Catalog-20250731_2.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 126, Life Sciences Cluster — Associate of Science Degree for Transfer, Biology"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 30,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "20A", "title_seen": "Cell and Molecular Biology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "20B", "title_seen": "Evolution and Organismal Biology", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "2A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "2B", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I: Mechanics of Solids and Fluids", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II: Electricity and Magnetism", "units_seen": 4 },
+            { "prefix": "MATH", "number": "4A", "title_seen": "Calculus I", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC General Education Coursework",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable Electives Required",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 6,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 2025-2026 catalog prints 30 major units, 34 Cal-GETC units, 6 transferable-elective units, and a 60-unit degree total; overlap between major and GE explains why the printed subtotals are not additive. Compared with 2026-2027, this catalog uses MATH 4A rather than the later common-course-numbered MATH C2210."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog's Programs of Study section lists the Biology AS-T as the only general Biology associate award. Specialized and adjacent programs and all certificates were ignored, and out_of_scope_candidates remains empty by batch instruction."
+}

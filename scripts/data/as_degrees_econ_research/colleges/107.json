@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "community_college_id": 107,
+    "college_name": "Imperial Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted the Economics AA-T from Imperial Valley College's official 2025-2026 CurriQunet catalog archive."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=752&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49879",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36786-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics AA-T Degree","award_seen":"Associate in Arts for Transfer","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official archived 2025-2026 catalog.","catalog_url":"https://imperial.curriqunet.com/Catalog/archive/14/iq/8044/8106/7846","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":22,"extraction_confidence":0.98,
+      "sources":[{"source_type":"official_college_catalog_html_archive","url":"https://imperial.curriqunet.com/Catalog/archive/14/iq/8044/8106/7846","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Imperial Valley College 2025-2026 archive ID 14 > Economics AA-T Degree > Required Courses"}],
+      "major_groups":[
+        {"label_seen":"Core Requirements","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Introduction to Micro Economics","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Introduction to Macro Economics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Calculus - select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"170","title_seen":"Introduction to Calculus with Applications","units_seen":4},{"prefix":"MATH","number":"192","title_seen":"Analytic Geometry and Calculus I","units_seen":4}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ACCT","number":"210","title_seen":"Principles of Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"220","title_seen":"Principles of Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"260","title_seen":"Business Communications","units_seen":3},{"prefix":"CIS","number":"101","title_seen":"Introduction to Information Systems","units_seen":3},{"prefix":"MATH","number":"122","title_seen":"Finite Mathematics","units_seen":3},{"prefix":"MATH","number":"194","title_seen":"Analytic Geometry and Calculus II","units_seen":4}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select any unused List A course, MATH 210, or MATH 230.","courses":[{"prefix":"MATH","number":"210","title_seen":"Multivariable Calculus","units_seen":4},{"prefix":"MATH","number":"230","title_seen":"Introduction to Linear Algebra with Applications","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The archived program page is active for catalog year 2025-2026 even though underlying curriculum-row links are labeled Historical. The prose says no more than 60 units are required; the normalized total remains the standard 60-unit AA-T framework."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope general Economics award, the Economics AA-T."
+}

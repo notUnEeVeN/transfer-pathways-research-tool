@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 19,
+    "college_name": "Victor Valley College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-23T23:55:28+00:00",
+    "resume_note": "Audited Victor Valley College's complete official 2025-2026 catalog. Its Economics entry explicitly states that no associate degree is offered with a major in Economics."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://catalog.vvc.edu/pdf/2025-26.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete 2025-2026 catalog, Economics page 206: explicitly states that no associate degree is offered with a major in Economics"
+    },
+    {
+      "source_type": "official_college_catalog_archive_index",
+      "url": "https://catalog.vvc.edu/archived-catalogs/",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Archived VVC Catalogs download menu identifies 2025-26.pdf as the entire Victor Valley College 2025-2026 catalog"
+    }
+  ],
+  "notes": "The catalog says Economics courses may contribute to Liberal Arts, Business, and Business Administration awards, but explicitly confirms there is no Economics associate degree. Those adjacent awards remain out of scope."
+}

@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "community_college_id": 66,
+    "college_name": "Santiago Canyon College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T00:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; both the local AA and AA-T are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1768&search_string=economics",
+    "checked_at": "2026-07-23T22:30:33+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47305",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32968-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics, AA","award_seen":"A.A. Degree Major","tmc_version_seen":null,"tmc_version_basis":null,"catalog_status_seen":"Active in Santiago Canyon College's official 2025-2026 catalog.","catalog_url":"https://sccollege.edu/campus/collegeoffices/curriculum/Shared%20Documents/Catalog%20PDF/SCC_Catalog_print.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":23,"extraction_confidence":0.97,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://sccollege.edu/campus/collegeoffices/curriculum/Shared%20Documents/Catalog%20PDF/SCC_Catalog_print.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Credit Programs, Economics, AA, program rules and 21-23 unit completion range"}],
+      "major_groups":[
+        {"label_seen":"Major Requirements","rule":"all","choose_n":null,"units_min":14,"ge_area":null,"courses":[{"prefix":"ACCT","number":"101","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"102","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"ECON","number":"101","title_seen":"Principles/Micro","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles/Macro","units_seen":3}]},
+        {"label_seen":"Mathematics and Quantitative Reasoning - at least one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUS","number":"150","title_seen":"Introduction to Information Systems and Applications","units_seen":3},{"prefix":"MATH","number":"150","title_seen":"Calculus for Biological, Management, and Social Sciences","units_seen":5}]},
+        {"label_seen":"Statistics and Probability - at least one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Associate degree general education and electives to reach 60 units","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"SCC AA GE","courses":[]},{"label_seen":"Electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints a 21-23 unit completion range."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics, AA-T","award_seen":"A.A. Degree for Transfer","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as the Economics AA-T and publishes the transfer-model core and lists.","catalog_status_seen":"Active in Santiago Canyon College's official 2025-2026 catalog.","catalog_url":"https://sccollege.edu/campus/collegeoffices/curriculum/Shared%20Documents/Catalog%20PDF/SCC_Catalog_print.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":24,"extraction_confidence":0.97,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://sccollege.edu/campus/collegeoffices/curriculum/Shared%20Documents/Catalog%20PDF/SCC_Catalog_print.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Credit Programs, Economics, AA-T, program rules and 21-24 unit completion range"}],
+      "major_groups":[
+        {"label_seen":"Major Requirements","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles/Micro","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles/Macro","units_seen":3}]},
+        {"label_seen":"Statistics and Probability - at least one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Calculus Requirement - at least one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"150","title_seen":"Calculus for Biological, Management, and Social Sciences","units_seen":5},{"prefix":"MATH","number":"180","title_seen":"Single Variable Calculus I","units_seen":4},{"prefix":"MATH","number":"180H","title_seen":"Honors Single Variable Calculus I","units_seen":4}]},
+        {"label_seen":"Select one course from List A","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"ACCT","number":"101","title_seen":"Financial Accounting","units_seen":4},{"prefix":"MATH","number":"185","title_seen":"Single Variable Calculus II","units_seen":4}]},
+        {"label_seen":"Select one course from List B","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select an unused List A course or one explicitly listed List B course.","courses":[{"prefix":"ACCT","number":"101","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"185","title_seen":"Single Variable Calculus II","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"102","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"150","title_seen":"Introduction to Information Systems and Applications","units_seen":3},{"prefix":"BUS","number":"222","title_seen":"Business Writing","units_seen":3},{"prefix":"MATH","number":"280","title_seen":"Intermediate Calculus","units_seen":3},{"prefix":"MATH","number":"287","title_seen":"Introduction to Linear Algebra and Differential Equations","units_seen":4},{"prefix":"MATH","number":"290","title_seen":"Linear Algebra","units_seen":5}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},{"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The official catalog prints 21-24 major units; variable calculus and List B options are preserved."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both a local Economics AA and Economics AA-T."
+}

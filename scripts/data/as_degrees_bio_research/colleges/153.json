@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 153,
+    "college_name": "Compton College",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:48:52+00:00",
+    "updated_at": "2026-07-23T22:00:00+00:00",
+    "resume_note": "The official 2025-2026 catalog program inventory contains no general Biology/Biological Sciences AS-T, AS, or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://www.compton.edu/academics/docs/2025-2026_Compton-College-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Catalog pages 69-70 degree inventory and pages 76-93 program requirements; no general Biology/Biological Sciences award"
+    },
+    {
+      "source_type": "official_college_program_index_html",
+      "url": "https://www.compton.edu/academics/majors/index.aspx",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete majors index lists adjacent Biomanufacturing, General Science, and General Studies awards but no Biology award"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Biology courses are available, but every biology-adjacent award in the 2025-2026 catalog falls outside the agreed general Biology/Biological Sciences title scope."
+}

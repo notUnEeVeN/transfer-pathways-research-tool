@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "community_college_id": 17,
+    "college_name": "Merced College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:17+00:00",
+    "updated_at": "2026-07-23T20:15:00+00:00",
+    "resume_note": "Pinned to the official 2025-2026 Merced College catalog addendum. Biology AS-T is the only in-scope Biology award; requirements and printed totals are fully extracted from catalog page 310."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=953&search_string=biology",
+    "checked_at": "2026-07-23T19:29:44+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47034",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35569-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology A.S.-T. Degree (04100.AST)",
+      "award_seen": "A.S.-T.",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog addendum; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.mccd.edu/wp-content/uploads/2025/12/Catalog-PDF-2025-26-Addendum-12.23.2025-1.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 36,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.mccd.edu/wp-content/uploads/2025/12/Catalog-PDF-2025-26-Addendum-12.23.2025-1.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF catalog page 310, Biology A.S.-T. Degree (04100.AST): Program Requirements, Total Units toward the Major, and degree-unit summary"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Program Core — biology",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 9,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "04A", "title_seen": "Fundamentals of Biology: The Cell and Evolution", "units_seen": 4},
+            {"prefix": "BIOL", "number": "04B", "title_seen": "Diversity of Life: Morphology and Physiology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A: Restricted Electives — chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "04A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "04B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "04A", "title_seen": "Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Physics: Select 1 grouping",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete General Physics (PHYS 02A and PHYS 02B), or Calculus-Based Physics (PHYS 04A and PHYS 04B); courses may not be mixed across groupings.",
+          "courses": [
+            {"prefix": "PHYS", "number": "02A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "02B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "04A", "title_seen": "Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "04B", "title_seen": "Physics II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B: Electives Select 3-5 Units from the following",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "The catalog groups CHEM 13A with CHEM 13AL as First Semester Organic Chemistry and CHEM 13B with CHEM 13BL as Second Semester Organic Chemistry; retain those lecture/lab pairings during compilation.",
+          "courses": [
+            {"prefix": "BIOL", "number": "16", "title_seen": "General Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOL", "number": "18", "title_seen": "Principles of Physiology", "units_seen": 4},
+            {"prefix": "MATH", "number": "04B", "title_seen": "Calculus II", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000", "former_number_seen": "MATH-10", "title_seen": "Introduction to Statistics", "units_seen": 3},
+            {"prefix": "CHEM", "number": "13A", "title_seen": "First Semester Organic Chemistry Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "13AL", "title_seen": "First Semester Organic Chemistry Labs", "units_seen": 2},
+            {"prefix": "CHEM", "number": "13B", "title_seen": "Second Semester Organic Chemistry Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "13BL", "title_seen": "Second Semester Organic Chemistry Labs", "units_seen": 2}
+          ]
+        },
+        {
+          "label_seen": "General Education (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Elective (CSU Transferable) Units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 0,
+          "units_max": 2,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 2025-2026 catalog prints 34-36 major units, 34 Cal-GETC units, up to 10 double-counted units, 0-2 elective units, and 60 total degree units. Compared with 2026-2027, this catalog uses MATH 04A and MATH 04B rather than the later common-course-numbered MATH C2210 and MATH C2220."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog addendum lists Biology AS-T but no general Biology/Biological Sciences AS or AA."
+}

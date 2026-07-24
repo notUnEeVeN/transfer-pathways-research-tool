@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "community_college_id": 44,
+    "college_name": "Los Angeles Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T01:35:00+00:00",
+    "resume_note": "First-pass extraction of both Economics awards from the official 2025-2026 catalog; the local AA's minimum-major constraint is preserved for human review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=840&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46088",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35526-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics Associate of Arts Degree","award_seen":"AA","tmc_version_seen":null,"tmc_version_basis":"Local Economics Associate of Arts, program code V002984C.","catalog_status_seen":"Active in Los Angeles Valley College's official 2025-2026 catalog.","catalog_url":"https://www.lavc.edu/sites/lavc.edu/files/2025-08/LAVC%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":18,"major_units_max":21,"extraction_confidence":0.97,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.lavc.edu/sites/lavc.edu/files/2025-08/LAVC%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics Associate of Arts, program V002984C, curriculum and award table"}],
+      "major_groups":[
+        {"label_seen":"Required economics courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Economics I","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Economics II","units_seen":3}]},
+        {"label_seen":"Select one mathematics course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"238","title_seen":"Calculus for Business and Social Sciences I","units_seen":5},{"prefix":"MATH","number":"245","title_seen":"College Algebra","units_seen":3},{"prefix":"MATH","number":"261","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"Select one accounting, calculus, or statistics course","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Select additional course as needed for a minimum of 18 major units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"The catalog says to select from this pool as needed to reach at least 18 major units; a course already used in an earlier requirement cannot be double-counted.","courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5},{"prefix":"CIS","number":"101","title_seen":"Introduction to Computer Information Systems","units_seen":3},{"prefix":"MATH","number":"238","title_seen":"Calculus for Business and Social Sciences I","units_seen":5},{"prefix":"MATH","number":"261","title_seen":"Calculus I","units_seen":5},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5},{"prefix":"PHILOS","number":"009","title_seen":"Symbolic Logic I","units_seen":3},{"prefix":"STAT","number":"101","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"LAVC Associate Degree General Education or Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"LAVC GE or Cal-GETC","courses":[]},
+        {"label_seen":"Electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints an 18-21 unit major. Its final selection is conditional on reaching the 18-unit minimum rather than an unconditional extra course."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer Degree","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"Official transfer award, program code V035526G.","catalog_status_seen":"Active in Los Angeles Valley College's official 2025-2026 catalog.","catalog_url":"https://www.lavc.edu/sites/lavc.edu/files/2025-08/LAVC%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":25,"extraction_confidence":0.98,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.lavc.edu/sites/lavc.edu/files/2025-08/LAVC%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics AA-T, program V035526G, curriculum and award table"}],
+      "major_groups":[
+        {"label_seen":"Required economics and statistics courses","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Economics I","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Economics II","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Required calculus - select one","rule":"choose_courses","choose_n":1,"units_min":5,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"238","title_seen":"Calculus for Business and Social Sciences I","units_seen":5},{"prefix":"MATH","number":"261","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5},{"prefix":"BUS","number":"032","title_seen":"Business Communications","units_seen":3},{"prefix":"CAOT","number":"032","title_seen":"Business Communications","units_seen":3}]},
+        {"label_seen":"List B - select one or an unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select ECON 010 or any List A course not already used.","courses":[{"prefix":"ECON","number":"010","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"032","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"CAOT","number":"032","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any unused List A course"}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The official catalog publishes a 21-25 unit major total."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one local Economics AA and one Economics AA-T."
+}

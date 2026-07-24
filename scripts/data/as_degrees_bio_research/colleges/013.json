@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 13,
+    "college_name": "Merritt College",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:48:51+00:00",
+    "updated_at": "2026-07-23T22:42:00+00:00",
+    "resume_note": "The complete associate-degree and certificate table in Merritt College's official archived 2025-2026 catalog shows no general Biology/Biological Sciences AS-T, AS, or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://mc.curriqunet.com/catalog/archive/9900/iq/37208",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Historical 2025-2026 catalog, Associate Degrees and Certificates table; the Biology section lists Natural History and Resources only as a Certificate of Achievement and has no associate award"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Merritt's official 2025-2026 award table has a Biology department row, but its only listed program is the Natural History and Resources Certificate of Achievement. Biology courses and transfer preparation do not constitute a published Biology associate degree."
+}

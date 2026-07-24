@@ -1,0 +1,110 @@
+{
+  "_meta": {
+    "community_college_id": 9,
+    "college_name": "Cerro Coso Community College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:51+00:00",
+    "updated_at": "2026-07-23T22:42:00+00:00",
+    "resume_note": "Pinned to Cerro Coso Community College's official 2025-2026 catalog. The General Sciences AA Biology Emphasis is included because the catalog explicitly presents it as the Biology transfer pathway."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "General Sciences Associate in Arts Degree - Biology Emphasis",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "tmc_version_basis": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.cerrocoso.edu/_resources/assets/documents/general-information/2025-2026_catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.cerrocoso.edu/_resources/assets/documents/general-information/2025-2026_catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF pages 90-91 / printed catalog pages 82-83, General Sciences Associate in Arts Degree, Biology Emphasis"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biology Emphasis - fixed chemistry course",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "C111", "title_seen": "General Inorganic Chemistry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "BIOL C111 or BIOL C111H",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "C111", "title_seen": "General Biology I", "units_seen": 5, "alternative_seen": "BIOL C111 or BIOL C111H"},
+            {"prefix": "BIOL", "number": "C111H", "title_seen": "General Biology I: Honors", "units_seen": 6, "alternative_seen": "BIOL C111 or BIOL C111H"}
+          ]
+        },
+        {
+          "label_seen": "BIOL C112 or BIOL C112H",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "C112", "title_seen": "General Biology II", "units_seen": 5, "alternative_seen": "BIOL C112 or BIOL C112H"},
+            {"prefix": "BIOL", "number": "C112H", "title_seen": "General Biology II: Honors", "units_seen": 6, "alternative_seen": "BIOL C112 or BIOL C112H"}
+          ]
+        },
+        {
+          "label_seen": "CHEM C113 or CHEM C113H",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "C113", "title_seen": "General Inorganic Chemistry II", "units_seen": 5, "alternative_seen": "CHEM C113 or CHEM C113H"},
+            {"prefix": "CHEM", "number": "C113H", "title_seen": "General Inorganic Chemistry II: Honors", "units_seen": 6, "alternative_seen": "CHEM C113 or CHEM C113H"}
+          ]
+        },
+        {
+          "label_seen": "Complete one general education pattern: Cerro Coso Local GE or Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cerro Coso Local General Education Pattern or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "Although the award title is General Sciences, the official catalog defines a named Biology Emphasis, describes it as preparation for upper-division Biology study, and publishes a distinct Biology course block. It is therefore retained as Cerro Coso's catalog-framed broad Biology pathway."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No separate Biology AS-T, AS, or Biology-titled AA appears in the complete official 2025-2026 catalog. The embedded General Sciences AA Biology Emphasis is the in-scope general Biology pathway."
+}

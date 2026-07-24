@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "community_college_id": 146,
+    "college_name": "Lemoore College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T22:10:00+00:00",
+    "resume_note": "First-pass extraction is complete from Lemoore College's official 2025-2026 eLumen catalog. The cohort-specific Biology AS-T is modeled; the current marketing page's additional Biology AS is not present in the 2025-2026 program index and is retained only as a human-review discrepancy."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=59898c13-cad9-4213-b036-2a5cc4b5fb2b&search_string=biology",
+    "checked_at": "2026-07-23T19:29:53+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50058",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/40166-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology (AST)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The official 2025-2026 catalog requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed as a 60-unit A.S-T degree, effective Fall 2025, in Lemoore College's official 2025-2026 eLumen catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://westhillslemoore.elumenapp.com/catalog/25-26/program/biology-ast-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 31,
+      "major_units_max": 31,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_program_page",
+          "url": "https://westhillslemoore.elumenapp.com/catalog/25-26/program/biology-ast-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Biology (AST), Program Requirements and Recommended Sequence; effective Fall 2025"
+        },
+        {
+          "source_type": "official_college_catalog_archive_index",
+          "url": "https://lemoorecollege.edu/catalog/catalog-archive.php",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Academic Catalog Archive, 2025-2026 Catalog link"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 31,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIO", "number": "001A", "title_seen": "Cell and Molecular Biology", "units_seen": 4 },
+            { "prefix": "BIO", "number": "001B", "title_seen": "Organismal Biology", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "001A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "001B", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "001A", "title_seen": "Introduction to Calculus", "units_seen": 5 },
+            { "prefix": "PHYSICS", "number": "002A", "title_seen": "Mechanics and Thermodynamics", "units_seen": 4 },
+            { "prefix": "PHYSICS", "number": "002B", "title_seen": "Electricity, Magnetism, Optics, and Modern Physics", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable elective units for total of 60 degree-applicable semester units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog narrative states that Cal-GETC requires 34 units and permits major/GE double counting. Its requirements summary displays 24 additional Cal-GETC units after 10 double-counted major units; 31 major + 24 additional GE + 5 electives = 60."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Human-review discrepancy: Lemoore's current marketing page lists both Biology Associate of Science and Biology AS-T, but the authoritative 2025-2026 eLumen program index contains only Biology (AST), effective Fall 2025. The local Biology AS appears only in an older archive and is absent from the pinned 2025-2026 index, so it is not instantiated here. The eLumen public route serves an Angular shell directly, but its official published-content endpoint successfully returned the complete 2025-2026 requirements."
+}

@@ -1,0 +1,104 @@
+{
+  "_meta": {
+    "community_college_id": 49,
+    "college_name": "Pasadena City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:01+00:00",
+    "updated_at": "2026-07-23T21:29:00+00:00",
+    "resume_note": "Pinned to Pasadena City College's official 2025-2026 online catalog. The general Biology AS-T is fully extracted; the Biology program index lists no separate general Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1282&search_string=biology",
+    "checked_at": "2026-07-23T19:29:46+00:00",
+    "programs": [
+      {"statewide_program_id": "50792", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/37954-biology"}
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science Degree for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed as the sole general Biology award in PCC's official 2025-2026 Biology program index; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://curriculum.pasadena.edu/academic-programs/biology/biology-ast/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 34,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_catalog", "url": "https://curriculum.pasadena.edu/academic-programs/biology/biology-ast/", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "2025-2026 Academic Catalog, Associate in Science in Biology for Transfer Degree course table and degree total"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 9,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "010A", "title_seen": "Cellular Biology, Genetics and Evolution", "units_seen": 5},
+            {"prefix": "BIOL", "number": "010B", "title_seen": "The Diversity of Life on Earth: Structure, Function and Ecology", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A - general chemistry sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "001A", "title_seen": "General Chemistry and Chemical Analysis I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "001B", "title_seen": "General Chemistry and Chemical Analysis II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - complete one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "005A", "title_seen": "Single Variable Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "005AH", "title_seen": "Honors Single Variable Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "006A", "title_seen": "Calculus for Life Sciences I", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "List A - complete one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 002A and PHYS 002B, or complete PHYS 008A and PHYS 008B; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "002A", "title_seen": "General Physics I: Mechanics and Thermal Physics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "002B", "title_seen": "General Physics II: Electromagnetism, Optics, and Modern Physics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "008A", "title_seen": "Physics for Scientists and Engineers I: Mechanics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "008B", "title_seen": "Physics for Scientists and Engineers II: Waves, Electricity & Magnetism", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "General education requirement",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "choice_structure_seen": "Complete Cal-GETC. Students with catalog rights to former patterns may instead complete CSU GE-Breadth or IGETC-CSU; eligible students may use the associated STEM variants.",
+          "courses": []
+        },
+        {"label_seen": "Transferable electives as needed to reach 60 transferable units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "PCC prints a 30-34 required subtotal. The flat choose_units vocabulary cannot enforce paired physics sequences by itself. PCC's catalog-rights alternatives to Cal-GETC are preserved in choice_structure_seen."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 Biology program index lists only the general Biology AS-T."
+}

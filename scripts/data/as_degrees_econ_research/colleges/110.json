@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 110,
+    "college_name": "Allan Hancock College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:10:00+00:00",
+    "resume_note": "Negative result audited against Allan Hancock College's complete official 2025-2026 All Degrees & Certificates inventory."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_complete_program_inventory",
+      "url": "https://hancockcollege.curriqunet.com/catalog/archive/1/iq/28545/28876/28883",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Catalog 2025-26 > Degrees & Programs > All Degrees & Certificates; complete 265-award inventory contains no Economics award"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No general Economics AA-T, AS-T, AA, or AS appears in the complete 2025-2026 All Degrees & Certificates inventory. Economics courses and economics options inside Business or Social Science pathways are not standalone Economics associate awards and are outside this pass."
+}

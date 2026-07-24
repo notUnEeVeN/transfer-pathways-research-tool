@@ -1,0 +1,131 @@
+{
+  "_meta": {
+    "community_college_id": 153,
+    "college_name": "Compton College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:44+00:00",
+    "updated_at": "2026-07-23T23:55:00+00:00",
+    "resume_note": "First-pass extraction complete from pages 83-84 of Compton College's official 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3599&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "62968",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/42372-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Arts in Economics for Transfer (AA-T)",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies an Economics AA-T and prints economics, statistics, calculus, and List A requirements.",
+      "catalog_status_seen": "Published in Compton College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.compton.edu/academics/docs/2025-2026_Compton-College-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 19,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.compton.edu/academics/docs/2025-2026_Compton-College-Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 83-84: Economics, Program Requirements for AA-T Degree, Total Units 18-19"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core - macroeconomics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "101", "title_seen": "Principles of Economics: Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "101H", "title_seen": "Honors Principles of Economics: Macroeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Core - microeconomics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "102", "title_seen": "Principles of Economics: Microeconomics Theory", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required Core - statistics: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000H", "title_seen": "Introduction to Statistics - Honors", "units_seen": 4},
+            {"prefix": "PSYC", "number": "120", "title_seen": "Introduction to Statistics & Data Analysis for the Behavioral Sciences", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core - calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "165", "title_seen": "Calculus for Business and Social Sciences", "units_seen": 5},
+            {"prefix": "MATH", "number": "190", "title_seen": "Single Variable Calculus and Analytical Geometry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A: 3-4 units",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BUS", "number": "101", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "102", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "BUS", "number": "128", "title_seen": "Written Business Communications", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog labels the required core as 15 units and List A as 3-4 units, for a printed total of 18-19 major units. No additional List B requirement is printed for this award."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

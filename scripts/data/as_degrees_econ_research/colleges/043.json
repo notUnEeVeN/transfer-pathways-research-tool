@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "community_college_id": 43,
+    "college_name": "Glendale Community College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T01:25:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 Economics AA-T program page; slash-listed alternatives are expanded for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=670&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51141",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39285-economics"
+      }
+    ]
+  },
+  "degrees": [{
+    "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official program page identifies this as the Associate in Arts for Transfer in Economics.","catalog_status_seen":"Active in Glendale Community College's official 2025-2026 degree inventory.","catalog_url":"https://www.glendale.edu/academics/degree-certificate-programs/graduation-requirements/associate-degrees-for-transfer/associate-in-arts-for-transfer-economics.html","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":27,"extraction_confidence":0.97,
+    "sources":[{"source_type":"official_college_program_html","url":"https://www.glendale.edu/academics/degree-certificate-programs/graduation-requirements/associate-degrees-for-transfer/associate-in-arts-for-transfer-economics.html","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics AA-T curriculum table and 21-27 unit major total"}],
+    "major_groups":[
+      {"label_seen":"Required economics courses","rule":"choose_units","choose_n":null,"units_min":6,"units_max":6,"ge_area":null,"choice_structure_seen":"Complete ECON C2001 and either ECON C2002 or the honors ECON C2002H.","courses":[{"prefix":"ECON","number":"C2001","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"C2002","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"C2002H","title_seen":"Honors Principles of Macroeconomics","units_seen":3}]},
+      {"label_seen":"Statistics - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Honors Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics with Support","units_seen":5},{"prefix":"ECON","number":"127","title_seen":"Introduction to Statistics for Economics and Business","units_seen":4}]},
+      {"label_seen":"Calculus - select one","rule":"choose_courses","choose_n":1,"units_min":5,"units_max":6,"ge_area":null,"courses":[{"prefix":"MATH","number":"112","title_seen":"Calculus for Business","units_seen":5},{"prefix":"MATH","number":"112+","title_seen":"Calculus for Business with Support","units_seen":5.5},{"prefix":"MATH","number":"103E","title_seen":"Calculus and Analytic Geometry I","units_seen":5},{"prefix":"MATH","number":"103E+","title_seen":"Calculus and Analytic Geometry I with Support","units_seen":6},{"prefix":"MATH","number":"103EH","title_seen":"Honors Calculus and Analytic Geometry I","units_seen":5}]},
+      {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUSAD","number":"120","title_seen":"Business Law I","units_seen":3},{"prefix":"BUSAD","number":"106","title_seen":"Written Business Communications","units_seen":3},{"prefix":"MATH","number":"104E","title_seen":"Calculus and Analytic Geometry II","units_seen":5},{"prefix":"MATH","number":"104EH","title_seen":"Honors Calculus and Analytic Geometry II","units_seen":5},{"prefix":"ACCTG","number":"101","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCTG","number":"102","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"CS/IS","number":"101","title_seen":"Introduction to Computer and Information Systems","units_seen":5}]},
+      {"label_seen":"List B - select one or an unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select an explicit List B course or any List A course not already used.","courses":[{"prefix":"ECON","number":"111","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"MATH","number":"105","title_seen":"Multivariable and Vector Calculus","units_seen":5},{"prefix":"MATH","number":"105H","title_seen":"Honors Multivariable and Vector Calculus","units_seen":5},{"prefix":"MATH","number":"107","title_seen":"Linear Algebra","units_seen":5},{"prefix":"MATH","number":"107H","title_seen":"Honors Linear Algebra","units_seen":5},{"prefix":"BUSAD","number":"120","title_seen":"Business Law I","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"BUSAD","number":"106","title_seen":"Written Business Communications","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"104E","title_seen":"Calculus and Analytic Geometry II","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCTG","number":"101","title_seen":"Financial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCTG","number":"102","title_seen":"Managerial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"CS/IS","number":"101","title_seen":"Introduction to Computer and Information Systems","units_seen":5,"alternative_seen":"Any unused List A course"}]},
+      {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+      {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+    ],"notes":"The official program page publishes a 21-27 unit major total."
+  }],
+  "out_of_scope_candidates": [],
+  "notes": "The official degree options identify one in-scope Economics award, the AA-T."
+}

@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "community_college_id": 107,
+    "college_name": "Imperial Valley College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:03+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "Pinned to Imperial Valley College's official 2025-2026 catalog. The Biology for Transfer AS-T requirement table is fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=752&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47390",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35417-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer - Major (A.S.-T.)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.imperial.edu/faculty-and-staff/archives/catalogs/2025-2026%20Full%20IVC%20Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 30,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.imperial.edu/faculty-and-staff/archives/catalogs/2025-2026%20Full%20IVC%20Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 101 / printed catalog page 100, Biology for Transfer Major (A.S.-T.)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Thirty (30) units required for the major - fixed courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 22,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "180", "title_seen": "General Biology: Molecules, Cells & Genetics", "units_seen": 4},
+            {"prefix": "BIOL", "number": "182", "title_seen": "General Biology: Principles of Organismal Biology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "200", "title_seen": "General Inorganic Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "202", "title_seen": "General Inorganic Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "192", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select PHYS 105 and PHYS 110 OR PHYS 200 and PHYS 202",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Choose the intact two-course sequence PHYS 105 + PHYS 110 or the intact two-course sequence PHYS 200 + PHYS 202; each sequence is 8 units.",
+          "courses": [
+            {"prefix": "PHYS", "number": "105", "title_seen": "College Physics I", "units_seen": 4, "alternative_seen": "Pair with PHYS 110"},
+            {"prefix": "PHYS", "number": "110", "title_seen": "College Physics II", "units_seen": 4, "alternative_seen": "Pair with PHYS 105"},
+            {"prefix": "PHYS", "number": "200", "title_seen": "General Physics I", "units_seen": 4, "alternative_seen": "Pair with PHYS 202"},
+            {"prefix": "PHYS", "number": "202", "title_seen": "General Physics II", "units_seen": 4, "alternative_seen": "Pair with PHYS 200"}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) - 34 units minimum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The official table prints all four physics courses under an either/or choice; choice_structure_seen preserves the required intact sequence structure."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete official 2025-2026 program section publishes one in-scope broad Biology award and no separate Biology AA or local AS."
+}

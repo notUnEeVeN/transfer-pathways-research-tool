@@ -1,0 +1,176 @@
+{
+  "_meta": {
+    "community_college_id": 133,
+    "college_name": "Monterey Peninsula College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:43:16+00:00",
+    "updated_at": "2026-07-23T21:54:00+00:00",
+    "resume_note": "First-pass extraction is complete from Monterey Peninsula College's official 2025-2026 catalog PDF. The Biology AS-T and Biological Sciences AS are both modeled."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=991&search_string=biology",
+    "checked_at": "2026-07-23T19:29:52+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46402",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35218-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed without inactive or teach-out language in Monterey Peninsula College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.mpc.edu/pdf/Monterey%20Peninsula%20College%202025-2026%20College%20Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.mpc.edu/pdf/Monterey%20Peninsula%20College%202025-2026%20College%20Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 137-138, Biology, Associate in Science for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "21", "title_seen": "Concepts in Biology I: Cells, Genetics, and Organisms", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "22", "title_seen": "Concepts in Biology II: Diversity, Ecology, and Evolution", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — chemistry sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "18", "title_seen": "Calculus and Analytic Geometry for Biology/Soc Sci/Business", "units_seen": 4 },
+            { "prefix": "MATH", "number": "20A", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and PHYS 2B, or complete PHYS 3A and PHYS 3B; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "3A", "title_seen": "Science and Engineering Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "3B", "title_seen": "Science and Engineering Physics II", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Complete Cal-GETC pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives, if needed, for a total of 60 transferable units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 32 major units and 28 additional units after allowed overlap/electives to reach 60."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Sciences, Associate in Science",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed without inactive or teach-out language in Monterey Peninsula College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.mpc.edu/pdf/Monterey%20Peninsula%20College%202025-2026%20College%20Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 24,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://catalog.mpc.edu/pdf/Monterey%20Peninsula%20College%202025-2026%20College%20Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 136-137, Biological Sciences, Associate in Science"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "21", "title_seen": "Concepts in Biology I: Cells, Genetics, and Organisms", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "22", "title_seen": "Concepts in Biology II: Diversity, Ecology, and Evolution", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "20A", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Complete Competency Requirements and an approved general education pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "MPC General Education or Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives, if needed, for a total of 60 degree-applicable units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 24 major units and 36 additional units comprising competency requirements, GE, and electives."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Monterey Peninsula College's official 2025-2026 catalog lists both qualifying general biology awards. Environmental Science and General Studies: Natural Science are adjacent awards and are excluded."
+}

@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "community_college_id": 58,
+    "college_name": "Berkeley City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to Berkeley City College's official archived 2025-2026 catalog. The Biology AS-T is fully extracted; no second broad Biology AA or AS is printed."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2472&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [{"statewide_program_id": "62686", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/41902-biology"}]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - AS-T Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official archived 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.berkeleycitycollege.edu/hubfs/2025-26%20Catalog%20-%202026-07-06_162854.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.berkeleycitycollege.edu/hubfs/2025-26%20Catalog%20-%202026-07-06_162854.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "PDF page 95 / printed catalog page 94, Biology - AS-T Degree"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 35,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "001A", "title_seen": "General Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "001B", "title_seen": "General Biology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "001A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "001B", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "MATH", "number": "003A", "title_seen": "Calculus I", "units_seen": 5},
+            {"prefix": "PHYS", "number": "003A", "title_seen": "General Physics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "003B", "title_seen": "General Physics", "units_seen": 5}
+          ]
+        },
+        {"label_seen": "CalGETC and elective courses", "rule": "ge_area", "choose_n": null, "units_min": 25, "ge_area": "Cal-GETC and electives combined in the catalog total", "courses": []}
+      ],
+      "notes": "The catalog combines Cal-GETC and elective courses into one 25-unit line rather than separately itemizing them."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete official 2025-2026 degree section prints one in-scope broad Biology award. Biotechnology awards are outside this pass and are not retained as candidates."
+}

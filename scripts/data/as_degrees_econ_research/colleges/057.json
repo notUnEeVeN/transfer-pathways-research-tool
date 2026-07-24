@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "community_college_id": 57,
+    "college_name": "Santa Rosa Junior College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T02:35:00+00:00",
+    "resume_note": "First-pass extraction from SRJC's official program-of-study page, version 7, effective Fall 2025; its conflicting total statements are preserved for human review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1752&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45368",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32758-economics"
+      }
+    ]
+  },
+  "degrees": [{
+    "degree_type_hint":"ast","degree_title_seen":"Economics (AA-T)","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official program page identifies the Associate in Arts for Transfer in Economics and links the state TMC.","catalog_status_seen":"Term effective Fall 2025 in Santa Rosa Junior College's official program-of-study system.","catalog_url":"https://portal.santarosa.edu/SRWeb/ProgramOfStudyPrinterFriendly.aspx?Program=001069&ProgramType=2&Version=7","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":19,"major_units_max":28,"extraction_confidence":0.96,
+    "sources":[{"source_type":"official_college_program_of_study_html","url":"https://portal.santarosa.edu/SRWeb/ProgramOfStudyPrinterFriendly.aspx?Program=001069&ProgramType=2&Version=7","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics (AA-T), Version 7, Term Effective Fall 2025, Program Requirements and Notes"}],
+    "major_groups":[
+      {"label_seen":"Economics for Transfer Core - required economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"1","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"2","title_seen":"Principles of Microeconomics","units_seen":3}]},
+      {"label_seen":"Economics for Transfer Core - statistics","rule":"choose_units","choose_n":null,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"PSYC","number":"9","title_seen":"Introduction to Behavioral Sciences Statistics","units_seen":3}]},
+      {"label_seen":"Economics for Transfer Core - calculus option","rule":"choose_units","choose_n":null,"units_min":4,"units_max":10,"ge_area":null,"choice_structure_seen":"Complete MATH 16 alone (4 units) or the MATH 1A and MATH 1B two-course sequence (10 units).","courses":[{"prefix":"MATH","number":"16","title_seen":"Business Calculus","units_seen":4},{"prefix":"MATH","number":"1A","title_seen":"Calculus, First Course","units_seen":5,"bundle_id":"calculus_sequence"},{"prefix":"MATH","number":"1B","title_seen":"Calculus, Second Course","units_seen":5,"bundle_id":"calculus_sequence"}]},
+      {"label_seen":"Economics for Transfer List A - complete at least 3 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"AGBU","number":"7","title_seen":"Agricultural Economics","units_seen":3},{"prefix":"BAD","number":"1","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BAD","number":"2","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BAD","number":"18","title_seen":"The Legal Environment of Business","units_seen":3},{"prefix":"BMG","number":"52","title_seen":"Business Communication","units_seen":3},{"prefix":"COMM","number":"3","title_seen":"Introduction to Argumentation","units_seen":3},{"prefix":"COMM","number":"9","title_seen":"Critical Thinking and Argumentation","units_seen":3},{"prefix":"CS","number":"84.21","title_seen":"Management Information Systems","units_seen":3},{"prefix":"ENGL","number":"C1001","title_seen":"Critical Thinking and Writing","units_seen":3},{"prefix":"MATH","number":"9","title_seen":"Finite Mathematics","units_seen":3},{"prefix":"PHIL","number":"5","title_seen":"Critical Thinking and Writing","units_seen":3},{"prefix":"SOC","number":"1","title_seen":"Introduction to Sociology","units_seen":3}]},
+      {"label_seen":"Economics for Transfer List B - complete at least 3 units","rule":"choose_units","choose_n":null,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"A course used for List A may not also satisfy List B; the official page repeats the eligible List A courses and adds the explicit List B courses.","courses":[{"prefix":"AGBU","number":"7","title_seen":"Agricultural Economics","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"BAD","number":"1","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"BAD","number":"2","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"BAD","number":"18","title_seen":"The Legal Environment of Business","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"BMG","number":"52","title_seen":"Business Communication","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"COMM","number":"3","title_seen":"Introduction to Argumentation","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"COMM","number":"9","title_seen":"Critical Thinking and Argumentation","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"CS","number":"84.21","title_seen":"Management Information Systems","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"ECON","number":"12","title_seen":"Introduction to Economics and the Environment","units_seen":3},{"prefix":"ECON","number":"30","title_seen":"International Economics","units_seen":3},{"prefix":"ENGL","number":"C1001","title_seen":"Critical Thinking and Writing","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"MATH","number":"5","title_seen":"Introduction to Linear Algebra","units_seen":4},{"prefix":"MATH","number":"9","title_seen":"Finite Mathematics","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"PHIL","number":"5","title_seen":"Critical Thinking and Writing","units_seen":3,"alternative_seen":"Eligible only if not used in List A"},{"prefix":"SOC","number":"1","title_seen":"Introduction to Sociology","units_seen":3,"alternative_seen":"Eligible only if not used in List A"}]},
+      {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+      {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+    ],"notes":"The page header and requirement buckets establish a 19-unit minimum; selecting the longest/highest-unit alternatives can produce 28 units. A separate sentence on the same page says 'minimum of 26-28' and conflicts with both the header and the explicit buckets. The 19-28 range preserves the actual published options and the inconsistency is left for human adjudication."
+  }],
+  "out_of_scope_candidates": [],
+  "notes": "SRJC's official Fall 2025 program page publishes one Economics AA-T and contains a documented major-unit inconsistency that should be hand reviewed."
+}

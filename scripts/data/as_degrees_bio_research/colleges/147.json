@@ -1,0 +1,112 @@
+{
+  "_meta": {
+    "community_college_id": 147,
+    "college_name": "Woodland Community College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "Pinned to Woodland Community College's official revised 2025-2026 catalog. The Biology AS-T is extracted; the official degree index does not list a separate general local Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2059&search_string=biology",
+    "checked_at": "2026-07-23T19:29:53+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47591",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35369-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology — Associate in Science for Transfer",
+      "award_seen": "Associate in Science for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as an active degree in the official revised 2025-2026 catalog.",
+      "catalog_url": "https://wcc.yccd.edu/wp-content/uploads/2026/02/WCC-Catalog-2025-26-Revised-Complete-2026-02-10.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://wcc.yccd.edu/wp-content/uploads/2026/02/WCC-Catalog-2025-26-Revised-Complete-2026-02-10.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Woodland Community College 2025-2026 revised catalog, printed pages 112-113, Biology AS-T"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "units_max": 20,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "1", "title_seen": "Principles of Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "7", "title_seen": "Introduction to Biodiversity, Ecology, and Evolution", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Mathematics — select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "1A", "title_seen": "Single Variable Calculus I — Early Transcendentals", "units_seen": 4},
+            {"prefix": "MATH", "number": "9", "title_seen": "Calculus for Business, Social and Life Sciences", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Physics — select one complete sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 1A and PHYS 1B, or complete PHYS 4A and PHYS 4B; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "1A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "1B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Mechanics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Electromagnetism", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 32 major units and 60 total units. It requires Cal-GETC but does not state a fixed Cal-GETC or elective subtotal on the program page, so those units_min values are left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 degree index lists the general Biology AS-T but no separate general Biology/Biological Sciences local AS or AA; specialized awards were ignored by scope."
+}

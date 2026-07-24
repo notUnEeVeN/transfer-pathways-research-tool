@@ -1,0 +1,155 @@
+{
+  "_meta": {
+    "community_college_id": 110,
+    "college_name": "Allan Hancock College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:27:03+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "Pinned to Allan Hancock College's official archived 2025-2026 catalog. The Biology AA and Biology AS-T requirement tables are fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=16&search_string=biology",
+    "checked_at": "2026-07-23T19:29:51+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46830",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36262-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Biology - Associate in Arts",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "tmc_version_basis": null,
+      "catalog_status_seen": "Published in Allan Hancock College's official historical 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://hancockcollege.curriqunet.com/Catalog/archive/1/iq/140/5134/11036/11039",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://hancockcollege.curriqunet.com/Catalog/archive/1/iq/140/5134/11036/11039",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Historical 2025-2026 catalog, Biology - Associate in Arts, Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required core courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "150", "title_seen": "Cell and Molecular Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "154", "title_seen": "Organismal Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "155", "title_seen": "Evolution and Ecology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select one emphasis",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Choose one intact emphasis: CHEM 150 + CHEM 151 (10 units) or PHYS 141 + PHYS 142 (8 units).",
+          "courses": [
+            {"prefix": "CHEM", "number": "150", "title_seen": "General Chemistry 1", "units_seen": 5, "alternative_seen": "Chemistry emphasis; pair with CHEM 151"},
+            {"prefix": "CHEM", "number": "151", "title_seen": "General Chemistry 2", "units_seen": 5, "alternative_seen": "Chemistry emphasis; pair with CHEM 150"},
+            {"prefix": "PHYS", "number": "141", "title_seen": "General Physics 1", "units_seen": 4, "alternative_seen": "Physics emphasis; pair with PHYS 142"},
+            {"prefix": "PHYS", "number": "142", "title_seen": "General Physics 2", "units_seen": 4, "alternative_seen": "Physics emphasis; pair with PHYS 141"}
+          ]
+        },
+        {
+          "label_seen": "General education and electives as needed",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "local_pattern",
+          "courses": []
+        }
+      ],
+      "notes": "The catalog's recommended electives are advisory and are not included in the required 23-25 unit major. General education and electives complete the 60-unit AA."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in Allan Hancock College's official historical 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://hancockcollege.curriqunet.com/Catalog/archive/1/iq/140/5134/11041/11044",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 37,
+      "major_units_max": 37,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html",
+          "url": "https://hancockcollege.curriqunet.com/Catalog/archive/1/iq/140/5134/11041/11044",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Historical 2025-2026 catalog, Biology - Associate in Science for Transfer, Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required core and List A courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 29,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "150", "title_seen": "Cell and Molecular Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "154", "title_seen": "Organismal Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "155", "title_seen": "Evolution and Ecology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "150", "title_seen": "General Chemistry 1", "units_seen": 5},
+            {"prefix": "CHEM", "number": "151", "title_seen": "General Chemistry 2", "units_seen": 5},
+            {"prefix": "MATH", "number": "C2210", "title_seen": "Single Variable Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Choose one physics sequence",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Choose the intact two-course sequence PHYS 141 + PHYS 142 or the intact two-course sequence PHYS 161 + PHYS 163; each sequence is 8 units.",
+          "courses": [
+            {"prefix": "PHYS", "number": "141", "title_seen": "General Physics 1", "units_seen": 4, "alternative_seen": "Pair with PHYS 142"},
+            {"prefix": "PHYS", "number": "142", "title_seen": "General Physics 2", "units_seen": 4, "alternative_seen": "Pair with PHYS 141"},
+            {"prefix": "PHYS", "number": "161", "title_seen": "Engineering Physics 1", "units_seen": 4, "alternative_seen": "Pair with PHYS 163"},
+            {"prefix": "PHYS", "number": "163", "title_seen": "Engineering Physics 2", "units_seen": 4, "alternative_seen": "Pair with PHYS 161"}
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC general education pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        }
+      ],
+      "notes": "The archived catalog calculator displays 37 major units plus 24 GE units (61 units), while the AS-T description states the statewide minimum of 60 transferable semester units. The record preserves 60 as the degree minimum and flags the generated 61-unit plan for human verification."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official historical 2025-2026 catalog publishes two in-scope broad Biology awards. Recommended electives are not separate required-major groups."
+}

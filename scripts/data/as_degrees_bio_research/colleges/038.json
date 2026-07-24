@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "community_college_id": 38,
+    "college_name": "Shasta College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:51+00:00",
+    "updated_at": "2026-07-23T22:00:00+00:00",
+    "resume_note": "The statewide discovery index omitted this award; the official 2025-2026 catalog confirms a Biological Sciences University Studies AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:29:43+00:00",
+    "programs": []
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Biological Sciences - University Studies",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "tmc_version_basis": "Local University Studies degree; no Transfer Model Curriculum claim is made.",
+      "catalog_status_seen": "Active in Shasta College's official 2025-2026 catalog.",
+      "catalog_url": "https://scmainweb.s3.us-west-1.amazonaws.com/files/resources/2025-26-college-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 22,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://scmainweb.s3.us-west-1.amazonaws.com/files/resources/2025-26-college-catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 87, Life Sciences: Biological Sciences, University Studies 22 Unit Emphasis (SC Program AA.1507); University Studies degree rules on pages 27-30"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Complete the following 22 units",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 22,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "1", "title_seen": "Principles of Biology", "units_seen": 4 },
+            { "prefix": "BOT", "number": "1", "title_seen": "General Botany", "units_seen": 4 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "University Studies general education option",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC or University Studies GE Option 3",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog labels this a 22-unit emphasis but the four explicitly printed courses total 18 units. This source discrepancy is preserved for human review rather than inventing a missing course. The catalog permits courses to double-count between the University Studies emphasis and GE, subject to its overall emphasis-plus-GE minimum."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "This is a catalog-confirmed AA that the statewide Biology discovery API did not list."
+}

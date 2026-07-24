@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "community_college_id": 150,
+    "college_name": "Clovis Community College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:52+00:00",
+    "updated_at": "2026-07-23T22:00:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; retain the catalog PDF for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2585&search_string=biology",
+    "checked_at": "2026-07-23T19:29:53+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46444",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35129-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Science in Biology for Transfer Degree",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The published curriculum contains the Biology TMC core plus one complete physics sequence.",
+      "catalog_status_seen": "Active in Clovis Community College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.cloviscollege.edu/catalog/assets/docs/catalog-2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 33,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.cloviscollege.edu/catalog/assets/docs/catalog-2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 148-149, Associate in Science in Biology for Transfer Degree (Major C.6101.AS-T)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses and List A",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 25,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5 },
+            { "prefix": "MATH", "number": "5A", "title_seen": "Math Analysis I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A - select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and 2B, or complete PHYS 4A and 4B; either sequence is 8 units.",
+          "courses": [
+            { "prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The official program table prints 33 major units. Clovis also lists a Life Science AS (formerly Biological Science), which is outside this narrowly titled general Biology/Biological Sciences pass."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the current Biology AS-T is included. The Life Science AS (formerly Biological Science) is outside this narrowly titled pass."
+}

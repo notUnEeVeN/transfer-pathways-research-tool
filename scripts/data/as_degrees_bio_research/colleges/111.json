@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 111,
+    "college_name": "College of Alameda",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:27:11+00:00",
+    "updated_at": "2026-07-23T21:45:00+00:00",
+    "resume_note": "Official 2025-2026 catalog checked. The former Biology AS is not listed; the Biology section offers only the interdisciplinary Science AS, which is outside the agreed title scope."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=6bbc883b-f2e3-479a-8a45-cb5b02f7b8e1&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://6398505.fs1.hubspotusercontent-na2.net/hubfs/6398505/2025-2026%20Catalog_FINAL_rev2_8.18.25.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "PDF printed pages 156-158, complete Biology section; only Science - A.S. Degree is listed"
+    },
+    {
+      "source_type": "official_college_catalog_archive_index",
+      "url": "https://alameda.edu/class-schedule-and-course-catalog",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Archive of Previous Course Catalogs, 2025-26 link"
+    }
+  ],
+  "notes": "The catalog says students can use the interdisciplinary Science AS for biology-major preparation, but it is not titled Biology or Biological Sciences and requires work across at least two science disciplines. The former Biology AS shown in 2024-2025 materials was not carried forward as an in-scope 2025-2026 award."
+}

@@ -55,6 +55,12 @@ describe('majors config', () => {
     }
   });
 
+  it('publishes the Economics AA-T label for the major-neutral transfer slot', () => {
+    expect(getMajor('econ').degreeSlotLabels).toEqual({ ast: 'A.A.-T' });
+    expect(JSON.parse(JSON.stringify(serializeMajors()))
+      .find((major) => major.slug === 'econ').degreeSlotLabels.ast).toBe('A.A.-T');
+  });
+
   it('unknown slug returns null', () => {
     expect(getMajor('nope')).toBeNull();
     expect(getMajor('')).toBeNull();

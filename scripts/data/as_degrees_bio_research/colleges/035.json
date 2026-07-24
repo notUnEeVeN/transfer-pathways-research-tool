@@ -1,0 +1,199 @@
+{
+  "_meta": {
+    "community_college_id": 35,
+    "college_name": "Fresno City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to Fresno City College's official archived 2025-2026 CurriQunet catalog (archive 1007), not the live catalog. Both the 18-20-unit local Biology A.S. and 33-unit Biology A.S.-T. are extracted with their historical 2025-2026 identifiers."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=599&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "47195",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35161-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology - Formerly Life Science Degree, Associate of Science - Major #6082",
+      "award_seen": "Associate of Science",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official archived 2025-2026 catalog. CurriQunet labels the archived curriculum entities 'Historical' because this is a frozen prior-year catalog; the award page does not identify the degree as inactive or teach-out within that catalog year.",
+      "catalog_url": "https://fresno.curriqunet.com/Catalog/archive/1007",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 20,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web_archive",
+          "url": "https://fresno.curriqunet.com/Catalog/archive/1007",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 archived catalog > Degree and Certificate Programs > Biology > Biology - Formerly Life Science Degree, Associate of Science - Major #6082"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5},
+            {"prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Core - Select One Chemistry Course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "3A", "title_seen": "Introductory General Chemistry", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Electives: Choose one to two courses from the following to make a minimum of 18 units total",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Choose one or two printed electives so that Required Core, the chemistry choice, and these electives total at least 18 major units. The catalog's computed elective range is 4-5 units and its major total is 18-20 units.",
+          "courses": [
+            {"prefix": "BIOL", "number": "5", "title_seen": "Human Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "7", "title_seen": "Field Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "14", "title_seen": "Conservation Biology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "15", "title_seen": "Animal Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "16", "title_seen": "Plant Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "31", "title_seen": "Microbiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "46", "title_seen": "Elementary Horticulture", "units_seen": 4},
+            {"prefix": "BIOL", "number": "71", "title_seen": "Field Biology of the High and Eastern Sierra Nevada", "units_seen": 1},
+            {"prefix": "BIOL", "number": "72", "title_seen": "Field Biology of the Central California Coast", "units_seen": 1},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHEM", "number": "3B", "title_seen": "Introductory Organic & Biological Chemistry", "units_seen": 4},
+            {"prefix": "GEOL", "number": "2", "title_seen": "Historical Geology", "units_seen": 4},
+            {"prefix": "GEOL", "number": "5", "title_seen": "Introduction to Oceanography", "units_seen": 3},
+            {"prefix": "GEOL", "number": "12", "title_seen": "Environmental Science", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Fresno City College associate-degree general education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Fresno City College associate-degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The archived curriculum table prints a 10-unit biology core, a 4-5-unit chemistry choice, a computed 4-5-unit elective range, and an 18-20-unit major total. The local GE subtotal is not restated on this program page, so units_min is left null."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer, Associate in Science - Major #6082",
+      "award_seen": "Associate in Science for Transfer",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official archived 2025-2026 catalog. CurriQunet labels the frozen prior-year curriculum entities 'Historical'; the award page does not identify the degree as inactive or teach-out within that catalog year.",
+      "catalog_url": "https://fresno.curriqunet.com/Catalog/archive/1007",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 33,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web_archive",
+          "url": "https://fresno.curriqunet.com/Catalog/archive/1007",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 archived catalog > Degree and Certificate Programs > Biology > Biology for Transfer, Associate in Science - Major #6082"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5},
+            {"prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Chemistry and Mathematics Requirements",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "5A", "title_seen": "Mathematical Analysis I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select One Physics Sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 2A and PHYS 2B, or complete PHYS 4A and PHYS 4B; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "2A", "title_seen": "General Physics 1", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "General Physics 2", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The archived program table prints a 33-unit major. Its narrative explicitly requires 60 CSU-transferable units and Cal-GETC but does not restate the Cal-GETC unit subtotal, so units_min is left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Biology A.S. and Biology-for-Transfer A.S. are included; specialties and certificates were ignored by scope."
+}

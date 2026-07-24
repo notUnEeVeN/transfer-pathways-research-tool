@@ -1,0 +1,2213 @@
+{
+  "_meta": {
+    "major_slug": "econ",
+    "source_academic_year": "2025-2026",
+    "purpose": "Resumable statewide inventory for Economics associate-degree research.",
+    "created_at": "2026-07-23T22:30:29+00:00",
+    "last_checkpoint_at": "2026-07-23T22:30:37+00:00",
+    "statewide_category_id": "8290",
+    "statewide_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+    "statewide_source_name": "I Can Go to College — California Community Colleges",
+    "source_role": "Fast official discovery index only. Each included degree still needs one college-catalog source for title, award, units, and requirements.",
+    "college_count": 115,
+    "college_universe_source": "scripts/data/as_degrees_cs_extraction.json#survey",
+    "canonical_college_ids_sha256": "1de245dee546d9bc0e2c52925516bd60a96f58fb7d023a5532f7ab620d06f2a0",
+    "completed_discovery_count": 115,
+    "unmatched_statewide_colleges": [],
+    "statewide_listing_count": 97
+  },
+  "colleges": [
+    {
+      "community_college_id": 2,
+      "college_name": "Evergreen Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "555",
+      "statewide_college_uri": "/colleges/evergreen-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=555&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49194",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35854-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 3,
+      "college_name": "Los Angeles City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "790",
+      "statewide_college_uri": "/colleges/la-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=790&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "52263",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/40566-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 4,
+      "college_name": "College of Marin",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "904",
+      "statewide_college_uri": "/colleges/marin",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=904&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45509",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33074-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 5,
+      "college_name": "College of San Mateo",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1667",
+      "statewide_college_uri": "/colleges/san-mateo",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1667&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45549",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33258-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 6,
+      "college_name": "College of the Sequoias",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1798",
+      "statewide_college_uri": "/colleges/sequoias",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1798&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45545",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33344-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 8,
+      "college_name": "Butte College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "177",
+      "statewide_college_uri": "/colleges/butte",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=177&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46453",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33927-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 9,
+      "college_name": "Cerro Coso Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 10,
+      "college_name": "Columbia College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "367",
+      "statewide_college_uri": "/colleges/columbia",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=367&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49803",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36637-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 13,
+      "college_name": "Merritt College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "960",
+      "statewide_college_uri": "/colleges/merritt",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=960&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46109",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33540-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 14,
+      "college_name": "Santa Ana College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1688",
+      "statewide_college_uri": "/colleges/santa-ana",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1688&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45705",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35555-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 16,
+      "college_name": "Cuesta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2364",
+      "statewide_college_uri": "/colleges/cuesta",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2364&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45249",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33041-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 17,
+      "college_name": "Merced College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "953",
+      "statewide_college_uri": "/colleges/merced",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=953&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47181",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35530-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 18,
+      "college_name": "Las Positas College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "871",
+      "statewide_college_uri": "/colleges/las-positas",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=871&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49515",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36227-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:30+00:00"
+    },
+    {
+      "community_college_id": 19,
+      "college_name": "Victor Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 20,
+      "college_name": "Barstow Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 25,
+      "college_name": "Los Angeles Trade Technical College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "816",
+      "statewide_college_uri": "/colleges/la-trade-tech",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=816&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53216",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39453-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 27,
+      "college_name": "American River College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "62",
+      "statewide_college_uri": "/colleges/american-river",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=62&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45177",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32720-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 28,
+      "college_name": "Contra Costa College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "372",
+      "statewide_college_uri": "/colleges/contra-costa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=372&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53046",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33578-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 30,
+      "college_name": "College of the Desert",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "499",
+      "statewide_college_uri": "/colleges/desert",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=499&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47161",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33266-economics"
+        },
+        {
+          "statewide_program_id": "4ac032b0-513d-42c3-a631-7d979c786929",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/45209-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 31,
+      "college_name": "Los Angeles Harbor College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "798",
+      "statewide_college_uri": "/colleges/la-harbor",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=798&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "51936",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/40037-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 32,
+      "college_name": "Mission College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "968",
+      "statewide_college_uri": "/colleges/mission",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=968&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45482",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35848-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 33,
+      "college_name": "City College of San Francisco",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1567",
+      "statewide_college_uri": "/colleges/san-francisco-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1567&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48425",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32869-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 35,
+      "college_name": "Fresno City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "599",
+      "statewide_college_uri": "/colleges/fresno-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=599&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47652",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35316-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 36,
+      "college_name": "Reedley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1316",
+      "statewide_college_uri": "/colleges/reedley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1316&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46129",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33546-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 38,
+      "college_name": "Shasta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 40,
+      "college_name": "Lake Tahoe Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 41,
+      "college_name": "Cabrillo College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "243",
+      "statewide_college_uri": "/colleges/cabrillo",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=243&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53058",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35570-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 43,
+      "college_name": "Glendale Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "670",
+      "statewide_college_uri": "/colleges/glendale",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=670&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "51141",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39285-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 44,
+      "college_name": "Los Angeles Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "840",
+      "statewide_college_uri": "/colleges/la-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=840&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46088",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35526-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 45,
+      "college_name": "San Diego Miramar College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1549",
+      "statewide_college_uri": "/colleges/san-diego-miramar",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1549&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45900",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33374-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:31+00:00"
+    },
+    {
+      "community_college_id": 47,
+      "college_name": "Los Angeles Mission College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 48,
+      "college_name": "Ohlone College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1125",
+      "statewide_college_uri": "/colleges/ohlone",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1125&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "44874",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32584-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 49,
+      "college_name": "Pasadena City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1282",
+      "statewide_college_uri": "/colleges/pasadena-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1282&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "50364",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37424-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 51,
+      "college_name": "Foothill College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "577",
+      "statewide_college_uri": "/colleges/foothill",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=577&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45343",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33001-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 52,
+      "college_name": "Modesto Junior College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "984",
+      "statewide_college_uri": "/colleges/modesto",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=984&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "5ea6a40c-4ef6-4aa8-92f4-dece37d042a5",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42673-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 53,
+      "college_name": "Mt. San Jacinto College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1060",
+      "statewide_college_uri": "/colleges/mt-san-jacinto",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1060&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45772",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33297-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 54,
+      "college_name": "San Diego City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1490",
+      "statewide_college_uri": "/colleges/san-diego-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1490&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46079",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36118-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 55,
+      "college_name": "Golden West College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3149",
+      "statewide_college_uri": "/colleges/golden-west",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3149&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46949",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35212-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 56,
+      "college_name": "Palomar College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1201",
+      "statewide_college_uri": "/colleges/palomar",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1201&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47270",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35206-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 57,
+      "college_name": "Santa Rosa Junior College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1752",
+      "statewide_college_uri": "/colleges/santa-rosa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1752&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45368",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32758-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 58,
+      "college_name": "Berkeley City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2472",
+      "statewide_college_uri": "/colleges/berkeley-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2472&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46156",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33548-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 61,
+      "college_name": "Los Medanos College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 62,
+      "college_name": "Mount San Antonio College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 63,
+      "college_name": "Palo Verde College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 64,
+      "college_name": "Rio Hondo College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1350",
+      "statewide_college_uri": "/colleges/rio-hondo",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1350&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46147",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33628-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:32+00:00"
+    },
+    {
+      "community_college_id": 65,
+      "college_name": "Saddleback College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1443",
+      "statewide_college_uri": "/colleges/saddleback",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1443&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48792",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33533-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 66,
+      "college_name": "Santiago Canyon College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1768",
+      "statewide_college_uri": "/colleges/santiago-canyon",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1768&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47305",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32968-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 67,
+      "college_name": "Coalinga College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 68,
+      "college_name": "Cañada College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "260",
+      "statewide_college_uri": "/colleges/canada",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=260&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45044",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32716-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 69,
+      "college_name": "Chaffey College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "332",
+      "statewide_college_uri": "/colleges/chaffey",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=332&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45194",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33201-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 70,
+      "college_name": "Crafton Hills College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "423",
+      "statewide_college_uri": "/colleges/crafton-hills",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=423&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45594",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33232-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 71,
+      "college_name": "Cypress College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "487",
+      "statewide_college_uri": "/colleges/cypress",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=487&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46940",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35301-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 72,
+      "college_name": "Gavilan College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "661",
+      "statewide_college_uri": "/colleges/gavilan",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=661&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45493",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33048-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 73,
+      "college_name": "Napa Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1087",
+      "statewide_college_uri": "/colleges/napa-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1087&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "9971503d-3893-4756-9dca-34bda48591af",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/44535-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 74,
+      "college_name": "Orange Coast College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1139",
+      "statewide_college_uri": "/colleges/orange-coast",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1139&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48441",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33283-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 77,
+      "college_name": "Laney College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "858",
+      "statewide_college_uri": "/colleges/laney",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=858&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "50361",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37371-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:33+00:00"
+    },
+    {
+      "community_college_id": 78,
+      "college_name": "Riverside City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1370",
+      "statewide_college_uri": "/colleges/riverside-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1370&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53006",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33229-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 80,
+      "college_name": "West Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2050",
+      "statewide_college_uri": "/colleges/west-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2050&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46636",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33023-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 82,
+      "college_name": "Lassen Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "883",
+      "statewide_college_uri": "/colleges/lassen",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=883&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45810",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33263-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 83,
+      "college_name": "College of the Redwoods",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 84,
+      "college_name": "Bakersfield College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "133",
+      "statewide_college_uri": "/colleges/bakersfield",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=133&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48034",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32967-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 86,
+      "college_name": "Los Angeles Pierce College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "804",
+      "statewide_college_uri": "/colleges/la-pierce",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=804&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45940",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33773-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 87,
+      "college_name": "Oxnard College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1194",
+      "statewide_college_uri": "/colleges/oxnard",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1194&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53012",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33198-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 90,
+      "college_name": "Yuba College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2068",
+      "statewide_college_uri": "/colleges/yuba",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2068&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "62840",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42493-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 91,
+      "college_name": "West Los Angeles College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2043",
+      "statewide_college_uri": "/colleges/west-la",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2043&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46719",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32977-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 92,
+      "college_name": "Santa Barbara City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1714",
+      "statewide_college_uri": "/colleges/santa-barbara-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1714&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46052",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33664-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 93,
+      "college_name": "Sierra College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1818",
+      "statewide_college_uri": "/colleges/sierra",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1818&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45020",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32653-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 94,
+      "college_name": "Solano Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1900",
+      "statewide_college_uri": "/colleges/solano",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1900&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "50057",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37103-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 95,
+      "college_name": "Ventura College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1986",
+      "statewide_college_uri": "/colleges/ventura",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1986&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48156",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35622-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 96,
+      "college_name": "Chabot College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "312",
+      "statewide_college_uri": "/colleges/chabot",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=312&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45756",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33274-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:34+00:00"
+    },
+    {
+      "community_college_id": 97,
+      "college_name": "Citrus College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "348",
+      "statewide_college_uri": "/colleges/citrus",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=348&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49759",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37131-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 99,
+      "college_name": "Cuyamaca College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "439",
+      "statewide_college_uri": "/colleges/cuyamaca",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=439&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49182",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35872-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 100,
+      "college_name": "Mendocino College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "944",
+      "statewide_college_uri": "/colleges/mendocino",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=944&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45237",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32985-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 101,
+      "college_name": "San Diego Mesa College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1521",
+      "statewide_college_uri": "/colleges/san-diego-mesa",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1521&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46122",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33617-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 102,
+      "college_name": "College of the Siskiyous",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 103,
+      "college_name": "El Camino College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "530",
+      "statewide_college_uri": "/colleges/el-camino",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=530&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53116",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33064-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 104,
+      "college_name": "Cerritos College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "330",
+      "statewide_college_uri": "/colleges/cerritos",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=330&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46776",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33534-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 105,
+      "college_name": "Coastline Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "362",
+      "statewide_college_uri": "/colleges/coastline",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=362&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48677",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37669-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 106,
+      "college_name": "Grossmont College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "704",
+      "statewide_college_uri": "/colleges/grossmont",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=704&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45432",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33279-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 107,
+      "college_name": "Imperial Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "752",
+      "statewide_college_uri": "/colleges/imperial-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=752&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49879",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36786-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:35+00:00"
+    },
+    {
+      "community_college_id": 108,
+      "college_name": "MiraCosta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 109,
+      "college_name": "San Joaquin Delta College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 110,
+      "college_name": "Allan Hancock College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 111,
+      "college_name": "College of Alameda",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "6bbc883b-f2e3-479a-8a45-cb5b02f7b8e1",
+      "statewide_college_uri": "/colleges/alameda",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=6bbc883b-f2e3-479a-8a45-cb5b02f7b8e1&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "31e697ab-2b1d-4a39-ade4-fc5cc70878bf",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37047-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 112,
+      "college_name": "Copper Mountain College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "495",
+      "statewide_college_uri": "/colleges/copper-mountain",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=495&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53141",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33381-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 113,
+      "college_name": "De Anza College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3000",
+      "statewide_college_uri": "/colleges/de-anza",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3000&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46734",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35500-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 114,
+      "college_name": "Diablo Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "506",
+      "statewide_college_uri": "/colleges/diablo-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=506&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45786",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33292-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 118,
+      "college_name": "East Los Angeles College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "517",
+      "statewide_college_uri": "/colleges/east-la",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=517&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53167",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36345-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 119,
+      "college_name": "Taft College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1978",
+      "statewide_college_uri": "/colleges/taft",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1978&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "50063",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37366-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 121,
+      "college_name": "Antelope Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "94",
+      "statewide_college_uri": "/colleges/antelope-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=94&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46708",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33228-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 122,
+      "college_name": "Feather River College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 123,
+      "college_name": "Hartnell College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "747",
+      "statewide_college_uri": "/colleges/hartnell",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=747&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45970",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33385-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 124,
+      "college_name": "Irvine Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "775",
+      "statewide_college_uri": "/colleges/irvine-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=775&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47177",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32863-economics"
+        },
+        {
+          "statewide_program_id": "8c12528e-6289-4abe-a307-29aa4a64eaf5",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/45857-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 125,
+      "college_name": "Porterville College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 126,
+      "college_name": "Sacramento City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1404",
+      "statewide_college_uri": "/colleges/sacramento-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1404&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48160",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35463-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 127,
+      "college_name": "Skyline College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1868",
+      "statewide_college_uri": "/colleges/skyline",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1868&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49932",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37237-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 130,
+      "college_name": "Los Angeles Southwest College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "not_listed",
+      "statewide_college_id": null,
+      "statewide_college_uri": null,
+      "programs_source_url": null,
+      "programs": [],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:29+00:00"
+    },
+    {
+      "community_college_id": 131,
+      "college_name": "San Bernardino Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1488",
+      "statewide_college_uri": "/colleges/san-bernardino",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1488&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "51573",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39381-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 133,
+      "college_name": "Monterey Peninsula College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "991",
+      "statewide_college_uri": "/colleges/monterey-peninsula",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=991&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46187",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33587-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 134,
+      "college_name": "Fullerton College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "635",
+      "statewide_college_uri": "/colleges/fullerton",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=635&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "49909",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/36961-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:36+00:00"
+    },
+    {
+      "community_college_id": 135,
+      "college_name": "Long Beach City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "887",
+      "statewide_college_uri": "/colleges/long-beach-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=887&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "53160",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35914-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 136,
+      "college_name": "San Jose City College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1642",
+      "statewide_college_uri": "/colleges/san-jose-city",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1642&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45235",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32759-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 137,
+      "college_name": "Santa Monica College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2109",
+      "statewide_college_uri": "/colleges/santa-monica",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2109&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45380",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33827-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 138,
+      "college_name": "Southwestern College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1921",
+      "statewide_college_uri": "/colleges/southwestern",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1921&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48620",
+          "title": "Associate In Arts In Economics For Transfer ",
+          "degree_type_hint": "ast",
+          "source_url": "https://icangotocollege.com/college-courses/35846-associate-in-arts-in-economics-for-transfer"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 139,
+      "college_name": "Moorpark College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1010",
+      "statewide_college_uri": "/colleges/moorpark",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1010&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46966",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/32700-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 140,
+      "college_name": "College of the Canyons",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "282",
+      "statewide_college_uri": "/colleges/canyons",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=282&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "50693",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/37867-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 142,
+      "college_name": "Cosumnes River College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "389",
+      "statewide_college_uri": "/colleges/cosumnes-river",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=389&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "46974",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/33571-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 145,
+      "college_name": "Folsom Lake College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "574",
+      "statewide_college_uri": "/colleges/folsom-lake",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=574&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "45610",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35523-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 146,
+      "college_name": "Lemoore College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "59898c13-cad9-4213-b036-2a5cc4b5fb2b",
+      "statewide_college_uri": "/colleges/lemoore-college",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=59898c13-cad9-4213-b036-2a5cc4b5fb2b&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "07d4d91b-ecd9-449d-bad0-e69238c9814d",
+          "title": "Economics ",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42563-economics"
+        },
+        {
+          "statewide_program_id": "fad8cd67-39b8-4ead-bdad-912936411716",
+          "title": "Economics (Aat)",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42563-economics-aat"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 147,
+      "college_name": "Woodland Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2059",
+      "statewide_college_uri": "/colleges/woodland",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2059&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "48949",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35733-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 148,
+      "college_name": "Norco College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1106",
+      "statewide_college_uri": "/colleges/norco",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1106&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "b1980899-7eca-4a01-adff-7bc528ba8007",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/43937-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 149,
+      "college_name": "Moreno Valley College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "1015",
+      "statewide_college_uri": "/colleges/moreno-valley",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1015&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "99c63d65-6fd8-4528-bac0-811136f179da",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42794-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 150,
+      "college_name": "Clovis Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "2585",
+      "statewide_college_uri": "/colleges/clovis",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2585&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "47801",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/35535-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 153,
+      "college_name": "Compton College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3599",
+      "statewide_college_uri": "/colleges/compton",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3599&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "62968",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/42372-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    },
+    {
+      "community_college_id": 200,
+      "college_name": "Madera Community College",
+      "discovery_status": "complete",
+      "discovery_source_url": "https://icangotocollege.com/api/transfer-tool/degree-program-categories/colleges?degree_program_id=8290&search_string=&distance=0&orderby=title",
+      "statewide_listing_status": "listed",
+      "statewide_college_id": "3824",
+      "statewide_college_uri": "/colleges/madera",
+      "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=3824&search_string=economics",
+      "programs": [
+        {
+          "statewide_program_id": "51751",
+          "title": "Economics",
+          "degree_type_hint": "unknown",
+          "source_url": "https://icangotocollege.com/college-courses/39520-economics"
+        }
+      ],
+      "discovery_error": null,
+      "checked_at": "2026-07-23T22:30:37+00:00"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "community_college_id": 63,
+    "college_name": "Palo Verde College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-23T23:58:00+00:00",
+    "resume_note": "The complete official 2025-2026 ADT, AA, and AS inventories contain no general Economics AA-T, AS-T, AA, or AS."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/adt",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Associate Degrees for Transfer list; no Economics ADT is listed"
+    },
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/associate-of-arts-degrees",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Associate of Arts Degrees list; no Economics AA is listed"
+    },
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://pvc.elumenapp.com/catalog/2025-2026/associate-of-science-degrees",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Associate of Science Degrees list; no Economics AS is listed"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Palo Verde publishes ECO 105 and ECO 106 coursework, but no Economics-titled associate award. Business Administration 2.0, Business Management, and Liberal Arts emphases in Business and Technology or Social and Behavioral Science are umbrella or adjacent awards and are outside this pass."
+}

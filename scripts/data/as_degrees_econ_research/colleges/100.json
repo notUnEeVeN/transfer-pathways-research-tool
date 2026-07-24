@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "community_college_id": 100,
+    "college_name": "Mendocino College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:32:00+00:00",
+    "resume_note": "Extracted from Mendocino College's official amended 2025-2026 catalog PDF, page 149."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=944&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45237",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32985-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Arts in Economics for Transfer",
+      "award_seen": "A.A.-T Economics",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the official amended 2025-2026 catalog.",
+      "catalog_url": "https://www.mendocino.edu/sites/default/files/2025-11/2025-26%20MC%20Catalog%20Amended.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf_amended", "url": "https://www.mendocino.edu/sites/default/files/2025-11/2025-26%20MC%20Catalog%20Amended.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Mendocino College Catalog 2025-2026 page 149: Economics AA-T required courses and degree requirements"}],
+      "major_groups": [
+        {"label_seen": "Required Courses — economics and statistics", "rule": "all", "choose_n": null, "units_min": 10, "ge_area": null, "courses": [
+          {"prefix": "ECO", "number": "200", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+          {"prefix": "ECO", "number": "201", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+          {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+        ]},
+        {"label_seen": "Required Courses — calculus: select one", "rule": "choose_courses", "choose_n": 1, "units_min": 4, "units_max": 5, "ge_area": null, "courses": [
+          {"prefix": "MTH", "number": "210", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 5},
+          {"prefix": "MTH", "number": "230", "title_seen": "Calculus for Business and Economics", "units_seen": 4}
+        ]},
+        {"label_seen": "Plus 4-5 additional units selected from the following", "rule": "choose_units", "choose_n": null, "units_min": 4, "units_max": 5, "ge_area": null, "courses": [
+          {"prefix": "BUS", "number": "200", "title_seen": "Financial Accounting", "units_seen": 4},
+          {"prefix": "BUS", "number": "201", "title_seen": "Managerial Accounting", "units_seen": 4},
+          {"prefix": "MTH", "number": "211", "title_seen": "Calculus and Analytic Geometry II", "units_seen": 5}
+        ]},
+        {"label_seen": "Plus 4-5 additional units selected from the following, or any course not used above", "rule": "choose_units", "choose_n": null, "units_min": 4, "units_max": 5, "ge_area": null, "choice_structure_seen": "Select MTH 212, MTH 214, or any course not used in the preceding 4-5-unit pool.", "courses": [
+          {"prefix": "MTH", "number": "212", "title_seen": "Calculus and Analytic Geometry III", "units_seen": 5},
+          {"prefix": "MTH", "number": "214", "title_seen": "Linear Algebra", "units_seen": 4},
+          {"prefix": "BUS", "number": "200", "title_seen": "Financial Accounting", "units_seen": 4, "alternative_seen": "Any unused preceding-pool course"},
+          {"prefix": "BUS", "number": "201", "title_seen": "Managerial Accounting", "units_seen": 4, "alternative_seen": "Any unused preceding-pool course"},
+          {"prefix": "MTH", "number": "211", "title_seen": "Calculus and Analytic Geometry II", "units_seen": 5, "alternative_seen": "Any unused preceding-pool course"}
+        ]},
+        {"label_seen": "California General Education Transfer Curriculum", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The amended catalog prints 22-25 total major units and 60 total degree units. Students completing the AA-T are exempt from Mendocino College Institutional Requirements."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official amended 2025-2026 catalog lists one general Economics award: A.A.-T Economics."
+}

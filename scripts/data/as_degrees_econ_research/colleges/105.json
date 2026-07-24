@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "community_college_id": 105,
+    "college_name": "Coastline Community College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted the Economics AA-T and local Economics AA from Coastline College's official archived 2025-2026 catalog PDF, printed pages 13-14."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=362&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48677",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37669-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics, Associate in Arts Degree for Transfer","award_seen":"Associate in Arts for Transfer","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://catalog.cccd.edu/pdf/CCC-2025-2026-Catalog.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":25,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf_archive","url":"https://catalog.cccd.edu/pdf/CCC-2025-2026-Catalog.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Coastline College 2025-2026 Catalog, printed pages 13-14, Economics AA-T"}],
+      "major_groups":[
+        {"label_seen":"Required Core - economics and statistics","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"C170","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"C175","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"C180","title_seen":"Calculus 1","units_seen":"4-5"},{"prefix":"MATH","number":"C140","title_seen":"Business Calculus","units_seen":"4-5"}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"C101","title_seen":"Financial Accounting","units_seen":null},{"prefix":"ACCT","number":"C102","title_seen":"Managerial Accounting","units_seen":null},{"prefix":"BUS","number":"C100","title_seen":"Introduction to Business","units_seen":null},{"prefix":"BUS","number":"C110","title_seen":"Business Law/Legal Environment of Business","units_seen":null},{"prefix":"BUS","number":"C139","title_seen":"Business Communication","units_seen":null},{"prefix":"ENGL","number":"C136","title_seen":"Business Communication","units_seen":null},{"prefix":"CIS","number":"C111","title_seen":"Information Systems, Programming, and Database Management","units_seen":null},{"prefix":"MATH","number":"C185","title_seen":"Calculus 2","units_seen":null}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select any unused List A course or one of the four specifically listed courses.","courses":[{"prefix":"ECON","number":"C110","title_seen":"Economic Issues and Policy","units_seen":3},{"prefix":"MATH","number":"C280","title_seen":"Calculus 3","units_seen":null},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":null},{"prefix":"PSCI","number":"C185","title_seen":"Comparative Government and Politics","units_seen":null}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transfer electives as needed to reach 60 transferable units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog notes that ECON C110 receives UC transfer credit only when completed before ECON C170 or ECON C175. Where the compact program table supplies only group ranges, individual units are left null rather than inferred."
+    },
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics, Associate of Arts Degree","award_seen":"Associate of Arts Degree","tmc_version_seen":null,"catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"https://catalog.cccd.edu/pdf/CCC-2025-2026-Catalog.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":18,"major_units_max":20,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf_archive","url":"https://catalog.cccd.edu/pdf/CCC-2025-2026-Catalog.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Coastline College 2025-2026 Catalog, printed page 14, Economics Associate of Arts Degree"}],
+      "major_groups":[
+        {"label_seen":"Required Core","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"C170","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"C175","title_seen":"Principles of Macroeconomics","units_seen":3}]},
+        {"label_seen":"Program Electives - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"C140","title_seen":"Business Calculus","units_seen":"4-5"},{"prefix":"MATH","number":"C180","title_seen":"Calculus 1","units_seen":"4-5"}]},
+        {"label_seen":"Program Electives - select two","rule":"choose_courses","choose_n":2,"units_min":8,"units_max":9,"ge_area":null,"courses":[{"prefix":"ACCT","number":"C101","title_seen":"Financial Accounting","units_seen":null},{"prefix":"ACCT","number":"C102","title_seen":"Managerial Accounting","units_seen":null},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"MATH","number":"C185","title_seen":"Calculus 2","units_seen":null}]},
+        {"label_seen":"Coastline local general education or Cal-GETC pattern","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Coastline local GE or Cal-GETC","courses":[]},
+        {"label_seen":"Electives to satisfy the 60-unit requirement","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints an 18-20-unit major range and permits either Coastline local GE or Cal-GETC for this local AA."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Two in-scope Economics awards are published in the official archived 2025-2026 catalog."
+}

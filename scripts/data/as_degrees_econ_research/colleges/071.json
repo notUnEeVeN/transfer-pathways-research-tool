@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 71,
+    "college_name": "Cypress College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T01:15:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; internal printed-range inconsistencies are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=487&search_string=economics",
+    "checked_at": "2026-07-23T22:30:33+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46940",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35301-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts Degree for Transfer Degree (AA-T)","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies this as the Economics AA-T and publishes the transfer-model core and lists.","catalog_status_seen":"Active in Cypress College's official 2025-2026 catalog.","catalog_url":"https://catalog.nocccd.edu/cypress-college/degrees-certificates/economics/associate-in-arts-in-economics-for-transfer-degree/","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":24,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://catalog.nocccd.edu/cypress-college/degrees-certificates/economics/associate-in-arts-in-economics-for-transfer-degree/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics AA-T, course list and Total Units"}],
+      "major_groups":[
+        {"label_seen":"Required Core Courses - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"100 C","title_seen":"Principles of Economics-Macro","units_seen":3},{"prefix":"ECON","number":"100HC","title_seen":"Honors Princ of Econ-Macro","units_seen":3}]},
+        {"label_seen":"Required Core Courses - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"105 C","title_seen":"Principles of Economics-Micro","units_seen":3},{"prefix":"ECON","number":"105HC","title_seen":"Honors Princ of Econ - Micro","units_seen":3}]},
+        {"label_seen":"Required Core Courses - statistics","rule":"all","choose_n":null,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics (formerly MATH 120 C Introduction to Statistics)","units_seen":4}]},
+        {"label_seen":"Required Core Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"130 C","title_seen":"Business Calculus","units_seen":4},{"prefix":"MATH","number":"150AC","title_seen":"Calculus I","units_seen":4}]},
+        {"label_seen":"List A: Select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"115 C","title_seen":"Finite Mathematics","units_seen":4},{"prefix":"MATH","number":"150BC","title_seen":"Calculus II","units_seen":4},{"prefix":"ACCT","number":"101 C","title_seen":"Financial Accounting","units_seen":5},{"prefix":"CIS","number":"111 C","title_seen":"Computer Information Systems","units_seen":3},{"prefix":"BUS","number":"211 C","title_seen":"Writing for Business","units_seen":3}]},
+        {"label_seen":"List B: Select one course or any unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select one explicit List B course or any List A course not already used.","courses":[{"prefix":"ACCT","number":"102 C","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"ECON","number":"110 C","title_seen":"Survey of Economics","units_seen":3},{"prefix":"ECON","number":"120 C","title_seen":"International Economics","units_seen":3},{"prefix":"ECON","number":"130 C","title_seen":"Consumer Economics","units_seen":3},{"prefix":"MATH","number":"250AC","title_seen":"Multivariable Calculus","units_seen":4},{"prefix":"MATH","number":"115 C","title_seen":"Finite Mathematics","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"150BC","title_seen":"Calculus II","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"101 C","title_seen":"Financial Accounting","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"CIS","number":"111 C","title_seen":"Computer Information Systems","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"211 C","title_seen":"Writing for Business","units_seen":3,"alternative_seen":"Any List A course not already used"}]},
+        {"label_seen":"Transfer general education pattern","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"CSU GE Breadth or CSU IGETC as printed","courses":[]},{"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The narrative prints 20-22 semester units while the course table prints Total Units 20-24. The course table range is stored, and the discrepancy is retained for human review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T appears in the official 2025-2026 catalog."
+}

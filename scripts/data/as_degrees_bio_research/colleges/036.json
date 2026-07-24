@@ -1,0 +1,175 @@
+{
+  "_meta": {
+    "community_college_id": 36,
+    "college_name": "Reedley College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to the official Reedley College 2025-2026 catalog. The local Biological Science A.S. and Biology A.S.-T. are extracted exactly as printed. Human review is required because program R.6110.AS-T repeats the same flexible 18-unit major list as local program R.6100.AS rather than a recognizable Biology TMC pattern."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1316&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45806",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33833-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Science, Associate in Science Degree",
+      "award_seen": "Associate in Science Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as program R.6100.AS in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.reedleycollege.edu/admissions-aid/Catalogs/catalog_2025_2026_final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.reedleycollege.edu/admissions-aid/Catalogs/catalog_2025_2026_final.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 87-88, Biological Science, Associate in Science Degree, program R.6100.AS"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Complete a total of 18 units from the Biology and Chemistry/Physical Science lists",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 18,
+          "units_max": 18,
+          "ge_area": null,
+          "choice_structure_seen": "Complete 18 total major units: at least 8 units must come from the printed Biology list and at least 3 units must come from the printed Chemistry and Physical Science list; remaining units may come from either list.",
+          "courses": [
+            {"prefix": "BIOL", "number": "2", "title_seen": "Environmental Science", "units_seen": 4},
+            {"prefix": "BIOL", "number": "5", "title_seen": "Human Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "10", "title_seen": "Introduction to Life Science Lecture", "units_seen": 3},
+            {"prefix": "BIOL", "number": "10L", "title_seen": "Introduction to Life Science Lab", "units_seen": 1},
+            {"prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5},
+            {"prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5},
+            {"prefix": "BIOL", "number": "13", "title_seen": "Environmental Science", "units_seen": 3},
+            {"prefix": "BIOL", "number": "13L", "title_seen": "Environmental Science Lab", "units_seen": 1},
+            {"prefix": "BIOL", "number": "20", "title_seen": "Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOL", "number": "22", "title_seen": "Human Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "31", "title_seen": "Microbiology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5},
+            {"prefix": "CHEM", "number": "3A", "title_seen": "Introductory General Chemistry", "units_seen": 4},
+            {"prefix": "CHEM", "number": "3B", "title_seen": "Introductory Organic and Biological Chemistry", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4C", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Reedley College associate-degree general education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Reedley College associate-degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The local program prints an 18-unit major with minimum category constraints rather than a fixed course sequence. The program pages do not restate the local GE unit subtotal, so units_min is left null."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer Degree",
+      "award_seen": "Associate in Science for Transfer Degree",
+      "tmc_version_seen": "Not stated",
+      "tmc_version_basis": "The official 2025-2026 catalog labels program R.6110.AS-T as a transfer degree but prints the same flexible 18-unit major used by the local A.S. This does not map cleanly to either statewide Biology TMC version, so no version is inferred.",
+      "catalog_status_seen": "Published as program R.6110.AS-T in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.reedleycollege.edu/admissions-aid/Catalogs/catalog_2025_2026_final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.reedleycollege.edu/admissions-aid/Catalogs/catalog_2025_2026_final.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 88, Biology, Associate in Science for Transfer Degree, program R.6110.AS-T"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Complete a total of 18 units from the Biology and Chemistry/Physical Science lists",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 18,
+          "units_max": 18,
+          "ge_area": null,
+          "choice_structure_seen": "As printed for R.6110.AS-T, complete 18 total major units: at least 8 units must come from the Biology list and at least 3 units from the Chemistry and Physical Science list; remaining units may come from either list.",
+          "courses": [
+            {"prefix": "BIOL", "number": "2", "title_seen": "Environmental Science", "units_seen": 4},
+            {"prefix": "BIOL", "number": "5", "title_seen": "Human Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "10", "title_seen": "Introduction to Life Science Lecture", "units_seen": 3},
+            {"prefix": "BIOL", "number": "10L", "title_seen": "Introduction to Life Science Lab", "units_seen": 1},
+            {"prefix": "BIOL", "number": "11A", "title_seen": "Biology for Science Majors I", "units_seen": 5},
+            {"prefix": "BIOL", "number": "11B", "title_seen": "Biology for Science Majors II", "units_seen": 5},
+            {"prefix": "BIOL", "number": "13", "title_seen": "Environmental Science", "units_seen": 3},
+            {"prefix": "BIOL", "number": "13L", "title_seen": "Environmental Science Lab", "units_seen": 1},
+            {"prefix": "BIOL", "number": "20", "title_seen": "Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOL", "number": "22", "title_seen": "Human Physiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "31", "title_seen": "Microbiology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "1B", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5},
+            {"prefix": "CHEM", "number": "3A", "title_seen": "Introductory General Chemistry", "units_seen": 4},
+            {"prefix": "CHEM", "number": "3B", "title_seen": "Introductory Organic and Biological Chemistry", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "2B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4A", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4B", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4},
+            {"prefix": "PHYS", "number": "4C", "title_seen": "Physics for Scientists and Engineers", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "Human-review warning: this is a faithful extraction of the official 2025-2026 page, which prints the same flexible 18-unit requirement set for R.6110.AS-T as for local R.6100.AS. It does not resemble the standard Biology TMC sequence. Do not silently replace the catalog requirements during import."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general local Biological Science A.S. and Biology A.S.-T. are included; specialty and certificate awards were ignored by scope."
+}

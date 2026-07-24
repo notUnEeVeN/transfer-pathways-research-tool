@@ -1,0 +1,102 @@
+{
+  "_meta": {
+    "community_college_id": 10,
+    "college_name": "Columbia College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:17+00:00",
+    "updated_at": "2026-07-23T20:08:00+00:00",
+    "resume_note": "Pinned to the official 2025-2026 Columbia College catalog. Preserve MATH 18A as printed for this year and the two intact physics-sequence alternatives."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=367&search_string=biology",
+    "checked_at": "2026-07-23T19:29:44+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46494",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35150-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology AS-T",
+      "award_seen": "A.S. Degree for Transfer",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://gocolumbia.elumenapp.com/catalog/2025-2026-Catalog/program/biology-as-t-cc-fall-2025",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 34,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://gocolumbia.elumenapp.com/catalog/2025-2026-Catalog/program/biology-as-t-cc-fall-2025",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Unit Requirements, Award Instructions, and Award Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 26,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "2", "title_seen": "Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "4", "title_seen": "Principles of Evolution and Zoology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "6", "title_seen": "Plant Biology And Ecology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "2A", "title_seen": "General Chemistry I", "units_seen": 3},
+            {"prefix": "CHEM", "number": "2AL", "title_seen": "General Chemistry I Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "2B", "title_seen": "General Chemistry II", "units_seen": 3},
+            {"prefix": "CHEM", "number": "2BL", "title_seen": "General Chemistry II Laboratory", "units_seen": 2},
+            {"prefix": "MATH", "number": "18A", "title_seen": "Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Physics Sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete Trigonometry-Based Physics (PHYCS 4A and 4B), or Calculus-Based Physics (PHYCS 5A and 5B); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYCS", "number": "4A", "title_seen": "Introductory Physics I: Trigonometry Level", "units_seen": 4},
+            {"prefix": "PHYCS", "number": "4B", "title_seen": "Introductory Physics II: Trigonometry Level", "units_seen": 4},
+            {"prefix": "PHYCS", "number": "5A", "title_seen": "Physics I: Calculus Level", "units_seen": 4},
+            {"prefix": "PHYCS", "number": "5B", "title_seen": "Physics II: Calculus Level", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) Pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Any CSU-transferable electives needed to bring the total units to 60",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog uses the subject prefix PHYCS rather than PHYS; it is preserved exactly."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists Biology AS-T but no general Biology/Biological Sciences AS or AA."
+}

@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "community_college_id": 149,
+    "college_name": "Moreno Valley College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "Pinned to Moreno Valley College's official archived 2025-2026 CurriQunet catalog. The Biology AS-T is extracted; the official degree index does not list a separate general local Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1015&search_string=biology",
+    "checked_at": "2026-07-23T19:29:53+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46173",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33953-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science for Transfer (ADT) - MAS768 (Cal-GETC)",
+      "award_seen": "Associate in Science for Transfer (ADT)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires Calculus I and a two-course calculus-based physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official archived 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://rccd.curriqunet.com/Catalog/archive/70/iq/3247/3262/3195",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://rccd.curriqunet.com/Catalog/archive/70/iq/3247/3262/3195",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 archived CurriQunet catalog > Associate Degree for Transfer > Biology - Associate in Science for Transfer (ADT) - MAS768 (Cal-GETC)"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses — biology",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete either BIO 60 or BIO 60H, plus BIO 61.",
+          "courses": [
+            {"prefix": "BIO", "number": "60", "title_seen": "Introduction to Molecular and Cellular Biology", "units_seen": 5},
+            {"prefix": "BIO", "number": "60H", "title_seen": "Honors Introduction to Molecular and Cellular Biology", "units_seen": 5},
+            {"prefix": "BIO", "number": "61", "title_seen": "Introduction to Organismal and Population Biology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Courses — general chemistry",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete either CHE 1A or CHE 1AH, and either CHE 1B or CHE 1BH.",
+          "courses": [
+            {"prefix": "CHE", "number": "1A", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHE", "number": "1AH", "title_seen": "Honors General Chemistry I", "units_seen": 5},
+            {"prefix": "CHE", "number": "1B", "title_seen": "General Chemistry II", "units_seen": 5},
+            {"prefix": "CHE", "number": "1BH", "title_seen": "Honors General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Required Courses — Calculus I",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "1A", "title_seen": "Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Courses — physics sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "PHY", "number": "4A", "title_seen": "Mechanics", "units_seen": 4},
+            {"prefix": "PHY", "number": "4B", "title_seen": "Electricity and Magnetism", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 32 major units and requires Cal-GETC. The program page does not restate the Cal-GETC subtotal or a fixed elective subtotal, so those units_min values are left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 degree index lists the general Biology AS-T but no separate general Biology/Biological Sciences local AS or AA; specialized and certificate awards were ignored by scope."
+}

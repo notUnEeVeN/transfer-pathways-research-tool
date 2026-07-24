@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "community_college_id": 90,
+    "college_name": "Yuba College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-24T02:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 PDF catalog and its addendum; source and choices are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2068&search_string=economics",
+    "checked_at": "2026-07-23T22:30:34+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "62840",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/42493-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast",
+      "degree_title_seen":"Economics Associate in Arts for Transfer",
+      "award_seen":"AA-T",
+      "tmc_version_seen":"Economics TMC",
+      "tmc_version_basis":"The official catalog's Economics program section identifies the award as an AA-T and publishes its transfer-model core and lists.",
+      "catalog_status_seen":"Active in Yuba College's official 2025-2026 catalog and reproduced in the 2025-2026 addendum.",
+      "catalog_url":"https://yc.yccd.edu/wp-content/uploads/2025/08/Yuba-College-Catalog-25.pdf",
+      "catalog_year":"2025-2026",
+      "unit_system":"semester",
+      "total_units":60,
+      "major_units_min":20,
+      "major_units_max":23,
+      "extraction_confidence":0.99,
+      "sources":[
+        {"source_type":"official_college_catalog_pdf","url":"https://yc.yccd.edu/wp-content/uploads/2025/08/Yuba-College-Catalog-25.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 99-100, Economics Associate in Arts for Transfer"},
+        {"source_type":"official_college_catalog_addendum_pdf","url":"https://yc.yccd.edu/wp-content/uploads/2026/02/Yuba-College-Catalog-25_26_Addendum.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Addendum Economics program section; award and requirements reproduced"}
+      ],
+      "major_groups":[
+        {"label_seen":"Required Courses - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"1A","title_seen":"Elementary Economics-Macro","units_seen":3},{"prefix":"ECON","number":"1B","title_seen":"Elementary Economics-Micro","units_seen":3}]},
+        {"label_seen":"Required Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"PSYCH","number":"6","title_seen":"Introduction to Statistics in Social and Behavioral Science","units_seen":4}]},
+        {"label_seen":"Required Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"1A","title_seen":"Single Variable Calculus I - Early Transcendentals","units_seen":4},{"prefix":"MATH","number":"9","title_seen":"Calculus for Business, Social and Life Sciences","units_seen":4}]},
+        {"label_seen":"List A: Complete 3-5 units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"11","title_seen":"Principles of Accounting-Financial","units_seen":4},{"prefix":"ACCT","number":"12","title_seen":"Principles of Accounting-Managerial","units_seen":5},{"prefix":"MATH","number":"1B","title_seen":"Single Variable Calculus II - Early Transcendentals","units_seen":4},{"prefix":"COMSC","number":"9A","title_seen":"C++ Programming","units_seen":4},{"prefix":"COMSC","number":"12","title_seen":"Java Programming","units_seen":3}]},
+        {"label_seen":"List B: Complete 3-4 units","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select an explicitly listed List B course or any List A course not already used; the catalog prints a 3-4 unit range despite List A containing a 5-unit accounting course.","courses":[{"prefix":"MATH","number":"1C","title_seen":"Multivariable Calculus","units_seen":4},{"prefix":"MATH","number":"3","title_seen":"Linear Algebra","units_seen":3},{"prefix":"POLSC","number":"7","title_seen":"International Relations","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"SOCIL","number":"1","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"ACCT","number":"11","title_seen":"Principles of Accounting-Financial","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"12","title_seen":"Principles of Accounting-Managerial","units_seen":5,"alternative_seen":"Any List A course not already used; conflicts with printed 3-4 unit List B range"},{"prefix":"MATH","number":"1B","title_seen":"Single Variable Calculus II - Early Transcendentals","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"COMSC","number":"9A","title_seen":"C++ Programming","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"COMSC","number":"12","title_seen":"Java Programming","units_seen":3,"alternative_seen":"Any List A course not already used"}]},
+        {"label_seen":"Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The authoritative Economics program section labels the degree AA-T and prints 20-23 major units. A separate transfer-degree summary in the addendum says Economics AS-T, apparently a summary-list typo; the detailed program page and degrees index both say AA-T."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T appears in the detailed official 2025-2026 program section."
+}

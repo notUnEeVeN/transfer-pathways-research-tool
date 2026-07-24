@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "community_college_id": 103,
+    "college_name": "El Camino College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:25:00+00:00",
+    "resume_note": "Extracted the local Economics AA and Economics AA-T from El Camino College's official archived 2025-2026 catalog PDF, printed pages 71-72 and 108-109."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=530&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53116",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33064-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Economics, AA","award_seen":"Associate of Arts","tmc_version_seen":null,"catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"http://catalog.elcamino.edu/mime/media/view/12/721/2025-2026+Catalog+PDF_FINAL.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":20,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf_archive","url":"http://catalog.elcamino.edu/mime/media/view/12/721/2025-2026+Catalog+PDF_FINAL.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"El Camino College 2025-2026 Catalog, printed pages 71-72, Economics AA"}],
+      "major_groups":[
+        {"label_seen":"Required Core - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Economics: Macroeconomics","units_seen":3},{"prefix":"ECON","number":"101H","title_seen":"Honors Principles of Economics: Macroeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - microeconomics","rule":"all","choose_n":null,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"102","title_seen":"Principles of Economics: Microeconomics Theory","units_seen":3}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"165","title_seen":"Calculus for Business and Social Sciences","units_seen":5},{"prefix":"MATH","number":"190","title_seen":"Single Variable Calculus and Analytic Geometry I","units_seen":5}]},
+        {"label_seen":"Required Core - United States history","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"HIST","number":"102","title_seen":"United States History from 1877 to the Present","units_seen":3},{"prefix":"HIST","number":"102H","title_seen":"Honors United States History from 1877 to the Present","units_seen":3}]},
+        {"label_seen":"List A: 6 units if not already completed as part of the required core","rule":"choose_units","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"HIST","number":"101","title_seen":"United States History to 1877","units_seen":3},{"prefix":"HIST","number":"101H","title_seen":"Honors United States History to 1877","units_seen":3},{"prefix":"HIST","number":"102","title_seen":"United States History from 1877 to the Present","units_seen":3},{"prefix":"HIST","number":"102H","title_seen":"Honors United States History from 1877 to the Present","units_seen":3},{"prefix":"HIST","number":"140","title_seen":"History of Early Civilizations","units_seen":3},{"prefix":"HIST","number":"141","title_seen":"History of Modern Civilizations","units_seen":3},{"prefix":"POLI","number":"10","title_seen":"Introduction to International Relations","units_seen":3},{"prefix":"POLI","number":"10H","title_seen":"Honors Introduction to International Relations","units_seen":3}]},
+        {"label_seen":"El Camino College associate-degree general education","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"El Camino College associate-degree general education","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The required-core heading prints 14 units; List A contributes 6 additional units, producing the catalog's 20-unit major total."
+    },
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics, AA-T","award_seen":"Associate of Arts for Transfer (AA-T)","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog.","catalog_url":"http://catalog.elcamino.edu/mime/media/view/12/721/2025-2026+Catalog+PDF_FINAL.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":25,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf_archive","url":"http://catalog.elcamino.edu/mime/media/view/12/721/2025-2026+Catalog+PDF_FINAL.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"El Camino College 2025-2026 Catalog, printed pages 108-109, Economics AA-T"}],
+      "major_groups":[
+        {"label_seen":"Required Core - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Principles of Economics: Macroeconomics","units_seen":3},{"prefix":"ECON","number":"101H","title_seen":"Honors Principles of Economics: Macroeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - microeconomics","rule":"all","choose_n":null,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"102","title_seen":"Principles of Economics: Microeconomics Theory","units_seen":3}]},
+        {"label_seen":"Required Core - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"165","title_seen":"Calculus for Business and Social Sciences","units_seen":5},{"prefix":"MATH","number":"190","title_seen":"Single Variable Calculus and Analytic Geometry I","units_seen":5}]},
+        {"label_seen":"List A: select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUS","number":"150","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BUS","number":"151","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"108","title_seen":"Written Business Communications","units_seen":3},{"prefix":"CIS","number":"13","title_seen":"Computer Information Systems","units_seen":3},{"prefix":"MATH","number":"140","title_seen":"Finite Mathematics for Business and Social Sciences","units_seen":4},{"prefix":"MATH","number":"191","title_seen":"Single Variable Calculus and Analytic Geometry II","units_seen":5}]},
+        {"label_seen":"List B: select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select any unused List A course, MATH 220, or MATH 270.","courses":[{"prefix":"MATH","number":"220","title_seen":"Multi-Variable Calculus","units_seen":5},{"prefix":"MATH","number":"270","title_seen":"Differential Equations with Linear Algebra","units_seen":5}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog publishes a 21-25-unit major range and requires Cal-GETC for this AA-T."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Two in-scope Economics awards are published in the official 2025-2026 catalog."
+}

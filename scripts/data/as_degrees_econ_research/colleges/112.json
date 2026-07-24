@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "community_college_id": 112,
+    "college_name": "Copper Mountain College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:55:00+00:00",
+    "resume_note": "Extracted the Economics AA-T and local Economics AA from Copper Mountain College's official 2025-2026 catalog with addendum, printed pages 90-91."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=495&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53141",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33381-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Associate in Arts in Economics for Transfer","award_seen":"Associate in Arts for Transfer (AA-T)","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog with addendum.","catalog_url":"https://www.cmccd.edu/wp-content/uploads/2026/01/Catalog-2025-26-Final-01.22.26.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":23.5,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf_with_addendum","url":"https://www.cmccd.edu/wp-content/uploads/2026/01/Catalog-2025-26-Final-01.22.26.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Copper Mountain College 2025-26 Catalog, PDF page 101 / printed page 90, Associate in Arts in Economics for Transfer"}],
+      "major_groups":[
+        {"label_seen":"Required Courses - economics and calculus","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"MATH","number":"001A","title_seen":"Calculus","units_seen":4}]},
+        {"label_seen":"Required Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH/STAT","number":"014/C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"SOC","number":"003","title_seen":"Fundamentals of Statistics","units_seen":4}]},
+        {"label_seen":"Select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4.5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"001","title_seen":"Financial Accounting","units_seen":4.5},{"prefix":"ACCT","number":"002","title_seen":"Managerial Accounting","units_seen":3.5},{"prefix":"CS","number":"073","title_seen":"Introduction to Computer Science","units_seen":3},{"prefix":"MATH","number":"001B","title_seen":"Calculus","units_seen":4}]},
+        {"label_seen":"Select one course not previously taken","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"001","title_seen":"Financial Accounting","units_seen":4.5},{"prefix":"ACCT","number":"002","title_seen":"Managerial Accounting","units_seen":3.5},{"prefix":"CS","number":"073","title_seen":"Introduction to Computer Science","units_seen":3},{"prefix":"MATH","number":"001B","title_seen":"Calculus","units_seen":4},{"prefix":"MATH","number":"002A","title_seen":"Multivariate Calculus","units_seen":5},{"prefix":"MATH","number":"002B","title_seen":"Linear Algebra","units_seen":4}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable elective units as needed","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog's printed minimum-transferable-units line says 57.5-68.5 even though the preceding AA-T rule states completion of 60 transferable semester units. The normalized degree total is 60 and the source inconsistency is preserved here."
+    },
+    {
+      "degree_type_hint":"local_other","degree_title_seen":"Associate in Arts in Economics","award_seen":"Associate in Arts","tmc_version_seen":null,"catalog_status_seen":"Active in the official 2025-2026 catalog with addendum.","catalog_url":"https://www.cmccd.edu/wp-content/uploads/2026/01/Catalog-2025-26-Final-01.22.26.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20.5,"major_units_max":20.5,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf_with_addendum","url":"https://www.cmccd.edu/wp-content/uploads/2026/01/Catalog-2025-26-Final-01.22.26.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Copper Mountain College 2025-26 Catalog, PDF page 101 / printed page 90, Associate in Arts in Economics"}],
+      "major_groups":[
+        {"label_seen":"Required Courses - fixed courses","rule":"all","choose_n":null,"units_min":16.5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"001","title_seen":"Financial Accounting","units_seen":4.5},{"prefix":"BUMA","number":"020A","title_seen":"Business Law","units_seen":3},{"prefix":"CIS","number":"070A","title_seen":"Computer Business Applications for Windows","units_seen":3},{"prefix":"ECON","number":"001","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Courses - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"SOC","number":"003","title_seen":"Fundamentals of Statistics","units_seen":4},{"prefix":"MATH/STAT","number":"014/C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Minimum General Education","rule":"ge_area","choose_n":null,"units_min":37,"units_max":40,"ge_area":"CSU GE or IGETC","courses":[]},
+        {"label_seen":"Transferable elective units as needed to reach 60","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints 20.5 major units and still labels the local award Associate in Arts in Economics, despite its business-heavy required core."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes two in-scope Economics awards: the Economics AA-T and a local Economics AA."
+}

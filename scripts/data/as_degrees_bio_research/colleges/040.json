@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "community_college_id": 40,
+    "college_name": "Lake Tahoe Community College",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T19:23:21+00:00",
+    "updated_at": "2026-07-23T20:15:00+00:00",
+    "resume_note": "Pinned to LTCC's official 2025-2026 eLumen catalog. The complete Programs and Associate Degrees for Transfer indexes contain no Biology program or award, so none_found remains supported for this academic year."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T19:22:01+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_program_index",
+      "url": "https://ltcc.elumenapp.com/catalog/2025-2026/program",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete 2025-2026 Programs index; Biology is absent, while Liberal Arts and Environmental Science are present"
+    },
+    {
+      "source_type": "official_college_catalog_degree_index",
+      "url": "https://ltcc.elumenapp.com/catalog/2025-2026/associate-degrees-for-transfer",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete 2025-2026 Associate Degrees for Transfer index; Biology AS-T is absent"
+    },
+    {
+      "source_type": "official_college_catalog_program_index",
+      "url": "https://ltcc.elumenapp.com/catalog/2025-2026/department/program-liberal-arts",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Liberal Arts award index; the closest broad science option is Liberal Arts: Mathematics and Science AA"
+    }
+  ],
+  "notes": "The official 2025-2026 catalog contains no Biology program grouping and no Biology award in its complete ADT index. Its closest broad science option is Liberal Arts: Mathematics and Science AA, and Environmental Science - AS is specialized; both remain out of scope."
+}

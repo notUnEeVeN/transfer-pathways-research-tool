@@ -1,0 +1,240 @@
+{
+  "_meta": {
+    "community_college_id": 54,
+    "college_name": "San Diego City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to the official 2025-2026 City College catalog. Three broad Biology/Biological Science awards are extracted; preserve the intact physics and chemistry choices in the AS-T."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1490&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46080",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33825-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science for Transfer Degree: City",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires a 10-unit physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 City College catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/City%202025-2026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 34,
+      "major_units_max": 38,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/City%202025-2026_Final.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 193-194, Biology - Associate in Science for Transfer Degree: City"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Courses Required for the Major — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "210A", "title_seen": "Introduction to the Biological Sciences I", "units_seen": 4},
+            {"prefix": "BIOL", "number": "210B", "title_seen": "Introduction to the Biological Sciences II", "units_seen": 4},
+            {"prefix": "CHEM", "number": "200", "title_seen": "General Chemistry I - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "200L", "title_seen": "General Chemistry I - Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "201", "title_seen": "General Chemistry II - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "201L", "title_seen": "General Chemistry II - Laboratory", "units_seen": 2}
+          ]
+        },
+        {
+          "label_seen": "Select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "121", "title_seen": "Basic Techniques of Applied Calculus I", "units_seen": 3},
+            {"prefix": "MATH", "number": "150", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select one 10-unit physics group",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 125 and 126; or PHYS 180A, 181A, 180B, and 181B; or PHYS 195 and 196. Courses may not be mixed across groups.",
+          "courses": [
+            {"prefix": "PHYS", "number": "125", "title_seen": "General Physics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "126", "title_seen": "General Physics II", "units_seen": 5},
+            {"prefix": "PHYS", "number": "180A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "181A", "title_seen": "General Physics Laboratory I", "units_seen": 1},
+            {"prefix": "PHYS", "number": "180B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "181B", "title_seen": "General Physics Laboratory II", "units_seen": 1},
+            {"prefix": "PHYS", "number": "195", "title_seen": "Mechanics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "196", "title_seen": "Electricity and Magnetism", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select 3-5 units of additional major preparation",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Complete CHEM 231 and CHEM 231L (5 units), or MATH 122 (3 units), or MATH 151 (4 units).",
+          "courses": [
+            {"prefix": "CHEM", "number": "231", "title_seen": "Organic Chemistry I - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "231L", "title_seen": "Organic Chemistry I - Laboratory", "units_seen": 2},
+            {"prefix": "MATH", "number": "122", "title_seen": "Basic Techniques of Calculus II", "units_seen": 3},
+            {"prefix": "MATH", "number": "151", "title_seen": "Calculus with Analytic Geometry II", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "California General Education Transfer Curriculum (Cal-GETC)", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog prints 31-33 units for the first block and then a separate required 3-5 unit selection, producing the 34-38 unit major total. Flat choose_units cannot enforce intact course sequences, so choice_structure_seen is authoritative."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "General Biology Track - Associate of Science Degree: City",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 City College catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/City%202025-2026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 23,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_catalog_pdf", "url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/City%202025-2026_Final.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog pages 272-273, General Biology Track - Associate of Science Degree: City"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Courses Required for the Major — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "210A", "title_seen": "Introduction to the Biological Sciences I", "units_seen": 4},
+            {"prefix": "BIOL", "number": "210B", "title_seen": "Introduction to the Biological Sciences II", "units_seen": 4},
+            {"prefix": "CHEM", "number": "200", "title_seen": "General Chemistry I - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "200L", "title_seen": "General Chemistry I - Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "201", "title_seen": "General Chemistry II - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "201L", "title_seen": "General Chemistry II - Laboratory", "units_seen": 2}
+          ]
+        },
+        {
+          "label_seen": "Calculus sequence choice",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 5,
+          "units_max": 6,
+          "ge_area": null,
+          "choice_structure_seen": "Complete MATH 121 and MATH 122 (6 units), or MATH 150 (5 units).",
+          "courses": [
+            {"prefix": "MATH", "number": "121", "title_seen": "Basic Techniques of Applied Calculus I", "units_seen": 3},
+            {"prefix": "MATH", "number": "122", "title_seen": "Basic Techniques of Calculus II", "units_seen": 3},
+            {"prefix": "MATH", "number": "150", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5}
+          ]
+        },
+        {"label_seen": "Additional City College associate-degree general education", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "City College associate-degree general education", "courses": []},
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The official catalog title and the printed 5-6 unit calculus sequence choice are preserved."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Liberal Arts and Sciences: Scientific Studies in Biological Science - Associate of Arts Degree: City",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 City College catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/City%202025-2026_Final.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 18,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {"source_type": "official_college_catalog_pdf", "url": "https://www.sdccd.edu/docs/ISPT/instsrv/Catalogs/MetaFiles/FinalPDF/City%202025-2026_Final.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog pages 304-305, Liberal Arts and Sciences: Scientific Studies in Biological Science - Associate of Arts Degree: City"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Complete a minimum of 18 units from the listed Biological Science preparation courses",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 18,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "101", "title_seen": "Issues in Environmental Science & Sustainability", "units_seen": 4},
+            {"prefix": "BIOL", "number": "107", "title_seen": "General Biology-Lecture and Laboratory", "units_seen": 4},
+            {"prefix": "BIOL", "number": "130", "title_seen": "Human Heredity", "units_seen": 3},
+            {"prefix": "BIOL", "number": "180", "title_seen": "Plants and People", "units_seen": 3},
+            {"prefix": "BIOL", "number": "205", "title_seen": "General Microbiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "210A", "title_seen": "Introduction to the Biological Sciences I", "units_seen": 4},
+            {"prefix": "BIOL", "number": "210B", "title_seen": "Introduction to the Biological Sciences II", "units_seen": 4},
+            {"prefix": "BIOL", "number": "111", "title_seen": "Cancer Biology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "230", "title_seen": "Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOL", "number": "232", "title_seen": "Experience in Human Dissection", "units_seen": 1},
+            {"prefix": "BIOL", "number": "235", "title_seen": "Human Physiology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "130", "title_seen": "Introduction to Organic and Biological Chemistry", "units_seen": 3},
+            {"prefix": "CHEM", "number": "130L", "title_seen": "Introduction to Organic and Biological Chemistry Laboratory", "units_seen": 1},
+            {"prefix": "CHEM", "number": "200", "title_seen": "General Chemistry I - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "200L", "title_seen": "General Chemistry I - Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "201", "title_seen": "General Chemistry II - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "201L", "title_seen": "General Chemistry II - Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "231", "title_seen": "Organic Chemistry I - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "231L", "title_seen": "Organic Chemistry I - Laboratory", "units_seen": 2},
+            {"prefix": "CHEM", "number": "233", "title_seen": "Organic Chemistry II - Lecture", "units_seen": 3},
+            {"prefix": "CHEM", "number": "233L", "title_seen": "Organic Chemistry II - Laboratory", "units_seen": 2},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 3},
+            {"prefix": "PSYC", "number": "258", "title_seen": "Behavioral Science Statistics", "units_seen": 3},
+            {"prefix": "MATH", "number": "115", "title_seen": "Gateway to Experimental Statistics", "units_seen": 4},
+            {"prefix": "BUSE", "number": "115", "title_seen": "Statistics for Business", "units_seen": 3},
+            {"prefix": "MATH", "number": "121", "title_seen": "Basic Techniques of Applied Calculus I", "units_seen": 3},
+            {"prefix": "MATH", "number": "122", "title_seen": "Basic Techniques of Calculus II", "units_seen": 3},
+            {"prefix": "MATH", "number": "150", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5},
+            {"prefix": "MATH", "number": "151", "title_seen": "Calculus with Analytic Geometry II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "125", "title_seen": "General Physics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "126", "title_seen": "General Physics II", "units_seen": 5},
+            {"prefix": "PHYS", "number": "180A", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "180B", "title_seen": "General Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "181A", "title_seen": "General Physics Laboratory I", "units_seen": 1},
+            {"prefix": "PHYS", "number": "181B", "title_seen": "General Physics Laboratory II", "units_seen": 1},
+            {"prefix": "PHYS", "number": "195", "title_seen": "Mechanics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "196", "title_seen": "Electricity and Magnetism", "units_seen": 5},
+            {"prefix": "PHYS", "number": "197", "title_seen": "Waves, Optics and Modern Physics", "units_seen": 5},
+            {"prefix": "PSYC", "number": "255", "title_seen": "Introduction to Psychological Research", "units_seen": 3},
+            {"prefix": "PSYC", "number": "259", "title_seen": "Behavioral Science Statistics Laboratory", "units_seen": 1}
+          ]
+        },
+        {"label_seen": "Additional City College associate-degree general education", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "City College associate-degree general education", "courses": []},
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog presents one flat 18-unit choice list. The indented statistics alternatives are retained as printed courses but do not create an extra requirement beyond the 18-unit minimum."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Three in-scope broad Biology/Biological Science associate awards are published in the official 2025-2026 catalog."
+}

@@ -11,12 +11,11 @@
  * and AsDegreeSchoolView, each free to drift from the others. Collapsed here
  * so there is exactly one place to update when a slot's copy changes.
  *
- * The labels and descriptions below must stay major-neutral too: this same
- * vocabulary renders the degree-type tabs for every major (Biology, Economics,
- * ...), not just Computer Science, so no slot copy may name a specific major.
- * Page copy that is genuinely about the CS-only *data* (e.g. "records have
- * only been gathered for Computer Science") belongs in the consuming page,
- * not here.
+ * The defaults and descriptions below stay major-neutral. A major may supply
+ * a small `degreeSlotLabels` override through the server major registry when
+ * the award itself differs — Economics' `ast` slot is an A.A.-T, for example.
+ * Keeping that override in major metadata avoids hard-coded subject branches
+ * here while preserving the familiar A.S.-T default for CS and Biology.
  */
 
 export const AS_DEGREE_SLOTS = ['ast', 'local_as', 'local_other']
@@ -38,7 +37,7 @@ export const DEGREE_TYPE_DESCRIPTION = {
 /** Canonical statewide-first display order. */
 export const DEGREE_TYPE_ORDER = { ast: 0, local_as: 1, local_other: 2 }
 
-/** Display label for a slot, falling back to the raw value if unknown. */
-export function slotLabel(slot) {
-  return DEGREE_TYPE_LABEL[slot] || slot
+/** Display label for a slot, falling back to its default then the raw value. */
+export function slotLabel(slot, overrides = null) {
+  return overrides?.[slot] || DEGREE_TYPE_LABEL[slot] || slot
 }

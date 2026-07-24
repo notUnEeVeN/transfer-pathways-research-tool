@@ -1,0 +1,334 @@
+{
+  "_meta": {
+    "community_college_id": 3,
+    "college_name": "Los Angeles City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T23:05:00+00:00",
+    "resume_note": "First-pass extraction complete from the official 2025-2026 LACC catalog. The unrestricted 'unused List A' option in List B is preserved as choice prose and repeated source candidates for later structured review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=790&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "52263",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/40566-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts (AA-T) Degree",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Listed as the Economics AA-T in the current 2025-2026 catalog under state code 40566 and academic plan C040566G.",
+      "catalog_url": "https://www.lacc.edu/sites/lacc.edu/files/2025-08/Complete%20LACC%202025-26%20College%20Catalog_0.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lacc.edu/sites/lacc.edu/files/2025-08/Complete%20LACC%202025-26%20College%20Catalog_0.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 74, Economics Associate in Arts (AA-T) Degree; state code 40566, academic plan C040566G"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major Core Courses — economics principles",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "ECON",
+              "number": "001",
+              "title_seen": "Principles of Microeconomics",
+              "units_seen": 3
+            },
+            {
+              "prefix": "ECON",
+              "number": "002",
+              "title_seen": "Principles of Macroeconomics",
+              "units_seen": 3
+            }
+          ]
+        },
+        {
+          "label_seen": "Major Core Courses — select one statistics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BUS",
+              "number": "015",
+              "title_seen": "Business Statistics",
+              "units_seen": 3
+            },
+            {
+              "prefix": "STAT",
+              "number": "C1000",
+              "title_seen": "Introduction to Statistics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "STAT",
+              "number": "C1000E",
+              "title_seen": "Introduction to Statistics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "MATH",
+              "number": "229",
+              "title_seen": "Statistics for Data Science",
+              "units_seen": 4
+            },
+            {
+              "prefix": "SOC",
+              "number": "125",
+              "title_seen": "Statistics for the Social Sciences",
+              "units_seen": 3
+            }
+          ]
+        },
+        {
+          "label_seen": "Major Core Courses — select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "236",
+              "title_seen": "Calculus for Business and Social Science",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "261",
+              "title_seen": "Calculus I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "261S",
+              "title_seen": "Calculus I with Support",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "List A — select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BUS",
+              "number": "001",
+              "title_seen": "Introduction to Business",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "230",
+              "title_seen": "Mathematics for Liberal Arts Students",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "262",
+              "title_seen": "Calculus II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "ACCT",
+              "number": "001",
+              "title_seen": "Introductory Accounting I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "ACCT",
+              "number": "002",
+              "title_seen": "Principles of Managerial Accounting",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CIS",
+              "number": "101",
+              "title_seen": "Introduction to Computers and Their Uses",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CAOT",
+              "number": "032",
+              "title_seen": "Business Communications",
+              "units_seen": 3
+            },
+            {
+              "prefix": "BUS",
+              "number": "017",
+              "title_seen": "Computer Uses for Business",
+              "units_seen": 3
+            },
+            {
+              "prefix": "SUPV",
+              "number": "012",
+              "title_seen": "Written Communications for Supervisors",
+              "units_seen": 3
+            }
+          ]
+        },
+        {
+          "label_seen": "List B — select one course or an unused List A course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Select one listed List B course or any List A course not already used to satisfy List A.",
+          "courses": [
+            {
+              "prefix": "HISTORY",
+              "number": "011",
+              "title_seen": "Political and Social History of the United States to 1877",
+              "units_seen": 3
+            },
+            {
+              "prefix": "CHICANO",
+              "number": "004",
+              "title_seen": "Introduction to Chicana/o Studies",
+              "units_seen": 3
+            },
+            {
+              "prefix": "POLS",
+              "number": "C1000",
+              "title_seen": "American Government and Politics",
+              "units_seen": 3
+            },
+            {
+              "prefix": "PSYC",
+              "number": "C1000",
+              "title_seen": "Introduction to Psychology",
+              "units_seen": 3
+            },
+            {
+              "prefix": "MATH",
+              "number": "263",
+              "title_seen": "Calculus III",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "270",
+              "title_seen": "Linear Algebra",
+              "units_seen": 3
+            },
+            {
+              "prefix": "BUS",
+              "number": "001",
+              "title_seen": "Introduction to Business",
+              "units_seen": 3,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "MATH",
+              "number": "230",
+              "title_seen": "Mathematics for Liberal Arts Students",
+              "units_seen": 3,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "MATH",
+              "number": "262",
+              "title_seen": "Calculus II",
+              "units_seen": 5,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "ACCT",
+              "number": "001",
+              "title_seen": "Introductory Accounting I",
+              "units_seen": 5,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "ACCT",
+              "number": "002",
+              "title_seen": "Principles of Managerial Accounting",
+              "units_seen": 5,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "CIS",
+              "number": "101",
+              "title_seen": "Introduction to Computers and Their Uses",
+              "units_seen": 3,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "CAOT",
+              "number": "032",
+              "title_seen": "Business Communications",
+              "units_seen": 3,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "BUS",
+              "number": "017",
+              "title_seen": "Computer Uses for Business",
+              "units_seen": 3,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            },
+            {
+              "prefix": "SUPV",
+              "number": "012",
+              "title_seen": "Written Communications for Supervisors",
+              "units_seen": 3,
+              "alternative_seen": "May be used in List B only if not already used for List A."
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints List B as six named courses plus any List A course not already used. That cross-list constraint is preserved verbatim for human modeling. The catalog uses the updated ACCT prefix, while the existing ASSIST course snapshot may retain ACCTG; title-based resolution should be reviewed."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog states that Economics offers the AA-T and does not list a general local Economics A.A. or A.S. Business and other adjacent awards were ignored."
+}

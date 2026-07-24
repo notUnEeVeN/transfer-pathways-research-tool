@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "community_college_id": 73,
+    "college_name": "Napa Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T01:15:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 PDF catalog; source and choice structure are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1087&search_string=economics",
+    "checked_at": "2026-07-23T22:30:33+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "9971503d-3893-4756-9dca-34bda48591af",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/44535-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics: AA-T Degree","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies this as the Economics AA-T and publishes the transfer-model core and lists.","catalog_status_seen":"Active in Napa Valley College's official 2025-2026 catalog.","catalog_url":"https://www.napavalley.edu/programs-and-academics/academic-affairs/documents/Napa%20Valley%20College%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":24,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.napavalley.edu/programs-and-academics/academic-affairs/documents/Napa%20Valley%20College%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 125-126, Economics: AA-T Degree"}],
+      "major_groups":[
+        {"label_seen":"Required Core Courses","rule":"all","choose_n":null,"units_min":9,"ge_area":null,"courses":[{"prefix":"ECON","number":"100","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"101","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":3}]},
+        {"label_seen":"Required Core Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"115","title_seen":"Applied Calculus","units_seen":5},{"prefix":"MATH","number":"120","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"Required Electives: List A","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"125","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"126","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUSI","number":"100","title_seen":"Introduction to Business","units_seen":3},{"prefix":"BUSI","number":"103","title_seen":"Legal Environment of Business","units_seen":3},{"prefix":"BUSI","number":"105","title_seen":"Business Communication","units_seen":3},{"prefix":"COMS","number":"101","title_seen":"Computer Information Systems","units_seen":3},{"prefix":"MATH","number":"121","title_seen":"Calculus II","units_seen":5}]},
+        {"label_seen":"Required Electives: List B","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select an explicit List B course or any List A course not already used.","courses":[{"prefix":"ECON","number":"120","title_seen":"Economic History of the U.S.","units_seen":3},{"prefix":"HIST","number":"120","title_seen":"United States History to 1877","units_seen":3},{"prefix":"HIST","number":"121","title_seen":"United States History 2","units_seen":3},{"prefix":"HIST","number":"150","title_seen":"History of American Women 1600-1900","units_seen":3},{"prefix":"HIST","number":"152","title_seen":"History of American Women Since 1900","units_seen":3},{"prefix":"HIST","number":"165","title_seen":"African American History","units_seen":3},{"prefix":"MATH","number":"220","title_seen":"Linear Algebra","units_seen":4},{"prefix":"MATH","number":"221","title_seen":"Multivariable Calculus","units_seen":5},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},{"prefix":"POLI","number":"145","title_seen":"International Political Economy","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"PSYC","number":"123","title_seen":"Social Psychology","units_seen":3},{"prefix":"SOCI","number":"120","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"SOCI","number":"122","title_seen":"Social Problems","units_seen":3},{"prefix":"ACCT","number":"125","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"126","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any List A course not already used"},{"prefix":"BUSI","number":"100","title_seen":"Introduction to Business","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"BUSI","number":"103","title_seen":"Legal Environment of Business","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"BUSI","number":"105","title_seen":"Business Communication","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"COMS","number":"101","title_seen":"Computer Information Systems","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"121","title_seen":"Calculus II","units_seen":5,"alternative_seen":"Any List A course not already used"}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},{"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The official PDF prints 20-24 total major units. Students choosing the calculus sequence are advised to take MATH 108 and MATH 120 instead of MATH 115; MATH 108 is preparatory and not printed in the 14-unit core total."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T appears in the official 2025-2026 catalog."
+}

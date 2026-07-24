@@ -1,0 +1,113 @@
+{
+  "_meta": {
+    "community_college_id": 136,
+    "college_name": "San Jose City College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:48:31+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "Pinned to San Jose City College's official 2025-2026 catalog. The Biology AS-T is extracted; the official program index does not list a separate general local Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1642&search_string=biology",
+    "checked_at": "2026-07-23T19:29:52+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51605",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39247-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology - Associate in Science for Transfer",
+      "award_seen": "Associate in Science for Transfer (AS-T)",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires Calculus I and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as an active degree in the official 2025-2026 catalog.",
+      "catalog_url": "https://sjcc.edu/_resources/PDF/Academic_Affairs/SJCC%202025-2026%20Catalog.FINAL.3.20.25pdf.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://sjcc.edu/_resources/PDF/Academic_Affairs/SJCC%202025-2026%20Catalog.FINAL.3.20.25pdf.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "San Jose City College 2025-2026 Catalog, printed pages 54-55, Biology - Associate in Science for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "004A", "title_seen": "General Principles and Cell Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "004B", "title_seen": "Biodiversity and Organismal Biology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "units_max": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "001A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "001B", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "MATH", "number": "071", "title_seen": "Calculus I With Analytic Geometry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select one complete physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 002A and PHYS 002B (8 units), or complete PHYS 004A and PHYS 004B (10 units); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "002A", "title_seen": "Algebra/Trigonometry-Based Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "002B", "title_seen": "Algebra/Trigonometry-Based Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "004A", "title_seen": "General Physics", "units_seen": 5},
+            {"prefix": "PHYS", "number": "004B", "title_seen": "General Physics", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "units_max": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable Electives (as needed)",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 1,
+          "units_max": 3,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 33-35 major units, 34 Cal-GETC units, 8 double-counted units, 1-3 transferable elective units, and 60 total units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 program index lists the general Biology AS-T but no separate general Biology/Biological Sciences local AS or AA. Public Health and other adjacent or specialized awards were ignored by scope."
+}

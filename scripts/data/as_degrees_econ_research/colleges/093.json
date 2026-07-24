@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "community_college_id": 93,
+    "college_name": "Sierra College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "First-pass extraction from Sierra College's archived official 2025-2026 catalog. The source table's blank MATH 0013 title and bundled BUS 0201/BUS 0202 option are preserved for human review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1818&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45020",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32653-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics for Transfer",
+      "award_seen": "AA-T Degree",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the archived official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.sierracollege.edu/archive/2025-2026/departments/economics/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 24,
+      "extraction_confidence": 0.97,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_html_archive",
+          "url": "https://catalog.sierracollege.edu/archive/2025-2026/departments/economics/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Economics for Transfer, AA-T Degree — Required Courses and Total Units 20-24"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "0001A", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "0001B", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "MATH", "number": "0013", "title_seen": null, "units_seen": 4, "catalog_number_note": "The official 2025-2026 requirement table prints MATH 0013 with a blank title."},
+            {"prefix": "MATH", "number": "0042", "title_seen": "Business Calculus", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Select 3-6 units from the following",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "units_max": 6,
+          "ge_area": null,
+          "choice_structure_seen": "BUS 0201 and BUS 0202 are printed together as one bundled option; all other entries are individual choices.",
+          "courses": [
+            {"prefix": "BUS", "number": "0201", "title_seen": "Financial Accounting", "alternative_seen": "Must be taken with BUS 0202 when this bundled option is selected"},
+            {"prefix": "BUS", "number": "0202", "title_seen": "Financial Accounting II", "alternative_seen": "Must be taken with BUS 0201 when this bundled option is selected"},
+            {"prefix": "BUS", "number": "0203", "title_seen": "Managerial Accounting"},
+            {"prefix": "BUS", "number": "0265", "title_seen": "Business Communications"},
+            {"prefix": "BUS", "number": "0270", "title_seen": "Business Law"},
+            {"prefix": "IT", "number": "0015", "title_seen": "Business Information Systems"},
+            {"prefix": "CSCI", "number": "0010", "title_seen": "Introduction to Computing"},
+            {"prefix": "CSCI", "number": "0012", "title_seen": "Programming Concepts and Methodology I"},
+            {"prefix": "CSCI", "number": "0066", "title_seen": "Object-Oriented Programming Using C++"},
+            {"prefix": "MATH", "number": "0016A", "title_seen": "Calculus for Social and Life Sciences"},
+            {"prefix": "MATH", "number": "0016B", "title_seen": "Calculus for Social and Life Sciences"},
+            {"prefix": "MATH", "number": "0030", "title_seen": "Analytical Geometry and Calculus I"},
+            {"prefix": "MATH", "number": "0031", "title_seen": "Analytical Geometry and Calculus II"}
+          ]
+        },
+        {
+          "label_seen": "Select 3-4 units from the following or unused course(s) from the preceding area",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "choice_structure_seen": "Select MATH 0032 or unused course(s) from the preceding 3-6-unit area.",
+          "courses": [
+            {"prefix": "MATH", "number": "0032", "title_seen": "Analytical Geometry and Calculus III"},
+            {"prefix": "BUS", "number": "0201", "title_seen": "Financial Accounting", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "BUS", "number": "0202", "title_seen": "Financial Accounting II", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "BUS", "number": "0203", "title_seen": "Managerial Accounting", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "BUS", "number": "0265", "title_seen": "Business Communications", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "BUS", "number": "0270", "title_seen": "Business Law", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "IT", "number": "0015", "title_seen": "Business Information Systems", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "CSCI", "number": "0010", "title_seen": "Introduction to Computing", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "CSCI", "number": "0012", "title_seen": "Programming Concepts and Methodology I", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "CSCI", "number": "0066", "title_seen": "Object-Oriented Programming Using C++", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "MATH", "number": "0016A", "title_seen": "Calculus for Social and Life Sciences", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "MATH", "number": "0016B", "title_seen": "Calculus for Social and Life Sciences", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "MATH", "number": "0030", "title_seen": "Analytical Geometry and Calculus I", "alternative_seen": "Unused preceding-area option"},
+            {"prefix": "MATH", "number": "0031", "title_seen": "Analytical Geometry and Calculus II", "alternative_seen": "Unused preceding-area option"}
+          ]
+        },
+        {"label_seen": "California General Education Transfer Curriculum", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog prints a 20-24-unit major. It omits the title for MATH 0013 and does not print individual units inside the two elective pools; the displayed group ranges and omission are preserved rather than inferred."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The archived 2025-2026 catalog lists one general Economics award: Economics for Transfer AA-T."
+}

@@ -1,0 +1,145 @@
+{
+  "_meta": {
+    "community_college_id": 8,
+    "college_name": "Butte College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:13+00:00",
+    "resume_note": "Pinned to the official complete 2025-2026 Butte College catalog. Preserve the dependency allowing an unused List A course to satisfy List B."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=177&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46453",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33927-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "AA-T Degree in Economics",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies this as the Economics associate degree for transfer and prints the standard Economics TMC core and elective lists.",
+      "catalog_status_seen": "Published with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.butte.edu/student-resources/academic-resources/curriculum-tools/_documents/2025-2026-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.butte.edu/student-resources/academic-resources/curriculum-tools/_documents/2025-2026-catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 71, AA-T Degree in Economics (program code 33927.31AA-T), Required courses and 20.00-23.00 total; printed pages 58-59 for the 60-unit ADT and Cal-GETC requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required courses — economics core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 6,
+          "units_max": 6,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "2", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECON", "number": "4", "title_seen": "Principles of Microeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "13", "title_seen": "Survey of Calculus", "units_seen": 4},
+            {"prefix": "MATH", "number": "13s", "title_seen": "Survey of Calculus with Support", "units_seen": 4},
+            {"prefix": "MATH", "number": "30", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5},
+            {"prefix": "MATH", "number": "30s", "title_seen": "Analytic Geometry and Calculus I with Support", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select one statistics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+            {"prefix": "STAT", "number": "C1000E", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A (Select one)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCT", "number": "2", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "4", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "12", "title_seen": "Mathematics for Business Decisions (Finite Mathematics)", "units_seen": 3},
+            {"prefix": "MATH", "number": "12s", "title_seen": "Mathematics for Business Decisions (Finite Mathematics) with Support", "units_seen": 3},
+            {"prefix": "MATH", "number": "31", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B (Select one or any course from List A not already used)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "choice_structure_seen": "Select ECON 20, MATH 32, MATH 42, or one course from List A that was not already used to satisfy List A.",
+          "courses": [
+            {"prefix": "ECON", "number": "20", "title_seen": "Economic History of the U.S.", "units_seen": 3},
+            {"prefix": "MATH", "number": "32", "title_seen": "Analytic Geometry and Calculus III", "units_seen": 4},
+            {"prefix": "MATH", "number": "42", "title_seen": "Linear Algebra", "units_seen": 3},
+            {"prefix": "ACCT", "number": "2", "title_seen": "Financial Accounting", "units_seen": 4},
+            {"prefix": "ACCT", "number": "4", "title_seen": "Managerial Accounting", "units_seen": 4},
+            {"prefix": "MATH", "number": "12", "title_seen": "Mathematics for Business Decisions (Finite Mathematics)", "units_seen": 3},
+            {"prefix": "MATH", "number": "12s", "title_seen": "Mathematics for Business Decisions (Finite Mathematics) with Support", "units_seen": 3},
+            {"prefix": "MATH", "number": "31", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "units_max": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to bring the degree total to 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "units_max": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The flat first-pass schema cannot enforce that a List A course reused in List B must be a different course; the exact dependency is preserved in choice_structure_seen for human structuring before analysis. Major and Cal-GETC courses may overlap toward the 60-unit degree total."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete official 2025-2026 catalog lists the general Economics AA-T and no local general Economics AA or AS."
+}

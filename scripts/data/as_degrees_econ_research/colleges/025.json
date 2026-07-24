@@ -1,0 +1,129 @@
+{
+  "_meta": {
+    "community_college_id": 25,
+    "college_name": "Los Angeles Trade Technical College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T22:30:51+00:00",
+    "updated_at": "2026-07-23T22:41:38+00:00",
+    "resume_note": "First-pass extraction complete from official 2025-2026 catalog page 117. Human review must resolve the catalog's AS-T heading versus repeated AA-T/AAT language in the same program block."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2071&search_string=economics",
+    "checked_at": "2026-07-23T22:30:30+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53216",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39453-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "ECONOMICS — Associate in Science for Transfer",
+      "award_seen": "Associate in Science for Transfer in the heading; Associate in Arts for Transfer (A.A.-T/AAT) in the body",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog presents this as the college's Economics transfer degree; no local TMC revision is printed.",
+      "catalog_status_seen": "Listed in the official 2025-2026 catalog and current college program index; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.lattc.edu/sites/lattc.edu/files/2026-04/25%2026%20LATTC%20Catalog%202264.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 25,
+      "extraction_confidence": 0.96,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://www.lattc.edu/sites/lattc.edu/files/2026-04/25%2026%20LATTC%20Catalog%202264.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 117: Economics transfer degree Required Core, List A, List B, 21-25 major units, Cal-GETC, and 60-unit total"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core — economics and statistics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "001", "title_seen": "Principles of Economics I", "units_seen": 3},
+            {"prefix": "ECON", "number": "002", "title_seen": "Principles of Economics II", "units_seen": 3},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core — calculus: select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "236", "title_seen": "Calculus for Business and Social Sciences", "units_seen": 5},
+            {"prefix": "MATH", "number": "261", "former_number_seen": "MATH 265", "title_seen": "Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A: 1 course (3-5 units)",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ACCTG", "number": "001", "title_seen": "Introductory Accounting I", "units_seen": 5},
+            {"prefix": "ACCTG", "number": "002", "title_seen": "Introductory Accounting II", "units_seen": 5},
+            {"prefix": "CIS", "number": "104", "title_seen": "Microcomputer Application Software", "units_seen": 3},
+            {"prefix": "BUS", "number": "032", "title_seen": "Business Communications", "units_seen": 3},
+            {"prefix": "MATH", "number": "235", "title_seen": "Finite Mathematics", "units_seen": 5},
+            {"prefix": "MATH", "number": "262", "former_number_seen": "MATH 266", "title_seen": "Calculus II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List B: 1 course (3-5 units) — any unused List A course or one listed below",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "Any List A course not already used may satisfy List B; the List A pool is repeated here so the complete raw choice set remains explicit.",
+          "courses": [
+            {"prefix": "ACCTG", "number": "001", "title_seen": "Introductory Accounting I", "units_seen": 5},
+            {"prefix": "ACCTG", "number": "002", "title_seen": "Introductory Accounting II", "units_seen": 5},
+            {"prefix": "CIS", "number": "104", "title_seen": "Microcomputer Application Software", "units_seen": 3},
+            {"prefix": "BUS", "number": "032", "title_seen": "Business Communications", "units_seen": 3},
+            {"prefix": "MATH", "number": "235", "title_seen": "Finite Mathematics", "units_seen": 5},
+            {"prefix": "MATH", "number": "262", "former_number_seen": "MATH 266", "title_seen": "Calculus II", "units_seen": 5},
+            {"prefix": "MATH", "number": "263", "former_number_seen": "MATH 267", "title_seen": "Calculus III", "units_seen": 5},
+            {"prefix": "MATH", "number": "270", "title_seen": "Linear Algebra", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Cal-GETC Pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 36,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable Electives as needed to reach 60 CSU units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "Catalog page 117 labels the program Associate in Science for Transfer, but its degree-requirement paragraph and total line repeatedly call it Associate in Arts in Economics for Transfer (AAT/A.A.-T); the current program index also labels Economics AA-T. This likely reflects a heading typo, but the conflict is preserved for human review. The page also prints Major Units: 21 near the heading and later gives the variable total as 21-25; the range is retained."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog and program index list one Economics transfer degree. No general local Economics AA or AS was identified; business, community-development, and broader social-science awards were excluded."
+}

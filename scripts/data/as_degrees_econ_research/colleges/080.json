@@ -1,0 +1,207 @@
+{
+  "_meta": {
+    "community_college_id": 80,
+    "college_name": "West Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T01:15:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 PDF catalog; both the local AA and AA-T are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=2050&search_string=economics",
+    "checked_at": "2026-07-23T22:30:34+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46636",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33023-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Economics Associate in Arts Degree",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "tmc_version_basis": null,
+      "catalog_status_seen": "Active in West Valley College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.westvalley.edu/documents/catalog/2025-2026_WVC_Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 21,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_catalog_pdf", "url": "https://www.westvalley.edu/documents/catalog/2025-2026_WVC_Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Catalog pages 201-204, Economics Associate in Arts Degree"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Core Courses - macroeconomics",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "001A", "title_seen": "Principles of Macroeconomics", "units_seen": 4},
+            {"prefix": "ECON", "number": "001AH", "title_seen": "Honors Principles of Macroeconomics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Core Courses - microeconomics",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "001B", "title_seen": "Principles of Microeconomics", "units_seen": 4},
+            {"prefix": "ECON", "number": "001BH", "title_seen": "Honors Principles of Microeconomics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Major Electives - choose 12-13 units from at least four fields",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 12,
+          "units_max": 13,
+          "ge_area": null,
+          "choice_structure_seen": "Choose 12-13 units from the listed courses, representing at least four fields.",
+          "courses": [
+            {"prefix":"ANTH","number":"001","title_seen":"Physical Anthropology","units_seen":3},
+            {"prefix":"ANTH","number":"002","title_seen":"Introduction to Archaeology","units_seen":3},
+            {"prefix":"ANTH","number":"003","title_seen":"Introduction to Cultural Anthropology","units_seen":3},
+            {"prefix":"ANTH","number":"003H","title_seen":"Honors Introduction to Cultural Anthropology","units_seen":3},
+            {"prefix":"ETHN","number":"001","title_seen":"Introduction to Ethnic Studies and Social Justice","units_seen":3},
+            {"prefix":"GEOG","number":"001","title_seen":"Physical Geography","units_seen":3},
+            {"prefix":"GEOG","number":"002","title_seen":"Cultural Geography","units_seen":3},
+            {"prefix":"HIST","number":"004A","title_seen":"Western Civilization","units_seen":3},
+            {"prefix":"HIST","number":"004B","title_seen":"Western Civilization","units_seen":3},
+            {"prefix":"HIST","number":"005A","title_seen":"World History","units_seen":3},
+            {"prefix":"HIST","number":"005B","title_seen":"World History","units_seen":3},
+            {"prefix":"HIST","number":"012","title_seen":"African American History","units_seen":3},
+            {"prefix":"HIST","number":"014","title_seen":"History of Native North Americans","units_seen":3},
+            {"prefix":"HIST","number":"016","title_seen":"Mexican-American History","units_seen":3},
+            {"prefix":"HIST","number":"017A","title_seen":"United States History","units_seen":3},
+            {"prefix":"HIST","number":"017B","title_seen":"United States History","units_seen":3},
+            {"prefix":"HIST","number":"017BH","title_seen":"Honors United States History","units_seen":3},
+            {"prefix":"HIST","number":"020","title_seen":"History of California","units_seen":3},
+            {"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},
+            {"prefix":"POLS","number":"C1000H","title_seen":"Honors American Government and Politics","units_seen":3},
+            {"prefix":"POLS","number":"002","title_seen":"Comparative Politics","units_seen":3},
+            {"prefix":"POLS","number":"003","title_seen":"Introduction to Political Science","units_seen":3},
+            {"prefix":"POLS","number":"003H","title_seen":"Honors Introduction to Political Science","units_seen":3},
+            {"prefix":"POLS","number":"004","title_seen":"International Relations","units_seen":3},
+            {"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},
+            {"prefix":"PSYC","number":"002","title_seen":"Experimental Psychology and Psychophysiology","units_seen":4},
+            {"prefix":"PSYC","number":"002H","title_seen":"Honors Experimental Psychology and Psychophysiology","units_seen":4},
+            {"prefix":"PSYC","number":"007","title_seen":"Physiological Psychology","units_seen":3},
+            {"prefix":"PSYC","number":"009","title_seen":"Psychology of Women","units_seen":3},
+            {"prefix":"PSYC","number":"012","title_seen":"Human Growth and Development","units_seen":3},
+            {"prefix":"PSYC","number":"025","title_seen":"Abnormal Psychology","units_seen":3},
+            {"prefix":"SOCI","number":"001","title_seen":"Introduction to Sociology","units_seen":3},
+            {"prefix":"SOCI","number":"002","title_seen":"Social Problems","units_seen":3},
+            {"prefix":"SOCI","number":"002H","title_seen":"Honors Social Problems","units_seen":3},
+            {"prefix":"SOCI","number":"020","title_seen":"Race and Ethnic Relations","units_seen":3},
+            {"prefix":"SOCI","number":"040","title_seen":"Marriage and the Family","units_seen":3},
+            {"prefix":"SOCI","number":"045","title_seen":"Human Sexuality","units_seen":3},
+            {"prefix":"WGQS","number":"001","title_seen":"Introduction to Women's and Gender Studies","units_seen":4},
+            {"prefix":"WGQS","number":"001H","title_seen":"Honors Introduction to Women's and Gender Studies","units_seen":4}
+          ]
+        },
+        {"label_seen": "West Valley College or Cal-GETC general education", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "WVC GE or Cal-GETC", "courses": []},
+        {"label_seen": "Electives as needed to meet 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog requires the 12-13 elective units to represent at least four fields."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts Degree for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog identifies this as the Economics AA-T and publishes its transfer-model core and lists.",
+      "catalog_status_seen": "Active in West Valley College's official 2025-2026 catalog.",
+      "catalog_url": "https://www.westvalley.edu/documents/catalog/2025-2026_WVC_Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 28,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_catalog_pdf", "url": "https://www.westvalley.edu/documents/catalog/2025-2026_WVC_Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Catalog pages 201-204, Economics Associate in Arts Degree for Transfer"}
+      ],
+      "major_groups": [
+        {"label_seen":"Required - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"001A","title_seen":"Principles of Macroeconomics","units_seen":4},{"prefix":"ECON","number":"001AH","title_seen":"Honors Principles of Macroeconomics","units_seen":4}]},
+        {"label_seen":"Required - microeconomics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"001B","title_seen":"Principles of Microeconomics","units_seen":4},{"prefix":"ECON","number":"001BH","title_seen":"Honors Principles of Microeconomics","units_seen":4}]},
+        {"label_seen":"Required - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Honors Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Required - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"003A","title_seen":"Calculus I","units_seen":5},{"prefix":"MATH","number":"003AH","title_seen":"Honors Calculus I","units_seen":5},{"prefix":"MATH","number":"012","title_seen":"Calculus for Business and Social Science","units_seen":4}]},
+        {
+          "label_seen":"List A - select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":6,"ge_area":null,
+          "courses":[
+            {"prefix":"ACCT","number":"010","title_seen":"Financial Accounting","units_seen":5},
+            {"prefix":"ACCT","number":"011","title_seen":"Managerial Accounting","units_seen":5},
+            {"prefix":"BUSN","number":"028","title_seen":"Business Communication","units_seen":3},
+            {"prefix":"BUSN","number":"028H","title_seen":"Honors Business Communication","units_seen":3},
+            {"prefix":"BUSN","number":"051","title_seen":"Introduction to Business","units_seen":3},
+            {"prefix":"BUSN","number":"078","title_seen":"Introduction to Global Business","units_seen":3},
+            {"prefix":"CIST","number":"002","title_seen":"Introduction to Computing","units_seen":4},
+            {"prefix":"CIST","number":"004A","title_seen":"Introduction to Programming","units_seen":4},
+            {"prefix":"CIST","number":"004A1","title_seen":"Introduction to Programming","units_seen":4},
+            {"prefix":"MATH","number":"001","title_seen":"Finite Mathematics","units_seen":4},
+            {"prefix":"MATH","number":"002","title_seen":"Precalculus Algebra","units_seen":6},
+            {"prefix":"MATH","number":"003B","title_seen":"Calculus II","units_seen":5},
+            {"prefix":"MATH","number":"003BH","title_seen":"Honors Calculus II","units_seen":5},
+            {"prefix":"MATH","number":"004B","title_seen":"Differential Equations","units_seen":4},
+            {"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},
+            {"prefix":"POLS","number":"C1000H","title_seen":"Honors American Government and Politics","units_seen":3}
+          ]
+        },
+        {
+          "label_seen":"List B - select one course or one unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,
+          "choice_structure_seen":"Select one explicitly listed List B course or one List A course not already used.",
+          "courses":[
+            {"prefix":"ANTH","number":"003","title_seen":"Introduction to Cultural Anthropology","units_seen":3},
+            {"prefix":"ANTH","number":"003H","title_seen":"Honors Introduction to Cultural Anthropology","units_seen":3},
+            {"prefix":"BUSN","number":"061","title_seen":"Business Law","units_seen":3},
+            {"prefix":"ETHN","number":"001","title_seen":"Introduction to Ethnic Studies and Social Justice","units_seen":3},
+            {"prefix":"GEOG","number":"002","title_seen":"Cultural Geography","units_seen":3},
+            {"prefix":"MATH","number":"004A","title_seen":"Multivariable Calculus","units_seen":5},
+            {"prefix":"MATH","number":"004C","title_seen":"Linear Algebra","units_seen":4},
+            {"prefix":"POLS","number":"003","title_seen":"Introduction to Political Science","units_seen":3},
+            {"prefix":"POLS","number":"003H","title_seen":"Honors Introduction to Political Science","units_seen":3},
+            {"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},
+            {"prefix":"SOCI","number":"001","title_seen":"Introduction to Sociology","units_seen":3},
+            {"prefix":"SOCI","number":"002","title_seen":"Social Problems","units_seen":3},
+            {"prefix":"WGQS","number":"001","title_seen":"Introduction to Women's and Gender Studies","units_seen":4},
+            {"prefix":"WGQS","number":"001H","title_seen":"Honors Introduction to Women's and Gender Studies","units_seen":4},
+            {"prefix":"ACCT","number":"010","title_seen":"Financial Accounting","units_seen":5,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"ACCT","number":"011","title_seen":"Managerial Accounting","units_seen":5,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"BUSN","number":"028","title_seen":"Business Communication","units_seen":3,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"BUSN","number":"028H","title_seen":"Honors Business Communication","units_seen":3,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"BUSN","number":"051","title_seen":"Introduction to Business","units_seen":3,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"BUSN","number":"078","title_seen":"Introduction to Global Business","units_seen":3,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"CIST","number":"002","title_seen":"Introduction to Computing","units_seen":4,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"CIST","number":"004A","title_seen":"Introduction to Programming","units_seen":4,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"CIST","number":"004A1","title_seen":"Introduction to Programming","units_seen":4,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"MATH","number":"001","title_seen":"Finite Mathematics","units_seen":4,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"MATH","number":"002","title_seen":"Precalculus Algebra","units_seen":6,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"MATH","number":"003B","title_seen":"Calculus II","units_seen":5,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"MATH","number":"003BH","title_seen":"Honors Calculus II","units_seen":5,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"MATH","number":"004B","title_seen":"Differential Equations","units_seen":4,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3,"alternative_seen":"Any List A course not already used"},
+            {"prefix":"POLS","number":"C1000H","title_seen":"Honors American Government and Politics","units_seen":3,"alternative_seen":"Any List A course not already used"}
+          ]
+        },
+        {"label_seen":"Completion of Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Additional transferable courses needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The official catalog prints 22-28 major units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both a local Economics AA and an Economics AA-T."
+}

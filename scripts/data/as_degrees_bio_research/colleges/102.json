@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 102,
+    "college_name": "College of the Siskiyous",
+    "major_slug": "bio",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T21:27:02+00:00",
+    "updated_at": "2026-07-23T21:52:00+00:00",
+    "resume_note": "The complete official 2025-2026 Degrees and Certificates A-Z catalog page contains no general Biology/Biological Sciences AS-T, AS, or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1855&search_string=biology",
+    "checked_at": "2026-07-23T19:29:50+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_html",
+      "url": "https://siskiyous.elumenapp.com/catalog/cos25-26catalog/degreesandcertificatesa-z",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Complete Degrees and Certificates A-Z page; no Biology or Biological Sciences award is listed"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "College of the Siskiyous offers Biology coursework and transfer preparation, but the official 2025-2026 award inventory does not publish an in-scope Biology AS-T, AS, or AA. Broad Natural Science and Environmental Science awards are not Biology awards and are outside this pass."
+}

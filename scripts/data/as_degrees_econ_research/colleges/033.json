@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 33,
+    "college_name": "City College of San Francisco",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-24T00:50:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog; exact course choices and UC-oriented advising notes are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1567&search_string=economics",
+    "checked_at": "2026-07-23T22:30:31+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48425",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32869-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics Major (AA-T)","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as the Economics AA-T and publishes its transfer-model requirements.","catalog_status_seen":"Active in City College of San Francisco's official 2025-2026 catalog.","catalog_url":"https://www.ccsf.edu/sites/default/files/2025/document/programs-and-courses-2025-26.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":26,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.ccsf.edu/sites/default/files/2025/document/programs-and-courses-2025-26.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 243-244, Economics Major (AA-T)"}],
+      "major_groups":[
+        {"label_seen":"Required","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"1","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"3","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Choose one statistics course","rule":"choose_courses","choose_n":1,"units_min":5,"units_max":5,"ge_area":null,"courses":[{"prefix":"ECON","number":"5","title_seen":"Introductory Statistics for Economics, Business and Social Sciences","units_seen":5},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":5},{"prefix":"PSYC","number":"5","title_seen":"Statistics for Behavioral Sciences","units_seen":5},{"prefix":"LALS","number":"5","title_seen":"Introduction to Statistical Methods in Latin American and Latino/a Studies","units_seen":5}]},
+        {"label_seen":"Choose one calculus course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"110A","title_seen":"Calculus I","units_seen":5},{"prefix":"MATH","number":"100A","title_seen":"Short Calculus I","units_seen":3}]},
+        {"label_seen":"Choose one advanced/accounting/programming course","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"110B","title_seen":"Calculus II","units_seen":5},{"prefix":"ACCT","number":"1","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCT","number":"2","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"CS","number":"110A","title_seen":"Introduction to Programming and Computer Science","units_seen":4},{"prefix":"CS","number":"110B","title_seen":"Programming Fundamentals: C++","units_seen":4},{"prefix":"CS","number":"111B","title_seen":"Programming Fundamentals: Java","units_seen":4}]},
+        {"label_seen":"Choose one additional course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ECON","number":"6","title_seen":"International Economics","units_seen":3},{"prefix":"ECON","number":"15","title_seen":"Political Economy","units_seen":3},{"prefix":"ECON","number":"20","title_seen":"LGBT Economics","units_seen":3},{"prefix":"ECON","number":"22","title_seen":"Introduction to Environmental Economics","units_seen":3},{"prefix":"ECON","number":"25","title_seen":"Women in the Economy","units_seen":3},{"prefix":"ECON","number":"30","title_seen":"Economics of the African American Community","units_seen":3},{"prefix":"MATH","number":"110C","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"120","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"Full completion of Cal-GETC","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints a 21-26 unit major range. It advises UC-bound Economics applicants to take MATH 110A and 110B, but those are advising constraints rather than requirements for every AA-T pathway."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T appears in the official 2025-2026 Economics curriculum."
+}

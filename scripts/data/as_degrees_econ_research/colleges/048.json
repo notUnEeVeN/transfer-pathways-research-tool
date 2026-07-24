@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "community_college_id": 48,
+    "college_name": "Ohlone College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T01:35:00+00:00",
+    "resume_note": "First-pass extraction from Ohlone's official 2025-2026 Economics AA-T curriculum guide."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1125&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "44874",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32584-economics"
+      }
+    ]
+  },
+  "degrees": [{
+    "degree_type_hint":"ast","degree_title_seen":"Economics Associate in Arts for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official curriculum guide identifies the award as an AA-T.","catalog_status_seen":"Active in Ohlone College's official 2025-2026 curriculum guides.","catalog_url":"https://www.ohlone.edu/sites/default/files/group/Curriculum_Guides/20252026/economics_adt.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":26,"major_units_max":26,"extraction_confidence":0.99,
+    "sources":[{"source_type":"official_college_curriculum_guide_pdf","url":"https://www.ohlone.edu/sites/default/files/group/Curriculum_Guides/20252026/economics_adt.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"2025-2026 Economics ADT curriculum guide, program requirements"}],
+    "major_groups":[
+      {"label_seen":"Required economics courses","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"BA","number":"102A","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"BA","number":"102B","title_seen":"Principles of Microeconomics","units_seen":3}]},
+      {"label_seen":"Required calculus - select one","rule":"choose_courses","choose_n":1,"units_min":5,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"101A","title_seen":"Calculus with Analytic Geometry","units_seen":5},{"prefix":"MATH","number":"167","title_seen":"Calculus for Business and Social Sciences","units_seen":5}]},
+      {"label_seen":"Required statistics","rule":"all","choose_n":null,"units_min":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":5}]},
+      {"label_seen":"List A - complete two courses","rule":"choose_courses","choose_n":2,"units_min":10,"units_max":10,"ge_area":null,"courses":[{"prefix":"BA","number":"101A","title_seen":"Financial Accounting","units_seen":5},{"prefix":"BA","number":"101B","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"MATH","number":"101B","title_seen":"Calculus with Analytic Geometry II","units_seen":5}]},
+      {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+      {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+    ],"notes":"The official guide publishes an exact 26-unit major total."
+  }],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 inventory publishes one in-scope Economics AA-T."
+}

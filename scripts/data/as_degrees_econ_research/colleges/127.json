@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 127,
+    "college_name": "Skyline College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:14:00+00:00",
+    "resume_note": "First-pass extraction complete from Skyline College's official 2025-2026 current-catalog page."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1868&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49932",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37237-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics for Transfer Associate in Arts Degree for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog identifies the program as the Economics AA-T and publishes the transfer core, List A, and List B.",
+      "catalog_status_seen": "Active in Skyline College's official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.skylinecollege.edu/current/programs/economics-for-transfer-aa-t.php",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 21,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_html","url":"https://catalog.skylinecollege.edu/current/programs/economics-for-transfer-aa-t.php","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"2025-2026 Catalog > Economics for Transfer AA-T > Program Requirements"}],
+      "major_groups": [
+        {"label_seen":"Required Core Courses","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECON","number":"100","title_seen":"Principles of Macro Economics","units_seen":3},{"prefix":"ECON","number":"102","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"241","title_seen":"Applied Calculus I","units_seen":5},{"prefix":"MATH","number":"251","title_seen":"Calculus with Analytic Geometry I","units_seen":5}]},
+        {"label_seen":"List A: Select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACTG","number":"121","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACTG","number":"131","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUS","number":"103","title_seen":"Introduction to Business Information Systems","units_seen":3},{"prefix":"BUS","number":"401","title_seen":"Business Communications","units_seen":3},{"prefix":"MATH","number":"252","title_seen":"Calculus with Analytic Geometry II","units_seen":5}]},
+        {"label_seen":"List B: Select one course or any unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Any List A course not already used may satisfy List B; the List A pool is repeated to preserve the full choice set.","courses":[{"prefix":"ACTG","number":"121","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"ACTG","number":"131","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"103","title_seen":"Introduction to Business Information Systems","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"401","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"252","title_seen":"Calculus with Analytic Geometry II","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ECON","number":"210","title_seen":"Economics of the Environment","units_seen":3},{"prefix":"MATH","number":"253","title_seen":"Calculus with Analytic Geometry III","units_seen":5},{"prefix":"MATH","number":"270","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Elective courses as needed to reach 60 CSU-transferable units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints Total Required Major Units 21-25 and notes that up to six major units may double-count toward general education."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the Economics AA-T is listed in the official 2025-2026 program inventory."
+}

@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 61,
+    "college_name": "Los Medanos College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-23T23:58:00+00:00",
+    "resume_note": "The complete official 2025-2026 Programs of Study award inventory contains no general Economics AA-T, AS-T, AA, or AS."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://www.losmedanos.edu/schedule/25-26-LMC-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Printed catalog pages 64-66, complete Programs of Study award table; no Economics associate degree is listed"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Los Medanos publishes Economics courses, but its complete 2025-2026 award table does not publish an Economics-titled associate degree. Business and Liberal Arts: Behavioral Science and Social Science awards are umbrella or adjacent awards and are outside this pass."
+}

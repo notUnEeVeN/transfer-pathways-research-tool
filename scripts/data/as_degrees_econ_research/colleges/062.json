@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 62,
+    "college_name": "Mount San Antonio College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-23T23:58:00+00:00",
+    "resume_note": "The complete official 2025-2026 Associate Degrees and Associate Degrees for Transfer indexes contain no general Economics AA-T, AS-T, AA, or AS."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://www.mtsac.edu/catalog/pdf_ada/Mt_San_Antonio_College_PDF_25-26_82225_ADA.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Printed catalog pages 213-214 and 327, complete Associate Degrees and Associate Degrees for Transfer indexes; no Economics award is listed"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Mt. SAC publishes Business: Economics coursework, but its complete 2025-2026 local and transfer associate-degree indexes do not publish an Economics-titled award. General Business and other business awards are adjacent awards and are outside this pass."
+}

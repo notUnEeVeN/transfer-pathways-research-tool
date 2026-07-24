@@ -1,0 +1,199 @@
+{
+  "_meta": {
+    "community_college_id": 28,
+    "college_name": "Contra Costa College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:02:54+00:00",
+    "updated_at": "2026-07-23T21:32:00+00:00",
+    "resume_note": "Pinned to Contra Costa College's official 2025-2026 eLumen catalog. Both the general local Biological Science A.S. and Biology A.S.-T. are extracted; preserve the A.S.-T.'s paired physics sequences and the local A.S.'s BIOSC 172 plus 172L pairing."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=372&search_string=biology",
+    "checked_at": "2026-07-23T19:29:45+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46365",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35208-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Science",
+      "award_seen": "Associate in Science Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as a credit degree in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://ccc.elumenapp.com/catalog/2025-2026/program/biological-science-fall-2020",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 21,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://ccc.elumenapp.com/catalog/2025-2026/program/biological-science-fall-2020",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 eLumen catalog > Biological Science > Associate in Science Degree > Program Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biological Science - A.S. Degree — Take one physics course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "PHYS", "number": "110", "title_seen": "Descriptive Physics", "units_seen": 3},
+            {"prefix": "PHYS", "number": "120", "title_seen": "General College Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "120H", "title_seen": "General College Physics I (Honors)", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Biological Science - A.S. Degree — Take one chemistry course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "119", "title_seen": "Introductory Chemistry", "units_seen": 4},
+            {"prefix": "CHEM", "number": "120", "title_seen": "General College Chemistry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Biological Science - A.S. Degree — Plus at least 12 units",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 12,
+          "ge_area": null,
+          "choice_structure_seen": "Complete at least 12 units from the printed list. BIOSC 172 and BIOSC 172L are offered only as the paired four-unit option ('OR BOTH'), not as independently selectable courses.",
+          "courses": [
+            {"prefix": "BIOSC", "number": "110", "title_seen": "Introduction to Biological Science", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "119", "title_seen": "Microbiology", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "132", "title_seen": "Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "134", "title_seen": "Human Physiology", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "145", "title_seen": "Organismal Biology", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "147", "title_seen": "Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "172", "title_seen": "Introduction to Biotechnology", "units_seen": 3},
+            {"prefix": "BIOSC", "number": "172L", "title_seen": "Introduction to Biotechnology Lab", "units_seen": 1}
+          ]
+        },
+        {
+          "label_seen": "Contra Costa College associate-degree general education",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Contra Costa College associate-degree GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 19-21 major credits and 60 total degree credits. The program page does not restate the local general-education unit subtotal, so that group's units_min is left null."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology",
+      "award_seen": "Associate in Science Degree for Transfer",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published as a credit transfer degree in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://ccc.elumenapp.com/catalog/2025-2026/program/biology-fall-2020",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 35,
+      "major_units_max": 36,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_web",
+          "url": "https://ccc.elumenapp.com/catalog/2025-2026/program/biology-fall-2020",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "2025-2026 eLumen catalog > Biology > Associate in Science Degree for Transfer > Program Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biology - AS-T Degree — required core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 23,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOSC", "number": "145", "title_seen": "Organismal Biology", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "147", "title_seen": "Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "120", "title_seen": "General College Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "121", "title_seen": "General College Chemistry II", "units_seen": 5},
+            {"prefix": "MATH", "number": "190", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Biology - AS-T Degree — take one full physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 120 and PHYS 121, or complete PHYS 130 and PHYS 230; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "120", "title_seen": "General College Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "121", "title_seen": "General College Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "130", "title_seen": "General Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "230", "title_seen": "General Physics II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Biology - AS-T Degree — take one additional course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOSC", "number": "132", "title_seen": "Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOSC", "number": "134", "title_seen": "Human Physiology", "units_seen": 4},
+            {"prefix": "CHEM", "number": "226", "title_seen": "Organic Chemistry I", "units_seen": 5},
+            {"prefix": "BIOSC", "number": "119", "title_seen": "Microbiology", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog reports 35-36 major credits and requires Cal-GETC, but the program page does not restate Cal-GETC's unit subtotal; units_min is therefore left null."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Biological Science A.S. and Biology A.S.-T. are included. Specialty and certificate awards were ignored by scope."
+}

@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "community_college_id": 49,
+    "college_name": "Pasadena City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:39+00:00",
+    "updated_at": "2026-07-24T02:05:00+00:00",
+    "resume_note": "First-pass extraction from Pasadena City College's official 2025-2026 Economics AA-T catalog page."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1282&search_string=economics",
+    "checked_at": "2026-07-23T22:30:32+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50364",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37424-economics"
+      }
+    ]
+  },
+  "degrees": [{
+    "degree_type_hint":"ast","degree_title_seen":"Economics – Associate in Arts Degree for Transfer","award_seen":"AA-T","tmc_version_seen":"Economics TMC","tmc_version_basis":"The official catalog identifies the award as an Associate in Arts in Economics for Transfer.","catalog_status_seen":"Active in Pasadena City College's official 2025-2026 academic catalog.","catalog_url":"https://curriculum.pasadena.edu/academic-programs/economics/economics-aat/","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":25,"extraction_confidence":0.99,
+    "sources":[{"source_type":"official_college_catalog_html","url":"https://curriculum.pasadena.edu/academic-programs/economics/economics-aat/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Associate in Arts in Economics for Transfer Degree curriculum table and Required Subtotal 20-25"}],
+    "major_groups":[
+      {"label_seen":"Required economics core","rule":"choose_units","choose_n":null,"units_min":6,"units_max":6,"ge_area":null,"choice_structure_seen":"Complete one macroeconomics version and one microeconomics version; honors and non-honors alternatives cannot both count.","courses":[{"prefix":"ECON","number":"001A","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"001AH","title_seen":"Principles of Macroeconomics - Honors","units_seen":3},{"prefix":"ECON","number":"001B","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"001BH","title_seen":"Principles of Microeconomics - Honors","units_seen":3}]},
+      {"label_seen":"Required statistics - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+      {"label_seen":"Required calculus - select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUS","number":"014B","title_seen":"Mathematical Analysis for Business - Calculus","units_seen":4},{"prefix":"MATH","number":"005A","title_seen":"Calculus I: Late Transcendentals","units_seen":5},{"prefix":"MATH","number":"005AH","title_seen":"Calculus I: Late Transcendentals - Honors","units_seen":5}]},
+      {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"BUS","number":"014A","title_seen":"Mathematical Analysis for Business - Finite","units_seen":4},{"prefix":"MATH","number":"005B","title_seen":"Calculus II: Late Transcendentals","units_seen":5},{"prefix":"MATH","number":"005BH","title_seen":"Calculus II: Late Transcendentals - Honors","units_seen":5},{"prefix":"ACCT","number":"001A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"001B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BIT","number":"025","title_seen":"Survey of Computer Technology in Business","units_seen":3},{"prefix":"BUS","number":"011A","title_seen":"Business Communications","units_seen":3}]},
+      {"label_seen":"List B - select one or an unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select MATH 005C/005CH, MATH 010/010H, or any List A course not already used.","courses":[{"prefix":"MATH","number":"005C","title_seen":"Multivariable Calculus","units_seen":5},{"prefix":"MATH","number":"005CH","title_seen":"Honors Multivariable Calculus","units_seen":5},{"prefix":"MATH","number":"010","title_seen":"Linear Algebra and Applications","units_seen":3},{"prefix":"MATH","number":"010H","title_seen":"Honors Linear Algebra and Applications","units_seen":3},{"prefix":"BUS","number":"014A","title_seen":"Mathematical Analysis for Business - Finite","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"005B","title_seen":"Calculus II: Late Transcendentals","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"001A","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"ACCT","number":"001B","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BIT","number":"025","title_seen":"Survey of Computer Technology in Business","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"BUS","number":"011A","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any unused List A course"}]},
+      {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+      {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+    ],"notes":"The official catalog prints a 20-25 unit required subtotal."
+  }],
+  "out_of_scope_candidates": [],
+  "notes": "Pasadena's official 2025-2026 Economics program inventory publishes one in-scope award, the AA-T."
+}

@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 118,
+    "college_name": "East Los Angeles College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:55:00+00:00",
+    "resume_note": "Extracted ELAC's Economics AA-T from its official 2025-2026 degree sheet and general catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=517&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53167",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/36345-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Associate in Arts in Economics for Transfer Degree","award_seen":"AA-T","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog and degree-planning sheet.","catalog_url":"https://www.elac.edu/sites/elac.edu/files/2025-10/Associate%20in%20Arts%20in%20Economics%20AA-T%2025-26%20ver%201.pdf","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":25,"extraction_confidence":0.94,
+      "sources":[{"source_type":"official_college_degree_planning_pdf","url":"https://www.elac.edu/sites/elac.edu/files/2025-10/Associate%20in%20Arts%20in%20Economics%20AA-T%2025-26%20ver%201.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"2025-2026 AA-T Economics degree sheet, version 1 dated 09/2025"},{"source_type":"official_college_catalog_pdf","url":"https://www.elac.edu/sites/elac.edu/files/2025-09/Catalog-2025-2026.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"ELAC General Catalog 2025-2026, printed page 339, Associate in Arts in Economics for Transfer"}],
+      "major_groups":[
+        {"label_seen":"Required Core - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Macroeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - statistics: choose one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics with Embedded Support","units_seen":4},{"prefix":"PSYCH","number":"091","title_seen":"Statistics for the Social and Behavioral Sciences","units_seen":4},{"prefix":"ECON","number":"020","title_seen":"Statistics for Economics","units_seen":3},{"prefix":"BUS","number":"015","title_seen":"Business Statistics","units_seen":3}]},
+        {"label_seen":"Required Core - calculus: choose one","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"236","title_seen":"Calculus for Business and Social Science","units_seen":5},{"prefix":"MATH","number":"261","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Financial Accounting","units_seen":4},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Managerial Accounting","units_seen":4},{"prefix":"CAOT","number":"035","title_seen":"Business Communications","units_seen":3},{"prefix":"CIS","number":"101","title_seen":"Introduction to Computer Information Systems","units_seen":3},{"prefix":"MATH","number":"235","title_seen":"Finite Mathematics","units_seen":5},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select any unused List A course or one of the five specifically listed courses.","courses":[{"prefix":"ECON","number":"011","title_seen":"Economics of Globalization","units_seen":3},{"prefix":"ECON","number":"030","title_seen":"International Economics","units_seen":3},{"prefix":"ECON","number":"060","title_seen":"Economics and the Environment","units_seen":3},{"prefix":"MATH","number":"263","title_seen":"Calculus III","units_seen":5},{"prefix":"MATH","number":"270","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Additional CSU-transferable units as needed to reach 60","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The 2025-2026 degree sheet incorporates Fall 2025 common-course-numbering changes: MATH 227/227S became STAT C1000/C1000E. The school-hosted PDF is the controlling source; individual elective titles were cross-checked against the official catalog/course pages."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope general Economics award, the Economics AA-T."
+}

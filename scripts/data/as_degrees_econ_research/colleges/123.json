@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "community_college_id": 123,
+    "college_name": "Hartnell College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:55:00+00:00",
+    "resume_note": "Extracted Hartnell College's Economics AA-T from the official 2025-2026 degree-requirements page and linked sample map."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=747&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45970",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33385-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics for Transfer (AAT.ECO)","award_seen":"Associate in Arts for Transfer","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active on Hartnell's official 2025-2026 degree-requirements resource.","catalog_url":"https://www.hartnell.edu/support/counseling/degree-requirements.html","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":20,"major_units_max":22,"extraction_confidence":0.97,
+      "sources":[{"source_type":"official_college_degree_requirements_web","url":"https://www.hartnell.edu/support/counseling/degree-requirements.html","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Social Sciences section > Economics for Transfer (AAT.ECO); page labels itself a resource for the 2025-2026 Catalog"},{"source_type":"official_college_sample_map_pdf","url":"https://www.hartnell.edu/support/counseling/degree-requirement-sample-plans-2025/social-sciences/economics-aat-eco.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"AAT.ECO sample map, 60-unit total and four-term sequencing"}],
+      "major_groups":[
+        {"label_seen":"Required Major Courses - economics and statistics","rule":"all","choose_n":null,"units_min":10,"ge_area":null,"courses":[{"prefix":"ECO","number":"1","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECO","number":"5","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"MAT/STAT","number":"13/C1000","title_seen":"Elementary Statistics","units_seen":4}]},
+        {"label_seen":"Required Major Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MAT","number":"2","title_seen":"Calculus for Managerial Life, and Social Science","units_seen":4},{"prefix":"MAT","number":"3A","title_seen":"Analytic Geometry and Calculus I","units_seen":4}]},
+        {"label_seen":"Major Electives - List A: complete one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"BUS","number":"1A","title_seen":"Financial Accounting","units_seen":3},{"prefix":"BUS","number":"1B","title_seen":"Managerial Accounting","units_seen":3},{"prefix":"BUS","number":"43","title_seen":"Business Information Systems and Information Literacy","units_seen":4},{"prefix":"ECO","number":"10","title_seen":"Introduction to Economics","units_seen":3},{"prefix":"MAT","number":"3B","title_seen":"Analytic Geometry and Calculus II","units_seen":4},{"prefix":"MAT","number":"16","title_seen":"Finite Mathematics","units_seen":3}]},
+        {"label_seen":"Major Electives - List B: complete one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select MAT 3C, MAT 4, or any unused List A course.","courses":[{"prefix":"MAT","number":"3C","title_seen":"Analytic Geometry and Calculus II","units_seen":4},{"prefix":"MAT","number":"4","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Electives numbered 1-99 as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The current 2025-2026 page prints MAT 3C as 'Analytic Geometry and Calculus II,' apparently duplicating MAT 3B's title; that source wording is preserved for human review. Course units were cross-checked against Hartnell's linked map and official course listings, yielding a 20-22-unit major range."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 degree-requirements resource publishes one in-scope general Economics award, the Economics AA-T."
+}

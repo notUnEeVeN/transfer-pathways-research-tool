@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "community_college_id": 87,
+    "college_name": "Oxnard College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-24T02:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 PDF catalog; both the local AA and AA-T are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1194&search_string=economics",
+    "checked_at": "2026-07-23T22:30:34+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53012",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33198-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"local_other",
+      "degree_title_seen":"Economics, Associate in Arts",
+      "award_seen":"AA",
+      "tmc_version_seen":null,
+      "tmc_version_basis":null,
+      "catalog_status_seen":"Active in Oxnard College's official 2025-2026 catalog.",
+      "catalog_url":"https://catalog.vcccd.edu/pdf/Oxnard%20College%20Catalog%202025-2026%20FINAL.pdf",
+      "catalog_year":"2025-2026",
+      "unit_system":"semester",
+      "total_units":60,
+      "major_units_min":18,
+      "major_units_max":21,
+      "extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://catalog.vcccd.edu/pdf/Oxnard%20College%20Catalog%202025-2026%20FINAL.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 168-170, Economics, Associate in Arts"}],
+      "major_groups":[
+        {"label_seen":"Required Core Courses - contemporary issues","rule":"all","choose_n":null,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"R100","title_seen":"Introduction to Economics and Contemporary Economics Issues","units_seen":3}]},
+        {"label_seen":"Required Core Courses - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"R201","title_seen":"Introduction to the Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"R201H","title_seen":"Honors: Introduction to the Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Core Courses - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"R202","title_seen":"Introduction to the Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"R202H","title_seen":"Honors: Introduction to the Principles of Macroeconomics","units_seen":3}]},
+        {
+          "label_seen":"Student must select at least 3 courses from the following","rule":"choose_units","choose_n":null,"units_min":9,"units_max":12,"ge_area":null,"choice_structure_seen":"Complete at least three listed courses totaling 9-12 units.",
+          "courses":[
+            {"prefix":"ACCT","number":"R101","title_seen":"Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"R101H","title_seen":"Honors: Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"R102","title_seen":"Managerial Accounting","units_seen":3},
+            {"prefix":"HIST","number":"R160","title_seen":"World History II","units_seen":3},{"prefix":"HIST","number":"R160H","title_seen":"Honors: World History II","units_seen":3},{"prefix":"HIST","number":"R140","title_seen":"History of the United States II","units_seen":3},{"prefix":"HIST","number":"R140H","title_seen":"Honors: History of the United States II","units_seen":3},
+            {"prefix":"MATH","number":"R106","title_seen":"Business Calculus","units_seen":4},{"prefix":"MATH","number":"R120","title_seen":"Calculus with Analytic Geometry I","units_seen":5},
+            {"prefix":"PHIL","number":"R107","title_seen":"Introduction to Logic","units_seen":3},{"prefix":"PHIL","number":"R100","title_seen":"Critical Thinking","units_seen":3},{"prefix":"PHIL","number":"R111","title_seen":"Critical Thinking and Analytic Writing","units_seen":3},
+            {"prefix":"POLS","number":"R100","title_seen":"Introduction to Politics","units_seen":3},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},{"prefix":"POLS","number":"R104","title_seen":"Introduction to International Relations","units_seen":3},{"prefix":"POLS","number":"R108","title_seen":"Comparative Politics","units_seen":3},
+            {"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"PSYC","number":"C1000H","title_seen":"Introduction to Psychology - Honors","units_seen":3},{"prefix":"SOC","number":"R101","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"SOC","number":"R101H","title_seen":"Honors: Introduction to Sociology","units_seen":3},
+            {"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4},{"prefix":"ESRM","number":"R100","title_seen":"Introduction to Environmental Science","units_seen":3}
+          ]
+        },
+        {"label_seen":"Oxnard College General Education or Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"OC GE or Cal-GETC","courses":[]},
+        {"label_seen":"Free electives required to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The official catalog prints 18-21 major units and permits either Oxnard College GE or Cal-GETC for this local AA."
+    },
+    {
+      "degree_type_hint":"ast",
+      "degree_title_seen":"Economics, Associate in Arts for Transfer",
+      "award_seen":"AA-T",
+      "tmc_version_seen":"Economics TMC",
+      "tmc_version_basis":"The official catalog identifies this as the Economics AA-T and publishes its transfer-model core and lists.",
+      "catalog_status_seen":"Active in Oxnard College's official 2025-2026 catalog.",
+      "catalog_url":"https://catalog.vcccd.edu/pdf/Oxnard%20College%20Catalog%202025-2026%20FINAL.pdf",
+      "catalog_year":"2025-2026",
+      "unit_system":"semester",
+      "total_units":60,
+      "major_units_min":20,
+      "major_units_max":25,
+      "extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://catalog.vcccd.edu/pdf/Oxnard%20College%20Catalog%202025-2026%20FINAL.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 170-171, Economics, Associate in Arts for Transfer"}],
+      "major_groups":[
+        {"label_seen":"Required Core - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"R202","title_seen":"Introduction to the Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"R202H","title_seen":"Honors: Introduction to the Principles of Macroeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"R201","title_seen":"Introduction to the Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"R201H","title_seen":"Honors: Introduction to the Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Required Core - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"R106","title_seen":"Business Calculus","units_seen":4},{"prefix":"MATH","number":"R120","title_seen":"Calculus with Analytic Geometry I","units_seen":5}]},
+        {"label_seen":"List A - select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"R121","title_seen":"Calculus with Analytic Geometry II","units_seen":5},{"prefix":"ACCT","number":"R101","title_seen":"Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"R101H","title_seen":"Honors: Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"R102","title_seen":"Managerial Accounting","units_seen":3},{"prefix":"CIS","number":"R100","title_seen":"Introduction to Computer Information Systems","units_seen":3},{"prefix":"BUS","number":"R140","title_seen":"Business Communications","units_seen":3}]},
+        {"label_seen":"List B - select one course or an unused List A course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select ECON R100, MATH R122, MATH R134, or any List A course not already used.","courses":[{"prefix":"ECON","number":"R100","title_seen":"Introduction to Economics and Contemporary Economics Issues","units_seen":3},{"prefix":"MATH","number":"R122","title_seen":"Calculus with Analytic Geometry III","units_seen":5},{"prefix":"MATH","number":"R134","title_seen":"Linear Algebra","units_seen":3},{"prefix":"MATH","number":"R121","title_seen":"Calculus with Analytic Geometry II","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"R101","title_seen":"Financial Accounting","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"R101H","title_seen":"Honors: Financial Accounting","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCT","number":"R102","title_seen":"Managerial Accounting","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"CIS","number":"R100","title_seen":"Introduction to Computer Information Systems","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"BUS","number":"R140","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any List A course not already used"}]},
+        {"label_seen":"Cal-GETC","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Free electives required to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The official catalog prints 20-25 major units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both a local Economics AA and an Economics AA-T."
+}

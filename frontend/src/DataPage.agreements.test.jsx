@@ -510,6 +510,18 @@ describe('Community Colleges degree integration', () => {
     expect(screen.queryByText(/No Biology associate degrees yet/)).toBeNull()
   })
 
+  it('labels the Economics transfer slot as A.A.-T from major metadata', async () => {
+    renderCollegePane({ degrees: [], major: {
+      slug: 'econ',
+      label: 'Economics',
+      degreeSlotLabels: { ast: 'A.A.-T' },
+      capabilities: { asDegrees: false },
+    } })
+    expect(await screen.findByRole('tab', { name: 'A.A.-T' })).toBeInTheDocument()
+    expect(screen.getByText('Economics · A.A.-T')).toBeInTheDocument()
+    expect(screen.queryByRole('tab', { name: 'A.S.-T' })).toBeNull()
+  })
+
   it('never labels the CS availability survey under another major', async () => {
     // The availability survey is Computer Science only. Picking Biology must
     // not borrow a CS record's title into a "Biology · …" header line.

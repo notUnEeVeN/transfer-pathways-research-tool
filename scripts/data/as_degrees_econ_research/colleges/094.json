@@ -1,0 +1,90 @@
+{
+  "_meta": {
+    "community_college_id": 94,
+    "college_name": "Solano Community College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 catalog PDF. The table's duplicated 'List A' summary wording is preserved and explained for review."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1900&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50057",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37103-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Associate in Arts in Economics for Transfer",
+      "award_seen": "ADT: A.A.-T",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the official 2025-2026 catalog.",
+      "catalog_url": "https://www.solano.edu/administrative-offices/academic-affairs/files/docs/archived-catalogs/full%20catalog%2025-26%20fall%20addendum.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 22,
+      "extraction_confidence": 0.98,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.solano.edu/administrative-offices/academic-affairs/files/docs/archived-catalogs/full%20catalog%2025-26%20fall%20addendum.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Catalog pages 251-252: Economics, Associate in Arts in Economics for Transfer, required courses and Lists A-B"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECON", "number": "001", "title_seen": "Principles of Economics (Macroeconomics)", "units_seen": 3},
+            {"prefix": "ECON", "number": "002", "title_seen": "Principles of Economics (Microeconomics)", "units_seen": 3},
+            {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A: select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "020", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 4},
+            {"prefix": "MATH", "number": "030", "title_seen": "Business Calculus I", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "List B: select two courses",
+          "rule": "choose_courses",
+          "choose_n": 2,
+          "units_min": 6,
+          "units_max": 8,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "021", "title_seen": "Analytic Geometry and Calculus II", "units_seen": 4},
+            {"prefix": "MATH", "number": "022", "title_seen": "Analytic Geometry and Calculus III", "units_seen": 4},
+            {"prefix": "MATH", "number": "023", "title_seen": "Differential Equations", "units_seen": 4},
+            {"prefix": "MATH", "number": "040", "title_seen": "Introduction to Linear Algebra", "units_seen": 3},
+            {"prefix": "CIS", "number": "015", "title_seen": "Programming in Visual Basic.NET", "units_seen": 3},
+            {"prefix": "BUS", "number": "018", "title_seen": "Legal Environment of Business", "units_seen": 3},
+            {"prefix": "ACCT", "number": "001", "title_seen": "Principles of Accounting - Financial", "units_seen": 4},
+            {"prefix": "ACCT", "number": "002", "title_seen": "Principles of Accounting - Managerial", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "California General Education Transfer Curriculum", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The summary above the lists prints 'One Course from List A' and then 'Two Courses from List A,' while the detailed table labels the second pool List B. The detailed List B label and printed 19-22 total are modeled; the source inconsistency remains documented."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists one general Economics award: the Economics AA-T."
+}

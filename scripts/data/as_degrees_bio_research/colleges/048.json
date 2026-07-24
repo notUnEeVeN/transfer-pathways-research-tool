@@ -1,0 +1,153 @@
+{
+  "_meta": {
+    "community_college_id": 48,
+    "college_name": "Ohlone College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:01+00:00",
+    "updated_at": "2026-07-23T21:28:00+00:00",
+    "resume_note": "Pinned to Ohlone's official 2025-2026 curriculum guides. Biology for Transfer AS-T and Biology AS are fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1125&search_string=biology",
+    "checked_at": "2026-07-23T19:29:46+00:00",
+    "programs": [
+      {"statewide_program_id": "47909", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/35532-biology"}
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 guide requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in Ohlone's official 2025-2026 curriculum-guide directory; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.ohlone.edu/sites/default/files/group/Curriculum_Guides/20252026/biology_adt.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 38,
+      "major_units_max": 38,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_curriculum_guide", "url": "https://www.ohlone.edu/sites/default/files/group/Curriculum_Guides/20252026/biology_adt.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "2025-2026 Biology for Transfer curriculum guide, Requirements, Required Core, List A, and List B"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "101A", "title_seen": "Principles of Biology - Molecular and Cellular Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "101B", "title_seen": "Principles of Biology - Organisms and Systems", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - required chemistry and mathematics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "101A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "101B", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "MATH", "number": "101A", "title_seen": "Calculus with Analytic Geometry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - complete one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 120 and PHYS 121, or complete PHYS 140 and PHYS 141; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "120", "title_seen": "Introduction to Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "121", "title_seen": "Introduction to Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "140", "title_seen": "Mechanics", "units_seen": 4},
+            {"prefix": "PHYS", "number": "141", "title_seen": "Electricity and Magnetism", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List B - complete one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "106", "title_seen": "Microbiology", "units_seen": 5},
+            {"prefix": "CHEM", "number": "112A", "title_seen": "Organic Chemistry", "units_seen": 5}
+          ]
+        },
+        {"label_seen": "Cal-GETC General Education requirements", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The flat choose_units vocabulary cannot enforce the paired physics sequences by itself; preserve choice_structure_seen during compilation."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in Ohlone's official 2025-2026 curriculum-guide directory; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.ohlone.edu/sites/default/files/group/Curriculum_Guides/20252026/biology_as.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_curriculum_guide", "url": "https://www.ohlone.edu/sites/default/files/group/Curriculum_Guides/20252026/biology_as.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "2025-2026 Biology Associate in Science curriculum guide, Requirements and Major Field table"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Major Field - required biology, general chemistry, and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 25,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "101A", "title_seen": "Principles of Biology - Molecular and Cellular Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "101B", "title_seen": "Principles of Biology - Organisms and Systems", "units_seen": 5},
+            {"prefix": "CHEM", "number": "101A", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "101B", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "MATH", "number": "101A", "title_seen": "Calculus with Analytic Geometry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Major Field - complete organic chemistry or introductory physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete CHEM 112A and CHEM 112B (10 units), or complete PHYS 120 and PHYS 121 (8 units); courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "CHEM", "number": "112A", "title_seen": "Organic Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "112B", "title_seen": "Organic Chemistry", "units_seen": 5},
+            {"prefix": "PHYS", "number": "120", "title_seen": "Introduction to Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "121", "title_seen": "Introduction to Physics II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Complete Ohlone College or Cal-GETC General Education requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Ohlone College GE or Cal-GETC",
+          "courses": []
+        },
+        {"label_seen": "Degree-applicable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The guide's alternating AND/OR table is modeled as two complete sequence choices. The flat choose_units vocabulary cannot enforce those pairings without choice_structure_seen."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 curriculum guides list both a general Biology AS-T and a general Biology AS."
+}

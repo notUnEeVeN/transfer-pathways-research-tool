@@ -16,6 +16,13 @@ describe('asDegreeSlots', () => {
     expect(slotLabel('mystery')).toBe('mystery')
   })
 
+  it('accepts a major-owned award-label override without changing other slots', () => {
+    const economics = { ast: 'A.A.-T' }
+    expect(slotLabel('ast', economics)).toBe('A.A.-T')
+    expect(slotLabel('local_as', economics)).toBe('Local A.S.')
+    expect(slotLabel('ast')).toBe('A.S.-T')
+  })
+
   it('sorts the slots statewide-first via DEGREE_TYPE_ORDER', () => {
     const sorted = [...AS_DEGREE_SLOTS].reverse().sort((a, b) => DEGREE_TYPE_ORDER[a] - DEGREE_TYPE_ORDER[b])
     expect(sorted).toEqual(['ast', 'local_as', 'local_other'])

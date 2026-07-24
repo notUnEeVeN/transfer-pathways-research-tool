@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "community_college_id": 131,
+    "college_name": "San Bernardino Valley College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:16:00+00:00",
+    "resume_note": "First-pass extraction complete from pages 187-188 of San Bernardino Valley College's official 2025-2026 catalog PDF."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1488&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "51573",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/39381-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts for Transfer Degree",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies this as an Economics AA-T and prints the required core plus List A and List B.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog; no inactive or teach-out language is shown.",
+      "catalog_url": "https://www.valleycollege.edu/academics/documents/2025-2026-sbvc-catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://www.valleycollege.edu/academics/documents/2025-2026-sbvc-catalog.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 187-188: Economics Associate in Arts for Transfer Degree, required courses, List A, List B, and 60-unit summary"}],
+      "major_groups": [
+        {"label_seen":"Required Courses - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"200","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"200H","title_seen":"Principles of Macroeconomics - Honors","units_seen":3}]},
+        {"label_seen":"Required Courses - microeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"201","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"201H","title_seen":"Principles of Microeconomics - Honors","units_seen":3}]},
+        {"label_seen":"Required Courses - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"208","title_seen":"Business and Economic Statistics","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"Required Courses - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"141","title_seen":"Business Calculus","units_seen":4},{"prefix":"MATH","number":"250","title_seen":"Single Variable Calculus I","units_seen":4}]},
+        {"label_seen":"List A - one course (3-4 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ACCT","number":"200","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"201","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"BUSAD","number":"127","title_seen":"Business Communication","units_seen":3},{"prefix":"CIT","number":"101","title_seen":"Introduction to Computer Literacy","units_seen":3},{"prefix":"MATH","number":"102","title_seen":"College Algebra","units_seen":4},{"prefix":"MATH","number":"151","title_seen":"Precalculus","units_seen":4},{"prefix":"MATH","number":"251","title_seen":"Single Variable Calculus II","units_seen":4}]},
+        {"label_seen":"List B - one course (3-5 units)","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ECON","number":"100","title_seen":"Introduction to Economics","units_seen":3},{"prefix":"ETHS","number":"100","title_seen":"Introduction to Ethnic Studies","units_seen":3},{"prefix":"GLST","number":"101","title_seen":"Introduction to Global Studies","units_seen":3},{"prefix":"MATH","number":"252","title_seen":"Multivariable Calculus","units_seen":5},{"prefix":"MATH","number":"265","title_seen":"Linear Algebra","units_seen":4},{"prefix":"POLS","number":"140","title_seen":"Introduction to Comparative Politics","units_seen":3},{"prefix":"POLS","number":"141","title_seen":"Introduction to World Politics","units_seen":3},{"prefix":"POLS","number":"141H","title_seen":"Introduction to World Politics - Honors","units_seen":3},{"prefix":"POLS","number":"150","title_seen":"Introduction to Public Policy","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"PSYC","number":"C1000H","title_seen":"Introduction to Psychology - Honors","units_seen":3},{"prefix":"SOC","number":"100","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"SOC","number":"100H","title_seen":"Introduction to Sociology - Honors","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Elective Units","rule":"electives","choose_n":null,"units_min":12,"ge_area":null,"choice_structure_seen":"The catalog prints 12-15 elective units after double counting, depending on the 20-23 unit major path.","courses":[]}
+      ],
+      "notes": "The catalog prints Major Total 20-23, nine units that may be double counted, Cal-GETC 34 units, electives 12-15, and total 60 units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed."
+}

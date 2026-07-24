@@ -1,0 +1,159 @@
+{
+  "_meta": {
+    "community_college_id": 71,
+    "college_name": "Cypress College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:29+00:00",
+    "updated_at": "2026-07-23T20:05:00+00:00",
+    "resume_note": "Complete first-pass extraction from the 2025-2026 Cypress catalog. The statewide inventory's apparent local A.S. is the same AS-T program; the current complete program index lists no general local Biology A.S. or A.A."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=487&search_string=biology",
+    "checked_at": "2026-07-23T19:22:06+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50059",
+        "title": "Associate In Science In Biology",
+        "degree_type_hint": "local_as",
+        "source_url": "https://icangotocollege.com/college-courses/37120-associate-in-science-in-biology"
+      },
+      {
+        "statewide_program_id": "a9903f52-85b4-4694-9a0b-7ed124dbae62",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37120-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Associate in Science Degree for Transfer (AS-T)",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The current catalog requires a physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Program code 1S37120 is listed in the current 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.nocccd.edu/cypress-college/degrees-certificates/biology/associate-in-science-in-biology-for-transfer-degree/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://catalog.nocccd.edu/cypress-college/degrees-certificates/biology/associate-in-science-in-biology-for-transfer-degree/",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Requirements table for program code 1S37120"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses are listed in the suggested sequence (10 units)",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "135AC",
+              "title_seen": "Principles of Biology 1: Cell and Molecular Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "135BC",
+              "title_seen": "Principles of Biology 2: Organismal Biology",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "List A: Required supporting science and mathematics courses — fixed courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "CHEM",
+              "number": "111AC",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "111BC",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "150AC",
+              "title_seen": "Calculus I",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Students must select 1 course pairing from the following",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 201 C and PHYS 202 C, or complete PHYS 221 C and PHYS 222 C; courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "201 C",
+              "title_seen": "College Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "202 C",
+              "title_seen": "College Physics II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "221 C",
+              "title_seen": "General Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "222 C",
+              "title_seen": "General Physics II",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Elective courses to complete a minimum of 60 units of CSU-transferable coursework",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog separately lists optional UC major-preparation courses and explicitly excludes them from the required major and degree totals, so they are not in major_groups. The catalog's older STEM-GE note still mentions CSU GE/IGETC, while the operative degree requirement specifies Cal-GETC. The flat choose_units vocabulary cannot enforce paired physics sequences by itself; preserve choice_structure_seen during compilation."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete current Programs of Study index lists only the Biology AS-T. Both statewide discovery rows resolve to this program; no general local Biology A.S. or A.A. is currently listed. Program-index check: https://catalog.nocccd.edu/cypress-college/programs-study/."
+}

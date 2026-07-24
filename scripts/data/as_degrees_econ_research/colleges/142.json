@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "community_college_id": 142,
+    "college_name": "Cosumnes River College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:15:00+00:00",
+    "resume_note": "First-pass extraction complete from page 294 of Cosumnes River College's official January 2026 archive of the 2025-2026 catalog."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=389&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46974",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33571-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.A.-T. in Economics",
+      "award_seen": "A.A.-T.",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies this as the Economics Associate Degree for Transfer and prints the Economics core, List A, and List B.",
+      "catalog_status_seen": "Published in Cosumnes River College's official January 2026 archive of the 2025-2026 catalog.",
+      "catalog_url": "https://crc.losrios.edu/crc/main/doc/2-admissions/catalog/catalog-archive/2025-26-catalog-20260101.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 23,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://crc.losrios.edu/crc/main/doc/2-admissions/catalog/catalog-archive/2025-26-catalog-20260101.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog page 294: Economics, A.A.-T. in Economics; Degree Requirements and printed Total Units 19-23"}],
+      "major_groups": [
+        {"label_seen":"Core - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"302","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"304","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"Core - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"310","title_seen":"Statistics for Business and Economics","units_seen":3},{"prefix":"PSYC","number":"330","title_seen":"Introductory Statistics for the Behavioral Sciences","units_seen":3},{"prefix":"STAT","number":"C1000E","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"341","title_seen":"Calculus for Business and Economics","units_seen":4},{"prefix":"MATH","number":"400","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"List A Select one course from the following","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"301","title_seen":"Financial Accounting","units_seen":4},{"prefix":"ACCT","number":"311","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"MATH","number":"401","title_seen":"Calculus II","units_seen":5},{"prefix":"CISC","number":"310","title_seen":"Introduction to Computer Information Science","units_seen":3},{"prefix":"CISP","number":"360","title_seen":"Introduction to Structured Programming","units_seen":4},{"prefix":"MATH","number":"410","title_seen":"Introduction to Linear Algebra","units_seen":3}]},
+        {"label_seen":"List B Select one course from the following","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"The footnote permits any course not used in List A; only the two separately printed List B courses are enumerated here.","courses":[{"prefix":"ECON","number":"306","title_seen":"Environmental Economics","units_seen":3},{"prefix":"AGB","number":"321","title_seen":"Agriculture Economics","units_seen":3}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints List B as 3 units and Total Units as 19-23, but its footnote also permits any unused List A course, including 4- or 5-unit choices. The printed major range is preserved and this possible excess-unit case is flagged for review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is listed as an in-scope associate award."
+}

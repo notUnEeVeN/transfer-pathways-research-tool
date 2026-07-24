@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "community_college_id": 97,
+    "college_name": "Citrus College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-23T23:32:00+00:00",
+    "resume_note": "Extracted from Citrus College's official 2025-2026 catalog page."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=348&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "49759",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37131-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "ADT in Economics",
+      "award_seen": "A.A.-Transfer Degree",
+      "tmc_version_seen": "Economics TMC",
+      "catalog_status_seen": "Active in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.citruscollege.edu/disciplines/economics/economics-adt/",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 28,
+      "major_units_max": 28,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_html", "url": "https://catalog.citruscollege.edu/disciplines/economics/economics-adt/", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "ADT in Economics — required courses, Total Units 28, and transfer-degree requirements"}],
+      "major_groups": [
+        {"label_seen": "Required courses", "rule": "all", "choose_n": null, "units_min": 24, "ge_area": null, "courses": [
+          {"prefix": "ECON", "number": "101", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+          {"prefix": "ECON", "number": "102", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+          {"prefix": "MATH", "number": "190", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5},
+          {"prefix": "MATH", "number": "191", "title_seen": "Calculus with Analytic Geometry II", "units_seen": 5},
+          {"prefix": "STAT", "number": "C1000", "title_seen": "Introduction to Statistics", "units_seen": 4},
+          {"prefix": "ACCT", "number": "102", "title_seen": "Managerial Accounting", "units_seen": 4}
+        ]},
+        {"label_seen": "Select ACCT 101 or ACCT 101H", "rule": "choose_courses", "choose_n": 1, "units_min": 4, "units_max": 4, "ge_area": null, "courses": [
+          {"prefix": "ACCT", "number": "101", "title_seen": "Financial Accounting", "units_seen": 4},
+          {"prefix": "ACCT", "number": "101H", "title_seen": "Financial Accounting - Honors", "units_seen": 4}
+        ]},
+        {"label_seen": "California General Education Transfer Curriculum", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The required-course table fixes the major at 28 units. Its example map later shows an ECON 101H alternative, but the authoritative requirement table lists only ECON 101, so no Honors macroeconomics alternative was inferred into the requirement."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists one general Economics award: ADT in Economics."
+}

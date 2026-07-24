@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "community_college_id": 133,
+    "college_name": "Monterey Peninsula College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:18:00+00:00",
+    "resume_note": "First-pass extraction complete from the official 2025-2026 Monterey Peninsula College program PDFs for both Economics awards."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=991&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46187",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33587-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics, Associate in Arts for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official catalog states that the award fulfills the Economics transfer model curriculum and prints the standard core and lists.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.mpc.edu/programs-study/economics/economics-as-t/economics-as-t_text.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 22,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_program_pdf","url":"https://catalog.mpc.edu/programs-study/economics/economics-as-t/economics-as-t_text.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics, Associate in Arts for Transfer: Major Requirements and Total Units"}],
+      "major_groups": [
+        {"label_seen":"Required Core - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"2","title_seen":"Principles of Economics: Macro","units_seen":3},{"prefix":"ECON","number":"4","title_seen":"Principles of Economics: Micro","units_seen":3}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"18","title_seen":"Calculus and Analytic Geometry for Biology/Soc Sci/Business","units_seen":4},{"prefix":"MATH","number":"20A","title_seen":"Calculus with Analytic Geometry I","units_seen":4}]},
+        {"label_seen":"Required Core - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"PSYC","number":"19","title_seen":"Introduction to Statistics for the Social Sciences","units_seen":4},{"prefix":"SOCI","number":"19","title_seen":"Introduction to Statistics for the Social Sciences","units_seen":4}]},
+        {"label_seen":"List A - select one course","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"BUSI","number":"3A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"BUSI","number":"3B","title_seen":"Managerial Accounting","units_seen":4},{"prefix":"MATH","number":"17","title_seen":"Finite Math","units_seen":4},{"prefix":"MATH","number":"20B","title_seen":"Calculus with Analytic Geometry II","units_seen":4}]},
+        {"label_seen":"List B - select one course","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"choice_structure_seen":"Any List A course not already selected may satisfy List B; the List A pool is repeated to preserve that choice.","courses":[{"prefix":"BUSI","number":"3A","title_seen":"Financial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"BUSI","number":"3B","title_seen":"Managerial Accounting","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"17","title_seen":"Finite Math","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"20B","title_seen":"Calculus with Analytic Geometry II","units_seen":4,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"20C","title_seen":"Calculus of Several Variables","units_seen":4},{"prefix":"MATH","number":"31","title_seen":"Linear Algebra","units_seen":4}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints 22 total major units and 38 additional Cal-GETC/elective units."
+    },
+    {
+      "degree_type_hint": "local_other",
+      "degree_title_seen": "Economics, Associate in Arts",
+      "award_seen": "AA",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published in the official 2025-2026 catalog.",
+      "catalog_url": "https://catalog.mpc.edu/programs-study/economics/economics-aa/economics-aa_text.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 21,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_program_pdf","url":"https://catalog.mpc.edu/programs-study/economics/economics-aa/economics-aa_text.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Economics, Associate in Arts: Major Requirements, Total Major Units, and Total Units"}],
+      "major_groups": [
+        {"label_seen":"Required Core - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"2","title_seen":"Principles of Economics: Macro","units_seen":3},{"prefix":"ECON","number":"4","title_seen":"Principles of Economics: Micro","units_seen":3}]},
+        {"label_seen":"Required Core - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"PSYC","number":"19","title_seen":"Introduction to Statistics for the Social Sciences","units_seen":4},{"prefix":"SOCI","number":"19","title_seen":"Introduction to Statistics for the Social Sciences","units_seen":4}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"MATH","number":"18","title_seen":"Calculus and Analytic Geometry for Biology/Soc Sci/Business","units_seen":4},{"prefix":"MATH","number":"20A","title_seen":"Calculus with Analytic Geometry I","units_seen":4}]},
+        {"label_seen":"Select two courses from the following","rule":"choose_courses","choose_n":2,"units_min":6,"units_max":7,"ge_area":null,"choice_structure_seen":"Limit one course from POLS C1000, POLS 10, or GWOS 10 for major requirements.","courses":[{"prefix":"BUSI","number":"3A","title_seen":"Financial Accounting","units_seen":4},{"prefix":"CSIS","number":"1","title_seen":"Computer Information Systems","units_seen":3},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},{"prefix":"POLS","number":"10","title_seen":"Gender in American Politics","units_seen":3},{"prefix":"GWOS","number":"10","title_seen":"Gender in American Politics","units_seen":3},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology","units_seen":3},{"prefix":"SOCI","number":"1","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"ETNC","number":"10","title_seen":"Introduction to Ethnic Studies","units_seen":3}]},
+        {"label_seen":"MPC General Education or Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"MPC General Education or Cal-GETC","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints 20-21 total major units and 39-40 additional competency, GE, and elective units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Both general Economics associate awards in the official 2025-2026 catalog are included."
+}

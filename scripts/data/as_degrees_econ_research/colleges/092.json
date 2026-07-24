@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "community_college_id": 92,
+    "college_name": "Santa Barbara City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-24T02:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 CourseLeaf catalog; both the AA-T and local AA are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1714&search_string=economics",
+    "checked_at": "2026-07-23T22:30:35+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46052",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33664-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast",
+      "degree_title_seen":"Economics, Associate in Arts for Transfer (AA-T)",
+      "award_seen":"AA-T",
+      "tmc_version_seen":"Economics TMC",
+      "tmc_version_basis":"The official catalog identifies the award as the Economics AA-T and publishes its required core and Lists A and B.",
+      "catalog_status_seen":"Active in Santa Barbara City College's official 2025-2026 catalog.",
+      "catalog_url":"https://catalog.sbcc.edu/academic-departments/political-science-economics/economics-aat/",
+      "catalog_year":"2025-2026",
+      "unit_system":"semester",
+      "total_units":60,
+      "major_units_min":21,
+      "major_units_max":27,
+      "extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://catalog.sbcc.edu/academic-departments/political-science-economics/economics-aat/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Requirements tab, Major Requirements"}],
+      "major_groups":[
+        {"label_seen":"Required Core - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Microeconomics","units_seen":3},{"prefix":"ECON","number":"101H","title_seen":"Microeconomics, Honors","units_seen":4}]},
+        {"label_seen":"Required Core - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"102","title_seen":"Macroeconomics","units_seen":3},{"prefix":"ECON","number":"102H","title_seen":"Macroeconomics, Honors","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"150","title_seen":"Calculus with Analytic Geometry I","units_seen":5},{"prefix":"MATH","number":"130","title_seen":"Calculus for Biological Sciences, Social Sciences and Business I","units_seen":5}]},
+        {"label_seen":"Required Core - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"PSY","number":"150","title_seen":"Statistics for the Behavioral Sciences","units_seen":4},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"SOC","number":"125","title_seen":"Introduction to Statistics in Sociology","units_seen":4}]},
+        {
+          "label_seen":"List A - Complete one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,
+          "courses":[
+            {"prefix":"ACCT","number":"230","title_seen":"Financial Accounting"},{"prefix":"ACCT","number":"240","title_seen":"Managerial Accounting"},{"prefix":"ANTH","number":"103","title_seen":"Introduction To Cultural Anthropology"},{"prefix":"BLAW","number":"101","title_seen":"Business Law"},{"prefix":"BLAW","number":"110","title_seen":"Legal Environment of Business"},{"prefix":"BUS","number":"101","title_seen":"Introduction To Business"},
+            {"prefix":"CHST","number":"102","title_seen":"The Chicano And Latino In U.S. History, From The 1960's To The Present"},{"prefix":"CHST","number":"115","title_seen":"Introduction To Mexican Literature"},{"prefix":"CHST","number":"121","title_seen":"The Chicana And Other Latina Women"},{"prefix":"CIS","number":"101","title_seen":"Introduction to Computers and Information Systems"},{"prefix":"COMP","number":"271","title_seen":"Business Communications"},
+            {"prefix":"CS","number":"104","title_seen":"Introduction to Programming"},{"prefix":"CS","number":"137","title_seen":"C Programming"},{"prefix":"CS","number":"140","title_seen":"Object-Oriented Programming Using C++"},
+            {"prefix":"ENG","number":"111","title_seen":"Critical Thinking and Composition Through Literature"},{"prefix":"ENG","number":"111H","title_seen":"Critical Thinking and Composition Through Literature, Honors"},{"prefix":"ENGL","number":"C1001","title_seen":"Critical Thinking and Writing"},{"prefix":"COMM","number":"235","title_seen":"Argumentation and Debate"},{"prefix":"PHIL","number":"111","title_seen":"Critical Thinking And Writing In Philosophy"},
+            {"prefix":"GEOG","number":"102","title_seen":"Human Geography"},{"prefix":"HIST","number":"101","title_seen":"History of the U.S. to 1877"},{"prefix":"HIST","number":"102","title_seen":"History of the U.S. Since 1865"},{"prefix":"HIST","number":"102H","title_seen":"History Of The U.S. Since 1865, Honors"},{"prefix":"HIST","number":"103","title_seen":"History of Western Civilization"},{"prefix":"HIST","number":"107","title_seen":"World Civilization, Beginnings to 1550"},
+            {"prefix":"MATH","number":"137","title_seen":"College Algebra"},{"prefix":"MATH","number":"138","title_seen":"Precalculus - College Algebra and Trigonometry"},{"prefix":"MATH","number":"160","title_seen":"Calculus with Analytic Geometry II"},{"prefix":"PHIL","number":"102","title_seen":"Comparative World Religions"},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics"},{"prefix":"SOC","number":"101","title_seen":"Introduction To Sociology"},{"prefix":"SOC","number":"101H","title_seen":"Introduction to Sociology, Honors"},{"prefix":"SOC","number":"103","title_seen":"Marriage, Family and Intimacy"}
+          ]
+        },
+        {
+          "label_seen":"List B - Complete one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Complete one explicitly listed List B course or any course not already taken in List A.",
+          "courses":[
+            {"prefix":"ANTH","number":"102","title_seen":"Introduction To Archaeology"},{"prefix":"ASAM","number":"101","title_seen":"Comparative Asian-American History, 1849-1965"},{"prefix":"ASAM","number":"102","title_seen":"Contemporary Asian-American History"},
+            {"prefix":"BLST","number":"101","title_seen":"The African-American In U.S. History To World War II"},{"prefix":"BLST","number":"102","title_seen":"The African-American In U.S. History, From Civil Rights Movement To Present"},{"prefix":"BLST","number":"103","title_seen":"African-American Culture"},
+            {"prefix":"CHST","number":"101","title_seen":"Mexican-American (Chicano) History In The U.S."},{"prefix":"CHST","number":"103","title_seen":"Mexican-American (Chicano) Culture"},{"prefix":"ECON","number":"114","title_seen":"Environmental and Natural Resource Economics"},
+            {"prefix":"ETHS","number":"101","title_seen":"The Immigrant Experience in the U.S."},{"prefix":"ETHS","number":"101H","title_seen":"The Immigrant Experience in the U.S., Honors"},{"prefix":"ETHS","number":"107","title_seen":"Racism In America","alternative_seen":"Cross-listed as SOC 107"},{"prefix":"ETHS","number":"109","title_seen":"U.S.-Mexico And Other Borderlands"},{"prefix":"ETHS","number":"121","title_seen":"Women of Color In The U.S."},
+            {"prefix":"GLST","number":"101","title_seen":"Introduction to Global Studies"},{"prefix":"GLST","number":"102","title_seen":"Global Problems"},{"prefix":"GLST","number":"105","title_seen":"Global Environmental Politics"},{"prefix":"MATH","number":"200","title_seen":"Multivariable Calculus"},{"prefix":"MATH","number":"210","title_seen":"Linear Algebra"},
+            {"prefix":"NATA","number":"101","title_seen":"American Indian: Past and Present"},{"prefix":"NATA","number":"102","title_seen":"The Native American In 20th Century Society"},{"prefix":"POLS","number":"121","title_seen":"International Politics"},{"prefix":"POLS","number":"121H","title_seen":"International Politics, Honors"},{"prefix":"PSYC","number":"C1000","title_seen":"Introduction to Psychology"},{"prefix":"PSYC","number":"C1000H","title_seen":"Introduction to Psychology - Honors"}
+          ]
+        },
+        {"label_seen":"Cal-GETC pattern","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The official catalog prints 21-27 major units. List B also permits any unused List A course; that cross-list dependency is captured in choice_structure_seen without duplicating all List A rows."
+    },
+    {
+      "degree_type_hint":"local_other",
+      "degree_title_seen":"Economics, Associate of Arts (AA)",
+      "award_seen":"AA",
+      "tmc_version_seen":null,
+      "tmc_version_basis":null,
+      "catalog_status_seen":"Active in Santa Barbara City College's official 2025-2026 catalog.",
+      "catalog_url":"https://catalog.sbcc.edu/academic-departments/political-science-economics/economics-aa/",
+      "catalog_year":"2025-2026",
+      "unit_system":"semester",
+      "total_units":60,
+      "major_units_min":24,
+      "major_units_max":26,
+      "extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_html","url":"https://catalog.sbcc.edu/academic-departments/political-science-economics/economics-aa/","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Requirements tab, Major Requirements"}],
+      "major_groups":[
+        {"label_seen":"Required Core - accounting","rule":"all","choose_n":null,"units_min":9,"ge_area":null,"courses":[{"prefix":"ACCT","number":"230","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCT","number":"240","title_seen":"Managerial Accounting","units_seen":4}]},
+        {"label_seen":"Required Core - microeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"101","title_seen":"Microeconomics","units_seen":3},{"prefix":"ECON","number":"101H","title_seen":"Microeconomics, Honors","units_seen":4}]},
+        {"label_seen":"Required Core - macroeconomics","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"courses":[{"prefix":"ECON","number":"102","title_seen":"Macroeconomics","units_seen":3},{"prefix":"ECON","number":"102H","title_seen":"Macroeconomics, Honors","units_seen":4}]},
+        {"label_seen":"List A - Complete 9 units of Social Science Electives","rule":"choose_units","choose_n":null,"units_min":9,"ge_area":null,"choice_structure_seen":"The catalog specifies 9 units of Social Science electives but does not enumerate a course list; any MATH course numbered 107 or higher may substitute for one social science elective.","courses":[]},
+        {"label_seen":"SBCC General Education or Cal-GETC","rule":"ge_area","choose_n":null,"units_min":null,"ge_area":"SBCC GE or Cal-GETC","courses":[]},
+        {"label_seen":"Degree-applicable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The official catalog prints 24-26 major units. It does not enumerate the Social Science elective pool; the exact open-ended rule and mathematics substitution note are preserved."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists both an Economics AA-T and a local Economics AA."
+}

@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "community_college_id": 119,
+    "college_name": "Taft College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:42+00:00",
+    "updated_at": "2026-07-24T00:55:00+00:00",
+    "resume_note": "Extracted Taft College's Economics AA-T from the official 2025-2026 catalog with addendum."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1978&search_string=economics",
+    "checked_at": "2026-07-23T22:30:36+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "50063",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/37366-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast","degree_title_seen":"Economics for Transfer","award_seen":"Associate in Arts in Economics for Transfer Degree","tmc_version_seen":"Economics TMC","catalog_status_seen":"Active in the official 2025-2026 catalog with addendum.","catalog_url":"https://files-backend.assets.thrillshare.com/documents/asset/uploaded_file/5913/Academics/7deb508a-82e1-418d-9185-65bb8dd56525/2025-2026-Taft-College-Catalog-with-Addendum.docx?disposition=inline","catalog_year":"2025-2026","unit_system":"semester","total_units":60,"major_units_min":21,"major_units_max":24,"extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_docx_with_addendum","url":"https://files-backend.assets.thrillshare.com/documents/asset/uploaded_file/5913/Academics/7deb508a-82e1-418d-9185-65bb8dd56525/2025-2026-Taft-College-Catalog-with-Addendum.docx?disposition=inline","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Degrees and Certificates > Economics for Transfer > Associate in Arts in Economics for Transfer Degree"}],
+      "major_groups":[
+        {"label_seen":"Required Core - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"2120","title_seen":"Principles of Economics - Micro","units_seen":3},{"prefix":"ECON","number":"2210","title_seen":"Principles of Economics - Macro","units_seen":3}]},
+        {"label_seen":"Required Core - statistics","rule":"choose_courses","choose_n":1,"units_min":4,"units_max":5,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":5},{"prefix":"PSYC","number":"2200","title_seen":"Elementary Statistics for the Behavioral and Social Sciences","units_seen":4}]},
+        {"label_seen":"Required Core - calculus","rule":"all","choose_n":null,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"2100","title_seen":"Analytic Geometry and Calculus I","units_seen":5}]},
+        {"label_seen":"List A - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select one listed course or any course articulated as lower-division preparation in the Economics major at a CSU.","courses":[{"prefix":"MATH","number":"1520","title_seen":"Finite Mathematics","units_seen":3},{"prefix":"MATH","number":"2120","title_seen":"Analytic Geometry and Calculus II","units_seen":4},{"prefix":"BSAD","number":"2220","title_seen":"Introduction to Financial Accounting","units_seen":4},{"prefix":"BSAD","number":"2221","title_seen":"Introduction to Managerial Accounting","units_seen":3},{"prefix":"BUSN","number":"1510","title_seen":"Business Communication","units_seen":3},{"prefix":"CIS","number":"2020","title_seen":"Introduction to Computer Information Systems","units_seen":3}]},
+        {"label_seen":"List B - select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":4,"ge_area":null,"choice_structure_seen":"Select MATH 2130, any unused List A course, or any CSU-transferable lower-division Economics elective.","courses":[{"prefix":"MATH","number":"2130","title_seen":"Analytic Geometry and Calculus III","units_seen":4}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Additional transferable elective units numbered 1500 or higher as needed to reach 60","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],"notes":"The catalog prints a 21-24-unit major subtotal and 60 total credit hours. Its open-ended CSU-articulated List A and CSU-transferable Economics List B options are preserved in choice_structure_seen."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog publishes one in-scope general Economics award, the Economics AA-T."
+}

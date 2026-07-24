@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "community_college_id": 130,
+    "college_name": "Los Angeles Southwest College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T00:10:00+00:00",
+    "resume_note": "Negative result audited against Los Angeles Southwest College's complete official 2025-2026 Instructional Programs inventory."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_complete_program_inventory",
+      "url": "https://www.lasc.edu/sites/lasc.edu/files/2026-01/LASC%202025-26%20College%20Catalog_1_5_26.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Catalog pages 18-21: Instructional Programs: Degrees and Certificates by Department complete award table"
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No general Economics AA-T, AS-T, AA, or AS appears in the complete 2025-2026 degrees-and-certificates table. Economics is listed as a discipline and its courses are used by Business Administration and general education, but the catalog does not list a standalone Economics associate award."
+}

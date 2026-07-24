@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "community_college_id": 86,
+    "college_name": "Los Angeles Pierce College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:41+00:00",
+    "updated_at": "2026-07-24T02:30:00+00:00",
+    "resume_note": "First-pass extraction from the official 2025-2026 PDF catalog; source and choices are preserved for human verification."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=804&search_string=economics",
+    "checked_at": "2026-07-23T22:30:34+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45940",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33773-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint":"ast",
+      "degree_title_seen":"Economics Associate in Arts for Transfer Degree (AA-T)",
+      "award_seen":"AA-T",
+      "tmc_version_seen":"Economics TMC",
+      "tmc_version_basis":"The official catalog identifies this as the Economics AA-T and publishes its transfer-model core and lists.",
+      "catalog_status_seen":"Active in Los Angeles Pierce College's official 2025-2026 catalog; revised Fall 2025.",
+      "catalog_url":"https://www.lapc.edu/sites/lapc.edu/files/2025-08/Los%20Angeles%20Pierce%20College%202025-2026%20General%20Catalog.pdf",
+      "catalog_year":"2025-2026",
+      "unit_system":"semester",
+      "total_units":60,
+      "major_units_min":21,
+      "major_units_max":25,
+      "extraction_confidence":0.99,
+      "sources":[{"source_type":"official_college_catalog_pdf","url":"https://www.lapc.edu/sites/lapc.edu/files/2025-08/Los%20Angeles%20Pierce%20College%202025-2026%20General%20Catalog.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog page 47, Educational Programs: Economics AA-T"}],
+      "major_groups":[
+        {"label_seen":"Major Required Courses - economics","rule":"all","choose_n":null,"units_min":6,"ge_area":null,"courses":[{"prefix":"ECON","number":"001","title_seen":"Principles of Microeconomics","units_seen":3},{"prefix":"ECON","number":"002","title_seen":"Principles of Macroeconomics","units_seen":3}]},
+        {"label_seen":"Major Required Courses - calculus","rule":"choose_courses","choose_n":1,"units_min":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"238","title_seen":"Calculus for Business and Social Science I","units_seen":5},{"prefix":"MATH","number":"261","title_seen":"Calculus I","units_seen":5}]},
+        {"label_seen":"Major Required Courses - statistics","rule":"all","choose_n":null,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4}]},
+        {"label_seen":"List A: Select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5},{"prefix":"CAOT","number":"032","title_seen":"Business Communications","units_seen":3},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5}]},
+        {"label_seen":"List B: Select one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Select ECON 010, MATH 263, or any List A course not already used.","courses":[{"prefix":"ECON","number":"010","title_seen":"Economic History of the United States","units_seen":3},{"prefix":"MATH","number":"263","title_seen":"Calculus III","units_seen":5},{"prefix":"ACCTG","number":"001","title_seen":"Introductory Accounting I","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"ACCTG","number":"002","title_seen":"Introductory Accounting II","units_seen":5,"alternative_seen":"Any List A course not already used"},{"prefix":"CAOT","number":"032","title_seen":"Business Communications","units_seen":3,"alternative_seen":"Any List A course not already used"},{"prefix":"MATH","number":"262","title_seen":"Calculus II","units_seen":5,"alternative_seen":"Any List A course not already used"}]},
+        {"label_seen":"California General Education Transfer Curriculum","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"CSU-transferable electives as needed to reach 60 units","rule":"electives","choose_n":null,"units_min":null,"ge_area":null,"courses":[]}
+      ],
+      "notes":"The Fall 2025 revision prints 21-25 major units. Unlike the prior catalog, MATH 270 Linear Algebra is no longer shown in List B."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T appears in the official 2025-2026 catalog."
+}

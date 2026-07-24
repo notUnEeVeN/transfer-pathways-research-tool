@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "community_college_id": 95,
+    "college_name": "Ventura College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:26:53+00:00",
+    "updated_at": "2026-07-23T21:33:00+00:00",
+    "resume_note": "Complete first-pass extraction from Ventura College's official historical 2025-2026 catalog PDF. The active pinned-cohort award is the legacy Biology AS-T; the Biology 2.0 inventory hit is retained only as a rollover review note and is not duplicated."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1986&search_string=biology",
+    "checked_at": "2026-07-23T19:29:49+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48764",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35652-biology"
+      },
+      {
+        "statewide_program_id": "133cd95a-a627-4220-8488-ad2655be1b87",
+        "title": "Biology 2.0",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/46542-biology-20"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The official 2025-2026 catalog requires calculus and one of three complete two-semester physics sequences, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed without inactive or teach-out language in Ventura College's official historical 2025-2026 catalog. Biology 2.0 is not the award printed for this cohort.",
+      "catalog_url": "https://www.venturacollege.edu/sites/default/files/media/pdf_document/2026/Ventura%202025-2026%20%281%29_0.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 33,
+      "major_units_max": 33,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive",
+          "url": "https://www.venturacollege.edu/sites/default/files/media/pdf_document/2026/Ventura%202025-2026%20%281%29_0.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 110-112, Biology, Associate in Science for Transfer"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "V03", "title_seen": "Evolution, Ecology, and Organismal Biology", "units_seen": 4 },
+            { "prefix": "BIOL", "number": "V04", "title_seen": "Cell and Molecular Biology", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "List A — Group 1: Complete all three courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "V120A", "title_seen": "General Chemistry I", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "V120B", "title_seen": "General Chemistry II", "units_seen": 5 },
+            { "prefix": "MATH", "number": "V21A", "title_seen": "Calculus with Analytic Geometry I", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "List A — Group 2: Complete one of the three physics sequences",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 10,
+          "units_max": 10,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS V02A/V02AL and V02B/V02BL, or PHYS V03A/V03AL and V03B/V03BL, or PHYS V04/V04L and V05/V05L; courses may not be mixed across sequences.",
+          "courses": [
+            { "prefix": "PHYS", "number": "V02A", "title_seen": "General Physics I: Algebra/Trigonometry-Based", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "V02AL", "title_seen": "General Physics I Laboratory: Algebra/Trigonometry-Based", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "V02B", "title_seen": "General Physics II: Algebra/Trigonometry-Based", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "V02BL", "title_seen": "General Physics II Laboratory: Algebra/Trigonometry-Based", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "V03A", "title_seen": "General Physics I: Calculus-Based", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "V03AL", "title_seen": "General Physics I Laboratory: Calculus-Based", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "V03B", "title_seen": "General Physics II: Calculus-Based", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "V03BL", "title_seen": "General Physics II Laboratory: Calculus-Based", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "V04", "title_seen": "Mechanics for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "V04L", "title_seen": "Mechanics Laboratory for Scientists and Engineers", "units_seen": 1 },
+            { "prefix": "PHYS", "number": "V05", "title_seen": "Electricity and Magnetism for Scientists and Engineers", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "V05L", "title_seen": "Electricity and Magnetism Laboratory for Scientists and Engineers", "units_seen": 1 }
+          ]
+        },
+        {
+          "label_seen": "CalGETC Pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives (CSU transferable units to reach 60)",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog prints 33 major units, 34 Cal-GETC units, 10 double-counted units, and 3 elective units. Human-review flag for cohort rollover: statewide discovery now exposes both Biology and Biology 2.0, but the authoritative 2025-2026 catalog contains only this legacy Biology AS-T; do not instantiate Biology 2.0 in the 2025-2026 runtime slot."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No broad local Biology/Biological Sciences AS or AA is listed in Ventura College's 2025-2026 catalog. Pre-Allied Health Sciences is a certificate and outside scope."
+}

@@ -1,0 +1,116 @@
+{
+  "_meta": {
+    "community_college_id": 53,
+    "college_name": "Mt. San Jacinto College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:01+00:00",
+    "updated_at": "2026-07-23T21:31:00+00:00",
+    "resume_note": "Pinned to Mt. San Jacinto College's official archived 2025-2026 catalog PDF dated October 9, 2025. Biology AS-T is fully extracted from pages 145-147; the program index lists no general Biology AS or AA."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1060&search_string=biology",
+    "checked_at": "2026-07-23T19:29:46+00:00",
+    "programs": [
+      {"statewide_program_id": "53205", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/38847-biology"}
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, A.S.-T",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires MATH 211 calculus and one of two physics sequences, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed as the Biology program's transfer degree in MSJC's official archived 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://catalog.msjc.edu/pdf/MSJC%202025-2026%20Catalog_100925.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 30,
+      "major_units_max": 35,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {"source_type": "official_college_catalog_archive", "url": "https://catalog.msjc.edu/pdf/MSJC%202025-2026%20Catalog_100925.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Archived catalog dated 10/9/2025, PDF pages 145-147, Biology, A.S.-T Requirements"}
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses - General Biology I",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "150", "title_seen": "General Biology I", "units_seen": 4},
+            {"prefix": "BIOL", "number": "150H", "title_seen": "Honors General Biology I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required Core Courses - General Biology II",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "151", "title_seen": "General Biology II", "units_seen": 4},
+            {"prefix": "BIOL", "number": "151H", "title_seen": "Honors General Biology II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A - General Chemistry I",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "101", "title_seen": "General Chemistry I", "units_seen": 5},
+            {"prefix": "CHEM", "number": "101H", "title_seen": "Honors General Chemistry I", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - General Chemistry II",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "102", "title_seen": "General Chemistry II", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A - Analytic Geometry and Calculus I",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "211", "title_seen": "Analytic Geometry and Calculus I", "units_seen": 4},
+            {"prefix": "MATH", "number": "211H", "title_seen": "Honors Analytic Geometry and Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Complete one of the following physics sequences",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHY 201 and either PHY 202 or PHY 202H, or complete PHY 101 and PHY 102; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHY", "number": "201", "title_seen": "Mechanics and Wave Motion", "units_seen": 4},
+            {"prefix": "PHY", "number": "202", "title_seen": "Electricity and Magnetism", "units_seen": 4},
+            {"prefix": "PHY", "number": "202H", "title_seen": "Honors Electricity and Magnetism", "units_seen": 4},
+            {"prefix": "PHY", "number": "101", "title_seen": "Basic Physics: Energy and Motion", "units_seen": 4},
+            {"prefix": "PHY", "number": "102", "title_seen": "Basic Electricity and Modern Physics", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "Cal-GETC Pattern", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Transferable electives as needed to reach 60 transferable units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog prints 30-35 Units for Major because it separately shows 0-5 optional List B units. Those courses are explicitly optional and not required for the degree, so they are not encoded as required major_groups. Optional List B includes ANAT 101/102; BIOL 125/125H and 144; CHEM 107, 112, 113/113H; GEOG 101; MATH 135, 212/212H; and STAT C1000/C1000H. The flat choose_units vocabulary cannot enforce the nested physics alternatives by itself."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official archived 2025-2026 catalog lists only the general Biology AS-T. The live catalog now serves 2026-2027, so retain the dated archive URL."
+}

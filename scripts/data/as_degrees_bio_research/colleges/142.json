@@ -1,0 +1,270 @@
+{
+  "_meta": {
+    "community_college_id": 142,
+    "college_name": "Cosumnes River College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:09+00:00",
+    "updated_at": "2026-07-23T20:07:53+00:00",
+    "resume_note": "Pinned to CRC's official January 1, 2026 archive of the 2025-2026 catalog. Preserve paired calculus alternatives in the local A.S.; this catalog requires CRC local general education rather than offering Cal-GETC as an alternative for that degree."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=389&search_string=biology",
+    "checked_at": "2026-07-23T19:22:10+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48455",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35303-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.S.-T. in Biology",
+      "award_seen": "A.S.-T.",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires PHYS 350 and PHYS 360, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in CRC's official January 1, 2026 archive of the 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://crc.losrios.edu/crc/main/doc/2-admissions/catalog/catalog-archive/2025-26-catalog-20260101.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 37,
+      "major_units_max": 38,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://crc.losrios.edu/crc/main/doc/2-admissions/catalog/catalog-archive/2025-26-catalog-20260101.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 196-197, A.S.-T. in Biology"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Degree Requirements — required biology, chemistry, and physics",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 33,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "400",
+              "title_seen": "Principles of Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "410",
+              "title_seen": "Principles of Botany",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "420",
+              "title_seen": "Principles of Zoology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "400",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "401",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYS",
+              "number": "350",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "360",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "Degree Requirements — calculus choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "355",
+              "title_seen": "Calculus for Biology and Medicine I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "MATH",
+              "number": "400",
+              "title_seen": "Calculus I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) Requirement",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The degree page requires Cal-GETC but does not restate its unit minimum, so units_min is left null."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "A.S. in Biology",
+      "award_seen": "A.S.",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Published as the general local Biology A.S. in CRC's official January 1, 2026 archive of the 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://crc.losrios.edu/crc/main/doc/2-admissions/catalog/catalog-archive/2025-26-catalog-20260101.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 43,
+      "major_units_max": 45,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://crc.losrios.edu/crc/main/doc/2-admissions/catalog/catalog-archive/2025-26-catalog-20260101.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog page 197, A.S. in Biology"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Degree Requirements — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 35,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "400",
+              "title_seen": "Principles of Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "410",
+              "title_seen": "Principles of Botany",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "420",
+              "title_seen": "Principles of Zoology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "400",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "401",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "420",
+              "title_seen": "Organic Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "421",
+              "title_seen": "Organic Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Degree Requirements — one calculus sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete MATH 355 and MATH 356, or complete MATH 400 and MATH 401; courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "355",
+              "title_seen": "Calculus for Biology and Medicine I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "MATH",
+              "number": "356",
+              "title_seen": "Calculus for Biology and Medicine II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "MATH",
+              "number": "400",
+              "title_seen": "Calculus I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "401",
+              "title_seen": "Calculus II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "CRC General Education Requirement",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "CRC Local General Education Requirement",
+          "courses": []
+        },
+        {
+          "label_seen": "Sufficient electives for a total of at least 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The flat choose_units vocabulary cannot enforce paired calculus sequences by itself; preserve choice_structure_seen during compilation. The 2025-2026 catalog requires CRC local general education and does not print a unit minimum in this degree block."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog provides two in-scope general Biology degrees: a Biology AS-T and a local Biology A.S.; no general Biology A.A. is listed. Other awards are intentionally excluded from this pinned in-scope batch."
+}

@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "community_college_id": 139,
+    "college_name": "Moorpark College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:13:00+00:00",
+    "resume_note": "First-pass extraction complete from pages 182-183 of Moorpark College's official 2025-2026 catalog PDF."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1010&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46966",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32700-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics, Associate in Arts for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the AA-T in Economics and prints the standard Required Core, List A, and List B structure.",
+      "catalog_status_seen": "Published in Moorpark College's official 2025-2026 catalog; no inactive or teach-out language is shown.",
+      "catalog_url": "https://catalog.vcccd.edu/pdf/Moorpark%20College%20Catalog%202025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 19,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://catalog.vcccd.edu/pdf/Moorpark%20College%20Catalog%202025-2026.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 182-183: Economics, Associate in Arts for Transfer; course tables and AA-T unit summary"}],
+      "major_groups": [
+        {"label_seen":"REQUIRED CORE COURSES - microeconomics","rule":"all","choose_n":null,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"M201","title_seen":"Principles of Microeconomics","units_seen":3}]},
+        {"label_seen":"REQUIRED CORE COURSES - macroeconomics: select one","rule":"choose_courses","choose_n":1,"units_min":3,"ge_area":null,"courses":[{"prefix":"ECON","number":"M202","title_seen":"Principles of Macroeconomics","units_seen":3},{"prefix":"ECON","number":"M202H","title_seen":"Honors: Principles of Macroeconomics","units_seen":3}]},
+        {"label_seen":"REQUIRED CORE COURSES - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"M16A","title_seen":"Applied Calculus I","units_seen":3},{"prefix":"MATH","number":"M25A","title_seen":"Calculus with Analytic Geometry I","units_seen":5},{"prefix":"MATH","number":"M25AH","title_seen":"Honors: Calculus with Analytic Geometry I","units_seen":5}]},
+        {"label_seen":"REQUIRED CORE COURSES - statistics: select one","rule":"choose_courses","choose_n":1,"units_min":4,"ge_area":null,"courses":[{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":4},{"prefix":"STAT","number":"C1000H","title_seen":"Introduction to Statistics - Honors","units_seen":4}]},
+        {"label_seen":"LIST A: Select and complete one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCT","number":"M110","title_seen":"Financial Accounting","units_seen":3},{"prefix":"ACCT","number":"M120","title_seen":"Managerial Accounting","units_seen":3},{"prefix":"BUS","number":"M39","title_seen":"Business Communication","units_seen":3},{"prefix":"BUS","number":"M140","title_seen":"Business Information Systems","units_seen":3},{"prefix":"COMM","number":"M07","title_seen":"Argumentation and Debate","units_seen":3},{"prefix":"CS","number":"M125","title_seen":"Programming Concepts and Methodology I","units_seen":3},{"prefix":"MATH","number":"M25B","title_seen":"Calculus with Analytic Geometry II","units_seen":5},{"prefix":"MATH","number":"M25BH","title_seen":"Honors: Calculus with Analytic Geometry II","units_seen":5},{"prefix":"MATH","number":"M35","title_seen":"Applied Differential Equations","units_seen":3},{"prefix":"POLS","number":"C1000","title_seen":"American Government and Politics","units_seen":3},{"prefix":"POLS","number":"C1000H","title_seen":"American Government and Politics - Honors","units_seen":3},{"prefix":"SOC","number":"M110","title_seen":"Introduction to Sociology","units_seen":3},{"prefix":"SOC","number":"M110H","title_seen":"Honors: Introduction to Sociology","units_seen":3}]},
+        {"label_seen":"LIST B: Select and complete one course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"Any course not used in List A may satisfy List B; only the additional List B courses are separately enumerated here.","courses":[{"prefix":"ECON","number":"M170","title_seen":"Economic History of the US","units_seen":3},{"prefix":"MATH","number":"M25C","title_seen":"Calculus with Analytic Geometry III","units_seen":5},{"prefix":"MATH","number":"M31","title_seen":"Introduction to Linear Algebra","units_seen":3}]},
+        {"label_seen":"General Education (Cal-GETC)","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Double-Counted Units","rule":"electives","choose_n":null,"units_min":6,"units_max":9,"ge_area":null,"choice_structure_seen":"The catalog separately reports 6-9 major/Cal-GETC double-counted units.","courses":[]},
+        {"label_seen":"Elective Units","rule":"electives","choose_n":null,"units_min":7,"units_max":16,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints Total Units for the Major 19-25, General Education 34, Double-Counted Units 6-9, Elective Units 7-16, and Total Units for the AA-T Degree 60."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is in scope in the 2025-2026 catalog."
+}

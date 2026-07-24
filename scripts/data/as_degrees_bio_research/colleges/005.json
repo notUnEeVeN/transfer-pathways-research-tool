@@ -1,0 +1,240 @@
+{
+  "_meta": {
+    "community_college_id": 5,
+    "college_name": "College of San Mateo",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:21+00:00",
+    "updated_at": "2026-07-23T20:08:00+00:00",
+    "resume_note": "Pinned to the official 2025-2026 CSM catalog. Preserve MATH 251 as printed for this year and retain the two intact physics-sequence alternatives when compiling the flat raw groups."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1667&search_string=biology",
+    "checked_at": "2026-07-23T19:22:02+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46174",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33912-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology Associate in Science Degree for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 catalog requires calculus and a two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://collegeofsanmateo.edu/schedule/docs/catalogs/CSM_2025-26_Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 37,
+      "major_units_max": 37,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://collegeofsanmateo.edu/schedule/docs/catalogs/CSM_2025-26_Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 139 and 141: Biology AS-T listing, Major Requirements, 37 Total Required Major Units, IGETC/CSU for STEM, and 60-unit minimum"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "230",
+              "title_seen": "Introductory Cell Biology",
+              "units_seen": 4
+            },
+            {
+              "prefix": "BIOL",
+              "number": "210",
+              "title_seen": "General Zoology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "220",
+              "title_seen": "General Botany",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Required Selective Courses — chemistry and calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "CHEM",
+              "number": "210",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "220",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            },
+            {
+              "prefix": "MATH",
+              "number": "251",
+              "title_seen": "Calculus with Analytic Geometry I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Required Selective Courses — physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 210 and PHYS 220, or complete PHYS 250 and PHYS 260; courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "210",
+              "title_seen": "General Physics I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "220",
+              "title_seen": "General Physics II",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "250",
+              "title_seen": "Physics with Calculus I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "260",
+              "title_seen": "Physics with Calculus II",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "General Education - certified completion of Intersegmental General Education Transfer Curriculum (IGETC/CSU) for STEM pattern",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "IGETC/CSU for STEM pattern",
+          "courses": []
+        },
+        {
+          "label_seen": "Elective courses: If applicable, additional courses to meet the minimum 60 CSU-transferable units required for the AS-T degree",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog's GE label is preserved exactly as displayed. The flat choose_units vocabulary cannot enforce paired physics sequences by itself; preserve choice_structure_seen during compilation."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology Associate in Science Degree Program",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed with complete requirements in the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://collegeofsanmateo.edu/schedule/docs/catalogs/CSM_2025-26_Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 24,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://collegeofsanmateo.edu/schedule/docs/catalogs/CSM_2025-26_Catalog.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Printed catalog pages 139-140: Biology AS listing, Major Requirements, 24 Total Required Major Units, GE/electives, and 60-unit minimum"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 24,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "210",
+              "title_seen": "General Zoology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "220",
+              "title_seen": "General Botany",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "230",
+              "title_seen": "Introductory Cell Biology",
+              "units_seen": 4
+            },
+            {
+              "prefix": "CHEM",
+              "number": "210",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "220",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Required General Education coursework",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "CSM AA/AS Degree Requirements",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to meet the minimum 60 units required for the Associate degree",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The catalog states this degree is intended for transfer into bachelor's programs in most Biology majors at UC campuses."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No general Biology AA was observed in the official 2025-2026 catalog. The AS-T follows the physics-bearing prior Biology TMC."
+}

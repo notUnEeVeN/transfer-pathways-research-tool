@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "community_college_id": 136,
+    "college_name": "San Jose City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:43+00:00",
+    "updated_at": "2026-07-24T01:10:00+00:00",
+    "resume_note": "First-pass extraction complete from page 110 of San Jose City College's official 2025-2026 catalog PDF."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1642&search_string=economics",
+    "checked_at": "2026-07-23T22:30:37+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "45235",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/32759-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics - Associate in Arts for Transfer",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The catalog identifies the award as the Economics AA-T and organizes its requirements as Required Core, List A, and List B.",
+      "catalog_status_seen": "Published in San Jose City College's official 2025-2026 catalog; no inactive or teach-out language is shown.",
+      "catalog_url": "https://sjcc.edu/_resources/PDF/Academic_Affairs/SJCC%202025-2026%20Catalog.FINAL.3.20.25pdf.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 18,
+      "major_units_max": 24,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type":"official_college_catalog_pdf_archive","url":"https://sjcc.edu/_resources/PDF/Academic_Affairs/SJCC%202025-2026%20Catalog.FINAL.3.20.25pdf.pdf","catalog_year":"2025-2026","checked_at":"2026-07-23","locator":"Catalog pages 109-110: Economics - Associate in Arts for Transfer; Major Requirements and AA-T Degree Requirements"}],
+      "major_groups": [
+        {"label_seen":"Required Core - economics and statistics","rule":"all","choose_n":null,"units_min":9,"ge_area":null,"courses":[{"prefix":"ECON","number":"010A","title_seen":"Principles of Macroeconomic Theory","units_seen":3},{"prefix":"ECON","number":"010B","title_seen":"Introduction to Microeconomic Theory","units_seen":3},{"prefix":"STAT","number":"C1000","title_seen":"Introduction to Statistics","units_seen":3}]},
+        {"label_seen":"Required Core - calculus: select one","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"MATH","number":"062","title_seen":"Calculus for Business and the Social Sciences","units_seen":3},{"prefix":"MATH","number":"071","title_seen":"Calculus I With Analytic Geometry","units_seen":5}]},
+        {"label_seen":"List A: Complete One Course","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"courses":[{"prefix":"ACCTG","number":"020","title_seen":"Financial Accounting","units_seen":5},{"prefix":"ACCTG","number":"021","title_seen":"Managerial Accounting","units_seen":5},{"prefix":"CIS","number":"041","title_seen":"Introduction to Computer Information Systems","units_seen":3},{"prefix":"MATH","number":"061","title_seen":"Finite Mathematics","units_seen":3},{"prefix":"MATH","number":"072","title_seen":"Calculus II with Analytic Geometry","units_seen":5}]},
+        {"label_seen":"List B: Complete One Course from this list or One Course not already used in List A","rule":"choose_courses","choose_n":1,"units_min":3,"units_max":5,"ge_area":null,"choice_structure_seen":"An unused List A course may satisfy List B; the List A pool is repeated to preserve the complete option set.","courses":[{"prefix":"ACCTG","number":"020","title_seen":"Financial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"ACCTG","number":"021","title_seen":"Managerial Accounting","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"CIS","number":"041","title_seen":"Introduction to Computer Information Systems","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"061","title_seen":"Finite Mathematics","units_seen":3,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"072","title_seen":"Calculus II with Analytic Geometry","units_seen":5,"alternative_seen":"Any unused List A course"},{"prefix":"MATH","number":"073","title_seen":"Multivariable Calculus","units_seen":5},{"prefix":"MATH","number":"079","title_seen":"Linear Algebra","units_seen":3}]},
+        {"label_seen":"Cal-GETC Requirements","rule":"ge_area","choose_n":null,"units_min":34,"ge_area":"Cal-GETC","courses":[]},
+        {"label_seen":"Transferable Electives (as needed to reach 60)","rule":"electives","choose_n":null,"units_min":10,"units_max":16,"ge_area":null,"courses":[]}
+      ],
+      "notes": "The catalog prints STAT C1000 as 3 credits, Required Core as 12-14, List A and List B as 3-5 each, and Total Units for the major as 18-24; those source values are preserved."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T is in scope; no separate general Economics AA or AS is listed in the catalog."
+}

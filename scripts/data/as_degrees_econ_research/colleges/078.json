@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "community_college_id": 78,
+    "college_name": "Riverside City College",
+    "major_slug": "econ",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T23:19:40+00:00",
+    "updated_at": "2026-07-24T01:15:00+00:00",
+    "resume_note": "First-pass extraction anchored to the official 2025-2026 catalog archive. The archive's interactive text was unavailable, so course-level continuity should receive targeted human validation."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1370&search_string=economics",
+    "checked_at": "2026-07-23T22:30:34+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "53006",
+        "title": "Economics",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/33229-economics"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Economics Associate in Arts for Transfer Degree",
+      "award_seen": "AA-T",
+      "tmc_version_seen": "Economics TMC",
+      "tmc_version_basis": "The official district catalog archive identifies the active 2025-2026 Economics AA-T; the course structure was transcribed from the immediately preceding official program requirements because the archived interactive requirement text was unavailable to the researcher.",
+      "catalog_status_seen": "Listed in Riverside City College's official archived 2025-2026 catalog.",
+      "catalog_url": "https://rccd.curriqunet.com/Catalog/archive/71/iq/4079/4130",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 20,
+      "major_units_max": 21,
+      "extraction_confidence": 0.88,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_archive_html",
+          "url": "https://rccd.curriqunet.com/Catalog/archive/71/iq/4079/4130",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Archived 2025-2026 RCC catalog, Economics AA-T program page"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required - macroeconomics",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "7", "title_seen": "Principles of Macroeconomics", "units_seen": 3},
+            {"prefix": "ECO", "number": "7H", "title_seen": "Honors Principles of Macroeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required - microeconomics",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "8", "title_seen": "Principles of Microeconomics", "units_seen": 3},
+            {"prefix": "ECO", "number": "8H", "title_seen": "Honors Principles of Microeconomics", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Required - statistics",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "12", "title_seen": "Statistics", "units_seen": 4},
+            {"prefix": "MAT", "number": "12H", "title_seen": "Honors Statistics", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Required - calculus",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "1A", "title_seen": "Calculus I", "units_seen": 4},
+            {"prefix": "MAT", "number": "5", "title_seen": "Calculus for Business and Life Science", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A - Select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MAT", "number": "1B", "title_seen": "Calculus II", "units_seen": 4},
+            {"prefix": "ACC", "number": "1A", "title_seen": "Principles of Accounting I", "units_seen": 3},
+            {"prefix": "ACC", "number": "1B", "title_seen": "Principles of Accounting II", "units_seen": 3},
+            {"prefix": "BUS", "number": "24", "title_seen": "Business Communication", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "List B - Select one course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 3,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "ECO", "number": "5", "title_seen": "Economics of the Environment", "units_seen": 3},
+            {"prefix": "ECO", "number": "6", "title_seen": "Introduction to Political Economy", "units_seen": 3},
+            {"prefix": "POL", "number": "6", "title_seen": "Introduction to Political Economy", "units_seen": 3},
+            {"prefix": "ECO", "number": "9", "title_seen": "Economics of Poverty, Inequality and Discrimination", "units_seen": 3},
+            {"prefix": "ECO", "number": "9H", "title_seen": "Honors Economics of Poverty, Inequality and Discrimination", "units_seen": 3},
+            {"prefix": "ECO", "number": "10", "title_seen": "Economics and Personal Decision-Making", "units_seen": 3}
+          ]
+        },
+        {"label_seen": "California General Education Transfer Curriculum", "rule": "ge_area", "choose_n": null, "units_min": null, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "Transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The official 2025-2026 archive establishes that the award is active, but its CurriQunet course-table text was inaccessible. Course numbers and choice structure are carried forward from the immediately preceding official requirements and require targeted human validation for 2025-2026 continuity."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "Only the general Economics AA-T was identified. The active-year source is official, but course-level continuity is intentionally flagged for verification."
+}

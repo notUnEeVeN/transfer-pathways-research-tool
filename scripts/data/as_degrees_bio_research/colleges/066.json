@@ -1,0 +1,207 @@
+{
+  "_meta": {
+    "community_college_id": 66,
+    "college_name": "Santiago Canyon College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:18+00:00",
+    "updated_at": "2026-07-23T21:30:00+00:00",
+    "resume_note": "Complete first-pass extraction from Santiago Canyon College's official published 2025-2026 eLumen catalog and catalog PDF. Both the Biology AS and Biology AS-T were extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1768&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46555",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35110-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biology, AS",
+      "award_seen": "AS",
+      "tmc_version_seen": null,
+      "tmc_version_basis": "Local degree; no Transfer Model Curriculum claim is made.",
+      "catalog_status_seen": "The program is active in Santiago Canyon College's published 2025-2026 eLumen catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://sccollege.elumenapp.com/catalog/catalog/program/biology-as-summer-2020",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 25,
+      "major_units_max": 25,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_webpage",
+          "url": "https://sccollege.elumenapp.com/catalog/catalog/program/biology-as-summer-2020",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Published 2025-2026 catalog, Biology AS program page, curriculum ID SCC.BIOL.AS"
+        },
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://sccollege.edu/campus/collegeoffices/curriculum/Shared%20Documents/Catalog%20PDF/SCC_Catalog_print.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 85, Biology, AS; control number 11856"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biology, AS — required courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "211", "title_seen": "Cellular and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "221", "title_seen": "Animal Diversity and Evolution", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "231", "title_seen": "Plant Diversity and Ecology", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "200B", "title_seen": "General Chemistry B", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Select one General Chemistry A course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "200A", "title_seen": "General Chemistry A", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "200AH", "title_seen": "Honors General Chemistry A", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Plan 3 — Associate of Science local general education requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Santiago Canyon College Plan 3 AS GE",
+          "courses": []
+        },
+        {
+          "label_seen": "Degree-applicable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The published catalog reports a fixed 25-unit major. The local Associate in Science degree also requires the college's associate-degree GE and 60 degree-applicable units overall."
+    },
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology, AS-T",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The three-course zoology/botany biology sequence, chemistry sequence, calculus option, and two-course physics sequence are an allowed prior Biology TMC configuration.",
+      "catalog_status_seen": "The program is active in Santiago Canyon College's published 2025-2026 eLumen catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://sccollege.elumenapp.com/catalog/catalog/program/biology-as-t-spring-2019",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 37,
+      "major_units_max": 37,
+      "extraction_confidence": 0.98,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_webpage",
+          "url": "https://sccollege.elumenapp.com/catalog/catalog/program/biology-as-t-spring-2019",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Published 2025-2026 catalog, Biology AS-T program page, curriculum ID SCC.BIOL.AST"
+        },
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://sccollege.edu/campus/collegeoffices/curriculum/Shared%20Documents/Catalog%20PDF/SCC_Catalog_print.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "PDF page 86, Biology, AS-T; 37-unit range; control number 35110"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Biology sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 15,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "BIOL", "number": "211", "title_seen": "Cellular and Molecular Biology", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "221", "title_seen": "Animal Diversity and Evolution", "units_seen": 5 },
+            { "prefix": "BIOL", "number": "231", "title_seen": "Plant Diversity and Ecology", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "General Chemistry A — select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "200A", "title_seen": "General Chemistry A", "units_seen": 5 },
+            { "prefix": "CHEM", "number": "200AH", "title_seen": "Honors General Chemistry A", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "General Chemistry B",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "CHEM", "number": "200B", "title_seen": "General Chemistry B", "units_seen": 5 }
+          ]
+        },
+        {
+          "label_seen": "Single Variable Calculus I — select one",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "MATH", "number": "180", "title_seen": "Single Variable Calculus I", "units_seen": 4 },
+            { "prefix": "MATH", "number": "180H", "title_seen": "Honors Single Variable Calculus I", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "Physics sequence",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "courses": [
+            { "prefix": "PHYS", "number": "150A", "title_seen": "Introductory Physics I", "units_seen": 4 },
+            { "prefix": "PHYS", "number": "150B", "title_seen": "Introductory Physics II", "units_seen": 4 }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": 34,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives as needed to reach 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The PDF and published eLumen page both report a fixed 37-unit major. The PDF's flattened rule renderer prints broad 5-15 and 4-8 group ranges, but the 37-unit total requires one CHEM 200A/200AH, CHEM 200B, one MATH 180/180H, and both physics courses; that logical structure is preserved here."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The complete published 2025-2026 program index lists the general Biology AS and Biology AS-T. Biotechnology and other specialized awards were ignored."
+}

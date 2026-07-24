@@ -1,0 +1,166 @@
+{
+  "_meta": {
+    "community_college_id": 27,
+    "college_name": "American River College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:23:09+00:00",
+    "updated_at": "2026-07-23T20:15:00+00:00",
+    "resume_note": "Pinned to the January 1 archive of the official 2025-2026 American River College catalog. The pre-Biology-2.0 A.S.-T. in Biology is fully extracted from catalog page 267; it requires a two-course physics sequence and prints 32-34 major units."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=62&search_string=biology",
+    "checked_at": "2026-07-23T19:22:03+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "48679",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35620-biology"
+      },
+      {
+        "statewide_program_id": "caa714d5-7388-4b43-a5a8-cb8f64baa8e0",
+        "title": "Biology 2.0",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/46503-biology-20"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "A.S.-T. in Biology",
+      "award_seen": "A.S.-T.",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 award requires calculus and one complete two-course physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the January 1 archive of the official 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://arc.losrios.edu/arc/main/doc/ARC03-Academics/ARC-Programs-and-Majors/catalog-archive/2025-26-catalog-20260101.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 34,
+      "extraction_confidence": 0.99,
+      "sources": [
+        {
+          "source_type": "official_college_catalog_pdf",
+          "url": "https://arc.losrios.edu/arc/main/doc/ARC03-Academics/ARC-Programs-and-Majors/catalog-archive/2025-26-catalog-20260101.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 267 (PDF page 269), Biology and Biotechnology > Associate Degrees for Transfer > A.S.-T. in Biology > Degree Requirements"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Degree Requirements — required biology and chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 20,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "BIOL",
+              "number": "400",
+              "title_seen": "Principles of Biology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "BIOL",
+              "number": "415",
+              "title_seen": "Introduction to Biology: Biodiversity, Evolution, and Ecology",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "400",
+              "title_seen": "General Chemistry I",
+              "units_seen": 5
+            },
+            {
+              "prefix": "CHEM",
+              "number": "401",
+              "title_seen": "General Chemistry II",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Degree Requirements — calculus choice",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {
+              "prefix": "MATH",
+              "number": "355",
+              "title_seen": "Calculus for Biology and Medicine I",
+              "units_seen": 4
+            },
+            {
+              "prefix": "MATH",
+              "number": "400",
+              "title_seen": "Calculus I",
+              "units_seen": 5
+            }
+          ]
+        },
+        {
+          "label_seen": "Degree Requirements — complete one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 9,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 350 and PHYS 360 (8 units), or complete PHYS 410 and PHYS 421 (9 units); courses may not be mixed across sequences.",
+          "courses": [
+            {
+              "prefix": "PHYS",
+              "number": "350",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "410",
+              "title_seen": "Mechanics of Solids and Fluids",
+              "units_seen": 5
+            },
+            {
+              "prefix": "PHYS",
+              "number": "360",
+              "title_seen": "General Physics",
+              "units_seen": 4
+            },
+            {
+              "prefix": "PHYS",
+              "number": "421",
+              "title_seen": "Electricity and Magnetism",
+              "units_seen": 4
+            }
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC) Requirement",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "Transferable electives as needed to complete 60 units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The 2025-2026 degree page requires Cal-GETC but does not restate its unit minimum, so units_min is left null. The catalog prints 32-34 major units and a 60-unit degree total. This is materially different from the 2026-2027 Biology 2.0 record: BIOL 415 is required, a complete two-course physics sequence is required, and the later Biology 2.0 List A is absent."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog lists the pre-Biology-2.0 A.S.-T. in Biology and no general local Biology A.S. or A.A. The statewide discovery snapshot was collected later and includes Biology 2.0, but it is not used as 2025-2026 catalog evidence."
+}

@@ -1,0 +1,242 @@
+{
+  "_meta": {
+    "community_college_id": 14,
+    "college_name": "Santa Ana College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T19:42:17+00:00",
+    "updated_at": "2026-07-23T19:45:49+00:00",
+    "resume_note": "First-pass extraction complete from the official 2025-2026 Santa Ana College catalog PDF. Later review should confirm the AS-T page's Engineering Physics 12-unit label and the local AS note referring to a 2021-2022 sample map."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=1688&search_string=biology",
+    "checked_at": "2026-07-23T19:29:44+00:00",
+    "programs": [
+      {
+        "statewide_program_id": "46773",
+        "title": "Biology",
+        "degree_type_hint": "unknown",
+        "source_url": "https://icangotocollege.com/college-courses/35134-biology"
+      }
+    ]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biology: A.S.-T Degree for Transfer",
+      "award_seen": "A.S.-T Degree for Transfer",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The current award requires calculus and a physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Listed in the current 2025-2026 catalog; no inactive or teach-out language is displayed.",
+      "catalog_url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 36,
+      "major_units_max": 36,
+      "extraction_confidence": 0.95,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog pages 96-97: Biology A.S.-T requirements and total"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Required Core",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 14,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "275", "title_seen": "Cell and Molecular Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "212", "title_seen": "Animal Diversity and Ecology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "214", "title_seen": "Plant Diversity and Evolution", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — General Chemistry",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "219", "title_seen": "General Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "219H", "title_seen": "Honors General Chemistry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — General Chemistry and Qualitative Analysis",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "229", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 210 and PHYS 211, PHYS 279 and PHYS 289, or PHYS 217 and PHYS 227; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "210", "title_seen": "Principles of Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "211", "title_seen": "Principles of Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "279", "title_seen": "College Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "289", "title_seen": "College Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "217", "title_seen": "Engineering Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "227", "title_seen": "Engineering Physics II", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A — calculus",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "180", "title_seen": "Single Variable Calculus I", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "California General Education Transfer Curriculum (Cal-GETC)",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Cal-GETC",
+          "courses": []
+        },
+        {
+          "label_seen": "CSU-transferable electives needed to complete 60 semester units",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The printed List A total is 22 units and the printed major total is 36. The page labels Engineering Physics as 12 units even though it displays PHYS 217 and 227 at 4 units each, followed by the separately displayed 4-unit MATH 180; raw courses and printed totals are preserved for human review."
+    },
+    {
+      "degree_type_hint": "local_as",
+      "degree_title_seen": "Biological Science: A.S. Degree",
+      "award_seen": "A.S. Degree",
+      "tmc_version_seen": null,
+      "catalog_status_seen": "Listed in the current 2025-2026 catalog. The description says its sample map is based on the 2021-2022 catalog and directs students to confirm requirements with a counselor.",
+      "catalog_url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 22,
+      "major_units_max": 25,
+      "extraction_confidence": 0.94,
+      "sources": [
+        {
+          "source_type": "official_college_catalog",
+          "url": "https://www.sac.edu/admissions/catalogarchive/SAC_Catalog_2025-2026.pdf",
+          "catalog_year": "2025-2026",
+          "checked_at": "2026-07-23",
+          "locator": "Catalog page 97: Biological Science A.S. core, electives, and total; general associate-degree requirements for the 60-unit degree total"
+        }
+      ],
+      "major_groups": [
+        {
+          "label_seen": "Core Courses — BIOL 211 or BIOL 275",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "211", "title_seen": "Cellular and Molecular Biology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "275", "title_seen": "Cell and Molecular Biology", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "Core Courses — BIOL 212",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "212", "title_seen": "Animal Diversity and Ecology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Core Courses — BIOL 214 or BIOL 290",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOL", "number": "214", "title_seen": "Plant Diversity and Evolution", "units_seen": 5},
+            {"prefix": "BIOL", "number": "290", "title_seen": "Biochemistry and Molecular Biology", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Core Courses — CHEM 229",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 5,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "229", "title_seen": "General Chemistry and Qualitative Analysis", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "Select a minimum of 3 units from the following electives",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 3,
+          "units_max": 5,
+          "ge_area": null,
+          "choice_structure_seen": "BIOL 259 and ENVR 259 are the same cross-listed Environmental Biology course and must not both be counted.",
+          "courses": [
+            {"prefix": "BIOL", "number": "127", "title_seen": "Ecology", "units_seen": 1},
+            {"prefix": "BIOL", "number": "128", "title_seen": "Natural History of the California Coast", "units_seen": 1},
+            {"prefix": "BIOL", "number": "132", "title_seen": "Natural History of Death Valley", "units_seen": 1},
+            {"prefix": "BIOL", "number": "133", "title_seen": "Desert Biology", "units_seen": 1},
+            {"prefix": "BIOL", "number": "139", "title_seen": "Health Microbiology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "149", "title_seen": "Human Anatomy and Physiology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "169", "title_seen": "Natural History of the Sierra Nevadas", "units_seen": null, "units_range_seen": "1.0-3.0"},
+            {"prefix": "BIOL", "number": "177", "title_seen": "Human Genetics", "units_seen": 3},
+            {"prefix": "BIOL", "number": "217", "title_seen": "Pathophysiology", "units_seen": 3},
+            {"prefix": "BIOL", "number": "229", "title_seen": "General Microbiology", "units_seen": 5},
+            {"prefix": "BIOL", "number": "239", "title_seen": "General Human Anatomy", "units_seen": 4},
+            {"prefix": "BIOL", "number": "249", "title_seen": "Human Physiology", "units_seen": 4},
+            {"prefix": "ENVR", "number": "259", "title_seen": "Environmental Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "259", "title_seen": "Environmental Biology", "units_seen": 4},
+            {"prefix": "BIOL", "number": "129", "title_seen": "Ecology of Southern California", "units_seen": 1},
+            {"prefix": "BIOL", "number": "131", "title_seen": "Natural History of the Southwest", "units_seen": 3}
+          ]
+        },
+        {
+          "label_seen": "Associate Degree General Education Requirements",
+          "rule": "ge_area",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": "Santa Ana College AA/AS General Education",
+          "courses": []
+        },
+        {
+          "label_seen": "Electives as needed to complete the 60-unit associate degree",
+          "rule": "electives",
+          "choose_n": null,
+          "units_min": null,
+          "ge_area": null,
+          "courses": []
+        }
+      ],
+      "notes": "The current catalog prints 19-20 core units, 3-5 elective units, and 22-25 total major units. Its description explicitly calls this a sample map based on the 2021-2022 catalog, so requirements should receive human review."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "No general Biology/Biological Sciences AA is listed in the current catalog. Specialized and adjacent awards were intentionally ignored per batch scope."
+}

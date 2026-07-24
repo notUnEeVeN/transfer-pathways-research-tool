@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "community_college_id": 61,
+    "college_name": "Los Medanos College",
+    "major_slug": "bio",
+    "research_status": "requirements_extracted",
+    "created_at": "2026-07-23T21:03:16+00:00",
+    "updated_at": "2026-07-23T21:20:00+00:00",
+    "resume_note": "Pinned to Los Medanos College's official 2025-2026 catalog. The Biological Science Biology AS-T is fully extracted."
+  },
+  "inventory": {
+    "statewide_listing_status": "listed",
+    "programs_source_url": "https://icangotocollege.com/api/transfer-tool/colleges/degree-programs?college_id=892&search_string=biology",
+    "checked_at": "2026-07-23T19:29:47+00:00",
+    "programs": [{"statewide_program_id": "46125", "title": "Biology", "degree_type_hint": "unknown", "source_url": "https://icangotocollege.com/college-courses/35128-biology"}]
+  },
+  "degrees": [
+    {
+      "degree_type_hint": "ast",
+      "degree_title_seen": "Biological Science — Biology, Associate in Science for Transfer",
+      "award_seen": "AS-T",
+      "tmc_version_seen": "Biology TMC (2015 Rev. 2)",
+      "tmc_version_basis": "The 2025-2026 degree requires an 8-unit physics sequence, matching the prior Biology TMC rather than Biology 2.0.",
+      "catalog_status_seen": "Published in the official 2025-2026 catalog with no inactive or teach-out language.",
+      "catalog_url": "https://www.losmedanos.edu/schedule/25-26-LMC-Catalog.pdf",
+      "catalog_year": "2025-2026",
+      "unit_system": "semester",
+      "total_units": 60,
+      "major_units_min": 32,
+      "major_units_max": 32,
+      "extraction_confidence": 0.99,
+      "sources": [{"source_type": "official_college_catalog_pdf", "url": "https://www.losmedanos.edu/schedule/25-26-LMC-Catalog.pdf", "catalog_year": "2025-2026", "checked_at": "2026-07-23", "locator": "Printed catalog page 103, Biological Science — Degree: Associate in Science for Transfer, Biology"}],
+      "major_groups": [
+        {
+          "label_seen": "Required Courses",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "BIOSC", "number": "020", "title_seen": "Principles of Biology: Cellular Processes", "units_seen": 5},
+            {"prefix": "BIOSC", "number": "021", "title_seen": "Principles of Biology: Organismic", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — required chemistry",
+          "rule": "all",
+          "choose_n": null,
+          "units_min": 10,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "CHEM", "number": "025", "title_seen": "General College Chemistry", "units_seen": 5},
+            {"prefix": "CHEM", "number": "026", "title_seen": "General College Chemistry", "units_seen": 5}
+          ]
+        },
+        {
+          "label_seen": "List A — select one calculus course",
+          "rule": "choose_courses",
+          "choose_n": 1,
+          "units_min": 4,
+          "units_max": 4,
+          "ge_area": null,
+          "courses": [
+            {"prefix": "MATH", "number": "210", "title_seen": "Calculus and Analytic Geometry I", "units_seen": 4},
+            {"prefix": "MATH", "number": "140", "title_seen": "Applied Calculus", "units_seen": 4}
+          ]
+        },
+        {
+          "label_seen": "List A — select one physics sequence",
+          "rule": "choose_units",
+          "choose_n": null,
+          "units_min": 8,
+          "units_max": 8,
+          "ge_area": null,
+          "choice_structure_seen": "Complete PHYS 035 and PHYS 036, or complete PHYS 040 and PHYS 041; courses may not be mixed across sequences.",
+          "courses": [
+            {"prefix": "PHYS", "number": "035", "title_seen": "College Physics I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "036", "title_seen": "College Physics II", "units_seen": 4},
+            {"prefix": "PHYS", "number": "040", "title_seen": "Physics for Scientists and Engineers I", "units_seen": 4},
+            {"prefix": "PHYS", "number": "041", "title_seen": "Physics for Scientists and Engineers II", "units_seen": 4}
+          ]
+        },
+        {"label_seen": "California General Education Transfer Curriculum (Cal-GETC)", "rule": "ge_area", "choose_n": null, "units_min": 34, "ge_area": "Cal-GETC", "courses": []},
+        {"label_seen": "CSU-transferable electives as needed to reach 60 units", "rule": "electives", "choose_n": null, "units_min": null, "ge_area": null, "courses": []}
+      ],
+      "notes": "The catalog prints a 10-unit required biology block and 22-unit List A, totaling 32 major units."
+    }
+  ],
+  "out_of_scope_candidates": [],
+  "notes": "The official 2025-2026 catalog and college degree index publish one in-scope broad Biology/Biological Science associate award."
+}

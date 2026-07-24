@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "community_college_id": 20,
+    "college_name": "Barstow Community College",
+    "major_slug": "econ",
+    "research_status": "none_found",
+    "created_at": "2026-07-23T23:19:38+00:00",
+    "updated_at": "2026-07-23T23:55:28+00:00",
+    "resume_note": "Audited Barstow Community College's complete official 2025-2026 catalog and its March 2026 addendum. Neither contains a general Economics award."
+  },
+  "inventory": {
+    "statewide_listing_status": "not_listed",
+    "programs_source_url": null,
+    "checked_at": "2026-07-23T22:30:29+00:00",
+    "programs": []
+  },
+  "degrees": [],
+  "out_of_scope_candidates": [],
+  "none_found_sources": [
+    {
+      "source_type": "official_college_catalog_pdf",
+      "url": "https://www.barstow.edu/sites/default/files/media/pdf_document/2025/2526-Catalog-20250731_2.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Programs of Study, catalog pages 60-137; complete program inventory contains no Economics AA-T, AS-T, AA, or AS"
+    },
+    {
+      "source_type": "official_college_catalog_addendum_pdf",
+      "url": "https://www.barstow.edu/sites/default/files/media/pdf_document/2026/2526-Addendum_20260320.pdf",
+      "catalog_year": "2025-2026",
+      "checked_at": "2026-07-23",
+      "locator": "Programs of Study, addendum pages 4-12; no Economics award is added"
+    }
+  ],
+  "notes": "Economics is present as a course discipline and as coursework in Business and broad Liberal Arts pathways, but the full catalog and addendum publish no general Economics associate award. Adjacent Business and Liberal Arts awards are outside this pass."
+}
