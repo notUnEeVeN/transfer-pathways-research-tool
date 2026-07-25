@@ -1,0 +1,1819 @@
+{
+ "dataset_version": "district-demographics.acs2024-5yr.v1",
+ "source": {
+  "name": "American Community Survey 2020-2024 5-year estimates, tables B03002 (Hispanic or Latino origin by race) and B19013 (median household income), all California ZCTAs",
+  "publisher": "U.S. Census Bureau, retrieved via the Census Reporter API (api.censusreporter.org, acs2024_5yr release)",
+  "page": "https://censusreporter.org/tables/B03002/",
+  "license": "public domain (U.S. federal data)"
+ },
+ "centroid_source": "GeoNames postal-code centroids (download.geonames.org/export/zip, CC-BY 4.0)",
+ "method": "Every California ZCTA is assigned to the community college district whose centroid is nearest (haversine on the GeoNames ZIP centroid), mirroring the district_income.v1 method; district race counts are sums over assigned ZCTAs, and median household income is the population-weighted mean of ZCTA medians (an approximation of the true pooled median).",
+ "coverage": {
+  "zctas_assigned": 1802,
+  "zctas_without_centroid": 6,
+  "population_assigned": 39286245,
+  "population_unlocated": 26715
+ },
+ "districts": {
+  "Allan Hancock Joint Community College District": {
+   "population": 345727,
+   "counts": {
+    "whiteNH": 135155,
+    "blackNH": 5389,
+    "americanIndianNH": 622,
+    "asianNH": 11927,
+    "pacificIslanderNH": 421,
+    "otherNH": 1278,
+    "twoOrMoreNH": 12861,
+    "hispanic": 178074
+   },
+   "shares": {
+    "whiteNH": 0.3909,
+    "blackNH": 0.0156,
+    "americanIndianNH": 0.0018,
+    "asianNH": 0.0345,
+    "pacificIslanderNH": 0.0012,
+    "otherNH": 0.0037,
+    "twoOrMoreNH": 0.0372,
+    "hispanic": 0.5151
+   },
+   "median_household_income": 91789,
+   "zctas": 20
+  },
+  "Antelope Valley Community College District": {
+   "population": 402080,
+   "counts": {
+    "whiteNH": 116922,
+    "blackNH": 52966,
+    "americanIndianNH": 996,
+    "asianNH": 15811,
+    "pacificIslanderNH": 596,
+    "otherNH": 3358,
+    "twoOrMoreNH": 15364,
+    "hispanic": 196067
+   },
+   "shares": {
+    "whiteNH": 0.2908,
+    "blackNH": 0.1317,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.0393,
+    "pacificIslanderNH": 0.0015,
+    "otherNH": 0.0084,
+    "twoOrMoreNH": 0.0382,
+    "hispanic": 0.4876
+   },
+   "median_household_income": 86594,
+   "zctas": 16
+  },
+  "Barstow Community College District": {
+   "population": 51020,
+   "counts": {
+    "whiteNH": 18280,
+    "blackNH": 5660,
+    "americanIndianNH": 459,
+    "asianNH": 1767,
+    "pacificIslanderNH": 485,
+    "otherNH": 173,
+    "twoOrMoreNH": 3226,
+    "hispanic": 20970
+   },
+   "shares": {
+    "whiteNH": 0.3583,
+    "blackNH": 0.1109,
+    "americanIndianNH": 0.009,
+    "asianNH": 0.0346,
+    "pacificIslanderNH": 0.0095,
+    "otherNH": 0.0034,
+    "twoOrMoreNH": 0.0632,
+    "hispanic": 0.411
+   },
+   "median_household_income": 64514,
+   "zctas": 13
+  },
+  "Butte-Glenn Community College District": {
+   "population": 290855,
+   "counts": {
+    "whiteNH": 180675,
+    "blackNH": 4062,
+    "americanIndianNH": 1870,
+    "asianNH": 15303,
+    "pacificIslanderNH": 822,
+    "otherNH": 1713,
+    "twoOrMoreNH": 15917,
+    "hispanic": 70493
+   },
+   "shares": {
+    "whiteNH": 0.6212,
+    "blackNH": 0.014,
+    "americanIndianNH": 0.0064,
+    "asianNH": 0.0526,
+    "pacificIslanderNH": 0.0028,
+    "otherNH": 0.0059,
+    "twoOrMoreNH": 0.0547,
+    "hispanic": 0.2424
+   },
+   "median_household_income": 70064,
+   "zctas": 44
+  },
+  "Cabrillo Community College District": {
+   "population": 274317,
+   "counts": {
+    "whiteNH": 142870,
+    "blackNH": 1929,
+    "americanIndianNH": 220,
+    "asianNH": 12713,
+    "pacificIslanderNH": 387,
+    "otherNH": 1936,
+    "twoOrMoreNH": 12033,
+    "hispanic": 102229
+   },
+   "shares": {
+    "whiteNH": 0.5208,
+    "blackNH": 0.007,
+    "americanIndianNH": 0.0008,
+    "asianNH": 0.0463,
+    "pacificIslanderNH": 0.0014,
+    "otherNH": 0.0071,
+    "twoOrMoreNH": 0.0439,
+    "hispanic": 0.3727
+   },
+   "median_household_income": 114059,
+   "zctas": 16
+  },
+  "Cerritos Community College District": {
+   "population": 521838,
+   "counts": {
+    "whiteNH": 54525,
+    "blackNH": 22600,
+    "americanIndianNH": 388,
+    "asianNH": 75295,
+    "pacificIslanderNH": 2337,
+    "otherNH": 3252,
+    "twoOrMoreNH": 8898,
+    "hispanic": 354543
+   },
+   "shares": {
+    "whiteNH": 0.1045,
+    "blackNH": 0.0433,
+    "americanIndianNH": 0.0007,
+    "asianNH": 0.1443,
+    "pacificIslanderNH": 0.0045,
+    "otherNH": 0.0062,
+    "twoOrMoreNH": 0.0171,
+    "hispanic": 0.6794
+   },
+   "median_household_income": 90667,
+   "zctas": 11
+  },
+  "Chabot-Las Positas Community College District": {
+   "population": 708131,
+   "counts": {
+    "whiteNH": 215785,
+    "blackNH": 37494,
+    "americanIndianNH": 1339,
+    "asianNH": 239730,
+    "pacificIslanderNH": 6889,
+    "otherNH": 2695,
+    "twoOrMoreNH": 37230,
+    "hispanic": 166969
+   },
+   "shares": {
+    "whiteNH": 0.3047,
+    "blackNH": 0.0529,
+    "americanIndianNH": 0.0019,
+    "asianNH": 0.3385,
+    "pacificIslanderNH": 0.0097,
+    "otherNH": 0.0038,
+    "twoOrMoreNH": 0.0526,
+    "hispanic": 0.2358
+   },
+   "median_household_income": 160748,
+   "zctas": 19
+  },
+  "Chaffey Community College District": {
+   "population": 785281,
+   "counts": {
+    "whiteNH": 161212,
+    "blackNH": 56855,
+    "americanIndianNH": 1553,
+    "asianNH": 75068,
+    "pacificIslanderNH": 1825,
+    "otherNH": 4842,
+    "twoOrMoreNH": 24897,
+    "hispanic": 459029
+   },
+   "shares": {
+    "whiteNH": 0.2053,
+    "blackNH": 0.0724,
+    "americanIndianNH": 0.002,
+    "asianNH": 0.0956,
+    "pacificIslanderNH": 0.0023,
+    "otherNH": 0.0062,
+    "twoOrMoreNH": 0.0317,
+    "hispanic": 0.5845
+   },
+   "median_household_income": 101944,
+   "zctas": 18
+  },
+  "Citrus Community College District": {
+   "population": 291336,
+   "counts": {
+    "whiteNH": 53974,
+    "blackNH": 8329,
+    "americanIndianNH": 401,
+    "asianNH": 45998,
+    "pacificIslanderNH": 581,
+    "otherNH": 1463,
+    "twoOrMoreNH": 8359,
+    "hispanic": 172231
+   },
+   "shares": {
+    "whiteNH": 0.1853,
+    "blackNH": 0.0286,
+    "americanIndianNH": 0.0014,
+    "asianNH": 0.1579,
+    "pacificIslanderNH": 0.002,
+    "otherNH": 0.005,
+    "twoOrMoreNH": 0.0287,
+    "hispanic": 0.5912
+   },
+   "median_household_income": 96264,
+   "zctas": 11
+  },
+  "Coast Community College District": {
+   "population": 810668,
+   "counts": {
+    "whiteNH": 285118,
+    "blackNH": 9169,
+    "americanIndianNH": 1423,
+    "asianNH": 174944,
+    "pacificIslanderNH": 2675,
+    "otherNH": 4302,
+    "twoOrMoreNH": 30009,
+    "hispanic": 303028
+   },
+   "shares": {
+    "whiteNH": 0.3517,
+    "blackNH": 0.0113,
+    "americanIndianNH": 0.0018,
+    "asianNH": 0.2158,
+    "pacificIslanderNH": 0.0033,
+    "otherNH": 0.0053,
+    "twoOrMoreNH": 0.037,
+    "hispanic": 0.3738
+   },
+   "median_household_income": 108784,
+   "zctas": 21
+  },
+  "Compton Community College District": {
+   "population": 847511,
+   "counts": {
+    "whiteNH": 26303,
+    "blackNH": 99609,
+    "americanIndianNH": 693,
+    "asianNH": 51986,
+    "pacificIslanderNH": 3371,
+    "otherNH": 3013,
+    "twoOrMoreNH": 11768,
+    "hispanic": 650768
+   },
+   "shares": {
+    "whiteNH": 0.031,
+    "blackNH": 0.1175,
+    "americanIndianNH": 0.0008,
+    "asianNH": 0.0613,
+    "pacificIslanderNH": 0.004,
+    "otherNH": 0.0036,
+    "twoOrMoreNH": 0.0139,
+    "hispanic": 0.7679
+   },
+   "median_household_income": 74068,
+   "zctas": 18
+  },
+  "Contra Costa Community College District": {
+   "population": 742263,
+   "counts": {
+    "whiteNH": 285309,
+    "blackNH": 65401,
+    "americanIndianNH": 1318,
+    "asianNH": 127993,
+    "pacificIslanderNH": 4395,
+    "otherNH": 5762,
+    "twoOrMoreNH": 50662,
+    "hispanic": 201423
+   },
+   "shares": {
+    "whiteNH": 0.3844,
+    "blackNH": 0.0881,
+    "americanIndianNH": 0.0018,
+    "asianNH": 0.1724,
+    "pacificIslanderNH": 0.0059,
+    "otherNH": 0.0078,
+    "twoOrMoreNH": 0.0683,
+    "hispanic": 0.2714
+   },
+   "median_household_income": 122580,
+   "zctas": 24
+  },
+  "Copper Mountain Community College District": {
+   "population": 72074,
+   "counts": {
+    "whiteNH": 40456,
+    "blackNH": 3284,
+    "americanIndianNH": 648,
+    "asianNH": 2034,
+    "pacificIslanderNH": 330,
+    "otherNH": 439,
+    "twoOrMoreNH": 6832,
+    "hispanic": 18051
+   },
+   "shares": {
+    "whiteNH": 0.5613,
+    "blackNH": 0.0456,
+    "americanIndianNH": 0.009,
+    "asianNH": 0.0282,
+    "pacificIslanderNH": 0.0046,
+    "otherNH": 0.0061,
+    "twoOrMoreNH": 0.0948,
+    "hispanic": 0.2505
+   },
+   "median_household_income": 59650,
+   "zctas": 11
+  },
+  "Desert Community College District": {
+   "population": 455679,
+   "counts": {
+    "whiteNH": 167285,
+    "blackNH": 10691,
+    "americanIndianNH": 1154,
+    "asianNH": 13885,
+    "pacificIslanderNH": 895,
+    "otherNH": 1261,
+    "twoOrMoreNH": 9661,
+    "hispanic": 250847
+   },
+   "shares": {
+    "whiteNH": 0.3671,
+    "blackNH": 0.0235,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.0305,
+    "pacificIslanderNH": 0.002,
+    "otherNH": 0.0028,
+    "twoOrMoreNH": 0.0212,
+    "hispanic": 0.5505
+   },
+   "median_household_income": 74786,
+   "zctas": 20
+  },
+  "El Camino Community College District": {
+   "population": 1080372,
+   "counts": {
+    "whiteNH": 240657,
+    "blackNH": 157981,
+    "americanIndianNH": 1879,
+    "asianNH": 155107,
+    "pacificIslanderNH": 2769,
+    "otherNH": 6398,
+    "twoOrMoreNH": 47317,
+    "hispanic": 468264
+   },
+   "shares": {
+    "whiteNH": 0.2228,
+    "blackNH": 0.1462,
+    "americanIndianNH": 0.0017,
+    "asianNH": 0.1436,
+    "pacificIslanderNH": 0.0026,
+    "otherNH": 0.0059,
+    "twoOrMoreNH": 0.0438,
+    "hispanic": 0.4334
+   },
+   "median_household_income": 98567,
+   "zctas": 34
+  },
+  "Feather River Community College District": {
+   "population": 19692,
+   "counts": {
+    "whiteNH": 15859,
+    "blackNH": 195,
+    "americanIndianNH": 287,
+    "asianNH": 162,
+    "pacificIslanderNH": 1,
+    "otherNH": 95,
+    "twoOrMoreNH": 943,
+    "hispanic": 2150
+   },
+   "shares": {
+    "whiteNH": 0.8054,
+    "blackNH": 0.0099,
+    "americanIndianNH": 0.0146,
+    "asianNH": 0.0082,
+    "pacificIslanderNH": 0.0001,
+    "otherNH": 0.0048,
+    "twoOrMoreNH": 0.0479,
+    "hispanic": 0.1092
+   },
+   "median_household_income": 73238,
+   "zctas": 23
+  },
+  "Foothill-De Anza Community College District": {
+   "population": 308310,
+   "counts": {
+    "whiteNH": 133828,
+    "blackNH": 7589,
+    "americanIndianNH": 389,
+    "asianNH": 89796,
+    "pacificIslanderNH": 2737,
+    "otherNH": 2061,
+    "twoOrMoreNH": 17430,
+    "hispanic": 54480
+   },
+   "shares": {
+    "whiteNH": 0.4341,
+    "blackNH": 0.0246,
+    "americanIndianNH": 0.0013,
+    "asianNH": 0.2913,
+    "pacificIslanderNH": 0.0089,
+    "otherNH": 0.0067,
+    "twoOrMoreNH": 0.0565,
+    "hispanic": 0.1767
+   },
+   "median_household_income": 194932,
+   "zctas": 17
+  },
+  "Gavilan Community College District": {
+   "population": 194052,
+   "counts": {
+    "whiteNH": 60613,
+    "blackNH": 3238,
+    "americanIndianNH": 201,
+    "asianNH": 17375,
+    "pacificIslanderNH": 657,
+    "otherNH": 806,
+    "twoOrMoreNH": 8903,
+    "hispanic": 102259
+   },
+   "shares": {
+    "whiteNH": 0.3124,
+    "blackNH": 0.0167,
+    "americanIndianNH": 0.001,
+    "asianNH": 0.0895,
+    "pacificIslanderNH": 0.0034,
+    "otherNH": 0.0042,
+    "twoOrMoreNH": 0.0459,
+    "hispanic": 0.527
+   },
+   "median_household_income": 137720,
+   "zctas": 7
+  },
+  "Glendale Community College District": {
+   "population": 775526,
+   "counts": {
+    "whiteNH": 306763,
+    "blackNH": 15030,
+    "americanIndianNH": 1059,
+    "asianNH": 98881,
+    "pacificIslanderNH": 697,
+    "otherNH": 4330,
+    "twoOrMoreNH": 28987,
+    "hispanic": 319779
+   },
+   "shares": {
+    "whiteNH": 0.3956,
+    "blackNH": 0.0194,
+    "americanIndianNH": 0.0014,
+    "asianNH": 0.1275,
+    "pacificIslanderNH": 0.0009,
+    "otherNH": 0.0056,
+    "twoOrMoreNH": 0.0374,
+    "hispanic": 0.4123
+   },
+   "median_household_income": 94750,
+   "zctas": 28
+  },
+  "Grossmont-Cuyamaca Community College District": {
+   "population": 554581,
+   "counts": {
+    "whiteNH": 298499,
+    "blackNH": 27395,
+    "americanIndianNH": 1543,
+    "asianNH": 28111,
+    "pacificIslanderNH": 2171,
+    "otherNH": 3460,
+    "twoOrMoreNH": 32327,
+    "hispanic": 161075
+   },
+   "shares": {
+    "whiteNH": 0.5382,
+    "blackNH": 0.0494,
+    "americanIndianNH": 0.0028,
+    "asianNH": 0.0507,
+    "pacificIslanderNH": 0.0039,
+    "otherNH": 0.0062,
+    "twoOrMoreNH": 0.0583,
+    "hispanic": 0.2904
+   },
+   "median_household_income": 99780,
+   "zctas": 21
+  },
+  "Hartnell Community College District": {
+   "population": 312533,
+   "counts": {
+    "whiteNH": 50748,
+    "blackNH": 6227,
+    "americanIndianNH": 415,
+    "asianNH": 16203,
+    "pacificIslanderNH": 984,
+    "otherNH": 899,
+    "twoOrMoreNH": 7126,
+    "hispanic": 229931
+   },
+   "shares": {
+    "whiteNH": 0.1624,
+    "blackNH": 0.0199,
+    "americanIndianNH": 0.0013,
+    "asianNH": 0.0518,
+    "pacificIslanderNH": 0.0031,
+    "otherNH": 0.0029,
+    "twoOrMoreNH": 0.0228,
+    "hispanic": 0.7357
+   },
+   "median_household_income": 92885,
+   "zctas": 15
+  },
+  "Imperial Community College District": {
+   "population": 172165,
+   "counts": {
+    "whiteNH": 14781,
+    "blackNH": 3516,
+    "americanIndianNH": 297,
+    "asianNH": 2246,
+    "pacificIslanderNH": 176,
+    "otherNH": 139,
+    "twoOrMoreNH": 1649,
+    "hispanic": 149361
+   },
+   "shares": {
+    "whiteNH": 0.0859,
+    "blackNH": 0.0204,
+    "americanIndianNH": 0.0017,
+    "asianNH": 0.013,
+    "pacificIslanderNH": 0.001,
+    "otherNH": 0.0008,
+    "twoOrMoreNH": 0.0096,
+    "hispanic": 0.8675
+   },
+   "median_household_income": 60987,
+   "zctas": 13
+  },
+  "Kern Community College District": {
+   "population": 147448,
+   "counts": {
+    "whiteNH": 55186,
+    "blackNH": 4636,
+    "americanIndianNH": 725,
+    "asianNH": 3297,
+    "pacificIslanderNH": 269,
+    "otherNH": 1496,
+    "twoOrMoreNH": 4725,
+    "hispanic": 77114
+   },
+   "shares": {
+    "whiteNH": 0.3743,
+    "blackNH": 0.0314,
+    "americanIndianNH": 0.0049,
+    "asianNH": 0.0224,
+    "pacificIslanderNH": 0.0018,
+    "otherNH": 0.0101,
+    "twoOrMoreNH": 0.032,
+    "hispanic": 0.523
+   },
+   "median_household_income": 68655,
+   "zctas": 27
+  },
+  "Lake Tahoe Community College District": {
+   "population": 74615,
+   "counts": {
+    "whiteNH": 53955,
+    "blackNH": 397,
+    "americanIndianNH": 641,
+    "asianNH": 2507,
+    "pacificIslanderNH": 124,
+    "otherNH": 240,
+    "twoOrMoreNH": 3542,
+    "hispanic": 13209
+   },
+   "shares": {
+    "whiteNH": 0.7231,
+    "blackNH": 0.0053,
+    "americanIndianNH": 0.0086,
+    "asianNH": 0.0336,
+    "pacificIslanderNH": 0.0017,
+    "otherNH": 0.0032,
+    "twoOrMoreNH": 0.0475,
+    "hispanic": 0.177
+   },
+   "median_household_income": 105901,
+   "zctas": 23
+  },
+  "Lassen Community College District": {
+   "population": 39513,
+   "counts": {
+    "whiteNH": 26001,
+    "blackNH": 1904,
+    "americanIndianNH": 897,
+    "asianNH": 739,
+    "pacificIslanderNH": 289,
+    "otherNH": 157,
+    "twoOrMoreNH": 1686,
+    "hispanic": 7840
+   },
+   "shares": {
+    "whiteNH": 0.658,
+    "blackNH": 0.0482,
+    "americanIndianNH": 0.0227,
+    "asianNH": 0.0187,
+    "pacificIslanderNH": 0.0073,
+    "otherNH": 0.004,
+    "twoOrMoreNH": 0.0427,
+    "hispanic": 0.1984
+   },
+   "median_household_income": 69549,
+   "zctas": 25
+  },
+  "Long Beach Community College District": {
+   "population": 470614,
+   "counts": {
+    "whiteNH": 166240,
+    "blackNH": 39082,
+    "americanIndianNH": 1400,
+    "asianNH": 59110,
+    "pacificIslanderNH": 1641,
+    "otherNH": 2500,
+    "twoOrMoreNH": 23342,
+    "hispanic": 177299
+   },
+   "shares": {
+    "whiteNH": 0.3532,
+    "blackNH": 0.083,
+    "americanIndianNH": 0.003,
+    "asianNH": 0.1256,
+    "pacificIslanderNH": 0.0035,
+    "otherNH": 0.0053,
+    "twoOrMoreNH": 0.0496,
+    "hispanic": 0.3767
+   },
+   "median_household_income": 99376,
+   "zctas": 19
+  },
+  "Los Angeles Community College District": {
+   "population": 1901456,
+   "counts": {
+    "whiteNH": 508927,
+    "blackNH": 201251,
+    "americanIndianNH": 3086,
+    "asianNH": 225075,
+    "pacificIslanderNH": 2247,
+    "otherNH": 13360,
+    "twoOrMoreNH": 74813,
+    "hispanic": 872697
+   },
+   "shares": {
+    "whiteNH": 0.2677,
+    "blackNH": 0.1058,
+    "americanIndianNH": 0.0016,
+    "asianNH": 0.1184,
+    "pacificIslanderNH": 0.0012,
+    "otherNH": 0.007,
+    "twoOrMoreNH": 0.0393,
+    "hispanic": 0.459
+   },
+   "median_household_income": 75236,
+   "zctas": 56
+  },
+  "Los Rios Community College District": {
+   "population": 1553534,
+   "counts": {
+    "whiteNH": 606707,
+    "blackNH": 140513,
+    "americanIndianNH": 4024,
+    "asianNH": 286830,
+    "pacificIslanderNH": 17028,
+    "otherNH": 11237,
+    "twoOrMoreNH": 107457,
+    "hispanic": 379738
+   },
+   "shares": {
+    "whiteNH": 0.3905,
+    "blackNH": 0.0904,
+    "americanIndianNH": 0.0026,
+    "asianNH": 0.1846,
+    "pacificIslanderNH": 0.011,
+    "otherNH": 0.0072,
+    "twoOrMoreNH": 0.0692,
+    "hispanic": 0.2444
+   },
+   "median_household_income": 92967,
+   "zctas": 56
+  },
+  "Marin Community College District": {
+   "population": 352481,
+   "counts": {
+    "whiteNH": 178540,
+    "blackNH": 17505,
+    "americanIndianNH": 248,
+    "asianNH": 27761,
+    "pacificIslanderNH": 855,
+    "otherNH": 4409,
+    "twoOrMoreNH": 19339,
+    "hispanic": 103824
+   },
+   "shares": {
+    "whiteNH": 0.5065,
+    "blackNH": 0.0497,
+    "americanIndianNH": 0.0007,
+    "asianNH": 0.0788,
+    "pacificIslanderNH": 0.0024,
+    "otherNH": 0.0125,
+    "twoOrMoreNH": 0.0549,
+    "hispanic": 0.2946
+   },
+   "median_household_income": 137205,
+   "zctas": 27
+  },
+  "Mendocino-Lake Community College District": {
+   "population": 130187,
+   "counts": {
+    "whiteNH": 81757,
+    "blackNH": 1147,
+    "americanIndianNH": 3332,
+    "asianNH": 2647,
+    "pacificIslanderNH": 236,
+    "otherNH": 799,
+    "twoOrMoreNH": 6691,
+    "hispanic": 33578
+   },
+   "shares": {
+    "whiteNH": 0.628,
+    "blackNH": 0.0088,
+    "americanIndianNH": 0.0256,
+    "asianNH": 0.0203,
+    "pacificIslanderNH": 0.0018,
+    "otherNH": 0.0061,
+    "twoOrMoreNH": 0.0514,
+    "hispanic": 0.2579
+   },
+   "median_household_income": 70664,
+   "zctas": 40
+  },
+  "Merced Community College District": {
+   "population": 398597,
+   "counts": {
+    "whiteNH": 109326,
+    "blackNH": 9402,
+    "americanIndianNH": 992,
+    "asianNH": 24187,
+    "pacificIslanderNH": 980,
+    "otherNH": 1928,
+    "twoOrMoreNH": 12023,
+    "hispanic": 239759
+   },
+   "shares": {
+    "whiteNH": 0.2743,
+    "blackNH": 0.0236,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.0607,
+    "pacificIslanderNH": 0.0025,
+    "otherNH": 0.0048,
+    "twoOrMoreNH": 0.0302,
+    "hispanic": 0.6015
+   },
+   "median_household_income": 67182,
+   "zctas": 34
+  },
+  "MiraCosta Community College District": {
+   "population": 429646,
+   "counts": {
+    "whiteNH": 193707,
+    "blackNH": 13984,
+    "americanIndianNH": 1017,
+    "asianNH": 28616,
+    "pacificIslanderNH": 2314,
+    "otherNH": 2882,
+    "twoOrMoreNH": 24496,
+    "hispanic": 162630
+   },
+   "shares": {
+    "whiteNH": 0.4509,
+    "blackNH": 0.0325,
+    "americanIndianNH": 0.0024,
+    "asianNH": 0.0666,
+    "pacificIslanderNH": 0.0054,
+    "otherNH": 0.0067,
+    "twoOrMoreNH": 0.057,
+    "hispanic": 0.3785
+   },
+   "median_household_income": 101772,
+   "zctas": 13
+  },
+  "Monterey Peninsula Community College District": {
+   "population": 106777,
+   "counts": {
+    "whiteNH": 61044,
+    "blackNH": 2638,
+    "americanIndianNH": 165,
+    "asianNH": 7555,
+    "pacificIslanderNH": 695,
+    "otherNH": 907,
+    "twoOrMoreNH": 5595,
+    "hispanic": 28178
+   },
+   "shares": {
+    "whiteNH": 0.5717,
+    "blackNH": 0.0247,
+    "americanIndianNH": 0.0015,
+    "asianNH": 0.0708,
+    "pacificIslanderNH": 0.0065,
+    "otherNH": 0.0085,
+    "twoOrMoreNH": 0.0524,
+    "hispanic": 0.2639
+   },
+   "median_household_income": 107245,
+   "zctas": 10
+  },
+  "Mt. San Antonio Community College District": {
+   "population": 757732,
+   "counts": {
+    "whiteNH": 129647,
+    "blackNH": 34653,
+    "americanIndianNH": 1872,
+    "asianNH": 205658,
+    "pacificIslanderNH": 1588,
+    "otherNH": 3264,
+    "twoOrMoreNH": 20584,
+    "hispanic": 360466
+   },
+   "shares": {
+    "whiteNH": 0.1711,
+    "blackNH": 0.0457,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.2714,
+    "pacificIslanderNH": 0.0021,
+    "otherNH": 0.0043,
+    "twoOrMoreNH": 0.0272,
+    "hispanic": 0.4757
+   },
+   "median_household_income": 101184,
+   "zctas": 19
+  },
+  "Mt. San Jacinto Community College District": {
+   "population": 796829,
+   "counts": {
+    "whiteNH": 316451,
+    "blackNH": 47273,
+    "americanIndianNH": 3672,
+    "asianNH": 53438,
+    "pacificIslanderNH": 2152,
+    "otherNH": 7396,
+    "twoOrMoreNH": 42110,
+    "hispanic": 324337
+   },
+   "shares": {
+    "whiteNH": 0.3971,
+    "blackNH": 0.0593,
+    "americanIndianNH": 0.0046,
+    "asianNH": 0.0671,
+    "pacificIslanderNH": 0.0027,
+    "otherNH": 0.0093,
+    "twoOrMoreNH": 0.0528,
+    "hispanic": 0.407
+   },
+   "median_household_income": 100496,
+   "zctas": 24
+  },
+  "Napa Valley Community College District": {
+   "population": 182879,
+   "counts": {
+    "whiteNH": 82626,
+    "blackNH": 6829,
+    "americanIndianNH": 308,
+    "asianNH": 17893,
+    "pacificIslanderNH": 1194,
+    "otherNH": 1217,
+    "twoOrMoreNH": 8130,
+    "hispanic": 64682
+   },
+   "shares": {
+    "whiteNH": 0.4518,
+    "blackNH": 0.0373,
+    "americanIndianNH": 0.0017,
+    "asianNH": 0.0978,
+    "pacificIslanderNH": 0.0065,
+    "otherNH": 0.0067,
+    "twoOrMoreNH": 0.0445,
+    "hispanic": 0.3537
+   },
+   "median_household_income": 107565,
+   "zctas": 9
+  },
+  "North Orange County Community College District": {
+   "population": 882794,
+   "counts": {
+    "whiteNH": 194658,
+    "blackNH": 17698,
+    "americanIndianNH": 948,
+    "asianNH": 220923,
+    "pacificIslanderNH": 2760,
+    "otherNH": 3712,
+    "twoOrMoreNH": 26018,
+    "hispanic": 416077
+   },
+   "shares": {
+    "whiteNH": 0.2205,
+    "blackNH": 0.02,
+    "americanIndianNH": 0.0011,
+    "asianNH": 0.2503,
+    "pacificIslanderNH": 0.0031,
+    "otherNH": 0.0042,
+    "twoOrMoreNH": 0.0295,
+    "hispanic": 0.4713
+   },
+   "median_household_income": 101560,
+   "zctas": 21
+  },
+  "Ohlone Community College District": {
+   "population": 460184,
+   "counts": {
+    "whiteNH": 69137,
+    "blackNH": 14728,
+    "americanIndianNH": 871,
+    "asianNH": 275661,
+    "pacificIslanderNH": 2465,
+    "otherNH": 2217,
+    "twoOrMoreNH": 16199,
+    "hispanic": 78906
+   },
+   "shares": {
+    "whiteNH": 0.1502,
+    "blackNH": 0.032,
+    "americanIndianNH": 0.0019,
+    "asianNH": 0.599,
+    "pacificIslanderNH": 0.0054,
+    "otherNH": 0.0048,
+    "twoOrMoreNH": 0.0352,
+    "hispanic": 0.1715
+   },
+   "median_household_income": 173912,
+   "zctas": 9
+  },
+  "Palo Verde Community College District": {
+   "population": 29184,
+   "counts": {
+    "whiteNH": 9478,
+    "blackNH": 2458,
+    "americanIndianNH": 1360,
+    "asianNH": 340,
+    "pacificIslanderNH": 60,
+    "otherNH": 406,
+    "twoOrMoreNH": 749,
+    "hispanic": 14333
+   },
+   "shares": {
+    "whiteNH": 0.3248,
+    "blackNH": 0.0842,
+    "americanIndianNH": 0.0466,
+    "asianNH": 0.0117,
+    "pacificIslanderNH": 0.0021,
+    "otherNH": 0.0139,
+    "twoOrMoreNH": 0.0257,
+    "hispanic": 0.4911
+   },
+   "median_household_income": 51249,
+   "zctas": 8
+  },
+  "Palomar Community College District": {
+   "population": 560994,
+   "counts": {
+    "whiteNH": 279018,
+    "blackNH": 10172,
+    "americanIndianNH": 2429,
+    "asianNH": 66719,
+    "pacificIslanderNH": 715,
+    "otherNH": 2898,
+    "twoOrMoreNH": 30177,
+    "hispanic": 168866
+   },
+   "shares": {
+    "whiteNH": 0.4974,
+    "blackNH": 0.0181,
+    "americanIndianNH": 0.0043,
+    "asianNH": 0.1189,
+    "pacificIslanderNH": 0.0013,
+    "otherNH": 0.0052,
+    "twoOrMoreNH": 0.0538,
+    "hispanic": 0.301
+   },
+   "median_household_income": 127521,
+   "zctas": 21
+  },
+  "Pasadena Area Community College District": {
+   "population": 650963,
+   "counts": {
+    "whiteNH": 129337,
+    "blackNH": 36097,
+    "americanIndianNH": 1582,
+    "asianNH": 191491,
+    "pacificIslanderNH": 1098,
+    "otherNH": 2426,
+    "twoOrMoreNH": 23362,
+    "hispanic": 265570
+   },
+   "shares": {
+    "whiteNH": 0.1987,
+    "blackNH": 0.0555,
+    "americanIndianNH": 0.0024,
+    "asianNH": 0.2942,
+    "pacificIslanderNH": 0.0017,
+    "otherNH": 0.0037,
+    "twoOrMoreNH": 0.0359,
+    "hispanic": 0.408
+   },
+   "median_household_income": 99047,
+   "zctas": 21
+  },
+  "Peralta Community College District": {
+   "population": 875893,
+   "counts": {
+    "whiteNH": 299436,
+    "blackNH": 120801,
+    "americanIndianNH": 1742,
+    "asianNH": 175273,
+    "pacificIslanderNH": 3193,
+    "otherNH": 7778,
+    "twoOrMoreNH": 60457,
+    "hispanic": 207213
+   },
+   "shares": {
+    "whiteNH": 0.3419,
+    "blackNH": 0.1379,
+    "americanIndianNH": 0.002,
+    "asianNH": 0.2001,
+    "pacificIslanderNH": 0.0036,
+    "otherNH": 0.0089,
+    "twoOrMoreNH": 0.069,
+    "hispanic": 0.2366
+   },
+   "median_household_income": 117692,
+   "zctas": 36
+  },
+  "Rancho Santiago Community College District": {
+   "population": 739564,
+   "counts": {
+    "whiteNH": 250375,
+    "blackNH": 12980,
+    "americanIndianNH": 629,
+    "asianNH": 137516,
+    "pacificIslanderNH": 1370,
+    "otherNH": 3633,
+    "twoOrMoreNH": 34490,
+    "hispanic": 298571
+   },
+   "shares": {
+    "whiteNH": 0.3385,
+    "blackNH": 0.0176,
+    "americanIndianNH": 0.0009,
+    "asianNH": 0.1859,
+    "pacificIslanderNH": 0.0019,
+    "otherNH": 0.0049,
+    "twoOrMoreNH": 0.0466,
+    "hispanic": 0.4037
+   },
+   "median_household_income": 121672,
+   "zctas": 21
+  },
+  "Redwoods Community College District": {
+   "population": 164270,
+   "counts": {
+    "whiteNH": 111565,
+    "blackNH": 2571,
+    "americanIndianNH": 5794,
+    "asianNH": 4904,
+    "pacificIslanderNH": 495,
+    "otherNH": 1368,
+    "twoOrMoreNH": 13088,
+    "hispanic": 24485
+   },
+   "shares": {
+    "whiteNH": 0.6792,
+    "blackNH": 0.0157,
+    "americanIndianNH": 0.0353,
+    "asianNH": 0.0299,
+    "pacificIslanderNH": 0.003,
+    "otherNH": 0.0083,
+    "twoOrMoreNH": 0.0797,
+    "hispanic": 0.1491
+   },
+   "median_household_income": 63630,
+   "zctas": 45
+  },
+  "Rio Hondo Community College District": {
+   "population": 706011,
+   "counts": {
+    "whiteNH": 45231,
+    "blackNH": 6080,
+    "americanIndianNH": 1751,
+    "asianNH": 163179,
+    "pacificIslanderNH": 689,
+    "otherNH": 3527,
+    "twoOrMoreNH": 7550,
+    "hispanic": 478004
+   },
+   "shares": {
+    "whiteNH": 0.0641,
+    "blackNH": 0.0086,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.2311,
+    "pacificIslanderNH": 0.001,
+    "otherNH": 0.005,
+    "twoOrMoreNH": 0.0107,
+    "hispanic": 0.677
+   },
+   "median_household_income": 84724,
+   "zctas": 17
+  },
+  "Riverside Community College District": {
+   "population": 1060952,
+   "counts": {
+    "whiteNH": 235973,
+    "blackNH": 69133,
+    "americanIndianNH": 1391,
+    "asianNH": 91049,
+    "pacificIslanderNH": 2975,
+    "otherNH": 7523,
+    "twoOrMoreNH": 30462,
+    "hispanic": 622446
+   },
+   "shares": {
+    "whiteNH": 0.2224,
+    "blackNH": 0.0652,
+    "americanIndianNH": 0.0013,
+    "asianNH": 0.0858,
+    "pacificIslanderNH": 0.0028,
+    "otherNH": 0.0071,
+    "twoOrMoreNH": 0.0287,
+    "hispanic": 0.5867
+   },
+   "median_household_income": 101755,
+   "zctas": 23
+  },
+  "San Bernardino Community College District": {
+   "population": 722495,
+   "counts": {
+    "whiteNH": 180023,
+    "blackNH": 62622,
+    "americanIndianNH": 1547,
+    "asianNH": 38998,
+    "pacificIslanderNH": 3147,
+    "otherNH": 4657,
+    "twoOrMoreNH": 22295,
+    "hispanic": 409206
+   },
+   "shares": {
+    "whiteNH": 0.2492,
+    "blackNH": 0.0867,
+    "americanIndianNH": 0.0021,
+    "asianNH": 0.054,
+    "pacificIslanderNH": 0.0044,
+    "otherNH": 0.0064,
+    "twoOrMoreNH": 0.0309,
+    "hispanic": 0.5664
+   },
+   "median_household_income": 82494,
+   "zctas": 37
+  },
+  "San Diego Community College District": {
+   "population": 1102149,
+   "counts": {
+    "whiteNH": 532860,
+    "blackNH": 50118,
+    "americanIndianNH": 2006,
+    "asianNH": 185614,
+    "pacificIslanderNH": 4248,
+    "otherNH": 7487,
+    "twoOrMoreNH": 64705,
+    "hispanic": 255111
+   },
+   "shares": {
+    "whiteNH": 0.4835,
+    "blackNH": 0.0455,
+    "americanIndianNH": 0.0018,
+    "asianNH": 0.1684,
+    "pacificIslanderNH": 0.0039,
+    "otherNH": 0.0068,
+    "twoOrMoreNH": 0.0587,
+    "hispanic": 0.2315
+   },
+   "median_household_income": 119499,
+   "zctas": 39
+  },
+  "San Francisco Community College District": {
+   "population": 1044183,
+   "counts": {
+    "whiteNH": 351131,
+    "blackNH": 42696,
+    "americanIndianNH": 1819,
+    "asianNH": 390296,
+    "pacificIslanderNH": 4690,
+    "otherNH": 8081,
+    "twoOrMoreNH": 59555,
+    "hispanic": 185915
+   },
+   "shares": {
+    "whiteNH": 0.3363,
+    "blackNH": 0.0409,
+    "americanIndianNH": 0.0017,
+    "asianNH": 0.3738,
+    "pacificIslanderNH": 0.0045,
+    "otherNH": 0.0077,
+    "twoOrMoreNH": 0.057,
+    "hispanic": 0.178
+   },
+   "median_household_income": 142476,
+   "zctas": 32
+  },
+  "San Joaquin Delta Community College District": {
+   "population": 919071,
+   "counts": {
+    "whiteNH": 272328,
+    "blackNH": 61376,
+    "americanIndianNH": 2363,
+    "asianNH": 148666,
+    "pacificIslanderNH": 4461,
+    "otherNH": 4922,
+    "twoOrMoreNH": 43470,
+    "hispanic": 381485
+   },
+   "shares": {
+    "whiteNH": 0.2963,
+    "blackNH": 0.0668,
+    "americanIndianNH": 0.0026,
+    "asianNH": 0.1618,
+    "pacificIslanderNH": 0.0049,
+    "otherNH": 0.0054,
+    "twoOrMoreNH": 0.0473,
+    "hispanic": 0.4151
+   },
+   "median_household_income": 101277,
+   "zctas": 42
+  },
+  "San Jose-Evergreen Community College District": {
+   "population": 866122,
+   "counts": {
+    "whiteNH": 190742,
+    "blackNH": 22887,
+    "americanIndianNH": 2182,
+    "asianNH": 325158,
+    "pacificIslanderNH": 3059,
+    "otherNH": 4702,
+    "twoOrMoreNH": 32044,
+    "hispanic": 285348
+   },
+   "shares": {
+    "whiteNH": 0.2202,
+    "blackNH": 0.0264,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.3754,
+    "pacificIslanderNH": 0.0035,
+    "otherNH": 0.0054,
+    "twoOrMoreNH": 0.037,
+    "hispanic": 0.3295
+   },
+   "median_household_income": 145401,
+   "zctas": 25
+  },
+  "San Luis Obispo County Community College District": {
+   "population": 169832,
+   "counts": {
+    "whiteNH": 112224,
+    "blackNH": 1018,
+    "americanIndianNH": 302,
+    "asianNH": 5814,
+    "pacificIslanderNH": 64,
+    "otherNH": 1346,
+    "twoOrMoreNH": 8561,
+    "hispanic": 40503
+   },
+   "shares": {
+    "whiteNH": 0.6608,
+    "blackNH": 0.006,
+    "americanIndianNH": 0.0018,
+    "asianNH": 0.0342,
+    "pacificIslanderNH": 0.0004,
+    "otherNH": 0.0079,
+    "twoOrMoreNH": 0.0504,
+    "hispanic": 0.2385
+   },
+   "median_household_income": 94057,
+   "zctas": 20
+  },
+  "San Mateo County Community College District": {
+   "population": 439242,
+   "counts": {
+    "whiteNH": 175080,
+    "blackNH": 7001,
+    "americanIndianNH": 492,
+    "asianNH": 118678,
+    "pacificIslanderNH": 3720,
+    "otherNH": 4490,
+    "twoOrMoreNH": 24951,
+    "hispanic": 104830
+   },
+   "shares": {
+    "whiteNH": 0.3986,
+    "blackNH": 0.0159,
+    "americanIndianNH": 0.0011,
+    "asianNH": 0.2702,
+    "pacificIslanderNH": 0.0085,
+    "otherNH": 0.0102,
+    "twoOrMoreNH": 0.0568,
+    "hispanic": 0.2387
+   },
+   "median_household_income": 173869,
+   "zctas": 19
+  },
+  "Santa Barbara Community College District": {
+   "population": 213333,
+   "counts": {
+    "whiteNH": 116593,
+    "blackNH": 3347,
+    "americanIndianNH": 480,
+    "asianNH": 14822,
+    "pacificIslanderNH": 150,
+    "otherNH": 1605,
+    "twoOrMoreNH": 9445,
+    "hispanic": 66891
+   },
+   "shares": {
+    "whiteNH": 0.5465,
+    "blackNH": 0.0157,
+    "americanIndianNH": 0.0023,
+    "asianNH": 0.0695,
+    "pacificIslanderNH": 0.0007,
+    "otherNH": 0.0075,
+    "twoOrMoreNH": 0.0443,
+    "hispanic": 0.3136
+   },
+   "median_household_income": 118127,
+   "zctas": 12
+  },
+  "Santa Clarita Community College District": {
+   "population": 984343,
+   "counts": {
+    "whiteNH": 349089,
+    "blackNH": 37752,
+    "americanIndianNH": 1429,
+    "asianNH": 132226,
+    "pacificIslanderNH": 1686,
+    "otherNH": 7689,
+    "twoOrMoreNH": 39268,
+    "hispanic": 415204
+   },
+   "shares": {
+    "whiteNH": 0.3546,
+    "blackNH": 0.0384,
+    "americanIndianNH": 0.0015,
+    "asianNH": 0.1343,
+    "pacificIslanderNH": 0.0017,
+    "otherNH": 0.0078,
+    "twoOrMoreNH": 0.0399,
+    "hispanic": 0.4218
+   },
+   "median_household_income": 112571,
+   "zctas": 29
+  },
+  "Santa Monica Community College District": {
+   "population": 804220,
+   "counts": {
+    "whiteNH": 449346,
+    "blackNH": 36565,
+    "americanIndianNH": 1102,
+    "asianNH": 105928,
+    "pacificIslanderNH": 1112,
+    "otherNH": 7489,
+    "twoOrMoreNH": 50590,
+    "hispanic": 152088
+   },
+   "shares": {
+    "whiteNH": 0.5587,
+    "blackNH": 0.0455,
+    "americanIndianNH": 0.0014,
+    "asianNH": 0.1317,
+    "pacificIslanderNH": 0.0014,
+    "otherNH": 0.0093,
+    "twoOrMoreNH": 0.0629,
+    "hispanic": 0.1891
+   },
+   "median_household_income": 123998,
+   "zctas": 31
+  },
+  "Sequoias Community College District": {
+   "population": 692119,
+   "counts": {
+    "whiteNH": 168479,
+    "blackNH": 15190,
+    "americanIndianNH": 3169,
+    "asianNH": 28041,
+    "pacificIslanderNH": 753,
+    "otherNH": 3113,
+    "twoOrMoreNH": 14499,
+    "hispanic": 458875
+   },
+   "shares": {
+    "whiteNH": 0.2434,
+    "blackNH": 0.0219,
+    "americanIndianNH": 0.0046,
+    "asianNH": 0.0405,
+    "pacificIslanderNH": 0.0011,
+    "otherNH": 0.0045,
+    "twoOrMoreNH": 0.0209,
+    "hispanic": 0.663
+   },
+   "median_household_income": 69776,
+   "zctas": 45
+  },
+  "Shasta-Tehama-Trinity Joint Community College District": {
+   "population": 243055,
+   "counts": {
+    "whiteNH": 179440,
+    "blackNH": 2023,
+    "americanIndianNH": 3450,
+    "asianNH": 7032,
+    "pacificIslanderNH": 416,
+    "otherNH": 2030,
+    "twoOrMoreNH": 15659,
+    "hispanic": 33005
+   },
+   "shares": {
+    "whiteNH": 0.7383,
+    "blackNH": 0.0083,
+    "americanIndianNH": 0.0142,
+    "asianNH": 0.0289,
+    "pacificIslanderNH": 0.0017,
+    "otherNH": 0.0084,
+    "twoOrMoreNH": 0.0644,
+    "hispanic": 0.1358
+   },
+   "median_household_income": 71343,
+   "zctas": 40
+  },
+  "Sierra Joint Community College District": {
+   "population": 787229,
+   "counts": {
+    "whiteNH": 531506,
+    "blackNH": 14942,
+    "americanIndianNH": 1972,
+    "asianNH": 65359,
+    "pacificIslanderNH": 900,
+    "otherNH": 4883,
+    "twoOrMoreNH": 51562,
+    "hispanic": 116105
+   },
+   "shares": {
+    "whiteNH": 0.6752,
+    "blackNH": 0.019,
+    "americanIndianNH": 0.0025,
+    "asianNH": 0.083,
+    "pacificIslanderNH": 0.0011,
+    "otherNH": 0.0062,
+    "twoOrMoreNH": 0.0655,
+    "hispanic": 0.1475
+   },
+   "median_household_income": 116554,
+   "zctas": 47
+  },
+  "Siskiyou Joint Community College District": {
+   "population": 45951,
+   "counts": {
+    "whiteNH": 33712,
+    "blackNH": 581,
+    "americanIndianNH": 1236,
+    "asianNH": 791,
+    "pacificIslanderNH": 205,
+    "otherNH": 180,
+    "twoOrMoreNH": 2903,
+    "hispanic": 6343
+   },
+   "shares": {
+    "whiteNH": 0.7337,
+    "blackNH": 0.0126,
+    "americanIndianNH": 0.0269,
+    "asianNH": 0.0172,
+    "pacificIslanderNH": 0.0045,
+    "otherNH": 0.0039,
+    "twoOrMoreNH": 0.0632,
+    "hispanic": 0.138
+   },
+   "median_household_income": 59627,
+   "zctas": 25
+  },
+  "Solano Community College District": {
+   "population": 344441,
+   "counts": {
+    "whiteNH": 121253,
+    "blackNH": 41058,
+    "americanIndianNH": 797,
+    "asianNH": 45223,
+    "pacificIslanderNH": 2395,
+    "otherNH": 2975,
+    "twoOrMoreNH": 23106,
+    "hispanic": 107634
+   },
+   "shares": {
+    "whiteNH": 0.352,
+    "blackNH": 0.1192,
+    "americanIndianNH": 0.0023,
+    "asianNH": 0.1313,
+    "pacificIslanderNH": 0.007,
+    "otherNH": 0.0086,
+    "twoOrMoreNH": 0.0671,
+    "hispanic": 0.3125
+   },
+   "median_household_income": 101694,
+   "zctas": 12
+  },
+  "Sonoma County Junior College District": {
+   "population": 498841,
+   "counts": {
+    "whiteNH": 287738,
+    "blackNH": 7812,
+    "americanIndianNH": 1634,
+    "asianNH": 21369,
+    "pacificIslanderNH": 1343,
+    "otherNH": 3154,
+    "twoOrMoreNH": 25619,
+    "hispanic": 150172
+   },
+   "shares": {
+    "whiteNH": 0.5768,
+    "blackNH": 0.0157,
+    "americanIndianNH": 0.0033,
+    "asianNH": 0.0428,
+    "pacificIslanderNH": 0.0027,
+    "otherNH": 0.0063,
+    "twoOrMoreNH": 0.0514,
+    "hispanic": 0.301
+   },
+   "median_household_income": 103554,
+   "zctas": 47
+  },
+  "South Orange County Community College District": {
+   "population": 846887,
+   "counts": {
+    "whiteNH": 454008,
+    "blackNH": 12043,
+    "americanIndianNH": 863,
+    "asianNH": 179890,
+    "pacificIslanderNH": 1708,
+    "otherNH": 5436,
+    "twoOrMoreNH": 49302,
+    "hispanic": 143637
+   },
+   "shares": {
+    "whiteNH": 0.5361,
+    "blackNH": 0.0142,
+    "americanIndianNH": 0.001,
+    "asianNH": 0.2124,
+    "pacificIslanderNH": 0.002,
+    "otherNH": 0.0064,
+    "twoOrMoreNH": 0.0582,
+    "hispanic": 0.1696
+   },
+   "median_household_income": 141904,
+   "zctas": 27
+  },
+  "Southwestern Community College District": {
+   "population": 638795,
+   "counts": {
+    "whiteNH": 88081,
+    "blackNH": 41489,
+    "americanIndianNH": 710,
+    "asianNH": 88545,
+    "pacificIslanderNH": 2276,
+    "otherNH": 3575,
+    "twoOrMoreNH": 23069,
+    "hispanic": 391050
+   },
+   "shares": {
+    "whiteNH": 0.1379,
+    "blackNH": 0.0649,
+    "americanIndianNH": 0.0011,
+    "asianNH": 0.1386,
+    "pacificIslanderNH": 0.0036,
+    "otherNH": 0.0056,
+    "twoOrMoreNH": 0.0361,
+    "hispanic": 0.6122
+   },
+   "median_household_income": 95258,
+   "zctas": 18
+  },
+  "State Center Community College District": {
+   "population": 1065492,
+   "counts": {
+    "whiteNH": 297483,
+    "blackNH": 43818,
+    "americanIndianNH": 5431,
+    "asianNH": 111987,
+    "pacificIslanderNH": 1569,
+    "otherNH": 4775,
+    "twoOrMoreNH": 36143,
+    "hispanic": 564286
+   },
+   "shares": {
+    "whiteNH": 0.2792,
+    "blackNH": 0.0411,
+    "americanIndianNH": 0.0051,
+    "asianNH": 0.1051,
+    "pacificIslanderNH": 0.0015,
+    "otherNH": 0.0045,
+    "twoOrMoreNH": 0.0339,
+    "hispanic": 0.5296
+   },
+   "median_household_income": 79309,
+   "zctas": 55
+  },
+  "Ventura County Community College District": {
+   "population": 710898,
+   "counts": {
+    "whiteNH": 284636,
+    "blackNH": 12176,
+    "americanIndianNH": 1035,
+    "asianNH": 46395,
+    "pacificIslanderNH": 1065,
+    "otherNH": 3842,
+    "twoOrMoreNH": 28107,
+    "hispanic": 333642
+   },
+   "shares": {
+    "whiteNH": 0.4004,
+    "blackNH": 0.0171,
+    "americanIndianNH": 0.0015,
+    "asianNH": 0.0653,
+    "pacificIslanderNH": 0.0015,
+    "otherNH": 0.0054,
+    "twoOrMoreNH": 0.0395,
+    "hispanic": 0.4693
+   },
+   "median_household_income": 110658,
+   "zctas": 23
+  },
+  "Victor Valley Community College District": {
+   "population": 423574,
+   "counts": {
+    "whiteNH": 121003,
+    "blackNH": 40294,
+    "americanIndianNH": 1001,
+    "asianNH": 12735,
+    "pacificIslanderNH": 1144,
+    "otherNH": 2357,
+    "twoOrMoreNH": 16340,
+    "hispanic": 228700
+   },
+   "shares": {
+    "whiteNH": 0.2857,
+    "blackNH": 0.0951,
+    "americanIndianNH": 0.0024,
+    "asianNH": 0.0301,
+    "pacificIslanderNH": 0.0027,
+    "otherNH": 0.0056,
+    "twoOrMoreNH": 0.0386,
+    "hispanic": 0.5399
+   },
+   "median_household_income": 75268,
+   "zctas": 12
+  },
+  "West Hills Community College District": {
+   "population": 93690,
+   "counts": {
+    "whiteNH": 21346,
+    "blackNH": 3713,
+    "americanIndianNH": 740,
+    "asianNH": 3241,
+    "pacificIslanderNH": 245,
+    "otherNH": 262,
+    "twoOrMoreNH": 2150,
+    "hispanic": 61993
+   },
+   "shares": {
+    "whiteNH": 0.2278,
+    "blackNH": 0.0396,
+    "americanIndianNH": 0.0079,
+    "asianNH": 0.0346,
+    "pacificIslanderNH": 0.0026,
+    "otherNH": 0.0028,
+    "twoOrMoreNH": 0.0229,
+    "hispanic": 0.6617
+   },
+   "median_household_income": 70375,
+   "zctas": 12
+  },
+  "West Kern Community College District": {
+   "population": 636528,
+   "counts": {
+    "whiteNH": 177163,
+    "blackNH": 29087,
+    "americanIndianNH": 2065,
+    "asianNH": 34197,
+    "pacificIslanderNH": 735,
+    "otherNH": 3052,
+    "twoOrMoreNH": 18366,
+    "hispanic": 371863
+   },
+   "shares": {
+    "whiteNH": 0.2783,
+    "blackNH": 0.0457,
+    "americanIndianNH": 0.0032,
+    "asianNH": 0.0537,
+    "pacificIslanderNH": 0.0012,
+    "otherNH": 0.0048,
+    "twoOrMoreNH": 0.0289,
+    "hispanic": 0.5842
+   },
+   "median_household_income": 73687,
+   "zctas": 24
+  },
+  "West Valley-Mission Community College District": {
+   "population": 612986,
+   "counts": {
+    "whiteNH": 183402,
+    "blackNH": 10681,
+    "americanIndianNH": 532,
+    "asianNH": 291229,
+    "pacificIslanderNH": 2927,
+    "otherNH": 3616,
+    "twoOrMoreNH": 26542,
+    "hispanic": 94057
+   },
+   "shares": {
+    "whiteNH": 0.2992,
+    "blackNH": 0.0174,
+    "americanIndianNH": 0.0009,
+    "asianNH": 0.4751,
+    "pacificIslanderNH": 0.0048,
+    "otherNH": 0.0059,
+    "twoOrMoreNH": 0.0433,
+    "hispanic": 0.1534
+   },
+   "median_household_income": 186591,
+   "zctas": 19
+  },
+  "Yosemite Community College District": {
+   "population": 628883,
+   "counts": {
+    "whiteNH": 281879,
+    "blackNH": 15314,
+    "americanIndianNH": 2423,
+    "asianNH": 32550,
+    "pacificIslanderNH": 3338,
+    "otherNH": 2203,
+    "twoOrMoreNH": 26486,
+    "hispanic": 264690
+   },
+   "shares": {
+    "whiteNH": 0.4482,
+    "blackNH": 0.0244,
+    "americanIndianNH": 0.0039,
+    "asianNH": 0.0518,
+    "pacificIslanderNH": 0.0053,
+    "otherNH": 0.0035,
+    "twoOrMoreNH": 0.0421,
+    "hispanic": 0.4209
+   },
+   "median_household_income": 82908,
+   "zctas": 56
+  },
+  "Yuba Community College District": {
+   "population": 262758,
+   "counts": {
+    "whiteNH": 106361,
+    "blackNH": 5901,
+    "americanIndianNH": 1720,
+    "asianNH": 27676,
+    "pacificIslanderNH": 896,
+    "otherNH": 2208,
+    "twoOrMoreNH": 13769,
+    "hispanic": 104227
+   },
+   "shares": {
+    "whiteNH": 0.4048,
+    "blackNH": 0.0225,
+    "americanIndianNH": 0.0065,
+    "asianNH": 0.1053,
+    "pacificIslanderNH": 0.0034,
+    "otherNH": 0.0084,
+    "twoOrMoreNH": 0.0524,
+    "hispanic": 0.3967
+   },
+   "median_household_income": 84303,
+   "zctas": 30
+  }
+ }
+}

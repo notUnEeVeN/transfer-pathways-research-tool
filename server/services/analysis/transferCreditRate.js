@@ -700,6 +700,7 @@ function nullMetrics(row, status, warning, namedUnits = null) {
 
 async function transferCreditRateData(db, _auditDb, {
   degreeType = 'local_as', majorSlug = null, majorPrograms = null,
+  verifiedOnly = false, assumeDegreeTemplatesValid = verifiedOnly,
 } = {}) {
   const type = DEGREE_TYPES.includes(degreeType) ? degreeType : 'local_as';
   const slug = String(majorSlug || '').trim();
@@ -709,6 +710,7 @@ async function transferCreditRateData(db, _auditDb, {
   const degreeQuery = {
     kind: 'as_degree', degree_type: type, status: 'found',
     major_slug: majorSlug || 'cs',
+    ...(verifiedOnly ? { 'verification.verified': true } : {}),
   };
   const templateQuery = { kind: 'degree' };
   if (slug) {
@@ -845,14 +847,18 @@ async function transferCreditRateData(db, _auditDb, {
           ? true
           : (doc.analysis_ready === false ? false : null),
         source_verified: doc.verification?.verified === true,
+        degree_template_assumed_valid: assumeDegreeTemplatesValid,
         source_modeling_warning_count: modelingWarningCount,
       };
 
       const sourceWarnings = [];
       if (doc.analysis_ready === false) {
-        sourceWarnings.push('The associate-degree source is not marked analysis-ready and still requires human verification.');
+        sourceWarnings.push(doc.verification?.verified === true
+          ? 'The associate-degree source is human-verified but is not marked analysis-ready for this model.'
+          : 'The associate-degree source is not marked analysis-ready and still requires human verification.');
       }
-      if (/needs[_\s-]+human[_\s-]+verification/i.test(String(campus.template.research_status || ''))) {
+      if (!assumeDegreeTemplatesValid
+          && /needs[_\s-]+human[_\s-]+verification/i.test(String(campus.template.research_status || ''))) {
         sourceWarnings.push('The four-year graduation template still requires human verification.');
       }
       if (catalogCohortsDiffer(doc.catalog_year, campus.template.catalog_year)) {

@@ -54,6 +54,11 @@ export const REQUIREMENT_SCOPES = [
   { value: 'lower-division', label: 'Lower-division only' },
 ]
 
+export const EVIDENCE_COHORTS = [
+  { value: 'all', label: 'All sourced programs' },
+  { value: 'verified', label: 'Verified programs only' },
+]
+
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
@@ -108,6 +113,37 @@ function scopeDescription(scope) {
   return scope === 'lower-division'
     ? 'Transferable and breadth requirements; university-only work is excluded.'
     : 'The complete modeled graduation plan, including upper-division and university-only work.'
+}
+
+export function EvidenceCohortControl({ verifiedOnly, onChange }) {
+  return (
+    <div className='flex flex-col' data-control-group='evidence'>
+      <span className='field-label'>Associate-degree evidence</span>
+      <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+        {EVIDENCE_COHORTS.map((item) => {
+          const active = verifiedOnly === (item.value === 'verified')
+          return (
+            <button key={item.value} type='button' aria-pressed={active}
+              onClick={() => onChange(item.value === 'verified')}
+              className={`px-3 text-button border-r border-border last:border-r-0 ${
+                active ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+              }`}>
+              {item.label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export function EvidenceSummary({ verifiedOnly, collegeCount, cellCount }) {
+  return (
+    <>
+      <span>{verifiedOnly ? 'Verified associate-degree programs only' : 'All sourced associate-degree programs'}</span>
+      <span className='text-ink-subtle'> · {intFmt.format(collegeCount)} {collegeCount === 1 ? 'college' : 'colleges'} · {intFmt.format(cellCount)} modeled {cellCount === 1 ? 'cell' : 'cells'}</span>
+    </>
+  )
 }
 
 // Shared by the Fig. 3 (rate) and Fig. 4 (extra units) cards — `getValue`
@@ -287,12 +323,13 @@ export default function TransferCreditRate({
   }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
   const [degreeType, setDegreeType] = useState(() => degreeModes[0]?.value || 'local_as')
   const [scope, setScope] = useState('lower-division')
+  const [verifiedOnly, setVerifiedOnly] = useState(false)
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(degreeModes[0]?.value || 'local_as')
     }
   }, [degreeModes, degreeType])
-  const query = useTransferCreditRate(degreeType, { majorSlug })
+  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
   const rows = query.data?.rows || []
   const model = useMemo(
     () => buildRateMatrix(rows, (row) => rateForScope(row, scope)),
@@ -310,7 +347,7 @@ export default function TransferCreditRate({
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
       <div className='flex flex-col'>
-        <span className='field-label'>Degree</span>
+        <span className='field-label'>Associate degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
           {degreeModes.map((mode) => (
             <button key={mode.value} type='button' onClick={() => setDegreeType(mode.value)}
@@ -335,6 +372,7 @@ export default function TransferCreditRate({
           ))}
         </div>
       </div>
+      <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />
       <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
         Refresh
@@ -350,7 +388,9 @@ export default function TransferCreditRate({
       <Stack gap='section'>
         {controls}
         <EmptyState card title='No degree records'
-          description='No analyzable associate-degree records exist for this degree type yet.' className='p-8' />
+          description={verifiedOnly
+            ? 'No human-verified associate-degree programs exist for this degree type yet.'
+            : 'No analyzable associate-degree records exist for this degree type yet.'} className='p-8' />
       </Stack>
     )
   }
@@ -360,15 +400,28 @@ export default function TransferCreditRate({
       {controls}
       <div data-export-root className='flex flex-col gap-3'>
         <div className='surface-card px-4 py-3'>
-          <p className='text-label'>{REQUIREMENT_SCOPES.find((item) => item.value === scope)?.label}</p>
+          <p className='text-label'>
+            {REQUIREMENT_SCOPES.find((item) => item.value === scope)?.label}
+            <span className='text-ink-subtle'> · </span>
+            <EvidenceSummary verifiedOnly={verifiedOnly}
+              collegeCount={model.rows.length} cellCount={model.valueCount} />
+          </p>
           <p className='mt-1 text-caption text-ink-muted'>{scopeDescription(scope)}</p>
+          {verifiedOnly && (
+            <p className='mt-1 text-caption text-ink-muted'>
+              The associate-degree sources are human-verified; bachelor’s graduation templates are treated as valid for this comparison.
+            </p>
+          )}
         </div>
         <RateTable model={model} scope={scope} />
         <TransferMethodNote warningCount={warningCount}>
           The denominator is the receiving bachelor’s requirements, not the associate degree. The full view includes university-only upper-division work; the lower-division view excludes that tier. Associate-degree units are applied at most once to articulated courses, general education or breadth, and documented elective room. Blank cells lack enough curated information.
-          {rows.some((row) => row.source_analysis_ready === false
-            || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
-            && ' Results marked with source-review warnings are exploratory until both degree structures are hand-verified.'}
+          {verifiedOnly
+            ? ' This high-fidelity state limits the associate-degree side to programs marked human-verified. Other method and modeling warnings remain visible.'
+            : rows.some((row) => row.source_verified !== true
+              || row.source_analysis_ready === false
+              || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
+              && ' This all-record state is exploratory because it can include associate-degree or bachelor’s sources still awaiting review.'}
         </TransferMethodNote>
       </div>
     </Stack>

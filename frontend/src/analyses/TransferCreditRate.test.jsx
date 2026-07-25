@@ -67,7 +67,7 @@ describe('TransferCreditRate', () => {
   it('defaults to the local CS A.S. cohort and lower-division requirements', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
-    expect(mockRate).toHaveBeenCalledWith('local_as', { majorSlug: 'cs' })
+    expect(mockRate).toHaveBeenCalledWith('local_as', { majorSlug: 'cs', verifiedOnly: false })
     expect(screen.getByText('CC Alpha')).toBeInTheDocument()
     // The cell value repeats in the column-average row (one computable cell).
     expect(screen.getAllByText('90.5%').length).toBeGreaterThan(0)
@@ -101,7 +101,20 @@ describe('TransferCreditRate', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
     fireEvent.click(screen.getByRole('button', { name: 'CS A.S.-T' }))
-    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs' })
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs', verifiedOnly: false })
+  })
+
+  it('switches to the human-verified associate-degree cohort without changing requirement scope', () => {
+    mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
+    render(<TransferCreditRate />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Verified programs only' }))
+
+    expect(mockRate).toHaveBeenLastCalledWith('local_as', { majorSlug: 'cs', verifiedOnly: true })
+    expect(screen.getByText(/Verified associate-degree programs only/i)).toBeInTheDocument()
+    expect(screen.getByText(/bachelor’s graduation templates are treated as valid/i)).toBeInTheDocument()
+    expect(screen.getByRole('note')).toHaveTextContent(/high-fidelity state limits the associate-degree side/i)
+    expect(screen.getByText(/Transferable and breadth requirements; university-only work is excluded/i)).toBeInTheDocument()
   })
 
   it('uses the Economics transfer and local A.A. cohorts and exposes source-review status', () => {
@@ -115,16 +128,18 @@ describe('TransferCreditRate', () => {
       degreeAnalysisSlots={['ast', 'local_other']}
       degreeSlotLabels={{ ast: 'A.A.-T / A.S.-T', local_other: 'Local A.A.' }} />)
 
-    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'econ' })
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'econ', verifiedOnly: false })
     expect(screen.getByRole('button', { name: 'Economics A.A.-T / A.S.-T' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Local Economics A.A.' }))
-    expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ' })
-    expect(screen.getByRole('note')).toHaveTextContent(/exploratory until both degree structures are hand-verified/i)
+    expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ', verifiedOnly: false })
+    expect(screen.getByRole('note')).toHaveTextContent(/all-record state is exploratory/i)
   })
 
   it('shows an empty state when the cohort has no records', () => {
     mockRate.mockReturnValue({ data: { rows: [] }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
     expect(screen.getByText('No degree records')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Verified programs only' }))
+    expect(screen.getByText(/No human-verified associate-degree programs exist/i)).toBeInTheDocument()
   })
 })

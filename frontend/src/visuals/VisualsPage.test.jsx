@@ -128,12 +128,14 @@ describe('built-in visual registry', () => {
       'transfer-extra-units',
       'coverage-heatmap',
       'income-access',
+      'income-depth',
       'multi-campus-pathways',
       'credit-loss',
       'choice-cost',
       'category-gaps',
       'complexity',
       'time-to-degree',
+      'price-of-place',
     ])
   })
 
@@ -154,6 +156,7 @@ describe('built-in visual registry', () => {
       'transfer-extra-units',
       'coverage-heatmap',
       'income-access',
+      'income-depth',
       'credit-loss',
       'choice-cost',
       'category-gaps',
@@ -182,12 +185,14 @@ describe('built-in visual registry', () => {
       'Modeled replacement coursework',
       'Potential graduation-unit coverage',
       'Transfer access and local income',
+      'Articulation depth and local income',
       'Preparation as campus options expand',
       'Minimum transfer coursework',
       'Cost of applying to more campuses',
       'Missing courses by subject',
       'Transfer pathway complexity',
       'Associate degree transfer credit',
+      'The price of place',
     ])
     for (const analysis of ANALYSES) {
       expect(`${analysis.title} ${analysis.description}`).not.toMatch(

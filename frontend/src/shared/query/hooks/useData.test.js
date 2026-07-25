@@ -15,7 +15,8 @@ vi.mock('../../hooks/useAuth', () => ({
   useAuth: () => ({ user: { uid: 'user-1' } }),
 }))
 
-import { useCoverage } from './useData'
+import apiClient from '../../api/apiClient'
+import { useCoverage, useTransferCreditRate } from './useData'
 
 describe('useCoverage', () => {
   beforeEach(() => mocks.useQuery.mockReset())
@@ -33,5 +34,27 @@ describe('useCoverage', () => {
       enabled: true,
       gcTime: 0,
     }))
+  })
+})
+
+describe('useTransferCreditRate', () => {
+  beforeEach(() => {
+    mocks.useQuery.mockReset()
+    apiClient.get.mockReset()
+  })
+
+  it('separates and requests the verified-only evidence cohort', async () => {
+    apiClient.get.mockResolvedValue({ data: { rows: [] } })
+
+    useTransferCreditRate('ast', { majorSlug: 'bio', verifiedOnly: true })
+
+    const queryOptions = mocks.useQuery.mock.calls[0][0]
+    expect(queryOptions.queryKey).toEqual([
+      'analysis-transfer-credit-rate', 'v6', 'user-1', 'bio', 'ast', 'verified',
+    ])
+    await queryOptions.queryFn()
+    expect(apiClient.get).toHaveBeenCalledWith('/analysis/transfer-credit-rate', {
+      params: { degree_type: 'ast', majorSlug: 'bio', verified_only: true },
+    })
   })
 })

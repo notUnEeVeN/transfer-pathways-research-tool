@@ -31,6 +31,7 @@ const {
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
 const { transferCreditRateData } = require('../services/analysis/transferCreditRate');
+const { articulationDepthData } = require('../services/analysis/articulationDepth');
 const { multiCampusPathwaysData } = require('../services/analysis/pathwayPlanner');
 const { loadMultiCampusSnapshot } = require('../services/analysis/pathwaySnapshot');
 
@@ -161,6 +162,9 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
 }
 
 exports.coverage = makeEndpoint('coverage', coverageData);
+// District-level articulation depth over each campus's own required +
+// recommended receiver universe — the measure behind the depth/income figure.
+exports.articulationDepth = makeEndpoint('articulation-depth', articulationDepthData);
 
 // Per-college ASSIST-vs-website minimums comparison (one campus × major ×
 // college). Single object, not a row list, so it can't ride makeEndpoint;
@@ -214,11 +218,22 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
   const configuredDefault = (major.degreeAnalysisSlots || [])
     .find((slot) => AS_DEGREE_SLOTS.includes(slot));
   const degreeType = requestedType || configuredDefault || 'local_as';
+  const verifiedOnlyParam = String(req.query.verified_only ?? '').trim().toLowerCase();
+  if (verifiedOnlyParam && !['true', 'false', '1', '0'].includes(verifiedOnlyParam)) {
+    return res.status(400).json({ error: 'verified_only must be true or false' });
+  }
+  const verifiedOnly = verifiedOnlyParam === 'true' || verifiedOnlyParam === '1';
   const db = req.app.locals.db;
   const rows = await transferCreditRateData(db, null, {
     degreeType,
     majorSlug: major.slug,
     majorPrograms: major.programs,
+    verifiedOnly,
+    // The high-fidelity state is presently defined by human verification of
+    // the associate-degree source. Per the research design, the receiving
+    // Biology/Economics graduation templates remain usable assumptions until
+    // their separate verification pass is complete.
+    assumeDegreeTemplatesValid: verifiedOnly,
   });
   if (req.query.format === 'csv') {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
@@ -226,7 +241,13 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
     return res.send(toCsv(rows));
   }
   res.json({
-    params: { degree_type: degreeType, majorSlug: major.slug, method: 'bachelors_completion_v4' },
+    params: {
+      degree_type: degreeType,
+      majorSlug: major.slug,
+      verified_only: verifiedOnly,
+      degree_templates_assumed_valid: verifiedOnly,
+      method: 'bachelors_completion_v4',
+    },
     n: rows.length,
     rows,
   });

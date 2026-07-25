@@ -3,8 +3,9 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
-  TransferMethodNote, buildRateMatrix, degreeModesForMajor, methodDetail,
-  methodWarningCount, paperRedCellColor, shortenSchool, unitSystemName,
+  EvidenceCohortControl, EvidenceSummary, TransferMethodNote, buildRateMatrix,
+  degreeModesForMajor, methodDetail, methodWarningCount, paperRedCellColor,
+  shortenSchool, unitSystemName,
 } from './TransferCreditRate'
 
 /**
@@ -116,12 +117,13 @@ export default function TransferExtraUnits({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
   }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
   const [degreeType, setDegreeType] = useState(() => degreeModes[0]?.value || 'local_as')
+  const [verifiedOnly, setVerifiedOnly] = useState(false)
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(degreeModes[0]?.value || 'local_as')
     }
   }, [degreeModes, degreeType])
-  const query = useTransferCreditRate(degreeType, { majorSlug })
+  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
   const rows = query.data?.rows || []
   const model = useMemo(
     () => buildRateMatrix(rows, (r) => r.extra_units_semester, extraScale),
@@ -139,7 +141,7 @@ export default function TransferExtraUnits({
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
       <div className='flex flex-col'>
-        <span className='field-label'>Degree</span>
+        <span className='field-label'>Associate degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
           {degreeModes.map((mode) => (
             <button key={mode.value} type='button' onClick={() => setDegreeType(mode.value)}
@@ -151,6 +153,7 @@ export default function TransferExtraUnits({
           ))}
         </div>
       </div>
+      <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />
       <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
         Refresh
@@ -166,7 +169,9 @@ export default function TransferExtraUnits({
       <Stack gap='section'>
         {controls}
         <EmptyState card title='No degree records'
-          description='No analyzable associate-degree records exist for this degree type yet.' className='p-8' />
+          description={verifiedOnly
+            ? 'No human-verified associate-degree programs exist for this degree type yet.'
+            : 'No analyzable associate-degree records exist for this degree type yet.'} className='p-8' />
       </Stack>
     )
   }
@@ -175,12 +180,26 @@ export default function TransferExtraUnits({
     <Stack gap='section'>
       {controls}
       <div data-export-root className='flex flex-col gap-3'>
+        <div className='surface-card px-4 py-3'>
+          <p className='text-label'>
+            <EvidenceSummary verifiedOnly={verifiedOnly}
+              collegeCount={model.rows.length} cellCount={model.valueCount} />
+          </p>
+          {verifiedOnly && (
+            <p className='mt-1 text-caption text-ink-muted'>
+              The associate-degree sources are human-verified; bachelor’s graduation templates are treated as valid for this comparison.
+            </p>
+          )}
+        </div>
         <ExtraTable model={model} />
         <TransferMethodNote warningCount={warningCount}>
           Each cell shows associate-degree units that do not apply through a named course, general education or breadth, or documented elective requirement in the curated graduation model. Quarter-unit results are converted to semester-equivalent units for comparison; these are modeled replacement units, not observed student outcomes.
-          {rows.some((row) => row.source_analysis_ready === false
-            || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
-            && ' Results marked with source-review warnings are exploratory until both degree structures are hand-verified.'}
+          {verifiedOnly
+            ? ' This high-fidelity state limits the associate-degree side to programs marked human-verified. Other method and modeling warnings remain visible.'
+            : rows.some((row) => row.source_verified !== true
+              || row.source_analysis_ready === false
+              || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
+              && ' This all-record state is exploratory because it can include associate-degree or bachelor’s sources still awaiting review.'}
         </TransferMethodNote>
       </div>
     </Stack>

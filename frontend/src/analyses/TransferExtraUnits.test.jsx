@@ -38,7 +38,7 @@ describe('TransferExtraUnits', () => {
   it('uses semester-equivalent units for the heatmap and keeps native units in the tooltip', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferExtraUnits />)
-    expect(mockRate).toHaveBeenCalledWith('local_as', { majorSlug: 'cs' })
+    expect(mockRate).toHaveBeenCalledWith('local_as', { majorSlug: 'cs', verifiedOnly: false })
     expect(screen.getAllByText('+20').length).toBeGreaterThan(0)
     expect(screen.getAllByText('+0').length).toBeGreaterThan(0)
     expect(screen.queryByText('Mean replacement units')).not.toBeInTheDocument()
@@ -56,7 +56,19 @@ describe('TransferExtraUnits', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferExtraUnits />)
     fireEvent.click(screen.getByRole('button', { name: 'CS A.S.-T' }))
-    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs' })
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs', verifiedOnly: false })
+  })
+
+  it('switches to a verified-record-only high-fidelity cohort', () => {
+    mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
+    render(<TransferExtraUnits />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Verified programs only' }))
+
+    expect(mockRate).toHaveBeenLastCalledWith('local_as', { majorSlug: 'cs', verifiedOnly: true })
+    expect(screen.getByText(/Verified associate-degree programs only/i)).toBeInTheDocument()
+    expect(screen.getByText(/bachelor’s graduation templates are treated as valid/i)).toBeInTheDocument()
+    expect(screen.getByRole('note')).toHaveTextContent(/high-fidelity state limits the associate-degree side/i)
   })
 
   it('defaults Economics to its transfer cohort and exposes the regular local A.A.', () => {
@@ -65,9 +77,9 @@ describe('TransferExtraUnits', () => {
       degreeAnalysisSlots={['ast', 'local_other']}
       degreeSlotLabels={{ ast: 'A.A.-T / A.S.-T', local_other: 'Local A.A.' }} />)
 
-    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'econ' })
+    expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'econ', verifiedOnly: false })
     expect(screen.getByRole('button', { name: 'Economics A.A.-T / A.S.-T' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Local Economics A.A.' }))
-    expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ' })
+    expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ', verifiedOnly: false })
   })
 })

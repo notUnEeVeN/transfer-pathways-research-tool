@@ -48,6 +48,8 @@ import ArticulationCoverageMap from './ArticulationCoverageMap'
 import PaperCourseBarriers, { PaperCourseBarriersPreview } from './PaperCourseBarriers'
 import CourseTypeCoverage from './CourseTypeCoverage'
 import IncomeAccess from './IncomeAccess'
+import IncomeDepth from './IncomeDepth'
+import PriceOfPlace, { PriceOfPlacePreview } from './PriceOfPlace'
 import CreditLoss from './CreditLoss'
 import ChoiceCost from './ChoiceCost'
 import CategoryGaps from './CategoryGaps'
@@ -240,6 +242,19 @@ export const ANALYSES = [
     Component: IncomeAccess,
   },
   {
+    id: 'income-depth',
+    ...selectedMajor({
+      requiredCapabilities: ['assistAgreements'],
+      datasets: ['ASSIST articulation agreements', 'district income and geography'],
+    }),
+    title: 'Articulation depth and local income',
+    description: 'Plots each community college district by how much of the campus-stated preparation — required and recommended coursework together — is articulated there, against the income of the area the district serves.',
+    provenance: 'new',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-24T12:00:00',
+    Component: IncomeDepth,
+  },
+  {
     id: 'multi-campus-pathways',
     ...fixedComputerScience({
       reason: 'This figure is backed by a committed Computer Science pathway snapshot.',
@@ -323,6 +338,20 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-04T09:04:00',
     Component: TimeToDegree,
+  },
+  {
+    id: 'price-of-place',
+    ...fixedComputerScience({
+      reason: 'This sequence is backed by a committed snapshot computed for the nine Computer Science programs against every other major in the full agreement corpus.',
+      datasets: ['committed full-corpus articulation snapshot', 'district income and geography'],
+    }),
+    title: 'The price of place',
+    description: 'Five connected figures from a committed snapshot of the complete agreement corpus, showing how district income relates to whether a complete Computer Science transfer path formally exists — measured against a field of about nine hundred other majors.',
+    provenance: 'new',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-24T18:00:00',
+    Component: PriceOfPlace,
+    PreviewComponent: PriceOfPlacePreview,
   },
 ]
 

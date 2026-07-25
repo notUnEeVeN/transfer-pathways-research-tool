@@ -130,17 +130,21 @@ export function useCoverage(params = {}, options = {}) {
 export function useTransferCreditRate(degreeType = 'local_as', options = {}) {
   const { user } = useAuth()
   const type = ['ast', 'local_as', 'local_other'].includes(degreeType) ? degreeType : 'local_as'
-  const { enabled = true, majorSlug = 'cs', ...queryOptions } = options
+  const { enabled = true, majorSlug = 'cs', verifiedOnly = false, ...queryOptions } = options
   const scopedMajor = String(majorSlug || '').trim() || 'cs'
+  const sourceCohort = verifiedOnly === true ? 'verified' : 'all'
   return useQuery({
-    // v5 adds major-selected cohorts (including local A.A.) and source-review
-    // metadata; never share one major or method version's memory cache with
-    // another.
-    queryKey: ['analysis-transfer-credit-rate', 'v5', user?.uid, scopedMajor, type],
+    // Keep the all-record and verified-only matrices in separate cache slots;
+    // their rows, averages, and warning assumptions are deliberately distinct.
+    queryKey: ['analysis-transfer-credit-rate', 'v6', user?.uid, scopedMajor, type, sourceCohort],
     queryFn: () =>
       apiClient
         .get('/analysis/transfer-credit-rate', {
-          params: { degree_type: type, majorSlug: scopedMajor },
+          params: {
+            degree_type: type,
+            majorSlug: scopedMajor,
+            ...(verifiedOnly === true ? { verified_only: true } : {}),
+          },
         })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
@@ -205,6 +209,12 @@ function useAnalysisEndpoint(key, path, params = {}, options = {}) {
 
 export function useCreditLoss(params = {}, options = {}) {
   return useAnalysisEndpoint('analysis-credit-loss', '/analysis/credit-loss', params, options)
+}
+
+// Per-district articulation depth over each campus's own required+recommended
+// receiver universe — feeds the depth-and-income figure.
+export function useArticulationDepth(params = {}, options = {}) {
+  return useAnalysisEndpoint('analysis-articulation-depth', '/analysis/articulation-depth', params, options)
 }
 
 export function useChoiceCost(params = {}, options = {}) {

@@ -60,6 +60,7 @@ async function seedTemplate({
   school = `UC ${schoolId}`,
   program = 'Computer Science, B.S.',
   majorSlug = null,
+  researchStatus = null,
   totalUnits = 120,
   groups,
 }) {
@@ -70,6 +71,7 @@ async function seedTemplate({
     school_id: schoolId,
     school,
     program,
+    ...(researchStatus ? { research_status: researchStatus } : {}),
     total_units: totalUnits,
     requirement_groups: groups,
   });
@@ -87,6 +89,8 @@ async function seedAsDegree({
   majorSlug = 'cs',
   totalUnits = 60,
   unitSystem = 'semester',
+  verified,
+  analysisReady,
   groups,
 }) {
   await db.collection('curated_requirements').insertOne({
@@ -100,14 +104,19 @@ async function seedAsDegree({
     college_name: `College ${collegeId}`,
     total_units: totalUnits,
     unit_system: unitSystem,
+    ...(typeof verified === 'boolean' ? { verification: { verified } } : {}),
+    ...(typeof analysisReady === 'boolean' ? { analysis_ready: analysisReady } : {}),
     requirement_groups: groups,
   });
-  await db.collection('assist_institutions').insertOne({
-    _id: `cc:${collegeId}`,
-    kind: 'community_college',
-    source_id: collegeId,
-    name: `College ${collegeId}`,
-  });
+  await db.collection('assist_institutions').updateOne(
+    { _id: `cc:${collegeId}` },
+    { $setOnInsert: {
+      kind: 'community_college',
+      source_id: collegeId,
+      name: `College ${collegeId}`,
+    } },
+    { upsert: true },
+  );
 }
 
 async function seedCourses(rows) {
@@ -149,6 +158,59 @@ afterAll(async () => {
 });
 
 describe('transferCreditRateData v4', () => {
+  it('limits the high-fidelity cohort to verified records in the exact degree slot', async () => {
+    await seedTemplate({
+      schoolId: 70,
+      researchStatus: 'ai_researched_needs_human_verification',
+      groups: [{
+        title: 'Breadth', tier: 'breadth', sections: [{
+          section_advisement: 1,
+          unit_advisement: 6,
+          receivers: [geReceiver('GE', { assume: true })],
+        }],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 701,
+      verified: true,
+      analysisReady: false,
+      groups: [asGeGroup(6)],
+    });
+    await seedAsDegree({
+      collegeId: 702,
+      verified: false,
+      groups: [asGeGroup(6)],
+    });
+    // Verification of another slot at the same college must not authorize the
+    // selected local A.S. record.
+    await seedAsDegree({
+      collegeId: 702,
+      degreeType: 'ast',
+      verified: true,
+      groups: [asGeGroup(6)],
+    });
+    await seedAgreement({ schoolId: 70, collegeId: 701, receivers: [] });
+    await seedAgreement({ schoolId: 70, collegeId: 702, receivers: [] });
+
+    const allRows = await transferCreditRateData(db, null, { degreeType: 'local_as' });
+    expect(allRows.map((item) => item.community_college_id).sort()).toEqual([701, 702]);
+    expect(allRows.every((item) => /four-year graduation template/i.test(item.method_warning))).toBe(true);
+
+    const verifiedRows = await transferCreditRateData(db, null, {
+      degreeType: 'local_as', verifiedOnly: true,
+    });
+    expect(verifiedRows).toHaveLength(1);
+    expect(verifiedRows[0]).toMatchObject({
+      community_college_id: 701,
+      degree_type: 'local_as',
+      source_verified: true,
+      degree_template_assumed_valid: true,
+    });
+    expect(verifiedRows[0].method_warning || '').not.toMatch(/four-year graduation template/i);
+    expect(verifiedRows[0].method_warning).toMatch(/human-verified but is not marked analysis-ready/i);
+    expect(verifiedRows[0].method_warning).not.toMatch(/still requires human verification/i);
+  });
+
   it('reports the share of all bachelor requirements and lower-division requirements fulfilled by the AS degree', async () => {
     await seedTemplate({
       schoolId: 1,

@@ -118,8 +118,33 @@ describe('associate-degree analysis request scope', () => {
     expect(response.body.params).toMatchObject({
       majorSlug: 'econ',
       degree_type: 'ast',
+      verified_only: false,
+      degree_templates_assumed_valid: false,
       method: 'bachelors_completion_v4',
     });
+  });
+
+  it('accepts and reports the verified associate-degree cohort', async () => {
+    const response = await run(transferCreditRateEndpoint, {
+      majorSlug: 'econ', verified_only: 'true',
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.params).toMatchObject({
+      majorSlug: 'econ',
+      degree_type: 'ast',
+      verified_only: true,
+      degree_templates_assumed_valid: true,
+    });
+  });
+
+  it('rejects an ambiguous verified-only value', async () => {
+    const response = await run(transferCreditRateEndpoint, {
+      majorSlug: 'econ', verified_only: 'yes',
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toMatch(/verified_only must be true or false/i);
   });
 
   it('accepts the researched Economics local A.A. slot', async () => {
