@@ -159,6 +159,18 @@ describe('PaperGate (four moments)', () => {
     expect(screen.getByText(/the gap shrinks by more than half/)).toBeInTheDocument()
   })
 
+  it('keeps movement explicit in moment 4 without returning to point markers', () => {
+    render(<PaperGate />)
+    const signing = screen.getByTestId('paper-gate-signing')
+    const arrows = [...signing.querySelectorAll('[data-movement-arrow]')]
+    expect(arrows).toHaveLength(3)
+    expect(arrows.filter((arrow) => arrow.getAttribute('data-movement-arrow') === 'right')).toHaveLength(2)
+    expect(arrows.filter((arrow) => arrow.getAttribute('data-movement-arrow') === 'left')).toHaveLength(1)
+    expect(signing.querySelectorAll('circle')).toHaveLength(0)
+    expect(signing.textContent).toContain('Every arrow lands on the conservative result')
+    expect(signing.textContent).toContain('AFTER SIGNATURES')
+  })
+
   it('switches to the detailed register with methods ink', () => {
     render(<PaperGate />)
     expect(screen.queryByText(/Nothing here is a stacked decomposition/)).not.toBeInTheDocument()

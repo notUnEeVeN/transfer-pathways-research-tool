@@ -422,11 +422,11 @@ function M3Ledger({ reg, mode, data }) {
 }
 
 // ───────── Moment 4 — sign the papers ─────────
-// Point-and-band on one shared 0-100 track: today is a solid ink dot, the
-// destination a band spanning the two evidence standards (thick cap at the
-// conservative bound — it leads every reading), the not-taught remainder a
-// hatched tail labelled "still closed." Collision guards suppress the
-// connector and note when spans are too small; the legend never is.
+// A directional rail on one shared 0–100 scale. Today is a compact labelled
+// tick rather than a point; a substantial, open-chevron arrow lands on the
+// conservative result; and a pale interval carries the result to the full
+// evidence standard. The gap arrow reverses honestly. The visual therefore
+// reads as movement first and evidence-range mechanics second.
 
 function M4Signing({ reg, mode, data, basis }) {
   const base = data.baseline
@@ -439,7 +439,7 @@ function M4Signing({ reg, mode, data, basis }) {
       note: basis === 'minimums'
         ? 'from two-in-five to three-in-four'
         : 'lands exactly on today’s richest quartile',
-      improvesDown: false, residual: true,
+      improvesDown: false, residual: true, primary: true,
     },
     {
       label: 'Richest − poorest gap', sub: 'percentage points · smaller is better',
@@ -454,87 +454,103 @@ function M4Signing({ reg, mode, data, basis }) {
       improvesDown: false, residual: true,
     },
   ]
-  const x = (v) => 320 + v * 760
-  const bandH = mode === 'glance' ? 42 : 38
-  const rowPitch = mode === 'glance' ? 150 : 130
-  const rowY = (i) => 160 + i * rowPitch
-  const legendY = rowY(rows.length - 1) + 92
-  const height = legendY + (mode === 'detailed' ? 96 : 76)
+  const plotX = 340
+  const plotW = 820
+  const x = (v) => plotX + v * plotW
+  const rowPitch = mode === 'glance' ? 154 : 140
+  const rowY = (i) => 180 + i * rowPitch
+  const chartBottom = rowY(rows.length - 1) + 54
+  const legendY = chartBottom + 46
+  const height = legendY + (mode === 'detailed' ? 104 : 82)
   const fmt = (row, v) => (row.unit === '%' ? pct(v) : `${pts(v)}${row.unit}`)
   return (
-    <svg {...svgProps(height, `Write only the evidence-backed agreements and re-measure on one shared scale. Poorest-quartile access moves from ${pct(base.access[0])} to between ${pct(cons.access[0])} and ${pct(full.access[0])}; the richest-poorest gap from ${pts(base.gapQ4Q1)} points to between ${pts(full.gapQ4Q1)} and ${pts(cons.gapQ4Q1)}; the far-and-poor stratum from ${pct(base.farPoorAccess)} to between ${pct(cons.farPoorAccess)} and ${pct(full.farPoorAccess)}. The not-taught remainder stays visibly unfixed.`)}>
+    <svg {...svgProps(height, `Write only the evidence-backed agreements and re-measure on one shared scale. Poorest-quartile access moves from ${pct(base.access[0])} to between ${pct(cons.access[0])} and ${pct(full.access[0])}; the richest-poorest gap from ${pts(base.gapQ4Q1)} points to between ${pts(full.gapQ4Q1)} and ${pts(cons.gapQ4Q1)}; the far-and-poor stratum from ${pct(base.farPoorAccess)} to between ${pct(cons.farPoorAccess)} and ${pct(full.farPoorAccess)}. The not-taught remainder stays visibly unfixed.`)}
+      data-testid='paper-gate-signing'>
       <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>Write only the evidence-backed agreements — teach nothing new — and re-measure</text>
-      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>One 0–100 track: shares are percent, the gap is percentage points · the destination is a band, conservative standard first</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>Every arrow lands on the conservative result; the pale interval extends to the full-evidence result</text>
+
+      <g transform='translate(28 78)'>
+        <line x1='0' y1='0' x2='56' y2='0' stroke={CS_BLUE} strokeOpacity='0.62' strokeWidth='7' strokeLinecap='round' />
+        <path d='M 47 -8 L 57 0 L 47 8' fill='none' stroke={CS_BLUE} strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' />
+        <text x='72' y='5' fontSize='12.5' fontWeight='600' fill={INK}>movement to the conservative result</text>
+        <rect x='352' y='-10' width='44' height='20' rx='6' fill='rgba(0,114,178,0.15)' />
+        <line x1='352' y1='-10' x2='352' y2='10' stroke={CS_BLUE} strokeWidth='3' />
+        <text x='410' y='5' fontSize='12.5' fontWeight='600' fill={INK}>range to full evidence</text>
+        <rect x='612' y='-6' width='40' height='12' rx='3' fill='url(#pgTailHatch)' stroke={BREADTH_FILL} strokeWidth='1' />
+        <text x='666' y='5' fontSize='12.5' fontWeight='600' fill={INK}>still closed after every supported agreement</text>
+      </g>
 
       {[0, 0.25, 0.5, 0.75, 1].map((v) => (
-        <text key={v} x={x(v)} y='96' fontSize='12' fill={MUTED_TEXT} textAnchor='middle'>{Math.round(v * 100)}</text>
+        <g key={v}>
+          <line x1={x(v)} y1='116' x2={x(v)} y2={chartBottom} stroke={v === 0 || v === 1 ? GRID_STRONG : GRID} strokeWidth='1' strokeDasharray={v === 0 || v === 1 ? undefined : '2 7'} />
+          <text x={x(v)} y='108' fontSize='12' fill={MUTED_TEXT} textAnchor='middle'>{Math.round(v * 100)}</text>
+        </g>
       ))}
 
       {rows.map((row, i) => {
         const yy = rowY(i)
         const lo = Math.min(row.lo, row.hi); const hi = Math.max(row.lo, row.hi)
-        const capLead = row.improvesDown ? x(lo) : x(hi)
-        const capCons = row.improvesDown ? x(hi) : x(lo)
-        const bandX = x(lo); const bandW = Math.max(6, x(hi) - x(lo))
-        const spanPts = Math.abs(row.today - (row.improvesDown ? hi : lo)) * 100
-        const showConnector = spanPts > 4
-        const showNote = Math.abs(row.today - (lo + hi) / 2) * 100 > 24
-        const connFrom = x(row.today) + (row.improvesDown ? -12 : 12)
-        const connTo = row.improvesDown ? x(hi) + 8 : x(lo) - 8
+        const conservative = row.improvesDown ? hi : lo
+        const fullEvidence = row.improvesDown ? lo : hi
+        const bandX = x(lo); const bandW = Math.max(20, x(hi) - x(lo))
+        const todayX = x(row.today)
+        const conservativeX = x(conservative)
+        const fullX = x(fullEvidence)
+        const forward = conservativeX > todayX
+        const arrowStart = todayX + (forward ? 8 : -8)
+        const arrowLineEnd = conservativeX + (forward ? -10 : 10)
+        const rangeMid = bandX + bandW / 2
+        const todayW = row.unit === '%' ? 92 : 112
+        const residualPoints = Math.round((1 - hi) * 100)
         const describe = `${row.label}: today ${fmt(row, row.today)}; signed, between ${fmt(row, row.improvesDown ? hi : lo)} and ${fmt(row, row.improvesDown ? lo : hi)}`
         return (
           <g key={row.label} role='img' aria-label={describe}>
             <title>{describe}</title>
+            {row.primary && (
+              <rect x='14' y={yy - 62} width='1198' height='122' rx='12' fill='rgba(0,114,178,0.028)' />
+            )}
+            {i > 0 && <line x1='28' y1={yy - rowPitch / 2} x2='1212' y2={yy - rowPitch / 2} stroke={GRID} strokeWidth='1' />}
             <text x='300' y={yy - 2} fontSize={reg.row} fontWeight='600' fill={INK} textAnchor='end'>{row.label}</text>
             <text x='300' y={yy + 16} fontSize='12' fill={MUTED_TEXT} textAnchor='end'>{row.sub}</text>
-            <rect x={x(0)} y={yy - 4} width={x(1) - x(0)} height='8' rx='4' fill='#EDF1EA' />
+            <line x1={x(0)} y1={yy} x2={x(1)} y2={yy} stroke='#EDF1EA' strokeWidth='12' strokeLinecap='round' />
             {row.residual && (
               <g>
-                <rect x={x(hi)} y={yy - 4} width={x(1) - x(hi)} height='8' fill='url(#pgTailHatch)' stroke={BREADTH_FILL} strokeWidth='1' />
-                <rect x={Math.min(x(1) - 92, x(hi) + (x(1) - x(hi)) / 2 - 44)} y={yy - 30} width='88' height='20' rx='4' fill='#FFFFFF' stroke={GRID} strokeWidth='1' />
-                <text x={Math.min(x(1) - 48, x(hi) + (x(1) - x(hi)) / 2)} y={yy - 16} fontSize='11.5' fill={MUTED_TEXT} textAnchor='middle'>still closed</text>
+                <rect x={x(hi)} y={yy - 6} width={x(1) - x(hi)} height='12' rx='3' fill='url(#pgTailHatch)' stroke={BREADTH_FILL} strokeWidth='1' />
+                <text x={x(hi) + (x(1) - x(hi)) / 2} y={yy + 28} fontSize='11.5' fontWeight='500' fill={MUTED_TEXT} textAnchor='middle'>{residualPoints}% still closed</text>
               </g>
             )}
-            <rect x={bandX} y={yy - bandH / 2} width={bandW} height={bandH} fill='rgba(0,114,178,0.16)' />
-            <rect x={capCons - 2} y={yy - bandH / 2} width='4' height={bandH} fill={CS_BLUE} />
-            <rect x={capLead - 0.8} y={yy - bandH / 2} width='1.6' height={bandH} fill={CS_BLUE} />
-            {showConnector && (
-              <g>
-                <line x1={connFrom} y1={yy} x2={connTo} y2={yy} stroke={CS_BLUE} strokeWidth='1.6' strokeDasharray='5 4' />
-                <path d={row.improvesDown
-                  ? `M ${connTo} ${yy} l 9 -5 l 0 10 z`
-                  : `M ${connTo} ${yy} l -9 -5 l 0 10 z`} fill={CS_BLUE} />
-              </g>
-            )}
-            <circle cx={x(row.today)} cy={yy} r={mode === 'glance' ? 11 : 9} fill={INK} stroke='#FFFFFF' strokeWidth='1.5' />
-            <text x={x(row.today)} y={yy + 38} fontSize={reg.tick} fontWeight='600' fill={SOFT} textAnchor='middle'>today {fmt(row, row.today)}</text>
-            <text x={(bandX + bandW / 2)} y={yy - bandH / 2 - 12} fontSize={mode === 'glance' ? 44 : 34} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
-              {fmt(row, row.improvesDown ? hi : lo).replace(row.unit, '')} – {fmt(row, row.improvesDown ? lo : hi)}
+            <line x1={arrowStart} y1={yy} x2={arrowLineEnd} y2={yy}
+              stroke={CS_BLUE} strokeOpacity={row.primary ? 0.72 : 0.58} strokeWidth={row.primary ? 9 : 7} strokeLinecap='round' />
+            <path data-movement-arrow={forward ? 'right' : 'left'}
+              d={forward
+                ? `M ${conservativeX - 11} ${yy - 9} L ${conservativeX} ${yy} L ${conservativeX - 11} ${yy + 9}`
+                : `M ${conservativeX + 11} ${yy - 9} L ${conservativeX} ${yy} L ${conservativeX + 11} ${yy + 9}`}
+              fill='none' stroke={CS_BLUE} strokeWidth='3.5' strokeLinecap='round' strokeLinejoin='round' />
+            <rect x={bandX} y={yy - 13} width={bandW} height='26' rx='7' fill='rgba(0,114,178,0.16)' />
+            <line x1={conservativeX} y1={yy - 15} x2={conservativeX} y2={yy + 15} stroke={CS_BLUE} strokeWidth='3.5' strokeLinecap='round' />
+            <line x1={fullX} y1={yy - 11} x2={fullX} y2={yy + 11} stroke={NAVY_SOFT} strokeWidth='2' strokeLinecap='round' />
+
+            <line x1={todayX} y1={yy - 13} x2={todayX} y2={yy + 13} stroke={INK} strokeWidth='3' strokeLinecap='round' />
+            <rect x={todayX - todayW / 2} y={yy + 22} width={todayW} height='28' rx='14' fill='#FFFFFF' stroke='rgba(25,48,24,0.20)' strokeWidth='1' />
+            <text x={todayX} y={yy + 41} fontSize='12.5' fontWeight='650' fill={INK} textAnchor='middle'>TODAY · {fmt(row, row.today)}</text>
+
+            <text x={rangeMid} y={yy - 43} fontSize='10.5' fontWeight='700' letterSpacing='0.08em' fill={MUTED_TEXT} textAnchor='middle'>AFTER SIGNATURES</text>
+            <text x={rangeMid} y={yy - 19} fontSize={mode === 'glance' ? 29 : 25} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
+              {fmt(row, conservative).replace(row.unit, '')} – {fmt(row, fullEvidence)}
             </text>
-            {showNote && (
-              <text x={bandX + bandW / 2} y={yy + 38} fontSize='12.5' fill={GAINED} textAnchor='middle'>{row.note}</text>
-            )}
+            <text x='300' y={yy + 39} fontSize='11.5' fontWeight='600' fill={GAINED} textAnchor='end'>{row.note}</text>
           </g>
         )
       })}
 
       <g>
-        <line x1='28' y1={legendY - 26} x2='1212' y2={legendY - 26} stroke={GRID} strokeWidth='1' />
-        <circle cx='40' cy={legendY - 4} r='7' fill={INK} stroke='#FFFFFF' strokeWidth='1.5' />
-        <text x='56' y={legendY} fontSize='12.5' fill={INK}>today</text>
-        <rect x='130' y={legendY - 13} width='40' height='18' fill='rgba(0,114,178,0.16)' />
-        <rect x='128' y={legendY - 13} width='4' height='18' fill={CS_BLUE} />
-        <rect x='169' y={legendY - 13} width='1.6' height='18' fill={CS_BLUE} />
-        <text x='182' y={legendY} fontSize='12.5' fill={INK}>signed — thick cap is the conservative standard, thin the full</text>
-        <rect x='620' y={legendY - 13} width='34' height='18' fill='url(#pgTailHatch)' stroke={BREADTH_FILL} strokeWidth='1' />
-        <text x='664' y={legendY} fontSize='12.5' fill={INK}>still closed — the not-taught remainder no signature fixes</text>
+        <line x1='28' y1={legendY - 24} x2='1212' y2={legendY - 24} stroke={GRID} strokeWidth='1' />
+        <text x='28' y={legendY} fontSize={reg.note} fontWeight='600' fill={INK}>
+          The {data.fates.counts.C} not-taught gaps stay exactly where they are — the largest share of the inequality is administrative, not all of it.
+        </text>
       </g>
-
-      <text x='28' y={legendY + 34} fontSize={reg.note} fontWeight='600' fill={INK}>
-        The {data.fates.counts.C} not-taught gaps stay exactly where they are — the largest share of the inequality is administrative, not all of it.
-      </text>
       {mode === 'detailed' && (
-        <text x='28' y={legendY + 58} fontSize='12' fill={MUTED_TEXT}>
+        <text x='28' y={legendY + 25} fontSize='12' fill={MUTED_TEXT}>
           Decimals: access {(base.access[0] * 100).toFixed(1)}% → {(cons.access[0] * 100).toFixed(1)}–{(full.access[0] * 100).toFixed(1)}% · gap {(base.gapQ4Q1 * 100).toFixed(1)} → {(full.gapQ4Q1 * 100).toFixed(1)}–{(cons.gapQ4Q1 * 100).toFixed(1)} pts · complete cells {base.completeCells} → {cons.completeCells}–{full.completeCells} of {base.totalCells}.
         </text>
       )}
