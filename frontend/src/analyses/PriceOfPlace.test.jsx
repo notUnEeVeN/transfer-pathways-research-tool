@@ -199,8 +199,8 @@ describe('PriceOfPlace', () => {
   })
 
 
-  it('preview renders the evidence figure alone', () => {
+  it('preview renders the tether map alone', () => {
     render(<PriceOfPlacePreview />)
-    expect(screen.getByText('District income quartile')).toBeInTheDocument()
+    expect(screen.getByText('Median tether, by income quartile')).toBeInTheDocument()
   })
 })

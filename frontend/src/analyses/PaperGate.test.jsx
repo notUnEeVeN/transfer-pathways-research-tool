@@ -184,8 +184,8 @@ describe('PaperGate (four moments)', () => {
   })
 
 
-  it('preview renders the mechanism figure alone', () => {
+  it('preview renders the all-courses arch alone', () => {
     render(<PaperGatePreview />)
-    expect(screen.getByText(/solved infrastructure/)).toBeInTheDocument()
+    expect(screen.getByText(/Every course the campuses ask for/)).toBeInTheDocument()
   })
 })

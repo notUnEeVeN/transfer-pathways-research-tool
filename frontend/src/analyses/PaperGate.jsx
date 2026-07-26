@@ -710,7 +710,7 @@ function JawsScenarios({ reg, data }) {
 // ───────── the sequence ─────────
 
 export function PaperGatePreview() {
-  return <M2Staircase reg={REG} data={repairs.minimums} basis='minimums' />
+  return <ArchScatter reg={REG} />
 }
 
 const BEATS = {

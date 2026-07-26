@@ -682,9 +682,9 @@ function Fig5Gates({ reg, basis }) {
 
 // ───────── the sequence ─────────
 
-/** Figure-only gallery thumbnail: the evidence beat alone. */
+/** Figure-only gallery thumbnail: the tether map, the sequence's showpiece. */
 export function PriceOfPlacePreview() {
-  return <Fig3 reg={REG} />
+  return <Fig4Tethers reg={REG} />
 }
 
 const BEATS = {
