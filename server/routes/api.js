@@ -65,7 +65,6 @@ router.get('/majors', ...guarded, majorsController.listMajorsEndpoint);
 
 router.get('/analysis/releases', ...guarded, analysisController.getReleases);
 router.get('/analysis/coverage', ...guarded, analysisController.coverage);
-router.get('/analysis/articulation-depth', ...guarded, analysisController.articulationDepth);
 router.get('/analysis/requirement-comparison', ...guarded, analysisController.requirementComparison);
 router.get('/analysis/credit-loss', ...guarded, analysisController.creditLoss);
 router.get('/analysis/transfer-credit-rate', ...guarded, analysisController.transferCreditRate);

@@ -128,14 +128,10 @@ describe('built-in visual registry', () => {
       'transfer-extra-units',
       'coverage-heatmap',
       'income-access',
-      'income-depth',
       'multi-campus-pathways',
       'credit-loss',
-      'choice-cost',
-      'category-gaps',
-      'complexity',
-      'time-to-degree',
       'price-of-place',
+      'paper-gate',
     ])
   })
 
@@ -156,12 +152,7 @@ describe('built-in visual registry', () => {
       'transfer-extra-units',
       'coverage-heatmap',
       'income-access',
-      'income-depth',
       'credit-loss',
-      'choice-cost',
-      'category-gaps',
-      'complexity',
-      'time-to-degree',
     ])
 
     const fixed = ANALYSES.filter((analysis) => analysis.majorScope.mode === 'fixed')
@@ -185,14 +176,10 @@ describe('built-in visual registry', () => {
       'Modeled replacement coursework',
       'Potential graduation-unit coverage',
       'Transfer access and local income',
-      'Articulation depth and local income',
       'Preparation as campus options expand',
       'Minimum transfer coursework',
-      'Cost of applying to more campuses',
-      'Missing courses by subject',
-      'Transfer pathway complexity',
-      'Associate degree transfer credit',
-      'The price of place',
+      'Income, distance, and transfer access',
+      'The paper gate',
     ])
     for (const analysis of ANALYSES) {
       expect(`${analysis.title} ${analysis.description}`).not.toMatch(
@@ -219,17 +206,17 @@ describe('built-in visual registry', () => {
     const visible = filterBuiltInAnalyses(ANALYSES, {
       isAdmin: true,
       releasedIds: ['coverage-heatmap'],
-      disabledIds: ['complexity'],
+      disabledIds: ['credit-loss'],
     })
-    expect(visible.map((analysis) => analysis.id)).toContain('credit-loss')
-    expect(visible.map((analysis) => analysis.id)).not.toContain('complexity')
+    expect(visible.map((analysis) => analysis.id)).toContain('coverage-heatmap')
+    expect(visible.map((analysis) => analysis.id)).not.toContain('credit-loss')
   })
 
   it('shows partners only published visuals that remain available', () => {
     const visible = filterBuiltInAnalyses(ANALYSES, {
       isAdmin: false,
-      releasedIds: ['coverage-heatmap', 'complexity'],
-      disabledIds: ['complexity'],
+      releasedIds: ['coverage-heatmap', 'credit-loss'],
+      disabledIds: ['credit-loss'],
     })
     expect(visible.map((analysis) => analysis.id)).toEqual(['coverage-heatmap'])
   })

@@ -4,8 +4,9 @@
  * for the 115 California community colleges in the corpus.
  *
  * Inputs (downloaded from nces.ed.gov/ipeds/datacenter/data/):
- *   HD2023.csv      — directory: name, city, sector, NCES locale code
+ *   HD2023.csv      — directory: name, city, sector, NCES locale, coordinates
  *   EFFY2023_RV.csv — 12-month unduplicated headcount by race/ethnicity
+ *   C2023_a_RV.csv  — completions by CIP field and award level
  * Matching: normalized-name match against pmt_data.community_colleges,
  * with an explicit alias map for naming differences. Unmatched colleges are
  * listed loudly rather than silently dropped.
@@ -80,6 +81,19 @@ const ALIASES = {
     });
   }
 
+  // CS associate degrees per institution: CIP family 11 (computer and
+  // information sciences), first majors, award level 3 (associate's).
+  const comp = parseCsv(fs.readFileSync(path.join(SCRATCH, 'C2023_a_RV.csv'), 'latin1'));
+  const cHead = comp[0];
+  const ccol = (name) => cHead.indexOf(name);
+  const csCompletionsByUnit = new Map();
+  for (const r of comp.slice(1)) {
+    if (r[ccol('MAJORNUM')] !== '1' || r[ccol('AWLEVEL')] !== '3') continue;
+    if (!/^11\./.test(r[ccol('CIPCODE')])) continue;
+    const unit = r[ccol('UNITID')];
+    csCompletionsByUnit.set(unit, (csCompletionsByUnit.get(unit) || 0) + Number(r[ccol('CTOTALT')] || 0));
+  }
+
   const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
   const colleges = await client.db('pmt_data').collection('community_colleges')
     .find({}, { projection: { id: 1, name: 1 } }).toArray();
@@ -99,6 +113,9 @@ const ALIASES = {
       ipeds_name: r[hcol('INSTNM')],
       city: r[hcol('CITY')],
       locale: Number(r[hcol('LOCALE')]),
+      lat: Number(r[hcol('LATITUDE')]),
+      lon: Number(r[hcol('LONGITUD')]),
+      cs_associate_completions: csCompletionsByUnit.get(unitid) || 0,
       ...(enroll || { headcount: null }),
     });
   }
@@ -116,7 +133,7 @@ const ALIASES = {
     const artifact = {
       dataset_version: 'ipeds-ccc.2023.v1',
       source: {
-        name: 'IPEDS HD2023 (directory, NCES locale) and EFFY2023 revised (12-month unduplicated headcount by race/ethnicity)',
+        name: 'IPEDS HD2023 (directory, NCES locale, coordinates), EFFY2023 revised (12-month unduplicated headcount by race/ethnicity), and C2023_A revised (completions; cs_associate_completions = first-major associate degrees in CIP family 11, computer and information sciences)',
         publisher: 'U.S. Department of Education, National Center for Education Statistics',
         page: 'https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx',
         year: '2022-23',

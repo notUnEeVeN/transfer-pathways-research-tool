@@ -31,7 +31,6 @@ const {
   agreementsExportData, receiversExportData, coursesExportData, universityCoursesExportData,
 } = require('../services/analysis/pathways');
 const { transferCreditRateData } = require('../services/analysis/transferCreditRate');
-const { articulationDepthData } = require('../services/analysis/articulationDepth');
 const { multiCampusPathwaysData } = require('../services/analysis/pathwayPlanner');
 const { loadMultiCampusSnapshot } = require('../services/analysis/pathwaySnapshot');
 
@@ -162,9 +161,6 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
 }
 
 exports.coverage = makeEndpoint('coverage', coverageData);
-// District-level articulation depth over each campus's own required +
-// recommended receiver universe — the measure behind the depth/income figure.
-exports.articulationDepth = makeEndpoint('articulation-depth', articulationDepthData);
 
 // Per-college ASSIST-vs-website minimums comparison (one campus × major ×
 // college). Single object, not a row list, so it can't ride makeEndpoint;

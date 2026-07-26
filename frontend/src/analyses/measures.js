@@ -75,36 +75,6 @@ export const MEASURES = {
     grain: 'One value per agreement — a community college × UC campus × major — binned per campus.',
     watchFor: 'Overlap-aware and single-campus: a course satisfying two requirements counts once, and “complete one of three” costs one course rather than three. It is a best case for a student targeting exactly one campus, not a course load. Units are summed in the college’s own system with no quarter or semester conversion.',
   },
-  'choice-cost': {
-    expression: 'cost of a campus = courses in its own minimum pathway that the campuses ahead of it in the order did not already require',
-    grain: 'One value per UC campus at one position in the chosen application order, averaged over community colleges.',
-    watchFor: 'Order dependent and not symmetric — reordering the same campuses moves cost between them. Each campus is solved on its own and the results are then differenced, so this overstates the true joint minimum whenever a different per-campus choice would have shared more courses.',
-  },
-  'category-gaps': {
-    expression: 'gap rate = colleges where this subject blocks the campus ÷ colleges where the campus requires this subject',
-    grain: 'One value per UC campus × course subject. The value counts colleges, not courses.',
-    watchFor: 'An unarticulated course inside a requirement that is already satisfied another way is not counted as a gap, so this is lower than a raw count of unarticulated courses. The “Untagged” row is courses with no subject mapping — it measures data completeness, not a subject.',
-  },
-  complexity: {
-    expression: 'complexity = sum over pathway courses of (longest prerequisite chain ending at the course + number of courses it unlocks)',
-    grain: 'One value per agreement — a community college × UC campus × major — binned per campus.',
-    watchFor: 'Prerequisite edges are inferred from course concept tags rather than read from catalogs, and only edges between courses inside the pathway count. Where no edges are known the score collapses to the course count, so read it next to its prerequisite data coverage or it will mostly measure how much we know.',
-  },
-  'price-of-place': {
-    expression: 'access = a complete transfer path formally exists at one or more colleges in the district under the strict eligibility engine; binding gap = missing receiver slots inside required groups the engine reports unsatisfied; both aggregated over district income quartiles',
-    grain: 'Five figures over the same committed snapshot: nine Computer Science programs against every other major in the full agreement corpus (each college evaluated alone), 72 income-matched districts in quartiles of 18.',
-    watchFor: 'Formal opportunity only — nothing here measures student behaviour or admission odds. Computing-adjacent programs are excluded from subject and field alike. Quartile means, never fitted curves, because shares are bounded. 72 districts is the true sample: the field’s hundreds of programs share the same income observations, so no per-program inference is implied. The snapshot is versioned; regenerate it with server/scripts/generatePriceOfPlaceSnapshot.js when the corpus updates.',
-  },
-  'income-depth': {
-    expression: 'district depth = mean over its colleges of (articulated receiver slots ÷ all required-plus-recommended receiver slots), computed against each campus’s own agreement and averaged across campuses',
-    grain: 'One point per community college district: articulation depth against the district service area’s mean adjusted gross income per tax return.',
-    watchFor: 'Depth is graded coverage of the campus-stated preparation universe, not binary completeness — a district can be deep yet still miss a required course. Campuses encode the required/recommended boundary differently (two encode no recommended layer at all), so shares are always per-campus normalized. Income is a community measure from tax returns, not the enrolled students’ income, and the relation is monotone but nonlinear — read the rank correlation before the linear one.',
-  },
-  'time-to-degree': {
-    expression: 'credit rate = units of associate degree courses that appear in the campus minimum pathway ÷ total units in the associate degree',
-    grain: 'One row per curated associate degree × agreement, so a degree appears once per matching campus.',
-    watchFor: 'Stricter than the degree credit figure: a course counts only if the cheapest single-campus pathway happens to select it, so units that would transfer as elective or general education credit are scored as lost. The two figures disagree on the same degree by design.',
-  },
 }
 
 export function measureFor(analysisId) {

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Paper Gate — at a glance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #F5F8F3; }
+  body { font-family: 'Hanken Grotesk Variable', 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #2E5C8A; text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: #24466F; }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#F5F8F3;color:#193018;padding:64px 32px 104px;display:flex;flex-direction:column;align-items:center;font-variant-numeric:tabular-nums">
+<div style="width:100%;max-width:1320px;display:flex;flex-direction:column;gap:76px">
+
+  <header style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#6B776A;font-weight:600">
+      <span style="width:10px;height:10px;border-radius:50%;background:#0072B2;display:inline-block"></span>
+      <span>Four moments · at a glance</span>
+    </div>
+    <h1 style="margin:0;font-size:64px;line-height:1.0;letter-spacing:-0.03em;font-weight:700">The Paper Gate</h1>
+    <p style="margin:0;font-size:25px;line-height:1.45;max-width:60ch;color:#334432;text-wrap:pretty">Calculus works everywhere; data structures works where the money is. <strong style="font-weight:600;color:#193018">Four-fifths of that difference is pre-approved paperwork.</strong> Sign it, and the poorest districts nearly catch up.</p>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px">
+      <span style="display:inline-flex;align-items:baseline;gap:9px;border:1px solid rgba(0,114,178,0.35);background:rgba(0,114,178,0.06);border-radius:999px;padding:8px 18px;font-size:15px;font-weight:600;color:#0072B2">Requirement basis<span style="color:#193018">{{ basisLabel }}</span></span>
+      <span style="font-size:15px;color:#6B776A">Everything below measures whether a complete transfer path formally exists — never who transfers.</span>
+    </div>
+  </header>
+
+  <!-- ══════════════════ MOMENT 1 ══════════════════ -->
+  <section data-screen-label="1 — split the checklist" style="display:flex;flex-direction:column;gap:20px">
+    <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#0072B2;font-weight:700">1 · Split the checklist</div>
+    <h2 style="margin:0;font-size:46px;line-height:1.08;letter-spacing:-0.024em;font-weight:700;max-width:30ch">Two kinds of item — and only one kind ever fails</h2>
+    <p style="margin:0;font-size:23px;line-height:1.45;max-width:56ch;color:#334432;font-weight:600;text-wrap:pretty">Calculus, physics, chemistry and composition are solved everywhere. The campus's own Computer Science courses are the only live variable.</p>
+
+    <div style="background:#FFFFFF;border:1px solid rgba(25,48,24,0.11);border-radius:16px;padding:42px 46px 38px;display:flex;flex-direction:column;gap:32px;margin-top:14px">
+      <div>
+        <div style="font-size:22px;font-weight:600;color:#193018">Every required course, sorted by how widely it is articulated</div>
+        <div style="font-size:17px;line-height:1.45;color:#6B776A;margin-top:6px">Height is the share of California's 115 community colleges that carry an accepted equivalent</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:16px" role="group" aria-label="{{ m1Alt }}">
+          <div style="width:52px;position:relative;height:360px;flex:none">
+            <div style="position:absolute;right:0;top:0;transform:translateY(-50%);font-size:15px;color:#6B776A">100%</div>
+            <div style="position:absolute;right:0;top:90px;transform:translateY(-50%);font-size:15px;color:#6B776A">75</div>
+            <div style="position:absolute;right:0;top:180px;transform:translateY(-50%);font-size:15px;color:#6B776A">50</div>
+            <div style="position:absolute;right:0;top:270px;transform:translateY(-50%);font-size:15px;color:#6B776A">25</div>
+            <div style="position:absolute;right:0;top:360px;transform:translateY(-50%);font-size:15px;color:#6B776A">0</div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+            <div style="position:relative;height:360px">
+              <div style="position:absolute;left:0;right:0;top:0;height:1px;background:rgba(25,48,24,0.10)"></div>
+              <div style="position:absolute;left:0;right:0;top:90px;height:1px;background:rgba(25,48,24,0.10)"></div>
+              <div style="position:absolute;left:0;right:0;top:180px;height:1px;background:rgba(25,48,24,0.10)"></div>
+              <div style="position:absolute;left:0;right:0;top:270px;height:1px;background:rgba(25,48,24,0.10)"></div>
+              <div style="position:absolute;left:0;right:0;top:360px;height:1px;background:rgba(25,48,24,0.28)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:flex-end;gap:3px">
+                <sc-for list="{{ m1Bars }}" as="bar" hint-placeholder-count="24">
+                  <div style="flex:1;min-width:0;border-radius:1px 1px 0 0;height:{{ bar.h }};background:{{ bar.fill }}" title="{{ bar.t }}"></div>
+                </sc-for>
+              </div>
+              <div style="position:absolute;left:0;right:0;top:{{ m1RuleGenTop }};height:0;border-top:1.6px dashed #4A5849"></div>
+              <div style="position:absolute;left:0;right:0;top:{{ m1RuleCsTop }};height:0;border-top:1.6px dashed #0072B2"></div>
+              <div style="position:absolute;right:0;top:{{ m1LabGenTop }};background:#FFFFFF;padding:3px 8px;border:1px solid rgba(25,48,24,0.10);border-radius:4px;font-size:17px;font-weight:600;color:#4A5849;white-space:nowrap">Median generic requirement · <span>{{ m1GenMed }}</span>%</div>
+              <div style="position:absolute;right:0;top:{{ m1LabCsTop }};background:#FFFFFF;padding:3px 8px;border:1px solid rgba(0,114,178,0.22);border-radius:4px;font-size:17px;font-weight:600;color:#0072B2;white-space:nowrap">Median CS requirement · <span>{{ m1CsMed }}</span>%</div>
+            </div>
+            <div style="display:flex;gap:3px;margin-top:22px">
+              <sc-for list="{{ m1Rug }}" as="cell" hint-placeholder-count="24">
+                <div style="flex:1;min-width:0;height:16px;background:{{ cell.fill }}"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;column-gap:36px;row-gap:12px;flex-wrap:wrap;margin-top:18px">
+              <span style="display:inline-flex;align-items:center;gap:11px;font-size:17px;font-weight:600;color:#193018"><span style="width:18px;height:18px;border-radius:3px;background:#6F7B6E"></span><span><span>{{ m1GenN }}</span> generic requirements</span></span>
+              <span style="display:inline-flex;align-items:center;gap:11px;font-size:17px;font-weight:600;color:#193018"><span style="width:18px;height:18px;border-radius:3px;background:#0072B2"></span><span><span>{{ m1CsN }}</span> Computer Science courses — the whole tail</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(25,48,24,0.11);border-top:1px solid rgba(25,48,24,0.11);border-bottom:1px solid rgba(25,48,24,0.11)">
+        <div style="background:#FFFFFF;padding:26px 26px 24px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:46px;font-weight:700;letter-spacing:-0.025em;line-height:1;color:#6F7B6E"><span>{{ m1GenMed }}</span>%</div>
+          <div style="font-size:18px;font-weight:600;color:#193018;margin-top:4px">of colleges carry the median generic requirement</div>
+          <div style="font-size:16px;line-height:1.45;color:#6B776A">Calculus and composition: literally every college.</div>
+        </div>
+        <div style="background:#FFFFFF;padding:26px 26px 24px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:46px;font-weight:700;letter-spacing:-0.025em;line-height:1;color:#0072B2"><span>{{ m1CsMed }}</span>%</div>
+          <div style="font-size:18px;font-weight:600;color:#193018;margin-top:4px">carry the median Computer Science requirement</div>
+          <div style="font-size:16px;line-height:1.45;color:#6B776A">Spread across the whole scale — the only place variation lives.</div>
+        </div>
+        <div style="background:#FFFFFF;padding:26px 26px 24px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:46px;font-weight:700;letter-spacing:-0.025em;line-height:1;color:#193018">0 → 63%</div>
+          <div style="font-size:18px;font-weight:600;color:#193018;margin-top:4px">of an ask is CS-core</div>
+          <div style="font-size:16px;line-height:1.45;color:#6B776A">Berkeley asks for no CS course at all. Irvine's ask is 63% CS-core.</div>
+        </div>
+      </div>
+
+      <div style="font-size:23px;line-height:1.35;font-weight:600;color:#193018;text-wrap:pretty">Two kinds of item. Only one of them ever fails — so if anything is creating the inequality, it has to be them.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ MOMENT 2 ══════════════════ -->
+  <section data-screen-label="2 — take the staircase apart" style="display:flex;flex-direction:column;gap:20px">
+    <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#0072B2;font-weight:700">2 · Take the staircase apart</div>
+    <h2 style="margin:0;font-size:46px;line-height:1.08;letter-spacing:-0.024em;font-weight:700;max-width:30ch">The generic layer is flat. The whole gradient is in the CS courses.</h2>
+    <p style="margin:0;font-size:23px;line-height:1.45;max-width:56ch;color:#334432;font-weight:600;text-wrap:pretty">A flat layer could never have produced a staircase. Only one of these two shapes could.</p>
+
+    <div style="background:#FFFFFF;border:1px solid rgba(25,48,24,0.11);border-radius:16px;padding:42px 46px 38px;display:flex;flex-direction:column;gap:30px;margin-top:14px">
+      <div>
+        <div style="font-size:22px;font-weight:600;color:#193018">The familiar object, then the two layers underneath it</div>
+        <div style="font-size:17px;line-height:1.45;color:#6B776A;margin-top:6px">Left: districts with a complete formal path. Right: requirements articulated, split by kind — same vertical scale</div>
+      </div>
+
+      <div style="position:relative;width:100%" role="group" aria-label="{{ m2Alt }}">
+        <svg viewBox="0 0 1240 552" width="100%" style="display:block" aria-hidden="true">
+          <text x="96" y="30" font-size="18" font-weight="600" fill="#193018" font-family="'Hanken Grotesk', sans-serif">The staircase</text>
+          <text x="660" y="30" font-size="18" font-weight="600" fill="#193018" font-family="'Hanken Grotesk', sans-serif">What the rise is made of</text>
+
+          <line x1="96" y1="126" x2="480" y2="126" stroke="rgba(25,48,24,0.10)" stroke-width="1"></line>
+          <line x1="96" y1="289" x2="480" y2="289" stroke="rgba(25,48,24,0.10)" stroke-width="1"></line>
+          <line x1="96" y1="452" x2="480" y2="452" stroke="rgba(25,48,24,0.28)" stroke-width="1.2"></line>
+          <text x="82" y="132" font-size="16" fill="#6B776A" text-anchor="end" font-family="'Hanken Grotesk', sans-serif">100%</text>
+          <text x="82" y="295" font-size="16" fill="#6B776A" text-anchor="end" font-family="'Hanken Grotesk', sans-serif">50</text>
+          <text x="82" y="458" font-size="16" fill="#6B776A" text-anchor="end" font-family="'Hanken Grotesk', sans-serif">0</text>
+
+          <path d="{{ m2StepPath }}" fill="rgba(25,48,24,0.055)" stroke="#193018" stroke-width="2.8" stroke-linejoin="round"></path>
+
+          <text x="144" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q1 · poorest</text>
+          <text x="240" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q2</text>
+          <text x="336" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q3</text>
+          <text x="432" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q4 · richest</text>
+          <text x="288" y="518" font-size="16" font-weight="500" fill="#334432" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">District income quartile →</text>
+
+          <line x1="660" y1="126" x2="1080" y2="126" stroke="rgba(25,48,24,0.10)" stroke-width="1"></line>
+          <line x1="660" y1="289" x2="1080" y2="289" stroke="rgba(25,48,24,0.10)" stroke-width="1"></line>
+          <line x1="660" y1="452" x2="1080" y2="452" stroke="rgba(25,48,24,0.28)" stroke-width="1.2"></line>
+          <text x="646" y="132" font-size="16" fill="#6B776A" text-anchor="end" font-family="'Hanken Grotesk', sans-serif">100%</text>
+          <text x="646" y="295" font-size="16" fill="#6B776A" text-anchor="end" font-family="'Hanken Grotesk', sans-serif">50</text>
+          <text x="646" y="458" font-size="16" fill="#6B776A" text-anchor="end" font-family="'Hanken Grotesk', sans-serif">0</text>
+
+          <path d="{{ m2GhostPath }}" fill="none" stroke="rgba(25,48,24,0.32)" stroke-width="1.8" stroke-dasharray="7 6"></path>
+          <path d="{{ m2GenPath }}" fill="none" stroke="#6F7B6E" stroke-width="3.4" stroke-linejoin="round"></path>
+          <path d="{{ m2CsPath }}" fill="none" stroke="#0072B2" stroke-width="5" stroke-linejoin="round"></path>
+          <sc-for list="{{ m2GenDots }}" as="dot" hint-placeholder-count="0">
+            <circle cx="{{ dot.x }}" cy="{{ dot.y }}" r="7" fill="#6F7B6E" stroke="#FFFFFF" stroke-width="1.6"></circle>
+          </sc-for>
+          <sc-for list="{{ m2CsDots }}" as="dot" hint-placeholder-count="0">
+            <circle cx="{{ dot.x }}" cy="{{ dot.y }}" r="9" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.8"></circle>
+          </sc-for>
+
+          <text x="660" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q1 · poorest</text>
+          <text x="800" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q2</text>
+          <text x="940" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q3</text>
+          <text x="1080" y="482" font-size="16" fill="#6B776A" text-anchor="middle" font-family="'Hanken Grotesk', sans-serif">Q4 · richest</text>
+
+          <path d="{{ m2GenBracket }}" fill="none" stroke="#6F7B6E" stroke-width="1.6"></path>
+          <path d="{{ m2CsBracket }}" fill="none" stroke="#0072B2" stroke-width="1.8"></path>
+        </svg>
+
+        <sc-for list="{{ m2StepLabels }}" as="lab" hint-placeholder-count="0">
+          <div style="position:absolute;left:{{ lab.left }};top:{{ lab.top }};transform:translate(-50%,-100%);font-size:26px;font-weight:700;color:#193018;white-space:nowrap" title="{{ lab.t }}">{{ lab.text }}</div>
+        </sc-for>
+        <sc-for list="{{ m2GenLabels }}" as="lab" hint-placeholder-count="0">
+          <div style="position:absolute;left:{{ lab.left }};top:{{ lab.top }};transform:translate(-50%,-100%);font-size:19px;font-weight:600;color:#4A5849;white-space:nowrap" title="{{ lab.t }}">{{ lab.text }}</div>
+        </sc-for>
+        <sc-for list="{{ m2CsLabels }}" as="lab" hint-placeholder-count="0">
+          <div style="position:absolute;left:{{ lab.left }};top:{{ lab.top }};transform:translate(-50%,0);font-size:21px;font-weight:700;color:#0072B2;white-space:nowrap" title="{{ lab.t }}">{{ lab.text }}</div>
+        </sc-for>
+        <div style="position:absolute;left:89.8%;top:{{ m2GenSwingTop }};transform:translateY(-50%);font-size:22px;font-weight:700;color:#6F7B6E;white-space:nowrap">+<span>{{ m2GenSwing }}</span> pts</div>
+        <div style="position:absolute;left:89.8%;top:{{ m2CsSwingTop }};transform:translateY(-50%);font-size:32px;font-weight:700;color:#0072B2;white-space:nowrap">+<span>{{ m2CsSwing }}</span> pts</div>
+      </div>
+
+      <div style="display:flex;column-gap:38px;row-gap:12px;flex-wrap:wrap;font-size:17px;color:#193018;font-weight:600">
+        <span style="display:inline-flex;align-items:center;gap:11px"><span style="width:30px;height:5px;border-radius:3px;background:#0072B2"></span>Computer Science requirements</span>
+        <span style="display:inline-flex;align-items:center;gap:11px"><span style="width:30px;height:3.4px;border-radius:2px;background:#6F7B6E"></span>Generic requirements</span>
+        <span style="display:inline-flex;align-items:center;gap:11px;color:#4A5849"><span style="width:30px;height:0;border-top:1.8px dashed rgba(25,48,24,0.45)"></span>District access, ghosted</span>
+      </div>
+
+      <div style="border-top:1px solid rgba(25,48,24,0.11);padding-top:26px;font-size:17px;line-height:1.55;color:#334432;max-width:96ch">Access is a <strong style="font-weight:600;color:#193018">conjunction</strong> — every requirement met, not a sum of layers. Generic +<span>{{ m2GenSwing }}</span> and CS +<span>{{ m2CsSwing }}</span> do not add to the staircase's <span>{{ m2AccessSwing }}</span>-point rise. What is true is that one layer is flat, the other is steep, and the staircase's shape tracks the steep one.</div>
+
+      <div style="font-size:23px;line-height:1.35;font-weight:600;color:#193018;text-wrap:pretty">The generic layer is flat. The income gradient lives in the Computer Science courses.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ MOMENT 3 ══════════════════ -->
+  <section data-screen-label="3 — the ledger" style="display:flex;flex-direction:column;gap:20px">
+    <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#0072B2;font-weight:700">3 · The ledger of unwritten agreements</div>
+    <h2 style="margin:0;font-size:46px;line-height:1.08;letter-spacing:-0.024em;font-weight:700;max-width:30ch">The wall is a short stack of unsigned documents</h2>
+    <p style="margin:0;font-size:23px;line-height:1.45;max-width:56ch;color:#334432;font-weight:600;text-wrap:pretty">Named courses, most of which the college already teaches at a level another UC campus already accepts.</p>
+
+    <div style="background:#FFFFFF;border:1px solid rgba(25,48,24,0.11);border-radius:16px;padding:42px 46px 38px;display:flex;flex-direction:column;gap:30px;margin-top:14px">
+      <div>
+        <div style="font-size:22px;font-weight:600;color:#193018">The heaviest unwritten agreements — and what each one alone would open</div>
+        <div style="font-size:17px;line-height:1.45;color:#6B776A;margin-top:6px">Both counts on one scale, out of 115 community colleges. They are near-inverse: a course standing in front of many colleges is rarely the only thing in front of them.</div>
+      </div>
+
+      <div style="display:flex;column-gap:38px;row-gap:12px;flex-wrap:wrap;font-size:17px;font-weight:600">
+        <span style="display:inline-flex;align-items:center;gap:11px;color:#193018"><span style="width:20px;height:20px;border-radius:3px;background:#0072B2"></span>Colleges it stands in front of</span>
+        <span style="display:inline-flex;align-items:center;gap:11px;color:#0D7964"><span style="width:20px;height:13px;border-radius:2px;background:#0D7964"></span>Colleges it opens if signed alone</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column" role="group" aria-label="{{ m3Alt }}">
+        <div style="display:grid;grid-template-columns:36% 64%;gap:28px;align-items:end;padding-bottom:10px">
+          <div style="font-size:13px;letter-spacing:0.08em;color:#6B776A;font-weight:700">UNSIGNED AGREEMENT</div>
+          <div style="position:relative;height:22px;width:calc(100% - 84px)">
+            <div style="position:absolute;left:0%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">0</div>
+            <div style="position:absolute;left:21.74%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">25</div>
+            <div style="position:absolute;left:43.48%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">50</div>
+            <div style="position:absolute;left:65.22%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">75</div>
+            <div style="position:absolute;left:86.96%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">100</div>
+            <div style="position:absolute;left:100%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">115</div>
+          </div>
+        </div>
+
+        <sc-for list="{{ m3Rows }}" as="led" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:36% 64%;gap:28px;align-items:center;padding:20px 0 24px;border-top:1px solid rgba(25,48,24,0.09)">
+            <div>
+              <div style="font-size:21px;font-weight:600;line-height:1.28;color:#193018;text-wrap:pretty">{{ led.course }}</div>
+              <div style="font-size:16px;color:#6B776A;margin-top:5px">{{ led.campus }}</div>
+            </div>
+            <div style="position:relative;height:60px;width:calc(100% - 84px)">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:rgba(25,48,24,0.28)"></div>
+              <div style="position:absolute;left:0;top:0;height:26px;border-radius:3px;width:{{ led.blockPct }};background:#0072B2" title="{{ led.blockT }}"></div>
+              <div style="position:absolute;left:{{ led.blockPct }};top:0;height:26px;display:flex;align-items:center;padding-left:14px;font-size:24px;font-weight:700;color:#0072B2;white-space:nowrap">{{ led.blocks }}</div>
+              <div style="position:absolute;left:0;top:36px;height:14px;border-radius:2px;width:{{ led.openPct }};background:#0D7964" title="{{ led.openT }}"></div>
+              <div style="position:absolute;left:{{ led.openPct }};top:31px;height:24px;display:flex;align-items:center;padding-left:18px;font-size:17px;font-weight:700;color:#0D7964;white-space:nowrap">{{ led.opens }}</div>
+              <sc-if value="{{ led.zero }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;left:0;top:36px;width:14px;height:14px;background:#FFFFFF;border:1.8px solid #9CA69B" title="{{ led.openT }}"></div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;border-top:1px solid rgba(25,48,24,0.11);padding-top:28px">
+        <div style="font-size:20px;font-weight:600;color:#193018">Why these are signatures and not construction projects</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:stretch">
+          <sc-for list="{{ m3Cards }}" as="card" hint-placeholder-count="2">
+            <div style="flex:1 1 170px;min-width:158px;padding:26px 24px 24px;border:1px solid rgba(25,48,24,0.14);border-radius:12px;display:flex;flex-direction:column;gap:8px;background-image:{{ card.bg }};border-style:{{ card.borderStyle }}">
+              <div style="height:5px;width:40px;border-radius:3px;background:{{ card.accent }}"></div>
+              <div style="font-size:46px;font-weight:700;letter-spacing:-0.025em;line-height:1;margin-top:10px;color:{{ card.pctColor }}"><span>{{ card.pct }}</span>%</div>
+              <div style="font-size:18px;font-weight:600;color:#193018;margin-top:2px">{{ card.label }}</div>
+              <div style="font-size:16px;line-height:1.45;color:#6B776A">{{ card.note }}</div>
+              <div style="font-size:15px;color:#4A5849;font-weight:600;margin-top:auto;padding-top:10px">{{ card.count }}</div>
+              <sc-if value="{{ card.showTiers }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:7px;padding-top:14px;border-top:1px solid rgba(25,48,24,0.11)">
+                  <sc-for list="{{ card.tiers }}" as="tier" hint-placeholder-count="3">
+                    <div style="display:flex;justify-content:space-between;gap:12px;font-size:15px;line-height:1.35;color:#4A5849">
+                      <span>{{ tier.label }}</span>
+                      <span style="font-weight:700;color:#193018">{{ tier.n }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="font-size:17px;line-height:1.55;color:#334432;max-width:96ch;border-top:1px solid rgba(25,48,24,0.11);padding-top:26px">The stamp is <strong style="font-weight:600;color:#193018">subject-level evidence, not course-level proof</strong> — the college teaches the subject at a level some campus formally accepted, not that this campus would accept this course. And no blocking count is a repair count: a row reading “stands in front of <span>{{ m3TopBlocks }}</span>” never means “sign it, open <span>{{ m3TopBlocks }}</span>.”</div>
+
+      <div style="font-size:23px;line-height:1.35;font-weight:600;color:#193018;text-wrap:pretty">Four-fifths of the wall is already accepted somewhere. It just isn't signed here.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ MOMENT 4 ══════════════════ -->
+  <section data-screen-label="4 — sign the papers" style="display:flex;flex-direction:column;gap:20px">
+    <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#0072B2;font-weight:700">4 · Sign the papers</div>
+    <h2 style="margin:0;font-size:46px;line-height:1.08;letter-spacing:-0.024em;font-weight:700;max-width:30ch">Sign the papers and the poorest quartile nearly catches up</h2>
+    <p style="margin:0;font-size:23px;line-height:1.45;max-width:56ch;color:#334432;font-weight:600;text-wrap:pretty">Write only the agreements the evidence already supports — teach nothing new, hire no one — and re-measure.</p>
+
+    <div style="background:#FFFFFF;border:1px solid rgba(25,48,24,0.11);border-radius:16px;padding:42px 46px 38px;display:flex;flex-direction:column;gap:30px;margin-top:14px">
+      <div>
+        <div style="font-size:22px;font-weight:600;color:#193018">Today, and after the signatures</div>
+        <div style="font-size:17px;line-height:1.45;color:#6B776A;margin-top:6px">Every destination is a range across two evidence standards — the conservative bound leads, full evidence trails</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column" role="group" aria-label="{{ m4Alt }}">
+        <div style="display:grid;grid-template-columns:25% 75%;gap:28px;align-items:end;padding-bottom:10px">
+          <div style="font-size:13px;letter-spacing:0.08em;color:#6B776A;font-weight:700">MEASURE</div>
+          <div style="position:relative;height:22px">
+            <div style="position:absolute;left:0%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">0</div>
+            <div style="position:absolute;left:25%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">25</div>
+            <div style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">50</div>
+            <div style="position:absolute;left:75%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">75</div>
+            <div style="position:absolute;left:100%;bottom:0;transform:translateX(-50%);font-size:15px;color:#6B776A">100</div>
+          </div>
+        </div>
+
+        <sc-for list="{{ m4Rows }}" as="mrow" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:25% 75%;gap:28px;align-items:center;padding:24px 0 26px;border-top:1px solid rgba(25,48,24,0.09)">
+            <div>
+              <div style="font-size:22px;font-weight:600;line-height:1.22;color:#193018;text-wrap:pretty">{{ mrow.label }}</div>
+              <div style="font-size:16px;line-height:1.4;color:#6B776A;margin-top:6px">{{ mrow.sub }}</div>
+            </div>
+            <div style="position:relative;height:132px">
+              <div style="position:absolute;left:0;right:0;top:64px;height:10px;border-radius:5px;background:#EDF1EA"></div>
+              <sc-if value="{{ mrow.residual }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:48px;height:42px;right:0;left:{{ mrow.resLeft }};border:1px solid #C6CEC5;background-image:repeating-linear-gradient(45deg, rgba(156,166,155,0.8) 0 2px, rgba(0,0,0,0) 2px 9px)" title="{{ mrow.resT }}"></div>
+              </sc-if>
+              <sc-if value="{{ mrow.residual }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:69px;transform:translateY(-50%);margin-left:12px;padding:1px 6px;background:rgba(255,255,255,0.9);font-size:15px;color:#4A5849;white-space:nowrap;left:{{ mrow.resLeft }}">still closed</div>
+              </sc-if>
+              <sc-if value="{{ mrow.showConn }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute;top:68px;height:0;border-top:2px dashed #0072B2;left:{{ mrow.connLeft }};width:{{ mrow.connW }}"></div>
+              </sc-if>
+              <sc-if value="{{ mrow.showConn }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute;top:69px;width:0;height:0;border-left:12px solid #0072B2;border-top:7px solid rgba(0,0,0,0);border-bottom:7px solid rgba(0,0,0,0);left:{{ mrow.arrowLeft }};transform:{{ mrow.arrowTf }}"></div>
+              </sc-if>
+              <div style="position:absolute;top:48px;height:42px;background:rgba(0,114,178,0.16);left:{{ mrow.bandLeft }};width:{{ mrow.bandW }}" title="{{ mrow.bandT }}"></div>
+              <div style="position:absolute;top:48px;height:42px;width:5px;background:#0072B2;transform:translateX(-2.5px);left:{{ mrow.consLeft }}"></div>
+              <div style="position:absolute;top:48px;height:42px;width:2px;background:#0072B2;left:{{ mrow.fullLeft }}"></div>
+              <div style="position:absolute;top:69px;width:22px;height:22px;border-radius:50%;background:#193018;transform:translate(-50%,-50%);left:{{ mrow.todayLeft }}" title="{{ mrow.todayT }}"></div>
+              <div style="position:absolute;top:100px;transform:translate(-50%,0);font-size:18px;font-weight:600;color:#193018;white-space:nowrap;left:{{ mrow.todayLeft }}">Today · <span>{{ mrow.todayValue }}</span></div>
+              <div style="position:absolute;top:48px;transform:translate(-50%,-100%);font-size:44px;font-weight:700;letter-spacing:-0.025em;line-height:1;color:#0072B2;white-space:nowrap;left:{{ mrow.bandMid }}">{{ mrow.rangeValue }}</div>
+              <sc-if value="{{ mrow.showNote }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute;top:100px;transform:translate(-50%,0);font-size:16px;color:#6B776A;white-space:nowrap;left:{{ mrow.bandMid }}">conservative → full</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;column-gap:32px;row-gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(25,48,24,0.09);font-size:16px;color:#6B776A">
+          <span style="display:inline-flex;align-items:center;gap:10px"><span style="width:5px;height:19px;background:#0072B2"></span>conservative bound — leads every reading</span>
+          <span style="display:inline-flex;align-items:center;gap:10px"><span style="width:2px;height:19px;background:#0072B2"></span>full-evidence bound</span>
+          <span style="display:inline-flex;align-items:center;gap:10px"><span style="width:26px;height:17px;border:1px solid #C6CEC5;background-image:repeating-linear-gradient(45deg, rgba(156,166,155,0.8) 0 2px, rgba(0,0,0,0) 2px 9px)"></span>still closed — no signature reaches it</span>
+        </div>
+      </div>
+
+      <div style="display:flex;column-gap:38px;row-gap:20px;flex-wrap:wrap;border-top:1px solid rgba(25,48,24,0.11);padding-top:28px">
+        <div style="flex:1 1 320px;min-width:280px;font-size:17px;line-height:1.55;color:#334432">No new courses and no new hires — only agreements for courses a college already teaches, in subjects some UC campus has already formally accepted at that level.</div>
+        <div style="flex:1 1 320px;min-width:280px;font-size:17px;line-height:1.55;color:#334432">The hatched tail stays unfixed: <span>{{ m3NotTaughtPct }}</span>% of blocking instances are subjects the college teaches nothing in, and no signature repairs those.</div>
+        <div style="flex:1 1 320px;min-width:280px;font-size:17px;line-height:1.55;color:#334432">{{ m4HonestLine }}</div>
+      </div>
+
+      <div style="font-size:23px;line-height:1.35;font-weight:600;color:#193018;text-wrap:pretty">Sign the papers and the poorest districts nearly catch up. The largest share of this inequality is administrative.</div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid rgba(25,48,24,0.11);padding-top:24px;font-size:15px;line-height:1.65;color:#6B776A;max-width:100ch">
+    A census of every ASSIST articulation agreement between California's 115 community colleges and the nine UC Computer Science programs. Requirement basis: <strong style="font-weight:600;color:#334432">{{ basisLabel }}</strong>. Formal opportunity only — a signed agreement changes what a path permits, not who walks it.
+  </footer>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;basis&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;floor&quot;,&quot;stated&quot;],&quot;default&quot;:&quot;floor&quot;,&quot;tsType&quot;:&quot;'floor' | 'stated'&quot;,&quot;section&quot;:&quot;Data&quot;,&quot;label&quot;:&quot;Requirement basis&quot;},&quot;showTierDetail&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Display&quot;,&quot;label&quot;:&quot;Evidence tier breakdown&quot;}}">
+class Component extends DCLogic {
+  get basis() { return this.props.basis === 'stated' ? 'stated' : 'floor'; }
+
+  ser(n, hi, lo, med) {
+    const m = Math.floor((n - 1) / 2), out = [];
+    for (let i = 0; i < n; i++) {
+      let v;
+      if (i <= m) v = hi + (med - hi) * Math.pow(m ? i / m : 1, 1.6);
+      else v = med + (lo - med) * Math.pow((i - m) / (n - 1 - m), 0.85);
+      out.push(Math.round(v));
+    }
+    return out;
+  }
+
+  data() {
+    const FLOOR = {
+      label: 'Eligibility floor',
+      sub: 'hand-verified curated minimums — the default',
+      m1: { genericN: 31, csN: 29, genericMed: 99, csMed: 66, gHi: 100, gLo: 93, cHi: 95, cLo: 19 },
+      m2: { access: [40, 62, 77, 90], generic: [93, 99, 100, 100], cs: [40, 57, 66, 72] },
+      m3: {
+        notTaughtPct: 15,
+        ledger: [
+          { course: 'Data Structures, Algorithms, & Programming', campus: 'UC Davis', blocks: 65, opens: 15 },
+          { course: 'Basic Data Structures and Object-Oriented Design', campus: 'UC San Diego', blocks: 49, opens: 12 },
+          { course: 'Intermediate Programming', campus: 'UC Irvine', blocks: 46, opens: 2 },
+          { course: 'Introduction to Programming', campus: 'UC Irvine', blocks: 44, opens: 0 },
+          { course: 'Computer Systems and Assembly Language and Lab', campus: 'UC Santa Cruz', blocks: 41, opens: 13 }
+        ],
+        cards: [
+          { pct: 79, count: '638 of 809 instances', label: 'Accepted elsewhere', kind: 'solid',
+            note: 'The college\u2019s equivalent course is already formally accepted by another UC campus. A signature, not a course.',
+            tiers: [{ label: 'by the demanding campus itself', n: 424 }, { label: 'by a stricter campus', n: 157 }, { label: 'by a laxer campus only', n: 57 }] },
+          { pct: 15, count: '123 of 809 instances', label: 'Not taught at all', kind: 'hollow',
+            note: 'The college teaches nothing in the subject. No signature fixes these.', tiers: null },
+          { pct: 1, count: '8 of 809 instances', label: 'Taught, never accepted', kind: 'muted',
+            note: 'The subject is on the books, but no campus has ever accepted this college\u2019s version.', tiers: null },
+          { pct: 5, count: '40 of 809 instances', label: 'Unclassified', kind: 'hatch',
+            note: 'The title classifier could not place the requirement. Shown, never absorbed into a cleaner number.', tiers: null }
+        ]
+      },
+      m4: {
+        rows: [
+          { label: 'Poorest-quartile access', sub: 'share of Q1 districts with a complete formal path', today: 40, cons: 75, full: 79, unit: '%', residual: true },
+          { label: 'Richest \u2013 poorest gap', sub: 'percentage points between Q4 and Q1 access', today: 49, cons: 23, full: 19, unit: ' pts', residual: false },
+          { label: 'Worst distance stratum', sub: 'districts both far from a campus and poor', today: 41, cons: 74, full: 79, unit: '%', residual: true }
+        ],
+        honest: 'The gap shrinks by more than half. Not to nothing \u2014 the not-taught remainder is real \u2014 but by more than half.'
+      }
+    };
+    const STATED = {
+      label: 'Stated preparation',
+      sub: 'everything the ASSIST agreement lists',
+      m1: { genericN: 54, csN: 38, genericMed: 97, csMed: 65, gHi: 100, gLo: 88, cHi: 95, cLo: 14 },
+      m2: { access: [35, 52, 59, 72], generic: [80, 86, 88, 88], cs: [33, 50, 58, 64] },
+      m3: {
+        notTaughtPct: 15,
+        ledger: [
+          { course: 'Software Construction Laboratory', campus: 'UC Los Angeles', blocks: 115, opens: 5 },
+          { course: 'Logic Design of Digital Systems — two same-titled courses, merged', campus: 'UC Los Angeles', blocks: 106, opens: 0 }
+        ],
+        cards: [
+          { pct: 81, count: 'of every missing instance', label: 'Accepted elsewhere', kind: 'solid',
+            note: 'The college\u2019s equivalent course is already formally accepted by another UC campus. A signature, not a course.', tiers: null },
+          { pct: 19, count: 'of every missing instance', label: 'Remainder', kind: 'hollow',
+            note: 'Genuine supply gaps, never-accepted subjects and unclassified instances. Tier counts on this basis live in the data file.', tiers: null }
+        ]
+      },
+      m4: {
+        rows: [
+          { label: 'Poorest-quartile access', sub: 'share of Q1 districts with a complete formal path', today: 35, cons: 68, full: 72, unit: '%', residual: true },
+          { label: 'Richest \u2013 poorest gap', sub: 'percentage points between Q4 and Q1 access', today: 37, cons: 30, full: 27, unit: ' pts', residual: false }
+        ],
+        honest: 'On this basis the repaired poorest quartile lands exactly on today\u2019s richest quartile \u2014 72%.'
+      }
+    };
+    return this.basis === 'stated' ? STATED : FLOOR;
+  }
+
+  renderVals() {
+    const D = this.data();
+    const CS = '#0072B2', GEN = '#6F7B6E';
+    const o = { ann: this.props.annotations !== false, basisLabel: D.label, basisSub: D.sub };
+
+    // ── Moment 1 · the sorted requirement field ──────────────
+    const g = this.ser(D.m1.genericN, D.m1.gHi, D.m1.gLo, D.m1.genericMed);
+    const c = this.ser(D.m1.csN, D.m1.cHi, D.m1.cLo, D.m1.csMed);
+    const items = g.map(v => ({ v, k: 'g' })).concat(c.map(v => ({ v, k: 'c' })));
+    items.sort((a, b) => (b.v - a.v) || (a.k === 'g' ? -1 : 1));
+    o.m1Bars = items.map(it => ({
+      h: it.v + '%', fill: it.k === 'g' ? GEN : CS,
+      t: it.v + '% of the 115 colleges articulate this ' + (it.k === 'g' ? 'generic' : 'Computer Science') + ' requirement'
+    }));
+    o.m1Rug = items.map(it => ({ fill: it.k === 'g' ? GEN : CS }));
+    const PH = 360;
+    o.m1RuleGenTop = ((100 - D.m1.genericMed) / 100 * PH).toFixed(1) + 'px';
+    o.m1RuleCsTop = ((100 - D.m1.csMed) / 100 * PH).toFixed(1) + 'px';
+    o.m1LabGenTop = ((100 - D.m1.genericMed) / 100 * PH + 7).toFixed(1) + 'px';
+    o.m1LabCsTop = ((100 - D.m1.csMed) / 100 * PH + 8).toFixed(1) + 'px';
+    o.m1GenMed = D.m1.genericMed; o.m1CsMed = D.m1.csMed;
+    o.m1GenN = D.m1.genericN; o.m1CsN = D.m1.csN;
+    o.m1TotalN = D.m1.genericN + D.m1.csN;
+    o.m1Alt = 'A field of ' + o.m1TotalN + ' columns, one per distinct required receiving course, sorted by the share of the 115 colleges that articulate it. The ' +
+      D.m1.genericN + ' generic requirements form a plateau at the top of the scale, median ' + D.m1.genericMed +
+      ' percent. The ' + D.m1.csN + ' Computer Science courses form the entire descending tail, median ' + D.m1.csMed + ' percent.';
+
+    // ── Moment 2 · the staircase, opened ─────────────────────
+    const H2 = 552, yb2 = 452, s2 = 3.26;
+    const y2 = v => +(yb2 - v * s2).toFixed(1);
+    const L = x => (x / 1240 * 100).toFixed(3) + '%';
+    const T = y => (y / H2 * 100).toFixed(3) + '%';
+    const ax0 = 96, sw = 96, qn = ['Q1 · poorest', 'Q2', 'Q3', 'Q4 · richest'];
+    let sp = 'M ' + ax0 + ' ' + yb2;
+    D.m2.access.forEach((v, i) => { const x = ax0 + i * sw, y = y2(v); sp += ' L ' + x + ' ' + y + ' L ' + (x + sw) + ' ' + y; });
+    o.m2StepPath = sp + ' L ' + (ax0 + 4 * sw) + ' ' + yb2 + ' Z';
+    o.m2StepLabels = D.m2.access.map((v, i) => ({
+      left: L(ax0 + i * sw + sw / 2), top: T(y2(v) - 9), text: v + '%',
+      t: qn[i] + ': a complete formal path exists from ' + v + '% of the quartile\u2019s districts'
+    }));
+    const bxs = [660, 800, 940, 1080];
+    const pathOf = vals => vals.map((v, i) => (i ? 'L ' : 'M ') + bxs[i] + ' ' + y2(v)).join(' ');
+    o.m2GhostPath = pathOf(D.m2.access);
+    o.m2GenPath = pathOf(D.m2.generic);
+    o.m2CsPath = pathOf(D.m2.cs);
+    o.m2GenDots = D.m2.generic.map((v, i) => ({ x: bxs[i], y: y2(v) }));
+    o.m2CsDots = D.m2.cs.map((v, i) => ({ x: bxs[i], y: y2(v) }));
+    const nudge = i => (i === 0 ? 26 : i === 3 ? -22 : 0);
+    o.m2GenLabels = D.m2.generic.map((v, i) => ({
+      left: L(bxs[i] + nudge(i)), top: T(y2(v) - 11), text: v + '%',
+      t: qn[i] + ': ' + v + '% of generic requirement \u00d7 college cells are articulated'
+    }));
+    o.m2CsLabels = D.m2.cs.map((v, i) => ({
+      left: L(bxs[i] + (i === 3 ? -22 : 0)), top: T(y2(v) + 13), text: v + '%',
+      t: qn[i] + ': ' + v + '% of Computer Science requirement \u00d7 college cells are articulated'
+    }));
+    const brk = (vals, x) => {
+      const a = y2(vals[0]), b = y2(vals[3]);
+      return 'M ' + (x - 7) + ' ' + a + ' L ' + x + ' ' + a + ' L ' + x + ' ' + b + ' L ' + (x - 7) + ' ' + b;
+    };
+    o.m2GenBracket = brk(D.m2.generic, 1100);
+    o.m2CsBracket = brk(D.m2.cs, 1100);
+    o.m2GenSwing = D.m2.generic[3] - D.m2.generic[0];
+    o.m2CsSwing = D.m2.cs[3] - D.m2.cs[0];
+    o.m2AccessSwing = D.m2.access[3] - D.m2.access[0];
+    o.m2GenSwingTop = T((y2(D.m2.generic[0]) + y2(D.m2.generic[3])) / 2);
+    o.m2CsSwingTop = T((y2(D.m2.cs[0]) + y2(D.m2.cs[3])) / 2);
+    o.m2Alt = 'Panel A: the district-access staircase across income quartiles, ' + D.m2.access.join('%, ') +
+      '%. Panel B, same vertical scale: the generic requirement layer runs ' + D.m2.generic.join('%, ') +
+      '%, a swing of ' + o.m2GenSwing + ' points; the Computer Science layer runs ' + D.m2.cs.join('%, ') +
+      '%, a swing of ' + o.m2CsSwing + ' points, and tracks the shape of the staircase.';
+
+    // ── Moment 3 · the ledger ────────────────────────────────
+    const pc = n => (n / 115 * 100).toFixed(3) + '%';
+    o.m3Rows = D.m3.ledger.map(r => ({
+      course: r.course, campus: r.campus,
+      blockPct: pc(r.blocks), blocks: String(r.blocks), openPct: pc(r.opens),
+      opens: r.opens + (r.opens === 1 ? ' opens' : ' open'), zero: r.opens === 0,
+      blockT: r.campus + ' · ' + r.course + ': stands in front of ' + r.blocks + ' of the 115 colleges',
+      openT: r.opens === 0
+        ? 'Signed alone this agreement opens no additional college — every college it blocks is blocked by something else too'
+        : 'Signed alone this agreement opens ' + r.opens + ' additional colleges'
+    }));
+    o.m3TopBlocks = D.m3.ledger[0].blocks;
+    o.m3NotTaughtPct = D.m3.notTaughtPct;
+    o.m3Alt = 'A ledger of the heaviest unsigned articulation agreements, blocks and opens-alone on one 0 to 115 scale. ' +
+      D.m3.ledger.map(r => r.campus + '\u2019s ' + r.course + ' stands in front of ' + r.blocks + ' colleges and would open ' + r.opens + ' if signed alone').join('; ') + '.';
+    const skin = k => k === 'hollow' ? { bg: 'none', borderStyle: 'dashed', accent: '#9CA69B', pctColor: '#4A5849' }
+      : k === 'hatch' ? { bg: 'repeating-linear-gradient(45deg, rgba(25,48,24,0.06) 0 4px, rgba(0,0,0,0) 4px 9px)', borderStyle: 'solid', accent: '#9CA69B', pctColor: '#4A5849' }
+      : k === 'muted' ? { bg: 'none', borderStyle: 'solid', accent: '#C6CEC5', pctColor: '#4A5849' }
+      : { bg: 'none', borderStyle: 'solid', accent: '#0D7964', pctColor: '#0D7964' };
+    const tiersOn = this.props.showTierDetail !== false;
+    o.m3Cards = D.m3.cards.map(cd => Object.assign({}, skin(cd.kind), {
+      pct: cd.pct, count: cd.count, label: cd.label, note: cd.note,
+      showTiers: !!(cd.tiers && tiersOn), tiers: cd.tiers || []
+    }));
+
+    // ── Moment 4 · sign the papers ───────────────────────────
+    const P = v => v.toFixed(3) + '%';
+    o.m4Rows = D.m4.rows.map(r => {
+      const lo = Math.min(r.cons, r.full), hi = Math.max(r.cons, r.full);
+      const fwd = r.cons >= r.today;
+      const tip = fwd ? lo : hi;
+      const cFrom = fwd ? r.today + 1.6 : hi + 2.2;
+      const cTo = fwd ? lo - 2.2 : r.today - 1.6;
+      return {
+        label: r.label, sub: r.sub,
+        residual: !!r.residual, resLeft: P(hi),
+        resT: (100 - hi) + ' points still closed after every supported agreement is written',
+        bandLeft: P(lo), bandW: P(Math.max(0.6, hi - lo)), bandMid: P((lo + hi) / 2),
+        bandT: 'After the signatures: ' + r.cons + r.unit + ' under the conservative evidence standard, ' + r.full + r.unit + ' under full evidence',
+        consLeft: P(r.cons), fullLeft: P(r.full),
+        connLeft: P(Math.min(cFrom, cTo)), connW: P(Math.max(0, Math.abs(cTo - cFrom))),
+        showConn: Math.abs(cTo - cFrom) > 4,
+        showNote: Math.abs(r.today - (lo + hi) / 2) > 24,
+        arrowLeft: P(tip), arrowTf: fwd ? 'translate(-100%,-50%)' : 'translate(0,-50%) rotate(180deg)',
+        todayLeft: P(r.today), todayValue: r.today + r.unit, todayT: 'Today: ' + r.today + r.unit,
+        rangeValue: r.cons + ' – ' + r.full + r.unit
+      };
+    });
+    o.m4HonestLine = D.m4.honest;
+    o.m4Alt = 'Three measures shown today and after the signatures, each destination a range across two evidence standards. ' +
+      D.m4.rows.map(r => r.label + ' moves from ' + r.today + r.unit + ' to between ' + r.cons + ' and ' + r.full + r.unit).join('; ') + '.';
+    return o;
+  }
+}
+
+</script>
+</body>
+</html>

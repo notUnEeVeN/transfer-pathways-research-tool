@@ -146,12 +146,7 @@ describe('analysis registry major scopes', () => {
       'transfer-credit-rate': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'transfer-extra-units': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'income-access': ['assistAgreements'],
-      'income-depth': ['assistAgreements'],
       'credit-loss': ['assistAgreements', 'agreementPathways'],
-      'choice-cost': ['assistAgreements', 'agreementPathways'],
-      'category-gaps': ['assistAgreements', 'courseCategories'],
-      complexity: ['assistAgreements', 'prerequisites'],
-      'time-to-degree': ['assistAgreements', 'asDegrees'],
     })
   })
 
@@ -167,7 +162,6 @@ describe('analysis registry major scopes', () => {
       'paper-articulation-map',
       'coverage-heatmap',
       'income-access',
-      'income-depth',
     ])
   })
 

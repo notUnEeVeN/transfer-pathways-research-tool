@@ -3,8 +3,14 @@ import { ANALYSES } from './registry'
 import { MEASURES, measureFor } from './measures'
 
 describe('figure measurement definitions', () => {
+  // The figure-sequence collections carry their definitions beat by beat on
+  // the page itself; one panel cannot describe six different figures.
+  const SEQUENCE_COLLECTIONS = new Set(['price-of-place', 'paper-gate'])
+
   it('defines a measure for every registered analysis', () => {
-    const missing = ANALYSES.filter((a) => !MEASURES[a.id]).map((a) => a.id)
+    const missing = ANALYSES
+      .filter((a) => !MEASURES[a.id] && !SEQUENCE_COLLECTIONS.has(a.id))
+      .map((a) => a.id)
     expect(missing).toEqual([])
   })
 

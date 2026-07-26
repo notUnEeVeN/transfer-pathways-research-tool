@@ -48,13 +48,9 @@ import ArticulationCoverageMap from './ArticulationCoverageMap'
 import PaperCourseBarriers, { PaperCourseBarriersPreview } from './PaperCourseBarriers'
 import CourseTypeCoverage from './CourseTypeCoverage'
 import IncomeAccess from './IncomeAccess'
-import IncomeDepth from './IncomeDepth'
 import PriceOfPlace, { PriceOfPlacePreview } from './PriceOfPlace'
+import PaperGate, { PaperGatePreview } from './PaperGate'
 import CreditLoss from './CreditLoss'
-import ChoiceCost from './ChoiceCost'
-import CategoryGaps from './CategoryGaps'
-import Complexity from './Complexity'
-import TimeToDegree from './TimeToDegree'
 
 // The built-in analyses render as first-class figures in the Visuals gallery,
 // credited to the console owner and dated alongside locally published
@@ -242,19 +238,6 @@ export const ANALYSES = [
     Component: IncomeAccess,
   },
   {
-    id: 'income-depth',
-    ...selectedMajor({
-      requiredCapabilities: ['assistAgreements'],
-      datasets: ['ASSIST articulation agreements', 'district income and geography'],
-    }),
-    title: 'Articulation depth and local income',
-    description: 'Plots each community college district by how much of the campus-stated preparation — required and recommended coursework together — is articulated there, against the income of the area the district serves.',
-    provenance: 'new',
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-24T12:00:00',
-    Component: IncomeDepth,
-  },
-  {
     id: 'multi-campus-pathways',
     ...fixedComputerScience({
       reason: 'This figure is backed by a committed Computer Science pathway snapshot.',
@@ -283,75 +266,32 @@ export const ANALYSES = [
     Component: CreditLoss,
   },
   {
-    id: 'choice-cost',
-    ...selectedMajor({
-      requiredCapabilities: ['assistAgreements', 'agreementPathways'],
-      datasets: ['articulation agreements', 'proof-aware per-agreement pathway solutions'],
-      pendingReason: 'Per-agreement pathways must exclude blocked agreements and record solver optimality before this visual can run for the selected major.',
-    }),
-    title: 'Cost of applying to more campuses',
-    description: 'Shows how many additional community college courses are needed as students add more campus options.',
-    provenance: 'ca',
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-04T09:01:00',
-    Component: ChoiceCost,
-  },
-  {
-    id: 'category-gaps',
-    ...selectedMajor({
-      requiredCapabilities: ['assistAgreements', 'courseCategories'],
-      datasets: ['articulation agreements', 'validated course categories'],
-      pendingReason: 'Course categories must be validated for this major before subject gaps can be compared.',
-    }),
-    title: 'Missing courses by subject',
-    description: 'Shows where community colleges do not offer an equivalent course, organized by campus and subject.',
-    provenance: 'ca',
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-04T09:02:00',
-    Component: CategoryGaps,
-  },
-  {
-    id: 'complexity',
-    ...selectedMajor({
-      requiredCapabilities: ['assistAgreements', 'prerequisites'],
-      datasets: ['articulation agreements', 'validated prerequisite concepts'],
-      pendingReason: 'Prerequisite concepts and chains must be validated for this major before pathway complexity can be modeled.',
-    }),
-    title: 'Transfer pathway complexity',
-    description: 'Shows how prerequisites can delay progress or block students along each transfer pathway.',
-    provenance: 'ma',
-    figureNo: 6,
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-04T09:03:00',
-    Component: Complexity,
-  },
-  {
-    id: 'time-to-degree',
-    ...selectedMajor({
-      requiredCapabilities: ['assistAgreements', 'asDegrees'],
-      datasets: ['associate degrees', 'articulation agreements'],
-      pendingReason: 'Associate-degree records must be gathered for this major before transfer credit can be modeled.',
-    }),
-    title: 'Associate degree transfer credit',
-    description: 'Shows how much of an associate degree counts toward transfer requirements and estimates the cost of units that do not count.',
-    provenance: 'ma',
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-04T09:04:00',
-    Component: TimeToDegree,
-  },
-  {
     id: 'price-of-place',
     ...fixedComputerScience({
       reason: 'This sequence is backed by a committed snapshot computed for the nine Computer Science programs against every other major in the full agreement corpus.',
       datasets: ['committed full-corpus articulation snapshot', 'district income and geography'],
     }),
-    title: 'The price of place',
+    title: 'Income, distance, and transfer access',
     description: 'Five connected figures from a committed snapshot of the complete agreement corpus, showing how district income relates to whether a complete Computer Science transfer path formally exists — measured against a field of about nine hundred other majors.',
     provenance: 'new',
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-24T18:00:00',
     Component: PriceOfPlace,
     PreviewComponent: PriceOfPlacePreview,
+  },
+  {
+    id: 'paper-gate',
+    ...fixedComputerScience({
+      reason: 'This sequence is backed by a committed course-repair simulation over the nine Computer Science programs, with the full agreement corpus as evidence.',
+      datasets: ['committed course-repair simulation artifact'],
+    }),
+    title: 'The paper gate',
+    description: 'The sequel to the income-and-distance collection: which courses block the remaining Computer Science transfer paths, why each is missing, what writing a single missing agreement would open, what each campus routes through articulation, and how far the map moves if every evidence-backed agreement were written.',
+    provenance: 'new',
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-07-25T15:00:00',
+    Component: PaperGate,
+    PreviewComponent: PaperGatePreview,
   },
 ]
 

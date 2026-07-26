@@ -40,6 +40,82 @@ describe('priceOfPlaceSnapshot (committed data contract)', () => {
     }
   })
 
+  it('carries the human denominators (figure-2 strip and notes)', () => {
+    const { people } = snapshot
+    // The strip's person-first stats: typical reach nearly doubles across
+    // quartiles, a fifth of the state lives behind a majority-shut door, and
+    // the deepest shutouts are small — stated as a tail, never the typical case.
+    expect(people.weightedStair.enrollment[3]).toBeGreaterThan(people.weightedStair.enrollment[0] * 1.5)
+    expect(people.residentsMajorityShut).toBeGreaterThan(people.residents.total * 0.15)
+    expect(people.residentsMajorityShut).toBeLessThan(people.residents.total * 0.35)
+    expect(people.students.gated).toBeGreaterThan(10000)
+    expect(people.students.gated).toBeLessThan(people.students.total * 0.05)
+    // Robustness stairs both rise: enrollment-weighted and ACS-income-ranked.
+    for (const stair of [people.weightedStair.enrollment, people.acsStair]) {
+      expect(stair[3]).toBeGreaterThan(stair[0] + 0.2)
+    }
+    // Why there is NO demographics beat: person-weighted mean reach is nearly
+    // flat across groups (spread under one program of nine). If this ever
+    // widens, the angle deserves a fresh look — the notes say it was set aside.
+    const g = people.groupReach
+    const reaches = [g.hispanic, g.asian, g.white, g.black]
+    expect(Math.max(...reaches) - Math.min(...reaches)).toBeLessThan(1)
+  })
+
+  it('carries the detour, wall, and concentration sections (beats 4, 6, 7)', () => {
+    const { detour, wall, lorenz } = snapshot
+    // The detour to full choice falls steeply with income: the poorest
+    // quartile's median detour is a multiple of the richest's, and nearly
+    // everyone there pays some detour.
+    expect(detour.byQuartile[0].medianDetourKm).toBeGreaterThan(detour.byQuartile[3].medianDetourKm * 4)
+    expect(detour.byQuartile[0].shareDetoured).toBeGreaterThan(0.9)
+    // The wall is narrow choice, not zero paths: a real minority of the
+    // state's CS associate graduates come from at-most-four colleges.
+    expect(wall.totals.completionsNarrow / wall.totals.completions).toBeGreaterThan(0.15)
+    expect(wall.totals.completionsNarrow / wall.totals.completions).toBeLessThan(0.5)
+    expect(wall.bands).toHaveLength(4)
+    // Concentration: subject opportunity is spread meaningfully less evenly
+    // than field opportunity, and the counterfactual shows stock sufficiency.
+    expect(lorenz.cs.gini).toBeGreaterThan(lorenz.field.gini * 1.8)
+    expect(lorenz.counterfactual.optimalResidentShare).toBeGreaterThan(lorenz.counterfactual.actualResidentShare * 2)
+    // Lorenz curves are valid: monotone, ending at (1, 1).
+    for (const curve of [lorenz.cs, lorenz.field]) {
+      const last = curve.points[curve.points.length - 1]
+      expect(last[0]).toBeCloseTo(1, 2)
+      expect(last[1]).toBeCloseTo(1, 2)
+      for (let i = 1; i < curve.points.length; i += 1) {
+        expect(curve.points[i][1]).toBeGreaterThanOrEqual(curve.points[i - 1][1])
+      }
+    }
+  })
+
+  it('carries the curated-minimums basis alongside strict', () => {
+    const m = snapshot.minimums
+    // No campus is closed on the eligibility floor; one stays open.
+    expect(m.fig1.filter((p) => p.regime === 'closed')).toHaveLength(0)
+    expect(m.fig1.filter((p) => p.regime === 'open')).toHaveLength(1)
+    // Seven campuses are identical under both bases (their ASSIST listing IS
+    // the floor); the two competitive campuses open up only on the floor.
+    const strictBy = new Map(snapshot.fig1.map((p) => [p.campus, p]))
+    const sameCount = m.fig1.filter((p) => {
+      const st = strictBy.get(p.campus)
+      return st && st.q1 === p.q1 && st.q4 === p.q4
+    }).length
+    expect(sameCount).toBe(7)
+    const ucla = m.fig1.find((p) => p.campus === 'UCLA')
+    expect(ucla.q1).toBeGreaterThan(0)
+    expect(ucla.q4).toBeGreaterThan(0.9)
+    // The floor staircase is monotone and STEEPER than the stated one — the
+    // strict basis was diluting the income story, not inflating it.
+    for (let q = 1; q < 4; q += 1) expect(m.fig3cs[q]).toBeGreaterThanOrEqual(m.fig3cs[q - 1])
+    const floorGap = m.fig3cs[3] - m.fig3cs[0]
+    const strictGap = snapshot.fig3.cs[3] - snapshot.fig3.cs[0]
+    expect(floorGap).toBeGreaterThan(strictGap)
+    // Distance grid survives on the floor: both gates still positive for CS.
+    expect(m.responses.income.near).toBeGreaterThan(0)
+    expect(m.responses.proximity.poor).toBeGreaterThan(0)
+  })
+
   it('carries the distance stratification (figures 4 and 5)', () => {
     const { distance } = snapshot
     // One tether per matched district, each with a campus and a quartile.
@@ -93,42 +169,38 @@ describe('projectCA', () => {
 describe('PriceOfPlace', () => {
   it('renders all five beats with the committed values, no hooks required', () => {
     render(<PriceOfPlace />)
-    expect(screen.getByText('Nine programs, three fates')).toBeInTheDocument()
-    expect(screen.getByText('Two maps, nearly the same map')).toBeInTheDocument()
-    expect(screen.getByText('Same start, triple the response')).toBeInTheDocument()
-    expect(screen.getByText('Distance is wealth’s twin')).toBeInTheDocument()
-    expect(screen.getByText('Two gates, tested separately')).toBeInTheDocument()
+    expect(screen.getByText('Complete transfer paths by district income')).toBeInTheDocument()
+    // The eligibility floor is the default basis: nothing is closed until the
+    // basis is switched to stated preparation.
+    expect(screen.queryByText(/CLOSED IN EVERY DISTRICT/)).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Stated preparation' }))
+    expect(screen.getByText(/CLOSED IN EVERY DISTRICT/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Eligibility floor' }))
+    expect(screen.getByText('District income and transfer access, mapped')).toBeInTheDocument()
+    expect(screen.getByText(/How district income shapes transfer access/)).toBeInTheDocument()
+    expect(screen.getByText('Transfer demand and income sensitivity, across every major')).toBeInTheDocument()
+    expect(screen.getByText(/high demand, large income swing/)).toBeInTheDocument()
+    expect(screen.getByText('Distance to the nearest campus, by district income')).toBeInTheDocument()
+    expect(screen.getByText('Income and distance, tested with the other held fixed')).toBeInTheDocument()
+    // The sequence is exactly the five-beat core — the person/geography beats
+    // were built, judged clutter, and retired to the notes and data file.
+    expect(screen.queryByText('The graduates at the narrow end')).not.toBeInTheDocument()
+    expect(screen.queryByText('Unequal, and unnecessary')).not.toBeInTheDocument()
+    expect(screen.queryByText(/CUT NEEDED/)).not.toBeInTheDocument()
     // Real numbers on the figure, not hover-only.
-    expect(screen.getAllByText(`${Math.round(snapshot.fig3.cs[3] * 100)}%`).length).toBeGreaterThan(0)
-    // The gate grid states its conditional responses in visible text.
-    expect(screen.getAllByText(/INCOME ALONE/).length).toBe(2)
-    expect(screen.getAllByText(/DISTANCE ALONE/).length).toBe(2)
-    // The author's plain-language log of checked angles is on the page.
-    expect(screen.getByText(/the angles we checked/i)).toBeInTheDocument()
-    expect(screen.getByText(/three times farther from the nearest campus/)).toBeInTheDocument()
+    expect(screen.getAllByText(`${Math.round(snapshot.minimums.fig3cs[3] * 100)}%`).length).toBeGreaterThan(0)
+    // The gate grid states its four conditional responses as in-place arrows.
+    expect(screen.getAllByText(/^field \+\d+$/).length).toBe(4)
+    expect(screen.getByText('NEARER HALF')).toBeInTheDocument()
+    // The author's notes are on the page, in note form.
+    expect(screen.getByText('Robustness checks')).toBeInTheDocument()
+    expect(screen.getByText('Explanations ruled out')).toBeInTheDocument()
+    expect(screen.getByText(/census median household income/)).toBeInTheDocument()
   })
 
-  it('switches between the detailed and at-a-glance registers', () => {
-    render(<PriceOfPlace />)
-    // Detailed default: standfirsts and method caveats, no headline conclusions.
-    expect(screen.getByText(/CLOSED EVERYWHERE — WEALTH IRRELEVANT/)).toBeInTheDocument()
-    expect(screen.getByText(/that imbalance is the confound itself/)).toBeInTheDocument()
-    expect(screen.getByText(/coarse but even-handed ruler/)).toBeInTheDocument()
-    expect(screen.queryByText(/Six come down to money/)).not.toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: 'At a glance' }))
-    // Glance: designed headline conclusions appear, method caveats retire.
-    expect(screen.getByText(/Six come down to money/)).toBeInTheDocument()
-    expect(screen.getByText(/distance still pays/)).toBeInTheDocument()
-    expect(screen.getByText(/Both gates are real/)).toBeInTheDocument()
-    expect(screen.queryByText(/that imbalance is the confound itself/)).not.toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Detailed' }))
-    expect(screen.getByText(/that imbalance is the confound itself/)).toBeInTheDocument()
-  })
 
   it('preview renders the evidence figure alone', () => {
     render(<PriceOfPlacePreview />)
-    expect(screen.getByText(/no curve is being fitted/)).toBeInTheDocument()
+    expect(screen.getByText('District income quartile')).toBeInTheDocument()
   })
 })

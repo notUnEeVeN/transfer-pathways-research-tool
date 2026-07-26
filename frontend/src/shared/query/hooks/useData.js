@@ -211,20 +211,6 @@ export function useCreditLoss(params = {}, options = {}) {
   return useAnalysisEndpoint('analysis-credit-loss', '/analysis/credit-loss', params, options)
 }
 
-// Per-district articulation depth over each campus's own required+recommended
-// receiver universe — feeds the depth-and-income figure.
-export function useArticulationDepth(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-articulation-depth', '/analysis/articulation-depth', params, options)
-}
-
-export function useChoiceCost(params = {}, options = {}) {
-  const hasSchools = (params.schoolIds || []).length > 0
-  return useAnalysisEndpoint('analysis-choice-cost', '/analysis/choice-cost', params, {
-    ...options,
-    enabled: hasSchools && (options.enabled ?? true),
-  })
-}
-
 // Joint, order-independent preparation plan for one or more UC campuses.
 // Unlike choice-cost, `schoolIds` is a set: sorting it here keeps equivalent
 // selections on one cache entry. College mode stays disabled until a college
@@ -296,18 +282,6 @@ export function useMultiCampusPathwaysSnapshot(options = {}) {
     },
     ...queryOptions,
   })
-}
-
-export function useCategoryGaps(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-category-gaps', '/analysis/category-gaps', params, options)
-}
-
-export function useComplexity(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-complexity', '/analysis/complexity', params, options)
-}
-
-export function useTimeToDegree(params = {}, options = {}) {
-  return useAnalysisEndpoint('analysis-time-to-degree', '/analysis/time-to-degree', params, options)
 }
 
 // ── editable curated/reference data ──

@@ -52,31 +52,9 @@ const SHORT_CAMPUS = {
   'UC Irvine': 'Irvine', 'UC Riverside': 'Riverside', 'UC Merced': 'Merced',
 };
 
-// Course buckets for figure 4 — coarse, transparent title classification of
-// receiving requirements. Order matters: first match wins.
-const BUCKETS = [
-  ['discrete', /discrete/i, 'Discrete mathematics'],
-  ['linear_algebra', /linear alg/i, 'Linear algebra'],
-  ['differential', /differential/i, 'Differential equations'],
-  ['calculus', /calculus|analytic geometry/i, 'Calculus'],
-  ['physics', /physics/i, 'Calculus-based physics'],
-  ['programming', /data structure|program|software engineering|\bc\+\+|java(?!nese)/i, 'Programming and data structures'],
-  ['architecture', /architect|assembl|organiz|machine structure/i, 'Computer organization'],
-  ['organic_chem', /organic chem/i, 'Organic chemistry'],
-  ['chemistry', /chem/i, 'General chemistry'],
-  ['statistics', /statist|probability/i, 'Statistics and probability'],
-  ['biology', /biolog|physiolog|anatomy|molecular|cell/i, 'Biology sequence'],
-  ['language', /spanish|french|german|japanese|chinese|italian|korean|latin|language|russian|portuguese/i, 'Foreign language sequence'],
-  ['music', /music/i, 'Music theory and performance'],
-  ['art_studio', /studio|drawing|painting|sculpture|design(?!ated)/i, 'Studio art sequence'],
-  ['composition', /composition|writing|rhetoric|reading/i, 'Composition and writing'],
-  ['economics', /econom/i, 'Economics principles'],
-  ['psychology', /psycholog/i, 'Psychology core'],
-];
-function bucketOf(label) {
-  for (const [id, re, name] of BUCKETS) if (re.test(label)) return { id, name };
-  return null;
-}
+// Course buckets for figure 4 — shared with the course-repair simulator so
+// both scripts classify titles identically.
+const { bucketOf } = require('./lib/courseBuckets');
 
 const mean = (v) => (v.length ? v.reduce((s, x) => s + x, 0) / v.length : null);
 const quantile = (values, q) => {
@@ -111,9 +89,46 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
       ucCourses.set(Number(c.parent_id), c.title || `${c.prefix} ${c.number}`);
     }
 
+    // Curated transfer minimums — the second completeness basis, computed in
+    // the same pass. ASSIST-strict asks "can every stated requirement be
+    // completed"; the hand-verified minimums ask "can the eligibility floor
+    // be met." ASSIST listings at competitive campuses mix competitiveness
+    // into the requirements, so the two bases genuinely differ there (UCLA,
+    // San Diego) and agree everywhere else. A minimum is groups of
+    // alternative sets; a set is met when every requirement in it has some
+    // articulated parent course at the college.
+    const minRows = await appDb.collection('curated_requirements')
+      .find({ kind: 'transfer_minimum' })
+      .sort({ school_id: 1, group_id: 1, set_id: 1, source_order: 1 }).toArray();
+    const minimumsBySchool = new Map();
+    for (const row of minRows) {
+      const sid = Number(row.school_id);
+      if (!minimumsBySchool.has(sid)) minimumsBySchool.set(sid, { groups: new Map(), parentIds: new Set() });
+      const m = minimumsBySchool.get(sid);
+      const g = String(row.group_id); const s = String(row.set_id);
+      if (!m.groups.has(g)) m.groups.set(g, new Map());
+      if (!m.groups.get(g).has(s)) m.groups.get(g).set(s, []);
+      const pids = (row.parent_ids || []).map(Number).filter(Number.isFinite);
+      for (const p of pids) m.parentIds.add(p);
+      m.groups.get(g).get(s).push(pids);
+    }
+    const meetsMinimum = (m, articulated) => {
+      for (const sets of m.groups.values()) {
+        let ok = false;
+        for (const reqs of sets.values()) {
+          if (reqs.length && reqs.every((pids) => pids.some((p) => articulated.has(p)))) { ok = true; break; }
+        }
+        if (!ok) return false;
+      }
+      return true;
+    };
+
     // ---- streaming aggregation state ----
     const programs = new Map();       // key -> program record
     const courseArticulated = new Map(); // receiving parent_id -> ever articulated anywhere
+    const csCompleteColleges = new Set(); // college ids with ≥1 complete subject path
+    const csCountByCollege = new Map();   // college id -> complete subject programs (0-9)
+    let csCompletePairs = 0;             // complete (college, program) subject cells
     const cursor = local.db('pmt_data').collection('uc_agreements')
       .find({}, { projection: { uc_school: 1, uc_school_id: 1, major: 1, community_college_id: 1, requirement_groups: 1 } })
       .batchSize(200);
@@ -142,6 +157,8 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
         requiredTotals: [],           // required-group receiver count per agreement (size matching)
         collegeSeen: [0, 0, 0, 0],     // college-level tallies (no district pooling)
         collegeComplete: [0, 0, 0, 0],
+        completeDistrictsMin: [new Set(), new Set(), new Set(), new Set()], // curated-minimums basis (subject only)
+        collegeCompleteMin: [0, 0, 0, 0],
       };
 
       const complete = isMajorArticulable(a, true);
@@ -149,6 +166,39 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
       if (complete) p.completeDistricts[quartile].add(district);
       p.collegeSeen[quartile] += 1;
       if (complete) p.collegeComplete[quartile] += 1;
+      if (isSubject && complete) {
+        const cid = Number(a.community_college_id);
+        csCompleteColleges.add(cid);
+        csCountByCollege.set(cid, (csCountByCollege.get(cid) || 0) + 1);
+        csCompletePairs += 1;
+      }
+      if (isSubject) {
+        const minimum = minimumsBySchool.get(Number(a.uc_school_id));
+        if (minimum) {
+          const articulated = new Set();
+          for (const g of a.requirement_groups) {
+            for (const s of g.sections || []) {
+              for (const r of s.receivers || []) {
+                if (r.articulation_status !== 'articulated') continue;
+                const receiving = r.receiving || {};
+                if (receiving.kind === 'course' && receiving.parent_id != null
+                  && minimum.parentIds.has(Number(receiving.parent_id))) {
+                  articulated.add(Number(receiving.parent_id));
+                }
+                if (receiving.kind === 'series') {
+                  for (const pid of receiving.parent_ids || []) {
+                    if (minimum.parentIds.has(Number(pid))) articulated.add(Number(pid));
+                  }
+                }
+              }
+            }
+          }
+          if (meetsMinimum(minimum, articulated)) {
+            p.completeDistrictsMin[quartile].add(district);
+            p.collegeCompleteMin[quartile] += 1;
+          }
+        }
+      }
 
       let raw = 0; let binding = 0; let requiredTotal = 0;
       for (const g of a.requirement_groups) {
@@ -212,10 +262,15 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
 
     // ---- fig 2: twin maps ----
     const reachByDistrict = new Map();
+    const reachMinByDistrict = new Map();
     for (const p of cs) {
       for (let q = 0; q < 4; q += 1) {
         for (const d of p.completeDistricts[q]) reachByDistrict.set(d, (reachByDistrict.get(d) || 0) + 1);
-        for (const d of p.seenDistricts[q]) if (!reachByDistrict.has(d)) reachByDistrict.set(d, 0);
+        for (const d of p.completeDistrictsMin[q]) reachMinByDistrict.set(d, (reachMinByDistrict.get(d) || 0) + 1);
+        for (const d of p.seenDistricts[q]) {
+          if (!reachByDistrict.has(d)) reachByDistrict.set(d, 0);
+          if (!reachMinByDistrict.has(d)) reachMinByDistrict.set(d, 0);
+        }
       }
     }
     const centroidByName = new Map(mapGeometry.district_centroids
@@ -224,10 +279,12 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
     const fig2Districts = matched.map(({ d, income }) => {
       const c = centroidByName.get(norm(d));
       const reach = reachByDistrict.get(d) ?? 0;
+      const reachMin = reachMinByDistrict.get(d) ?? 0;
       return c && {
         district: d, lon: c.lon, lat: c.lat,
         income: Math.round(income), incomeQuartile: quartileOfDistrict.get(d),
         reach, reachBand: reachBandOf(reach),
+        reachMin, reachMinBand: reachBandOf(reachMin),
       };
     }).filter(Boolean);
     const fig2Stats = {
@@ -240,13 +297,13 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
     };
 
     // ---- fig 3: quartile access shares ----
-    const districtShares = (list) => [0, 1, 2, 3].map((q) => {
+    const districtShares = (list, field = 'completeDistricts') => [0, 1, 2, 3].map((q) => {
       const perDistrict = new Map();
       for (const p of list) {
         for (const d of p.seenDistricts[q]) {
           const row = perDistrict.get(d) || { done: 0, n: 0 };
           row.n += 1;
-          if (p.completeDistricts[q].has(d)) row.done += 1;
+          if (p[field][q].has(d)) row.done += 1;
           perDistrict.set(d, row);
         }
       }
@@ -275,10 +332,10 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
     // poorest quartile), so pooling gives them more draws — this check shows
     // the contrast is not that mechanic: responses compress proportionally
     // and the subject-to-field ratio is unchanged.
-    const collegeShares = (list) => [0, 1, 2, 3].map((q) => {
+    const collegeShares = (list, field = 'collegeComplete') => [0, 1, 2, 3].map((q) => {
       let done = 0; let total = 0;
       for (const p of list) {
-        done += p.collegeComplete[q];
+        done += p[field][q];
         total += p.collegeSeen[q];
       }
       return total ? round(done / total) : null;
@@ -410,14 +467,14 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
       near: (tetherOf.get(x.d)?.km ?? Infinity) <= medianKm,
       rich: quartileOfDistrict.get(x.d) >= 2,
     }]));
-    const stratShare = (list, keep) => {
+    const stratShare = (list, keep, field = 'completeDistricts') => {
       let done = 0; let total = 0;
       for (const p of list) {
         for (let q = 0; q < 4; q += 1) {
           for (const d of p.seenDistricts[q]) {
             if (!keep(d)) continue;
             total += 1;
-            if (p.completeDistricts[q].has(d)) done += 1;
+            if (p[field][q].has(d)) done += 1;
           }
         }
       }
@@ -456,6 +513,283 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
       },
     };
 
+    // ---- people: human denominators and resident demographics ----
+    // Joins the committed IPEDS and ACS artifacts: how many students and
+    // residents sit behind the gate, who they are, and whether the staircase
+    // survives enrollment weighting and an alternative income measure.
+    const ipedsArt = JSON.parse(fs.readFileSync(
+      path.resolve(__dirname, '../../analysis/data/ipeds_ccc.v1.json'), 'utf8'));
+    const demoArt = JSON.parse(fs.readFileSync(
+      path.resolve(__dirname, '../../analysis/data/district_demographics.v1.json'), 'utf8'));
+    const headcountByDistrict = new Map();
+    for (const c of ipedsArt.colleges) {
+      const d = districtOf.get(c.college_id);
+      if (d) headcountByDistrict.set(d, (headcountByDistrict.get(d) || 0) + (c.headcount || 0));
+    }
+    const demoByNorm = new Map(Object.entries(demoArt.districts).map(([n, v]) => [norm(n), v]));
+    const peopleRows = fig2Districts.map((d) => ({
+      ...d,
+      headcount: headcountByDistrict.get(d.district) || 0,
+      demo: demoByNorm.get(norm(d.district)),
+    }));
+    const sumBy = (list, f) => list.reduce((s, r) => s + f(r), 0);
+    const gated = peopleRows.filter((r) => r.reach <= 2);
+    const openRows = peopleRows.filter((r) => r.reach >= 7);
+    const compOf = (list) => {
+      const popTot = sumBy(list, (r) => r.demo?.population || 0);
+      const share = (key) => (popTot ? round(sumBy(list, (r) => r.demo?.counts?.[key] || 0) / popTot) : null);
+      return { hispanic: share('hispanic'), asian: share('asianNH'), white: share('whiteNH'), black: share('blackNH') };
+    };
+    const stairWeighted = (weightOf) => [0, 1, 2, 3].map((q) => {
+      const inQ = peopleRows.filter((r) => r.incomeQuartile === q);
+      const w = sumBy(inQ, weightOf);
+      return w ? round(sumBy(inQ, (r) => (r.reach / 9) * weightOf(r)) / w) : null;
+    });
+    const acsRanked = peopleRows.filter((r) => Number.isFinite(r.demo?.median_household_income))
+      .sort((a, b) => a.demo.median_household_income - b.demo.median_household_income);
+    const acsQOf = new Map(acsRanked.map((r, i) => [
+      r.district, Math.min(3, Math.floor((i * 4) / acsRanked.length))]));
+    const people = {
+      students: {
+        gated: sumBy(gated, (r) => r.headcount),
+        none: sumBy(peopleRows.filter((r) => r.reach === 0), (r) => r.headcount),
+        total: sumBy(peopleRows, (r) => r.headcount),
+      },
+      residents: {
+        gated: sumBy(gated, (r) => r.demo?.population || 0),
+        total: sumBy(peopleRows, (r) => r.demo?.population || 0),
+      },
+      gatedDistricts: gated.length,
+      openDistricts: openRows.length,
+      // Residents in districts that reach at most four of nine — most doors shut.
+      residentsMajorityShut: sumBy(peopleRows.filter((r) => r.reach <= 4), (r) => r.demo?.population || 0),
+      composition: { gated: compOf(gated), open: compOf(openRows), statewide: compOf(peopleRows) },
+      // Person-weighted mean reach by group — computed to test the demographic
+      // story at person level. It nearly vanishes (spread < 1 program), which
+      // is why there is no demographics beat: composition contrasts live only
+      // in the sparse tail districts.
+      groupReach: (() => {
+        const g = {};
+        for (const [label, key] of [['hispanic', 'hispanic'], ['asian', 'asianNH'], ['white', 'whiteNH'], ['black', 'blackNH']]) {
+          let numer = 0; let denom = 0;
+          for (const r of peopleRows) { const p = r.demo?.counts?.[key] || 0; numer += p * r.reach; denom += p; }
+          g[label] = round(numer / denom, 2);
+        }
+        let numer = 0; let denom = 0;
+        for (const r of peopleRows) { const p = r.demo?.population || 0; numer += p * r.reach; denom += p; }
+        g.all = round(numer / denom, 2);
+        return g;
+      })(),
+      weightedStair: {
+        unweighted: stairWeighted(() => 1),
+        enrollment: stairWeighted((r) => r.headcount),
+        population: stairWeighted((r) => r.demo?.population || 0),
+      },
+      acsStair: [0, 1, 2, 3].map((q) => {
+        const inQ = peopleRows.filter((r) => acsQOf.get(r.district) === q);
+        return inQ.length ? round(sumBy(inQ, (r) => r.reach / 9) / inQ.length) : null;
+      }),
+      acsMovedDistricts: peopleRows.filter((r) => acsQOf.has(r.district)
+        && acsQOf.get(r.district) !== r.incomeQuartile).length,
+    };
+
+    // ---- detour: extra miles to the nearest college with FULL CHOICE ----
+    // "Any path" is a weak bar — one program (Berkeley) is open nearly
+    // everywhere, so almost every college clears it and the detour to any
+    // path is ~zero for 98% of residents (verified; that dead end is recorded
+    // in the working notes). What wealth actually buys is choice. So the
+    // detour is measured to the nearest college where MOST of the nine are
+    // open (7+), versus the nearest college at all.
+    const zctaArt = JSON.parse(fs.readFileSync(
+      path.resolve(__dirname, '../../analysis/data/ca_zcta_population.v1.json'), 'utf8'));
+    const collegeSites = ipedsArt.colleges.filter((c) => Number.isFinite(c.lat));
+    const completeSites = collegeSites.filter((c) => (csCountByCollege.get(c.college_id) || 0) >= 7);
+    const districtSites = mapGeometry.district_centroids
+      .map(([name, lon, lat]) => ({ name, lon, lat }))
+      .filter((d) => quartileOfDistrict.has(d.name));
+    const nearestKm = (lat, lon, sites) => {
+      let best = Infinity;
+      for (const s of sites) { const km = havKm(lat, lon, s.lat, s.lon); if (km < best) best = km; }
+      return best;
+    };
+    const detourRows = zctaArt.zctas.map((z) => {
+      let bestD = Infinity; let bestName = null;
+      for (const d of districtSites) {
+        const km = havKm(z.lat, z.lon, d.lat, d.lon);
+        if (km < bestD) { bestD = km; bestName = d.name; }
+      }
+      const dNearest = nearestKm(z.lat, z.lon, collegeSites);
+      const dComplete = nearestKm(z.lat, z.lon, completeSites);
+      return {
+        population: z.population,
+        quartile: quartileOfDistrict.get(bestName),
+        detourKm: Math.max(0, dComplete - dNearest),
+      };
+    });
+    const weightedMedian = (rows, valueOf) => {
+      const sorted = [...rows].sort((a, b) => valueOf(a) - valueOf(b));
+      const totalW = sorted.reduce((s, r) => s + r.population, 0);
+      let acc = 0;
+      for (const r of sorted) { acc += r.population; if (acc >= totalW / 2) return valueOf(r); }
+      return null;
+    };
+    const detourQuartile = (q) => {
+      const rows = detourRows.filter((r) => r.quartile === q);
+      const popTot = rows.reduce((s, r) => s + r.population, 0);
+      const detoured = rows.filter((r) => r.detourKm > 2); // >2 km = a real detour
+      return {
+        shareDetoured: round(detoured.reduce((s, r) => s + r.population, 0) / popTot),
+        medianDetourKm: round(weightedMedian(rows, (r) => r.detourKm), 1),
+        medianDetourKmAmongDetoured: detoured.length
+          ? round(weightedMedian(detoured, (r) => r.detourKm), 1) : null,
+      };
+    };
+    const detour = {
+      byQuartile: [0, 1, 2, 3].map(detourQuartile),
+      fullChoiceColleges: completeSites.length,
+      threshold: 7,
+    };
+
+    // ---- wall: CS associate completions vs how far up the college connects ----
+    // Almost no college has zero paths (4 colleges, 3 completions — the "no
+    // path" wall doesn't exist). The real wall is narrow choice: graduates of
+    // colleges where most of the nine programs are shut.
+    const reachBandOfCount = (n) => (n <= 2 ? 0 : n <= 4 ? 1 : n <= 6 ? 2 : 3);
+    const wallColleges = collegeSites.map((c) => ({
+      name: c.name,
+      completions: c.cs_associate_completions,
+      reach: csCountByCollege.get(c.college_id) || 0,
+    })).sort((a, b) => b.completions - a.completions);
+    const wallBands = [0, 1, 2, 3].map((band) => {
+      const inBand = wallColleges.filter((c) => reachBandOfCount(c.reach) === band);
+      return {
+        band,
+        colleges: inBand.length,
+        completions: inBand.reduce((s, c) => s + c.completions, 0),
+      };
+    });
+    const wall = {
+      colleges: wallColleges,
+      bands: wallBands,
+      totals: {
+        completions: wallColleges.reduce((s, c) => s + c.completions, 0),
+        completionsNarrow: wallColleges.filter((c) => c.reach <= 4)
+          .reduce((s, c) => s + c.completions, 0),
+        collegesNarrow: wallColleges.filter((c) => c.reach <= 4).length,
+        colleges: wallColleges.length,
+      },
+    };
+
+    // ---- participation: does CS participation follow CS access? ----
+    // Completions per 1,000 enrolled, open-access vs narrow-access colleges,
+    // and the observational bound: extra CS completers per year if the
+    // narrow colleges matched the open rate. Access and wealth travel
+    // together, so this bounds rather than proves.
+    const participation = (() => {
+      const rate = (list) => {
+        const c = list.reduce((s, x) => s + x.cs_associate_completions, 0);
+        const h = list.reduce((s, x) => s + x.headcount, 0);
+        return { perK: round((c / h) * 1000, 2), completions: c, headcount: h, n: list.length };
+      };
+      const reachOf = (c) => csCountByCollege.get(c.college_id) || 0;
+      const open = rate(collegeSites.filter((c) => reachOf(c) >= 7));
+      const narrow = rate(collegeSites.filter((c) => reachOf(c) <= 4));
+      return {
+        open, narrow,
+        extraPerYear: Math.round(((open.perK - narrow.perK) / 1000) * narrow.headcount),
+      };
+    })();
+
+    // ---- lorenz: how unequally opportunity is spread over people ----
+    // Person-weighted concentration: districts sorted worst- to best-served;
+    // x = cumulative population share, y = cumulative share of opportunity
+    // (population × reach). Drawn for the subject and the field, plus the
+    // fixed-stock counterfactual: the same number of complete cells, placed
+    // one fully-open college per district in population order.
+    const fieldComplete = new Map(); const fieldSeen = new Map();
+    for (const p of field) {
+      for (let q = 0; q < 4; q += 1) {
+        for (const d of p.seenDistricts[q]) fieldSeen.set(d, (fieldSeen.get(d) || 0) + 1);
+        for (const d of p.completeDistricts[q]) fieldComplete.set(d, (fieldComplete.get(d) || 0) + 1);
+      }
+    }
+    const popOfDistrict = (d) => demoByNorm.get(norm(d))?.population || 0;
+    const lorenzCurve = (oppOf) => {
+      const rows = matched.map(({ d }) => ({ pop: popOfDistrict(d), opp: oppOf(d) }))
+        .filter((r) => r.pop > 0)
+        .sort((a, b) => a.opp - b.opp);
+      const popTot = rows.reduce((s, r) => s + r.pop, 0);
+      const oppTot = rows.reduce((s, r) => s + r.pop * r.opp, 0);
+      let cp = 0; let co = 0; let gini = 0; let px = 0; let py = 0;
+      const points = [[0, 0]];
+      for (const r of rows) {
+        cp += r.pop / popTot; co += (r.pop * r.opp) / oppTot;
+        gini += (cp - px) * (co + py);
+        points.push([round(cp), round(co)]);
+        px = cp; py = co;
+      }
+      return { points, gini: round(1 - gini) };
+    };
+    const csLorenz = lorenzCurve((d) => reachByDistrict.get(d) ?? 0);
+    const fieldLorenz = lorenzCurve((d) => {
+      const seen = fieldSeen.get(d) || 0;
+      return seen ? (fieldComplete.get(d) || 0) / seen : 0;
+    });
+    const shareHeldByTopFifth = (curve) => {
+      const at = curve.points.reduce((best, [x, y]) => (x <= 0.8 ? y : best), 0);
+      return round(1 - at);
+    };
+    // Fixed-stock counterfactual: csCompletePairs cells, spent nine per
+    // district (one fully open college), most-populous districts first.
+    const byPop = matched.map(({ d }) => popOfDistrict(d)).sort((a, b) => b - a);
+    const popTotal = byPop.reduce((s, v) => s + v, 0);
+    const fullyOpenable = Math.min(byPop.length, Math.floor(csCompletePairs / 9));
+    const counterfactual = {
+      pairs: csCompletePairs,
+      districtsFullyOpenable: fullyOpenable,
+      optimalResidentShare: round(byPop.slice(0, fullyOpenable).reduce((s, v) => s + v, 0) / popTotal),
+      actualResidentShare: round(matched.reduce((s, { d }) => (
+        (reachByDistrict.get(d) ?? 0) >= 7 ? s + popOfDistrict(d) : s), 0) / popTotal),
+    };
+    const lorenz = {
+      cs: csLorenz,
+      field: fieldLorenz,
+      topFifthShare: { cs: shareHeldByTopFifth(csLorenz), field: shareHeldByTopFifth(fieldLorenz) },
+      counterfactual,
+    };
+
+    // ---- minimums basis: the same headline metrics on the eligibility floor ----
+    const shareQMin = (p, q) => p.completeDistrictsMin[q].size / Math.max(1, p.seenDistricts[q].size);
+    const fig1Min = cs.map((p) => {
+      const q1 = shareQMin(p, 0); const q4 = shareQMin(p, 3);
+      const regime = (q1 === 0 && q4 === 0) ? 'closed' : (q1 > 0.8 ? 'open' : 'contested');
+      return {
+        campus: SHORT_CAMPUS[p.school] || p.school, program: p.major,
+        q1: round(q1), q4: round(q4), regime,
+      };
+    });
+    const minimums = {
+      fig1: fig1Min,
+      fig3cs: districtShares(cs, 'completeDistrictsMin'),
+      collegeLevelCs: collegeShares(cs, 'collegeCompleteMin'),
+      cells: {
+        nearPoor: stratShare(cs, (d) => strat.get(d)?.near === true && strat.get(d)?.rich === false, 'completeDistrictsMin'),
+        nearRich: stratShare(cs, (d) => strat.get(d)?.near === true && strat.get(d)?.rich === true, 'completeDistrictsMin'),
+        farPoor: stratShare(cs, (d) => strat.get(d)?.near === false && strat.get(d)?.rich === false, 'completeDistrictsMin'),
+        farRich: stratShare(cs, (d) => strat.get(d)?.near === false && strat.get(d)?.rich === true, 'completeDistrictsMin'),
+      },
+    };
+    minimums.responses = {
+      income: {
+        near: round(minimums.cells.nearRich - minimums.cells.nearPoor),
+        far: round(minimums.cells.farRich - minimums.cells.farPoor),
+      },
+      proximity: {
+        poor: round(minimums.cells.nearPoor - minimums.cells.farPoor),
+        rich: round(minimums.cells.nearRich - minimums.cells.farRich),
+      },
+    };
+
     const snapshot = {
       version: 1,
       generated_at: new Date().toISOString(),
@@ -468,7 +802,7 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
         districtsPerQuartile,
       },
       fig1, fig2: { districts: fig2Districts, stats: fig2Stats, outline: mapGeometry.california_outline },
-      fig3, fig4, fig5a, fig5b, distance,
+      fig3, fig4, fig5a, fig5b, distance, people, detour, wall, lorenz, participation, minimums,
     };
     fs.writeFileSync(OUT_PATH, JSON.stringify(snapshot));
     console.log(`wrote ${OUT_PATH} (${Math.round(fs.statSync(OUT_PATH).size / 1024)} KB)`);
@@ -482,5 +816,20 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
     console.log('distance: median km/quartile', JSON.stringify(distance.medianKmByQuartile), '· split at', distance.medianKm, 'km');
     console.log('distance cells:', JSON.stringify(cells));
     console.log('distance responses:', JSON.stringify(distance.responses));
+    console.log('people students:', JSON.stringify(people.students), '· residents gated', people.residents.gated.toLocaleString());
+    console.log('people composition:', JSON.stringify(people.composition));
+    console.log('people stairs — enrollment-weighted:', JSON.stringify(people.weightedStair.enrollment),
+      '· acs-ranked:', JSON.stringify(people.acsStair), `(${people.acsMovedDistricts} districts moved)`);
+    console.log('detour by quartile:', JSON.stringify(detour.byQuartile));
+    console.log('wall:', JSON.stringify(wall.totals), '· bands:', JSON.stringify(wall.bands),
+      '· top narrow:', wall.colleges.filter((c) => c.reach <= 4).slice(0, 3)
+        .map((c) => `${c.name} ${c.completions}`).join(' · '));
+    console.log('lorenz gini — cs:', lorenz.cs.gini, '· field:', lorenz.field.gini,
+      '· top-fifth share:', JSON.stringify(lorenz.topFifthShare));
+    console.log('counterfactual:', JSON.stringify(counterfactual));
+    console.log('participation:', JSON.stringify(participation));
+    console.log('minimums fig1:', fig1Min.map((f) => `${f.campus} ${Math.round(f.q1 * 100)}→${Math.round(f.q4 * 100)}% [${f.regime}]`).join(' · '));
+    console.log('minimums fig3 cs:', JSON.stringify(minimums.fig3cs), '· college-level:', JSON.stringify(minimums.collegeLevelCs));
+    console.log('minimums distance cells:', JSON.stringify(minimums.cells), '· responses:', JSON.stringify(minimums.responses));
   } finally { await atlas.close(); await local.close(); }
 })().catch((e) => { console.error(e); process.exit(1); });

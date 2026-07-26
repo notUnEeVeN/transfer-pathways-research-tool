@@ -183,17 +183,6 @@ describe('PaperGate (four moments)', () => {
     expect(signing.textContent).not.toContain('Worst distance stratum')
   })
 
-  it('switches to the detailed register with methods ink', () => {
-    render(<PaperGate />)
-    expect(screen.queryByText(/Nothing here is a stacked decomposition/)).not.toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Detailed' }))
-    // The conjunction guard, the tier sentence, and the decimals footnote
-    // live in the detailed register only.
-    expect(screen.getByText(/Nothing here is a stacked decomposition/)).toBeInTheDocument()
-    expect(screen.getByText(/Decimals:/)).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'At a glance' }))
-    expect(screen.queryByText(/Decimals:/)).not.toBeInTheDocument()
-  })
 
   it('preview renders the mechanism figure alone', () => {
     render(<PaperGatePreview />)

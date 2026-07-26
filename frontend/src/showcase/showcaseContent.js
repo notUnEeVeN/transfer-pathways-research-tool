@@ -22,7 +22,7 @@ export const SCOPE_METRICS = [
 export const SHOWCASE_FINDINGS = [
   {
     id: 'complete-paths',
-    analysisId: 'category-gaps',
+    analysisId: 'paper-course-barriers',
     status: 'Working finding',
     metric: '5 of 9',
     title: 'A typical district has complete paths to five of nine UC computer science programs',
