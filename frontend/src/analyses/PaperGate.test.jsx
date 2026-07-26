@@ -152,11 +152,14 @@ describe('PaperGate (four moments)', () => {
     // Stated: its own counts and its own waffle total.
     expect(screen.getByText(/\+68 pathways/)).toBeInTheDocument()
     expect(screen.getByText(/of the 1,761 missing entries/)).toBeInTheDocument()
-    // Stated basis: the gap-row note is suppressed by the collision guard;
-    // the access-row verdict line carries the quotable geometry instead.
+    // Stated basis: the access-row verdict carries the quotable geometry and
+    // the gap inset re-measures the same two quartile endpoints.
     expect(screen.getByText(/lands exactly on today’s richest quartile/)).toBeInTheDocument()
+    expect(screen.getByText('37-POINT GAP')).toBeInTheDocument()
+    expect(screen.getByText('30 pts')).toBeInTheDocument()
+    expect(screen.getByText('27 pts')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Eligibility floor' }))
-    expect(screen.getByText(/the gap shrinks by more than half/)).toBeInTheDocument()
+    expect(screen.getByText(/the gap shrinks by more than half/i)).toBeInTheDocument()
   })
 
   it('separates access movement from the contracting rich-poor gap', () => {
@@ -165,11 +168,17 @@ describe('PaperGate (four moments)', () => {
     const arrows = [...signing.querySelectorAll('[data-movement-arrow]')]
     expect(arrows).toHaveLength(2)
     expect(arrows.every((arrow) => arrow.getAttribute('data-movement-arrow') === 'right')).toBe(true)
-    expect(signing.querySelectorAll('circle')).toHaveLength(0)
     const gap = screen.getByTestId('paper-gate-gap-closing')
+    expect(gap.querySelectorAll('circle')).toHaveLength(0)
     expect(gap.querySelectorAll('[data-gap-span]')).toHaveLength(3)
     expect(gap.textContent).toContain('THE GAP ITSELF')
-    expect(gap.textContent).toContain('the span contracts; no score moves left')
+    expect(gap.textContent).toContain('POOREST QUARTILE')
+    expect(gap.textContent).toContain('RICHEST QUARTILE')
+    expect(gap.textContent).toContain('points of the gap closed')
+    expect(gap.textContent).toContain('CONSERVATIVE')
+    expect(gap.textContent).toContain('FULL EVIDENCE')
+    expect(gap.textContent).toContain('49-POINT GAP')
+    expect(gap.textContent).toContain('26–30 points of the gap closed')
     expect(signing.textContent).toContain('Access moves along the blue arrows')
     expect(signing.textContent).toContain('AFTER SIGNATURES')
   })

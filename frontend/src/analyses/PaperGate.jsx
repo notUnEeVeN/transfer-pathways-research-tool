@@ -424,9 +424,9 @@ function M3Ledger({ reg, mode, data }) {
 // ───────── Moment 4 — sign the papers ─────────
 // Two distinct visual grammars on one 0–100 scale. Access is movement: today
 // is a compact labelled tick, and an open-chevron rail advances to the
-// evidence-backed range. The rich-poor gap is distance, not movement: three
-// directly labelled spans show the space between the quartile endpoints
-// contracting from today to the conservative and full-evidence results.
+// evidence-backed range. The rich-poor gap is a relationship: quiet spans
+// keep the same labelled quartile endpoints in view, while dashed mappings
+// and a softly highlighted middle make the contraction traceable.
 
 function M4Signing({ reg, mode, data, basis }) {
   const base = data.baseline
@@ -445,34 +445,32 @@ function M4Signing({ reg, mode, data, basis }) {
       label: 'Worst distance stratum', sub: 'far from a campus and poor',
       unit: '%', today: base.farPoorAccess, lo: cons.farPoorAccess, hi: full.farPoorAccess,
       note: 'the hardest cell on the map roughly doubles',
-      residual: true, y: mode === 'glance' ? 548 : 530,
+      residual: true, y: mode === 'glance' ? 698 : 680,
     },
   ]
   const plotX = 340
   const plotW = 820
   const x = (v) => plotX + v * plotW
   const gapTop = mode === 'glance' ? 268 : 258
-  const gapBottom = mode === 'glance' ? 470 : 456
+  const gapBottom = mode === 'glance' ? 608 : 590
   const chartBottom = accessRows[1].y + 54
   const legendY = chartBottom + 46
   const height = legendY + (mode === 'detailed' ? 104 : 82)
-  const gapSpans = [
-    {
-      key: 'today', label: 'TODAY', value: `${pts(base.gapQ4Q1)} pts`,
-      left: base.access[0], right: base.access[3], y: gapTop + 64,
-      color: FIELD, width: 4.5,
-    },
-    {
-      key: 'conservative', label: 'CONSERVATIVE', value: `${pts(cons.gapQ4Q1)} pts`,
-      left: cons.access[0], right: cons.access[3], y: gapTop + 124,
-      color: CS_BLUE, width: 5,
-    },
-    {
-      key: 'full', label: 'FULL EVIDENCE', value: `${pts(full.gapQ4Q1)} pts`,
-      left: full.access[0], right: full.access[3], y: gapTop + 156,
-      color: NAVY_SOFT, width: 3,
-    },
-  ]
+  const gapTodayY = gapTop + (mode === 'glance' ? 92 : 88)
+  const gapConsY = gapTop + (mode === 'glance' ? 230 : 224)
+  const gapFullY = gapConsY + 38
+  const todayPoorX = x(base.access[0])
+  const todayRichX = x(base.access[3])
+  const consPoorX = x(cons.access[0])
+  const fullPoorX = x(full.access[0])
+  const consRichX = x(cons.access[3])
+  const fullRichX = x(full.access[3])
+  const closedConservative = pts(base.gapQ4Q1) - pts(cons.gapQ4Q1)
+  const closedFull = pts(base.gapQ4Q1) - pts(full.gapQ4Q1)
+  const wedgeLabelX = (todayPoorX + todayRichX + consPoorX + consRichX) / 4
+  const afterPoorLabelX = (consPoorX + fullPoorX) / 2
+  const afterRichLabelX = (consRichX + fullRichX) / 2
+  const evidenceLabelX = Math.min(consPoorX, fullPoorX) - 20
   return (
     <svg {...svgProps(height, `Write only the evidence-backed agreements and re-measure on one shared scale. Poorest-quartile access moves from ${pct(base.access[0])} to between ${pct(cons.access[0])} and ${pct(full.access[0])}; the richest-poorest gap from ${pts(base.gapQ4Q1)} points to between ${pts(full.gapQ4Q1)} and ${pts(cons.gapQ4Q1)}; the far-and-poor stratum from ${pct(base.farPoorAccess)} to between ${pct(cons.farPoorAccess)} and ${pct(full.farPoorAccess)}. The not-taught remainder stays visibly unfixed.`)}
       data-testid='paper-gate-signing'>
@@ -551,36 +549,72 @@ function M4Signing({ reg, mode, data, basis }) {
       <g data-testid='paper-gate-gap-closing' role='img'
         aria-label={`The richest-poorest access gap contracts from ${pts(base.gapQ4Q1)} points today to ${pts(cons.gapQ4Q1)} points under the conservative standard and ${pts(full.gapQ4Q1)} points under full evidence.`}>
         <rect x='14' y={gapTop} width='1198' height={gapBottom - gapTop} rx='12' fill='rgba(25,48,24,0.026)' stroke={GRID} strokeWidth='1' />
-        <text x='28' y={gapTop + 38} fontSize='10.5' fontWeight='700' letterSpacing='0.09em' fill={CS_BLUE}>THE GAP ITSELF</text>
-        <text x='28' y={gapTop + 66} fontSize={reg.row} fontWeight='650' fill={INK}>Richest − poorest</text>
-        <text x='28' y={gapTop + 86} fontSize='12' fill={MUTED_TEXT}>distance between their access levels</text>
-        <text x='28' y={gapTop + 112} fontSize='11.5' fontWeight='600' fill={GAINED}>the span contracts; no score moves left</text>
-        <text x='28' y={gapTop + 136} fontSize='11.5' fontWeight='600' fill={INK}>
-          {basis === 'minimums' ? 'the gap shrinks by more than half' : 'the gap narrows; it does not close'}
-        </text>
+        <text x='28' y={gapTop + 34} fontSize='10.5' fontWeight='700' letterSpacing='0.09em' fill={CS_BLUE}>THE GAP ITSELF</text>
+        <text x='28' y={gapTop + 55} fontSize='12' fill={MUTED_TEXT}>the distance between the same poorest and richest quartiles, before and after signing</text>
 
-        {gapSpans.map((span) => {
-          const leftX = x(span.left)
-          const rightX = x(span.right)
-          const midX = (leftX + rightX) / 2
-          const labelW = span.key === 'today' ? 86 : 156
-          return (
-            <g key={span.key} data-gap-span={span.key}>
-              <text x={plotX} y={span.y + 4} fontSize='10.5' fontWeight='700' letterSpacing='0.08em' fill={span.color}>{span.label}</text>
-              <line x1={leftX} y1={span.y} x2={rightX} y2={span.y} stroke={span.color} strokeWidth={span.width} strokeLinecap='round' />
-              <line x1={leftX} y1={span.y - 9} x2={leftX} y2={span.y + 9} stroke={span.color} strokeWidth={span.width > 4 ? 3 : 2} strokeLinecap='round' />
-              <line x1={rightX} y1={span.y - 9} x2={rightX} y2={span.y + 9} stroke={span.color} strokeWidth={span.width > 4 ? 3 : 2} strokeLinecap='round' />
-              <rect x={midX - labelW / 2} y={span.y - 14} width={labelW} height='28' rx='14' fill='#FFFFFF' stroke={GRID} strokeWidth='1' />
-              <text x={midX} y={span.y + 5} fontSize={span.key === 'today' ? 15 : 14} fontWeight='700' fill={span.color} textAnchor='middle'>{span.value}{span.key === 'today' ? ' GAP' : ''}</text>
-              {span.key === 'today' && (
-                <g fontSize='11.5' fontWeight='600' fill={SOFT}>
-                  <text x={leftX} y={span.y + 27} textAnchor='middle'>{pct(span.left)} poorest</text>
-                  <text x={rightX} y={span.y + 27} textAnchor='middle'>{pct(span.right)} richest</text>
-                </g>
-              )}
-            </g>
-          )
-        })}
+        <g>
+          <text x='28' y={gapTodayY - 4} fontSize={reg.row} fontWeight='700' fill={INK}>TODAY</text>
+          <text x='28' y={gapTodayY + 18} fontSize='12' fill={MUTED_TEXT}>as the tables stand</text>
+        </g>
+        <g>
+          <text x='28' y={gapConsY + 4} fontSize={reg.row} fontWeight='700' fill={INK}>AFTER SIGNING</text>
+          <text x='28' y={gapConsY + 26} fontSize='12' fill={MUTED_TEXT}>only evidence-backed agreements</text>
+        </g>
+
+        <polygon points={`${todayPoorX},${gapTodayY + 8} ${todayRichX},${gapTodayY + 8} ${consRichX},${gapConsY} ${consPoorX},${gapConsY}`}
+          fill='rgba(0,114,178,0.055)' />
+        <line x1={todayPoorX} y1={gapTodayY + 8} x2={consPoorX} y2={gapConsY}
+          stroke={CS_BLUE} strokeOpacity='0.78' strokeWidth='1.8' strokeDasharray='7 6' markerEnd='url(#pgGapArrowBlue)' />
+        <line x1={todayRichX} y1={gapTodayY + 8} x2={consRichX} y2={gapConsY}
+          stroke={FIELD} strokeOpacity='0.48' strokeWidth='1.8' strokeDasharray='7 6' markerEnd='url(#pgGapArrowField)' />
+
+        <rect x={wedgeLabelX - 96} y={(gapTodayY + gapConsY) / 2 - 21} width='192' height='43' rx='9' fill='rgba(255,255,255,0.88)' stroke='rgba(0,114,178,0.12)' strokeWidth='1' />
+        <text x={wedgeLabelX} y={(gapTodayY + gapConsY) / 2 - 2} fontSize={mode === 'glance' ? 17 : 15.5} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
+          {closedConservative}–{closedFull} points of the gap closed
+        </text>
+        <text x={wedgeLabelX} y={(gapTodayY + gapConsY) / 2 + 15} fontSize='11' fontWeight='600' fill={CS_BLUE} textAnchor='middle'>by signatures alone</text>
+
+        <g data-gap-span='today'>
+          <line x1={todayPoorX} y1={gapTodayY} x2={todayRichX} y2={gapTodayY} stroke={FIELD} strokeWidth='4.5' strokeLinecap='round' />
+          <line x1={todayPoorX} y1={gapTodayY - 10} x2={todayPoorX} y2={gapTodayY + 10} stroke={CS_BLUE} strokeWidth='3' strokeLinecap='round' />
+          <line x1={todayRichX} y1={gapTodayY - 10} x2={todayRichX} y2={gapTodayY + 10} stroke={FIELD} strokeWidth='3' strokeLinecap='round' />
+          <rect x={(todayPoorX + todayRichX) / 2 - 54} y={gapTodayY - 15} width='108' height='30' rx='15' fill='#FFFFFF' stroke={GRID_STRONG} strokeWidth='1' />
+          <text x={(todayPoorX + todayRichX) / 2} y={gapTodayY + 5} fontSize='15' fontWeight='700' fill={INK} textAnchor='middle'>{pts(base.gapQ4Q1)}-POINT GAP</text>
+
+          <text x={todayPoorX} y={gapTodayY - 29} fontSize='10.5' fontWeight='700' letterSpacing='0.07em' fill={CS_BLUE} textAnchor='middle'>POOREST QUARTILE</text>
+          <text x={todayPoorX} y={gapTodayY - 13} fontSize='15' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>{pct(base.access[0])}</text>
+          <text x={todayRichX} y={gapTodayY - 29} fontSize='10.5' fontWeight='700' letterSpacing='0.07em' fill={SOFT} textAnchor='middle'>RICHEST QUARTILE</text>
+          <text x={todayRichX} y={gapTodayY - 13} fontSize='15' fontWeight='700' fill={SOFT} textAnchor='middle'>{pct(base.access[3])}</text>
+        </g>
+
+        <g data-gap-span='conservative'>
+          <text x={evidenceLabelX} y={gapConsY + 4} fontSize='10.5' fontWeight='700' letterSpacing='0.07em' fill={CS_BLUE} textAnchor='end'>CONSERVATIVE</text>
+          <line x1={consPoorX} y1={gapConsY} x2={consRichX} y2={gapConsY} stroke={CS_BLUE} strokeWidth='4' strokeLinecap='round' />
+          <line x1={consPoorX} y1={gapConsY - 9} x2={consPoorX} y2={gapConsY + 9} stroke={CS_BLUE} strokeWidth='3' strokeLinecap='round' />
+          <line x1={consRichX} y1={gapConsY - 9} x2={consRichX} y2={gapConsY + 9} stroke={CS_BLUE} strokeWidth='3' strokeLinecap='round' />
+          <rect x={(consPoorX + consRichX) / 2 - 38} y={gapConsY - 13} width='76' height='26' rx='13' fill='#FFFFFF' stroke='rgba(0,114,178,0.18)' strokeWidth='1' />
+          <text x={(consPoorX + consRichX) / 2} y={gapConsY + 5} fontSize='14' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>{pts(cons.gapQ4Q1)} pts</text>
+        </g>
+
+        <g data-gap-span='full'>
+          <text x={evidenceLabelX} y={gapFullY + 4} fontSize='10.5' fontWeight='700' letterSpacing='0.07em' fill={NAVY_SOFT} textAnchor='end'>FULL EVIDENCE</text>
+          <line x1={fullPoorX} y1={gapFullY} x2={fullRichX} y2={gapFullY} stroke={NAVY_SOFT} strokeWidth='3' strokeLinecap='round' />
+          <line x1={fullPoorX} y1={gapFullY - 8} x2={fullPoorX} y2={gapFullY + 8} stroke={NAVY_SOFT} strokeWidth='2' strokeLinecap='round' />
+          <line x1={fullRichX} y1={gapFullY - 8} x2={fullRichX} y2={gapFullY + 8} stroke={NAVY_SOFT} strokeWidth='2' strokeLinecap='round' />
+          <rect x={(fullPoorX + fullRichX) / 2 - 38} y={gapFullY - 13} width='76' height='26' rx='13' fill='#FFFFFF' stroke='rgba(110,147,191,0.20)' strokeWidth='1' />
+          <text x={(fullPoorX + fullRichX) / 2} y={gapFullY + 5} fontSize='14' fontWeight='700' fill={NAVY_SOFT} textAnchor='middle'>{pts(full.gapQ4Q1)} pts</text>
+        </g>
+
+        <g>
+          <text x={afterPoorLabelX} y={gapConsY - 27} fontSize='10.5' fontWeight='700' letterSpacing='0.07em' fill={CS_BLUE} textAnchor='middle'>POOREST QUARTILE</text>
+          <text x={afterPoorLabelX} y={gapConsY - 10} fontSize='15' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>{pct(cons.access[0]).replace('%', '')}–{pct(full.access[0])}</text>
+          <text x={afterRichLabelX} y={gapConsY - 27} fontSize='10.5' fontWeight='700' letterSpacing='0.07em' fill={SOFT} textAnchor='middle'>RICHEST QUARTILE</text>
+          <text x={afterRichLabelX} y={gapConsY - 10} fontSize='15' fontWeight='700' fill={SOFT} textAnchor='middle'>{pct(full.access[3])}</text>
+        </g>
+
+        <text x='28' y={gapBottom - 18} fontSize='11.5' fontWeight='600' fill={INK}>
+          {basis === 'minimums' ? 'The gap shrinks by more than half.' : 'The gap narrows; it does not close.'}
+        </text>
       </g>
 
       <g>
@@ -595,6 +629,12 @@ function M4Signing({ reg, mode, data, basis }) {
         </text>
       )}
       <defs>
+        <marker id='pgGapArrowBlue' markerWidth='8' markerHeight='8' refX='7' refY='4' orient='auto' markerUnits='userSpaceOnUse'>
+          <path d='M 0 0 L 7 4 L 0 8' fill='none' stroke={CS_BLUE} strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
+        </marker>
+        <marker id='pgGapArrowField' markerWidth='8' markerHeight='8' refX='7' refY='4' orient='auto' markerUnits='userSpaceOnUse'>
+          <path d='M 0 0 L 7 4 L 0 8' fill='none' stroke={FIELD} strokeOpacity='0.58' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
+        </marker>
         <pattern id='pgTailHatch' width='8' height='8' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'>
           <line x1='0' y1='0' x2='0' y2='8' stroke='rgba(156,166,155,0.8)' strokeWidth='2' />
         </pattern>
