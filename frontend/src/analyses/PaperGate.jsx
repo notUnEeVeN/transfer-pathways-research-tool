@@ -1,0 +1,751 @@
+import React, { useState } from 'react'
+import { Stack } from '../components/ui'
+import repairs from '../../../analysis/data/course_repairs.v1.json'
+import placeSnapshot from './priceOfPlaceSnapshot.json'
+
+/**
+ * "The Paper Gate" — four moments answering the question The Price of Place
+ * leaves open: why Computer Science, and what would fix it.
+ *
+ *   1 · Every course in the system — the arch: every receiving course by
+ *       articulation level and income swing, flat at the edges by arithmetic,
+ *       alive in the contested middle where the CS courses crowd and float
+ *       above the rest; the like-for-like lanes beneath close the reading.
+ *   2 · The staircase, taken apart — the income gradient lives in the
+ *       Computer Science layer; the generic layer is a flat ceiling, with
+ *       the sibling collection's staircase ghosted (compared, never summed).
+ *   3 · The ledger of unwritten agreements — the wall as named documents,
+ *       both counts on one scale, the stack classified by evidence.
+ *   4 · Sign the papers — write only the evidence-backed agreements and
+ *       re-measure (point-and-band, conservative bound first).
+ *
+ * Every value comes from analysis/data/course_repairs.v1.json, computed by
+ * server/scripts/simulateCourseRepairs.js, on two requirement bases: the
+ * hand-verified eligibility floor (default) and the full stated preparation.
+ * Everything measures formal opportunity — whether a complete transfer path
+ * formally exists — never student behaviour or admission odds.
+ */
+
+const INK = '#193018'
+const SOFT = '#4A5849'
+const MUTED_TEXT = '#6B776A'
+const MUTED_LINE = '#9CA69B'
+const GRID = 'rgba(25,48,24,0.10)'
+const GRID_STRONG = 'rgba(25,48,24,0.16)'
+const AXIS = 'rgba(25,48,24,0.28)'
+const CS_BLUE = '#0072B2'
+const FIELD = '#6F7B6E'
+const GAINED = '#0D7964'
+const NAVY = '#1E3A5F'
+const NAVY_SOFT = '#6E93BF'
+const PALE = '#A9C3DE'
+const BREADTH_FILL = '#C6CEC5'
+const HOLLOW_FILL = '#FBFCFA'
+const FONT = "'Hanken Grotesk Variable', 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif"
+
+const REGISTERS = {
+  glance: { tick: 15, row: 19, note: 15, big: 52, mid: 22, dotR: 9 },
+  detailed: { tick: 12.5, row: 15.5, note: 12.5, big: 34, mid: 18, dotR: 7 },
+}
+
+const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 })
+const pct = (v) => `${pctFmt.format(v * 100)}%`
+const pts = (v) => Math.round(v * 100)
+const svgProps = (height, label) => ({
+  viewBox: `0 0 1240 ${height}`,
+  role: 'img',
+  'aria-label': label,
+  className: 'block h-auto w-full',
+  'data-export-width': 1240,
+  style: { fontFamily: FONT, fontVariantNumeric: 'tabular-nums' },
+})
+
+function headlinesFor(data, basis) {
+  const ing = data.ingredients
+  const csSwing = pts(ing.gradient.cs[3] - ing.gradient.cs[0])
+  const genSwing = pts(ing.gradient.generic[3] - ing.gradient.generic[0])
+  const aShare = Math.round((data.fates.counts.A / data.fates.instances) * 100)
+  const archS = repairs.arch.summary
+  return {
+    1: `Against every course in the system: Computer Science courses are ${(archS.csContestedShare / archS.otherContestedShare).toFixed(1)}× as likely to be contested — and twice as income-graded even among contested courses.`,
+    2: `The generic layer is flat. The income gradient lives in the Computer Science courses — ${csSwing} points from poorest to richest, against ${genSwing} for everything else.`,
+    3: (() => {
+      const top = data.repairs.types.filter((t) => t.completeCells > 0)[0]
+      return `Approve every ${top.name.toLowerCase()} course statewide and ${top.completeCells} transfer pathways open — and ${Math.round((data.fates.counts.A / data.fates.instances) * 100)} percent of all the missing entries are already accepted at another campus.`
+    })(),
+    4: basis === 'minimums'
+      ? 'Sign only the pre-approved agreements — teach nothing new anywhere — and the richest-poorest gap shrinks by more than half.'
+      : 'Sign only the pre-approved agreements — teach nothing new anywhere — and the poorest quartile reaches the line where today’s richest stands.',
+    5: (() => {
+      const low = data.repairs.scenarios.lowestBar
+      const lowClose = Math.round(((data.baseline.gapQ4Q1 - low.gapQ4Q1) / data.baseline.gapQ4Q1) * 100)
+      const consClose = Math.round(((data.baseline.gapQ4Q1 - data.repairs.conservativeRepairedMap.gapQ4Q1) / data.baseline.gapQ4Q1) * 100)
+      return `${low.courses} introductory courses — material every college can host — close ${lowClose} percent of the wealth gap on their own. The full pre-approved stack closes at least ${consClose} percent.`
+    })(),
+  }
+}
+
+function Beat({ no, role, title, standfirst, mode, headlines, children }) {
+  return (
+    <section aria-label={title}
+      className='bg-white rounded-[14px] border flex flex-col gap-5'
+      style={{ borderColor: 'rgba(25,48,24,0.11)', padding: '30px 34px 28px' }}>
+      <div className='flex flex-col gap-2 max-w-[80ch]'>
+        <span className='text-[11.5px] tracking-[0.11em] uppercase font-[700]' style={{ color: CS_BLUE }}>
+          {no} · {role}
+        </span>
+        <h3 className='m-0 text-[26px] leading-[1.14] tracking-[-0.018em] font-[600]' style={{ color: INK }}>{title}</h3>
+        {mode === 'glance'
+          ? <p className='m-0 text-[18px] leading-snug font-[650]' style={{ color: INK }}>{headlines[no]}</p>
+          : <p className='m-0 text-[15px] leading-normal' style={{ color: SOFT }}>{standfirst}</p>}
+      </div>
+      <div className='rounded-[10px] border bg-white' style={{ borderColor: GRID, padding: '18px 14px 10px' }}>
+        {children}
+      </div>
+    </section>
+  )
+}
+
+// ───────── Every course in the system — the arch, then the like-for-like ──
+// Panel A: the full field — every receiving course by articulation level and
+// income swing. The arch shape is the point: flat at both edges (courses
+// articulated nowhere or everywhere cannot swing), alive only in the middle.
+// Band meanings live in a strip UNDER the axis, never inside the plot.
+// Panel B reinforces the reading: inside the contested band, like for like,
+// the swings as two lanes with means marked. Basis-independent throughout.
+
+function ArchScatter({ reg, mode }) {
+  const { courses, summary } = repairs.arch
+  const csRows = courses.filter((r) => r.cs)
+  const field = courses.filter((r) => !r.cs)
+  const contested = (r) => r.level >= 0.1 && r.level < 0.9
+  const x = (v) => 200 + v * 940
+  const y = (v) => 440 - ((v + 0.15) / 0.9) * 344
+  const steepest = [...csRows].sort((a, b) => b.swing - a.swing)[0]
+  const ratio = (summary.csContestedShare / summary.otherContestedShare).toFixed(1)
+  const bandY = 470
+  const bDivider = 556
+  const laneTop = 606
+  const lanes = [
+    { label: 'Computer Science', rows: csRows.filter(contested), cy: laneTop + 58, mean: summary.csContestedSwing, color: CS_BLUE },
+    { label: 'Every other course', rows: field.filter(contested), cy: laneTop + 172, mean: summary.otherContestedSwing, color: FIELD },
+  ]
+  const sx = (v) => 340 + ((v + 0.1) / 0.8) * 800
+  const jitter = (i) => (((i * 2654435761) % 83) / 83 - 0.5) * 54
+  const footY = laneTop + 262
+  return (
+    <svg {...svgProps(footY + 66, `Panel A: all ${courses.length.toLocaleString()} receiving courses by articulation level and income swing — flat at both edges where no swing is possible, alive in the contested middle, where the Computer Science courses crowd and float above the rest. Panel B: inside the contested band, Computer Science courses swing +${Math.round(summary.csContestedSwing * 100)} points on average against +${Math.round(summary.otherContestedSwing * 100)} for everything else.`)}>
+      <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>A · Every course the campuses ask for</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>One dot per receiving course, all majors · across: share of colleges articulating it · up: poorest-to-richest swing</text>
+
+      {[0, 0.2, 0.4, 0.6].map((v) => (
+        <g key={v}>
+          <line x1='200' y1={y(v)} x2='1140' y2={y(v)} stroke={v === 0 ? AXIS : GRID} strokeWidth='1' />
+          <text x='184' y={y(v) + 4} fontSize={reg.tick} fill={MUTED_TEXT} textAnchor='end'>{v === 0 ? '0' : `+${Math.round(v * 100)}`}</text>
+        </g>
+      ))}
+      {[0.25, 0.5, 0.75].map((v) => (
+        <line key={v} x1={x(v)} y1={y(0.72)} x2={x(v)} y2={y(-0.15)} stroke={GRID} strokeWidth='1' />
+      ))}
+
+      <rect x={x(0)} y={y(0.72)} width={x(0.1) - x(0)} height={y(-0.15) - y(0.72)} fill='rgba(25,48,24,0.04)' />
+      <rect x={x(0.9)} y={y(0.72)} width={x(1) - x(0.9)} height={y(-0.15) - y(0.72)} fill='rgba(25,48,24,0.04)' />
+
+      {field.map((r, i) => (
+        <circle key={`f${i}`} cx={x(r.level)} cy={y(r.swing)} r='2.6' fill={FIELD} fillOpacity='0.28'>
+          <title>{`${r.title}: articulated at ${pct(r.level)} of colleges · ${Math.round(r.swing * 100)}-point income swing`}</title>
+        </circle>
+      ))}
+      {csRows.map((r, i) => (
+        <circle key={`c${i}`} cx={x(r.level)} cy={y(r.swing)} r={mode === 'glance' ? 6 : 5}
+          fill={CS_BLUE} fillOpacity='0.9' stroke='#FFFFFF' strokeWidth='1'>
+          <title>{`${r.title}: articulated at ${pct(r.level)} of colleges · ${Math.round(r.swing * 100)}-point income swing`}</title>
+        </circle>
+      ))}
+      {steepest && (
+        <text x={x(steepest.level) + (steepest.level > 0.55 ? -12 : 12)} y={y(steepest.swing) - 10}
+          fontSize='11.5' fontWeight='600' fill={CS_BLUE}
+          textAnchor={steepest.level > 0.55 ? 'end' : 'start'}>
+          {steepest.title.slice(0, 40)} · +{Math.round(steepest.swing * 100)}
+        </text>
+      )}
+
+      {/* Band meanings, under the axis — never inside the plot. */}
+      <g>
+        {[[0, 0.1, 'almost nowhere', 'flat by arithmetic'],
+          [0.1, 0.9, 'the contested middle', 'income can decide'],
+          [0.9, 1, 'solved', 'flat']].map(([a, b, l1, l2]) => (
+            <g key={l1}>
+              <line x1={x(a) + 3} y1={bandY} x2={x(b) - 3} y2={bandY} stroke={MUTED_LINE} strokeWidth='1.4' />
+              <line x1={x(a) + 3} y1={bandY - 5} x2={x(a) + 3} y2={bandY + 5} stroke={MUTED_LINE} strokeWidth='1.4' />
+              <line x1={x(b) - 3} y1={bandY - 5} x2={x(b) - 3} y2={bandY + 5} stroke={MUTED_LINE} strokeWidth='1.4' />
+              <text x={(x(a) + x(b)) / 2} y={bandY + 22} fontSize='12' fontWeight={l1 === 'the contested middle' ? 700 : 500}
+                fill={l1 === 'the contested middle' ? INK : MUTED_TEXT} textAnchor='middle'>{l1}</text>
+              <text x={(x(a) + x(b)) / 2} y={bandY + 38} fontSize='11' fill={MUTED_TEXT} textAnchor='middle'>{l2}</text>
+            </g>
+          ))}
+      </g>
+      <text x='670' y={bandY + 62} fontSize='13.5' fontWeight='500' fill={INK} textAnchor='middle'>Share of colleges articulating the course</text>
+
+      <line x1='28' y1={bDivider} x2='1212' y2={bDivider} stroke='rgba(25,48,24,0.09)' strokeWidth='1' />
+      <text x='28' y={bDivider + 28} fontSize='16' fontWeight='500' fill={INK}>B · Inside the contested band, like for like</text>
+      <text x='28' y={bDivider + 50} fontSize={reg.tick} fill={MUTED_TEXT}>The same contested courses from the middle of panel A, one dot each, with the mean swing marked per lane</text>
+
+      {[0, 0.2, 0.4, 0.6].map((v) => (
+        <g key={v}>
+          <line x1={sx(v)} y1={laneTop + 22} x2={sx(v)} y2={laneTop + 210} stroke={v === 0 ? AXIS : GRID} strokeWidth='1' />
+          <text x={sx(v)} y={laneTop + 228} fontSize={reg.tick} fill={MUTED_TEXT} textAnchor='middle'>{v === 0 ? '0' : `+${Math.round(v * 100)}`}</text>
+        </g>
+      ))}
+      <text x='740' y={laneTop + 250} fontSize='13.5' fontWeight='500' fill={INK} textAnchor='middle'>Income swing, points</text>
+
+      {lanes.map((lane) => (
+        <g key={lane.label}>
+          <text x='324' y={lane.cy + 4} fontSize={reg.row} fontWeight='600'
+            fill={lane.color === CS_BLUE ? CS_BLUE : SOFT} textAnchor='end'>{lane.label}</text>
+          <text x='324' y={lane.cy + 22} fontSize='12' fill={MUTED_TEXT} textAnchor='end'>{lane.rows.length} contested courses</text>
+          {lane.rows.map((r, i) => (
+            <circle key={`${lane.label}|${i}`} cx={sx(r.swing)} cy={lane.cy + jitter(i)}
+              r={lane.color === CS_BLUE ? (mode === 'glance' ? 6 : 5) : 2.8}
+              fill={lane.color} fillOpacity={lane.color === CS_BLUE ? 0.9 : 0.3}
+              stroke={lane.color === CS_BLUE ? '#FFFFFF' : 'none'} strokeWidth='1'>
+              <title>{`${r.title}: articulated at ${pct(r.level)} of colleges · ${Math.round(r.swing * 100)}-point swing`}</title>
+            </circle>
+          ))}
+          <line x1={sx(lane.mean)} y1={lane.cy - 36} x2={sx(lane.mean)} y2={lane.cy + 36} stroke={INK} strokeWidth='2.6' />
+          <text x={sx(lane.mean)} y={lane.cy - 44} fontSize={reg.tick} fontWeight='700' fill={INK} textAnchor='middle'>mean +{Math.round(lane.mean * 100)}</text>
+        </g>
+      ))}
+
+      <text x='28' y={footY + 22} fontSize={reg.note} fontWeight='600' fill={INK}>
+        Computer Science courses crowd the contested middle ({ratio}× everything else) — and float above it: +{Math.round(summary.csContestedSwing * 100)} against +{Math.round(summary.otherContestedSwing * 100)}, like for like.
+      </text>
+      <text x='28' y={footY + 46} fontSize={mode === 'glance' ? reg.note : 12} fill={MUTED_TEXT}>
+        Courses at the edges cannot swing — that is arithmetic, not a finding — which is why panel B makes the comparison only inside the band.
+      </text>
+    </svg>
+  )
+}
+
+// ───────── Moment 2 — the staircase, taken apart ─────────
+// The generic layer is a ceiling band pinned near 100%; the CS layer is the
+// only climbing line; the sibling collection's access staircase is ghosted
+// behind them. Shapes are compared, never summed — access is a conjunction.
+
+function M2Staircase({ reg, mode, data, basis }) {
+  const ing = data.ingredients
+  const stair = basis === 'minimums' ? placeSnapshot.minimums.fig3cs : placeSnapshot.fig3.cs
+  const x = (q) => 240 + q * 230
+  const y = (v) => 470 - v * 380
+  const line = (arr) => arr.map((v, q) => `${x(q)},${y(v)}`).join(' ')
+  const csSwing = pts(ing.gradient.cs[3] - ing.gradient.cs[0])
+  const genSwing = pts(ing.gradient.generic[3] - ing.gradient.generic[0])
+  const genMin = Math.min(...ing.gradient.generic)
+  return (
+    <svg {...svgProps(586, `The generic requirement layer runs ${pct(ing.gradient.generic[0])} to ${pct(ing.gradient.generic[3])} across income quartiles — a flat ceiling. The Computer Science layer climbs from ${pct(ing.gradient.cs[0])} to ${pct(ing.gradient.cs[3])}. Behind them, the district access staircase from The Price of Place climbs only where the Computer Science line climbs.`)}>
+      <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>Share of requirement-college cells articulated, by district income quartile</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>Quartile means, nothing fitted · the pale dashed steps are the previous collection’s access staircase, for recognition</text>
+
+      {[0, 0.25, 0.5, 0.75, 1].map((v, i) => (
+        <g key={v}>
+          <line x1='240' y1={y(v)} x2='930' y2={y(v)} stroke={i === 0 ? AXIS : GRID} strokeWidth='1' />
+          <text x='224' y={y(v) + 5} fontSize={reg.tick} fill={MUTED_TEXT} textAnchor='end'>{pct(v)}</text>
+        </g>
+      ))}
+
+      {/* The ceiling: generic availability lives inside this thin band. */}
+      <rect x='240' y={y(1)} width='690' height={Math.max(4, y(genMin) - y(1))} fill='rgba(111,123,110,0.12)' />
+      <text x='930' y={y(1) - 8} fontSize='12' fill={SOFT} textAnchor='end'>the generic ceiling — solved infrastructure</text>
+
+      <polyline points={line(stair)} fill='none' stroke={PALE} strokeWidth='3.4' strokeDasharray='8 6' strokeLinecap='round' />
+      {stair.map((v, q) => (
+        <circle key={q} cx={x(q)} cy={y(v)} r='5.5' fill={PALE}>
+          <title>{`District access staircase, Q${q + 1}: ${pct(v)} — The Price of Place, as published`}</title>
+        </circle>
+      ))}
+
+      <polyline points={line(ing.gradient.generic)} fill='none' stroke={FIELD} strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' />
+      {ing.gradient.generic.map((v, q) => (
+        <circle key={q} cx={x(q)} cy={y(v)} r='6' fill={FIELD}>
+          <title>{`Generic requirements, Q${q + 1}: ${pct(v)} of requirement-college cells articulated`}</title>
+        </circle>
+      ))}
+      <polyline points={line(ing.gradient.cs)} fill='none' stroke={CS_BLUE} strokeWidth='3.6' strokeLinecap='round' strokeLinejoin='round' />
+      {ing.gradient.cs.map((v, q) => (
+        <circle key={q} cx={x(q)} cy={y(v)} r='7' fill={CS_BLUE} stroke='#FFFFFF' strokeWidth='1.5'>
+          <title>{`Computer Science requirements, Q${q + 1}: ${pct(v)} of requirement-college cells articulated`}</title>
+        </circle>
+      ))}
+
+      <g>
+        <text x='952' y={y(ing.gradient.generic[3]) + 4} fontSize={reg.row} fontWeight='600' fill={SOFT}>generic</text>
+        <text x='952' y={y(ing.gradient.generic[3]) + 24} fontSize={reg.tick} fill={SOFT}>+{genSwing} pts — flat</text>
+        <text x='952' y={y(ing.gradient.cs[3]) + 4} fontSize={reg.row} fontWeight='700' fill={CS_BLUE}>Computer Science</text>
+        <text x='952' y={y(ing.gradient.cs[3]) + 26} fontSize={reg.mid} fontWeight='700' fill={CS_BLUE}>+{csSwing} pts</text>
+        <text x='952' y={y(stair[3]) + 22} fontSize='12' fill={MUTED_TEXT}>the access staircase</text>
+      </g>
+
+      {['Q1 · poorest', 'Q2', 'Q3', 'Q4 · richest'].map((labelText, q) => (
+        <text key={labelText} x={x(q)} y='502' fontSize='14' fontWeight='500' fill={INK} textAnchor='middle'>{labelText}</text>
+      ))}
+
+      <text x='28' y='540' fontSize={reg.note} fontWeight='600' fill={INK}>
+        The staircase climbs only where the blue line climbs. The generic ingredients never could have produced it.
+      </text>
+      {mode === 'detailed' && (
+        <text x='28' y='562' fontSize='12' fill={MUTED_TEXT}>
+          Access is a conjunction — every requirement met — so the layers are compared by shape, never summed. Nothing here is a stacked decomposition.
+        </text>
+      )}
+    </svg>
+  )
+}
+
+// ───────── Moment 3 — the unwritten agreements, by course type ─────────
+// Panel A: approve every course of a TYPE statewide (data structures split
+// from introductory programming and so on — recognisable kinds, not merged
+// families) and count the transfer pathways that open. Airy rows, one claim
+// each. Panel B: the beat's centerpiece — every missing entry in the state
+// as one square, coloured by its evidence; the green field IS the argument
+// that most of this is already accepted at another campus.
+
+function M3Ledger({ reg, mode, data }) {
+  const { counts, instances } = data.fates
+  const types = data.repairs.types.filter((t) => t.completeCells > 0).slice(0, 6)
+  const maxCells = Math.max(...types.map((t) => t.completeCells))
+  const rowPitch = mode === 'glance' ? 84 : 72
+  const rowY = (i) => 116 + i * rowPitch
+  const barX = 420; const barMax = 540
+  const bTop = rowY(types.length - 1) + rowPitch + 40
+  const aShare = Math.round((counts.A / instances) * 100)
+  // Waffle: one square per missing instance, evidence-ordered.
+  const cols = instances > 1000 ? 62 : 48
+  const pitch = Math.floor(872 / cols)
+  const sq = pitch - 3
+  const waffleRows = Math.ceil(instances / cols)
+  const waffleH = waffleRows * pitch
+  const cellFate = (i) => (i < counts.A ? 'A' : i < counts.A + counts.B ? 'B' : i < counts.A + counts.B + counts.C ? 'C' : 'U')
+  const FATE_STYLE = {
+    A: { fill: GAINED, stroke: 'none', label: 'already accepted for the same subject at another campus' },
+    B: { fill: BREADTH_FILL, stroke: 'none', label: 'taught, never accepted' },
+    C: { fill: '#FFFFFF', stroke: MUTED_LINE, label: 'not taught — no signature fixes these' },
+    U: { fill: 'url(#pgWaffleHatch)', stroke: BREADTH_FILL, label: 'resists classification' },
+  }
+  const legendY = bTop + 96 + waffleH + 34
+  const footY = legendY + 44
+  return (
+    <svg {...svgProps(footY + 76, `Panel A: approving whole course types statewide — every ${types[0].name.toLowerCase()} course approved would open ${types[0].completeCells} transfer pathways. Panel B: all ${instances.toLocaleString()} missing entries drawn one square each; ${aShare} percent are already accepted for the same subject at another campus.`)}>
+      <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>A · Approve a whole type of course, statewide</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>
+        Transfer pathways that open if every course of the type were articulated statewide · pathways need whole sequences, so single courses open little alone
+      </text>
+
+      {types.map((t, i) => {
+        const y = rowY(i)
+        const w = Math.max(6, (t.completeCells / maxCells) * barMax)
+        const inBar = w >= 190
+        const describe = `${t.name}: approving all ${t.courses} receiving courses statewide opens ${t.completeCells} pathways; ${Math.round(t.preApprovedShare * 100)} percent of its missing entries are already accepted elsewhere`
+        return (
+          <g key={t.type} role='img' aria-label={describe}>
+            <title>{describe}</title>
+            <text x='404' y={y + 2} fontSize={reg.row} fontWeight='600' fill={INK} textAnchor='end'>{t.name}</text>
+            <text x='404' y={y + 21} fontSize='12' fill={MUTED_TEXT} textAnchor='end'>{t.courses} receiving courses · <tspan fill={GAINED} fontWeight='600'>{Math.round(t.preApprovedShare * 100)}% pre-approved</tspan></text>
+            <rect x={barX} y={y - 12} width={w} height='28' rx='3' fill={CS_BLUE} />
+            {inBar ? (
+              <text x={barX + w - 12} y={y + 8} fontSize={reg.mid} fontWeight='700' fill='#FFFFFF' textAnchor='end'>+{t.completeCells} pathways</text>
+            ) : (
+              <text x={barX + w + 12} y={y + 8} fontSize={reg.mid} fontWeight='700' fill={CS_BLUE}>+{t.completeCells} pathways</text>
+            )}
+
+          </g>
+        )
+      })}
+
+      <line x1='28' y1={bTop} x2='1212' y2={bTop} stroke='rgba(25,48,24,0.09)' strokeWidth='1' />
+      <text x='28' y={bTop + 32} fontSize='16' fontWeight='500' fill={INK}>B · Every missing entry in the state, one square each</text>
+      <text x='28' y={bTop + 54} fontSize={reg.tick} fill={MUTED_TEXT}>One square = one required course missing from one college’s path · coloured by the evidence behind it, strongest first</text>
+
+      <g>
+        <text x='28' y={bTop + 148} fontSize={mode === 'glance' ? 72 : 58} fontWeight='700' fill={GAINED}>{aShare}%</text>
+        <text x='28' y={bTop + 180} fontSize={reg.row} fontWeight='600' fill={INK}>of the {instances.toLocaleString()} missing entries</text>
+        <text x='28' y={bTop + 202} fontSize={reg.row} fontWeight='600' fill={INK}>are already accepted for the</text>
+        <text x='28' y={bTop + 224} fontSize={reg.row} fontWeight='600' fill={INK}>same subject at another campus.</text>
+        <text x='28' y={bTop + 254} fontSize='12' fill={MUTED_TEXT}>{counts.A1.toLocaleString()} accepted by the demanding campus itself,</text>
+        <text x='28' y={bTop + 271} fontSize='12' fill={MUTED_TEXT}>{counts.A2} by a stricter one, {counts.A3} by laxer campuses only.</text>
+      </g>
+
+      <g>
+        {Array.from({ length: instances }, (_, i) => {
+          const fate = cellFate(i)
+          const st = FATE_STYLE[fate]
+          const col = i % cols
+          const row = Math.floor(i / cols)
+          return (
+            <rect key={i} x={340 + col * pitch} y={bTop + 76 + row * pitch} width={sq} height={sq} rx='1.5'
+              fill={st.fill} stroke={st.stroke} strokeWidth={st.stroke === 'none' ? 0 : 1} />
+          )
+        })}
+        <title>{`${instances.toLocaleString()} missing entries: ${counts.A.toLocaleString()} accepted elsewhere · ${counts.B} taught but never accepted · ${counts.C} not taught · ${counts.unclassified} unclassified`}</title>
+      </g>
+
+      <g fontSize='12.5'>
+        {Object.entries(FATE_STYLE).map(([fate, st], i) => {
+          const n = { A: counts.A, B: counts.B, C: counts.C, U: counts.unclassified }[fate]
+          const lx = [340, 340, 745, 745][i]
+          const ly = legendY + (i % 2) * 22 - 22
+          return (
+            <g key={fate}>
+              <rect x={lx} y={ly - 11} width='13' height='13' rx='1.5' fill={st.fill} stroke={st.stroke} strokeWidth={st.stroke === 'none' ? 0 : 1} />
+              <text x={lx + 21} y={ly} fill={INK}>{n.toLocaleString()} · {st.label}</text>
+            </g>
+          )
+        })}
+      </g>
+
+      <text x='28' y={footY} fontSize={reg.note} fontWeight='600' fill={INK}>
+        The colleges teach these subjects, and other campuses already accept their courses — what is missing is the entry in this campus’s table.
+      </text>
+      <text x='28' y={footY + 24} fontSize={reg.note} fill={SOFT}>
+        The stake in people: colleges behind the wall produce {placeSnapshot.participation.narrow.perK} Computer Science completers per 1,000 students against {placeSnapshot.participation.open.perK} where paths are open — matching that rate would mean roughly {placeSnapshot.participation.extraPerYear} more a year, an observational bound.
+      </text>
+      <text x='28' y={footY + 48} fontSize={mode === 'glance' ? reg.note : 12} fill={MUTED_TEXT}>
+        Accepted-elsewhere is subject-level evidence, not course-level proof — the conservative standard in the next figure exists for exactly this reason.
+      </text>
+      <defs>
+        <pattern id='pgWaffleHatch' width='7' height='7' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'>
+          <rect width='7' height='7' fill='#FFFFFF' />
+          <line x1='0' y1='0' x2='0' y2='7' stroke='rgba(25,48,24,0.1)' strokeWidth='3' />
+        </pattern>
+      </defs>
+    </svg>
+  )
+}
+
+// ───────── Moment 4 — sign the papers ─────────
+// Point-and-band on one shared 0-100 track: today is a solid ink dot, the
+// destination a band spanning the two evidence standards (thick cap at the
+// conservative bound — it leads every reading), the not-taught remainder a
+// hatched tail labelled "still closed." Collision guards suppress the
+// connector and note when spans are too small; the legend never is.
+
+function M4Signing({ reg, mode, data, basis }) {
+  const base = data.baseline
+  const cons = data.repairs.conservativeRepairedMap
+  const full = data.repairs.tierARepairedMap
+  const rows = [
+    {
+      label: 'Poorest-quartile access', sub: 'share of the poorest districts’ paths open',
+      unit: '%', today: base.access[0], lo: cons.access[0], hi: full.access[0],
+      note: basis === 'minimums'
+        ? 'from two-in-five to three-in-four'
+        : 'lands exactly on today’s richest quartile',
+      improvesDown: false, residual: true,
+    },
+    {
+      label: 'Richest − poorest gap', sub: 'percentage points · smaller is better',
+      unit: ' pts', today: base.gapQ4Q1, lo: full.gapQ4Q1, hi: cons.gapQ4Q1,
+      note: basis === 'minimums' ? 'the gap shrinks by more than half' : 'the gap narrows, it does not close',
+      improvesDown: true, residual: false,
+    },
+    {
+      label: 'Worst distance stratum', sub: 'far from a campus and poor',
+      unit: '%', today: base.farPoorAccess, lo: cons.farPoorAccess, hi: full.farPoorAccess,
+      note: 'the hardest cell on the map roughly doubles',
+      improvesDown: false, residual: true,
+    },
+  ]
+  const x = (v) => 320 + v * 760
+  const bandH = mode === 'glance' ? 42 : 38
+  const rowPitch = mode === 'glance' ? 150 : 130
+  const rowY = (i) => 160 + i * rowPitch
+  const legendY = rowY(rows.length - 1) + 92
+  const height = legendY + (mode === 'detailed' ? 96 : 76)
+  const fmt = (row, v) => (row.unit === '%' ? pct(v) : `${pts(v)}${row.unit}`)
+  return (
+    <svg {...svgProps(height, `Write only the evidence-backed agreements and re-measure on one shared scale. Poorest-quartile access moves from ${pct(base.access[0])} to between ${pct(cons.access[0])} and ${pct(full.access[0])}; the richest-poorest gap from ${pts(base.gapQ4Q1)} points to between ${pts(full.gapQ4Q1)} and ${pts(cons.gapQ4Q1)}; the far-and-poor stratum from ${pct(base.farPoorAccess)} to between ${pct(cons.farPoorAccess)} and ${pct(full.farPoorAccess)}. The not-taught remainder stays visibly unfixed.`)}>
+      <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>Write only the evidence-backed agreements — teach nothing new — and re-measure</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>One 0–100 track: shares are percent, the gap is percentage points · the destination is a band, conservative standard first</text>
+
+      {[0, 0.25, 0.5, 0.75, 1].map((v) => (
+        <text key={v} x={x(v)} y='96' fontSize='12' fill={MUTED_TEXT} textAnchor='middle'>{Math.round(v * 100)}</text>
+      ))}
+
+      {rows.map((row, i) => {
+        const yy = rowY(i)
+        const lo = Math.min(row.lo, row.hi); const hi = Math.max(row.lo, row.hi)
+        const capLead = row.improvesDown ? x(lo) : x(hi)
+        const capCons = row.improvesDown ? x(hi) : x(lo)
+        const bandX = x(lo); const bandW = Math.max(6, x(hi) - x(lo))
+        const spanPts = Math.abs(row.today - (row.improvesDown ? hi : lo)) * 100
+        const showConnector = spanPts > 4
+        const showNote = Math.abs(row.today - (lo + hi) / 2) * 100 > 24
+        const connFrom = x(row.today) + (row.improvesDown ? -12 : 12)
+        const connTo = row.improvesDown ? x(hi) + 8 : x(lo) - 8
+        const describe = `${row.label}: today ${fmt(row, row.today)}; signed, between ${fmt(row, row.improvesDown ? hi : lo)} and ${fmt(row, row.improvesDown ? lo : hi)}`
+        return (
+          <g key={row.label} role='img' aria-label={describe}>
+            <title>{describe}</title>
+            <text x='300' y={yy - 2} fontSize={reg.row} fontWeight='600' fill={INK} textAnchor='end'>{row.label}</text>
+            <text x='300' y={yy + 16} fontSize='12' fill={MUTED_TEXT} textAnchor='end'>{row.sub}</text>
+            <rect x={x(0)} y={yy - 4} width={x(1) - x(0)} height='8' rx='4' fill='#EDF1EA' />
+            {row.residual && (
+              <g>
+                <rect x={x(hi)} y={yy - 4} width={x(1) - x(hi)} height='8' fill='url(#pgTailHatch)' stroke={BREADTH_FILL} strokeWidth='1' />
+                <rect x={Math.min(x(1) - 92, x(hi) + (x(1) - x(hi)) / 2 - 44)} y={yy - 30} width='88' height='20' rx='4' fill='#FFFFFF' stroke={GRID} strokeWidth='1' />
+                <text x={Math.min(x(1) - 48, x(hi) + (x(1) - x(hi)) / 2)} y={yy - 16} fontSize='11.5' fill={MUTED_TEXT} textAnchor='middle'>still closed</text>
+              </g>
+            )}
+            <rect x={bandX} y={yy - bandH / 2} width={bandW} height={bandH} fill='rgba(0,114,178,0.16)' />
+            <rect x={capCons - 2} y={yy - bandH / 2} width='4' height={bandH} fill={CS_BLUE} />
+            <rect x={capLead - 0.8} y={yy - bandH / 2} width='1.6' height={bandH} fill={CS_BLUE} />
+            {showConnector && (
+              <g>
+                <line x1={connFrom} y1={yy} x2={connTo} y2={yy} stroke={CS_BLUE} strokeWidth='1.6' strokeDasharray='5 4' />
+                <path d={row.improvesDown
+                  ? `M ${connTo} ${yy} l 9 -5 l 0 10 z`
+                  : `M ${connTo} ${yy} l -9 -5 l 0 10 z`} fill={CS_BLUE} />
+              </g>
+            )}
+            <circle cx={x(row.today)} cy={yy} r={mode === 'glance' ? 11 : 9} fill={INK} stroke='#FFFFFF' strokeWidth='1.5' />
+            <text x={x(row.today)} y={yy + 38} fontSize={reg.tick} fontWeight='600' fill={SOFT} textAnchor='middle'>today {fmt(row, row.today)}</text>
+            <text x={(bandX + bandW / 2)} y={yy - bandH / 2 - 12} fontSize={mode === 'glance' ? 44 : 34} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
+              {fmt(row, row.improvesDown ? hi : lo).replace(row.unit, '')} – {fmt(row, row.improvesDown ? lo : hi)}
+            </text>
+            {showNote && (
+              <text x={bandX + bandW / 2} y={yy + 38} fontSize='12.5' fill={GAINED} textAnchor='middle'>{row.note}</text>
+            )}
+          </g>
+        )
+      })}
+
+      <g>
+        <line x1='28' y1={legendY - 26} x2='1212' y2={legendY - 26} stroke={GRID} strokeWidth='1' />
+        <circle cx='40' cy={legendY - 4} r='7' fill={INK} stroke='#FFFFFF' strokeWidth='1.5' />
+        <text x='56' y={legendY} fontSize='12.5' fill={INK}>today</text>
+        <rect x='130' y={legendY - 13} width='40' height='18' fill='rgba(0,114,178,0.16)' />
+        <rect x='128' y={legendY - 13} width='4' height='18' fill={CS_BLUE} />
+        <rect x='169' y={legendY - 13} width='1.6' height='18' fill={CS_BLUE} />
+        <text x='182' y={legendY} fontSize='12.5' fill={INK}>signed — thick cap is the conservative standard, thin the full</text>
+        <rect x='620' y={legendY - 13} width='34' height='18' fill='url(#pgTailHatch)' stroke={BREADTH_FILL} strokeWidth='1' />
+        <text x='664' y={legendY} fontSize='12.5' fill={INK}>still closed — the not-taught remainder no signature fixes</text>
+      </g>
+
+      <text x='28' y={legendY + 34} fontSize={reg.note} fontWeight='600' fill={INK}>
+        The {data.fates.counts.C} not-taught gaps stay exactly where they are — the largest share of the inequality is administrative, not all of it.
+      </text>
+      {mode === 'detailed' && (
+        <text x='28' y={legendY + 58} fontSize='12' fill={MUTED_TEXT}>
+          Decimals: access {(base.access[0] * 100).toFixed(1)}% → {(cons.access[0] * 100).toFixed(1)}–{(full.access[0] * 100).toFixed(1)}% · gap {(base.gapQ4Q1 * 100).toFixed(1)} → {(full.gapQ4Q1 * 100).toFixed(1)}–{(cons.gapQ4Q1 * 100).toFixed(1)} pts · complete cells {base.completeCells} → {cons.completeCells}–{full.completeCells} of {base.totalCells}.
+        </text>
+      )}
+      <defs>
+        <pattern id='pgTailHatch' width='8' height='8' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'>
+          <line x1='0' y1='0' x2='0' y2='8' stroke='rgba(156,166,155,0.8)' strokeWidth='2' />
+        </pattern>
+      </defs>
+    </svg>
+  )
+}
+
+// ───────── Moment 5 — the closing jaws (staged payoff) ─────────
+// A form neither collection uses elsewhere: two lines across three scenario
+// stages — richest-quartile access along the top (nearly flat; they were
+// always fine) and poorest-quartile access climbing from below — with the
+// shaded wedge between them BEING the gap, printed at each stage. The final
+// stage forks into thin conservative-to-full bands. Only the end quartiles
+// are drawn; the interior is not claimed.
+
+function JawsScenarios({ reg, mode, data }) {
+  const base = data.baseline
+  const low = data.repairs.scenarios.lowestBar
+  const cons = data.repairs.conservativeRepairedMap
+  const full = data.repairs.tierARepairedMap
+  const sx = [250, 655, 1040]
+  const y = (v) => 486 - v * 380
+  const q4 = [base.access[3], low.access[3], cons.access[3]]
+  const q1 = [base.access[0], low.access[0], cons.access[0]]
+  const gapAt = [base.gapQ4Q1, low.gapQ4Q1, null]
+  const line = (vals) => vals.map((v, i) => `${sx[i]},${y(v)}`).join(' ')
+  const wedge = `${q4.map((v, i) => `${sx[i]},${y(v)}`).join(' ')} ${[2, 1, 0].map((i) => `${sx[i]},${y(q1[i])}`).join(' ')}`
+  const stageMeta = [
+    { label: 'Today', effort: 'as the tables stand' },
+    { label: 'Sign the introductory courses', effort: `${low.courses} courses’ worth of paperwork · ${Math.round(low.preApprovedShare * 100)}% already accepted elsewhere` },
+    { label: 'Sign everything the evidence supports', effort: `${full.instancesPatched.toLocaleString()} pre-approved entries · conservative standard first` },
+  ]
+  return (
+    <svg {...svgProps(636, `Two lines across three scenarios. Richest-quartile access runs ${pct(base.access[3])}, ${pct(low.access[3])}, then ${pct(cons.access[3])} to ${pct(full.access[3])} — nearly flat. Poorest-quartile access climbs from ${pct(base.access[0])} to ${pct(low.access[0])} after signing only the ${low.courses} introductory courses, then to between ${pct(cons.access[0])} and ${pct(full.access[0])}. The gap between the lines narrows from ${pts(base.gapQ4Q1)} points to ${pts(low.gapQ4Q1)}, then to between ${pts(cons.gapQ4Q1)} and ${pts(full.gapQ4Q1)}.`)}>
+      <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>The gap, watched closing — three scenarios, two quartiles</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>The shaded wedge is the rich-poor access gap itself · only the end quartiles are drawn — the interior is not claimed</text>
+
+      {[0.25, 0.5, 0.75, 1].map((v) => (
+        <g key={v}>
+          <line x1='170' y1={y(v)} x2='1120' y2={y(v)} stroke={GRID} strokeWidth='1' />
+          <text x='154' y={y(v) + 4} fontSize={reg.tick} fill={MUTED_TEXT} textAnchor='end'>{pct(v)}</text>
+        </g>
+      ))}
+
+      <polygon points={wedge} fill='rgba(0,114,178,0.09)' />
+      <polyline points={line(q4)} fill='none' stroke={FIELD} strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' />
+      <polyline points={line(q1)} fill='none' stroke={CS_BLUE} strokeWidth='3.6' strokeLinecap='round' strokeLinejoin='round' />
+
+      {q4.map((v, i) => (
+        <circle key={`q4${i}`} cx={sx[i]} cy={y(v)} r='6' fill={FIELD} stroke='#FFFFFF' strokeWidth='1.5'>
+          <title>{`Richest quartile, ${stageMeta[i].label.toLowerCase()}: ${pct(v)} of paths open`}</title>
+        </circle>
+      ))}
+      {q1.map((v, i) => (
+        <circle key={`q1${i}`} cx={sx[i]} cy={y(v)} r={mode === 'glance' ? 8 : 7} fill={CS_BLUE} stroke='#FFFFFF' strokeWidth='1.5'>
+          <title>{`Poorest quartile, ${stageMeta[i].label.toLowerCase()}: ${pct(v)} of paths open`}</title>
+        </circle>
+      ))}
+
+      {/* Final stage forks: conservative-to-full bands on both lines. */}
+      {[[cons.access[3], full.access[3], FIELD], [cons.access[0], full.access[0], CS_BLUE]].map(([lo, hi, color], i) => (
+        <g key={`band${i}`}>
+          <rect x={sx[2] - 7} y={y(Math.max(lo, hi))} width='14' height={Math.max(6, Math.abs(y(lo) - y(hi)))} rx='6'
+            fill={color} opacity='0.85'>
+            <title>{`Between ${pct(Math.min(lo, hi))} (conservative standard) and ${pct(Math.max(lo, hi))} (full standard)`}</title>
+          </rect>
+        </g>
+      ))}
+
+      {q4.map((v, i) => (
+        <text key={`lq4${i}`} x={sx[i]} y={y(v) - 14} fontSize={reg.tick} fontWeight='600' fill={SOFT} textAnchor='middle'>
+          {i === 2 ? `${pts(v)}–${pts(full.access[3])}%` : pct(v)}
+        </text>
+      ))}
+      {q1.map((v, i) => (
+        <text key={`lq1${i}`} x={sx[i]} y={y(v) + 30} fontSize={reg.row} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
+          {i === 2 ? `${pts(v)}–${pts(full.access[0])}%` : pct(v)}
+        </text>
+      ))}
+
+      {gapAt.map((g, i) => (
+        <text key={`gap${i}`} x={sx[i] + (i === 0 ? 40 : 0)} y={(y(q4[i]) + y(q1[i])) / 2 + 6}
+          fontSize={mode === 'glance' ? 22 : 18} fontWeight='700' fill={INK} textAnchor='middle'>
+          {g != null ? `${pts(g)} pts` : `${pts(cons.gapQ4Q1)}–${pts(full.gapQ4Q1)} pts`}
+        </text>
+      ))}
+      <text x={sx[0] + 40} y={(y(q4[0]) + y(q1[0])) / 2 + 26} fontSize='11.5' fill={MUTED_TEXT} textAnchor='middle'>the gap</text>
+
+      <text x='1132' y={y(q4[2]) + 4} fontSize='13' fontWeight='600' fill={SOFT}>richest quartile</text>
+      <text x='1132' y={y(q1[2]) + 4} fontSize='13' fontWeight='700' fill={CS_BLUE}>poorest quartile</text>
+
+      {stageMeta.map((st, i) => (
+        <g key={st.label} textAnchor='middle'>
+          <text x={sx[i]} y='530' fontSize={reg.row} fontWeight='600' fill={INK}>{st.label}</text>
+          <text x={sx[i]} y='550' fontSize='12' fill={MUTED_TEXT}>{st.effort}</text>
+        </g>
+      ))}
+
+      <text x='28' y='592' fontSize={reg.note} fontWeight='600' fill={INK}>
+        The rich were always fine — the jaws close because the poorest districts climb. {low.courses} introductory courses do a third of the closing on their own.
+      </text>
+      {mode === 'detailed' && (
+        <text x='28' y='614' fontSize='12' fill={MUTED_TEXT}>
+          Interior quartiles are computed but not drawn — no interpolation between scenarios or quartiles. The final stage is a range across the two evidence standards, conservative first.
+        </text>
+      )}
+    </svg>
+  )
+}
+
+// ───────── the sequence ─────────
+
+export function PaperGatePreview() {
+  return <M2Staircase reg={REGISTERS.glance} mode='glance' data={repairs.minimums} basis='minimums' />
+}
+
+const BEATS = {
+  1: {
+    role: 'The comparison',
+    standfirst: 'A Computer Science transfer path is a checklist: generic material the whole state articulates, plus the campus’s own Computer Science courses. Here is every course in the system, and where each kind lives.',
+  },
+  2: {
+    role: 'The mechanism',
+    standfirst: 'The ask’s two layers split by district income quartile, with the previous collection’s access staircase ghosted behind them. The layers are compared by shape — access is a conjunction, so nothing is summed.',
+  },
+  3: {
+    role: 'The evidence',
+    standfirst: 'What approving each type of course statewide would open — and then every missing entry in the state, one square each, coloured by the evidence behind it.',
+  },
+  4: {
+    role: 'The payoff',
+    standfirst: 'Write only the evidence-backed agreements — nothing new taught anywhere — and re-measure at two evidence standards.',
+  },
+  5: {
+    role: 'The staging',
+    standfirst: 'The same payoff, staged: richest- and poorest-quartile access across three scenarios, with the shaded wedge between them being the gap itself. The lowest bar — introductory programming alone — does a third of the closing.',
+  },
+}
+
+const REGISTER_OPTIONS = [
+  { value: 'glance', label: 'At a glance' },
+  { value: 'detailed', label: 'Detailed' },
+]
+
+const BASIS_OPTIONS = [
+  { value: 'minimums', label: 'Eligibility floor' },
+  { value: 'strict', label: 'Stated preparation' },
+]
+
+export default function PaperGate() {
+  const [mode, setMode] = useState('glance')
+  const [basis, setBasis] = useState('minimums')
+  const reg = REGISTERS[mode]
+  const data = basis === 'minimums' ? repairs.minimums : repairs
+  const headlines = headlinesFor(data, basis)
+  return (
+    <Stack gap='section'>
+      <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+        <div className='flex flex-col'>
+          <span className='field-label'>Register</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {REGISTER_OPTIONS.map((item) => (
+              <button key={item.value} type='button' onClick={() => setMode(item.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  mode === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className='flex flex-col'>
+          <span className='field-label'>Requirements</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {BASIS_OPTIONS.map((item) => (
+              <button key={item.value} type='button' onClick={() => setBasis(item.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  basis === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className='ml-auto text-caption max-w-[560px]' style={{ color: MUTED_TEXT }}>
+          Why Computer Science, and what would fix it. Calculus works everywhere; data structures works
+          where the money is — and most of the difference is unsigned paperwork.
+        </p>
+      </div>
+      <div data-export-root className='flex flex-col gap-7'>
+        <Beat no='1' title='Every course in the system' mode={mode} headlines={headlines} {...BEATS[1]}>
+          <ArchScatter reg={reg} mode={mode} />
+        </Beat>
+        <Beat no='2' title='The staircase, taken apart' mode={mode} headlines={headlines} {...BEATS[2]}>
+          <M2Staircase reg={reg} mode={mode} data={data} basis={basis} />
+        </Beat>
+        <Beat no='3' title='The unwritten agreements' mode={mode} headlines={headlines} {...BEATS[3]}>
+          <M3Ledger reg={reg} mode={mode} data={data} />
+        </Beat>
+        <Beat no='4' title='Sign the papers' mode={mode} headlines={headlines} {...BEATS[4]}>
+          <M4Signing reg={reg} mode={mode} data={data} basis={basis} />
+        </Beat>
+        <Beat no='5' title='How the gap closes' mode={mode} headlines={headlines} {...BEATS[5]}>
+          <JawsScenarios reg={reg} mode={mode} data={data} />
+        </Beat>
+      </div>
+    </Stack>
+  )
+}
