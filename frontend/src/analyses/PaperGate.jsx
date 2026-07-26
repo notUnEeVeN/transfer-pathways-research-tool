@@ -422,57 +422,67 @@ function M3Ledger({ reg, mode, data }) {
 }
 
 // ───────── Moment 4 — sign the papers ─────────
-// A directional rail on one shared 0–100 scale. Today is a compact labelled
-// tick rather than a point; a substantial, open-chevron arrow lands on the
-// conservative result; and a pale interval carries the result to the full
-// evidence standard. The gap arrow reverses honestly. The visual therefore
-// reads as movement first and evidence-range mechanics second.
+// Two distinct visual grammars on one 0–100 scale. Access is movement: today
+// is a compact labelled tick, and an open-chevron rail advances to the
+// evidence-backed range. The rich-poor gap is distance, not movement: three
+// directly labelled spans show the space between the quartile endpoints
+// contracting from today to the conservative and full-evidence results.
 
 function M4Signing({ reg, mode, data, basis }) {
   const base = data.baseline
   const cons = data.repairs.conservativeRepairedMap
   const full = data.repairs.tierARepairedMap
-  const rows = [
+  const accessRows = [
     {
       label: 'Poorest-quartile access', sub: 'share of the poorest districts’ paths open',
       unit: '%', today: base.access[0], lo: cons.access[0], hi: full.access[0],
       note: basis === 'minimums'
         ? 'from two-in-five to three-in-four'
         : 'lands exactly on today’s richest quartile',
-      improvesDown: false, residual: true, primary: true,
-    },
-    {
-      label: 'Richest − poorest gap', sub: 'percentage points · smaller is better',
-      unit: ' pts', today: base.gapQ4Q1, lo: full.gapQ4Q1, hi: cons.gapQ4Q1,
-      note: basis === 'minimums' ? 'the gap shrinks by more than half' : 'the gap narrows, it does not close',
-      improvesDown: true, residual: false,
+      residual: true, primary: true, y: 180,
     },
     {
       label: 'Worst distance stratum', sub: 'far from a campus and poor',
       unit: '%', today: base.farPoorAccess, lo: cons.farPoorAccess, hi: full.farPoorAccess,
       note: 'the hardest cell on the map roughly doubles',
-      improvesDown: false, residual: true,
+      residual: true, y: mode === 'glance' ? 548 : 530,
     },
   ]
   const plotX = 340
   const plotW = 820
   const x = (v) => plotX + v * plotW
-  const rowPitch = mode === 'glance' ? 154 : 140
-  const rowY = (i) => 180 + i * rowPitch
-  const chartBottom = rowY(rows.length - 1) + 54
+  const gapTop = mode === 'glance' ? 268 : 258
+  const gapBottom = mode === 'glance' ? 470 : 456
+  const chartBottom = accessRows[1].y + 54
   const legendY = chartBottom + 46
   const height = legendY + (mode === 'detailed' ? 104 : 82)
-  const fmt = (row, v) => (row.unit === '%' ? pct(v) : `${pts(v)}${row.unit}`)
+  const gapSpans = [
+    {
+      key: 'today', label: 'TODAY', value: `${pts(base.gapQ4Q1)} pts`,
+      left: base.access[0], right: base.access[3], y: gapTop + 64,
+      color: FIELD, width: 4.5,
+    },
+    {
+      key: 'conservative', label: 'CONSERVATIVE', value: `${pts(cons.gapQ4Q1)} pts`,
+      left: cons.access[0], right: cons.access[3], y: gapTop + 124,
+      color: CS_BLUE, width: 5,
+    },
+    {
+      key: 'full', label: 'FULL EVIDENCE', value: `${pts(full.gapQ4Q1)} pts`,
+      left: full.access[0], right: full.access[3], y: gapTop + 156,
+      color: NAVY_SOFT, width: 3,
+    },
+  ]
   return (
     <svg {...svgProps(height, `Write only the evidence-backed agreements and re-measure on one shared scale. Poorest-quartile access moves from ${pct(base.access[0])} to between ${pct(cons.access[0])} and ${pct(full.access[0])}; the richest-poorest gap from ${pts(base.gapQ4Q1)} points to between ${pts(full.gapQ4Q1)} and ${pts(cons.gapQ4Q1)}; the far-and-poor stratum from ${pct(base.farPoorAccess)} to between ${pct(cons.farPoorAccess)} and ${pct(full.farPoorAccess)}. The not-taught remainder stays visibly unfixed.`)}
       data-testid='paper-gate-signing'>
       <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>Write only the evidence-backed agreements — teach nothing new — and re-measure</text>
-      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>Every arrow lands on the conservative result; the pale interval extends to the full-evidence result</text>
+      <text x='28' y='46' fontSize={reg.tick} fill={MUTED_TEXT}>Access moves along the blue arrows; the gap below is the distance between the poorest and richest quartile endpoints</text>
 
       <g transform='translate(28 78)'>
         <line x1='0' y1='0' x2='56' y2='0' stroke={CS_BLUE} strokeOpacity='0.62' strokeWidth='7' strokeLinecap='round' />
         <path d='M 47 -8 L 57 0 L 47 8' fill='none' stroke={CS_BLUE} strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' />
-        <text x='72' y='5' fontSize='12.5' fontWeight='600' fill={INK}>movement to the conservative result</text>
+        <text x='72' y='5' fontSize='12.5' fontWeight='600' fill={INK}>access gained to the conservative result</text>
         <rect x='352' y='-10' width='44' height='20' rx='6' fill='rgba(0,114,178,0.15)' />
         <line x1='352' y1='-10' x2='352' y2='10' stroke={CS_BLUE} strokeWidth='3' />
         <text x='410' y='5' fontSize='12.5' fontWeight='600' fill={INK}>range to full evidence</text>
@@ -487,29 +497,26 @@ function M4Signing({ reg, mode, data, basis }) {
         </g>
       ))}
 
-      {rows.map((row, i) => {
-        const yy = rowY(i)
+      {accessRows.map((row) => {
+        const yy = row.y
         const lo = Math.min(row.lo, row.hi); const hi = Math.max(row.lo, row.hi)
-        const conservative = row.improvesDown ? hi : lo
-        const fullEvidence = row.improvesDown ? lo : hi
+        const conservative = lo
+        const fullEvidence = hi
         const bandX = x(lo); const bandW = Math.max(20, x(hi) - x(lo))
         const todayX = x(row.today)
         const conservativeX = x(conservative)
         const fullX = x(fullEvidence)
-        const forward = conservativeX > todayX
-        const arrowStart = todayX + (forward ? 8 : -8)
-        const arrowLineEnd = conservativeX + (forward ? -10 : 10)
+        const arrowStart = todayX + 8
+        const arrowLineEnd = conservativeX - 10
         const rangeMid = bandX + bandW / 2
-        const todayW = row.unit === '%' ? 92 : 112
         const residualPoints = Math.round((1 - hi) * 100)
-        const describe = `${row.label}: today ${fmt(row, row.today)}; signed, between ${fmt(row, row.improvesDown ? hi : lo)} and ${fmt(row, row.improvesDown ? lo : hi)}`
+        const describe = `${row.label}: today ${pct(row.today)}; signed, between ${pct(conservative)} and ${pct(fullEvidence)}`
         return (
           <g key={row.label} role='img' aria-label={describe}>
             <title>{describe}</title>
             {row.primary && (
               <rect x='14' y={yy - 62} width='1198' height='122' rx='12' fill='rgba(0,114,178,0.028)' />
             )}
-            {i > 0 && <line x1='28' y1={yy - rowPitch / 2} x2='1212' y2={yy - rowPitch / 2} stroke={GRID} strokeWidth='1' />}
             <text x='300' y={yy - 2} fontSize={reg.row} fontWeight='600' fill={INK} textAnchor='end'>{row.label}</text>
             <text x='300' y={yy + 16} fontSize='12' fill={MUTED_TEXT} textAnchor='end'>{row.sub}</text>
             <line x1={x(0)} y1={yy} x2={x(1)} y2={yy} stroke='#EDF1EA' strokeWidth='12' strokeLinecap='round' />
@@ -521,27 +528,60 @@ function M4Signing({ reg, mode, data, basis }) {
             )}
             <line x1={arrowStart} y1={yy} x2={arrowLineEnd} y2={yy}
               stroke={CS_BLUE} strokeOpacity={row.primary ? 0.72 : 0.58} strokeWidth={row.primary ? 9 : 7} strokeLinecap='round' />
-            <path data-movement-arrow={forward ? 'right' : 'left'}
-              d={forward
-                ? `M ${conservativeX - 11} ${yy - 9} L ${conservativeX} ${yy} L ${conservativeX - 11} ${yy + 9}`
-                : `M ${conservativeX + 11} ${yy - 9} L ${conservativeX} ${yy} L ${conservativeX + 11} ${yy + 9}`}
+            <path data-movement-arrow='right'
+              d={`M ${conservativeX - 11} ${yy - 9} L ${conservativeX} ${yy} L ${conservativeX - 11} ${yy + 9}`}
               fill='none' stroke={CS_BLUE} strokeWidth='3.5' strokeLinecap='round' strokeLinejoin='round' />
             <rect x={bandX} y={yy - 13} width={bandW} height='26' rx='7' fill='rgba(0,114,178,0.16)' />
             <line x1={conservativeX} y1={yy - 15} x2={conservativeX} y2={yy + 15} stroke={CS_BLUE} strokeWidth='3.5' strokeLinecap='round' />
             <line x1={fullX} y1={yy - 11} x2={fullX} y2={yy + 11} stroke={NAVY_SOFT} strokeWidth='2' strokeLinecap='round' />
 
             <line x1={todayX} y1={yy - 13} x2={todayX} y2={yy + 13} stroke={INK} strokeWidth='3' strokeLinecap='round' />
-            <rect x={todayX - todayW / 2} y={yy + 22} width={todayW} height='28' rx='14' fill='#FFFFFF' stroke='rgba(25,48,24,0.20)' strokeWidth='1' />
-            <text x={todayX} y={yy + 41} fontSize='12.5' fontWeight='650' fill={INK} textAnchor='middle'>TODAY · {fmt(row, row.today)}</text>
+            <rect x={todayX - 46} y={yy + 22} width='92' height='28' rx='14' fill='#FFFFFF' stroke='rgba(25,48,24,0.20)' strokeWidth='1' />
+            <text x={todayX} y={yy + 41} fontSize='12.5' fontWeight='650' fill={INK} textAnchor='middle'>TODAY · {pct(row.today)}</text>
 
             <text x={rangeMid} y={yy - 43} fontSize='10.5' fontWeight='700' letterSpacing='0.08em' fill={MUTED_TEXT} textAnchor='middle'>AFTER SIGNATURES</text>
             <text x={rangeMid} y={yy - 19} fontSize={mode === 'glance' ? 29 : 25} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
-              {fmt(row, conservative).replace(row.unit, '')} – {fmt(row, fullEvidence)}
+              {pct(conservative).replace('%', '')} – {pct(fullEvidence)}
             </text>
             <text x='300' y={yy + 39} fontSize='11.5' fontWeight='600' fill={GAINED} textAnchor='end'>{row.note}</text>
           </g>
         )
       })}
+
+      <g data-testid='paper-gate-gap-closing' role='img'
+        aria-label={`The richest-poorest access gap contracts from ${pts(base.gapQ4Q1)} points today to ${pts(cons.gapQ4Q1)} points under the conservative standard and ${pts(full.gapQ4Q1)} points under full evidence.`}>
+        <rect x='14' y={gapTop} width='1198' height={gapBottom - gapTop} rx='12' fill='rgba(25,48,24,0.026)' stroke={GRID} strokeWidth='1' />
+        <text x='28' y={gapTop + 38} fontSize='10.5' fontWeight='700' letterSpacing='0.09em' fill={CS_BLUE}>THE GAP ITSELF</text>
+        <text x='28' y={gapTop + 66} fontSize={reg.row} fontWeight='650' fill={INK}>Richest − poorest</text>
+        <text x='28' y={gapTop + 86} fontSize='12' fill={MUTED_TEXT}>distance between their access levels</text>
+        <text x='28' y={gapTop + 112} fontSize='11.5' fontWeight='600' fill={GAINED}>the span contracts; no score moves left</text>
+        <text x='28' y={gapTop + 136} fontSize='11.5' fontWeight='600' fill={INK}>
+          {basis === 'minimums' ? 'the gap shrinks by more than half' : 'the gap narrows; it does not close'}
+        </text>
+
+        {gapSpans.map((span) => {
+          const leftX = x(span.left)
+          const rightX = x(span.right)
+          const midX = (leftX + rightX) / 2
+          const labelW = span.key === 'today' ? 86 : 156
+          return (
+            <g key={span.key} data-gap-span={span.key}>
+              <text x={plotX} y={span.y + 4} fontSize='10.5' fontWeight='700' letterSpacing='0.08em' fill={span.color}>{span.label}</text>
+              <line x1={leftX} y1={span.y} x2={rightX} y2={span.y} stroke={span.color} strokeWidth={span.width} strokeLinecap='round' />
+              <line x1={leftX} y1={span.y - 9} x2={leftX} y2={span.y + 9} stroke={span.color} strokeWidth={span.width > 4 ? 3 : 2} strokeLinecap='round' />
+              <line x1={rightX} y1={span.y - 9} x2={rightX} y2={span.y + 9} stroke={span.color} strokeWidth={span.width > 4 ? 3 : 2} strokeLinecap='round' />
+              <rect x={midX - labelW / 2} y={span.y - 14} width={labelW} height='28' rx='14' fill='#FFFFFF' stroke={GRID} strokeWidth='1' />
+              <text x={midX} y={span.y + 5} fontSize={span.key === 'today' ? 15 : 14} fontWeight='700' fill={span.color} textAnchor='middle'>{span.value}{span.key === 'today' ? ' GAP' : ''}</text>
+              {span.key === 'today' && (
+                <g fontSize='11.5' fontWeight='600' fill={SOFT}>
+                  <text x={leftX} y={span.y + 27} textAnchor='middle'>{pct(span.left)} poorest</text>
+                  <text x={rightX} y={span.y + 27} textAnchor='middle'>{pct(span.right)} richest</text>
+                </g>
+              )}
+            </g>
+          )
+        })}
+      </g>
 
       <g>
         <line x1='28' y1={legendY - 24} x2='1212' y2={legendY - 24} stroke={GRID} strokeWidth='1' />

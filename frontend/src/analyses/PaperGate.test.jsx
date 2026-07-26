@@ -159,15 +159,18 @@ describe('PaperGate (four moments)', () => {
     expect(screen.getByText(/the gap shrinks by more than half/)).toBeInTheDocument()
   })
 
-  it('keeps movement explicit in moment 4 without returning to point markers', () => {
+  it('separates access movement from the contracting rich-poor gap', () => {
     render(<PaperGate />)
     const signing = screen.getByTestId('paper-gate-signing')
     const arrows = [...signing.querySelectorAll('[data-movement-arrow]')]
-    expect(arrows).toHaveLength(3)
-    expect(arrows.filter((arrow) => arrow.getAttribute('data-movement-arrow') === 'right')).toHaveLength(2)
-    expect(arrows.filter((arrow) => arrow.getAttribute('data-movement-arrow') === 'left')).toHaveLength(1)
+    expect(arrows).toHaveLength(2)
+    expect(arrows.every((arrow) => arrow.getAttribute('data-movement-arrow') === 'right')).toBe(true)
     expect(signing.querySelectorAll('circle')).toHaveLength(0)
-    expect(signing.textContent).toContain('Every arrow lands on the conservative result')
+    const gap = screen.getByTestId('paper-gate-gap-closing')
+    expect(gap.querySelectorAll('[data-gap-span]')).toHaveLength(3)
+    expect(gap.textContent).toContain('THE GAP ITSELF')
+    expect(gap.textContent).toContain('the span contracts; no score moves left')
+    expect(signing.textContent).toContain('Access moves along the blue arrows')
     expect(signing.textContent).toContain('AFTER SIGNATURES')
   })
 
