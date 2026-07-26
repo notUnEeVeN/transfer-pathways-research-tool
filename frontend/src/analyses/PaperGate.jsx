@@ -461,7 +461,6 @@ function M4Signing({ reg, mode, data, basis }) {
   const fullRichX = x(full.access[3])
   const closedConservative = pts(base.gapQ4Q1) - pts(cons.gapQ4Q1)
   const closedFull = pts(base.gapQ4Q1) - pts(full.gapQ4Q1)
-  const wedgeLabelX = (todayPoorX + todayRichX + consPoorX + fullRichX) / 4
   const afterPoorLabelX = (consPoorX + fullPoorX) / 2
   const afterRichLabelX = (consRichX + fullRichX) / 2
   return (
@@ -542,8 +541,10 @@ function M4Signing({ reg, mode, data, basis }) {
       <g data-testid='paper-gate-gap-closing' role='img'
         aria-label={`The richest-poorest access gap contracts from ${pts(base.gapQ4Q1)} points today to a range from ${pts(full.gapQ4Q1)} to ${pts(cons.gapQ4Q1)} points after signing, across two evidence checks.`}>
         <rect x='14' y={gapTop} width='1198' height={gapBottom - gapTop} rx='12' fill='rgba(25,48,24,0.026)' stroke={GRID} strokeWidth='1' />
-        <text x='28' y={gapTop + 34} fontSize='10.5' fontWeight='700' letterSpacing='0.09em' fill={CS_BLUE}>THE GAP ITSELF</text>
-        <text x='28' y={gapTop + 55} fontSize='12' fill={MUTED_TEXT}>the distance between the same poorest and richest quartiles, before and after signing</text>
+        <text x='28' y={gapTop + 35} fontSize={mode === 'glance' ? 18 : 16.5} fontWeight='700' fill={CS_BLUE}>
+          {closedConservative}–{closedFull} points of the gap closed by signatures alone
+        </text>
+        <text x='28' y={gapTop + 57} fontSize='12' fill={MUTED_TEXT}>the distance between the same poorest and richest quartiles, before and after signing</text>
 
         <g>
           <text x='28' y={gapTodayY - 4} fontSize={reg.row} fontWeight='700' fill={INK}>TODAY</text>
@@ -560,12 +561,6 @@ function M4Signing({ reg, mode, data, basis }) {
           stroke={CS_BLUE} strokeOpacity='0.78' strokeWidth='1.8' strokeDasharray='7 6' markerEnd='url(#pgGapArrowBlue)' />
         <line x1={todayRichX} y1={gapTodayY + 8} x2={fullRichX} y2={gapAfterY}
           stroke={FIELD} strokeOpacity='0.48' strokeWidth='1.8' strokeDasharray='7 6' markerEnd='url(#pgGapArrowField)' />
-
-        <rect x={wedgeLabelX - 106} y={(gapTodayY + gapAfterY) / 2 - 23} width='212' height='46' rx='10' fill='rgba(255,255,255,0.9)' stroke='rgba(0,114,178,0.12)' strokeWidth='1' />
-        <text x={wedgeLabelX} y={(gapTodayY + gapAfterY) / 2 - 3} fontSize={mode === 'glance' ? 17 : 15.5} fontWeight='700' fill={CS_BLUE} textAnchor='middle'>
-          {closedConservative}–{closedFull} points of the gap closed
-        </text>
-        <text x={wedgeLabelX} y={(gapTodayY + gapAfterY) / 2 + 15} fontSize='11' fontWeight='600' fill={CS_BLUE} textAnchor='middle'>by signatures alone</text>
 
         <g data-gap-span='today'>
           <line x1={todayPoorX} y1={gapTodayY} x2={todayRichX} y2={gapTodayY} stroke={FIELD} strokeWidth='4.5' strokeLinecap='round' />

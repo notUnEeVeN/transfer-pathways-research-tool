@@ -170,7 +170,7 @@ describe('PaperGate (four moments)', () => {
     const gap = screen.getByTestId('paper-gate-gap-closing')
     expect(gap.querySelectorAll('circle')).toHaveLength(0)
     expect(gap.querySelectorAll('[data-gap-span]')).toHaveLength(2)
-    expect(gap.textContent).toContain('THE GAP ITSELF')
+    expect(gap.textContent).toContain('26–30 points of the gap closed by signatures alone')
     expect(gap.textContent).toContain('POOREST QUARTILE')
     expect(gap.textContent).toContain('RICHEST QUARTILE')
     expect(gap.textContent).toContain('points of the gap closed')
