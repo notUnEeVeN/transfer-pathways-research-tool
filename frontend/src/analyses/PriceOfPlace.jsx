@@ -652,94 +652,94 @@ function Fig5Gates({ reg, basis }) {
       rich: { cs: basis === 'minimums' ? minimums.responses.proximity.rich : strictResponses.proximity.rich.cs, field: strictResponses.proximity.rich.field },
     },
   }
-  const colL = [240, 706]
-  const colW = 330
-  const rowT = [96, 330]
-  const rowH = 168
-  const barMax = colW - 116
   const splitMi = kmToMi(medianKm)
   const poorN = cells.nearPoor.n + cells.farPoor.n
   const richN = cells.nearRich.n + cells.farRich.n
-  const gapX = (colL[0] + colW + colL[1]) / 2
-  const gapY = (rowT[0] + rowH + rowT[1]) / 2
-  const cell = (data, cx, cy, describe) => (
+  // Card-grid anatomy from the docs/stratified-check-1a.html design, skinned
+  // in this page's tokens: cells as cards with in-cell bars on one shared
+  // 0-100% track (tick at 50%), and the four held-fixed comparisons as chips
+  // riding their connector lines between the cards.
+  const colX = [206, 760]
+  const colW = 400
+  const rowY = [78, 350]
+  const rowH = 176
+  const midX = (colX[0] + colW + colX[1]) / 2
+  const betweenY = (rowY[0] + rowH + rowY[1]) / 2
+  const barW = colW - 40
+  const TRACK = 'rgba(25,48,24,0.08)'
+  const TICK = 'rgba(25,48,24,0.16)'
+  const cellCard = (data, cx, cy, describe) => (
     <g role='img' aria-label={describe}>
       <title>{describe}</title>
-      <rect x={cx} y={cy} width={colW} height={rowH} rx='8' fill='#FDFDFC' stroke={GRID_STRONG} />
-      <text x={cx + colW - 14} y={cy + 24} fontSize='11.5' fill={MUTED_TEXT} textAnchor='end'>{data.n} districts</text>
-      <text x={cx + 16} y={cy + 46} fontSize='12' fontWeight='600' fill={CS_BLUE}>Computer Science</text>
-      <rect x={cx + 16} y={cy + 54} width={data.cs * barMax} height='24' rx='2' fill={CS_BLUE} />
-      <text x={cx + 16 + data.cs * barMax + 10} y={cy + 71} fontSize={reg.panel} fontWeight='700' fill={CS_BLUE}>{pct(data.cs)}</text>
-      <text x={cx + 16} y={cy + 104} fontSize='12' fontWeight='600' fill={SOFT}>Other majors</text>
-      <rect x={cx + 16} y={cy + 112} width={data.field * barMax} height='18' rx='2' fill={FIELD} />
-      <text x={cx + 16 + data.field * barMax + 10} y={cy + 126} fontSize={reg.tick} fontWeight='600' fill={SOFT}>{pct(data.field)}</text>
+      <rect x={cx} y={cy} width={colW} height={rowH} rx='11' fill='#FDFDFC' stroke={GRID_STRONG} />
+      <text x={cx + colW - 104} y={cy + 27} fontSize='11' fontWeight='700' letterSpacing='0.07em' fill={MUTED_TEXT} textAnchor='end'>{data.n} OF 36 DISTRICTS</text>
+      <rect x={cx + colW - 94} y={cy + 19} width='76' height='5' rx='2.5' fill='rgba(25,48,24,0.10)' />
+      <rect x={cx + colW - 94} y={cy + 19} width={(data.n / 36) * 76} height='5' rx='2.5' fill={MUTED_LINE} />
+      <text x={cx + 20} y={cy + 62} fontSize='13.5' fontWeight='700' fill={CS_BLUE}>Computer Science</text>
+      <text x={cx + colW - 20} y={cy + 64} fontSize='25' fontWeight='700' fill={CS_BLUE} textAnchor='end'>{pct(data.cs)}</text>
+      <rect x={cx + 20} y={cy + 74} width={barW} height='20' rx='5' fill={TRACK} />
+      <line x1={cx + 20 + barW / 2} y1={cy + 74} x2={cx + 20 + barW / 2} y2={cy + 94} stroke={TICK} strokeWidth='1' />
+      <rect x={cx + 20} y={cy + 74} width={Math.max(4, data.cs * barW)} height='20' rx='5' fill={CS_BLUE} />
+      <text x={cx + 20} y={cy + 124} fontSize='13.5' fontWeight='600' fill={SOFT}>Other majors</text>
+      <text x={cx + colW - 20} y={cy + 126} fontSize='19' fontWeight='700' fill={SOFT} textAnchor='end'>{pct(data.field)}</text>
+      <rect x={cx + 20} y={cy + 134} width={barW} height='13' rx='4' fill={TRACK} />
+      <line x1={cx + 20 + barW / 2} y1={cy + 134} x2={cx + 20 + barW / 2} y2={cy + 147} stroke={TICK} strokeWidth='1' />
+      <rect x={cx + 20} y={cy + 134} width={Math.max(3, data.field * barW)} height='13' rx='4' fill={FIELD} />
     </g>
   )
-  // The held-fixed comparisons drawn in place of side tables: a rightward
-  // arrow in each row (income varies, distance held) and an upward arrow in
-  // each column (distance varies, income held), each carrying its gain.
-  const incomeArrow = (row, resp) => {
-    const yMid = rowT[row] + rowH / 2
-    const describe = `Income difference within the ${row === 0 ? 'nearer' : 'farther'} stratum: Computer Science +${pts(resp.cs)} points, other programs +${pts(resp.field)}`
-    return (
-      <g role='img' aria-label={describe}>
-        <title>{describe}</title>
-        <text x={gapX} y={yMid - 14} fontSize='14' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>+{pts(resp.cs)} pts</text>
-        <text x={gapX} y={yMid + 6} fontSize='12' fill={SOFT} textAnchor='middle'>field +{pts(resp.field)}</text>
-        <line x1={colL[0] + colW + 14} y1={yMid + 24} x2={colL[1] - 14} y2={yMid + 24} stroke={MUTED_LINE} strokeWidth='1.8' markerEnd='url(#gateArrow)' />
-      </g>
-    )
-  }
-  const distanceArrow = (col, resp) => {
-    const xArrow = colL[col] + colW / 2 - 96
-    const describe = `Distance difference within the ${col === 0 ? 'lower' : 'higher'}-income stratum: Computer Science +${pts(resp.cs)} points, other programs +${pts(resp.field)}`
-    return (
-      <g role='img' aria-label={describe}>
-        <title>{describe}</title>
-        <line x1={xArrow} y1={rowT[1] - 12} x2={xArrow} y2={rowT[0] + rowH + 12} stroke={MUTED_LINE} strokeWidth='1.8' markerEnd='url(#gateArrow)' />
-        <text x={xArrow + 16} y={gapY - 2} fontSize='14' fontWeight='700' fill={CS_BLUE}>+{pts(resp.cs)} pts</text>
-        <text x={xArrow + 110} y={gapY - 2} fontSize='12' fill={SOFT}>field +{pts(resp.field)}</text>
-      </g>
-    )
-  }
+  const chip = (x, y, resp, describe) => (
+    <g role='img' aria-label={describe}>
+      <title>{describe}</title>
+      <rect x={x - 58} y={y - 28} width='116' height='56' rx='10' fill='#FFFFFF' stroke={GRID_STRONG} />
+      <text x={x} y={y - 4} fontSize='22' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>+{pts(resp.cs)}<tspan fontSize='12' fontWeight='700'> pts</tspan></text>
+      <text x={x} y={y + 18} fontSize='12' fontWeight='600' fill={SOFT} textAnchor='middle'>field +{pts(resp.field)}</text>
+    </g>
+  )
   return (
-    <svg {...svgProps(568, `Districts split at the median distance to a campus (${splitMi} miles) and the median income. The income gradient is present within both distance strata, the distance gradient within both income strata, and the Computer Science difference exceeds the field's in every comparison.`)}>
+    <svg {...svgProps(548, `Districts split at the median distance to a campus (${splitMi} miles) and the median income. The income gradient is present within both distance strata, the distance gradient within both income strata, and the Computer Science difference exceeds the field's in every comparison.`)}>
       <defs>
         <marker id='gateArrow' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto'>
           <path d='M0,0 L10,5 L0,10 z' fill={MUTED_LINE} />
         </marker>
       </defs>
 
-      <text x={colL[0] + colW / 2} y='48' fontSize='14.5' fontWeight='600' fill={INK} textAnchor='middle'>Lower-income half · {poorN} districts</text>
-      <text x={colL[0] + colW / 2} y='68' fontSize='11.5' fill={MUTED_TEXT} textAnchor='middle'>below the median district income</text>
-      <text x={colL[1] + colW / 2} y='48' fontSize='14.5' fontWeight='600' fill={INK} textAnchor='middle'>Higher-income half · {richN} districts</text>
-      <text x={colL[1] + colW / 2} y='68' fontSize='11.5' fill={MUTED_TEXT} textAnchor='middle'>above the median district income</text>
+      <text x={colX[0] + colW / 2} y='30' fontSize='17' fontWeight='600' fill={INK} textAnchor='middle'>Lower-income half</text>
+      <text x={colX[0] + colW / 2} y='50' fontSize='12.5' fill={MUTED_TEXT} textAnchor='middle'>{poorN} districts · below the median income</text>
+      <text x={midX} y='38' fontSize='10' fontWeight='700' letterSpacing='0.14em' fill={MUTED_LINE} textAnchor='middle'>INCOME →</text>
+      <text x={colX[1] + colW / 2} y='30' fontSize='17' fontWeight='600' fill={INK} textAnchor='middle'>Higher-income half</text>
+      <text x={colX[1] + colW / 2} y='50' fontSize='12.5' fill={MUTED_TEXT} textAnchor='middle'>{richN} districts · above the median income</text>
 
-      <text x='28' y={rowT[0] + 78} fontSize='12' fontWeight='700' fill={MUTED_TEXT} letterSpacing='0.08em'>NEARER HALF</text>
-      <text x='28' y={rowT[0] + 98} fontSize='11.5' fill={MUTED_TEXT}>within {splitMi} miles of a campus</text>
-      <text x='28' y={rowT[1] + 78} fontSize='12' fontWeight='700' fill={MUTED_TEXT} letterSpacing='0.08em'>FARTHER HALF</text>
-      <text x='28' y={rowT[1] + 98} fontSize='11.5' fill={MUTED_TEXT}>beyond {splitMi} miles</text>
+      <text x='190' y={rowY[0] + rowH / 2 - 4} fontSize='13' fontWeight='700' letterSpacing='0.1em' fill={SOFT} textAnchor='end'>NEARER HALF</text>
+      <text x='190' y={rowY[0] + rowH / 2 + 16} fontSize='12.5' fill={MUTED_TEXT} textAnchor='end'>within {splitMi} miles of a campus</text>
+      <text x='190' y={betweenY + 4} fontSize='10' fontWeight='700' letterSpacing='0.14em' fill={MUTED_LINE} textAnchor='end'>↑ DISTANCE</text>
+      <text x='190' y={rowY[1] + rowH / 2 - 4} fontSize='13' fontWeight='700' letterSpacing='0.1em' fill={SOFT} textAnchor='end'>FARTHER HALF</text>
+      <text x='190' y={rowY[1] + rowH / 2 + 16} fontSize='12.5' fill={MUTED_TEXT} textAnchor='end'>beyond {splitMi} miles</text>
 
-      {cell(cells.nearPoor, colL[0], rowT[0],
+      {cellCard(cells.nearPoor, colX[0], rowY[0],
         `${cells.nearPoor.n} nearer, lower-income districts: Computer Science access ${pct(cells.nearPoor.cs)}, other majors ${pct(cells.nearPoor.field)}`)}
-      {cell(cells.nearRich, colL[1], rowT[0],
+      {cellCard(cells.nearRich, colX[1], rowY[0],
         `${cells.nearRich.n} nearer, higher-income districts: Computer Science access ${pct(cells.nearRich.cs)}, other majors ${pct(cells.nearRich.field)}`)}
-      {cell(cells.farPoor, colL[0], rowT[1],
+      {cellCard(cells.farPoor, colX[0], rowY[1],
         `${cells.farPoor.n} farther, lower-income districts: Computer Science access ${pct(cells.farPoor.cs)}, other majors ${pct(cells.farPoor.field)}`)}
-      {cell(cells.farRich, colL[1], rowT[1],
+      {cellCard(cells.farRich, colX[1], rowY[1],
         `${cells.farRich.n} farther, higher-income districts: Computer Science access ${pct(cells.farRich.cs)}, other majors ${pct(cells.farRich.field)}`)}
 
-      {incomeArrow(0, responses.income.near)}
-      {incomeArrow(1, responses.income.far)}
-      {distanceArrow(0, responses.proximity.poor)}
-      {distanceArrow(1, responses.proximity.rich)}
+      {/* income comparisons ride a rightward connector through each row */}
+      <line x1={colX[0] + colW + 10} y1={rowY[0] + rowH / 2} x2={colX[1] - 12} y2={rowY[0] + rowH / 2} stroke={MUTED_LINE} strokeWidth='1.4' markerEnd='url(#gateArrow)' />
+      {chip(midX, rowY[0] + rowH / 2, responses.income.near,
+        `Income difference within the nearer stratum: Computer Science +${pts(responses.income.near.cs)} points, other majors +${pts(responses.income.near.field)}`)}
+      <line x1={colX[0] + colW + 10} y1={rowY[1] + rowH / 2} x2={colX[1] - 12} y2={rowY[1] + rowH / 2} stroke={MUTED_LINE} strokeWidth='1.4' markerEnd='url(#gateArrow)' />
+      {chip(midX, rowY[1] + rowH / 2, responses.income.far,
+        `Income difference within the farther stratum: Computer Science +${pts(responses.income.far.cs)} points, other majors +${pts(responses.income.far.field)}`)}
 
-      <text x='28' y='536' fontSize={reg.note} fill={MUTED_TEXT}>
-        Rightward arrows: the access difference between the lower- and higher-income halves, within the same distance stratum.
-      </text>
-      <text x='28' y='556' fontSize={reg.note} fill={MUTED_TEXT}>
-        Upward arrows: the access difference between the farther and nearer halves, within the same income stratum. Bars: share of program-district pairs with a complete path.
-      </text>
+      {/* distance comparisons ride an upward connector through each column */}
+      <line x1={colX[0] + colW / 2} y1={rowY[1] - 8} x2={colX[0] + colW / 2} y2={rowY[0] + rowH + 10} stroke={MUTED_LINE} strokeWidth='1.4' markerEnd='url(#gateArrow)' />
+      {chip(colX[0] + colW / 2, betweenY, responses.proximity.poor,
+        `Distance difference within the lower-income stratum: Computer Science +${pts(responses.proximity.poor.cs)} points, other majors +${pts(responses.proximity.poor.field)}`)}
+      <line x1={colX[1] + colW / 2} y1={rowY[1] - 8} x2={colX[1] + colW / 2} y2={rowY[0] + rowH + 10} stroke={MUTED_LINE} strokeWidth='1.4' markerEnd='url(#gateArrow)' />
+      {chip(colX[1] + colW / 2, betweenY, responses.proximity.rich,
+        `Distance difference within the higher-income stratum: Computer Science +${pts(responses.proximity.rich.cs)} points, other majors +${pts(responses.proximity.rich.field)}`)}
+
     </svg>
   )
 }
