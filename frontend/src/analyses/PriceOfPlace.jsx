@@ -659,9 +659,9 @@ function Fig5Gates({ reg, basis }) {
   // in this page's tokens: cells as cards with in-cell bars on one shared
   // 0-100% track (tick at 50%), and the four held-fixed comparisons as chips
   // riding their connector lines between the cards.
-  const colX = [206, 760]
-  const colW = 400
-  const rowY = [78, 350]
+  const colX = [206, 780]
+  const colW = 380
+  const rowY = [78, 366]
   const rowH = 176
   const midX = (colX[0] + colW + colX[1]) / 2
   const betweenY = (rowY[0] + rowH + rowY[1]) / 2
@@ -690,13 +690,13 @@ function Fig5Gates({ reg, basis }) {
   const chip = (x, y, resp, describe) => (
     <g role='img' aria-label={describe}>
       <title>{describe}</title>
-      <rect x={x - 58} y={y - 28} width='116' height='56' rx='10' fill='#FFFFFF' stroke={GRID_STRONG} />
-      <text x={x} y={y - 4} fontSize='22' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>+{pts(resp.cs)}<tspan fontSize='12' fontWeight='700'> pts</tspan></text>
-      <text x={x} y={y + 18} fontSize='12' fontWeight='600' fill={SOFT} textAnchor='middle'>field +{pts(resp.field)}</text>
+      <rect x={x - 47} y={y - 25} width='94' height='50' rx='10' fill='#FFFFFF' stroke={GRID_STRONG} />
+      <text x={x} y={y - 3} fontSize='21' fontWeight='700' fill={CS_BLUE} textAnchor='middle'>+{pts(resp.cs)}<tspan fontSize='12' fontWeight='700'> pts</tspan></text>
+      <text x={x} y={y + 16} fontSize='12' fontWeight='600' fill={SOFT} textAnchor='middle'>field +{pts(resp.field)}</text>
     </g>
   )
   return (
-    <svg {...svgProps(548, `Districts split at the median distance to a campus (${splitMi} miles) and the median income. The income gradient is present within both distance strata, the distance gradient within both income strata, and the Computer Science difference exceeds the field's in every comparison.`)}>
+    <svg {...svgProps(566, `Districts split at the median distance to a campus (${splitMi} miles) and the median income. The income gradient is present within both distance strata, the distance gradient within both income strata, and the Computer Science difference exceeds the field's in every comparison.`)}>
       <defs>
         <marker id='gateArrow' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto'>
           <path d='M0,0 L10,5 L0,10 z' fill={MUTED_LINE} />
