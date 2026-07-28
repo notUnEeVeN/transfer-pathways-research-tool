@@ -6,11 +6,13 @@
  *
  *  1. FATES — for every binding-missing course (a receiver the strict
  *     eligibility engine reports as blocking a path), why is it missing?
- *       A · accepted-for-this-subject-elsewhere: the college holds an
- *           ARTICULATED entry for a same-bucket receiving course at another
- *           campus (or another course at this one) — the sector's own
- *           paperwork shows the college teaches this subject at an accepted
- *           level; this particular agreement just lacks the entry.
+ *       A · same-class evidence elsewhere: the college holds an ARTICULATED
+ *           entry for a receiving course of the SAME COURSE CLASS (v2: the
+ *           finer type taxonomy — data structures, computer organization,
+ *           introductory programming, … — not the old broad buckets) at
+ *           another campus, or another course at this one. Evidence of a like
+ *           course accepted, never proof of equivalence; the committed
+ *           validation sample and its hand codes estimate the precision.
  *           Because campuses set different bars, A is tiered by WHO accepted:
  *             A1 — the demanding campus itself accepts another course of this
  *                  college in the same subject (near-proof);
@@ -59,14 +61,14 @@ const dotenv = require('dotenv');
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const { isMajorArticulable } = require('../services/analysis/eligibility');
 const { getMajor, programPairs } = require('../config/majors');
-const { bucketOf, courseTypeOf } = require('./lib/courseBuckets');
+const { bucketOf, courseTypeOf, COMPUTING_IDS, INTRO_IDS } = require('./lib/courseBuckets');
 
-const OUT_PATH = path.resolve(__dirname, '../../analysis/data/course_repairs.v1.json');
+const OUT_PATH = path.resolve(__dirname, '../../analysis/data/course_repairs.v2.json');
 const placeSnapshot = require('../../frontend/src/analyses/priceOfPlaceSnapshot.json');
 
 const REGISTRY_CS = new Set(programPairs(getMajor('cs').programs)
   .map((pair) => `${pair.school_id}|${pair.major}`));
-const CS_BUCKETS = new Set(['programming', 'architecture', 'discrete']);
+const CS_BUCKETS = COMPUTING_IDS;
 const norm = (s) => String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '')
   .replace(/&/g, ' and ').replace(/[^a-z0-9]+/gi, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
@@ -508,13 +510,13 @@ function withPatched(agreements, shouldPatch, fn) {
     // The lowest-bar scenario: introductory programming alone — the material
     // every college can unquestionably host — kept as a first-class scenario
     // with FULL metrics, for the staged payoff figure.
-    const introGroup = typeGroups.get('intro_programming');
-    const introPids = new Set(introGroup ? introGroup.list.map((i) => i.pid) : []);
-    const lowestBar = introGroup ? {
-      name: 'Introductory programming',
+    const introList = [...INTRO_IDS].flatMap((id) => typeGroups.get(id)?.list ?? []);
+    const introPids = new Set(introList.map((i) => i.pid));
+    const lowestBar = introList.length ? {
+      name: 'Universal introductory programming sequence',
       courses: introPids.size,
-      instances: introGroup.list.length,
-      preApprovedShare: round(introGroup.list.filter((i) => i.fate === 'A').length / introGroup.list.length),
+      instances: introList.length,
+      preApprovedShare: round(introList.filter((i) => i.fate === 'A').length / introList.length),
       ...withPatched(subject, (a, r) => introPids.has(Number(r.receiving?.parent_id)), metrics),
     } : null;
 
@@ -532,6 +534,205 @@ function withPatched(agreements, shouldPatch, fn) {
     };
     const tierAMap = repairedMapFor((i) => i.fate === 'A');
     const conservativeMap = repairedMapFor((i) => i.tier === 'A1' || i.tier === 'A2');
+    // Evidence-scoped introductory programming: only the intro instances with
+    // same-class acceptance evidence — the "existing agreements only"
+    // scenario, properly scoped (the universal scenario above patches every
+    // missing intro entry, evidence or not, and is labeled as such).
+    // Cumulative ladder for the staged payoff figure: each stage contains the
+    // one before it. Stage 2 is the universal intro sequence; stage 3 adds
+    // every evidence-backed entry (at two standards) ON TOP of it. Without
+    // the union, stage 3 would drop the intro entries that lack evidence and
+    // could regress against stage 2 — nesting is a property the figure must
+    // guarantee, not hope for.
+    const cumulativeFor = (keepTier) => {
+      const pairs = new Set(instances.filter(keepTier)
+        .map((i) => `${i.agreement.uc_school_id}|${i.agreement.major}|${i.college}|${i.pid}`));
+      const m = withPatched(subject,
+        (a, r) => pairs.has(`${a.uc_school_id}|${a.major}|${Number(a.community_college_id)}|${Number(r.receiving?.parent_id)}`)
+          || introPids.has(Number(r.receiving?.parent_id)),
+        metrics);
+      return { ...m, instancesPatched: instances.filter((i) => keepTier(i) || introPids.has(i.pid)).length };
+    };
+    const cumulative = {
+      conservative: cumulativeFor((i) => i.tier === 'A1' || i.tier === 'A2'),
+      full: cumulativeFor((i) => i.fate === 'A'),
+    };
+
+    // The class ladder: cumulative statewide repairs one course class at a
+    // time, ordered by measured evidence share — the closest thing the data
+    // has to "easiest first" — ending at the everything ceiling (untaught and
+    // unclassified included). Cumulative, unlike the independent type
+    // repairs, so sequence complementarities show up in the marginal steps.
+    // Greedy route order: at each step, simulate every remaining class on
+    // top of the classes already repaired and take the one with the largest
+    // marginal poorest-quartile gain. Combinations are discovered, not
+    // assumed; ties break by evidence share, then size, then id. The order
+    // is computed in the full-repair world and SHARED by both route
+    // variants, so the figure pair stays row-comparable.
+    const greedyOrder = (groups, runMetrics, baselineMetrics) => {
+      const remaining = groups.map((g) => ({
+        ...g,
+        evidenceShare: round(g.list.filter((i) => i.fate === 'A').length / g.list.length),
+      }));
+      const ordered = [];
+      const cumulative = [];
+      let currentQ1 = baselineMetrics.access[0];
+      while (remaining.length) {
+        let best = null;
+        for (let k = 0; k < remaining.length; k += 1) {
+          const m = runMetrics([...cumulative, ...remaining[k].list]);
+          const gain = m.access[0] - currentQ1;
+          const beats = !best
+            || gain > best.gain + 1e-9
+            || (Math.abs(gain - best.gain) <= 1e-9 && (
+              remaining[k].evidenceShare > remaining[best.k].evidenceShare
+              || (remaining[k].evidenceShare === remaining[best.k].evidenceShare
+                && (remaining[k].list.length > remaining[best.k].list.length
+                  || (remaining[k].list.length === remaining[best.k].list.length
+                    && remaining[k].id < remaining[best.k].id)))));
+          if (beats) best = { k, gain, q1: m.access[0] };
+        }
+        const chosen = remaining.splice(best.k, 1)[0];
+        ordered.push(chosen);
+        cumulative.push(...chosen.list);
+        currentQ1 = best.q1;
+      }
+      return ordered;
+    };
+
+    const buildLadder = (orderedGroups, runMetrics, allMetrics) => {
+      const steps = orderedGroups.map((g) => ({
+        ...g,
+        evidenceShare: g.evidenceShare ?? round(g.list.filter((i) => i.fate === 'A').length / g.list.length),
+      }));
+      const cumulative = [];
+      const ladder = steps.map((step) => {
+        cumulative.push(...step.list);
+        return {
+          id: step.id,
+          name: step.name,
+          newInstances: step.list.length,
+          evidenceShare: step.evidenceShare,
+          ...runMetrics(cumulative),
+        };
+      });
+      ladder.push({
+        id: 'everything',
+        name: 'Everything, including untaught',
+        newInstances: null,
+        evidenceShare: null,
+        ...allMetrics(),
+      });
+      return { ladder, steps };
+    };
+
+    // The milestone route: a milestone lands whenever the universal cumulative
+    // patch has moved the poorest quartile by >=5 points since the last one
+    // (smaller classes fold in and are named). Each milestone is measured
+    // TWICE on top of the previous milestones' universal state: signatures
+    // only (its evidence-backed entries) and universal (teach the rest too) —
+    // the arrow-and-band geometry of the signing figure, per milestone.
+    // Route figures: one row per computing course TYPE, no folding — the
+    // taxonomy is one shared thing; only the ORDER differs, each figure
+    // greedy in its own world. `runPrimary` defines that world (full repair
+    // or evidence-only) and fills `primarySlot`; `runSecondary` computes the
+    // other standard's value for the same row (inner tick or band).
+    const buildTypeRoute = (groups, baselineMetrics, runPrimary, runSecondary, primarySlot) => {
+      const remaining = groups.map((g) => ({
+        ...g,
+        evidenceShare: round(g.list.filter((i) => i.fate === 'A').length / g.list.length),
+      }));
+      const route = [];
+      const cumulative = [];
+      let from = baselineMetrics;
+      while (remaining.length) {
+        let best = null;
+        for (let k = 0; k < remaining.length; k += 1) {
+          const m = runPrimary([...cumulative, ...remaining[k].list]);
+          const gain = m.access[0] - from.access[0];
+          const beats = !best
+            || gain > best.gain + 1e-9
+            || (Math.abs(gain - best.gain) <= 1e-9 && (
+              remaining[k].evidenceShare > remaining[best.k].evidenceShare
+              || (remaining[k].evidenceShare === remaining[best.k].evidenceShare
+                && (remaining[k].list.length > remaining[best.k].list.length
+                  || (remaining[k].list.length === remaining[best.k].list.length
+                    && remaining[k].id < remaining[best.k].id)))));
+          if (beats) best = { k, gain, m };
+        }
+        const chosen = remaining.splice(best.k, 1)[0];
+        const secondary = runSecondary([...cumulative], chosen.list);
+        cumulative.push(...chosen.list);
+        const primaryVal = { access: best.m.access, gapQ4Q1: best.m.gapQ4Q1, completeCells: best.m.completeCells };
+        const secondaryVal = { access: secondary.access, gapQ4Q1: secondary.gapQ4Q1, completeCells: secondary.completeCells };
+        route.push({
+          id: chosen.id,
+          name: chosen.name,
+          included: [chosen.name],
+          newInstances: chosen.list.length,
+          evidenceShare: chosen.evidenceShare,
+          from: from.access,
+          fromGapQ4Q1: from.gapQ4Q1,
+          evidence: primarySlot === 'evidence' ? primaryVal : secondaryVal,
+          access: primarySlot === 'evidence' ? secondaryVal.access : primaryVal.access,
+          gapQ4Q1: primarySlot === 'evidence' ? secondaryVal.gapQ4Q1 : primaryVal.gapQ4Q1,
+          completeCells: primarySlot === 'evidence' ? secondaryVal.completeCells : primaryVal.completeCells,
+        });
+        from = best.m;
+      }
+      return route;
+    };
+
+    const runLadderUniversal = (list) => {
+      const pids = new Set(list.map((i) => i.pid));
+      return withPatched(subject, (a, r) => pids.has(Number(r.receiving?.parent_id)), metrics);
+    };
+    const strictOrdered = greedyOrder(
+      [...typeGroups.entries()].map(([id, g]) => ({ id, name: g.name, list: g.list })),
+      runLadderUniversal,
+      baseline,
+    );
+    console.log(`  greedy route order (stated): ${strictOrdered.map((g) => g.id).join(' → ')}`);
+    const ladderBuilt = buildLadder(strictOrdered, runLadderUniversal,
+      () => withPatched(subject, () => true, metrics));
+    const classLadder = ladderBuilt.ladder;
+
+    const instKey = (i) => `${i.agreement.uc_school_id}|${i.agreement.major}|${i.college}|${i.pid}`;
+    const strictInstPredicate = (pairs) => (a, r) => pairs.has(`${a.uc_school_id}|${a.major}|${Number(a.community_college_id)}|${Number(r.receiving?.parent_id)}`);
+    const routeGroups = [...typeGroups.entries()]
+      .map(([id, g]) => ({ id, name: g.name, list: g.list }))
+      .filter((g) => COMPUTING_IDS.has(g.id));
+    // Full-repair route: greedy in the universal world; inner tick = the same
+    // row's evidence-only value.
+    const ladderRoute = buildTypeRoute(routeGroups, baseline,
+      runLadderUniversal,
+      (prevList, ownList) => {
+        const pids = new Set(prevList.map((i) => i.pid));
+        const pairs = new Set(ownList.filter((i) => i.fate === 'A').map(instKey));
+        return withPatched(subject,
+          (a, r) => pids.has(Number(r.receiving?.parent_id)) || strictInstPredicate(pairs)(a, r),
+          metrics);
+      },
+      'access');
+    // Signatures route: greedy in the evidence-only world over the SAME
+    // types; band = the same row's universal repair on top of the spine.
+    const ladderRouteSignatures = buildTypeRoute(routeGroups, baseline,
+      (list) => {
+        const pairs = new Set(list.filter((i) => i.fate === 'A').map(instKey));
+        return withPatched(subject, strictInstPredicate(pairs), metrics);
+      },
+      (prevList, ownList) => runLadderUniversal([...prevList, ...ownList]),
+      'evidence');
+
+    const introEvidence = introList.length ? (() => {
+      const list = introList.filter((i) => i.fate === 'A');
+      return {
+        name: 'Evidence-supported introductory programming sequence',
+        courses: new Set(list.map((i) => i.pid)).size,
+        instances: list.length,
+        ...repairedMapFor((i) => INTRO_IDS.has(i.bucket) && i.fate === 'A'),
+      };
+    })() : null;
     console.log(`  full tier-A repaired map: ${JSON.stringify(tierAMap)}`);
     console.log(`  conservative (A1+A2) repaired map: ${JSON.stringify(conservativeMap)}`);
 
@@ -551,7 +752,7 @@ function withPatched(agreements, shouldPatch, fn) {
               if (r.articulation_status === 'articulated') articulated += 1;
               const b = r.receiving?.kind === 'course'
                 ? bucketOf(ucTitle.get(Number(r.receiving.parent_id)) || '') : null;
-              if (b && ['programming', 'architecture', 'discrete'].includes(b.id)) core += 1;
+              if (b && CS_BUCKETS.has(b.id)) core += 1;
             }
           }
         }
@@ -609,20 +810,8 @@ function withPatched(agreements, shouldPatch, fn) {
     })();
     const bestSingle = [...courseRepairs].sort((a, b) => b.q1Points - a.q1Points)[0];
 
-    // Validation sample: 25 random fate-A instances with their evidence, for
-    // a human judgment of whether the equivalences look genuine.
     const collegeName = new Map((await local.db('pmt_data').collection('community_colleges')
       .find({}, { projection: { id: 1, name: 1 } }).toArray()).map((c) => [c.id, c.name]));
-    const aInstances = instances.filter((i) => i.fate === 'A');
-    const validationSample = [...aInstances].sort(() => Math.random() - 0.5).slice(0, 25)
-      .map((i) => ({
-        college: collegeName.get(i.college) || String(i.college),
-        missing: `${i.title} (${campusName.get(i.campus)})`,
-        tier: i.tier,
-        evidence: [...(acceptedBy.get(`${i.college}|${i.bucket}`) || new Map())].slice(0, 3)
-          .map(([campus, pids]) => `${campusName.get(campus)} accepts: ${[...pids].slice(0, 2)
-            .map((pid) => ucTitle.get(pid) || pid).join('; ')}`),
-      }));
 
     // Keystones · incomplete cells that one course repair would complete.
     const keystones = [];
@@ -937,14 +1126,23 @@ function withPatched(agreements, shouldPatch, fn) {
       };
     }).sort((a, b) => b.completeCells - a.completeCells);
 
-    const minIntroGroup = minTypeGroups.get('intro_programming');
-    const minIntroReqIds = new Set(minIntroGroup ? minIntroGroup.list.map((i) => i.reqId) : []);
-    const minLowestBar = minIntroGroup ? {
-      name: 'Introductory programming',
+    const minIntroList = [...INTRO_IDS].flatMap((id) => minTypeGroups.get(id)?.list ?? []);
+    const minIntroReqIds = new Set(minIntroList.map((i) => i.reqId));
+    const minLowestBar = minIntroList.length ? {
+      name: 'Universal introductory programming sequence',
       courses: minIntroReqIds.size,
-      instances: minIntroGroup.list.length,
-      preApprovedShare: round(minIntroGroup.list.filter((i) => i.fate === 'A').length / minIntroGroup.list.length),
+      instances: minIntroList.length,
+      preApprovedShare: round(minIntroList.filter((i) => i.fate === 'A').length / minIntroList.length),
       ...minMetrics((ag, r) => minIntroReqIds.has(r.reqId)),
+    } : null;
+
+    const minIntroA = minIntroList.filter((i) => i.fate === 'A');
+    const minIntroAPairs = new Set(minIntroA.map((i) => `${i.college}|${i.reqId}`));
+    const minIntroEvidence = minIntroList.length ? {
+      name: 'Evidence-supported introductory programming sequence',
+      courses: new Set(minIntroA.map((i) => i.reqId)).size,
+      instances: minIntroA.length,
+      ...minMetrics((ag, r) => minIntroAPairs.has(`${ag.college}|${r.reqId}`)),
     } : null;
 
     const minTierAPairs = new Set(minInstances.filter((i) => i.fate === 'A')
@@ -953,6 +1151,50 @@ function withPatched(agreements, shouldPatch, fn) {
       .map((i) => `${i.college}|${i.reqId}`));
     const minTierAMap = minMetrics((ag, r) => minTierAPairs.has(`${ag.college}|${r.reqId}`));
     const minConsMap = minMetrics((ag, r) => minConsPairs.has(`${ag.college}|${r.reqId}`));
+
+    const runMinLadderUniversal = (list) => {
+      const reqIds = new Set(list.map((i) => i.reqId));
+      return minMetrics((ag, r) => reqIds.has(r.reqId));
+    };
+    const minOrdered = greedyOrder(
+      [...minTypeGroups.entries()].map(([id, g]) => ({ id, name: g.name, list: g.list })),
+      runMinLadderUniversal,
+      minBaseline,
+    );
+    console.log(`  greedy route order (floor): ${minOrdered.map((g) => g.id).join(' → ')}`);
+    const minLadderBuilt = buildLadder(minOrdered, runMinLadderUniversal,
+      () => minMetrics(() => true));
+    const minClassLadder = minLadderBuilt.ladder;
+    const minRouteGroups = [...minTypeGroups.entries()]
+      .map(([id, g]) => ({ id, name: g.name, list: g.list }))
+      .filter((g) => COMPUTING_IDS.has(g.id));
+    const minLadderRoute = buildTypeRoute(minRouteGroups, minBaseline,
+      runMinLadderUniversal,
+      (prevList, ownList) => {
+        const reqIds = new Set(prevList.map((i) => i.reqId));
+        const pairs = new Set(ownList.filter((i) => i.fate === 'A').map((i) => `${i.college}|${i.reqId}`));
+        return minMetrics((ag, r) => reqIds.has(r.reqId) || pairs.has(`${ag.college}|${r.reqId}`));
+      },
+      'access');
+    const minLadderRouteSignatures = buildTypeRoute(minRouteGroups, minBaseline,
+      (list) => {
+        const pairs = new Set(list.filter((i) => i.fate === 'A').map((i) => `${i.college}|${i.reqId}`));
+        return minMetrics((ag, r) => pairs.has(`${ag.college}|${r.reqId}`));
+      },
+      (prevList, ownList) => runMinLadderUniversal([...prevList, ...ownList]),
+      'evidence');
+
+    const minCumulativeFor = (pairsSet) => {
+      const m = minMetrics((ag, r) => pairsSet.has(`${ag.college}|${r.reqId}`) || minIntroReqIds.has(r.reqId));
+      return {
+        ...m,
+        instancesPatched: minInstances.filter((i) => pairsSet.has(`${i.college}|${i.reqId}`) || minIntroReqIds.has(i.reqId)).length,
+      };
+    };
+    const minCumulative = {
+      conservative: minCumulativeFor(minConsPairs),
+      full: minCumulativeFor(minTierAPairs),
+    };
 
     const minKeystones = [];
     for (const ag of minAgreements) {
@@ -978,7 +1220,7 @@ function withPatched(agreements, shouldPatch, fn) {
         const row = {
           required: reqs.length,
           articulated: reqs.filter((r) => r.met).length,
-          core: reqs.filter((r) => ['programming', 'architecture', 'discrete'].includes(r.bucket)).length,
+          core: reqs.filter((r) => CS_BUCKETS.has(r.bucket)).length,
         };
         if (!byCampus.has(ag.campus)) byCampus.set(ag.campus, { name: `UC ${ag.campusName}`, rows: [] });
         byCampus.get(ag.campus).rows.push(row);
@@ -1029,7 +1271,7 @@ function withPatched(agreements, shouldPatch, fn) {
       repairs: {
         buckets: minBucketRepairs,
         types: minTypeRepairs,
-        scenarios: { lowestBar: minLowestBar },
+        scenarios: { lowestBar: minLowestBar, introEvidence: minIntroEvidence, cumulative: minCumulative, classLadder: minClassLadder, route: minLadderRoute, routeSignatures: minLadderRouteSignatures },
         bestSingle: minCourseRepairs.length
           ? { title: minCourseRepairs[0].title, campus: minCourseRepairs[0].campus, q1Points: minCourseRepairs[0].q1Points }
           : null,
@@ -1050,12 +1292,136 @@ function withPatched(agreements, shouldPatch, fn) {
     console.log(`  market: ${market.programs.length} measurable programs (CS ${csMarket.length}) · excluded closed-on-stated ${market.excludedCount}`);
     console.log(`  market mean swing — CS ${Math.round(meanSwing(csMarket) * 100)} pts · field ${Math.round(meanSwing(fieldMarket) * 100)} pts`);
 
+    // ══ Validation ════════════════════════════════════════════════════════
+    // Stratified fate-A sample for single-coder review: up to 3 per
+    // tier × class stratum across both bases, then consequential instances
+    // (introductory programming, keystones) to 90. Hand codes live in a
+    // separate committed file; when present, the positive predictive value of
+    // the repair set is reported. Seeded shuffles keep the draw reproducible;
+    // rerunning preserves codes already entered for surviving ids.
+    banner('Validation sample');
+    let vSeed = 20260726;
+    const vRand = () => {
+      vSeed = (Math.imul(vSeed, 1664525) + 1013904223) >>> 0;
+      return vSeed / 4294967296;
+    };
+    const vShuffle = (list) => {
+      const a = [...list];
+      for (let i = a.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(vRand() * (i + 1));
+        const t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    };
+    const keystoneSet = new Set(keystones.map((k) => `${k.college}|${k.pid}`));
+    const evidenceFor = (college, bucketId) => [...(acceptedBy.get(`${college}|${bucketId}`) || new Map())]
+      .slice(0, 3)
+      .map(([campus, pids]) => `${campusName.get(campus)} accepts: ${[...pids].slice(0, 2)
+        .map((pid) => ucTitle.get(pid) || pid).join('; ')}`);
+    const poolMap = new Map();
+    for (const i of instances.filter((x) => x.fate === 'A')) {
+      const key = `${i.college}|${i.campus}|${norm(i.title)}`;
+      if (poolMap.has(key)) continue;
+      poolMap.set(key, {
+        id: `s|${i.college}|${i.campus}|${i.pid}`,
+        basis: 'stated',
+        college: collegeName.get(i.college) || String(i.college),
+        missing: `${i.title} (${campusName.get(i.campus)})`,
+        class: i.bucket,
+        tier: i.tier,
+        consequential: INTRO_IDS.has(i.bucket) || keystoneSet.has(`${i.college}|${i.pid}`),
+        evidence: evidenceFor(i.college, i.bucket),
+      });
+    }
+    for (const i of minInstances.filter((x) => x.fate === 'A')) {
+      const key = `${i.college}|${i.campus}|${norm(i.title)}`;
+      if (poolMap.has(key)) continue;
+      poolMap.set(key, {
+        id: `m|${i.college}|${i.campus}|${i.reqId}`,
+        basis: 'floor',
+        college: collegeName.get(i.college) || String(i.college),
+        missing: `${i.title} (UC ${i.campusName})`,
+        class: i.bucket,
+        tier: i.tier,
+        consequential: INTRO_IDS.has(i.bucket),
+        evidence: evidenceFor(i.college, i.bucket),
+      });
+    }
+    const pool = [...poolMap.values()];
+    const byStratum = new Map();
+    for (const row of pool) {
+      const key = `${row.tier}|${row.class}`;
+      if (!byStratum.has(key)) byStratum.set(key, []);
+      byStratum.get(key).push(row);
+    }
+    const SAMPLE_TARGET = 90;
+    const sample = [];
+    const takenIds = new Set();
+    for (const rows of byStratum.values()) {
+      for (const row of vShuffle(rows).slice(0, 3)) {
+        sample.push(row);
+        takenIds.add(row.id);
+      }
+    }
+    for (const stage of [pool.filter((r) => r.consequential), pool]) {
+      for (const row of vShuffle(stage)) {
+        if (sample.length >= SAMPLE_TARGET) break;
+        if (takenIds.has(row.id)) continue;
+        sample.push(row);
+        takenIds.add(row.id);
+      }
+    }
+    sample.sort((x, y) => x.class.localeCompare(y.class) || x.tier.localeCompare(y.tier) || x.id.localeCompare(y.id));
+
+    const CODES_PATH = path.resolve(__dirname, '../../analysis/data/course_match_codes.v1.json');
+    const previousCodes = new Map();
+    if (fs.existsSync(CODES_PATH)) {
+      try {
+        for (const c of JSON.parse(fs.readFileSync(CODES_PATH, 'utf8')).cases || []) {
+          if (c.code) previousCodes.set(c.id, c.code);
+        }
+      } catch { /* unreadable codes file: start fresh */ }
+    }
+    const codesFile = {
+      coding_scheme: {
+        equivalent: 'the accepted courses are plausibly equivalent preparation for the missing receiving course',
+        same_field_insufficient: 'same field, but the accepted courses are not sufficient preparation',
+        mismatched: 'the evidence is clearly a different kind of course',
+        indeterminate: 'cannot be judged without syllabi',
+      },
+      coder: null,
+      generated_by: 'course-repairs.v2',
+      cases: sample.map((row) => ({ ...row, code: previousCodes.get(row.id) ?? null })),
+    };
+    fs.writeFileSync(CODES_PATH, JSON.stringify(codesFile, null, 1));
+    const codedCases = codesFile.cases.filter((c) => c.code);
+    const ppvOf = (list) => {
+      const judged = list.filter((c) => c.code && c.code !== 'indeterminate');
+      return judged.length
+        ? { ppv: round(judged.filter((c) => c.code === 'equivalent').length / judged.length), judged: judged.length }
+        : { ppv: null, judged: 0 };
+    };
+    const validation = {
+      sampleSize: codesFile.cases.length,
+      poolSize: pool.length,
+      design: 'stratified by tier and course class (up to 3 per stratum, both bases, deduplicated by college-campus-title), then consequential instances (introductory programming, keystones) to 90; single-coder codes committed in analysis/data/course_match_codes.v1.json',
+      codedCount: codedCases.length,
+      codeCounts: ['equivalent', 'same_field_insufficient', 'mismatched', 'indeterminate']
+        .map((code) => ({ code, n: codedCases.filter((c) => c.code === code).length })),
+      ppv: codedCases.length ? {
+        overall: ppvOf(codedCases),
+        byTier: ['A1', 'A2', 'A3'].map((tier) => ({ tier, ...ppvOf(codedCases.filter((c) => c.tier === tier)) })),
+      } : null,
+    };
+    console.log(`  sample ${sample.length} of pool ${pool.length} · coded ${codedCases.length}`
+      + (validation.ppv ? ` · overall PPV ${validation.ppv.overall.ppv}` : ' · awaiting hand codes'));
+
     // ══ Output ════════════════════════════════════════════════════════════
     banner('Write artifact');
     const artifact = {
-      dataset_version: 'course-repairs.v1',
+      dataset_version: 'course-repairs.v2',
       scope: 'nine registry Computer Science programs, strict eligibility engine, 72 income-matched districts',
-      method: 'Binding-missing receivers classified by evidence (A: the college holds an articulated entry for a same-bucket receiving course somewhere in the full corpus; B: no articulation evidence but the catalog holds a UC-transferable title-bucket match; C: neither). Exact-pair cross-agreement evidence is structurally impossible — articulation is campus-wide per course pair. Repairs give matching receivers a synthetic articulation option and recompute complete cells, the district access staircase, and the far-poor distance stratum.',
+      method: 'Binding-missing receivers classified by evidence at course-CLASS granularity (v2 taxonomy: data structures, algorithms, computer organization, assembly-systems, introductory programming, further programming, and the mathematics classes, with statistics checked before every computing pattern). A: the college holds an articulated entry for a same-class receiving course somewhere in the full corpus — evidence of a like course accepted, not proof of equivalence; the committed validation sample and its hand codes estimate precision. B: no articulation evidence but the catalog holds a UC-transferable same-class title. C: neither. Exact-pair cross-agreement evidence is structurally impossible — articulation is campus-wide per course pair. Repairs give matching receivers a synthetic articulation option and recompute complete cells, the district access staircase, and the far-poor distance stratum. Scenarios are tiered: conservative (A1+A2), full same-class evidence (A), evidence-scoped introductory programming, and universal introductory programming (an upper bound labeled as such).',
       baseline: { ...baseline, totalCells: subject.length },
       fates: {
         counts: fateCount,
@@ -1067,7 +1433,7 @@ function withPatched(agreements, shouldPatch, fn) {
         courses: courseRepairs,
         buckets: bucketRepairs,
         types: typeRepairs,
-        scenarios: { lowestBar },
+        scenarios: { lowestBar, introEvidence, cumulative, classLadder, route: ladderRoute, routeSignatures: ladderRouteSignatures },
         bestSingle: { title: bestSingle.title.trim(), campus: bestSingle.campus, q1Points: bestSingle.q1Points },
         tierARepairedMap: { ...tierAMap, delta: delta(tierAMap), instancesPatched: fateCount.A },
         conservativeRepairedMap: {
@@ -1078,7 +1444,8 @@ function withPatched(agreements, shouldPatch, fn) {
       },
       campusProfiles,
       keystones,
-      validationSample,
+      validationSample: codesFile.cases,
+      validation,
       ingredients,
       market,
       arch,
@@ -1105,6 +1472,6 @@ function withPatched(agreements, shouldPatch, fn) {
     const cM = artifact.repairs.conservativeRepairedMap;
     console.log(`\nfull tier-A (${t.instancesPatched} instances): Q1 ${baseline.access[0]} → ${t.access[0]} · gap ${baseline.gapQ4Q1} → ${t.gapQ4Q1} · far-poor ${baseline.farPoorAccess} → ${t.farPoorAccess}`);
     console.log(`conservative A1+A2 (${cM.instancesPatched} instances): Q1 ${baseline.access[0]} → ${cM.access[0]} · gap ${baseline.gapQ4Q1} → ${cM.gapQ4Q1} · far-poor ${baseline.farPoorAccess} → ${cM.farPoorAccess}`);
-    console.log('\nvalidation sample (25 fate-A cases for hand-checking) written into the artifact.');
+    console.log(`\nvalidation sample (${codesFile.cases.length} stratified fate-A cases) written to the artifact and ${CODES_PATH}`);
   } finally { await atlas.close(); await local.close(); }
 })().catch((e) => { console.error(e); process.exit(1); });

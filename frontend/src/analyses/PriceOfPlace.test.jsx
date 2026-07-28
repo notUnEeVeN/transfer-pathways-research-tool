@@ -145,6 +145,19 @@ describe('priceOfPlaceSnapshot (committed data contract)', () => {
   })
 })
 
+describe('priceOfPlaceSnapshot permutation check', () => {
+  it('carries the committed label-permutation test on both bases', () => {
+    const p = snapshot.permutation
+    expect(p.strict.iterations).toBeGreaterThanOrEqual(100000)
+    for (const basis of [p.strict, p.floor]) {
+      // The observed Q4-Q1 gap exceeds every gap seen under random
+      // relabeling of districts into quartiles.
+      expect(basis.observedGap).toBeGreaterThan(basis.maxNullGap)
+      expect(basis.pUpperBound).toBeLessThan(0.001)
+    }
+  })
+})
+
 describe('fig1Rows', () => {
   it('groups the nine programs into regime bands, contested sorted by poorest-quartile share', () => {
     const bands = fig1Rows()
@@ -177,11 +190,15 @@ describe('PriceOfPlace', () => {
     expect(screen.getByText(/CLOSED IN EVERY DISTRICT/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Eligibility floor' }))
     expect(screen.getByText('District income and transfer access, mapped')).toBeInTheDocument()
-    expect(screen.getByText(/How district income shapes transfer access/)).toBeInTheDocument()
-    expect(screen.getByText('Transfer demand and income sensitivity, across every major')).toBeInTheDocument()
+    expect(screen.getByText(/Transfer-access gradients by district income/)).toBeInTheDocument()
+    expect(screen.getByText('Transfer demand and income sensitivity across measurable programs')).toBeInTheDocument()
     expect(screen.getByText(/high demand, large income swing/)).toBeInTheDocument()
+    // On the floor basis all nine CS programs are in the market figure,
+    // including the two that are closed under stated preparation.
+    expect(screen.getByText(/Computer Science on the eligibility floor/)).toBeInTheDocument()
+    expect(screen.getAllByText('UC Los Angeles').length).toBeGreaterThan(1)
     expect(screen.getByText('Distance to the nearest campus, by district income')).toBeInTheDocument()
-    expect(screen.getByText('Income and distance, tested with the other held fixed')).toBeInTheDocument()
+    expect(screen.getByText('Income and distance, compared within broad strata')).toBeInTheDocument()
     // The sequence is exactly the five-beat core — the person/geography beats
     // were built, judged clutter, and retired to the notes and data file.
     expect(screen.queryByText('The graduates at the narrow end')).not.toBeInTheDocument()
@@ -194,8 +211,9 @@ describe('PriceOfPlace', () => {
     expect(screen.getByText('NEARER HALF')).toBeInTheDocument()
     // The author's notes are on the page, in note form.
     expect(screen.getByText('Robustness checks')).toBeInTheDocument()
-    expect(screen.getByText('Explanations ruled out')).toBeInTheDocument()
+    expect(screen.getByText('Alternative explanations, checked')).toBeInTheDocument()
     expect(screen.getByText(/census median household income/)).toBeInTheDocument()
+    expect(screen.getByText(/Spearman rank correlation/)).toBeInTheDocument()
   })
 
 
@@ -203,4 +221,5 @@ describe('PriceOfPlace', () => {
     render(<PriceOfPlacePreview />)
     expect(screen.getByText('Median tether, by income quartile')).toBeInTheDocument()
   })
+
 })

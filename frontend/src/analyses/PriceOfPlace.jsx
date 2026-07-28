@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Stack } from '../components/ui'
 import snapshot from './priceOfPlaceSnapshot.json'
-import repairs from '../../../analysis/data/course_repairs.v1.json'
+import repairs from '../../../analysis/data/course_repairs.v2.json'
 
 /**
- * "Income, distance, and transfer access" — a figure sequence: Computer Science transfer
+ * "The Income Gate" — a figure sequence: Computer Science transfer
  * preparation is gated by where you start — the income of your district and
  * its distance to a campus — in a way the rest of the UC curriculum is not.
  *
@@ -35,6 +35,7 @@ const GAINED = '#0D7964'
 const Q1_FILL = '#A9C3DE'
 const Q4_FILL = '#1E3A5F'
 const CONN = '#6E93BF'
+const RAMP = ['#A9C3DE', '#6E93BF', '#38618C', '#1E3A5F']
 const FONT = "'Hanken Grotesk Variable', 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif"
 
 // Registers: detailed = the paper-facing file; glance = the v2 file (nothing
@@ -47,21 +48,42 @@ const tetherRatio = (
 
 const marketMeanSwing = (list) => Math.round(
   (list.reduce((sum, r) => sum + r.swing, 0) / list.length) * 100)
+
+// The field is measured on stated preparation — the only basis it has. The
+// Computer Science series follows the page basis: on the eligibility floor
+// all nine programs are measurable (UCLA and San Diego are closed only under
+// stated preparation), so the floor view joins floor access to the same
+// demand counts, two of which come from the artifact's exclusion list.
+const campusLabel = (campus) => (campus === 'UCLA' ? 'UC Los Angeles' : `UC ${campus}`)
+const CS_APPLICANTS = new Map([
+  ...repairs.market.programs.filter((r) => r.cs).map((r) => [r.campus, r.applicants]),
+  ...repairs.market.excludedTop.filter((r) => /Computer Science/.test(r.major)).map((r) => [r.campus, r.applicants]),
+])
+const floorCsRows = snapshot.minimums.fig1.map((p) => ({
+  major: 'Computer Science',
+  campus: campusLabel(p.campus),
+  applicants: CS_APPLICANTS.get(campusLabel(p.campus)) ?? 0,
+  q1: p.q1,
+  q4: p.q4,
+  swing: p.q4 - p.q1,
+  cs: true,
+}))
 const HEADLINES = {
   1: 'For each of the nine programs, the share of districts holding a complete transfer path, in the lowest- and highest-income quartiles.',
   2: 'The same districts drawn twice — shaded by the mean income of the area each serves, then by how many of the nine programs hold a complete path from it. The two shadings align.',
-  4: `Across the ${repairs.market.programs.filter((r) => !r.cs).length} measurable majors, district income moves access by ${marketMeanSwing(repairs.market.programs.filter((r) => !r.cs))} points on average; the nine Computer Science programs average ${marketMeanSwing(repairs.market.programs.filter((r) => r.cs))}. Computer Science occupies a corner of the figure the rest of the field avoids — it is at once among the most applied-to majors and among the most income-sensitive.`,
-  5: `Distance is a second variable that could produce the income gradient: lower-income districts sit farther from the campuses, the lowest-income quartile ${tetherRatio}× as far as the highest. Because distance and income travel together, the next figure measures each with the other held fixed.`,
-  6: `Districts split at the median distance to a campus (${Math.round(snapshot.distance.medianKm * 0.621371)} miles) and the median income: each variable raises access with the other held fixed, and the Computer Science response exceeds the field's in all four comparisons.`,
+  5: `Distance is a second variable that could produce the income gradient: lower-income districts sit farther from the campuses, the lowest-income quartile ${tetherRatio}× as far as the highest. Because distance and income travel together, the next figure compares each within broad strata of the other.`,
+  6: `Districts split at the median distance to a campus (${Math.round(snapshot.distance.medianKm * 0.621371)} miles) and the median income: the income gradient is present within both distance strata, the distance gradient within both income strata, and the Computer Science difference exceeds the field's in all four comparisons.`,
 }
 const fieldN = snapshot.counts.fieldPrograms
-const stairLine = (cs) => `Access rises from ${Math.round(cs[0] * 100)} to ${Math.round(cs[3] * 100)} percent for Computer Science between the lowest- and highest-income quartiles, against ${Math.round(snapshot.fig3.field[0] * 100)} to ${Math.round(snapshot.fig3.field[3] * 100)} for the ${fieldN} other majors — a disproportionate response to district income.`
+const stairLine = (cs) => `Access rises from ${Math.round(cs[0] * 100)} to ${Math.round(cs[3] * 100)} percent for Computer Science between the lowest- and highest-income quartiles, against ${Math.round(snapshot.fig3.field[0] * 100)} to ${Math.round(snapshot.fig3.field[3] * 100)} for the ${fieldN} other campus-major programs — a markedly steeper gradient for Computer Science.`
 const HEADLINES_BY_BASIS = {
   strict: {
     3: stairLine(snapshot.fig3.cs),
+    4: `Across the ${repairs.market.programs.filter((r) => !r.cs).length} measurable programs, district income moves access by ${marketMeanSwing(repairs.market.programs.filter((r) => !r.cs))} points on average; the ${repairs.market.programs.filter((r) => r.cs).length} measurable Computer Science programs average ${marketMeanSwing(repairs.market.programs.filter((r) => r.cs))} (the remaining ${9 - repairs.market.programs.filter((r) => r.cs).length} are closed from every district under stated preparation and have no measurable swing). Computer Science sits nearly alone in the high-demand, high-swing corner — at once among the most applied-to programs and among the most income-sensitive.`,
   },
   minimums: {
     3: stairLine(snapshot.minimums.fig3cs),
+    4: `Across the ${repairs.market.programs.filter((r) => !r.cs).length} measurable programs, district income moves access by ${marketMeanSwing(repairs.market.programs.filter((r) => !r.cs))} points on average, measured on stated preparation — the only basis the field has. The nine Computer Science programs, measured on the hand-curated eligibility floor, average ${marketMeanSwing(floorCsRows)}. Computer Science sits nearly alone in the high-demand, high-swing corner — at once among the most applied-to programs and among the most income-sensitive.`,
   },
 }
 const headlineFor = (no, basis) => HEADLINES_BY_BASIS[basis]?.[no] ?? HEADLINES[no]
@@ -86,11 +108,11 @@ const svgProps = (height, label) => ({
 // time. Retired analyses live in the data file.
 const NOTES = [
   {
-    head: 'Explanations ruled out',
+    head: 'Alternative explanations, checked',
     items: [
       'Program size — Computer Science requires about 11 courses against a typical 8, ordinary for the corpus.',
       'Multi-college districts — scoring every college on its own leaves the income gap essentially unchanged.',
-      'Distance alone — stratifying at the median tether and median income shows each variable acting with the other held fixed (figure 6).',
+      'Distance alone — the income gradient persists within both distance strata, and the distance gradient within both income strata (figure 6).',
       'Demographics — person-weighted reach differs too little across groups to report (5.3 of nine for the typical Hispanic resident against 6.0 for the typical Asian resident).',
     ],
   },
@@ -98,6 +120,7 @@ const NOTES = [
     head: 'Robustness checks',
     items: [
       'Requirement basis — recomputed on the hand-verified eligibility floor; the staircase steepens (a 49-point gap against 37), so the strict basis diluted the pattern rather than inflating it.',
+      'Basis asymmetry — the field is measured on stated ASSIST preparation, its only basis; Computer Science on the hand-curated floor. Stated listings can only overstate requirements, which lowers measured access and, once a program closes everywhere, flattens its measured gradient toward zero (UCLA Computer Science: 0 to 0 on stated, 22 to 94 on the floor). This plausibly biases the field gradient downward — a direction, not a guarantee — and the like-for-like stated comparison (Computer Science +37 against the field +11) requires no basis assumption.',
       'Enrollment weighting — the staircase survives weighting districts by their enrollment.',
       'Income measure — survives re-ranking districts by census median household income in place of tax-return means (26 of 72 districts change quartile, the pattern does not).',
       'Person weighting — survives counting people instead of districts (mean reach 3.5 of nine in the lowest-income quartile against 6.5 in the highest).',
@@ -113,7 +136,8 @@ const NOTES = [
   {
     head: 'Not yet checked',
     items: [
-      'Earlier years of the agreement database; the city–suburb–rural classification. (Untaught versus unarticulated is covered by The Paper Gate.)',
+      'Earlier years of the agreement database; the city–suburb–rural classification. (Untaught versus unarticulated is covered by The Computing Bottleneck.)',
+      'A graded stated-preparation measure — the share of required groups satisfied rather than the binary complete-path check — would relieve the closure censoring without hand curation; not yet built.',
     ],
   },
 ]
@@ -160,7 +184,7 @@ function Fig1({ reg, basis }) {
   const HEADERS = {
     closed: ['CLOSED IN EVERY DISTRICT', MUTED_TEXT],
     open: ['OPEN NEARLY EVERYWHERE', MUTED_TEXT],
-    contested: ['DECIDED BY DISTRICT INCOME', CS_BLUE],
+    contested: ['VARIES WITH DISTRICT INCOME', CS_BLUE],
   }
   // Bands stack dynamically: under the eligibility floor no campus is closed,
   // so the closed band simply does not render.
@@ -177,8 +201,8 @@ function Fig1({ reg, basis }) {
   const contestedBand = layout.find((b) => b.regime === 'contested')
   return (
     <svg {...svgProps(height, basis === 'minimums'
-      ? 'Nine UC Computer Science programs measured on the hand-verified eligibility floor: one open nearly everywhere, eight decided by district income, none closed.'
-      : 'Nine UC Computer Science programs grouped into three regimes: two closed in every district, one open nearly everywhere, six decided by district income.')}>
+      ? 'Nine UC Computer Science programs measured on the hand-verified eligibility floor: one open nearly everywhere, eight varying with district income, none closed.'
+      : 'Nine UC Computer Science programs grouped into three regimes: two closed in every district, one open nearly everywhere, six varying with district income.')}>
       <text x='28' y='24' fontSize='16' fontWeight='500' fill={INK}>Districts with a complete transfer path, by income quartile</text>
       <text x='1212' y='46' fontSize='12' fill={MUTED_TEXT} textAnchor='end'>Swing, Q1 → Q4</text>
 
@@ -251,6 +275,35 @@ function Fig1({ reg, basis }) {
   )
 }
 
+// Spearman rank correlation with average ranks for ties — the twin maps'
+// visual claim, stated as a number.
+const rankOf = (values) => {
+  const sorted = values.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0])
+  const ranks = new Array(values.length)
+  let i = 0
+  while (i < sorted.length) {
+    let j = i
+    while (j + 1 < sorted.length && sorted[j + 1][0] === sorted[i][0]) j += 1
+    const mean = (i + j) / 2 + 1
+    for (let k = i; k <= j; k += 1) ranks[sorted[k][1]] = mean
+    i = j + 1
+  }
+  return ranks
+}
+export function spearman(xs, ys) {
+  const rx = rankOf(xs)
+  const ry = rankOf(ys)
+  const mx = rx.reduce((sum, v) => sum + v, 0) / rx.length
+  const my = ry.reduce((sum, v) => sum + v, 0) / ry.length
+  let num = 0; let dx = 0; let dy = 0
+  rx.forEach((v, i) => {
+    num += (v - mx) * (ry[i] - my)
+    dx += (v - mx) ** 2
+    dy += (ry[i] - my) ** 2
+  })
+  return num / Math.sqrt(dx * dy)
+}
+
 // ───────── Figure 2 — twin point maps ─────────
 
 export function projectCA(lon, lat) {
@@ -276,7 +329,6 @@ function useMapLayout() {
   }
 }
 
-const RAMP = [Q1_FILL, CONN, '#38618C', Q4_FILL]
 const QUARTILE_NAME = ['lowest-income', 'second', 'third', 'highest-income']
 
 function Fig2({ reg, basis }) {
@@ -285,6 +337,7 @@ function Fig2({ reg, basis }) {
   const dotR = 6.6
   const reachOf = (d) => (basis === 'minimums' ? d.reachMin : d.reach)
   const bandOf = (d) => (basis === 'minimums' ? d.reachMinBand : d.reachBand)
+  const rho = spearman(districts.map((d) => d.income), districts.map(reachOf))
   const mapGroup = (tx, colorOf, describe) => (
     <g transform={`translate(${tx}, 76)`}>
       <path d={outlinePath} fill='#FBFCFA' stroke={MUTED_LINE} strokeWidth='1.1' strokeLinejoin='round' />
@@ -334,6 +387,10 @@ function Fig2({ reg, basis }) {
           ))}
           <text x='660' y='578' fontSize='11.5' fill={MUTED_TEXT}>Shut out ————————→ Nearly open</text>
         </g>
+
+        <text x='200' y='606' fontSize='12.5' fill={MUTED_TEXT}>
+          Spearman rank correlation between district income and programs reachable: ρ = {rho.toFixed(2)} across the {districts.length} districts
+        </text>
       </svg>
 
     </>
@@ -365,7 +422,7 @@ function Fig3({ reg, basis }) {
       <polyline points={fieldPts} fill='none' stroke={FIELD} strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' />
       {field.map((v, q) => (
         <circle key={q} cx={x(q)} cy={y(v)} r='6' fill={FIELD}>
-          <title>{`${n} other UC majors, Q${q + 1}: ${pct(v)}`}</title>
+          <title>{`${n} other UC programs, Q${q + 1}: ${pct(v)}`}</title>
         </circle>
       ))}
       <polyline points={csPts} fill='none' stroke={CS_BLUE} strokeWidth='3.4' strokeLinecap='round' strokeLinejoin='round' />
@@ -377,7 +434,7 @@ function Fig3({ reg, basis }) {
 
       <text x='962' y='136' fontSize='14' fontWeight='600' fill={CS_BLUE}>Computer Science</text>
       <text x='962' y='166' fontSize={reg.big} fontWeight='700' fill={CS_BLUE}>{pct(cs[3])}</text>
-      <text x='962' y='252' fontSize='14' fontWeight='600' fill={SOFT}>{n} other majors</text>
+      <text x='962' y='252' fontSize='14' fontWeight='600' fill={SOFT}>{n} other programs</text>
       <text x='962' y='282' fontSize={reg.big} fontWeight='700' fill={SOFT}>{pct(field[3])}</text>
       <text x='236' y={y(cs[0]) - 8} fontSize='13' fontWeight='600' fill={CS_BLUE}>{pct(cs[0])}</text>
       <text x='236' y={y(field[0]) + 22} fontSize='13' fontWeight='600' fill={SOFT}>{pct(field[0])}</text>
@@ -403,17 +460,17 @@ function Fig3({ reg, basis }) {
 // artifact; programs closed everywhere on stated preparation are excluded as
 // unmeasurable (their floors are uncurated), never drawn as flat.
 
-function Fig4Market({ reg }) {
-  const { programs, excludedCount, excludedTop } = repairs.market
+function Fig4Market({ reg, basis }) {
+  const { programs, excludedCount } = repairs.market
   const field = programs.filter((r) => !r.cs)
-  const csRows = programs.filter((r) => r.cs)
+  const csRows = basis === 'minimums' ? floorCsRows : programs.filter((r) => r.cs)
   const meanSwing = field.reduce((sum, r) => sum + r.swing, 0) / field.length
   const x = (v) => 220 + (Math.min(v, 3500) / 3500) * 880
   const y = (v) => 400 - ((v + 0.1) / 0.9) * 360
   const companion = [...field].sort((a, b) => (b.swing * 2 + b.applicants / 3500) - (a.swing * 2 + a.applicants / 3500))
     .find((r) => r.applicants > 900 && r.swing > 0.6)
   return (
-    <svg {...svgProps(500, `Every measurable major: transfer applicants against the access swing between the lowest- and highest-income quartiles, on stated preparation. The field averages a ${Math.round(meanSwing * 100)}-point swing; the Computer Science programs average ${marketMeanSwing(csRows)} points and occupy the high-demand, high-swing corner. ${excludedCount} majors closed everywhere on stated preparation are not drawn.`)}>
+    <svg {...svgProps(524, `Every measurable program: transfer applicants against the access swing between the lowest- and highest-income quartiles. The field, measured on stated preparation, averages a ${Math.round(meanSwing * 100)}-point swing; the Computer Science programs${basis === 'minimums' ? ', measured on the eligibility floor,' : ''} average ${marketMeanSwing(csRows)} points and occupy the high-demand, high-swing corner.`)}>
 
       {[0, 0.2, 0.4, 0.6, 0.8].map((v, i) => (
         <g key={v}>
@@ -442,7 +499,7 @@ function Fig4Market({ reg }) {
       {csRows.map((r, i) => (
         <g key={`cs|${r.campus}|${i}`}>
           <circle cx={x(r.applicants)} cy={y(r.swing)} r={9} fill={CS_BLUE} stroke='#FFFFFF' strokeWidth='1.5'>
-            <title>{`${r.major} (${r.campus}): ${r.applicants.toLocaleString()} applicants · access ${pct(r.q1)} → ${pct(r.q4)} across income quartiles — a ${Math.round(r.swing * 100)}-point swing`}</title>
+            <title>{`${r.major} (${r.campus}): ${r.applicants.toLocaleString()} applicants · access ${pct(r.q1)} → ${pct(r.q4)} across income quartiles — a ${Math.round(r.swing * 100)}-point swing${basis === 'minimums' ? ' on the eligibility floor' : ''}`}</title>
           </circle>
           <text x={x(r.applicants) + 12} y={y(r.swing) - 6} fontSize='11.5' fontWeight='600' fill={CS_BLUE}>{r.campus}</text>
         </g>
@@ -451,8 +508,15 @@ function Fig4Market({ reg }) {
       <text x='1096' y={y(0.76)} fontSize='12.5' fontWeight='600' fill={INK} textAnchor='end'>high demand, large income swing</text>
 
       <text x='28' y='488' fontSize={reg.note} fill={MUTED_TEXT}>
-        {excludedCount} majors closed from every district on stated preparation are not drawn — a closed program has no measurable swing.
+        {basis === 'minimums'
+          ? 'The field is measured on stated preparation, its only basis; Computer Science on the eligibility floor.'
+          : `${excludedCount} programs closed from every district on stated preparation are not drawn — a closed program has no measurable swing.`}
       </text>
+      {basis === 'minimums' && (
+        <text x='28' y='510' fontSize={reg.note} fill={MUTED_TEXT}>
+          {excludedCount - 2} field programs closed from every district are not drawn — a closed program has no measurable swing.
+        </text>
+      )}
     </svg>
   )
 }
@@ -616,7 +680,7 @@ function Fig5Gates({ reg, basis }) {
   // each column (distance varies, income held), each carrying its gain.
   const incomeArrow = (row, resp) => {
     const yMid = rowT[row] + rowH / 2
-    const describe = `Income with distance held (${row === 0 ? 'nearer' : 'farther'} half): Computer Science +${pts(resp.cs)} points, other majors +${pts(resp.field)}`
+    const describe = `Income difference within the ${row === 0 ? 'nearer' : 'farther'} stratum: Computer Science +${pts(resp.cs)} points, other programs +${pts(resp.field)}`
     return (
       <g role='img' aria-label={describe}>
         <title>{describe}</title>
@@ -628,7 +692,7 @@ function Fig5Gates({ reg, basis }) {
   }
   const distanceArrow = (col, resp) => {
     const xArrow = colL[col] + colW / 2 - 96
-    const describe = `Distance with income held (${col === 0 ? 'lower' : 'higher'}-income half): Computer Science +${pts(resp.cs)} points, other majors +${pts(resp.field)}`
+    const describe = `Distance difference within the ${col === 0 ? 'lower' : 'higher'}-income stratum: Computer Science +${pts(resp.cs)} points, other programs +${pts(resp.field)}`
     return (
       <g role='img' aria-label={describe}>
         <title>{describe}</title>
@@ -639,7 +703,7 @@ function Fig5Gates({ reg, basis }) {
     )
   }
   return (
-    <svg {...svgProps(568, `Districts split at the median distance to a campus (${splitMi} miles) and the median income. Income still raises Computer Science access with distance held fixed, distance still raises it with income held fixed, and both responses are a multiple of the field's.`)}>
+    <svg {...svgProps(568, `Districts split at the median distance to a campus (${splitMi} miles) and the median income. The income gradient is present within both distance strata, the distance gradient within both income strata, and the Computer Science difference exceeds the field's in every comparison.`)}>
       <defs>
         <marker id='gateArrow' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto'>
           <path d='M0,0 L10,5 L0,10 z' fill={MUTED_LINE} />
@@ -671,10 +735,10 @@ function Fig5Gates({ reg, basis }) {
       {distanceArrow(1, responses.proximity.rich)}
 
       <text x='28' y='536' fontSize={reg.note} fill={MUTED_TEXT}>
-        Rightward arrows: the access gained moving from the lower- to the higher-income half, distance held fixed.
+        Rightward arrows: the access difference between the lower- and higher-income halves, within the same distance stratum.
       </text>
       <text x='28' y='556' fontSize={reg.note} fill={MUTED_TEXT}>
-        Upward arrows: the access gained moving from the farther to the nearer half, income held fixed. Bars: share of program-district pairs with a complete path.
+        Upward arrows: the access difference between the farther and nearer halves, within the same income stratum. Bars: share of program-district pairs with a complete path.
       </text>
     </svg>
   )
@@ -704,7 +768,7 @@ const BEATS = {
     role: 'The objection',
   },
   6: {
-    role: 'The verdict',
+    role: 'The stratified check',
   },
 }
 
@@ -713,6 +777,7 @@ const BASIS_OPTIONS = [
   { value: 'minimums', label: 'Eligibility floor' },
   { value: 'strict', label: 'Stated preparation' },
 ]
+
 
 export default function PriceOfPlace() {
   const [basis, setBasis] = useState('minimums')
@@ -742,16 +807,16 @@ export default function PriceOfPlace() {
         <Beat no='2' title='District income and transfer access, mapped' basis={basis} {...BEATS[2]}>
           <Fig2 reg={reg} basis={basis} />
         </Beat>
-        <Beat no='3' title='How district income shapes transfer access: Computer Science against all other majors' basis={basis} {...BEATS[3]}>
+        <Beat no='3' title='Transfer-access gradients by district income: Computer Science and all other programs' basis={basis} {...BEATS[3]}>
           <Fig3 reg={reg} basis={basis} />
         </Beat>
-        <Beat no='4' title='Transfer demand and income sensitivity, across every major' basis={basis} {...BEATS[4]}>
-          <Fig4Market reg={reg} />
+        <Beat no='4' title='Transfer demand and income sensitivity across measurable programs' basis={basis} {...BEATS[4]}>
+          <Fig4Market reg={reg} basis={basis} />
         </Beat>
         <Beat no='5' title='Distance to the nearest campus, by district income' basis={basis} {...BEATS[5]}>
           <Fig4Tethers reg={reg} />
         </Beat>
-        <Beat no='6' title='Income and distance, tested with the other held fixed' basis={basis} {...BEATS[6]}>
+        <Beat no='6' title='Income and distance, compared within broad strata' basis={basis} {...BEATS[6]}>
           <Fig5Gates reg={reg} basis={basis} />
         </Beat>
         <div className='rounded-[10px] border px-5 py-4 flex flex-col gap-3' data-export-exclude

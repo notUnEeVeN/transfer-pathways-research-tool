@@ -1,0 +1,1382 @@
+{
+ "coding_scheme": {
+  "equivalent": "the accepted courses are plausibly equivalent preparation for the missing receiving course",
+  "same_field_insufficient": "same field, but the accepted courses are not sufficient preparation",
+  "mismatched": "the evidence is clearly a different kind of course",
+  "indeterminate": "cannot be judged without syllabi"
+ },
+ "coder": null,
+ "generated_by": "course-repairs.v2",
+ "cases": [
+  {
+   "id": "s|136|132|359692",
+   "basis": "stated",
+   "college": "San Jose City College",
+   "missing": "Computer Systems and Assembly Language and Lab (UC Santa Cruz)",
+   "class": "assembly_systems",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC Irvine accepts: Computer Systems and C Programming",
+    "UC Santa Cruz accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|27|132|359692",
+   "basis": "stated",
+   "college": "American River College",
+   "missing": "Computer Systems and Assembly Language and Lab (UC Santa Cruz)",
+   "class": "assembly_systems",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Machine Organization and Assembly Language Programming",
+    "UC Irvine accepts: Computer Systems and C Programming",
+    "UC Santa Cruz accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|54|132|359692",
+   "basis": "stated",
+   "college": "San Diego City College",
+   "missing": "Computer Systems and Assembly Language and Lab (UC Santa Cruz)",
+   "class": "assembly_systems",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Santa Cruz accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|118|46|262283",
+   "basis": "stated",
+   "college": "East Los Angeles College",
+   "missing": "Machine Organization and Assembly Language Programming (UC Riverside)",
+   "class": "assembly_systems",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Irvine accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|130|132|359692",
+   "basis": "stated",
+   "college": "Los Angeles Southwest College",
+   "missing": "Computer Systems and Assembly Language and Lab (UC Santa Cruz)",
+   "class": "assembly_systems",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Machine Organization and Assembly Language Programming",
+    "UC Irvine accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|149|132|359692",
+   "basis": "stated",
+   "college": "Moreno Valley College",
+   "missing": "Computer Systems and Assembly Language and Lab (UC Santa Cruz)",
+   "class": "assembly_systems",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Machine Organization and Assembly Language Programming",
+    "UC Irvine accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|146|46|262283",
+   "basis": "stated",
+   "college": "Lemoore College",
+   "missing": "Machine Organization and Assembly Language Programming (UC Riverside)",
+   "class": "assembly_systems",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Santa Cruz accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|54|46|262283",
+   "basis": "stated",
+   "college": "San Diego City College",
+   "missing": "Machine Organization and Assembly Language Programming (UC Riverside)",
+   "class": "assembly_systems",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Santa Cruz accepts: Computer Systems and C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|7|259921",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "The Cell (UC San Diego)",
+   "class": "biology",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Fundamental Concepts of Modern Biology; Human Physiology",
+    "UC Davis accepts: Everyday Biology; Elementary Human Physiology",
+    "UC Los Angeles accepts: Introduction to Human Physiology; Introduction to Human Anatomy"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|7|289357",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "Organismic and Evolutionary Biology (UC San Diego)",
+   "class": "biology",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Fundamental Concepts of Modern Biology; Human Physiology",
+    "UC Davis accepts: Everyday Biology; Elementary Human Physiology",
+    "UC Los Angeles accepts: Introduction to Human Physiology; Introduction to Human Anatomy"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|7|355280",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "Multicellular Life (UC San Diego)",
+   "class": "biology",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Fundamental Concepts of Modern Biology; Human Physiology",
+    "UC Davis accepts: Everyday Biology; Elementary Human Physiology",
+    "UC Los Angeles accepts: Introduction to Human Physiology; Introduction to Human Anatomy"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|79|351700",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "General Biology (Plant Form & Function, Ecology, Evolution) (UC Berkeley)",
+   "class": "biology",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Fundamental Concepts of Modern Biology; Human Physiology",
+    "UC Davis accepts: Everyday Biology; Elementary Human Physiology",
+    "UC Los Angeles accepts: Introduction to Human Physiology; Introduction to Human Anatomy"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|67|79|351700",
+   "basis": "stated",
+   "college": "Coalinga College",
+   "missing": "General Biology (Plant Form & Function, Ecology, Evolution) (UC Berkeley)",
+   "class": "biology",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: The Cell; Multicellular Life",
+    "UC Riverside accepts: Intro to Organismal Biology",
+    "UC Davis accepts: Introduction to Biology: Essentials of Life on Earth; Botany & Physiology of Cultivated Plants "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|147|46|291322",
+   "basis": "stated",
+   "college": "Woodland Community College",
+   "missing": "Calculus of Several Variables (UC Riverside)",
+   "class": "calculus",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus for Science and Engineering; Calculus for Science and Engineering",
+    "UC Riverside accepts: Calculus for Business; First-Year Calculus",
+    "UC Berkeley accepts: Calculus I; Calculus II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|82|46|291322",
+   "basis": "stated",
+   "college": "Lassen Community College",
+   "missing": "Calculus of Several Variables (UC Riverside)",
+   "class": "calculus",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus for Science and Engineering; Calculus for Science and Engineering",
+    "UC Riverside accepts: First-Year Calculus; First-Year Calculus",
+    "UC Berkeley accepts: Calculus I; Calculus II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|82|7|288885",
+   "basis": "stated",
+   "college": "Lassen Community College",
+   "missing": "Calculus and Analytic Geometry for Science and Engineering (UC San Diego)",
+   "class": "calculus",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus for Science and Engineering; Calculus for Science and Engineering",
+    "UC Riverside accepts: First-Year Calculus; First-Year Calculus",
+    "UC Berkeley accepts: Calculus I; Calculus II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|117|291192",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "Differential and Integral Calculus (UC Los Angeles)",
+   "class": "calculus",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus for Science and Engineering",
+    "UC Riverside accepts: First-Year Calculus; Principles of Calculus I"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|144|269482",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "Calculus I for Physical Sciences & Engineering (UC Merced)",
+   "class": "calculus",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus for Science and Engineering",
+    "UC Riverside accepts: First-Year Calculus; Principles of Calculus I"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|89|292181",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "Calculus (UC Davis)",
+   "class": "calculus",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus for Science and Engineering",
+    "UC Riverside accepts: First-Year Calculus; Principles of Calculus I"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|7|289387",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "General Chemistry I (UC San Diego)",
+   "class": "chemistry",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Concepts of Chemistry",
+    "UC Davis accepts: Concept of Chemistry",
+    "UC Los Angeles accepts: Chemical Structure; Chemical Energetics and Change"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|7|355268",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "General Chemistry II (UC San Diego)",
+   "class": "chemistry",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Concepts of Chemistry",
+    "UC Davis accepts: Concept of Chemistry",
+    "UC Los Angeles accepts: Chemical Structure; Chemical Energetics and Change"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|79|351685",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "General Chemistry (UC Berkeley)",
+   "class": "chemistry",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Concepts of Chemistry",
+    "UC Davis accepts: Concept of Chemistry",
+    "UC Los Angeles accepts: Chemical Structure; Chemical Energetics and Change"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|118|117|295362",
+   "basis": "stated",
+   "college": "East Los Angeles College",
+   "missing": "Logic Design of Digital Systems (UC Los Angeles)",
+   "class": "computer_org",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Los Angeles accepts: Introduction to Computer Organization",
+    "UC Santa Barbara accepts: Fundamentals of Logic Design; Computer Organization and Logic Design",
+    "UC Merced accepts: Computer Organization and Assembly Language"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|135|117|295362",
+   "basis": "stated",
+   "college": "Long Beach City College",
+   "missing": "Logic Design of Digital Systems (UC Los Angeles)",
+   "class": "computer_org",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Computer Organization & Machine-Dependent Programming ",
+    "UC Los Angeles accepts: Introduction to Computer Organization",
+    "UC Irvine accepts: Introductory Computer Organization"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|149|117|295362",
+   "basis": "stated",
+   "college": "Moreno Valley College",
+   "missing": "Logic Design of Digital Systems (UC Los Angeles)",
+   "class": "computer_org",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Los Angeles accepts: Introduction to Computer Organization",
+    "UC Santa Barbara accepts: Computer Organization and Logic Design",
+    "UC Merced accepts: Computer Organization and Assembly Language"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|54|7|289384",
+   "basis": "stated",
+   "college": "San Diego City College",
+   "missing": "Computer Organization and Systems Programming (UC San Diego)",
+   "class": "computer_org",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Los Angeles accepts: Introduction to Computer Organization",
+    "UC Irvine accepts: Introduction to Digital Systems",
+    "UC Santa Barbara accepts: Fundamentals of Logic Design"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|68|117|295362",
+   "basis": "stated",
+   "college": "Canada College",
+   "missing": "Logic Design of Digital Systems (UC Los Angeles)",
+   "class": "computer_org",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Computer Organization and Systems Programming",
+    "UC Davis accepts: Computer Organization & Machine-Dependent Programming ",
+    "UC Santa Barbara accepts: Computer Organization and Logic Design"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|70|117|295362",
+   "basis": "stated",
+   "college": "Crafton Hills College",
+   "missing": "Logic Design of Digital Systems (UC Los Angeles)",
+   "class": "computer_org",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Computer Organization & Machine-Dependent Programming ",
+    "UC Irvine accepts: Introductory Computer Organization",
+    "UC Santa Barbara accepts: Computer Organization and Logic Design"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|130|120|305521",
+   "basis": "stated",
+   "college": "Los Angeles Southwest College",
+   "missing": "Introductory Computer Organization (UC Irvine)",
+   "class": "computer_org",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Computer Organization & Machine-Dependent Programming ",
+    "UC Los Angeles accepts: Introduction to Computer Organization",
+    "UC Santa Barbara accepts: Computer Organization and Logic Design"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|149|7|289384",
+   "basis": "stated",
+   "college": "Moreno Valley College",
+   "missing": "Computer Organization and Systems Programming (UC San Diego)",
+   "class": "computer_org",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Los Angeles accepts: Introduction to Computer Organization",
+    "UC Santa Barbara accepts: Computer Organization and Logic Design",
+    "UC Merced accepts: Computer Organization and Assembly Language"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|6|120|272048",
+   "basis": "stated",
+   "college": "College of the Sequoias",
+   "missing": "Principles in System Design (UC Irvine)",
+   "class": "computer_org",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Davis accepts: Computer Organization & Machine-Dependent Programming "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|10|89|300146",
+   "basis": "stated",
+   "college": "Columbia College",
+   "missing": "Data Structures, Algorithms, & Programming  (UC Davis)",
+   "class": "data_structures",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Introduction to Data Structures",
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|150|89|300146",
+   "basis": "stated",
+   "college": "Clovis Community College",
+   "missing": "Data Structures, Algorithms, & Programming  (UC Davis)",
+   "class": "data_structures",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC Berkeley accepts: Data Structures",
+    "UC Davis accepts: Introduction to Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|2|89|300146",
+   "basis": "stated",
+   "college": "Evergreen Valley College",
+   "missing": "Data Structures, Algorithms, & Programming  (UC Davis)",
+   "class": "data_structures",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Berkeley accepts: Data Structures",
+    "UC Davis accepts: Introduction to Data Structures",
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|10|7|289377",
+   "basis": "stated",
+   "college": "Columbia College",
+   "missing": "Basic Data Structures and Object-Oriented Design (UC San Diego)",
+   "class": "data_structures",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Introduction to Data Structures",
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|28|7|289377",
+   "basis": "stated",
+   "college": "Contra Costa College",
+   "missing": "Basic Data Structures and Object-Oriented Design (UC San Diego)",
+   "class": "data_structures",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Intro to Data Structures and Algorithms",
+    "UC Berkeley accepts: Data Structures",
+    "UC Davis accepts: Data Structures, Algorithms, & Programming "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|90|7|289377",
+   "basis": "stated",
+   "college": "Yuba College",
+   "missing": "Basic Data Structures and Object-Oriented Design (UC San Diego)",
+   "class": "data_structures",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Intro to Data Structures and Algorithms",
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|112|7|289377",
+   "basis": "stated",
+   "college": "Copper Mountain College",
+   "missing": "Basic Data Structures and Object-Oriented Design (UC San Diego)",
+   "class": "data_structures",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|84|89|300146",
+   "basis": "stated",
+   "college": "Bakersfield College",
+   "missing": "Data Structures, Algorithms, & Programming  (UC Davis)",
+   "class": "data_structures",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Berkeley accepts: Data Structures",
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|97|120|289117",
+   "basis": "stated",
+   "college": "Citrus College",
+   "missing": "Data Structure Implementation and Analysis (UC Irvine)",
+   "class": "data_structures",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Programming and Basic Data Structures for Data Science",
+    "UC Berkeley accepts: Data Structures",
+    "UC Merced accepts: Data Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|10|117|1807",
+   "basis": "stated",
+   "college": "Columbia College",
+   "missing": "Differential Equations (UC Los Angeles)",
+   "class": "differential",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Introduction to Differential Equations",
+    "UC Riverside accepts: Intro to Ordinary Differential Equations",
+    "UC Davis accepts: Differential Equations "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|122|117|1807",
+   "basis": "stated",
+   "college": "Feather River College",
+   "missing": "Differential Equations (UC Los Angeles)",
+   "class": "differential",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Differential Equations ",
+    "UC Irvine accepts: Elementary Differential Equations",
+    "UC Santa Barbara accepts: Differential Equations"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|20|117|1807",
+   "basis": "stated",
+   "college": "Barstow Community College",
+   "missing": "Differential Equations (UC Los Angeles)",
+   "class": "differential",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Introduction to Differential Equations",
+    "UC Riverside accepts: Intro to Ordinary Differential Equations",
+    "UC Davis accepts: Differential Equations "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|133|7|259955",
+   "basis": "stated",
+   "college": "Monterey Peninsula College",
+   "missing": "Mathematics for Algorithms and Systems (UC San Diego)",
+   "class": "discrete",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Discrete Mathematics; Discrete Mathematics",
+    "UC Riverside accepts: Intro to Discrete Structures",
+    "UC Berkeley accepts: Discrete Mathematics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|43|7|259955",
+   "basis": "stated",
+   "college": "Glendale Community College",
+   "missing": "Mathematics for Algorithms and Systems (UC San Diego)",
+   "class": "discrete",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Discrete Mathematics; Discrete Mathematics",
+    "UC Riverside accepts: Intro to Discrete Structures",
+    "UC Davis accepts: Discrete Mathematics For Computer Science "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|53|7|259955",
+   "basis": "stated",
+   "college": "Mt. San Jacinto College",
+   "missing": "Mathematics for Algorithms and Systems (UC San Diego)",
+   "class": "discrete",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Discrete Mathematics; Discrete Mathematics",
+    "UC Riverside accepts: Intro to Discrete Structures",
+    "UC Davis accepts: Discrete Mathematics For Computer Science "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|14|117|355305",
+   "basis": "stated",
+   "college": "Santa Ana College",
+   "missing": "Introduction to Discrete Structures (UC Los Angeles)",
+   "class": "discrete",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Discrete Mathematics; Discrete Mathematics",
+    "UC Riverside accepts: Intro to Discrete Structures",
+    "UC Irvine accepts: Discrete Mathematics for Computer Science; Boolean Logic and Discrete Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|68|117|355305",
+   "basis": "stated",
+   "college": "Canada College",
+   "missing": "Introduction to Discrete Structures (UC Los Angeles)",
+   "class": "discrete",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Riverside accepts: Intro to Discrete Structures",
+    "UC Davis accepts: Discrete Mathematics For Computer Science ",
+    "UC Irvine accepts: Discrete Mathematics for Computer Science; Boolean Logic and Discrete Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|84|7|259955",
+   "basis": "stated",
+   "college": "Bakersfield College",
+   "missing": "Mathematics for Algorithms and Systems (UC San Diego)",
+   "class": "discrete",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Discrete Mathematics For Computer Science ",
+    "UC Irvine accepts: Discrete Mathematics for Computer Science; Boolean Logic and Discrete Structures",
+    "UC Santa Cruz accepts: Applied Discrete Mathematics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|123|120|259293",
+   "basis": "stated",
+   "college": "Hartnell College",
+   "missing": "Discrete Mathematics for Computer Science (UC Irvine)",
+   "class": "discrete",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Discrete Mathematics; Discrete Mathematics",
+    "UC Davis accepts: Discrete Mathematics For Computer Science ",
+    "UC Los Angeles accepts: Introduction to Discrete Structures"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|73|117|355305",
+   "basis": "stated",
+   "college": "Napa Valley College",
+   "missing": "Introduction to Discrete Structures (UC Los Angeles)",
+   "class": "discrete",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Merced accepts: Discrete Mathematics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|8|120|259293",
+   "basis": "stated",
+   "college": "Butte College",
+   "missing": "Discrete Mathematics for Computer Science (UC Irvine)",
+   "class": "discrete",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Discrete Mathematics For Computer Science ",
+    "UC Santa Cruz accepts: Applied Discrete Mathematics"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|130|120|120|Intro|A|0",
+   "basis": "floor",
+   "college": "Los Angeles Southwest College",
+   "missing": "Introduction to Programming (UC UC Irvine)",
+   "class": "intro_programming",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC San Diego accepts: Introduction to Programming and Computational Problem Solving - Accelerated Pace",
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering I; Intro to Computing",
+    "UC Davis accepts: Introduction to Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|47|120|120|Intro|A|0",
+   "basis": "floor",
+   "college": "Los Angeles Mission College",
+   "missing": "Introduction to Programming (UC UC Irvine)",
+   "class": "intro_programming",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC San Diego accepts: Introduction to Programming and Computational Problem Solving I; Introduction to Programming and Computational Problem Solving - Accelerated Pace",
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering I; Intro to Computing",
+    "UC Davis accepts: Introduction to Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|102|117|298652",
+   "basis": "stated",
+   "college": "College of the Siskiyous",
+   "missing": "Introduction to Computer Science I (UC Los Angeles)",
+   "class": "intro_programming",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering I; Intro to Computing",
+    "UC Los Angeles accepts: Introduction to Programming",
+    "UC Irvine accepts: Introduction to Programming; Advanced C Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|105|120|120|Intro|A|0",
+   "basis": "floor",
+   "college": "Coastline Community College",
+   "missing": "Introduction to Programming (UC UC Irvine)",
+   "class": "intro_programming",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Santa Cruz accepts: Programming Abstractions: Python",
+    "UC Merced accepts: Introduction to Computer Applications"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|105|128|271244",
+   "basis": "stated",
+   "college": "Coastline Community College",
+   "missing": "Problem Solving with Computers I (UC Santa Barbara)",
+   "class": "intro_programming",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Santa Cruz accepts: Programming Abstractions: Python",
+    "UC Merced accepts: Introduction to Computer Applications"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|133|7|259958",
+   "basis": "stated",
+   "college": "Monterey Peninsula College",
+   "missing": "Introduction to Programming and Computational Problem Solving - Accelerated Pace (UC San Diego)",
+   "class": "intro_programming",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering I; Intro to Computing",
+    "UC Berkeley accepts: Introduction to Computer Programming for Scientists and Engineers (MATLAB)",
+    "UC Davis accepts: Introduction to Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|122|120|120|Intro|A|0",
+   "basis": "floor",
+   "college": "Feather River College",
+   "missing": "Introduction to Programming (UC UC Irvine)",
+   "class": "intro_programming",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computing; Intro to Computer Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|17|7|259958",
+   "basis": "stated",
+   "college": "Merced College",
+   "missing": "Introduction to Programming and Computational Problem Solving - Accelerated Pace (UC San Diego)",
+   "class": "intro_programming",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering I; Intro to Computing",
+    "UC Irvine accepts: Introduction to Programming; Programming in C/C++ as a Second Language",
+    "UC Santa Barbara accepts: Introduction to Computer Science; Problem Solving with Computers I"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|63|144|376830",
+   "basis": "stated",
+   "college": "Palo Verde College",
+   "missing": "Introduction to Programming (UC Merced)",
+   "class": "intro_programming",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computing"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|153|46|283468",
+   "basis": "stated",
+   "college": "Compton College",
+   "missing": "Intro to Computer Science for Science, Mathematics, and Engineering II (UC Riverside)",
+   "class": "intro_programming_2",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Santa Barbara accepts: Problem Solving with Computers II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|32|128|297915",
+   "basis": "stated",
+   "college": "Mission College",
+   "missing": "Problem Solving with Computers II (UC Santa Barbara)",
+   "class": "intro_programming_2",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering II",
+    "UC Los Angeles accepts: Introduction to Computer Science II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|97|128|297915",
+   "basis": "stated",
+   "college": "Citrus College",
+   "missing": "Problem Solving with Computers II (UC Santa Barbara)",
+   "class": "intro_programming_2",
+   "tier": "A2",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering II",
+    "UC Los Angeles accepts: Introduction to Computer Science II"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|28|7|7|Intro|A|0",
+   "basis": "floor",
+   "college": "Contra Costa College",
+   "missing": "CSE 8B (UC UC San Diego)",
+   "class": "intro_programming_2",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering II",
+    "UC Los Angeles accepts: Introduction to Computer Science II",
+    "UC Santa Barbara accepts: Problem Solving with Computers II"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|94|7|7|Intro|A|0",
+   "basis": "floor",
+   "college": "Solano Community College",
+   "missing": "CSE 8B (UC UC San Diego)",
+   "class": "intro_programming_2",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Los Angeles accepts: Introduction to Computer Science II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|91|128|297915",
+   "basis": "stated",
+   "college": "West Los Angeles College",
+   "missing": "Problem Solving with Computers II (UC Santa Barbara)",
+   "class": "intro_programming_2",
+   "tier": "A3",
+   "consequential": true,
+   "evidence": [
+    "UC Riverside accepts: Intro to Computer Science for Science, Mathematics, and Engineering II"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|119|117|291195",
+   "basis": "stated",
+   "college": "Taft College",
+   "missing": "Linear Algebra and Applications (UC Los Angeles)",
+   "class": "linear_algebra",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Berkeley accepts: Linear Algebra and Differential Equations",
+    "UC Davis accepts: Linear Algebra ",
+    "UC Irvine accepts: Introduction to Linear Algebra"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|119|7|273963",
+   "basis": "stated",
+   "college": "Taft College",
+   "missing": "Linear Algebra (UC San Diego)",
+   "class": "linear_algebra",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Berkeley accepts: Linear Algebra and Differential Equations",
+    "UC Davis accepts: Linear Algebra ",
+    "UC Irvine accepts: Introduction to Linear Algebra"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|20|117|291195",
+   "basis": "stated",
+   "college": "Barstow Community College",
+   "missing": "Linear Algebra and Applications (UC Los Angeles)",
+   "class": "linear_algebra",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Linear Algebra",
+    "UC Berkeley accepts: Linear Algebra and Differential Equations",
+    "UC Davis accepts: Linear Algebra "
+   ],
+   "code": null
+  },
+  {
+   "id": "s|71|89|340711",
+   "basis": "stated",
+   "college": "Cypress College",
+   "missing": "Linear Algebra  (UC Davis)",
+   "class": "linear_algebra",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Linear Algebra",
+    "UC Riverside accepts: Applied Linear Algebra",
+    "UC Berkeley accepts: Linear Algebra and Differential Equations"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|71|89|356778",
+   "basis": "stated",
+   "college": "Cypress College",
+   "missing": "Modern Linear Algebra (UC Davis)",
+   "class": "linear_algebra",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Linear Algebra",
+    "UC Riverside accepts: Applied Linear Algebra",
+    "UC Berkeley accepts: Linear Algebra and Differential Equations"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|71|89|370070",
+   "basis": "stated",
+   "college": "Cypress College",
+   "missing": "Linear Algebra with Applications to Biology (UC Davis)",
+   "class": "linear_algebra",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Linear Algebra",
+    "UC Riverside accepts: Applied Linear Algebra",
+    "UC Berkeley accepts: Linear Algebra and Differential Equations"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|125|46|359266",
+   "basis": "stated",
+   "college": "Porterville College",
+   "missing": "General Physics (UC Riverside)",
+   "class": "physics",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Physics - Mechanics; Physics - Electricity and Magnetism",
+    "UC Riverside accepts: General Physics; General Physics",
+    "UC Berkeley accepts: Introductory Physics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|67|46|359266",
+   "basis": "stated",
+   "college": "Coalinga College",
+   "missing": "General Physics (UC Riverside)",
+   "class": "physics",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Physics - Mechanics; Physics - Electricity and Magnetism",
+    "UC Riverside accepts: General Physics",
+    "UC Berkeley accepts: Physics for Scientists and Engineers"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|67|79|275225",
+   "basis": "stated",
+   "college": "Coalinga College",
+   "missing": "Physics for Scientists and Engineers (UC Berkeley)",
+   "class": "physics",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Physics - Mechanics; Physics - Electricity and Magnetism",
+    "UC Riverside accepts: General Physics",
+    "UC Berkeley accepts: Physics for Scientists and Engineers"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|122|46|281598",
+   "basis": "stated",
+   "college": "Feather River College",
+   "missing": "General Physics (UC Riverside)",
+   "class": "physics",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Berkeley accepts: Physics for Scientists and Engineers",
+    "UC Davis accepts: General Physics ; General Physics ",
+    "UC Los Angeles accepts: Physics for Scientists and Engineers: Electrodynamics, Optics, and Special Relativity; Physics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|82|46|281598",
+   "basis": "stated",
+   "college": "Lassen Community College",
+   "missing": "General Physics (UC Riverside)",
+   "class": "physics",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: General Physics ; General Physics ",
+    "UC Los Angeles accepts: Physics",
+    "UC Santa Barbara accepts: Introductory Physics; Introductory Physics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|82|79|245412",
+   "basis": "stated",
+   "college": "Lassen Community College",
+   "missing": "Physics for Scientists and Engineers (UC Berkeley)",
+   "class": "physics",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: General Physics ; General Physics ",
+    "UC Los Angeles accepts: Physics",
+    "UC Santa Barbara accepts: Introductory Physics; Introductory Physics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|82|79|283495",
+   "basis": "stated",
+   "college": "Lassen Community College",
+   "missing": "Introduction to Astrophysics (UC Berkeley)",
+   "class": "physics",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: General Physics ; General Physics ",
+    "UC Los Angeles accepts: Physics",
+    "UC Santa Barbara accepts: Introductory Physics; Introductory Physics"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|109|120|120|Intro|A|1",
+   "basis": "floor",
+   "college": "San Joaquin Delta College",
+   "missing": "Intermediate Programming (UC UC Irvine)",
+   "class": "programming_other",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Irvine accepts: Object-Oriented Systems and Programming",
+    "UC Santa Barbara accepts: Foundations of Computer Science",
+    "UC Merced accepts: Advanced Programming"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|124|120|120|Intro|A|1",
+   "basis": "floor",
+   "college": "Irvine Valley College",
+   "missing": "Intermediate Programming (UC UC Irvine)",
+   "class": "programming_other",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: MATLAB Programming for Engineering Analysis",
+    "UC Davis accepts: Programming & Problem Solving ",
+    "UC Los Angeles accepts: Principles of Java Language with Applications"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|140|120|120|Intro|A|1",
+   "basis": "floor",
+   "college": "College of the Canyons",
+   "missing": "Intermediate Programming (UC UC Irvine)",
+   "class": "programming_other",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Programming & Problem Solving ",
+    "UC Irvine accepts: Object-Oriented Systems and Programming",
+    "UC Santa Barbara accepts: Foundations of Computer Science"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|40|89|292100",
+   "basis": "stated",
+   "college": "Lake Tahoe Community College",
+   "missing": "Programming & Problem Solving  (UC Davis)",
+   "class": "programming_other",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Irvine accepts: Programming in Java as a Second Language"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|54|89|292100",
+   "basis": "stated",
+   "college": "San Diego City College",
+   "missing": "Programming & Problem Solving  (UC Davis)",
+   "class": "programming_other",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: MATLAB Programming for Engineering Analysis",
+    "UC Irvine accepts: Object-Oriented Systems and Programming",
+    "UC Santa Barbara accepts: Object Oriented Design and Implementation; Foundations of Computer Science"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|83|128|288694",
+   "basis": "stated",
+   "college": "College of the Redwoods",
+   "missing": "Foundations of Computer Science (UC Santa Barbara)",
+   "class": "programming_other",
+   "tier": "A2",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Programming & Problem Solving "
+   ],
+   "code": null
+  },
+  {
+   "id": "m|13|120|120|Intro|A|1",
+   "basis": "floor",
+   "college": "Merritt College",
+   "missing": "Intermediate Programming (UC UC Irvine)",
+   "class": "programming_other",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Santa Barbara accepts: Foundations of Computer Science"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|97|120|120|Intro|A|1",
+   "basis": "floor",
+   "college": "Citrus College",
+   "missing": "Intermediate Programming (UC UC Irvine)",
+   "class": "programming_other",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Programming & Problem Solving ",
+    "UC Santa Barbara accepts: Foundations of Computer Science"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|20|89|292100",
+   "basis": "stated",
+   "college": "Barstow Community College",
+   "missing": "Programming & Problem Solving  (UC Davis)",
+   "class": "programming_other",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Santa Barbara accepts: Foundations of Computer Science"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|126|120|120|Intro|A|2",
+   "basis": "floor",
+   "college": "Sacramento City College",
+   "missing": "Programming with Software Libraries (UC UC Irvine)",
+   "class": "software_eng",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Software Development & Object-Oriented Programming in C++"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|62|120|120|Intro|A|2",
+   "basis": "floor",
+   "college": "Mount San Antonio College",
+   "missing": "Programming with Software Libraries (UC UC Irvine)",
+   "class": "software_eng",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Software Development & Object-Oriented Programming in C++"
+   ],
+   "code": null
+  },
+  {
+   "id": "m|99|120|120|Intro|A|2",
+   "basis": "floor",
+   "college": "Cuyamaca College",
+   "missing": "Programming with Software Libraries (UC UC Irvine)",
+   "class": "software_eng",
+   "tier": "A3",
+   "consequential": false,
+   "evidence": [
+    "UC Davis accepts: Software Development & Object-Oriented Programming in C++"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|147|120|265039",
+   "basis": "stated",
+   "college": "Woodland Community College",
+   "missing": "Introduction to Probability and Statistics for Computer Science (UC Irvine)",
+   "class": "statistics",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Calculus Based Elementary Probability and Statistics; Introduction to Statistical Analysis",
+    "UC Riverside accepts: Statistics for Business; Psychological Methods: Statistical Procedures",
+    "UC Berkeley accepts: Introduction to Statistics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|32|120|265039",
+   "basis": "stated",
+   "college": "Mission College",
+   "missing": "Introduction to Probability and Statistics for Computer Science (UC Irvine)",
+   "class": "statistics",
+   "tier": "A1",
+   "consequential": true,
+   "evidence": [
+    "UC San Diego accepts: Calculus Based Elementary Probability and Statistics; Introduction to Statistics",
+    "UC Riverside accepts: Statistics for Business; Statistical Analysis",
+    "UC Berkeley accepts: Introduction to Statistics"
+   ],
+   "code": null
+  },
+  {
+   "id": "s|82|120|265039",
+   "basis": "stated",
+   "college": "Lassen Community College",
+   "missing": "Introduction to Probability and Statistics for Computer Science (UC Irvine)",
+   "class": "statistics",
+   "tier": "A1",
+   "consequential": false,
+   "evidence": [
+    "UC San Diego accepts: Introduction to Statistics; Introduction to Statistical Analysis",
+    "UC Riverside accepts: Statistics for Business; Psychological Methods: Statistical Procedures",
+    "UC Berkeley accepts: Introduction to Statistics"
+   ],
+   "code": null
+  }
+ ]
+}

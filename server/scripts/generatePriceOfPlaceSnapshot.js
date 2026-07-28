@@ -354,6 +354,65 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
         quantile(matched.filter((x) => quartileOfDistrict.get(x.d) === q).map((x) => x.income), 0.5))),
     };
 
+    // ---- committed permutation check (the referee's test) ----
+    // How often does a uniformly random relabeling of the 72 districts into
+    // quartiles produce a Q4-Q1 access gap at least as large as the observed
+    // one? Seeded, so the committed snapshot is reproducible. Run on both
+    // bases; the field of the test is the subject staircase itself.
+    const permutationFor = (field) => {
+      const perDistrict = new Map();
+      for (const p of cs) {
+        for (let q = 0; q < 4; q += 1) {
+          for (const d of p.seenDistricts[q]) {
+            const row = perDistrict.get(d) || { done: 0, n: 0 };
+            row.n += 1;
+            if (p[field][q].has(d)) row.done += 1;
+            perDistrict.set(d, row);
+          }
+        }
+      }
+      const rows = [...perDistrict.entries()]
+        .map(([d, r]) => ({ q: quartileOfDistrict.get(d), share: r.done / r.n }));
+      const gapOf = (labels) => {
+        let s1 = 0; let n1 = 0; let s4 = 0; let n4 = 0;
+        for (let i = 0; i < labels.length; i += 1) {
+          if (labels[i] === 0) { s1 += rows[i].share; n1 += 1; }
+          else if (labels[i] === 3) { s4 += rows[i].share; n4 += 1; }
+        }
+        return s4 / n4 - s1 / n1;
+      };
+      const observed = gapOf(rows.map((r) => r.q));
+      let seed = 20260726;
+      const rand = () => {
+        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+        return seed / 4294967296;
+      };
+      const labels = rows.map((r) => r.q);
+      const iterations = 100000;
+      let atLeast = 0; let maxNull = -Infinity;
+      for (let it = 0; it < iterations; it += 1) {
+        for (let i = labels.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(rand() * (i + 1));
+          const t = labels[i]; labels[i] = labels[j]; labels[j] = t;
+        }
+        const g = gapOf(labels);
+        if (g >= observed) atLeast += 1;
+        if (g > maxNull) maxNull = g;
+      }
+      return {
+        iterations,
+        observedGap: round(observed),
+        maxNullGap: round(maxNull),
+        pUpperBound: Number(((atLeast + 1) / (iterations + 1)).toFixed(6)),
+      };
+    };
+    const permutation = {
+      method: 'district income-quartile labels permuted uniformly; gap = mean Q4 district share minus mean Q1 district share over the nine-program subject staircase; seeded LCG, add-one p upper bound',
+      strict: permutationFor('completeDistricts'),
+      floor: permutationFor('completeDistrictsMin'),
+    };
+    console.log('permutation check:', JSON.stringify(permutation.strict), '· floor', JSON.stringify(permutation.floor));
+
     // ---- fig 4: the gate has a course catalogue ----
     const panel = (list) => {
       const byBucket = new Map();
@@ -803,6 +862,7 @@ const round = (v, d = 3) => (v == null ? null : Number(v.toFixed(d)));
       },
       fig1, fig2: { districts: fig2Districts, stats: fig2Stats, outline: mapGeometry.california_outline },
       fig3, fig4, fig5a, fig5b, distance, people, detour, wall, lorenz, participation, minimums,
+      permutation,
     };
     fs.writeFileSync(OUT_PATH, JSON.stringify(snapshot));
     console.log(`wrote ${OUT_PATH} (${Math.round(fs.statSync(OUT_PATH).size / 1024)} KB)`);
