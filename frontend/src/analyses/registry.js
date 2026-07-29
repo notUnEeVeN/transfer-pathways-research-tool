@@ -59,12 +59,16 @@ import CreditLoss from './CreditLoss'
 // TODO(owner): confirm the exact display name to attribute these to.
 export const ANALYSIS_AUTHOR = 'Tybalt Mallet'
 
-const selectedMajor = ({ requiredCapabilities = [], datasets = [], pendingReason } = {}) => ({
+const selectedMajor = ({ requiredCapabilities = [], datasets = [], pendingReason, excludedMajors } = {}) => ({
   majorScope: {
     mode: 'selected',
     requiredCapabilities,
     datasets,
     ...(pendingReason ? { pendingReason } : {}),
+    // Editorial exclusions: majors whose data technically supports the figure
+    // but for which it is deliberately not offered, with the reason shown on
+    // the card. Not a capability gate — nothing is pending.
+    ...(excludedMajors ? { excludedMajors } : {}),
   },
 })
 
@@ -92,6 +96,9 @@ export const ANALYSES = [
     id: 'paper-credit-loss',
     ...selectedMajor({
       requiredCapabilities: ['assistAgreements', 'caCreditLossArtifact'],
+      excludedMajors: {
+        econ: 'Economics asks for at most a handful of stated courses per campus (Riverside: under one on average), so the permutation-averaged credit-loss machinery has nearly nothing to measure. The figure is built for majors with CS-sized asks.',
+      },
       datasets: ['ASSIST articulation agreements', 'generated California Figure 1 artifact'],
       pendingReason: 'The major-specific California Figure 1 artifact must be generated from ASSIST agreements before this visual can run.',
     }),
@@ -152,6 +159,9 @@ export const ANALYSES = [
     id: 'paper-course-barriers',
     ...selectedMajor({
       requiredCapabilities: ['assistAgreements', 'courseTypeFigures'],
+      excludedMajors: {
+        econ: 'Economics states a median of five receiver slots per campus and no course category is unsatisfiable anywhere, so the per-category gap panels render as an empty grid. The figure is built for majors with CS-sized asks.',
+      },
       datasets: ['ASSIST articulation agreements', 'course-type rules'],
       pendingReason: 'Course-type rules must be written and validated against this major’s ASSIST requirements before its course gaps can be compared.',
     }),

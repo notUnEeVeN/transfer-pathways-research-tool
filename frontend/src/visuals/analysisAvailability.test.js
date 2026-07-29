@@ -165,6 +165,33 @@ describe('analysis registry major scopes', () => {
     ])
   })
 
+  it('excludes the course-scale figures for Economics with an editorial reason', () => {
+    const economics = major({
+      slug: 'econ',
+      label: 'Economics',
+      capabilities: {
+        assistAgreements: true,
+        caCreditLossArtifact: true,
+        courseTypeFigures: true,
+        degreeTemplates: true,
+      },
+    })
+    for (const id of ['paper-course-barriers', 'paper-credit-loss']) {
+      const analysis = ANALYSES.find((item) => item.id === id)
+      const result = resolveAnalysisAvailability(analysis, economics)
+      expect(result).toMatchObject({
+        available: false,
+        status: 'not_applicable',
+        label: 'Not shown for Economics',
+      })
+      expect(result.reason).toMatch(/CS-sized asks/)
+      // The same figures stay available for Biology — the exclusion is
+      // editorial and per-major, never a capability gate.
+      const biology = major({ capabilities: { ...economics.capabilities } })
+      expect(resolveAnalysisAvailability(analysis, biology).available).toBe(true)
+    }
+  })
+
   it('makes both associate-degree models available for Economics without enabling them for Biology', () => {
     const economics = major({
       slug: 'econ',

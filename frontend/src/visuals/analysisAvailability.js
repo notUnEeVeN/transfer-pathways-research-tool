@@ -69,6 +69,24 @@ export function resolveAnalysisAvailability(analysis, selectedMajor) {
     return unavailableConfiguration(`Unknown major-scope mode: ${text(scope.mode) || 'missing'}.`, scope)
   }
 
+  // Editorial exclusion: the major has the data, but the figure does not
+  // make sense for it (e.g. course-level figures over Economics' tiny stated
+  // ask). Distinct from data_pending — nothing is being waited on.
+  const excluded = scope.excludedMajors
+  if (excluded && Object.prototype.hasOwnProperty.call(excluded, selectedSlug)) {
+    return {
+      available: false,
+      status: 'not_applicable',
+      effectiveMajorSlug: null,
+      fixed: false,
+      label: `Not shown for ${selectedLabel}`,
+      reason: text(excluded[selectedSlug])
+        || `This visual is deliberately not offered for ${selectedLabel}.`,
+      datasets,
+      missingCapabilities: [],
+    }
+  }
+
   const required = scope.requiredCapabilities ?? []
   if (!Array.isArray(required) || required.some((name) => !text(name))) {
     return unavailableConfiguration('This visual has invalid capability requirements.', scope)

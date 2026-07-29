@@ -548,10 +548,12 @@ export function BuiltInAnalysisCard({
           <span className='font-[650] text-ink'>
             {availability.fixed
               ? `This audited visual is available only for ${fixedMajorLabel}.`
-              : `This visual is not ready for ${majorLabel}.`}
+              : availability.status === 'not_applicable'
+                ? `This visual is deliberately not shown for ${majorLabel}.`
+                : `This visual is not ready for ${majorLabel}.`}
           </span>
           {' '}{availability.reason}
-          {!!availability.datasets?.length && (
+          {availability.status !== 'not_applicable' && !!availability.datasets?.length && (
             <> Required data: {availability.datasets.join(', ')}.</>
           )}
         </Alert>
