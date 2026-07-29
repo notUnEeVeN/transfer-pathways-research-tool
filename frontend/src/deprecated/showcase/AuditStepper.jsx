@@ -8,7 +8,7 @@
  */
 
 import React, { useState } from 'react'
-import { MarketingSection } from '../components/ui'
+import { MarketingSection } from '../../components/ui'
 import { AUDIT_STORY } from './showcaseContent'
 
 function BoundStage({ bound }) {

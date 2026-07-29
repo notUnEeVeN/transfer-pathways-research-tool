@@ -195,7 +195,7 @@ describe('PriceOfPlace', () => {
     expect(screen.getByText(/high demand, large income swing/)).toBeInTheDocument()
     // On the floor basis all nine CS programs are in the market figure,
     // including the two that are closed under stated preparation.
-    expect(screen.getByText(/Computer Science on the eligibility floor/)).toBeInTheDocument()
+    expect(screen.getByText(/measured on the hand-curated eligibility floor/)).toBeInTheDocument()
     expect(screen.getAllByText('UC Los Angeles').length).toBeGreaterThan(1)
     expect(screen.getByText('Distance to the nearest campus, by district income')).toBeInTheDocument()
     expect(screen.getByText('Income and distance, compared within broad strata')).toBeInTheDocument()

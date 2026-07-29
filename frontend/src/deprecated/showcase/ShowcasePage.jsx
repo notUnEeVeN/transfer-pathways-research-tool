@@ -7,10 +7,10 @@ import {
 } from '@heroicons/react/24/outline'
 import {
   Alert, Badge, Button, FullScreenPanel, Logo, MarketingSection,
-} from '../components/ui'
-import { getAnalysisById } from '../analyses/registry'
-import { useAccessMe, useVisualSettings } from '../shared/query/hooks/useAccess'
-import { canViewBuiltInAnalysis } from '../visuals/analysisVisibility'
+} from '../../components/ui'
+import { getAnalysisById } from '../../analyses/registry'
+import { useAccessMe, useVisualSettings } from '../../shared/query/hooks/useAccess'
+import { canViewBuiltInAnalysis } from '../../visuals/analysisVisibility'
 import { EvidenceBadge } from './previews'
 import FigureSlides from './FigureSlides'
 import CaliforniaWork from './CaliforniaWork'

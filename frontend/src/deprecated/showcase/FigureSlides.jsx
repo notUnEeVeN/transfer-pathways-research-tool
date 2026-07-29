@@ -13,10 +13,10 @@
 
 import React from 'react'
 import { ArrowsPointingOutIcon } from '@heroicons/react/24/outline'
-import { Badge, MarketingSection } from '../components/ui'
-import { getAnalysisById } from '../analyses/registry'
-import MeasurePanel from '../analyses/MeasurePanel'
-import { measureFor } from '../analyses/measures'
+import { Badge, MarketingSection } from '../../components/ui'
+import { getAnalysisById } from '../../analyses/registry'
+import MeasurePanel from '../../analyses/MeasurePanel'
+import { measureFor } from '../../analyses/measures'
 import { FEATURED_FIGURES } from './showcaseContent'
 
 // One height for every embed so the slides read as a set rather than a

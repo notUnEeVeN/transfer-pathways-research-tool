@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { Badge } from '../components/ui'
+import { Badge } from '../../components/ui'
 
 const COMPLETE_PATHS_BY_CAMPUS = [
   { campus: 'Berkeley', districts: 69 },

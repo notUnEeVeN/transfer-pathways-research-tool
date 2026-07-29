@@ -26,5 +26,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.js'],
+    // Deprecated prototypes keep their code and tests for the archive, but
+    // do not burden the live suite.
+    exclude: ['**/node_modules/**', 'src/deprecated/**'],
   },
 })

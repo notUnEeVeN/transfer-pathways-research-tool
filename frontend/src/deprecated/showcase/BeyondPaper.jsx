@@ -7,8 +7,8 @@
  */
 
 import React from 'react'
-import { Badge, MarketingSection } from '../components/ui'
-import ConceptGraphView from '../prereqs/ConceptGraphView'
+import { Badge, MarketingSection } from '../../components/ui'
+import ConceptGraphView from '../../prereqs/ConceptGraphView'
 import { DEGREE_READINESS, PREREQ_EXHIBIT } from './showcaseContent'
 
 export default function BeyondPaper() {

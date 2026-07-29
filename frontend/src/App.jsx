@@ -11,9 +11,11 @@ import SubNav from './components/SubNav'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import DataPage from './DataPage'
-import ShowcasePage from './showcase/ShowcasePage'
-import { SHOWCASE_ENABLED } from './showcase/showcaseVisibility'
 import VisualsPage from './visuals/VisualsPage'
+// Maryland (ARTSYS) — the second state, deliberately a separate view rather
+// than a mode inside Data. Remove this import, the three `maryland` entries
+// below, and src/maryland/ to remove the feature completely.
+import MarylandPage from './maryland/MarylandPage'
 import ApiPage from './DataApiDocs'
 import TasksPage from './tasks/TasksPage'
 import SignInScreen from './SignInScreen'
@@ -154,8 +156,8 @@ function Shell() {
 function availableConsoleViews(role) {
   return new Set([
     'data',
-    ...(SHOWCASE_ENABLED ? ['showcase'] : []),
     'visuals',
+    'maryland',
     'audit',
     'tasks',
     'api',
@@ -220,9 +222,6 @@ function Console({ role, user }) {
               statsSeen={statsSeen} reviewSeen={reviewSeen} />
           )}
           {view === 'data' && <DataPage onNavigate={setView} />}
-          {SHOWCASE_ENABLED && view === 'showcase' && (
-            <div className='h-full overflow-auto'><ShowcasePage /></div>
-          )}
           {view === 'visuals' && (
             <div className='h-full overflow-auto'>
               <PageContainer><VisualsPage onNavigate={setView} /></PageContainer>
@@ -233,6 +232,7 @@ function Console({ role, user }) {
               <PageContainer><TasksPage /></PageContainer>
             </div>
           )}
+          {view === 'maryland' && <MarylandPage />}
           {view === 'api' && <ApiPage />}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
@@ -249,8 +249,8 @@ function Console({ role, user }) {
 function TopBar({ view, setView, role, user }) {
   const tabs = [
     { value: 'data', label: 'Data' },
-    ...(SHOWCASE_ENABLED ? [{ value: 'showcase', label: 'Showcase' }] : []),
     { value: 'visuals', label: 'Visuals' },
+    { value: 'maryland', label: 'Maryland' },
     { value: 'audit', label: 'Audit' },
     { value: 'tasks', label: 'Tasks' },
     { value: 'api', label: 'API' },

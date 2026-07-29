@@ -7,7 +7,7 @@
  */
 
 import React from 'react'
-import { MarketingSection } from '../components/ui'
+import { MarketingSection } from '../../components/ui'
 import { CALIFORNIA_WORK } from './showcaseContent'
 import { FigureSlide } from './FigureSlides'
 

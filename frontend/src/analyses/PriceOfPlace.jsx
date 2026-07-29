@@ -403,7 +403,7 @@ function Fig3({ reg, basis }) {
   const cs = basis === 'minimums' ? snapshot.minimums.fig3cs : snapshot.fig3.cs
   const { field, medianIncome } = snapshot.fig3
   const x = (q) => 220 + q * 240
-  const y = (v) => 452 - v * 450 // 80% → y=92, per the design's scale
+  const y = (v) => 452 - v * 400 // 100% → y=52: the floor endpoint stays inside the chart
   const csPts = cs.map((v, q) => `${x(q)},${y(v)}`).join(' ')
   const fieldPts = field.map((v, q) => `${x(q)},${y(v)}`).join(' ')
   const wedge = `${cs.map((v, q) => `${x(q)},${y(v)}`).join(' ')} ${[3, 2, 1, 0].map((q) => `${x(q)},${y(field[q])}`).join(' ')}`
@@ -411,7 +411,7 @@ function Fig3({ reg, basis }) {
   return (
     <svg {...svgProps(572, `Share of districts with a complete transfer path rises from ${pct(field[0])} to ${pct(field[3])} for ${n} non-computing majors, and from ${pct(cs[0])} to ${pct(cs[3])} for the nine Computer Science programs.`)}>
 
-      {[0, 0.2, 0.4, 0.6, 0.8].map((v, i) => (
+      {[0, 0.2, 0.4, 0.6, 0.8, 1].map((v, i) => (
         <g key={v}>
           <line x1='220' y1={y(v)} x2='940' y2={y(v)} stroke={i === 0 ? AXIS : GRID} strokeWidth='1' />
           <text x='204' y={y(v) + 5} fontSize={reg.tick} fill={MUTED_TEXT} textAnchor='end'>{pct(v)}</text>
@@ -436,8 +436,8 @@ function Fig3({ reg, basis }) {
       <text x='962' y='166' fontSize={reg.big} fontWeight='700' fill={CS_BLUE}>{pct(cs[3])}</text>
       <text x='962' y='252' fontSize='14' fontWeight='600' fill={SOFT}>{n} other programs</text>
       <text x='962' y='282' fontSize={reg.big} fontWeight='700' fill={SOFT}>{pct(field[3])}</text>
-      <text x='236' y={y(cs[0]) - 8} fontSize='13' fontWeight='600' fill={CS_BLUE}>{pct(cs[0])}</text>
-      <text x='236' y={y(field[0]) + 22} fontSize='13' fontWeight='600' fill={SOFT}>{pct(field[0])}</text>
+      <text x='206' y={y(cs[0]) + 5} fontSize='13' fontWeight='600' fill={CS_BLUE} textAnchor='end'>{pct(cs[0])}</text>
+      <text x='206' y={y(field[0]) + 5} fontSize='13' fontWeight='600' fill={SOFT} textAnchor='end'>{pct(field[0])}</text>
       <text x='770' y={y(cs[2]) - 35} fontSize='13' fontWeight='700' fill={CS_BLUE}>+{pts(cs[3] - cs[0])} points</text>
       <text x='770' y={y(field[2]) + 28} fontSize='13' fontWeight='700' fill={SOFT}>+{pts(field[3] - field[0])} points</text>
 
@@ -470,7 +470,7 @@ function Fig4Market({ reg, basis }) {
   const companion = [...field].sort((a, b) => (b.swing * 2 + b.applicants / 3500) - (a.swing * 2 + a.applicants / 3500))
     .find((r) => r.applicants > 900 && r.swing > 0.6)
   return (
-    <svg {...svgProps(524, `Every measurable program: transfer applicants against the access swing between the lowest- and highest-income quartiles. The field, measured on stated preparation, averages a ${Math.round(meanSwing * 100)}-point swing; the Computer Science programs${basis === 'minimums' ? ', measured on the eligibility floor,' : ''} average ${marketMeanSwing(csRows)} points and occupy the high-demand, high-swing corner.`)}>
+    <svg {...svgProps(500, `Every measurable program: transfer applicants against the access swing between the lowest- and highest-income quartiles. The field, measured on stated preparation, averages a ${Math.round(meanSwing * 100)}-point swing; the Computer Science programs${basis === 'minimums' ? ', measured on the eligibility floor,' : ''} average ${marketMeanSwing(csRows)} points and occupy the high-demand, high-swing corner.`)}>
 
       {[0, 0.2, 0.4, 0.6, 0.8].map((v, i) => (
         <g key={v}>
@@ -507,14 +507,9 @@ function Fig4Market({ reg, basis }) {
 
       <text x='1096' y={y(0.76)} fontSize='12.5' fontWeight='600' fill={INK} textAnchor='end'>high demand, large income swing</text>
 
-      <text x='28' y='488' fontSize={reg.note} fill={MUTED_TEXT}>
-        {basis === 'minimums'
-          ? 'The field is measured on stated preparation, its only basis; Computer Science on the eligibility floor.'
-          : `${excludedCount} programs closed from every district on stated preparation are not drawn — a closed program has no measurable swing.`}
-      </text>
-      {basis === 'minimums' && (
-        <text x='28' y='510' fontSize={reg.note} fill={MUTED_TEXT}>
-          {excludedCount - 2} field programs closed from every district are not drawn — a closed program has no measurable swing.
+      {basis !== 'minimums' && (
+        <text x='28' y='488' fontSize={reg.note} fill={MUTED_TEXT}>
+          {excludedCount} programs closed from every district on stated preparation are not drawn — a closed program has no measurable swing.
         </text>
       )}
     </svg>

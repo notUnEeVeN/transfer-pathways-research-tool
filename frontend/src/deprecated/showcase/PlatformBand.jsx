@@ -8,7 +8,7 @@
 
 import React from 'react'
 import { CalendarDaysIcon } from '@heroicons/react/24/outline'
-import { Logo, MarketingSection } from '../components/ui'
+import { Logo, MarketingSection } from '../../components/ui'
 import { PLATFORM_SURFACES, SCOPE_METRICS, SHOWCASE_SNAPSHOT } from './showcaseContent'
 
 export default function PlatformBand() {
