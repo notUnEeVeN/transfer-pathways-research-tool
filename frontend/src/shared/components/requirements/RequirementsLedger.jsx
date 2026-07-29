@@ -274,6 +274,10 @@ function SendingSide({ receiver, courses, userCourses, mark }) {
   )
 }
 
+// `match.caption` overrides the second line only. California callers pass none
+// and render byte-identically; a non-California corpus (Maryland/ARTSYS) uses it
+// so the row cannot claim "UC-transferable" about courses that are nothing of
+// the sort.
 function CategoryMatch({ match }) {
   const areas = (match.areas || []).join(', ')
   if (match.assumed) {
@@ -293,7 +297,8 @@ function CategoryMatch({ match }) {
           : `${match.qualifying_count} qualifying ${match.qualifying_count === 1 ? 'course' : 'courses'}`}
       </p>
       <p className='text-caption ink-muted mt-0.5'>
-        {areas ? `UC-transferable courses tagged for IGETC ${areas}` : 'Approved UC-transferable breadth courses'}
+        {match.caption
+          ?? (areas ? `UC-transferable courses tagged for IGETC ${areas}` : 'Approved UC-transferable breadth courses')}
       </p>
     </div>
   )

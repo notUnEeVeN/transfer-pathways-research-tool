@@ -17,11 +17,18 @@
     "slots:audit": "node scripts/migrateAsDegreeSlots.js",
     "slots:apply": "node scripts/migrateAsDegreeSlots.js --apply",
     "snapshot:multi-campus": "node scripts/generateMultiCampusPathwaysSnapshot.js",
+    "artsys:audit": "node scripts/importArtsys.js",
+    "artsys:import": "node scripts/importArtsys.js --apply",
+    "artsys:refresh": "node scripts/importArtsys.js --apply --refresh",
+    "artsys:import:local": "node scripts/importArtsys.js --apply --uri mongodb://127.0.0.1:27017 --db pmt_research",
+    "artsys:enrich": "node scripts/enrichArtsys.js",
+    "artsys:enrich:apply": "node scripts/enrichArtsys.js --apply",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.113.0",
+    "cheerio": "^1.2.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

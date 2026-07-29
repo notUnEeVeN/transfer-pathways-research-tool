@@ -75,6 +75,12 @@ router.get('/analysis/category-gaps', ...guarded, analysisController.categoryGap
 router.get('/analysis/complexity', ...guarded, analysisController.complexity);
 router.get('/analysis/time-to-degree', ...guarded, analysisController.timeToDegree);
 
+// ───────── Maryland (ARTSYS) — second state, deliberately isolated ─────────
+// Reads only `artsys_*` collections and shares no code with the California
+// stack above. Removing this line and server/{routes,controllers}/Maryland*
+// removes the state entirely; nothing else references it.
+router.use('/md', require('./maryland')(guarded));
+
 // ───────── Audit console ─────────
 // Same audit stack as the production tool, minus its local-Mongo gates: the
 // research reference handle points at the dedicated research cluster by
