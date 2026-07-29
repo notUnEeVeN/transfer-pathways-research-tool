@@ -436,8 +436,8 @@ function Fig3({ reg, basis }) {
       <text x='962' y='166' fontSize={reg.big} fontWeight='700' fill={CS_BLUE}>{pct(cs[3])}</text>
       <text x='962' y='252' fontSize='14' fontWeight='600' fill={SOFT}>{n} other programs</text>
       <text x='962' y='282' fontSize={reg.big} fontWeight='700' fill={SOFT}>{pct(field[3])}</text>
-      <text x='206' y={y(cs[0]) + 5} fontSize='13' fontWeight='600' fill={CS_BLUE} textAnchor='end'>{pct(cs[0])}</text>
-      <text x='206' y={y(field[0]) + 5} fontSize='13' fontWeight='600' fill={SOFT} textAnchor='end'>{pct(field[0])}</text>
+      <text x='232' y={y(cs[0]) - 12} fontSize='13' fontWeight='600' fill={CS_BLUE}>{pct(cs[0])}</text>
+      <text x='232' y={y(field[0]) + 20} fontSize='13' fontWeight='600' fill={SOFT}>{pct(field[0])}</text>
       <text x='770' y={y(cs[2]) - 35} fontSize='13' fontWeight='700' fill={CS_BLUE}>+{pts(cs[3] - cs[0])} points</text>
       <text x='770' y={y(field[2]) + 28} fontSize='13' fontWeight='700' fill={SOFT}>+{pts(field[3] - field[0])} points</text>
 
