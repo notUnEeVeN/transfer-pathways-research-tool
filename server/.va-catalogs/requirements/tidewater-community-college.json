@@ -1,0 +1,41 @@
+{
+ "slug": "tidewater-community-college",
+ "name": "Tidewater Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "outcome": "blocked",
+ "source_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": null,
+  "candidates": [],
+  "catoids": [],
+  "read": {
+   "navs_seen": 0,
+   "nav_pages_read": 0,
+   "program_links_seen": 0,
+   "via": "navigation"
+  },
+  "read_fetch": {
+   "navs_seen": 0,
+   "nav_pages_read": 0,
+   "program_links_seen": 0
+  },
+  "read_curl": {
+   "navs_seen": 0,
+   "nav_pages_read": 0,
+   "program_links_seen": 0,
+   "via": "curl"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.769Z"
+}

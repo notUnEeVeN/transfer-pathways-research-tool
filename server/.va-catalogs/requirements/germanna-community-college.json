@@ -1,0 +1,1397 @@
+{
+ "slug": "germanna-community-college",
+ "name": "Germanna Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.germanna.edu/preview_program.php?catoid=15&poid=1614&returnto=453&print=1",
+ "captured_at": "2026-08-02T05:43:53.367Z",
+ "program_title": "Computer Science - AS - 246",
+ "total_credits": {
+  "min": 60,
+  "max": 60,
+  "raw": "60"
+ },
+ "stopped_at": "Suggested Scheduling:",
+ "groups": [
+  {
+   "title": "Student Development",
+   "credits": {
+    "min": 1,
+    "max": 1,
+    "raw": "1"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Student Development (1cr)",
+    "SDV 100: College Success Skills or SDV 101"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills or SDV"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100: College Success Skills or SDV",
+       "credits": {
+        "min": 101,
+        "max": 101,
+        "raw": "101"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Written Communication",
+   "credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Written Communication (6cr)",
+    "ENG 111: College Composition I",
+    "ENG 112: College Composition II or ENG 113: Technical-Professional Writing"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111: College Composition I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        },
+        {
+         "code": "ENG113",
+         "title": "Technical-Professional Writing"
+        }
+       ],
+       "conjunction": "or",
+       "text": "ENG 112: College Composition II or ENG 113: Technical-Professional Writing",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Arts, Humanities, and Literature",
+   "credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "choose": 2,
+   "choose_credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "distinct_sections": 2,
+   "note": "Choose any two courses (6cr) from the options below - selections must be from two different categories (PHI 220 may be required by some transfer colleges)",
+   "source_text": [
+    "Arts, Humanities, and Literature (6cr)",
+    "Choose any two courses (6cr) from the options below - selections must be from two different categories (PHI 220 may be required by some transfer colleges)",
+    "Art",
+    "ART 101: History of Art: Prehistoric to Gothic",
+    "ART 102: History of Art: Renaissance to Modern",
+    "MUS 121: Music in Society",
+    "CST 130: Introduction to Theatre",
+    "CST 151: Film Appreciation I",
+    "Humanities",
+    "HUM 201: Early Humanities",
+    "HUM 202: Modern Humanities",
+    "HUM 210: Introduction to Women and Gender Studies",
+    "HUM 220: Introduction to African-American Studies",
+    "HUM 256: Comparative Mythology",
+    "HUM 259: The Greek and Roman Tradition",
+    "PHI 100: Introduction to Philosophy",
+    "PHI 111: Logic I",
+    "PHI 220: Ethics",
+    "REL 100: Introduction to the Study of Religion",
+    "REL 230: Religions of the World",
+    "REL 237: Eastern Religions",
+    "REL 240: Religions in America",
+    "Literature",
+    "ENG 225: Reading Literature",
+    "ENG 245: British Literature",
+    "ENG 246: American Literature",
+    "ENG 250: Children’s Literature",
+    "ENG 255: World Literature",
+    "ENG 258: African American Literature",
+    "ENG 275: Women’s Literature"
+   ],
+   "sections": [
+    {
+     "label": "Art",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ART101",
+         "title": "History of Art: Prehistoric to Gothic"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 101: History of Art: Prehistoric to Gothic",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART102",
+         "title": "History of Art: Renaissance to Modern"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 102: History of Art: Renaissance to Modern",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS121",
+         "title": "Music in Society"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 121: Music in Society",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST130",
+         "title": "Introduction to Theatre"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 130: Introduction to Theatre",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST151",
+         "title": "Film Appreciation I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 151: Film Appreciation I",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Humanities",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "HUM201",
+         "title": "Early Humanities"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 201: Early Humanities",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM202",
+         "title": "Modern Humanities"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 202: Modern Humanities",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM210",
+         "title": "Introduction to Women and Gender Studies"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 210: Introduction to Women and Gender Studies",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM220",
+         "title": "Introduction to African-American Studies"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 220: Introduction to African-American Studies",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM256",
+         "title": "Comparative Mythology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 256: Comparative Mythology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM259",
+         "title": "The Greek and Roman Tradition"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 259: The Greek and Roman Tradition",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI100",
+         "title": "Introduction to Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 100: Introduction to Philosophy",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI111",
+         "title": "Logic I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 111: Logic I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI220",
+         "title": "Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 220: Ethics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL100",
+         "title": "Introduction to the Study of Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 100: Introduction to the Study of Religion",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL230",
+         "title": "Religions of the World"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 230: Religions of the World",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL237",
+         "title": "Eastern Religions"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 237: Eastern Religions",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL240",
+         "title": "Religions in America"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 240: Religions in America",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Literature",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG225",
+         "title": "Reading Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 225: Reading Literature",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG245",
+         "title": "British Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 245: British Literature",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG246",
+         "title": "American Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 246: American Literature",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG250",
+         "title": "Children’s Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 250: Children’s Literature",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG255",
+         "title": "World Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 255: World Literature",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG258",
+         "title": "African American Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 258: African American Literature",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG275",
+         "title": "Women’s Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 275: Women’s Literature",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Social and Behavioral Sciences",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose any UCGS Social and Behavior Sciences from the courses below",
+   "source_text": [
+    "Social and Behavioral Sciences (3cr)",
+    "Choose any UCGS Social and Behavior Sciences from the courses below",
+    "ECO 150: Economic Essentials: Theory and Application",
+    "ECO 201: Principles of Macroeconomics",
+    "ECO 202: Principles of Microeconomics",
+    "GEO 210: People and the Land: Introduction to Cultural Geography",
+    "GEO 220: World Regional Geography",
+    "PLS 135: U.S. Government and Politics",
+    "PLS 140: Introduction to Comparative Politics",
+    "PLS 241: Introduction to International Relations",
+    "PSY 200: Principles of Psychology",
+    "SOC 200: Introduction to Sociology",
+    "SOC 268: Social Problems"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ECO150",
+         "title": "Economic Essentials: Theory and Application"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 150: Economic Essentials: Theory and Application",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO201",
+         "title": "Principles of Macroeconomics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 201: Principles of Macroeconomics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO202",
+         "title": "Principles of Microeconomics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 202: Principles of Microeconomics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO210",
+         "title": "People and the Land: Introduction to Cultural Geography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO 210: People and the Land: Introduction to Cultural Geography",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO220",
+         "title": "World Regional Geography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO 220: World Regional Geography",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS135",
+         "title": "U.S. Government and Politics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 135: U.S. Government and Politics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS140",
+         "title": "Introduction to Comparative Politics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 140: Introduction to Comparative Politics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS241",
+         "title": "Introduction to International Relations"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 241: Introduction to International Relations",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY200",
+         "title": "Principles of Psychology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY 200: Principles of Psychology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC200",
+         "title": "Introduction to Sociology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 200: Introduction to Sociology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC268",
+         "title": "Social Problems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 268: Social Problems",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "History",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose any UCGS History from the courses below",
+   "source_text": [
+    "History (3cr)",
+    "Choose any UCGS History from the courses below",
+    "HIS 101: Western Civilizations Pre-1600 CE",
+    "HIS 102: Western Civilizations Post-1600 CE",
+    "HIS 111: World Civilizations Pre-1500CE",
+    "HIS 112: World Civilizations Post-1500CE",
+    "HIS 121: United States History to 1877",
+    "HIS 122: United States History since 1865"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "HIS101",
+         "title": "Western Civilizations Pre-1600 CE"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 101: Western Civilizations Pre-1600 CE",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS102",
+         "title": "Western Civilizations Post-1600 CE"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 102: Western Civilizations Post-1600 CE",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS111",
+         "title": "World Civilizations Pre-1500CE"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 111: World Civilizations Pre-1500CE",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS112",
+         "title": "World Civilizations Post-1500CE"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 112: World Civilizations Post-1500CE",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS121",
+         "title": "United States History to"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 121: United States History to",
+       "credits": {
+        "min": 1877,
+        "max": 1877,
+        "raw": "1877"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS122",
+         "title": "United States History since"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 122: United States History since",
+       "credits": {
+        "min": 1865,
+        "max": 1865,
+        "raw": "1865"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Natural Sciences",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose one UCGS Natural Science Course from below",
+   "source_text": [
+    "Natural Sciences (4cr)",
+    "Choose one UCGS Natural Science Course from below",
+    "BIO 101: General Biology I",
+    "CHM 111: General Chemistry I",
+    "PHY 201: General College Physics I",
+    "PHY 241: University Physics I",
+    "GOL 105: Physical Geology",
+    "GOL 106: Historical Geology"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101: General Biology I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111: General Chemistry I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY201",
+         "title": "General College Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 201: General College Physics I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241: University Physics I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105: Physical Geology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106: Historical Geology",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Mathematics",
+   "credits": {
+    "min": 7,
+    "max": 7,
+    "raw": "7"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Mathematics (7cr)",
+    "MTH 263: Calculus I and",
+    "MTH 245: Statistics I or MTH 264 Calculus II"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263: Calculus I and",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics I"
+        },
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 245: Statistics I or MTH 264 Calculus II",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "UCGS General Education Elective",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose one course below",
+   "source_text": [
+    "UCGS General Education Elective (3cr)",
+    "Choose one course below",
+    "BIO 102: General Biology II",
+    "CHM 112: General Chemistry II",
+    "PHY 202: General College Physics II",
+    "PHY 242: University Physics II",
+    "GOL 105: Physical Geology",
+    "GOL 106: Historical Geology",
+    "MTH 245: Statistics I",
+    "MTH 264: Calculus II",
+    "MTH 265: Calculus III",
+    "CST 100: Principles of Public Speaking",
+    "CST 110: Introduction to Human Communication",
+    "Any World Language"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102: General Biology II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112: General Chemistry II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY202",
+         "title": "General College Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 202: General College Physics II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242: University Physics II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105: Physical Geology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106: Historical Geology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 245: Statistics I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264: Calculus II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265: Calculus III",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100: Principles of Public Speaking",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST110",
+         "title": "Introduction to Human Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 110: Introduction to Human Communication",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Major Requirements",
+   "credits": {
+    "min": 17,
+    "max": 17,
+    "raw": "17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Major Requirements (17cr)",
+    "CSC 221: Introduction to Problem Solving and Programming",
+    "CSC 222: Object-Oriented Programming",
+    "CSC 223: Data Structures and Analysis of Algorithms",
+    "CSC 205: Computer Organization or MTH 265 Calculus III",
+    "CSC 208: Introduction to Discrete Structure or MTH 288 Discrete Mathematics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221: Introduction to Problem Solving and Programming",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222: Object-Oriented Programming",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223: Data Structures and Analysis of Algorithms",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        },
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CSC 205: Computer Organization or MTH 265 Calculus III",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structure"
+        },
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CSC 208: Introduction to Discrete Structure or MTH 288 Discrete Mathematics",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Transfer Electives (Prerequisites if needed)",
+   "credits": {
+    "min": 7,
+    "max": 10,
+    "raw": "7-10"
+   },
+   "choose": null,
+   "choose_credits": {
+    "min": 62,
+    "max": 62,
+    "raw": "62"
+   },
+   "distinct_sections": null,
+   "note": "Select elective coursework to reach 60 - 62 credit hours total Select Additional Science from the list of science options",
+   "source_text": [
+    "Transfer Electives (Prerequisites if needed) (7-10)",
+    "Select elective coursework to reach 60 - 62 credit hours total",
+    "MTH 161: Precalculus I /MTH 162 Precalculus II",
+    "MTH 167: Precalculus with Trigonometry",
+    "Select Additional Science from the list of science options",
+    "CSC 205 Computer Organization - if not taken to fulfill major requirement",
+    "EGR 121 Foundations of Engineering",
+    "EGR 122 Engineering Design Engineering Design",
+    "EGR 270 Fundamentals of Computer Engineering",
+    "CST 100, CST 110, or World Language",
+    "MTH 265 Calculus III",
+    "MTH 266 Linear Algebra"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": "Precalculus I"
+        },
+        {
+         "code": "MTH162",
+         "title": "Precalculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 161: Precalculus I /MTH 162 Precalculus II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH167",
+         "title": "Precalculus with Trigonometry"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 167: Precalculus with Trigonometry",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization - if not taken to fulfill major requirement"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization - if not taken to fulfill major requirement",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121 Foundations of Engineering",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design Engineering Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122 Engineering Design Engineering Design",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR270",
+         "title": "Fundamentals of Computer Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 270 Fundamentals of Computer Engineering",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": ","
+        },
+        {
+         "code": "CST110",
+         "title": "World Language"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100, CST 110, or World Language",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 Calculus III",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 Linear Algebra",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Purpose: The curriculum is primarily designed for students who wish to transfer to a four-year college or university to complete a baccalaureate degree in Computer Science; the curriculum emphasizes the study of the science of computing and the use of computing in a scientific setting. Upon completion of the program, students will have obtained the basic knowledge and skills that will enable them to understand the underlying structure of computers and how to implement processes.",
+  "Admission Requirements: All students must demonstrate college readiness through transcript review or informed self-placement. Based on this review, students may request or be required to enroll in prerequisite or corequisite math and/or English courses."
+ ],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 75 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "10 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "75 distinct courses across 78 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 57–60, stated total 60"
+   }
+  ],
+  "stats": {
+   "groups": 10,
+   "sections": 13,
+   "rows": 78,
+   "course_rows": 78,
+   "category_rows": 0,
+   "distinct_courses": 75,
+   "credit_span": {
+    "min": 57,
+    "max": 60,
+    "groups_with_credits": 10
+   },
+   "stated_total": "60"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.731Z"
+}

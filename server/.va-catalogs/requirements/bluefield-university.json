@@ -1,0 +1,20 @@
+{
+ "slug": "bluefield-university",
+ "name": "Bluefield University",
+ "level": "four_year",
+ "platform": "web",
+ "outcome": "no_cs_program",
+ "source_url": "https://www.bluefield.edu/academics/programs-of-study/",
+ "offers_cs": false,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": false,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": null,
+ "extracted_at": "2026-08-02T06:25:26.253Z"
+}

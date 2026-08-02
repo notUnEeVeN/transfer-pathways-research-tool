@@ -1,0 +1,1137 @@
+{
+ "slug": "virginia-peninsula-community-college",
+ "name": "Virginia Peninsula Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.vpcc.edu/preview_program.php?catoid=26&poid=6026&print=1",
+ "captured_at": "2026-08-02T05:51:49.449Z",
+ "program_title": "Computer Science (246) Associate of Science",
+ "total_credits": {
+  "min": 60,
+  "max": 60,
+  "raw": "60"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Fall 1",
+   "credits": {
+    "min": 17,
+    "max": 17,
+    "raw": "17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fall 1",
+    "CSC 221 - Introduction to Problem Solving and Programming (3 credits)",
+    "ENG 111 - College Composition I (3 credits)",
+    "SDV 100 - College Success Skills (1 credit)",
+    "MTH 263 - Calculus I (4 credits)",
+    "NOTE: If students enrolling in MTH 263 are required to successfully complete MTH 161-MTH 162 prerequisite courses, the courses may be used to fulfill Computer Science Elective requirements.",
+    "— xx3 - Arts/Humanities/Literature (BLK II) (3 credits)",
+    "— xx3 - History (BLK VI) (3 credits)",
+    "Semester Total Credits 17"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 - Introduction to Problem Solving and Programming (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 - College Composition I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100 - College Success Skills (1 credit)",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 - Calculus I (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "are required to successfully complete"
+        },
+        {
+         "code": "MTH161",
+         "title": null
+        },
+        {
+         "code": "MTH162",
+         "title": "prerequisite courses, the courses may be used to fulfill Computer Science Elective requirements."
+        }
+       ],
+       "conjunction": "and",
+       "text": "NOTE: If students enrolling in MTH 263 are required to successfully complete MTH 161-MTH 162 prerequisite courses, the courses may be used to fulfill Computer Science Elective requirements.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "— xx3 - Arts/Humanities/Literature (BLK II) (3 credits)",
+       "category": "— xx3 - Arts/Humanities/Literature (BLK II)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "— xx3 - History (BLK VI) (3 credits)",
+       "category": "— xx3 - History (BLK VI)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring 1",
+   "credits": {
+    "min": 16,
+    "max": 17,
+    "raw": "16/17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Spring 1",
+    "CSC 208 - Introduction to Discrete Structures (3 credits)",
+    "CSC 222 - Object-Oriented Programming (4 credits)",
+    "ENG 112 - College Composition II (3 credits) or",
+    "ENG 113 - Technical-Professional Writing (3 credits)",
+    "MTH 264 - Calculus II (4 credits) or",
+    "MTH 245 - Statistics I (3 credits)",
+    "— xx3 - Social and Behavioral Sciences (BLK III) (3 credits)",
+    "Semester Total Credits 16/17"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 - Introduction to Discrete Structures (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 - Object-Oriented Programming (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 - College Composition II (3 credits) or",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG113",
+         "title": "Technical-Professional Writing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 113 - Technical-Professional Writing (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 - Calculus II (4 credits) or",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 245 - Statistics I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "— xx3 - Social and Behavioral Sciences (BLK III) (3 credits)",
+       "category": "— xx3 - Social and Behavioral Sciences (BLK III)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall 2",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fall 2",
+    "CSC 223 - Data Structures and Analysis of Algorithms (4 credits)",
+    "— xx3 - Arts/Humanities/Literature (BLK II) (3 credits)",
+    "BIO 101 - General Biology I (4 credits) or",
+    "CHM 111 - General Chemistry I (4 credits) or",
+    "GOL 105 - Physical Geology (4 credits) or",
+    "PHY 241 - University Physics I (4 credits) or"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 - Data Structures and Analysis of Algorithms (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "— xx3 - Arts/Humanities/Literature (BLK II) (3 credits)",
+       "category": "— xx3 - Arts/Humanities/Literature (BLK II)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101 - General Biology I (4 credits) or",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 - General Chemistry I (4 credits) or",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105 - Physical Geology (4 credits) or",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241 - University Physics I (4 credits) or",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Science 1",
+   "credits": {
+    "min": 3,
+    "max": 4,
+    "raw": "3-4"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose one course from the list below.",
+   "source_text": [
+    "Computer Science 1 (3-4 credits)",
+    "Choose one course from the list below.",
+    "BIO 102 - General Biology II (4 credits)",
+    "CHM 112 - General Chemistry II (4 credits)",
+    "CSC 205 - Computer Organization (3 credits)",
+    "FRE 101 - Beginning French I (4 credits)",
+    "FRE 102 - Beginning French II (4 credits)",
+    "FRE 201 - Intermediate French I (3 credits)",
+    "FRE 202 - Intermediate French II (3 credits)",
+    "GOL 106 - Historical Geology (4 credits)",
+    "ITE 152 - Introduction to Digital and Information Literacy and Computer Applications (3 credits)",
+    "MTH 265 - Calculus III (4 credits)",
+    "MTH 266 - Linear Algebra (3 credits)",
+    "PHY 242 - University Physics II (4 credits)",
+    "SPA 101 - Beginning Spanish I (4 credits)",
+    "SPA 102 - Beginning Spanish II (4 credits)",
+    "SPA 201 - Intermediate Spanish I (3 credits)",
+    "SPA 202 - Intermediate Spanish II (3 credits)",
+    "Semester Total Credits 14/15"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102 - General Biology II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 - General Chemistry II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 - Computer Organization (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE101",
+         "title": "Beginning French I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 101 - Beginning French I (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE102",
+         "title": "Beginning French II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 102 - Beginning French II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE201",
+         "title": "Intermediate French I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 201 - Intermediate French I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE202",
+         "title": "Intermediate French II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 202 - Intermediate French II (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106 - Historical Geology (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "TE152",
+         "title": "Introduction to Digital and Information Literacy and Computer Applications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ITE 152 - Introduction to Digital and Information Literacy and Computer Applications (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 - Calculus III (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 - Linear Algebra (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242 - University Physics II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA101",
+         "title": "Beginning Spanish I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 101 - Beginning Spanish I (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA102",
+         "title": "Beginning Spanish II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 102 - Beginning Spanish II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA201",
+         "title": "Intermediate Spanish I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 201 - Intermediate Spanish I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA202",
+         "title": "Intermediate Spanish II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 202 - Intermediate Spanish II (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring 2",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Spring 2",
+    "CSC 205 - Computer Organization (3 credits) or",
+    "MTH 265 - Calculus III (4 credits)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 - Computer Organization (3 credits) or",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 - Calculus III (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Science 2",
+   "credits": {
+    "min": 7,
+    "max": 10,
+    "raw": "7-10"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose courses from the list below. For additional information about this program visit the Science, Technology, Engineering and Mathematics webpage, stop by room 321 Hastings Hall, phone 757-825-2898, or email stemoffice@vpcc.edu. Students may take courses in the summer session where available. Please consult with an academic advisor to review course scheduling options. Students are encouraged to speak with a financial aid advisor to determine funding eligibility.",
+   "source_text": [
+    "Computer Science 2 (7-10 credits)",
+    "Choose courses from the list below.",
+    "CSC 205 Computer Organization (3 credits)",
+    "CST 100 - Principles of Public Speaking (3 credits)",
+    "EGR 121 - Foundations of Engineering (2 credits)",
+    "EGR 122 - Engineering Design (3 credits)",
+    "FRE 101 - Beginning French I (4 credits)",
+    "FRE 102 - Beginning French II (4 credits)",
+    "FRE 201 - Intermediate French I (3 credits)",
+    "FRE 202 - Intermediate French II (3 credits)",
+    "MTH 245 - Statistics I (3 credits)",
+    "MTH 264 - Calculus II (4 credits)",
+    "MTH 266 - Linear Algebra (3 credits)",
+    "MTH 161 - Precalculus I (3 credits)",
+    "MTH 162 - Precalculus II (3 credits)",
+    "SPA 101 - Beginning Spanish I (4 credits)",
+    "SPA 102 - Beginning Spanish II (4 credits)",
+    "SPA 201 - Intermediate Spanish I (3 credits)",
+    "SPA 202 - Intermediate Spanish II (3 credits)",
+    "Semester Total Credits 13/14",
+    "Program Information (STEM)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 - Principles of Public Speaking (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121 - Foundations of Engineering (2 credits)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122 - Engineering Design (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE101",
+         "title": "Beginning French I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 101 - Beginning French I (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE102",
+         "title": "Beginning French II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 102 - Beginning French II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE201",
+         "title": "Intermediate French I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 201 - Intermediate French I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FRE202",
+         "title": "Intermediate French II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FRE 202 - Intermediate French II (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 245 - Statistics I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 - Calculus II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 - Linear Algebra (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": "Precalculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 161 - Precalculus I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH162",
+         "title": "Precalculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 162 - Precalculus II (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA101",
+         "title": "Beginning Spanish I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 101 - Beginning Spanish I (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA102",
+         "title": "Beginning Spanish II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 102 - Beginning Spanish II (4 credits)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA201",
+         "title": "Intermediate Spanish I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 201 - Intermediate Spanish I (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SPA202",
+         "title": "Intermediate Spanish II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SPA 202 - Intermediate Spanish II (3 credits)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Purpose: The Associate of Science (A.S.) degree program in Computer Science is a statewide common curriculum designed primarily for students who wish to transfer to a four-year college or university to pursue a Bachelor of Science (B.S.) degree in Computer Science.",
+  "The curriculum emphasizes programming, software design, study of algorithms, and data structures as well as computer hardware and architecture. This degree provides the basic skillset required for further specialization at the university level. Depending on the university, students will have the opportunity to select a field of study including software engineering, bioinformatics, cybersecurity, or basic research."
+ ],
+ "unassigned": [
+  "For additional information about this program visit the Science, Technology, Engineering and Mathematics webpage, stop by room 321 Hastings Hall, phone 757-825-2898, or email stemoffice@vpcc.edu.",
+  "Students may take courses in the summer session where available. Please consult with an academic advisor to review course scheduling options. Students are encouraged to speak with a financial aid advisor to determine funding eligibility."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 36 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "6 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "36 distinct courses across 55 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 43–48 against a stated 60, but 2 of 6 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "4 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 6,
+   "sections": 6,
+   "rows": 55,
+   "course_rows": 51,
+   "category_rows": 4,
+   "distinct_courses": 36,
+   "credit_span": {
+    "min": 43,
+    "max": 48,
+    "groups_with_credits": 4
+   },
+   "stated_total": "60"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.807Z"
+}

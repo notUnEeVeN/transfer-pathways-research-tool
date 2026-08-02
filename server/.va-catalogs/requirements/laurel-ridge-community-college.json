@@ -1,0 +1,1516 @@
+{
+ "slug": "laurel-ridge-community-college",
+ "name": "Laurel Ridge Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.laurelridge.edu/preview_program.php?catoid=25&poid=1940",
+ "captured_at": "2026-08-02T05:44:46.266Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 60,
+  "max": 64,
+  "raw": "60-64"
+ },
+ "stopped_at": "Suggested Scheduling:",
+ "groups": [
+  {
+   "title": "Student Development",
+   "credits": {
+    "min": 1,
+    "max": 1,
+    "raw": "1"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "Student Development (1 cr)",
+    "Select one course",
+    "SDV 100 - College Success Skills (Fall Spring Summer) 1 cr.",
+    "SDV 101 - Orientation to IT Professions (Fall Spring Summer) 1 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills (Fall Spring Summer) 1 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100 - College Success Skills (Fall Spring Summer) 1 cr.",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV101",
+         "title": "Orientation to IT Professions (Fall Spring Summer) 1 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 101 - Orientation to IT Professions (Fall Spring Summer) 1 cr.",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Written Communication",
+   "credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Written Communication (6 cr)",
+    "ENG 111 - College Composition I (Fall Spring Summer) 3 cr.",
+    "ENG 112 - College Composition II (Fall Spring Summer) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 - College Composition I (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 - College Composition II (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Arts & Humanities",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "Arts & Humanities (3 cr)",
+    "Select one course",
+    "ART 100 - Art Appreciation (Fall Spring Summer) 3 cr.",
+    "ART 101 - History of Art: Prehistoric to Gothic (Fall Spring Summer) 3 cr.",
+    "ART 102 - History of Art: Renaissance to Modern (Fall Spring Summer) 3 cr.",
+    "CST 151 - Film Appreciation (Fall Spring) 3 cr.",
+    "MUS 121 - Music in Society (Fall Spring Summer) 3 cr.",
+    "HUM 201 - Early Humanities (Fall Summer) 3 cr.",
+    "HUM 202 - Modern Humanities (Check Availability) 3 cr.",
+    "HUM 216 - Introduction to Non-Western Cultures (Spring Summer) 3 cr.",
+    "HUM 256 - Comparative Mythology (Fall Spring Summer) 3 cr.",
+    "HUM 259 - The Greek and Roman Tradition (Check Availability) 3 cr.",
+    "PHI 100 - Introduction to Philosophy (Fall Spring Summer) 3 cr.",
+    "PHI 111 - Logic (Fall Spring) 3 cr.",
+    "PHI 220 - Ethics and Society (Fall Spring Summer) 3 cr.",
+    "REL 100 - Introduction to the Study of Religion (Fall Spring Summer) 3 cr.",
+    "REL 230 - Religions of the World (Check Availability) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ART100",
+         "title": "Art Appreciation (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 100 - Art Appreciation (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART101",
+         "title": "History of Art: Prehistoric to Gothic (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 101 - History of Art: Prehistoric to Gothic (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART102",
+         "title": "History of Art: Renaissance to Modern (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 102 - History of Art: Renaissance to Modern (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST151",
+         "title": "Film Appreciation (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 151 - Film Appreciation (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS121",
+         "title": "Music in Society (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 121 - Music in Society (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM201",
+         "title": "Early Humanities (Fall Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 201 - Early Humanities (Fall Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM202",
+         "title": "Modern Humanities (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 202 - Modern Humanities (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM216",
+         "title": "Introduction to Non-Western Cultures (Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 216 - Introduction to Non-Western Cultures (Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM256",
+         "title": "Comparative Mythology (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 256 - Comparative Mythology (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HUM259",
+         "title": "The Greek and Roman Tradition (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HUM 259 - The Greek and Roman Tradition (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI100",
+         "title": "Introduction to Philosophy (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 100 - Introduction to Philosophy (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI111",
+         "title": "Logic (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 111 - Logic (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI220",
+         "title": "Ethics and Society (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 220 - Ethics and Society (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL100",
+         "title": "Introduction to the Study of Religion (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 100 - Introduction to the Study of Religion (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL230",
+         "title": "Religions of the World (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 230 - Religions of the World (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Literature",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "Literature (3 cr)",
+    "Select one course",
+    "Consult with your advisor regarding options for this specific course requirement.",
+    "ENG 225 - Reading Literature: Culture and Ideas (Fall Spring) 3 cr.",
+    "ENG 245 - British Literature (Check Availability) 3 cr.",
+    "ENG 246 - American Literature (Fall Spring Summer) 3 cr.",
+    "ENG 250 - Children’s Literature (Fall Spring Summer) 3 cr.",
+    "ENG 255 - World Literature (Fall Spring) 3 cr.",
+    "ENG 258 - African American Literature (Check Availability) 3 cr.",
+    "ENG 275 - Women’s Literature (Check Availability) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Consult with your advisor regarding options for this specific course requirement.",
+       "category": "Consult with your advisor regarding options for this specific course requirement."
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG225",
+         "title": "Reading Literature: Culture and Ideas (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 225 - Reading Literature: Culture and Ideas (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG245",
+         "title": "British Literature (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 245 - British Literature (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG246",
+         "title": "American Literature (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 246 - American Literature (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG250",
+         "title": "Children’s Literature (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 250 - Children’s Literature (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG255",
+         "title": "World Literature (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 255 - World Literature (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG258",
+         "title": "African American Literature (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 258 - African American Literature (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG275",
+         "title": "Women’s Literature (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 275 - Women’s Literature (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Social & Behavioral Sciences",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "Social & Behavioral Sciences (3 cr)",
+    "Select one course",
+    "ECO 150 - Economic Essentials: Theory and Application (Fall Spring Summer) 3 cr.",
+    "ECO 201 - Principles of Macroeconomics (Fall Spring Summer) 3 cr.",
+    "ECO 202 - Principles of Microeconomics (Fall Spring Summer) 3 cr.",
+    "GEO 210 - People & the Land: Introduction to Cultural Geography (Fall Spring Summer) 3 cr.",
+    "GEO 220 - World Regional Geography (Fall Spring) 3 cr.",
+    "PLS 135 - U.S. Government and Politics (Fall Spring Summer) 3 cr.",
+    "PLS 241 - Introduction to International Relations (Check Availability) 3 cr.",
+    "PSY 200 - Principles of Psychology (Fall Spring Summer) 3 cr.",
+    "SOC 200 - Introduction to Sociology (Fall Spring Summer) 3 cr.",
+    "SOC 268 - Social Problems (Fall Spring) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ECO150",
+         "title": "Economic Essentials: Theory and Application (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 150 - Economic Essentials: Theory and Application (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO201",
+         "title": "Principles of Macroeconomics (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 201 - Principles of Macroeconomics (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO202",
+         "title": "Principles of Microeconomics (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 202 - Principles of Microeconomics (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO210",
+         "title": "People & the Land: Introduction to Cultural Geography (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO 210 - People & the Land: Introduction to Cultural Geography (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO220",
+         "title": "World Regional Geography (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO 220 - World Regional Geography (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS135",
+         "title": "U.S. Government and Politics (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 135 - U.S. Government and Politics (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS241",
+         "title": "Introduction to International Relations (Check Availability) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 241 - Introduction to International Relations (Check Availability) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY200",
+         "title": "Principles of Psychology (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY 200 - Principles of Psychology (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC200",
+         "title": "Introduction to Sociology (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 200 - Introduction to Sociology (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC268",
+         "title": "Social Problems (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 268 - Social Problems (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Natural Science",
+   "credits": {
+    "min": 8,
+    "max": 8,
+    "raw": "8"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Natural Science (8 cr)",
+    "CHM 111 - General Chemistry I (Fall Spring Summer) 4 cr.",
+    "CHM 112 - General Chemistry II (Fall Spring Summer) 4 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I (Fall Spring Summer) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 - General Chemistry I (Fall Spring Summer) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II (Fall Spring Summer) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 - General Chemistry II (Fall Spring Summer) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Mathematics",
+   "credits": {
+    "min": 8,
+    "max": 8,
+    "raw": "8"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Mathematics (8 cr)",
+    "MTH 263 - Calculus I (Fall Spring Summer) 4 cr.",
+    "MTH 264 - Calculus II (Fall Spring Summer) 4 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I (Fall Spring Summer) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 - Calculus I (Fall Spring Summer) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II (Fall Spring Summer) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 - Calculus II (Fall Spring Summer) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "History",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "History (3 cr)",
+    "Select one course",
+    "HIS 111 - World Civilizations Pre-1500 CE (Fall Spring Summer) 3 cr.",
+    "HIS 112 - World Civilizations Post-1500 CE (Fall Spring Summer) 3 cr.",
+    "HIS 121 - United States History to 1877 (Fall Spring Summer) 3 cr.",
+    "HIS 122 - United States History Since 1865 (Fall Spring Summer) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "HIS111",
+         "title": "World Civilizations Pre-1500 CE (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 111 - World Civilizations Pre-1500 CE (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS112",
+         "title": "World Civilizations Post-1500 CE (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 112 - World Civilizations Post-1500 CE (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS121",
+         "title": "United States History to 1877 (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 121 - United States History to 1877 (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS122",
+         "title": "United States History Since 1865 (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 122 - United States History Since 1865 (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Communications",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "Communications (3 cr)",
+    "Select one course",
+    "Consult with your advisor regarding options for this specific course requirement.",
+    "CST 100 - Principles of Public Speaking (Fall Spring Summer) 3 cr.",
+    "CST 110 - Introduction to Human Communication (Fall Spring) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Consult with your advisor regarding options for this specific course requirement.",
+       "category": "Consult with your advisor regarding options for this specific course requirement."
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 - Principles of Public Speaking (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST110",
+         "title": "Introduction to Human Communication (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 110 - Introduction to Human Communication (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Major Requirements",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Major Requirements (14 cr)",
+    "CSC 221 - Introduction to Problem Solving and Programming (Spring Only) 3 cr.",
+    "CSC 222 - Object-Oriented Programming (Fall Only) 4 cr.",
+    "CSC 223 - Data Structures and Analysis of Algorithms (Spring Only) 4 cr.",
+    "CSC 208 - Introduction to Discrete Structures (Spring Only) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming (Spring Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 - Introduction to Problem Solving and Programming (Spring Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming (Fall Only) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 - Object-Oriented Programming (Fall Only) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms (Spring Only) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 - Data Structures and Analysis of Algorithms (Spring Only) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures (Spring Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 - Introduction to Discrete Structures (Spring Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Systems and Digital Design",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one course",
+   "source_text": [
+    "Computer Systems and Digital Design (3 cr)",
+    "Select one course",
+    "CSC 205 - Computer Organization (Spring Only) 3 cr.",
+    "CSC 215 - Computer Systems (Fall Only) 3 cr."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization (Spring Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 - Computer Organization (Spring Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems (Fall Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215 - Computer Systems (Fall Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Elective",
+   "credits": {
+    "min": 5,
+    "max": 8,
+    "raw": "5-8"
+   },
+   "choose": 2,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select two courses",
+   "source_text": [
+    "Elective (5-8 cr)",
+    "Select two courses",
+    "CSC 110 - Principles of Computer Science (Fall Spring Summer) 3 cr.",
+    "CSC 205 - Computer Organization (Spring Only) 3 cr.",
+    "CSC 210 - Programming with C++ (Summer Only) 4 cr.",
+    "CSC 215 - Computer Systems (Fall Only) 3 cr.",
+    "CSC 295 - Topics in (Check Availability) 1-5 cr.",
+    "CSC 298 - Seminar and Project (Check Availability) 1-5 cr.",
+    "EGR 121 - Foundations of Engineering (Fall Spring Summer) 2 cr.",
+    "EGR 122 - Engineering Design (Spring Only) 3 cr.",
+    "EGR 270 - Fundamentals of Computer Engineering (Fall Spring Summer) 4 cr.",
+    "MTH 161 - Precalculus I (Fall Spring Summer) 3 cr.",
+    "MTH 162 - Precalculus II (Fall Spring Summer) 3 cr.",
+    "MTH 167 - Precalculus with Trigonometry (Fall Spring Summer) 5 cr.",
+    "MTH 265 - Calculus III (Fall Spring) 4 cr.",
+    "MTH 266 - Linear Algebra (Fall Spring) 3 cr.",
+    "It is highly recommended that students consult with their academic advisor to select the most appropriate course for their curriculum and/or transferability to another college."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC110",
+         "title": "Principles of Computer Science (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 110 - Principles of Computer Science (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization (Spring Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 - Computer Organization (Spring Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC210",
+         "title": "Programming with C++ (Summer Only) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 210 - Programming with C++ (Summer Only) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems (Fall Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215 - Computer Systems (Fall Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC295",
+         "title": "Topics in (Check Availability) 1-5 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 295 - Topics in (Check Availability) 1-5 cr.",
+       "credits": {
+        "min": 1,
+        "max": 5,
+        "raw": "1-5"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC298",
+         "title": "Seminar and Project (Check Availability) 1-5 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 298 - Seminar and Project (Check Availability) 1-5 cr.",
+       "credits": {
+        "min": 1,
+        "max": 5,
+        "raw": "1-5"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering (Fall Spring Summer) 2 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121 - Foundations of Engineering (Fall Spring Summer) 2 cr.",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design (Spring Only) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122 - Engineering Design (Spring Only) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR270",
+         "title": "Fundamentals of Computer Engineering (Fall Spring Summer) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 270 - Fundamentals of Computer Engineering (Fall Spring Summer) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": "Precalculus I (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 161 - Precalculus I (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH162",
+         "title": "Precalculus II (Fall Spring Summer) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 162 - Precalculus II (Fall Spring Summer) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH167",
+         "title": "Precalculus with Trigonometry (Fall Spring Summer) 5 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 167 - Precalculus with Trigonometry (Fall Spring Summer) 5 cr.",
+       "credits": {
+        "min": 5,
+        "max": 5,
+        "raw": "5"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III (Fall Spring) 4 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 - Calculus III (Fall Spring) 4 cr.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra (Fall Spring) 3 cr."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 - Linear Algebra (Fall Spring) 3 cr.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "It is highly recommended that students consult with their academic advisor to select the most appropriate course for their curriculum and/or transferability to another college.",
+       "category": "It is highly recommended that students consult with their academic advisor to select the most appropriate course for their curriculum and/or transferability to another college."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Students will demonstrate their information literacy skills by effectively locating, evaluating, and utilizing various digital development resources.",
+  "Students will investigate factors other than computational efficiency that influence the choice of algorithms.",
+  "Students will compare different methods for converting numerical data from one format to another.",
+  "Students will illustrate the concepts of modeling and abstraction with respect to problem-solving.",
+  "Students will compare practical examples to the appropriate set, function, or relation model and interpret the associated operations and terminology in context.",
+  "Students will use at least one national or international user interface design standard in a simple application.",
+  "Students will explain the characteristics that distinguish the database approach from the approach of programming with data files."
+ ],
+ "unassigned": [],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 64 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "12 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "64 distinct courses across 69 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 60–63, stated total 60-64"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "3 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 12,
+   "sections": 12,
+   "rows": 69,
+   "course_rows": 66,
+   "category_rows": 3,
+   "distinct_courses": 64,
+   "credit_span": {
+    "min": 60,
+    "max": 63,
+    "groups_with_credits": 12
+   },
+   "stated_total": "60-64"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.735Z"
+}

@@ -1,0 +1,500 @@
+{
+ "slug": "virginia-highlands-community-college",
+ "name": "Virginia Highlands Community College",
+ "level": "community_college",
+ "platform": "pdf",
+ "parser": "pdf",
+ "pdf_window": {
+  "found": true,
+  "lines": 71,
+  "reason": null
+ },
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
+ "captured_at": "2026-08-02T05:51:47.147Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 60,
+  "max": 63,
+  "raw": "60-63"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "First Semester (Fall)",
+   "credits": {
+    "min": 16,
+    "max": 17,
+    "raw": "16-17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "First Semester (Fall)",
+    "SDV 101 Orientation to College Success 1",
+    "ENG 111 College Composition I 3",
+    "HIS 121 or HIS 122 United States History to 1877 or United States History Since 1865 3",
+    "SSE Social or Behavioral Science Elective from UCGS1 3",
+    "MTH 161 or MTH 263 Precalculus I or Calculus I 3-4",
+    "CSC 221 Introduction to Problem Solving and Programming 3",
+    "Total 16-17"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV101",
+         "title": "Orientation to College Success"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 101 Orientation to College Success",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 College Composition I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS121",
+         "title": "United States History to 1877"
+        },
+        {
+         "code": "HIS122",
+         "title": "United States History Since 1865"
+        }
+       ],
+       "conjunction": "or",
+       "text": "HIS 121 or HIS 122 United States History to 1877 or United States History Since 1865",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "SSE Social or Behavioral Science Elective from UCGS1 3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": "Precalculus I"
+        },
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 161 or MTH 263 Precalculus I or Calculus I",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 Introduction to Problem Solving and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Second Semester (Spring)",
+   "credits": {
+    "min": 16,
+    "max": 17,
+    "raw": "16-17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Second Semester (Spring)",
+    "ENG 112 College Composition II 3",
+    "ART/HUM/MUS ART/HUM/MUS from UCGS2 3",
+    "MTH 162 or MTH 264 Precalculus II or Calculus II 3-4",
+    "CST 100 Principles of Public Speaking 3",
+    "SCI BIO, CHM, GOL, PHY from UCGS3 4",
+    "Total 16-17"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 College Composition II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "ART/HUM/MUS ART/HUM/MUS from UCGS2 3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH162",
+         "title": "Precalculus II"
+        },
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 162 or MTH 264 Precalculus II or Calculus II",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 Principles of Public Speaking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Third Semester (Fall)",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Third Semester (Fall)",
+    "CSC 222 Object-oriented Programming 4",
+    "MTH 263 or MTH 265 Calculus I or Calculus III 4",
+    "CSC 208/MTH 288 Introduction to Discrete Structures/Discrete Mathematics 3",
+    "ENG 245 or ENG 246 British Literature or American Literature 3",
+    "Total 14"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 Object-oriented Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        },
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 263 or MTH 265 Calculus I or Calculus III",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures"
+        },
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CSC 208/MTH 288 Introduction to Discrete Structures/Discrete Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG245",
+         "title": "British Literature"
+        },
+        {
+         "code": "ENG246",
+         "title": "American Literature"
+        }
+       ],
+       "conjunction": "or",
+       "text": "ENG 245 or ENG 246 British Literature or American Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fourth Semester (Spring)",
+   "credits": {
+    "min": 14,
+    "max": 15,
+    "raw": "14-15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Notes: Students are urged to acquaint themselves with the requirements of the major department in the college or university to which transfer is contemplated; and further, 1. See UCGS Block III. 3. See UCGS Block IV.",
+   "source_text": [
+    "Fourth Semester (Spring)",
+    "CSC 205 Computer Organization 3",
+    "MTH 264 or MTH 266 Calculus II or Linear Algebra 3-4",
+    "CSC 223 Data Structures and Analysis of Algorithms 4",
+    "SCI BIO, CHM, GOL, PHY from UCGS3 4",
+    "Total 14-15",
+    "students are urged to consult with their counselors and advisors at VHCC in planning their academic program and electives.",
+    "2. See UCGS Block II, parts A & B. Cannot be a literature course."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        },
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 264 or MTH 266 Calculus II or Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 Data Structures and Analysis of Algorithms",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "SCI BIO, CHM, GOL, PHY from UCGS3 4",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "students are urged to consult with their counselors and advisors at VHCC in planning their academic program and electives.",
+       "category": "students are urged to consult with their counselors and advisors at VHCC in planning their academic program and electives."
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "2. See UCGS Block II, parts A & B. Cannot be a literature course.",
+       "category": "2. See UCGS Block II, parts A & B. Cannot be a literature course."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Notes:",
+  "Students are urged to acquaint themselves with the requirements of the major department in the college or university to which transfer is contemplated; and further,",
+  "1. See UCGS Block III.",
+  "3. See UCGS Block IV."
+ ],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 20 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "4 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "20 distinct courses across 17 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 60–63, stated total 60-63"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 4,
+   "sections": 7,
+   "rows": 17,
+   "course_rows": 15,
+   "category_rows": 2,
+   "distinct_courses": 20,
+   "credit_span": {
+    "min": 60,
+    "max": 63,
+    "groups_with_credits": 4
+   },
+   "stated_total": "60-63"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.803Z"
+}

@@ -1,0 +1,491 @@
+{
+ "slug": "longwood-university",
+ "name": "Longwood University",
+ "level": "four_year",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=974&print=1",
+ "captured_at": "2026-08-02T05:54:38.874Z",
+ "program_title": "Computer Science, BA or BS",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Civitae Core Requirements",
+   "credits": {
+    "min": 39,
+    "max": 40,
+    "raw": "39-40"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Computer Science majors may count Civitae Core Curriculum courses satisfying major requirements as also satisfying their respective Civitae Core requirements, up to two Pillar courses and one Perspectives course. The following are the courses in this major that may be used in this way: Courses satisfying major requirements that are designated as Civitae Core courses subsequent to the print deadline of this Catalog will not appear in the above listings but will be eligible to also satisfy Civitae Core requirements, subject to the same rules as the others. (If doing so would otherwise decrease the total credits required for the degree below 120, General Elective credit must be substituted to restore the total.)",
+   "source_text": [
+    "Civitae Core Requirements (39-40 credits)",
+    "MATH 171 can be taken to satisfy the Quantitative Reasoning Pillar requirement"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH171",
+         "title": "can be taken to satisfy the Quantitative Reasoning Pillar requirement"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 171 can be taken to satisfy the Quantitative Reasoning Pillar requirement",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Additional Degree Requirements BA Degree",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Additional Degree Requirements BA Degree: 3 credits",
+    "Additional Degree Requirements BS Degree: 3-4 credits - MATH 250 or MATH 261 must be taken to earn a BS degree (MATH 164 or placement is a prerequisite for MATH 261)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH250",
+         "title": null
+        },
+        {
+         "code": "MATH261",
+         "title": "must be taken to earn a BS degree ("
+        },
+        {
+         "code": "MATH164",
+         "title": "or placement is a prerequisite for"
+        },
+        {
+         "code": "MATH261",
+         "title": ")"
+        }
+       ],
+       "conjunction": "or",
+       "text": "Additional Degree Requirements BS Degree: 3-4 credits - MATH 250 or MATH 261 must be taken to earn a BS degree (MATH 164 or placement is a prerequisite for MATH 261)",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Science Foundations",
+   "credits": {
+    "min": 30,
+    "max": 30,
+    "raw": "30"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Computer Science Foundations (30 credits)",
+    "CMSC 160 - Introduction to Algorithmic Design I 4 credits",
+    "CMSC 161 - Software Development Tools and Principles 1 credit",
+    "CMSC 162 - Introduction to Algorithmic Design II 4 credits",
+    "CMSC 201 - Computer Organization 3 credits",
+    "CMSC 208 - Grammars, Languages, and Automata 3 credits",
+    "CMSC 242 - Introduction to Network and Systems Programming 3 credits",
+    "CMSC 262 - Data Structures and Algorithms in Application 3 credits",
+    "CMSC 283 - Experiential Learning Seminar in Computer Science I 0 credits",
+    "CMSC 442 - Operating Systems 3 credits",
+    "CMSC 461 - Senior Capstone in Computer Science 3 credits",
+    "CMSC 483 - Experiential Learning Seminar in Computer Science II 0 credits",
+    "ENGL 319 - Technical Writing 3 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CMSC160",
+         "title": "Introduction to Algorithmic Design I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 160 - Introduction to Algorithmic Design I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC161",
+         "title": "Software Development Tools and Principles 1 credit"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 161 - Software Development Tools and Principles 1 credit",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC162",
+         "title": "Introduction to Algorithmic Design II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 162 - Introduction to Algorithmic Design II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC201",
+         "title": "Computer Organization 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 201 - Computer Organization 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC208",
+         "title": "Grammars, Languages, and Automata 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 208 - Grammars, Languages, and Automata 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC242",
+         "title": "Introduction to Network and Systems Programming 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 242 - Introduction to Network and Systems Programming 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC262",
+         "title": "Data Structures and Algorithms in Application 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 262 - Data Structures and Algorithms in Application 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC283",
+         "title": "Experiential Learning Seminar in Computer Science I 0 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 283 - Experiential Learning Seminar in Computer Science I 0 credits",
+       "credits": {
+        "min": 0,
+        "max": 0,
+        "raw": "0"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC442",
+         "title": "Operating Systems 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 442 - Operating Systems 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC461",
+         "title": "Senior Capstone in Computer Science 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 461 - Senior Capstone in Computer Science 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMSC483",
+         "title": "Experiential Learning Seminar in Computer Science II 0 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMSC 483 - Experiential Learning Seminar in Computer Science II 0 credits",
+       "credits": {
+        "min": 0,
+        "max": 0,
+        "raw": "0"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL319",
+         "title": "Technical Writing 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 319 - Technical Writing 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Mathematics Foundations",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Mathematics Foundations (3 credits)",
+    "MATH 171 - Statistical Decision Making 3 credits (counted in Civitae)",
+    "MATH 175 - Discrete Mathematics 3 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH171",
+         "title": "Statistical Decision Making 3 credits (counted in Civitae)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 171 - Statistical Decision Making 3 credits (counted in Civitae)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH175",
+         "title": "Discrete Mathematics 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 175 - Discrete Mathematics 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Major Electives",
+   "credits": {
+    "min": 12,
+    "max": 12,
+    "raw": "12"
+   },
+   "choose": null,
+   "choose_credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "distinct_sections": null,
+   "note": "Students must complete at least 12 additional credits of CMSC courses at the 200-level or above, of which at least 6 credits must be at the 300-level or above. CMSC 350 may not count as an elective.",
+   "source_text": [
+    "Major Electives (12 credits)",
+    "Students must complete at least 12 additional credits of CMSC courses at the 200-level or above, of which at least 6 credits must be at the 300-level or above. CMSC 350 may not count as an elective.",
+    "Multiple Languages",
+    "CS majors must demonstrate proficiency in multiple programming languages and technologies. This requirement can be met by passing CMSC 140, CMSC 210, or CMSC 280. Courses taken to meet this requirement may also count as major electives if they are of sufficient level.",
+    "General Electives"
+   ],
+   "sections": [
+    {
+     "label": "Multiple Languages",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CMSC140",
+         "title": null
+        },
+        {
+         "code": "CMSC210",
+         "title": ","
+        },
+        {
+         "code": "CMSC280",
+         "title": ". Courses taken to meet this requirement may also count as major electives if they are of sufficient level."
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS majors must demonstrate proficiency in multiple programming languages and technologies. This requirement can be met by passing CMSC 140, CMSC 210, or CMSC 280. Courses taken to meet this requirement may also count as major electives if they are of sufficient level.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Computer Science majors may count Civitae Core Curriculum courses satisfying major requirements as also satisfying their respective Civitae Core requirements, up to two Pillar courses and one Perspectives course. The following are the courses in this major that may be used in this way:",
+  "Courses satisfying major requirements that are designated as Civitae Core courses subsequent to the print deadline of this Catalog will not appear in the above listings but will be eligible to also satisfy Civitae Core requirements, subject to the same rules as the others. (If doing so would otherwise decrease the total credits required for the degree below 120, General Elective credit must be substituted to restore the total.)"
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 20 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "5 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "20 distinct courses across 17 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   }
+  ],
+  "stats": {
+   "groups": 5,
+   "sections": 5,
+   "rows": 17,
+   "course_rows": 17,
+   "category_rows": 0,
+   "distinct_courses": 20,
+   "credit_span": {
+    "min": 87,
+    "max": 88,
+    "groups_with_credits": 5
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.893Z"
+}

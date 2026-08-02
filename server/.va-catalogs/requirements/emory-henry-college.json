@@ -1,0 +1,384 @@
+{
+ "slug": "emory-henry-college",
+ "name": "Emory & Henry College",
+ "level": "four_year",
+ "platform": "cleancatalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.ehc.edu/math-and-computer-science/computer-science-0",
+ "captured_at": "2026-08-02T05:53:51.401Z",
+ "program_title": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Any two 3 credit courses at the 200 level or above Any two 3 credit courses at the 200 level or above",
+   "source_text": [
+    "CSC 100",
+    "CSC 100",
+    "Introduction to Computing",
+    "3",
+    "CSC 100L",
+    "Introduction to Computing Lab",
+    "1",
+    "CSC 110",
+    "Computer Programming I",
+    "3",
+    "CSC 110L",
+    "Computer Programming I Lab",
+    "1",
+    "CSC 111",
+    "Computer Programming II",
+    "3",
+    "CSC 111L",
+    "Computer Programming II",
+    "1",
+    "CSC 220",
+    "Data Structures",
+    "3",
+    "Any two 3 credit courses at the 200 level or above",
+    "+",
+    "6",
+    "Any two 3 credit courses at the 200 level or above",
+    "×",
+    "Total Credits",
+    "6",
+    "Item #",
+    "Title",
+    "Semester Hours",
+    "CSC 310",
+    "Database Systems",
+    "3",
+    "CSC 320",
+    "Programming Languages",
+    "3",
+    "CSC 325",
+    "Analysis of Algorithms",
+    "3",
+    "CSC 375",
+    "Computer Organization",
+    "3",
+    "CSC 385",
+    "Theory of Computing",
+    "3",
+    "CSC 390",
+    "Professional Ethics in Computer Science",
+    "3",
+    "Close",
+    "Sub-Total Semester Hours",
+    "21",
+    "Total Credits",
+    "21"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 100,
+        "max": 100,
+        "raw": "100"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC100L",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 100L",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "1",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 110,
+        "max": 110,
+        "raw": "110"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC110L",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 110L",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "1",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 111,
+        "max": 111,
+        "raw": "111"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC111L",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 111L",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "1",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 220,
+        "max": 220,
+        "raw": "220"
+       }
+      }
+     ]
+    },
+    {
+     "label": "6",
+     "choose": null,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": []
+    },
+    {
+     "label": "Semester Hours",
+     "choose": null,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 310,
+        "max": 310,
+        "raw": "310"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 320,
+        "max": 320,
+        "raw": "320"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 325,
+        "max": 325,
+        "raw": "325"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 375,
+        "max": 375,
+        "raw": "375"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 385,
+        "max": 385,
+        "raw": "385"
+       }
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC",
+       "category": "CSC",
+       "credits": {
+        "min": 390,
+        "max": 390,
+        "raw": "390"
+       }
+      }
+     ]
+    }
+   ],
+   "implicit": true
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 3 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
+   },
+   {
+    "severity": "warn",
+    "name": "few_courses",
+    "detail": "3 distinct courses"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "10 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 1,
+   "sections": 14,
+   "rows": 13,
+   "course_rows": 3,
+   "category_rows": 10,
+   "distinct_courses": 3,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.827Z"
+}

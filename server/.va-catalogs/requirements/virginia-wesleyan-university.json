@@ -1,0 +1,2746 @@
+{
+ "slug": "virginia-wesleyan-university",
+ "name": "Virginia Wesleyan University",
+ "level": "four_year",
+ "platform": "web",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://www.batten.edu/academics/majors/computer-science/",
+ "captured_at": "2026-08-02T05:59:10.639Z",
+ "program_title": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "300/400-level Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "300/400-level Electives",
+    "Three courses (up to two may be Cybersecurity courses): CS 331 Systems Analysis and Design · CS 350 Numerical Methods · CS 380 Programming Languages · CS 430 Database Management Systems Design · CS 440 Operating Systems · CS 389 Advanced Topics in Computer Science · CS 489 Research in Computer Science · CYB 301 Cybersecurity Essentials and Tools · CYB 320 Cyber Networks and Communication · CYB 389 Advanced Topics in Cybersecurity · CYB 423 Operating Systems Security and Administration · CYB 445 Ethical Hacking and Penetration Testing · other CS/CYB courses at the 300 level or higher as approved by advisor",
+    "12 hrs",
+    "MATH 171",
+    "Calculus I",
+    "4 hrs",
+    "MATH 210",
+    "Introductory Statistics",
+    "4 hrs",
+    "Total Hours Required",
+    "40",
+    "CS 112",
+    "Computer Programming I",
+    "4 hrs",
+    "CS 212",
+    "Computer Programming II",
+    "4 hrs",
+    "CS 205",
+    "Foundations of Logic and Proof",
+    "4 hrs",
+    "CS 310",
+    "Introduction to Computer Systems",
+    "4 hrs",
+    "CS 311",
+    "Data Structures",
+    "4 hrs"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS331",
+         "title": "Systems Analysis and Design ·"
+        },
+        {
+         "code": "CS350",
+         "title": "Numerical Methods ·"
+        },
+        {
+         "code": "CS380",
+         "title": "Programming Languages ·"
+        },
+        {
+         "code": "CS430",
+         "title": "Database Management Systems Design ·"
+        },
+        {
+         "code": "CS440",
+         "title": "Operating Systems ·"
+        },
+        {
+         "code": "CS389",
+         "title": "Advanced Topics in Computer Science ·"
+        },
+        {
+         "code": "CS489",
+         "title": "Research in Computer Science ·"
+        },
+        {
+         "code": "CYB301",
+         "title": "Cybersecurity Essentials and Tools ·"
+        },
+        {
+         "code": "CYB320",
+         "title": "Cyber Networks and Communication ·"
+        },
+        {
+         "code": "CYB389",
+         "title": "Advanced Topics in Cybersecurity ·"
+        },
+        {
+         "code": "CYB423",
+         "title": "Operating Systems Security and Administration ·"
+        },
+        {
+         "code": "CYB445",
+         "title": "Ethical Hacking and Penetration Testing · other CS/CYB courses at the 300 level or higher as approved by advisor"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Three courses (up to two may be Cybersecurity courses): CS 331 Systems Analysis and Design · CS 350 Numerical Methods · CS 380 Programming Languages · CS 430 Database Management Systems Design · CS 440 Operating Systems · CS 389 Advanced Topics in Computer Science · CS 489 Research in Computer Science · CYB 301 Cybersecurity Essentials and Tools · CYB 320 Cyber Networks and Communication · CYB 389 Advanced Topics in Cybersecurity · CYB 423 Operating Systems Security and Administration · CYB 445 Ethical Hacking and Penetration Testing · other CS/CYB courses at the 300 level or higher as approved by advisor",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "12 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 171,
+        "max": 171,
+        "raw": "171"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 210,
+        "max": 210,
+        "raw": "210"
+       }
+      }
+     ]
+    },
+    {
+     "label": "40",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 112,
+        "max": 112,
+        "raw": "112"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 212,
+        "max": 212,
+        "raw": "212"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 205,
+        "max": 205,
+        "raw": "205"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 310,
+        "max": 310,
+        "raw": "310"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 311,
+        "max": 311,
+        "raw": "311"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "300/400-level Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "300/400-level Electives",
+    "Three courses (up to two may be Cybersecurity courses): CS 331 Systems Analysis and Design · CS 350 Numerical Methods · CS 380 Programming Languages · CS 430 Database Management Systems Design · CS 440 Operating Systems · CS 389 Advanced Topics in Computer Science · CS 489 Research in Computer Science · CYB 301 Cybersecurity Essentials and Tools · CYB 320 Cyber Networks and Communication · CYB 389 Advanced Topics in Cybersecurity · CYB 423 Operating Systems Security and Administration · CYB 445 Ethical Hacking and Penetration Testing · other CS/CYB courses at the 300 level or higher as approved by advisor",
+    "12 hrs",
+    "CS 489",
+    "Research in Computer Science (Capstone)",
+    "4 hrs"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS331",
+         "title": "Systems Analysis and Design ·"
+        },
+        {
+         "code": "CS350",
+         "title": "Numerical Methods ·"
+        },
+        {
+         "code": "CS380",
+         "title": "Programming Languages ·"
+        },
+        {
+         "code": "CS430",
+         "title": "Database Management Systems Design ·"
+        },
+        {
+         "code": "CS440",
+         "title": "Operating Systems ·"
+        },
+        {
+         "code": "CS389",
+         "title": "Advanced Topics in Computer Science ·"
+        },
+        {
+         "code": "CS489",
+         "title": "Research in Computer Science ·"
+        },
+        {
+         "code": "CYB301",
+         "title": "Cybersecurity Essentials and Tools ·"
+        },
+        {
+         "code": "CYB320",
+         "title": "Cyber Networks and Communication ·"
+        },
+        {
+         "code": "CYB389",
+         "title": "Advanced Topics in Cybersecurity ·"
+        },
+        {
+         "code": "CYB423",
+         "title": "Operating Systems Security and Administration ·"
+        },
+        {
+         "code": "CYB445",
+         "title": "Ethical Hacking and Penetration Testing · other CS/CYB courses at the 300 level or higher as approved by advisor"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Three courses (up to two may be Cybersecurity courses): CS 331 Systems Analysis and Design · CS 350 Numerical Methods · CS 380 Programming Languages · CS 430 Database Management Systems Design · CS 440 Operating Systems · CS 389 Advanced Topics in Computer Science · CS 489 Research in Computer Science · CYB 301 Cybersecurity Essentials and Tools · CYB 320 Cyber Networks and Communication · CYB 389 Advanced Topics in Cybersecurity · CYB 423 Operating Systems Security and Administration · CYB 445 Ethical Hacking and Penetration Testing · other CS/CYB courses at the 300 level or higher as approved by advisor",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "12 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 489,
+        "max": 489,
+        "raw": "489"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Mathematical Science Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Mathematical Science Courses",
+    "MATH 171 Calculus I · MATH 172 Calculus II · MATH 210 Introductory Statistics · MATH 217 Linear Algebra · PHYS 221 University Physics I",
+    "4 hrs",
+    "Total Hours Required",
+    "56"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH171",
+         "title": "Calculus I ·"
+        },
+        {
+         "code": "MATH172",
+         "title": "Calculus II ·"
+        },
+        {
+         "code": "MATH210",
+         "title": "Introductory Statistics ·"
+        },
+        {
+         "code": "MATH217",
+         "title": "Linear Algebra ·"
+        },
+        {
+         "code": "PHYS221",
+         "title": "University Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 171 Calculus I · MATH 172 Calculus II · MATH 210 Introductory Statistics · MATH 217 Linear Algebra · PHYS 221 University Physics I",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Foundational Course",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Foundational Course",
+    "One of: CS 107 Introduction to Python Programming · CS 110 Introduction to Programming with Visual BASIC · CS 205 Foundations of Logic and Proof",
+    "4 hrs",
+    "CS 112",
+    "Computer Programming I",
+    "4 hrs",
+    "CS 212",
+    "Computer Programming II",
+    "4 hrs"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS107",
+         "title": "Introduction to Python Programming ·"
+        },
+        {
+         "code": "CS110",
+         "title": "Introduction to Programming with Visual BASIC ·"
+        },
+        {
+         "code": "CS205",
+         "title": "Foundations of Logic and Proof"
+        }
+       ],
+       "conjunction": "and",
+       "text": "One of: CS 107 Introduction to Python Programming · CS 110 Introduction to Programming with Visual BASIC · CS 205 Foundations of Logic and Proof",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 112,
+        "max": 112,
+        "raw": "112"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 212,
+        "max": 212,
+        "raw": "212"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "300-level+ Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Data Science is an emerging field that combines computer science and statistics. The minor in Data Science teaches programming skills, programming languages Java, Python and R, data analytics, models, and visualizations.",
+   "source_text": [
+    "300-level+ Electives",
+    "Two of: CS 307 Data Science Using Python · CS 310 Introduction to Computer Systems · CS 311 Data Structures · CS 331 Systems Analysis and Design · CS 350 Numerical Methods · CS 380 Programming Languages · CS 430 Database Management Systems Design · CS 440 Operating Systems · CS 480 Advanced Topics in Computer Science · CS 489 Research in Computer Science · other CS courses at the 300 level or higher as approved by advisor",
+    "8 hrs",
+    "Total Hours Required",
+    "20",
+    "A 2.0 GPA and a grade of C- or higher is required for all courses in the Computer Science minor.",
+    "CS 112",
+    "Computer Programming I",
+    "4 hrs",
+    "CS 212",
+    "Computer Programming II",
+    "4 hrs",
+    "CS 311",
+    "Data Structures",
+    "4 hrs",
+    "MATH 210",
+    "Introductory Statistics",
+    "4 hrs",
+    "MATH 310",
+    "Statistical Models",
+    "4 hrs",
+    "Total Hours Required",
+    "20",
+    "CS 112",
+    "Computer Programming I",
+    "4 hrs",
+    "CS 212",
+    "Computer Programming II",
+    "4 hrs",
+    "CS 311",
+    "Data Structures",
+    "4 hrs"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS307",
+         "title": "Data Science Using Python ·"
+        },
+        {
+         "code": "CS310",
+         "title": "Introduction to Computer Systems ·"
+        },
+        {
+         "code": "CS311",
+         "title": "Data Structures ·"
+        },
+        {
+         "code": "CS331",
+         "title": "Systems Analysis and Design ·"
+        },
+        {
+         "code": "CS350",
+         "title": "Numerical Methods ·"
+        },
+        {
+         "code": "CS380",
+         "title": "Programming Languages ·"
+        },
+        {
+         "code": "CS430",
+         "title": "Database Management Systems Design ·"
+        },
+        {
+         "code": "CS440",
+         "title": "Operating Systems ·"
+        },
+        {
+         "code": "CS480",
+         "title": "Advanced Topics in Computer Science ·"
+        },
+        {
+         "code": "CS489",
+         "title": "Research in Computer Science · other CS courses at the 300 level or higher as approved by advisor"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Two of: CS 307 Data Science Using Python · CS 310 Introduction to Computer Systems · CS 311 Data Structures · CS 331 Systems Analysis and Design · CS 350 Numerical Methods · CS 380 Programming Languages · CS 430 Database Management Systems Design · CS 440 Operating Systems · CS 480 Advanced Topics in Computer Science · CS 489 Research in Computer Science · other CS courses at the 300 level or higher as approved by advisor",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "20",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "A 2.0 GPA and a grade of C- or higher is required for all courses in the Computer Science minor.",
+       "category": "A 2.0 GPA and a grade of C- or higher is required for all courses in the Computer Science minor."
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 112,
+        "max": 112,
+        "raw": "112"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 212,
+        "max": 212,
+        "raw": "212"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 311,
+        "max": 311,
+        "raw": "311"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 210,
+        "max": 210,
+        "raw": "210"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 310,
+        "max": 310,
+        "raw": "310"
+       }
+      }
+     ]
+    },
+    {
+     "label": "20",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 112,
+        "max": 112,
+        "raw": "112"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 212,
+        "max": 212,
+        "raw": "212"
+       }
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 311,
+        "max": 311,
+        "raw": "311"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Criminal Justice Elective",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Computer Science coursework spans programming fundamentals, data structures, systems, and theory, with upper-level electives in databases, numerical methods, programming languages, and cybersecurity. Relevant Mathematics and Information Systems (ISP) courses required by the degree are listed below alongside core CS coursework.",
+   "source_text": [
+    "Criminal Justice Elective",
+    "One of: CJ 266 Criminal Procedure · CJ 340 Forensic Accounting · CJ 387 Criminal Law · CJ 389 Criminal Investigation & Evidence Collection",
+    "4 hrs",
+    "CS 401",
+    "Principles of Cybersecurity",
+    "4 hrs",
+    "Total Hours Required",
+    "20",
+    "Courses"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CJ266",
+         "title": "Criminal Procedure ·"
+        },
+        {
+         "code": "CJ340",
+         "title": "Forensic Accounting ·"
+        },
+        {
+         "code": "CJ387",
+         "title": "Criminal Law ·"
+        },
+        {
+         "code": "CJ389",
+         "title": "Criminal Investigation & Evidence Collection"
+        }
+       ],
+       "conjunction": "and",
+       "text": "One of: CJ 266 Criminal Procedure · CJ 340 Forensic Accounting · CJ 387 Criminal Law · CJ 389 Criminal Investigation & Evidence Collection",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "4 hrs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 401,
+        "max": 401,
+        "raw": "401"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "View All Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "View All Courses",
+    "CS 100"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 100,
+        "max": 100,
+        "raw": "100"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Computer Concepts and Applications",
+    "Topics include basic concepts of computer hardware and software; the development of the computer, networks, and the Internet; programming logic; Web page development with HTML/CSS; application software such as word processing, spreadsheet, database, and presentation software; and social concerns associated with the widespread use of computers. Prerequisite: placement level H, A, B, or C. Students with credit for CS 112 or higher by consent only. Offered every spring.",
+    "CS 107"
+   ],
+   "sections": [
+    {
+     "label": "Computer Concepts and Applications",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS112",
+         "title": "or higher by consent only. Offered every spring."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Topics include basic concepts of computer hardware and software; the development of the computer, networks, and the Internet; programming logic; Web page development with HTML/CSS; application software such as word processing, spreadsheet, database, and presentation software; and social concerns associated with the widespread use of computers. Prerequisite: placement level H, A, B, or C. Students with credit for CS 112 or higher by consent only. Offered every spring.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 107,
+        "max": 107,
+        "raw": "107"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Introduction to Python Programming",
+    "The basic components of Python programming language are studied. Topics include variables and types, expressions, statements, conditions with selection and looping, functions. Concepts and basics on lists, tuples, sets and dictionaries are also presented. Prerequisite: placement level H, A, B, or C. Students with credit for CS 112 or higher by consent only. Offered every fall.",
+    "CS 110"
+   ],
+   "sections": [
+    {
+     "label": "Introduction to Python Programming",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS112",
+         "title": "or higher by consent only. Offered every fall."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The basic components of Python programming language are studied. Topics include variables and types, expressions, statements, conditions with selection and looping, functions. Concepts and basics on lists, tuples, sets and dictionaries are also presented. Prerequisite: placement level H, A, B, or C. Students with credit for CS 112 or higher by consent only. Offered every fall.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 110,
+        "max": 110,
+        "raw": "110"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Introduction to Programming with Visual BASIC",
+    "An introductory programming course that uses Visual BASIC programming language. Topics include the program development process, structured programming, data types, assignment, selection, looping, subroutines, one-dimensional arrays, files, and random numbers. Prerequisite: placement level H, A, or B, or MATH 104 with a grade of C- or higher, or consent. Students with credit for CS 112 or higher by consent only. Offered every spring.",
+    "CS 112"
+   ],
+   "sections": [
+    {
+     "label": "Introduction to Programming with Visual BASIC",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH104",
+         "title": "with a grade of C- or higher, or consent. Students with credit for"
+        },
+        {
+         "code": "CS112",
+         "title": "or higher by consent only. Offered every spring."
+        }
+       ],
+       "conjunction": "or",
+       "text": "An introductory programming course that uses Visual BASIC programming language. Topics include the program development process, structured programming, data types, assignment, selection, looping, subroutines, one-dimensional arrays, files, and random numbers. Prerequisite: placement level H, A, or B, or MATH 104 with a grade of C- or higher, or consent. Students with credit for CS 112 or higher by consent only. Offered every spring.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 112,
+        "max": 112,
+        "raw": "112"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Computer Programming I",
+    "An introduction to computer programming using a modern programming language. Topics include the program development process, structured programming, data types, variables and expressions, input/output, assignment, selection, looping, functions, and arrays. Prerequisite: placement level H, A, or B, or MATH 104 with a grade of B or higher, or consent. CS 107, CS 110 or a high school programming class is strongly recommended. Offered every semester.",
+    "CS 201"
+   ],
+   "sections": [
+    {
+     "label": "Computer Programming I",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH104",
+         "title": "with a grade of B or higher, or consent."
+        },
+        {
+         "code": "CS107",
+         "title": null
+        },
+        {
+         "code": "CS110",
+         "title": "or a high school programming class is strongly recommended. Offered every semester."
+        }
+       ],
+       "conjunction": "or",
+       "text": "An introduction to computer programming using a modern programming language. Topics include the program development process, structured programming, data types, variables and expressions, input/output, assignment, selection, looping, functions, and arrays. Prerequisite: placement level H, A, or B, or MATH 104 with a grade of B or higher, or consent. CS 107, CS 110 or a high school programming class is strongly recommended. Offered every semester.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 201,
+        "max": 201,
+        "raw": "201"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 2,
+    "max": 2,
+    "raw": "2"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "2 credits",
+    "Intro to 3D Modeling/Printing",
+    "Introduction to 3D modeling and printing. Several software packages are used to create and manipulate 3D models. Topics also include a survey of current applications of 3D printing, the mechanics of basic 3D printing technology, and factors involved in achieving a successful 3D print. Prerequisite: sophomore status or higher, and placement level B or higher or MATH 104 with a grade of C or higher. Offered intermittently.",
+    "CS 205"
+   ],
+   "sections": [
+    {
+     "label": "Intro to 3D Modeling/Printing",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH104",
+         "title": "with a grade of C or higher. Offered intermittently."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduction to 3D modeling and printing. Several software packages are used to create and manipulate 3D models. Topics also include a survey of current applications of 3D printing, the mechanics of basic 3D printing technology, and factors involved in achieving a successful 3D print. Prerequisite: sophomore status or higher, and placement level B or higher or MATH 104 with a grade of C or higher. Offered intermittently.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 205,
+        "max": 205,
+        "raw": "205"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Foundations of Logic and Proof",
+    "Introduction to abstract mathematical thinking and logical reasoning skills needed in upper-level Math/CS courses. Topics include logic, argument, proofs, induction, sets, and abstract functions and relations. Emphasizes mathematical writing. Identical to MATH 205. Prerequisite: MATH 217 with a grade of C- or higher, or CS 212 with a grade of C or higher, or consent. Recommended spring of sophomore year. Offered every spring.",
+    "CS 212"
+   ],
+   "sections": [
+    {
+     "label": "Foundations of Logic and Proof",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH205",
+         "title": ". Prerequisite:"
+        },
+        {
+         "code": "MATH217",
+         "title": "with a grade of C- or higher,"
+        },
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher, or consent. Recommended spring of sophomore year. Offered every spring."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Introduction to abstract mathematical thinking and logical reasoning skills needed in upper-level Math/CS courses. Topics include logic, argument, proofs, induction, sets, and abstract functions and relations. Emphasizes mathematical writing. Identical to MATH 205. Prerequisite: MATH 217 with a grade of C- or higher, or CS 212 with a grade of C or higher, or consent. Recommended spring of sophomore year. Offered every spring.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 212,
+        "max": 212,
+        "raw": "212"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Computer Programming II",
+    "A continuation of CS 112. Topics include advanced programming design in static methods (void and value-returning methods), arrays used in methods, classes, array-based lists, selection sort, binary search, object-oriented programming techniques (inheritance, polymorphism, and composition), and recursion. Prerequisite: CS 202 with a grade of C- or higher, CS 112 with a grade of C or higher, or consent. Offered every semester.",
+    "CS 305"
+   ],
+   "sections": [
+    {
+     "label": "Computer Programming II",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS112",
+         "title": ". Topics include advanced programming design in static methods (void and value-returning methods), arrays used in methods, classes, array-based lists, selection sort, binary search, object-oriented programming techniques (inheritance, polymorphism, and composition), and recursion. Prerequisite:"
+        },
+        {
+         "code": "CS202",
+         "title": "with a grade of C- or higher"
+        },
+        {
+         "code": "CS112",
+         "title": "with a grade of C or higher, or consent. Offered every semester."
+        }
+       ],
+       "conjunction": "or",
+       "text": "A continuation of CS 112. Topics include advanced programming design in static methods (void and value-returning methods), arrays used in methods, classes, array-based lists, selection sort, binary search, object-oriented programming techniques (inheritance, polymorphism, and composition), and recursion. Prerequisite: CS 202 with a grade of C- or higher, CS 112 with a grade of C or higher, or consent. Offered every semester.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 305,
+        "max": 305,
+        "raw": "305"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 1,
+    "max": 1,
+    "raw": "1"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "1 credit",
+    "Teaching Experience",
+    "Qualified students assist computer science instructors in the teaching of CS courses and laboratories assigned in the classroom. May be repeated for credit, but students may apply no more than 4 semester hours towards the major or minor. Prerequisite: a grade of B or higher in CS 212, and consent. Students may repeat this course pending satisfactory performance in previous enrollment(s). Offered every semester.",
+    "CS 307"
+   ],
+   "sections": [
+    {
+     "label": "Teaching Experience",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": ", and consent. Students may repeat this course pending satisfactory performance in previous enrollment(s). Offered every semester."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Qualified students assist computer science instructors in the teaching of CS courses and laboratories assigned in the classroom. May be repeated for credit, but students may apply no more than 4 semester hours towards the major or minor. Prerequisite: a grade of B or higher in CS 212, and consent. Students may repeat this course pending satisfactory performance in previous enrollment(s). Offered every semester.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 307,
+        "max": 307,
+        "raw": "307"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Data Science Using Python",
+    "The advanced Python programming techniques and applications in data science are studied. Topics include control structures, lists, tuples, sets and dictionaries, as well as the popular Python modules in data science including math, statistics, NumPy, and Pandas. Case studies on data analysis, visualization, series and frames are also covered. Prerequisite: A grade of C or higher in MATH 210 and a grade of a B or higher in either CS 107 or CS 212, or consent. Offered fall of even-numbered years.",
+    "CS 310"
+   ],
+   "sections": [
+    {
+     "label": "Data Science Using Python",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH210",
+         "title": "and a grade of a B or higher in either"
+        },
+        {
+         "code": "CS107",
+         "title": null
+        },
+        {
+         "code": "CS212",
+         "title": ", or consent. Offered fall of even-numbered years."
+        }
+       ],
+       "conjunction": "or",
+       "text": "The advanced Python programming techniques and applications in data science are studied. Topics include control structures, lists, tuples, sets and dictionaries, as well as the popular Python modules in data science including math, statistics, NumPy, and Pandas. Case studies on data analysis, visualization, series and frames are also covered. Prerequisite: A grade of C or higher in MATH 210 and a grade of a B or higher in either CS 107 or CS 212, or consent. Offered fall of even-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 310,
+        "max": 310,
+        "raw": "310"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Introduction to Computer Systems",
+    "Introduces the basic concepts of computer organization and assembly language. Specific topics include CPU and memory organization, machine language, addressing techniques, macros, program segmentation and linkage, and assembler construction. Satisfies the oral competency requirement for computer science majors. Prerequisite: CS 212 with a grade of C or higher and consent. Offered fall of odd-numbered years.",
+    "CS 311"
+   ],
+   "sections": [
+    {
+     "label": "Introduction to Computer Systems",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher and consent. Offered fall of odd-numbered years."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduces the basic concepts of computer organization and assembly language. Specific topics include CPU and memory organization, machine language, addressing techniques, macros, program segmentation and linkage, and assembler construction. Satisfies the oral competency requirement for computer science majors. Prerequisite: CS 212 with a grade of C or higher and consent. Offered fall of odd-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 311,
+        "max": 311,
+        "raw": "311"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Data Structures",
+    "An introduction to commonly used computer data structuring techniques. Topics include abstract data types, classes, queues, stacks, linked lists, algorithm analysis, sorting, searching, trees, and graphs. Prerequisite: CS 212 with a grade of C or higher or consent. Offered every fall.",
+    "CS 331"
+   ],
+   "sections": [
+    {
+     "label": "Data Structures",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher or consent. Offered every fall."
+        }
+       ],
+       "conjunction": "and",
+       "text": "An introduction to commonly used computer data structuring techniques. Topics include abstract data types, classes, queues, stacks, linked lists, algorithm analysis, sorting, searching, trees, and graphs. Prerequisite: CS 212 with a grade of C or higher or consent. Offered every fall.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 331,
+        "max": 331,
+        "raw": "331"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Systems Analysis and Design",
+    "Introduces the concepts, principles, and stages of computer-based information systems analysis and design. Topics include the system development environment, project management, system requirements definition, interface and structure design, and system implementation and administration. Prerequisite: CS 212 with a grade of C or higher or consent. Offered intermittently.",
+    "CS 350"
+   ],
+   "sections": [
+    {
+     "label": "Systems Analysis and Design",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher or consent. Offered intermittently."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduces the concepts, principles, and stages of computer-based information systems analysis and design. Topics include the system development environment, project management, system requirements definition, interface and structure design, and system implementation and administration. Prerequisite: CS 212 with a grade of C or higher or consent. Offered intermittently.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 350,
+        "max": 350,
+        "raw": "350"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Numerical Methods",
+    "Examines methods used in solving numerical problems with the aid of a computer. Topics include floating-point arithmetic, interpolation, integration, roots of non-linear equations, ordinary differential equations, and systems of linear equations. Identical to MATH 350. Students enrolled in the pre-engineering program with ODU cannot receive credit for this course and the cross-registered courses MAE 340 or CEE 305. Prerequisites: MATH 172 with a grade of C- or higher and CS 212 with a grade of C- or higher, or consent. Offered spring of even-numbered years.",
+    "CS 380"
+   ],
+   "sections": [
+    {
+     "label": "Numerical Methods",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH350",
+         "title": ". Students enrolled in the pre-engineering program with ODU cannot receive credit for this course and the cross-registered courses"
+        },
+        {
+         "code": "MAE340",
+         "title": null
+        },
+        {
+         "code": "CEE305",
+         "title": ". Prerequisites:"
+        },
+        {
+         "code": "MATH172",
+         "title": "with a grade of C- or higher"
+        },
+        {
+         "code": "CS212",
+         "title": "with a grade of C- or higher, or consent. Offered spring of even-numbered years."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Examines methods used in solving numerical problems with the aid of a computer. Topics include floating-point arithmetic, interpolation, integration, roots of non-linear equations, ordinary differential equations, and systems of linear equations. Identical to MATH 350. Students enrolled in the pre-engineering program with ODU cannot receive credit for this course and the cross-registered courses MAE 340 or CEE 305. Prerequisites: MATH 172 with a grade of C- or higher and CS 212 with a grade of C- or higher, or consent. Offered spring of even-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 380,
+        "max": 380,
+        "raw": "380"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Programming Languages",
+    "Introduces students to the historical development of programming languages and to the decisions involved in the design and implementation of such programming language features as elementary, structured, and user-defined data types, subprograms, sequence control, data control, and storage management. Selected features of several existing languages are examined in the context of these issues. Prerequisite: CS 212 with a grade of C or higher or consent. Offered intermittently.",
+    "CS 389"
+   ],
+   "sections": [
+    {
+     "label": "Programming Languages",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher or consent. Offered intermittently."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduces students to the historical development of programming languages and to the decisions involved in the design and implementation of such programming language features as elementary, structured, and user-defined data types, subprograms, sequence control, data control, and storage management. Selected features of several existing languages are examined in the context of these issues. Prerequisite: CS 212 with a grade of C or higher or consent. Offered intermittently.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 389,
+        "max": 389,
+        "raw": "389"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Advanced Topics in Computer Science",
+    "Explores an area of computer science which is not otherwise included in the curriculum. Students may repeat the course for credit as the topic varies. Prerequisite: CS 212 with a grade of C or higher and consent. Offered intermittently.",
+    "CS 430"
+   ],
+   "sections": [
+    {
+     "label": "Advanced Topics in Computer Science",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher and consent. Offered intermittently."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Explores an area of computer science which is not otherwise included in the curriculum. Students may repeat the course for credit as the topic varies. Prerequisite: CS 212 with a grade of C or higher and consent. Offered intermittently.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 430,
+        "max": 430,
+        "raw": "430"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Database Management Systems Design",
+    "Emphasizes the concepts and structures necessary to design and implement database systems using a relational database management system. Various database management system architectures illustrating hierarchical, network, and relational models are discussed. Physical data storage techniques, file security, data integrity, and data normalization are also explored. Prerequisite: CS 212 with a grade of C or higher or consent. Offered intermittently.",
+    "CS 440"
+   ],
+   "sections": [
+    {
+     "label": "Database Management Systems Design",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher or consent. Offered intermittently."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Emphasizes the concepts and structures necessary to design and implement database systems using a relational database management system. Various database management system architectures illustrating hierarchical, network, and relational models are discussed. Physical data storage techniques, file security, data integrity, and data normalization are also explored. Prerequisite: CS 212 with a grade of C or higher or consent. Offered intermittently.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 440,
+        "max": 440,
+        "raw": "440"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Operating Systems",
+    "Introduces the principles of operating systems emphasizing intersystem communication. Examines concepts and techniques necessary for understanding and designing these systems. Topics include I/O and interrupt structure, concurrent processes, process scheduling, and memory management and protection. Prerequisite: CS 212 with a grade of C or higher or consent. CS 310 is recommended. Offered intermittently.",
+    "CS 470"
+   ],
+   "sections": [
+    {
+     "label": "Operating Systems",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS212",
+         "title": "with a grade of C or higher or consent."
+        },
+        {
+         "code": "CS310",
+         "title": "is recommended. Offered intermittently."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Introduces the principles of operating systems emphasizing intersystem communication. Examines concepts and techniques necessary for understanding and designing these systems. Topics include I/O and interrupt structure, concurrent processes, process scheduling, and memory management and protection. Prerequisite: CS 212 with a grade of C or higher or consent. CS 310 is recommended. Offered intermittently.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 470,
+        "max": 470,
+        "raw": "470"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "2 or",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "An intensive computer science project conducted in a professional setting. Pass/Fail grading. Prerequisite: junior/senior status, cumulative GPA of at least 2.5, and consent. Offered intermittently.",
+   "source_text": [
+    "2 or 4 credits",
+    "Internship in Computer Science",
+    "CS 489"
+   ],
+   "sections": [
+    {
+     "label": "Internship in Computer Science",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS",
+       "category": "CS",
+       "credits": {
+        "min": 489,
+        "max": 489,
+        "raw": "489"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "2 or",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "2 or 4 credits",
+    "Research in Computer Science",
+    "Offers students the opportunity to conduct original scientific research in an area of interest. Students work closely with one or more members of the natural science faculty to develop and conduct a research project, then present their findings orally during the semester's undergraduate research symposium and as a formal research paper. Students are encouraged to present their findings at a conference. Prerequisites: junior/senior status and a major in Computer Science, prior approval by the project advisor, and consent of the instructor. Students may enroll for 2 or 4 hours in a given semester. May be repeated for a maximum total of 8 semester hours. Identical to BIO 489, CHEM 489, EES 489, and MATH 489. Offered intermittently.",
+    "ISP 101"
+   ],
+   "sections": [
+    {
+     "label": "Research in Computer Science",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO489",
+         "title": null
+        },
+        {
+         "code": "CHEM489",
+         "title": null
+        },
+        {
+         "code": "EES489",
+         "title": ","
+        },
+        {
+         "code": "MATH489",
+         "title": ". Offered intermittently."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Offers students the opportunity to conduct original scientific research in an area of interest. Students work closely with one or more members of the natural science faculty to develop and conduct a research project, then present their findings orally during the semester's undergraduate research symposium and as a formal research paper. Students are encouraged to present their findings at a conference. Prerequisites: junior/senior status and a major in Computer Science, prior approval by the project advisor, and consent of the instructor. Students may enroll for 2 or 4 hours in a given semester. May be repeated for a maximum total of 8 semester hours. Identical to BIO 489, CHEM 489, EES 489, and MATH 489. Offered intermittently.",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "ISP",
+       "category": "ISP",
+       "credits": {
+        "min": 101,
+        "max": 101,
+        "raw": "101"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Introduces students to the fundamental principles and practices of utilizing information systems to help organizations achieve their goals and carry out their missions. While the course serves as the introductory course in the Information Systems Program curriculum, it is a suitable elective for any student interested in the subject. Students should have a working knowledge of Internet use and computer applications such as word processing, spreadsheets, presentation graphics, and e-mail. Offered every semester.",
+   "source_text": [
+    "4 credits",
+    "Fundamentals of Information Systems",
+    "CYB 101"
+   ],
+   "sections": [
+    {
+     "label": "Fundamentals of Information Systems",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 101,
+        "max": 101,
+        "raw": "101"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Cybersecurity Basics",
+    "An entry-level exploration into the world of cybersecurity, introducing students to critical threats (e.g., malware, phishing), fundamental principles (e.g., authentication, authorization), and foundational technologies (e.g., antivirus, firewalls, and intrusion detection systems), making it ideal for beginners seeking a smooth start into the cybersecurity field. Prerequisite: Math placement level B or higher or MATH 104 with a grade B or higher. Offered every fall.",
+    "CYB 230"
+   ],
+   "sections": [
+    {
+     "label": "Cybersecurity Basics",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH104",
+         "title": "with a grade B or higher. Offered every fall."
+        }
+       ],
+       "conjunction": "and",
+       "text": "An entry-level exploration into the world of cybersecurity, introducing students to critical threats (e.g., malware, phishing), fundamental principles (e.g., authentication, authorization), and foundational technologies (e.g., antivirus, firewalls, and intrusion detection systems), making it ideal for beginners seeking a smooth start into the cybersecurity field. Prerequisite: Math placement level B or higher or MATH 104 with a grade B or higher. Offered every fall.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 230,
+        "max": 230,
+        "raw": "230"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Unix Operating System",
+    "An introduction to Unix operating system covering the Unix file system, Unix shell, and basic utilities used for file management, process monitoring, and text processing. Through practical exercises, students will master file navigation and management, use VI editor, and effectively perform tasks within a Unix environment. Prerequisite: Math placement level B or higher or MATH 104 with a grade B or higher. Offered every spring.",
+    "CYB 301"
+   ],
+   "sections": [
+    {
+     "label": "Unix Operating System",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH104",
+         "title": "with a grade B or higher. Offered every spring."
+        }
+       ],
+       "conjunction": "and",
+       "text": "An introduction to Unix operating system covering the Unix file system, Unix shell, and basic utilities used for file management, process monitoring, and text processing. Through practical exercises, students will master file navigation and management, use VI editor, and effectively perform tasks within a Unix environment. Prerequisite: Math placement level B or higher or MATH 104 with a grade B or higher. Offered every spring.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 301,
+        "max": 301,
+        "raw": "301"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Cybersecurity Essentials and Tools",
+    "The course examines the concepts, principles, and applications of cybersecurity in the IT infrastructure and explores the knowledge and skills needed to ensure security of information and information systems within organizations. Prerequisite: CYB 101 with a grade of C- or higher and consent. Offered spring of even-numbered years.",
+    "CYB 320"
+   ],
+   "sections": [
+    {
+     "label": "Cybersecurity Essentials and Tools",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CYB101",
+         "title": "with a grade of C- or higher and consent. Offered spring of even-numbered years."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The course examines the concepts, principles, and applications of cybersecurity in the IT infrastructure and explores the knowledge and skills needed to ensure security of information and information systems within organizations. Prerequisite: CYB 101 with a grade of C- or higher and consent. Offered spring of even-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 320,
+        "max": 320,
+        "raw": "320"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Cyber Networks and Communication",
+    "Networks and Cybersecurity is an introductory course that provides students with the foundational knowledge in networking necessary for cybersecurity. The curriculum encompasses a study of network infrastructures, OSI Model layers, Internet Protocol suites, and network security protocols. Aimed at equipping students with the knowledge and competencies essential for further studies and advancement in networks and cybersecurity. Prerequisite: CYB 101 with a grade of C- or consent. Offered fall of odd-numbered years.",
+    "CYB 389"
+   ],
+   "sections": [
+    {
+     "label": "Cyber Networks and Communication",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CYB101",
+         "title": "with a grade of C- or consent. Offered fall of odd-numbered years."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Networks and Cybersecurity is an introductory course that provides students with the foundational knowledge in networking necessary for cybersecurity. The curriculum encompasses a study of network infrastructures, OSI Model layers, Internet Protocol suites, and network security protocols. Aimed at equipping students with the knowledge and competencies essential for further studies and advancement in networks and cybersecurity. Prerequisite: CYB 101 with a grade of C- or consent. Offered fall of odd-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 389,
+        "max": 389,
+        "raw": "389"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Advanced Topics in Cybersecurity",
+    "Explores an area of cybersecurity which is not otherwise included in the curriculum. Students may repeat the course for credit as the topic varies. Prerequisite: CYB 101 with a grade of C- or higher and CYB 230 with a grade of C- or higher. May be repeated up to two times for credit as topics change. Offered spring of even-numbered years.",
+    "CYB 423"
+   ],
+   "sections": [
+    {
+     "label": "Advanced Topics in Cybersecurity",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CYB101",
+         "title": "with a grade of C- or higher"
+        },
+        {
+         "code": "CYB230",
+         "title": "with a grade of C- or higher. May be repeated up to two times for credit as topics change. Offered spring of even-numbered years."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Explores an area of cybersecurity which is not otherwise included in the curriculum. Students may repeat the course for credit as the topic varies. Prerequisite: CYB 101 with a grade of C- or higher and CYB 230 with a grade of C- or higher. May be repeated up to two times for credit as topics change. Offered spring of even-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 423,
+        "max": 423,
+        "raw": "423"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Operating Systems Security and Administration",
+    "This course provides and in-depth examination of operating system security. Students will learn about vulnerabilities, file permissions, kernel security, and various security tools. The course combines theoretical concepts with practical exercises for securing local and remote systems. Prerequisite: CYB 101 with a grade of C- or higher and CYB 230 with a grade of C- or higher or consent. CYB 301 is recommended. Offered fall of odd-numbered years.",
+    "CYB 445"
+   ],
+   "sections": [
+    {
+     "label": "Operating Systems Security and Administration",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CYB101",
+         "title": "with a grade of C- or higher"
+        },
+        {
+         "code": "CYB230",
+         "title": "with a grade of C- or higher or consent."
+        },
+        {
+         "code": "CYB301",
+         "title": "is recommended. Offered fall of odd-numbered years."
+        }
+       ],
+       "conjunction": "or",
+       "text": "This course provides and in-depth examination of operating system security. Students will learn about vulnerabilities, file permissions, kernel security, and various security tools. The course combines theoretical concepts with practical exercises for securing local and remote systems. Prerequisite: CYB 101 with a grade of C- or higher and CYB 230 with a grade of C- or higher or consent. CYB 301 is recommended. Offered fall of odd-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 445,
+        "max": 445,
+        "raw": "445"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Ethical Hacking and Penetration Testing",
+    "This course delves into ethical hacking and penetration testing, with a focus on vulnerability scanning, system, and web security. Through hands-on activities, students learn to assess system security while following ethical and legal guidelines. The curriculum prepares students for cybersecurity roles by blending theory and practice. Prerequisite: CYB 101 with a grade of C- or higher and CYB 230 with a grade of C- or higher or consent. CYB 320 (Cyber Networks and Communication) is recommended. Offered spring of even-numbered years.",
+    "CYB 470"
+   ],
+   "sections": [
+    {
+     "label": "Ethical Hacking and Penetration Testing",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CYB101",
+         "title": "with a grade of C- or higher"
+        },
+        {
+         "code": "CYB230",
+         "title": "with a grade of C- or higher or consent."
+        },
+        {
+         "code": "CYB320",
+         "title": "(Cyber Networks and Communication) is recommended. Offered spring of even-numbered years."
+        }
+       ],
+       "conjunction": "or",
+       "text": "This course delves into ethical hacking and penetration testing, with a focus on vulnerability scanning, system, and web security. Through hands-on activities, students learn to assess system security while following ethical and legal guidelines. The curriculum prepares students for cybersecurity roles by blending theory and practice. Prerequisite: CYB 101 with a grade of C- or higher and CYB 230 with a grade of C- or higher or consent. CYB 320 (Cyber Networks and Communication) is recommended. Offered spring of even-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 470,
+        "max": 470,
+        "raw": "470"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "An intensive experience in the cybersecurity field conducted in a professional setting where students engage in real-world tasks, challenges, and projects related to cybersecurity. Prerequisites: junior/senior status, cumulative GPA of at least 2.5, and consent. Offered intermittently.",
+   "source_text": [
+    "4 credits",
+    "Internship in Cybersecurity",
+    "CYB 489"
+   ],
+   "sections": [
+    {
+     "label": "Internship in Cybersecurity",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CYB",
+       "category": "CYB",
+       "credits": {
+        "min": 489,
+        "max": 489,
+        "raw": "489"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students conduct original research in cybersecurity, working closely with faculty to develop projects. They present findings orally at the research symposium and in a research paper, with encouragement to present at a conference. Prerequisite: Junior/senior status and consent. Can be taken multiple times. Offered intermittently.",
+   "source_text": [
+    "4 credits",
+    "Research in Cybersecurity",
+    "MATH 171"
+   ],
+   "sections": [
+    {
+     "label": "Research in Cybersecurity",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 171,
+        "max": 171,
+        "raw": "171"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Calculus I",
+    "Students learn the basic tools of calculus, why they work, and how to apply them in various contexts. Calculus I develops differential calculus through symbolic, graphical, and numerical approaches. Topics include differentiation of algebraic and transcendental functions, applications in modeling and optimization, the Fundamental Theorem of Calculus, and an introduction to differential equations. Prerequisite: placement level A or MATH 170 (grade C- or higher). Offered every semester.",
+    "MATH 172"
+   ],
+   "sections": [
+    {
+     "label": "Calculus I",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH170",
+         "title": "(grade C- or higher). Offered every semester."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Students learn the basic tools of calculus, why they work, and how to apply them in various contexts. Calculus I develops differential calculus through symbolic, graphical, and numerical approaches. Topics include differentiation of algebraic and transcendental functions, applications in modeling and optimization, the Fundamental Theorem of Calculus, and an introduction to differential equations. Prerequisite: placement level A or MATH 170 (grade C- or higher). Offered every semester.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 172,
+        "max": 172,
+        "raw": "172"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Calculus II",
+    "A continuation of Calculus I. More advanced techniques are studied and used to solve quantitative problems in various contexts. Topics include integration techniques, applications of definite integration, polar coordinates, parametric equations, and sequences and series. Prerequisite: MATH 136 or 171 with a grade of C- or higher or consent. Offered every semester.",
+    "MATH 210"
+   ],
+   "sections": [
+    {
+     "label": "Calculus II",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH136",
+         "title": "or 171 with a grade of C- or higher or consent. Offered every semester."
+        }
+       ],
+       "conjunction": "and",
+       "text": "A continuation of Calculus I. More advanced techniques are studied and used to solve quantitative problems in various contexts. Topics include integration techniques, applications of definite integration, polar coordinates, parametric equations, and sequences and series. Prerequisite: MATH 136 or 171 with a grade of C- or higher or consent. Offered every semester.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 210,
+        "max": 210,
+        "raw": "210"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Introductory Statistics",
+    "Introduces students to learning from data. Topics include the basics of data production, data analysis, probability, Central Limit Theorem, and statistical inference. Statistical software is used for data management, calculation, and visualization. No previous knowledge of statistics is required. Students cannot receive credit for both MATH 210 and PSY 210. Prerequisites: sophomore status or higher, and placement level H, A, or B, or MATH 104 with a grade of C- or higher. Not appropriate for first-year students. Students must have a TI-83 or TI-84 graphing calculator. Offered every semester.",
+    "MATH 217"
+   ],
+   "sections": [
+    {
+     "label": "Introductory Statistics",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH210",
+         "title": null
+        },
+        {
+         "code": "PSY210",
+         "title": ". Prerequisites: sophomore status or higher, and placement level H, A, or B,"
+        },
+        {
+         "code": "MATH104",
+         "title": "with a grade of C- or higher. Not appropriate for first-year students. Students must have a TI-83 or TI-84 graphing calculator. Offered every semester."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Introduces students to learning from data. Topics include the basics of data production, data analysis, probability, Central Limit Theorem, and statistical inference. Statistical software is used for data management, calculation, and visualization. No previous knowledge of statistics is required. Students cannot receive credit for both MATH 210 and PSY 210. Prerequisites: sophomore status or higher, and placement level H, A, or B, or MATH 104 with a grade of C- or higher. Not appropriate for first-year students. Students must have a TI-83 or TI-84 graphing calculator. Offered every semester.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 217,
+        "max": 217,
+        "raw": "217"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Linear Algebra",
+    "The study of vector spaces and linear equations in several variables. Topics include systems of linear equations, vector spaces, linear dependence of vectors, bases, dimension, linear transformations, matrices, determinants, and applications. Prerequisite: MATH 172 with a grade of C- or higher, or consent. Offered every fall.",
+    "MATH 310"
+   ],
+   "sections": [
+    {
+     "label": "Linear Algebra",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH172",
+         "title": "with a grade of C- or higher, or consent. Offered every fall."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The study of vector spaces and linear equations in several variables. Topics include systems of linear equations, vector spaces, linear dependence of vectors, bases, dimension, linear transformations, matrices, determinants, and applications. Prerequisite: MATH 172 with a grade of C- or higher, or consent. Offered every fall.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MATH",
+       "category": "MATH",
+       "credits": {
+        "min": 310,
+        "max": 310,
+        "raw": "310"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4 credits",
+    "Statistical Models",
+    "A course in applied data analysis. Emphasizes construction of models for authentic data sets. Statistical software is used extensively for analyzing real data sets from various contexts. Topics include parametric and non-parametric tests, simple and multiple regression, and ANOVA. Prerequisites: ENG 105 with a grade of C or higher, MATH 172 with a grade C or higher, and MATH 210 with a grade C or higher, or consent. Offered spring of even-numbered years.",
+    "PHYS 221"
+   ],
+   "sections": [
+    {
+     "label": "Statistical Models",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG105",
+         "title": "with a grade of C or higher"
+        },
+        {
+         "code": "MATH172",
+         "title": "with a grade C or higher,"
+        },
+        {
+         "code": "MATH210",
+         "title": "with a grade C or higher, or consent. Offered spring of even-numbered years."
+        }
+       ],
+       "conjunction": "or",
+       "text": "A course in applied data analysis. Emphasizes construction of models for authentic data sets. Statistical software is used extensively for analyzing real data sets from various contexts. Topics include parametric and non-parametric tests, simple and multiple regression, and ANOVA. Prerequisites: ENG 105 with a grade of C or higher, MATH 172 with a grade C or higher, and MATH 210 with a grade C or higher, or consent. Offered spring of even-numbered years.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "PHYS",
+       "category": "PHYS",
+       "credits": {
+        "min": 221,
+        "max": 221,
+        "raw": "221"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Computer Science students have access to a guaranteed admission engineering pathway through Batten University's partnership agreements. Contact your advisor for current eligibility requirements and application deadlines. Pre-Engineering pathway to MS programs in Aerospace, Biomedical, Civil, Computer, Electrical, Environmental, and Mechanical Engineering, plus Modeling & Simulation. A strong programming foundation across multiple languages prepares students for software engineering, application development, and full-stack development roles. The B.S. track's required research experience prepares students for graduate study in computer science, data science, and related technical fields. For students more interested in how organizations use information systems than in algorithms and software design theory. For students who want security to be the center of their degree rather than a concentration or minor within Computer Science. A natural pairing — especially for the B.S. track, which already shares calculus and linear algebra requirements with the math major. John WangProfessor of Computer Science757-455-5710Allen Village 121Abdullah Al-AlajAssistant Professor of Computer Science757-233-8742132 Clarke Hall",
+   "source_text": [
+    "4 credits",
+    "University Physics I",
+    "CATALOG DESCRIPTION NOT FOUND IN SOURCE MATERIAL. Required for the B.S. track but no course description for PHYS 221 appears anywhere in this source file. Flagged for Academic Affairs — confirm catalog copy before publishing.",
+    "Graduate & Dual Degree Pathways",
+    "Old Dominion University",
+    "Batten College of Engineering & Technology",
+    "Guaranteed Admission",
+    "View All Dual Degree Programs",
+    "Career Outcomes",
+    "Software Development",
+    "Software Engineering",
+    "Application Development",
+    "Web Development",
+    "Data Science & Analytics",
+    "Coursework in data structures, statistics, and Python-based data science supports careers in data analysis, machine learning, and business intelligence.",
+    "Data Science",
+    "Analytics",
+    "Machine Learning",
+    "Cybersecurity",
+    "Upper-level cybersecurity coursework and the dedicated minor prepare students for roles in information security, network defense, and ethical hacking.",
+    "Cybersecurity",
+    "Network Security",
+    "Information Security",
+    "Graduate Study & Research",
+    "Graduate School",
+    "Research",
+    "Engineering",
+    "Related Programs",
+    "Computer Information Systems",
+    "Cybersecurity",
+    "Mathematics",
+    "Faculty"
+   ],
+   "sections": [
+    {
+     "label": "University Physics I",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHYS221",
+         "title": "appears anywhere in this source file. Flagged for Academic Affairs — confirm catalog copy before publishing."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CATALOG DESCRIPTION NOT FOUND IN SOURCE MATERIAL. Required for the B.S. track but no course description for PHYS 221 appears anywhere in this source file. Flagged for Academic Affairs — confirm catalog copy before publishing.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Data Science & Analytics",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Coursework in data structures, statistics, and Python-based data science supports careers in data analysis, machine learning, and business intelligence.",
+       "category": "Coursework in data structures, statistics, and Python-based data science supports careers in data analysis, machine learning, and business intelligence."
+      }
+     ]
+    },
+    {
+     "label": "Cybersecurity",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Upper-level cybersecurity coursework and the dedicated minor prepare students for roles in information security, network defense, and ethical hacking.",
+       "category": "Upper-level cybersecurity coursework and the dedicated minor prepare students for roles in information security, network defense, and ethical hacking."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Data Science is an emerging field that combines computer science and statistics. The minor in Data Science teaches programming skills, programming languages Java, Python and R, data analytics, models, and visualizations.",
+  "Computer Science coursework spans programming fundamentals, data structures, systems, and theory, with upper-level electives in databases, numerical methods, programming languages, and cybersecurity. Relevant Mathematics and Information Systems (ISP) courses required by the degree are listed below alongside core CS coursework.",
+  "An intensive computer science project conducted in a professional setting. Pass/Fail grading. Prerequisite: junior/senior status, cumulative GPA of at least 2.5, and consent. Offered intermittently.",
+  "Introduces students to the fundamental principles and practices of utilizing information systems to help organizations achieve their goals and carry out their missions. While the course serves as the introductory course in the Information Systems Program curriculum, it is a suitable elective for any student interested in the subject. Students should have a working knowledge of Internet use and computer applications such as word processing, spreadsheets, presentation graphics, and e-mail. Offered every semester.",
+  "An intensive experience in the cybersecurity field conducted in a professional setting where students engage in real-world tasks, challenges, and projects related to cybersecurity. Prerequisites: junior/senior status, cumulative GPA of at least 2.5, and consent. Offered intermittently.",
+  "Students conduct original research in cybersecurity, working closely with faculty to develop projects. They present findings orally at the research symposium and in a research paper, with encouragement to present at a conference. Prerequisite: Junior/senior status and consent. Can be taken multiple times. Offered intermittently.",
+  "Computer Science students have access to a guaranteed admission engineering pathway through Batten University's partnership agreements. Contact your advisor for current eligibility requirements and application deadlines.",
+  "Pre-Engineering pathway to MS programs in Aerospace, Biomedical, Civil, Computer, Electrical, Environmental, and Mechanical Engineering, plus Modeling & Simulation.",
+  "A strong programming foundation across multiple languages prepares students for software engineering, application development, and full-stack development roles.",
+  "The B.S. track's required research experience prepares students for graduate study in computer science, data science, and related technical fields.",
+  "For students more interested in how organizations use information systems than in algorithms and software design theory.",
+  "For students who want security to be the center of their degree rather than a concentration or minor within Computer Science.",
+  "A natural pairing — especially for the B.S. track, which already shares calculus and linear algebra requirements with the math major.",
+  "John WangProfessor of Computer Science757-455-5710Allen Village 121Abdullah Al-AlajAssistant Professor of Computer Science757-233-8742132 Clarke Hall"
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 46 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "42 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "46 distinct courses across 94 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "57 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 42,
+   "sections": 63,
+   "rows": 94,
+   "course_rows": 37,
+   "category_rows": 57,
+   "distinct_courses": 46,
+   "credit_span": {
+    "min": 135,
+    "max": 135,
+    "groups_with_credits": 35
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:45.091Z"
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ArrowNarrowLeft } from '@untitledui-pro/icons/duotone';
 import Stack from '@/components/ui/layout/Stack'
 import CompletionCheck from '@/components/ui/display/CompletionCheck'
@@ -428,6 +428,14 @@ function ReceiverRow({ receiver, ctx, rowKey }) {
 // ---------------------------------------------------------------------------
 // Section/group rule + status text live in ledgerText.js (pure, golden-locked).
 
+/**
+ * How many options a section may print before it collapses to a count.
+ *
+ * Eight is above every "choose one of these three or four" list in the corpus
+ * and well below the general-education menus, which run to forty.
+ */
+const MENU_COLLAPSE_AT = 8
+
 function RequirementSection({ section, group, ctx, soleStat, pooled, groupComplete, groupIdx, sectionIdx }) {
   const { userCourses, crossCc } = ctx
   const receivers = section.receivers || []
@@ -451,6 +459,20 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
   const greyed = status.kind === 'none'
   const rule = sectionRule(section, group, receivers, soleStat, pooled)
 
+  // A general-education menu can list forty courses to pick one from. Printed
+  // in full it buries the requirement it belongs to, and the list is not the
+  // information — the count is. Collapse to a count past the threshold, keeping
+  // any course the student has actually completed on screen so progress is
+  // never hidden, and let the list be opened when someone does want to read it.
+  // The courses themselves are untouched in the document; this is a display
+  // decision, not a smaller degree.
+  const [expanded, setExpanded] = useState(false)
+  const collapsible = receivers.length > MENU_COLLAPSE_AT && !expanded
+  const shown = collapsible
+    ? receivers.filter((r) => isReceiverCompleted(r, userCourses, crossCc))
+    : receivers
+  const hiddenCount = receivers.length - shown.length
+
   // The shared SectionCard owns the rail + tinted header + divided body; we only
   // pick the tone and supply the instruction header, done check, and footnote.
   return (
@@ -464,9 +486,22 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
       ) : null}
       headerMark={done ? <CompletionCheck /> : null}
     >
-      {receivers.map((r, i) => (
+      {shown.map((r, i) => (
         <ReceiverRow key={i} receiver={r} ctx={ctx} rowKey={`${groupIdx}-${sectionIdx}-${i}`} />
       ))}
+      {hiddenCount > 0 && (
+        <button type='button' onClick={() => setExpanded(true)}
+          className='w-full px-4 py-2.5 text-left text-[13px] text-ink-subtle hover:text-ink-default hover:bg-surface-hover transition-colors'>
+          {shown.length > 0 ? `${hiddenCount} more courses satisfy this` : `${hiddenCount} courses satisfy this`}
+          <span className='underline ml-1.5'>show</span>
+        </button>
+      )}
+      {expanded && receivers.length > MENU_COLLAPSE_AT && (
+        <button type='button' onClick={() => setExpanded(false)}
+          className='w-full px-4 py-2.5 text-left text-[13px] text-ink-subtle hover:text-ink-default hover:bg-surface-hover transition-colors'>
+          <span className='underline'>collapse</span> the {receivers.length} courses
+        </button>
+      )}
     </SectionCard>
   )
 }

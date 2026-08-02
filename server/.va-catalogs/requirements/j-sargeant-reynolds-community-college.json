@@ -1,0 +1,45 @@
+{
+ "slug": "j-sargeant-reynolds-community-college",
+ "name": "J Sargeant Reynolds Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "outcome": "url_only",
+ "source_url": "https://catalog.reynolds.edu/preview_program.php?catoid=10&poid=2162&returnto=955&print=1",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": "https://catalog.reynolds.edu/preview_program.php?catoid=10&poid=2162&returnto=955&print=1",
+  "title": "Computer Science AS",
+  "candidates": [
+   {
+    "score": 20,
+    "title": "Computer Science AS",
+    "href": "https://catalog.reynolds.edu/preview_program.php?catoid=10&poid=2162&returnto=955",
+    "catoid": 10
+   }
+  ],
+  "catoids": [
+   10
+  ],
+  "read": {
+   "navs_seen": 26,
+   "nav_pages_read": 3,
+   "program_links_seen": 176,
+   "via": "navigation"
+  },
+  "read_fetch": {
+   "navs_seen": 26,
+   "nav_pages_read": 0,
+   "program_links_seen": 0
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.732Z"
+}

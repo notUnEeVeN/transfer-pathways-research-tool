@@ -1,0 +1,23 @@
+{
+ "slug": "averett-university",
+ "name": "Averett University",
+ "level": "four_year",
+ "platform": "pdf",
+ "outcome": "url_only",
+ "source_url": "https://www.averett.edu/academics/majors-and-programs/undergraduate/computer-science/",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": null,
+  "candidates": []
+ },
+ "extracted_at": "2026-08-02T06:13:44.812Z"
+}

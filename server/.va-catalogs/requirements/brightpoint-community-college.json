@@ -1,0 +1,1444 @@
+{
+ "slug": "brightpoint-community-college",
+ "name": "Brightpoint Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157&print=1",
+ "captured_at": "2026-08-02T05:42:22.964Z",
+ "program_title": "Computer Science, AS",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Math Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Math Requirements",
+    "MTH 263 - Calculus l 4 credits",
+    "MTH 264 - Calculus ll 4 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus l 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 - Calculus l 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus ll 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 - Calculus ll 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Major Course Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Major Course Requirements",
+    "CSC 221 - Introduction to Problem Solving and Programming 3 credits",
+    "CSC 222 - Object-Oriented Programming 4 credits",
+    "CSC 205 - Computer Organization 3 credits",
+    "CSC 223 - Data Structures and Analysis of Algorithms 4 credits",
+    "CSC 208 - Introduction to Discrete Structures 3 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 - Introduction to Problem Solving and Programming 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 - Object-Oriented Programming 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 - Computer Organization 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 - Data Structures and Analysis of Algorithms 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 - Introduction to Discrete Structures 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Lab Science Requirements",
+   "credits": null,
+   "choose": 2,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose 2 to complete a sequence: Credits / Units: 8",
+   "source_text": [
+    "Lab Science Requirements",
+    "Choose 2 to complete a sequence: Credits / Units: 8",
+    "BIO 101 - General Biology I 4 credits",
+    "BIO 102 - General Biology II 4 credits",
+    "CHM 111 - General Chemistry I 4 credits",
+    "CHM 112 - General Chemistry II 4 credits",
+    "PHY 201 - General College Physics I 4 credits",
+    "PHY 202 - General College Physics II 4 credits",
+    "PHY 241 - University Physics I 4 credits",
+    "PHY 242 - University Physics II 4 credits",
+    "History"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101 - General Biology I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102 - General Biology II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 - General Chemistry I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 - General Chemistry II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY201",
+         "title": "General College Physics I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 201 - General College Physics I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY202",
+         "title": "General College Physics II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 202 - General College Physics II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241 - University Physics I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242 - University Physics II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "History (choose 1): Credits / Units",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "History (choose 1): Credits / Units: 3 credits",
+    "HIS 101 - Western Civilizations Pre-1600 CE 3 credits",
+    "HIS 102 - Western Civilizations Post-1600 CE 3 credits",
+    "HIS 111 - World Civilization Pre-1500 CE 3 credits",
+    "HIS 112 - World Civilization Post-1500 CE 3 credits",
+    "HIS 121 - United States History to 1877 3 credits",
+    "HIS 122 - United States History Since 1865 3 credits",
+    "Humanities"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "HIS101",
+         "title": "Western Civilizations Pre-1600 CE 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 101 - Western Civilizations Pre-1600 CE 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS102",
+         "title": "Western Civilizations Post-1600 CE 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 102 - Western Civilizations Post-1600 CE 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS111",
+         "title": "World Civilization Pre-1500 CE 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 111 - World Civilization Pre-1500 CE 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS112",
+         "title": "World Civilization Post-1500 CE 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 112 - World Civilization Post-1500 CE 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS121",
+         "title": "United States History to 1877 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 121 - United States History to 1877 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS122",
+         "title": "United States History Since 1865 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 122 - United States History Since 1865 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Humanities (choose 1): Credits / Units",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Humanities (choose 1): Credits / Units: 3 credits",
+    "PHI 100 - Introduction to Philosophy 3 credits",
+    "PHI 111 - Logic 3 credits",
+    "PHI 220 - Ethics and Society 3 credits",
+    "REL 100 - Introduction to the Study of Religion 3 credits",
+    "REL 230 - Religions of the World 3 credits",
+    "Social/Behavioral Sciences"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHI100",
+         "title": "Introduction to Philosophy 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 100 - Introduction to Philosophy 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI111",
+         "title": "Logic 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 111 - Logic 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI220",
+         "title": "Ethics and Society 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 220 - Ethics and Society 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL100",
+         "title": "Introduction to the Study of Religion 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 100 - Introduction to the Study of Religion 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL230",
+         "title": "Religions of the World 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL 230 - Religions of the World 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Social/Behavioral Sciences (choose 1): Credits / Units",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Social/Behavioral Sciences (choose 1): Credits / Units: 3 credits",
+    "ECO 150 - Economic Essentials: Theory and Application 3 credits",
+    "ECO 201 - Principles of Macroeconomics 3 credits",
+    "ECO 202 - Principles of Microeconomics 3 credits",
+    "GEO 210 - People and the Land: An Introduction to Cultural Geography 3 credits",
+    "GEO 220 - World Regional Geography 3 credits",
+    "PLS 135 - U.S. Government and Politics 3 credits",
+    "PLS 140 - Introduction to Comparative Politics 3 credits",
+    "PLS 241 - Introduction to International Relations 3 credits",
+    "PSY 200 - Principles of Psychology 3 credits",
+    "SOC 200 - Introduction to Sociology 3 credits",
+    "SOC 211 - Cultural Anthropology 3 credits",
+    "SOC 268 - Social Problems 3 credits",
+    "Arts/Literature"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ECO150",
+         "title": "Economic Essentials: Theory and Application 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 150 - Economic Essentials: Theory and Application 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO201",
+         "title": "Principles of Macroeconomics 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 201 - Principles of Macroeconomics 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO202",
+         "title": "Principles of Microeconomics 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 202 - Principles of Microeconomics 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO210",
+         "title": "People and the Land: An Introduction to Cultural Geography 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO 210 - People and the Land: An Introduction to Cultural Geography 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO220",
+         "title": "World Regional Geography 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO 220 - World Regional Geography 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS135",
+         "title": "U.S. Government and Politics 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 135 - U.S. Government and Politics 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS140",
+         "title": "Introduction to Comparative Politics 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 140 - Introduction to Comparative Politics 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PLS241",
+         "title": "Introduction to International Relations 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PLS 241 - Introduction to International Relations 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY200",
+         "title": "Principles of Psychology 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY 200 - Principles of Psychology 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC200",
+         "title": "Introduction to Sociology 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 200 - Introduction to Sociology 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC211",
+         "title": "Cultural Anthropology 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 211 - Cultural Anthropology 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC268",
+         "title": "Social Problems 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC 268 - Social Problems 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Arts/Literature (choose 1): Credits / Units",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Arts/Literature (choose 1): Credits / Units: 3 credits",
+    "ART 101 - History of Art: Prehistoric to Gothic 3 credits",
+    "ART 102 - History of Art: Renaissance to Modern 3 credits",
+    "CST 130 - Introduction to the Theatre 3 credits",
+    "CST 151 - Film Appreciation I 3 credits",
+    "MUS 121 - Music in Society 3 credits",
+    "MUS 226 - World Music 3 credits",
+    "ENG 245 - British Literature 3 credits",
+    "ENG 246 - American Literature 3 credits",
+    "ENG 255 - World Literature 3 credits",
+    "ENG 258 - African American Literature 3 credits",
+    "ENG 275 - Women in Literature 3 credits",
+    "ENG 225 - Reading Literature: Culture and Ideas 3 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ART101",
+         "title": "History of Art: Prehistoric to Gothic 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 101 - History of Art: Prehistoric to Gothic 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART102",
+         "title": "History of Art: Renaissance to Modern 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 102 - History of Art: Renaissance to Modern 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST130",
+         "title": "Introduction to the Theatre 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 130 - Introduction to the Theatre 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST151",
+         "title": "Film Appreciation I 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 151 - Film Appreciation I 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS121",
+         "title": "Music in Society 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 121 - Music in Society 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS226",
+         "title": "World Music 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 226 - World Music 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG245",
+         "title": "British Literature 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 245 - British Literature 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG246",
+         "title": "American Literature 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 246 - American Literature 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG255",
+         "title": "World Literature 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 255 - World Literature 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG258",
+         "title": "African American Literature 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 258 - African American Literature 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG275",
+         "title": "Women in Literature 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 275 - Women in Literature 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG225",
+         "title": "Reading Literature: Culture and Ideas 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 225 - Reading Literature: Culture and Ideas 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Approved Electives",
+   "credits": null,
+   "choose": 2,
+   "choose_credits": {
+    "min": 8,
+    "max": 8,
+    "raw": "8"
+   },
+   "distinct_sections": null,
+   "note": "Choose 2 or 3 for a minimum of 8 credits: Credits / Units: 8-9 Students are strongly encouraged to complete their SDV, ENG, and MTH requirements first. Students should regularly meet with their faculty advisor and check their degree progress by accessing advisement reports in the Student Information System (SIS) in the myBrightpoint portal or the Academic Planner in Navigate. Students planning to transfer to Virginia Tech for Computer Science should complete the A.S. in Computer Science at Brightpoint.",
+   "source_text": [
+    "Approved Electives",
+    "Choose 2 or 3 for a minimum of 8 credits: Credits / Units: 8-9",
+    "CHM 111 - General Chemistry I 4 credits",
+    "CHM 112 - General Chemistry II 4 credits",
+    "CST 100 - Principles of Public Speaking 3 credits",
+    "CST 110 - Introduction to Human Communication 3 credits",
+    "EGR 121 - Foundations of Engineering 2 credits",
+    "EGR 122 - Engineering Design 3 credits",
+    "EGR 270 - Fundamentals of Computer Engineering 4 credits",
+    "ITE 152 - Introduction to Digital Literacy and Computer Applications 3 credits",
+    "MTH 161 - Precalculus l 3 credits",
+    "MTH 162 - Precalculus ll 3 credits",
+    "MTH 245 - Statistics l 3 credits",
+    "MTH 265 - Calculus lll 4 credits",
+    "MTH 266 - Linear Algebra 3 credits",
+    "PHY 241 - University Physics I 4 credits",
+    "PHY 242 - University Physics II 4 credits",
+    "CSC 195 - AI Foundations for Computer Science 3 credits",
+    "Total Minimum Credits to Complete: 60",
+    "ADDITIONAL INFORMATION:",
+    "Pre-requisite and co-requisite requirements can be found in course details.",
+    "Students should regularly meet with their faculty advisor and check their degree progress by accessing advisement reports in the Student Information System (SIS) in the myBrightpoint portal or the Academic Planner in Navigate.",
+    "A sequence BIO 101 & BIO 102, CHM 111 & CHM 112, or PHY 241 & PHY 242 is recommended.",
+    "Courses noted as Spring only are based on historical trends and current planning and may change without notice."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 - General Chemistry I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 - General Chemistry II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 - Principles of Public Speaking 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST110",
+         "title": "Introduction to Human Communication 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 110 - Introduction to Human Communication 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering 2 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121 - Foundations of Engineering 2 credits",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122 - Engineering Design 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR270",
+         "title": "Fundamentals of Computer Engineering 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 270 - Fundamentals of Computer Engineering 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "TE152",
+         "title": "Introduction to Digital Literacy and Computer Applications 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ITE 152 - Introduction to Digital Literacy and Computer Applications 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": "Precalculus l 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 161 - Precalculus l 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH162",
+         "title": "Precalculus ll 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 162 - Precalculus ll 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics l 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 245 - Statistics l 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus lll 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 - Calculus lll 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 - Linear Algebra 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241 - University Physics I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242 - University Physics II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC195",
+         "title": "AI Foundations for Computer Science 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 195 - AI Foundations for Computer Science 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "ADDITIONAL INFORMATION:",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pre-requisite and co-requisite requirements can be found in course details.",
+       "category": "Pre-requisite and co-requisite requirements can be found in course details."
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "&"
+        },
+        {
+         "code": "BIO102",
+         "title": null
+        },
+        {
+         "code": "CHM111",
+         "title": "&"
+        },
+        {
+         "code": "CHM112",
+         "title": ","
+        },
+        {
+         "code": "PHY241",
+         "title": "&"
+        },
+        {
+         "code": "PHY242",
+         "title": "is recommended."
+        }
+       ],
+       "conjunction": "or",
+       "text": "A sequence BIO 101 & BIO 102, CHM 111 & CHM 112, or PHY 241 & PHY 242 is recommended.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Courses noted as Spring only are based on historical trends and current planning and may change without notice.",
+       "category": "Courses noted as Spring only are based on historical trends and current planning and may change without notice."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "PURPOSE: This two-year degree prepares students to transfer to a four-year college and major in computer science.",
+  "TRANSFER INFORMATION: This program is aligned with the Transfer Virginia common curriculum for Computer Science. Students should consult with their advisors to ensure that they select general electives that best prepare them for the specific requirements of their intended transfer college or university programs of study. More information can also be found at www.brightpoint.edu/academics/transfer/ and by using the Transfer Virginia Portal https://www.transfervirginia.org.",
+  "PROGRAM OUTCOMES: By the completion of this program, students will be expected to demonstrate an intermediate level of competency in the following skills:"
+ ],
+ "unassigned": [
+  "Students are strongly encouraged to complete their SDV, ENG, and MTH requirements first.",
+  "Students planning to transfer to Virginia Tech for Computer Science should complete the A.S. in Computer Science at Brightpoint."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 62 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "8 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "62 distinct courses across 69 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 8,
+   "sections": 10,
+   "rows": 69,
+   "course_rows": 67,
+   "category_rows": 2,
+   "distinct_courses": 62,
+   "credit_span": {
+    "min": 12,
+    "max": 12,
+    "groups_with_credits": 4
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.719Z"
+}

@@ -1,0 +1,1270 @@
+{
+ "slug": "northern-virginia-community-college",
+ "name": "Northern Virginia Community College",
+ "level": "community_college",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.nvcc.edu/programs/computer-science-as/",
+ "captured_at": "2026-08-02T05:46:46.932Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 60,
+  "max": 63,
+  "raw": "60-63"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "1st Semester",
+   "credits": {
+    "min": 15,
+    "max": 16,
+    "raw": "15-16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following options: 1",
+   "source_text": [
+    "CSC 221 Introduction to Problem Solving and Programming",
+    "ENG 111 College Composition I",
+    "HIS Elective",
+    "Select one of the following options: 1",
+    "Option 1: If PreCalculus is needed",
+    "MTH 167 PreCalculus with Trigonometry",
+    "SDV 100or SDV 101 College Success Skillsor Orientation to:"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 Introduction to Problem Solving and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 College Composition I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "HIS Elective",
+       "category": "HIS Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 5,
+      "max": 6,
+      "raw": "5-6"
+     },
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Option 1: If PreCalculus is needed",
+       "category": "Option 1: If PreCalculus is needed",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH167",
+         "title": "PreCalculus with Trigonometry"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 167 PreCalculus with Trigonometry",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills"
+        },
+        {
+         "code": "SDV101",
+         "title": "Orientation to"
+        }
+       ],
+       "conjunction": "or",
+       "text": "SDV 100or SDV 101 College Success Skillsor Orientation to:",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "2nd Semester",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSC 222 Object Oriented Programming",
+    "ENG 112 College Composition II",
+    "MTH 263 Calculus I",
+    "Humanities/Fine Arts Elective 2"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 Object Oriented Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 College Composition II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Humanities/Fine Arts Elective 2",
+       "category": "Humanities/Fine Arts Elective 2",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "3rd Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following Physical and Life Science Electives w/Lab:",
+   "source_text": [
+    "CSC 208or MTH 288 Introduction to Discrete Structuresor Discrete Mathematics",
+    "CSC 223 Data Structures and Analysis of Algorithms",
+    "MTH 264 Calculus II 3",
+    "Select one of the following Physical and Life Science Electives w/Lab:",
+    "BIO 101 General Biology I",
+    "CHM 111 General Chemistry I",
+    "PHY 241 University Physics I",
+    "GOL 105 Physical Geology",
+    "GOL 106 Historical Geology"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures"
+        },
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CSC 208or MTH 288 Introduction to Discrete Structuresor Discrete Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 Data Structures and Analysis of Algorithms",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 Calculus II 3",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 4,
+      "raw": "4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101 General Biology I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 General Chemistry I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241 University Physics I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105 Physical Geology",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106 Historical Geology",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "4th Semester",
+   "credits": {
+    "min": 16,
+    "max": 18,
+    "raw": "16-18"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following: Select one of the following Physical and Life Science Electives w/Lab:",
+   "source_text": [
+    "Approved Elective 4",
+    "Humanities/Fine Arts Elective 2",
+    "Social/Behavioral Sciences Elective 5",
+    "Select one of the following:",
+    "CSC 205 Computer Organization",
+    "CSC 215 Computer Systems",
+    "MTH 265 Calculus III",
+    "Select one of the following Physical and Life Science Electives w/Lab:",
+    "BIO 102 General Biology II",
+    "CHM 112 General Chemistry II",
+    "PHY 242 University Physics II",
+    "GOL 105 Physical Geology",
+    "GOL 106 Historical Geology"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Approved Elective 4",
+       "category": "Approved Elective 4",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Humanities/Fine Arts Elective 2",
+       "category": "Humanities/Fine Arts Elective 2",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Social/Behavioral Sciences Elective 5",
+       "category": "Social/Behavioral Sciences Elective 5",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 4,
+      "raw": "3-4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215 Computer Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 Calculus III",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 4,
+      "raw": "4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102 General Biology II",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 General Chemistry II",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242 University Physics II",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105 Physical Geology",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106 Historical Geology",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Option 2: If placed out of PreCalculus",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSC 205 Computer Organization",
+    "CSC 208 Introduction to Discrete Structures",
+    "CSC 215 Computer Systems",
+    "MTH 265 Calculus III",
+    "MTH 266 Linear Algebra",
+    "MTH 288 Discrete Mathematics",
+    "PHY 201 General College Physics I",
+    "BIO 101 General Biology I",
+    "BIO 102 General Biology II",
+    "CHM 111 General Chemistry I",
+    "CHM 112 General Chemistry II",
+    "PHY 241 University Physics I",
+    "PHY 242 University Physics II",
+    "GOL 105 Physical Geology",
+    "GOL 106 Historical Geology"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 Introduction to Discrete Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215 Computer Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 Calculus III",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 288 Discrete Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY201",
+         "title": "General College Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 201 General College Physics I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101 General Biology I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102 General Biology II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 General Chemistry I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 General Chemistry II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241 University Physics I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242 University Physics II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105 Physical Geology",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106 Historical Geology",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Approved Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "PHY 201 General College Physics I",
+    "CSC 205 Computer Organization",
+    "CSC 215 Computer Systems",
+    "CSC 195 Topics In:",
+    "CSC 295 Topics In:",
+    "EGR 121 Foundations of Engineering",
+    "EGR 122 Engineering Design",
+    "EGR 270 Fundamentals of Computer Engineering",
+    "CST 100 Principles of Public Speaking",
+    "CST 110 Introduction to Human Communication",
+    "MTH 265 Calculus III",
+    "MTH 266 Linear Algebra",
+    "MTH 283 Probability and Statistics",
+    "BIO 101 General Biology I",
+    "BIO 102 General Biology II",
+    "CHM 111 General Chemistry I",
+    "CHM 112 General Chemistry II",
+    "PHY 241 University Physics I",
+    "PHY 242 University Physics II",
+    "GOL 105 Physical Geology",
+    "GOL 106 Historical Geology"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHY201",
+         "title": "General College Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 201 General College Physics I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215 Computer Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC195",
+         "title": "Topics In"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 195 Topics In:",
+       "credits": {
+        "min": 1,
+        "max": 5,
+        "raw": "1-5"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC295",
+         "title": "Topics In"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 295 Topics In:",
+       "credits": {
+        "min": 1,
+        "max": 5,
+        "raw": "1-5"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121 Foundations of Engineering",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122 Engineering Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR270",
+         "title": "Fundamentals of Computer Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 270 Fundamentals of Computer Engineering",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 Principles of Public Speaking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST110",
+         "title": "Introduction to Human Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 110 Introduction to Human Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 Calculus III",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH283",
+         "title": "Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 283 Probability and Statistics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101 General Biology I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102 General Biology II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 111 General Chemistry I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 112 General Chemistry II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241 University Physics I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 242 University Physics II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL105",
+         "title": "Physical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 105 Physical Geology",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOL106",
+         "title": "Historical Geology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOL 106 Historical Geology",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 33 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "6 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "33 distinct courses across 65 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 60–63, stated total 60-63"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "6 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 6,
+   "sections": 10,
+   "rows": 65,
+   "course_rows": 59,
+   "category_rows": 6,
+   "distinct_courses": 33,
+   "credit_span": {
+    "min": 60,
+    "max": 63,
+    "groups_with_credits": 4
+   },
+   "stated_total": "60-63"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.756Z"
+}

@@ -1,0 +1,1645 @@
+{
+ "slug": "randolph-college",
+ "name": "Randolph College",
+ "level": "four_year",
+ "platform": "web",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://www.randolphcollege.edu/computer-science/curriculum/",
+ "captured_at": "2026-08-02T05:56:43.691Z",
+ "program_title": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students will study abstract data types and their implementation. Arrays, lists, stacks, queues, trees, heaps, hash tables, maps, and graphs are considered. Fundamental algorithms including list manipulation, sorting, graph searches and tree traversals are also covered. Credit hours: 4. Prerequisite: CSCI 1156 or the equivalent. Students will study techniques for designing and analyzing algorithms. The design techniques including divide-and-conquer, dynamic programming, greediness and probabilistic approaches will be covered. An analysis of best/average/worst case complexity in both time and space will be covered. Credit hours: 4. Prerequisite or Corequisite: MATH 2236 or the equivalent. Students will explore how the skills they have accumulated over the course of their degree may be applied both to solve problems in the real world and to extend the limits of human knowledge. They will select a research advisor and a research topic in computer science and begin directed readings. Credit hours:1. Prerequisite: CSCI 2251. Students will prepare for continued studies or work in Cybersecurity. They will select a research topic and begin directed readings. Credit hours: 1. Prerequisite: Senior standing in Cybersecurity or permission of the Department. Offered alternate years. Students will explore how the skills they have accumulated over the course of their degree may be applied both to solve problems in the real world and to extend the limits of human knowledge. They will select a research advisor and a research topic in mathematics and begin directed readings. Credit hours: 1. Prerequisite: MATH 3360. Students will conduct research on a particular question in mathematics or computer science under the direction of a research advisor. Students will draw on skills they have accumulated over their undergraduate careers as well as see familiar topics presented in a new light. Work will culminate in a research paper and a presentation in front of faculty and peers. Identical with CSCI 4494. Credit hours: 4. Prerequisite: MATH 4492 or CSCI 4492. Four years to graduation and countless opportunities along the way. Graduate in the same amount of time as the traditional model and have even more time to pursue all your interests—both inside and outside the classroom. CONTACT US",
+   "source_text": [
+    "CSCI 1131 - Introduction to Computer Science With Python",
+    "CSCI 1131 - Introduction to Computer Science With Python",
+    "Open to students with little or no programming experience. Basics of computation and the role it can play in problem solving. By the end of the course, students will be able to write programs in Python that allow them to accomplish useful goals. Credit hours: 4. Offered every year.",
+    "CSCI 1151 - Computer Programming I",
+    "An introduction to computers and computer programming. Emphasis will be placed on problem-solving with examples and exercises from social, natural, and mathematical sciences. Techniques of flowcharting and structured programming, development of algorithms, and types of computer hardware will also be discussed. Intended for students with no previous programming experience. Credit hours: 3. A student may not receive credit for this course after taking CSCI 1156 or its equivalent.",
+    "CSCI 1151L - Computer Programming I Laboratory",
+    "Hands-on application of the topics studied in CSCI 1151. Credit hours: 1. Prerequisite or Corequisite: CSCI 1151 or the equivalent.",
+    "CSCI 1156 - Computer Programming II",
+    "A continuation of Computer Science 1151. Emphasis on top-down programming using methods. Topics include user-defined classes and advanced data types, arrays, recursion, algorithms for sorting and searching, exception handling, advanced GUIs and graphics, and embedding Java applets into HTML documents. Credit hours: 4. Prerequisite: CSCI 1151 or the equivalent.",
+    "CSCI 1156L - Computer Programming II Laboratory",
+    "Hands-on application of the topics studied in CSCI 1156. Credit hours: 1. Prerequisite or Corequisite: CSCI 1156 or the equivalent.",
+    "CSCI 2252 - Data Structures",
+    "Students will study abstract data types and their implementation. Arrays, lists, stacks, queues, trees, heaps, hash tables, maps, and graphs are considered. Fundamental algorithms including list manipulation, sorting, graph searches and tree traversals are also covered. Credit hours: 4. Prerequisite: CSCI 1156 or the equivalent.",
+    "CSCI 2256 - Algorithms",
+    "Students will study techniques for designing and analyzing algorithms. The design techniques including divide-and-conquer, dynamic programming, greediness and probabilistic approaches will be covered. An analysis of best/average/worst case complexity in both time and space will be covered. Credit hours: 4. Prerequisite or Corequisite: MATH 2236 or the equivalent.",
+    "CSCI 2290 - Independent Study",
+    "CSCI 3326 - Computer Architecture and Assembly Language",
+    "Introduction to internal computer architecture including the instruction cycle, parts of the CPU, memory hierarchy including caching, pipelining, exception handling, and issues of multiprocessing. Implementation of assembly language programs using sample architectures. Principles of translating high-level languages. Credit hours: 3. Pre- or co-requisites: CSCI 2251 and MATH 1149 or equivalent.",
+    "CSCI 3328 - Computer Networks",
+    "Introduction to the design and analysis of computer networks. Topics include application layer protocols, Internet protocols, network interfaces, local and wide area networks, wireless networks, bridging and routing. Credit hours: 4. Prerequisites: CSCI 1156 and MATH 2236.",
+    "CSCI 3336 - Operating Systems",
+    "Design and implementation of operating systems. Mutual exclusion, concurrency, deadlock, process scheduling, memory management, and files systems. Credit hours: 4. Prerequisite CSCI 1156.",
+    "CSCI 3344 - Computer Graphics",
+    "Techniques for the display of graphical information. 2D and 3D geometry and transformations. Interactive graphics, shading, hidden surface elimination, perspective, and depth. Modeling and realism. Credit hours: 4. Prerequisites: CSCI 2256 and MATH 2241.",
+    "CSCI 3346 - Software Development",
+    "This course provides an in-depth study of steps in the software-development process: user requirements, specifications, design, implementation, testing, maintenance, documentation, and management. Students will develop the facility to apply the general principles to new problems. Credit hours: 4. Prerequisite CSCI 2251.",
+    "CSCI 3364 - Game Development",
+    "Design and development of interactive games. Principles of game development will be illustrated with 2D games, while students with the appropriate graphics background may develop 3D games. This is a hands-on course. Credit hours: 4. Prerequisite: CSCI 2256.",
+    "CSCI 3366 - Computer Security",
+    "Introduction to the field of computer security as it relates to other areas of information technology. Topics include security threats, hardening systems, securing networks, and cryptography. Credit hours: 4. Prerequisites: CSCI 1156 and MATH 3337.",
+    "CSCI 3368 - AI & Large Language Models",
+    "This course explores artificial intelligence fundamentals with a focus on large language models (LLMs). Topics include machine learning, natural language processing, and ethical considerations. Credit hours: 4. Prerequisite: CSCI 2256. Offered alternate years.",
+    "CSCI 4490 - Independent Study",
+    "CSCI 4492 - Professional Development Seminar",
+    "Students will explore how the skills they have accumulated over the course of their degree may be applied both to solve problems in the real world and to extend the limits of human knowledge. They will select a research advisor and a research topic in computer science and begin directed readings. Credit hours:1. Prerequisite: CSCI 2251.",
+    "Data Science – DSCI",
+    "DSCI 2232 - Introduction to Data Science",
+    "Data science is an interdisciplinary field incorporating statistical techniques with algorithms to collect and to process large data sets, in order to extract meaning and make decisions. Students will explore the collection and filtering of data, machine learning algorithms, and methods for drawing conclusions. Credit hours: 4. Prerequisite: ECON 2227 or EVST 2205 or MATH 2227 or MATH 3343 or POL 2231 or PSYC 2227 or SOC 3395. Identical with MATH 2232.",
+    "DSCI 2233 - Machine Learning",
+    "A broad introduction to machine learning and statistical pattern recognition. Unsupervised and supervised learning algorithms including dimensionality reduction (PCA and variants), clustering (simple clustering, agglomerative and non-agglomerative), probabilistic models, neural networks, and support vector machines. Credit hours: 4. Prerequisite: ECON 2227 or EVST 2205 or MATH 2227 or MATH 3343 or POL 2231 or PSYC 2227 or SOC 3395.",
+    "DSCI 4495 - Data Science Seminar",
+    "The seminar requires students to explore the areas of their personal interest in data science in order to inform their choice of research topics, graduate school, and employment. Students will review the major ideas in data science and will prepare for the rigorous data science-related job interview. Credit hours: 1.",
+    "Cybersecurity – CYBR",
+    "CYBR 2250 - Introduction to Cybersecurity",
+    "Provides a foundational understanding of the principles and practices used to protect computer systems and networks from cyber threats. Covering topics like common attack vectors, security measures, cryptography, network security, user awareness, ethical considerations, and basic threat analysis. Credit hours: 4. Prerequisite: MATH 1118 or MATH 1119 and CSCI 1151. Offered every year.",
+    "CYBR 4492 - Professional Development Seminar",
+    "Students will prepare for continued studies or work in Cybersecurity. They will select a research topic and begin directed readings. Credit hours: 1. Prerequisite: Senior standing in Cybersecurity or permission of the Department. Offered alternate years.",
+    "Mathematics – MATH",
+    "MATH 1109 - Introduction to Quantitative Reasoning",
+    "This course presents mathematical ideas in a real world context. Topics covered include critical thinking and problem solving, the mathematics of finance, basic statistical principles, mathematics and the arts, and the theory of voting. Credit hours: 4. (QR)",
+    "MATH 1117 - Precal Elem Modeling I",
+    "Relations defined algebraically, graphically, and numerically. Functions, including polynomial, rational, trigonometric, exponential, and logarithmic. Applications, including modeling. Algebraic techniques and a review of basic geometric relationships. Credit hours: 4. Not open to students who have been placed into MATH 1119 or above, except by permission of the Department. (QR)",
+    "MATH 1118 - Precal Elem Modeling II",
+    "Relations defined algebraically, graphically, and numerically. Functions, including polynomial, rational, trigonometric, exponential, and logarithmic. Applications, including modeling. Algebraic techniques and a review of basic geometric relationships. Credit hours: 4. Not open to students who have been placed into MATH 1119 or above, except by permission of the Department. (QR)",
+    "MATH 1119 - Precalculus",
+    "A study of the properties of various functions, including polynomial, trigonometric, exponential, and logarithmic. Analytic geometry of conic sections. Credit hours: 4. Not open to students who have been placed into MATH 1149 or above, except by permission of the Department. (QR)",
+    "MATH 1149 - Calculus I",
+    "Limits, continuity, and differentiation of algebraic functions of one variable. Applications to curve sketching, optimization, and rates of change. The definite integral applied to finding the area under a curve. Credit hours: 4. Prerequisite: MATH 1118 or MATH 1119 or the equivalent. (QR)",
+    "MATH 1150 - Calculus II",
+    "A continuation of Mathematics 1149. Volumes and surface area of solids of revolution. Lengths of curves. The logarithm and exponential functions. Techniques of integration. Areas in polar coordinates. Improper integrals, infinite series, and power series. Credit hours: 4. Prerequisite: MATH 1149 or permission of the Department. (QR)",
+    "MATH 2227 - Elementary Applied Statistics",
+    "An introduction to statistics, including probability, binomial distributions, normal distributions, sampling theory, testing hypotheses, chi-square tests, and linear regression. Credit hours: 4. Not open to students who have satisfactorily completed MATH 3343. A student may receive credit for two of these courses: ECON 2227, MATH 2227, POL 2231, PSYC 2227, or SOC 3395. (QR)",
+    "MATH 2229 - Advanced Mathematical Problem Solving",
+    "In this course, students will be expected to solve and present solutions to a collection of problems gathered from various mathematics competitions. Problem solutions may involve the techniques of classical algebra, geometry, calculus, and combinatorics. Credit hours: 1. Prerequisite: permission of instructor. May be repeated for credit up to a maximum of 4 hours.",
+    "MATH 2232 - Introduction to Data Science",
+    "Data science is an interdisciplinary field incorporating statistical techniques with algorithms to collect and to process large data sets, in order to extract meaning and make decisions. Students will explore the collection and filtering of data, machine learning algorithms, and methods for drawing conclusions. Identical with DSCI 2232. Credit hours: 4. Prerequisite: ECON 2227 or EVST 2205 or MATH 2227 or MATH 3343 or POL 2231 or PSYC 2227 or SOC 3395.",
+    "MATH 2234 - Techniques of Mathematical Proof",
+    "An introduction to formal mathematical proof. Topics include logical inference, statements involving quantifiers, indirect proof, and mathematical induction. We investigate proofs in a variety of disciplines but with a particular focus on set theory, combinatorics, and graph theory. Credit hours: 4. Prerequisite: MATH 1149.",
+    "MATH 2236 - Discrete Math and Graph Theory",
+    "Discrete mathematics focuses on structures where the parts are distinct and separated, as contrasted with the continuous structures studied in calculus. This course has a particular focus on graphs and networks.. We will consider paths and cycles, coloring, planar graphs, and trees. We also consider algorithms to find shortest paths, minimum spanning trees, and maximum flows. Credit hours: 4. Prerequisite: MATH 1149 or CSCI 1151.",
+    "MATH 2241 - Linear Algebra",
+    "Systems of linear equations, vector spaces and subspaces, bases and dimension, linear transformations, eigenvalues and eigenvectors, and inner product spaces. Credit hours: 4. Prerequisite: MATH 1149 or permission of the Department.",
+    "MATH 2250 - Calculus III",
+    "An introduction to vector calculus. Differential and integral calculus of more than one variable. Vector fields, including Green’s, Stokes’, and the Divergence Theorems. Credit hours: 4. Prerequisite: MATH 1150 and either MATH 2241 or PHYS 1115 or permission of the Department.",
+    "MATH 3320 - Introductory Topology",
+    "An introduction to point-set geometry, including topological spaces, metric spaces, homotopy, the Urysohn lemma, and Tychonoff’s theorem. Students explore topology as the underpinning of modern geometry. Credit hours: 4. Prerequisite: MATH 2241 or permission of the Department.",
+    "MATH 3331 - Differential Equations",
+    "First order linear and non-linear equations, second and higher order linear equations, series solutions, Laplace transforms, and systems of linear differential equations. Applications, primarily to mechanics and population dynamics. Credit hours: 4. Prerequisite: MATH 1150 and 2241 or the course may be taken concurrently with MATH 2241 by permission of the Department.",
+    "MATH 3337 - Number Theory",
+    "Properties of the integers. Unique factorizations, congruences and modular arithmetic. Diophantine equations, prime numbers, quadratic reciprocity, and integer functions. Applications to cryptology. Credit hours: 4. Prerequisite: MATH 1150 and MATH 2234 or permission of the Department.",
+    "MATH 3343 - Mathematical Statistics",
+    "Probability. Discrete and continuous probability distributions. Sampling and the Central Limit Theorem. Confidence intervals, hypothesis testing, linear regression, and non-parametric tests. Credit hours: 4. Prerequisite: MATH 2250.",
+    "MATH 3353 - Mathematical Modeling",
+    "The construction and analysis of mathematical models to solve problems in the physical and social sciences. Dynamical systems are emphasized with a particular concentration on linear and non-linear discrete dynamical systems. Topics may include dimensional analysis, stability, chaos, and fractals. Credit hours: 4. Prerequisite: MATH 1150 and 2241.",
+    "MATH 3362 - Group Theory",
+    "This course covers the fundamentals of group theory, from basic definitions to the Sylow theorems. Topics include subgroups, cosets, normality, quotient groups, homomorphisms, isomorphism theorems, and the classification of finite abelian groups. Credit hours: 4. Prerequisites: MATH 2234 and Math 2241 or permission of the Department.",
+    "MATH 3364 - Rings and Fields",
+    "This course explores ring and field theory, focusing on ideals, quotient rings, and factorization in UFDs, PIDs, and Euclidean domains. Field extensions, including algebraic and finite fields, are covered in depth. Credit hours: 4. Prerequisites: MATH 2234 and Math 2241 or permission of the Department.",
+    "MATH 3390 - Independent Study",
+    "MATH 4426 - Complex Variables",
+    "The complex number system. Limits, continuity, and differentiability of functions of a single complex variable. Contour integration and Cauchy’s Theorem. The calculus of residues. Conformal mapping. Credit hours: 4. Prerequisite: MATH 2250.",
+    "MATH 4443 - Introduction to Analysis",
+    "A rigorous study of limits, continuity, differentiation, and integration of functions of a real variable. Credit hours: 4. Prerequisite: MATH 2234 and MATH 2250 or permission of the Department.",
+    "MATH 4490 - Independent Study",
+    "MATH 4492 - Professional Development Seminar",
+    "Students will explore how the skills they have accumulated over the course of their degree may be applied both to solve problems in the real world and to extend the limits of human knowledge. They will select a research advisor and a research topic in mathematics and begin directed readings. Credit hours: 1. Prerequisite: MATH 3360.",
+    "MATH 4494 - Senior Seminar",
+    "Students will conduct research on a particular question in mathematics or computer science under the direction of a research advisor. Students will draw on skills they have accumulated over their undergraduate careers as well as see familiar topics presented in a new light. Work will culminate in a research paper and a presentation in front of faculty and peers. Identical with CSCI 4494. Credit hours: 4. Prerequisite: MATH 4492 or CSCI 4492.",
+    "MATH 4497H - Honors in the Major",
+    "MATH 4498H - Honors in the Major",
+    "TAKE2",
+    "INQUIRE",
+    "2500 RIVERMONT AVE.",
+    "LYNCHBURG, VA 24503",
+    "434-947-8000",
+    "RESOURCES",
+    "A-Z INDEX",
+    "FAST FACTS",
+    "EMERGENCY INFO",
+    "DISCLOSURE",
+    "PRIVACY POLICY",
+    "ON CAMPUS",
+    "CALENDAR",
+    "MAPS & DIRECTIONS",
+    "CAMPUS STORE",
+    "MAIER MUSEUM OF ART",
+    "ENDSTATION THEATRE",
+    "POPULAR LINKS",
+    "PRESIDENT",
+    "FINANCIAL AID",
+    "EMPLOYMENT",
+    "MAT - EDUCATION",
+    "MFA - CREATIVE WRITING",
+    "FOLLOW US",
+    "REQUEST",
+    "ADMISSION INFO",
+    "SCHEDULE",
+    "A VISIT",
+    "NOW",
+    "TODAY"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI1131",
+         "title": "Introduction to Computer Science With Python"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 1131 - Introduction to Computer Science With Python",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Open to students with little or no programming experience. Basics of computation and the role it can play in problem solving. By the end of the course, students will be able to write programs in Python that allow them to accomplish useful goals. Credit hours: 4. Offered every year.",
+       "category": "Open to students with little or no programming experience. Basics of computation and the role it can play in problem solving. By the end of the course, students will be able to write programs in Python that allow them to accomplish useful goals. . Offered every year.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1151",
+         "title": "Computer Programming I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 1151 - Computer Programming I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156",
+         "title": "or its equivalent."
+        }
+       ],
+       "conjunction": "and",
+       "text": "An introduction to computers and computer programming. Emphasis will be placed on problem-solving with examples and exercises from social, natural, and mathematical sciences. Techniques of flowcharting and structured programming, development of algorithms, and types of computer hardware will also be discussed. Intended for students with no previous programming experience. . A student may not receive credit for this course after taking CSCI 1156 or its equivalent.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1151L",
+         "title": "Computer Programming I Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 1151L - Computer Programming I Laboratory",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1151",
+         "title": ". . Prerequisite or Corequisite:"
+        },
+        {
+         "code": "CSCI1151",
+         "title": "or the equivalent."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Hands-on application of the topics studied in CSCI 1151. . Prerequisite or Corequisite: CSCI 1151 or the equivalent.",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156",
+         "title": "Computer Programming II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 1156 - Computer Programming II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1151",
+         "title": "or the equivalent."
+        }
+       ],
+       "conjunction": "and",
+       "text": "A continuation of Computer Science 1151. Emphasis on top-down programming using methods. Topics include user-defined classes and advanced data types, arrays, recursion, algorithms for sorting and searching, exception handling, advanced GUIs and graphics, and embedding Java applets into HTML documents. . Prerequisite: CSCI 1151 or the equivalent.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156L",
+         "title": "Computer Programming II Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 1156L - Computer Programming II Laboratory",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156",
+         "title": ". . Prerequisite or Corequisite:"
+        },
+        {
+         "code": "CSCI1156",
+         "title": "or the equivalent."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Hands-on application of the topics studied in CSCI 1156. . Prerequisite or Corequisite: CSCI 1156 or the equivalent.",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI2252",
+         "title": "Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 2252 - Data Structures",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI2256",
+         "title": "Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 2256 - Algorithms",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI2290",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 2290 - Independent Study",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3326",
+         "title": "Computer Architecture and Assembly Language"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3326 - Computer Architecture and Assembly Language",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI2251",
+         "title": null
+        },
+        {
+         "code": "MATH1149",
+         "title": "or equivalent."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduction to internal computer architecture including the instruction cycle, parts of the CPU, memory hierarchy including caching, pipelining, exception handling, and issues of multiprocessing. Implementation of assembly language programs using sample architectures. Principles of translating high-level languages. . Pre- or co-requisites: CSCI 2251 and MATH 1149 or equivalent.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3328",
+         "title": "Computer Networks"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3328 - Computer Networks",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156",
+         "title": null
+        },
+        {
+         "code": "MATH2236",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduction to the design and analysis of computer networks. Topics include application layer protocols, Internet protocols, network interfaces, local and wide area networks, wireless networks, bridging and routing. . Prerequisites: CSCI 1156 and MATH 2236.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3336",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3336 - Operating Systems",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Design and implementation of operating systems. Mutual exclusion, concurrency, deadlock, process scheduling, memory management, and files systems. . Prerequisite CSCI 1156.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3344",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3344 - Computer Graphics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI2256",
+         "title": null
+        },
+        {
+         "code": "MATH2241",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Techniques for the display of graphical information. 2D and 3D geometry and transformations. Interactive graphics, shading, hidden surface elimination, perspective, and depth. Modeling and realism. . Prerequisites: CSCI 2256 and MATH 2241.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3346",
+         "title": "Software Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3346 - Software Development",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI2251",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "This course provides an in-depth study of steps in the software-development process: user requirements, specifications, design, implementation, testing, maintenance, documentation, and management. Students will develop the facility to apply the general principles to new problems. . Prerequisite CSCI 2251.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3364",
+         "title": "Game Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3364 - Game Development",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI2256",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Design and development of interactive games. Principles of game development will be illustrated with 2D games, while students with the appropriate graphics background may develop 3D games. This is a hands-on course. . Prerequisite: CSCI 2256.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3366",
+         "title": "Computer Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3366 - Computer Security",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI1156",
+         "title": null
+        },
+        {
+         "code": "MATH3337",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Introduction to the field of computer security as it relates to other areas of information technology. Topics include security threats, hardening systems, securing networks, and cryptography. . Prerequisites: CSCI 1156 and MATH 3337.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI3368",
+         "title": "AI & Large Language Models"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 3368 - AI & Large Language Models",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI2256",
+         "title": ". Offered alternate years."
+        }
+       ],
+       "conjunction": "and",
+       "text": "This course explores artificial intelligence fundamentals with a focus on large language models (LLMs). Topics include machine learning, natural language processing, and ethical considerations. . Prerequisite: CSCI 2256. Offered alternate years.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI4490",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 4490 - Independent Study",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI4492",
+         "title": "Professional Development Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 4492 - Professional Development Seminar",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Data Science – DSCI",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "DSCI2232",
+         "title": "Introduction to Data Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "DSCI 2232 - Introduction to Data Science",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECON2227",
+         "title": null
+        },
+        {
+         "code": "EVST2205",
+         "title": null
+        },
+        {
+         "code": "MATH2227",
+         "title": null
+        },
+        {
+         "code": "MATH3343",
+         "title": null
+        },
+        {
+         "code": "POL2231",
+         "title": null
+        },
+        {
+         "code": "PSYC2227",
+         "title": null
+        },
+        {
+         "code": "SOC3395",
+         "title": ". Identical with"
+        },
+        {
+         "code": "MATH2232",
+         "title": "."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Data science is an interdisciplinary field incorporating statistical techniques with algorithms to collect and to process large data sets, in order to extract meaning and make decisions. Students will explore the collection and filtering of data, machine learning algorithms, and methods for drawing conclusions. . Prerequisite: ECON 2227 or EVST 2205 or MATH 2227 or MATH 3343 or POL 2231 or PSYC 2227 or SOC 3395. Identical with MATH 2232.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "DSCI2233",
+         "title": "Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "DSCI 2233 - Machine Learning",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECON2227",
+         "title": null
+        },
+        {
+         "code": "EVST2205",
+         "title": null
+        },
+        {
+         "code": "MATH2227",
+         "title": null
+        },
+        {
+         "code": "MATH3343",
+         "title": null
+        },
+        {
+         "code": "POL2231",
+         "title": null
+        },
+        {
+         "code": "PSYC2227",
+         "title": null
+        },
+        {
+         "code": "SOC3395",
+         "title": "."
+        }
+       ],
+       "conjunction": "or",
+       "text": "A broad introduction to machine learning and statistical pattern recognition. Unsupervised and supervised learning algorithms including dimensionality reduction (PCA and variants), clustering (simple clustering, agglomerative and non-agglomerative), probabilistic models, neural networks, and support vector machines. . Prerequisite: ECON 2227 or EVST 2205 or MATH 2227 or MATH 3343 or POL 2231 or PSYC 2227 or SOC 3395.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "DSCI4495",
+         "title": "Data Science Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "DSCI 4495 - Data Science Seminar",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "The seminar requires students to explore the areas of their personal interest in data science in order to inform their choice of research topics, graduate school, and employment. Students will review the major ideas in data science and will prepare for the rigorous data science-related job interview. Credit hours: 1.",
+       "category": "The seminar requires students to explore the areas of their personal interest in data science in order to inform their choice of research topics, graduate school, and employment. Students will review the major ideas in data science and will prepare for the rigorous data science-related job interview. .",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       }
+      }
+     ]
+    },
+    {
+     "label": "Cybersecurity – CYBR",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CYBR2250",
+         "title": "Introduction to Cybersecurity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CYBR 2250 - Introduction to Cybersecurity",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1118",
+         "title": null
+        },
+        {
+         "code": "MATH1119",
+         "title": null
+        },
+        {
+         "code": "CSCI1151",
+         "title": ". Offered every year."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Provides a foundational understanding of the principles and practices used to protect computer systems and networks from cyber threats. Covering topics like common attack vectors, security measures, cryptography, network security, user awareness, ethical considerations, and basic threat analysis. . Prerequisite: MATH 1118 or MATH 1119 and CSCI 1151. Offered every year.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CYBR4492",
+         "title": "Professional Development Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CYBR 4492 - Professional Development Seminar",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Mathematics – MATH",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH1109",
+         "title": "Introduction to Quantitative Reasoning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1109 - Introduction to Quantitative Reasoning",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "This course presents mathematical ideas in a real world context. Topics covered include critical thinking and problem solving, the mathematics of finance, basic statistical principles, mathematics and the arts, and the theory of voting. Credit hours: 4. (QR)",
+       "category": "This course presents mathematical ideas in a real world context. Topics covered include critical thinking and problem solving, the mathematics of finance, basic statistical principles, mathematics and the arts, and the theory of voting. . (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1117",
+         "title": "Precal Elem Modeling I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1117 - Precal Elem Modeling I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1119",
+         "title": "or above, except by permission of the Department. (QR)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Relations defined algebraically, graphically, and numerically. Functions, including polynomial, rational, trigonometric, exponential, and logarithmic. Applications, including modeling. Algebraic techniques and a review of basic geometric relationships. . Not open to students who have been placed into MATH 1119 or above, except by permission of the Department. (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1118",
+         "title": "Precal Elem Modeling II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1118 - Precal Elem Modeling II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1119",
+         "title": "or above, except by permission of the Department. (QR)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Relations defined algebraically, graphically, and numerically. Functions, including polynomial, rational, trigonometric, exponential, and logarithmic. Applications, including modeling. Algebraic techniques and a review of basic geometric relationships. . Not open to students who have been placed into MATH 1119 or above, except by permission of the Department. (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1119",
+         "title": "Precalculus"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1119 - Precalculus",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1149",
+         "title": "or above, except by permission of the Department. (QR)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "A study of the properties of various functions, including polynomial, trigonometric, exponential, and logarithmic. Analytic geometry of conic sections. . Not open to students who have been placed into MATH 1149 or above, except by permission of the Department. (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1149",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1149 - Calculus I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1118",
+         "title": null
+        },
+        {
+         "code": "MATH1119",
+         "title": "or the equivalent. (QR)"
+        }
+       ],
+       "conjunction": "or",
+       "text": "Limits, continuity, and differentiation of algebraic functions of one variable. Applications to curve sketching, optimization, and rates of change. The definite integral applied to finding the area under a curve. . Prerequisite: MATH 1118 or MATH 1119 or the equivalent. (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1150",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1150 - Calculus II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1149",
+         "title": "or permission of the Department. (QR)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "A continuation of Mathematics 1149. Volumes and surface area of solids of revolution. Lengths of curves. The logarithm and exponential functions. Techniques of integration. Areas in polar coordinates. Improper integrals, infinite series, and power series. . Prerequisite: MATH 1149 or permission of the Department. (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2227",
+         "title": "Elementary Applied Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2227 - Elementary Applied Statistics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3343",
+         "title": ". A student may receive credit for two of these courses:"
+        },
+        {
+         "code": "ECON2227",
+         "title": null
+        },
+        {
+         "code": "MATH2227",
+         "title": null
+        },
+        {
+         "code": "POL2231",
+         "title": null
+        },
+        {
+         "code": "PSYC2227",
+         "title": ","
+        },
+        {
+         "code": "SOC3395",
+         "title": ". (QR)"
+        }
+       ],
+       "conjunction": "or",
+       "text": "An introduction to statistics, including probability, binomial distributions, normal distributions, sampling theory, testing hypotheses, chi-square tests, and linear regression. . Not open to students who have satisfactorily completed MATH 3343. A student may receive credit for two of these courses: ECON 2227, MATH 2227, POL 2231, PSYC 2227, or SOC 3395. (QR)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2229",
+         "title": "Advanced Mathematical Problem Solving"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2229 - Advanced Mathematical Problem Solving",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "In this course, students will be expected to solve and present solutions to a collection of problems gathered from various mathematics competitions. Problem solutions may involve the techniques of classical algebra, geometry, calculus, and combinatorics. Credit hours: 1. Prerequisite: permission of instructor. May be repeated for credit up to a maximum of 4 hours.",
+       "category": "In this course, students will be expected to solve and present solutions to a collection of problems gathered from various mathematics competitions. Problem solutions may involve the techniques of classical algebra, geometry, calculus, and combinatorics. . Prerequisite: permission of instructor. May be repeated for credit up to a maximum of 4 hours.",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2232",
+         "title": "Introduction to Data Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2232 - Introduction to Data Science",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "DSCI2232",
+         "title": ". . Prerequisite:"
+        },
+        {
+         "code": "ECON2227",
+         "title": null
+        },
+        {
+         "code": "EVST2205",
+         "title": null
+        },
+        {
+         "code": "MATH2227",
+         "title": null
+        },
+        {
+         "code": "MATH3343",
+         "title": null
+        },
+        {
+         "code": "POL2231",
+         "title": null
+        },
+        {
+         "code": "PSYC2227",
+         "title": null
+        },
+        {
+         "code": "SOC3395",
+         "title": "."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Data science is an interdisciplinary field incorporating statistical techniques with algorithms to collect and to process large data sets, in order to extract meaning and make decisions. Students will explore the collection and filtering of data, machine learning algorithms, and methods for drawing conclusions. Identical with DSCI 2232. . Prerequisite: ECON 2227 or EVST 2205 or MATH 2227 or MATH 3343 or POL 2231 or PSYC 2227 or SOC 3395.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2234",
+         "title": "Techniques of Mathematical Proof"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2234 - Techniques of Mathematical Proof",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1149",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "An introduction to formal mathematical proof. Topics include logical inference, statements involving quantifiers, indirect proof, and mathematical induction. We investigate proofs in a variety of disciplines but with a particular focus on set theory, combinatorics, and graph theory. . Prerequisite: MATH 1149.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2236",
+         "title": "Discrete Math and Graph Theory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2236 - Discrete Math and Graph Theory",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1149",
+         "title": null
+        },
+        {
+         "code": "CSCI1151",
+         "title": "."
+        }
+       ],
+       "conjunction": "or",
+       "text": "Discrete mathematics focuses on structures where the parts are distinct and separated, as contrasted with the continuous structures studied in calculus. This course has a particular focus on graphs and networks.. We will consider paths and cycles, coloring, planar graphs, and trees. We also consider algorithms to find shortest paths, minimum spanning trees, and maximum flows. . Prerequisite: MATH 1149 or CSCI 1151.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2241",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2241 - Linear Algebra",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1149",
+         "title": "or permission of the Department."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Systems of linear equations, vector spaces and subspaces, bases and dimension, linear transformations, eigenvalues and eigenvectors, and inner product spaces. . Prerequisite: MATH 1149 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2250",
+         "title": "Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2250 - Calculus III",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1150",
+         "title": "and either"
+        },
+        {
+         "code": "MATH2241",
+         "title": null
+        },
+        {
+         "code": "PHYS1115",
+         "title": "or permission of the Department."
+        }
+       ],
+       "conjunction": "or",
+       "text": "An introduction to vector calculus. Differential and integral calculus of more than one variable. Vector fields, including Green’s, Stokes’, and the Divergence Theorems. . Prerequisite: MATH 1150 and either MATH 2241 or PHYS 1115 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3320",
+         "title": "Introductory Topology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3320 - Introductory Topology",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2241",
+         "title": "or permission of the Department."
+        }
+       ],
+       "conjunction": "and",
+       "text": "An introduction to point-set geometry, including topological spaces, metric spaces, homotopy, the Urysohn lemma, and Tychonoff’s theorem. Students explore topology as the underpinning of modern geometry. . Prerequisite: MATH 2241 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3331",
+         "title": "Differential Equations"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3331 - Differential Equations",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1150",
+         "title": "and 2241 or the course may be taken concurrently with"
+        },
+        {
+         "code": "MATH2241",
+         "title": "by permission of the Department."
+        }
+       ],
+       "conjunction": "or",
+       "text": "First order linear and non-linear equations, second and higher order linear equations, series solutions, Laplace transforms, and systems of linear differential equations. Applications, primarily to mechanics and population dynamics. . Prerequisite: MATH 1150 and 2241 or the course may be taken concurrently with MATH 2241 by permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3337",
+         "title": "Number Theory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3337 - Number Theory",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1150",
+         "title": null
+        },
+        {
+         "code": "MATH2234",
+         "title": "or permission of the Department."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Properties of the integers. Unique factorizations, congruences and modular arithmetic. Diophantine equations, prime numbers, quadratic reciprocity, and integer functions. Applications to cryptology. . Prerequisite: MATH 1150 and MATH 2234 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3343",
+         "title": "Mathematical Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3343 - Mathematical Statistics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2250",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Probability. Discrete and continuous probability distributions. Sampling and the Central Limit Theorem. Confidence intervals, hypothesis testing, linear regression, and non-parametric tests. . Prerequisite: MATH 2250.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3353",
+         "title": "Mathematical Modeling"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3353 - Mathematical Modeling",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1150",
+         "title": "and 2241."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The construction and analysis of mathematical models to solve problems in the physical and social sciences. Dynamical systems are emphasized with a particular concentration on linear and non-linear discrete dynamical systems. Topics may include dimensional analysis, stability, chaos, and fractals. . Prerequisite: MATH 1150 and 2241.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3362",
+         "title": "Group Theory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3362 - Group Theory",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2234",
+         "title": "and Math 2241 or permission of the Department."
+        }
+       ],
+       "conjunction": "and",
+       "text": "This course covers the fundamentals of group theory, from basic definitions to the Sylow theorems. Topics include subgroups, cosets, normality, quotient groups, homomorphisms, isomorphism theorems, and the classification of finite abelian groups. . Prerequisites: MATH 2234 and Math 2241 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3364",
+         "title": "Rings and Fields"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3364 - Rings and Fields",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2234",
+         "title": "and Math 2241 or permission of the Department."
+        }
+       ],
+       "conjunction": "and",
+       "text": "This course explores ring and field theory, focusing on ideals, quotient rings, and factorization in UFDs, PIDs, and Euclidean domains. Field extensions, including algebraic and finite fields, are covered in depth. . Prerequisites: MATH 2234 and Math 2241 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3390",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3390 - Independent Study",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4426",
+         "title": "Complex Variables"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4426 - Complex Variables",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2250",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The complex number system. Limits, continuity, and differentiability of functions of a single complex variable. Contour integration and Cauchy’s Theorem. The calculus of residues. Conformal mapping. . Prerequisite: MATH 2250.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4443",
+         "title": "Introduction to Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4443 - Introduction to Analysis",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2234",
+         "title": null
+        },
+        {
+         "code": "MATH2250",
+         "title": "or permission of the Department."
+        }
+       ],
+       "conjunction": "and",
+       "text": "A rigorous study of limits, continuity, differentiation, and integration of functions of a real variable. . Prerequisite: MATH 2234 and MATH 2250 or permission of the Department.",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4490",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4490 - Independent Study",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4492",
+         "title": "Professional Development Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4492 - Professional Development Seminar",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH4494",
+         "title": "Senior Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4494 - Senior Seminar",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH4497H",
+         "title": "Honors in the Major"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4497H - Honors in the Major",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4498H",
+         "title": "Honors in the Major"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4498H - Honors in the Major",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ],
+   "implicit": true
+  }
+ ],
+ "narrative": [
+  "Students will explore the collection and filtering of data, machine learning algorithms, and methods for drawing conclusions."
+ ],
+ "unassigned": [
+  "Four years to graduation and countless opportunities along the way. Graduate in the same amount of time as the traditional model and have even more time to pursue all your interests—both inside and outside the classroom.",
+  "CONTACT US"
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 58 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "58 distinct courses across 90 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "4 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 1,
+   "sections": 8,
+   "rows": 90,
+   "course_rows": 86,
+   "category_rows": 4,
+   "distinct_courses": 58,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.955Z"
+}

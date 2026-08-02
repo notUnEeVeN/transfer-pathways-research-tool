@@ -1,0 +1,842 @@
+{
+ "slug": "university-of-mary-washington",
+ "name": "University of Mary Washington",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.umw.edu/undergraduate/majors/computer-science/",
+ "captured_at": "2026-08-02T05:59:07.865Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 120,
+  "max": 122,
+  "raw": "120-122"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Major Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following: Select one course, minimum 3 credits, in CPSC or CYBR numbered 400 or higher that was not used to satisfy any of the preceding requirements 1 Select one course, minimum 3 credits, in CPSC or CYBR or MATH numbered 300 or higher 2",
+   "source_text": [
+    "CPSC 220 Computer Programming and Problem Solving",
+    "CPSC 225 Software Development Tools",
+    "CPSC 240 Object-oriented Analysis and Design",
+    "CPSC 302 Computer Ethics",
+    "CPSC 305 Computer Systems and Architecture",
+    "CPSC 326 Theoretical Foundations of Computing",
+    "CPSC 340 Data Structures and Algorithms",
+    "CPSC 350 Applications of Databases",
+    "CPSC 405 Operating Systems and Systems Programming",
+    "CPSC 430 Software Engineering",
+    "Select one of the following:",
+    "CPSC 284 Applied Discrete Mathematics",
+    "MATH 201& MATH 300 Introduction to Discrete Mathematicsand Linear Algebra",
+    "Select one course, minimum 3 credits, in CPSC or CYBR numbered 400 or higher that was not used to satisfy any of the preceding requirements 1",
+    "Select one course, minimum 3 credits, in CPSC or CYBR or MATH numbered 300 or higher 2"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC220",
+         "title": "Computer Programming and Problem Solving"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 220 Computer Programming and Problem Solving",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC225",
+         "title": "Software Development Tools"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 225 Software Development Tools",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC240",
+         "title": "Object-oriented Analysis and Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 240 Object-oriented Analysis and Design",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC302",
+         "title": "Computer Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 302 Computer Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC305",
+         "title": "Computer Systems and Architecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 305 Computer Systems and Architecture",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC326",
+         "title": "Theoretical Foundations of Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 326 Theoretical Foundations of Computing",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC340",
+         "title": "Data Structures and Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 340 Data Structures and Algorithms",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC350",
+         "title": "Applications of Databases"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 350 Applications of Databases",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC405",
+         "title": "Operating Systems and Systems Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 405 Operating Systems and Systems Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC430",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 430 Software Engineering",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 6,
+      "raw": "4-6"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC284",
+         "title": "Applied Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 284 Applied Discrete Mathematics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH201",
+         "title": "Introduction to Discrete Mathematics"
+        },
+        {
+         "code": "MATH300",
+         "title": "and Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 201& MATH 300 Introduction to Discrete Mathematicsand Linear Algebra",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": []
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 110 Introduction to Computer Science 1",
+    "FSEM 100 First-Year Seminar",
+    "General Education Courses"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC110",
+         "title": "Introduction to Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 110 Introduction to Computer Science 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FSEM100",
+         "title": "First-Year Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FSEM 100 First-Year Seminar",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education Courses",
+       "category": "General Education Courses",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 220 Computer Programming and Problem Solving",
+    "CPSC 284 Applied Discrete Mathematics",
+    "General Education Courses"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC220",
+         "title": "Computer Programming and Problem Solving"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 220 Computer Programming and Problem Solving",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC284",
+         "title": "Applied Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 284 Applied Discrete Mathematics",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education Courses",
+       "category": "General Education Courses",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 17,
+    "max": 17,
+    "raw": "17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 225 Software Development Tools",
+    "CPSC 240 Object-oriented Analysis and Design",
+    "General Education Courses"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC225",
+         "title": "Software Development Tools"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 225 Software Development Tools",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC240",
+         "title": "Object-oriented Analysis and Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 240 Object-oriented Analysis and Design",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education Courses",
+       "category": "General Education Courses",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 340 Data Structures and Algorithms",
+    "CPSC 350 Applications of Databases",
+    "General Education Courses"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC340",
+         "title": "Data Structures and Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 340 Data Structures and Algorithms",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC350",
+         "title": "Applications of Databases"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 350 Applications of Databases",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education Courses",
+       "category": "General Education Courses",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 15,
+    "max": 16,
+    "raw": "15-16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 326 Theoretical Foundations of Computing",
+    "CPSC/MATH 300-Level Elective",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC326",
+         "title": "Theoretical Foundations of Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 326 Theoretical Foundations of Computing",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH300",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC/MATH 300-Level Elective",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 15,
+    "max": 16,
+    "raw": "15-16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 302 Computer Ethics",
+    "CPSC 400-Level Elective",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC302",
+         "title": "Computer Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 302 Computer Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CPSC 400-Level Elective",
+       "category": "CPSC 400-Level Elective",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 305 Computer Systems and Architecture",
+    "CPSC 430 Software Engineering",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC305",
+         "title": "Computer Systems and Architecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 305 Computer Systems and Architecture",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC430",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 430 Software Engineering",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 16,
+    "max": 16,
+    "raw": "16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CPSC 405 Operating Systems and Systems Programming",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC405",
+         "title": "Operating Systems and Systems Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 405 Operating Systems and Systems Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 15 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "9 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "15 distinct courses across 35 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 120–122, stated total 120-122"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "9 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 9,
+   "sections": 11,
+   "rows": 35,
+   "course_rows": 26,
+   "category_rows": 9,
+   "distinct_courses": 15,
+   "credit_span": {
+    "min": 120,
+    "max": 122,
+    "groups_with_credits": 8
+   },
+   "stated_total": "120-122"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.977Z"
+}

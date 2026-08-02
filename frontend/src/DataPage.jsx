@@ -1005,8 +1005,12 @@ const COURSE_CELL_CLASS = {
   num: 'text-caption tabular ink-muted',
 }
 
-function CourseTable({ rows, columns }) {
+// `onRowClick` is optional: catalogs that are purely a listing (the CC and UC
+// course tables) pass nothing and render exactly as before; views that drill
+// into a row pass a handler and the rows become buttons.
+export function CourseTable({ rows, columns, onRowClick = null }) {
   const gridStyle = { gridTemplateColumns: columns.map((c) => c.width || 'minmax(0,1fr)').join(' ') }
+  const clickable = typeof onRowClick === 'function'
   return (
     <div className='surface-card overflow-hidden'>
       <div className='overflow-auto max-h-[70vh]'>
@@ -1017,7 +1021,12 @@ function CourseTable({ rows, columns }) {
         </div>
         {rows.map((r, i) => (
           <div key={r._id || i} style={gridStyle}
-            className='grid gap-3.5 items-center px-5 py-[10.5px] border-b border-border last:border-0 hover:bg-surface-hover'>
+            {...(clickable ? {
+              role: 'button', tabIndex: 0,
+              onClick: () => onRowClick(r),
+              onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onRowClick(r) } },
+            } : {})}
+            className={`grid gap-3.5 items-center px-5 py-[10.5px] border-b border-border last:border-0 hover:bg-surface-hover${clickable ? ' cursor-pointer' : ''}`}>
             {columns.map((c) => (
               <span key={c.key} className={`${COURSE_CELL_CLASS[c.variant] || COURSE_CELL_CLASS.title} ${c.align === 'right' ? 'text-right' : ''}`}>
                 {c.render ? c.render(r) : (r[c.key] ?? '—')}
@@ -1030,7 +1039,7 @@ function CourseTable({ rows, columns }) {
   )
 }
 
-const courseSearch = (rows, q, fields) => {
+export const courseSearch = (rows, q, fields) => {
   if (!q.trim()) return rows
   const s = q.toLowerCase()
   return rows.filter((r) => fields.some((f) => String(r[f] ?? '').toLowerCase().includes(s)))
@@ -1300,7 +1309,7 @@ const DEGREE_TIER_SECTIONS = [
   { tier: 'nontransferable', label: 'Upper division · at the university', sub: 'Completed after transfer' },
 ]
 
-function TieredDegreeLedger({ groups, ...ledgerProps }) {
+export function TieredDegreeLedger({ groups, ...ledgerProps }) {
   const buckets = DEGREE_TIER_SECTIONS.map((section) => ({
     ...section,
     groups: groups.filter((g) => (g.tier || 'transferable') === section.tier),

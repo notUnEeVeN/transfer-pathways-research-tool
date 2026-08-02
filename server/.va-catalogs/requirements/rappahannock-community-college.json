@@ -1,0 +1,44 @@
+{
+ "slug": "rappahannock-community-college",
+ "name": "Rappahannock Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "outcome": "no_cs_program",
+ "source_url": "https://catalog.rappahannock.edu/",
+ "offers_cs": false,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": false,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": null,
+  "candidates": [],
+  "catoids": [
+   9,
+   7
+  ],
+  "read": {
+   "navs_seen": 23,
+   "nav_pages_read": 3,
+   "program_links_seen": 0,
+   "via": "navigation"
+  },
+  "read_fetch": {
+   "navs_seen": 60,
+   "nav_pages_read": 0,
+   "program_links_seen": 0
+  },
+  "read_curl": {
+   "navs_seen": 60,
+   "nav_pages_read": 0,
+   "program_links_seen": 0,
+   "via": "curl"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.760Z"
+}

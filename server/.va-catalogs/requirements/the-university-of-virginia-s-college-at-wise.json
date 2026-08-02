@@ -1,0 +1,523 @@
+{
+ "slug": "the-university-of-virginia-s-college-at-wise",
+ "name": "The University of Virginia's College at Wise",
+ "level": "four_year",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "http://catalog.uvawise.edu/preview_program.php?catoid=2&poid=179",
+ "captured_at": "2026-08-02T05:58:34.727Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 77,
+  "max": 80,
+  "raw": "77-80"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Math and Science Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "BIO XXXX/LAB, CHM XXXX/LAB, ENV XXXX/LAB, GLG XXXX/LAB or PHY XXXX/LAB - At least two natural science with associated labs. Courses must be chosen from biology, chemistry, environmental science, geology or physics. Credit(s) 8-10 *",
+   "source_text": [
+    "Math and Science Requirements",
+    "MTH 2040 - Calculus I Credit(s): 4 *",
+    "MTH 2050 - Calculus II Credit(s): 4",
+    "MTH 2180 - Applied Probability & Statistics Credit(s): 3",
+    "OR",
+    "STA 2180 - Applied Probabality & Statistics Credit(s): 3",
+    "CSC 3710 - Discrete Structures Credit(s): 3",
+    "MTH XXXX - At least one additional 3000/4000-level mathematics course Credit(s): 3-4"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH2040",
+         "title": "Calculus I Credit(s): 4 *"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 2040 - Calculus I Credit(s): 4 *",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH2050",
+         "title": "Calculus II Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 2050 - Calculus II Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH2180",
+         "title": "Applied Probability & Statistics Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 2180 - Applied Probability & Statistics Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "OR",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STA2180",
+         "title": "Applied Probabality & Statistics Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STA 2180 - Applied Probabality & Statistics Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC3710",
+         "title": "Discrete Structures Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 3710 - Discrete Structures Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "MTH XXXX - At least one additional 3000/4000-level mathematics course Credit(s): 3-4",
+       "category": "MTH XXXX - At least one additional 3000/4000-level mathematics course Credit(s): 3-4"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Science Core",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "* Will satisfy the Liberal Arts Core (the department recommends Physics) All students seeking a degree in Computer Science must perform satisfactorily on comprehensive examinations administered by the department. The examinations will cover the computer science core courses. Select an option Select Location(s) UVA Board of Visitors, UVA Wise College Board, Administration All catalogs © 2026 The University of Virginia at Wise. Powered by Modern Campus Catalog™.",
+   "source_text": [
+    "Computer Science Core",
+    "SWE 1790 - Engineering Leadership Credit(s): 3",
+    "CSC 1010 - Introduction to Programming In Python Credit(s): 4",
+    "CSC 1180 - Foundations of Programming in C++ Credit(s): 4",
+    "CSC 2180 - Data Structures Credit(s): 4",
+    "CSC 2300 - Software Engineering Credit(s): 3",
+    "OR",
+    "SWE 2300 - Software Engineering Credit(s): 3",
+    "CSC 3180 - Introduction to Algorithms Credit(s): 3",
+    "CSC 3400 - Database Design & Applications Credit(s): 3",
+    "CSC 4000 - Operating Systems: Theory/Practice Credit(s): 3",
+    "CSC 4200 - Programming Languages Credit(s): 3",
+    "CSC 4300 - Computer Architecture Credit(s): 3",
+    "CSC 4350 - Computer Networks Credit(s): 3",
+    "CSC 4990 - Computer Science Seminar Credit(s): 1",
+    "15 Additional Upper Division Hours of Coursework",
+    "Nine (9) hours must be in Computer Science - One 2000-level programming course (not already used) may be used to partially fulfill this requirement. The remaining courses must be selected from CSC, DSC, SWE, MIS, and MTH courses or PHY 3030 (electronics).",
+    "Print (opens a new window)",
+    "Select an option",
+    "Courses",
+    "Programs",
+    "Department",
+    "Other Content",
+    "Entire Catalog",
+    "Entire Catalog",
+    "Select Location(s)",
+    "S",
+    "earch",
+    "Whole Word/Phrase",
+    "Advanced Search",
+    "Chancellor’s Letter",
+    "Academic Calendar",
+    "About the College",
+    "Accreditation",
+    "The Campus",
+    "Admissions",
+    "Financial Aid",
+    "Tuition and Fees",
+    "Payment Policies",
+    "Academic Information",
+    "Academic and Other Policies and Procedures",
+    "Complaints, Grievances and Appeals",
+    "Majors and Minors",
+    "General Education Liberal Arts Core",
+    "Department of Business and Economics",
+    "Department of Communication Studies",
+    "Department of Education",
+    "Department of History and Philosophy",
+    "Department of Language and Literature",
+    "Department of Mathematics and Computer Science",
+    "Department of Natural Sciences",
+    "Department of Nursing",
+    "Department of Social Sciences",
+    "Department of Visual and Performing Arts",
+    "Interdisciplinary Studies",
+    "Undergraduate Course Descriptions",
+    "Full Course Listing",
+    "Archived Catalogs",
+    "1 College Avenue, Wise, VA 24293",
+    "MAP & DIRECTIONS",
+    "276-328-0100",
+    "info@uvawise.edu",
+    "Footer",
+    "For Students",
+    "For Faculty & Staff",
+    "For Press & Media",
+    "Library",
+    "My UVA Wise",
+    "Work at UVA Wise",
+    "Accreditation",
+    "Legal",
+    "Policies",
+    "Consumer Information",
+    "Tuition Notice",
+    "© 2023 The University of Virginia’s College at Wise"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SWE1790",
+         "title": "Engineering Leadership Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 1790 - Engineering Leadership Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC1010",
+         "title": "Introduction to Programming In Python Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 1010 - Introduction to Programming In Python Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC1180",
+         "title": "Foundations of Programming in C++ Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 1180 - Foundations of Programming in C++ Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC2180",
+         "title": "Data Structures Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 2180 - Data Structures Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC2300",
+         "title": "Software Engineering Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 2300 - Software Engineering Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "OR",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SWE2300",
+         "title": "Software Engineering Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 2300 - Software Engineering Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC3180",
+         "title": "Introduction to Algorithms Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 3180 - Introduction to Algorithms Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC3400",
+         "title": "Database Design & Applications Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 3400 - Database Design & Applications Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC4000",
+         "title": "Operating Systems: Theory/Practice Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 4000 - Operating Systems: Theory/Practice Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC4200",
+         "title": "Programming Languages Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 4200 - Programming Languages Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC4300",
+         "title": "Computer Architecture Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 4300 - Computer Architecture Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC4350",
+         "title": "Computer Networks Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 4350 - Computer Networks Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC4990",
+         "title": "Computer Science Seminar Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 4990 - Computer Science Seminar Credit(s):",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "15 Additional Upper Division Hours of Coursework",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHY3030",
+         "title": "(electronics)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Nine (9) hours must be in Computer Science - One 2000-level programming course (not already used) may be used to partially fulfill this requirement. The remaining courses must be selected from CSC, DSC, SWE, MIS, and MTH courses or PHY 3030 (electronics).",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "BIO XXXX/LAB, CHM XXXX/LAB, ENV XXXX/LAB, GLG XXXX/LAB or PHY XXXX/LAB - At least two natural science with associated labs. Courses must be chosen from biology, chemistry, environmental science, geology or physics. Credit(s) 8-10 *",
+  "* Will satisfy the Liberal Arts Core (the department recommends Physics)",
+  "All students seeking a degree in Computer Science must perform satisfactorily on comprehensive examinations administered by the department. The examinations will cover the computer science core courses.",
+  "UVA Board of Visitors, UVA Wise College Board, Administration",
+  "All catalogs © 2026 The University of Virginia at Wise. Powered by Modern Campus Catalog™."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 19 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "2 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "19 distinct courses across 20 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 0–0 against a stated 77-80, but 2 of 2 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "1 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 2,
+   "sections": 5,
+   "rows": 20,
+   "course_rows": 19,
+   "category_rows": 1,
+   "distinct_courses": 19,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": "77-80"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.969Z"
+}

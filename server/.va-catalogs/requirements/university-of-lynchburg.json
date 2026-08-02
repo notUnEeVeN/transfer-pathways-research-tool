@@ -1,0 +1,20 @@
+{
+ "slug": "university-of-lynchburg",
+ "name": "University of Lynchburg",
+ "level": "four_year",
+ "platform": "pdf",
+ "outcome": "no_cs_program",
+ "source_url": "https://www.lynchburg.edu/academics/majors-and-minors/computer-science/",
+ "offers_cs": false,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": false,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": null,
+ "extracted_at": "2026-08-02T06:13:44.969Z"
+}

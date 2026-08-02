@@ -1,0 +1,522 @@
+{
+ "slug": "eastern-mennonite-university",
+ "name": "Eastern Mennonite University",
+ "level": "four_year",
+ "platform": "pdf",
+ "parser": "pdf",
+ "pdf_window": {
+  "found": true,
+  "lines": 53,
+  "reason": null
+ },
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://emu.edu/catalog/docs/2025-26%20UG%20Catalog%202025.pdf",
+ "captured_at": "2026-08-02T06:11:28.687Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 48,
+  "max": 48,
+  "raw": "48"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Foundational Courses",
+   "credits": {
+    "min": 12,
+    "max": 12,
+    "raw": "12"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Foundational Courses (12 SH)",
+    "• CE 165 Networking and Data Communication (2)",
+    "• CE 175 Architecture and Operating Systems (4)",
+    "66 – 2025-26 Undergraduate Programs",
+    "Undergraduate Catalog 2025-26",
+    "• CS 145 Introduction to Programming (2) OR CS 155 Programming in Python (2) OR CS 245 Programming in Java (2)",
+    "• CS 255 Intermediate Programming (2)",
+    "• CS 265 Databases and Information Management (2)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CE165",
+         "title": "Networking and Data Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CE 165 Networking and Data Communication (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CE175",
+         "title": "Architecture and Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CE 175 Architecture and Operating Systems (4)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Undergraduate Catalog 2025-26",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS145",
+         "title": "Introduction to Programming"
+        },
+        {
+         "code": "CS155",
+         "title": "Programming in Python"
+        },
+        {
+         "code": "CS245",
+         "title": "Programming in Java"
+        }
+       ],
+       "conjunction": "or",
+       "text": "• CS 145 Introduction to Programming (2) OR CS 155 Programming in Python (2) OR CS 245 Programming in Java (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS255",
+         "title": "Intermediate Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CS 255 Intermediate Programming (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS265",
+         "title": "Databases and Information Management"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CS 265 Databases and Information Management (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "• of discrete or finite mathematics",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "• 4 SH of discrete or finite mathematics:",
+    "• MATH 170 Discrete Mathematics (4)",
+    "• MATH 134 Finite Math: Logic and Problem Solving (2)",
+    "• MATH 136 Finite Math: Number Theory and Probability (2)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH170",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• MATH 170 Discrete Mathematics (4)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH134",
+         "title": "Finite Math: Logic and Problem Solving"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• MATH 134 Finite Math: Logic and Problem Solving (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH136",
+         "title": "Finite Math: Number Theory and Probability"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• MATH 136 Finite Math: Number Theory and Probability (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "• of statistics courses (any course with a STAT prefix)",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "• 4 SH of statistics courses (any course with a STAT prefix)",
+    "• 4 SH of any additional statistics, any engineering, or math courses at or above the level of",
+    "calculus."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "• 4 SH of any additional statistics, any engineering, or math courses at or above the level of",
+       "category": "• of any additional statistics, any engineering, or math courses at or above the level of",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Software Development Courses",
+   "credits": {
+    "min": 12,
+    "max": 12,
+    "raw": "12"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "• CS capstone requirement can be fulfilled by the engineering capstone experience.",
+   "source_text": [
+    "Software Development Courses (12 SH)",
+    "• CS 345 Data Structures (2)",
+    "• CS 355 Advanced Data Structures (2)",
+    "• *CS 365 System Administration (2)",
+    "• CE 375 Software Engineering (2)",
+    "• CS 455 Programming Languages (2)",
+    "• CS 475 Capstone Project (2)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS345",
+         "title": "Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CS 345 Data Structures (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS355",
+         "title": "Advanced Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CS 355 Advanced Data Structures (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS365",
+         "title": "System Administration"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• *CS 365 System Administration (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CE375",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CE 375 Software Engineering (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS455",
+         "title": "Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CS 455 Programming Languages (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS475",
+         "title": "Capstone Project"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• CS 475 Capstone Project (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Additional Courses",
+   "credits": {
+    "min": 12,
+    "max": 12,
+    "raw": "12"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose the remaining hours (to total at least 12 SH) from:",
+   "source_text": [
+    "Additional Courses (12 SH)",
+    "Career Experience fulfilled through CS 488, LARTS 391, or other program-approved career",
+    "experience.",
+    "Choose the remaining hours (to total at least 12 SH) from:"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS488",
+         "title": ","
+        },
+        {
+         "code": "LARTS391",
+         "title": "other program-approved career"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Career Experience fulfilled through CS 488, LARTS 391, or other program-approved career",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "• Any other CE courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "• Any other CE courses",
+    "• *ENGR 325 Engineering Ethics (2)",
+    "* indicates the course is offered in alternate years"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGR325",
+         "title": "Engineering Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "• *ENGR 325 Engineering Ethics (2)",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Contact: Daniel Showalter"
+ ],
+ "unassigned": [
+  "• CS capstone requirement can be fulfilled by the engineering capstone experience."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 19 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "6 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "19 distinct courses across 17 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 44–44 against a stated 48, but 1 of 6 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "1 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 6,
+   "sections": 7,
+   "rows": 17,
+   "course_rows": 16,
+   "category_rows": 1,
+   "distinct_courses": 19,
+   "credit_span": {
+    "min": 44,
+    "max": 44,
+    "groups_with_credits": 5
+   },
+   "stated_total": "48"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.826Z"
+}

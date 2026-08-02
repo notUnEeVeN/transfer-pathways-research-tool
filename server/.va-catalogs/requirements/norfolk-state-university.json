@@ -1,0 +1,1542 @@
+{
+ "slug": "norfolk-state-university",
+ "name": "Norfolk State University",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
+ "captured_at": "2026-08-02T06:05:44.874Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 120,
+  "max": 120,
+  "raw": "120"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "First Year",
+   "credits": {
+    "min": 30,
+    "max": 30,
+    "raw": "30"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "SEM 101& SEM 102 Spartan Seminar 101and Spartan Seminar 102",
+    "CSC 101 Introduction to the Computer Science Profession",
+    "CSC 170 Computer Programming I",
+    "CSC 170L Computer Programming Laboratory I",
+    "MTH 153 College Algebra & Trigonometry",
+    "ENG 101 College English I",
+    "PED 100 Fundametals of Fitness for Life",
+    "CSC 260 Computer Programming II",
+    "CSC 260L Computer Programming II Laboratory",
+    "MTH 184 Calculus I",
+    "ENG 102 College English II",
+    "XXX XXX",
+    "HED 100 Personal and Community Health"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SEM101",
+         "title": "Spartan Seminar 101"
+        },
+        {
+         "code": "SEM102",
+         "title": "and Spartan Seminar 102"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SEM 101& SEM 102 Spartan Seminar 101and Spartan Seminar 102",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC101",
+         "title": "Introduction to the Computer Science Profession"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 101 Introduction to the Computer Science Profession",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC170",
+         "title": "Computer Programming I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 170 Computer Programming I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC170L",
+         "title": "Computer Programming Laboratory I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 170L Computer Programming Laboratory I",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH153",
+         "title": "College Algebra & Trigonometry"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 153 College Algebra & Trigonometry",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG101",
+         "title": "College English I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 101 College English I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PED100",
+         "title": "Fundametals of Fitness for Life"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PED 100 Fundametals of Fitness for Life",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC260",
+         "title": "Computer Programming II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 260 Computer Programming II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC260L",
+         "title": "Computer Programming II Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 260L Computer Programming II Laboratory",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH184",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 184 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG102",
+         "title": "College English II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 102 College English II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "HED100",
+         "title": "Personal and Community Health"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HED 100 Personal and Community Health",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Second Year",
+   "credits": {
+    "min": 31,
+    "max": 31,
+    "raw": "31"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one Laboratory Science Elective and the corresponding Laboratory of the following:",
+   "source_text": [
+    "SEM 201 Spartan Seminar 201",
+    "CSC 372 Data Structures",
+    "Select one Laboratory Science Elective and the corresponding Laboratory of the following:",
+    "BIO 110& 110L General Biologyand General Biology Laboratory",
+    "PHY 152& 152L General Physicsand General Physics Laboratory I",
+    "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
+    "MTH 251 Calculus II",
+    "MTH 371 Discrete Mathematical Structures",
+    "CSC 268 Computer Organization",
+    "CSC 295 Java Applications Programming",
+    "CSC 361 Survey of Programming Languages",
+    "ENG 303 Professional & Technical Writing",
+    "ENG 285 Public Speaking"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SEM201",
+         "title": "Spartan Seminar 201"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SEM 201 Spartan Seminar 201",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC372",
+         "title": "Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 372 Data Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 4,
+      "raw": "4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIO110",
+         "title": "General Biology"
+        },
+        {
+         "code": "BIO110L",
+         "title": "and General Biology Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 110& 110L General Biologyand General Biology Laboratory",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY152",
+         "title": "General Physics"
+        },
+        {
+         "code": "PHY152L",
+         "title": "and General Physics Laboratory I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 152& 152L General Physicsand General Physics Laboratory I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM221",
+         "title": "General Chemistry I"
+        },
+        {
+         "code": "CHM221L",
+         "title": "and General Chemistry I Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH251",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 251 Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH371",
+         "title": "Discrete Mathematical Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 371 Discrete Mathematical Structures",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC268",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 268 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC295",
+         "title": "Java Applications Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 295 Java Applications Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC361",
+         "title": "Survey of Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 361 Survey of Programming Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG303",
+         "title": "Professional & Technical Writing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 303 Professional & Technical Writing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG285",
+         "title": "Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 285 Public Speaking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Third Year",
+   "credits": {
+    "min": 28,
+    "max": 28,
+    "raw": "28"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one Laboratory Science Elective Sequence of the following:",
+   "source_text": [
+    "CSC 292 Unix and C Programming",
+    "CSC 380 Software Engneerng",
+    "CSC 468 Computer Architecture",
+    "MTH 351 Probability & Statistics I",
+    "Select one Laboratory Science Elective Sequence of the following:",
+    "PHY 152 General Physics",
+    "BIO 110& 110L General Biologyand General Biology Laboratory",
+    "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
+    "CSC 430 Data Communications",
+    "XXX XXX",
+    "XXX XXX",
+    "ENG 207 Introduction to World Literature",
+    "FIA 201 Basic Art Appreciation",
+    "MUS 301 Music Appreciation",
+    "CSC 275 Fundamentals of Cybersecurity"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC292",
+         "title": "Unix and C Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 292 Unix and C Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC380",
+         "title": "Software Engneerng"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 380 Software Engneerng",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC468",
+         "title": "Computer Architecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 468 Computer Architecture",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH351",
+         "title": "Probability & Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 351 Probability & Statistics I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 4,
+      "raw": "4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHY152",
+         "title": "General Physics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 152 General Physics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO110",
+         "title": "General Biology"
+        },
+        {
+         "code": "BIO110L",
+         "title": "and General Biology Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 110& 110L General Biologyand General Biology Laboratory",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM221",
+         "title": "General Chemistry I"
+        },
+        {
+         "code": "CHM221L",
+         "title": "and General Chemistry I Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC430",
+         "title": "Data Communications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 430 Data Communications",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG207",
+         "title": "Introduction to World Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 207 Introduction to World Literature",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "FIA201",
+         "title": "Basic Art Appreciation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FIA 201 Basic Art Appreciation",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS301",
+         "title": "Music Appreciation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 301 Music Appreciation",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC275",
+         "title": "Fundamentals of Cybersecurity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 275 Fundamentals of Cybersecurity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fourth Year",
+   "credits": {
+    "min": 31,
+    "max": 31,
+    "raw": "31"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSC 498 Computer Science Seminar I",
+    "CSC 464 Operating Systems",
+    "XXX XXX",
+    "XXX XXX",
+    "HIS 335 African-American History",
+    "HIS 336 African-American History Since 1865",
+    "HIS 371 African History/Cultures 1600-PRESENT",
+    "HRP 320 African American Health",
+    "XXX XXX",
+    "ENG 383 African-American Literature, 1940-PRESENT",
+    "MUS 234 African-American Music",
+    "CSC 499 Computer Science Seminar II",
+    "XXX XXX",
+    "XXX XXX"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC498",
+         "title": "Computer Science Seminar I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 498 Computer Science Seminar I",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC464",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 464 Operating Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS335",
+         "title": "African-American History"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 335 African-American History",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS336",
+         "title": "African-American History Since 1865"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 336 African-American History Since 1865",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS371",
+         "title": "African History/Cultures 1600-PRESENT"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 371 African History/Cultures 1600-PRESENT",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "HRP320",
+         "title": "African American Health"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HRP 320 African American Health",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG383",
+         "title": "African-American Literature, 1940-PRESENT"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 383 African-American Literature, 1940-PRESENT",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS234",
+         "title": "African-American Music"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 234 African-American Music",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC499",
+         "title": "Computer Science Seminar II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 499 Computer Science Seminar II",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "XXX XXX",
+       "category": "XXX XXX",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Major Electives - At least 15 Credit Hours",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSC 312 Topics in Information Technology",
+    "CSC 313 Network Administration",
+    "CSC 314 Advanced Internet Programming",
+    "CSC 316 Introduction to Cloud Computing",
+    "CSC 360 Interface Design",
+    "CSC 369 Introduction to 3D Animation and Visual",
+    "CSC 390 Technical Strategies in Game Design",
+    "CSC 373 Algorithms Design and Analysis",
+    "CSC 395 Mobile App Development Using Android",
+    "CSC 411 Web Server Administration",
+    "CSC 420 Database Principles and Design",
+    "CSC 422 Database Implementation",
+    "CSC 432 Wireless Internet of Things",
+    "CSC 435 Computer Security I",
+    "CSC 445 Computer Network Defense",
+    "CSC 449 Cryptography and Network Security",
+    "CSC 466 Advanced Computer Topics I",
+    "CSC 467 Adv Cmptr Topic II",
+    "CSC 470 Artificial Intelligence",
+    "CSC 471 Introduction to Game Design and Development",
+    "CSC 472 3D Game Programming",
+    "CSC 476 Advanced CompTop III",
+    "CSC 477 Adv Comp Topic IV",
+    "CSC 485 Software Quality Assurance and Testing",
+    "CSC 486 Software Project Management",
+    "CSC 487 Engineering Secure Software Systems",
+    "CSC 488 Principles of Distributed Software Syste",
+    "CSC 490 Game Design Capstone Project",
+    "CSC 492 Independent Study",
+    "CSC 494 Digital Forensics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC312",
+         "title": "Topics in Information Technology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 312 Topics in Information Technology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC313",
+         "title": "Network Administration"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 313 Network Administration",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC314",
+         "title": "Advanced Internet Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 314 Advanced Internet Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC316",
+         "title": "Introduction to Cloud Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 316 Introduction to Cloud Computing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC360",
+         "title": "Interface Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 360 Interface Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC369",
+         "title": "Introduction to 3D Animation and Visual"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 369 Introduction to 3D Animation and Visual",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC390",
+         "title": "Technical Strategies in Game Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 390 Technical Strategies in Game Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC373",
+         "title": "Algorithms Design and Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 373 Algorithms Design and Analysis",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC395",
+         "title": "Mobile App Development Using Android"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 395 Mobile App Development Using Android",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC411",
+         "title": "Web Server Administration"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 411 Web Server Administration",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC420",
+         "title": "Database Principles and Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 420 Database Principles and Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC422",
+         "title": "Database Implementation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 422 Database Implementation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC432",
+         "title": "Wireless Internet of Things"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 432 Wireless Internet of Things",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC435",
+         "title": "Computer Security I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 435 Computer Security I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC445",
+         "title": "Computer Network Defense"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 445 Computer Network Defense",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC449",
+         "title": "Cryptography and Network Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 449 Cryptography and Network Security",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC466",
+         "title": "Advanced Computer Topics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 466 Advanced Computer Topics I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC467",
+         "title": "Adv Cmptr Topic II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 467 Adv Cmptr Topic II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC470",
+         "title": "Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 470 Artificial Intelligence",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC471",
+         "title": "Introduction to Game Design and Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 471 Introduction to Game Design and Development",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC472",
+         "title": "3D Game Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 472 3D Game Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC476",
+         "title": "Advanced CompTop III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 476 Advanced CompTop III",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC477",
+         "title": "Adv Comp Topic IV"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 477 Adv Comp Topic IV",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC485",
+         "title": "Software Quality Assurance and Testing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 485 Software Quality Assurance and Testing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC486",
+         "title": "Software Project Management"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 486 Software Project Management",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC487",
+         "title": "Engineering Secure Software Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 487 Engineering Secure Software Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC488",
+         "title": "Principles of Distributed Software Syste"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 488 Principles of Distributed Software Syste",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC490",
+         "title": "Game Design Capstone Project"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 490 Game Design Capstone Project",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC492",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 492 Independent Study",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC494",
+         "title": "Digital Forensics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 494 Digital Forensics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "warn",
+    "name": "codes_ambiguous",
+    "detail": "1 code(s) appear on the page but run into an adjacent figure in the extracted text",
+    "codes": [
+     "CSC472"
+    ]
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "5 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "76 distinct courses across 83 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 120–120, stated total 120"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "8 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 5,
+   "sections": 7,
+   "rows": 83,
+   "course_rows": 75,
+   "category_rows": 8,
+   "distinct_courses": 76,
+   "credit_span": {
+    "min": 120,
+    "max": 120,
+    "groups_with_credits": 4
+   },
+   "stated_total": "120"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.907Z"
+}

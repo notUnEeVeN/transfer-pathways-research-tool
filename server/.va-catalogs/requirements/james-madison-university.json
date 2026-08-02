@@ -1,0 +1,1063 @@
+{
+ "slug": "james-madison-university",
+ "name": "James Madison University",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.jmu.edu/programs/computer-science-bs/",
+ "captured_at": "2026-08-02T05:54:38.187Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 120,
+  "max": 120,
+  "raw": "120"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Major Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose one introductory discrete math course: Choose one calculus sequence: Choose one statistics course: Choose one algorithms course: Choose one systems elective:",
+   "source_text": [
+    "CS 149 Introduction to Programming",
+    "CS 159 Advanced Programming",
+    "CS 240 Algorithms and Data Structures",
+    "CS 261 Computer Systems I",
+    "CS 327 Discrete Structures II",
+    "CS 345 Software Engineering",
+    "CS 361 Computer Systems II",
+    "CS 430 Programming Languages",
+    "Choose one introductory discrete math course:",
+    "CS 227 Discrete Structures I",
+    "MATH 227 Discrete Structures I",
+    "MATH 245 Discrete Mathematics",
+    "Choose one calculus sequence:",
+    "MATH 235 Calculus I [C3QR]",
+    "MATH 231& MATH 232 Calculus with Functions I [C3QR]and Calculus with Functions II",
+    "Choose one statistics course:",
+    "MATH 220 Elementary Statistics [C3QR]",
+    "MATH 229 Introduction to Applied Statistics Using R [C3QR]",
+    "MATH 318 Introduction to Probability and Statistics",
+    "Choose one algorithms course:",
+    "CS 412 Applied Algorithms",
+    "CS 452 Design and Analysis of Algorithms",
+    "Choose one systems elective:",
+    "CS 432 Compilers",
+    "CS 450 Operating Systems",
+    "CS 455 Advanced Computer Networking",
+    "CS 456 Computer Architecture",
+    "CS 470 Parallel and Distributed Systems"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS149",
+         "title": "Introduction to Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 149 Introduction to Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS159",
+         "title": "Advanced Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 159 Advanced Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS240",
+         "title": "Algorithms and Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 240 Algorithms and Data Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS261",
+         "title": "Computer Systems I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 261 Computer Systems I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS327",
+         "title": "Discrete Structures II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 327 Discrete Structures II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS345",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 345 Software Engineering",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS361",
+         "title": "Computer Systems II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 361 Computer Systems II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS430",
+         "title": "Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 430 Programming Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS227",
+         "title": "Discrete Structures I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 227 Discrete Structures I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH227",
+         "title": "Discrete Structures I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 227 Discrete Structures I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH245",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 245 Discrete Mathematics",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 6,
+      "raw": "4-6"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH235",
+         "title": "Calculus I [C3QR]"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 235 Calculus I [C3QR]",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH231",
+         "title": "Calculus with Functions I [C3QR]"
+        },
+        {
+         "code": "MATH232",
+         "title": "and Calculus with Functions II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 231& MATH 232 Calculus with Functions I [C3QR]and Calculus with Functions II",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 4,
+      "raw": "3-4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH220",
+         "title": "Elementary Statistics [C3QR]"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 220 Elementary Statistics [C3QR]",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH229",
+         "title": "Introduction to Applied Statistics Using R [C3QR]"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 229 Introduction to Applied Statistics Using R [C3QR]",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH318",
+         "title": "Introduction to Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 318 Introduction to Probability and Statistics",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS412",
+         "title": "Applied Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 412 Applied Algorithms",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS452",
+         "title": "Design and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 452 Design and Analysis of Algorithms",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS432",
+         "title": "Compilers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 432 Compilers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS450",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 450 Operating Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS455",
+         "title": "Advanced Computer Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 455 Advanced Computer Networking",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS456",
+         "title": "Computer Architecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 456 Computer Architecture",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS470",
+         "title": "Parallel and Distributed Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 470 Parallel and Distributed Systems",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 149 Introduction to Programming",
+    "MATH 231 Calculus with Functions I [C3QR] 1",
+    "General Education requirement"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS149",
+         "title": "Introduction to Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 149 Introduction to Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH231",
+         "title": "Calculus with Functions I [C3QR]"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 231 Calculus with Functions I [C3QR] 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education requirement",
+       "category": "General Education requirement",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 159 Advanced Programming",
+    "CS 227 Discrete Structures I",
+    "MATH 232 Calculus with Functions II 1",
+    "General Education requirement"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS159",
+         "title": "Advanced Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 159 Advanced Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS227",
+         "title": "Discrete Structures I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 227 Discrete Structures I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH232",
+         "title": "Calculus with Functions II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 232 Calculus with Functions II 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education requirement",
+       "category": "General Education requirement",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 240 Algorithms and Data Structures",
+    "CS 345 Software Engineering",
+    "General Education requirement",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS240",
+         "title": "Algorithms and Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 240 Algorithms and Data Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS345",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 345 Software Engineering",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education requirement",
+       "category": "General Education requirement",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 261 Computer Systems I",
+    "MATH 220 Elementary Statistics [C3QR] 2",
+    "General Education requirement",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS261",
+         "title": "Computer Systems I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 261 Computer Systems I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH220",
+         "title": "Elementary Statistics [C3QR]"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 220 Elementary Statistics [C3QR] 2",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education requirement",
+       "category": "General Education requirement",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 327 Discrete Structures II",
+    "CS 361 Computer Systems II",
+    "General Education requirement",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS327",
+         "title": "Discrete Structures II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 327 Discrete Structures II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS361",
+         "title": "Computer Systems II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 361 Computer Systems II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education requirement",
+       "category": "General Education requirement",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 430 Programming Languages",
+    "CS Systems Elective",
+    "General Education requirement",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS430",
+         "title": "Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 430 Programming Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS Systems Elective",
+       "category": "CS Systems Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education requirement",
+       "category": "General Education requirement",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS Algorithm Elective",
+    "CS Elective",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS Algorithm Elective",
+       "category": "CS Algorithm Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS Elective",
+       "category": "CS Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Semester",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS Electives",
+    "Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS Electives",
+       "category": "CS Electives",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Electives",
+       "category": "Electives",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 24 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "9 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "24 distinct courses across 51 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 120–120, stated total 120"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "16 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 9,
+   "sections": 14,
+   "rows": 51,
+   "course_rows": 35,
+   "category_rows": 16,
+   "distinct_courses": 24,
+   "credit_span": {
+    "min": 120,
+    "max": 120,
+    "groups_with_credits": 8
+   },
+   "stated_total": "120"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.889Z"
+}

@@ -110,6 +110,26 @@ router.get('/tokens',        ...guarded, tokensController.list);
 router.post('/tokens',       ...guarded, jsonBody, tokensController.create);
 router.delete('/tokens/:id', ...guarded, tokensController.revoke);
 
+// ───────── Virginia (Transfer Virginia course corpus) ─────────
+// Read-only, and deliberately its own mount rather than an extra source inside
+// the /assist routes: this corpus is under evaluation and shares no collection
+// with California, so it can be removed by deleting one block.
+const virginiaController = require('../controllers/Virginia');
+router.get('/va/summary',        ...guarded, virginiaController.summary);
+router.get('/va/institutions',   ...guarded, virginiaController.institutions);
+router.get('/va/departments',    ...guarded, virginiaController.departments);
+router.get('/va/matrix',         ...guarded, virginiaController.matrix);
+router.get('/va/courses',        ...guarded, virginiaController.courses);
+router.get('/va/courses/:code',  ...guarded, virginiaController.course);
+router.get('/va/degrees',        ...guarded, virginiaController.degrees);
+router.get('/va/coverage',       ...guarded, virginiaController.coverage);
+// Hand-editing mirrors the California contract: same stamping, same
+// append-only revision log, same admin gate on the history.
+router.put('/va/degrees/:id',    ...guarded, jsonBody, virginiaController.putDegree);
+router.delete('/va/degrees/:id', ...guarded, virginiaController.deleteDegree);
+router.get('/va/degrees/:id/revisions',
+  authenticateToken, requireAdmin, userLimiter, virginiaController.degreeRevisions);
+
 // ───────── Data explorer (scoped dataset summary + raw ASSIST payloads) ─────────
 const dataController = require('../controllers/Data');
 router.get('/data/summary',        ...guarded, dataController.getSummary);

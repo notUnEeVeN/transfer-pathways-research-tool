@@ -27,3 +27,14 @@ server/.artsys-cache/
 
 # Parked Virginia crawl cache (regenerable; see deprecated/virginia/)
 deprecated/virginia/cache/
+
+# Virginia guide + course crawl cache (regenerable)
+server/.virginia-cache/
+server/.va-degrees/
+server/.virginia-courses/
+
+# Captured catalog pages and the Chrome profile that fetches them. Regenerable
+# by `node scripts/captureVirginiaCatalogs.js`; the reviewable output of the
+# scrape is .va-catalogs/requirements/, which IS committed.
+server/.va-catalogs/pages/
+server/.va-catalogs/.browser-profile/

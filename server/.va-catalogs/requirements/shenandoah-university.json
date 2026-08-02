@@ -1,0 +1,844 @@
+{
+ "slug": "shenandoah-university",
+ "name": "Shenandoah University",
+ "level": "four_year",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=1982&print=1",
+ "captured_at": "2026-08-02T05:57:16.365Z",
+ "program_title": "Computer Science (B.S.)",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Total of required in computer science and mathematics.",
+   "credits": {
+    "min": 43,
+    "max": 43,
+    "raw": "43"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select 6 or more credits of mathematics electives. These electives credits should be at the 200 level or above with at least 3 credits at the 300 level or above.",
+   "source_text": [
+    "Total of 43 credits required in computer science and mathematics.",
+    "CSC 121 Introduction to Computer Programming I Credit(s): 3",
+    "CSC 122 Introduction to Computer Programming II Credit(s): 3",
+    "CSC 210 Data Structures Credit(s): 3",
+    "CSC 301 Introduction to Networking Credit(s): 3",
+    "CSC 403 Operating Systems Credit(s): 3",
+    "CSC 410 Introduction to Databases Credit(s): 3",
+    "MATH 201 Calculus and Analytic Geometry I Credit(s): 4",
+    "MATH 202 Calculus and Analytic Geometry II Credit(s): 4",
+    "MATH 370 Numerical Analysis Credit(s): 3",
+    "MATH 209 Discrete Math Credit(s): 3",
+    "CSC 310 Computer Architecture Credit(s): 3",
+    "CSC 407 Software Design Credit(s): 3",
+    "CSC 430 Programming Languages Credit(s): 3",
+    "CSC 480 Research in Computer Science Credit(s): 2",
+    "Mathematics Electives",
+    "Select 6 or more credits of mathematics electives. These electives credits should be at the 200 level or above with at least 3 credits at the 300 level or above.",
+    "Computer Science Electives",
+    "Additional 6 credits from CSC or DATA courses. These courses must be at the 300 level or above.",
+    "Course Map"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC121",
+         "title": "Introduction to Computer Programming I Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 121 Introduction to Computer Programming I Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC122",
+         "title": "Introduction to Computer Programming II Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 122 Introduction to Computer Programming II Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC210",
+         "title": "Data Structures Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 210 Data Structures Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC301",
+         "title": "Introduction to Networking Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 301 Introduction to Networking Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC403",
+         "title": "Operating Systems Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 403 Operating Systems Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC410",
+         "title": "Introduction to Databases Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 410 Introduction to Databases Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH201",
+         "title": "Calculus and Analytic Geometry I Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 201 Calculus and Analytic Geometry I Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH202",
+         "title": "Calculus and Analytic Geometry II Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 202 Calculus and Analytic Geometry II Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH370",
+         "title": "Numerical Analysis Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 370 Numerical Analysis Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH209",
+         "title": "Discrete Math Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 209 Discrete Math Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC310",
+         "title": "Computer Architecture Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 310 Computer Architecture Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC407",
+         "title": "Software Design Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 407 Software Design Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC430",
+         "title": "Programming Languages Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 430 Programming Languages Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC480",
+         "title": "Research in Computer Science Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 480 Research in Computer Science Credit(s):",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Computer Science Electives",
+     "choose": 6,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Additional 6 credits from CSC or DATA courses. These courses must be at the 300 level or above.",
+       "category": "Additional from CSC or DATA courses. These courses must be at the 300 level or above.",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "1st Year – Fall",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "1st Year – Fall",
+    "MATH 201 Calculus and Analytic Geometry I Credit(s): 4 (Quantitative Literacy)",
+    "ENG 101 Composition Credit(s): 3 (Communicative Literacy - Written Sphere)",
+    "CSC121: Introduction to Computer Programming I Credit(s): 3",
+    "FYS 101 Going Global First-Year Seminar Credit(s): 3",
+    "Elective or Minor Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH201",
+         "title": "Calculus and Analytic Geometry I Credit(s): 4 (Quantitative Literacy)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 201 Calculus and Analytic Geometry I Credit(s): 4 (Quantitative Literacy)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG101",
+         "title": "Composition Credit(s): 3 (Communicative Literacy - Written Sphere)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 101 Composition Credit(s): 3 (Communicative Literacy - Written Sphere)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC121",
+         "title": "Introduction to Computer Programming I Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC121: Introduction to Computer Programming I Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "FYS101",
+         "title": "Going Global First-Year Seminar Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "FYS 101 Going Global First-Year Seminar Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "1st Year – Spring",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Cultural Understanding ShenEd: 3 (Navigating Difference Sphere)",
+   "source_text": [
+    "1st Year – Spring",
+    "MATH 202 Calculus and Analytic Geometry II Credit(s): 4",
+    "Creative Expression ShenEd Credit(s): 3",
+    "CSC122 Introduction to Computer Programming II: Credit(s): 3",
+    "Elective or Minor Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH202",
+         "title": "Calculus and Analytic Geometry II Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 202 Calculus and Analytic Geometry II Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Creative Expression ShenEd Credit(s): 3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC122",
+         "title": "Introduction to Computer Programming II: Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC122 Introduction to Computer Programming II: Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "2nd Year – Fall",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "2nd Year – Fall",
+    "CSC210: Data Structures Credit(s): 3",
+    "CSC301 Introduction to Networking Credit(s): 3",
+    "PHYS 121 General Physics I Credit(s): 4 (Scientific Inquiry Sphere)",
+    "Ethical Reasoning ShenEd Credit(s): 3 (Navigating Differences Sphere)/Elective",
+    "ShenEd Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC210",
+         "title": "Data Structures Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC210: Data Structures Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC301",
+         "title": "Introduction to Networking Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC301 Introduction to Networking Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS121",
+         "title": "General Physics I Credit(s): 4 (Scientific Inquiry Sphere)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 121 General Physics I Credit(s): 4 (Scientific Inquiry Sphere)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Ethical Reasoning ShenEd Credit(s): 3 (Navigating Differences Sphere)/Elective",
+       "category": "Ethical Reasoning ShenEd Credit(s): 3 (Navigating Differences Sphere)/Elective"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "2nd Year – Spring",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "2nd Year – Spring",
+    "CSC310: Computer Architecture Credit(s): 3",
+    "MATH 209 Discrete Math Credit(s): 3",
+    "PHYS 122 General Physics II Credit(s): 4",
+    "ShenEd Communicative Literacy Oral Sphere Credit(s): 3",
+    "ShenEd Social and Behavioral Science Region Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC310",
+         "title": "Computer Architecture Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC310: Computer Architecture Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH209",
+         "title": "Discrete Math Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 209 Discrete Math Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS122",
+         "title": "General Physics II Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 122 General Physics II Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "3rd Year – Fall",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "3rd Year – Fall",
+    "MATH 370 Numerical Analysis Credit(s): 3",
+    "CSC410: Databases Credit(s): 3",
+    "CSC Elective Credit(s): 3",
+    "Elective Credit(s): 3",
+    "ShenEd Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH370",
+         "title": "Numerical Analysis Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 370 Numerical Analysis Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC410",
+         "title": "Databases Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC410: Databases Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "3rd Year – Spring",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "3rd Year – Spring",
+    "CSC403: Operating Systems Credit(s): 3",
+    "CSC Elective Credit(s): 3",
+    "MATH elective Credit(s): 3",
+    "Elective Credit(s): 3",
+    "Elective Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC403",
+         "title": "Operating Systems Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC403: Operating Systems Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "4th Year – Fall",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4th Year – Fall",
+    "CSC407: Software Design: Credit(s): 4",
+    "Math Elective Credit(s): 3",
+    "Elective Credit(s): 3",
+    "Elective Credit(s): 3",
+    "Elective Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC407",
+         "title": "Software Design: Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC407: Software Design: Credit(s):",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "4th Year – Spring",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "4th Year – Spring",
+    "CSC430 Programming Languages Credit(s): 3",
+    "CSC480 Research in Computer Science Credit(s): 2",
+    "Elective Credit(s): 3",
+    "Elective Credit(s): 3",
+    "Elective Credit(s): 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC430",
+         "title": "Programming Languages Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC430 Programming Languages Credit(s):",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC480",
+         "title": "Research in Computer Science Credit(s):"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC480 Research in Computer Science Credit(s):",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Cultural Understanding ShenEd: 3 (Navigating Difference Sphere)"
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 18 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "9 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "18 distinct courses across 34 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 9,
+   "sections": 11,
+   "rows": 34,
+   "course_rows": 32,
+   "category_rows": 2,
+   "distinct_courses": 18,
+   "credit_span": {
+    "min": 43,
+    "max": 43,
+    "groups_with_credits": 1
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.966Z"
+}

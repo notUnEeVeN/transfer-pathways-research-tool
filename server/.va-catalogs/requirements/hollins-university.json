@@ -1,0 +1,29 @@
+{
+ "slug": "hollins-university",
+ "name": "Hollins University",
+ "level": "four_year",
+ "platform": "web",
+ "outcome": "url_only",
+ "source_url": "https://www.hollins.edu/programs/mathematics-computer-science/",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": "https://www.hollins.edu/programs/mathematics-computer-science/",
+  "candidates": [
+   {
+    "score": 10,
+    "title": "Mathematics and Computer Science",
+    "href": "https://www.hollins.edu/programs/mathematics-computer-science/"
+   }
+  ]
+ },
+ "extracted_at": "2026-08-02T06:13:44.877Z"
+}

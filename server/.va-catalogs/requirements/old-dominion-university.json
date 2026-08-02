@@ -1,0 +1,2665 @@
+{
+ "slug": "old-dominion-university",
+ "name": "Old Dominion University",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/computer-science-bscs/",
+ "captured_at": "2026-08-02T06:11:30.080Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 120,
+  "max": 134,
+  "raw": "120-134"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Lower-Division General Education",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Written Communication",
+    "Oral Communication",
+    "Mathematics",
+    "Language and Culture",
+    "Information Literacy and Research",
+    "Human Behavior",
+    "Human Creativity",
+    "Interpreting the Past",
+    "Literature",
+    "Philosophy and Ethics",
+    "The Nature of Science",
+    "Impact of Technology"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Written Communication",
+       "category": "Written Communication",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Oral Communication",
+       "category": "Oral Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Mathematics",
+       "category": "Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Language and Culture",
+       "category": "Language and Culture",
+       "credits": {
+        "min": 0,
+        "max": 6,
+        "raw": "0-6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Information Literacy and Research",
+       "category": "Information Literacy and Research",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Human Behavior",
+       "category": "Human Behavior",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Human Creativity",
+       "category": "Human Creativity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Interpreting the Past",
+       "category": "Interpreting the Past",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Literature",
+       "category": "Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Philosophy and Ethics",
+       "category": "Philosophy and Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "The Nature of Science",
+       "category": "The Nature of Science",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Impact of Technology",
+       "category": "Impact of Technology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "BIOL 121N& BIOL 122N General Biology Iand General Biology I Lab",
+    "BIOL 123N& BIOL 124N General Biology IIand General Biology II Lab",
+    "BIOL 136N& BIOL 137N Honors General Biology Iand Honors General Biology I Lab",
+    "BIOL 138N& BIOL 139N Honors General Biology IIand Honors General Biology II Lab",
+    "CHEM 105N& CHEM 106N Introductory Chemistryand Introductory Chemistry Laboratory",
+    "CHEM 107N& CHEM 108N Introductory Organic and Biochemistryand Introductory Organic and Biochemistry Laboratory",
+    "CHEM 121N& CHEM 122N Foundations of Chemistry I Lectureand Foundations of Chemistry I Laboratory",
+    "CHEM 123N& CHEM 124N Foundations of Chemistry II Lectureand Foundations of Chemistry II Laboratory",
+    "OEAS 106N& OEAS 108N Introductory Oceanographyand Understanding Global Climate Change",
+    "OEAS 106N& OEAS 250N Introductory Oceanographyand Natural Hazards and Disasters",
+    "OEAS 126N& OEAS 108N Honors: Introductory Oceanographyand Understanding Global Climate Change",
+    "OEAS 126N& OEAS 250N Honors: Introductory Oceanographyand Natural Hazards and Disasters",
+    "PHYS 111N& PHYS 112N Introductory General Physicsand Introductory General Physics",
+    "PHYS 226N& PHYS 227N Honors: University Physics Iand Honors: University Physics II",
+    "PHYS 231N& PHYS 232N University Physics Iand University Physics II"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIOL121N",
+         "title": "General Biology I"
+        },
+        {
+         "code": "BIOL122N",
+         "title": "and General Biology I Lab"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 121N& BIOL 122N General Biology Iand General Biology I Lab",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL123N",
+         "title": "General Biology II"
+        },
+        {
+         "code": "BIOL124N",
+         "title": "and General Biology II Lab"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 123N& BIOL 124N General Biology IIand General Biology II Lab",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL136N",
+         "title": "Honors General Biology I"
+        },
+        {
+         "code": "BIOL137N",
+         "title": "and Honors General Biology I Lab"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 136N& BIOL 137N Honors General Biology Iand Honors General Biology I Lab",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL138N",
+         "title": "Honors General Biology II"
+        },
+        {
+         "code": "BIOL139N",
+         "title": "and Honors General Biology II Lab"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 138N& BIOL 139N Honors General Biology IIand Honors General Biology II Lab",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM105N",
+         "title": "Introductory Chemistry"
+        },
+        {
+         "code": "CHEM106N",
+         "title": "and Introductory Chemistry Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 105N& CHEM 106N Introductory Chemistryand Introductory Chemistry Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM107N",
+         "title": "Introductory Organic and Biochemistry"
+        },
+        {
+         "code": "CHEM108N",
+         "title": "and Introductory Organic and Biochemistry Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 107N& CHEM 108N Introductory Organic and Biochemistryand Introductory Organic and Biochemistry Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM121N",
+         "title": "Foundations of Chemistry I Lecture"
+        },
+        {
+         "code": "CHEM122N",
+         "title": "and Foundations of Chemistry I Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 121N& CHEM 122N Foundations of Chemistry I Lectureand Foundations of Chemistry I Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM123N",
+         "title": "Foundations of Chemistry II Lecture"
+        },
+        {
+         "code": "CHEM124N",
+         "title": "and Foundations of Chemistry II Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 123N& CHEM 124N Foundations of Chemistry II Lectureand Foundations of Chemistry II Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "OEAS106N",
+         "title": "Introductory Oceanography"
+        },
+        {
+         "code": "OEAS108N",
+         "title": "and Understanding Global Climate Change"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OEAS 106N& OEAS 108N Introductory Oceanographyand Understanding Global Climate Change",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "OEAS106N",
+         "title": "Introductory Oceanography"
+        },
+        {
+         "code": "OEAS250N",
+         "title": "and Natural Hazards and Disasters"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OEAS 106N& OEAS 250N Introductory Oceanographyand Natural Hazards and Disasters",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "OEAS126N",
+         "title": "Honors: Introductory Oceanography"
+        },
+        {
+         "code": "OEAS108N",
+         "title": "and Understanding Global Climate Change"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OEAS 126N& OEAS 108N Honors: Introductory Oceanographyand Understanding Global Climate Change",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "OEAS126N",
+         "title": "Honors: Introductory Oceanography"
+        },
+        {
+         "code": "OEAS250N",
+         "title": "and Natural Hazards and Disasters"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OEAS 126N& OEAS 250N Honors: Introductory Oceanographyand Natural Hazards and Disasters",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS111N",
+         "title": "Introductory General Physics"
+        },
+        {
+         "code": "PHYS112N",
+         "title": "and Introductory General Physics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 111N& PHYS 112N Introductory General Physicsand Introductory General Physics",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS226N",
+         "title": "Honors: University Physics I"
+        },
+        {
+         "code": "PHYS227N",
+         "title": "and Honors: University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 226N& PHYS 227N Honors: University Physics Iand Honors: University Physics II",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS231N",
+         "title": "University Physics I"
+        },
+        {
+         "code": "PHYS232N",
+         "title": "and University Physics II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 231N& PHYS 232N University Physics Iand University Physics II",
+       "credits": {
+        "min": 8,
+        "max": 8,
+        "raw": "8"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "General Education",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Complete lower-division requirements Complete upper-division requirements (minimum of 6 credit hours)",
+   "source_text": [
+    "Complete lower-division requirements",
+    "Complete upper-division requirements (minimum of 6 credit hours)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 6,
+      "max": 12,
+      "raw": "6-12"
+     },
+     "rows": []
+    }
+   ]
+  },
+  {
+   "title": "Required Computer Science Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following: Select one of the following:",
+   "source_text": [
+    "Select one of the following:",
+    "CS 151 Introduction to Programming with Java",
+    "or",
+    "CS 153 Introduction to Programming with Python",
+    "or",
+    "CS 150 Introduction to Programming with C++",
+    "CS 170 Introduction to Computer Architecture I",
+    "Select one of the following:",
+    "CS 251& CS 260 Programming with Javaand C++ for Programmers",
+    "or",
+    "CS 253& CS 260& CS 261 Transfer Credit for Programming with Pythonand C++ for Programmersand Java for Programmers",
+    "or",
+    "CS 250& CS 261 Programming with C++and Java for Programmers",
+    "CS 252 Introduction to Unix for Programmers",
+    "CS 270 Introduction to Computer Architecture II",
+    "CS 315 Computer Science Undergraduate Colloquium *",
+    "or CS 115 Introduction to Computer Science with Python",
+    "CS 330 Object-Oriented Design and Programming",
+    "CS 350 Introduction to Software Engineering",
+    "or CS 351& CS 352 Software Engineeringand Software Engineering Lab",
+    "CS 355 Principles of Programming Languages",
+    "CS 361 Data Structures and Algorithms",
+    "CS 381 Introduction to Discrete Structures",
+    "CS 390 Introduction to Theoretical Computer Science",
+    "CS 410 Professional Workforce Development I",
+    "CS 411W Professional Workforce Development II",
+    "CS 417 Computational Methods and Software",
+    "CS 422 Introduction to Machine Learning (or)",
+    "or CS 480 Introduction to Artificial Intelligence",
+    "CS 450 Database Concepts (or)",
+    "or CS 418 Web Programming",
+    "CS 471 Operating Systems"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 4,
+      "raw": "4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS151",
+         "title": "Introduction to Programming with Java"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 151 Introduction to Programming with Java",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "or",
+       "category": "or",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CS153",
+         "title": "Introduction to Programming with Python"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 153 Introduction to Programming with Python",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "or",
+       "category": "or",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CS150",
+         "title": "Introduction to Programming with C++"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 150 Introduction to Programming with C++",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS170",
+         "title": "Introduction to Computer Architecture I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 170 Introduction to Computer Architecture I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 5,
+      "max": 6,
+      "raw": "5-6"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS251",
+         "title": "Programming with Java"
+        },
+        {
+         "code": "CS260",
+         "title": "and C++ for Programmers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 251& CS 260 Programming with Javaand C++ for Programmers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "or",
+       "category": "or",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CS253",
+         "title": "Transfer Credit for Programming with Python"
+        },
+        {
+         "code": "CS260",
+         "title": "and C++ for Programmers"
+        },
+        {
+         "code": "CS261",
+         "title": "and Java for Programmers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 253& CS 260& CS 261 Transfer Credit for Programming with Pythonand C++ for Programmersand Java for Programmers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "or",
+       "category": "or",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CS250",
+         "title": "Programming with C++"
+        },
+        {
+         "code": "CS261",
+         "title": "and Java for Programmers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 250& CS 261 Programming with C++and Java for Programmers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS252",
+         "title": "Introduction to Unix for Programmers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 252 Introduction to Unix for Programmers",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS270",
+         "title": "Introduction to Computer Architecture II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 270 Introduction to Computer Architecture II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS315",
+         "title": "Computer Science Undergraduate Colloquium"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 315 Computer Science Undergraduate Colloquium *",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS115",
+         "title": "Introduction to Computer Science with Python"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 115 Introduction to Computer Science with Python",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS330",
+         "title": "Object-Oriented Design and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 330 Object-Oriented Design and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS350",
+         "title": "Introduction to Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 350 Introduction to Software Engineering",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS351",
+         "title": "Software Engineering"
+        },
+        {
+         "code": "CS352",
+         "title": "and Software Engineering Lab"
+        }
+       ],
+       "conjunction": "or",
+       "text": "or CS 351& CS 352 Software Engineeringand Software Engineering Lab",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS355",
+         "title": "Principles of Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 355 Principles of Programming Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS361",
+         "title": "Data Structures and Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 361 Data Structures and Algorithms",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS381",
+         "title": "Introduction to Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 381 Introduction to Discrete Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS390",
+         "title": "Introduction to Theoretical Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 390 Introduction to Theoretical Computer Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS410",
+         "title": "Professional Workforce Development I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 410 Professional Workforce Development I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS411W",
+         "title": "Professional Workforce Development II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 411W Professional Workforce Development II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS417",
+         "title": "Computational Methods and Software"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 417 Computational Methods and Software",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS422",
+         "title": "Introduction to Machine Learning (or)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 422 Introduction to Machine Learning (or)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS480",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 480 Introduction to Artificial Intelligence",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS450",
+         "title": "Database Concepts (or)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 450 Database Concepts (or)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS418",
+         "title": "Web Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 418 Web Programming",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS471",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 471 Operating Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Elective Computer Science Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select three additional CS courses from the following: **",
+   "source_text": [
+    "Select three additional CS courses from the following: **",
+    "CS 222 Introduction to Digital Image Processing",
+    "CS 312 Internet Concepts",
+    "CS 337 OOP and Foreign Function Interfaces in Rust",
+    "CS 402 Formal Software Foundations",
+    "CS 418 Web Programming",
+    "CS 422 Introduction to Machine Learning",
+    "CS 431 Web Server Design",
+    "CS 432 Web Science",
+    "CS 433 Web Security",
+    "CS 441 App Development for Smart Devices",
+    "CS 445 Introduction to Quantum Computing",
+    "CS 450 Database Concepts",
+    "CS 455 Introduction to Networks and Communications",
+    "CS 460 Computer Graphics",
+    "CS 462 Cybersecurity Fundamentals",
+    "CS 463 Cryptography for Cybersecurity",
+    "CS 464 Networked Systems Security",
+    "CS 465 Information Assurance for Cybersecurity",
+    "CS 466 Principles and Practice of Cyber Defense",
+    "CS 467 Introduction to Reverse Software Engineering",
+    "CS 469 Data Analytics for Cybersecurity",
+    "CS 472 Network and Systems Security",
+    "CS 475 Introduction to Computer Simulation",
+    "CS 476 Systems Programming",
+    "CS 478 Computational Geometry, Methods and Applications",
+    "CS 480 Introduction to Artificial Intelligence",
+    "CS 481 Trustworthy Health Analytics",
+    "CS 486 Introduction to Parallel Computing",
+    "CS 487 Applied Parallel Computing",
+    "CS 488 Principles of Compiler Construction",
+    "CS 491 Honors Research I in Computer Science",
+    "CS 492 Honors Research II in Computer Science",
+    "CS 499W Honors Thesis in Computer Science"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 3,
+     "credits": {
+      "min": 9,
+      "max": 9,
+      "raw": "9"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS222",
+         "title": "Introduction to Digital Image Processing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 222 Introduction to Digital Image Processing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS312",
+         "title": "Internet Concepts"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 312 Internet Concepts",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS337",
+         "title": "OOP and Foreign Function Interfaces in Rust"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 337 OOP and Foreign Function Interfaces in Rust",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS402",
+         "title": "Formal Software Foundations"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 402 Formal Software Foundations",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS418",
+         "title": "Web Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 418 Web Programming",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS422",
+         "title": "Introduction to Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 422 Introduction to Machine Learning",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS431",
+         "title": "Web Server Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 431 Web Server Design",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS432",
+         "title": "Web Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 432 Web Science",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS433",
+         "title": "Web Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 433 Web Security",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS441",
+         "title": "App Development for Smart Devices"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 441 App Development for Smart Devices",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS445",
+         "title": "Introduction to Quantum Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 445 Introduction to Quantum Computing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS450",
+         "title": "Database Concepts"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 450 Database Concepts",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS455",
+         "title": "Introduction to Networks and Communications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 455 Introduction to Networks and Communications",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS460",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 460 Computer Graphics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS462",
+         "title": "Cybersecurity Fundamentals"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 462 Cybersecurity Fundamentals",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS463",
+         "title": "Cryptography for Cybersecurity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 463 Cryptography for Cybersecurity",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS464",
+         "title": "Networked Systems Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 464 Networked Systems Security",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS465",
+         "title": "Information Assurance for Cybersecurity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 465 Information Assurance for Cybersecurity",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS466",
+         "title": "Principles and Practice of Cyber Defense"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 466 Principles and Practice of Cyber Defense",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS467",
+         "title": "Introduction to Reverse Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 467 Introduction to Reverse Software Engineering",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS469",
+         "title": "Data Analytics for Cybersecurity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 469 Data Analytics for Cybersecurity",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS472",
+         "title": "Network and Systems Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 472 Network and Systems Security",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS475",
+         "title": "Introduction to Computer Simulation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 475 Introduction to Computer Simulation",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS476",
+         "title": "Systems Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 476 Systems Programming",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS478",
+         "title": "Computational Geometry, Methods and Applications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 478 Computational Geometry, Methods and Applications",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS480",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 480 Introduction to Artificial Intelligence",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS481",
+         "title": "Trustworthy Health Analytics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 481 Trustworthy Health Analytics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS486",
+         "title": "Introduction to Parallel Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 486 Introduction to Parallel Computing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS487",
+         "title": "Applied Parallel Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 487 Applied Parallel Computing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS488",
+         "title": "Principles of Compiler Construction"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 488 Principles of Compiler Construction",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS491",
+         "title": "Honors Research I in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 491 Honors Research I in Computer Science",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS492",
+         "title": "Honors Research II in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 492 Honors Research II in Computer Science",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS499W",
+         "title": "Honors Thesis in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 499W Honors Thesis in Computer Science",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Other Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "MATH 211 Calculus I",
+    "MATH 212 Calculus II",
+    "MATH 316 Introductory Linear Algebra",
+    "STAT 330 An Introduction to Probability and Statistics",
+    "Technical Elective ***"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH211",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 211 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH212",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 212 Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH316",
+         "title": "Introductory Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 316 Introductory Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT330",
+         "title": "An Introduction to Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 330 An Introduction to Probability and Statistics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Technical Elective ***",
+       "category": "Technical Elective ***",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Honors Program in Computer Science",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 491 Honors Research I in Computer Science",
+    "CS 492 Honors Research II in Computer Science",
+    "CS 499W Honors Thesis in Computer Science"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS491",
+         "title": "Honors Research I in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 491 Honors Research I in Computer Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS492",
+         "title": "Honors Research II in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 492 Honors Research II in Computer Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS499W",
+         "title": "Honors Thesis in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 499W Honors Thesis in Computer Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 14,
+    "max": 17,
+    "raw": "14-17"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following:",
+   "source_text": [
+    "ENGL 110C English Composition (Grade of C or better required)",
+    "MATH 211 Calculus I",
+    "Select one of the following:",
+    "CS 151or CS 153 Introduction to Programming with Javaor Introduction to Programming with Python",
+    "Human Behavior",
+    "Language & Culture I (May be waived; See requirement details)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGL110C",
+         "title": "English Composition ("
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 110C English Composition (Grade of C or better required)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH211",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 211 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 4,
+      "max": 4,
+      "raw": "4"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS151",
+         "title": "Introduction to Programming with Java"
+        },
+        {
+         "code": "CS153",
+         "title": "Introduction to Programming with Python"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 151or CS 153 Introduction to Programming with Javaor Introduction to Programming with Python",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Human Behavior",
+       "category": "Human Behavior",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Language & Culture I (May be waived; See requirement details)",
+       "category": "Language & Culture I (May be waived; See requirement details)",
+       "credits": {
+        "min": 0,
+        "max": 3,
+        "raw": "0-3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 15,
+    "max": 18,
+    "raw": "15-18"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "ENGL 211C or ENGL 231C (Grade of C or better required)",
+    "MATH 212 Calculus II",
+    "CS 170 Introduction to Computer Architecture I",
+    "CS 251 Programming with Java",
+    "CS 252 Introduction to Unix for Programmers",
+    "Language & Culture II (May be waived; See requirement details)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGL211C",
+         "title": null
+        },
+        {
+         "code": "ENGL231C",
+         "title": null
+        }
+       ],
+       "conjunction": "or",
+       "text": "ENGL 211C or ENGL 231C (Grade of C or better required)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH212",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 212 Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS170",
+         "title": "Introduction to Computer Architecture I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 170 Introduction to Computer Architecture I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS251",
+         "title": "Programming with Java"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 251 Programming with Java",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS252",
+         "title": "Introduction to Unix for Programmers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 252 Introduction to Unix for Programmers",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Language & Culture II (May be waived; See requirement details)",
+       "category": "Language & Culture II (May be waived; See requirement details)",
+       "credits": {
+        "min": 0,
+        "max": 3,
+        "raw": "0-3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 16,
+    "max": 16,
+    "raw": "16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "MATH 316 Introductory Linear Algebra",
+    "CS 270 Introduction to Computer Architecture II",
+    "CS 330 Object-Oriented Design and Programming",
+    "Oral Communication: COMM 101R or PHIL 160R",
+    "Nature of Science I (Must be in sequence)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH316",
+         "title": "Introductory Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 316 Introductory Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS270",
+         "title": "Introduction to Computer Architecture II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 270 Introduction to Computer Architecture II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS330",
+         "title": "Object-Oriented Design and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 330 Object-Oriented Design and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM101R",
+         "title": null
+        },
+        {
+         "code": "PHIL160R",
+         "title": null
+        }
+       ],
+       "conjunction": "or",
+       "text": "Oral Communication: COMM 101R or PHIL 160R",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Nature of Science I (Must be in sequence)",
+       "category": "Nature of Science I (Must be in sequence)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "STAT 330 An Introduction to Probability and Statistics",
+    "CS 260 C++ for Programmers",
+    "CS 361 Data Structures and Algorithms",
+    "Information Literacy and Research: CS 121G or CS 202G",
+    "Nature of Science II (Must be in sequence)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT330",
+         "title": "An Introduction to Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 330 An Introduction to Probability and Statistics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS260",
+         "title": "C++ for Programmers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 260 C++ for Programmers",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS361",
+         "title": "Data Structures and Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 361 Data Structures and Algorithms",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS121G",
+         "title": null
+        },
+        {
+         "code": "CS202G",
+         "title": null
+        }
+       ],
+       "conjunction": "or",
+       "text": "Information Literacy and Research: CS 121G or CS 202G",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Nature of Science II (Must be in sequence)",
+       "category": "Nature of Science II (Must be in sequence)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 16,
+    "max": 16,
+    "raw": "16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 315 Computer Science Undergraduate Colloquium **",
+    "CS 355 Principles of Programming Languages",
+    "CS 381 Introduction to Discrete Structures",
+    "CS 422or CS 480 Introduction to Machine Learning (or)or Introduction to Artificial Intelligence",
+    "Human Creativity",
+    "Upper-Division General Education Course (Option D)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS315",
+         "title": "Computer Science Undergraduate Colloquium"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 315 Computer Science Undergraduate Colloquium **",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS355",
+         "title": "Principles of Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 355 Principles of Programming Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS381",
+         "title": "Introduction to Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 381 Introduction to Discrete Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS422",
+         "title": "Introduction to Machine Learning ("
+        },
+        {
+         "code": "CS480",
+         "title": "or"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 422or CS 480 Introduction to Machine Learning (or)or Introduction to Artificial Intelligence",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Human Creativity",
+       "category": "Human Creativity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Upper-Division General Education Course (Option D)",
+       "category": "Upper-Division General Education Course (Option D)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 350or CS 351 and CS 352 Introduction to Software Engineeringor Software Engineering and Software Engineering Lab",
+    "CS 390 Introduction to Theoretical Computer Science",
+    "CS 450or CS 418 Database Conceptsor Web Programming",
+    "Literature",
+    "Interpreting the Past"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS350",
+         "title": "Introduction to Software Engineering"
+        },
+        {
+         "code": "CS351",
+         "title": "Software Engineering and Software Engineering Lab"
+        },
+        {
+         "code": "CS352",
+         "title": null
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 350or CS 351 and CS 352 Introduction to Software Engineeringor Software Engineering and Software Engineering Lab",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS390",
+         "title": "Introduction to Theoretical Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 390 Introduction to Theoretical Computer Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS450",
+         "title": "Database Concepts"
+        },
+        {
+         "code": "CS418",
+         "title": "Web Programming"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 450or CS 418 Database Conceptsor Web Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Literature",
+       "category": "Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Interpreting the Past",
+       "category": "Interpreting the Past",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall",
+   "credits": {
+    "min": 15,
+    "max": 16,
+    "raw": "15-16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 410 Professional Workforce Development I",
+    "CS 417 Computational Methods and Software",
+    "Technical Elective",
+    "Elective CS course",
+    "Philosophy & Ethics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS410",
+         "title": "Professional Workforce Development I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 410 Professional Workforce Development I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS417",
+         "title": "Computational Methods and Software"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 417 Computational Methods and Software",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Technical Elective",
+       "category": "Technical Elective",
+       "credits": {
+        "min": 3,
+        "max": 4,
+        "raw": "3-4"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Elective CS course",
+       "category": "Elective CS course",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Philosophy & Ethics",
+       "category": "Philosophy & Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 411W Professional Workforce Development II",
+    "CS 471 Operating Systems",
+    "Elective CS course",
+    "Elective CS course",
+    "Upper-Division General Education Course (Option D)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS411W",
+         "title": "Professional Workforce Development II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 411W Professional Workforce Development II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS471",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 471 Operating Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Elective CS course",
+       "category": "Elective CS course",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Elective CS course",
+       "category": "Elective CS course",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Upper-Division General Education Course (Option D)",
+       "category": "Upper-Division General Education Course (Option D)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Program Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose three from the following:*",
+   "source_text": [
+    "CS 550 Database Concepts",
+    "Choose three from the following:*",
+    "CS 522 Introduction to Machine Learning",
+    "CS 532 Web Science",
+    "CS 569 Data Analytics for Cybersecurity",
+    "CS 580 Introduction to Artificial Intelligence"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Concepts"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Concepts",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 3,
+     "credits": {
+      "min": 9,
+      "max": 9,
+      "raw": "9"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS522",
+         "title": "Introduction to Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 522 Introduction to Machine Learning",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS532",
+         "title": "Web Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 532 Web Science",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS569",
+         "title": "Data Analytics for Cybersecurity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 569 Data Analytics for Cybersecurity",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 100 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "16 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "100 distinct courses across 145 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 120–127, stated total 120-134"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "32 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 16,
+   "sections": 19,
+   "rows": 145,
+   "course_rows": 113,
+   "category_rows": 32,
+   "distinct_courses": 100,
+   "credit_span": {
+    "min": 120,
+    "max": 127,
+    "groups_with_credits": 8
+   },
+   "stated_total": "120-134"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.941Z"
+}

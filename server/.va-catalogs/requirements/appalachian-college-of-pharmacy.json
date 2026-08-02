@@ -1,0 +1,20 @@
+{
+ "slug": "appalachian-college-of-pharmacy",
+ "name": "Appalachian College of Pharmacy",
+ "level": "four_year",
+ "platform": "web",
+ "outcome": "no_cs_program",
+ "source_url": "https://www.acp.edu/",
+ "offers_cs": false,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": false,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": null,
+ "extracted_at": "2026-08-02T06:13:44.812Z"
+}

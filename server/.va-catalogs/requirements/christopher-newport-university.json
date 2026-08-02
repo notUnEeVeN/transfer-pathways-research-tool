@@ -1,0 +1,397 @@
+{
+ "slug": "christopher-newport-university",
+ "name": "Christopher Newport University",
+ "level": "four_year",
+ "platform": "web",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://cnu.edu/academics/programs/computer-science.html",
+ "captured_at": "2026-08-02T05:53:34.152Z",
+ "program_title": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Core",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Core",
+    "CPSC 150/150L - Introduction to Programming and Laboratory",
+    "CPSC 250/250L - Programming for Data Manipulation and Laboratory"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC150",
+         "title": "/150L - Introduction to Programming and Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 150/150L - Introduction to Programming and Laboratory",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC250",
+         "title": "/250L - Programming for Data Manipulation and Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 250/250L - Programming for Data Manipulation and Laboratory",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Twelve additional credits selected from the list pf CPSC courses in the computer science major at a level higher than 250, with at least six credits at the 300 or 400 level. Note that classes taken to fulfill any major requirements may only be applied toward six of these twelve additional credits.",
+   "source_text": [
+    "Electives",
+    "CPSC 255 - Programming for Applications",
+    "CPSC 270 - Data and File Structures",
+    "CPSC 280 - Introduction to Software Engineering",
+    "CPSC 327 - C++ Programming",
+    "CPSC 360 - Programming Language Concepts",
+    "CPSC 410 - Operating Systems I",
+    "CPSC 420 - Algorithms",
+    "CPSC 425 - Object Oriented Programming and Design",
+    "CPSC 428 - Cryptography and Network Security",
+    "CPSC 440 - Database Management Systems",
+    "CPSC 450 - Operating Systems II",
+    "CPSC 460 - Introduction to Compilers",
+    "CPSC 470 - Theoretical Computer Science",
+    "CPSC 471 - Applied Artificial Intelligence",
+    "CPSC 472 - Introduction to Robotics",
+    "CPSC 475 - Android Mobile Computing",
+    "CPSC 480 - Software Design and Development",
+    "CPSC 485 - Principles and Applications of Multimedia",
+    "CPSC 495 - Special Topics",
+    "CPSC 498 - Capstone Project in Computer Science",
+    "undergraduate catalog",
+    "Career Options",
+    "Software Developer/Engineer",
+    "Data Scientist",
+    "Artificial Intelligence (AI) Engineer",
+    "Cybersecutiy Analyst",
+    "Systems Analyst",
+    "Quick edit",
+    "Report a problem"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CPSC255",
+         "title": "Programming for Applications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 255 - Programming for Applications",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC270",
+         "title": "Data and File Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 270 - Data and File Structures",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC280",
+         "title": "Introduction to Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 280 - Introduction to Software Engineering",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC327",
+         "title": "C++ Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 327 - C++ Programming",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC360",
+         "title": "Programming Language Concepts"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 360 - Programming Language Concepts",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC410",
+         "title": "Operating Systems I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 410 - Operating Systems I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC420",
+         "title": "Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 420 - Algorithms",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC425",
+         "title": "Object Oriented Programming and Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 425 - Object Oriented Programming and Design",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC428",
+         "title": "Cryptography and Network Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 428 - Cryptography and Network Security",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC440",
+         "title": "Database Management Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 440 - Database Management Systems",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC450",
+         "title": "Operating Systems II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 450 - Operating Systems II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC460",
+         "title": "Introduction to Compilers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 460 - Introduction to Compilers",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC470",
+         "title": "Theoretical Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 470 - Theoretical Computer Science",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC471",
+         "title": "Applied Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 471 - Applied Artificial Intelligence",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC472",
+         "title": "Introduction to Robotics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 472 - Introduction to Robotics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC475",
+         "title": "Android Mobile Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 475 - Android Mobile Computing",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC480",
+         "title": "Software Design and Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 480 - Software Design and Development",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC485",
+         "title": "Principles and Applications of Multimedia"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 485 - Principles and Applications of Multimedia",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC495",
+         "title": "Special Topics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 495 - Special Topics",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CPSC498",
+         "title": "Capstone Project in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CPSC 498 - Capstone Project in Computer Science",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Twelve additional credits selected from the list pf CPSC courses in the computer science major at a level higher than 250, with at least six credits at the 300 or 400 level. Note that classes taken to fulfill any major requirements may only be applied toward six of these twelve additional credits."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 22 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "2 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "22 distinct courses across 22 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   }
+  ],
+  "stats": {
+   "groups": 2,
+   "sections": 2,
+   "rows": 22,
+   "course_rows": 22,
+   "category_rows": 0,
+   "distinct_courses": 22,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.815Z"
+}

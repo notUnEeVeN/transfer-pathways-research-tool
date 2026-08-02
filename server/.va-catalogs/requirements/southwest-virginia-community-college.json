@@ -1,0 +1,466 @@
+{
+ "slug": "southwest-virginia-community-college",
+ "name": "Southwest Virginia Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.sw.edu/preview_program.php?catoid=13&poid=1613&returnto=761&print=1",
+ "captured_at": "2026-08-02T05:50:02.031Z",
+ "program_title": "Computer Science, AS",
+ "total_credits": {
+  "min": 60,
+  "max": 60,
+  "raw": "60"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "First Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "First Semester:",
+    "MTH 263: Calculus I 4 Credits",
+    "EGR 121: Foundations of Engineering 2 Credits",
+    "CSC 221: Introduction to Problem Solving and Programming 3 Credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I 4 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263: Calculus I 4 Credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering 2 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121: Foundations of Engineering 2 Credits",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221: Introduction to Problem Solving and Programming 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Elective: History Elective",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Elective: History Elective 3 Credits",
+    "ENG 111: College Composition I 3 Credits",
+    "SDV 100: College Success Skills 1 Credits",
+    "Semester Total:",
+    "Lecture Hours: 16",
+    "Labs Hours: 0"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111: College Composition I 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills 1 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100: College Success Skills 1 Credits",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Second Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Second Semester:",
+    "ENG 112: College Composition II 3 Credits",
+    "MTH 264: Calculus II 4 Credits",
+    "EGR 122: Engineering Design 3 Credits",
+    "CSC 222: Object-Oriented Programming 4 Credits",
+    "Semester Total:",
+    "Lecture Hours: 14",
+    "Lab Hours: 0"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112: College Composition II 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II 4 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264: Calculus II 4 Credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122: Engineering Design 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming 4 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222: Object-Oriented Programming 4 Credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Third Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Third Semester:",
+    "MTH 288: Discrete Mathematics 3 Credits",
+    "PHY 241: University Physics I 4 Credits",
+    "CSC 205: Computer Organization 3 Credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 288: Discrete Mathematics 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I 4 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHY 241: University Physics I 4 Credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205: Computer Organization 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fourth Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fourth Semester:",
+    "MTH 265: Calculus III 4 Credits",
+    "CSC 223: Data Structures and Analysis of Algorithms 4 Credits",
+    "PHI 220: Ethics 3 Credits",
+    "CST 100: Principles of Public Speaking 3 Credits",
+    "Elective: Social & Behavioral Science Elective&nbsp;3 Credits",
+    "Semester Total:",
+    "Lecture Hours: 17",
+    "Labs Hours: 0"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III 4 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265: Calculus III 4 Credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms 4 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223: Data Structures and Analysis of Algorithms 4 Credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI220",
+         "title": "Ethics 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 220: Ethics 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking 3 Credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100: Principles of Public Speaking 3 Credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Elective: Social & Behavioral Science Elective&nbsp;3 Credits",
+       "category": "Elective: Social & Behavioral Science Elective&nbsp;3 Credits"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "AS Transfer Resources-Transfer & Articulation Agreements, Guaranteed Admission Agreements",
+  "Purpose:",
+  "The Associates of Science Degree Program in Computer Science is designed to transfer to a four-year college or university to complete a baccalaureate degree program with a major in computer science or a related discipline.",
+  "Students are urged to become acquainted with the requirements of the major department in the college or university to which transfer is contemplated, and to consult with the Student Services Office of the community college in planning their program and selecting electives. This program covers algorithms, programming languages, computer architecture, operating systems, and humanities necessary for team and stakeholder interaction on projects."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 16 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "5 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "16 distinct courses across 17 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 3–3 against a stated 60, but 4 of 5 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "1 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 5,
+   "sections": 5,
+   "rows": 17,
+   "course_rows": 16,
+   "category_rows": 1,
+   "distinct_courses": 16,
+   "credit_span": {
+    "min": 3,
+    "max": 3,
+    "groups_with_credits": 1
+   },
+   "stated_total": "60"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.769Z"
+}

@@ -1,0 +1,54 @@
+{
+ "slug": "william-mary",
+ "name": "William & Mary",
+ "level": "four_year",
+ "platform": "web",
+ "outcome": "url_only",
+ "source_url": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php",
+  "candidates": [
+   {
+    "score": 15,
+    "title": "Bachelor of Science in Computer Science",
+    "href": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php"
+   },
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://cdsp.wm.edu/computerscience/index.php"
+   },
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://cdsp.wm.edu/computerscience/index.php"
+   },
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://cdsp.wm.edu/computerscience/index.php"
+   },
+   {
+    "score": 10,
+    "title": "Support Computer Science",
+    "href": "https://cdsp.wm.edu/computerscience/support/index.php"
+   },
+   {
+    "score": 10,
+    "title": "Bachelor of Arts in Computer Science",
+    "href": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-arts-b.a-in-computer-science.php"
+   }
+  ]
+ },
+ "extracted_at": "2026-08-02T06:25:26.261Z"
+}

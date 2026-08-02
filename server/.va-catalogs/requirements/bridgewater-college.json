@@ -1,0 +1,54 @@
+{
+ "slug": "bridgewater-college",
+ "name": "Bridgewater College",
+ "level": "four_year",
+ "platform": "cleancatalog",
+ "outcome": "url_only",
+ "source_url": "https://www.bridgewater.edu/academics/divisions/math-computer-science/computer-science-major/",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+  "candidates": [
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science"
+   },
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science"
+   },
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/minor/computer-science"
+   },
+   {
+    "score": 13,
+    "title": "Computer Science",
+    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/minor/computer-science"
+   },
+   {
+    "score": 10,
+    "title": "Mathematics & Computer Science",
+    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science"
+   },
+   {
+    "score": 10,
+    "title": "Mathematics & Computer Science",
+    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science"
+   }
+  ]
+ },
+ "extracted_at": "2026-08-02T06:13:44.812Z"
+}

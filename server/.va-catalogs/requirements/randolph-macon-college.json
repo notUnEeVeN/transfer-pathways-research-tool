@@ -1,0 +1,557 @@
+{
+ "slug": "randolph-macon-college",
+ "name": "Randolph-Macon College",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/",
+ "captured_at": "2026-08-02T05:40:27.123Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 40,
+  "max": 40,
+  "raw": "40"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Foundation",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSCI 111 Introduction to Computer Science",
+    "CSCI 112 Data Structures",
+    "CSCI 210 Introduction to Discrete Structures",
+    "CSCI 211 Computer Organization",
+    "CSCI 212 Systems Programming",
+    "CSCI 213 Object-Oriented Programming",
+    "CSCI 311 Algorithms"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI111",
+         "title": "Introduction to Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 111 Introduction to Computer Science",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI112",
+         "title": "Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 112 Data Structures",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI210",
+         "title": "Introduction to Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 210 Introduction to Discrete Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI211",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 211 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI212",
+         "title": "Systems Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 212 Systems Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI213",
+         "title": "Object-Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 213 Object-Oriented Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI311",
+         "title": "Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 311 Algorithms",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Programming Emphasis",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following:",
+   "source_text": [
+    "Select one of the following:",
+    "CSCI 330 Network Architecture and Protocols",
+    "CSCI 332 Computer Graphics",
+    "CSCI 335 Web Development",
+    "CSCI 340 Parallel Computing",
+    "CSCI 343 Introduction to Simulation",
+    "CSCI 350 Operating Systems",
+    "CSCI 382 Special Topics in Computer Science"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI330",
+         "title": "Network Architecture and Protocols"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 330 Network Architecture and Protocols",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI332",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 332 Computer Graphics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI335",
+         "title": "Web Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 335 Web Development",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI340",
+         "title": "Parallel Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 340 Parallel Computing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI343",
+         "title": "Introduction to Simulation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 343 Introduction to Simulation",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI350",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 350 Operating Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI382",
+         "title": "Special Topics in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 382 Special Topics in Computer Science",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select four additional courses from the following list, at least two of which must be at the 300 level or above:",
+   "source_text": [
+    "Select four additional courses from the following list, at least two of which must be at the 300 level or above:",
+    "CSCI 229 Introduction to Robotics",
+    "CSCI 236 Database Systems",
+    "CSCI 280-284",
+    "CSCI 330 Network Architecture and Protocols",
+    "CSCI 332 Computer Graphics",
+    "CSCI 333 Programming Languages",
+    "CSCI 335 Web Development",
+    "CSCI 339 Artificial Intelligence",
+    "CSCI 340 Parallel Computing",
+    "CSCI 349 Machine Learning",
+    "CSCI 350 Operating Systems",
+    "CSCI 363 Theory of Computation",
+    "CSCI 380-384",
+    "CSCI 485 Computer Science Research",
+    "CSEC 322 System Security and Defense",
+    "CSEC 323 Software Security",
+    "CSEC 353 Cryptography"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 4,
+     "credits": {
+      "min": 12,
+      "max": 12,
+      "raw": "12"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI229",
+         "title": "Introduction to Robotics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 229 Introduction to Robotics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI236",
+         "title": "Database Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 236 Database Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSCI 280-284",
+       "category": "CSCI 280-284",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI330",
+         "title": "Network Architecture and Protocols"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 330 Network Architecture and Protocols",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI332",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 332 Computer Graphics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI333",
+         "title": "Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 333 Programming Languages",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI335",
+         "title": "Web Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 335 Web Development",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI339",
+         "title": "Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 339 Artificial Intelligence",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI340",
+         "title": "Parallel Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 340 Parallel Computing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI349",
+         "title": "Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 349 Machine Learning",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI350",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 350 Operating Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI363",
+         "title": "Theory of Computation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 363 Theory of Computation",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSCI 380-384",
+       "category": "CSCI 380-384",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI485",
+         "title": "Computer Science Research"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 485 Computer Science Research",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSEC322",
+         "title": "System Security and Defense"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSEC 322 System Security and Defense",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSEC323",
+         "title": "Software Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSEC 323 Software Security",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSEC353",
+         "title": "Cryptography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSEC 353 Cryptography",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 24 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "3 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "24 distinct courses across 31 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 0–0 against a stated 40, but 3 of 3 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 3,
+   "sections": 3,
+   "rows": 31,
+   "course_rows": 29,
+   "category_rows": 2,
+   "distinct_courses": 24,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": "40"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.962Z"
+}

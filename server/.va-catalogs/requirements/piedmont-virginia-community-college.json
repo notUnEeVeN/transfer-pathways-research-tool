@@ -1,0 +1,413 @@
+{
+ "slug": "piedmont-virginia-community-college",
+ "name": "Piedmont Virginia Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.pvcc.edu/preview_program.php?catoid=9&poid=1070&returnto=1076&print=1",
+ "captured_at": "2026-08-02T05:47:45.694Z",
+ "program_title": "Computer Science (AS)",
+ "total_credits": {
+  "min": 60,
+  "max": 60,
+  "raw": "60"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses",
+    "SDV 100 - College Success Skills Credits: 1",
+    "ENG 111 - College Composition I Credits: 3",
+    "ENG 112 - College Composition II Credits: 3",
+    "CSC 221 - Introduction to Problem Solving and Programming Credits: 3",
+    "CSC 222 - Object-Oriented Programming Credits: 4",
+    "CSC 223 - Data Structures and Analysis of Algorithms Credits: 4",
+    "CSC 205 - Computer Organization Credits: 3",
+    "MTH 245 - Statistics I Credits: 3",
+    "MTH 167 - Precalculus with Trigonometry Credits: 5",
+    "MTH 263 - Calculus I Credits: 4",
+    "MTH 264 - Calculus II Credits: 4",
+    "MTH 288 - Discrete Mathematics Credits: 3",
+    "BIO 101 - General Biology I Credits: 4",
+    "OR CHM 111 General Chemistry I Credits: 4",
+    "BIO 102 - General Biology II Credits: 4",
+    "OR CHM 112 General Chemistry II Credits: 4",
+    "___ ___ - UCGS Social/Behavioral Science Elective Credits: 3",
+    "___ ___ - UCGS Fine Arts or Literature Elective Credits: 3",
+    "___ ___ - UCGS History Elective Credits: 3",
+    "___ ___ - UCGS Humanities/Fine Arts/Literature Elective Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100 - College Success Skills",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 - College Composition I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 - College Composition II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 - Introduction to Problem Solving and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 - Object-Oriented Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 - Data Structures and Analysis of Algorithms",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 - Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 245 - Statistics I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH167",
+         "title": "Precalculus with Trigonometry"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 167 - Precalculus with Trigonometry",
+       "credits": {
+        "min": 5,
+        "max": 5,
+        "raw": "5"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 - Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 - Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 288 - Discrete Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": "General Biology I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 101 - General Biology I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR CHM 111 General Chemistry I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO102",
+         "title": "General Biology II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIO 102 - General Biology II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR CHM 112 General Chemistry II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "___ ___ - UCGS Social/Behavioral Science Elective Credits: 3",
+       "category": "___ ___ - UCGS Social/Behavioral Science Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "___ ___ - UCGS Fine Arts or Literature Elective Credits: 3",
+       "category": "___ ___ - UCGS Fine Arts or Literature Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "___ ___ - UCGS History Elective Credits: 3",
+       "category": "___ ___ - UCGS History Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "___ ___ - UCGS Humanities/Fine Arts/Literature Elective Credits: 3",
+       "category": "___ ___ - UCGS Humanities/Fine Arts/Literature Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Purpose: This transfer degree emphasizes the study of the science of computing and the use of computing in a scientific setting.",
+  "Program Information This program emphasizes computer science and the underlying mathematical principles. The curriculum also includes electives in humanities and social sciences to broaden the viewpoints of students. Students can select the appropriate course for their pre-professional program as required in the first two years of the prospective four-year college or university degree. Students should become familiar with the requirements of the major department at the contemplated transfer institutions. When students have a choice of courses, they should base their choice on the requirements of the transfer institutions. The responsibility for proper course selection rests with the student. Students who complete the program and fulfill all other graduation requirements will be awarded the associate of science degree in computer science.",
+  "Transfer Information: PVCC has guaranteed transfer agreements with top colleges and universities that guarantee admission to PVCC graduates who meet specific academic transfer criteria."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 16 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "16 distinct courses across 20 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 0–0 against a stated 60, but 1 of 1 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "4 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 1,
+   "sections": 1,
+   "rows": 20,
+   "course_rows": 16,
+   "category_rows": 4,
+   "distinct_courses": 16,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": "60"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.760Z"
+}

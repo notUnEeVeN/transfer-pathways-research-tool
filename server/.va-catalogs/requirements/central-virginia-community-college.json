@@ -1,0 +1,489 @@
+{
+ "slug": "central-virginia-community-college",
+ "name": "Central Virginia Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://centralvirginia.catalog.acalog.com/preview_program.php?catoid=6&poid=934&returnto=208&print=1",
+ "captured_at": "2026-08-02T05:37:00.068Z",
+ "program_title": "Computer Science, AS",
+ "total_credits": {
+  "min": 60,
+  "max": 61,
+  "raw": "60-61"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Fall Semester- Year 1",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fall Semester- Year 1",
+    "SDV 100 - College Success Skills Credits: 1",
+    "ENG 111 - College Composition I Credits: 3",
+    "UCGS Block III: Social and Behavioral Sciences: Credits: 3",
+    "MTH 263 - Calculus I Credits: 4",
+    "EGR 121 - Foundations of Engineering Credits: 2",
+    "CSC 221 - Introduction to Problem Solving and Programming Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100 - College Success Skills",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 - College Composition I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "UCGS Block III: Social and Behavioral Sciences: Credits: 3",
+       "category": "UCGS Block III: Social and Behavioral Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 - Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": "Foundations of Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 121 - Foundations of Engineering",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 - Introduction to Problem Solving and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Semester- Year 1",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Spring Semester- Year 1",
+    "CSC 208 - Introduction to Discrete Structures Credits: 3 Or MTH 288 - Discrete Mathematics",
+    "MTH 264 - Calculus II Credits: 4 Or MTH 245 - Statistics I",
+    "EGR 122 - Engineering Design Credits: 3",
+    "PHY 241 - University Physics I Credits: 4 Or CHM 111 - General Chemistry I",
+    "UCGS Block II: Humanities, Art, Literature Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures"
+        },
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CSC 208 - Introduction to Discrete Structures Or MTH 288 - Discrete Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II"
+        },
+        {
+         "code": "MTH245",
+         "title": "Statistics I"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 264 - Calculus II Or MTH 245 - Statistics I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR122",
+         "title": "Engineering Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "EGR 122 - Engineering Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        },
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "or",
+       "text": "PHY 241 - University Physics I Or CHM 111 - General Chemistry I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "UCGS Block II: Humanities, Art, Literature Credits: 3",
+       "category": "UCGS Block II: Humanities, Art, Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall Semester- Year 2",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fall Semester- Year 2",
+    "CSC 222 - Object-Oriented Programming Credits: 4",
+    "ENG 112 - College Composition II Credits: 3",
+    "PHY 242 - University Physics II Credits: 4 Or CHM 112 - General Chemistry II",
+    "UCGS Block VI: History Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 - Object-Oriented Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 - College Composition II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY242",
+         "title": "University Physics II"
+        },
+        {
+         "code": "CHM112",
+         "title": "General Chemistry II"
+        }
+       ],
+       "conjunction": "or",
+       "text": "PHY 242 - University Physics II Or CHM 112 - General Chemistry II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "UCGS Block VI: History Credits: 3",
+       "category": "UCGS Block VI: History",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Semester - Year 2",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Transfer Note: Students should consult an academic counselor to verify specific program requirements with their intended four-year institution. While an elective course may satisfy a requirement for the Central Virginia Community College program, it may not fulfill a requirement at a four-year institution. Also, note that all four-year transfer agreements for partnering four-year institutions may be found at Transfer Virginia under Resource Center. Please consult the institution if an agreement is not posted.",
+   "source_text": [
+    "Spring Semester - Year 2",
+    "UCGS Block II: Humanities, Art, Literature Credits: 3",
+    "CSC 223 - Data Structures and Analysis of Algorithms Credits: 4",
+    "CSC 215 - Computer Systems Credits: 3 Or CSC 205 - Computer Organization",
+    "PHY 241 - University Physics I Credits: 4 Or CHM 111 General Chemistry I",
+    "Students should consult an academic counselor to verify specific program requirements with their intended four-year institution. While an elective course may satisfy a requirement for the Central Virginia Community College program, it may not fulfill a requirement at a four-year institution. Also, note that all four-year transfer agreements for partnering four-year institutions may be found at Transfer Virginia under Resource Center. Please consult the institution if an agreement is not posted."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "UCGS Block II: Humanities, Art, Literature Credits: 3",
+       "category": "UCGS Block II: Humanities, Art, Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 - Data Structures and Analysis of Algorithms",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems"
+        },
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CSC 215 - Computer Systems Or CSC 205 - Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY241",
+         "title": "University Physics I"
+        },
+        {
+         "code": "CHM111",
+         "title": "General Chemistry I"
+        }
+       ],
+       "conjunction": "or",
+       "text": "PHY 241 - University Physics I Or CHM 111 General Chemistry I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Purpose:",
+  "This degree program is designed for the student preparing for transfer to a four year program in Computer Science. The student is responsible for determining transferability to a four-year college or university. This program is G3 Eligible.",
+  "This program is aligned with the Transfer Virginia Computer Science AS common curriculum. Students are strongly encouraged to consult with their academic advisor and review program options using the Transfer Virginia Portal or in consultation with their intended four-year institution.",
+  "Admissions Requirements:"
+ ],
+ "unassigned": [
+  "Satisfactory completion of the following high school units or equivalent as a minimum: 4 years of English, 3 years of mathematics (Algebra I, Algebra II, and Geometry), 1 year of laboratory science and 1 year of social science.",
+  "Students with deficiencies will require developmental studies and will not be able to complete the program within a two-year window.",
+  "All students expected to complete the requirements for a degree, diploma, certificate, or career studies certificate must complete an Application for Graduation.",
+  "The Program Pathway is a resource for students that lists the following items:",
+  "The pathway below identifies CVCC-specific courses that align with the Transfer Virginia Common Curriculum. Students should consult with their academic advisor about additional course options, the Transfer Virginia Portal, Transfer Virginia Portal or by consulting with their intended four-year institution.",
+  "Transfer Note:"
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 19 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "4 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "19 distinct courses across 19 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 0–0 against a stated 60-61, but 4 of 4 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "4 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 4,
+   "sections": 4,
+   "rows": 19,
+   "course_rows": 15,
+   "category_rows": 4,
+   "distinct_courses": 19,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": "60-61"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.722Z"
+}

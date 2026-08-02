@@ -1,0 +1,1419 @@
+{
+ "slug": "radford-university",
+ "name": "Radford University",
+ "level": "four_year",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3321&print=1",
+ "captured_at": "2026-08-02T05:56:17.960Z",
+ "program_title": "Computer Science, B.S. (R, L)",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Advanced Artificial Intelligence Concentration",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "The Advanced Computer Science concentration prepares students for a variety of technology careers or graduate study by building a broad foundation in the computer science core. The Advanced Database, Advanced Networks, Advanced Artifical Intelligence and Advanced Software Engineering concentrations provide graduates with a breadth of technical experience and a depth of knowledge in a particular application area. This major fulfills the R and L areas of the REAL Curriculum. Students fulfill the R area through classes though the skills and knowledge gained in a calculus class, programming classes and a discrete math course. Students fulfill the L area through classes developing and reflecting on their professional skills, experience and abilities in a number of classes teaching skills in area such as networks, web site development, databases and software development. Students need majors and/or minors to fulfill the E and A areas to complete the REAL Curriculum requirements.",
+   "source_text": [
+    "Advanced Artificial Intelligence Concentration",
+    "Students seeking the Bachelor of Science in Computer Science must complete the University’s REAL Curriculum Requirements, the Degree Core Requirements, the Bachelor of Science Requirements, and either four 3XX or 4XX CS courses (except CS 307, 398, 493, 498, 352, 371, 445,455,465,475) or complete the courses for one of concentrations. Students may also use any 500 or 600-level CS course approved by the School Director to fulfill any of the four classes listed earlier. Students can choose at least one of the five concentrations within the major in addition to the major itself: Advanced Computer Science, Advanced Databases, Advanced Networks, Advanced Artifical Intelligence, and Advanced Software Engineering.",
+    "REAL Curriculum"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS307",
+         "title": ", 398, 493, 498, 352, 371, 445,455,465,475) or complete the courses for one of concentrations. Students may also use any 500 or 600-level CS course approved by the School Director to fulfill any of the four classes listed earlier. Students can choose at least one of the five concentrations within the major in addition to the major itself: Advanced Computer Science, Advanced Databases, Advanced Networks, Advanced Artifical Intelligence, and Advanced Software Engineering."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Students seeking the Bachelor of Science in Computer Science must complete the University’s REAL Curriculum Requirements, the Degree Core Requirements, the Bachelor of Science Requirements, and either four 3XX or 4XX CS courses (except CS 307, 398, 493, 498, 352, 371, 445,455,465,475) or complete the courses for one of concentrations. Students may also use any 500 or 600-level CS course approved by the School Director to fulfill any of the four classes listed earlier. Students can choose at least one of the five concentrations within the major in addition to the major itself: Advanced Computer Science, Advanced Databases, Advanced Networks, Advanced Artifical Intelligence, and Advanced Software Engineering.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Foundational Writing",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Foundational Writing (3 credits)",
+    "ENGL 111 - Principles of College Composition (GE)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGL111",
+         "title": "Principles of College Composition (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 111 - Principles of College Composition (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Foundational Math",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Foundational Math (3 credits)",
+    "MATH 100 - Quantitative Reasoning (GE)",
+    "MATH 121 - Math Content for Teachers I (GE)",
+    "MATH 125 - Precalculus I (GE)",
+    "REAL Cornerstone Requirements"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH100",
+         "title": "Quantitative Reasoning (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 100 - Quantitative Reasoning (GE)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH121",
+         "title": "Math Content for Teachers I (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 121 - Math Content for Teachers I (GE)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH125",
+         "title": "Precalculus I (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 125 - Precalculus I (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Writing Intensive (WI) Courses",
+   "credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Writing Intensive (WI) Courses (6 credits)",
+    "Writing Intensive courses are denoted below with a (WI). Two writing intensive courses are required to graduate, with at least one at the 300- or 400-level."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Writing Intensive courses are denoted below with a (WI). Two writing intensive courses are required to graduate, with at least one at the 300- or 400-level.",
+       "category": "Writing Intensive courses are denoted below with a (WI). Two writing intensive courses are required to graduate, with at least one at the 300- or 400-level."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "General Education Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "General Education Requirements",
+    "General Education courses will be denoted below with a (GE). Students are required to take at least 30 credit hours of general education designated courses within their degree requirements. The Computer Science major includes 12-26 general education credits.",
+    "CS 120 - Principles of Computer Science I (GE)",
+    "CS 220 - Principles of Computer Science II (GE)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General Education courses will be denoted below with a (GE). Students are required to take at least 30 credit hours of general education designated courses within their degree requirements. The Computer Science major includes 12-26 general education credits.",
+       "category": "General Education courses will be denoted below with a (GE). Students are required to take at least hours of general education designated courses within their degree requirements. The Computer Science major includes 12-26 general education credits.",
+       "credits": {
+        "min": 30,
+        "max": 30,
+        "raw": "30"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "CS120",
+         "title": "Principles of Computer Science I (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 120 - Principles of Computer Science I (GE)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS220",
+         "title": "Principles of Computer Science II (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 220 - Principles of Computer Science II (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "School Requirements (19 to)",
+   "credits": {
+    "min": 21,
+    "max": 21,
+    "raw": "21"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "School Requirements (19 to 21 credits)",
+    "CS 120 - Principles of Computer Science I (GE)",
+    "CS 220 - Principles of Computer Science II (GE)",
+    "CS 322 - Discrete Mathematics for Computer Science",
+    "CS 390 - Career Preparation",
+    "CS 411 - Societal Security in Computing",
+    "MATH 168 - Calculus I with Integrated Precalculus I (GE) and",
+    "MATH 169 - Calculus I with Integrated Precalculus II (GE)",
+    "OR",
+    "MATH 171 - Calculus and Analytic Geometry I (GE)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS120",
+         "title": "Principles of Computer Science I (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 120 - Principles of Computer Science I (GE)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS220",
+         "title": "Principles of Computer Science II (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 220 - Principles of Computer Science II (GE)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS322",
+         "title": "Discrete Mathematics for Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 322 - Discrete Mathematics for Computer Science",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS390",
+         "title": "Career Preparation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 390 - Career Preparation",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS411",
+         "title": "Societal Security in Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 411 - Societal Security in Computing",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH168",
+         "title": "Calculus I with Integrated Precalculus I (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 168 - Calculus I with Integrated Precalculus I (GE) and",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH169",
+         "title": "Calculus I with Integrated Precalculus II (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 169 - Calculus I with Integrated Precalculus II (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "OR",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH171",
+         "title": "Calculus and Analytic Geometry I (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 171 - Calculus and Analytic Geometry I (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "B.S. Requirements",
+   "credits": {
+    "min": 6,
+    "max": 8,
+    "raw": "6-8"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "For the CS Major and Advanced Database, Advanced Network, and Advanced Software Engineering Concentrations: Two courses (each 3-4 hours), one of which must include a lab, chosen from: any Astronomy; any Biology; any Chemistry; any Geology; any Physics.",
+   "source_text": [
+    "B.S. Requirements (6-8 credits)",
+    "For the Advanced Computer Science concentration: At least two courses totaling 7-8 credit hours and including at least one lab based class, from the following list: BIOL 106, BIOL 111, BIOL 112, BIOL 229, BIOL 230, BIOL 231, BIOL 310, BIOL 311; CHEM 111, CHEM 112; GEOL 120, GEOL 121, GEOL 105, GEOL 206; PHYS 111; PHYS 112, PHYS 221, PHYS 222; ASTR 151, ASTR 152, ASTR 220."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIOL106",
+         "title": null
+        },
+        {
+         "code": "BIOL111",
+         "title": null
+        },
+        {
+         "code": "BIOL112",
+         "title": null
+        },
+        {
+         "code": "BIOL229",
+         "title": null
+        },
+        {
+         "code": "BIOL230",
+         "title": null
+        },
+        {
+         "code": "BIOL231",
+         "title": null
+        },
+        {
+         "code": "BIOL310",
+         "title": null
+        },
+        {
+         "code": "BIOL311",
+         "title": null
+        },
+        {
+         "code": "CHEM111",
+         "title": null
+        },
+        {
+         "code": "CHEM112",
+         "title": null
+        },
+        {
+         "code": "GEOL120",
+         "title": null
+        },
+        {
+         "code": "GEOL121",
+         "title": null
+        },
+        {
+         "code": "GEOL105",
+         "title": null
+        },
+        {
+         "code": "GEOL206",
+         "title": null
+        },
+        {
+         "code": "PHYS111",
+         "title": null
+        },
+        {
+         "code": "PHYS112",
+         "title": null
+        },
+        {
+         "code": "PHYS221",
+         "title": null
+        },
+        {
+         "code": "PHYS222",
+         "title": null
+        },
+        {
+         "code": "ASTR151",
+         "title": null
+        },
+        {
+         "code": "ASTR152",
+         "title": null
+        },
+        {
+         "code": "ASTR220",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "For the Advanced Computer Science concentration: At least two courses totaling 7-8 credit hours and including at least one lab based class, from the following list: BIOL 106, BIOL 111, BIOL 112, BIOL 229, BIOL 230, BIOL 231, BIOL 310, BIOL 311; CHEM 111, CHEM 112; GEOL 120, GEOL 121, GEOL 105, GEOL 206; PHYS 111; PHYS 112, PHYS 221, PHYS 222; ASTR 151, ASTR 152, ASTR 220.",
+       "credits": {
+        "min": 7,
+        "max": 8,
+        "raw": "7-8"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Science Courses",
+   "credits": {
+    "min": 18,
+    "max": 18,
+    "raw": "18"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Computer Science Courses (18 credits)",
+    "CS 230 - Foundations of Cloud Computing",
+    "CS 252 - Foundations of Computer Systems",
+    "CS 340 - Database I",
+    "CS 345 - Introduction to Information Security",
+    "CS 350 - Introduction to Computer Networking",
+    "CS 370 - Software Engineering I"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS230",
+         "title": "Foundations of Cloud Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 230 - Foundations of Cloud Computing",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS252",
+         "title": "Foundations of Computer Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 252 - Foundations of Computer Systems",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS340",
+         "title": "Database I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 340 - Database I",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS345",
+         "title": "Introduction to Information Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 345 - Introduction to Information Security",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS350",
+         "title": "Introduction to Computer Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 350 - Introduction to Computer Networking",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS370",
+         "title": "Software Engineering I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 370 - Software Engineering I",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Concentration Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students can choose one of five concentrations from the following list: Advanced Computer Science, Advanced Database, Advanced Software Engineering, Advanced Artificial Intelligence, and Advanced Networks. See below for specific concentration requirements.",
+   "source_text": [
+    "Concentration Requirements",
+    "If one of these concentrations is not taken, then the student must chose 12 hours of CS 300 or 400 level courses except for (CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475), or any 500 or 600 level course approved by the School director."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS300",
+         "title": "or 400 level courses except for ("
+        },
+        {
+         "code": "CS307",
+         "title": ", 398, 493, 498, 352, 371, 445, 455, 465, 475), or any 500 or 600 level course approved by the School director."
+        }
+       ],
+       "conjunction": "or",
+       "text": "If one of these concentrations is not taken, then the student must chose 12 hours of CS 300 or 400 level courses except for (CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475), or any 500 or 600 level course approved by the School director.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 20,
+    "max": 20,
+    "raw": "20"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses (20 credits)",
+    "CS 352 - Computer Organization",
+    "CS 360 - Data Structures and Analysis of Algorithms",
+    "CS 371 - Operating Systems",
+    "CS 380 - Organization of Programming Languages",
+    "or",
+    "CS 420 - Computability Theory and Formal Languages",
+    "MATH 172 - Calculus and Analytic Geometry II (GE)",
+    "STAT 301 - Foundations of Probability and Statistics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS352",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 352 - Computer Organization",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS360",
+         "title": "Data Structures and Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 360 - Data Structures and Analysis of Algorithms",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS371",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 371 - Operating Systems",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS380",
+         "title": "Organization of Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 380 - Organization of Programming Languages",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS420",
+         "title": "Computability Theory and Formal Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 420 - Computability Theory and Formal Languages",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH172",
+         "title": "Calculus and Analytic Geometry II (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 172 - Calculus and Analytic Geometry II (GE)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT301",
+         "title": "Foundations of Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 301 - Foundations of Probability and Statistics",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 22,
+    "max": 23,
+    "raw": "22-23"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses (22-23 credits)",
+    "CS 441 - Database II",
+    "or",
+    "CS 440 - Data Engineering (or CS 540 or CS 541)",
+    "CS 442 - Data Warehousing and Visualization (or CS 542)",
+    "CS 443 - Cloud Database Architecture (or CS 543)",
+    "CS 445 - Computer System and Database Security (or CS 645)",
+    "Plus 6 additional credit hours chosen from any 300 or 400-level CS courses (except CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475) or any 500 or 600-level CS course approved by the School Director.",
+    "STAT 200 - Introduction to Statistics (GE)",
+    "or",
+    "STAT 301 - Foundations of Probability and Statistics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS441",
+         "title": "Database II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 441 - Database II",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS440",
+         "title": "Data Engineering ("
+        },
+        {
+         "code": "CS540",
+         "title": null
+        },
+        {
+         "code": "CS541",
+         "title": ")"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 440 - Data Engineering (or CS 540 or CS 541)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS442",
+         "title": "Data Warehousing and Visualization ("
+        },
+        {
+         "code": "CS542",
+         "title": ")"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 442 - Data Warehousing and Visualization (or CS 542)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS443",
+         "title": "Cloud Database Architecture ("
+        },
+        {
+         "code": "CS543",
+         "title": ")"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 443 - Cloud Database Architecture (or CS 543)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS445",
+         "title": "Computer System and Database Security ("
+        },
+        {
+         "code": "CS645",
+         "title": ")"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CS 445 - Computer System and Database Security (or CS 645)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS307",
+         "title": ", 398, 493, 498, 352, 371, 445, 455, 465, 475) or any 500 or 600-level CS course approved by the School Director."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Plus 6 additional credit hours chosen from any 300 or 400-level CS courses (except CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475) or any 500 or 600-level CS course approved by the School Director.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT200",
+         "title": "Introduction to Statistics (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 200 - Introduction to Statistics (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT301",
+         "title": "Foundations of Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 301 - Foundations of Probability and Statistics",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 21,
+    "max": 21,
+    "raw": "21"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses (21 credits)",
+    "CS 352 - Computer Organization",
+    "CS 371 - Operating Systems",
+    "CS 451 - Network Design and Analysis",
+    "CS 452 - Distributed Computing",
+    "CS 455 - Applied Cryptography and Network Security",
+    "Plus 6 additional credit hours chosen from any 300 or 400-level CS courses (except for CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475 ) or any 500 or 600-level CS course approved by the Department Chair.",
+    "STAT 200 - Introduction to Statistics (GE) or",
+    "STAT 301 - Foundations of Probability and Statistics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS352",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 352 - Computer Organization",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS371",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 371 - Operating Systems",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS451",
+         "title": "Network Design and Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 451 - Network Design and Analysis",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS452",
+         "title": "Distributed Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 452 - Distributed Computing",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS455",
+         "title": "Applied Cryptography and Network Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 455 - Applied Cryptography and Network Security",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS307",
+         "title": ", 398, 493, 498, 352, 371, 445, 455, 465, 475 ) or any 500 or 600-level CS course approved by the Department Chair."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Plus 6 additional credit hours chosen from any 300 or 400-level CS courses (except for CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475 ) or any 500 or 600-level CS course approved by the Department Chair.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT200",
+         "title": "Introduction to Statistics (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 200 - Introduction to Statistics (GE) or",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT301",
+         "title": "Foundations of Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 301 - Foundations of Probability and Statistics",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses (15 credits)",
+    "CS 380 - Organization of Programming Languages",
+    "or",
+    "CS 420 - Computability Theory and Formal Languages",
+    "or",
+    "CS 445 - Computer System and Database Security",
+    "CS 471 - Software Engineering II",
+    "CS 472 - Software Engineering III",
+    "Plus 6 additional credit hours chosen from any 300 or 400-level CS courses (except for CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475) or any 500 or 600-level CS course approved by the School Director."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS380",
+         "title": "Organization of Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 380 - Organization of Programming Languages",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS420",
+         "title": "Computability Theory and Formal Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 420 - Computability Theory and Formal Languages",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS445",
+         "title": "Computer System and Database Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 445 - Computer System and Database Security",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS471",
+         "title": "Software Engineering II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 471 - Software Engineering II",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS472",
+         "title": "Software Engineering III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 472 - Software Engineering III",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS307",
+         "title": ", 398, 493, 498, 352, 371, 445, 455, 465, 475) or any 500 or 600-level CS course approved by the School Director."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Plus 6 additional credit hours chosen from any 300 or 400-level CS courses (except for CS 307, 398, 493, 498, 352, 371, 445, 455, 465, 475) or any 500 or 600-level CS course approved by the School Director.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 18,
+    "max": 19,
+    "raw": "18-19"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose one of the following courses: Choose one of the following courses: Each student majoring in the Advanced Computer Science Concentration of the Computer Science and Technology degree must take the Major Field Test in Computer Science or an equivalent exam as determined by the department during her or his last semester. Each student majoring in the Advanced Computer Science Concentration of the Computer Science and Technology degree must earn a grade of “C” or better in each Computer Science course applied toward the major. All majors require a minimum 2.0 GPA in the major in order to be eligible for graduation.",
+   "source_text": [
+    "Required Courses (18-19 credits)",
+    "CS 481 - Fundamentals and Usage of Generative AI",
+    "CS 482 - Deep Learning, Transformers, and Large Language Models",
+    "CS 440 - Data Engineering",
+    "CS 489 - AI Capstone Project",
+    "Choose one of the following courses:",
+    "STAT 200 - Introduction to Statistics (GE)",
+    "or",
+    "STAT 301 - Foundations of Probability and Statistics",
+    "Choose one of the following courses:",
+    "MATH 260 - Linear Algebra",
+    "or",
+    "MATH 440 - Machine Learning with AI Applications",
+    "Additional Degree Requirements"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS481",
+         "title": "Fundamentals and Usage of Generative AI"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 481 - Fundamentals and Usage of Generative AI",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS482",
+         "title": "Deep Learning, Transformers, and Large Language Models"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 482 - Deep Learning, Transformers, and Large Language Models",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS440",
+         "title": "Data Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 440 - Data Engineering",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS489",
+         "title": "AI Capstone Project"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 489 - AI Capstone Project",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT200",
+         "title": "Introduction to Statistics (GE)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 200 - Introduction to Statistics (GE)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT301",
+         "title": "Foundations of Probability and Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 301 - Foundations of Probability and Statistics",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH260",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 260 - Linear Algebra",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "or",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH440",
+         "title": "Machine Learning with AI Applications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 440 - Machine Learning with AI Applications",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Open",
+   "credits": {
+    "min": 41,
+    "max": 74,
+    "raw": "41-74"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Open Credit Hours (41-74 credits)",
+    "These credits can be used to fulfill additional courses, majors, minors, and/or REAL Curriculum requirements, including Foundational Writing and Foundational Math.",
+    "Total Credit Hours Needed for Degree 120"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "These credits can be used to fulfill additional courses, majors, minors, and/or REAL Curriculum requirements, including Foundational Writing and Foundational Math.",
+       "category": "These credits can be used to fulfill additional courses, majors, minors, and/or REAL Curriculum requirements, including Foundational Writing and Foundational Math."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "The Advanced Computer Science concentration prepares students for a variety of technology careers or graduate study by building a broad foundation in the computer science core. The Advanced Database, Advanced Networks, Advanced Artifical Intelligence and Advanced Software Engineering concentrations provide graduates with a breadth of technical experience and a depth of knowledge in a particular application area.",
+  "This major fulfills the R and L areas of the REAL Curriculum. Students fulfill the R area through classes though the skills and knowledge gained in a calculus class, programming classes and a discrete math course.",
+  "Students fulfill the L area through classes developing and reflecting on their professional skills, experience and abilities in a number of classes teaching skills in area such as networks, web site development, databases and software development.",
+  "Students need majors and/or minors to fulfill the E and A areas to complete the REAL Curriculum requirements.",
+  "For the CS Major and Advanced Database, Advanced Network, and Advanced Software Engineering Concentrations: Two courses (each 3-4 hours), one of which must include a lab, chosen from: any Astronomy; any Biology; any Chemistry; any Geology; any Physics.",
+  "Students can choose one of five concentrations from the following list: Advanced Computer Science, Advanced Database, Advanced Software Engineering, Advanced Artificial Intelligence, and Advanced Networks. See below for specific concentration requirements.",
+  "Each student majoring in the Advanced Computer Science Concentration of the Computer Science and Technology degree must take the Major Field Test in Computer Science or an equivalent exam as determined by the department during her or his last semester. Each student majoring in the Advanced Computer Science Concentration of the Computer Science and Technology degree must earn a grade of “C” or better in each Computer Science course applied toward the major. All majors require a minimum 2.0 GPA in the major in order to be eligible for graduation."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 69 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "15 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "69 distinct courses across 63 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "3 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 15,
+   "sections": 25,
+   "rows": 63,
+   "course_rows": 60,
+   "category_rows": 3,
+   "distinct_courses": 69,
+   "credit_span": {
+    "min": 194,
+    "max": 231,
+    "groups_with_credits": 12
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.947Z"
+}

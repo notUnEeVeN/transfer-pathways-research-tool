@@ -1,0 +1,579 @@
+{
+ "slug": "wytheville-community-college",
+ "name": "Wytheville Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.wcc.vccs.edu/preview_program.php?catoid=14&poid=1454&returnto=377&print=1",
+ "captured_at": "2026-08-02T05:52:33.668Z",
+ "program_title": "Science, Major in Computer Science, AS",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "HUM ELE Any LIT or ART or HUM 5",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "HUM ELE Any LIT or ART or HUM 3 credits 5",
+    "ENG 111 College Composition I 3 credits",
+    "MTH 263 Calculus I 4 credits",
+    "SDV 100 College Success Skills 1 credits",
+    "Suggested Credits for Semester: 14"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 College Composition I 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 Calculus I 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills 1 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100 College Success Skills 1 credits",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Second Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Second Semester",
+    "CSC 221 Introduction to Problem Solving and Programming 3 credits",
+    "CST 100 Principles of Public Speaking 3 credits",
+    "ENG 112 College Composition II 3 credits 3",
+    "MTH 264 Calculus II 4 credits",
+    "MTH 266 Linear Algebra 3 credits",
+    "Suggested Credits for Semester: 16"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 Introduction to Problem Solving and Programming 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 Principles of Public Speaking 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 College Composition II 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "Calculus II 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 Calculus II 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH266",
+         "title": "Linear Algebra 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 266 Linear Algebra 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Third Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Third Semester",
+    "CSC 222 Object-Oriented Programming 4 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 Object-Oriented Programming 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "PHY ELE Physics Elective 4",
+   "credits": {
+    "min": 4,
+    "max": 4,
+    "raw": "4"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "PHY ELE Physics Elective 4 credits 4",
+    "MTH 265 Calculus III 4 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH265",
+         "title": "Calculus III 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 265 Calculus III 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fourth Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fourth Semester",
+    "CSC 208 Introduction to Discrete Structures 3 credits",
+    "CSC 223 Data Structures and Analysis of Algorithms 4 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures 3 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 Introduction to Discrete Structures 3 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms 4 credits"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 Data Structures and Analysis of Algorithms 4 credits",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ELE Computer Science/Engineering Elective 6",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "ELE Computer Science/Engineering Elective 3 credits 6",
+    "Suggested Credits for Semester: 17",
+    "Total Minimum Credits Required for this Curriculum: 62",
+    "1 History Electives: HIS 101, HIS 102, HIS 121, HIS 122",
+    "2 Humanities Electives: ART 101, CST 151, HUM 201, HUM 202, PHI 100 , PHI 220, REL 230",
+    "PHI 220 preferred, HUM electives should be from different clusters.",
+    "3 English Elective: ENG 112 or ENG 113",
+    "4 Physics Electives : PHY 201, PHY 241",
+    "5 Social and Behavioral Science Electives: PSY 200, PSY 215, PSY 216, PSY 230, SOC 200",
+    "6 Computer Science/Engineering Elective: EGR 121, EGR 122, CSC 215 and other courses as approved by advisor for transfer purposes.",
+    "7 Physics Electives: PHY 202, PHY 242"
+   ],
+   "sections": [
+    {
+     "label": "Total Minimum Credits Required for this Curriculum: 62",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "HIS101",
+         "title": null
+        },
+        {
+         "code": "HIS102",
+         "title": null
+        },
+        {
+         "code": "HIS121",
+         "title": ", HIS"
+        }
+       ],
+       "conjunction": "and",
+       "text": "1 History Electives: HIS 101, HIS 102, HIS 121, HIS",
+       "credits": {
+        "min": 122,
+        "max": 122,
+        "raw": "122"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART101",
+         "title": null
+        },
+        {
+         "code": "CST151",
+         "title": null
+        },
+        {
+         "code": "HUM201",
+         "title": null
+        },
+        {
+         "code": "HUM202",
+         "title": null
+        },
+        {
+         "code": "PHI100",
+         "title": null
+        },
+        {
+         "code": "PHI220",
+         "title": ", REL"
+        }
+       ],
+       "conjunction": "and",
+       "text": "2 Humanities Electives: ART 101, CST 151, HUM 201, HUM 202, PHI 100 , PHI 220, REL",
+       "credits": {
+        "min": 230,
+        "max": 230,
+        "raw": "230"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI220",
+         "title": "preferred, HUM electives should be from different clusters."
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 220 preferred, HUM electives should be from different clusters.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "or ENG"
+        }
+       ],
+       "conjunction": "and",
+       "text": "3 English Elective: ENG 112 or ENG",
+       "credits": {
+        "min": 113,
+        "max": 113,
+        "raw": "113"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY201",
+         "title": ", PHY"
+        }
+       ],
+       "conjunction": "and",
+       "text": "4 Physics Electives : PHY 201, PHY",
+       "credits": {
+        "min": 241,
+        "max": 241,
+        "raw": "241"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY200",
+         "title": null
+        },
+        {
+         "code": "PSY215",
+         "title": null
+        },
+        {
+         "code": "PSY216",
+         "title": null
+        },
+        {
+         "code": "PSY230",
+         "title": ", SOC"
+        }
+       ],
+       "conjunction": "and",
+       "text": "5 Social and Behavioral Science Electives: PSY 200, PSY 215, PSY 216, PSY 230, SOC",
+       "credits": {
+        "min": 200,
+        "max": 200,
+        "raw": "200"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "EGR121",
+         "title": null
+        },
+        {
+         "code": "EGR122",
+         "title": null
+        },
+        {
+         "code": "CSC215",
+         "title": "and other courses as approved by advisor for transfer purposes."
+        }
+       ],
+       "conjunction": "and",
+       "text": "6 Computer Science/Engineering Elective: EGR 121, EGR 122, CSC 215 and other courses as approved by advisor for transfer purposes.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY202",
+         "title": ", PHY"
+        }
+       ],
+       "conjunction": "and",
+       "text": "7 Physics Electives: PHY 202, PHY",
+       "credits": {
+        "min": 242,
+        "max": 242,
+        "raw": "242"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Purpose: Associate of Science in Science, Major in Computer Science is a statewide common curriculum designed primarily for students who wish to transfer to a four-year college or university to pursue a Bachelor of Science degree in Computer Science.",
+  "Students are encouraged to become acquainted with the requirements of the college or university to which she or he is considering for transfer and to regularly consult with his/her community college advisor in planning their program and selecting electives. Students should successfully complete all community college courses meeting the grade requirement of “C”."
+ ],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 30 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "6 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "30 distinct courses across 20 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   }
+  ],
+  "stats": {
+   "groups": 6,
+   "sections": 6,
+   "rows": 20,
+   "course_rows": 20,
+   "category_rows": 0,
+   "distinct_courses": 30,
+   "credit_span": {
+    "min": 10,
+    "max": 10,
+    "groups_with_credits": 3
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.812Z"
+}

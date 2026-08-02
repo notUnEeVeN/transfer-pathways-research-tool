@@ -1,0 +1,603 @@
+{
+ "slug": "new-river-community-college",
+ "name": "New River Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.nr.edu/preview_program.php?catoid=42&poid=1965&returnto=3275&print=1",
+ "captured_at": "2026-08-02T05:46:25.061Z",
+ "program_title": "Computer Science AS",
+ "total_credits": {
+  "min": 61,
+  "max": 63,
+  "raw": "61-63"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "First Semester (Fall)",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "First Semester (Fall)",
+    "CSC 221 Introduction to Problem Solving and Programming 3 credit(s)",
+    "ENG 111 College Composition I 3 credit(s)",
+    "HIS 101 Western Civilizations Pre-1600 CE 3 credit(s)",
+    "OR HIS 121 United States History to 1877 3 credit(s)",
+    "MTH 263 Calculus I 4 credit(s)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 Introduction to Problem Solving and Programming 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 College Composition I 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS101",
+         "title": "Western Civilizations Pre-1600 CE 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 101 Western Civilizations Pre-1600 CE 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS121",
+         "title": "United States History to 1877 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR HIS 121 United States History to 1877 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I 4 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 Calculus I 4 credit(s)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Social Science Requirement(s)(s)",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Social Science Requirement(s) 3 credit(s)",
+    "SDV 101 Orientation to Computer Science and Information Technology 1 credit(s)",
+    "OR SDV 100 College Success Skills 1 credit(s)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV101",
+         "title": "Orientation to Computer Science and Information Technology 1 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 101 Orientation to Computer Science and Information Technology 1 credit(s)",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills 1 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR SDV 100 College Success Skills 1 credit(s)",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Second Semester (Spring)",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Second Semester (Spring)",
+    "ENG 112 College Composition II 3 credit(s)",
+    "CSC 215 Computer Systems 3 credit(s)",
+    "MTH 245 Statistics I 3 credit(s)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 College Composition II 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "Computer Systems 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215 Computer Systems 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "Statistics I 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 245 Statistics I 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Third Semester (Fall)",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Third Semester (Fall)",
+    "CSC 222 Object-Oriented Programming 4 credit(s)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming 4 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 Object-Oriented Programming 4 credit(s)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fourth Semester (Spring)",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fourth Semester (Spring)",
+    "CSC 223 Data Structures and Analysis of Algorithms 4 credit(s)",
+    "CSC 208 Introduction to Discrete Structures 3 credit(s)",
+    "OR MTH 288 Discrete Mathematics 3 credit(s)",
+    "CST 100 Principles of Public Speaking 3 credit(s)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms 4 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 Data Structures and Analysis of Algorithms 4 credit(s)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 Introduction to Discrete Structures 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH288",
+         "title": "Discrete Mathematics 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR MTH 288 Discrete Mathematics 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking 3 credit(s)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 Principles of Public Speaking 3 credit(s)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Total",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students may choose from college approved Humanities/Fine Arts Requirements in the catalog, with the exception of ENG options, to fulfill this requirement. For more details on RU degree requirements, see https://www.radford.edu/content/csat/home/computing/programs/computer-science/computer-science.html.",
+   "source_text": [
+    "Total: 15 credits",
+    "NOTES",
+    "Students may choose from college approved Social Science Requirements in the catalog. The Social Science course cannot be a HIS course.",
+    "The Natural Science requirements may be selected from the following: BIO 101-BIO 102 ; CHM 111-CHM 112, PHY 241-PHY 242, GOL 105. Students should determine transfer institution’s requirements prior to selection. Some four-year degree programs require a two-semester sequence of a single laboratory science, chosen from BIO 101-BIO 102, CHM 111-CHM 112, PHY 241-PHY 242 .",
+    "Students may choose from college approved Computer Science Requirement(s): MTH 161-MTH 162, MTH 167, MTH 245, MTH 264, MTH 265, MTH 266, BIO 101-BIO 102, CHM 111-CHM 112, GOL 105, PHY 241-PHY 242, PHY 201, CSC 1XX, CSC 205, World Languages.",
+    "NOTES FOR TRANSFER TO RADFORD UNIVERSITY"
+   ],
+   "sections": [
+    {
+     "label": "NOTES",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Students may choose from college approved Social Science Requirements in the catalog. The Social Science course cannot be a HIS course.",
+       "category": "Students may choose from college approved Social Science Requirements in the catalog. The Social Science course cannot be a HIS course."
+      },
+      {
+       "codes": [
+        {
+         "code": "BIO101",
+         "title": null
+        },
+        {
+         "code": "BIO102",
+         "title": null
+        },
+        {
+         "code": "CHM111",
+         "title": null
+        },
+        {
+         "code": "CHM112",
+         "title": null
+        },
+        {
+         "code": "PHY241",
+         "title": null
+        },
+        {
+         "code": "PHY242",
+         "title": null
+        },
+        {
+         "code": "GOL105",
+         "title": ". Students should determine transfer institution’s requirements prior to selection. Some four-year degree programs require a two-semester sequence of a single laboratory science, chosen from"
+        },
+        {
+         "code": "BIO101",
+         "title": null
+        },
+        {
+         "code": "BIO102",
+         "title": null
+        },
+        {
+         "code": "CHM111",
+         "title": null
+        },
+        {
+         "code": "CHM112",
+         "title": null
+        },
+        {
+         "code": "PHY241",
+         "title": null
+        },
+        {
+         "code": "PHY242",
+         "title": "."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The Natural Science requirements may be selected from the following: BIO 101-BIO 102 ; CHM 111-CHM 112, PHY 241-PHY 242, GOL 105. Students should determine transfer institution’s requirements prior to selection. Some four-year degree programs require a two-semester sequence of a single laboratory science, chosen from BIO 101-BIO 102, CHM 111-CHM 112, PHY 241-PHY 242 .",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": null
+        },
+        {
+         "code": "MTH162",
+         "title": null
+        },
+        {
+         "code": "MTH167",
+         "title": null
+        },
+        {
+         "code": "MTH245",
+         "title": null
+        },
+        {
+         "code": "MTH264",
+         "title": null
+        },
+        {
+         "code": "MTH265",
+         "title": null
+        },
+        {
+         "code": "MTH266",
+         "title": null
+        },
+        {
+         "code": "BIO101",
+         "title": null
+        },
+        {
+         "code": "BIO102",
+         "title": null
+        },
+        {
+         "code": "CHM111",
+         "title": null
+        },
+        {
+         "code": "CHM112",
+         "title": null
+        },
+        {
+         "code": "GOL105",
+         "title": null
+        },
+        {
+         "code": "PHY241",
+         "title": null
+        },
+        {
+         "code": "PHY242",
+         "title": null
+        },
+        {
+         "code": "PHY201",
+         "title": ", CSC 1XX"
+        },
+        {
+         "code": "CSC205",
+         "title": ", World Languages."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Students may choose from college approved Computer Science Requirement(s): MTH 161-MTH 162, MTH 167, MTH 245, MTH 264, MTH 265, MTH 266, BIO 101-BIO 102, CHM 111-CHM 112, GOL 105, PHY 241-PHY 242, PHY 201, CSC 1XX, CSC 205, World Languages.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Note: This degree can be completed 100% online.",
+  "Purpose: The transfer degrees program is designed for students who plan to complete a baccalaureate degree program at a four-year college or university, or who are not yet prepared to select a definite career objective. The AS Computer Science degree provides the first two years of a guided pathway for students interested in transferring to a four-year college or university and entering computer science professions.",
+  "Admission Requirements: The student must meet the entrance requirements established by the college. Students are urged to check the mathematics requirements of the four-year college or university to determine the proper mathematics course to be taken at the community college. In addition, they should contact the appropriate four-year institution to determine the transferability of elective courses.",
+  "Note: Although a course fulfills a requirement for an NRCC program, it is possible the course will not fulfill a requirement at a four-year institution. Students who plan to transfer need to determine the four-year institution’s requirements prior to course selection. General transfer information is available at www.nr.edu/transfer/."
+ ],
+ "unassigned": [
+  "Students may choose from college approved Humanities/Fine Arts Requirements in the catalog, with the exception of ENG options, to fulfill this requirement.",
+  "For more details on RU degree requirements, see https://www.radford.edu/content/csat/home/computing/programs/computer-science/computer-science.html."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 30 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "6 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "30 distinct courses across 18 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 18–18 against a stated 61-63, but 4 of 6 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "1 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 6,
+   "sections": 6,
+   "rows": 18,
+   "course_rows": 17,
+   "category_rows": 1,
+   "distinct_courses": 30,
+   "credit_span": {
+    "min": 18,
+    "max": 18,
+    "groups_with_credits": 2
+   },
+   "stated_total": "61-63"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.737Z"
+}

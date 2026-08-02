@@ -1,0 +1,23 @@
+{
+ "slug": "roanoke-college",
+ "name": "Roanoke College",
+ "level": "four_year",
+ "platform": "coursedog",
+ "outcome": "url_only",
+ "source_url": "https://catalog.roanoke.edu/programs/BS.CPSC/about-the-program-aoYks",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": null,
+  "candidates": []
+ },
+ "extracted_at": "2026-08-02T06:13:44.963Z"
+}

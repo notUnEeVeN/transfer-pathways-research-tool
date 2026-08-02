@@ -1,0 +1,3036 @@
+{
+ "slug": "virginia-polytechnic-institute-and-state-university",
+ "name": "Virginia Polytechnic Institute and State University",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
+ "captured_at": "2026-08-02T05:59:09.237Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 123,
+  "max": 123,
+  "raw": "123"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Degree Core Requirements",
+   "credits": {
+    "min": 24,
+    "max": 24,
+    "raw": "24"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 1114 Introduction to Software Design (C)",
+    "CS 2505 Introduction to Computer Organization (C)",
+    "CS 2506 Introduction to Computer Organization (C)",
+    "CS 3214 Computer Systems",
+    "CS 3604 Professionalism in Computing",
+    "MATH 2114 Introduction to Linear Algebra",
+    "MATH 2204 Introduction to Multivariable Calculus",
+    "or CMDA 2005 Integrated Quantitative Sciences",
+    "MATH 2534 Introduction to Discrete Mathematics",
+    "or MATH 3034 Introduction to Proofs"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS1114",
+         "title": "Introduction to Software Design (C)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 1114 Introduction to Software Design (C)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS2505",
+         "title": "Introduction to Computer Organization (C)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2505 Introduction to Computer Organization (C)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS2506",
+         "title": "Introduction to Computer Organization (C)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2506 Introduction to Computer Organization (C)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3214",
+         "title": "Computer Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3214 Computer Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3604",
+         "title": "Professionalism in Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3604 Professionalism in Computing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2114",
+         "title": "Introduction to Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2114 Introduction to Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2204",
+         "title": "Introduction to Multivariable Calculus"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2204 Introduction to Multivariable Calculus",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMDA2005",
+         "title": "Integrated Quantitative Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CMDA 2005 Integrated Quantitative Sciences",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH2534",
+         "title": "Introduction to Discrete Mathematics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 2534 Introduction to Discrete Mathematics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3034",
+         "title": "Introduction to Proofs"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 3034 Introduction to Proofs",
+       "credits": null,
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Major Requirements",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 2104 Introduction to Problem Solving in Computer Science (C)",
+    "CS 3304 Comparative Languages",
+    "CS Theory Elective",
+    "CS 4/5XXX Elective 3",
+    "CS 4XXX Capstone",
+    "Career Bridge Experience 4",
+    "ENGE 3900 Bridge Experience",
+    "Additional Course Requirements",
+    "CS 1944 Computer Science First Year Seminar",
+    "CS 2114 Software Design and Data Structures (C)",
+    "CS 4944 Seminar",
+    "MATH 3134 Applied Combinatorics and Graph Theory",
+    "or MATH 3124 Modern Algebra"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS2104",
+         "title": "Introduction to Problem Solving in Computer Science (C)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2104 Introduction to Problem Solving in Computer Science (C)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3304",
+         "title": "Comparative Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3304 Comparative Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS Theory Elective",
+       "category": "CS Theory Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS 4/5XXX Elective 3",
+       "category": "CS 4/5XXX Elective 3",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS 4XXX Capstone",
+       "category": "CS 4XXX Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Career Bridge Experience 4",
+       "category": "Career Bridge Experience 4",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE3900",
+         "title": "Bridge Experience"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 3900 Bridge Experience",
+       "credits": {
+        "min": 0,
+        "max": 0,
+        "raw": "0"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Additional Course Requirements",
+       "category": "Additional Course Requirements",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "CS1944",
+         "title": "Computer Science First Year Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 1944 Computer Science First Year Seminar",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS2114",
+         "title": "Software Design and Data Structures (C)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2114 Software Design and Data Structures (C)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4944",
+         "title": "Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4944 Seminar",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3134",
+         "title": "Applied Combinatorics and Graph Theory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3134 Applied Combinatorics and Graph Theory",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3124",
+         "title": "Modern Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 3124 Modern Algebra",
+       "credits": null,
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Elective Courses",
+   "credits": {
+    "min": 37,
+    "max": 37,
+    "raw": "37"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 3/4/5XXX Electives 3",
+    "CS Technical Elective 3",
+    "Advanced Natural Science Elective",
+    "Communications Elective",
+    "Professional Writing Elective",
+    "Statistics Elective",
+    "Free Electives"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS 3/4/5XXX Electives 3",
+       "category": "CS 3/4/5XXX Electives 3",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CS Technical Elective 3",
+       "category": "CS Technical Elective 3",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Advanced Natural Science Elective",
+       "category": "Advanced Natural Science Elective",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Communications Elective",
+       "category": "Communications Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Professional Writing Elective",
+       "category": "Professional Writing Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Statistics Elective",
+       "category": "Statistics Elective",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Free Electives",
+       "category": "Free Electives",
+       "credits": {
+        "min": 7,
+        "max": 7,
+        "raw": "7"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Pathways to General Education",
+   "credits": {
+    "min": 47,
+    "max": 47,
+    "raw": "47"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select three hours in Pathway 1a (use Communications Elective, Professional Writing Elective, or Free Elective) Select six hours in Pathway 2 Select six hours in Pathway 3 Select three credits in Pathway 6a",
+   "source_text": [
+    "Pathways Concept 1 - Discourse",
+    "ENGL 1105 First-Year Writing (1F)",
+    "ENGL 1106 First-Year Writing (1F)",
+    "Select three hours in Pathway 1a (use Communications Elective, Professional Writing Elective, or Free Elective)",
+    "Pathways Concept 2 - Critical Thinking in the Humanities",
+    "Select six hours in Pathway 2",
+    "Pathways Concept 3 - Reasoning in the Social Sciences",
+    "Select six hours in Pathway 3",
+    "Pathways Concept 4 - Reasoning in the Natural Sciences",
+    "Natural Science Elective",
+    "Natural Science Elective",
+    "Pathways Concept 5 - Quantitative and Computational Thinking",
+    "MATH 1225 Calculus of a Single Variable (5F ; C-)",
+    "MATH 1226 Calculus of a Single Variable (5F)",
+    "CS 3114 Data Structures and Algorithms (5A ; C)",
+    "Pathways Concept 6 - Critique and Practice in Design and the Arts",
+    "Select three credits in Pathway 6a",
+    "ENGE 1215& ENGE 1216 Foundations of Engineeringand Foundations of Engineering (6D)",
+    "or ENGE 1414 Foundations of Engineering Practice",
+    "Pathways Concept 7 - Critical Analysis of Identity and Equity in the United States",
+    "Pathways Concept 7 is currently suspended effective Fall 2025. Please refer to the Pathways Page for more information.",
+    "Pathways Concept 7 can be double-counted with another core concept. In this case, additional free elective credits must be taken to maintain a minimum of 123 credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 1 - Discourse",
+       "category": "Pathways Concept 1 - Discourse",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL1105",
+         "title": "First-Year Writing (1F)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 1105 First-Year Writing (1F)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL1106",
+         "title": "First-Year Writing (1F)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 1106 First-Year Writing (1F)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 3,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 2 - Critical Thinking in the Humanities",
+       "category": "Pathways Concept 2 - Critical Thinking in the Humanities",
+       "credits": null
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 6,
+     "credits": {
+      "min": 6,
+      "max": 6,
+      "raw": "6"
+     },
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 3 - Reasoning in the Social Sciences",
+       "category": "Pathways Concept 3 - Reasoning in the Social Sciences",
+       "credits": null
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 6,
+     "credits": {
+      "min": 6,
+      "max": 6,
+      "raw": "6"
+     },
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 4 - Reasoning in the Natural Sciences",
+       "category": "Pathways Concept 4 - Reasoning in the Natural Sciences",
+       "credits": null
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Natural Science Elective",
+       "category": "Natural Science Elective",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Natural Science Elective",
+       "category": "Natural Science Elective",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 5 - Quantitative and Computational Thinking",
+       "category": "Pathways Concept 5 - Quantitative and Computational Thinking",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1225",
+         "title": "Calculus of a Single Variable (5F ; C-)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1225 Calculus of a Single Variable (5F ; C-)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH1226",
+         "title": "Calculus of a Single Variable (5F)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 1226 Calculus of a Single Variable (5F)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3114",
+         "title": "Data Structures and Algorithms (5A ; C)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3114 Data Structures and Algorithms (5A ; C)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 6 - Critique and Practice in Design and the Arts",
+       "category": "Pathways Concept 6 - Critique and Practice in Design and the Arts",
+       "credits": null
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 3,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGE1215",
+         "title": "Foundations of Engineering"
+        },
+        {
+         "code": "ENGE1216",
+         "title": "and Foundations of Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 1215& ENGE 1216 Foundations of Engineeringand Foundations of Engineering (6D)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE1414",
+         "title": "Foundations of Engineering Practice"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or ENGE 1414 Foundations of Engineering Practice",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 7 - Critical Analysis of Identity and Equity in the United States",
+       "category": "Pathways Concept 7 - Critical Analysis of Identity and Equity in the United States",
+       "credits": null
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 7 is currently suspended effective Fall 2025. Please refer to the Pathways Page for more information.",
+       "category": "Pathways Concept 7 is currently suspended effective Fall 2025. Please refer to the Pathways Page for more information.",
+       "credits": null
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Pathways Concept 7 can be double-counted with another core concept. In this case, additional free elective credits must be taken to maintain a minimum of 123 credits",
+       "category": "Pathways Concept 7 can be double-counted with another core concept. In this case, additional free elective credits must be taken to maintain a minimum of 123 credits",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Natural Science Electives:",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "BIOL 1105& BIOL 1115 Principles of Biologyand Principles of Biology Laboratory",
+    "CHEM 1035& CHEM 1045 General Chemistryand General Chemistry Laboratory",
+    "PHYS 2305 Foundations of Physics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIOL1105",
+         "title": "Principles of Biology"
+        },
+        {
+         "code": "BIOL1115",
+         "title": "and Principles of Biology Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 1105& BIOL 1115 Principles of Biologyand Principles of Biology Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM1035",
+         "title": "General Chemistry"
+        },
+        {
+         "code": "CHEM1045",
+         "title": "and General Chemistry Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 1035& CHEM 1045 General Chemistryand General Chemistry Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS2305",
+         "title": "Foundations of Physics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 2305 Foundations of Physics",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Advanced Natural Science Elective:",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "BIOL 1106& BIOL 1116 Principles of Biologyand Principles of Biology Laboratory",
+    "CHEM 1036& CHEM 1046 General Chemistryand General Chemistry Laboratory",
+    "PHYS 2306 Foundations of Physics"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIOL1106",
+         "title": "Principles of Biology"
+        },
+        {
+         "code": "BIOL1116",
+         "title": "and Principles of Biology Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 1106& BIOL 1116 Principles of Biologyand Principles of Biology Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM1036",
+         "title": "General Chemistry"
+        },
+        {
+         "code": "CHEM1046",
+         "title": "and General Chemistry Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 1036& CHEM 1046 General Chemistryand General Chemistry Laboratory",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS2306",
+         "title": "Foundations of Physics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 2306 Foundations of Physics",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Communications Elective.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "COMM 2004 Public Speaking",
+    "COMM 2014 Communication Principles of Teamwork"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "COMM2004",
+         "title": "Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM 2004 Public Speaking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM2014",
+         "title": "Communication Principles of Teamwork"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM 2014 Communication Principles of Teamwork",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Professional Writing Elective.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "ENGL 3764 Technical Writing",
+    "ENGL 3804 Technical Editing and Style",
+    "ENGL 3814 Creating User Documentation",
+    "ENGL 3824 Visual Rhetoric and Document Design",
+    "ENGL 3834 Intercultural Issues in Professional Writing",
+    "ENGL 3844 Writing and Digital Media",
+    "ENGL 4824 Science Writing"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGL3764",
+         "title": "Technical Writing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 3764 Technical Writing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL3804",
+         "title": "Technical Editing and Style"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 3804 Technical Editing and Style",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL3814",
+         "title": "Creating User Documentation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 3814 Creating User Documentation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL3824",
+         "title": "Visual Rhetoric and Document Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 3824 Visual Rhetoric and Document Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL3834",
+         "title": "Intercultural Issues in Professional Writing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 3834 Intercultural Issues in Professional Writing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL3844",
+         "title": "Writing and Digital Media"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 3844 Writing and Digital Media",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL4824",
+         "title": "Science Writing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL 4824 Science Writing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Statistics Elective.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "STAT 4705 Probability and Statistics for Engineers",
+    "STAT 4105 Theoretical Statistics 1",
+    "STAT 4714 Probability and Statistics for Electrical Engineers 1",
+    "STAT 4604 Statistical Methods for Engineers",
+    "STAT 3704 Statistics for Engineering Applications 2",
+    "CMDA 2006 Integrated Quantitative Sciences 1"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT4705",
+         "title": "Probability and Statistics for Engineers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 4705 Probability and Statistics for Engineers",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT4105",
+         "title": "Theoretical Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 4105 Theoretical Statistics 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT4714",
+         "title": "Probability and Statistics for Electrical Engineers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 4714 Probability and Statistics for Electrical Engineers 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT4604",
+         "title": "Statistical Methods for Engineers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 4604 Statistical Methods for Engineers",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT3704",
+         "title": "Statistics for Engineering Applications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 3704 Statistics for Engineering Applications 2",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMDA2006",
+         "title": "Integrated Quantitative Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMDA 2006 Integrated Quantitative Sciences 1",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "CS 3/4/5XXXX Electives3.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "BIT 4614 Cybersecurity Management II",
+    "CMDA 3654 Introductory Data Analytics and Visualization",
+    "CMDA 4654 Intermediate Data Analytics and Machine Learning",
+    "ECE 4424 Machine Learning",
+    "ECE 4504 Computer Organization",
+    "MATH 3414 Numerical Methods",
+    "MATH 4414 Issues in Scientific Computing",
+    "PSCI 4164 Future of Security: Integrative Solutions for Complex Security Systems",
+    "STAT 3654 Introductory Data Analytics and Visualization",
+    "STAT 4654 Intermediate Data Analytics and Machine Learning",
+    "STS 4014 Algorithms & Society"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIT4614",
+         "title": "Cybersecurity Management II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4614 Cybersecurity Management II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMDA3654",
+         "title": "Introductory Data Analytics and Visualization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMDA 3654 Introductory Data Analytics and Visualization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMDA4654",
+         "title": "Intermediate Data Analytics and Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMDA 4654 Intermediate Data Analytics and Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4424",
+         "title": "Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4424 Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4504",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4504 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH3414",
+         "title": "Numerical Methods"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 3414 Numerical Methods",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4414",
+         "title": "Issues in Scientific Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4414 Issues in Scientific Computing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSCI4164",
+         "title": "Future of Security: Integrative Solutions for Complex Security Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSCI 4164 Future of Security: Integrative Solutions for Complex Security Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT3654",
+         "title": "Introductory Data Analytics and Visualization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 3654 Introductory Data Analytics and Visualization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT4654",
+         "title": "Intermediate Data Analytics and Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 4654 Intermediate Data Analytics and Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STS4014",
+         "title": "Algorithms & Society"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STS 4014 Algorithms & Society",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Exceptions (not allowed to count towards CS 3/4/5XXX electives)",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 3114 Data Structures and Algorithms",
+    "CS 4774 Human-Computer Interaction Design Experience",
+    "CS 5040 Intermediate Data Structures and Algorithm Analysis",
+    "CS 5044 Object-Oriented Programming with Java",
+    "CS 5045 Computation for the Data Sciences",
+    "CS 5046 Computation for the Data Sciences",
+    "CS 5644 Machine Learning with Big Data",
+    "CS 5664 Social Media Analytics",
+    "CS 5904 Project and Report",
+    "CS 5944 Graduate Seminar",
+    "CS 5974 Independent Study",
+    "CS 5994 Research and Thesis"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS3114",
+         "title": "Data Structures and Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3114 Data Structures and Algorithms",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4774",
+         "title": "Human-Computer Interaction Design Experience"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4774 Human-Computer Interaction Design Experience",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5040",
+         "title": "Intermediate Data Structures and Algorithm Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5040 Intermediate Data Structures and Algorithm Analysis",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5044",
+         "title": "Object-Oriented Programming with Java"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5044 Object-Oriented Programming with Java",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5045",
+         "title": "Computation for the Data Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5045 Computation for the Data Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5046",
+         "title": "Computation for the Data Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5046 Computation for the Data Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5644",
+         "title": "Machine Learning with Big Data"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5644 Machine Learning with Big Data",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5664",
+         "title": "Social Media Analytics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5664 Social Media Analytics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5904",
+         "title": "Project and Report"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5904 Project and Report",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5944",
+         "title": "Graduate Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5944 Graduate Seminar",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5974",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5974 Independent Study",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5994",
+         "title": "Research and Thesis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5994 Research and Thesis",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "CS 4/5XXXX Elective3.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "BIT 4614 Cybersecurity Management II",
+    "CMDA 4654 Intermediate Data Analytics and Machine Learning",
+    "ECE 4424 Machine Learning",
+    "ECE 4504 Computer Organization",
+    "MATH 4414 Issues in Scientific Computing",
+    "PSCI 4164 Future of Security: Integrative Solutions for Complex Security Systems",
+    "STAT 4654 Intermediate Data Analytics and Machine Learning",
+    "STS 4014 Algorithms & Society"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BIT4614",
+         "title": "Cybersecurity Management II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4614 Cybersecurity Management II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMDA4654",
+         "title": "Intermediate Data Analytics and Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMDA 4654 Intermediate Data Analytics and Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4424",
+         "title": "Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4424 Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4504",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4504 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4414",
+         "title": "Issues in Scientific Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4414 Issues in Scientific Computing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSCI4164",
+         "title": "Future of Security: Integrative Solutions for Complex Security Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSCI 4164 Future of Security: Integrative Solutions for Complex Security Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT4654",
+         "title": "Intermediate Data Analytics and Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 4654 Intermediate Data Analytics and Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STS4014",
+         "title": "Algorithms & Society"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STS 4014 Algorithms & Society",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Exceptions (not allowed to count towards the CS 4/5XXX electives.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 4774 Human-Computer Interaction Design Experience",
+    "CS 5040 Intermediate Data Structures and Algorithm Analysis",
+    "CS 5044 Object-Oriented Programming with Java",
+    "CS 5045 Computation for the Data Sciences",
+    "CS 5046 Computation for the Data Sciences",
+    "CS 5644 Machine Learning with Big Data",
+    "CS 5664 Social Media Analytics",
+    "CS 5904 Project and Report",
+    "CS 5944 Graduate Seminar",
+    "CS 5974 Independent Study",
+    "CS 5994 Research and Thesis"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4774",
+         "title": "Human-Computer Interaction Design Experience"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4774 Human-Computer Interaction Design Experience",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5040",
+         "title": "Intermediate Data Structures and Algorithm Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5040 Intermediate Data Structures and Algorithm Analysis",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5044",
+         "title": "Object-Oriented Programming with Java"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5044 Object-Oriented Programming with Java",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5045",
+         "title": "Computation for the Data Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5045 Computation for the Data Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5046",
+         "title": "Computation for the Data Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5046 Computation for the Data Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5644",
+         "title": "Machine Learning with Big Data"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5644 Machine Learning with Big Data",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5664",
+         "title": "Social Media Analytics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5664 Social Media Analytics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5904",
+         "title": "Project and Report"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5904 Project and Report",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5944",
+         "title": "Graduate Seminar"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5944 Graduate Seminar",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5974",
+         "title": "Independent Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5974 Independent Study",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5994",
+         "title": "Research and Thesis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5994 Research and Thesis",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "CS Theory Elective.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 4104 Data and Algorithm Analysis",
+    "CS 4114 Introduction to Formal Languages and Automata Theory",
+    "CS 4124 Theory of Computation",
+    "CS 4134 Quantum Computation and Information Processing",
+    "CS 5104 Computability and Formal Languages",
+    "CS 5114 Theory of Algorithms"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4104",
+         "title": "Data and Algorithm Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4104 Data and Algorithm Analysis",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4114",
+         "title": "Introduction to Formal Languages and Automata Theory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4114 Introduction to Formal Languages and Automata Theory",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4124",
+         "title": "Theory of Computation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4124 Theory of Computation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4134",
+         "title": "Quantum Computation and Information Processing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4134 Quantum Computation and Information Processing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5104",
+         "title": "Computability and Formal Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5104 Computability and Formal Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS5114",
+         "title": "Theory of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 5114 Theory of Algorithms",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Capstone Requirement.",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 4094 Computer Science Capstone",
+    "CS 4274 Secure Computing Capstone",
+    "CS 4284 Systems & Networking Capstone",
+    "CS 4624 Multimedia, Hypertext and Information Access",
+    "CS 4634 Design Of Information",
+    "CS 4644 Creative Computing Studio",
+    "CS 4664 Data-Centric Computing Capstone",
+    "CS 4704 Software Engineering Capstone",
+    "CS 4784 Human-Computer Interaction Capstone",
+    "CS 4884 Computational Biology and Bioinformatics Capstone",
+    "ENGE 4735 Interdisciplinary Design Capstone",
+    "ENGE 4736 Interdisciplinary Design Capstone"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4094",
+         "title": "Computer Science Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4094 Computer Science Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4274",
+         "title": "Secure Computing Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4274 Secure Computing Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4284",
+         "title": "Systems & Networking Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4284 Systems & Networking Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4624",
+         "title": "Multimedia, Hypertext and Information Access"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4624 Multimedia, Hypertext and Information Access",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4634",
+         "title": "Design Of Information"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4634 Design Of Information",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4644",
+         "title": "Creative Computing Studio"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4644 Creative Computing Studio",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4664",
+         "title": "Data-Centric Computing Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4664 Data-Centric Computing Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4704",
+         "title": "Software Engineering Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4704 Software Engineering Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4784",
+         "title": "Human-Computer Interaction Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4784 Human-Computer Interaction Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4884",
+         "title": "Computational Biology and Bioinformatics Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4884 Computational Biology and Bioinformatics Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE4735",
+         "title": "Interdisciplinary Design Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 4735 Interdisciplinary Design Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE4736",
+         "title": "Interdisciplinary Design Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 4736 Interdisciplinary Design Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Some courses may be restricted to majors other than CS in some semesters",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "AOE 4434 Introduction to Computational Fluid Dynamics",
+    "ART 3704 Topics in Computer Animation",
+    "BIT 4424 Business Information Visualization and Analytics",
+    "BIT 4434 Computer Simulation in Business",
+    "BIT 4444 Web-Based Decision Support Systems",
+    "BIT 4544 Artificial Intelligence, Machine Learning, and Deep Learning in BIT",
+    "BIT 4604 Data Governance, Privacy and Ethics",
+    "BIT 4614 Cybersecurity Management II",
+    "BIT 4624 Cybersecurity Analytics for Business",
+    "CEM 4624 Construction Robotics and Automation",
+    "CEM 4634 Data Analysis and Visualization for Construction and Facilities Management",
+    "CMDA 3606 Mathematical Modeling: Methods and Tools",
+    "ECE 3544 Digital Design I",
+    "ECE 3574 Applied Software Design",
+    "ECE 4524 Artificial Intelligence and Engineering Applications",
+    "ECE 4550 Real-Time Systems",
+    "ECE 4560 Computer and Network Security Fundamentals",
+    "ECE 4564 Network Application Design",
+    "ECE 4580 Digital Image Processing",
+    "ECE 4704 Principles of Robotics Systems",
+    "ENGE 4735 Interdisciplinary Design Capstone",
+    "ENGE 4736 Interdisciplinary Design Capstone",
+    "ENGE 4964 Field Study",
+    "GEOG 4314 Spatial Analysis in Geographic Information Systems",
+    "GEOG 4324 Algorithms in Geographic Information Systems",
+    "MATH 4175 Cryptography",
+    "MATH 4176 Cryptography",
+    "MATH 4445 Introduction to Numerical Analysis",
+    "MATH 4454 Applied Mathematical Modeling",
+    "ME 4524 Introduction to Robotics and Automation",
+    "MUS 3064 Digital Sound Manipulation",
+    "MUS 3065 Computer Music and Multimedia Design",
+    "MUS 3066 Computer Music and Multimedia Design"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "AOE4434",
+         "title": "Introduction to Computational Fluid Dynamics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "AOE 4434 Introduction to Computational Fluid Dynamics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART3704",
+         "title": "Topics in Computer Animation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART 3704 Topics in Computer Animation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4424",
+         "title": "Business Information Visualization and Analytics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4424 Business Information Visualization and Analytics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4434",
+         "title": "Computer Simulation in Business"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4434 Computer Simulation in Business",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4444",
+         "title": "Web-Based Decision Support Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4444 Web-Based Decision Support Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4544",
+         "title": "Artificial Intelligence, Machine Learning, and Deep Learning in BIT"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4544 Artificial Intelligence, Machine Learning, and Deep Learning in BIT",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4604",
+         "title": "Data Governance, Privacy and Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4604 Data Governance, Privacy and Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4614",
+         "title": "Cybersecurity Management II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4614 Cybersecurity Management II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BIT4624",
+         "title": "Cybersecurity Analytics for Business"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIT 4624 Cybersecurity Analytics for Business",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CEM4624",
+         "title": "Construction Robotics and Automation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CEM 4624 Construction Robotics and Automation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CEM4634",
+         "title": "Data Analysis and Visualization for Construction and Facilities Management"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CEM 4634 Data Analysis and Visualization for Construction and Facilities Management",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CMDA3606",
+         "title": "Mathematical Modeling: Methods and Tools"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CMDA 3606 Mathematical Modeling: Methods and Tools",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE3544",
+         "title": "Digital Design I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 3544 Digital Design I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE3574",
+         "title": "Applied Software Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 3574 Applied Software Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4524",
+         "title": "Artificial Intelligence and Engineering Applications"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4524 Artificial Intelligence and Engineering Applications",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4550",
+         "title": "Real-Time Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4550 Real-Time Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4560",
+         "title": "Computer and Network Security Fundamentals"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4560 Computer and Network Security Fundamentals",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4564",
+         "title": "Network Application Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4564 Network Application Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4580",
+         "title": "Digital Image Processing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4580 Digital Image Processing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE4704",
+         "title": "Principles of Robotics Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 4704 Principles of Robotics Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE4735",
+         "title": "Interdisciplinary Design Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 4735 Interdisciplinary Design Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE4736",
+         "title": "Interdisciplinary Design Capstone"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 4736 Interdisciplinary Design Capstone",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGE4964",
+         "title": "Field Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGE 4964 Field Study",
+       "credits": {
+        "min": 1,
+        "max": 19,
+        "raw": "1-19"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEOG4314",
+         "title": "Spatial Analysis in Geographic Information Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEOG 4314 Spatial Analysis in Geographic Information Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEOG4324",
+         "title": "Algorithms in Geographic Information Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEOG 4324 Algorithms in Geographic Information Systems",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4175",
+         "title": "Cryptography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4175 Cryptography",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4176",
+         "title": "Cryptography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4176 Cryptography",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4445",
+         "title": "Introduction to Numerical Analysis"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4445 Introduction to Numerical Analysis",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH4454",
+         "title": "Applied Mathematical Modeling"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 4454 Applied Mathematical Modeling",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ME4524",
+         "title": "Introduction to Robotics and Automation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ME 4524 Introduction to Robotics and Automation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS3064",
+         "title": "Digital Sound Manipulation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 3064 Digital Sound Manipulation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS3065",
+         "title": "Computer Music and Multimedia Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 3065 Computer Music and Multimedia Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS3066",
+         "title": "Computer Music and Multimedia Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS 3066 Computer Music and Multimedia Design",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "pass",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 121 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "16 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "121 distinct courses across 162 rows"
+   },
+   {
+    "severity": "pass",
+    "name": "credits_reconcile",
+    "detail": "groups sum to 123–123, stated total 123"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "23 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 16,
+   "sections": 20,
+   "rows": 162,
+   "course_rows": 139,
+   "category_rows": 23,
+   "distinct_courses": 121,
+   "credit_span": {
+    "min": 123,
+    "max": 123,
+    "groups_with_credits": 4
+   },
+   "stated_total": "123"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:45.065Z"
+}

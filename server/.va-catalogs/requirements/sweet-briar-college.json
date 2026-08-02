@@ -1,0 +1,43 @@
+{
+ "slug": "sweet-briar-college",
+ "name": "Sweet Briar College",
+ "level": "four_year",
+ "platform": "acalog",
+ "outcome": "url_only",
+ "source_url": "https://catalog.sbc.edu/index.php?catoid=24",
+ "offers_cs": null,
+ "program_title": null,
+ "total_credits": null,
+ "groups": [],
+ "validation": {
+  "verdict": "n/a",
+  "needs_hand_read": true,
+  "checks": [],
+  "stats": {}
+ },
+ "evidence": {
+  "url": null,
+  "candidates": [],
+  "catoids": [
+   24
+  ],
+  "read": {
+   "navs_seen": 29,
+   "nav_pages_read": 7,
+   "program_links_seen": 54,
+   "via": "navigation"
+  },
+  "read_fetch": {
+   "navs_seen": 29,
+   "nav_pages_read": 0,
+   "program_links_seen": 0
+  },
+  "read_curl": {
+   "navs_seen": 29,
+   "nav_pages_read": 0,
+   "program_links_seen": 0,
+   "via": "curl"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.966Z"
+}

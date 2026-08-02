@@ -1,0 +1,780 @@
+{
+  "_comment": [
+    "The capture registry: every Virginia institution the CS scrape visits.",
+    "",
+    "One row per institution, keyed by the same slug the requirement documents",
+    "use (`va:as:<slug>:cs` / `va:degree:<slug>:cs`), so a row here and a row in",
+    "`va_requirements` always name the same school.",
+    "",
+    "`catalog_root` and `platform` were probed live, not assumed \u2014 see the",
+    "`probed` stamp. `platform` decides the transport: acalog needs the browser,",
+    "courseleaf/cleancatalog/coursedog/smartcatalog answer a plain fetch, and",
+    "`pdf` / `web` are the institutions that publish no catalog software at all.",
+    "",
+    "`seeds` are known-good starting URLs. They are a hint, never the answer:",
+    "acalog poids go stale every catalog year, so capture rediscovers on the",
+    "newest catoid and only falls back to the seed. `role` separates the major",
+    "requirements page from the general-education page, because a four-year",
+    "degree's full graduation requirements usually span both.",
+    "",
+    "`offers_cs: false` is a recorded finding, not an absence \u2014 it means the",
+    "catalog was read and no CS degree was there."
+  ],
+  "probed": "2026-08-01",
+  "institutions": [
+    {
+      "slug": "blue-ridge-community-college",
+      "name": "Blue Ridge Community College",
+      "level": "community_college",
+      "vccs_slug": "brcc",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.brcc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.brcc.edu/programs-study/science-computer-science/"
+        }
+      ]
+    },
+    {
+      "slug": "brightpoint-community-college",
+      "name": "Brightpoint Community College",
+      "level": "community_college",
+      "vccs_slug": "brightpoint",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.brightpoint.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.brightpoint.edu/preview_program.php?catoid=8&poid=1008"
+        }
+      ]
+    },
+    {
+      "slug": "central-virginia-community-college",
+      "name": "Central Virginia Community College",
+      "level": "community_college",
+      "vccs_slug": "cvcc",
+      "platform": "acalog",
+      "catalog_root": "https://centralvirginia.catalog.acalog.com/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://centralvirginia.edu/programs-classes/science-technology-engineering-math/computer-science"
+        }
+      ],
+      "note": "catalog.centralvirginia.edu serves the college website, not the catalog. The Acalog instance is hosted at centralvirginia.catalog.acalog.com."
+    },
+    {
+      "slug": "danville-community-college",
+      "name": "Danville Community College",
+      "level": "community_college",
+      "vccs_slug": "dcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.danville.edu/",
+      "seeds": [],
+      "note": "VCCS registry and Transfer Virginia both report no CS program. Re-checked at the catalog by this scrape rather than inherited."
+    },
+    {
+      "slug": "eastern-shore-community-college",
+      "name": "Eastern Shore Community College",
+      "level": "community_college",
+      "vccs_slug": "escc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.es.vccs.edu/",
+      "seeds": [],
+      "note": "Reported as offering no CS program; re-checked at the catalog."
+    },
+    {
+      "slug": "germanna-community-college",
+      "name": "Germanna Community College",
+      "level": "community_college",
+      "vccs_slug": "gcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.germanna.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.germanna.edu/preview_program.php?catoid=15&poid=1614"
+        }
+      ]
+    },
+    {
+      "slug": "j-sargeant-reynolds-community-college",
+      "name": "J Sargeant Reynolds Community College",
+      "level": "community_college",
+      "vccs_slug": "reynolds",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.reynolds.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.reynolds.edu/programs/program-pages/computer-science-as.html"
+        }
+      ],
+      "note": "Previously recorded url_only against a department page. The college does run an Acalog catalog \u2014 discover there first."
+    },
+    {
+      "slug": "laurel-ridge-community-college",
+      "name": "Laurel Ridge Community College",
+      "level": "community_college",
+      "vccs_slug": "laurelridge",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.laurelridge.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.laurelridge.edu/preview_program.php?catoid=25&poid=1940"
+        }
+      ]
+    },
+    {
+      "slug": "mountain-empire-community-college",
+      "name": "Mountain Empire Community College",
+      "level": "community_college",
+      "vccs_slug": "mecc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.mecc.edu/",
+      "seeds": [],
+      "note": "Reported as offering no CS program; re-checked at the catalog."
+    },
+    {
+      "slug": "mountain-gateway-community-college",
+      "name": "Mountain Gateway Community College",
+      "level": "community_college",
+      "vccs_slug": "mgcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.mgcc.edu/",
+      "seeds": [],
+      "note": "Reported as offering no CS program; re-checked at the catalog."
+    },
+    {
+      "slug": "new-river-community-college",
+      "name": "New River Community College",
+      "level": "community_college",
+      "vccs_slug": "nrcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.nr.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.nr.edu/preview_program.php?catoid=42&poid=1965"
+        }
+      ]
+    },
+    {
+      "slug": "northern-virginia-community-college",
+      "name": "Northern Virginia Community College",
+      "level": "community_college",
+      "vccs_slug": "nova",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.nvcc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.nvcc.edu/programs/computer-science-as/"
+        }
+      ]
+    },
+    {
+      "slug": "patrick-henry-community-college",
+      "name": "Patrick & Henry Community College",
+      "level": "community_college",
+      "vccs_slug": "phcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.patrickhenry.edu/",
+      "seeds": [],
+      "note": "Reported as offering no CS program; re-checked at the catalog."
+    },
+    {
+      "slug": "paul-d-camp-community-college",
+      "name": "Paul D. Camp Community College",
+      "level": "community_college",
+      "vccs_slug": "camp",
+      "platform": "web",
+      "catalog_root": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/"
+        }
+      ],
+      "note": "No catalog software: catalog.pdc.edu does not resolve and the catalog page serves an image. Capture must find the PDF or flipbook from that page."
+    },
+    {
+      "slug": "piedmont-virginia-community-college",
+      "name": "Piedmont Virginia Community College",
+      "level": "community_college",
+      "vccs_slug": "pvcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.pvcc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.pvcc.edu/preview_program.php?catoid=7&poid=845"
+        }
+      ]
+    },
+    {
+      "slug": "rappahannock-community-college",
+      "name": "Rappahannock Community College",
+      "level": "community_college",
+      "vccs_slug": "rcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.rappahannock.edu/",
+      "seeds": [],
+      "note": "Reported as offering no CS program; re-checked at the catalog."
+    },
+    {
+      "slug": "richard-bland-college",
+      "name": "Richard Bland College",
+      "level": "community_college",
+      "platform": "acalog",
+      "catalog_root": "http://catalog.rbc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "http://catalog.rbc.edu/preview_program.php?catoid=7&poid=143"
+        }
+      ],
+      "note": "Two-year college of William & Mary, not VCCS. Uses its own course numbering (CSCI 222, MATH 261), so its codes will not join va_courses. HTTP only \u2014 catalog.rbc.edu has no TLS listener."
+    },
+    {
+      "slug": "southside-virginia-community-college",
+      "name": "Southside Virginia Community College",
+      "level": "community_college",
+      "vccs_slug": "svcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.southside.edu/",
+      "seeds": [],
+      "note": "Reported as offering no CS program; re-checked at the catalog."
+    },
+    {
+      "slug": "southwest-virginia-community-college",
+      "name": "Southwest Virginia Community College",
+      "level": "community_college",
+      "vccs_slug": "swcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.sw.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.sw.edu/academics/programs/computer-science/"
+        }
+      ],
+      "note": "Previously url_only against a department page; the college does run an Acalog catalog."
+    },
+    {
+      "slug": "tidewater-community-college",
+      "name": "Tidewater Community College",
+      "level": "community_college",
+      "vccs_slug": "tcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.tcc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235"
+        }
+      ],
+      "note": "Behind Cloudflare bot verification on top of Acalog \u2014 needs the browser transport and a warm profile."
+    },
+    {
+      "slug": "virginia-highlands-community-college",
+      "name": "Virginia Highlands Community College",
+      "level": "community_college",
+      "vccs_slug": "vhcc",
+      "platform": "pdf",
+      "catalog_root": "https://vhcc.edu/catalog",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf"
+        }
+      ],
+      "note": "Publishes the catalog as a single PDF behind an Issuu flipbook; the PDF itself is served from vhcc.edu and is machine-readable."
+    },
+    {
+      "slug": "virginia-peninsula-community-college",
+      "name": "Virginia Peninsula Community College",
+      "level": "community_college",
+      "vccs_slug": "vpcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.vpcc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.vpcc.edu/preview_program.php?catoid=13&poid=3168"
+        }
+      ]
+    },
+    {
+      "slug": "virginia-western-community-college",
+      "name": "Virginia Western Community College",
+      "level": "community_college",
+      "vccs_slug": "vwcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.virginiawestern.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.virginiawestern.edu/preview_program.php?catoid=24&poid=3387"
+        }
+      ]
+    },
+    {
+      "slug": "wytheville-community-college",
+      "name": "Wytheville Community College",
+      "level": "community_college",
+      "vccs_slug": "wcc",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.wcc.vccs.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.wcc.vccs.edu/preview_program.php?catoid=14&poid=1454"
+        }
+      ]
+    },
+    {
+      "slug": "appalachian-college-of-pharmacy",
+      "name": "Appalachian College of Pharmacy",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.acp.edu/",
+      "seeds": [],
+      "offers_cs": false,
+      "note": "Pharmacy school. Appears in the equivalency corpus only as a receiver of general-education courses; awards no undergraduate CS degree."
+    },
+    {
+      "slug": "averett-university",
+      "name": "Averett University",
+      "level": "four_year",
+      "platform": "pdf",
+      "catalog_root": "https://www.averett.edu/academics/registrars-office/catalogs/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf"
+        }
+      ],
+      "note": "No catalog software and no per-program page: the department page says 'see the current course catalog', which is a single PDF."
+    },
+    {
+      "slug": "bluefield-university",
+      "name": "Bluefield University",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.bluefield.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.bluefield.edu/academics/programs-of-study/"
+        }
+      ],
+      "aliases": [
+        "Bluefield College"
+      ],
+      "retires": [
+        "bluefield-college"
+      ],
+      "note": "Renamed from Bluefield College. Its programs list carries Cybersecurity, Information Technology and Business Administration-IT but no Computer Science degree, so the corpus records a checked negative rather than an empty document.",
+      "offers_cs": false
+    },
+    {
+      "slug": "bridgewater-college",
+      "name": "Bridgewater College",
+      "level": "four_year",
+      "platform": "cleancatalog",
+      "catalog_root": "https://bridgewater.cleancatalog.io/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.bridgewater.edu/academics/divisions/mathematics-computer-science/computer-science-major/"
+        }
+      ]
+    },
+    {
+      "slug": "christopher-newport-university",
+      "name": "Christopher Newport University",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://cnu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://cnu.edu/academics/areasofstudy/bs-computerfoundations-computerscience/"
+        }
+      ]
+    },
+    {
+      "slug": "eastern-mennonite-university",
+      "name": "Eastern Mennonite University",
+      "level": "four_year",
+      "platform": "pdf",
+      "catalog_root": "https://emu.edu/registrar/catalogs",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://emu.edu/catalog/docs/2025-26%20UG%20Catalog%202025.pdf"
+        }
+      ],
+      "note": "emu.edu/computer-science is a marketing page; requirements are published only in the undergraduate catalog PDF."
+    },
+    {
+      "slug": "emory-henry-college",
+      "name": "Emory & Henry College",
+      "level": "four_year",
+      "platform": "cleancatalog",
+      "catalog_root": "https://catalog.ehc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.ehc.edu/math-and-computer-science/computer-science-0"
+        }
+      ],
+      "aliases": [
+        "Emory & Henry University"
+      ]
+    },
+    {
+      "slug": "ferrum-college",
+      "name": "Ferrum College",
+      "level": "four_year",
+      "platform": "acalog",
+      "catalog_root": "https://ferrum.catalog.acalog.com/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3062"
+        }
+      ]
+    },
+    {
+      "slug": "george-mason-university",
+      "name": "George Mason University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.gmu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.gmu.edu/colleges-schools/engineering-computing/school-computing/computer-science/computer-science-bs/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.gmu.edu/mason-core/"
+        }
+      ]
+    },
+    {
+      "slug": "hollins-university",
+      "name": "Hollins University",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.hollins.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.hollins.edu/programs/mathematics-computer-science/"
+        }
+      ],
+      "note": "Recorded as offering no CS major; re-checked by this scrape."
+    },
+    {
+      "slug": "james-madison-university",
+      "name": "James Madison University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.jmu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.jmu.edu/programs/computer-science-bs/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.jmu.edu/general-education/"
+        }
+      ]
+    },
+    {
+      "slug": "longwood-university",
+      "name": "Longwood University",
+      "level": "four_year",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.longwood.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.longwood.edu/preview_program.php?catoid=7&poid=1081"
+        }
+      ]
+    },
+    {
+      "slug": "mary-baldwin-university",
+      "name": "Mary Baldwin University",
+      "level": "four_year",
+      "platform": "cleancatalog",
+      "catalog_root": "https://catalog.marybaldwin.edu/",
+      "seeds": [],
+      "note": "The catalog's Computer Science BS page redirects to a URL ending `-discontinued`. Discovery runs from the catalog root so the scrape records what the catalog says today rather than following a stale link."
+    },
+    {
+      "slug": "marymount-university",
+      "name": "Marymount University",
+      "level": "four_year",
+      "platform": "smartcatalog",
+      "catalog_root": "https://marymount.smartcatalogiq.com/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://marymount.edu/academics/college-of-business-innovation-leadership-and-technology/school-of-technology-and-innovation/undergraduate-programs/computer-science-b-s/"
+        }
+      ]
+    },
+    {
+      "slug": "norfolk-state-university",
+      "name": "Norfolk State University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.nsu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/"
+        }
+      ],
+      "note": "The previously recorded URL was Computer Engineering Technology, a different degree. Norfolk State publishes five CS tracks; the Standard Track is the plain B.S."
+    },
+    {
+      "slug": "old-dominion-university",
+      "name": "Old Dominion University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.odu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/computer-science-bscs/"
+        }
+      ],
+      "note": "The previously recorded URL was the department index, whose 104 codes are course descriptions rather than degree requirements."
+    },
+    {
+      "slug": "radford-university",
+      "name": "Radford University",
+      "level": "four_year",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.radford.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834"
+        }
+      ]
+    },
+    {
+      "slug": "randolph-college",
+      "name": "Randolph College",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.randolphcollege.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.randolphcollege.edu/computer-science/curriculum/"
+        }
+      ]
+    },
+    {
+      "slug": "randolph-macon-college",
+      "name": "Randolph-Macon College",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.rmc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/"
+        }
+      ]
+    },
+    {
+      "slug": "regent-university",
+      "name": "Regent University",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.regent.edu/resources/course-catalogs/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.regent.edu/program/bs-in-computer-science/"
+        },
+        {
+          "role": "catalog",
+          "url": "https://www.regent.edu/resources/course-catalogs/"
+        }
+      ],
+      "note": "The program page shows only featured courses and refers students to the catalog."
+    },
+    {
+      "slug": "roanoke-college",
+      "name": "Roanoke College",
+      "level": "four_year",
+      "platform": "coursedog",
+      "catalog_root": "https://catalog.roanoke.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.roanoke.edu/programs/BS.CPSC"
+        }
+      ]
+    },
+    {
+      "slug": "shenandoah-university",
+      "name": "Shenandoah University",
+      "level": "four_year",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.su.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244"
+        }
+      ]
+    },
+    {
+      "slug": "sweet-briar-college",
+      "name": "Sweet Briar College",
+      "level": "four_year",
+      "platform": "acalog",
+      "catalog_root": "https://catalog.sbc.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.sbc.edu/preview_program.php?catoid=9&poid=653"
+        }
+      ]
+    },
+    {
+      "slug": "the-university-of-virginia-s-college-at-wise",
+      "name": "The University of Virginia's College at Wise",
+      "level": "four_year",
+      "platform": "acalog",
+      "catalog_root": "http://catalog.uvawise.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=2&poid=179"
+        }
+      ],
+      "note": "HTTP only. Previously url_only; the browser transport should reach the Acalog program page."
+    },
+    {
+      "slug": "university-of-lynchburg",
+      "name": "University of Lynchburg",
+      "level": "four_year",
+      "platform": "pdf",
+      "catalog_root": "https://www.lynchburg.edu/academics/majors-and-minors/computer-science/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.lynchburg.edu/wp-content/uploads/2025/02/2024-2025-UG-catalog-Final-2-1.pdf"
+        }
+      ],
+      "note": "The major page states requirements are in the catalog and links only a PDF."
+    },
+    {
+      "slug": "university-of-mary-washington",
+      "name": "University of Mary Washington",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.umw.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.umw.edu/undergraduate/majors/computer-science/"
+        }
+      ]
+    },
+    {
+      "slug": "virginia-commonwealth-university",
+      "name": "Virginia Commonwealth University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://bulletin.vcu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs/"
+        },
+        {
+          "role": "ge",
+          "url": "https://bulletin.vcu.edu/undergraduate/general-education/"
+        }
+      ]
+    },
+    {
+      "slug": "virginia-polytechnic-institute-and-state-university",
+      "name": "Virginia Polytechnic Institute and State University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.vt.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.vt.edu/undergraduate/pathways-general-education/"
+        }
+      ]
+    },
+    {
+      "slug": "virginia-state-university",
+      "name": "Virginia State University",
+      "level": "four_year",
+      "platform": "courseleaf",
+      "catalog_root": "https://catalog.vsu.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/"
+        }
+      ]
+    },
+    {
+      "slug": "virginia-wesleyan-university",
+      "name": "Virginia Wesleyan University",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.batten.edu/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.batten.edu/academics/majors/computer-science/"
+        }
+      ],
+      "aliases": [
+        "Batten University"
+      ],
+      "note": "Renamed to Batten University; vwu.edu redirects to batten.edu. The equivalency corpus files all 137 accepted courses under the old name, so the old name stays canonical here."
+    },
+    {
+      "slug": "william-mary",
+      "name": "William & Mary",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://cdsp.wm.edu/computerscience/undergraduate/index.php",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php"
+        }
+      ],
+      "note": "catalog.wm.edu still serves a CourseLeaf 'coming soon' placeholder and wm.edu/as/computerscience redirects to cdsp.wm.edu, so the department's own B.S. page is the published source. Re-point at the catalog once it launches."
+    }
+  ]
+}

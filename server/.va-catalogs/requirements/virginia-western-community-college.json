@@ -1,0 +1,467 @@
+{
+ "slug": "virginia-western-community-college",
+ "name": "Virginia Western Community College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.virginiawestern.edu/preview_program.php?catoid=25&poid=3520&returnto=2597&print=1",
+ "captured_at": "2026-08-02T05:52:11.745Z",
+ "program_title": "Computer Science, A.S.",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "First Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "First Semester",
+    "SDV 101 - Orientation to Information Technology 2 CR",
+    "ENG 111 - College Composition I 3 CR",
+    "MTH 167* - Pre-Calculus with Trigonometry 5 CR",
+    "CSC 221 - Introduction to Problem Solving and Programming 3 CR"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "SDV101",
+         "title": "Orientation to Information Technology 2 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 101 - Orientation to Information Technology 2 CR",
+       "credits": {
+        "min": 2,
+        "max": 2,
+        "raw": "2"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 - College Composition I 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH167",
+         "title": "* - Pre-Calculus with Trigonometry 5 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 167* - Pre-Calculus with Trigonometry 5 CR",
+       "credits": {
+        "min": 5,
+        "max": 5,
+        "raw": "5"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 - Introduction to Problem Solving and Programming 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Second Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Second Semester",
+    "MTH 263* - Calculus I 4 CR",
+    "ENG 112* - College Composition II 3 CR",
+    "HIS 121 - United States History to 1877 3 CR",
+    "CST 100 - Principles of Public Speaking 3 CR",
+    "PHI 220 - Ethics and Society 3 CR"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "* - Calculus I 4 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263* - Calculus I 4 CR",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "* - College Composition II 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112* - College Composition II 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIS121",
+         "title": "United States History to 1877 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIS 121 - United States History to 1877 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 - Principles of Public Speaking 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHI220",
+         "title": "Ethics and Society 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHI 220 - Ethics and Society 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Third Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Third Semester",
+    "CSC 215* - Computer Systems 3 CR",
+    "MTH 245* - Statistics I 3 CR (or MTH 264*)1",
+    "CSC 222* - Object-Oriented Programming 4 CR",
+    "CHM 111* - General Chemistry I 4 CR (or PHY 241*)1"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC215",
+         "title": "* - Computer Systems 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 215* - Computer Systems 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH245",
+         "title": "* - Statistics I 3 CR ("
+        },
+        {
+         "code": "MTH264",
+         "title": "*)1"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 245* - Statistics I 3 CR (or MTH 264*)1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "* - Object-Oriented Programming 4 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222* - Object-Oriented Programming 4 CR",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM111",
+         "title": "* - General Chemistry I 4 CR ("
+        },
+        {
+         "code": "PHY241",
+         "title": "*)1"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CHM 111* - General Chemistry I 4 CR (or PHY 241*)1",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fourth Semester",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fourth Semester",
+    "CSC 223* - Data Structures and Analysis of Algorithms 4 CR",
+    "MTH 288* - Discrete Mathematics 3 CR",
+    "CHM 112* - General Chemistry II 4 CR (or PHY 242*)1"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "* - Data Structures and Analysis of Algorithms 4 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223* - Data Structures and Analysis of Algorithms 4 CR",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH288",
+         "title": "* - Discrete Mathematics 3 CR"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 288* - Discrete Mathematics 3 CR",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHM112",
+         "title": "* - General Chemistry II 4 CR ("
+        },
+        {
+         "code": "PHY242",
+         "title": "*)1"
+        }
+       ],
+       "conjunction": "or",
+       "text": "CHM 112* - General Chemistry II 4 CR (or PHY 242*)1",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "ENG LIT - Literature Elective",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "ENG LIT - Literature Elective 3 CR",
+    "Total Minimum Credits for Degree: 60",
+    "1 Please select the Mathematics course and Science sequence most appropriate for the intended transfer institution.",
+    "* This course has a requisite."
+   ],
+   "sections": [
+    {
+     "label": "Total Minimum Credits for Degree: 60",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "1 Please select the Mathematics course and Science sequence most appropriate for the intended transfer institution.",
+       "category": "1 Please select the Mathematics course and Science sequence most appropriate for the intended transfer institution."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Purpose: This curriculum is designed for students who plan to transfer to a four-year institution to complete a non-Engineering based baccalaureate degree in computer science or information technology. Students desiring a four-year Engineering Computer Science degree should consider the program under the Engineering A.S.",
+  "Admission Requirements: Applicants must meet the requirements for admission to credit-level coursework established by the college."
+ ],
+ "unassigned": [
+  "Students who intend to transfer should verify specific program requirements with their four-year institution. Students with questions about the differences in the computer science/information technology degrees at Virginia Western should contact the program head before enrolling."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 19 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "5 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "19 distinct courses across 17 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "1 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 5,
+   "sections": 5,
+   "rows": 17,
+   "course_rows": 16,
+   "category_rows": 1,
+   "distinct_courses": 19,
+   "credit_span": {
+    "min": 3,
+    "max": 3,
+    "groups_with_credits": 1
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.809Z"
+}

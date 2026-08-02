@@ -1,0 +1,431 @@
+{
+ "slug": "ferrum-college",
+ "name": "Ferrum College",
+ "level": "four_year",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424&print=1",
+ "captured_at": "2026-08-02T05:53:56.528Z",
+ "program_title": "Computer Science, Network, B.S.",
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSC 101 - Introduction to Computers and Computer Information Systems 3 Credit(s).",
+    "CSC 101 - Introduction to Computers and Computer Information Systems 3 Credit(s).",
+    "CSC 229 - Programming Concepts and Algorithm Design 3 Credit(s).",
+    "CSC 245 - Networking Fundamentals 3 Credit(s).",
+    "CSC 312 - Computer Organization 3 Credit(s).",
+    "CSC 320 - Programming Using C++ 3 Credit(s).",
+    "CSC 350 - Operating Systems 3 Credit(s).",
+    "CSC 401 - Database Theory 3 Credit(s).",
+    "CSC 455 - Systems Analysis and Design 3 Credit(s).",
+    "CSC 498 - Senior Research Seminar (Capstone) 3 Credit(s).",
+    "MTH 107 - Introduction to Finite Mathematics 3 Credit(s).",
+    "MTH 208 - Introductory Statistics 3 Credit(s).",
+    "MTH 243 - Discrete Mathematics 3 Credit(s).",
+    "Computer Science Network Required Courses [24 Credits]",
+    "BUS 230 - Computer Applications 3 Credit(s).",
+    "BUS 318 - Introduction to Electronic Commerce 3 Credit(s).",
+    "BUS 325 - Advanced Computer Applications 3 Credit(s).",
+    "CSC 102 - Hardware Maintenance and Troubleshooting 3 Credit(s).",
+    "CSC 345 - Advanced Networking Configuration and Management 3 Credit(s).",
+    "CSC 435 - Fundamentals of Cybersecurity 3 Credit(s).",
+    "CSC 445 - Digital Forensics and Cybercrime 3 Credit(s).",
+    "ECO 202 - Principles of Microeconomics 3 Credit(s).",
+    "Total Credit Hours Required in Program: 60",
+    "Total Credit Hours Required in Degree: 120"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC101",
+         "title": "Introduction to Computers and Computer Information Systems 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 101 - Introduction to Computers and Computer Information Systems 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC229",
+         "title": "Programming Concepts and Algorithm Design 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 229 - Programming Concepts and Algorithm Design 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC245",
+         "title": "Networking Fundamentals 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 245 - Networking Fundamentals 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC312",
+         "title": "Computer Organization 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 312 - Computer Organization 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC320",
+         "title": "Programming Using C++ 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 320 - Programming Using C++ 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC350",
+         "title": "Operating Systems 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 350 - Operating Systems 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC401",
+         "title": "Database Theory 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 401 - Database Theory 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC455",
+         "title": "Systems Analysis and Design 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 455 - Systems Analysis and Design 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC498",
+         "title": "Senior Research Seminar (Capstone) 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 498 - Senior Research Seminar (Capstone) 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH107",
+         "title": "Introduction to Finite Mathematics 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 107 - Introduction to Finite Mathematics 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH208",
+         "title": "Introductory Statistics 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 208 - Introductory Statistics 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH243",
+         "title": "Discrete Mathematics 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 243 - Discrete Mathematics 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Computer Science Network Required Courses [24 Credits]",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "BUS230",
+         "title": "Computer Applications 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "BUS 230 - Computer Applications 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BUS318",
+         "title": "Introduction to Electronic Commerce 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "BUS 318 - Introduction to Electronic Commerce 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "BUS325",
+         "title": "Advanced Computer Applications 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "BUS 325 - Advanced Computer Applications 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC102",
+         "title": "Hardware Maintenance and Troubleshooting 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 102 - Hardware Maintenance and Troubleshooting 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC345",
+         "title": "Advanced Networking Configuration and Management 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 345 - Advanced Networking Configuration and Management 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC435",
+         "title": "Fundamentals of Cybersecurity 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 435 - Fundamentals of Cybersecurity 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC445",
+         "title": "Digital Forensics and Cybercrime 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 445 - Digital Forensics and Cybercrime 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECO202",
+         "title": "Principles of Microeconomics 3 Credit(s)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECO 202 - Principles of Microeconomics 3 Credit(s).",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ],
+   "implicit": true
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 20 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "20 distinct courses across 20 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   }
+  ],
+  "stats": {
+   "groups": 1,
+   "sections": 2,
+   "rows": 20,
+   "course_rows": 20,
+   "category_rows": 0,
+   "distinct_courses": 20,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": null
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.830Z"
+}

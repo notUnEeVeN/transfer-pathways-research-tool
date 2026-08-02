@@ -1,0 +1,1889 @@
+{
+ "slug": "richard-bland-college",
+ "name": "Richard Bland College",
+ "level": "community_college",
+ "platform": "acalog",
+ "parser": "lines",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412&print=1",
+ "captured_at": "2026-08-02T05:48:49.351Z",
+ "program_title": "Math/Computer Science, A.S.",
+ "total_credits": {
+  "min": 60,
+  "max": 60,
+  "raw": "60"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 6,
+    "max": 6,
+    "raw": "6"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses: 6 Credit Hours",
+    "ENGL - 101 Rhetoric & Research I Credits: 3",
+    "ENGL - 102 Rhetoric & Research II Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENGL101",
+         "title": "Rhetoric & Research I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 101 Rhetoric & Research I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL102",
+         "title": "Rhetoric & Research II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 102 Rhetoric & Research II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The Art of Language and Ideas",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one from the following:",
+   "source_text": [
+    "The Art of Language and Ideas: 3 Credit Hours",
+    "Select one from the following:",
+    "(Those planning to pursue Pharmacy should take COMM 101)",
+    "COMM - 101 Public Speaking Credits: 3",
+    "COMM - 102 Introduction to Communication Credits: 3",
+    "COMM - 201 Interpersonal Communication Credits: 3",
+    "COMM - 204 Intro to Mass Communication Credits: 3",
+    "ENGL - 203 English Literature through the Eighteenth Century Credits: 3",
+    "ENGL - 204 English Literature: Romanticism to the Present Credits: 3",
+    "ENGL - 205 American Literature through the Civil War Credits: 3",
+    "ENGL - 206 American Literature: Civil War to the Present Credits: 3",
+    "ENGL - 210 Shakespeare Credits: 3",
+    "ENGL - 211 Modernism Credits: 3",
+    "ENGL - 214 African-American Literature Credits: 3",
+    "ENGL - 215 Introduction to Literary Study Credits: 3",
+    "ENGL - 216 Digital Literacies Credits: 3",
+    "PHIL - 101 Introduction to Philosophy Credits: 3",
+    "PHIL - 121 Critical Thinking Credits: 3",
+    "PHIL - 201 Ancient and Medieval Philosophy Credits: 3",
+    "PHIL - 202 Modern Philosophy Credits: 3",
+    "PHIL - 203 Introduction to Ethics Credits: 3",
+    "PHIL - 270 Introduction to Asian Religious Thought Credits: 3",
+    "REL - 201 Introduction to Religion Credits: 3",
+    "REL - 209 Comparative Religion Credits: 3",
+    "REL - 210 Social History of Christianity Credits: 3",
+    "REL - 270 Introduction to Asian Religious Thought Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "COMM101",
+         "title": ")"
+        }
+       ],
+       "conjunction": "and",
+       "text": "(Those planning to pursue Pharmacy should take COMM 101)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM101",
+         "title": "Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM - 101 Public Speaking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM102",
+         "title": "Introduction to Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM - 102 Introduction to Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM201",
+         "title": "Interpersonal Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM - 201 Interpersonal Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM204",
+         "title": "Intro to Mass Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM - 204 Intro to Mass Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL203",
+         "title": "English Literature through the Eighteenth Century"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 203 English Literature through the Eighteenth Century",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL204",
+         "title": "English Literature: Romanticism to the Present"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 204 English Literature: Romanticism to the Present",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL205",
+         "title": "American Literature through the Civil War"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 205 American Literature through the Civil War",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL206",
+         "title": "American Literature: Civil War to the Present"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 206 American Literature: Civil War to the Present",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL210",
+         "title": "Shakespeare"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 210 Shakespeare",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL211",
+         "title": "Modernism"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 211 Modernism",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL214",
+         "title": "African-American Literature"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 214 African-American Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL215",
+         "title": "Introduction to Literary Study"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 215 Introduction to Literary Study",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGL216",
+         "title": "Digital Literacies"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGL - 216 Digital Literacies",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL101",
+         "title": "Introduction to Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 101 Introduction to Philosophy",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL121",
+         "title": "Critical Thinking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 121 Critical Thinking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL201",
+         "title": "Ancient and Medieval Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 201 Ancient and Medieval Philosophy",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL202",
+         "title": "Modern Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 202 Modern Philosophy",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL203",
+         "title": "Introduction to Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 203 Introduction to Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL270",
+         "title": "Introduction to Asian Religious Thought"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 270 Introduction to Asian Religious Thought",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL201",
+         "title": "Introduction to Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 201 Introduction to Religion",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL209",
+         "title": "Comparative Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 209 Comparative Religion",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL210",
+         "title": "Social History of Christianity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 210 Social History of Christianity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL270",
+         "title": "Introduction to Asian Religious Thought"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 270 Introduction to Asian Religious Thought",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The Language and History of Fine Arts",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one from the following:",
+   "source_text": [
+    "The Language and History of Fine Arts: 3 Credit Hours",
+    "Select one from the following:",
+    "ART - 201 Art History Survey Credits: 3",
+    "ART - 202 Art History Survey Credits: 3",
+    "ART - 231 Art Appreciation Credits: 3",
+    "MUS - 103 Music Appreciation Credits: 3",
+    "MUS - 123 Intro to Rock n’ Roll Credits: 3",
+    "THEA - 201 Theatre: A Contemporary and Historical Introduction Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ART201",
+         "title": "Art History Survey"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART - 201 Art History Survey",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART202",
+         "title": "Art History Survey"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART - 202 Art History Survey",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ART231",
+         "title": "Art Appreciation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART - 231 Art Appreciation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS103",
+         "title": "Music Appreciation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS - 103 Music Appreciation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MUS123",
+         "title": "Intro to Rock n’ Roll"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MUS - 123 Intro to Rock n’ Roll",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "THEA201",
+         "title": "Theatre: A Contemporary and Historical Introduction"
+        }
+       ],
+       "conjunction": "and",
+       "text": "THEA - 201 Theatre: A Contemporary and Historical Introduction",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The Human Experience",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one from the following:",
+   "source_text": [
+    "The Human Experience: 3 Credit Hours",
+    "Select one from the following:",
+    "ANTH - 103 Cultural Anthropology Credits: 3",
+    "PHIL - 101 Introduction to Philosophy Credits: 3",
+    "PHIL - 121 Critical Thinking Credits: 3",
+    "PHIL - 201 Ancient and Medieval Philosophy Credits: 3",
+    "PHIL - 202 Modern Philosophy Credits: 3",
+    "PHIL - 203 Introduction to Ethics Credits: 3",
+    "PHIL - 270 Introduction to Asian Religious Thought Credits: 3",
+    "PSY - 201 Introduction to Psychology as a Natural Science Credits: 3",
+    "PSY - 202 Introduction to Psychology as a Social Science Credits: 3",
+    "PSY - 217 Research Methods in the Behavioral Sciences Credits: 3",
+    "PSY - 218 Abnormal Psychology Credits: 3",
+    "PSY - 240 Introduction to Counseling Credits: 3",
+    "PSY - 250 Developmental Psychology Credits: 3",
+    "PSY - 292 Stress Management Credits: 3",
+    "PSY - 295 Human Sexuality Credits: 3",
+    "REL - 201 Introduction to Religion Credits: 3",
+    "REL - 209 Comparative Religion Credits: 3",
+    "REL - 210 Social History of Christianity Credits: 3",
+    "REL - 270 Introduction to Asian Religious Thought Credits: 3",
+    "SOC - 201 General Sociology Credits: 3",
+    "SOC - 204 Social Problems Credits: 3",
+    "SOC - 208 Introduction to Race and Ethnicity Credits: 3",
+    "SOC - 250 Criminology Credits: 3",
+    "SOC - 253 Marriage and the Family Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ANTH103",
+         "title": "Cultural Anthropology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ANTH - 103 Cultural Anthropology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL101",
+         "title": "Introduction to Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 101 Introduction to Philosophy",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL121",
+         "title": "Critical Thinking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 121 Critical Thinking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL201",
+         "title": "Ancient and Medieval Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 201 Ancient and Medieval Philosophy",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL202",
+         "title": "Modern Philosophy"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 202 Modern Philosophy",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL203",
+         "title": "Introduction to Ethics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 203 Introduction to Ethics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL270",
+         "title": "Introduction to Asian Religious Thought"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 270 Introduction to Asian Religious Thought",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY201",
+         "title": "Introduction to Psychology as a Natural Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 201 Introduction to Psychology as a Natural Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY202",
+         "title": "Introduction to Psychology as a Social Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 202 Introduction to Psychology as a Social Science",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY217",
+         "title": "Research Methods in the Behavioral Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 217 Research Methods in the Behavioral Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY218",
+         "title": "Abnormal Psychology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 218 Abnormal Psychology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY240",
+         "title": "Introduction to Counseling"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 240 Introduction to Counseling",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY250",
+         "title": "Developmental Psychology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 250 Developmental Psychology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY292",
+         "title": "Stress Management"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 292 Stress Management",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PSY295",
+         "title": "Human Sexuality"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PSY - 295 Human Sexuality",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL201",
+         "title": "Introduction to Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 201 Introduction to Religion",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL209",
+         "title": "Comparative Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 209 Comparative Religion",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL210",
+         "title": "Social History of Christianity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 210 Social History of Christianity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL270",
+         "title": "Introduction to Asian Religious Thought"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 270 Introduction to Asian Religious Thought",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC201",
+         "title": "General Sociology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC - 201 General Sociology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC204",
+         "title": "Social Problems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC - 204 Social Problems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC208",
+         "title": "Introduction to Race and Ethnicity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC - 208 Introduction to Race and Ethnicity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC250",
+         "title": "Criminology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC - 250 Criminology",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SOC253",
+         "title": "Marriage and the Family"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SOC - 253 Marriage and the Family",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "U.S. and World Cultures",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one from the following:",
+   "source_text": [
+    "U.S. and World Cultures: 3 Credit Hours",
+    "Select one from the following:",
+    "ECON - 201 Principles of Economics (Macro) Credits: 3",
+    "ECON - 202 Principles of Economics (Micro) Credits: 3",
+    "GEO - 101 Major World Regions Credits: 3",
+    "GEO - 103 Cultural Geography Credits: 3",
+    "GOVT - 201 American Government and Politics Credits: 3",
+    "GOVT - 202 The United States in World Affairs Credits: 3",
+    "GOVT - 203 Comparative Government and Politics Credits: 3",
+    "HIST - 101 Western Civilization to 1715 Credits: 3",
+    "HIST - 102 Western Civilization since 1715 Credits: 3",
+    "HIST - 191 World History from Neolithic to 1500 Credits: 3",
+    "HIST - 192 World History from 1500 to Present Credits: 3",
+    "HIST - 201 American History to 1865 Credits: 3",
+    "HIST - 202 American History since 1865 Credits: 3",
+    "HIST - 222 The Civil War and Reconstruction Credits: 3",
+    "HIST - 240 Nazi Germany Credits: 3",
+    "HIST - 242 The Medieval Crusades Credits: 3",
+    "HIST - 248 Modern Germany Credits: 3",
+    "HIST - 250 Modern America: U.S. History since 1945 Credits: 3",
+    "HIST - 259 American Military History Credits: 3",
+    "PHIL - 270 Introduction to Asian Religious Thought Credits: 3",
+    "REL - 201 Introduction to Religion Credits: 3",
+    "REL - 209 Comparative Religion Credits: 3",
+    "REL - 210 Social History of Christianity Credits: 3",
+    "REL - 219 History and Religion of Israel Credits: 3",
+    "REL - 220 New Testament World Credits: 3",
+    "REL - 254 Religion in Contemporary America Credits: 3",
+    "REL - 270 Introduction to Asian Religious Thought Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ECON201",
+         "title": "Principles of Economics (Macro)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECON - 201 Principles of Economics (Macro)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECON202",
+         "title": "Principles of Economics (Micro)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECON - 202 Principles of Economics (Micro)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO101",
+         "title": "Major World Regions"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO - 101 Major World Regions",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEO103",
+         "title": "Cultural Geography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEO - 103 Cultural Geography",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOVT201",
+         "title": "American Government and Politics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOVT - 201 American Government and Politics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOVT202",
+         "title": "The United States in World Affairs"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOVT - 202 The United States in World Affairs",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GOVT203",
+         "title": "Comparative Government and Politics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GOVT - 203 Comparative Government and Politics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST101",
+         "title": "Western Civilization to 1715"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 101 Western Civilization to 1715",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST102",
+         "title": "Western Civilization since 1715"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 102 Western Civilization since 1715",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST191",
+         "title": "World History from Neolithic to 1500"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 191 World History from Neolithic to 1500",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST192",
+         "title": "World History from 1500 to Present"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 192 World History from 1500 to Present",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST201",
+         "title": "American History to 1865"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 201 American History to 1865",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST202",
+         "title": "American History since 1865"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 202 American History since 1865",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST222",
+         "title": "The Civil War and Reconstruction"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 222 The Civil War and Reconstruction",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST240",
+         "title": "Nazi Germany"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 240 Nazi Germany",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST242",
+         "title": "The Medieval Crusades"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 242 The Medieval Crusades",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST248",
+         "title": "Modern Germany"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 248 Modern Germany",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST250",
+         "title": "Modern America: U.S. History since 1945"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 250 Modern America: U.S. History since 1945",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "HIST259",
+         "title": "American Military History"
+        }
+       ],
+       "conjunction": "and",
+       "text": "HIST - 259 American Military History",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL270",
+         "title": "Introduction to Asian Religious Thought"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL - 270 Introduction to Asian Religious Thought",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL201",
+         "title": "Introduction to Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 201 Introduction to Religion",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL209",
+         "title": "Comparative Religion"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 209 Comparative Religion",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL210",
+         "title": "Social History of Christianity"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 210 Social History of Christianity",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL219",
+         "title": "History and Religion of Israel"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 219 History and Religion of Israel",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL220",
+         "title": "New Testament World"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 220 New Testament World",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL254",
+         "title": "Religion in Contemporary America"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 254 Religion in Contemporary America",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "REL270",
+         "title": "Introduction to Asian Religious Thought"
+        }
+       ],
+       "conjunction": "and",
+       "text": "REL - 270 Introduction to Asian Religious Thought",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose at least 7 credits from the courses below:",
+   "source_text": [
+    "Required Courses:",
+    "CSCI - 221 Programming for Computer Science & Engineering Majors I Credits: 4",
+    "MATH - 251 Calculus I Credits: 4",
+    "MATH - 252 Calculus II Credits: 4",
+    "Choose at least 7 credits from the courses below:",
+    "(For Mathematics take MATH 261 and at least one of MATH 254/271. For Computer Science take CSCI 222 and one math course).",
+    "CSCI - 222 Programming for Computer Science & Engineering Majors II Credits: 4",
+    "MATH - 254 Elementary Linear Algebra Credits: 3",
+    "MATH - 261 Multivariable Calculus Credits: 4",
+    "MATH - 271 Differential Equations Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI221",
+         "title": "Programming for Computer Science & Engineering Majors I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI - 221 Programming for Computer Science & Engineering Majors I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH251",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH - 251 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH252",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH - 252 Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": null,
+     "credits": {
+      "min": 7,
+      "max": 7,
+      "raw": "7"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH261",
+         "title": "and at least one of"
+        },
+        {
+         "code": "MATH254",
+         "title": "/271. For Computer Science take"
+        },
+        {
+         "code": "CSCI222",
+         "title": "and one math course)."
+        }
+       ],
+       "conjunction": "and",
+       "text": "(For Mathematics take MATH 261 and at least one of MATH 254/271. For Computer Science take CSCI 222 and one math course).",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI222",
+         "title": "Programming for Computer Science & Engineering Majors II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI - 222 Programming for Computer Science & Engineering Majors II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH254",
+         "title": "Elementary Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH - 254 Elementary Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH261",
+         "title": "Multivariable Calculus"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH - 261 Multivariable Calculus",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH271",
+         "title": "Differential Equations"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH - 271 Differential Equations",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses:",
+    "PHYS - 201 University Physics (Lecture and Lab) Credits: 4",
+    "PHYS - 202 University Physics (Lecture and Lab) Credits: 4"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHYS201",
+         "title": "University Physics (Lecture and Lab)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS - 201 University Physics (Lecture and Lab)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS202",
+         "title": "University Physics (Lecture and Lab)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS - 202 University Physics (Lecture and Lab)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Electives: 15",
+   "credits": {
+    "min": 16,
+    "max": 16,
+    "raw": "16"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Foreign Language: it is recommended that students check with their desired transfer institution to determine their foreign language requirements.",
+   "source_text": [
+    "Electives: 15 - 16 Credit Hours",
+    "Recommended electives (3-6) in Math: MATH 261, MATH 271 Recommended electives (4-12) from the Natural Sciences (Mathematics and Computer Science majors are often required to take one to three additional Natural Science courses. It is recommended that students check with their desired transfer institution to determine the specific natural science courses required. (No more than two additional PE credit hours may be taken for elective credit.)",
+    "Foreign Language",
+    "Computer Proficiency",
+    "The Computer Proficiency requirement for this degree is satisfied through the Quantitive and Symbolic Reasoning component. No additional courses are required."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH261",
+         "title": null
+        },
+        {
+         "code": "MATH271",
+         "title": "Recommended electives (4-12) from the Natural Sciences (Mathematics and Computer Science majors are often required to take one to three additional Natural Science courses. It is recommended that students check with their desired transfer institution to determine the specific natural science courses required. (No more than two additional PE credit hours may be taken for elective credit.)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "Recommended electives (3-6) in Math: MATH 261, MATH 271 Recommended electives (4-12) from the Natural Sciences (Mathematics and Computer Science majors are often required to take one to three additional Natural Science courses. It is recommended that students check with their desired transfer institution to determine the specific natural science courses required. (No more than two additional PE credit hours may be taken for elective credit.)",
+       "credits": {
+        "min": 4,
+        "max": 12,
+        "raw": "4-12"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Computer Proficiency",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "The Computer Proficiency requirement for this degree is satisfied through the Quantitive and Symbolic Reasoning component. No additional courses are required.",
+       "category": "The Computer Proficiency requirement for this degree is satisfied through the Quantitive and Symbolic Reasoning component. No additional courses are required."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Foreign Language: it is recommended that students check with their desired transfer institution to determine their foreign language requirements."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 76 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "8 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "76 distinct courses across 95 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 34–34 against a stated 60, but 2 of 8 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "1 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 8,
+   "sections": 10,
+   "rows": 95,
+   "course_rows": 94,
+   "category_rows": 1,
+   "distinct_courses": 76,
+   "credit_span": {
+    "min": 34,
+    "max": 34,
+    "groups_with_credits": 6
+   },
+   "stated_total": "60"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.767Z"
+}

@@ -1,0 +1,3370 @@
+{
+ "slug": "george-mason-university",
+ "name": "George Mason University",
+ "level": "four_year",
+ "platform": "courseleaf",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.gmu.edu/colleges-schools/engineering-computing/school-computing/computer-science/computer-science-bs/",
+ "captured_at": "2026-08-02T05:54:26.325Z",
+ "program_title": null,
+ "total_credits": {
+  "min": 32,
+  "max": 32,
+  "raw": "32"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Computer Science Core",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following: 2 Select one of the following: 2",
+   "source_text": [
+    "CS 110 Essentials of Computer Science 1",
+    "CS 112 Introduction to Computer Programming (Mason Core)",
+    "or CS 108& CS 109 Intro to Computer Programming, Part A (Mason Core)and Intro to Computer Programming, Part B",
+    "CS 211 Object-Oriented Programming",
+    "CS 262 Introduction to Low-Level Programming",
+    "CS 310 Data Structures",
+    "CS 321 Software Engineering (Mason Core)",
+    "CS 330 Formal Methods and Models",
+    "CS 367 Computer Systems and Programming",
+    "CS 405 Ethics and Law in Computing (Mason Core)",
+    "CS 450 Database Concepts",
+    "Select one of the following: 2",
+    "CS 471 Operating Systems",
+    "CS 571 Operating Systems (for BAM students and Departmental Honors students only)",
+    "Select one of the following: 2",
+    "CS 483 Analysis of Algorithms",
+    "CS 583 Analysis of Algorithms (for BAM students and Departmental Honors students only)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS110",
+         "title": "Essentials of Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 110 Essentials of Computer Science 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS112",
+         "title": "Introduction to Computer Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 112 Introduction to Computer Programming (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS108",
+         "title": "Intro to Computer Programming, Part A"
+        },
+        {
+         "code": "CS109",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "or",
+       "text": "or CS 108& CS 109 Intro to Computer Programming, Part A (Mason Core)and Intro to Computer Programming, Part B",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS211",
+         "title": "Object-Oriented Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 211 Object-Oriented Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS262",
+         "title": "Introduction to Low-Level Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 262 Introduction to Low-Level Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS310",
+         "title": "Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 310 Data Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS321",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 321 Software Engineering (Mason Core)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS330",
+         "title": "Formal Methods and Models"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 330 Formal Methods and Models",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS367",
+         "title": "Computer Systems and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 367 Computer Systems and Programming",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS405",
+         "title": "Ethics and Law in Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 405 Ethics and Law in Computing (Mason Core)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS450",
+         "title": "Database Concepts"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 450 Database Concepts",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS471",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 471 Operating Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems (for BAM students and Departmental Honors students only)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems (for BAM students and Departmental Honors students only)",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS483",
+         "title": "Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 483 Analysis of Algorithms",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms (for BAM students and Departmental Honors students only)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms (for BAM students and Departmental Honors students only)",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Senior Computer Science",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one from the following: Select three additional courses from the following:",
+   "source_text": [
+    "Select one from the following:",
+    "CS 455 Computer Communications and Networking 5",
+    "or CS 555 Computer Communications and Networking",
+    "CS 468 Secure Programming and Systems",
+    "CS 475 Concurrent and Distributed Systems",
+    "Select three additional courses from the following:",
+    "CS 425 Game Programming I",
+    "CS 440 Compilers 5",
+    "or CS 540 Compilers",
+    "CS 450 Database Concepts",
+    "CS 451 Computer Graphics 5",
+    "or CS 551 Computer Graphics",
+    "CS 452 Virtual Reality",
+    "CS 453 Computational Photography",
+    "CS 455 Computer Communications and Networking 5",
+    "or CS 555 Computer Communications and Networking",
+    "CS 463 Comparative Programming Languages",
+    "CS 465 Computer Systems Architecture 1",
+    "CS 468 Secure Programming and Systems",
+    "CS 475 Concurrent and Distributed Systems",
+    "CS 477 Mobile Application Development",
+    "CS 478 Natural Language Processing",
+    "CS 480 Introduction to Artificial Intelligence 5",
+    "or CS 580 Introduction to Artificial Intelligence",
+    "CS 482 Computer Vision",
+    "CS 484 Data Mining 5",
+    "or CS 584 Theory and Applications of Data Mining",
+    "CS 485 Autonomous Robotics",
+    "CS 487 Introduction to Cryptography 5",
+    "or CS 587 Introduction to Cryptography",
+    "CS 489 Deep Learning",
+    "CS 491 Industry-Sponsored Senior Design Project 2",
+    "CS 499 Special Topics in Computer Science 3",
+    "MATH 446 Numerical Analysis I 4",
+    "or OR 481 Numerical Methods in Engineering"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS455",
+         "title": "Computer Communications and Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 455 Computer Communications and Networking 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 555 Computer Communications and Networking",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS468",
+         "title": "Secure Programming and Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 468 Secure Programming and Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS475",
+         "title": "Concurrent and Distributed Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 475 Concurrent and Distributed Systems",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 3,
+     "credits": {
+      "min": 9,
+      "max": 9,
+      "raw": "9"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS425",
+         "title": "Game Programming I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 425 Game Programming I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS440",
+         "title": "Compilers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 440 Compilers 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS540",
+         "title": "Compilers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 540 Compilers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS450",
+         "title": "Database Concepts"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 450 Database Concepts",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS451",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 451 Computer Graphics 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS551",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 551 Computer Graphics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS452",
+         "title": "Virtual Reality"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 452 Virtual Reality",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS453",
+         "title": "Computational Photography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 453 Computational Photography",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS455",
+         "title": "Computer Communications and Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 455 Computer Communications and Networking 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 555 Computer Communications and Networking",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS463",
+         "title": "Comparative Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 463 Comparative Programming Languages",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS465",
+         "title": "Computer Systems Architecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 465 Computer Systems Architecture 1",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS468",
+         "title": "Secure Programming and Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 468 Secure Programming and Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS475",
+         "title": "Concurrent and Distributed Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 475 Concurrent and Distributed Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS477",
+         "title": "Mobile Application Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 477 Mobile Application Development",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS478",
+         "title": "Natural Language Processing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 478 Natural Language Processing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS480",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 480 Introduction to Artificial Intelligence 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 580 Introduction to Artificial Intelligence",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS482",
+         "title": "Computer Vision"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 482 Computer Vision",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS484",
+         "title": "Data Mining"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 484 Data Mining 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 584 Theory and Applications of Data Mining",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS485",
+         "title": "Autonomous Robotics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 485 Autonomous Robotics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS487",
+         "title": "Introduction to Cryptography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 487 Introduction to Cryptography 5",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS587",
+         "title": "Introduction to Cryptography"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or CS 587 Introduction to Cryptography",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS489",
+         "title": "Deep Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 489 Deep Learning",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS491",
+         "title": "Industry-Sponsored Senior Design Project"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 491 Industry-Sponsored Senior Design Project 2",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS499",
+         "title": "Special Topics in Computer Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 499 Special Topics in Computer Science 3",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH446",
+         "title": "Numerical Analysis I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 446 Numerical Analysis I 4",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "OR481",
+         "title": "Numerical Methods in Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or OR 481 Numerical Methods in Engineering",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Mathematics",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "MATH 113 Analytic Geometry and Calculus I (Mason Core)",
+    "or MATH 123& MATH 124 Calculus with Algebra/Trigonometry, Part Aand Calculus with Algebra/Trigonometry, Part B (Mason Core)",
+    "MATH 114 Analytic Geometry and Calculus II",
+    "MATH 125 Discrete Mathematics I (Mason Core)",
+    "MATH 203 Linear Algebra",
+    "MATH 213 Analytic Geometry and Calculus III"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH113",
+         "title": "Analytic Geometry and Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 113 Analytic Geometry and Calculus I (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH123",
+         "title": "Calculus with Algebra/Trigonometry, Part A"
+        },
+        {
+         "code": "MATH124",
+         "title": "and Calculus with Algebra/Trigonometry, Part B (Mason Core)"
+        }
+       ],
+       "conjunction": "or",
+       "text": "or MATH 123& MATH 124 Calculus with Algebra/Trigonometry, Part Aand Calculus with Algebra/Trigonometry, Part B (Mason Core)",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH114",
+         "title": "Analytic Geometry and Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 114 Analytic Geometry and Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH125",
+         "title": "Discrete Mathematics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 125 Discrete Mathematics I (Mason Core)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH203",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 203 Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH213",
+         "title": "Analytic Geometry and Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 213 Analytic Geometry and Calculus III",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Statistics",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "STAT 344 Probability and Statistics for Engineers and Scientists I 1"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT344",
+         "title": "Probability and Statistics for Engineers and Scientists I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 344 Probability and Statistics for Engineers and Scientists I 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Computer Science-Related Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select 6 credits from the following:",
+   "source_text": [
+    "Select 6 credits from the following:",
+    "STAT 354 Probability and Statistics for Engineers and Scientists II",
+    "OR 335 Discrete Systems Modeling and Simulation",
+    "OR 441 Deterministic Optimization",
+    "OR 442 Stochastic Models",
+    "ECE 301 Digital Electronics",
+    "or ECE 231& ECE 232 Digital System Designand Digital System Design Lab",
+    "ECE 350 Embedded Systems and Hardware Interfaces",
+    "ECE 446 Device Driver Development",
+    "ECE 447 Microcontrollers",
+    "ECE 455 GPU Architecture and Programming",
+    "ECE 511 Computer Architecture",
+    "SWE 419 Object-Oriented Software Design and Implementation 3",
+    "or SWE 619 Object-Oriented Software Specification and Construction",
+    "SWE 432 Web Application Development 3",
+    "or SWE 642 Software Engineering for the World Wide Web",
+    "SWE 437 Software Testing and Maintenance 3",
+    "or SWE 637 Software Testing",
+    "SWE 443 Software Architectures",
+    "SYST 371 Systems Engineering Management",
+    "SYST 470 Human Factors Engineering",
+    "PHIL 371 Philosophy of the Natural Sciences",
+    "PHIL 376 Symbolic Logic",
+    "ENGH 388 Professional and Technical Writing"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 6,
+      "max": 6,
+      "raw": "6"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT354",
+         "title": "Probability and Statistics for Engineers and Scientists II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 354 Probability and Statistics for Engineers and Scientists II",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "OR335",
+         "title": "Discrete Systems Modeling and Simulation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 335 Discrete Systems Modeling and Simulation",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "OR441",
+         "title": "Deterministic Optimization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 441 Deterministic Optimization",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "OR442",
+         "title": "Stochastic Models"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 442 Stochastic Models",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE301",
+         "title": "Digital Electronics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 301 Digital Electronics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE231",
+         "title": "Digital System Design"
+        },
+        {
+         "code": "ECE232",
+         "title": "and Digital System Design Lab"
+        }
+       ],
+       "conjunction": "or",
+       "text": "or ECE 231& ECE 232 Digital System Designand Digital System Design Lab",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE350",
+         "title": "Embedded Systems and Hardware Interfaces"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 350 Embedded Systems and Hardware Interfaces",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE446",
+         "title": "Device Driver Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 446 Device Driver Development",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE447",
+         "title": "Microcontrollers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 447 Microcontrollers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE455",
+         "title": "GPU Architecture and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 455 GPU Architecture and Programming",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE511",
+         "title": "Computer Architecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 511 Computer Architecture",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE419",
+         "title": "Object-Oriented Software Design and Implementation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 419 Object-Oriented Software Design and Implementation 3",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE619",
+         "title": "Object-Oriented Software Specification and Construction"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or SWE 619 Object-Oriented Software Specification and Construction",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE432",
+         "title": "Web Application Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 432 Web Application Development 3",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE642",
+         "title": "Software Engineering for the World Wide Web"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or SWE 642 Software Engineering for the World Wide Web",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE437",
+         "title": "Software Testing and Maintenance"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 437 Software Testing and Maintenance 3",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE637",
+         "title": "Software Testing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or SWE 637 Software Testing",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE443",
+         "title": "Software Architectures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 443 Software Architectures",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SYST371",
+         "title": "Systems Engineering Management"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SYST 371 Systems Engineering Management",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "SYST470",
+         "title": "Human Factors Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SYST 470 Human Factors Engineering",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL371",
+         "title": "Philosophy of the Natural Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL 371 Philosophy of the Natural Sciences",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "PHIL376",
+         "title": "Symbolic Logic"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHIL 376 Symbolic Logic",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGH388",
+         "title": "Professional and Technical Writing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGH 388 Professional and Technical Writing",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Natural Science",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select 12 credits of natural science",
+   "source_text": [
+    "Select 12 credits of natural science"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 12,
+      "max": 12,
+      "raw": "12"
+     },
+     "rows": []
+    }
+   ]
+  },
+  {
+   "title": "Biology",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Lecture and Lab, selected from the following:",
+    "BIOL 102 Introductory Biology I-Survey of Biodiversity and Ecology (Mason Core)",
+    "BIOL 106 Introductory Biology I Laboratory (Mason Core)",
+    "BIOL 107 Intro Biology II Lecture (Mason Core)",
+    "Lecture and Lab, selected from the following:",
+    "BIOL 103& BIOL 105 Introductory Biology II-Survey of Cell and Molecular Biology (Mason Core)and Introductory Biology II Laboratory (Mason Core)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Lecture and Lab, selected from the following:",
+       "category": "Lecture and Lab, selected from the following:",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL102",
+         "title": "Introductory Biology I-Survey of Biodiversity and Ecology"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 102 Introductory Biology I-Survey of Biodiversity and Ecology (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL106",
+         "title": "Introductory Biology I Laboratory"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 106 Introductory Biology I Laboratory (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL107",
+         "title": "Intro Biology II Lecture"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 107 Intro Biology II Lecture (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Lecture and Lab, selected from the following:",
+       "category": "Lecture and Lab, selected from the following:",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "BIOL103",
+         "title": "Introductory Biology II-Survey of Cell and Molecular Biology"
+        },
+        {
+         "code": "BIOL105",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "BIOL 103& BIOL 105 Introductory Biology II-Survey of Cell and Molecular Biology (Mason Core)and Introductory Biology II Laboratory (Mason Core)",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Chemistry",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CHEM 211& CHEM 213 General Chemistry I (Mason Core)and General Chemistry Laboratory I (Mason Core)",
+    "CHEM 212& CHEM 214 General Chemistry II (Mason Core)and General Chemistry Laboratory II (Mason Core)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CHEM211",
+         "title": "General Chemistry I"
+        },
+        {
+         "code": "CHEM213",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 211& CHEM 213 General Chemistry I (Mason Core)and General Chemistry Laboratory I (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CHEM212",
+         "title": "General Chemistry II"
+        },
+        {
+         "code": "CHEM214",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CHEM 212& CHEM 214 General Chemistry II (Mason Core)and General Chemistry Laboratory II (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Geology",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "GEOL 101& GEOL 103 Physical Geology (Mason Core)and Physical Geology Lab (Mason Core)",
+    "GEOL 102& GEOL 104 Historical Geology (Mason Core)and Historical Geology Laboratory (Mason Core)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "GEOL101",
+         "title": "Physical Geology"
+        },
+        {
+         "code": "GEOL103",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEOL 101& GEOL 103 Physical Geology (Mason Core)and Physical Geology Lab (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "GEOL102",
+         "title": "Historical Geology"
+        },
+        {
+         "code": "GEOL104",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "GEOL 102& GEOL 104 Historical Geology (Mason Core)and Historical Geology Laboratory (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Physics",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "PHYS 160& PHYS 161 University Physics I (Mason Core)and University Physics I Laboratory (Mason Core)",
+    "PHYS 260& PHYS 261 University Physics II (Mason Core)and University Physics II Laboratory (Mason Core)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "PHYS160",
+         "title": "University Physics I"
+        },
+        {
+         "code": "PHYS161",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 160& PHYS 161 University Physics I (Mason Core)and University Physics I Laboratory (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "PHYS260",
+         "title": "University Physics II"
+        },
+        {
+         "code": "PHYS261",
+         "title": "(Mason Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "PHYS 260& PHYS 261 University Physics II (Mason Core)and University Physics II Laboratory (Mason Core)",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Additional Mason Core",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Oral Communication",
+    "COMM 100 Public Speaking (Mason Core)",
+    "or COMM 101 Fundamentals of Communication (Mason Core)",
+    "Written Communication",
+    "ENGH 100 Composition for Multilingual Writers (Mason Core)",
+    "or ENGH 101 Composition (Mason Core)",
+    "Advanced Composition",
+    "ENGH 302 Advanced Composition (Mason Core)",
+    "Literature",
+    "Arts",
+    "Global History",
+    "Social and Behavioral Sciences",
+    "Global Contexts"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Oral Communication",
+       "category": "Oral Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM100",
+         "title": "Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM 100 Public Speaking (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "COMM101",
+         "title": "Fundamentals of Communication"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or COMM 101 Fundamentals of Communication (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Written Communication",
+       "category": "Written Communication",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGH100",
+         "title": "Composition for Multilingual Writers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGH 100 Composition for Multilingual Writers (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGH101",
+         "title": "Composition"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or ENGH 101 Composition (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Advanced Composition",
+       "category": "Advanced Composition",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "ENGH302",
+         "title": "Advanced Composition"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENGH 302 Advanced Composition (Mason Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Literature",
+       "category": "Literature",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Arts",
+       "category": "Arts",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Global History",
+       "category": "Global History",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Social and Behavioral Sciences",
+       "category": "Social and Behavioral Sciences",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Global Contexts",
+       "category": "Global Contexts",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students must complete 8 elective credits",
+   "source_text": [
+    "Students must complete 8 elective credits"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 8,
+     "credits": {
+      "min": 8,
+      "max": 8,
+      "raw": "8"
+     },
+     "rows": []
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Master's Admission Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "MATH 213 Analytic Geometry and Calculus III",
+    "MATH 203 Linear Algebra",
+    "or MATH 321 Abstract Algebra",
+    "STAT 250 Introductory Statistics I (Mason Core)",
+    "or STAT 344 Probability and Statistics for Engineers and Scientists I",
+    "STAT 346 Probability for Engineers",
+    "or MATH 351 Probability",
+    "STAT 362 Introduction to Computer Statistical Packages"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH213",
+         "title": "Analytic Geometry and Calculus III"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 213 Analytic Geometry and Calculus III",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH203",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 203 Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH321",
+         "title": "Abstract Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 321 Abstract Algebra",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT250",
+         "title": "Introductory Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 250 Introductory Statistics I (Mason Core)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT344",
+         "title": "Probability and Statistics for Engineers and Scientists I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or STAT 344 Probability and Statistics for Engineers and Scientists I",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT346",
+         "title": "Probability for Engineers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 346 Probability for Engineers",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH351",
+         "title": "Probability"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 351 Probability",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT362",
+         "title": "Introduction to Computer Statistical Packages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 362 Introduction to Computer Statistical Packages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Pathway Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "STAT 544 Applied Probability *",
+    "or STAT 521 Applied Probability and Statistical Inference",
+    "STAT 554 Applied Statistics I",
+    "STAT 560 Biostatistical Methods",
+    "STAT 574 Survey Sampling I",
+    "STAT 663 Statistical Graphics and Data Visualization"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STAT544",
+         "title": "Applied Probability"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 544 Applied Probability *",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT521",
+         "title": "Applied Probability and Statistical Inference"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or STAT 521 Applied Probability and Statistical Inference",
+       "credits": null,
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT554",
+         "title": "Applied Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 554 Applied Statistics I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT560",
+         "title": "Biostatistical Methods"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 560 Biostatistical Methods",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT574",
+         "title": "Survey Sampling I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 574 Survey Sampling I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "STAT663",
+         "title": "Statistical Graphics and Data Visualization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "STAT 663 Statistical Graphics and Data Visualization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Pathway Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 571 Operating Systems (to replace CS 471)",
+    "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+    "CS 583 Analysis of Algorithms (to replace CS 483)",
+    "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+    "ECE 508 Internet of Things (elective for BS CS)",
+    "ECE 511 Computer Architecture (Computer Science-related course for BS CS)",
+    "ECE 512",
+    "ECE 516 Mobile Systems and Applications (elective for BS CS)",
+    "ECE 527 Learning From Data (elective for BS CS)",
+    "ECE 542 Computer Network Architectures and Protocols (to replace CS 455)",
+    "ECE 554 Machine Learning for Embedded Systems",
+    "ECE 555 GPU Architecture and Programming",
+    "ECE 556 Neuromorphic Computing"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems (to replace CS 471)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms (to replace CS 483)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE508",
+         "title": "Internet of Things (elective for BS CS)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 508 Internet of Things (elective for BS CS)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE511",
+         "title": "Computer Architecture (Computer Science-related course for BS CS)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 511 Computer Architecture (Computer Science-related course for BS CS)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "ECE 512",
+       "category": "ECE 512",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE516",
+         "title": "Mobile Systems and Applications (elective for BS CS)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 516 Mobile Systems and Applications (elective for BS CS)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE527",
+         "title": "Learning From Data (elective for BS CS)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 527 Learning From Data (elective for BS CS)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE542",
+         "title": "Computer Network Architectures and Protocols (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 542 Computer Network Architectures and Protocols (to replace CS 455)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE554",
+         "title": "Machine Learning for Embedded Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 554 Machine Learning for Embedded Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE555",
+         "title": "GPU Architecture and Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 555 GPU Architecture and Programming",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECE556",
+         "title": "Neuromorphic Computing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECE 556 Neuromorphic Computing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Option Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 540 Compilers (to replace CS 440)",
+    "CS 550 Database Systems (to replace CS 450)",
+    "CS 551 Computer Graphics (to replace CS 451)",
+    "CS 555 Computer Communications and Networking (to replace CS 455)",
+    "CS 571 Operating Systems (to replace CS 471)",
+    "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+    "CS 583 Analysis of Algorithms (to replace CS 483)",
+    "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+    "CS 587 Introduction to Cryptography (to replace CS 487)",
+    "SWE 619 Object-Oriented Software Specification and Construction (to replace SWE 419)",
+    "SWE 637 Software Testing (to replace SWE 437)",
+    "SWE 642 Software Engineering for the World Wide Web (to replace SWE 432)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS540",
+         "title": "Compilers (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 540 Compilers (to replace CS 440)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Systems (to replace CS 450)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS551",
+         "title": "Computer Graphics (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 551 Computer Graphics (to replace CS 451)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 555 Computer Communications and Networking (to replace CS 455)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems (to replace CS 471)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms (to replace CS 483)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS587",
+         "title": "Introduction to Cryptography (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 587 Introduction to Cryptography (to replace CS 487)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE619",
+         "title": "Object-Oriented Software Specification and Construction (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 619 Object-Oriented Software Specification and Construction (to replace SWE 419)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE637",
+         "title": "Software Testing (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 637 Software Testing (to replace SWE 437)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE642",
+         "title": "Software Engineering for the World Wide Web (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 642 Software Engineering for the World Wide Web (to replace SWE 432)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Option Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+    "CS 550 Database Systems (to replace CS 450)",
+    "CS 580 Introduction to Artificial Intelligence (to replace CS 480)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Systems (to replace CS 450)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Option Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 540 Compilers (to replace CS 440)",
+    "CS 550 Database Systems (to replace CS 450)",
+    "CS 551 Computer Graphics (to replace CS 451)",
+    "CS 555 Computer Communications and Networking (to replace CS 455)",
+    "CS 571 Operating Systems (to replace CS 471)",
+    "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+    "CS 583 Analysis of Algorithms (to replace CS 483)",
+    "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+    "CS 587 Introduction to Cryptography (to replace CS 487)",
+    "SWE 619 Object-Oriented Software Specification and Construction (to replace SWE 419)",
+    "SWE 637 Software Testing (to replace SWE 437)",
+    "SWE 642 Software Engineering for the World Wide Web (to replace SWE 432)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS540",
+         "title": "Compilers (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 540 Compilers (to replace CS 440)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Systems (to replace CS 450)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS551",
+         "title": "Computer Graphics (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 551 Computer Graphics (to replace CS 451)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 555 Computer Communications and Networking (to replace CS 455)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems (to replace CS 471)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms (to replace CS 483)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS587",
+         "title": "Introduction to Cryptography (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 587 Introduction to Cryptography (to replace CS 487)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE619",
+         "title": "Object-Oriented Software Specification and Construction (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 619 Object-Oriented Software Specification and Construction (to replace SWE 419)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE637",
+         "title": "Software Testing (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 637 Software Testing (to replace SWE 437)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE642",
+         "title": "Software Engineering for the World Wide Web (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 642 Software Engineering for the World Wide Web (to replace SWE 432)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Pathway Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 540 Compilers",
+    "CS 550 Database Systems",
+    "CS 551 Computer Graphics",
+    "CS 555 Computer Communications and Networking",
+    "CS 571 Operating Systems",
+    "CS 580 Introduction to Artificial Intelligence",
+    "CS 583 Analysis of Algorithms",
+    "CS 584 Theory and Applications of Data Mining"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS540",
+         "title": "Compilers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 540 Compilers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS551",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 551 Computer Graphics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 555 Computer Communications and Networking",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "OR 541 Operations Research: Deterministic Optimization (Core)",
+    "OR 542 Operations Research: Stochastic Models (Core)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "OR541",
+         "title": "Operations Research: Deterministic Optimization (Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 541 Operations Research: Deterministic Optimization (Core)",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "OR542",
+         "title": "Operations Research: Stochastic Models (Core)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 542 Operations Research: Stochastic Models (Core)",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Option Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 540 Compilers (to replace CS 440)",
+    "CS 550 Database Systems (to replace CS 450)",
+    "CS 551 Computer Graphics (to replace CS 451)",
+    "CS 555 Computer Communications and Networking (to replace CS 455)",
+    "CS 571 Operating Systems (to replace CS 471)",
+    "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+    "CS 583 Analysis of Algorithms (to replace CS 483)",
+    "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+    "CS 587 Introduction to Cryptography (to replace CS 487)",
+    "SWE 619 Object-Oriented Software Specification and Construction (to replace SWE 419)",
+    "SWE 637 Software Testing (to replace SWE 437)",
+    "SWE 642 Software Engineering for the World Wide Web (to replace SWE 432)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS540",
+         "title": "Compilers (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 540 Compilers (to replace CS 440)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Systems (to replace CS 450)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS551",
+         "title": "Computer Graphics (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 551 Computer Graphics (to replace CS 451)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 555 Computer Communications and Networking (to replace CS 455)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems (to replace CS 471)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence (to replace CS 480)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms (to replace CS 483)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining (to replace CS 484)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS587",
+         "title": "Introduction to Cryptography (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 587 Introduction to Cryptography (to replace CS 487)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE619",
+         "title": "Object-Oriented Software Specification and Construction (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 619 Object-Oriented Software Specification and Construction (to replace SWE 419)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE637",
+         "title": "Software Testing (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 637 Software Testing (to replace SWE 437)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SWE642",
+         "title": "Software Engineering for the World Wide Web (to replace"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SWE 642 Software Engineering for the World Wide Web (to replace SWE 432)",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Accelerated Pathway Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CS 540 Compilers",
+    "CS 550 Database Systems",
+    "CS 551 Computer Graphics",
+    "CS 555 Computer Communications and Networking",
+    "CS 571 Operating Systems",
+    "CS 580 Introduction to Artificial Intelligence",
+    "CS 583 Analysis of Algorithms",
+    "CS 584 Theory and Applications of Data Mining"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS540",
+         "title": "Compilers"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 540 Compilers",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS550",
+         "title": "Database Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 550 Database Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS551",
+         "title": "Computer Graphics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 551 Computer Graphics",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS555",
+         "title": "Computer Communications and Networking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 555 Computer Communications and Networking",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS571",
+         "title": "Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 571 Operating Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS580",
+         "title": "Introduction to Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 580 Introduction to Artificial Intelligence",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS583",
+         "title": "Analysis of Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 583 Analysis of Algorithms",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CS584",
+         "title": "Theory and Applications of Data Mining"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 584 Theory and Applications of Data Mining",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Requirements",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "OR 541 Operations Research: Deterministic Optimization",
+    "OR 542 Operations Research: Stochastic Models"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "OR541",
+         "title": "Operations Research: Deterministic Optimization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 541 Operations Research: Deterministic Optimization",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "OR542",
+         "title": "Operations Research: Stochastic Models"
+        }
+       ],
+       "conjunction": "and",
+       "text": "OR 542 Operations Research: Stochastic Models",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 119 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "23 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "119 distinct courses across 189 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 0–0 against a stated 32, but 23 of 23 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "11 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 23,
+   "sections": 26,
+   "rows": 189,
+   "course_rows": 178,
+   "category_rows": 11,
+   "distinct_courses": 119,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": "32"
+  }
+ },
+ "extracted_at": "2026-08-02T06:13:44.876Z"
+}

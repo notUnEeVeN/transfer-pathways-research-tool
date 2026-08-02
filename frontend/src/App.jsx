@@ -18,6 +18,7 @@ import VisualsPage from './visuals/VisualsPage'
 import MarylandPage from './maryland/MarylandPage'
 import ApiPage from './DataApiDocs'
 import TasksPage from './tasks/TasksPage'
+import VirginiaPage from './virginia/VirginiaPage'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
 // Stats components reused individually for a spacious full-width dashboard.
@@ -158,6 +159,7 @@ function availableConsoleViews(role) {
     'data',
     'visuals',
     'maryland',
+    'virginia',
     'audit',
     'tasks',
     'api',
@@ -233,6 +235,7 @@ function Console({ role, user }) {
             </div>
           )}
           {view === 'maryland' && <MarylandPage />}
+          {view === 'virginia' && <VirginiaPage />}
           {view === 'api' && <ApiPage />}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
@@ -251,6 +254,7 @@ function TopBar({ view, setView, role, user }) {
     { value: 'data', label: 'Data' },
     { value: 'visuals', label: 'Visuals' },
     { value: 'maryland', label: 'Maryland' },
+    { value: 'virginia', label: 'Virginia' },
     { value: 'audit', label: 'Audit' },
     { value: 'tasks', label: 'Tasks' },
     { value: 'api', label: 'API' },
