@@ -300,3 +300,56 @@ describe('buildDegreeGroups combination ASSIST blocks', () => {
     expect(single.covered).toBe(2);
   });
 });
+
+// Berkeley MCB names two calculus sequences and twelve emphasis tracks as `Or`
+// groups. Summing their sections charged the degree once per alternative and
+// pushed its denominator from 120 units to 392, which collapsed the coverage
+// heatmap to single digits.
+const orGroups = [{
+  title: 'Lower-division mathematics — one complete sequence',
+  group_conjunction: 'Or',
+  sections: [
+    {
+      section_advisement: 1,
+      unit_advisement: 8,
+      receivers: [{ receiving: { kind: 'series', parent_ids: [51, 52] }, options: [] }],
+    },
+    {
+      section_advisement: 1,
+      unit_advisement: 8,
+      receivers: [{ receiving: { kind: 'series', parent_ids: [10, 11] }, options: [] }],
+    },
+  ],
+}];
+
+describe('buildDegreeGroups alternative (Or) groups', () => {
+  it('charges one path, not one per alternative', () => {
+    const template = buildDegreeGroups(orGroups, {});
+    expect(template.units.total).toBe(8);
+    expect(template.total).toBe(1);
+  });
+
+  it('counts the group covered when any one alternative articulates', () => {
+    const result = buildDegreeGroups(orGroups, { articulated: new Set([51, 52]) });
+    expect(result.covered).toBe(1);
+    expect(result.units.covered).toBe(8);
+  });
+
+  it('does not average an articulated path with an unarticulated one', () => {
+    const result = buildDegreeGroups(orGroups, { articulated: new Set([10, 11]) });
+    expect(result.covered).toBe(1);
+    expect(result.units.covered).toBe(8);
+  });
+
+  it('reports the group missing when no alternative articulates', () => {
+    const result = buildDegreeGroups(orGroups, { articulated: new Set([999]) });
+    expect(result.covered).toBe(0);
+    expect(result.units.covered).toBe(0);
+    expect(result.units.total).toBe(8);
+  });
+
+  it('still sums the sections of an And group', () => {
+    const and = [{ ...orGroups[0], group_conjunction: 'And' }];
+    expect(buildDegreeGroups(and, {}).units.total).toBe(16);
+  });
+});

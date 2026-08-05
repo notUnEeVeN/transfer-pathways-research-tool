@@ -63,7 +63,17 @@ function geCoverCourses(areas, ccGeAreas) {
   return out;
 }
 
-async function loadUniversityCourses(db, requirementGroups) {
+/**
+ * `overrides` — `{ [parent_id]: units }` supplied by a degree document.
+ *
+ * ASSIST mirrors what a campus reported to it, which is occasionally behind the
+ * campus's own catalog. Berkeley publishes Chem 3A and 3B at 4 units; ASSIST
+ * still records 3. Correcting the mirror would diverge from upstream and be
+ * undone by the next import, so the document that noticed the discrepancy
+ * carries the correction and states its source. Everything else still comes
+ * from ASSIST.
+ */
+async function loadUniversityCourses(db, requirementGroups, overrides = null) {
   const parentIds = new Set();
   for (const g of requirementGroups || []) {
     for (const s of g.sections || []) {
@@ -79,6 +89,11 @@ async function loadUniversityCourses(db, requirementGroups) {
         { projection: { parent_id: 1, prefix: 1, number: 1, title: 1, min_units: 1, max_units: 1, _id: 0 } })
       .toArray();
     for (const c of rows) out[Number(c.parent_id)] = c;
+  }
+  for (const [pid, units] of Object.entries(overrides || {})) {
+    const row = out[Number(pid)];
+    if (!row || !Number.isFinite(Number(units))) continue;
+    out[Number(pid)] = { ...row, min_units: Number(units), max_units: Number(units), units_overridden: true };
   }
   return out;
 }
@@ -155,6 +170,34 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     let gTotal = 0;
     let gCovered = 0;
     const lines = [];
+    // An `Or` group is a set of alternative paths — twelve MCB emphasis tracks,
+    // two calculus sequences — and a student completes exactly ONE. Summing its
+    // sections charges the degree once per alternative: Berkeley MCB's twelve
+    // 24-unit tracks summed to 288 units and pushed the degree's denominator
+    // from 120 to 392, collapsing its coverage to single digits. The group is
+    // therefore collapsed to the single best-covered section, which is also the
+    // honest answer to "how far can this college get a student" — a student
+    // picks the sequence their college articulates. Berkeley MCB's math group
+    // is exactly that case: Math 51/52 articulates widely, Math 10A/10B never
+    // does, and the group is covered, not half-covered.
+    const isOr = String(g.group_conjunction || '').toLowerCase() === 'or'
+      && (g.sections || []).length > 1;
+    const unitsBefore = unitsTotal;
+    const coveredUnitsBefore = unitsCovered;
+    // Per-section deltas, recorded at the TOP of the next iteration so the
+    // several `continue` paths through the section body all get counted.
+    const sectionStats = [];
+    let mark = null;
+    const closeSection = () => {
+      if (!mark) return;
+      sectionStats.push({
+        total: gTotal - mark.gTotal,
+        covered: gCovered - mark.gCovered,
+        unitsTotal: unitsTotal - mark.unitsTotal,
+        unitsCovered: unitsCovered - mark.unitsCovered,
+      });
+      mark = null;
+    };
 
     // ASSIST does not always state a requirement as course rows. A campus may
     // publish one NAMED block instead — UC Irvine's biology "Mathematics
@@ -193,6 +236,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     );
 
     for (const s of g.sections || []) {
+      if (isOr) { closeSection(); mark = { gTotal, gCovered, unitsTotal, unitsCovered }; }
       const ask = s.section_advisement ?? 1;
       const recvs = s.receivers || [];
       const kind = recvs[0]?.receiving?.kind;
@@ -323,6 +367,18 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       if (evaluated) unitsCovered += sectionUnits * ((gCovered - sectionCoveredBefore) / ask);
     }
 
+    if (isOr) {
+      closeSection();
+      // Best-covered path wins; ties keep the authored order, so an unevaluated
+      // template reports its primary alternative rather than an arbitrary one.
+      const ratio = (x) => (x.total ? x.covered / x.total : 0);
+      const pick = sectionStats.reduce((a, b) => (ratio(b) > ratio(a) ? b : a),
+        sectionStats[0] || { total: 0, covered: 0, unitsTotal: 0, unitsCovered: 0 });
+      gTotal = pick.total;
+      gCovered = pick.covered;
+      unitsTotal = unitsBefore + pick.unitsTotal;
+      unitsCovered = coveredUnitsBefore + pick.unitsCovered;
+    }
     total += gTotal;
     covered += gCovered;
     if (byTier[tier]) { byTier[tier].total += gTotal; byTier[tier].covered += gCovered; }
@@ -335,7 +391,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     ...(byCategory ? { by_category: byCategory, by_category_multi: byCategoryMulti } : {}),
     by_tier: evaluated ? byTier : Object.fromEntries(TIERS.map((t) => [t, { total: byTier[t].total, covered: null }])),
     units: {
-      total: unitsTotal,
+      total: +unitsTotal.toFixed(1),
       // A partially covered authored block can produce fractional units (for
       // example, one of three slots in a 10-unit block). Keep one decimal so
       // the primary percentage is not distorted by whole-unit rounding.
