@@ -1,0 +1,148 @@
+[
+ {
+  "slug": "brcc",
+  "name": "Blue Ridge",
+  "vccs_url": "https://courses.vccs.edu/colleges/brcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/brcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/brcc/programs/major/246.AssociateofScienceinComputerScience"
+  ]
+ },
+ {
+  "slug": "brightpoint",
+  "name": "Brightpoint",
+  "vccs_url": "https://courses.vccs.edu/colleges/brightpoint/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/brightpoint/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/brightpoint/programs/major/246-01.AssociateofScienceDegreeinComputerScience"
+  ]
+ },
+ {
+  "slug": "camp",
+  "name": "Paul D. Camp",
+  "vccs_url": "https://courses.vccs.edu/colleges/camp/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/camp/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/camp/programs/major/246.AssociateofScienceinComputerScience"
+  ]
+ },
+ {
+  "slug": "cvcc",
+  "name": "Central Virginia",
+  "vccs_url": "https://courses.vccs.edu/colleges/cvcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/cvcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/cvcc/programs/major/246.AssociateofScienceinComputerScience"
+  ]
+ },
+ {
+  "slug": "gcc",
+  "name": "Germanna",
+  "vccs_url": "https://courses.vccs.edu/colleges/gcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/gcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/gcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+  ]
+ },
+ {
+  "slug": "laurelridge",
+  "name": "Laurel Ridge",
+  "vccs_url": "https://courses.vccs.edu/colleges/laurelridge/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/laurelridge/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/laurelridge/programs/major/246.AssociateofScienceDegreeinComputerScience",
+   "https://courses.vccs.edu/colleges/laurelridge/programs/major/221-246-01.CareerStudiesCertificateinComputerScience"
+  ]
+ },
+ {
+  "slug": "nrcc",
+  "name": "New River",
+  "vccs_url": "https://courses.vccs.edu/colleges/nrcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/nrcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/nrcc/programs/major/246.AssociateofScienceinComputerScience",
+   "https://courses.vccs.edu/colleges/nrcc/programs/major/831-01.AssociateofScienceinEngineeringDegreeComputerScienceMajor"
+  ]
+ },
+ {
+  "slug": "nova",
+  "name": "Northern Virginia",
+  "vccs_url": "https://courses.vccs.edu/colleges/nova/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/nova/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/nova/programs/major/2460.AssociateofScienceinComputerScienceDegree"
+  ]
+ },
+ {
+  "slug": "pvcc",
+  "name": "Piedmont Virginia",
+  "vccs_url": "https://courses.vccs.edu/colleges/pvcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/pvcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/pvcc/programs/major/246.AssociateofScienceDegreeinComputerScience"
+  ]
+ },
+ {
+  "slug": "reynolds",
+  "name": "J Sargeant Reynolds",
+  "vccs_url": "https://courses.vccs.edu/colleges/reynolds/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/reynolds/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/reynolds/programs/major/246.AssociateofScienceinComputerScienceDegree"
+  ]
+ },
+ {
+  "slug": "swcc",
+  "name": "Southwest Virginia",
+  "vccs_url": "https://courses.vccs.edu/colleges/swcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/swcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/swcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+  ]
+ },
+ {
+  "slug": "tcc",
+  "name": "Tidewater",
+  "vccs_url": "https://courses.vccs.edu/colleges/tcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/tcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/tcc/programs/major/246.AssociateofScienceComputerScience"
+  ]
+ },
+ {
+  "slug": "vhcc",
+  "name": "Virginia Highlands",
+  "vccs_url": "https://courses.vccs.edu/colleges/vhcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/vhcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/vhcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+  ]
+ },
+ {
+  "slug": "vpcc",
+  "name": "Virginia Peninsula",
+  "vccs_url": "https://courses.vccs.edu/colleges/vpcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/vpcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/vpcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+  ]
+ },
+ {
+  "slug": "vwcc",
+  "name": "Virginia Western",
+  "vccs_url": "https://courses.vccs.edu/colleges/vwcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/vwcc/programs/11.0701-ComputerScience",
+   "https://courses.vccs.edu/colleges/vwcc/programs/major/246.AssociateofScienceinComputerScienceDegree",
+   "https://courses.vccs.edu/colleges/vwcc/programs/major/831-01.AssociateofScienceinEngineeringDegreeComputerScienceMajor"
+  ]
+ },
+ {
+  "slug": "wcc",
+  "name": "Wytheville",
+  "vccs_url": "https://courses.vccs.edu/colleges/wcc/programs",
+  "programs": [
+   "https://courses.vccs.edu/colleges/wcc/programs/major/880-01.AssociateofScienceinScienceDegreeComputerScienceMajor"
+  ]
+ }
+]

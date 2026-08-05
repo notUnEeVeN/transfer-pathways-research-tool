@@ -1,0 +1,269 @@
+[
+ {
+  "slug": "brcc",
+  "name": "All Programs and Majors at Blue Ridge Commun",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/brcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science",
+    "h": "/colleges/brcc/programs/major/246.AssociateofScienceinComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "brightpoint",
+  "name": "All Programs and Majors at Brightpoint Commu",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/brightpoint/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science Degree in Computer Science",
+    "h": "/colleges/brightpoint/programs/major/246-01.AssociateofScienceDegreeinComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "camp",
+  "name": "All Programs and Majors at Camp Community Co",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/camp/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science",
+    "h": "/colleges/camp/programs/major/246.AssociateofScienceinComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "cvcc",
+  "name": "All Programs and Majors at Central Virginia ",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/cvcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science",
+    "h": "/colleges/cvcc/programs/major/246.AssociateofScienceinComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "dcc",
+  "name": "All Programs and Majors at Danville Communit",
+  "cs": []
+ },
+ {
+  "slug": "escc",
+  "name": "All Programs and Majors at Eastern Shore Com",
+  "cs": []
+ },
+ {
+  "slug": "gcc",
+  "name": "All Programs and Majors at Germanna Communit",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/gcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/gcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+   }
+  ]
+ },
+ {
+  "slug": "laurelridge",
+  "name": "All Programs and Majors at Laurel Ridge Comm",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/laurelridge/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science Degree in Computer Science",
+    "h": "/colleges/laurelridge/programs/major/246.AssociateofScienceDegreeinComputerScience"
+   },
+   {
+    "t": "Career Studies Certificate in Computer Science",
+    "h": "/colleges/laurelridge/programs/major/221-246-01.CareerStudiesCertificateinComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "mecc",
+  "name": "All Programs and Majors at Mountain Empire C",
+  "cs": []
+ },
+ {
+  "slug": "mgcc",
+  "name": "All Programs and Majors at Mountain Gateway ",
+  "cs": []
+ },
+ {
+  "slug": "nrcc",
+  "name": "All Programs and Majors at New River Communi",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/nrcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science",
+    "h": "/colleges/nrcc/programs/major/246.AssociateofScienceinComputerScience"
+   },
+   {
+    "t": "Associate of Science in Engineering Degree Computer Science Major",
+    "h": "/colleges/nrcc/programs/major/831-01.AssociateofScienceinEngineeringDegreeComputerScienceMajor"
+   }
+  ]
+ },
+ {
+  "slug": "nova",
+  "name": "All Programs and Majors at Northern Virginia",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/nova/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/nova/programs/major/2460.AssociateofScienceinComputerScienceDegree"
+   }
+  ]
+ },
+ {
+  "slug": "phcc",
+  "name": "All Programs and Majors at Patrick & Henry C",
+  "cs": []
+ },
+ {
+  "slug": "pvcc",
+  "name": "All Programs and Majors at Piedmont Virginia",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/pvcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science Degree in Computer Science",
+    "h": "/colleges/pvcc/programs/major/246.AssociateofScienceDegreeinComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "rcc",
+  "name": "All Programs and Majors at Rappahannock Comm",
+  "cs": []
+ },
+ {
+  "slug": "reynolds",
+  "name": "All Programs and Majors at Reynolds Communit",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/reynolds/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/reynolds/programs/major/246.AssociateofScienceinComputerScienceDegree"
+   }
+  ]
+ },
+ {
+  "slug": "svcc",
+  "name": "All Programs and Majors at Southside Virgini",
+  "cs": []
+ },
+ {
+  "slug": "swcc",
+  "name": "All Programs and Majors at Southwest Virgini",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/swcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/swcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+   }
+  ]
+ },
+ {
+  "slug": "tcc",
+  "name": "All Programs and Majors at Tidewater Communi",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/tcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science: Computer Science",
+    "h": "/colleges/tcc/programs/major/246.AssociateofScienceComputerScience"
+   }
+  ]
+ },
+ {
+  "slug": "vhcc",
+  "name": "All Programs and Majors at Virginia Highland",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/vhcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/vhcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+   }
+  ]
+ },
+ {
+  "slug": "vpcc",
+  "name": "All Programs and Majors at Virginia Peninsul",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/vpcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/vpcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+   }
+  ]
+ },
+ {
+  "slug": "vwcc",
+  "name": "All Programs and Majors at Virginia Western ",
+  "cs": [
+   {
+    "t": "Computer Science",
+    "h": "/colleges/vwcc/programs/11.0701-ComputerScience"
+   },
+   {
+    "t": "Associate of Science in Computer Science Degree",
+    "h": "/colleges/vwcc/programs/major/246.AssociateofScienceinComputerScienceDegree"
+   },
+   {
+    "t": "Associate of Science in Engineering Degree Computer Science Major",
+    "h": "/colleges/vwcc/programs/major/831-01.AssociateofScienceinEngineeringDegreeComputerScienceMajor"
+   }
+  ]
+ },
+ {
+  "slug": "wcc",
+  "name": "All Programs and Majors at Wytheville Commun",
+  "cs": [
+   {
+    "t": "Associate of Science in Science Degree Computer Science Major",
+    "h": "/colleges/wcc/programs/major/880-01.AssociateofScienceinScienceDegreeComputerScienceMajor"
+   }
+  ]
+ }
+]

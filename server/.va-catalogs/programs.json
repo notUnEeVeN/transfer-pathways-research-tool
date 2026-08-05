@@ -1,0 +1,4987 @@
+[
+ {
+  "institution": "Virginia Polytechnic Institute and State University",
+  "program": "BS in Computer Science in Computer Science",
+  "seed_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Degree Core RequirementsDegree Core Requirements",
+    "credits": null,
+    "codes": [
+     "CS1114",
+     "CS2505",
+     "CS2506",
+     "CS3214",
+     "CS3604",
+     "MATH2114",
+     "MATH2204",
+     "CMDA2005",
+     "MATH2534",
+     "MATH3034"
+    ],
+    "note": null
+   },
+   {
+    "title": "Major RequirementsMajor Requirements",
+    "credits": null,
+    "codes": [
+     "CS2104",
+     "CS3304"
+    ],
+    "note": null
+   },
+   {
+    "title": "Career Bridge Experience 4Career Bridge Experience",
+    "credits": null,
+    "codes": [
+     "ENGE3900"
+    ],
+    "note": null
+   },
+   {
+    "title": "Additional Course RequirementsAdditional Course Requirements",
+    "credits": null,
+    "codes": [
+     "CS1944",
+     "CS2114",
+     "CS4944",
+     "MATH3134",
+     "MATH3124"
+    ],
+    "note": null
+   },
+   {
+    "title": "Pathways Concept 1 - DiscoursePathways Concept 1 - Discourse",
+    "credits": null,
+    "codes": [
+     "ENGL1105",
+     "ENGL1106"
+    ],
+    "note": null
+   },
+   {
+    "title": "Pathways Concept 5 - Quantitative and Computational ThinkingPathways Concept 5 - Quantitative and Computational Thinking",
+    "credits": null,
+    "codes": [
+     "MATH1225",
+     "MATH1226",
+     "CS3114"
+    ],
+    "note": null
+   },
+   {
+    "title": "Pathways Concept 6 - Critique and Practice in Design and the ArtsPathways Concept 6 - Critique and Practice in Design and the Arts",
+    "credits": null,
+    "codes": [
+     "ENGE1215",
+     "ENGE1216",
+     "ENGE1414"
+    ],
+    "note": null
+   },
+   {
+    "title": "Pathways Concept 7 - Critical Analysis of Identity and Equity in the United StatesPathways Concept 7 - Critical Analysis of Identity and Equity in the United States",
+    "credits": null,
+    "codes": [
+     "BIOL1105",
+     "BIOL1115",
+     "CHEM1035",
+     "CHEM1045",
+     "PHYS2305",
+     "BIOL1106",
+     "BIOL1116",
+     "CHEM1036",
+     "CHEM1046",
+     "PHYS2306",
+     "COMM2004",
+     "COMM2014",
+     "ENGL3764",
+     "ENGL3804",
+     "ENGL3814",
+     "ENGL3824",
+     "ENGL3834",
+     "ENGL3844",
+     "ENGL4824",
+     "STAT4705",
+     "STAT4105",
+     "STAT4714",
+     "STAT4604",
+     "STAT3704",
+     "CMDA2006",
+     "BIT4614",
+     "CMDA3654",
+     "CMDA4654",
+     "ECE4424",
+     "ECE4504",
+     "MATH3414",
+     "MATH4414",
+     "PSCI4164",
+     "STAT3654",
+     "STAT4654",
+     "STS4014",
+     "CS3114",
+     "CS4774",
+     "CS5040",
+     "CS5044",
+     "CS5045",
+     "CS5046",
+     "CS5644",
+     "CS5664",
+     "CS5904",
+     "CS5944",
+     "CS5974",
+     "CS5994",
+     "BIT4614",
+     "CMDA4654",
+     "ECE4424",
+     "ECE4504",
+     "MATH4414",
+     "PSCI4164",
+     "STAT4654",
+     "STS4014",
+     "CS4774",
+     "CS5040",
+     "CS5044",
+     "CS5045",
+     "CS5046",
+     "CS5644",
+     "CS5664",
+     "CS5904",
+     "CS5944",
+     "CS5974",
+     "CS5994",
+     "CS4104",
+     "CS4114",
+     "CS4124",
+     "CS4134",
+     "CS5104",
+     "CS5114",
+     "CS4094",
+     "CS4274",
+     "CS4284",
+     "CS4624",
+     "CS4634",
+     "CS4644",
+     "CS4664",
+     "CS4704",
+     "CS4784",
+     "CS4884",
+     "ENGE4735",
+     "ENGE4736",
+     "AOE4434",
+     "ART3704",
+     "BIT4424",
+     "BIT4434",
+     "BIT4444",
+     "BIT4544",
+     "BIT4604",
+     "BIT4614",
+     "BIT4624",
+     "CEM4624",
+     "CEM4634",
+     "CMDA3606",
+     "ECE3544",
+     "ECE3574",
+     "ECE4524",
+     "ECE4550",
+     "ECE4560",
+     "ECE4564",
+     "ECE4580",
+     "ECE4704",
+     "ENGE4735",
+     "ENGE4736",
+     "ENGE4964",
+     "GEOG4314",
+     "GEOG4324",
+     "MATH4175",
+     "MATH4176",
+     "MATH4445",
+     "MATH4454",
+     "ME4524",
+     "MUS3064",
+     "MUS3065",
+     "MUS3066",
+     "CS1114",
+     "ENGE1215",
+     "ENGL1105",
+     "MATH1225",
+     "CS2114",
+     "ENGE1216",
+     "ENGL1106",
+     "MATH1226",
+     "CS1944",
+     "CS2104",
+     "CS2505",
+     "MATH2534",
+     "MATH3034",
+     "CS2506",
+     "MATH2114",
+     "MATH2204",
+     "CMDA2005",
+     "CS3114",
+     "MATH3134",
+     "CS3214",
+     "CS3604",
+     "ENGE3900",
+     "CS3304",
+     "CS4944"
+    ],
+    "note": "Credits; Credits; Credits; Credits; Credits; Credits; Credits; Credits"
+   }
+  ],
+  "codes": [
+   "CS1114",
+   "CS2505",
+   "CS2506",
+   "CS3214",
+   "CS3604",
+   "MATH2114",
+   "MATH2204",
+   "CMDA2005",
+   "MATH2534",
+   "MATH3034",
+   "CS2104",
+   "CS3304",
+   "ENGE3900",
+   "CS1944",
+   "CS2114",
+   "CS4944",
+   "MATH3134",
+   "MATH3124",
+   "ENGL1105",
+   "ENGL1106",
+   "MATH1225",
+   "MATH1226",
+   "CS3114",
+   "ENGE1215",
+   "ENGE1216",
+   "ENGE1414",
+   "BIOL1105",
+   "BIOL1115",
+   "CHEM1035",
+   "CHEM1045",
+   "PHYS2305",
+   "BIOL1106",
+   "BIOL1116",
+   "CHEM1036",
+   "CHEM1046",
+   "PHYS2306",
+   "COMM2004",
+   "COMM2014",
+   "ENGL3764",
+   "ENGL3804",
+   "ENGL3814",
+   "ENGL3824",
+   "ENGL3834",
+   "ENGL3844",
+   "ENGL4824",
+   "STAT4705",
+   "STAT4105",
+   "STAT4714",
+   "STAT4604",
+   "STAT3704",
+   "CMDA2006",
+   "BIT4614",
+   "CMDA3654",
+   "CMDA4654",
+   "ECE4424",
+   "ECE4504",
+   "MATH3414",
+   "MATH4414",
+   "PSCI4164",
+   "STAT3654",
+   "STAT4654",
+   "STS4014",
+   "CS4774",
+   "CS5040",
+   "CS5044",
+   "CS5045",
+   "CS5046",
+   "CS5644",
+   "CS5664",
+   "CS5904",
+   "CS5944",
+   "CS5974",
+   "CS5994",
+   "CS4104",
+   "CS4114",
+   "CS4124",
+   "CS4134",
+   "CS5104",
+   "CS5114",
+   "CS4094",
+   "CS4274",
+   "CS4284",
+   "CS4624",
+   "CS4634",
+   "CS4644",
+   "CS4664",
+   "CS4704",
+   "CS4784",
+   "CS4884",
+   "ENGE4735",
+   "ENGE4736",
+   "AOE4434",
+   "ART3704",
+   "BIT4424",
+   "BIT4434",
+   "BIT4444",
+   "BIT4544",
+   "BIT4604",
+   "BIT4624",
+   "CEM4624",
+   "CEM4634",
+   "CMDA3606",
+   "ECE3544",
+   "ECE3574",
+   "ECE4524",
+   "ECE4550",
+   "ECE4560",
+   "ECE4564",
+   "ECE4580",
+   "ECE4704",
+   "ENGE4964",
+   "GEOG4314",
+   "GEOG4324",
+   "MATH4175",
+   "MATH4176",
+   "MATH4445",
+   "MATH4454",
+   "ME4524",
+   "MUS3064",
+   "MUS3065",
+   "MUS3066"
+  ]
+ },
+ {
+  "institution": "Central Virginia Community College",
+  "program": "AS in Computer Science",
+  "seed_url": "https://centralvirginia.edu/programs-classes/science-technology-engineering-math/computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "University of Mary Washington",
+  "program": "BS in Computer Science",
+  "seed_url": "https://www.umw.edu/study/areas/computer-science/",
+  "status": "ok",
+  "hops": 1,
+  "source_url": "https://catalog.umw.edu/undergraduate/majors/computer-science/#requirementstext",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Requirements",
+    "credits": null,
+    "codes": [
+     "CPSC220",
+     "CPSC225",
+     "CPSC240",
+     "CPSC302",
+     "CPSC305",
+     "CPSC326",
+     "CPSC340",
+     "CPSC350",
+     "CPSC405",
+     "CPSC430",
+     "CPSC284",
+     "MATH201",
+     "MATH300",
+     "CPSC110",
+     "FSEM100",
+     "CPSC220",
+     "CPSC284",
+     "CPSC225",
+     "CPSC240",
+     "CPSC340",
+     "CPSC350",
+     "CPSC326",
+     "CPSC302",
+     "CPSC305",
+     "CPSC430",
+     "CPSC405"
+    ],
+    "note": "Credits; Credits; Credits; Credits; Credits; Credits; Credits; Credits"
+   }
+  ],
+  "codes": [
+   "CPSC220",
+   "CPSC225",
+   "CPSC240",
+   "CPSC302",
+   "CPSC305",
+   "CPSC326",
+   "CPSC340",
+   "CPSC350",
+   "CPSC405",
+   "CPSC430",
+   "CPSC284",
+   "MATH201",
+   "MATH300",
+   "CPSC110",
+   "FSEM100"
+  ]
+ },
+ {
+  "institution": "Northern Virginia Community College",
+  "program": "Computer Science, A.S.",
+  "seed_url": "https://catalog.nvcc.edu/programs/computer-science-as/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "https://catalog.nvcc.edu/programs/computer-science-as/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Requirements",
+    "credits": null,
+    "codes": [
+     "CSC221",
+     "ENG111",
+     "MTH167",
+     "SDV100",
+     "SDV101",
+     "CSC222",
+     "ENG112",
+     "MTH263",
+     "CSC208",
+     "MTH288",
+     "CSC223",
+     "MTH264",
+     "BIO101",
+     "CHM111",
+     "PHY241",
+     "GOL105",
+     "GOL106",
+     "CSC205",
+     "CSC215",
+     "MTH265",
+     "BIO102",
+     "CHM112",
+     "PHY242",
+     "GOL105",
+     "GOL106",
+     "CSC205",
+     "CSC208",
+     "CSC215",
+     "MTH265",
+     "MTH266",
+     "MTH288",
+     "PHY201",
+     "BIO101",
+     "BIO102",
+     "CHM111",
+     "CHM112",
+     "PHY241",
+     "PHY242",
+     "GOL105",
+     "GOL106",
+     "PHY201",
+     "CSC205",
+     "CSC215",
+     "CSC195",
+     "CSC295",
+     "EGR121",
+     "EGR122",
+     "EGR270",
+     "CST100",
+     "CST110",
+     "MTH265",
+     "MTH266",
+     "MTH283",
+     "BIO101",
+     "BIO102",
+     "CHM111",
+     "CHM112",
+     "PHY241",
+     "PHY242",
+     "GOL105",
+     "GOL106"
+    ],
+    "note": "Credits; Credits; Credits; Credits"
+   }
+  ],
+  "codes": [
+   "CSC221",
+   "ENG111",
+   "MTH167",
+   "SDV100",
+   "SDV101",
+   "CSC222",
+   "ENG112",
+   "MTH263",
+   "CSC208",
+   "MTH288",
+   "CSC223",
+   "MTH264",
+   "BIO101",
+   "CHM111",
+   "PHY241",
+   "GOL105",
+   "GOL106",
+   "CSC205",
+   "CSC215",
+   "MTH265",
+   "BIO102",
+   "CHM112",
+   "PHY242",
+   "MTH266",
+   "PHY201",
+   "CSC195",
+   "CSC295",
+   "EGR121",
+   "EGR122",
+   "EGR270",
+   "CST100",
+   "CST110",
+   "MTH283"
+  ]
+ },
+ {
+  "institution": "Longwood University",
+  "program": "Computer Science BA",
+  "seed_url": "http://www.longwood.edu/computerscience/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Longwood University",
+  "program": "Computer Science BS",
+  "seed_url": "http://www.longwood.edu/computerscience/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "University of Lynchburg",
+  "program": "BS in Computer Science",
+  "seed_url": "https://www.lynchburg.edu/academics/majors-and-minors/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "George Mason University",
+  "program": "Applied Computer Science, BS",
+  "seed_url": "https://catalog.gmu.edu/colleges-schools/engineering-computing/school-computing/computer-science/applied-computer-science-bs/#requirementstext",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "George Mason University",
+  "program": "Computer Science, BS",
+  "seed_url": "https://catalog.gmu.edu/colleges-schools/engineering-computing/school-computing/computer-science/computer-science-bs/#requirementstext",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "https://catalog.gmu.edu/colleges-schools/engineering-computing/school-computing/computer-science/computer-science-bs/#requirementstext",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Requirements",
+    "credits": null,
+    "codes": [
+     "CS110",
+     "CS112",
+     "CS108",
+     "CS109",
+     "CS211",
+     "CS262",
+     "CS310",
+     "CS321",
+     "CS330",
+     "CS367",
+     "CS405",
+     "CS450",
+     "CS471",
+     "CS571",
+     "CS483",
+     "CS583",
+     "CS455",
+     "CS555",
+     "CS468",
+     "CS475",
+     "CS425",
+     "CS440",
+     "CS540",
+     "CS450",
+     "CS451",
+     "CS551",
+     "CS452",
+     "CS453",
+     "CS455",
+     "CS555",
+     "CS463",
+     "CS465",
+     "CS468",
+     "CS475",
+     "CS477",
+     "CS478",
+     "CS480",
+     "CS580",
+     "CS482",
+     "CS484",
+     "CS584",
+     "CS485",
+     "CS487",
+     "CS587",
+     "CS489",
+     "CS491",
+     "CS499",
+     "MATH446",
+     "MATH113",
+     "MATH123",
+     "MATH124",
+     "MATH114",
+     "MATH125",
+     "MATH203",
+     "MATH213",
+     "STAT344",
+     "STAT354",
+     "ECE301",
+     "ECE231",
+     "ECE232",
+     "ECE350",
+     "ECE446",
+     "ECE447",
+     "ECE455",
+     "ECE511",
+     "SWE419",
+     "SWE619",
+     "SWE432",
+     "SWE642",
+     "SWE437",
+     "SWE637",
+     "SWE443",
+     "SYST371",
+     "SYST470",
+     "PHIL371",
+     "PHIL376",
+     "ENGH388"
+    ],
+    "note": null
+   },
+   {
+    "title": "BiologyBiology",
+    "credits": null,
+    "codes": [
+     "BIOL102",
+     "BIOL106",
+     "BIOL107",
+     "BIOL103",
+     "BIOL105"
+    ],
+    "note": null
+   },
+   {
+    "title": "ChemistryChemistry",
+    "credits": null,
+    "codes": [
+     "CHEM211",
+     "CHEM213",
+     "CHEM212",
+     "CHEM214"
+    ],
+    "note": null
+   },
+   {
+    "title": "GeologyGeology",
+    "credits": null,
+    "codes": [
+     "GEOL101",
+     "GEOL103",
+     "GEOL102",
+     "GEOL104"
+    ],
+    "note": null
+   },
+   {
+    "title": "PhysicsPhysics",
+    "credits": null,
+    "codes": [
+     "PHYS160",
+     "PHYS161",
+     "PHYS260",
+     "PHYS261",
+     "COMM100",
+     "COMM101",
+     "ENGH100",
+     "ENGH101",
+     "ENGH302",
+     "MATH213",
+     "MATH203",
+     "MATH321",
+     "STAT250",
+     "STAT344",
+     "STAT346",
+     "MATH351",
+     "STAT362",
+     "STAT544",
+     "STAT521",
+     "STAT554",
+     "STAT560",
+     "STAT574",
+     "STAT663",
+     "CS571",
+     "CS580",
+     "CS583",
+     "CS584",
+     "ECE508",
+     "ECE511",
+     "ECE512",
+     "ECE516",
+     "ECE527",
+     "ECE542",
+     "ECE554",
+     "ECE555",
+     "ECE556",
+     "CS540",
+     "CS550",
+     "CS551",
+     "CS555",
+     "CS571",
+     "CS580",
+     "CS583",
+     "CS584",
+     "CS587",
+     "SWE619",
+     "SWE637",
+     "SWE642",
+     "CS584",
+     "CS550",
+     "CS580",
+     "CS540",
+     "CS550",
+     "CS551",
+     "CS555",
+     "CS571",
+     "CS580",
+     "CS583",
+     "CS584",
+     "CS587",
+     "SWE619",
+     "SWE637",
+     "SWE642",
+     "CS540",
+     "CS550",
+     "CS551",
+     "CS555",
+     "CS571",
+     "CS580",
+     "CS583",
+     "CS584",
+     "CS540",
+     "CS550",
+     "CS551",
+     "CS555",
+     "CS571",
+     "CS580",
+     "CS583",
+     "CS584",
+     "CS587",
+     "SWE619",
+     "SWE637",
+     "SWE642",
+     "CS540",
+     "CS550",
+     "CS551",
+     "CS555",
+     "CS571",
+     "CS580",
+     "CS583",
+     "CS584"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CS110",
+   "CS112",
+   "CS108",
+   "CS109",
+   "CS211",
+   "CS262",
+   "CS310",
+   "CS321",
+   "CS330",
+   "CS367",
+   "CS405",
+   "CS450",
+   "CS471",
+   "CS571",
+   "CS483",
+   "CS583",
+   "CS455",
+   "CS555",
+   "CS468",
+   "CS475",
+   "CS425",
+   "CS440",
+   "CS540",
+   "CS451",
+   "CS551",
+   "CS452",
+   "CS453",
+   "CS463",
+   "CS465",
+   "CS477",
+   "CS478",
+   "CS480",
+   "CS580",
+   "CS482",
+   "CS484",
+   "CS584",
+   "CS485",
+   "CS487",
+   "CS587",
+   "CS489",
+   "CS491",
+   "CS499",
+   "MATH446",
+   "MATH113",
+   "MATH123",
+   "MATH124",
+   "MATH114",
+   "MATH125",
+   "MATH203",
+   "MATH213",
+   "STAT344",
+   "STAT354",
+   "ECE301",
+   "ECE231",
+   "ECE232",
+   "ECE350",
+   "ECE446",
+   "ECE447",
+   "ECE455",
+   "ECE511",
+   "SWE419",
+   "SWE619",
+   "SWE432",
+   "SWE642",
+   "SWE437",
+   "SWE637",
+   "SWE443",
+   "SYST371",
+   "SYST470",
+   "PHIL371",
+   "PHIL376",
+   "ENGH388",
+   "BIOL102",
+   "BIOL106",
+   "BIOL107",
+   "BIOL103",
+   "BIOL105",
+   "CHEM211",
+   "CHEM213",
+   "CHEM212",
+   "CHEM214",
+   "GEOL101",
+   "GEOL103",
+   "GEOL102",
+   "GEOL104",
+   "PHYS160",
+   "PHYS161",
+   "PHYS260",
+   "PHYS261",
+   "COMM100",
+   "COMM101",
+   "ENGH100",
+   "ENGH101",
+   "ENGH302",
+   "MATH321",
+   "STAT250",
+   "STAT346",
+   "MATH351",
+   "STAT362",
+   "STAT544",
+   "STAT521",
+   "STAT554",
+   "STAT560",
+   "STAT574",
+   "STAT663",
+   "ECE508",
+   "ECE512",
+   "ECE516",
+   "ECE527",
+   "ECE542",
+   "ECE554",
+   "ECE555",
+   "ECE556",
+   "CS550"
+  ]
+ },
+ {
+  "institution": "George Mason University",
+  "program": "Computer Science Minor",
+  "seed_url": "https://www2.gmu.edu/admissions-aid/apply-now/how-apply/transfer",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Old Dominion University",
+  "program": "Computer Science-BSCS",
+  "seed_url": "https://www.odu.edu/academics/programs/undergraduate/computer-science",
+  "status": "ok",
+  "hops": 1,
+  "source_url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/computer-science-bscs/#degreeprogramguidetext",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Requirements",
+    "credits": null,
+    "codes": [
+     "BIOL121N",
+     "BIOL122N",
+     "BIOL123N",
+     "BIOL124N",
+     "BIOL136N",
+     "BIOL137N",
+     "BIOL138N",
+     "BIOL139N",
+     "CHEM105N",
+     "CHEM106N",
+     "CHEM107N",
+     "CHEM108N",
+     "CHEM121N",
+     "CHEM122N",
+     "CHEM123N",
+     "CHEM124N",
+     "OEAS106N",
+     "OEAS108N",
+     "OEAS106N",
+     "OEAS250N",
+     "OEAS126N",
+     "OEAS108N",
+     "OEAS126N",
+     "OEAS250N",
+     "PHYS111N",
+     "PHYS112N",
+     "PHYS226N",
+     "PHYS227N",
+     "PHYS231N",
+     "PHYS232N"
+    ],
+    "note": null
+   },
+   {
+    "title": "Required Computer Science CoursesRequired Computer Science Courses",
+    "credits": null,
+    "codes": [
+     "CS151",
+     "CS153",
+     "CS150",
+     "CS170",
+     "CS251",
+     "CS260",
+     "CS253",
+     "CS260",
+     "CS261",
+     "CS250",
+     "CS261",
+     "CS252",
+     "CS270",
+     "CS315",
+     "CS115",
+     "CS330",
+     "CS350",
+     "CS351",
+     "CS352",
+     "CS355",
+     "CS361",
+     "CS381",
+     "CS390",
+     "CS410",
+     "CS411W",
+     "CS417",
+     "CS422",
+     "CS480",
+     "CS450",
+     "CS418",
+     "CS471"
+    ],
+    "note": null
+   },
+   {
+    "title": "Elective Computer Science CoursesElective Computer Science Courses",
+    "credits": null,
+    "codes": [
+     "CS222",
+     "CS312",
+     "CS337",
+     "CS402",
+     "CS418",
+     "CS422",
+     "CS431",
+     "CS432",
+     "CS433",
+     "CS441",
+     "CS445",
+     "CS450",
+     "CS455",
+     "CS460",
+     "CS462",
+     "CS463",
+     "CS464",
+     "CS465",
+     "CS466",
+     "CS467",
+     "CS469",
+     "CS472",
+     "CS475",
+     "CS476",
+     "CS478",
+     "CS480",
+     "CS481",
+     "CS486",
+     "CS487",
+     "CS488",
+     "CS491",
+     "CS492",
+     "CS499W"
+    ],
+    "note": null
+   },
+   {
+    "title": "Other Required Courses Other Required Courses",
+    "credits": null,
+    "codes": [
+     "MATH211",
+     "MATH212",
+     "MATH316",
+     "STAT330",
+     "CS491",
+     "CS492",
+     "CS499W",
+     "ENGL110C",
+     "MATH211",
+     "CS151",
+     "CS153",
+     "ENGL211C",
+     "MATH212",
+     "CS170",
+     "CS251",
+     "CS252",
+     "MATH316",
+     "CS270",
+     "CS330",
+     "PHIL160R",
+     "STAT330",
+     "CS260",
+     "CS361",
+     "CS202G",
+     "CS315",
+     "CS355",
+     "CS381",
+     "CS422",
+     "CS480",
+     "CS350",
+     "CS390",
+     "CS450",
+     "CS418",
+     "CS410",
+     "CS417",
+     "CS411W",
+     "CS471",
+     "CS550",
+     "CS522",
+     "CS532",
+     "CS569",
+     "CS580"
+    ],
+    "note": "Credit Hours; Credit Hours; Credit Hours; Credit Hours; Credit Hours; Credit Hours; Credit Hours; Credit Hours"
+   }
+  ],
+  "codes": [
+   "BIOL121N",
+   "BIOL122N",
+   "BIOL123N",
+   "BIOL124N",
+   "BIOL136N",
+   "BIOL137N",
+   "BIOL138N",
+   "BIOL139N",
+   "CHEM105N",
+   "CHEM106N",
+   "CHEM107N",
+   "CHEM108N",
+   "CHEM121N",
+   "CHEM122N",
+   "CHEM123N",
+   "CHEM124N",
+   "OEAS106N",
+   "OEAS108N",
+   "OEAS250N",
+   "OEAS126N",
+   "PHYS111N",
+   "PHYS112N",
+   "PHYS226N",
+   "PHYS227N",
+   "PHYS231N",
+   "PHYS232N",
+   "CS151",
+   "CS153",
+   "CS150",
+   "CS170",
+   "CS251",
+   "CS260",
+   "CS253",
+   "CS261",
+   "CS250",
+   "CS252",
+   "CS270",
+   "CS315",
+   "CS115",
+   "CS330",
+   "CS350",
+   "CS351",
+   "CS352",
+   "CS355",
+   "CS361",
+   "CS381",
+   "CS390",
+   "CS410",
+   "CS411W",
+   "CS417",
+   "CS422",
+   "CS480",
+   "CS450",
+   "CS418",
+   "CS471",
+   "CS222",
+   "CS312",
+   "CS337",
+   "CS402",
+   "CS431",
+   "CS432",
+   "CS433",
+   "CS441",
+   "CS445",
+   "CS455",
+   "CS460",
+   "CS462",
+   "CS463",
+   "CS464",
+   "CS465",
+   "CS466",
+   "CS467",
+   "CS469",
+   "CS472",
+   "CS475",
+   "CS476",
+   "CS478",
+   "CS481",
+   "CS486",
+   "CS487",
+   "CS488",
+   "CS491",
+   "CS492",
+   "CS499W",
+   "MATH211",
+   "MATH212",
+   "MATH316",
+   "STAT330",
+   "ENGL110C",
+   "ENGL211C",
+   "PHIL160R",
+   "CS202G",
+   "CS550",
+   "CS522",
+   "CS532",
+   "CS569",
+   "CS580"
+  ]
+ },
+ {
+  "institution": "Marymount University",
+  "program": "Computer Science (BS)",
+  "seed_url": "https://marymount.edu/academics/college-of-business-innovation-leadership-and-technology/school-of-technology-and-innovation/undergraduate-programs/computer-science-b-s/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Regent University",
+  "program": "B.S. in Computer Science",
+  "seed_url": "https://www.regent.edu/program/bs-in-computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Randolph College",
+  "program": "Minor in Computer Science",
+  "seed_url": "https://www.randolphcollege.edu/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Randolph-Macon College",
+  "program": "Computer Science (BS)",
+  "seed_url": "https://www.rmc.edu/academics/computer-science-major",
+  "status": "ok",
+  "hops": 1,
+  "source_url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "FoundationFoundation",
+    "credits": null,
+    "codes": [
+     "CSCI111",
+     "CSCI112",
+     "CSCI210",
+     "CSCI211",
+     "CSCI212",
+     "CSCI213",
+     "CSCI311"
+    ],
+    "note": null
+   },
+   {
+    "title": "Programming EmphasisProgramming Emphasis",
+    "credits": null,
+    "codes": [
+     "CSCI330",
+     "CSCI332",
+     "CSCI335",
+     "CSCI340",
+     "CSCI343",
+     "CSCI350",
+     "CSCI382"
+    ],
+    "note": null
+   },
+   {
+    "title": "ElectivesElectives",
+    "credits": null,
+    "codes": [
+     "CSCI229",
+     "CSCI236",
+     "CSCI330",
+     "CSCI332",
+     "CSCI333",
+     "CSCI335",
+     "CSCI339",
+     "CSCI340",
+     "CSCI349",
+     "CSCI350",
+     "CSCI363",
+     "CSCI485",
+     "CSEC322",
+     "CSEC323",
+     "CSEC353"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CSCI111",
+   "CSCI112",
+   "CSCI210",
+   "CSCI211",
+   "CSCI212",
+   "CSCI213",
+   "CSCI311",
+   "CSCI330",
+   "CSCI332",
+   "CSCI335",
+   "CSCI340",
+   "CSCI343",
+   "CSCI350",
+   "CSCI382",
+   "CSCI229",
+   "CSCI236",
+   "CSCI333",
+   "CSCI339",
+   "CSCI349",
+   "CSCI363",
+   "CSCI485",
+   "CSEC322",
+   "CSEC323",
+   "CSEC353"
+  ]
+ },
+ {
+  "institution": "Randolph-Macon College",
+  "program": "Computer Science (Minor)",
+  "seed_url": "https://www.rmc.edu/academics/areas-of-study/computer-science/",
+  "status": "ok",
+  "hops": 1,
+  "source_url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "FoundationFoundation",
+    "credits": null,
+    "codes": [
+     "CSCI111",
+     "CSCI112",
+     "CSCI210",
+     "CSCI211",
+     "CSCI212",
+     "CSCI213",
+     "CSCI311"
+    ],
+    "note": null
+   },
+   {
+    "title": "Programming EmphasisProgramming Emphasis",
+    "credits": null,
+    "codes": [
+     "CSCI330",
+     "CSCI332",
+     "CSCI335",
+     "CSCI340",
+     "CSCI343",
+     "CSCI350",
+     "CSCI382"
+    ],
+    "note": null
+   },
+   {
+    "title": "ElectivesElectives",
+    "credits": null,
+    "codes": [
+     "CSCI229",
+     "CSCI236",
+     "CSCI330",
+     "CSCI332",
+     "CSCI333",
+     "CSCI335",
+     "CSCI339",
+     "CSCI340",
+     "CSCI349",
+     "CSCI350",
+     "CSCI363",
+     "CSCI485",
+     "CSEC322",
+     "CSEC323",
+     "CSEC353"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CSCI111",
+   "CSCI112",
+   "CSCI210",
+   "CSCI211",
+   "CSCI212",
+   "CSCI213",
+   "CSCI311",
+   "CSCI330",
+   "CSCI332",
+   "CSCI335",
+   "CSCI340",
+   "CSCI343",
+   "CSCI350",
+   "CSCI382",
+   "CSCI229",
+   "CSCI236",
+   "CSCI333",
+   "CSCI339",
+   "CSCI349",
+   "CSCI363",
+   "CSCI485",
+   "CSEC322",
+   "CSEC323",
+   "CSEC353"
+  ]
+ },
+ {
+  "institution": "Radford University",
+  "program": "BS in Computer Science",
+  "seed_url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Radford University",
+  "program": "Minor in Computer Science",
+  "seed_url": "https://www.radford.edu/admissions/transfer/index.html",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Emory & Henry University",
+  "program": "Computer Science (BS)",
+  "seed_url": "https://www.ehc.edu/registrar/services/placement-testing/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "George Mason University",
+  "program": "Computer Science Undergraduate Certificate",
+  "seed_url": "https://www2.gmu.edu/admissions-aid/apply-now/how-apply/transfer",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Regent University",
+  "program": "Undergraduate Certificate: Computer Science",
+  "seed_url": "https://www.regent.edu/program/undergraduate-certificate-in-computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Tidewater Community College",
+  "program": "Associate of Science - Computer Science",
+  "seed_url": "https://catalog.tcc.edu/preview_program.php?catoid=21&poid=4756&returnto=1049",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Eastern Mennonite University",
+  "program": "Bachelor of Science Computer Science",
+  "seed_url": "https://emu.edu/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "William & Mary",
+  "program": "Computer Science - Bachelor of Science",
+  "seed_url": "https://www.wm.edu/as/computerscience/index.php",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Shenandoah University",
+  "program": "Bachelor of Science Computer Science",
+  "seed_url": "https://www.su.edu/admissions/transfer-students/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Commonwealth University",
+  "program": "Computer Science, Bachelor of Science",
+  "seed_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Major requirementsMajor requirements",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "CMSC255",
+     "CMSC256",
+     "CMSC302",
+     "CMSC303",
+     "CMSC304",
+     "CMSC311",
+     "CMSC355",
+     "CMSC357",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Ancillary requirementsAncillary requirements",
+    "credits": null,
+    "codes": [
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "ENGR395",
+     "MATH200",
+     "MATH201",
+     "STAT212",
+     "STAT210",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191"
+    ],
+    "note": null
+   },
+   {
+    "title": "Open electivesOpen electives",
+    "credits": null,
+    "codes": [
+     "CMSC410",
+     "CMSC411",
+     "CMSC412",
+     "CMSC413",
+     "CMSC414",
+     "CMSC415",
+     "CMSC420",
+     "CMSC425",
+     "CMSC426",
+     "CMSC427",
+     "CMSC428",
+     "CMSC435",
+     "CMSC436",
+     "CMSC437",
+     "CMSC438",
+     "CMSC491",
+     "CMSC492",
+     "CMSC506",
+     "CMSC235",
+     "CMSC254",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "CMSC255",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "MATH200",
+     "CMSC256",
+     "CMSC302",
+     "MATH201",
+     "UNIV200",
+     "CMSC304",
+     "CMSC311",
+     "ENGR395",
+     "STAT212",
+     "STAT210",
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "PHYZ207",
+     "BIOL151",
+     "BIOZ151",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": "Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:"
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB697",
+     "EGRB602",
+     "EGRB690",
+     "EGRB697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB602",
+     "EGRB690"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC697",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451"
+    ],
+    "note": null
+   },
+   {
+    "title": "Spring semesterSpring semester",
+    "credits": null,
+    "codes": [
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC510",
+     "CMSC535"
+    ],
+    "note": null
+   },
+   {
+    "title": "Spring semesterSpring semester",
+    "credits": null,
+    "codes": [
+     "CMSC442",
+     "CMSC452",
+     "CMSC516",
+     "STAT534"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC681",
+     "CMSC682"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "BIOL152",
+     "BIOZ152",
+     "CHEM102",
+     "CHEZ102",
+     "PHYS208"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC697",
+     "CMSC606",
+     "CMSC636",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC606",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE697",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696",
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CMSC235",
+   "CMSC254",
+   "CMSC255",
+   "CMSC256",
+   "CMSC302",
+   "CMSC303",
+   "CMSC304",
+   "CMSC311",
+   "CMSC355",
+   "CMSC357",
+   "CMSC401",
+   "CMSC405",
+   "CMSC408",
+   "CMSC440",
+   "CMSC441",
+   "CMSC451",
+   "CMSC442",
+   "CMSC452",
+   "ECON205",
+   "ECON210",
+   "ECON211",
+   "ENGR395",
+   "MATH200",
+   "MATH201",
+   "STAT212",
+   "STAT210",
+   "UNIV101",
+   "UNIV103",
+   "UNIV191",
+   "CMSC410",
+   "CMSC411",
+   "CMSC412",
+   "CMSC413",
+   "CMSC414",
+   "CMSC415",
+   "CMSC420",
+   "CMSC425",
+   "CMSC426",
+   "CMSC427",
+   "CMSC428",
+   "CMSC435",
+   "CMSC436",
+   "CMSC437",
+   "CMSC438",
+   "CMSC491",
+   "CMSC492",
+   "CMSC506",
+   "UNIV200",
+   "CHEM101",
+   "CHEZ101",
+   "PHYS207",
+   "PHYZ207",
+   "BIOL151",
+   "BIOZ151",
+   "EGRB601",
+   "EGRB697",
+   "EGRB602",
+   "EGRB690",
+   "CMSC697",
+   "CMSC510",
+   "CMSC535",
+   "CMSC516",
+   "STAT534",
+   "CMSC681",
+   "CMSC682",
+   "EGMN604",
+   "EGMN605",
+   "EGMN606",
+   "EGMN607",
+   "EGMN697",
+   "EGMN661",
+   "CMSC606",
+   "CMSC627",
+   "CMSC636",
+   "CLSE650",
+   "CLSE654",
+   "CLSE655",
+   "CLSE656",
+   "CLSE690",
+   "CLSE697",
+   "EGRE697",
+   "EGMN507",
+   "ENGR601",
+   "ENGR602",
+   "ENGR696",
+   "CLSE545",
+   "CLSE580",
+   "EGRE510",
+   "EGRE512",
+   "EGRE513",
+   "EGRE615",
+   "BIOL152",
+   "BIOZ152",
+   "CHEM102",
+   "CHEZ102",
+   "PHYS208",
+   "EGMN610"
+  ]
+ },
+ {
+  "institution": "The University of Virginia's College at Wise",
+  "program": "Bachelor of Science in Computer Science, Major in Computer Science",
+  "seed_url": "https://www.uvawise.edu/academics/majors-minors/computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Christopher Newport University",
+  "program": "Bachelor of Science in Computer Foundations, Major in Computer Science",
+  "seed_url": "https://cnu.edu/academics/areasofstudy/bs-computerfoundations-computerscience/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - Computer Engineering",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - Computer Engineering (DNIMAS) Track",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Commonwealth University",
+  "program": "Computer Science, Bachelor of Arts",
+  "seed_url": "https://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-ba/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "https://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-ba/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Major requirementsMajor requirements",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "CMSC255",
+     "CMSC256",
+     "CMSC302",
+     "CMSC311",
+     "CMSC355",
+     "CMSC401",
+     "CMSC303",
+     "CMSC304",
+     "CMSC357",
+     "CMSC404",
+     "CMSC405",
+     "CMSC408",
+     "CMSC410",
+     "CMSC411",
+     "CMSC412",
+     "CMSC413",
+     "CMSC414",
+     "CMSC415",
+     "CMSC420",
+     "CMSC425",
+     "CMSC426",
+     "CMSC427",
+     "CMSC428",
+     "CMSC435",
+     "CMSC436",
+     "CMSC437",
+     "CMSC438",
+     "CMSC440"
+    ],
+    "note": null
+   },
+   {
+    "title": "Ancillary requirementsAncillary requirements",
+    "credits": null,
+    "codes": [
+     "IDST301",
+     "MATH211",
+     "MATH310",
+     "STAT212",
+     "STAT210",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191"
+    ],
+    "note": null
+   },
+   {
+    "title": "Open electivesOpen electives",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "MATH151",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "CMSC255",
+     "MATH211",
+     "CMSC256",
+     "CMSC302",
+     "UNIV200",
+     "CMSC311",
+     "STAT212",
+     "STAT210",
+     "CMSC355",
+     "MATH310",
+     "CMSC401",
+     "IDST301"
+    ],
+    "note": "Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:"
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC355",
+     "MATH310",
+     "CMSC401",
+     "IDST301"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC697",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC355",
+     "MATH310",
+     "CMSC401",
+     "IDST301"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC355",
+     "MATH310",
+     "CMSC401",
+     "IDST301"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC510",
+     "CMSC535"
+    ],
+    "note": null
+   },
+   {
+    "title": "Spring semesterSpring semester",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "STAT534"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC681",
+     "CMSC682"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CMSC235",
+   "CMSC254",
+   "CMSC255",
+   "CMSC256",
+   "CMSC302",
+   "CMSC311",
+   "CMSC355",
+   "CMSC401",
+   "CMSC303",
+   "CMSC304",
+   "CMSC357",
+   "CMSC404",
+   "CMSC405",
+   "CMSC408",
+   "CMSC410",
+   "CMSC411",
+   "CMSC412",
+   "CMSC413",
+   "CMSC414",
+   "CMSC415",
+   "CMSC420",
+   "CMSC425",
+   "CMSC426",
+   "CMSC427",
+   "CMSC428",
+   "CMSC435",
+   "CMSC436",
+   "CMSC437",
+   "CMSC438",
+   "CMSC440",
+   "IDST301",
+   "MATH211",
+   "MATH310",
+   "STAT212",
+   "STAT210",
+   "UNIV101",
+   "UNIV103",
+   "UNIV191",
+   "MATH151",
+   "UNIV200",
+   "CMSC697",
+   "CMSC510",
+   "CMSC535",
+   "CMSC516",
+   "STAT534",
+   "CMSC681",
+   "CMSC682"
+  ]
+ },
+ {
+  "institution": "Ferrum College",
+  "program": "B.S. in Computer Science, Cybersecurity",
+  "seed_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3062&returnto=1424",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Ferrum College",
+  "program": "B.S. in Computer Science, Network",
+  "seed_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Ferrum College",
+  "program": "B.S. in Computer Science, Programming",
+  "seed_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3063&returnto=1424",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Blue Ridge Community College",
+  "program": "Associate of Science in Computer Science",
+  "seed_url": "https://www.brcc.edu/student-support-services/advising/transfer-advising/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "J Sargeant Reynolds Community College",
+  "program": "Associate of Science in Computer Science",
+  "seed_url": "https://catalog.reynolds.edu/preview_program.php?catoid=6&poid=1209&returnto=491",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Brightpoint Community College",
+  "program": "Associate of Science Degree in Computer Science",
+  "seed_url": "https://catalog.brightpoint.edu/preview_program.php?catoid=6&poid=748&returnto=428",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Laurel Ridge Community College",
+  "program": "Associate of Science Degree in Computer Science",
+  "seed_url": "https://laurelridge.edu/degree/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "New River Community College",
+  "program": "Associate of Science in Computer Science",
+  "seed_url": "https://catalog.nr.edu/preview_program.php?catoid=36&poid=1559&returnto=2660",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Patrick & Henry Community College",
+  "program": "Associate of Science in Computer Science",
+  "seed_url": "https://www.patrickhenry.edu/student-resources/what-about/transferring/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Piedmont Virginia Community College",
+  "program": "Associate of Science Degree in Computer Science",
+  "seed_url": "https://www.pvcc.edu/programs/computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Southwest Virginia Community College",
+  "program": "Associate of Science in Computer Science",
+  "seed_url": "https://catalog.sw.edu/preview_program.php?catoid=10&poid=1240&returnto=585",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Peninsula Community College",
+  "program": "Associate of Science in Computer Science Degree",
+  "seed_url": "https://catalog.vpcc.edu/preview_program.php?catoid=19&poid=4291",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Highlands Community College",
+  "program": "Associate of Science Degree in Computer Science",
+  "seed_url": "https://www.vhcc.edu/program-category/transfer-degrees",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Western Community College",
+  "program": "Associate of Science in Computer Science Degree",
+  "seed_url": "https://www.virginiawestern.edu/academics/engineering-mechatronics/science-computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "James Madison University",
+  "program": "Bachelor of Science, Major in Computer Science",
+  "seed_url": "https://www.jmu.edu/cise/cs/academics/undergraduate/curriculum/index.shtml",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Richard Bland College",
+  "program": "Associate of Science-Math/Computer Science",
+  "seed_url": "https://www.rbc.edu/academics/programs-degree/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Roanoke College",
+  "program": "Bachelor of Science in Computer Science",
+  "seed_url": "https://www.roanoke.edu/computerscience",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Batten University",
+  "program": "Bachelor of Science in Computer Science",
+  "seed_url": "https://www.batten.edu/academics/majors/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Randolph College",
+  "program": "Bachelor of Science in Computer Science",
+  "seed_url": "https://www.randolphcollege.edu/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Averett University",
+  "program": "Bachelor of Science in Computer Science",
+  "seed_url": "https://www.averett.edu/academics/majors-and-programs/undergraduate/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Germanna Community College",
+  "program": "Associate of Science in Computer Science Degree",
+  "seed_url": "https://catalog.germanna.edu/preview_program.php?catoid=14&poid=1389",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Paul D. Camp Community College",
+  "program": "Associate of Sciences in Computer Science",
+  "seed_url": "https://www.pdc.edu/explore-camp/science-technology-computing/aas-general-studies-specialization-in-computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Roanoke College",
+  "program": "Bachelor of Arts in Computer Science Education",
+  "seed_url": "https://www.roanoke.edu/education",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Batten University",
+  "program": "Bachelor of Arts in Computer Science",
+  "seed_url": "https://www.batten.edu/enrollment-aid/transfers/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Bridgewater College",
+  "program": "Computer Science Cyber Security Major - BS",
+  "seed_url": "https://www.bridgewater.edu/academics/divisions/mathematics-computer-science/computer-science-major/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Bridgewater College",
+  "program": "Computer Science Full Stack Development Major - BS",
+  "seed_url": "https://www.bridgewater.edu/academics/divisions/mathematics-computer-science/computer-science-major/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Ferrum College",
+  "program": "B.S. in Computer Science, Web Design",
+  "seed_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3061&returnto=1424",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Averett University",
+  "program": "Bachelor of Arts in Computer Science",
+  "seed_url": "https://www.averett.edu/academics/majors-and-programs/undergraduate/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Northern Virginia Community College",
+  "program": "Computer Science: Algorithms and Artificial Intelligence, C.S.C.",
+  "seed_url": "https://catalog.nvcc.edu/programs/computer-science-csc/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "https://catalog.nvcc.edu/programs/computer-science-csc/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Requirements",
+    "credits": null,
+    "codes": [
+     "CSC221",
+     "CSC222",
+     "CSC208",
+     "CSC223",
+     "CSC195",
+     "CSC195",
+     "CSC205",
+     "CSC295",
+     "CSC295",
+     "CSC215"
+    ],
+    "note": "Credits; Credits; Credits"
+   }
+  ],
+  "codes": [
+   "CSC221",
+   "CSC222",
+   "CSC208",
+   "CSC223",
+   "CSC195",
+   "CSC205",
+   "CSC295",
+   "CSC215"
+  ]
+ },
+ {
+  "institution": "Virginia Polytechnic Institute and State University",
+  "program": "BS in Computer Science in Secure Computing",
+  "seed_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/secure-computing-bs/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Laurel Ridge Community College",
+  "program": "Career Studies Certificate in Computer Science",
+  "seed_url": "https://laurelridge.edu/degree/applied-computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Wytheville Community College",
+  "program": "Associate of Science in Science Degree Computer Science Major",
+  "seed_url": "https://catalog.wcc.vccs.edu/preview_program.php?catoid=12&poid=1199&returnto=317",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Commonwealth University",
+  "program": "Computer Science with concentration in Data Science, Bachelor of Science",
+  "seed_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs-concentration-data-science/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs-concentration-data-science/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Major requirementsMajor requirements",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "CMSC255",
+     "CMSC256",
+     "CMSC302",
+     "CMSC303",
+     "CMSC304",
+     "CMSC311",
+     "CMSC355",
+     "CMSC357",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452",
+     "CMSC435",
+     "CMSC436",
+     "CMSC437",
+     "CMSC438"
+    ],
+    "note": null
+   },
+   {
+    "title": "Ancillary requirementsAncillary requirements",
+    "credits": null,
+    "codes": [
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "ENGR395",
+     "MATH200",
+     "MATH201",
+     "STAT212",
+     "STAT210"
+    ],
+    "note": null
+   },
+   {
+    "title": "Open electivesOpen electives",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "CMSC255",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "MATH200",
+     "CMSC256",
+     "CMSC302",
+     "MATH201",
+     "UNIV200",
+     "CMSC304",
+     "CMSC311",
+     "ENGR395",
+     "STAT212",
+     "STAT210",
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "PHYZ207",
+     "BIOL151",
+     "BIOZ151",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC435",
+     "CMSC436",
+     "CMSC442",
+     "CMSC452",
+     "CMSC437",
+     "CMSC438"
+    ],
+    "note": "Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:"
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB697",
+     "EGRB602",
+     "EGRB690",
+     "EGRB697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB602",
+     "EGRB690"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC697",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451"
+    ],
+    "note": null
+   },
+   {
+    "title": "Spring semesterSpring semester",
+    "credits": null,
+    "codes": [
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "BIOL152",
+     "BIOZ152",
+     "CHEM102",
+     "CHEZ102",
+     "PHYS208"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC697",
+     "CMSC606",
+     "CMSC636",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC606",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE697",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696",
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CMSC235",
+   "CMSC254",
+   "CMSC255",
+   "CMSC256",
+   "CMSC302",
+   "CMSC303",
+   "CMSC304",
+   "CMSC311",
+   "CMSC355",
+   "CMSC357",
+   "CMSC401",
+   "CMSC405",
+   "CMSC408",
+   "CMSC440",
+   "CMSC441",
+   "CMSC451",
+   "CMSC442",
+   "CMSC452",
+   "CMSC435",
+   "CMSC436",
+   "CMSC437",
+   "CMSC438",
+   "UNIV101",
+   "UNIV103",
+   "UNIV191",
+   "ECON205",
+   "ECON210",
+   "ECON211",
+   "ENGR395",
+   "MATH200",
+   "MATH201",
+   "STAT212",
+   "STAT210",
+   "UNIV200",
+   "CHEM101",
+   "CHEZ101",
+   "PHYS207",
+   "PHYZ207",
+   "BIOL151",
+   "BIOZ151",
+   "EGRB601",
+   "EGRB697",
+   "EGRB602",
+   "EGRB690",
+   "CMSC697",
+   "EGMN604",
+   "EGMN605",
+   "EGMN606",
+   "EGMN607",
+   "EGMN697",
+   "EGMN661",
+   "CMSC516",
+   "CMSC606",
+   "CMSC627",
+   "CMSC636",
+   "CLSE650",
+   "CLSE654",
+   "CLSE655",
+   "CLSE656",
+   "CLSE690",
+   "CLSE697",
+   "EGRE697",
+   "EGMN507",
+   "ENGR601",
+   "ENGR602",
+   "ENGR696",
+   "CLSE545",
+   "CLSE580",
+   "EGRE510",
+   "EGRE512",
+   "EGRE513",
+   "EGRE615",
+   "BIOL152",
+   "BIOZ152",
+   "CHEM102",
+   "CHEZ102",
+   "PHYS208",
+   "EGMN610"
+  ]
+ },
+ {
+  "institution": "Virginia Western Community College",
+  "program": "Associate of Science in Engineering Degree Computer Science Major",
+  "seed_url": "https://www.virginiawestern.edu/academics/engineering-mechatronics/computer-science/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - Software Engineering Track",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - Software Engineering (DNIMAS) Track",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - CyberSecurity (DNIMAS) Track",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - Cybersecurity Track",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Norfolk State University",
+  "program": "Bachelor of Science in Computer Science - (DNIMAS) Track",
+  "seed_url": "https://www.nsu.edu/cs/bs-computer-science",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Commonwealth University",
+  "program": "Computer Science with concentration in Cybersecurity, Bachelor of Science",
+  "seed_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs-concentration-cybersecurity/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs-concentration-cybersecurity/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Major requirementsMajor requirements",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "CMSC255",
+     "CMSC256",
+     "CMSC302",
+     "CMSC303",
+     "CMSC304",
+     "CMSC311",
+     "CMSC355",
+     "CMSC357",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452",
+     "CMSC413",
+     "CMSC414",
+     "CMSC415"
+    ],
+    "note": null
+   },
+   {
+    "title": "Ancillary requirementsAncillary requirements",
+    "credits": null,
+    "codes": [
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "ENGR395",
+     "MATH200",
+     "MATH201",
+     "STAT212",
+     "STAT210"
+    ],
+    "note": null
+   },
+   {
+    "title": "Open electivesOpen electives",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "CMSC255",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "MATH200",
+     "CMSC256",
+     "CMSC302",
+     "MATH201",
+     "UNIV200",
+     "CMSC304",
+     "CMSC311",
+     "ENGR395",
+     "STAT212",
+     "STAT210",
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "PHYZ207",
+     "BIOL151",
+     "BIOZ151",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC413",
+     "CMSC415",
+     "CMSC441",
+     "CMSC451",
+     "CMSC414",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": "Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:"
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB697",
+     "EGRB602",
+     "EGRB690",
+     "EGRB697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB602",
+     "EGRB690"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC697",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451"
+    ],
+    "note": null
+   },
+   {
+    "title": "Spring semesterSpring semester",
+    "credits": null,
+    "codes": [
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "BIOL152",
+     "BIOZ152",
+     "CHEM102",
+     "CHEZ102",
+     "PHYS208"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC697",
+     "CMSC606",
+     "CMSC636",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC606",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE697",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696",
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CMSC235",
+   "CMSC254",
+   "CMSC255",
+   "CMSC256",
+   "CMSC302",
+   "CMSC303",
+   "CMSC304",
+   "CMSC311",
+   "CMSC355",
+   "CMSC357",
+   "CMSC401",
+   "CMSC405",
+   "CMSC408",
+   "CMSC440",
+   "CMSC441",
+   "CMSC451",
+   "CMSC442",
+   "CMSC452",
+   "CMSC413",
+   "CMSC414",
+   "CMSC415",
+   "UNIV101",
+   "UNIV103",
+   "UNIV191",
+   "ECON205",
+   "ECON210",
+   "ECON211",
+   "ENGR395",
+   "MATH200",
+   "MATH201",
+   "STAT212",
+   "STAT210",
+   "UNIV200",
+   "CHEM101",
+   "CHEZ101",
+   "PHYS207",
+   "PHYZ207",
+   "BIOL151",
+   "BIOZ151",
+   "EGRB601",
+   "EGRB697",
+   "EGRB602",
+   "EGRB690",
+   "CMSC697",
+   "EGMN604",
+   "EGMN605",
+   "EGMN606",
+   "EGMN607",
+   "EGMN697",
+   "EGMN661",
+   "CMSC516",
+   "CMSC606",
+   "CMSC627",
+   "CMSC636",
+   "CLSE650",
+   "CLSE654",
+   "CLSE655",
+   "CLSE656",
+   "CLSE690",
+   "CLSE697",
+   "EGRE697",
+   "EGMN507",
+   "ENGR601",
+   "ENGR602",
+   "ENGR696",
+   "CLSE545",
+   "CLSE580",
+   "EGRE510",
+   "EGRE512",
+   "EGRE513",
+   "EGRE615",
+   "BIOL152",
+   "BIOZ152",
+   "CHEM102",
+   "CHEZ102",
+   "PHYS208",
+   "EGMN610"
+  ]
+ },
+ {
+  "institution": "Virginia Commonwealth University",
+  "program": "Computer Science with concentration in Software Engineering, Bachelor of Science",
+  "seed_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs-concentration-software-engineering/",
+  "status": "ok",
+  "hops": 0,
+  "source_url": "http://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs-concentration-software-engineering/",
+  "total_credits": null,
+  "groups": [
+   {
+    "title": "Major requirementsMajor requirements",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "CMSC255",
+     "CMSC256",
+     "CMSC302",
+     "CMSC303",
+     "CMSC304",
+     "CMSC311",
+     "CMSC355",
+     "CMSC357",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452",
+     "CMSC420",
+     "CMSC425",
+     "CMSC426",
+     "CMSC427"
+    ],
+    "note": null
+   },
+   {
+    "title": "Ancillary requirementsAncillary requirements",
+    "credits": null,
+    "codes": [
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "ENGR395",
+     "MATH200",
+     "MATH201",
+     "STAT212",
+     "STAT210"
+    ],
+    "note": null
+   },
+   {
+    "title": "Open electivesOpen electives",
+    "credits": null,
+    "codes": [
+     "CMSC235",
+     "CMSC254",
+     "UNIV101",
+     "UNIV103",
+     "UNIV191",
+     "CMSC255",
+     "ECON205",
+     "ECON210",
+     "ECON211",
+     "MATH200",
+     "CMSC256",
+     "CMSC302",
+     "MATH201",
+     "UNIV200",
+     "CMSC304",
+     "CMSC311",
+     "ENGR395",
+     "STAT212",
+     "STAT210",
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "PHYZ207",
+     "BIOL151",
+     "BIOZ151",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "CMSC426",
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC425",
+     "CMSC427",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": "Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:; Term Hours:"
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB697",
+     "EGRB602",
+     "EGRB690",
+     "EGRB697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGRB601",
+     "EGRB602",
+     "EGRB690"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "CMSC697",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451"
+    ],
+    "note": null
+   },
+   {
+    "title": "Spring semesterSpring semester",
+    "credits": null,
+    "codes": [
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC606",
+     "CMSC627",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed researchDirected research",
+    "credits": null,
+    "codes": [
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration component - CLSE course workConcentration component - CLSE course work",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Directed research componentDirected research component",
+    "credits": null,
+    "codes": [
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Concentration componentConcentration component",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Junior yearJunior year",
+    "credits": null,
+    "codes": [
+     "CMSC303",
+     "CMSC355",
+     "CMSC357",
+     "BIOL151",
+     "BIOZ151",
+     "CHEM101",
+     "CHEZ101",
+     "PHYS207",
+     "CMSC401",
+     "CMSC405",
+     "CMSC408",
+     "BIOL152",
+     "BIOZ152",
+     "CHEM102",
+     "CHEZ102",
+     "PHYS208"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC440",
+     "CMSC441",
+     "CMSC451",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661",
+     "EGMN604",
+     "EGMN605",
+     "EGMN606",
+     "EGMN607",
+     "EGMN661"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC697",
+     "CMSC606",
+     "CMSC636",
+     "CMSC697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CMSC516",
+     "CMSC627",
+     "CMSC606",
+     "CMSC636"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE690",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656",
+     "CLSE650",
+     "CLSE654",
+     "CLSE655",
+     "CLSE656"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE697",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696",
+     "EGMN507",
+     "ENGR601",
+     "ENGR602",
+     "ENGR696"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655",
+     "CLSE545",
+     "CLSE580",
+     "CLSE650",
+     "CLSE655"
+    ],
+    "note": null
+   },
+   {
+    "title": "Thesis optionThesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Non-thesis optionNon-thesis option",
+    "credits": null,
+    "codes": [
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615",
+     "EGRE510",
+     "EGRE512",
+     "EGRE513",
+     "EGRE615"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610",
+     "EGMN697"
+    ],
+    "note": null
+   },
+   {
+    "title": "Senior yearSenior year",
+    "credits": null,
+    "codes": [
+     "CMSC441",
+     "CMSC451",
+     "CMSC440",
+     "CMSC442",
+     "CMSC452"
+    ],
+    "note": null
+   },
+   {
+    "title": "Fifth yearFifth year",
+    "credits": null,
+    "codes": [
+     "EGMN605",
+     "EGMN606",
+     "EGMN610"
+    ],
+    "note": null
+   }
+  ],
+  "codes": [
+   "CMSC235",
+   "CMSC254",
+   "CMSC255",
+   "CMSC256",
+   "CMSC302",
+   "CMSC303",
+   "CMSC304",
+   "CMSC311",
+   "CMSC355",
+   "CMSC357",
+   "CMSC401",
+   "CMSC405",
+   "CMSC408",
+   "CMSC440",
+   "CMSC441",
+   "CMSC451",
+   "CMSC442",
+   "CMSC452",
+   "CMSC420",
+   "CMSC425",
+   "CMSC426",
+   "CMSC427",
+   "UNIV101",
+   "UNIV103",
+   "UNIV191",
+   "ECON205",
+   "ECON210",
+   "ECON211",
+   "ENGR395",
+   "MATH200",
+   "MATH201",
+   "STAT212",
+   "STAT210",
+   "UNIV200",
+   "CHEM101",
+   "CHEZ101",
+   "PHYS207",
+   "PHYZ207",
+   "BIOL151",
+   "BIOZ151",
+   "EGRB601",
+   "EGRB697",
+   "EGRB602",
+   "EGRB690",
+   "CMSC697",
+   "EGMN604",
+   "EGMN605",
+   "EGMN606",
+   "EGMN607",
+   "EGMN697",
+   "EGMN661",
+   "CMSC516",
+   "CMSC606",
+   "CMSC627",
+   "CMSC636",
+   "CLSE650",
+   "CLSE654",
+   "CLSE655",
+   "CLSE656",
+   "CLSE690",
+   "CLSE697",
+   "EGRE697",
+   "EGMN507",
+   "ENGR601",
+   "ENGR602",
+   "ENGR696",
+   "CLSE545",
+   "CLSE580",
+   "EGRE510",
+   "EGRE512",
+   "EGRE513",
+   "EGRE615",
+   "BIOL152",
+   "BIOZ152",
+   "CHEM102",
+   "CHEZ102",
+   "PHYS208",
+   "EGMN610"
+  ]
+ },
+ {
+  "institution": "Wytheville Community College",
+  "program": "Associate of Arts & Sciences Degree in Science: Computer Science Specialization",
+  "seed_url": "https://catalog.wcc.vccs.edu/preview_program.php?catoid=11&poid=1094&returnto=290",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "New River Community College",
+  "program": "Associate of Science in Engineering-Computer Sciences Major",
+  "seed_url": "https://catalog.nr.edu/preview_program.php?catoid=36&poid=1576&returnto=2660",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Patrick & Henry Community College",
+  "program": "Associate of Science in Engineering-Computer Sciences Major",
+  "seed_url": "https://www.patrickhenry.edu/student-resources/what-about/transferring/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "Virginia Polytechnic Institute and State University",
+  "program": "BS in Computer Science in Data-Centric Computing",
+  "seed_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/data-centric-computing-bs/",
+  "status": "no_requirements"
+ },
+ {
+  "institution": "George Mason University",
+  "program": "Secondary Education – Computer Science (6-12) Undergraduate Certificate",
+  "seed_url": "https://www2.gmu.edu/admissions-aid/apply-now/how-apply/transfer",
+  "status": "no_requirements"
+ }
+]

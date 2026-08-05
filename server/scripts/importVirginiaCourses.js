@@ -19,6 +19,7 @@
  */
 const fs = require('node:fs');
 const path = require('node:path');
+const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
 const { VirginiaClient } = require('../services/virginia/fetch');
 const {
@@ -45,6 +46,14 @@ const opts = {
 };
 
 const log = (...a) => console.log('[va:courses]', ...a);
+
+// Keep the same stable identity contract as the Virginia degree importers.
+// va_courses is replaced atomically on every refresh, so these fields must be
+// recreated here rather than relying on a later degree import to add them.
+const VA_ID_BASE = 900000000;
+const courseIdFor = (code) => VA_ID_BASE
+  + (createHash('sha1').update(`va:${code}`).digest().readUInt32BE(0) % 0x0fffffff);
+const courseKeyFor = (code) => `va:${code}`;
 
 /** Community college vs four-year, from the name. Richard Bland is two-year. */
 function levelOf(name) {
@@ -98,6 +107,8 @@ function toDoc(code, parsed) {
   const four = [...fourYear.values()].sort((a, b) => a.institution.localeCompare(b.institution));
   return {
     _id: `va:crs:${code}`,
+    course_id: courseIdFor(code),
+    course_key: courseKeyFor(code),
     source: 'transferva',
     code,
     title: base.title,
@@ -142,6 +153,8 @@ async function write(docs, institutions) {
       log(`  ${name}: ${rows.length} docs`);
     }
     await db.collection('va_courses').createIndex({ code: 1 }, { unique: true });
+    await db.collection('va_courses').createIndex({ course_id: 1 }, { unique: true });
+    await db.collection('va_courses').createIndex({ course_key: 1 }, { unique: true });
     await db.collection('va_courses').createIndex({ 'articulates_to.institution': 1 });
     await db.collection('va_courses').createIndex({ offered_by: 1 });
   } finally {
