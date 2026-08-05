@@ -10,6 +10,7 @@
  * framing; see optionSolver.js for the min-set semantics.
  */
 const { manyToOneCount } = require('./optionSolver');
+const { curricularComplexity } = require('./curricularComplexity');
 const { selectMissingAcrossMajorsOptimal } = require('./minCourses');
 const {
   isMajorArticulable, isMajorCompleted, isReceiverCompleted,
@@ -1603,33 +1604,8 @@ async function complexityData(db, auditDb, {
       const inSet = new Set(keys);
       const parents = (k) => (prereqsByKey.get(k) || []).filter((p) => inSet.has(p));
 
-      // delay: longest chain ending at k (memoized DFS; cycles guard).
-      const delayMemo = new Map();
-      const delay = (k, seen = new Set()) => {
-        if (delayMemo.has(k)) return delayMemo.get(k);
-        if (seen.has(k)) return 1;
-        seen.add(k);
-        const d = 1 + Math.max(0, ...parents(k).map((p) => delay(p, seen)));
-        delayMemo.set(k, d);
-        return d;
-      };
-      // blocking: descendants count via reverse edges.
-      const children = new Map(keys.map((k) => [k, []]));
-      for (const k of keys) for (const p of parents(k)) children.get(p)?.push(k);
-      const blocking = (k) => {
-        const seen = new Set();
-        const stack = [...(children.get(k) || [])];
-        while (stack.length) {
-          const c = stack.pop();
-          if (seen.has(c)) continue;
-          seen.add(c);
-          stack.push(...(children.get(c) || []));
-        }
-        return seen.size;
-      };
-
-      const perCourse = keys.map((k) => ({ key: k, delay: delay(k), blocking: blocking(k) }));
-      const complexity = perCourse.reduce((s, c) => s + c.delay + c.blocking, 0);
+      // Structural metrics per Heileman et al. 2018 — see curricularComplexity.js.
+      const { perCourse, complexity, maxDelay } = curricularComplexity(keys, parents);
       const edges = keys.reduce((s, k) => s + parents(k).length, 0);
       rows.push({
         system: sys.key,
@@ -1644,7 +1620,7 @@ async function complexityData(db, auditDb, {
           ? +((keys.filter((k) => prereqsByKey.has(k)).length / keys.length) * 100).toFixed(1)
           : null,
         complexity,
-        max_delay: perCourse.length ? Math.max(...perCourse.map((c) => c.delay)) : 0,
+        max_delay: maxDelay,
         per_course: perCourse,
       });
     }
