@@ -10,8 +10,15 @@
  */
 
 const CONCEPT_KIND = 'prereq_concept';
+const { getMajor, programPairClause } = require('../config/majors');
 
-const courseKeyOf = (row) => `cc:${row.course_id}`;
+// Sending (community college) and receiving (university) courses live in one
+// collection and are keyed apart, so a projected graph can hold both without
+// collision: a transfer pathway is addressed by `cc:` ids and a university's own
+// curriculum by `university:` ids. Sending rows keep the key they always had.
+const courseKeyOf = (row) => (row.side === 'receiving'
+  ? `university:${row.parent_id}`
+  : `cc:${row.course_id}`);
 const collegeKeyOf = (row) => String(row.institution_id ?? `cc:${row.community_college_id}`);
 
 async function loadConceptRows(db) {
@@ -19,6 +26,42 @@ async function loadConceptRows(db) {
     .find({ kind: CONCEPT_KIND })
     .sort({ discipline: 1, slug: 1 })
     .toArray();
+}
+
+// A major names the concepts its prerequisite view starts from. Keep every
+// transitive prerequisite, and keep combined-course concepts that can satisfy
+// any included concept (plus all of that compound's constituents/rules). When
+// an older major config has no explicit template, preserve the historical
+// all-concepts response.
+function conceptRowsForMajor(conceptRows, major) {
+  if (!major || !Array.isArray(major.prerequisiteConcepts)) return conceptRows;
+
+  const bySlug = new Map(conceptRows.map((row) => [String(row.slug), row]));
+  const included = new Set(major.prerequisiteConcepts.map(String));
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const slug of [...included]) {
+      const row = bySlug.get(slug);
+      if (!row) continue;
+      const related = [
+        ...(row.requires || []).flatMap((entry) => (Array.isArray(entry) ? entry : [entry])),
+        ...(row.satisfies || []),
+      ].map(String);
+      for (const next of related) {
+        if (!included.has(next)) { included.add(next); changed = true; }
+      }
+    }
+    for (const row of conceptRows) {
+      const slug = String(row.slug);
+      if (included.has(slug)) continue;
+      if ((row.satisfies || []).map(String).some((satisfied) => included.has(satisfied))) {
+        included.add(slug);
+        changed = true;
+      }
+    }
+  }
+  return conceptRows.filter((row) => included.has(String(row.slug)));
 }
 
 // Pure projection. courseRows must all carry course_id + a college key; only
@@ -234,12 +277,13 @@ function projectGroups(conceptRows, courseRows) {
   return groupsByCourse;
 }
 
-async function loadExaminedCourses(db, collegeKey = null) {
-  const filter = { side: 'sending', concept_source: { $exists: true } };
+async function loadExaminedCourses(db, collegeKey = null, side = 'sending') {
+  const filter = { side, concept_source: { $exists: true } };
   if (collegeKey) filter.institution_id = collegeKey;
   return db.collection('assist_courses').find(filter, {
     projection: {
-      course_id: 1, institution_id: 1, community_college_id: 1, prefix: 1, number: 1,
+      course_id: 1, parent_id: 1, side: 1, institution_id: 1, community_college_id: 1,
+      university_id: 1, prefix: 1, number: 1,
       title: 1, units: 1, concept: 1, concept_source: 1, concept_confidence: 1, concept_note: 1, language: 1,
     },
   }).toArray();
@@ -250,16 +294,38 @@ async function projectPrereqEdges(db) {
   return projectEdges(concepts, courses);
 }
 
+/**
+ * The same concept-rule projection over UNIVERSITY courses, giving each campus
+ * its own prerequisite graph. This is what a resident degree pathway needs: the
+ * transfer-side figure compares a community college pathway against the
+ * university's own curriculum, and the latter has no community college in it.
+ */
+async function projectUniversityPrereqEdges(db) {
+  const [concepts, courses] = await Promise.all([
+    loadConceptRows(db), loadExaminedCourses(db, null, 'receiving'),
+  ]);
+  return projectEdges(concepts, courses);
+}
+
 async function projectPrereqGroups(db) {
   const [concepts, courses] = await Promise.all([loadConceptRows(db), loadExaminedCourses(db)]);
   return projectGroups(concepts, courses);
 }
 
-// Distinct numeric CC course ids in agreement options, optionally one college.
-async function inScopeCourseIds(db, collegeKey = null) {
+// Distinct numeric CC course ids in agreement options, optionally one college
+// and one configured major. Major scoping uses byte-exact campus/program pins;
+// a sibling program with a similar name must never enter the review queue.
+async function inScopeCourseIds(db, collegeKey = null, majorSlug = null) {
+  const filter = {};
+  if (collegeKey) filter.college_id = collegeKey;
+  if (majorSlug) {
+    const major = getMajor(majorSlug);
+    if (!major) throw new Error(`unknown major: ${majorSlug}`);
+    Object.assign(filter, programPairClause(major));
+  }
   const ids = new Set();
   const cursor = db.collection('assist_agreements')
-    .find(collegeKey ? { college_id: collegeKey } : {}, { projection: { requirement_groups: 1 } });
+    .find(filter, { projection: { requirement_groups: 1 } });
   for await (const doc of cursor) {
     for (const g of doc.requirement_groups || [])
       for (const s of g.sections || [])
@@ -270,9 +336,12 @@ async function inScopeCourseIds(db, collegeKey = null) {
   return ids;
 }
 
-async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
-  const conceptRows = await loadConceptRows(db);
-  const concepts = conceptRows.map((c) => ({
+async function prerequisiteGraphData(db, { collegeKey = null, majorSlug = null } = {}) {
+  const major = majorSlug ? getMajor(majorSlug) : null;
+  if (majorSlug && !major) throw new Error(`unknown major: ${majorSlug}`);
+  const allConceptRows = await loadConceptRows(db);
+  const displayConceptRows = conceptRowsForMajor(allConceptRows, major);
+  const concepts = displayConceptRows.map((c) => ({
     slug: String(c.slug), name: c.name || c.slug, discipline: c.discipline || 'other',
     requires: c.requires || [],
     satisfies: (c.satisfies || []).map(String),
@@ -292,22 +361,26 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
       }
     }
   }
-  const inScope = await inScopeCourseIds(db, collegeKey);
+  const inScope = await inScopeCourseIds(db, collegeKey, majorSlug);
 
   if (!collegeKey) {
-    // in_scope counts agreement-referenced courses present in the catalog (phantoms excluded)
-    const [examined, inCatalog] = await Promise.all([
-      db.collection('assist_courses')
-        .countDocuments({ side: 'sending', concept_source: { $exists: true } }),
-      inScope.size
-        ? db.collection('assist_courses')
-          .countDocuments({ side: 'sending', course_id: { $in: [...inScope] } })
-        : Promise.resolve(0),
-    ]);
-    return { concepts, rules, stats: { in_scope: inCatalog, examined } };
+    // Coverage is over the current agreement scope. Historical examined rows
+    // remain durable in the catalog, but must not inflate this numerator.
+    const scopedCatalog = inScope.size
+      ? await db.collection('assist_courses').find(
+        { side: 'sending', course_id: { $in: [...inScope] } },
+        { projection: { concept: 1, concept_source: 1 } }
+      ).toArray()
+      : [];
+    const examined = scopedCatalog.filter((row) => row.concept_source !== undefined).length;
+    const mapped = scopedCatalog.filter((row) => row.concept).length;
+    return { concepts, rules, stats: { in_scope: scopedCatalog.length, examined, mapped } };
   }
 
-  // College view: every course that is in scope OR already examined.
+  // Project against every reviewed local course so a mapped course outside the
+  // agreement can still be a real prerequisite. In major mode the response is
+  // then reduced to direct agreement courses plus only their prerequisite
+  // closure; unrelated reviewed courses from other majors stay out of view.
   const catalog = await db.collection('assist_courses').find(
     { side: 'sending', institution_id: collegeKey },
     { projection: {
@@ -317,10 +390,41 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
   ).toArray();
   const byNumericId = new Map(catalog.map((row) => [Number(row.course_id), row]));
   const phantom = [...inScope].filter((id) => !byNumericId.has(id)).sort((a, b) => a - b);
-  const rows = catalog.filter((row) =>
-    inScope.has(Number(row.course_id)) || row.concept_source !== undefined);
+  const directRows = catalog.filter((row) => inScope.has(Number(row.course_id)));
+  const examinedRows = catalog.filter((row) => row.concept_source !== undefined);
+  const projectedEdgeMap = projectEdges(allConceptRows, examinedRows);
 
-  const edgeMap = projectEdges(conceptRows, rows);
+  let rows;
+  if (majorSlug) {
+    const prerequisiteClosure = new Set();
+    const pending = directRows
+      .filter((row) => row.concept && projectedEdgeMap.has(courseKeyOf(row)))
+      .map(courseKeyOf);
+    while (pending.length) {
+      const dependent = pending.pop();
+      for (const prerequisite of projectedEdgeMap.get(dependent) || []) {
+        if (prerequisiteClosure.has(prerequisite)) continue;
+        prerequisiteClosure.add(prerequisite);
+        pending.push(prerequisite);
+      }
+    }
+    rows = catalog.filter((row) => (
+      inScope.has(Number(row.course_id)) || prerequisiteClosure.has(courseKeyOf(row))
+    ));
+  } else {
+    // Backward-compatible union view: current direct courses plus every row the
+    // historical all-major classification examined.
+    rows = catalog.filter((row) => (
+      inScope.has(Number(row.course_id)) || row.concept_source !== undefined
+    ));
+  }
+
+  const visibleKeys = new Set(rows.map(courseKeyOf));
+  const edgeMap = new Map();
+  for (const [to, froms] of projectedEdgeMap) {
+    if (!visibleKeys.has(to)) continue;
+    edgeMap.set(to, froms.filter((from) => visibleKeys.has(from)));
+  }
   const edges = [];
   for (const [to, froms] of edgeMap) for (const from of froms) edges.push({ from, to });
 
@@ -347,14 +451,17 @@ async function prerequisiteGraphData(db, { collegeKey = null } = {}) {
     concept_note: row.concept_note ?? null,
     language: row.language ?? null,
     in_scope: inScope.has(Number(row.course_id)),
+    role: inScope.has(Number(row.course_id))
+      ? 'major_preparation'
+      : majorSlug ? 'prerequisite_only' : 'reviewed_out_of_scope',
   })).sort((a, b) => String(a.prefix).localeCompare(String(b.prefix))
     || String(a.number).localeCompare(String(b.number)));
 
-  const examined = rows.filter((r) => r.concept_source !== undefined).length;
-  const mapped = rows.filter((r) => r.concept).length;
+  const examined = directRows.filter((r) => r.concept_source !== undefined).length;
+  const mapped = directRows.filter((r) => r.concept).length;
   const stats = {
     // in_scope counts agreement-referenced courses present in the catalog (phantoms excluded)
-    in_scope: inScope.size - phantom.length, examined, mapped,
+    in_scope: directRows.length, examined, mapped,
     edges: edges.length, phantom_course_ids: phantom,
   };
 
@@ -388,6 +495,7 @@ module.exports = {
   projectEdges,
   projectGroups,
   projectPrereqEdges,
+  projectUniversityPrereqEdges,
   projectPrereqGroups,
   prerequisiteGraphData,
 };

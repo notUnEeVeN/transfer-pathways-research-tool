@@ -1,0 +1,392 @@
+{
+  "captured_at": "2026-08-05T04:41:15.429Z",
+  "pages": [
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "BIS",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/bis/",
+      "file": "pages/89/BIS.html",
+      "bytes": 147277
+    },
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "CHE",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/che/",
+      "file": "pages/89/CHE.html",
+      "bytes": 299922
+    },
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "ECN",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/ecn/",
+      "file": "pages/89/ECN.html",
+      "bytes": 299974
+    },
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "ECS",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/ecs/",
+      "file": "pages/89/ECS.html",
+      "bytes": 414073
+    },
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "MAT",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/mat/",
+      "file": "pages/89/MAT.html",
+      "bytes": 434995
+    },
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "PHY",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/phy/",
+      "file": "pages/89/PHY.html",
+      "bytes": 311504
+    },
+    {
+      "school_id": 89,
+      "campus": "UC Davis",
+      "prefix": "STA",
+      "format": "courseleaf",
+      "url": "https://catalog.ucdavis.edu/courses-subject-code/sta/",
+      "file": "pages/89/STA.html",
+      "bytes": 291274
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "BIO SCI",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/bio_sci/",
+      "file": "pages/120/BIO_SCI.html",
+      "bytes": 396448
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "CHEM",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/chem/",
+      "file": "pages/120/CHEM.html",
+      "bytes": 316817
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "ECON",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/econ/",
+      "file": "pages/120/ECON.html",
+      "bytes": 351121
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "I&C SCI",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/i_c_sci/",
+      "file": "pages/120/I_C_SCI.html",
+      "bytes": 160398
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "IN4MATX",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/in4matx/",
+      "file": "pages/120/IN4MATX.html",
+      "bytes": 196310
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "MATH",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/math/",
+      "file": "pages/120/MATH.html",
+      "bytes": 356608
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "PHYSICS",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/physics/",
+      "file": "pages/120/PHYSICS.html",
+      "bytes": 320612
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "SOC SCI",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/soc_sci/",
+      "file": "pages/120/SOC_SCI.html",
+      "bytes": 252684
+    },
+    {
+      "school_id": 120,
+      "campus": "UC Irvine",
+      "prefix": "STATS",
+      "format": "courseleaf",
+      "url": "https://catalogue.uci.edu/allcourses/stats/",
+      "file": "pages/120/STATS.html",
+      "bytes": 196349
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "CHEM",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=CHEM",
+      "file": "pages/128/CHEM.html",
+      "bytes": 480384
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "CMPSC",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=CMPSC",
+      "file": "pages/128/CMPSC.html",
+      "bytes": 480385
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "ECON",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=ECON",
+      "file": "pages/128/ECON.html",
+      "bytes": 480384
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "EEMB",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=EEMB",
+      "file": "pages/128/EEMB.html",
+      "bytes": 480384
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "MATH",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=MATH",
+      "file": "pages/128/MATH.html",
+      "bytes": 480384
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "MCDB",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=MCDB",
+      "file": "pages/128/MCDB.html",
+      "bytes": 480384
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "PHYS",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=PHYS",
+      "file": "pages/128/PHYS.html",
+      "bytes": 480384
+    },
+    {
+      "school_id": 128,
+      "campus": "UC Santa Barbara",
+      "prefix": "PSTAT",
+      "format": "coursedog",
+      "url": "https://catalog.ucsb.edu/courses?subject=PSTAT",
+      "file": "pages/128/PSTAT.html",
+      "bytes": 480385
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "AM",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/am-applied-mathematics",
+      "file": "pages/132/AM.html",
+      "bytes": 129185
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "BIOE",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/bioe-biology-ecology-and-evolutionary",
+      "file": "pages/132/BIOE.html",
+      "bytes": 257300
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "BIOL",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/biol-biology-molecular-cell-and-developmental",
+      "file": "pages/132/BIOL.html",
+      "bytes": 244389
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "CHEM",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/chem-chemistry-and-biochemistry",
+      "file": "pages/132/CHEM.html",
+      "bytes": 152868
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "CSE",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/cse-computer-science-and-engineering",
+      "file": "pages/132/CSE.html",
+      "bytes": 332280
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "ECON",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/econ-economics",
+      "file": "pages/132/ECON.html",
+      "bytes": 231345
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "MATH",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/math-mathematics",
+      "file": "pages/132/MATH.html",
+      "bytes": 201920
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "PHYS",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/phys-physics",
+      "file": "pages/132/PHYS.html",
+      "bytes": 176191
+    },
+    {
+      "school_id": 132,
+      "campus": "UC Santa Cruz",
+      "prefix": "STAT",
+      "format": "ucsc",
+      "url": "https://catalog.ucsc.edu/en/current/general-catalog/courses/stat-statistics",
+      "file": "pages/132/STAT.html",
+      "bytes": 111190
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "BILD",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/BIOL.html",
+      "file": "pages/7/BILD.html",
+      "bytes": 199488
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "CHEM",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/CHEM.html",
+      "file": "pages/7/CHEM.html",
+      "bytes": 134641
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "COGS",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/COGS.html",
+      "file": "pages/7/COGS.html",
+      "bytes": 107803
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "CSE",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/CSE.html",
+      "file": "pages/7/CSE.html",
+      "bytes": 181524
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "ECE",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/ECE.html",
+      "file": "pages/7/ECE.html",
+      "bytes": 162197
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "ECON",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/ECON.html",
+      "file": "pages/7/ECON.html",
+      "bytes": 126539
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "MAE",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/MAE.html",
+      "file": "pages/7/MAE.html",
+      "bytes": 149653
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "MATH",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/MATH.html",
+      "file": "pages/7/MATH.html",
+      "bytes": 175038
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "NANO",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/NANO.html",
+      "file": "pages/7/NANO.html",
+      "bytes": 121199
+    },
+    {
+      "school_id": 7,
+      "campus": "UC San Diego",
+      "prefix": "PHYS",
+      "format": "ucsd",
+      "url": "https://catalog.ucsd.edu/courses/PHYS.html",
+      "file": "pages/7/PHYS.html",
+      "bytes": 117946
+    }
+  ]
+}
