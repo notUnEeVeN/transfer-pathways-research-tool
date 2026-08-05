@@ -19,11 +19,18 @@
 import { getAnalysisById } from '../analyses/registry'
 
 // Display order of the lanes, top to bottom / left to right.
-export const SOURCE_ORDER = ['ca', 'ma', 'new']
+//
+// The MA recreations lead: they are the active line of work. The CA ports and
+// the original income figures are complete but no longer being developed, so
+// they are marked `archived` below and their shelves render collapsed — present
+// and one click away, without competing for attention. Reordering this array
+// and clearing the `archived` flags restores the previous presentation.
+export const SOURCE_ORDER = ['ma', 'ca', 'new']
 
 export const SOURCE_META = {
   ca: {
     id: 'ca',
+    archived: true,
     label: 'CA',
     name: 'CA ports',
     tagline: 'Ports of the older transfer-articulation research, on our data',
@@ -44,6 +51,7 @@ export const SOURCE_META = {
   },
   new: {
     id: 'new',
+    archived: true,
     label: 'New',
     name: 'New for this paper',
     tagline: 'Original figures generated for this paper',

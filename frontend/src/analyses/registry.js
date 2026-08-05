@@ -41,6 +41,7 @@ import CoverageHeatmap from './CoverageHeatmap'
 import MultiCampusPathways, { MultiCampusPathwaysPreview } from './MultiCampusPathways'
 import TransferCreditRate from './TransferCreditRate'
 import TransferExtraUnits from './TransferExtraUnits'
+import TransferExtraCost from './TransferExtraCost'
 import PaperCreditLoss, { PaperCreditLossPreview } from './PaperCreditLoss'
 import PaperDistrictHeatmap, { PaperDistrictHeatmapPreview } from './PaperDistrictHeatmap'
 import PaperArticulationHistogram, { PaperArticulationHistogramPreview } from './PaperArticulationHistogram'
@@ -114,11 +115,16 @@ export const ANALYSES = [
   {
     id: 'paper-district-heatmap',
     ...selectedMajor({
-      requiredCapabilities: ['assistAgreements'],
-      datasets: ['ASSIST articulation agreements', 'community college districts'],
+      // State-agnostic: any major whose corpus renders strict-engine coverage
+      // verdicts (California through ASSIST, Maryland through ARTSYS).
+      requiredCapabilities: ['articulationVerdicts'],
+      datasets: ['articulation agreements', 'sending-institution grouping'],
     }),
     title: 'Transfer coverage by district',
     description: 'Shows which community college districts offer a complete transfer path to each University of California campus.',
+    // Maryland has no district construction — the college is the row unit.
+    stateTitles: { md: 'Transfer coverage by college' },
+    stateDescriptions: { md: 'Shows which community colleges offer a complete transfer path into each program with a published guide.' },
     provenance: 'ca',
     figureNo: 2,
     author_label: ANALYSIS_AUTHOR,
@@ -129,11 +135,13 @@ export const ANALYSES = [
   {
     id: 'paper-articulation-histogram',
     ...selectedMajor({
-      requiredCapabilities: ['assistAgreements'],
-      datasets: ['ASSIST articulation agreements', 'community college districts'],
+      requiredCapabilities: ['articulationVerdicts'],
+      datasets: ['articulation agreements', 'sending-institution grouping'],
     }),
     title: 'Districts by complete campus coverage',
     description: 'Shows how many community college districts offer a complete transfer path to zero through nine University of California campuses.',
+    stateTitles: { md: 'Colleges by complete program coverage' },
+    stateDescriptions: { md: 'Shows how many colleges hold a complete transfer path into zero through all of the programs with published guides.' },
     provenance: 'ca',
     figureNo: 3,
     author_label: ANALYSIS_AUTHOR,
@@ -218,6 +226,21 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:05:00',
     Component: TransferExtraUnits,
+  },
+  {
+    id: 'transfer-extra-cost',
+    ...selectedMajor({
+      requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
+      datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates', 'campus tuition and fees'],
+      pendingReason: 'Associate-degree requirements, four-year graduation templates and published campus tuition must all be present before replacement coursework can be priced.',
+    }),
+    title: 'Cost of replacement coursework',
+    description: 'Prices the associate-degree units that do not apply, using each campus’s published resident tuition and fees.',
+    provenance: 'ma',
+    figureNo: 5,
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-08-04T09:00:00',
+    Component: TransferExtraCost,
   },
   {
     id: 'coverage-heatmap',

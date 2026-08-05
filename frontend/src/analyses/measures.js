@@ -55,6 +55,11 @@ export const MEASURES = {
     grain: 'One value per community college × UC campus, for one associate degree type.',
     watchFor: 'This companion measure keeps the associate degree as its denominator, unlike the bachelor’s-requirement completion figure. Every optimistic application assumption pushes replacement units down, so read it as a lower bound rather than observed repeated coursework.',
   },
+  'transfer-extra-cost': {
+    expression: 'cost = replacement units (semester-equivalent) × campus annual resident tuition and fees ÷ (full-time load × 2 semesters)',
+    grain: 'One dollar value per community college × UC campus, for one associate degree type and one full-time load basis.',
+    watchFor: 'A campus bills a flat rate per term, so the per-unit price is derived, not published — the minimum-load basis divides by 12 units to follow the source paper, and the standard-load basis divides by 15, which is 20% cheaper per unit. Tuition and fees exclude waivable health insurance, room, board and books, and use the cohort that first enrolled in 2025-26; earlier cohorts pay less under UC’s tuition stability plan. It inherits every optimistic assumption in the replacement-units measure, so it is a lower bound on cost, and it prices coursework rather than the extra terms a student may actually enroll for.',
+  },
   'coverage-heatmap': {
     expression: 'coverage = modeled graduation units with a community college equivalent ÷ all modeled graduation units',
     grain: 'One value per community college × UC program.',

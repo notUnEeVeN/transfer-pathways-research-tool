@@ -7,6 +7,7 @@ const major = (overrides = {}) => ({
   label: 'Biology',
   capabilities: {
     assistAgreements: true,
+    articulationVerdicts: true,
     caCreditLossArtifact: true,
     degreeTemplates: true,
     prerequisites: false,
@@ -137,14 +138,17 @@ describe('analysis registry major scopes', () => {
 
     expect(selected).toEqual({
       'paper-credit-loss': ['assistAgreements', 'caCreditLossArtifact'],
-      'paper-district-heatmap': ['assistAgreements'],
-      'paper-articulation-histogram': ['assistAgreements'],
+      // State-agnostic strict-verdict figures: available to Maryland majors
+      // (through ARTSYS) as well as the California ones (through ASSIST).
+      'paper-district-heatmap': ['articulationVerdicts'],
+      'paper-articulation-histogram': ['articulationVerdicts'],
       'paper-articulation-map': ['assistAgreements'],
       'coverage-heatmap': ['assistAgreements', 'degreeTemplates'],
       'paper-course-barriers': ['assistAgreements', 'courseTypeFigures'],
       'course-type-coverage': ['assistAgreements', 'degreeTemplates', 'courseTypeFigures'],
       'transfer-credit-rate': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'transfer-extra-units': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
+      'transfer-extra-cost': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'income-access': ['assistAgreements'],
       'credit-loss': ['assistAgreements', 'agreementPathways'],
     })
@@ -171,6 +175,7 @@ describe('analysis registry major scopes', () => {
       label: 'Economics',
       capabilities: {
         assistAgreements: true,
+        articulationVerdicts: true,
         caCreditLossArtifact: true,
         courseTypeFigures: true,
         degreeTemplates: true,

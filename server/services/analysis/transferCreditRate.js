@@ -693,6 +693,9 @@ function nullMetrics(row, status, warning, namedUnits = null) {
     known_nontransferable_units: null,
     extra_units: null,
     extra_units_semester: null,
+    extra_cost_usd: null,
+    extra_cost_standard_load_usd: null,
+    tuition_annual_resident_usd: null,
     method_status: status,
     method_warning: warning,
   };
@@ -721,13 +724,36 @@ async function transferCreditRateData(db, _auditDb, {
     degreeQuery.$or = dimensional;
     templateQuery.$or = dimensional;
   }
-  const [degrees, templates, institutions] = await Promise.all([
+  const [degrees, templates, institutions, universities] = await Promise.all([
     db.collection('curated_requirements')
       .find(degreeQuery).toArray(),
     db.collection('curated_requirements').find(templateQuery).toArray(),
     db.collection('assist_institutions')
       .find({ kind: 'community_college' }, { projection: { name: 1, source_id: 1 } }).toArray(),
+    db.collection('assist_institutions').find({ kind: 'university' }, {
+      projection: {
+        source_id: 1, academic_calendar: 1, tuition_annual_resident_usd: 1,
+        tuition_per_credit_usd: 1, tuition_per_credit_standard_load_usd: 1,
+      },
+    }).toArray(),
   ]);
+
+  // Cost of the replacement coursework, following the MA paper: a campus bills a
+  // flat rate per term, so a per-unit price is derived from annual tuition and
+  // fees over a full-time load. Their published figures reproduce as
+  // `annual / (12 units x terms)` — Fitchburg State to within $2.
+  //
+  // Extra units are carried here in SEMESTER-equivalent terms, and the calendar
+  // cancels out: for a quarter campus, (extra x 1.5) x (annual / 36) is exactly
+  // extra x (annual / 24). So one semester-equivalent rate is correct for both
+  // calendars and is identical to native-units x native-rate.
+  const tuitionBySchool = new Map(universities
+    .filter((row) => row.tuition_annual_resident_usd != null)
+    .map((row) => [Number(row.source_id), {
+      annual: Number(row.tuition_annual_resident_usd),
+      perSemesterUnit: Number(row.tuition_annual_resident_usd) / 24,
+      perSemesterUnitStandardLoad: Number(row.tuition_annual_resident_usd) / 30,
+    }]));
 
   const scopedTemplates = exactPrograms
     ? templates.filter((template) => {
@@ -1008,6 +1034,23 @@ async function transferCreditRateData(db, _auditDb, {
         known_nontransferable_units: round1(fullKnownIneligibleUnits),
         extra_units: round1(extra),
         extra_units_semester: round1(toSemesterUnits(extra, collegeSystem)),
+        ...(() => {
+          const rate = tuitionBySchool.get(Number(campus.school_id));
+          const semesterExtra = toSemesterUnits(extra, collegeSystem);
+          if (!rate) {
+            return {
+              extra_cost_usd: null,
+              extra_cost_standard_load_usd: null,
+              tuition_annual_resident_usd: null,
+            };
+          }
+          return {
+            extra_cost_usd: Math.round(semesterExtra * rate.perSemesterUnit),
+            extra_cost_standard_load_usd:
+              Math.round(semesterExtra * rate.perSemesterUnitStandardLoad),
+            tuition_annual_resident_usd: rate.annual,
+          };
+        })(),
         method_status: warnings.length ? 'estimated' : 'ok',
         method_warning: warnings.length ? [...new Set(warnings)].join(' ') : null,
       });

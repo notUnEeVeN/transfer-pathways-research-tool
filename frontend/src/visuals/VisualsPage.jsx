@@ -141,7 +141,17 @@ function LiveThumbnail({
   )
 }
 
-function itemDetails(item, { isAdmin, releasedSet }) {
+// A ported figure can carry per-state copy (Maryland renders colleges where
+// California renders districts); the selected major's `state` picks it.
+function analysisCopy(analysis, selectedMajor) {
+  const state = selectedMajor?.state || null
+  return {
+    title: (state && analysis.stateTitles?.[state]) || analysis.title,
+    description: (state && analysis.stateDescriptions?.[state]) || analysis.description,
+  }
+}
+
+function itemDetails(item, { isAdmin, releasedSet, selectedMajor = null }) {
   if (item.kind === 'figure') {
     const fig = item.figure
     return {
@@ -153,9 +163,10 @@ function itemDetails(item, { isAdmin, releasedSet }) {
   }
 
   const { analysis } = item
+  const copy = analysisCopy(analysis, selectedMajor)
   return {
-    title: analysis.title,
-    description: analysis.description,
+    title: copy.title,
+    description: copy.description,
     source: `${analysis.author_label} · ${fmtDate(analysis.published_at)}`,
     badge: isAdmin
       ? <PublicationBadge published={releasedSet.has(analysis.id)} />
@@ -171,7 +182,7 @@ export function VisualThumbnailCard({
   selectedMajor = null,
 }) {
   const { previewRef, ready } = useDeferredPreview()
-  const details = itemDetails(item, { isAdmin, releasedSet })
+  const details = itemDetails(item, { isAdmin, releasedSet, selectedMajor })
   // Ported figures show a "CA Fig. 1" / "MA Fig. 3" pill so the source figure
   // is legible on the card without opening it. Originals get none.
   const figureRef = figureRefForItem(item)
@@ -531,7 +542,7 @@ export function BuiltInAnalysisCard({
   const scopeBadge = <AvailabilityBadge availability={availability} />
 
   return (
-    <AnalysisCard title={analysis.title}
+    <AnalysisCard title={analysisCopy(analysis, selectedMajor).title}
       source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
       exportName={`${analysis.id}-${availability.effectiveMajorSlug || selectedMajor?.slug || 'unavailable'}`}
       exportable={availability.available && !!Component}
@@ -608,29 +619,49 @@ function SpotlightLegend({ groups, active, pinned, onHover, onLeave, onToggle })
   )
 }
 
+// An archived lane (CA ports, original income figures) renders collapsed: the
+// header, its count and a disclosure, with the cards mounted only once opened.
+// The work is finished rather than deleted, so it stays reachable without
+// competing with the MA recreations for attention. Pinning or hovering the lane
+// in the filter bar expands it too, so the existing spotlight still works.
 function ProvenanceShelf({
-  group, dimmed, shelfRef, isAdmin, releasedSet, onOpen, selectedMajor,
+  group, dimmed, shelfRef, isAdmin, releasedSet, onOpen, selectedMajor, spotlit = false,
 }) {
   const { meta, items } = group
+  const [open, setOpen] = React.useState(!meta.archived)
+  const shown = open || spotlit
   return (
     <section ref={shelfRef} aria-label={meta.name}
       className={`scroll-mt-20 transition-opacity duration-300 ease-out ${
         dimmed ? 'opacity-40' : 'opacity-100'}`}>
       <div className='mb-3 flex items-center gap-3'>
         <span className={`h-5 w-1.5 rounded-pill ${meta.dotClass}`} aria-hidden='true' />
-        <h2 className='heading-card'>{meta.name}</h2>
+        <h2 className={`heading-card ${meta.archived ? 'ink-muted' : ''}`}>{meta.name}</h2>
         <span className={`rounded-pill px-2 py-0.5 text-tag font-[650] ${meta.softClass} ${meta.textClass}`}>
           {items.length}
         </span>
+        {meta.archived && (
+          <span className='rounded-pill bg-surface-sunken px-2 py-0.5 text-tag ink-subtle'>archived</span>
+        )}
         <p className='hidden truncate text-caption ink-subtle sm:block'>{meta.tagline}</p>
+        {meta.archived && (
+          <button type='button' onClick={() => setOpen((v) => !v)}
+            aria-expanded={shown}
+            className='ml-auto shrink-0 rounded-pill border border-border px-2.5 py-0.5 text-tag
+              ink-muted hover:border-border-strong hover:text-ink'>
+            {shown ? 'Hide' : `Show ${items.length}`}
+          </button>
+        )}
       </div>
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
-        {items.map((item) => (
-          <VisualThumbnailCard key={item.key} item={item} isAdmin={isAdmin}
-            releasedSet={releasedSet} selectedMajor={selectedMajor}
-            onOpen={() => onOpen(item.key)} />
-        ))}
-      </div>
+      {shown && (
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
+          {items.map((item) => (
+            <VisualThumbnailCard key={item.key} item={item} isAdmin={isAdmin}
+              releasedSet={releasedSet} selectedMajor={selectedMajor}
+              onOpen={() => onOpen(item.key)} />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
@@ -707,7 +738,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
 
   const selectedItem = gallery.find((item) => item.key === selectedKey) || null
   const selectedDetails = selectedItem
-    ? itemDetails(selectedItem, { isAdmin, releasedSet })
+    ? itemDetails(selectedItem, { isAdmin, releasedSet, selectedMajor })
     : null
 
   const loading = figuresQuery.isLoading || visualSettings.isLoading || majorsLoading
@@ -801,6 +832,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
               <ProvenanceShelf key={group.id} group={group}
                 dimmed={!!activeSource && activeSource !== group.id}
                 shelfRef={(el) => { shelfRefs.current[group.id] = el }}
+                spotlit={activeSource === group.id}
                 isAdmin={isAdmin} releasedSet={releasedSet} selectedMajor={analysisMajor}
                 onOpen={setSelectedKey} />
             ))}
