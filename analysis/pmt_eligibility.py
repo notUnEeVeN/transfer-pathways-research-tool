@@ -103,6 +103,10 @@ def is_receiver_available(receiver, cross_cc=None, strict=False):
         return False
     if receiver.get("articulation_status") != "not_articulated":
         return True
+    # ASSIST's own "never articulated" placeholder: no CC anywhere holds an
+    # equivalent and the course is taken at the university after transfer.
+    # Not demandable at a community college, so even strict must not count it
+    # as achievable demand.
     # THE ONE DELIBERATE MODIFICATION. PMT treats an unarticulated receiver as
     # unavailable, which shrinks every downstream cap min(advisement, available)
     # and lets unmet ASSIST demand default-ACCEPT. Under strict we count it as
@@ -110,7 +114,7 @@ def is_receiver_available(receiver, cross_cc=None, strict=False):
     # ask and genuine gaps surface. Completion (is_receiver_completed) is
     # unchanged, so the unarticulated receiver still can't be *satisfied* — it
     # is demand that goes unmet. This is the sole behavioral divergence from PMT.
-    if strict:
+    if strict and receiver.get("not_articulated_reason") != "never_articulated":
         return True
     if not receiver.get("hash_id"):
         return False
@@ -460,6 +464,15 @@ def _articulated(receiver):
     return receiver.get("articulation_status") == "articulated"
 
 
+def _placeholder(receiver):
+    """ASSIST's permanent "never articulated" rows: ignored by strict
+    eligibility, so they are never gaps and never repair candidates."""
+    return (
+        receiver.get("articulation_status") == "not_articulated"
+        and receiver.get("not_articulated_reason") == "never_articulated"
+    )
+
+
 def _is_plain_and_group(group):
     """A group whose sections are an independent 'complete all of' list — the
     common case where a shortfall localizes to a single section/course."""
@@ -472,10 +485,12 @@ def _is_plain_and_group(group):
 
 def _section_blockers(gi, si, section):
     receivers = section.get("receivers") or []
-    unart = [r for r in receivers if not _articulated(r)]
+    unart = [r for r in receivers if not _articulated(r) and not _placeholder(r)]
 
     if section.get("unit_advisement") is not None:
-        need = section["unit_advisement"]
+        # Cap the ask the way the strict engine does: placeholders carry no
+        # achievable units, so they cannot be part of the shortfall.
+        need = min(section["unit_advisement"], available_units(receivers, [], strict=True))
         have = available_units(receivers, [], strict=False)  # articulated units only
         return [{
             "grain": "section", "group_index": gi, "section_index": si,
@@ -483,13 +498,14 @@ def _section_blockers(gi, si, section):
             "candidates": [r["receiving"] for r in unart],
         }]
 
-    stated_need = section["section_advisement"] if section.get("section_advisement") is not None else 1
+    stated = section["section_advisement"] if section.get("section_advisement") is not None else 1
+    stated_need = min(stated, available_count(receivers, [], strict=True))
     articulated_count = sum(1 for r in receivers if _articulated(r))
     shortfall = stated_need - articulated_count
     if shortfall <= 0:
         return []
 
-    if stated_need >= len(receivers):
+    if stated_need >= len(receivers) - sum(1 for r in receivers if _placeholder(r)):
         # Must-take: every unarticulated receiver is individually mandatory, so
         # name each by its own university course.
         return [{
@@ -507,7 +523,8 @@ def _section_blockers(gi, si, section):
 
 def _group_blocker(gi, group, synth, strict):
     sections = group.get("sections") or []
-    unart = [r for s in sections for r in (s.get("receivers") or []) if not _articulated(r)]
+    unart = [r for s in sections for r in (s.get("receivers") or [])
+             if not _articulated(r) and not _placeholder(r)]
     if group.get("group_advisement") is not None:
         if group.get("group_min_distinct_sections") is not None:
             need = group["group_min_distinct_sections"]

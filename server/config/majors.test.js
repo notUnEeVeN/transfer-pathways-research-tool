@@ -43,7 +43,7 @@ describe('majors config', () => {
     expect(cs.capabilities.prerequisites).toBe(true);
   });
 
-  it('enables researched templates but leaves unvalidated visual inputs pending for new majors', () => {
+  it('enables researched degree and prerequisite templates while leaving category curation pending', () => {
     for (const slug of ['bio', 'econ']) {
       const capabilities = getMajor(slug).capabilities;
       expect(capabilities.assistAgreements).toBe(true);
@@ -51,12 +51,23 @@ describe('majors config', () => {
       expect(capabilities.agreementPathways).toBe(false);
       expect(capabilities.degreeTemplates).toBe(true);
       expect(capabilities.courseCategories).toBe(false);
-      expect(capabilities.prerequisites).toBe(false);
+      expect(capabilities.prerequisites).toBe(true);
     }
     // Both new majors now have imported associate-degree records; the
     // capabilities that remain false are the ones still awaiting validation.
     expect(getMajor('bio').capabilities.asDegrees).toBe(true);
     expect(getMajor('econ').capabilities.asDegrees).toBe(true);
+  });
+
+  it('publishes explicit prerequisite roots for each major', () => {
+    expect(getMajor('cs').prerequisiteConcepts).toContain('cs_3_data_structures');
+    expect(getMajor('bio').prerequisiteConcepts).toEqual(expect.arrayContaining([
+      'bio_genetics', 'biochemistry', 'molecular_biology', 'intro_data_science',
+    ]));
+    expect(getMajor('econ').prerequisiteConcepts).toEqual(expect.arrayContaining([
+      'econ_micro', 'econ_macro', 'intro_psychology', 'intro_american_government',
+      'intro_sociology',
+    ]));
   });
 
   it('publishes the researched associate-degree cohorts and labels per major', () => {
@@ -82,7 +93,7 @@ describe('majors config', () => {
   it('serializeMajors survives a JSON round-trip with every field intact', () => {
     const json = JSON.parse(JSON.stringify(serializeMajors()));
     const cs = json.find((m) => m.slug === 'cs');
-    expect(cs.label).toBe('Computer Science');
+    expect(cs.label).toBe('Computer Science (CA)');
     expect(cs.programs['79']).toEqual(['Electrical Engineering & Computer Sciences, B.S.']);
     expect(cs.categories.map((c) => c.key)).toContain('discrete_math');
     expect(cs.capabilities.paperBaselines).toBe(true);

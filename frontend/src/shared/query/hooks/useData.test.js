@@ -16,7 +16,7 @@ vi.mock('../../hooks/useAuth', () => ({
 }))
 
 import apiClient from '../../api/apiClient'
-import { useCoverage, useTransferCreditRate } from './useData'
+import { useCoverage, usePrereqGraph, useTransferCreditRate } from './useData'
 
 describe('useCoverage', () => {
   beforeEach(() => mocks.useQuery.mockReset())
@@ -55,6 +55,43 @@ describe('useTransferCreditRate', () => {
     await queryOptions.queryFn()
     expect(apiClient.get).toHaveBeenCalledWith('/analysis/transfer-credit-rate', {
       params: { degree_type: 'ast', majorSlug: 'bio', verified_only: true },
+    })
+  })
+})
+
+describe('usePrereqGraph', () => {
+  beforeEach(() => {
+    mocks.useQuery.mockReset()
+    apiClient.get.mockReset()
+  })
+
+  it('isolates the cache and request by major and college', async () => {
+    apiClient.get.mockResolvedValue({ data: { concepts: [] } })
+
+    usePrereqGraph(4, 'bio')
+
+    const queryOptions = mocks.useQuery.mock.calls[0][0]
+    expect(queryOptions.queryKey).toEqual([
+      'prereq-graph', 'user-1', 'bio', 4,
+    ])
+    await queryOptions.queryFn()
+    expect(apiClient.get).toHaveBeenCalledWith('/curated/prerequisite-graph', {
+      params: { majorSlug: 'bio', college_id: 'cc:4' },
+    })
+  })
+
+  it('keeps legacy callers explicitly scoped to the default CS major', async () => {
+    apiClient.get.mockResolvedValue({ data: { concepts: [] } })
+
+    usePrereqGraph(null)
+
+    const queryOptions = mocks.useQuery.mock.calls[0][0]
+    expect(queryOptions.queryKey).toEqual([
+      'prereq-graph', 'user-1', 'cs', 'all',
+    ])
+    await queryOptions.queryFn()
+    expect(apiClient.get).toHaveBeenCalledWith('/curated/prerequisite-graph', {
+      params: { majorSlug: 'cs' },
     })
   })
 })

@@ -422,7 +422,13 @@ export function PaperArticulationHistogramPreview({ majorSlug = 'cs', majorLabel
     majorLabel={majorLabel} />
 }
 
-export default function PaperArticulationHistogram({
+// The Maryland branch that once lived here was retired with the rest of the
+// Maryland work (see deprecated/maryland/).
+export default function PaperArticulationHistogram({ majorSlug = 'cs', ...rest }) {
+  return <CaPaperArticulationHistogram key='ca' majorSlug={majorSlug} {...rest} />
+}
+
+function CaPaperArticulationHistogram({
   majorSlug = 'cs',
   majorLabel: configuredMajorLabel = '',
 }) {

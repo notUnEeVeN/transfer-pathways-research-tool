@@ -28,10 +28,13 @@ describe('DegreeRequirementsDetail (ledger-rendered template)', () => {
   })
 
   it('flags a template as Verified once it carries verification notes', () => {
-    const verified = { ...tmpl, verification_notes: [{ text: 'walked the official pages', author_label: 'Tybalt Mallet' }] }
+    const verified = { ...tmpl, verification_notes: [{ text: 'walked the official pages', author_label: 'Tybalt Mallet', created_at: '2026-08-02T00:00:00.000Z' }] }
     const { container } = render(<DegreeRequirementsDetail doc={verified} />)
     expect(container.textContent).toContain('checked against the official pages')
     expect(container.textContent).toContain('Verified by Tybalt Mallet')
+    // Same banner as the associate-degree review: who, when, and how to reopen.
+    expect(container.textContent).toContain('Use Unverify below')
+    expect(container.textContent).toMatch(/8\/\d{1,2}\/2026/)
   })
 
   it('flags a template as Verified from an explicit verdict flag, even with no notes', () => {

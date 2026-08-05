@@ -66,9 +66,14 @@ const isReceiverCompleted = (receiver, userCourses, crossCc = []) => {
 const isReceiverAvailable = (receiver, crossCc = [], strict = false) => {
   if (!receiver) return false;
   if (receiver.articulation_status !== 'not_articulated') return true;
+  // ASSIST's own "This course has not been articulated" placeholder: no CC
+  // anywhere holds an equivalent and the course is taken at the university
+  // after transfer. It is not demandable at a community college, so even
+  // strict must not count it as achievable demand (it would close every
+  // college over a course none of them can offer).
   // THE ONE DELIBERATE MODIFICATION (see module header): under strict an
   // unarticulated receiver counts as achievable demand, removing PMT's cap.
-  if (strict) return true;
+  if (strict && receiver.not_articulated_reason !== 'never_articulated') return true;
   if (!receiver.hash_id) return false;
   return crossCc.some((s) => s.hash_id === receiver.hash_id);
 };

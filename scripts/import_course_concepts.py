@@ -105,10 +105,18 @@ def validate_concepts(concepts):
 
 
 def validate_mapping(rows, graph):
+    seen_ids = set()
     for row in rows:
         cid = row.get("course_id")
-        if not isinstance(cid, (int, float)) or int(cid) != cid:
+        if isinstance(cid, bool) or not isinstance(cid, (int, float)) or int(cid) != cid:
             sys.exit(f"mapping row has non-numeric course_id: {row!r}")
+        cid = int(cid)
+        if cid in seen_ids:
+            sys.exit(f"duplicate course_id in course_concepts.json: {cid}")
+        seen_ids.add(cid)
+        institution_id = row.get("institution_id")
+        if not isinstance(institution_id, str) or not re.fullmatch(r"cc:\d+", institution_id):
+            sys.exit(f"course {cid}: institution_id must be cc:<numeric id>")
         concept = row.get("concept")
         if concept is not None and concept not in graph:
             sys.exit(f"course {cid}: unknown concept {concept!r}")

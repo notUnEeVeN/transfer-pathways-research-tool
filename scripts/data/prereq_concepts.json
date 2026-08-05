@@ -1,24 +1,72 @@
 {
  "_meta": {
-  "purpose": "DRAFT prerequisite concept vocabulary + rules (spec docs/superpowers/specs/2026-07-15-prerequisite-concept-graph-design.md §1A). Pending Tybalt's exhaustive review — rename to prereq_concepts.json only after approval. Consumed by scripts/import_course_concepts.py.",
+  "purpose": "Cross-state prerequisite concept vocabulary and normative rule DAG. California ASSIST and Virginia VCCS mappings share these semantic concepts while retaining source-specific published course rules.",
   "status": "locked",
-  "authored": "2026-07-15",
-  "method": "in-session multi-agent draft: 7 discipline-family proposers over the full in-scope inventory (4,730 CC courses, 230 UC receiving) -> synthesis -> 2 adversarial verifiers (coverage, rules); review doc at docs/prereq-concepts-review.md",
+  "authored": "2026-07-15; expanded for Biology, Economics, and Virginia CS 2026-08-02",
+  "method": "Original multi-agent synthesis over the California CS-era inventory, a receiver-anchored California Biology/Economics expansion, and a Virginia VCCS crosswalk backed by published statewide course descriptions and requisites. Source-specific rules remain outside this shared semantic vocabulary.",
   "conventions": [
    "Lab-only UC asks (e.g. PHYSICS 4AL, CHEM 1AL) are covered by their lecture concept; labs do not get separate concepts.",
    "Corequisites are not encoded; where a relationship is commonly concurrent, encoding it as a completed prerequisite is a per-concept normative call recorded in that concept's note.",
-   "Combined courses (e.g. 'Linear Algebra and Differential Equations') map to BOTH constituent concepts.",
-   "Courses with no concept stay unmapped by design; concepts exist only for recurring pathway courses anchored by UC asks."
+   "Combined courses use an explicit compound concept with satisfies links when the combination changes prerequisite depth; otherwise they follow the documented deepest-constituent convention.",
+   "Courses with no concept stay unmapped by design; concepts exist only for recurring, structurally meaningful pathway courses supported by a state source."
   ],
-  "review": "Approved 2026-07-15 by Tybalt ('that's fine, proceed'): decisions 1-5 stand as drafted (linear_alg<-calc_3 and diff_eq<-linear_alg are his stated normative calls; consequences accepted as documented); decision 6: software-tools cluster left unmapped for v1; decision 7: intro_stats/engl_comp_2 kept as CC-side concepts; decision 8: variance notes added post-approval. Combined-course convention for classification: a course spanning multiple concepts maps to the DEEPEST constituent in the partial order, flagged 'combined_course' (single-concept schema, v1); listed in QA for manual override."
+  "review": "Original California CS vocabulary approved 2026-07-15. Biology/Economics and Virginia additions are verification-ready first passes as of 2026-08-02; flagged mappings remain intentionally visible for partner adjudication. Virginia's published course-level requisites, not this normative DAG, are authoritative in Virginia views."
  },
  "concepts": [
+  {
+   "slug": "precalc_1",
+   "name": "Precalculus I (Algebra and Functions)",
+   "discipline": "math",
+   "requires": [],
+   "note": "The first half of a two-course precalculus sequence. It is present because Virginia CS pathways explicitly name the preparation below Calculus I; California's ASSIST-scoped prerequisite view still begins at transfer-level calculus.",
+   "va_anchors": [
+    "MTH 161 @ Virginia's Community Colleges"
+   ],
+   "example_cc_titles": [
+    "PreCalculus I",
+    "College Algebra and Functions"
+   ]
+  },
+  {
+   "slug": "precalc_2",
+   "name": "Precalculus II (Trigonometry)",
+   "discipline": "math",
+   "requires": [
+    "precalc_1"
+   ],
+   "note": "The trigonometry half of a two-course precalculus sequence. Virginia's published MTH 162 rule requires MTH 161 or placement; placement alternatives remain on the Virginia course-level requisite rather than in this concept edge.",
+   "va_anchors": [
+    "MTH 162 @ Virginia's Community Colleges"
+   ],
+   "example_cc_titles": [
+    "PreCalculus II",
+    "Trigonometry and Conic Sections"
+   ]
+  },
+  {
+   "slug": "precalc_combined",
+   "name": "Precalculus with Trigonometry (Combined)",
+   "discipline": "math",
+   "requires": [],
+   "satisfies": [
+    "precalc_1",
+    "precalc_2"
+   ],
+   "note": "A single course covering the algebra/functions and trigonometry preparation represented by the two-course precalculus sequence. Virginia MTH 167 is the anchor; its satisfies links let it stand in for both halves without pretending the student took two courses.",
+   "va_anchors": [
+    "MTH 167 @ Virginia's Community Colleges"
+   ],
+   "example_cc_titles": [
+    "PreCalculus with Trigonometry",
+    "Combined Precalculus and Trigonometry"
+   ]
+  },
   {
    "slug": "calc_1",
    "name": "Calculus I (single-variable, differential)",
    "discipline": "math",
    "requires": [],
-   "note": "The start of the STEM math track. Honors, 'with support', and early/late-transcendentals sections all count. There's no precalc or trig concept because those courses never appear in the agreements. A course that combines Calc 1 and 2 counts as both.",
+   "note": "The start of the transfer-level STEM math track. Honors, 'with support', and early/late-transcendentals sections all count. It remains a root in the shared normative DAG because California transfer preparation begins here; Virginia's more specific precalculus alternatives and grade rules are represented by published course-level requisites. A course that combines Calc 1 and 2 counts as both.",
    "uc_anchors": [
     "MATH 31A @ UCLA",
     "MATH 20A @ UCSD",
@@ -176,6 +224,25 @@
    ]
   },
   {
+   "slug": "applied_math_3",
+   "name": "Applied Mathematical Methods III (Life Sciences / Economics)",
+   "discipline": "math",
+   "requires": [
+    "bus_calc_2"
+   ],
+   "note": "A third applied-mathematics course in the life-science or economics track, usually differential equations and linear algebra taught after two applied-calculus courses. It stays separate from the STEM Calc III / Linear Algebra chain because its sending-side preparation is materially shorter.",
+   "uc_anchors": [
+    "MATH 3C @ UCLA",
+    "MAT 017C @ UC Davis",
+    "AM 11B @ UC Santa Cruz"
+   ],
+   "example_cc_titles": [
+    "Calculus for Biology and Medicine III",
+    "Mathematical Methods for Economists II",
+    "Differential Equations with Linear Algebra for Life Sciences"
+   ]
+  },
+  {
    "slug": "stats_calc",
    "name": "Calculus-Based Probability & Statistics for STEM",
    "discipline": "stats",
@@ -211,6 +278,23 @@
     "Introduction to Statistics",
     "Elementary Statistics",
     "Introduction to Probability and Statistics"
+   ]
+  },
+  {
+   "slug": "intro_data_science",
+   "name": "Introduction to Data Science",
+   "discipline": "stats",
+   "requires": [],
+   "note": "A first data-science course centered on data preparation, visualization, computation, and interpretation. It is a root because the articulated community-college versions generally have only algebra or placement gates. Ordinary introductory statistics courses that articulate to a UC data-science course remain intro_stats rather than being relabeled from the receiver title alone.",
+   "uc_anchors": [
+    "DSC 008 @ UC Merced",
+    "STA 032 @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "Introduction to Data Science",
+    "Foundations of Data Science",
+    "Data Science and Visualization",
+    "Statistical Data Science"
    ]
   },
   {
@@ -413,6 +497,62 @@
    ]
   },
   {
+   "slug": "organic_chem_survey_1",
+   "name": "Brief / Survey Organic Chemistry I",
+   "discipline": "chem",
+   "requires": [
+    "gen_chem_1"
+   ],
+   "note": "The shorter organic-chemistry track used by life-science and allied-health programs. It starts after one general-chemistry course, so it must not inherit the full majors sequence's General Chemistry II gate.",
+   "uc_anchors": [
+    "CHE 008A @ UC Davis",
+    "CHEM 008 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Brief Organic Chemistry",
+    "Elementary Organic Chemistry",
+    "Principles of Organic Chemistry",
+    "Survey of Organic Chemistry"
+   ]
+  },
+  {
+   "slug": "organic_chem_survey_2",
+   "name": "Brief / Survey Organic Chemistry II",
+   "discipline": "chem",
+   "requires": [
+    "organic_chem_survey_1"
+   ],
+   "note": "Second course of the brief organic-chemistry track. Many colleges compress the track into one course, so this concept appears only where the sending catalog actually prints a second course.",
+   "uc_anchors": [
+    "CHE 008B @ UC Davis"
+   ],
+   "example_cc_titles": [
+    "Brief Organic Chemistry II",
+    "Elementary Organic Chemistry II",
+    "Organic Chemistry for Health Sciences II"
+   ]
+  },
+  {
+   "slug": "organic_biochem_survey",
+   "name": "Combined Organic Chemistry & Biochemistry Survey",
+   "discipline": "chem",
+   "requires": [
+    "gen_chem_1"
+   ],
+   "satisfies": [
+    "organic_chem_survey_1"
+   ],
+   "note": "A one-course allied-health survey combining introductory organic chemistry and biochemistry. It has the short-track General Chemistry I gate and satisfies the first brief-organic step, but it does not stand in for science-majors Organic Chemistry or Biochemistry.",
+   "uc_anchors": [
+    "BIO SCI 98 @ UC Irvine (selected articulated survey options)"
+   ],
+   "example_cc_titles": [
+    "Introduction to Organic and Biological Chemistry",
+    "Elementary Organic and Biochemistry",
+    "General Organic and Biochemistry"
+   ]
+  },
+  {
    "slug": "cs_1",
    "name": "Programming Fundamentals (CS1)",
    "discipline": "cs",
@@ -585,21 +725,79 @@
   },
   {
    "slug": "human_physiology",
-   "name": "Human Physiology",
+   "name": "Human Physiology / Human Biology",
    "discipline": "bio",
    "requires": [
     "bio_cell_molec",
     "gen_chem_1"
    ],
-   "note": "A dedicated Human Physiology course (majors / pre-professional). We require both cell and molecular biology and General Chemistry 1 — the conservative call. Multi-semester anatomy and physiology sequences do not map here.",
+   "note": "A dedicated Human Physiology or Human Biology course used in the lower-division Biology pathway. We require both cell and molecular biology and General Chemistry I as the conservative statewide order. Anatomy-and-physiology components map here only when an explicit Biology-major ASSIST articulation treats them as the equivalent course.",
    "uc_anchors": [
-    "MCELLBI 32 @ UC Berkeley"
+    "MCELLBI 32 @ UC Berkeley",
+    "LIFESCI 7C @ UCLA",
+    "BIOE 20B @ UC Santa Cruz"
    ],
    "example_cc_titles": [
     "Human Physiology",
     "General Human Physiology",
     "Principles of Human Physiology",
     "Introductory Physiology"
+   ]
+  },
+  {
+   "slug": "bio_genetics",
+   "name": "Genetics",
+   "discipline": "bio",
+   "requires": [
+    "bio_cell_molec"
+   ],
+   "note": "A dedicated lower-division genetics course. The statewide approximation requires the majors cell-and-molecular course first; human-genetics and heredity titles are included when ASSIST explicitly articulates them to the Biology-major genetics requirement.",
+   "uc_anchors": [
+    "BIO SCI 97 @ UC Irvine"
+   ],
+   "example_cc_titles": [
+    "Genetics",
+    "Principles of Genetics",
+    "Human Genetics",
+    "Genetic Analysis"
+   ]
+  },
+  {
+   "slug": "biochemistry",
+   "name": "Biochemistry (Science Majors)",
+   "discipline": "bio",
+   "requires": [
+    "gen_chem_2"
+   ],
+   "note": "A science-majors biochemistry course. General Chemistry II is the common prerequisite shared across the articulated sending courses; many colleges additionally require Organic Chemistry, but encoding that statewide would overstate the shorter variants. Allied-health courses combining organic chemistry and biochemistry use organic_biochem_survey.",
+   "uc_anchors": [
+    "BIO SCI 98 @ UC Irvine",
+    "CHEM 153A @ UCLA"
+   ],
+   "example_cc_titles": [
+    "Biochemistry",
+    "General Biochemistry",
+    "Principles of Biochemistry",
+    "Biological Chemistry"
+   ]
+  },
+  {
+   "slug": "molecular_biology",
+   "name": "Molecular Biology",
+   "discipline": "bio",
+   "requires": [
+    "bio_genetics"
+   ],
+   "note": "An advanced lower-division molecular-biology course, distinct from the introductory cell-and-molecular survey. The normative chain requires Genetics; chemistry expectations vary enough across the articulated sending courses that no additional statewide chemistry edge is encoded. Combined Genetics/Molecular Biology rows remain in the verification queue.",
+   "uc_anchors": [
+    "BIO SCI 99 @ UC Irvine",
+    "BIO 011 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Molecular Biology",
+    "Principles of Molecular Biology",
+    "Genetics and Molecular Biology",
+    "Molecular Biology with Laboratory"
    ]
   },
   {
@@ -696,6 +894,51 @@
    ]
   },
   {
+   "slug": "intro_psychology",
+   "name": "Introduction to Psychology",
+   "discipline": "other",
+   "requires": [],
+   "note": "The first survey course in psychology. It is a root because its normal gates are placement-level, not other transfer courses. Only courses explicitly articulating to the pinned Economics program's introductory-psychology receiver are assigned here; the much broader UCI social-science menu remains examined-null.",
+   "uc_anchors": [
+    "PSY 001 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Introduction to Psychology",
+    "General Psychology",
+    "Introductory Psychology"
+   ]
+  },
+  {
+   "slug": "intro_american_government",
+   "name": "Introduction to American Government & Politics",
+   "discipline": "other",
+   "requires": [],
+   "note": "The first American government/politics survey used as a supporting social-science requirement in Economics. It has no transfer-level prerequisite in the model and is assigned from the explicit UC receiver rather than from generic social-science eligibility alone.",
+   "uc_anchors": [
+    "POLI 001 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "American Government",
+    "Introduction to American Politics",
+    "American Government and Politics"
+   ]
+  },
+  {
+   "slug": "intro_sociology",
+   "name": "Introduction to Sociology",
+   "discipline": "other",
+   "requires": [],
+   "note": "The first sociology survey used as a supporting social-science requirement in Economics. It is a root and is assigned only where an explicit ASSIST receiver anchors the equivalence.",
+   "uc_anchors": [
+    "SOC 001 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Introduction to Sociology",
+    "Introductory Sociology",
+    "Principles of Sociology"
+   ]
+  },
+  {
    "slug": "econ_micro",
    "name": "Principles of Microeconomics",
    "discipline": "other",
@@ -728,11 +971,31 @@
    ]
   },
   {
+   "slug": "econ_intro_combined",
+   "name": "Introduction to Economics (Combined Micro & Macro)",
+   "discipline": "other",
+   "requires": [],
+   "satisfies": [
+    "econ_micro",
+    "econ_macro"
+   ],
+   "note": "A one-course introduction covering both microeconomics and macroeconomics. It is separate from either Principles half, and its satisfies links let the combined course stand in for both when a college or downstream rule needs them.",
+   "uc_anchors": [
+    "ECON 1 @ UC Berkeley",
+    "ECON 001 @ UC Merced"
+   ],
+   "example_cc_titles": [
+    "Introduction to Economics",
+    "Principles of Economics",
+    "Introductory Economics"
+   ]
+  },
+  {
    "slug": "acct_financial",
    "name": "Financial Accounting",
    "discipline": "other",
    "requires": [],
-   "note": "Financial Accounting — the biggest single cluster (~120 colleges). Managerial accounting isn't in our data, and vocational bookkeeping stays unmapped.",
+   "note": "Financial Accounting — the biggest single California accounting cluster and the first course in Virginia's published accounting sequence. Vocational bookkeeping stays unmapped.",
    "uc_anchors": [
     "BUS 20 @ UC Riverside"
    ],
@@ -741,6 +1004,23 @@
     "ACCTG 001 Introductory Accounting I",
     "BUS 1A Financial Accounting",
     "ACCT 116A Financial Accounting"
+   ]
+  },
+  {
+   "slug": "acct_managerial",
+   "name": "Managerial Accounting",
+   "discipline": "other",
+   "requires": [
+    "acct_financial"
+   ],
+   "note": "The second principles course, focused on cost and managerial accounting after Financial Accounting. Virginia ACC 212 creates an explicit published sequence, so it remains separate from advanced cost-accounting electives and vocational bookkeeping.",
+   "va_anchors": [
+    "ACC 212 @ Virginia's Community Colleges"
+   ],
+   "example_cc_titles": [
+    "Principles of Accounting II",
+    "Managerial Accounting",
+    "Cost and Managerial Accounting"
    ]
   },
   {

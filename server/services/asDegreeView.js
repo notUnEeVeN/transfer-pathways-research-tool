@@ -485,10 +485,31 @@ async function asDegreeVerification(db) {
 
   const counts = {};
   for (const major of majors) {
-    counts[major.slug] = { verified: 0, present: 0, absent: 0 };
-    for (const row of rows) counts[major.slug][row.majors[major.slug].state] += 1;
+    counts[major.slug] = {
+      verified: 0,
+      present: 0,
+      absent: 0,
+      // Verified records per award slot (a college may verify more than one
+      // award, so these sum to >= the college-level `verified` count).
+      verified_slots: Object.fromEntries(AS_DEGREE_SLOTS.map((slot) => [slot, 0])),
+    };
+    for (const row of rows) {
+      const view = row.majors[major.slug];
+      counts[major.slug][view.state] += 1;
+      for (const slot of AS_DEGREE_SLOTS) {
+        if (view.slots[slot]?.verified) counts[major.slug].verified_slots[slot] += 1;
+      }
+    }
   }
-  return { majors: majors.map((m) => ({ slug: m.slug, label: m.label })), counts, rows };
+  return {
+    majors: majors.map((m) => ({
+      slug: m.slug,
+      label: m.label,
+      degreeSlotLabels: m.degreeSlotLabels || null,
+    })),
+    counts,
+    rows,
+  };
 }
 
 function courseView(course) {

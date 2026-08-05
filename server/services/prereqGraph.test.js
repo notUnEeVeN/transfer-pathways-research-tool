@@ -6,6 +6,7 @@ const cjs = createRequire(import.meta.url);
 const {
   projectEdges, projectGroups, projectPrereqEdges, projectPrereqGroups, prerequisiteGraphData,
 } = cjs('./prereqGraph');
+const { getMajor } = cjs('../config/majors');
 
 let mongo;
 let db;
@@ -275,6 +276,102 @@ describe('prerequisiteGraphData', () => {
     expect(intoAssembly).toHaveLength(3);
     expect(intoAssembly.every((e) => e.option === true)).toBe(true);
     expect(new Set(intoAssembly.map((e) => e.group)).size).toBe(1); // one alternatives group
+  });
+
+  it('scopes one major by exact program pins and returns only its prerequisite closure', async () => {
+    await db.dropDatabase();
+    const concepts = [
+      { slug: 'base', requires: [] },
+      { slug: 'intro', requires: ['base'] },
+      { slug: 'advanced', requires: ['intro'] },
+      { slug: 'combined', requires: ['base'], satisfies: ['intro'] },
+      { slug: 'bio_only', requires: [] },
+      { slug: 'unrelated', requires: [] },
+    ];
+    await db.collection('curated_requirements').insertMany(concepts.map((conceptRow) => ({
+      _id: `prereq_concept:${conceptRow.slug}`,
+      kind: 'prereq_concept',
+      legacy_id: conceptRow.slug,
+      name: conceptRow.slug,
+      discipline: 'other',
+      ...conceptRow,
+    })));
+    await db.collection('assist_courses').insertMany([
+      course(1, 10, 'base'),
+      course(2, 10, 'intro'),
+      course(3, 10, 'advanced'),
+      course(4, 10, undefined),
+      course(5, 10, 'bio_only'),
+      course(6, 10, 'unrelated'),
+      course(7, 10, 'combined'),
+    ]);
+
+    const agreement = (major, courseIds) => ({
+      college_id: 'cc:10',
+      uc_school_id: 7,
+      major,
+      requirement_groups: [{ sections: [{ receivers: [{ options: [{ course_ids: courseIds }] }] }] }],
+    });
+    const cs = getMajor('cs');
+    const bio = getMajor('bio');
+    await db.collection('assist_agreements').insertMany([
+      agreement(cs.programs[7][0], [3, 4, 999]),
+      agreement(bio.programs[7][0], [5]),
+      agreement(`${cs.programs[7][0]} Minor`, [6]),
+    ]);
+
+    // The compatibility union still returns every reviewed row, but coverage
+    // denominators/numerators describe only courses in today's agreements.
+    const unionSummary = await prerequisiteGraphData(db, {});
+    expect(unionSummary.stats).toEqual({ in_scope: 4, examined: 3, mapped: 3 });
+    const unionCollege = await prerequisiteGraphData(db, { collegeKey: 'cc:10' });
+    expect(unionCollege.courses).toHaveLength(7);
+    expect(unionCollege.stats).toMatchObject({ in_scope: 4, examined: 3, mapped: 3 });
+
+    // The configured template starts at `advanced`. Its ancestors, plus a
+    // combined concept that can satisfy `intro`, must remain visible.
+    const originalConcepts = cs.prerequisiteConcepts;
+    try {
+      cs.prerequisiteConcepts = ['advanced'];
+
+      const summary = await prerequisiteGraphData(db, { majorSlug: 'cs' });
+      expect(new Set(summary.concepts.map((conceptRow) => conceptRow.slug))).toEqual(
+        new Set(['base', 'intro', 'advanced', 'combined']),
+      );
+      expect(summary.stats).toEqual({ in_scope: 2, examined: 1, mapped: 1 });
+
+      const data = await prerequisiteGraphData(db, { collegeKey: 'cc:10', majorSlug: 'cs' });
+      expect(data.courses.map((row) => row.key).sort()).toEqual([
+        'cc:1', 'cc:2', 'cc:3', 'cc:4', 'cc:7',
+      ]);
+      expect(data.courses.filter((row) => row.role === 'major_preparation').map((row) => row.key).sort())
+        .toEqual(['cc:3', 'cc:4']);
+      expect(data.courses.filter((row) => row.role === 'prerequisite_only').map((row) => row.key).sort())
+        .toEqual(['cc:1', 'cc:2', 'cc:7']);
+      expect(data.courses.some((row) => row.key === 'cc:5' || row.key === 'cc:6')).toBe(false);
+      expect(data.edges).toEqual(expect.arrayContaining([
+        { from: 'cc:1', to: 'cc:2' },
+        { from: 'cc:1', to: 'cc:7' },
+        { from: 'cc:2', to: 'cc:3' },
+        { from: 'cc:7', to: 'cc:3' },
+      ]));
+      expect(data.stats).toEqual({
+        in_scope: 2,
+        examined: 1,
+        mapped: 1,
+        edges: 4,
+        phantom_course_ids: [999],
+      });
+
+      // Older config entries without an explicit template keep the historical
+      // all-concept response even when their agreement scope is requested.
+      delete cs.prerequisiteConcepts;
+      const backwardCompatible = await prerequisiteGraphData(db, { majorSlug: 'cs' });
+      expect(backwardCompatible.concepts).toHaveLength(concepts.length);
+    } finally {
+      if (originalConcepts === undefined) delete cs.prerequisiteConcepts;
+      else cs.prerequisiteConcepts = originalConcepts;
+    }
   });
 });
 

@@ -192,6 +192,20 @@ describe('the deliberate modification (strict)', () => {
     expect(isMajorArticulable(m, true)).toBe(false);
     expect(isMajorArticulable(m, false)).toBe(true);
   });
+  it('never_articulated placeholders do not block even under strict', () => {
+    // ASSIST's "This course has not been articulated" rows (e.g. UCLA ECON
+    // 11/41): no CC anywhere holds an equivalent, the course is taken at the
+    // university after transfer. Not demandable, so strict must ignore it.
+    const never = (pid) => ({ ...unart(pid), not_articulated_reason: 'never_articulated' });
+    const m = major(grp([
+      sec([art(1, 101), art(2, 102)]),
+      sec([never(3), never(4)]),
+    ]));
+    expect(isMajorArticulable(m, true)).toBe(true);
+    // ...while a genuinely missing entry in the same shape still blocks.
+    const m2 = major(grp([sec([art(1, 101), art(2, 102), never(3), unart(4)], { section_advisement: 3 })]));
+    expect(isMajorArticulable(m2, true)).toBe(false);
+  });
   it('recommended unarticulated group does not block', () => {
     const m = major(
       grp([sec([art(1, 101)], { section_advisement: 1 })]),

@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept, prerequisiteGraph, asDegrees } = cjs('./CanonicalData');
+const { getMajor } = cjs('../config/majors');
 
 let mongo;
 let db;
@@ -236,6 +237,16 @@ describe('prereq_concept kind', () => {
     const res = await del('prereq_concept:calc_1');
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toMatch(/1 course/);
+  });
+
+  it('rejects deleting a concept a Virginia course mapping uses', async () => {
+    await put(concept('calc_1'));
+    await db.collection('va_course_concepts').insertOne({
+      _id: 'va:concept:MTH263', course_key: 'va:MTH263', code: 'MTH263', concept: 'calc_1',
+    });
+    const res = await del('prereq_concept:calc_1');
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/1 Virginia course mapping/);
   });
 
   it('deletes an unreferenced concept', async () => {
@@ -724,6 +735,13 @@ describe('prerequisiteGraph endpoint', () => {
     expect(res.body.error).toMatch(/college_id must be cc:<id>/);
   });
 
+  it('400s an unknown majorSlug with the supported slugs', async () => {
+    const res = await run(prerequisiteGraph, request({ query: { majorSlug: 'marine-basketry' } }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe('unknown major: marine-basketry');
+    expect(res.body.known).toEqual(expect.arrayContaining(['cs', 'bio', 'econ']));
+  });
+
   it('returns the concept DAG without a college and the full payload with one', async () => {
     await db.collection('curated_requirements').insertOne({
       _id: 'prereq_concept:calc_1', kind: 'prereq_concept', legacy_id: 'calc_1',
@@ -740,6 +758,38 @@ describe('prerequisiteGraph endpoint', () => {
     const scoped = await run(prerequisiteGraph, request({ query: { college_id: 'cc:10' } }));
     expect(scoped.body.courses).toHaveLength(1);
     expect(scoped.body.courses[0].key).toBe('cc:1');
+  });
+
+  it('passes majorSlug through to exact agreement scoping', async () => {
+    await db.collection('curated_requirements').insertOne({
+      _id: 'prereq_concept:calc_1', kind: 'prereq_concept', legacy_id: 'calc_1',
+      slug: 'calc_1', name: 'Calculus I', discipline: 'math', requires: [],
+    });
+    await db.collection('assist_courses').insertMany([
+      {
+        _id: 'cc:1', side: 'sending', course_id: 1, institution_id: 'cc:10',
+        title: 'CS preparation', concept: 'calc_1', concept_source: 'llm_session_v1',
+      },
+      {
+        _id: 'cc:2', side: 'sending', course_id: 2, institution_id: 'cc:10',
+        title: 'Biology preparation', concept: 'calc_1', concept_source: 'llm_session_v1',
+      },
+    ]);
+    const agreement = (major, courseId) => ({
+      college_id: 'cc:10', uc_school_id: 7, major,
+      requirement_groups: [{ sections: [{ receivers: [{ options: [{ course_ids: [courseId] }] }] }] }],
+    });
+    await db.collection('assist_agreements').insertMany([
+      agreement(getMajor('cs').programs[7][0], 1),
+      agreement(getMajor('bio').programs[7][0], 2),
+    ]);
+
+    const res = await run(prerequisiteGraph, request({
+      query: { college_id: 'cc:10', majorSlug: 'cs' },
+    }));
+    expect(res.statusCode).toBe(200);
+    expect(res.body.courses.map((row) => row.key)).toEqual(['cc:1']);
+    expect(res.body.courses[0]).toMatchObject({ in_scope: true, role: 'major_preparation' });
   });
 });
 

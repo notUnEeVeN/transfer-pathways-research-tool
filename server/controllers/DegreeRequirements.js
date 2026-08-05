@@ -28,7 +28,7 @@ exports.list = asyncHandler(async (req, res) => {
 
   const rows = [];
   for (const doc of docs) {
-    const universityCoursesById = await loadUniversityCourses(db, doc.requirement_groups);
+    const universityCoursesById = await loadUniversityCourses(db, doc.requirement_groups, doc.course_unit_overrides);
     const { total } = buildDegreeGroups(doc.requirement_groups, { universityCoursesById });
     const ledger = buildLedgerGroups(doc.requirement_groups, { template: true });
     rows.push({

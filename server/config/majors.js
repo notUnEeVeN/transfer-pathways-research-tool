@@ -19,7 +19,7 @@
 const MAJORS = [
   {
     slug: 'cs',
-    label: 'Computer Science',
+    label: 'Computer Science (CA)',
     // Human-friendly fallback used only by legacy callers that explicitly ask
     // for a contains search. Analysis requests with majorSlug=cs use the exact
     // campus/program pairs below.
@@ -75,6 +75,18 @@ const MAJORS = [
     },
     // Which prereq-concept disciplines this major's chains draw on.
     conceptDisciplines: ['math', 'cs', 'physics', 'engr', 'stats'],
+    // Explicit roots for the major-scoped prerequisite page. The graph service
+    // adds every transitive prerequisite and satisfying compound concept.
+    prerequisiteConcepts: [
+      'calc_1', 'calc_2', 'calc_3', 'linear_alg', 'diff_eq', 'linear_alg_diff_eq',
+      'discrete_math', 'bus_calc_1', 'bus_calc_2', 'stats_calc', 'intro_stats',
+      'phys_mech', 'phys_em', 'phys_waves_thermo', 'phys_modern', 'phys_gen_1', 'phys_gen_2',
+      'gen_chem_1', 'gen_chem_2', 'organic_chem_1', 'organic_chem_2',
+      'cs_1', 'cs_2_oop', 'cs_3_data_structures', 'comp_arch_assembly',
+      'c_systems_programming', 'digital_logic', 'engr_circuits', 'engr_programming',
+      'bio_cell_molec', 'bio_organismal', 'human_physiology',
+      'engl_comp_1', 'engl_comp_2', 'intro_lit',
+    ],
     // The typing RULES stay in code — they are regexes and prefix sets, and a
     // major's rules are a module (services/courseTypes.js here,
     // services/courseTypesBio.js for Biology) named by `courseTypes.module`
@@ -84,6 +96,10 @@ const MAJORS = [
     // major; cs has the full historical dataset.
     capabilities: {
       assistAgreements: true,
+      // Strict-engine coverage verdicts exist for this major's corpus —
+      // the state-agnostic requirement of the coverage matrix/histogram
+      // figures (Maryland majors satisfy it through artsys_* data).
+      articulationVerdicts: true,
       caCreditLossArtifact: true,
       agreementPathways: true,
       asDegrees: true,
@@ -174,8 +190,25 @@ const MAJORS = [
       ],
     },
     conceptDisciplines: ['math', 'chem', 'bio', 'physics', 'stats'],
+    prerequisiteConcepts: [
+      'calc_1', 'calc_2', 'calc_3', 'linear_alg', 'diff_eq', 'linear_alg_diff_eq',
+      'discrete_math', 'bus_calc_1', 'bus_calc_2', 'applied_math_3',
+      'stats_calc', 'intro_stats', 'intro_data_science',
+      'phys_mech', 'phys_em', 'phys_waves_thermo', 'phys_modern', 'phys_gen_1', 'phys_gen_2',
+      'gen_chem_1', 'gen_chem_2', 'organic_chem_1', 'organic_chem_2',
+      'organic_chem_survey_1', 'organic_chem_survey_2', 'organic_biochem_survey',
+      'bio_cell_molec', 'bio_organismal', 'human_physiology',
+      'bio_genetics', 'biochemistry', 'molecular_biology',
+      'cs_1', 'cs_2_oop', 'cs_3_data_structures', 'comp_arch_assembly',
+      'c_systems_programming', 'engr_programming',
+      'engl_comp_1', 'engl_comp_2', 'intro_lit',
+    ],
     capabilities: {
       assistAgreements: true,
+      // Strict-engine coverage verdicts exist for this major's corpus —
+      // the state-agnostic requirement of the coverage matrix/histogram
+      // figures (Maryland majors satisfy it through artsys_* data).
+      articulationVerdicts: true,
       caCreditLossArtifact: true,
       // Per-agreement exact-path artifacts still need blocked-path and solver-
       // proof metadata before the exploratory minimum/choice-cost cards are
@@ -188,11 +221,10 @@ const MAJORS = [
       // there are no hand-curated website minimums to gather.
       transferMinimums: false,
       degreeTemplates: true,
-      // Category names and prerequisite concepts are provisional until their
-      // dedicated validation passes are complete.
+      // Course-category validation is separate from the prerequisite mapping.
       courseCategories: false,
       courseTypeFigures: true,
-      prerequisites: false,
+      prerequisites: true,
       snapshots: [],
     },
   },
@@ -270,8 +302,22 @@ const MAJORS = [
       ],
     },
     conceptDisciplines: ['math', 'stats', 'other'],
+    prerequisiteConcepts: [
+      'calc_1', 'calc_2', 'calc_3', 'linear_alg', 'diff_eq', 'linear_alg_diff_eq',
+      'bus_calc_1', 'bus_calc_2', 'applied_math_3',
+      'stats_calc', 'intro_stats', 'intro_data_science',
+      'econ_micro', 'econ_macro', 'econ_intro_combined',
+      'intro_psychology', 'intro_american_government', 'intro_sociology',
+      'bio_organismal',
+      'cs_1', 'cs_2_oop', 'cs_3_data_structures', 'engr_programming',
+      'engl_comp_1', 'engl_comp_2', 'intro_lit',
+    ],
     capabilities: {
       assistAgreements: true,
+      // Strict-engine coverage verdicts exist for this major's corpus —
+      // the state-agnostic requirement of the coverage matrix/histogram
+      // figures (Maryland majors satisfy it through artsys_* data).
+      articulationVerdicts: true,
       caCreditLossArtifact: true,
       agreementPathways: false,
       // The 2025-2026 statewide associate-degree corpus and all nine
@@ -283,11 +329,10 @@ const MAJORS = [
       // there are no hand-curated website minimums to gather.
       transferMinimums: false,
       degreeTemplates: true,
-      // Category names and prerequisite concepts are provisional until their
-      // dedicated validation passes are complete.
+      // Course-category validation is separate from the prerequisite mapping.
       courseCategories: false,
       courseTypeFigures: true,
-      prerequisites: false,
+      prerequisites: true,
       snapshots: [],
     },
   },

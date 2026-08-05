@@ -222,4 +222,10 @@ describe('PriceOfPlace', () => {
     expect(screen.getByText('Median tether, by income quartile')).toBeInTheDocument()
   })
 
+  it('offers the colorful palette without changing any text', () => {
+    render(<PriceOfPlace />)
+    fireEvent.click(screen.getByRole('button', { name: 'Colorful' }))
+    expect(screen.getByText('Complete transfer paths by district income')).toBeInTheDocument()
+    expect(screen.getByText('Income and distance, compared within broad strata')).toBeInTheDocument()
+  })
 })

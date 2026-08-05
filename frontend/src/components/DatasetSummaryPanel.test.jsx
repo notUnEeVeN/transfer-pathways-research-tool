@@ -43,7 +43,8 @@ const summary = {
 const verification = {
   majors: MAJORS.map((m) => ({ slug: m.slug, label: m.label })),
   counts: {
-    cs: { verified: 112, present: 3, absent: 0 },
+    cs: { verified: 112, present: 3, absent: 0,
+      verified_slots: { ast: 74, local_as: 40, local_other: 2 } },
     bio: { verified: 0, present: 40, absent: 75 },
     econ: { verified: 0, present: 30, absent: 85 },
   },
@@ -87,6 +88,9 @@ describe('DatasetSummaryPanel', () => {
     // Computer Science: 112 verified · 3 unverified · 0 not offered.
     const csRow = within(landscape).getByText('Computer Science').parentElement
     expect(csRow).toHaveTextContent('112 verified')
+    // The verified count breaks down by award so A.S.-T vs local A.S. is
+    // visible at a glance; zero-count slots stay silent (bio has no line).
+    expect(csRow).toHaveTextContent('74 A.S.-T · 40 Local A.S. · 2 Other')
     expect(csRow).toHaveTextContent('3 unverified')
     expect(csRow).toHaveTextContent('0 not offered')
     const bioRow = within(landscape).getByText('Biology').parentElement

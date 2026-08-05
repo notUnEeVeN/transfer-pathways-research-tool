@@ -51,6 +51,9 @@ function groupsWithAvailability(groups, isAvailable) {
           receiving: receiver.receiving,
           hash_id: receiver.hash_id,
           articulation_status: available ? 'articulated' : 'not_articulated',
+          // Preserve ASSIST's "never articulated" placeholder marker so the
+          // strict engine keeps ignoring it at this grain too.
+          not_articulated_reason: available ? null : (receiver.not_articulated_reason ?? null),
           options: available
             ? [{ course_ids: [`assist-evidence-${evidenceId}`], course_conjunction: 'and' }]
             : [],

@@ -21,6 +21,7 @@ const mockAsDegreeDetail = vi.fn(() => ({
   isLoading: false,
   isError: false,
 }))
+const mockConceptGraphView = vi.fn(() => null)
 vi.mock('@frontend/query/hooks/useData', () => ({
   // The college pane mounts AsDegreeReview, which reads these two. Two records
   // so the section's degree-type tabs have something to switch between.
@@ -112,7 +113,7 @@ vi.mock('@frontend/query/hooks/useData', () => ({
   useSaveDegreeRequirement: () => ({ mutateAsync: async () => ({}), isPending: false }),
   useAsDegreeVerification: () => ({
     data: {
-      majors: [{ slug: 'cs', label: 'Computer Science' }],
+      majors: [{ slug: 'cs', label: 'Computer Science (CA)' }],
       counts: { cs: { verified: 1, present: 1, absent: 1 } },
       rows: [
         // Marin has an unverified local record but no A.S.-T → present.
@@ -193,7 +194,9 @@ vi.mock('./asdegrees/AsDegreeSchoolView', () => ({
   default: () => null,
   DegreePanel: ({ degree }) => <div>Associate degree detail {degree?.doc?.degree_type}</div>,
 }))
-vi.mock('./prereqs/ConceptGraphView', () => ({ default: () => null }))
+vi.mock('./prereqs/ConceptGraphView', () => ({
+  default: (props) => mockConceptGraphView(props),
+}))
 
 // The associate-degree section's `major` prop comes from useMajorChoice,
 // which only differs from the CS fallback inside a MajorProvider. Mocking the
@@ -215,6 +218,7 @@ import { CS_FALLBACK } from './shared/majors/useMajors'
 // needs a valid registry even when no MajorProvider wraps the tree. Default to
 // the CS fallback; renderCollegePane overrides it with the case's major.
 beforeEach(() => {
+  mockConceptGraphView.mockClear()
   mockMajors.mockReturnValue({
     majors: CS_FALLBACK, defaultSlug: CS_FALLBACK[0].slug,
     bySlug: new Map(CS_FALLBACK.map((m) => [m.slug, m])),
@@ -339,7 +343,7 @@ describe('DataPage SubNav route chip', () => {
     expect(screen.getByRole('region', { name: 'Associate degrees' })).toBeInTheDocument()
     expect(screen.getByText('Associate degree detail ast')).toBeInTheDocument()
     expect(screen.getByText('Diablo Valley College')).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · Computer Science A.S.-T · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science (CA) · Computer Science A.S.-T · 2025-2026')).toBeInTheDocument()
     expect(screen.queryByText(/complete CS A.S.-T requirement record/i)).not.toBeInTheDocument()
     expect(screen.queryByText('Receiving campus')).not.toBeInTheDocument()
     expect(screen.queryByText('School pair')).not.toBeInTheDocument()
@@ -357,8 +361,13 @@ describe('DataPage SubNav route chip', () => {
       .find((tablist) => within(tablist).queryByRole('tab', { name: 'Transfer articulation' }))
     fireEvent.click(within(detailTabs).getByRole('tab', { name: 'Prerequisites' }))
     expect(screen.getByRole('button', {
-      name: 'GET /api/curated/prerequisite-graph?college_id=cc:101',
+      name: 'GET /api/curated/prerequisite-graph?college_id=cc:101&majorSlug=cs',
     })).toBeInTheDocument()
+    expect(mockConceptGraphView).toHaveBeenCalledWith(expect.objectContaining({
+      initialCollegeId: 101,
+      lockCollege: true,
+      majorSlug: 'cs',
+    }))
 
     fireEvent.click(within(detailTabs).getByRole('tab', { name: 'Transfer articulation' }))
     expect(await screen.findByText('School pair')).toBeInTheDocument()
@@ -432,9 +441,9 @@ describe('Community Colleges degree integration', () => {
     expect(screen.queryByText('All regions')).not.toBeInTheDocument()
     // Per-major dots, not a "CS A.S.-T" badge — one per major, labelled by state.
     expect(screen.queryByText('CS A.S.-T')).not.toBeInTheDocument()
-    expect(screen.getByLabelText('Computer Science: verified')).toBeInTheDocument()
-    expect(screen.getByLabelText('Computer Science: present, unverified')).toBeInTheDocument()
-    expect(screen.getByLabelText('Computer Science: not offered')).toBeInTheDocument()
+    expect(screen.getByLabelText('Computer Science (CA): verified')).toBeInTheDocument()
+    expect(screen.getByLabelText('Computer Science (CA): present, unverified')).toBeInTheDocument()
+    expect(screen.getByLabelText('Computer Science (CA): not offered')).toBeInTheDocument()
 
     // "Has unverified" keeps only the college with a present-but-unverified record.
     fireEvent.click(screen.getByRole('button', { name: 'Filter by verification' }))
@@ -487,7 +496,7 @@ describe('Community Colleges degree integration', () => {
     expect(screen.getByText('Santa Monica College')).toBeInTheDocument()
     // No record for any slot at this college — the header falls back to the
     // slot's own label rather than a "no degree" message; the tabs stay put.
-    expect(screen.getByText('Computer Science · A.S.-T')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science (CA) · A.S.-T')).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Associate degrees' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.queryByText('No agreements')).not.toBeInTheDocument()
     await waitFor(() => expect(screen.getByRole('button', {
@@ -514,10 +523,10 @@ describe('Community Colleges degree integration', () => {
     expect(screen.getByRole('tab', { name: 'A.S.-T' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Local A.S.' })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'Other' })).toBeInTheDocument()
-    expect(screen.getByText('Computer Science · A.S.-T')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science (CA) · A.S.-T')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('tab', { name: 'Local A.S.' }))
-    expect(screen.getByText('Computer Science · A.S. in Computer Science · 2024-2025')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science (CA) · A.S. in Computer Science · 2024-2025')).toBeInTheDocument()
   })
 
   it('updates the degree header when switching between transfer and local A.S. records', () => {
@@ -526,9 +535,9 @@ describe('Community Colleges degree integration', () => {
     fireEvent.click(screen.getByText('Diablo Valley College').closest('[class*="cursor-pointer"]'))
     fireEvent.click(screen.getByRole('tab', { name: 'Associate degrees' }))
 
-    expect(screen.getByText('Computer Science · Computer Science A.S.-T · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science (CA) · Computer Science A.S.-T · 2025-2026')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('tab', { name: 'Local A.S.' }))
-    expect(screen.getByText('Computer Science · Computer Science A.S. · 2025-2026')).toBeInTheDocument()
+    expect(screen.getByText('Computer Science (CA) · Computer Science A.S. · 2025-2026')).toBeInTheDocument()
   })
 
   it('shows all three slots even when the college has no records', async () => {

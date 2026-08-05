@@ -512,7 +512,15 @@ export function PaperDistrictHeatmapPreview({ majorSlug = 'cs', majorLabel = '' 
   return <PaperDistrictHeatmap preview majorSlug={majorSlug} majorLabel={majorLabel} />
 }
 
-export default function PaperDistrictHeatmap({
+// The Maryland branch that once lived here was retired with the rest of the
+// Maryland work (see deprecated/maryland/). This stays a thin dispatcher so
+// restoring a second corpus is a single added branch rather than a rewrite.
+export default function PaperDistrictHeatmap({ majorSlug = 'cs', ...rest }) {
+  const selectedMajorSlug = String(majorSlug || '').trim().toLowerCase() || 'cs'
+  return <CaPaperDistrictHeatmap key='ca' majorSlug={selectedMajorSlug} {...rest} />
+}
+
+function CaPaperDistrictHeatmap({
   presentation = false,
   preview = false,
   majorSlug = 'cs',

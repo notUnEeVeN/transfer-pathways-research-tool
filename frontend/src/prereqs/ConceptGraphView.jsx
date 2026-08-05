@@ -19,14 +19,18 @@ function ConceptChips({ heading, sub, items }) {
   )
 }
 
-export default function ConceptGraphView({ initialCollegeId = null, lockCollege = false }) {
-  // initialCollegeId exists so tests can render college mode without driving
-  // the portal-based Combobox in jsdom; the app mounts this with no props.
+export default function ConceptGraphView({
+  initialCollegeId = null,
+  lockCollege = false,
+  majorSlug = null,
+}) {
+  // initialCollegeId exists so tests and institution panes can enter college
+  // mode without driving the portal-based Combobox.
   // lockCollege hides the college Combobox — the Institutions pane already
   // owns the selection via its rail, so a second picker here is noise.
   const colleges = useColleges()
   const [collegeId, setCollegeId] = useState(initialCollegeId)
-  const graph = usePrereqGraph(collegeId)
+  const graph = usePrereqGraph(collegeId, majorSlug)
 
   const collegeOptions = useMemo(() => [
     { value: null, label: 'Canonical concepts (no college)' },
@@ -36,6 +40,7 @@ export default function ConceptGraphView({ initialCollegeId = null, lockCollege 
   if (graph.isLoading) return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   if (graph.isError) return <Alert type='error'>Failed to load the prerequisite graph.</Alert>
   const d = graph.data
+  const mappedCourses = (d.courses || []).filter((c) => c.concept)
 
   let graphEl; let gapChips = null
   if (collegeId == null) {
@@ -43,14 +48,13 @@ export default function ConceptGraphView({ initialCollegeId = null, lockCollege 
       ? <PrereqGraph mode='canonical' concepts={d.concepts} rules={d.rules} />
       : <Alert type='info'>Nothing to draw yet — add concepts or run the importer.</Alert>
   } else {
-    const mapped = (d.courses || []).filter((c) => c.concept)
     const conceptIndex = Object.fromEntries(d.concepts.map((c) => [c.slug, c]))
-    graphEl = mapped.length
-      ? <PrereqGraph mode='college' courses={mapped} edges={d.edges} conceptIndex={conceptIndex} />
+    graphEl = mappedCourses.length
+      ? <PrereqGraph mode='college' courses={mappedCourses} edges={d.edges} conceptIndex={conceptIndex} />
       : <Alert type='info'>No mapped courses at this college yet.</Alert>
-    const present = new Set(mapped.map((c) => c.concept))
+    const present = new Set(mappedCourses.map((c) => c.concept))
     // Satisfies counts: a college with a combined LA+DE course "has" both.
-    for (const c of mapped) for (const s of conceptIndex[c.concept]?.satisfies || []) present.add(s)
+    for (const c of mappedCourses) for (const s of conceptIndex[c.concept]?.satisfies || []) present.add(s)
     const missing = d.concepts.filter((c) =>
       !present.has(c.slug) && (c.requires.length || d.rules.some((r) => r.from === c.slug)))
     gapChips = (
@@ -70,10 +74,9 @@ export default function ConceptGraphView({ initialCollegeId = null, lockCollege 
     : [
       {
         label: 'In-scope courses', value: s.in_scope,
-        // Reconciles with the graph: only mapped courses are drawn, so a
-        // college can have examined-but-unmapped courses (GE, one-offs) that
-        // don't appear as nodes.
-        sub: `${s.mapped} drawn · ${s.examined - s.mapped} examined, no concept`,
+        // The graph also draws mapped prerequisite-only closure courses, while
+        // coverage remains defined over direct major courses alone.
+        sub: `${mappedCourses.length} drawn · ${s.examined - s.mapped} major courses examined, no concept`,
       },
       {
         label: 'Examined', value: s.in_scope ? `${Math.round((s.examined / s.in_scope) * 100)}%` : '—',

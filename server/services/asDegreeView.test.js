@@ -275,9 +275,23 @@ describe('asDegreeVerification', () => {
     // Rows sort by college name; counts roll up the per-major landscape.
     expect(result.rows.map((r) => r.college_name)).toEqual(
       ['Allan Hancock College', 'Cabrillo College', 'Evergreen Valley College']);
-    expect(result.counts.cs).toEqual({ verified: 2, present: 0, absent: 1 });
-    expect(result.counts.bio).toEqual({ verified: 0, present: 1, absent: 2 });
-    expect(result.counts.econ).toEqual({ verified: 0, present: 0, absent: 3 });
+    expect(result.counts.cs).toEqual({
+      verified: 2, present: 0, absent: 1,
+      verified_slots: { ast: 1, local_as: 1, local_other: 0 },
+    });
+    expect(result.counts.bio).toEqual({
+      verified: 0, present: 1, absent: 2,
+      verified_slots: { ast: 0, local_as: 0, local_other: 0 },
+    });
+    expect(result.counts.econ).toEqual({
+      verified: 0, present: 0, absent: 3,
+      verified_slots: { ast: 0, local_as: 0, local_other: 0 },
+    });
+
+    // The award labels ride along so the overview can name the slots
+    // per major (Economics' transfer award is an A.A.-T, for example).
+    const econ = result.majors.find((m) => m.slug === 'econ');
+    expect(econ.degreeSlotLabels).toMatchObject({ ast: 'A.A.-T / A.S.-T' });
   });
 });
 

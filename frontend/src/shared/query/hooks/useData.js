@@ -439,13 +439,17 @@ export function useDeleteRefRow(table) {
   })
 }
 
-export function usePrereqGraph(collegeId) {
+export function usePrereqGraph(collegeId, majorSlug = 'cs') {
   const { user } = useAuth()
+  const safeMajor = String(majorSlug || 'cs').trim() || 'cs'
   return useQuery({
-    queryKey: ['prereq-graph', user?.uid, collegeId ?? 'all'],
+    queryKey: ['prereq-graph', user?.uid, safeMajor, collegeId ?? 'all'],
     queryFn: () => apiClient
       .get('/curated/prerequisite-graph', {
-        params: collegeId != null ? { college_id: `cc:${collegeId}` } : {},
+        params: {
+          majorSlug: safeMajor,
+          ...(collegeId != null ? { college_id: `cc:${collegeId}` } : {}),
+        },
       })
       .then((r) => r.data),
     enabled: !!user?.uid,

@@ -6071,6 +6071,15 @@
  "market": {
   "programs": [
    {
+    "major": "Business Economics/B.A.",
+    "campus": "UC Los Angeles",
+    "cs": false,
+    "applicants": 3379,
+    "q1": 0.889,
+    "q4": 1,
+    "swing": 0.111
+   },
+   {
     "major": "Business Administration, B.A.",
     "campus": "UC Irvine",
     "cs": false,
@@ -6174,6 +6183,15 @@
     "campus": "UC Santa Barbara",
     "cs": false,
     "applicants": 1540,
+    "q1": 0.944,
+    "q4": 1,
+    "swing": 0.056
+   },
+   {
+    "major": "Economics/B.A.",
+    "campus": "UC Los Angeles",
+    "cs": false,
+    "applicants": 1519,
     "q1": 0.944,
     "q4": 1,
     "swing": 0.056
@@ -7574,6 +7592,15 @@
     "swing": 0.111
    },
    {
+    "major": "Mathematics/Economics/B.S.",
+    "campus": "UC Los Angeles",
+    "cs": false,
+    "applicants": 149,
+    "q1": 0.222,
+    "q4": 0.778,
+    "swing": 0.556
+   },
+   {
     "major": "Chemical Engineering, B.S.",
     "campus": "UC Berkeley",
     "cs": false,
@@ -7824,6 +7851,15 @@
     "q1": 0.889,
     "q4": 1,
     "swing": 0.111
+   },
+   {
+    "major": "Financial Actuarial Mathematics/B.S.",
+    "campus": "UC Los Angeles",
+    "cs": false,
+    "applicants": 92,
+    "q1": 0.111,
+    "q4": 0.5,
+    "swing": 0.389
    },
    {
     "major": "Gender Studies/B.A.",
@@ -8636,13 +8672,8 @@
     "swing": 0.333
    }
   ],
-  "excludedCount": 225,
+  "excludedCount": 221,
   "excludedTop": [
-   {
-    "major": "Business Economics/B.A.",
-    "campus": "UC Los Angeles",
-    "applicants": 3379
-   },
    {
     "major": "Economics: Business Economics B.S.",
     "campus": "UC San Diego",
@@ -8667,6 +8698,11 @@
     "major": "Computer Science/B.S.",
     "campus": "UC Los Angeles",
     "applicants": 1655
+   },
+   {
+    "major": "Psychological and Brain Sciences, B.S.",
+    "campus": "UC Santa Barbara",
+    "applicants": 1209
    }
   ]
  },

@@ -17,12 +17,6 @@
     "slots:audit": "node scripts/migrateAsDegreeSlots.js",
     "slots:apply": "node scripts/migrateAsDegreeSlots.js --apply",
     "snapshot:multi-campus": "node scripts/generateMultiCampusPathwaysSnapshot.js",
-    "artsys:audit": "node scripts/importArtsys.js",
-    "artsys:import": "node scripts/importArtsys.js --apply",
-    "artsys:refresh": "node scripts/importArtsys.js --apply --refresh",
-    "artsys:import:local": "node scripts/importArtsys.js --apply --uri mongodb://127.0.0.1:27017 --db pmt_research",
-    "artsys:enrich": "node scripts/enrichArtsys.js",
-    "artsys:enrich:apply": "node scripts/enrichArtsys.js --apply",
     "test": "vitest run",
     "test:watch": "vitest"
   },

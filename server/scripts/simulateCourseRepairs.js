@@ -95,7 +95,9 @@ function withPatched(agreements, shouldPatch, fn) {
   const patched = [];
   for (const a of agreements) {
     for (const { receiver } of receivers(a)) {
-      if (receiver.articulation_status === 'not_articulated' && shouldPatch(a, receiver)) {
+      if (receiver.articulation_status === 'not_articulated'
+          && receiver.not_articulated_reason !== 'never_articulated'
+          && shouldPatch(a, receiver)) {
         patched.push({ receiver, options: receiver.options });
         receiver.articulation_status = 'articulated';
         receiver.options = [{ course_ids: [syntheticId], course_conjunction: 'and' }];
@@ -348,6 +350,10 @@ function withPatched(agreements, shouldPatch, fn) {
         for (const s of g.sections || []) {
           for (const r of s.receivers || []) {
             if (r.articulation_status !== 'not_articulated') continue;
+            // ASSIST's permanent "never articulated" placeholders are taken at
+            // the university after transfer; the engine ignores them, so they
+            // are not missing entries and cannot be repaired.
+            if (r.not_articulated_reason === 'never_articulated') continue;
             const pid = r.receiving?.kind === 'course' ? Number(r.receiving.parent_id) : null;
             if (pid == null) continue;
             const college = Number(a.community_college_id);
@@ -819,6 +825,7 @@ function withPatched(agreements, shouldPatch, fn) {
       if (isMajorArticulable(a, true)) continue;
       const pids = [...new Set([...receivers(a)]
         .filter(({ receiver }) => receiver.articulation_status === 'not_articulated'
+          && receiver.not_articulated_reason !== 'never_articulated'
           && receiver.receiving?.kind === 'course')
         .map(({ receiver }) => Number(receiver.receiving.parent_id)))];
       for (const pid of pids) {

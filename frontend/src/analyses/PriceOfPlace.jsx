@@ -29,13 +29,29 @@ const MUTED_LINE = '#9CA69B'
 const GRID = 'rgba(25,48,24,0.10)'
 const GRID_STRONG = 'rgba(25,48,24,0.16)'
 const AXIS = 'rgba(25,48,24,0.28)'
-const CS_BLUE = '#0072B2'
-const FIELD = '#6F7B6E'
-const GAINED = '#0D7964'
-const Q1_FILL = '#A9C3DE'
-const Q4_FILL = '#1E3A5F'
-const CONN = '#6E93BF'
-const RAMP = ['#A9C3DE', '#6E93BF', '#38618C', '#1E3A5F']
+// Accent palettes. Classic is the print look the sequence was designed in;
+// vivid recolors the data ink with the Okabe-Ito colors the rest of the
+// gallery uses. Neutrals (ink, grids, text) are shared by both.
+const PALETTES = {
+  classic: {
+    CS_BLUE: '#0072B2',
+    FIELD: '#6F7B6E',
+    GAINED: '#0D7964',
+    Q1_FILL: '#A9C3DE',
+    Q4_FILL: '#1E3A5F',
+    CONN: '#6E93BF',
+    RAMP: ['#A9C3DE', '#6E93BF', '#38618C', '#1E3A5F'],
+  },
+  vivid: {
+    CS_BLUE: '#0072B2',
+    FIELD: '#CC79A7',
+    GAINED: '#009E73',
+    Q1_FILL: '#D55E00',
+    Q4_FILL: '#0072B2',
+    CONN: '#9CA69B',
+    RAMP: ['#D55E00', '#E69F00', '#56B4E9', '#0072B2'],
+  },
+}
 const FONT = "'Hanken Grotesk Variable', 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif"
 
 // Registers: detailed = the paper-facing file; glance = the v2 file (nothing
@@ -144,13 +160,13 @@ const NOTES = [
 
 // ───────── beat chrome (the handoff's section anatomy) ─────────
 
-function Beat({ no, role, title, basis = 'strict', children }) {
+function Beat({ no, role, title, basis = 'strict', pal, children }) {
   return (
     <section aria-label={title}
       className='bg-white rounded-[14px] border flex flex-col gap-5'
       style={{ borderColor: 'rgba(25,48,24,0.11)', padding: '30px 34px 28px' }}>
       <div className='flex flex-col gap-2 max-w-[80ch]'>
-        <span className='text-[11.5px] tracking-[0.11em] uppercase font-[700]' style={{ color: CS_BLUE }}>
+        <span className='text-[11.5px] tracking-[0.11em] uppercase font-[700]' style={{ color: pal.CS_BLUE }}>
           {no} · {role}
         </span>
         <h3 className='m-0 text-[26px] leading-[1.14] tracking-[-0.018em] font-[600]' style={{ color: INK }}>{title}</h3>
@@ -176,7 +192,8 @@ export function fig1Rows(basis = 'strict') {
   ]
 }
 
-function Fig1({ reg, basis }) {
+function Fig1({ reg, basis, pal }) {
+  const { CS_BLUE, GAINED, Q1_FILL, Q4_FILL, CONN } = pal
   const bands = fig1Rows(basis).filter((b) => b.members.length > 0)
   const x = (v) => 300 + v * 760
   const { medianIncome } = snapshot.fig3
@@ -331,7 +348,8 @@ function useMapLayout() {
 
 const QUARTILE_NAME = ['lowest-income', 'second', 'third', 'highest-income']
 
-function Fig2({ reg, basis }) {
+function Fig2({ reg, basis, pal }) {
+  const { CS_BLUE, RAMP } = pal
   const { districts } = snapshot.fig2
   const { outlinePath, place } = useMapLayout()
   const dotR = 6.6
@@ -399,7 +417,8 @@ function Fig2({ reg, basis }) {
 
 // ───────── Figure 3 — two quartile paths, divergence shaded ─────────
 
-function Fig3({ reg, basis }) {
+function Fig3({ reg, basis, pal }) {
+  const { CS_BLUE, FIELD } = pal
   const cs = basis === 'minimums' ? snapshot.minimums.fig3cs : snapshot.fig3.cs
   const { field, medianIncome } = snapshot.fig3
   const x = (q) => 220 + q * 240
@@ -460,7 +479,8 @@ function Fig3({ reg, basis }) {
 // artifact; programs closed everywhere on stated preparation are excluded as
 // unmeasurable (their floors are uncurated), never drawn as flat.
 
-function Fig4Market({ reg, basis }) {
+function Fig4Market({ reg, pal, basis }) {
+  const { CS_BLUE, FIELD } = pal
   const { programs, excludedCount } = repairs.market
   const field = programs.filter((r) => !r.cs)
   const csRows = basis === 'minimums' ? floorCsRows : programs.filter((r) => r.cs)
@@ -552,7 +572,8 @@ const CAMPUS_LABEL = {
   Merced: [10, -6, 'start'],
 }
 
-function Fig4Tethers({ reg }) {
+function Fig4Tethers({ reg, pal }) {
+  const { RAMP } = pal
   const { tethers, campuses, medianKmByQuartile } = snapshot.distance
   const { outlinePath, place } = useTetherLayout()
   const campusByName = new Map(campuses.map((c) => [c.name, c]))
@@ -630,7 +651,8 @@ function Fig4Tethers({ reg }) {
 
 // ───────── Figure 6 — the gate grid: each factor with the other held ─────────
 
-function Fig5Gates({ reg, basis }) {
+function Fig5Gates({ reg, basis, pal }) {
+  const { CS_BLUE, FIELD } = pal
   const { cells: strictCells, responses: strictResponses, medianKm } = snapshot.distance
   const minimums = snapshot.minimums
   const cells = Object.fromEntries(Object.entries(strictCells).map(([key, cell]) => [key, {
@@ -743,7 +765,7 @@ function Fig5Gates({ reg, basis }) {
 
 /** Figure-only gallery thumbnail: the tether map, the sequence's showpiece. */
 export function PriceOfPlacePreview() {
-  return <Fig4Tethers reg={REG} />
+  return <Fig4Tethers reg={REG} pal={PALETTES.classic} />
 }
 
 const BEATS = {
@@ -773,10 +795,16 @@ const BASIS_OPTIONS = [
   { value: 'strict', label: 'Stated preparation' },
 ]
 
+const PALETTE_OPTIONS = [
+  { value: 'classic', label: 'Classic' },
+  { value: 'vivid', label: 'Colorful' },
+]
 
 export default function PriceOfPlace() {
   const [basis, setBasis] = useState('minimums')
+  const [palette, setPalette] = useState('classic')
   const reg = REG
+  const pal = PALETTES[palette]
   const { counts } = snapshot
   return (
     <Stack gap='section'>
@@ -794,25 +822,38 @@ export default function PriceOfPlace() {
             ))}
           </div>
         </div>
+        <div className='flex flex-col'>
+          <span className='field-label'>Color</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {PALETTE_OPTIONS.map((item) => (
+              <button key={item.value} type='button' onClick={() => setPalette(item.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  palette === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       <div data-export-root className='flex flex-col gap-7'>
-        <Beat no='1' title='Complete transfer paths by district income' basis={basis} {...BEATS[1]}>
-          <Fig1 reg={reg} basis={basis} />
+        <Beat no='1' title='Complete transfer paths by district income' basis={basis} pal={pal} {...BEATS[1]}>
+          <Fig1 reg={reg} basis={basis} pal={pal} />
         </Beat>
-        <Beat no='2' title='District income and transfer access, mapped' basis={basis} {...BEATS[2]}>
-          <Fig2 reg={reg} basis={basis} />
+        <Beat no='2' title='District income and transfer access, mapped' basis={basis} pal={pal} {...BEATS[2]}>
+          <Fig2 reg={reg} basis={basis} pal={pal} />
         </Beat>
-        <Beat no='3' title='Transfer-access gradients by district income: Computer Science and all other programs' basis={basis} {...BEATS[3]}>
-          <Fig3 reg={reg} basis={basis} />
+        <Beat no='3' title='Transfer-access gradients by district income: Computer Science and all other programs' basis={basis} pal={pal} {...BEATS[3]}>
+          <Fig3 reg={reg} basis={basis} pal={pal} />
         </Beat>
-        <Beat no='4' title='Transfer demand and income sensitivity across measurable programs' basis={basis} {...BEATS[4]}>
-          <Fig4Market reg={reg} basis={basis} />
+        <Beat no='4' title='Transfer demand and income sensitivity across measurable programs' basis={basis} pal={pal} {...BEATS[4]}>
+          <Fig4Market reg={reg} pal={pal} basis={basis} />
         </Beat>
-        <Beat no='5' title='Distance to the nearest campus, by district income' basis={basis} {...BEATS[5]}>
-          <Fig4Tethers reg={reg} />
+        <Beat no='5' title='Distance to the nearest campus, by district income' basis={basis} pal={pal} {...BEATS[5]}>
+          <Fig4Tethers reg={reg} pal={pal} />
         </Beat>
-        <Beat no='6' title='Income and distance, compared within broad strata' basis={basis} {...BEATS[6]}>
-          <Fig5Gates reg={reg} basis={basis} />
+        <Beat no='6' title='Income and distance, compared within broad strata' basis={basis} pal={pal} {...BEATS[6]}>
+          <Fig5Gates reg={reg} basis={basis} pal={pal} />
         </Beat>
         <div className='rounded-[10px] border px-5 py-4 flex flex-col gap-3' data-export-exclude
           style={{ borderColor: GRID, background: 'rgba(25,48,24,0.03)' }}>

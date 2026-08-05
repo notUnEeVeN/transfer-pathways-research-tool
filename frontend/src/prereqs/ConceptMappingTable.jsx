@@ -8,6 +8,7 @@ const pct = (v) => (v == null ? '—' : `${Math.round(v * 100)}%`)
 // Import-time flags (needs_review, combined_course, …) ride in concept_note;
 // the Flagged filter keys on any note being present on a machine-sourced row.
 const FILTER_OPTIONS = [
+  { value: 'in_scope', label: 'Major courses' },
   { value: 'all', label: 'All courses' },
   { value: 'unmapped', label: 'Unmapped only' },
   { value: 'flagged', label: 'Flagged only' },
@@ -21,16 +22,17 @@ const LANGUAGE_OPTIONS = [
   ...['java', 'cpp', 'python', 'c', 'csharp', 'javascript'].map((v) => ({ value: v, label: v })),
 ]
 
-// Data → Prerequisites → Mapping: which concept each in-scope course carries.
-// Rows come from the graph endpoint (it knows the in-scope set); edits go
+// Data → Prerequisites → Mapping: which concept each relevant course carries.
+// The endpoint includes direct major courses plus their prerequisite closure;
+// the table starts on direct courses and can reveal the full closure. Edits go
 // through PUT /assist/courses/:id/concept.
-export default function ConceptMappingTable({ initialCollegeId = null }) {
+export default function ConceptMappingTable({ initialCollegeId = null, majorSlug = null }) {
   const colleges = useColleges()
   const [collegeId, setCollegeId] = useState(initialCollegeId)
-  const graph = usePrereqGraph(collegeId)
+  const graph = usePrereqGraph(collegeId, majorSlug)
   const save = useSaveCourseConcept()
   const [query, setQuery] = useState('')
-  const [filter, setFilter] = useState('all')
+  const [filter, setFilter] = useState('in_scope')
   const [editing, setEditing] = useState(null) // { key, label, concept, note }
   const [saveError, setSaveError] = useState(null)
 
@@ -47,6 +49,7 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
     const all = graph.data?.courses || []
     const needle = query.trim().toLowerCase()
     return all.filter((r) => {
+      if (filter === 'in_scope' && !r.in_scope) return false
       if (filter === 'unmapped' && r.concept) return false
       if (filter === 'flagged' && !isFlagged(r)) return false
       if (!needle) return true
@@ -125,8 +128,12 @@ export default function ConceptMappingTable({ initialCollegeId = null }) {
             },
             { key: 'concept_source', label: 'Source', render: (r) => r.concept_source ?? '-' },
             {
-              key: 'in_scope', label: 'In scope',
-              render: (r) => (r.in_scope ? 'yes' : <span className='text-ink-subtle'>manual</span>),
+              key: 'role', label: 'Role',
+              render: (r) => (r.in_scope
+                ? 'major'
+                : <span className='text-ink-subtle'>
+                    {r.role === 'prerequisite_only' ? 'prerequisite' : 'manual'}
+                  </span>),
             },
           ]} />
       )}

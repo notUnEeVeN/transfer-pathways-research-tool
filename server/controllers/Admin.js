@@ -149,7 +149,11 @@ exports.getDataset = asyncHandler(async (req, res) => {
   // hierarchy so repeated labels never collapse nine campus programs into a
   // misleading distinct-string count.
   const configuredPairKeys = new Set();
-  const majorFamilies = listMajors().map((major) => {
+  // Only ASSIST-backed majors belong in this inventory: it reconciles the
+  // ported Atlas campus programs, which Maryland (ARTSYS) majors never have.
+  const majorFamilies = listMajors()
+    .filter((major) => major.capabilities?.assistAgreements)
+    .map((major) => {
     const programs = programPairs(major).map((pair) => {
       const key = `${pair.school_id}|${pair.major}`;
       configuredPairKeys.add(key);

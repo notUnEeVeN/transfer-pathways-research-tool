@@ -143,7 +143,10 @@ function poolReceiver(canonical, sourceReceivers, catalog, telemetry) {
   return {
     ...clone(canonical),
     articulation_status: options.length ? 'articulated' : 'not_articulated',
-    not_articulated_reason: options.length ? null : 'No complete articulation path in district',
+    not_articulated_reason: options.length ? null
+      : (canonical.not_articulated_reason === 'never_articulated'
+        ? 'never_articulated'
+        : 'No complete articulation path in district'),
     options,
     options_conjunction: 'or',
   };

@@ -5,6 +5,7 @@ import {
   useAsDegreeVerification, useDataSummary, useDegreeRequirements,
 } from '@frontend/query/hooks/useData'
 import { useMajors } from '@frontend/majors/useMajors'
+import { AS_DEGREE_SLOTS, slotLabel } from '../asdegrees/asDegreeSlots'
 import MajorVerificationDots, {
   MajorVerificationLegend, VERIFICATION_STATE_META,
 } from '@frontend/majors/MajorVerificationDots'
@@ -117,11 +118,23 @@ function DegreeLandscapePanel({ onNavigate }) {
           <p className='px-[22px] py-5 text-caption text-ink-subtle'>No associate-degree records yet.</p>
         ) : majors.map((m, i) => {
           const c = counts[m.slug] || { verified: 0, present: 0, absent: 0 }
+          // Verified awards by slot (A.S.-T vs local A.S. …). A college can
+          // verify more than one award, so these can sum past `verified`.
+          const bySlot = AS_DEGREE_SLOTS
+            .map((slot) => [slot, c.verified_slots?.[slot] ?? 0])
+            .filter(([, n]) => n > 0)
+            .map(([slot, n]) => `${n} ${slotLabel(slot, m.degreeSlotLabels)}`)
+            .join(' · ')
           return (
             <div key={m.slug}
               className={`grid grid-cols-[minmax(0,1.3fr)_1fr_1.15fr_1.15fr] gap-3.5 items-center px-[22px] py-3 ${i ? 'border-t border-border' : ''}`}>
               <p className='text-body-strong truncate min-w-0'>{m.label}</p>
-              <LandscapeCount state='verified' value={c.verified} label='verified' />
+              <span className='inline-flex flex-col gap-0.5 min-w-0'>
+                <LandscapeCount state='verified' value={c.verified} label='verified' />
+                {bySlot && (
+                  <span className='text-tag text-ink-subtle whitespace-nowrap pl-[18px]'>{bySlot}</span>
+                )}
+              </span>
               <LandscapeCount state='present' value={c.present} label='unverified' />
               <LandscapeCount state='absent' value={c.absent} label='not offered' />
             </div>

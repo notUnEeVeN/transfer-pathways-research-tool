@@ -148,14 +148,15 @@ export const ENDPOINT_GROUPS = [
       },
       {
         method: 'GET',
-        path: '/curated/prerequisite-graph?college_id=cc:113',
+        path: '/curated/prerequisite-graph?majorSlug=bio&college_id=cc:113',
         title: 'Prerequisite concept graph',
-        plain: 'The concept vocabulary and its prerequisite rules. Add college_id=cc:<id> for that college\'s courses, projected course-to-course prerequisite edges, and coverage stats; omit it for the canonical concept model. This is the full 115-college prerequisite source.',
+        plain: 'The concept vocabulary and its prerequisite rules. majorSlug=cs|bio|econ uses exact configured campus/program pairs and returns that major\'s template; omit it for the backward-compatible all-major union. Add college_id=cc:<id> for direct major courses, prerequisite-only closure courses, projected edges, and scoped coverage stats; omit college_id for the canonical template.',
         returns: '{ concepts, rules, stats, courses?, edges?, legacy? }',
         fields: [
           ['concepts', 'Each: slug, name, discipline, requires (a slug or an OR-group array = any one of), satisfies (combined-course equivalences), note.'],
+          ['courses (with college_id)', 'Direct major rows plus mapped prerequisite-only closure rows; role distinguishes major_preparation from prerequisite_only.'],
           ['edges (with college_id)', 'Projected prerequisites { from: cc:<id>, to: cc:<id> }, assuming the student takes the cheapest prerequisite chain.'],
-          ['stats', 'in_scope, examined, mapped, edges, and legacy-agreement overlap where the prior group had data.'],
+          ['stats', 'in_scope, examined, and mapped are all intersected with the selected major scope; edges and legacy overlap describe the returned college graph.'],
         ],
       },
       {
@@ -185,6 +186,41 @@ export const ENDPOINT_GROUPS = [
         title: 'Evaluate one degree at one college',
         plain: 'The selected major’s degree ledger, transferable coverage, and tier totals for a campus/college pair.',
         returns: '{ school_id, community_college_id, major_slug, completion, groups, ... }',
+      },
+    ],
+  },
+  {
+    id: 'virginia',
+    title: 'Virginia data',
+    blurb: 'Transfer Virginia equivalencies and the separately sourced VCCS prerequisite baseline. Virginia collections and identities never mix with ASSIST rows.',
+    endpoints: [
+      {
+        method: 'GET',
+        path: '/va/summary',
+        title: 'Virginia corpus summary',
+        plain: 'Course, institution, equivalency, department, and import counts for the Virginia corpus.',
+        returns: '{ imported, courses, institutions, community_colleges, four_year, equivalencies, ... }',
+      },
+      {
+        method: 'GET',
+        path: '/va/courses?college=Northern%20Virginia%20Community%20College',
+        title: 'Virginia courses',
+        plain: 'Shared Virginia course rows, optionally filtered by offering college, receiving university, department, or search text.',
+        returns: '{ courses, total, skip, limit, receiver }',
+      },
+      {
+        method: 'GET',
+        path: '/va/prerequisite-graph?college=Northern%20Virginia%20Community%20College',
+        title: 'Virginia CS prerequisite graph',
+        plain: 'Published VCCS prerequisite/corequisite formulas projected statewide, onto one college’s supply, or with university=<name> onto accepted VCCS transfer preparation. The university form is not that university’s local prerequisite policy.',
+        returns: '{ concepts, concept_rules, rules, courses, edges, missing, gaps, stats, scope, sources, coverage_warnings }',
+        fields: [
+          ['rules[].paths[].all_of', 'Lossless source formula: paths are OR alternatives and all_of conditions are simultaneous AND requirements.'],
+          ['edges', 'Flattened visual projections only; each edge carries source status/formula metadata and missing supply is explicit.'],
+          ['scope / stats.corpus_status', 'The direct universe is the requirement-derived Virginia CS scope. The endpoint returns unavailable instead of mixing partial or mismatched concept/requisite import generations.'],
+          ['Richard Bland', 'Institution-local identities are retained for review, but VCCS master rules and same-code university equivalencies are not projected onto Richard Bland.'],
+          ['course keys', 'Canonical Virginia graph identity va:CODE; va:crs:CODE is retained only as a source document reference.'],
+        ],
       },
     ],
   },
@@ -319,7 +355,7 @@ export const GUIDE_SECTIONS = [
     blocks: [
       {
         type: 'p',
-        text: 'Prerequisites are modeled as a small set of canonical course concepts (calc_1, cs_2_oop, gen_chem_1, ...) with prerequisite rules between them. Each community-college course carries a concept tag; per-college prerequisite edges are projected at read time from the rules applied to whatever courses a college actually offers.',
+        text: 'Prerequisites are modeled as a small set of canonical course concepts (calc_1, cs_2_oop, bio_genetics, econ_micro, ...) with prerequisite rules between them. Each community-college course carries one concept tag or an explicit examined-null result; per-college edges are projected at read time from the selected major template and the courses that college offers.',
       },
       {
         type: 'p',

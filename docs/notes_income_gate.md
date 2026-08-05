@@ -25,7 +25,15 @@ the figures. Companion file: `docs/notes_computing_bottleneck.md`.
   protocol documentation and a second coder are the group-stage upgrade) and
   full **stated preparation** (ASSIST as listed). Seven campuses identical
   under both; UCLA and San Diego are closed only under stated preparation
-  (listings fold competitiveness into requirements). Floor staircase steeper:
+  (listings fold competitiveness into requirements).
+- **"Never articulated" placeholders are not blockers** (engine rule, both
+  ports): receivers ASSIST itself marks "This course has not been
+  articulated" (`not_articulated_reason: never_articulated`) have no CC
+  equivalent anywhere and are taken at the university after transfer. Strict
+  mode ignores them when computing achievable demand. Before this rule the
+  strict basis wrongly closed eight field programs everywhere (UCLA
+  Economics, UCLA Business Economics, Berkeley French, …); no Computer
+  Science result changed. Floor staircase steeper:
   49-point Q4–Q1 gap vs 37 stated — the strict basis diluted the income
   pattern, it did not inflate it.
 - **Basis asymmetry, a direction not a theorem**: stated listings can only
@@ -77,7 +85,7 @@ the figures. Companion file: `docs/notes_computing_bottleneck.md`.
 
 - Field measured on stated preparation (its only basis); CS follows the page
   basis — on the floor all nine programs are measurable (UCLA and San Diego's
-  applicant counts recovered from the exclusion list). 225 field programs
+  applicant counts recovered from the exclusion list). 221 field programs
   closed everywhere on stated preparation are not drawn: a closed program has
   no measurable swing (conditioning on measurability, not outcome selection —
   but the title must stay scoped to measurable programs).

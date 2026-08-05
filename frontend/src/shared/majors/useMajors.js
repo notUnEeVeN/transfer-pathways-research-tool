@@ -13,7 +13,7 @@ import { useAuth } from '../hooks/useAuth'
 // pause rather than mistake this resilience fallback for a validated deep link.
 export const CS_FALLBACK = [{
   slug: 'cs',
-  label: 'Computer Science',
+  label: 'Computer Science (CA)',
   // Fail closed to the canonical CS campus/program pairs while the server
   // config is loading or unavailable. A substring fallback would reintroduce
   // adjacent CS programs into the data browser.
