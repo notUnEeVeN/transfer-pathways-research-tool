@@ -10,6 +10,7 @@ import AsDegreeHeaderFields from './AsDegreeHeaderFields'
 import { buildScaffold, saveBlockers } from './asDegreeScaffold'
 import AsDegreeJsonPanel from './AsDegreeJsonPanel'
 import { courseLabel, isComplexGroup, setGroupCourses } from './asDegreeCourses'
+import VerifiedBanner from '../../shared/components/VerifiedBanner'
 
 /**
  * Read one college's AI-scraped AS degrees against the catalog, and correct
@@ -112,19 +113,8 @@ export default function AsDegreeReview({ collegeId, major = 'cs', slot }) {
   return (
     <Stack gap='comfortable'>
       {verified && !creating && (
-        <div className='surface-card border-l-4 border-success bg-success-soft px-4 py-3 flex items-center gap-2.5'>
-          <CheckBadgeIcon className='w-5 h-5 text-success shrink-0' />
-          <div className='min-w-0'>
-            <p className='text-body-strong text-success'>
-              Verified{verifiedBy ? ` by ${verifiedBy}` : ''}
-            </p>
-            <p className='text-caption text-ink-muted'>
-              This record has been checked against the catalog
-              {verifiedAt ? ` · ${new Date(verifiedAt).toLocaleDateString()}` : ''}.
-              Use Unverify below to flag it for another look.
-            </p>
-          </div>
-        </div>
+        <VerifiedBanner verifiers={verifiedBy} verifiedAt={verifiedAt}
+          checkedAgainst='the college catalog' />
       )}
 
       {creating && (

@@ -16,6 +16,10 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { diffDocs } = require('../services/docDiff');
+const {
+  UnknownVirginiaInstitutionError,
+  virginiaPrerequisiteGraphData,
+} = require('../services/virginia/prereqGraph');
 
 const COURSES = 'va_courses';
 const INSTITUTIONS = 'va_institutions';
@@ -28,6 +32,26 @@ const EDITABLE_KINDS = new Set(['as_degree', 'degree']);
 
 const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const intOr = (v, d) => (Number.isFinite(Number(v)) ? Number(v) : d);
+
+/**
+ * Published Virginia course prerequisites, kept separate from ASSIST's
+ * inferred prerequisite endpoint. `university` is explicitly a transfer-
+ * preparation projection over accepted VCCS courses; it never represents the
+ * receiving university's own catalog prerequisite policy.
+ */
+exports.prerequisiteGraph = asyncHandler(async (req, res) => {
+  const college = String(req.query.college || '').trim() || null;
+  const university = String(req.query.university || '').trim() || null;
+  try {
+    const graph = await virginiaPrerequisiteGraphData(req.app.locals.db, { college, university });
+    return res.json(graph);
+  } catch (error) {
+    if (error instanceof UnknownVirginiaInstitutionError) {
+      return res.status(400).json({ error: error.message });
+    }
+    throw error;
+  }
+});
 
 /** Corpus counts for the landing view. */
 exports.summary = asyncHandler(async (req, res) => {
@@ -225,11 +249,18 @@ exports.degrees = asyncHandler(async (req, res) => {
   const institution = String(req.query.institution || '').trim();
   if (!institution) return res.status(400).json({ error: 'institution is required' });
   const slug = institution.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  // One degree per institution. Two sources were captured — the college's own
+  // catalogue and Transfer Virginia's program map — and both were kept so a
+  // verifier could see disagreement. They did not disagree: where both stated
+  // units they matched in 11 of 11 cases. The richer document now survives as
+  // the single record, carrying the other's URL under `corroborating_sources`,
+  // and the losers are marked `superseded` rather than deleted.
   const docs = await db.collection(REQUIREMENTS)
-    .find({ $or: [{ college_id: `va:cc:${slug}` }, { school_id: `va:uni:${slug}` }] })
+    .find({
+      $or: [{ college_id: `va:cc:${slug}` }, { school_id: `va:uni:${slug}` }],
+      status: { $nin: ['superseded', 'out_of_scope'] },
+    })
     .toArray();
-  // Catalog first: it is the spine, the map is corroboration.
-  docs.sort((a, b) => (a.source === 'institution_catalog' ? -1 : 1));
 
   // The shared RequirementsLedger resolves courses on BOTH sides, and they use
   // different lookups:
@@ -246,6 +277,26 @@ exports.degrees = asyncHandler(async (req, res) => {
       for (const s of g.sections || []) {
         for (const r of s.receivers || []) {
           if (r.receiving?.parent_id != null && r.code_seen) parentIds.set(r.receiving.parent_id, r.code_seen);
+          // A series receiver names its members in `parent_ids` and carries no
+          // singular `parent_id`. Mapping only the singular left every member of
+          // every series unresolved, and the ledger renders an unresolved id as
+          // `#914981327` — the bare numbers a reader sees instead of a course.
+          //
+          // The extractors record a series' codes as one `/`-separated string
+          // positionally aligned with the ids: `parent_ids: [a, b]` alongside
+          // `code_seen: "CS108 / CS109"`. All 46 series in the corpus take that
+          // shape, so the string is split and zipped against the ids.
+          const seriesIds = r.receiving?.parent_ids || [];
+          if (seriesIds.length) {
+            const seriesCodes = String(r.code_seen || '').split('/').map((x) => x.trim()).filter(Boolean);
+            seriesIds.forEach((pid, i) => {
+              if (pid == null) return;
+              // A repeated id inside a series (four exist) keeps the first code
+              // rather than being relabelled by a later position.
+              const code = seriesCodes[i] || seriesCodes[0];
+              if (code && !parentIds.has(pid)) parentIds.set(pid, code);
+            });
+          }
           for (const o of r.options || []) for (const id of o.course_ids || []) courseIds.add(id);
         }
       }
@@ -343,7 +394,7 @@ exports.coverage = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const [rows, docs] = await Promise.all([
     db.collection(COVERAGE).find({}).sort({ institution: 1 }).toArray(),
-    db.collection(REQUIREMENTS).find({}, {
+    db.collection(REQUIREMENTS).find({ status: { $nin: ['superseded', 'out_of_scope'] } }, {
       projection: {
         kind: 1, source: 1, status: 1, verification: 1, college_id: 1, school_id: 1,
         requirement_groups: 1, total_units: 1, catalog_url: 1, source_url: 1,

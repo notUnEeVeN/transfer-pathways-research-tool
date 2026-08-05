@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowLeftIcon, ArrowTopRightOnSquareIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import {
-  Panel, StatStrip, Badge, Button, Select, Spinner, Alert, EmptyState, Stack,
+  Panel, StatStrip, Badge, Button, Spinner, Alert, EmptyState, Stack,
   PageContainer, Tabs,
 } from '../components/ui'
 import SubNav from '../components/SubNav'
@@ -10,10 +10,13 @@ import { InstitutionRail, CourseTable, courseSearch, TieredDegreeLedger } from '
 // consoles report the same job the same way.
 import { ProgressBar } from '../asdegrees/validation/ValidationDashboard'
 import Textarea from '../components/ui/forms/Textarea'
+import JsonDocumentPanel from '../shared/JsonDocumentPanel'
+import VerifiedBanner from '../shared/components/VerifiedBanner'
 import {
-  useVaSummary, useVaInstitutions, useVaDepartments, useVaCourses, useVaCourse, useVaMatrix,
+  useVaSummary, useVaInstitutions, useVaCourses, useVaCourse, useVaMatrix,
   useVaDegrees, useVaCoverage, useSaveVaDegree, useVaDegreeRevisions,
 } from './useVirginia'
+import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPrerequisites'
 
 /**
  * Transfer Virginia explorer.
@@ -28,9 +31,10 @@ import {
  *                          graduation requirements (California's UC hub)
  *   Courses             — the shared VCCS catalog in one place
  *
- * Two of California's tabs are absent rather than stubbed. **Districts** has no
- * Virginia analogue — VCCS is a single system, not 72 independent districts.
- * **Prerequisites** is not published by Transfer Virginia at all.
+ * **Districts** has no Virginia analogue — VCCS is a single system, not 72
+ * independent districts. Prerequisites come from the separate VCCS master
+ * course source, not from Transfer Virginia's equivalency records; the two
+ * authorities remain visibly distinct in the prerequisite views.
  *
  * The last tab exists because of a fact peculiar to this state: the 23 VCCS
  * colleges share one course numbering system, so `CSC221` is the same course
@@ -40,11 +44,13 @@ import {
  * four-year equivalencies keep the VCCS code — which is why the per-university
  * course view leads with the identifier a course lands as.
  *
- * The degree panes show both sources when both exist — the institution's own
- * catalog and Transfer Virginia's program map — without merging them, because
- * every row is hand-verified and a verifier needs to see disagreement rather
- * than an averaged answer. Institutions that publish no machine-readable course
- * list are marked `URL only`: the verified link is the deliverable there.
+ * Each institution shows ONE degree. Two sources were captured — the college's
+ * own catalog and Transfer Virginia's program map — and both were displayed for
+ * a time so a verifier could see disagreement. They did not disagree: where both
+ * stated units they matched in 11 of 11 cases, so the richer document now stands
+ * alone and carries the other's URL as corroboration. Institutions that publish
+ * no machine-readable course list are marked `URL only`: the verified link is
+ * the deliverable there.
  */
 
 const TABS = [
@@ -52,6 +58,7 @@ const TABS = [
   { value: 'colleges', label: 'Community Colleges' },
   { value: 'universities', label: 'Universities' },
   { value: 'courses', label: 'Courses' },
+  { value: 'prerequisites', label: 'Prerequisites' },
 ]
 
 const TAB_ROUTES = {
@@ -59,6 +66,7 @@ const TAB_ROUTES = {
   colleges: { path: '/api/va/institutions?level=community_college' },
   universities: { path: '/api/va/institutions?level=four_year' },
   courses: { path: '/api/va/courses' },
+  prerequisites: { path: '/api/va/prerequisite-graph' },
 }
 
 const num = (v) => (v == null ? '—' : Number(v).toLocaleString())
@@ -93,6 +101,7 @@ export default function VirginiaPage() {
                 {tab === 'colleges' && <CollegesPane onRoute={setRoute} />}
                 {tab === 'universities' && <UniversitiesPane onRoute={setRoute} />}
                 {tab === 'courses' && <CoursesTab />}
+                {tab === 'prerequisites' && <VirginiaPrerequisitesTab />}
               </>
             )}
         </PageContainer>
@@ -147,10 +156,15 @@ function OverviewTab({ summary }) {
 /**
  * Verification state for one institution, in California's status vocabulary.
  *
- * Four states, deliberately not collapsed to a tick and a cross. `In review` is
- * work waiting; `URL only` and `No program` are settled facts that will never
- * carry a tick, and counting them as outstanding would leave the job looking
- * permanently unfinished.
+ * A document is verified or it is not. `URL only` and `No program` are settled
+ * facts about what an institution publishes, not stages of review — they will
+ * never carry a tick, and counting them as outstanding would leave the job
+ * looking permanently unfinished.
+ *
+ * There is deliberately no "flagged by the parser" state. Whether an extraction
+ * tripped a validation rule is the machine's opinion of its own work, and
+ * showing it as a category invited reading it as a verdict; a person checking
+ * the document against its source page is the only verdict that counts.
  */
 const VA_STATE = {
   verified: { label: 'Verified', variant: 'success' },
@@ -174,7 +188,6 @@ function buildVerificationIndex(coverage = []) {
       documents: docs.length,
       readable: readable.length,
       verified: readable.filter((d) => d.verified).length,
-      flagged: readable.some((d) => d.validation === 'warn' || d.validation === 'fail'),
       groups: readable[0]?.groups ?? 0,
       receivers: readable[0]?.receivers ?? 0,
     })
@@ -208,7 +221,6 @@ function VerificationPanel() {
         label: level === 'community_college' ? 'A.S. degrees' : 'B.S. degrees',
         verified: readable.filter((s) => s.state === 'verified').length,
         readable: readable.length,
-        flagged: readable.filter((s) => s.flagged).length,
         nothing: states.filter((s) => s && !s.readable).length,
       }
     })
@@ -229,7 +241,7 @@ function VerificationPanel() {
           <div key={l.level}>
             <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.readable} tone='success' />
             <p className='text-tag text-ink-subtle mt-1.5'>
-              {l.flagged} flagged by the parser · {l.nothing} publish nothing to read
+              {l.nothing} publish nothing to read
             </p>
           </div>
         ))}
@@ -249,7 +261,6 @@ function RailFilters({ counts, value, onChange, total }) {
   const options = [
     { key: 'all', label: 'All', count: total, variant: 'neutral' },
     { key: 'in_review', label: VA_STATE.in_review.label, count: counts.in_review, variant: VA_STATE.in_review.variant },
-    { key: 'flagged', label: 'Flagged parse', count: counts.flagged, variant: 'conservative' },
     { key: 'verified', label: VA_STATE.verified.label, count: counts.verified, variant: VA_STATE.verified.variant },
     { key: 'url_only', label: VA_STATE.url_only.label, count: counts.url_only, variant: VA_STATE.url_only.variant },
     { key: 'no_program', label: VA_STATE.no_program.label, count: counts.no_program, variant: VA_STATE.no_program.variant },
@@ -341,15 +352,11 @@ function useRailItems(institutions, coverage, filter) {
       // Nothing is repeated under the name: not the equivalency reach, not the
       // degree's status, not its size. The filter pills above already say which
       // bucket the list is showing, and a rail of bare names is the point.
-      // `flagged` survives alone because it is the one thing that singles a row
-      // out from its neighbours in an already-filtered list.
-      const subtitle = state?.flagged ? 'flagged' : null
       return {
         id: i.name,
         name: i.name,
-        subtitle,
+        subtitle: null,
         state: state?.state ?? null,
-        flagged: Boolean(state?.flagged),
       }
     })
 
@@ -358,12 +365,9 @@ function useRailItems(institutions, coverage, filter) {
       verified: rows.filter((r) => r.state === 'verified').length,
       url_only: rows.filter((r) => r.state === 'url_only').length,
       no_program: rows.filter((r) => r.state === 'no_program').length,
-      flagged: rows.filter((r) => r.flagged).length,
     }
 
-    const match = filter === 'all' ? () => true
-      : filter === 'flagged' ? (r) => r.flagged
-        : (r) => r.state === filter
+    const match = filter === 'all' ? () => true : (r) => r.state === filter
 
     return { items: rows.filter(match), counts, total: rows.length }
   }, [institutions, coverage, filter])
@@ -387,7 +391,9 @@ function CollegesPane({ onRoute }) {
     onRoute({
       path: subTab === 'courses'
         ? `/api/va/courses?college=${encodeURIComponent(selected)}`
-        : '/api/va/as-degrees',
+        : subTab === 'prerequisites'
+          ? `/api/va/prerequisite-graph?college=${encodeURIComponent(selected)}`
+          : '/api/va/as-degrees',
     })
   }, [onRoute, selected, subTab])
 
@@ -410,9 +416,11 @@ function CollegesPane({ onRoute }) {
           <Tabs value={subTab} onChange={setSubTab} options={[
             { value: 'courses', label: 'Courses' },
             { value: 'degrees', label: 'Associate Degrees' },
+            { value: 'prerequisites', label: 'Prerequisites' },
           ]} />
           {subTab === 'courses' && <CollegeCourses college={current.name} />}
           {subTab === 'degrees' && <DegreesPane kind='associate' institution={current.name} />}
+          {subTab === 'prerequisites' && <VirginiaPrerequisiteView college={current.name} />}
         </Stack>
       )}
     </div>
@@ -504,7 +512,9 @@ function UniversitiesPane({ onRoute }) {
     onRoute({
       path: subTab === 'courses'
         ? `/api/va/courses?receiver=${encodeURIComponent(selected)}`
-        : '/api/va/degrees',
+        : subTab === 'prerequisites'
+          ? `/api/va/prerequisite-graph?university=${encodeURIComponent(selected)}`
+          : '/api/va/degrees',
     })
   }, [onRoute, selected, subTab])
 
@@ -527,9 +537,14 @@ function UniversitiesPane({ onRoute }) {
           <Tabs value={subTab} onChange={setSubTab} options={[
             { value: 'courses', label: 'Courses' },
             { value: 'requirements', label: 'Graduation Requirements' },
+            // The tab says what the content IS; that it is VCCS preparation
+            // rather than this university's own policy is a qualifier, and the
+            // view carries it as a standing banner.
+            { value: 'prerequisites', label: 'Prerequisites' },
           ]} />
           {subTab === 'courses' && <UniversityCourses university={current.name} />}
           {subTab === 'requirements' && <DegreesPane kind='bachelor' institution={current.name} />}
+          {subTab === 'prerequisites' && <VirginiaPrerequisiteView university={current.name} />}
         </Stack>
       )}
     </div>
@@ -596,7 +611,13 @@ function DegreesPane({ institution, kind }) {
 
 /**
  * One degree document, with the same hand-edit affordances as a California
- * requirement: mark verified / reopen, and free-text notes.
+ * requirement: edit the stored JSON, mark verified / reopen, and free-text notes.
+ *
+ * The JSON panel is the point of the page. Everything above it is a rendering of
+ * the document, and until the document itself could be corrected there was no
+ * way to act on a mistake found while reading — a verifier could record that a
+ * degree was wrong but not make it right. The ledger redraws as the JSON is
+ * typed, and nothing is written until Save.
  *
  * The verdict itself is stamped server-side from the signed-in user, so what is
  * sent here is only the intent. Notes are never pre-filled or auto-written —
@@ -606,21 +627,46 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
   const save = useSaveVaDegree(institution)
   const [notes, setNotes] = useState(doc.verification?.notes ?? '')
   const [showHistory, setShowHistory] = useState(false)
+  const [draft, setDraft] = useState(null)
+  const [error, setError] = useState(null)
+  const [saved, setSaved] = useState(null)
   const revisions = useVaDegreeRevisions(doc._id, showHistory)
 
   useEffect(() => { setNotes(doc.verification?.notes ?? '') }, [doc._id, doc.verification?.notes])
+  // Drop a half-typed draft when a different document loads underneath.
+  useEffect(() => { setDraft(null); setError(null); setSaved(null) }, [doc._id])
 
-  const codes = doc.codes_seen ?? []
-  const groups = Array.isArray(doc.requirement_groups) ? doc.requirement_groups : []
+  // The edited document if one is in hand, otherwise the stored one. The ledger
+  // and the JSON panel both read this, so the view above redraws as you type.
+  const editDoc = draft && draft._id === doc._id ? draft : doc
+
+  const codes = editDoc.codes_seen ?? []
+  const groups = Array.isArray(editDoc.requirement_groups) ? editDoc.requirement_groups : []
   const url = doc.catalog_url || doc.source_url
   const fromCatalog = doc.source === 'institution_catalog'
   const verified = !!doc.verification?.verified
   const dirty = notes !== (doc.verification?.notes ?? '')
 
   const commit = (nextVerified) => save.mutate({
-    ...doc,
-    verification: { ...(doc.verification || {}), verified: nextVerified, notes: notes || null },
+    ...editDoc,
+    verification: { ...(editDoc.verification || {}), verified: nextVerified, notes: notes || null },
   })
+
+  /** Save the edited document without touching the verdict. */
+  const saveEdits = async () => {
+    setError(null)
+    setSaved(null)
+    try {
+      await save.mutateAsync({
+        ...editDoc,
+        verification: { ...(editDoc.verification || {}), notes: notes || null },
+      })
+      setDraft(null)
+      setSaved('Changes saved.')
+    } catch (e) {
+      setError(e?.response?.data?.error || 'Could not save this degree.')
+    }
+  }
 
   return (
     <Panel title={doc.degree_title_seen || doc.program || 'Computer Science'}>
@@ -630,10 +676,22 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
         </Badge>
         {doc.total_units != null && <Badge>{doc.total_units} credits</Badge>}
         {doc.status === 'url_only' && <Badge variant='conservative'>URL only</Badge>}
-        {verified
-          ? <Badge variant='verify'>verified{doc.verification?.verified_by_label ? ` · ${doc.verification.verified_by_label}` : ''}</Badge>
-          : <Badge variant='conservative'>unverified</Badge>}
+        {!verified && <Badge variant='conservative'>unverified</Badge>}
       </div>
+
+      {/* The same banner the California templates and the associate-degree
+          review show, rather than a compact badge. A hand-verified Virginia
+          degree is the same kind of claim and now carries the same weight. */}
+      {verified && (
+        <div className='mb-3'>
+          <VerifiedBanner
+            verifiers={doc.verification?.verified_by_label}
+            verifiedAt={doc.verification?.verified_at}
+            subject='This degree has'
+            checkedAgainst='the source catalog page'
+            reopenLabel='Reopen' />
+        </div>
+      )}
 
       {url && (
         <a href={url} target='_blank' rel='noreferrer'
@@ -673,11 +731,22 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
         </p>
       )}
 
+      <div className='mt-4'>
+        <JsonDocumentPanel doc={editDoc} onChange={setDraft}
+          ariaLabel='Degree requirements JSON'
+          redrawNote='The requirements above redraw as you type.' />
+      </div>
+      {error && <Alert type='error'>{error}</Alert>}
+      {saved && <Alert type='success'>{saved}</Alert>}
+
       <div className='mt-4 pt-3 border-t border-border'>
         <p className='text-label mb-1.5'>Verification notes</p>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
           placeholder='Your own notes on this document…' />
         <div className='flex flex-wrap items-center gap-2 mt-2'>
+          <Button onClick={saveEdits} disabled={save.isPending || (!draft && !dirty)}>
+            {save.isPending ? 'Saving…' : 'Save changes'}
+          </Button>
           <Button onClick={() => commit(true)} disabled={save.isPending}>
             {verified ? 'Re-verify' : 'Mark verified'}
           </Button>
@@ -722,16 +791,13 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
 /* ── Courses (shared VCCS catalog) ───────────────────────────────────────── */
 
 function CoursesTab() {
-  const [q, setQ] = useState('')
-  const [department, setDepartment] = useState('')
-  const [college, setCollege] = useState('')
-  const [receiver, setReceiver] = useState('')
   const [open, setOpen] = useState(null)
-
-  const departments = useVaDepartments()
-  const colleges = useVaInstitutions('community_college')
-  const receivers = useVaInstitutions('four_year')
-  const courses = useVaCourses({ q, department, college, receiver })
+  // The whole shared catalog, unfiltered. It is a few hundred rows — short
+  // enough to scroll and read, which is faster than working a filter bar. The
+  // limit must clear the corpus outright: the previous default of 200 silently
+  // hid the tail of the catalog behind a "200 of 304" counter with no way to
+  // reach the rest.
+  const courses = useVaCourses({ limit: 2000 })
 
   if (open) return <CourseDetail code={open} onBack={() => setOpen(null)} />
 
@@ -740,55 +806,16 @@ function CoursesTab() {
   return (
     <Stack gap='cozy'>
       <Panel title='The shared VCCS catalog'>
-        <p className='text-caption ink-subtle mb-3'>
+        <p className='text-caption ink-subtle'>
           All 23 community colleges use the same course numbers, so this is one list rather than 23.
-          Filter by an offering college or a receiving university to narrow it.
+          Open a course for the colleges that carry it and the universities that take it.
         </p>
-        <div className='flex flex-wrap items-end gap-3'>
-          {/* Same pill search the Data page's catalog views use. */}
-          <label className='flex-none w-[340px] flex items-center gap-2 bg-surface border border-border rounded-pill px-[15px] py-[9px]'>
-            <MagnifyingGlassIcon className='w-[14px] h-[14px] text-ink-subtle shrink-0' />
-            <input value={q} onChange={(e) => setQ(e.target.value)} aria-label='Search courses'
-              placeholder='Search code / title / department…'
-              className='flex-1 min-w-0 bg-transparent outline-none border-none text-caption ink-default placeholder:text-ink-subtle' />
-          </label>
-          <Select value={department} onChange={(e) => setDepartment(e.target.value)}>
-            <option value=''>All departments</option>
-            {(departments.data?.departments ?? []).map((d) => (
-              <option key={d.department} value={d.department}>{d.department} ({d.courses})</option>
-            ))}
-          </Select>
-          <Select value={college} onChange={(e) => setCollege(e.target.value)}>
-            <option value=''>Offered by any college</option>
-            {(colleges.data?.institutions ?? []).map((i) => (
-              <option key={i._id} value={i.name}>{i.name}</option>
-            ))}
-          </Select>
-          <Select value={receiver} onChange={(e) => setReceiver(e.target.value)}>
-            <option value=''>Transfers to any university</option>
-            {(receivers.data?.institutions ?? []).map((i) => (
-              <option key={i._id} value={i.name}>{i.name}</option>
-            ))}
-          </Select>
-          {(q || department || college || receiver) && (
-            <Button variant='ghost' onClick={() => { setQ(''); setDepartment(''); setCollege(''); setReceiver('') }}>
-              Clear
-            </Button>
-          )}
-        </div>
       </Panel>
 
       {courses.isLoading ? <div className='flex justify-center py-8'><Spinner /></div>
-        : !rows.length ? <EmptyState title='No courses' description='No catalog rows match these filters.' />
-        : (
-          <Stack gap='cozy'>
-            <span className='text-caption text-ink-subtle'>
-              {num(rows.length)} of {num(courses.data?.total)} courses
-            </span>
-            <CourseTable rows={rows} columns={VA_CATALOG_COLUMNS}
-              onRowClick={(r) => setOpen(r.code)} />
-          </Stack>
-        )}
+        : courses.isError ? <Alert type='error'>Failed to load courses.</Alert>
+        : !rows.length ? <EmptyState title='No courses' description='No catalog rows here.' />
+        : <CourseTable rows={rows} columns={VA_CATALOG_COLUMNS} onRowClick={(r) => setOpen(r.code)} />}
     </Stack>
   )
 }

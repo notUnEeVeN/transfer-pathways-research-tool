@@ -429,12 +429,37 @@ function ReceiverRow({ receiver, ctx, rowKey }) {
 // Section/group rule + status text live in ledgerText.js (pure, golden-locked).
 
 /**
- * How many options a section may print before it collapses to a count.
+ * How many options a section may print before it may collapse to a count.
  *
  * Eight is above every "choose one of these three or four" list in the corpus
  * and well below the general-education menus, which run to forty.
  */
 const MENU_COLLAPSE_AT = 8
+
+/**
+ * Whether a group's individual courses are worth printing.
+ *
+ * Only two kinds of requirement collapse: general education, and anything a
+ * community college cannot satisfy — upper-division major work, or a group
+ * explicitly marked non-articulable. For those the count is the information;
+ * which particular course fills the slot changes nothing.
+ *
+ * Lower-division major requirements are the opposite. They are exactly what a
+ * transfer student completes before arriving, so every option matters and the
+ * list always prints in full however long it runs.
+ */
+function isCondensable(group) {
+  if (!group) return false
+  // The corpus writes this as `upper_division`; two documents once wrote
+  // `upper`. Matching the prefix covers both, and also the compound values the
+  // California templates use (`upper_division_or_residency`). Matching only
+  // `upper` meant this never fired for any California degree.
+  return /^upper/.test(group.course_level || '')
+    || group.cc_articulable === false
+    || group.ge_area != null
+    || group.ge_scope != null
+    || /^\s*(ge|general education)\b/i.test(group.title || '')
+}
 
 function RequirementSection({ section, group, ctx, soleStat, pooled, groupComplete, groupIdx, sectionIdx }) {
   const { userCourses, crossCc } = ctx
@@ -467,7 +492,8 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
   // The courses themselves are untouched in the document; this is a display
   // decision, not a smaller degree.
   const [expanded, setExpanded] = useState(false)
-  const collapsible = receivers.length > MENU_COLLAPSE_AT && !expanded
+  const condensable = isCondensable(group)
+  const collapsible = condensable && receivers.length > MENU_COLLAPSE_AT && !expanded
   const shown = collapsible
     ? receivers.filter((r) => isReceiverCompleted(r, userCourses, crossCc))
     : receivers
@@ -496,7 +522,7 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
           <span className='underline ml-1.5'>show</span>
         </button>
       )}
-      {expanded && receivers.length > MENU_COLLAPSE_AT && (
+      {expanded && condensable && receivers.length > MENU_COLLAPSE_AT && (
         <button type='button' onClick={() => setExpanded(false)}
           className='w-full px-4 py-2.5 text-left text-[13px] text-ink-subtle hover:text-ink-default hover:bg-surface-hover transition-colors'>
           <span className='underline'>collapse</span> the {receivers.length} courses

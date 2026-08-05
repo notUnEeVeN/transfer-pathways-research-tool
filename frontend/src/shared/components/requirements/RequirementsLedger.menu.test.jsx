@@ -9,10 +9,11 @@ import RequirementsLedger from './RequirementsLedger'
  * section states the count instead. The courses stay in the document — this is
  * a display decision, not a smaller degree.
  */
-const menuOf = (n, sectionExtras = {}) => ({
+const menuOf = (n, sectionExtras = {}, groupExtras = { ge_area: '3B' }) => ({
   requirement_groups: [{
     title: 'Social and Behavioral Sciences',
     is_required: true,
+    ...groupExtras,
     sections: [{
       ...sectionExtras,
       receivers: Array.from({ length: n }, (_, i) => ({
@@ -37,6 +38,39 @@ const renderMenu = (n, props = {}, sectionExtras = {}) => render(
 )
 
 describe('RequirementsLedger — long option menus', () => {
+  it('never condenses a lower-division major requirement, however long', () => {
+    // These are exactly what a transfer student completes before arriving, so
+    // every option matters. Only GE and work a CC cannot satisfy collapse.
+    const { container } = render(
+      <RequirementsLedger major={menuOf(24, {}, { title: 'Lower division — Mathematics: Part 1' })}
+        courses={ccCourses(24)} universityCoursesById={uniCourses(24)}
+        preserveOrder showCompletion={false} />
+    )
+    expect(container.textContent).toContain('SOC 200')
+    expect(container.textContent).toContain('SOC 223')
+    expect(container.textContent).not.toMatch(/courses satisfy this/)
+  })
+
+  it('recognises the corpus spelling of upper division, not just one variant', () => {
+    // 16 of the 27 UC degree documents write `upper_division`; matching only
+    // `upper` meant this never fired for a California degree.
+    const { container } = render(
+      <RequirementsLedger major={menuOf(24, {}, { title: 'Upper-division major', course_level: 'upper_division' })}
+        courses={ccCourses(24)} universityCoursesById={uniCourses(24)}
+        preserveOrder showCompletion={false} />
+    )
+    expect(container.textContent).toContain('24 courses satisfy this')
+  })
+
+  it('condenses upper-division work a community college cannot satisfy', () => {
+    const { container } = render(
+      <RequirementsLedger major={menuOf(24, {}, { title: 'Upper-division emphasis', course_level: 'upper_division', cc_articulable: false })}
+        courses={ccCourses(24)} universityCoursesById={uniCourses(24)}
+        preserveOrder showCompletion={false} />
+    )
+    expect(container.textContent).toContain('24 courses satisfy this')
+  })
+
   it('prints a short list in full', () => {
     const { container } = renderMenu(5)
     expect(container.textContent).toContain('SOC 200')

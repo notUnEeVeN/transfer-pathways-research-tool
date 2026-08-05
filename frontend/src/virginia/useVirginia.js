@@ -66,6 +66,23 @@ export function useVaMatrix() {
   return useVa('matrix', '/va/matrix', null, { staleTime: 5 * 60 * 1000 })
 }
 
+/**
+ * Published VCCS prerequisite baseline, optionally projected onto one
+ * community college's supply or one university's accepted VCCS courses.
+ *
+ * `university` deliberately scopes a transfer-preparation view. It does not
+ * claim to return that university's own catalog prerequisite policy.
+ */
+export function useVaPrerequisiteGraph({ college = '', university = '' } = {}) {
+  const params = {}
+  if (college) params.college = college
+  if (university) params.university = university
+  const scope = college && university ? `pair:${college}:${university}`
+    : college ? `college:${college}` : university ? `university:${university}` : 'statewide'
+  return useVa(`prerequisite-graph:${scope}`, '/va/prerequisite-graph',
+    Object.keys(params).length ? params : null)
+}
+
 /** CS degrees for one institution — catalog document plus any program map. */
 export function useVaDegrees(institution) {
   return useVa(`degrees:${institution || 'none'}`, '/va/degrees',

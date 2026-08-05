@@ -22,6 +22,7 @@ vi.mock('./useVirginia', () => ({
   useVaCourses: () => state.courses,
   useVaCourse: () => state.course,
   useVaMatrix: () => state.matrix,
+  useVaPrerequisiteGraph: () => state.prerequisites,
 }))
 
 import VirginiaPage from './VirginiaPage'
@@ -142,6 +143,24 @@ beforeEach(() => {
     receivers: ['George Mason University'],
     cells: [[137]], courses: 304,
   })
+  state.prerequisites = ok({
+    concepts: [
+      { slug: 'cs_1', name: 'Programming Fundamentals', discipline: 'cs', requires: [], satisfies: [] },
+      { slug: 'cs_2_oop', name: 'Object-Oriented Programming', discipline: 'cs', requires: ['cs_1'], satisfies: [] },
+    ],
+    rules: [],
+    stats: { in_scope: 2, examined: 2, mapped: 2, edges: 1 },
+    courses: [
+      { key: 'va:CSC221', code: 'CSC221', title: 'Introduction to Problem Solving', concept: 'cs_1',
+        concept_source: 'vccs_master', concept_confidence: 1, flags: [], in_scope: true },
+      { key: 'va:CSC222', code: 'CSC222', title: 'Object-Oriented Programming', concept: 'cs_2_oop',
+        concept_source: 'vccs_master', concept_confidence: 1, flags: [], in_scope: true,
+        lands_as: { identifier: 'CS112', name: 'Introduction to Programming' } },
+    ],
+    edges: [{ from: 'va:CSC221', to: 'va:CSC222', kind: 'prerequisite', raw: 'Prerequisite: CSC 221' }],
+    missing: [],
+    scope: { coverage: 'complete' },
+  })
 })
 
 describe('VirginiaPage', () => {
@@ -150,13 +169,12 @@ describe('VirginiaPage', () => {
     expect(screen.getByText('4,668')).toBeTruthy()
   })
 
-  it('shows the four top-level tabs, and no Districts or Prerequisites', () => {
+  it('shows the five top-level tabs, including Virginia prerequisites but no Districts', () => {
     render(<VirginiaPage />)
-    for (const t of ['Overview', 'Community Colleges', 'Universities', 'Courses']) {
+    for (const t of ['Overview', 'Community Colleges', 'Universities', 'Courses', 'Prerequisites']) {
       expect(screen.getAllByText(t).length).toBeGreaterThan(0)
     }
     expect(screen.queryByText('Districts')).toBeNull()
-    expect(screen.queryByText('Prerequisites')).toBeNull()
   })
 
   it('renders the not-imported state instead of crashing on an empty corpus', () => {
@@ -217,7 +235,7 @@ describe('rails and drill-in', () => {
 // unvisited tab can ship broken — which is exactly what happened to the
 // Courses tab when its search input was swapped out.
 describe('every tab renders', () => {
-  const tabs = ['Overview', 'Community Colleges', 'Universities', 'Courses']
+  const tabs = ['Overview', 'Community Colleges', 'Universities', 'Courses', 'Prerequisites']
   for (const label of tabs) {
     it(`renders the ${label} tab without throwing`, async () => {
       const { fireEvent } = await import('@testing-library/react')
@@ -234,6 +252,40 @@ describe('every tab renders', () => {
     expect(screen.getByText(/shared VCCS catalog/i)).toBeTruthy()
     fireEvent.click(screen.getByText('CSC221'))
     expect(screen.getAllByText(/Introduction to Problem Solving/i).length).toBeGreaterThan(0)
+  })
+
+  it('opens the published VCCS prerequisite view', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Prerequisites' }).at(-1))
+    expect(screen.getByText(/published statewide VCCS course relationships/i)).toBeTruthy()
+    expect(screen.getByRole('tab', { name: 'Mapping Review' })).toBeTruthy()
+  })
+})
+
+describe('Virginia prerequisite drill-ins', () => {
+  it('adds the published baseline to a community college without claiming exact local policy', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+    fireEvent.click(screen.getByText('Blue Ridge Community College'))
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Prerequisites' }).at(-1))
+    expect(screen.getByText(/published statewide VCCS prerequisite baseline/i)).toBeTruthy()
+    expect(screen.getByText(/may add local prerequisites or corequisites/i)).toBeTruthy()
+  })
+
+  it('labels a university sequence as transfer preparation, never university prerequisites', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Universities' }))
+    fireEvent.click(screen.getByText('George Mason University'))
+    // The sub-tab and the top-level tab share the name; the sub-tab renders last.
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Prerequisites' }).at(-1))
+    // The tab names the content; the "not this university's own policy"
+    // qualifier belongs to the view, as a banner that cannot be tabbed past.
+    expect(screen.getByText(/Transfer preparation, not university prerequisites/i)).toBeTruthy()
+    expect(screen.getByText('CS112')).toBeTruthy()
+    expect(screen.queryByRole('tab', { name: 'University Prerequisites' })).toBeNull()
   })
 })
 
@@ -431,5 +483,19 @@ describe('degree status in the rails', () => {
     // No reach, no status, no size — the pills above carry all of it.
     expect(ccRail.queryByText(/courses/)).toBeNull()
     expect(ccRail.queryByText(/groups/)).toBeNull()
+  })
+})
+
+describe('Virginia degree editing', () => {
+  it('exposes the stored document as editable JSON, not just a rendering', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+    fireEvent.click(screen.getByText('Blue Ridge Community College'))
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Associate Degrees' }).at(-1))
+    // Until this existed a verifier could record that a degree was wrong but
+    // had no way to correct it.
+    expect(screen.getByLabelText('Degree requirements JSON')).toBeTruthy()
+    expect(screen.getByRole('button', { name: /Save changes/i })).toBeTruthy()
   })
 })
