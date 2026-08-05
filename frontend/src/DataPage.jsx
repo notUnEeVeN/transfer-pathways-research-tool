@@ -4,7 +4,9 @@ import {
   ArrowTopRightOnSquareIcon, ChartBarIcon, TrashIcon, PencilSquareIcon, ArrowsUpDownIcon,
 } from '@heroicons/react/24/outline'
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
+import { useAuth } from './shared/hooks/useAuth'
 import { Alert, Button, EmptyState, Input, LoadingLogo, PageContainer, Select, Spinner, Stack, StatStrip, Tabs, Textarea } from './components/ui'
+import CampusPrerequisites from './CampusPrerequisites'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SubNav from './components/SubNav'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
@@ -13,6 +15,7 @@ import ConceptGraphView from './prereqs/ConceptGraphView'
 import AsDegreeReview from './asdegrees/validation/AsDegreeReview'
 import { AS_DEGREE_SLOTS, slotLabel } from './asdegrees/asDegreeSlots'
 import JsonDocumentPanel from './shared/JsonDocumentPanel'
+import VerifiedBanner from './shared/components/VerifiedBanner'
 import { buildDegreeContext } from './degrees/degreeContext'
 import { createDegreeDocument } from './degrees/degreeTemplateModel'
 import { degreeSourcesFor } from './degrees/degreeSources'
@@ -115,7 +118,7 @@ export default function DataPage({ onNavigate = () => {} }) {
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
           )}
           {tab === 'institutions' && <InstitutionsTab onRoute={reportRoute} />}
-          {tab === 'prerequisites' && <PrerequisitesTab />}
+          {tab === 'prerequisites' && <PrerequisitesTab onRoute={reportRoute} />}
           {tab === 'districts' && <DistrictsTab />}
         </PageContainer>
       </div>
@@ -478,7 +481,7 @@ function CampusAgreements({
     if (section === 'courses') {
       onRoute({ path: `/api/assist/courses?institution_id=cc:${collegeId}` })
     } else if (section === 'prerequisites') {
-      onRoute({ path: `/api/curated/prerequisite-graph?college_id=cc:${collegeId}` })
+      onRoute({ path: `/api/curated/prerequisite-graph?college_id=cc:${collegeId}&majorSlug=${encodeURIComponent(majorSlug)}` })
     } else if (section === 'degrees') {
       onRoute({ path: `/api/curated/as-degrees?college_id=cc:${collegeId}` })
     } else if (defaultAgreementId) {
@@ -486,7 +489,7 @@ function CampusAgreements({
     } else if (!batch.isLoading) {
       onRoute({ path: `/api/assist/agreements?college_id=cc:${collegeId}&university_id=uc:${campus.school_id}` })
     }
-  }, [batch.isLoading, campus.school_id, collegeId, defaultAgreementId, onRoute, section])
+  }, [batch.isLoading, campus.school_id, collegeId, defaultAgreementId, majorSlug, onRoute, section])
 
   const backToColleges = () => {
     onRoute({ path: '/api/assist/coverage' })
@@ -513,13 +516,15 @@ function CampusAgreements({
           { value: 'courses', label: 'Courses' },
           { value: 'prerequisites', label: 'Prerequisites' },
         ]} />
-        <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
+        <MajorPicker value={majorSlug} onChange={setSlug} capability='assistAgreements'
+          className='ml-auto w-60 max-w-full' />
       </div>
       {section === 'courses' ? (
         <CourseList institutionId={collegeId} useCourses={useCcCourses}
           columns={CC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title']} />
       ) : section === 'prerequisites' ? (
-        <ConceptGraphView key={collegeId} initialCollegeId={collegeId} lockCollege />
+        <ConceptGraphView key={collegeId} initialCollegeId={collegeId} lockCollege
+          majorSlug={majorSlug} />
       ) : section === 'degrees' ? (
         <AssociateDegreeSection collegeId={collegeId} availability={degreeAvailability}
           major={major} />
@@ -554,6 +559,7 @@ function CampusAgreements({
 // enclosing "all colleges" list to return to, so the back button only
 // renders when a caller supplies one (Community Colleges no longer does).
 function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
+  const { user } = useAuth()
   const q = useDegreeRequirements()
   const raw = useDegreeRequirementDocuments()
   const save = useSaveDegreeRequirement()
@@ -598,17 +604,39 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
     setSaved(null)
   }, [schoolId, majorSlug, rawDoc?._id])
 
-  const persist = async () => {
+  // `verified === null` saves edits without touching the verdict — the same
+  // three-way save the associate-degree review uses, so a four-year template is
+  // checked off exactly the way an A.S. record is.
+  const persist = async (verified = null) => {
     setError(null)
     setSaved(null)
     try {
-      await save.mutateAsync(editDoc)
+      await save.mutateAsync(verified === null ? editDoc : {
+        ...editDoc,
+        verification: {
+          ...(editDoc.verification || {}),
+          verified,
+          verified_at: new Date().toISOString(),
+        },
+      })
       setDraft(null)
-      setSaved(creating ? 'Requirements created.' : 'Changes saved.')
+      setSaved(verified === null
+        ? (creating ? 'Requirements created.' : 'Changes saved.')
+        : verified ? 'Marked verified.' : 'Flagged as needing work.')
     } catch (e) {
       setError(e?.response?.data?.error || 'Could not save these requirements.')
     }
   }
+
+  /** Notes live on the document as `verification_notes`, authored by the reader. */
+  const saveNotes = async (nextNotes) => {
+    await save.mutateAsync({ ...(rawDoc || editDoc), verification_notes: nextNotes })
+  }
+
+  // Mirrors DegreeRequirementsDetail's own rule so the verdict buttons and its
+  // banner can never disagree about whether this template is verified.
+  const verified = !!rawDoc?.verification?.verified
+    || (Array.isArray(rawDoc?.verification_notes) && rawDoc.verification_notes.length > 0)
 
   return (
     <Stack gap='cozy'>
@@ -618,7 +646,8 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
         {onBack && (
           <Button variant='ghost' leadingIcon={ArrowLeftIcon} onClick={onBack}>All colleges</Button>
         )}
-        <MajorPicker value={majorSlug} onChange={setSlug} className='ml-auto w-60 max-w-full' />
+        <MajorPicker value={majorSlug} onChange={setSlug} capability='assistAgreements'
+          className='ml-auto w-60 max-w-full' />
       </div>
       {q.isLoading || raw.isLoading ? (
         <div className='flex justify-center py-10'><Spinner /></div>
@@ -626,8 +655,14 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
         <Alert type='error'>Failed to load the graduation requirements.</Alert>
       ) : (
         <>
+          {/* No banner here: DegreeRequirementsDetail already renders the
+              verified banner, and it reads both the verdict flag and the
+              verification notes. A second one above it stated the same fact
+              twice. */}
           {doc ? (
-            <DegreeRequirementsDetail doc={doc} />
+            <DegreeRequirementsDetail doc={doc}
+              onSaveNotes={rawDoc ? saveNotes : null} savingNotes={save.isPending}
+              noteAuthor={{ uid: user?.uid || null, label: user?.displayName || user?.email || null }} />
           ) : (
             <EmptyState title={major ? `No ${major.label} graduation requirements yet` : 'No graduation requirements yet'}
               description={`Fill in the document below — by hand or with the AI briefing — to add the four-year ${major?.label || ''} template for this campus.`} />
@@ -643,9 +678,25 @@ function CampusDegreeTemplate({ schoolId, school, onBack = null }) {
           {error && <Alert type='error'>{error}</Alert>}
           {saved && <Alert type='success'>{saved}</Alert>}
           <div className='flex flex-wrap items-center gap-2'>
-            <Button onClick={persist} disabled={save.isPending}>
+            <Button onClick={() => persist(null)} disabled={save.isPending}>
               {save.isPending ? 'Saving…' : creating ? 'Create requirements' : 'Save changes'}
             </Button>
+            {!creating && !verified && (
+              <>
+                <Button onClick={() => persist(true)} disabled={save.isPending}>
+                  {save.isPending ? 'Saving…' : 'Mark verified'}
+                </Button>
+                <Button variant='secondary' onClick={() => persist(false)} disabled={save.isPending}>
+                  Needs work
+                </Button>
+              </>
+            )}
+            {/* Already verified: the verdict can't be re-applied — only reopened. */}
+            {!creating && verified && (
+              <Button variant='secondary' onClick={() => persist(false)} disabled={save.isPending}>
+                {save.isPending ? 'Saving…' : 'Unverify'}
+              </Button>
+            )}
           </div>
         </>
       )}
@@ -984,7 +1035,7 @@ function ComparisonView({ compareFor }) {
   )
 }
 
-function StatTile({ label, value, sub = null, full }) {
+export function StatTile({ label, value, sub = null, full }) {
   return (
     <div className='surface-card p-3'>
       <p className='text-label text-ink-muted'>{label}</p>
@@ -1188,6 +1239,7 @@ function UniversitiesPane({ onRoute = () => {} }) {
       courses: `/api/assist/courses?institution_id=uc:${selectedSchoolId}`,
       requirements: '/api/curated/degrees',
       minimums: '/api/curated/requirements?kind=transfer_minimum',
+      prerequisites: `/api/curated/prerequisites?institution_id=uc:${selectedSchoolId}`,
     }
     onRoute({ path: paths[activeSubTab] })
   }, [onRoute, selectedSchoolId, activeSubTab])
@@ -1210,11 +1262,15 @@ function UniversitiesPane({ onRoute = () => {} }) {
               { value: 'courses', label: 'Courses' },
               { value: 'requirements', label: 'Graduation Requirements' },
               ...(hasMinimums ? [{ value: 'minimums', label: 'Transfer Minimums' }] : []),
+              { value: 'prerequisites', label: 'Prerequisites' },
             ]} />
           {activeSubTab === 'requirements' && (
             <CampusDegreeTemplate schoolId={selectedCampus.school_id} school={selectedCampus.school} />
           )}
           {activeSubTab === 'minimums' && <CampusMinimums schoolId={selectedCampus.school_id} />}
+          {activeSubTab === 'prerequisites' && (
+            <CampusPrerequisites schoolId={selectedCampus.school_id} school={selectedCampus.school} />
+          )}
           {activeSubTab === 'courses' && (
             <CourseList institutionId={selectedCampus.school_id} useCourses={useUniversityCourses}
               columns={UC_COURSE_COLUMNS} searchFields={['prefix', 'number', 'title', 'department']} />
@@ -1347,20 +1403,18 @@ export function DegreeRequirementsDetail({ doc, onEdit = null, onSaveNotes = nul
   const verifiers = doc.verification?.verified_by_label
     ? [doc.verification.verified_by_label]
     : [...new Set(notes.map((n) => n.author_label).filter(Boolean))]
+  // Same banner the associate-degree review shows: who, when, and how to
+  // reopen. The date comes from the verdict when there is one, else from the
+  // most recent note, so a template verified by note-writing is dated too.
+  const verifiedAt = doc.verification?.verified_at
+    || notes.map((n) => n.created_at).filter(Boolean).sort().at(-1)
+    || null
   return (
     <Stack gap='cozy'>
       {verified && (
-        <div className='surface-card border-l-4 border-success bg-success-soft px-4 py-3 flex items-center gap-2.5'>
-          <CheckBadgeIcon className='w-5 h-5 text-success shrink-0' />
-          <div className='min-w-0'>
-            <p className='text-body-strong text-success'>
-              Verified{verifiers.length ? ` by ${verifiers.join(', ')}` : ''}
-            </p>
-            <p className='text-caption text-ink-muted'>
-              These four-year requirements have been checked against the official pages.
-            </p>
-          </div>
-        </div>
+        <VerifiedBanner verifiers={verifiers} verifiedAt={verifiedAt}
+          subject='These four-year requirements have'
+          checkedAgainst='the official pages' />
       )}
       <div className='surface-card px-5 py-[18px]'>
         <div className='flex items-center gap-2'>

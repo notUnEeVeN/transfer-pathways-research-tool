@@ -30,7 +30,17 @@ createRoot(document.getElementById('root')).render(
       // va-v3: the coverage response gained per-institution documents and
       // verification state for the overview worklist. A persisted v2 payload
       // has neither, so the worklist would rehydrate empty.
-      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2-analysis-v3-va-v3`,
+      // degrees-v2: the UC degree templates were rebuilt (Berkeley MCB and
+      // Economics unit budgets, course_level vocabulary). A persisted response
+      // predates all of it and would paint the old units.
+      // degrees-v3: alternative (Or) requirement groups now cost one path
+      // instead of one per alternative, and Berkeley's L&S general education
+      // declares the IGETC areas behind it. Every cached coverage percentage
+      // predates both and would keep painting the old, far-too-low numbers.
+      // uc-prereqs-v1: /curated/prerequisites gained campus filtering and now
+      // answers with { rows, total } rather than every row in the collection. A
+      // persisted response predates both and would rehydrate the whole corpus.
+      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2-analysis-v3-va-v3-degrees-v3-uc-prereqs-v1`,
       dehydrateOptions: {
         // Security/config state and computed analyses must always come from
         // the current server. Catalog/source records still hydrate instantly.

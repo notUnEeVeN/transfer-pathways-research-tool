@@ -512,6 +512,7 @@ exports.putRequirement = asyncHandler(async (req, res) => {
   if (kind === 'degree') {
     const invalid = validateDegreeIdentity(canonical);
     if (invalid) return res.status(400).json({ error: invalid });
+    stampVerdict(canonical, req);
   }
   if (kind === 'as_degree_template') {
     const invalid = await validateAsDegreeTemplate(db, canonical);
@@ -521,14 +522,7 @@ exports.putRequirement = asyncHandler(async (req, res) => {
     const invalid = await validateAsDegree(db, canonical);
     if (invalid) return res.status(400).json({ error: invalid });
     canonical.covered_concepts = await recomputeAsDegreeCoveredConcepts(db, canonical);
-    // Stamp who applied the verdict, authoritatively from the signed-in user —
-    // cleared when the record is reopened so a stale name can't linger.
-    if (canonical.verification) {
-      const verified = !!canonical.verification.verified;
-      canonical.verification.verified_by = verified ? (req.user?.uid ?? null) : null;
-      canonical.verification.verified_by_label = verified
-        ? (req.user?.name || req.user?.email || null) : null;
-    }
+    stampVerdict(canonical, req);
     // Group-level curation stamp: the doc-level curated_by above records who
     // last saved; group-level curated_by records who confirmed THIS group.
     for (const g of canonical.requirement_groups || []) {
@@ -582,17 +576,19 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   const canonicalId = rawId.startsWith(prefix) ? rawId : `${prefix}${rawId}`;
   if (kind === 'prereq_concept') {
     const slug = canonicalId.slice(prefix.length);
-    const [dependents, mapped, templated] = await Promise.all([
+    const [dependents, mapped, vaMapped, templated] = await Promise.all([
       req.app.locals.db.collection(COLLECTIONS.requirements)
         .countDocuments({ kind: 'prereq_concept', requires: slug }),
       req.app.locals.db.collection(COLLECTIONS.courses)
         .countDocuments({ concept: slug }),
+      req.app.locals.db.collection('va_course_concepts')
+        .countDocuments({ concept: slug }),
       req.app.locals.db.collection(COLLECTIONS.requirements)
         .countDocuments({ kind: 'as_degree_template', 'groups.sections.slots.concepts': slug }),
     ]);
-    if (dependents || mapped || templated) {
+    if (dependents || mapped || vaMapped || templated) {
       return res.status(400).json({
-        error: `concept is referenced by ${dependents} concept(s), ${mapped} course(s), and ${templated} degree template(s); reassign them first`,
+        error: `concept is referenced by ${dependents} concept(s), ${mapped} course(s), ${vaMapped} Virginia course mapping(s), and ${templated} degree template(s); reassign them first`,
       });
     }
   }
@@ -612,8 +608,31 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
 });
 
 exports.listPrerequisites = asyncHandler(async (req, res) => {
-  const rows = await req.app.locals.db.collection(COLLECTIONS.prerequisites).find().toArray();
-  res.json({ rows });
+  // The collection now holds each campus's whole published catalogue — tens of
+  // thousands of rows — so an unfiltered read is only for the small curated
+  // community-college set the concept tools edit. A campus view filters, and a
+  // search narrows further.
+  const filter = {};
+  const institutionId = String(req.query.institution_id || '').trim();
+  if (institutionId) filter.institution_id = institutionId;
+  const search = String(req.query.q || '').trim();
+  if (search) {
+    const safe = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    filter.$or = [
+      { course_code: { $regex: safe, $options: 'i' } },
+      { course_name: { $regex: safe, $options: 'i' } },
+    ];
+  }
+  if (String(req.query.with_prerequisites || '') === 'true') {
+    filter['prerequisite_groups.0'] = { $exists: true };
+  }
+  const limit = Math.min(Number(req.query.limit) || 5000, 20000);
+  const [rows, total] = await Promise.all([
+    req.app.locals.db.collection(COLLECTIONS.prerequisites)
+      .find(filter).sort({ course_code: 1 }).limit(limit).toArray(),
+    req.app.locals.db.collection(COLLECTIONS.prerequisites).countDocuments(filter),
+  ]);
+  res.json({ rows, total, limit });
 });
 
 exports.putPrerequisite = asyncHandler(async (req, res) => {
@@ -646,7 +665,17 @@ exports.prerequisiteGraph = asyncHandler(async (req, res) => {
   const requested = String(req.query.college_id || '').trim();
   const parsed = requested ? parseInstitutionId(requested, 'community_college') : null;
   if (requested && !parsed) return res.status(400).json({ error: 'college_id must be cc:<id>' });
-  const data = await prerequisiteGraphData(req.app.locals.db, { collegeKey: parsed?.key ?? null });
+  const majorSlug = String(req.query.majorSlug || '').trim() || null;
+  if (majorSlug && !getMajor(majorSlug)) {
+    return res.status(400).json({
+      error: `unknown major: ${majorSlug}`,
+      known: listMajors().map((major) => major.slug),
+    });
+  }
+  const data = await prerequisiteGraphData(req.app.locals.db, {
+    collegeKey: parsed?.key ?? null,
+    majorSlug,
+  });
   res.json(data);
 });
 
@@ -794,3 +823,23 @@ exports.COLLECTIONS = COLLECTIONS;
 exports.REQUIREMENT_KINDS = REQUIREMENT_KINDS;
 exports.parseInstitutionId = parseInstitutionId;
 exports.validateAsDegree = validateAsDegree;
+
+/**
+ * Record who applied a verification verdict, taken from the signed-in user
+ * rather than the request body.
+ *
+ * The client sends only the intent; a caller cannot claim someone else checked
+ * a document. Reopening clears the name, so a stale verifier can never linger
+ * on a record that is no longer verified.
+ *
+ * Shared by `as_degree` and `degree`: a four-year graduation requirement is
+ * hand-checked against a catalog exactly as an associate degree is, and the two
+ * should not drift in who gets credit for it.
+ */
+function stampVerdict(canonical, req) {
+  if (!canonical.verification) return;
+  const verified = !!canonical.verification.verified;
+  canonical.verification.verified_by = verified ? (req.user?.uid ?? null) : null;
+  canonical.verification.verified_by_label = verified
+    ? (req.user?.name || req.user?.email || null) : null;
+}
