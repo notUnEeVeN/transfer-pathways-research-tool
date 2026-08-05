@@ -22,19 +22,31 @@ as-degree-backup-*.json
 # Claude Code worktrees — isolated checkouts, never part of the repo
 .claude/worktrees/
 
-# ARTSYS import HTML cache (regenerable; ~9,600 pages)
-server/.artsys-cache/
-
-# Parked Virginia crawl cache (regenerable; see deprecated/virginia/)
-deprecated/virginia/cache/
+# Parked Maryland crawl cache (regenerable; see deprecated/maryland/)
+deprecated/maryland/cache/
 
 # Virginia guide + course crawl cache (regenerable)
 server/.virginia-cache/
-server/.va-degrees/
+# Degree-page captures are regenerable, but the compact CS scope ledger is a
+# checked-in source artifact for the Virginia prerequisite builder.
+server/.va-degrees/*
+!server/.va-degrees/cs_course_scope.json
 server/.virginia-courses/
+server/.va-prerequisites-cache/
 
 # Captured catalog pages and the Chrome profile that fetches them. Regenerable
 # by `node scripts/captureVirginiaCatalogs.js`; the reviewable output of the
 # scrape is .va-catalogs/requirements/, which IS committed.
 server/.va-catalogs/pages/
 server/.va-catalogs/.browser-profile/
+
+# UC catalogue captures. Regenerable by scripts/captureUcCatalogs.js,
+# captureCoursedogCatalogs.js, captureAcalogCatalogs.js and
+# captureUcMajorRequirements.js; the reviewable outputs are the small index
+# files, which ARE committed so a reader can see what was fetched and from where.
+server/.uc-catalogs/pages/
+server/.uc-catalogs/coursedog/
+server/.uc-catalogs/acalog/
+server/.uc-catalogs/pdf/
+server/.uc-catalogs/majors/*.html
+server/.uc-catalogs/.browser-profile/
