@@ -10,6 +10,12 @@
  * and gap.
  */
 
+const {
+  primaryCohort,
+  registryInstitutionFor,
+  sourceNamesForInstitution,
+} = require('./institutionCohorts');
+
 const CONCEPT_KIND = 'prereq_concept';
 const COLLECTIONS = Object.freeze({
   courses: 'va_courses',
@@ -108,12 +114,24 @@ function institutionCandidates(kind, institutionRows, courseRows, requirementRow
       id: `${prefix}${slug}`,
       catalog_id: row?._id || prior.catalog_id || `va:inst:${slug}`,
       level: expectedLevel,
-      aliases: unique([...(prior.aliases || []), row?.alias_of]),
+      aliases: unique([...(prior.aliases || []), row?.alias_of, ...(row?.aliases || [])]),
     });
   };
 
   for (const row of institutionRows) {
     if (row.level === expectedLevel) addName(row.name, row);
+  }
+  // UVA and VMI are valid primary receiving selectors before the course corpus
+  // happens to contain an equivalency for them. Keeping them in the resolver
+  // makes the public rail stable and yields an honest empty scoped graph.
+  if (kind === 'university') {
+    for (const slug of primaryCohort.institution_slugs) {
+      const institution = registryInstitutionFor(slug);
+      addName(institution.name, {
+        _id: `va:inst:${institution.slug}`,
+        aliases: sourceNamesForInstitution(institution).filter((name) => name !== institution.name),
+      });
+    }
   }
   for (const course of courseRows) {
     if (kind === 'college') {
@@ -601,8 +619,9 @@ async function virginiaPrerequisiteGraphData(db, selectors = {}) {
   const hasCcSupply = (row) => (row.offered_by || []).some(isCcSupplyName);
   const offeredAtCollege = (row) => !college
     || (row.offered_by || []).some((name) => sameCollegeName(name, college.name));
+  const universitySourceNames = university ? sourceNamesForInstitution(university.name) : [];
   const landingAtUniversity = (row) => university
-    ? (row.articulates_to || []).find((landing) => landing.institution === university.name) || null
+    ? (row.articulates_to || []).find((landing) => universitySourceNames.includes(landing.institution)) || null
     : null;
 
   const courseFromArtifacts = (key) => {

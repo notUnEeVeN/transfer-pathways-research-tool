@@ -8,956 +8,239 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
- "captured_at": "2026-08-02T06:05:44.874Z",
- "program_title": null,
- "total_credits": {
-  "min": 120,
-  "max": 120,
-  "raw": "120"
+ "catalog_year": "2025-2026",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science in Computer Science",
+  "catalog_year": "2025-2026",
+  "program": "Bachelor of Science in Computer Science - Standard Track",
+  "variant": "Standard Track; excludes the Computer Engineering, IA, Cybersecurity, Software Engineering, DNIMAS, and accelerated graduate pathways",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Science, Engineering, and Technology",
+  "general_education_authority": "Norfolk State University General Education Core Program",
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "general_education_units": 40,
+   "core_major_summary_units": 53,
+   "requirements_electives_summary_units": 27,
+   "other_requirements_summary_units": 0,
+   "published_major_elective_menu_units_minimum": 15,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed current non-schedule degree, graduation, and policy sources do not publish a separate university-wide upper-division-credit minimum. Do not infer one from the excluded Plan of Study grid.",
+    "source_refs": [
+     "major",
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "Bachelor candidates must spend at least two semesters in residence and earn at least 30 semester hours during that period, including all senior-year curriculum courses.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "resident_semesters_minimum": 2,
+   "minimum_cumulative_gpa": 2
+  },
+  "modeling_notes": [
+   "The live NSU catalog is still the 2025-2026 edition as of 2026-08-09. Recapture and compare when a newer edition is published.",
+   "The authoritative scope is #curriculumtextcontainer, but most named fixed curriculum courses appear only in its labeled Plan of Study grid. Because prospective schedules are not requirement authority, the non-schedule sources are insufficient for a complete major composition.",
+   "Preserve the published 40 + 53 + 27 + 0 = 120 graduation summary and the separate at-least-15-credit Major Electives menu without inventing the missing allocation of the 27-credit Requirements Electives block.",
+   "Do not weaken exclude_plan_grids_when_course_lists to make the current extraction look complete. A complete model needs another official non-schedule requirement source or explicit human acceptance."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "catalog_edition_lag",
+    "severity": "review",
+    "message": "The current live catalog is 2025-2026 while the other CourseLeaf cohort catalogs have advanced to 2026-2027."
+   },
+   {
+    "code": "fixed_curriculum_only_in_plan_grid",
+    "severity": "review",
+    "message": "Excluding the prospective Plan of Study grid leaves summary totals and an elective menu, but not the complete fixed curriculum required to compose the degree."
+   },
+   {
+    "code": "requirements_elective_summary_not_reconciled",
+    "severity": "review",
+    "message": "The 27-credit Requirements Electives summary is not fully explained by the non-schedule Major Electives list, which states at least 15 credits."
+   },
+   {
+    "code": "catalog_navigation_under_construction_label",
+    "severity": "review",
+    "message": "The navigation shows an Under Construction child beneath the populated Standard Track page; retain this as a catalog-quality warning."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
  },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Norfolk State University major and degree requirements",
+   "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
+   "requested_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:17:33.652Z",
+   "sha256": "f223ee32c51b1597a85aa3f82be17c1018cc257a969de3fca3e222be71746ac1",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Norfolk State University general education requirements",
+   "url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/",
+   "requested_url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:17:33.652Z",
+   "sha256": "a582c2e01a83134b609086ea218dfcad27a4c8327515ee9038bbf1f00e6c451c",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Norfolk State University college or school requirements",
+   "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/",
+   "requested_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:17:33.652Z",
+   "sha256": "c6f34f1f976e77b9925b2c0897cac59251ff3615dee6dee7f997a1b08dab1292",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college_2",
+   "role": "college",
+   "kind": "college",
+   "label": "Norfolk State University college or school requirements",
+   "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/",
+   "requested_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:17:33.652Z",
+   "sha256": "c715d597e0898ad7655c59675b164324d21fea5a3c3ceda8148500662825f718",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Norfolk State University academic policies",
+   "url": "https://catalog.nsu.edu/undergraduate/academic-policies/",
+   "requested_url": "https://catalog.nsu.edu/undergraduate/academic-policies/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:17:33.652Z",
+   "sha256": "81623b45aa0703da5465a94bf914370430c4afc4069a58dd41e0e82ace73c476",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Norfolk State University course descriptions and credit values",
+   "url": "https://catalog.nsu.edu/undergraduate/course-descriptions/csc/",
+   "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/csc/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:17:33.652Z",
+   "sha256": "9d2f4b6142ac40a1c71c382bd53e4c92447d27a43156d50ce82504bc519fe86f",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college",
+    "college_2"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "missing",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:17:33.652Z",
+ "program_title": "Bachelor of Science in Computer Science - Standard Track",
+ "parse_error": null,
+ "total_credits": null,
  "stopped_at": null,
  "groups": [
-  {
-   "title": "First Year",
-   "credits": {
-    "min": 30,
-    "max": 30,
-    "raw": "30"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "SEM 101& SEM 102 Spartan Seminar 101and Spartan Seminar 102",
-    "CSC 101 Introduction to the Computer Science Profession",
-    "CSC 170 Computer Programming I",
-    "CSC 170L Computer Programming Laboratory I",
-    "MTH 153 College Algebra & Trigonometry",
-    "ENG 101 College English I",
-    "PED 100 Fundametals of Fitness for Life",
-    "CSC 260 Computer Programming II",
-    "CSC 260L Computer Programming II Laboratory",
-    "MTH 184 Calculus I",
-    "ENG 102 College English II",
-    "XXX XXX",
-    "HED 100 Personal and Community Health"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "SEM101",
-         "title": "Spartan Seminar 101"
-        },
-        {
-         "code": "SEM102",
-         "title": "and Spartan Seminar 102"
-        }
-       ],
-       "conjunction": "and",
-       "text": "SEM 101& SEM 102 Spartan Seminar 101and Spartan Seminar 102",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC101",
-         "title": "Introduction to the Computer Science Profession"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 101 Introduction to the Computer Science Profession",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC170",
-         "title": "Computer Programming I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 170 Computer Programming I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC170L",
-         "title": "Computer Programming Laboratory I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 170L Computer Programming Laboratory I",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MTH153",
-         "title": "College Algebra & Trigonometry"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MTH 153 College Algebra & Trigonometry",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENG101",
-         "title": "College English I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENG 101 College English I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "PED100",
-         "title": "Fundametals of Fitness for Life"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PED 100 Fundametals of Fitness for Life",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC260",
-         "title": "Computer Programming II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 260 Computer Programming II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC260L",
-         "title": "Computer Programming II Laboratory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 260L Computer Programming II Laboratory",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MTH184",
-         "title": "Calculus I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MTH 184 Calculus I",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENG102",
-         "title": "College English II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENG 102 College English II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "HED100",
-         "title": "Personal and Community Health"
-        }
-       ],
-       "conjunction": "and",
-       "text": "HED 100 Personal and Community Health",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       },
-       "indented": false
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Second Year",
-   "credits": {
-    "min": 31,
-    "max": 31,
-    "raw": "31"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": "Select one Laboratory Science Elective and the corresponding Laboratory of the following:",
-   "source_text": [
-    "SEM 201 Spartan Seminar 201",
-    "CSC 372 Data Structures",
-    "Select one Laboratory Science Elective and the corresponding Laboratory of the following:",
-    "BIO 110& 110L General Biologyand General Biology Laboratory",
-    "PHY 152& 152L General Physicsand General Physics Laboratory I",
-    "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
-    "MTH 251 Calculus II",
-    "MTH 371 Discrete Mathematical Structures",
-    "CSC 268 Computer Organization",
-    "CSC 295 Java Applications Programming",
-    "CSC 361 Survey of Programming Languages",
-    "ENG 303 Professional & Technical Writing",
-    "ENG 285 Public Speaking"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "SEM201",
-         "title": "Spartan Seminar 201"
-        }
-       ],
-       "conjunction": "and",
-       "text": "SEM 201 Spartan Seminar 201",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC372",
-         "title": "Data Structures"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 372 Data Structures",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      }
-     ]
-    },
-    {
-     "label": null,
-     "choose": 1,
-     "credits": {
-      "min": 4,
-      "max": 4,
-      "raw": "4"
-     },
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "BIO110",
-         "title": "General Biology"
-        },
-        {
-         "code": "BIO110L",
-         "title": "and General Biology Laboratory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "BIO 110& 110L General Biologyand General Biology Laboratory",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "PHY152",
-         "title": "General Physics"
-        },
-        {
-         "code": "PHY152L",
-         "title": "and General Physics Laboratory I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PHY 152& 152L General Physicsand General Physics Laboratory I",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "CHM221",
-         "title": "General Chemistry I"
-        },
-        {
-         "code": "CHM221L",
-         "title": "and General Chemistry I Laboratory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "MTH251",
-         "title": "Calculus II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MTH 251 Calculus II",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MTH371",
-         "title": "Discrete Mathematical Structures"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MTH 371 Discrete Mathematical Structures",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC268",
-         "title": "Computer Organization"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 268 Computer Organization",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC295",
-         "title": "Java Applications Programming"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 295 Java Applications Programming",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC361",
-         "title": "Survey of Programming Languages"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 361 Survey of Programming Languages",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENG303",
-         "title": "Professional & Technical Writing"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENG 303 Professional & Technical Writing",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENG285",
-         "title": "Public Speaking"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENG 285 Public Speaking",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Third Year",
-   "credits": {
-    "min": 28,
-    "max": 28,
-    "raw": "28"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": "Select one Laboratory Science Elective Sequence of the following:",
-   "source_text": [
-    "CSC 292 Unix and C Programming",
-    "CSC 380 Software Engneerng",
-    "CSC 468 Computer Architecture",
-    "MTH 351 Probability & Statistics I",
-    "Select one Laboratory Science Elective Sequence of the following:",
-    "PHY 152 General Physics",
-    "BIO 110& 110L General Biologyand General Biology Laboratory",
-    "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
-    "CSC 430 Data Communications",
-    "XXX XXX",
-    "XXX XXX",
-    "ENG 207 Introduction to World Literature",
-    "FIA 201 Basic Art Appreciation",
-    "MUS 301 Music Appreciation",
-    "CSC 275 Fundamentals of Cybersecurity"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CSC292",
-         "title": "Unix and C Programming"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 292 Unix and C Programming",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC380",
-         "title": "Software Engneerng"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 380 Software Engneerng",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC468",
-         "title": "Computer Architecture"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 468 Computer Architecture",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MTH351",
-         "title": "Probability & Statistics I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MTH 351 Probability & Statistics I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      }
-     ]
-    },
-    {
-     "label": null,
-     "choose": 1,
-     "credits": {
-      "min": 4,
-      "max": 4,
-      "raw": "4"
-     },
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "PHY152",
-         "title": "General Physics"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PHY 152 General Physics",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "BIO110",
-         "title": "General Biology"
-        },
-        {
-         "code": "BIO110L",
-         "title": "and General Biology Laboratory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "BIO 110& 110L General Biologyand General Biology Laboratory",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "CHM221",
-         "title": "General Chemistry I"
-        },
-        {
-         "code": "CHM221L",
-         "title": "and General Chemistry I Laboratory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CHM 221& 221L General Chemistry Iand General Chemistry I Laboratory",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC430",
-         "title": "Data Communications"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 430 Data Communications",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "ENG207",
-         "title": "Introduction to World Literature"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENG 207 Introduction to World Literature",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "FIA201",
-         "title": "Basic Art Appreciation"
-        }
-       ],
-       "conjunction": "and",
-       "text": "FIA 201 Basic Art Appreciation",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "MUS301",
-         "title": "Music Appreciation"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MUS 301 Music Appreciation",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC275",
-         "title": "Fundamentals of Cybersecurity"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 275 Fundamentals of Cybersecurity",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fourth Year",
-   "credits": {
-    "min": 31,
-    "max": 31,
-    "raw": "31"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CSC 498 Computer Science Seminar I",
-    "CSC 464 Operating Systems",
-    "XXX XXX",
-    "XXX XXX",
-    "HIS 335 African-American History",
-    "HIS 336 African-American History Since 1865",
-    "HIS 371 African History/Cultures 1600-PRESENT",
-    "HRP 320 African American Health",
-    "XXX XXX",
-    "ENG 383 African-American Literature, 1940-PRESENT",
-    "MUS 234 African-American Music",
-    "CSC 499 Computer Science Seminar II",
-    "XXX XXX",
-    "XXX XXX"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CSC498",
-         "title": "Computer Science Seminar I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 498 Computer Science Seminar I",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC464",
-         "title": "Operating Systems"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 464 Operating Systems",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "HIS335",
-         "title": "African-American History"
-        }
-       ],
-       "conjunction": "and",
-       "text": "HIS 335 African-American History",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "HIS336",
-         "title": "African-American History Since 1865"
-        }
-       ],
-       "conjunction": "and",
-       "text": "HIS 336 African-American History Since 1865",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "HIS371",
-         "title": "African History/Cultures 1600-PRESENT"
-        }
-       ],
-       "conjunction": "and",
-       "text": "HIS 371 African History/Cultures 1600-PRESENT",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "HRP320",
-         "title": "African American Health"
-        }
-       ],
-       "conjunction": "and",
-       "text": "HRP 320 African American Health",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "ENG383",
-         "title": "African-American Literature, 1940-PRESENT"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENG 383 African-American Literature, 1940-PRESENT",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "MUS234",
-         "title": "African-American Music"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MUS 234 African-American Music",
-       "credits": null,
-       "indented": true
-      },
-      {
-       "codes": [
-        {
-         "code": "CSC499",
-         "title": "Computer Science Seminar II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSC 499 Computer Science Seminar II",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 9,
-        "max": 9,
-        "raw": "9"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "XXX XXX",
-       "category": "XXX XXX",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
   {
    "title": "Major Electives - At least 15 Credit Hours",
    "credits": null,
@@ -1503,40 +786,35 @@
     ]
    },
    {
-    "severity": "pass",
-    "name": "group_count",
-    "detail": "5 requirement groups"
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
    },
    {
     "severity": "pass",
     "name": "course_count",
-    "detail": "76 distinct courses across 83 rows"
+    "detail": "30 distinct courses across 30 rows"
    },
    {
-    "severity": "pass",
-    "name": "credits_reconcile",
-    "detail": "groups sum to 120–120, stated total 120"
-   },
-   {
-    "severity": "pass",
-    "name": "categories",
-    "detail": "8 unenumerated requirement(s) kept as categories"
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
    }
   ],
   "stats": {
-   "groups": 5,
-   "sections": 7,
-   "rows": 83,
-   "course_rows": 75,
-   "category_rows": 8,
-   "distinct_courses": 76,
+   "groups": 1,
+   "sections": 1,
+   "rows": 30,
+   "course_rows": 30,
+   "category_rows": 0,
+   "distinct_courses": 30,
    "credit_span": {
-    "min": 120,
-    "max": 120,
-    "groups_with_credits": 4
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
    },
-   "stated_total": "120"
+   "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.907Z"
+ "extracted_at": "2026-08-10T03:21:26.565Z"
 }

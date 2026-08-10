@@ -1,0 +1,810 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_community_college_cs_as_gap_official_source_batch",
+  "researched_at": "2026-08-09",
+  "source_policy": {
+    "allowed_sources": "Current official college catalogs, official college program pages, and official college policy pages only. A third-party-hosted file is accepted only when the current official college catalog page links to that exact file.",
+    "transfer_virginia_role": "Transfer Virginia may be named by an official catalog as an option-set or advising source, but it was not used by itself to establish that a program exists, its award, or its graduation rules.",
+    "schedule_exclusion": "Prospective schedules and term class listings are not evidence that an award exists.",
+    "unknown_rule": "A null value means the reviewed current official sources did not state the value; it must not be interpreted as zero or as not applicable."
+  },
+  "summary": {
+    "institutions_reviewed": 4,
+    "genuine_no_cs_associate_path": 0,
+    "current_standalone_cs_as": 3,
+    "current_combined_math_cs_as": 1,
+    "findings": [
+      "Reynolds, Camp, and Tidewater each publish a current Computer Science Associate of Science transfer degree.",
+      "Richard Bland does not publish a standalone Computer Science A.S.; it publishes a current combined Math/Computer Science, A.S. with a Computer Science branch inside the quantitative requirement.",
+      "The three missing structural records are capture/discovery failures, not defensible no-program findings."
+    ]
+  },
+  "institutions": [
+    {
+      "slug": "j-sargeant-reynolds-community-college",
+      "name": "Reynolds Community College",
+      "registry_name": "J Sargeant Reynolds Community College",
+      "finding": "current_standalone_cs_as_exists",
+      "genuinely_no_cs_as": false,
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "status": "current_published_catalog",
+        "platform": "Modern Campus Catalog (Acalog)",
+        "catalog_url": "https://catalog.reynolds.edu/index.php?catoid=13",
+        "evidence": "The current catalog selector and page heading identify catoid 13 as the Reynolds College 2026-2027 Catalog."
+      },
+      "degree": {
+        "catalog_program_title": "Computer Science AS",
+        "award": "Associate of Science (A.S.)",
+        "program_code": null,
+        "program_code_status": "not_printed_on_the_reviewed_current_catalog_pages",
+        "cip_code": null,
+        "official_program_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4051&returnto=1496",
+        "official_marketing_url": "https://www.reynolds.edu/programs/program-pages/computer-science-as.html",
+        "published_total_credits": {
+          "program_marketing_page": "60-63",
+          "ba_full_time_map": "62-63",
+          "bs_full_time_map": 63,
+          "interpretation": "The base award is variable by transfer destination. The catalog publishes separate BA-oriented and BS-oriented maps rather than one universal course table."
+        },
+        "purpose": "Transfer preparation for a bachelor's degree in computer science or a related field.",
+        "program_maps": [
+          {
+            "variant": "full_time_ba_destination",
+            "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4134",
+            "total_credits": "62-63"
+          },
+          {
+            "variant": "part_time_ba_destination",
+            "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4138",
+            "total_credits": "same award; sequence is spread across additional terms"
+          },
+          {
+            "variant": "full_time_bs_destination",
+            "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173",
+            "total_credits": 63
+          },
+          {
+            "variant": "part_time_bs_destination",
+            "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4174",
+            "total_credits": "same award; sequence is spread across additional terms"
+          }
+        ],
+        "requirement_logic": {
+          "common_fixed_courses": [
+            "CSC 221",
+            "CSC 222",
+            "CSC 223",
+            "CSC 208",
+            "ENG 111",
+            "ENG 112",
+            "MTH 263",
+            "SDV 101"
+          ],
+          "common_general_education_slots": [
+            {
+              "slot": "history",
+              "rule": "choose one UCGS History elective",
+              "option_source_ref": "approved_transfer_electives"
+            },
+            {
+              "slot": "social_behavioral_science",
+              "rule": "choose one UCGS Social/Behavioral Science elective",
+              "option_source_ref": "approved_transfer_electives"
+            },
+            {
+              "slot": "humanities_1",
+              "rule": "choose one UCGS Humanities/Fine Arts elective",
+              "option_source_ref": "approved_transfer_electives"
+            },
+            {
+              "slot": "humanities_2",
+              "rule": "choose one UCGS Humanities/Fine Arts/Literature elective from a different discipline area than humanities_1",
+              "option_source_ref": "approved_transfer_electives"
+            }
+          ],
+          "ba_destination_map": [
+            {
+              "kind": "required",
+              "course": "MTH 245",
+              "note": "MTH 245 is the printed BA-map course; transfer-destination substitutions require advisor review."
+            },
+            {
+              "kind": "required",
+              "course": "CSC 205"
+            },
+            {
+              "kind": "one_of",
+              "slot": "natural_science",
+              "options": [
+                "BIO 101",
+                "GOL 105",
+                "CHM 111",
+                "PHY 201",
+                "PHY 241"
+              ]
+            },
+            {
+              "kind": "course_or_advisor_elective",
+              "slot": "linear_algebra_or_destination_elective",
+              "printed_course": "MTH 266"
+            },
+            {
+              "kind": "course_or_ucgs_elective",
+              "slot": "oral_communication_or_destination_elective",
+              "printed_course": "CST 100"
+            },
+            {
+              "kind": "course_or_advisor_elective",
+              "slot": "computer_systems_or_destination_elective",
+              "printed_course": "CSC 215"
+            },
+            {
+              "kind": "course_or_advisor_elective",
+              "slot": "discrete_math_or_destination_elective",
+              "printed_course": "MTH 288"
+            },
+            {
+              "kind": "course_or_advisor_elective",
+              "slot": "world_language_or_destination_elective",
+              "printed_course": "SPA 101",
+              "credits": "4 or higher based on university needs"
+            }
+          ],
+          "bs_destination_map": [
+            {
+              "kind": "required",
+              "course": "MTH 264"
+            },
+            {
+              "kind": "one_of",
+              "slot": "natural_science",
+              "options": [
+                "BIO 101",
+                "CHM 111",
+                "PHY 241"
+              ]
+            },
+            {
+              "kind": "one_of",
+              "slot": "advanced_math_or_computer_organization",
+              "options": [
+                "CSC 205",
+                "MTH 265"
+              ],
+              "credits": "3-4"
+            },
+            {
+              "kind": "course_or_advisor_elective",
+              "slot": "computer_systems_or_destination_elective",
+              "printed_course": "CSC 215"
+            },
+            {
+              "kind": "destination_elective_slots",
+              "count": 3,
+              "credits": [
+                4,
+                3,
+                3
+              ],
+              "rule": "choose with an advisor for the intended four-year institution; one of the three is specifically labeled UCGS Approved Elective"
+            }
+          ],
+          "sequence_note": "The catalog says courses should be taken in the listed order. MTH 167 may be used as preparatory elective credit when additional preparation is needed."
+        }
+      },
+      "general_education_and_electives": {
+        "authority": "Reynolds Approved Transfer Electives, including Passport and UCGS markings",
+        "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=3925",
+        "evidence": "The current official page enumerates the Arts/Humanities/Literature, Natural Sciences, Mathematics, Social and Behavioral Sciences/History, World Languages, and additional UCGS Block VII choices used by the maps.",
+        "important_constraints": [
+          "Only courses completed after May 2020 with a grade of C or better apply to Passport/UCGS completion.",
+          "The two humanities slots cannot come from the same discipline area.",
+          "BIO 101 and BIO 106 cannot both receive credit.",
+          "MTH 161 and MTH 167 cannot both receive credit."
+        ]
+      },
+      "graduation_constraints": {
+        "policy_url": "https://catalog.reynolds.edu/content.php?catoid=13&navoid=1487#classroom-graduation-and-program-requirements",
+        "minimum_curriculum_gpa": 2.0,
+        "residency": {
+          "minimum_percent": 25,
+          "unit": "percent of degree credit hours earned at Reynolds"
+        },
+        "other_rules": [
+          "Complete all program and curricular admission requirements.",
+          "Submit the graduation application by the published deadline.",
+          "The school dean recommends graduation and the registrar certifies completion.",
+          "The selected catalog normally may not be more than seven years old at graduation."
+        ]
+      },
+      "capture_and_parser_blockers": [
+        "The base Computer Science AS page contains no course list. The actual requirements are four linked BA/BS, full-time/part-time program-map records, so a one-page program extractor will always return an empty tree.",
+        "Direct HTTP clients currently receive an AWS WAF 202 challenge with an empty body. A real-browser session completed the challenge and exposed the current catoid 13 pages.",
+        "The repository's earlier catoid 10 map identifiers are stale; the current catalog uses catoid 13 and different poids.",
+        "The degree is destination-sensitive. Collapsing the BA and BS maps into one flat AND list would overstate requirements."
+      ],
+      "sources": [
+        {
+          "id": "program",
+          "role": "award_identity_and_map_index",
+          "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4051&returnto=1496",
+          "evidence": "Current Computer Science AS transfer award and links to all four program maps."
+        },
+        {
+          "id": "approved_transfer_electives",
+          "role": "general_education_and_elective_option_dictionary",
+          "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=3925",
+          "evidence": "Current official UCGS, Passport, and broader transfer-elective course lists."
+        },
+        {
+          "id": "graduation_policy",
+          "role": "graduation_residency_and_gpa",
+          "url": "https://catalog.reynolds.edu/content.php?catoid=13&navoid=1487#classroom-graduation-and-program-requirements",
+          "evidence": "Current 2.0 curriculum GPA and 25-percent Reynolds-credit rules."
+        }
+      ]
+    },
+    {
+      "slug": "paul-d-camp-community-college",
+      "name": "Camp Community College",
+      "registry_name": "Paul D. Camp Community College",
+      "finding": "current_standalone_cs_as_exists_with_legacy_teachout",
+      "genuinely_no_cs_as": false,
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "status": "current_published_catalog",
+        "platform": "official college landing page linking a Google Drive PDF",
+        "catalog_landing_url": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/",
+        "catalog_pdf_url": "https://drive.google.com/file/d/1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5/view?usp=sharing",
+        "catalog_pdf_sha256": "48ed713d8832e07d8bb5e8e560dfb4626fd1cea6dd3ca58f9b3c8139ba49cab5",
+        "evidence": "The current official catalog landing page labels the linked cover as 2026-27; the linked PDF contains the 2026-2027 academic calendar and current programs."
+      },
+      "degree": {
+        "catalog_program_title": "Computer Science",
+        "award": "Associate of Science",
+        "effective_term": "Fall 2024",
+        "program_code": "246",
+        "cip_code": "11.0701",
+        "official_program_url": "https://drive.google.com/file/d/1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5/view?usp=sharing",
+        "source_location": {
+          "printed_pages": "265-267",
+          "pdf_pages": "275-277"
+        },
+        "published_total_credits": 61,
+        "purpose": "A university-parallel transfer degree aligned to the VCCS common curriculum for Computer Science.",
+        "requirement_logic": {
+          "fixed_courses": [
+            "ENG 111",
+            "ENG 112",
+            "MTH 161",
+            "MTH 162",
+            "MTH 263",
+            "CSC 221",
+            "CSC 222",
+            "CSC 223",
+            "CSC 205",
+            "CSC 208",
+            "CST 100",
+            "SDV 100"
+          ],
+          "choice_slots": [
+            {
+              "slot": "humanities_arts_literature_1",
+              "rule": "choose any UCGS-approved Humanities, Art, or Literature course"
+            },
+            {
+              "slot": "humanities_arts_literature_2",
+              "rule": "choose an Arts/Literature elective from a different humanities subgroup than the first choice; some universities require literature"
+            },
+            {
+              "slot": "social_science",
+              "rule": "choose any UCGS-approved Social Science course"
+            },
+            {
+              "slot": "history",
+              "rule": "choose any UCGS-approved History course"
+            },
+            {
+              "slot": "natural_science_1",
+              "rule": "choose any UCGS-approved Natural Science course",
+              "credits": 4
+            },
+            {
+              "slot": "natural_science_2",
+              "rule": "choose a TransferVA-approved Science course as required by the official catalog",
+              "credits": 4,
+              "note": "The program footnote says PHY 202 should be considered only for B.A. Computer Science transfer paths."
+            },
+            {
+              "slot": "calculus_ii_or_statistics",
+              "kind": "one_of",
+              "options": [
+                "MTH 264",
+                "MTH 245"
+              ],
+              "published_slot_credits": 4,
+              "known_course_credit_issue": "MTH 245 is ordinarily a three-credit VCCS course, while the table prints four credits for the combined slot."
+            }
+          ],
+          "programming_language_note": "The catalog says Camp currently uses C++ for CSC 221 and CSC 222 and Java for CSC 223; destination-language needs require advance advising."
+        }
+      },
+      "legacy_teachout": {
+        "catalog_program_title": "General Studies - Specialization in Computer Science",
+        "award": "Associate of Arts and Sciences",
+        "program_code": "697-02",
+        "cip_code": "11.0701",
+        "published_total_credits": 61,
+        "last_new_enrollment_term": "Summer 2024",
+        "completion_deadline": "Spring 2027",
+        "source_location": {
+          "printed_pages": "262-264",
+          "pdf_pages": "272-274"
+        },
+        "interpretation": "This remains in the current catalog only for already-enrolled teachout students. New students from Fall 2024 forward enter the Computer Science A.S., plan 246."
+      },
+      "general_education_and_electives": {
+        "authority": "Camp 2026-2027 Catalog and Student Handbook",
+        "url": "https://drive.google.com/file/d/1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5/view?usp=sharing",
+        "source_location": {
+          "printed_pages": "146-155",
+          "pdf_pages": "156-165"
+        },
+        "evidence": "The official PDF publishes the college-wide elective rules, General Education Passport, and the courses applicable to General Education and UCGS. The program table narrows those option sets for this award."
+      },
+      "graduation_constraints": {
+        "policy_url": "https://drive.google.com/file/d/1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5/view?usp=sharing",
+        "source_location": {
+          "printed_page": 64,
+          "pdf_page": 74
+        },
+        "minimum_curriculum_gpa": 2.0,
+        "residency": {
+          "minimum_percent": 25,
+          "unit": "percent of degree credits acquired at Camp"
+        },
+        "catalog_of_record": "Use the catalog in effect at entry or a later selected catalog; after an interruption of four or more consecutive non-summer semesters, use the catalog in effect at re-entry.",
+        "other_rules": [
+          "Complete all course and credit-hour requirements.",
+          "Receive the responsible dean's recommendation.",
+          "File the graduation application and resolve college obligations."
+        ]
+      },
+      "data_quality_flags": [
+        "The current program's first-term rows total 16 credits, but the table prints 17. The four printed term totals therefore sum to 62 while the program total is 61.",
+        "The MTH 264/MTH 245 row prints four credits although MTH 245 is normally three credits; selecting Statistics can change the arithmetic unless another credit is supplied.",
+        "The official marketing page still labels plan 246 as General Studies-Computer Science and calls the award Associate of Arts and Sciences, while the current catalog unambiguously identifies plan 246 as the new Computer Science Associate of Science. The catalog controls.",
+        "The PDF metadata title says 2024-2025 even though the file was created in July 2026 and its actual contents are the 2026-2027 catalog. Content and official landing-page label control."
+      ],
+      "capture_and_parser_blockers": [
+        "There is no catalog application or per-program HTML. The scraper must discover the first current Google Drive file linked from the official landing page, download it, verify PDF magic, and retain the PDF hash.",
+        "The 341-page PDF contains both a discontinued teachout specialization and the replacement A.S. A heading-only search for Computer Science can select the wrong award.",
+        "The generic PDF parser needs page-window citations and must preserve the cross-category humanities rule, the dynamic UCGS/TransferVA science option sets, and the MTH 264-or-MTH 245 alternative.",
+        "The source itself has credit arithmetic conflicts, so successful extraction must remain review-required rather than silently forcing the stated 61-credit total."
+      ],
+      "sources": [
+        {
+          "id": "catalog_landing",
+          "role": "official_current_catalog_index",
+          "url": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/",
+          "evidence": "Official Camp page linking the current 2026-27 catalog and subsequent archived catalogs."
+        },
+        {
+          "id": "catalog_pdf",
+          "role": "program_general_education_and_graduation_policy",
+          "url": "https://drive.google.com/file/d/1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5/view?usp=sharing",
+          "evidence": "Officially linked 2026-2027 catalog PDF; program pages 265-267 and graduation page 64."
+        },
+        {
+          "id": "marketing_program",
+          "role": "current_program_corroboration_with_stale_title_warning",
+          "url": "https://www.pdc.edu/explore-camp/general-studies-transfer/aas-general-studies-specialization-in-computer-science/",
+          "evidence": "Official page confirms plan 246 is intended for Computer Science transfer, but its displayed title and award lag the current catalog."
+        }
+      ]
+    },
+    {
+      "slug": "tidewater-community-college",
+      "name": "Tidewater Community College",
+      "finding": "current_standalone_cs_as_exists",
+      "genuinely_no_cs_as": false,
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "status": "current_published_catalog",
+        "platform": "Modern Campus Catalog (Acalog) behind Cloudflare",
+        "catalog_url": "https://catalog.tcc.edu/index.php?catoid=23",
+        "evidence": "The current catalog selector, program page, and policy pages identify catoid 23 as the 2026-2027 Catalog."
+      },
+      "degree": {
+        "catalog_program_title": "Computer Science, Associate of Science",
+        "award": "Associate of Science (A.S.)",
+        "program_code": "246",
+        "cip_code": null,
+        "cip_code_status": "not_printed_on_the_reviewed_current_program_page",
+        "official_program_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235",
+        "official_marketing_url": "https://www.tcc.edu/programs/computer-science/",
+        "published_total_credits": {
+          "catalog": "60-63",
+          "marketing_page": 61,
+          "interpretation": "The catalog range controls because alternative math and elective choices carry different credit values."
+        },
+        "purpose": "Transfer preparation for a Bachelor of Science in Computer Science.",
+        "requirement_logic": {
+          "fixed_courses": [
+            "CSC 221",
+            "CSC 222",
+            "CSC 223",
+            "ENG 111",
+            "ENG 112",
+            "MTH 263",
+            "SDV 101"
+          ],
+          "choice_slots": [
+            {
+              "slot": "precalculus_preparation",
+              "kind": "one_of_nested",
+              "options": [
+                {
+                  "all_of": [
+                    "MTH 167"
+                  ]
+                },
+                {
+                  "all_of": [
+                    "MTH 161",
+                    "MTH 162"
+                  ]
+                },
+                {
+                  "condition": "student places directly into MTH 263",
+                  "replacement": "use Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives for the displaced preparation credits"
+                }
+              ]
+            },
+            {
+              "slot": "social_science",
+              "rule": "choose one General Education Social Science elective other than History",
+              "option_source_ref": "general_education_core"
+            },
+            {
+              "slot": "history",
+              "kind": "one_of",
+              "options": [
+                "HIS 101",
+                "HIS 102",
+                "HIS 111",
+                "HIS 112",
+                "HIS 121",
+                "HIS 122"
+              ]
+            },
+            {
+              "slot": "discrete_structures",
+              "kind": "one_of",
+              "options": [
+                "MTH 288",
+                "CSC 208"
+              ]
+            },
+            {
+              "slot": "science_with_lab",
+              "kind": "one_of",
+              "options": [
+                "BIO 101",
+                "CHM 111",
+                "PHY 241",
+                "GOL 105",
+                "GOL 106",
+                "GOL 110"
+              ]
+            },
+            {
+              "slot": "calculus_ii_or_statistics",
+              "kind": "one_of",
+              "options": [
+                "MTH 264",
+                "MTH 245"
+              ]
+            },
+            {
+              "slot": "humanities_pair",
+              "kind": "choose_distinct_categories",
+              "choose_courses": 2,
+              "choose_categories": 2,
+              "categories": [
+                "Artistic Expression",
+                "Literature and Creative Writing",
+                "Human Culture"
+              ],
+              "option_source_ref": "general_education_core"
+            },
+            {
+              "slot": "semester_4_technical_slot_a",
+              "printed_course": "CSC 215",
+              "source_footnote": 8,
+              "rule_status": "ambiguous_source_wording",
+              "printed_alternatives": [
+                "additional science",
+                "PHY 201",
+                "CSC 205",
+                "CSC 215",
+                "EGR 121",
+                "EGR 122",
+                "EGR 270",
+                "CST 100",
+                "CSC 110",
+                "World Languages",
+                "MTH 265",
+                "MTH 266"
+              ]
+            },
+            {
+              "slot": "semester_4_technical_slot_b",
+              "printed_course": "CSC 205",
+              "source_footnote": 7,
+              "kind": "one_of",
+              "options": [
+                "CSC 205",
+                "CSC 215",
+                "MTH 265"
+              ]
+            },
+            {
+              "slot": "approved_elective",
+              "kind": "one_of",
+              "options": [
+                "any World Language class",
+                "BIO 102",
+                "CHM 112",
+                "GOL 105",
+                "GOL 106",
+                "GOL 110",
+                "PHY 242",
+                "MTH 245",
+                "MTH 264",
+                "MTH 265",
+                "CST 100",
+                "CSC 110"
+              ],
+              "minimum_total_rule": "The completed program must contain at least 60 credits; a second lab science is recommended and some transfer institutions require a science sequence."
+            }
+          ],
+          "distinct_slot_warning": "The two semester-4 technical slots have overlapping options. They must remain separate requirement nodes, and one course must not be used to satisfy both slots."
+        }
+      },
+      "general_education_and_electives": {
+        "general_education_core": {
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119",
+          "evidence": "Current official option lists for Communication, Mathematics, Natural Science with Lab, Humanities, and Social Science. It also states that one course cannot satisfy more than one curriculum requirement."
+        },
+        "approved_transfer_electives": {
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120",
+          "evidence": "Current official transfer-elective dictionary for destination-sensitive elective slots."
+        }
+      },
+      "graduation_constraints": {
+        "policy_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105",
+        "minimum_curriculum_gpa": 2.0,
+        "residency": {
+          "minimum_percent": 25,
+          "unit": "percent of degree credit hours earned in coursework at TCC"
+        },
+        "catalog_of_record": "Use the catalog in effect at admission to the curriculum or a later catalog chosen by the student, provided it is not more than six years old including the graduation year.",
+        "other_rules": [
+          "Complete all curriculum course and credit-hour requirements.",
+          "Apply for graduation by the published deadline.",
+          "Resolve college obligations and receive official certification."
+        ]
+      },
+      "data_quality_flags": [
+        "The official marketing page publishes 61 credits while the current catalog publishes 60-63; the catalog range reflects variable-credit alternatives.",
+        "Footnote 8 is grammatically malformed and does not cleanly delimit whether 'additional science plus PHY 201' is one sequence or multiple menu items. This slot requires a human read before verification.",
+        "Footnotes 7 and 8 create overlapping CSC 205/CSC 215 choices in two separate semester-4 slots. A flat set loses the two-slot requirement.",
+        "The catoid 23 catalog home page is headed 2026-2027 but still contains a sentence telling users that the toolbar accesses 2024-2025 information. The heading, current selector, and individual program/policy pages consistently identify 2026-2027."
+      ],
+      "capture_and_parser_blockers": [
+        "Cloudflare returns a 403 challenge to curl and generic HTTP fetches. A real Chrome browser session with challenge wait reaches the page.",
+        "The current TCC marketing page's View Curriculum link still targets catoid 21/poid 4756. That archived URL redirects to the current catoid 23 catalog home page instead of the program, so discovery must search the current catalog navigation or use catoid 23/poid 5235.",
+        "The Acalog parser must retain numbered footnotes, nested all-of versus one-of math preparation, category-distinct humanities choices, and two separate technical slots.",
+        "A warm browser profile or challenge-aware browser capture is required; retrying the same raw request will not produce catalog content."
+      ],
+      "sources": [
+        {
+          "id": "program",
+          "role": "award_and_program_requirements",
+          "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235",
+          "evidence": "Current Computer Science A.S., program code 246, requirements, footnotes, and 60-63-credit total."
+        },
+        {
+          "id": "general_education_core",
+          "role": "general_education_option_dictionary",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119",
+          "evidence": "Current category lists and two-of-three humanities-category rule."
+        },
+        {
+          "id": "approved_transfer_electives",
+          "role": "transfer_elective_option_dictionary",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120",
+          "evidence": "Current official transfer-elective list."
+        },
+        {
+          "id": "graduation_policy",
+          "role": "graduation_residency_and_gpa",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105",
+          "evidence": "Current 2.0 applicable-study GPA and 25-percent TCC-credit rules."
+        },
+        {
+          "id": "marketing_program",
+          "role": "current_program_corroboration",
+          "url": "https://www.tcc.edu/programs/computer-science/",
+          "evidence": "Official TCC page confirms a four-semester, 61-credit Computer Science A.S. and online/campus availability."
+        }
+      ]
+    },
+    {
+      "slug": "richard-bland-college",
+      "name": "Richard Bland College",
+      "finding": "current_combined_math_computer_science_as_exists_but_no_standalone_cs_as",
+      "genuinely_no_cs_as": false,
+      "standalone_cs_as_exists": false,
+      "cs_oriented_associate_path_exists": true,
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "status": "current_published_catalog",
+        "platform": "Modern Campus Catalog (Acalog) on an HTTP-only catalog host",
+        "catalog_url": "http://catalog.rbc.edu/index.php?catoid=10",
+        "evidence": "The current catalog selector and page heading identify catoid 10 as the 2026-2027 College Catalog."
+      },
+      "degree": {
+        "catalog_program_title": "Math/Computer Science, A.S.",
+        "official_site_title": "Associate of Science Degree - Math/Computer Science (A.S.-Math/Computer Science)",
+        "award": "Associate of Science (A.S.)",
+        "program_scope": "combined mathematics and computer science transfer award",
+        "cip_code": "30.0801",
+        "program_code": null,
+        "program_code_status": "not_printed_on_the_reviewed_current_sources",
+        "official_program_url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412",
+        "official_program_index_url": "https://www.rbc.edu/academics/programs-degree/",
+        "published_total_credits": 60,
+        "purpose": "Transfer preparation for applied quantitative fields. The official program index identifies Math/Computer Science as one combined A.S., not a standalone Computer Science award.",
+        "requirement_logic": {
+          "fixed_courses": [
+            "ENGL 101",
+            "ENGL 102",
+            "CSCI 221",
+            "MATH 251",
+            "MATH 252",
+            "PHYS 201",
+            "PHYS 202"
+          ],
+          "general_education_slots": [
+            {
+              "slot": "art_of_language_and_ideas",
+              "rule": "choose one three-credit course from the program page's enumerated communication, literature, philosophy, and religion list"
+            },
+            {
+              "slot": "language_and_history_of_fine_arts",
+              "rule": "choose one three-credit course from the program page's enumerated art, music, and theatre list"
+            },
+            {
+              "slot": "human_experience",
+              "rule": "choose one three-credit course from the program page's enumerated anthropology, philosophy, psychology, religion, and sociology list"
+            },
+            {
+              "slot": "us_and_world_cultures",
+              "rule": "choose one three-credit course from the program page's enumerated economics, geography, government, history, philosophy, and religion list"
+            }
+          ],
+          "quantitative_and_symbolic_reasoning": {
+            "published_credits": "19-20",
+            "common_all_of": [
+              "CSCI 221",
+              "MATH 251",
+              "MATH 252"
+            ],
+            "additional_rule": {
+              "minimum_credits": 7,
+              "candidate_courses": [
+                "CSCI 222",
+                "MATH 254",
+                "MATH 261",
+                "MATH 271"
+              ],
+              "computer_science_branch": {
+                "all_of": [
+                  "CSCI 222",
+                  {
+                    "one_of": [
+                      "MATH 254",
+                      "MATH 261",
+                      "MATH 271"
+                    ]
+                  }
+                ]
+              },
+              "mathematics_branch": "Take MATH 261 and at least one of MATH 254 or MATH 271."
+            }
+          },
+          "natural_world": {
+            "published_credits": 8,
+            "all_of": [
+              "PHYS 201",
+              "PHYS 202"
+            ]
+          },
+          "electives": {
+            "published_credits": "15-16",
+            "hard_rule": "Complete enough electives to reach the degree total.",
+            "recommendations_not_requirements": [
+              "3-6 credits in Mathematics, with MATH 261 and MATH 271 named as recommendations",
+              "4-12 credits in Natural Sciences based on the intended transfer institution",
+              "no more than two additional Physical Education credits may count as electives"
+            ]
+          },
+          "foreign_language": "Not required for this degree. The catalog recommends checking the intended transfer institution's foreign-language requirements.",
+          "computer_proficiency": "Satisfied through the Quantitative and Symbolic Reasoning component; no additional course is required."
+        }
+      },
+      "general_education_and_electives": {
+        "authority": "The program-specific current catalog page",
+        "url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412",
+        "evidence": "The program page enumerates every broad General Education menu and states the quantitative branch, natural-science pair, elective range, and 60-credit total.",
+        "course_dictionary_url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=418"
+      },
+      "graduation_constraints": {
+        "current_catalog_academic_policy_url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=406",
+        "current_official_advising_policy_url": "https://www.rbc.edu/wp-content/uploads/2025/07/Fall-2025-Advising-FAQ.pdf",
+        "minimum_cumulative_gpa": 2.0,
+        "residency": {
+          "minimum_credits": 30,
+          "unit": "credits completed at Richard Bland College",
+          "evidence": "The current official advising FAQ requires at least 30 of the minimum 60 degree credits at RBC."
+        },
+        "last_hours_residency": {
+          "minimum": null,
+          "status": "not_stated_in_reviewed_current_sources",
+          "evidence": "Older RBC catalogs imposed a nine-of-the-last-fifteen rule, but the current catalog page and current official advising FAQ reviewed for this batch do not state it; do not carry the historical rule forward without registrar confirmation."
+        },
+        "other_rules": [
+          "Complete all course requirements for the selected degree.",
+          "Complete at least 60 total credits.",
+          "Meet with the learner mentor and submit the graduation application."
+        ]
+      },
+      "capture_and_parser_blockers": [
+        "Richard Bland is not a VCCS college and uses institution-local codes such as CSCI 221/222 and MATH 251/252. These must not be joined to the VCCS course dictionary solely by normalized code.",
+        "The catalog host is HTTP-only and currently applies an AWS WAF 202 challenge to raw requests; a real browser reaches the page.",
+        "The award combines Mathematics and Computer Science. A parser that keeps only 'choose at least seven credits' loses the branch condition that Computer Science students must take CSCI 222 and one Mathematics option.",
+        "The 15-16 elective block mixes hard credit totals with nonbinding recommendations. Recommended Mathematics and Natural Science courses must not be converted into additional AND requirements.",
+        "The current official residency rule is published in an advising PDF rather than the program catalog page, so policy-layer composition is required."
+      ],
+      "sources": [
+        {
+          "id": "program",
+          "role": "award_program_requirements_and_general_education",
+          "url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412",
+          "evidence": "Current combined Math/Computer Science A.S., program logic, and 60-credit total."
+        },
+        {
+          "id": "official_program_index",
+          "role": "award_scope_and_cip",
+          "url": "https://www.rbc.edu/academics/programs-degree/",
+          "evidence": "Current official site identifies the combined A.S.-Math/Computer Science award and CIP 30.0801; it lists no standalone Computer Science A.S."
+        },
+        {
+          "id": "academic_policy",
+          "role": "current_gpa_policy",
+          "url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=406",
+          "evidence": "Current catalog states the 2.0 GPA expected for graduation."
+        },
+        {
+          "id": "graduation_advising_policy",
+          "role": "current_total_credit_residency_and_gpa_summary",
+          "url": "https://www.rbc.edu/wp-content/uploads/2025/07/Fall-2025-Advising-FAQ.pdf",
+          "evidence": "Current official FAQ states 60 total credits, 30 completed at RBC, and a 2.0 cumulative GPA."
+        }
+      ]
+    }
+  ]
+}

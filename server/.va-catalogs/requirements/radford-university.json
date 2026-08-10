@@ -8,8 +8,235 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3321&print=1",
- "captured_at": "2026-08-02T05:56:17.960Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S. (R, L)",
+  "variant": "Base Computer Science B.S. without a concentration; four approved three-credit upper-level CS courses",
+  "academic_unit": "School of Computing and Information Sciences",
+  "college": "Artis College of Science and Technology",
+  "general_education_authority": "Radford University REAL Curriculum",
+  "excluded_variants": [
+   "Advanced Computer Science Concentration",
+   "Advanced Database Concentration",
+   "Advanced Networks Concentration",
+   "Advanced Software Engineering Concentration",
+   "Advanced Artificial Intelligence Concentration",
+   "Virginia Tech accelerated M.Eng. track"
+  ],
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "published_major_units_minimum": 55,
+   "published_major_units_maximum": 88,
+   "general_education_designated_units_minimum": 30,
+   "real_framework_units_minimum": 48,
+   "no_concentration_upper_level_cs_units": 12,
+   "bs_science_units_minimum": 6,
+   "bs_science_units_maximum": 8,
+   "upper_division": {
+    "status": "scoped_only",
+    "minimum_units": null,
+    "rule": "No aggregate university-wide upper-level minimum was found. The selected no-concentration path requires 12 approved upper-level CS credits, and one of the two writing-intensive courses must be at the 300 or 400 level.",
+    "source_refs": [
+     "major",
+     "general_education",
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "No fewer than 30 bachelor-level credits must be earned at Radford University.",
+    "source_refs": [
+     "graduation"
+    ]
+   }
+  },
+  "modeling_notes": [
+   "The selected base path uses the catalog's explicit 12-hour upper-level CS alternative when no concentration is taken. Do not aggregate any of the five optional concentration blocks into it.",
+   "The published 55-88 major-credit range spans mutually exclusive base and concentration choices; it is not one additive requirement.",
+   "REAL is an integrated 48-hour framework that can be fulfilled by major, minor, and degree work. The program separately requires at least 30 GE-designated credits; do not add 48 gross credits on top of the major.",
+   "Exclude the separate Virginia Tech accelerated M.Eng. pathway from the standard 120-credit B.S. model."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "integrated_real_curriculum_overlap",
+    "severity": "review",
+    "message": "The 48-hour REAL framework overlaps major/minor/degree requirements and cannot be imported as a standalone 48-credit GE block."
+   },
+   {
+    "code": "upper_division_rules_are_scoped_not_aggregate",
+    "severity": "review",
+    "message": "The current catalog publishes scoped major and writing-intensive upper-level rules but no one university-wide upper-level-credit total."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Radford University major and degree requirements",
+   "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3321&print=1",
+   "requested_url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3321&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:17:41.684Z",
+   "sha256": "377250367076d0a6fe945db23326b400e04ab3d47c816da464793c8897aa1b8c",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Radford University general education requirements",
+   "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3437",
+   "requested_url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3437",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:17:41.684Z",
+   "sha256": "f6702e30bd187de51d7fd72a13729de64fe8ec6c8cdc697aff5a62f04f52909c",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Radford University college or school requirements",
+   "url": "https://www.radford.edu/artis-college-science-technology/school-of-computing-and-information-sciences/academic-programs.html",
+   "requested_url": "https://www.radford.edu/artis-college-science-technology/school-of-computing-and-information-sciences/academic-programs.html",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:17:41.684Z",
+   "sha256": "833e8647a6ad9b7b1607b3daae420f465360ac77c8d6a3536746e7946e6fb38b",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Radford University university graduation requirements",
+   "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3433",
+   "requested_url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3433",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:17:41.684Z",
+   "sha256": "8cbd26b4c092390c642000a9ed2073bb6aaae2d2cfc44e8d05fc7e2d2636ad8b",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Radford University academic policies",
+   "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3438",
+   "requested_url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3438",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:17:41.684Z",
+   "sha256": "a7857bf36596af10cfa04d336b95eac8fd6f5d89c6b466d9a648a46cbe1957f4",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Radford University course descriptions and credit values",
+   "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3427",
+   "requested_url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3427",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:17:41.684Z",
+   "sha256": "f2fe7f4f4586be3897b0b4e5e516d5c213bfea0f3deb11ccd70414abdfb8f6cd",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:17:41.684Z",
  "program_title": "Computer Science, B.S. (R, L)",
+ "parse_error": null,
  "total_credits": null,
  "stopped_at": null,
  "groups": [
@@ -1415,5 +1642,5 @@
    "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.947Z"
+ "extracted_at": "2026-08-10T03:21:26.575Z"
 }

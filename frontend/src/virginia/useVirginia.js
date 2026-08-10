@@ -34,10 +34,13 @@ export function useVaSummary() {
   return useVa('summary', '/va/summary', null, { staleTime: 60 * 1000 })
 }
 
-/** Institutions, optionally one level (`community_college` | `four_year`). */
-export function useVaInstitutions(level) {
-  return useVa(`institutions:${level || 'all'}`, '/va/institutions',
-    level ? { level } : null, { staleTime: 5 * 60 * 1000 })
+/** Institutions, optionally restricted by level and comparison cohort. */
+export function useVaInstitutions(level, cohort = '') {
+  const params = {}
+  if (level) params.level = level
+  if (cohort) params.cohort = cohort
+  return useVa(`institutions:${level || 'all'}:${cohort || 'all'}`, '/va/institutions',
+    Object.keys(params).length ? params : null, { staleTime: 5 * 60 * 1000 })
 }
 
 /** Distinct departments with course counts. */
@@ -61,9 +64,10 @@ export function useVaCourse(code) {
     null, { enabled: !!code, staleTime: 5 * 60 * 1000 })
 }
 
-/** College × university shared-course counts. */
-export function useVaMatrix() {
-  return useVa('matrix', '/va/matrix', null, { staleTime: 5 * 60 * 1000 })
+/** College × university shared-course counts, optionally one receiving cohort. */
+export function useVaMatrix(cohort = '') {
+  return useVa(`matrix:${cohort || 'all'}`, '/va/matrix',
+    cohort ? { cohort } : null, { staleTime: 5 * 60 * 1000 })
 }
 
 /**

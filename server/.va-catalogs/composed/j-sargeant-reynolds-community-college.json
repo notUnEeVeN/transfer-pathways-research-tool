@@ -1,0 +1,819 @@
+{
+  "schema_version": 1,
+  "slug": "j-sargeant-reynolds-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, A.S. — B.S.-destination requirements",
+  "award": "AS",
+  "total_units": 63,
+  "total_units_max": 63,
+  "composition_status": "composed_full_degree",
+  "selected_variant": {
+    "key": "full_time_bs_destination",
+    "label": "Full-time B.S.-destination requirement map",
+    "source_ref": "major",
+    "catalog_program_id": 4173,
+    "selection_basis": "The award identity states that the A.S. is intended for transfer into a Bachelor of Science in Computer Science, the captured primary requirement source is the B.S.-destination map, and the registry explicitly designates that map as the default program seed."
+  },
+  "source_bundle_required": [
+    "catalog",
+    "major",
+    "program_ba",
+    "general_education",
+    "graduation",
+    "college"
+  ],
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 63,
+    "selected_variant_units": 63,
+    "modeled_units": 63,
+    "minimum_program_gpa": 2,
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of the degree credit hours must be earned at Reynolds.",
+      "source_refs": [
+        "graduation"
+      ]
+    },
+    "selected_variant_arithmetic": {
+      "fixed_major_general_education_and_advanced_choice_units": 48,
+      "computer_systems_or_advisor_elective_units": 3,
+      "remaining_four_destination_slot_capacity_units": 12,
+      "total_units": 63,
+      "published_row_total_if_the_four_credit_label_is_summed_verbatim": 64,
+      "note": "The B.S. page prints four remaining destination slots as 4 + 3 + 3 + 3 credits, but its Year Two Fall heading and 63-credit program total are each one lower than the printed row sum. This composition preserves the four slots and the 12-credit degree remainder without silently treating the anomalous four-credit label as additive."
+    }
+  },
+  "modeling_notes": [
+    "The current award page is an identity and map index, not a requirement table. Its stated purpose is transfer into a Bachelor of Science in Computer Science, so the separately captured B.S.-destination map is the defensible canonical variant for the one existing Reynolds degree-document identity.",
+    "The B.A.-destination map is materially different and is retained below as a complete separate requirement variant. It must become its own degree-variant identity before both variants can be exposed as independently selectable canonical API documents.",
+    "Full-time and part-time pages are scheduling variants of the same B.A. or B.S. requirement sets. This composition uses the full-time requirement-bearing sources but removes all semester sequencing and the recommendation to take courses in printed order.",
+    "MTH 167 is only recommended when additional preparation is needed and then counts toward elective credit; it is not promoted to an unconditional requirement.",
+    "The B.S. page has a one-credit internal conflict: the printed Year Two Fall rows total 17 although the heading says 16, and all printed rows total 64 although the page states 63. All named slots remain visible, while the four destination-directed slots use the 12-credit remainder that closes the official 63-credit total.",
+    "UCGS and transfer-elective category gates cite the separate current Approved Transfer Electives source. The program maps' advising substitutions are preserved as exact unsupported constraints instead of being flattened into a universal course list."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "destination_variants_change_requirements",
+      "severity": "block_analysis",
+      "message": "The B.A.- and B.S.-destination maps have different mathematics, science, language, and elective requirements and require separate downstream degree-variant identities."
+    },
+    {
+      "code": "bs_map_one_credit_internal_conflict",
+      "severity": "block_analysis",
+      "message": "The B.S. map's printed rows sum to 64, while its semester headings and program total sum to 63; the four destination slots are retained inside the source-backed 12-credit remainder."
+    },
+    {
+      "code": "advisor_selected_destination_electives",
+      "severity": "block_analysis",
+      "message": "Several slots are intentionally selected with an advisor for the receiving institution and cannot be reduced to one universal course menu."
+    }
+  ],
+  "course_titles": {
+    "BIO101": "General Biology I",
+    "CHM111": "General Chemistry I",
+    "CSC205": "Computer Organization",
+    "CSC208": "Introduction to Discrete Structures",
+    "CSC215": "Computer Systems",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CST100": "Principles of Public Speaking",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "GOL105": "Physical Geology",
+    "MTH245": "Statistics I",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH265": "Calculus III",
+    "MTH266": "Linear Algebra",
+    "MTH288": "Discrete Mathematics",
+    "PHY201": "General College Physics I",
+    "PHY241": "University Physics I",
+    "SDV101": "Orientation to STEM Disciplines",
+    "SPA101": "Beginning Spanish I"
+  },
+  "requirement_variants": [
+    {
+      "key": "full_time_bs_destination",
+      "selected": true,
+      "source_refs": [
+        "catalog",
+        "major"
+      ],
+      "published_units_minimum": 63,
+      "published_units_maximum": 63,
+      "relationship_to_part_time_map": "Same award requirements; the part-time page changes sequencing only.",
+      "source_arithmetic_status": "printed_rows_conflict_with_semester_heading_and_total_by_one_credit",
+      "requirement_groups_location": "top-level requirement_groups"
+    },
+    {
+      "key": "full_time_ba_destination",
+      "selected": false,
+      "source_refs": [
+        "catalog",
+        "program_ba"
+      ],
+      "published_units_minimum": 62,
+      "published_units_maximum": 63,
+      "relationship_to_part_time_map": "Same award requirements; the part-time page changes sequencing only.",
+      "canonical_path_note": "The 62-credit path uses a three-credit advisor-selected destination elective in the final language/elective slot; SPA 101 or another four-credit language route produces 63.",
+      "requirement_groups": [
+        {
+          "title": "B.A.-destination computer science requirements",
+          "source_refs": [
+            "program_ba"
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CSC221"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "select": 1,
+              "units": 4,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CSC222"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "select": 1,
+              "units": 4,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CSC223"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CSC208"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CSC205"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination written communication",
+          "source_refs": [
+            "program_ba"
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "ENG111"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "ENG112"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination mathematics",
+          "source_refs": [
+            "program_ba"
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 4,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "MTH263"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "MTH245"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination college success",
+          "source_refs": [
+            "program_ba",
+            "graduation"
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 1,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "SDV101"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination laboratory science",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 4,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "BIO101"
+                    ],
+                    [
+                      "GOL105"
+                    ],
+                    [
+                      "CHM111"
+                    ],
+                    [
+                      "PHY201"
+                    ],
+                    [
+                      "PHY241"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination humanities, fine arts, and literature",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "ge_area": "reynolds_ucgs_humanities_fine_arts_literature",
+          "units": 6,
+          "distinct_areas": 2,
+          "note": "The two courses cannot come from the same discipline area."
+        },
+        {
+          "title": "B.A.-destination UCGS history",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "ge_area": "reynolds_ucgs_history",
+          "units": 3
+        },
+        {
+          "title": "B.A.-destination UCGS social and behavioral science",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "ge_area": "reynolds_ucgs_social_behavioral_science",
+          "units": 3
+        },
+        {
+          "title": "B.A.-destination linear algebra or destination elective",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "analysis_constraints": [
+            {
+              "kind": "advisor_approved_substitution",
+              "status": "evaluator_not_implemented",
+              "description": "MTH 266 is the printed course; another destination-specific elective requires advisor selection."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "MTH266"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination oral communication or UCGS elective",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "analysis_constraints": [
+            {
+              "kind": "advisor_approved_ucgs_substitution",
+              "status": "evaluator_not_implemented",
+              "description": "CST 100 is the printed course; another UCGS elective may be selected with an advisor."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CST100"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination computer systems or destination elective",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "analysis_constraints": [
+            {
+              "kind": "advisor_approved_substitution",
+              "status": "evaluator_not_implemented",
+              "description": "CSC 215 is the printed course; another destination-specific elective may be selected with an advisor."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "CSC215"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination discrete mathematics or destination elective",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "analysis_constraints": [
+            {
+              "kind": "advisor_approved_substitution",
+              "status": "evaluator_not_implemented",
+              "description": "MTH 288 is the printed course; another destination-specific elective may be selected with an advisor."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "MTH288"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "B.A.-destination world language or destination elective",
+          "source_refs": [
+            "program_ba",
+            "general_education"
+          ],
+          "analysis_constraints": [
+            {
+              "kind": "variable_credit_advisor_approved_substitution",
+              "status": "evaluator_not_implemented",
+              "description": "SPA 101 is the printed four-credit route; a three-credit or higher destination elective may be selected with an advisor, producing the published 62-63 range."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "units_max": 4,
+              "receivers": [
+                {
+                  "kind": "cc_course",
+                  "options": [
+                    [
+                      "SPA101"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "B.S.-destination computer science requirements",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC221"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC222"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC223"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC208"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination written communication",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ENG111"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ENG112"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination calculus",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH263"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH264"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination college success",
+      "source_refs": [
+        "major",
+        "graduation"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 1,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "SDV101"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination laboratory science",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "BIO101"
+                ],
+                [
+                  "CHM111"
+                ],
+                [
+                  "PHY241"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination humanities, fine arts, and literature",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "ge_area": "reynolds_ucgs_humanities_fine_arts_literature",
+      "units": 6,
+      "distinct_areas": 2,
+      "note": "Choose the two printed UCGS courses from different discipline areas."
+    },
+    {
+      "title": "B.S.-destination UCGS history",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "ge_area": "reynolds_ucgs_history",
+      "units": 3
+    },
+    {
+      "title": "B.S.-destination UCGS social and behavioral science",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "ge_area": "reynolds_ucgs_social_behavioral_science",
+      "units": 3,
+      "note": "The map prints ECO 202 but expressly permits another UCGS Social/Behavioral Science elective."
+    },
+    {
+      "title": "B.S.-destination advanced mathematics or computer organization",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC205"
+                ],
+                [
+                  "MTH265"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination computer systems or advisor-selected elective",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "advisor_approved_substitution",
+          "status": "evaluator_not_implemented",
+          "description": "CSC 215 is the printed course; another destination-specific elective may be selected with an advisor."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC215"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S.-destination elective capacity across four distinct printed slots",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "ge_area": "reynolds_bs_destination_elective_slots",
+      "units": 12,
+      "printed_slot_count": 4,
+      "printed_slots": [
+        {
+          "label": "Approved elective based on four-year institution",
+          "printed_units": 4
+        },
+        {
+          "label": "UCGS Approved Elective",
+          "printed_units": 3
+        },
+        {
+          "label": "Approved elective based on four-year institution",
+          "printed_units": 3
+        },
+        {
+          "label": "Approved elective based on four-year institution",
+          "printed_units": 3
+        }
+      ],
+      "note": "Four separate slots are retained: a printed four-credit receiving-institution elective, one UCGS Approved Elective, and two additional three-credit receiving-institution electives. Their printed row values total 13, but the semester headings and 63-credit program total leave exactly 12 credits after all other requirements. The source conflict must be resolved before the evaluator distributes credit among the four slots."
+    }
+  ]
+}

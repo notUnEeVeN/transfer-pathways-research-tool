@@ -13,10 +13,17 @@ vi.mock('./useVirginia', () => ({
   useVaSummary: () => state.summary,
   // The real endpoint filters by level; mirroring that here keeps the rails
   // from being fed institutions of the wrong kind.
-  useVaInstitutions: (level) => {
+  useVaInstitutions: (level, cohort = '') => {
     const all = state.institutions
     if (!level || !all?.data) return all
-    return { ...all, data: { institutions: all.data.institutions.filter((i) => i.level === level) } }
+    return {
+      ...all,
+      data: {
+        ...all.data,
+        institutions: all.data.institutions.filter((i) => i.level === level
+          && (!cohort || i.cohort === cohort)),
+      },
+    }
   },
   useVaDepartments: () => state.departments,
   useVaCourses: () => state.courses,
@@ -32,21 +39,38 @@ const ok = (data) => ({ data, isLoading: false, error: null })
 beforeEach(() => {
   state.summary = ok({
     imported: true, courses: 304, institutions: 57, community_colleges: 24,
-    four_year: 33, equivalencies: 4668, with_notes: 970, departments: 69,
+    four_year: 33, public_four_year: 15, equivalencies: 4668, with_notes: 970, departments: 69,
   })
   state.institutions = ok({
+    cohorts: {
+      schev_public_four_year: { institution_count: 15 },
+      other_four_year: { institution_count: 18 },
+    },
     institutions: [
       { _id: 'va:inst:blue-ridge', name: 'Blue Ridge Community College', level: 'community_college',
         course_count: 213, receives_count: 0, degree_status: 'full', degree_courses: 31 },
       { _id: 'va:inst:wytheville', name: 'Wytheville Community College', level: 'community_college',
         course_count: 180, receives_count: 0, degree_status: 'url_only', degree_courses: 0 },
       { _id: 'va:inst:gmu', name: 'George Mason University', level: 'four_year',
+        cohort: 'schev_public_four_year', is_primary: true,
         course_count: 0, receives_count: 237, degree_status: 'full', degree_courses: 114 },
+      { _id: 'va:inst:cnu', name: 'Christopher Newport University', level: 'four_year',
+        cohort: 'schev_public_four_year', is_primary: true, needs_collection: true,
+        course_count: 0, receives_count: 215, degree_status: 'none', degree_courses: 0 },
+      { _id: 'va:inst:uva', name: 'University of Virginia', level: 'four_year',
+        cohort: 'schev_public_four_year', is_primary: true, needs_collection: true,
+        course_count: 0, receives_count: 0, degree_status: 'none', degree_courses: 0 },
+      { _id: 'va:inst:vmi', name: 'Virginia Military Institute', level: 'four_year',
+        cohort: 'schev_public_four_year', is_primary: true, needs_collection: true,
+        course_count: 0, receives_count: 0, degree_status: 'none', degree_courses: 0 },
       { _id: 'va:inst:lynchburg', name: 'University of Lynchburg', level: 'four_year',
+        cohort: 'other_four_year', is_primary: false,
         course_count: 0, receives_count: 131, degree_status: 'url_only', degree_courses: 0 },
       { _id: 'va:inst:gwu', name: 'George Washington University', level: 'four_year',
+        cohort: 'external', is_primary: false,
         course_count: 0, receives_count: 1, degree_status: 'none', degree_courses: 0 },
       { _id: 'va:inst:hollins', name: 'Hollins University', level: 'four_year',
+        cohort: 'other_four_year', is_primary: false,
         course_count: 0, receives_count: 48, degree_status: 'no_program', degree_courses: 0 },
     ],
   })
@@ -77,6 +101,8 @@ beforeEach(() => {
       _id: 'va:as:x:cs', kind: 'as_degree', source: 'institution_catalog',
       degree_title_seen: 'Computer Science, AS', catalog_url: 'https://catalog.example.edu/cs',
       total_units: 60, status: 'extracted', codes_seen: ['CSC221', 'CSC222'],
+      collection_status: 'catalog_accepted',
+      acceptance: { accepted: true, ready_for_analysis: false },
       verification: { verified: false },
       requirement_groups: [{
         is_required: true, group_conjunction: 'And', title: 'Requirements',
@@ -123,13 +149,29 @@ beforeEach(() => {
         offers_cs: true,
         documents: { as_degree: [doc({ doc_id: 'va:as:wytheville:cs', status: 'url_only', groups: 0, receivers: 0, validation: null })], degree: [] } },
       { _id: 'va:cov:uni:gmu', institution: 'George Mason University', level: 'four_year', collected: true,
+        cohort: 'schev_public_four_year', is_primary: true,
         offers_cs: true,
         documents: { as_degree: [], degree: [doc({ doc_id: 'va:degree:gmu:cs', verified: true, validation: 'warn' })] } },
+      { _id: 'va:cov:uni:cnu', institution: 'Christopher Newport University', level: 'four_year', collected: false,
+        cohort: 'schev_public_four_year', is_primary: true, needs_collection: true,
+        collection_status: 'captured_needs_review', offers_cs: true,
+        documents: { as_degree: [], degree: [] } },
+      { _id: 'va:cov:uni:uva', institution: 'University of Virginia', level: 'four_year', collected: false,
+        cohort: 'schev_public_four_year', is_primary: true, needs_collection: true,
+        collection_status: 'not_collected', offers_cs: true,
+        documents: { as_degree: [], degree: [] } },
+      { _id: 'va:cov:uni:vmi', institution: 'Virginia Military Institute', level: 'four_year', collected: false,
+        cohort: 'schev_public_four_year', is_primary: true, needs_collection: true,
+        collection_status: 'not_collected', offers_cs: true,
+        documents: { as_degree: [], degree: [] } },
       { _id: 'va:cov:uni:lynchburg', institution: 'University of Lynchburg', level: 'four_year', collected: false,
-        offers_cs: true,
-        documents: { as_degree: [], degree: [doc({ doc_id: 'va:degree:lynchburg:cs', status: 'url_only', groups: 0, receivers: 0, validation: null })] } },
+        cohort: 'other_four_year', is_primary: false,
+        collection_status: 'catalog_url_only', offers_cs: true,
+        documents: { as_degree: [], degree: [] } },
       { _id: 'va:cov:uni:hollins', institution: 'Hollins University', level: 'four_year', collected: false, offers_cs: false,
-        documents: { as_degree: [], degree: [doc({ doc_id: 'va:degree:hollins:cs', status: 'no_program', groups: 0, receivers: 0, validation: null })] } },
+        cohort: 'other_four_year', is_primary: false,
+        collection_status: 'no_program',
+        documents: { as_degree: [], degree: [] } },
     ],
     collected: 2,
     total: 4,
@@ -167,6 +209,8 @@ describe('VirginiaPage', () => {
   it('renders without crashing and shows the corpus counts', () => {
     render(<VirginiaPage />)
     expect(screen.getByText('4,668')).toBeTruthy()
+    const publicTile = screen.getByText('Public universities').parentElement
+    expect(within(publicTile).getByText('15')).toBeTruthy()
   })
 
   it('shows the five top-level tabs, including Virginia prerequisites but no Districts', () => {
@@ -368,6 +412,81 @@ describe('degree editing', () => {
   })
 })
 
+describe('degree completeness and verification gates', () => {
+  const openAssociateDegree = async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getAllByText('Community Colleges')[0])
+    fireEvent.click(screen.getByText('Blue Ridge Community College'))
+    fireEvent.click(screen.getAllByText('Associate Degrees')[0])
+    return fireEvent
+  }
+
+  it.each([
+    ['captured_only', 'Captured only', /no trustworthy requirement tree/i, true],
+    ['major_only', 'Major only', /general education, college, or university graduation layers/i, true],
+    ['catalog_accepted', 'Catalog accepted', /eligible for human verification/i, false],
+    ['analysis_ready', 'Analysis ready', /unit closure, and policy audits passed/i, false],
+  ])('shows %s honestly and gates verification', async (status, label, explanation, disabled) => {
+    const doc = state.degrees.data.degrees[0]
+    doc.collection_status = status
+    // Exercise collection_status as an independent allow-list. The two
+    // accepted statuses must unlock Verify even when a nested verdict is not
+    // present in an older API response.
+    delete doc.acceptance
+    await openAssociateDegree()
+
+    expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(2)
+    expect(screen.getByText(explanation)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(disabled)
+  })
+
+  it('accepts the nested catalog verdict when collection_status is absent', async () => {
+    const doc = state.degrees.data.degrees[0]
+    delete doc.collection_status
+    doc.acceptance = { accepted: true, ready_for_analysis: false }
+    await openAssociateDegree()
+
+    expect(screen.getAllByText('Catalog accepted').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
+  })
+
+  it('keeps a corroborating major-only document editable without calling it complete', async () => {
+    const doc = state.degrees.data.degrees[0]
+    doc.source = 'transfer_virginia'
+    doc.collection_status = 'major_only'
+    doc.acceptance = { accepted: false, ready_for_analysis: false }
+    const fireEvent = await openAssociateDegree()
+
+    expect(screen.getByText('Transfer Virginia map')).toBeTruthy()
+    expect(screen.getByText(/This is not a complete degree/i)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(true)
+    const notes = screen.getByPlaceholderText(/your own notes/i)
+    expect(notes.disabled).toBe(false)
+    fireEvent.change(notes, { target: { value: 'major layer checked; GE still missing' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Save notes' }))
+    expect(state.saved[0].verification).toMatchObject({
+      verified: false,
+      notes: 'major layer checked; GE still missing',
+    })
+  })
+
+  it('lets a verified legacy document be reopened without allowing re-verification', async () => {
+    const doc = state.degrees.data.degrees[0]
+    delete doc.collection_status
+    delete doc.acceptance
+    doc.verification = { verified: true, verified_by_label: 'Legacy researcher' }
+    const fireEvent = await openAssociateDegree()
+
+    expect(screen.getAllByText('Completeness not recorded').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getByRole('button', { name: 'Re-verify' }).disabled).toBe(true)
+    const reopen = screen.getByRole('button', { name: 'Reopen' })
+    expect(reopen.disabled).toBe(false)
+    fireEvent.click(reopen)
+    expect(state.saved[0].verification.verified).toBe(false)
+  })
+})
+
 describe('degree panes', () => {
   it('shows a catalog-sourced degree with its source link and courses', async () => {
     const { fireEvent } = await import('@testing-library/react')
@@ -455,7 +574,7 @@ describe('degree status in the rails', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
-    const uniRail = within(screen.getByText(/Universities ·/).closest('div'))
+    const uniRail = within(screen.getByText(/Public universities ·/).closest('div'))
     // The pills above state which bucket the list is showing; repeating it on
     // every row was the noise that made the rail hard to read.
     expect(uniRail.queryByText(/accepted/)).toBeNull()
@@ -470,8 +589,50 @@ describe('degree status in the rails', () => {
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
     expect(filters().getByText('Verified 1')).toBeTruthy()
+    expect(filters().getByText('Needs collecting 2')).toBeTruthy()
+    expect(filters().getByText('Needs composing 1')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /Other Virginia partners 18/ }))
     expect(filters().getByText('URL only 1')).toBeTruthy()
     expect(filters().getByText('No program 1')).toBeTruthy()
+  })
+
+  it('opens on the public cohort and keeps other Virginia partners one click away', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getAllByText('Universities')[0])
+
+    const publicRail = within(screen.getByText(/Public universities ·/).closest('div'))
+    expect(publicRail.getByText('George Mason University')).toBeTruthy()
+    expect(publicRail.getByText('University of Virginia')).toBeTruthy()
+    expect(publicRail.getByText('Virginia Military Institute')).toBeTruthy()
+    expect(publicRail.queryByText('University of Lynchburg')).toBeNull()
+    expect(screen.queryByText('George Washington University')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: /Other Virginia partners 18/ }))
+    const otherRail = within(screen.getByText(/Other Virginia partners ·/).closest('div'))
+    expect(otherRail.getByText('University of Lynchburg')).toBeTruthy()
+    expect(otherRail.getByText('Hollins University')).toBeTruthy()
+    expect(otherRail.queryByText('George Mason University')).toBeNull()
+  })
+
+  it('shows an honest collection gap for a public school with no degree record', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getAllByText('Universities')[0])
+    fireEvent.click(screen.getByRole('button', { name: /Needs collecting 2/ }))
+    const publicRail = within(screen.getByText(/Public universities ·/).closest('div'))
+    expect(publicRail.getByText('University of Virginia')).toBeTruthy()
+    expect(publicRail.getByText('Virginia Military Institute')).toBeTruthy()
+  })
+
+  it('separates captured source work from schools that have not been collected', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getAllByText('Universities')[0])
+    fireEvent.click(screen.getByRole('button', { name: /Needs composing 1/ }))
+    const publicRail = within(screen.getByText(/Public universities ·/).closest('div'))
+    expect(publicRail.getByText('Christopher Newport University')).toBeTruthy()
+    expect(publicRail.queryByText('University of Virginia')).toBeNull()
   })
 
   it('leaves the rail as bare names, marking only what stands out', async () => {

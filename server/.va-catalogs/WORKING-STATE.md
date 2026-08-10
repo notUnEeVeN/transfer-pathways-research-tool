@@ -29,39 +29,50 @@ scripts/importVirginiaCatalogDegrees.js → va_requirements, va_coverage, va_rev
 Parsers live in `services/virginia/catalogParse/`: `lines.js` (Acalog, PDF,
 department pages), `courseleaf.js` (CourseLeaf markup), `pdf.js` (cuts one
 program out of a whole-catalog PDF), `validate.js` (the import gate),
-`normalize.js` (the shared vocabulary). 41 unit tests.
+`normalize.js` (the shared vocabulary). The parser, capture, composition, and
+acceptance paths all have focused regression coverage.
 
-`.va-catalogs/institutions.json` is the registry: 55 institutions, every catalog
-host and platform probed live rather than assumed.
+`.va-catalogs/institutions.json` is the registry: 57 institutions — 24 sending
+colleges, the 15-school SCHEV public four-year primary cohort, and 18 additional
+Virginia four-year partners retained as a secondary cohort. Existing catalog
+hosts were probed live rather than assumed; UVA and VMI are explicit
+`needs_collection` additions and are not accepted degree records.
 
-## Current state — 2026-08-01
+## Current state — 2026-08-09
 
-| | |
-| --- | --- |
-| Documents | 55 (24 A.S., 31 B.S.) |
-| Requirement groups | **346** (was 49, one per document) |
-| Receivers | **2,491** |
-| Structurally extracted | 33 |
-| Validation | 11 pass · 22 warn · **0 fail** |
-| Four-year course titles | 804/836 (**96%**, was 75%) |
+The parser-only counts below are the pre-expansion 55-school collection
+diagnostics, not degree-completeness claims; UVA and VMI are not folded into
+them until their source layers have actually been captured:
 
-Everything is imported and live. Nothing is committed.
+| | Community colleges | Four-year institutions |
+| --- | ---: | ---: |
+| Captured program tree | 16 | 21 |
+| URL/source only | 0 | 5 |
+| Official no-program finding | 7 | 5 |
+| Blocked capture | 1 | 0 |
+| Parser verdict `pass` / `warn` | 5 / 11 | 0 / 21 |
 
-### Verification snapshot — intentionally rough
+The source-walked compositions in `.va-catalogs/composed/` are the only records
+eligible for catalog acceptance. Parser-only trees remain `major_only` or
+`captured_only`; exact composition and acceptance counts are reported by the
+importer’s dry run rather than maintained manually in this resume file.
 
-This corpus is ready for human verification, not publication as settled data.
-The parser has preserved what it found, including likely over-capture, so a
-reviewer can correct the source-shaped tree rather than reconstruct missing
-material. Start with these two conspicuous cases:
+The 2026-08-09 accepted-only publication evaluated the then-current 55 institutions and
+published 12 source-composed documents (six A.S. and six B.S.) plus all 55
+coverage rows. All 12 are catalog-accepted, none is analysis-ready, and none is
+human-verified. Tidewater and Averett remain visible source artifacts but were
+not published as accepted degrees. On 2026-08-10 the registry gained UVA and
+VMI to complete SCHEV's 15-school public cohort; the API synthesizes honest
+`not_collected` work rows for them until the next collection/publication run.
 
-- **Virginia Commonwealth University** currently has 80 groups and 634 rows;
-  the tree appears to include fifth-year, graduate, thesis and non-thesis
-  material outside the undergraduate B.S.
-- **George Mason University** includes accelerated-master and pathway sections
-  alongside the undergraduate core.
+The authoritative contract and current workflow are documented in
+`docs/virginia-degree-collection.md`. In particular, a parser `pass` means only
+that the captured program page has a coherent tree. It does **not** mean the GE,
+college, graduation, upper-level, or residence layers have been composed.
 
-Also expect 19 captured documents with no parsed `program_title`. Those are
-verification targets, not evidence that the institution lacks a program.
+No broad corpus import should run merely because capture/extraction succeeded.
+Run the importer in dry-run mode and require the explicit acceptance verdict;
+source-bundle changes also reopen any earlier human verdict.
 
 ## Transports, and why each is needed
 
@@ -113,16 +124,16 @@ Others worth keeping:
 
 ## Findings about the institutions
 
-- **11 institutions offer no CS degree** — 7 community colleges and 4 four-years,
+- **In the pre-expansion 55-school scrape, 12 institutions offer no CS degree** — 7 community colleges and 5 four-years,
   each confirmed at the catalog rather than inherited from a registry:
   - *Community colleges (7 of 24):* Danville, Eastern Shore, Mountain Empire,
     Mountain Gateway, Patrick & Henry, Rappahannock, Southside Virginia.
-  - *Four-years (4 of 31):* Appalachian College of Pharmacy (a pharmacy
+  - *Four-years (5 of 31):* Appalachian College of Pharmacy (a pharmacy
     school), Bluefield University (its programs list carries Cybersecurity and
     Information Technology but no CS), Mary Baldwin (its CS page redirects to a
-    URL ending `-discontinued`), University of Lynchburg.
+    URL ending `-discontinued`), Sweet Briar College, University of Lynchburg.
 
-  So **17 of 24 community colleges and 27 of 31 four-years do offer it**.
+  So **17 of 24 community colleges and 26 of 31 four-years do offer it**.
 - **William & Mary is `url_only`, not no-program.** `catalog.wm.edu` serves a
   CourseLeaf "coming soon" placeholder and `wm.edu/as/computerscience` redirects
   to `cdsp.wm.edu`, whose B.S. page is prose with no course list. The college
@@ -145,12 +156,12 @@ Others worth keeping:
 - **Tidewater** is the one blocked institution: Cloudflare on top of Acalog.
   It has succeeded before with a warm profile — retry rather than treat as
   permanent.
-- **10 institutions are `url_only`** — the page was retrieved and publishes no
-  machine-readable course list: Averett, Bluefield, Bridgewater (CleanCatalog
-  renders client-side and the escalation still returned a thin page), Hollins,
-  J. Sargeant Reynolds (its Acalog program page carries only Program Maps and
-  Planning Tools), Marymount, Paul D. Camp, Regent, Roanoke, Sweet Briar.
-- 22 documents are `warn`. The commonest reason is `credits_partial` — the
+- **5 four-year institutions are `url_only`** — Hollins, Marymount, Regent,
+  Roanoke, and William & Mary. Averett's bounded current PDF and Bridgewater's
+  current CleanCatalog source layers are now captured; Reynolds and Camp are
+  likewise no longer source-only. Sweet Briar is a current official no-program
+  finding.
+- 32 documents are `warn`. The commonest reason is `credits_partial` — the
   catalog prints a figure on some headings and not others, so the sum cannot be
   reconciled. That is a fact about the page, not a defect.
 - Hand-authored trees go in `.va-catalogs/requirements/<slug>.json` with
@@ -162,10 +173,11 @@ Others worth keeping:
 node scripts/importVirginiaCourses.js --uri <uri> --db pmt_research --crosscheck 25
 node scripts/captureVirginiaCatalogs.js                 # opens Chrome; leave it alone
 node scripts/extractVirginiaRequirements.js --uri <uri>
-node scripts/importVirginiaCatalogDegrees.js --uri <uri> --db pmt_research
+node scripts/importVirginiaCatalogDegrees.js --uri <uri> --db pmt_research --dry-run
+node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --uri <uri> --db pmt_research
 ```
 
 Collections: `va_courses`, `va_institutions`, `va_requirements`, `va_coverage`,
-`va_revisions`. Documents match the California `as_degree` / `degree` shape
-key-for-key, edit through the same contract, and render through the same
-`TieredDegreeLedger` / `RequirementsLedger` with no consumer changes.
+`va_revisions`. Only source-composed records that pass the catalog gate should
+be considered candidates for a write. Analysis-ready and human-verified remain
+separate, stricter states.

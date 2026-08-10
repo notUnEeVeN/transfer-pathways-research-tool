@@ -3,13 +3,229 @@
  "name": "Richard Bland College",
  "level": "community_college",
  "platform": "acalog",
- "parser": "lines",
- "pdf_window": null,
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412&print=1",
- "captured_at": "2026-08-02T05:48:49.351Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Math/Computer Science, A.S.",
+  "variant": "Computer Science branch of the combined Math/Computer Science A.S.; no standalone Computer Science A.S. is published",
+  "catalog_version": {
+   "catalog_id": 10,
+   "program_id": 197
+  },
+  "program_code": null,
+  "cip_code": "30.0801",
+  "academic_unit": null,
+  "college": "Richard Bland College",
+  "general_education_authority": "Richard Bland College Math/Computer Science A.S. program requirements",
+  "unit_audit": {
+   "published_program_units": 60,
+   "quantitative_and_symbolic_reasoning_units_minimum": 19,
+   "quantitative_and_symbolic_reasoning_units_maximum": 20,
+   "natural_world_units": 8,
+   "elective_units_minimum": 15,
+   "elective_units_maximum": 16,
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 30 of the minimum 60 degree credits must be completed at Richard Bland College.",
+    "source_refs": [
+     "policy"
+    ]
+   },
+   "last_hours_residency": {
+    "status": "none_stated",
+    "reason": "The reviewed current catalog and current institutional policy page do not repeat the historical nine-of-the-last-fifteen rule; do not carry it forward without current Registrar confirmation.",
+    "source_refs": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "minimum_cumulative_gpa": 2
+  },
+  "modeling_notes": [
+   "This is one combined Mathematics/Computer Science transfer award. The official program index supplies the combined scope and CIP 30.0801 and does not list a standalone Computer Science A.S.",
+   "For the Computer Science branch, the additional seven-credit quantitative rule is CSCI 222 AND one of MATH 254, MATH 261, or MATH 271; it is not a flat choose-one menu.",
+   "The 15-16 elective block contains recommendations tied to the transfer destination. Recommended mathematics and natural-science courses are not additional AND requirements.",
+   "Richard Bland is outside VCCS and uses institution-local CSCI/MATH course codes; resolve them only in the Richard Bland course namespace."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "combined_award_not_standalone_cs",
+    "severity": "review",
+    "message": "Expose the award as Math/Computer Science A.S.; do not relabel it as a standalone Computer Science A.S."
+   },
+   {
+    "code": "non_vccs_course_namespace",
+    "severity": "block",
+    "message": "RBC course codes must not join the VCCS course registry solely by normalized code."
+   },
+   {
+    "code": "catalog_host_http_only",
+    "severity": "review",
+    "message": "The current Acalog host has no TLS listener, so program/catalog sources are official but not secure."
+   }
+  ],
+  "layers": {
+   "award_scope": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Richard Bland College major and degree requirements",
+   "url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412&print=1",
+   "requested_url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:36:40.741Z",
+   "sha256": "a77c485b8d11292d18c445a8f956b7a75e59ef84a909d336b801e3f5acf48a89",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "Richard Bland College academic catalog",
+   "url": "https://www.rbc.edu/academics/programs-degree/",
+   "requested_url": "https://www.rbc.edu/academics/programs-degree/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:36:40.741Z",
+   "sha256": "7f1555ee6f7295feb35241768e611a907b81b999baf3b0f64c7b73ee6dd76411",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Richard Bland College university graduation requirements",
+   "url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=406",
+   "requested_url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=406",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:36:40.741Z",
+   "sha256": "9cb44e7bddd0a3c1e054149aa9e9ad8bac80b82e1fa6beba2e0fc5d442280045",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Richard Bland College academic policies",
+   "url": "https://www.rbc.edu/academics/apibclep-credit/",
+   "requested_url": "https://www.rbc.edu/academics/apibclep-credit/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:36:40.741Z",
+   "sha256": "3a0e2d2bf6a210a51d6f4696a88ba9c0d50e26faebdcad44cebb83cc03a48367",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Richard Bland College course descriptions and credit values",
+   "url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=418",
+   "requested_url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=418",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:36:40.741Z",
+   "sha256": "78eea4aeea15caeec616923d90834025c1bfdfbb0a4e151a1b27f504e1a8a9f5",
+   "official": true,
+   "secure": false
+  }
+ ],
+ "source_layers": {
+  "award_scope": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation",
+    "policy"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "graduation",
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:36:40.741Z",
+ "extracted_at": "2026-08-10T03:42:25.046Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": "Math/Computer Science, A.S.",
+ "parse_error": null,
  "total_credits": {
   "min": 60,
   "max": 60,
@@ -1884,6 +2100,5 @@
    },
    "stated_total": "60"
   }
- },
- "extracted_at": "2026-08-02T06:13:44.767Z"
+ }
 }

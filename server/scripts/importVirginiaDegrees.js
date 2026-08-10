@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * Import Virginia associate degrees as canonical `as_degree` documents.
+ * Import Transfer Virginia associate program maps as corroborating
+ * `as_degree`-shaped documents.
  *
- * The document shape is the California one exactly — same keys, same nesting,
- * same types — so anything that reads an `as_degree` reads these unchanged.
- * Storage is a separate `va_requirements` collection rather than
- * `curated_requirements`, keeping the two states isolated in Mongo while the
- * schema stays identical.
+ * These maps are intentionally `captured_only`: unenumerated categories and
+ * missing catalog-year/college-policy layers mean they are not canonical full
+ * degrees and cannot pass the Virginia verification gate. They coexist in
+ * `va_requirements` with the source-of-record institution-catalog documents so
+ * a researcher can compare the two without either source overwriting the other.
  *
  * ── The one genuine structural difference ────────────────────────────────────
  * California identifies courses by numeric ASSIST ids (`course_ids: [353249]`,
@@ -25,8 +26,8 @@
  * being gathered from institution catalogs instead.
  *
  * Every document carries `catalog_url` (the human-readable program page) and a
- * `reconciliation` block, because all of this is hand-verified: the URL is what
- * makes a check fast, and the reconciliation says whether to look hard.
+ * `reconciliation` block. These maps are corroboration, not hand verification:
+ * the institution catalog remains the source of record for the degree.
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -51,6 +52,27 @@ const log = (...a) => console.log('[va:degrees]', ...a);
 
 const BASE = 'https://www.transfervirginia.org';
 const isCC = (n) => /community college|Richard Bland/i.test(n || '');
+
+/** Transfer-oriented associate awards only; certificates and A.A.S. are out of scope. */
+function eligibleAssociateProgram(name) {
+  const value = String(name || '').trim();
+  if (!value || /certificate|\bC\.?S\.?C\.?\b|associate\s+(?:of\s+)?applied\s+science|\bA\.?A\.?S\.?\b/i.test(value)) {
+    return false;
+  }
+  return /associate\s+(?:(?:in|of)\s+)?science|associate\s+(?:of\s+)?arts\s*(?:&|and)\s*sciences|\bA\.?S\.?\b|\bAA&S\b/i.test(value);
+}
+
+async function writeTransferVirginiaDocuments(db, docs, idMap) {
+  // Replace only this importer's corroborating documents. A staging rename of
+  // `va_requirements` used to erase every institution-catalog degree.
+  await db.collection('va_requirements').deleteMany({ source: 'transferva_program_map' });
+  if (docs.length) await db.collection('va_requirements').insertMany(docs, { ordered: false });
+
+  const idStaging = 'va_course_ids__staging';
+  await db.collection(idStaging).drop().catch(() => {});
+  if (idMap.length) await db.collection(idStaging).insertMany(idMap, { ordered: false });
+  await db.collection(idStaging).rename('va_course_ids', { dropTarget: true });
+}
 
 const keyOf = (code) => ({ id: courseIdFor(code), key: courseKeyFor(code) });
 
@@ -103,11 +125,11 @@ function toRequirementGroups(groups) {
   return groups.map(walk);
 }
 
-(async () => {
+async function main() {
   const mapsFile = path.join(opts.cache, 'maps_Computer_Science.json');
   if (!fs.existsSync(mapsFile)) throw new Error(`no map index at ${mapsFile}`);
   const index = JSON.parse(fs.readFileSync(mapsFile, 'utf8'))
-    .filter((m) => m.map === 'populated' && isCC(m.institution));
+    .filter((m) => m.map === 'populated' && isCC(m.institution) && eligibleAssociateProgram(m.program));
   log(`${index.length} populated associate maps across ${new Set(index.map((m) => m.institution)).size} colleges`);
 
   const docs = [];
@@ -133,6 +155,8 @@ function toRequirementGroups(groups) {
       degree_type: /AA&S|AA & S/i.test(m.program) ? 'AA&S' : /\bAA\b/i.test(m.program) ? 'AA' : 'AS',
       template_ref: null,
       status: 'extracted',
+      collection_status: 'captured_only',
+      research_status: 'corroboration_only_needs_catalog_verification',
       degree_title_seen: m.program,
       catalog_url: `${BASE}/degrees/${m.degreeId}`,
       catalog_year: null,
@@ -178,17 +202,25 @@ function toRequirementGroups(groups) {
   await client.connect();
   try {
     const db = client.db(dbName);
-    for (const [name, rows] of [['va_requirements', docs], ['va_course_ids', idMap]]) {
-      const staging = `${name}__staging`;
-      await db.collection(staging).drop().catch(() => {});
-      if (rows.length) await db.collection(staging).insertMany(rows, { ordered: false });
-      await db.collection(staging).rename(name, { dropTarget: true });
-      log(`  ${name}: ${rows.length} docs`);
-    }
+    await writeTransferVirginiaDocuments(db, docs, idMap);
+    log(`  va_requirements (Transfer Virginia only): ${docs.length} docs`);
+    log(`  va_course_ids: ${idMap.length} docs`);
     await db.collection('va_requirements').createIndex({ kind: 1, college_id: 1 });
     await db.collection('va_course_ids').createIndex({ course_id: 1 }, { unique: true });
   } finally {
     await client.close();
   }
   log('done');
-})().catch((e) => { console.error('[va:degrees] FATAL', e); process.exit(1); });
+}
+
+if (require.main === module) main().catch((e) => {
+  console.error('[va:degrees] FATAL', e);
+  process.exitCode = 1;
+});
+
+module.exports = {
+  eligibleAssociateProgram,
+  main,
+  toRequirementGroups,
+  writeTransferVirginiaDocuments,
+};

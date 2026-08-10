@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "slug": "blue-ridge-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "award": "AS",
+  "total_units": 60,
+  "total_units_max": 62,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "elective",
+    "student_development",
+    "graduation"
+  ],
+  "option_sets": {
+    "laboratory_science": {
+      "source_refs": ["major"],
+      "credits": 4,
+      "courses": ["BIO101", "CHM111", "GOL105", "GOL110", "PHY201", "PHY241"]
+    },
+    "general_education_elective": {
+      "source_refs": ["major", "elective"],
+      "printed_slot_credits": 4,
+      "courses": [
+        "BIO101", "BIO102", "CHM111", "CHM112", "CST100", "CST110", "GOL105", "GOL110",
+        "MTH245", "MTH264", "PHY201", "PHY202", "PHY241", "PHY242",
+        "ASL101", "ASL102", "ASL201", "SPA101", "SPA102", "SPA115", "SPA201", "SPA202"
+      ]
+    },
+    "computer_science_elective": {
+      "source_refs": ["major", "elective"],
+      "required_credits": 9,
+      "published_slots": [3, 6],
+      "courses": [
+        "BIO102", "CHM112", "CSC205", "CSC215", "CST100", "CST110", "EGR121", "EGR122", "EGR270",
+        "GOL105", "GOL110", "MTH161", "MTH162", "MTH167", "MTH265", "MTH266", "PHY201", "PHY202", "PHY242",
+        "ASL101", "ASL102", "ASL201", "SPA101", "SPA102", "SPA115", "SPA201", "SPA202"
+      ]
+    },
+    "ucgs_block_ii": {
+      "source_refs": ["general_education"],
+      "categories": {
+        "art": ["ART100", "ART101", "ART102", "CST130", "CST151", "MUS121"],
+        "humanities": ["HUM202", "HUM210", "HUM216", "HUM220", "PHI100", "PHI220", "REL100", "REL230"],
+        "literature": ["ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+      }
+    },
+    "ucgs_block_iii": {
+      "source_refs": ["general_education"],
+      "courses": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS140", "PLS241", "PSY200", "SOC200", "SOC268"]
+    },
+    "ucgs_block_vi": {
+      "source_refs": ["general_education"],
+      "courses": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122"]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 62,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 62,
+    "closure_basis": "The catalog's printed slot values sum to 60 with the three-credit mathematics alternatives and to 62 when both variable mathematics choices are four credits.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of degree credit hours must be completed at Blue Ridge.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_curriculum_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The official catalog uses a four-semester grid as its only course-requirement structure. This composition reorganizes the same rows by rule and does not import semester placement as an additional schedule requirement.",
+    "The General Education Elective remains a four-credit requirement because that is the value printed in the degree grid. Its three-credit approved options remain visible as a blocking source conflict; no filler credit is invented.",
+    "The program requires nine Computer Science elective credits across printed three- and six-credit slots but gives no universal course count for its two- through five-credit menu. It is therefore retained as a source-owned nine-credit category, with its exact twenty-seven-course dictionary in option_sets.",
+    "The two Block II selections enumerate all twenty-one UCGS options and retain the source's different-category rule.",
+    "Courses appearing in more than one official menu are not permission to double count the same applied credits toward multiple printed slots."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "general_education_slot_credit_conflict",
+      "severity": "block",
+      "message": "The degree grid assigns four credits to General Education Elective, but its approved menu includes three-credit courses and states no compensating-credit rule."
+    },
+    {
+      "code": "computer_science_elective_cardinality_unspecified",
+      "severity": "review",
+      "message": "The nine-credit Computer Science elective menu ranges from two to five credits per course and gives no universal choose-N instruction."
+    },
+    {
+      "code": "cross_requirement_overlap_requires_evaluation",
+      "severity": "review",
+      "message": "Several approved options also occur in fixed or other elective slots; the same course credit cannot silently be counted twice."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Computer science and discrete mathematics requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["MTH288"]]}]}
+      ]
+    },
+    {
+      "title": "Written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus I",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus II or Statistics I",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "receivers": [{"kind": "cc_course", "options": [["MTH264"], ["MTH245"]]}]
+        }
+      ]
+    },
+    {
+      "title": "College success",
+      "source_refs": ["major", "student_development"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"], ["SDV101"]]}]}
+      ]
+    },
+    {
+      "title": "Laboratory science",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["BIO101"], ["CHM111"], ["GOL105"], ["GOL110"], ["PHY201"], ["PHY241"]]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "Computer systems or advanced mathematics",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "receivers": [{"kind": "cc_course", "options": [["CSC205"], ["CSC215"], ["MTH265"]]}]
+        }
+      ]
+    },
+    {
+      "title": "General Education Elective",
+      "source_refs": ["major", "elective"],
+      "analysis_constraints": [
+        {
+          "kind": "alternative_course_credit_mismatch",
+          "status": "evaluator_not_implemented",
+          "description": "The evaluator cannot close the printed four-credit slot when a listed three-credit option is selected because the source states no compensating-credit rule."
+        },
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "The same applied course credit cannot satisfy this slot and a fixed, laboratory, mathematics, or Computer Science elective slot at the same time."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["BIO101"], ["BIO102"], ["CHM111"], ["CHM112"], ["CST100"], ["CST110"], ["GOL105"], ["GOL110"],
+              ["MTH245"], ["MTH264"], ["PHY201"], ["PHY202"], ["PHY241"], ["PHY242"],
+              ["ASL101"], ["ASL102"], ["ASL201"], ["SPA101"], ["SPA102"], ["SPA115"], ["SPA201"], ["SPA202"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science electives",
+      "source_refs": ["major", "elective"],
+      "ge_area": "blue_ridge_computer_science_electives",
+      "units": 9,
+      "note": "Complete nine credits across the catalog's three- and six-credit Computer Science elective slots. The exact twenty-seven-course official menu is retained in option_sets; the source does not state one universal selection count."
+    },
+    {
+      "title": "UCGS Block II — Humanities, Art, and Literature",
+      "source_refs": ["major", "general_education"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_ge_areas",
+          "status": "evaluator_not_implemented",
+          "description": "The two selected courses must come from different UCGS Block II categories: Art, Humanities, or Literature."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "label": "First Block II selection",
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["MUS121"],
+              ["HUM202"], ["HUM210"], ["HUM216"], ["HUM220"], ["PHI100"], ["PHI220"], ["REL100"], ["REL230"],
+              ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]
+            ]
+          }]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Second Block II selection from a different category",
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["MUS121"],
+              ["HUM202"], ["HUM210"], ["HUM216"], ["HUM220"], ["PHI100"], ["PHI220"], ["REL100"], ["REL230"],
+              ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Block III — Social and Behavioral Science",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS140"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC268"]]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Block VI — History",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]
+          }]
+        }
+      ]
+    }
+  ]
+}

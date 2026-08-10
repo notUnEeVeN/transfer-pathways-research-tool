@@ -3,13 +3,181 @@
  "name": "Brightpoint Community College",
  "level": "community_college",
  "platform": "acalog",
- "parser": "lines",
- "pdf_window": null,
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157&print=1",
- "captured_at": "2026-08-02T05:42:22.964Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, AS",
+  "variant": "Current transfer-oriented Computer Science A.S.",
+  "catalog_version": {
+   "catalog_id": 12,
+   "program_id": 1464,
+   "returnto": 1157
+  },
+  "general_education_authority": "Brightpoint Computer Science A.S. approved course menus",
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "modeled_units_minimum": 60,
+   "modeled_units_maximum": 61,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of total semester credits must be earned through Brightpoint credit instruction.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+   "The current award is catoid 12, poid 1464. The older catoid 8 seed is stale and must not establish the 2026-2027 degree.",
+   "The program page itself enumerates the approved history, humanities, social/behavioral-science, arts/literature, laboratory-sequence, and elective menus.",
+   "Approved electives require two or three courses totaling at least eight credits. Preserve both the variable cardinality and minimum-credit rule; do not flatten it to an unconditional two-course choice.",
+   "The sequence recommendation after the elective list and the Spring-only planning note are advisory, not additional requirements."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "variable_count_minimum_credit_elective_rule",
+    "severity": "review",
+    "message": "The approved-elective rule combines choose two or three with a minimum of eight credits and needs a cardinality-plus-credit evaluator."
+   },
+   {
+    "code": "acalog_browser_capture_required",
+    "severity": "review",
+    "message": "The current official Acalog host may return an AWS WAF 202 response with an empty body to direct HTTP clients; retain browser-capable capture."
+   }
+  ],
+  "layers": {
+   "catalog_identity": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Brightpoint Community College major and degree requirements",
+   "url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157&print=1",
+   "requested_url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T04:14:27.735Z",
+   "sha256": "0748976b29841ee284ed8e7b6c0b79c89fed95d4e4dd5e546d9e97bd09234a0c",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "Brightpoint Community College academic catalog",
+   "url": "https://catalog.brightpoint.edu/index.php?catoid=12",
+   "requested_url": "https://catalog.brightpoint.edu/index.php?catoid=12",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T04:14:27.735Z",
+   "sha256": "18743a6017fce52e74b5d9fa2842725b8aba476e224832ff126981d0c00dd42a",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Brightpoint Community College university graduation requirements",
+   "url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1153",
+   "requested_url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1153",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T04:14:27.735Z",
+   "sha256": "c13307191b46ef3ae0017a6889686f451a1e9ddff3ef615598bd607c621cdbc3",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Brightpoint Community College academic policies",
+   "url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1151",
+   "requested_url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1151",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T04:14:27.735Z",
+   "sha256": "2fba189eee6853419f4df531ebf56118d81aaf7144045b9e8dea40eb02d5743a",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "catalog_identity": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T04:14:27.735Z",
+ "extracted_at": "2026-08-10T04:15:12.857Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": "Computer Science, AS",
+ "parse_error": null,
  "total_credits": null,
  "stopped_at": null,
  "groups": [
@@ -1439,6 +1607,5 @@
    },
    "stated_total": null
   }
- },
- "extracted_at": "2026-08-02T06:13:44.719Z"
+ }
 }

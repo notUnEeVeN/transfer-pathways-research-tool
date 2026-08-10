@@ -18,9 +18,41 @@
     "degree's full graduation requirements usually span both.",
     "",
     "`offers_cs: false` is a recorded finding, not an absence \u2014 it means the",
-    "catalog was read and no CS degree was there."
+    "catalog was read and no CS degree was there.",
+    "",
+    "`cohorts.schev_public_four_year` is the primary public receiving scope.",
+    "Institutions outside it remain in this registry as secondary research;",
+    "cohort membership changes display/filter priority, never data retention."
   ],
   "probed": "2026-08-01",
+  "cohorts": {
+    "schev_public_four_year": {
+      "label": "Virginia public four-year institutions",
+      "description": "The primary Virginia receiving cohort used for public-to-public comparison with the University of California.",
+      "level": "four_year",
+      "primary": true,
+      "authority": "State Council of Higher Education for Virginia",
+      "source_url": "https://www.schev.edu/students/applying-for-college/colleges-universities",
+      "verified_at": "2026-08-10",
+      "institution_slugs": [
+        "christopher-newport-university",
+        "george-mason-university",
+        "james-madison-university",
+        "longwood-university",
+        "norfolk-state-university",
+        "old-dominion-university",
+        "radford-university",
+        "university-of-mary-washington",
+        "university-of-virginia",
+        "the-university-of-virginia-s-college-at-wise",
+        "virginia-commonwealth-university",
+        "virginia-military-institute",
+        "virginia-state-university",
+        "virginia-polytechnic-institute-and-state-university",
+        "william-mary"
+      ]
+    }
+  },
   "institutions": [
     {
       "slug": "blue-ridge-community-college",
@@ -29,12 +61,87 @@
       "vccs_slug": "brcc",
       "platform": "courseleaf",
       "catalog_root": "https://catalog.brcc.edu/",
+      "courseleaf_parse": {
+        "requirements_selector": "#content",
+        "exclude_plan_grids_when_course_lists": false
+      },
       "seeds": [
         {
           "role": "program",
           "url": "https://catalog.brcc.edu/programs-study/science-computer-science/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.brcc.edu/programs-study/ucgselectives/"
+        },
+        {
+          "role": "elective",
+          "url": "https://catalog.brcc.edu/programs-study/world-language/"
+        },
+        {
+          "role": "student_development",
+          "url": "https://catalog.brcc.edu/programs-study/sdv/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.brcc.edu/student-handbook/policies/graduation/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "AS",
+        "award_name": "Associate of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, A.S.",
+        "variant": "Current transfer-oriented Computer Science A.S.",
+        "general_education_authority": "Blue Ridge UCGS Electives",
+        "unit_audit": {
+          "published_program_units_minimum": 60,
+          "published_program_units_maximum": 62,
+          "modeled_units_minimum": 60,
+          "modeled_units_maximum": 62,
+          "residency": {
+            "status": "required",
+            "minimum_percent": 25,
+            "rule": "At least 25 percent of the degree credit hours must be completed at Blue Ridge.",
+            "source_refs": ["graduation"]
+          },
+          "minimum_curriculum_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The catalog's four-semester grid is the only official course-requirement structure. Reorganize its rows into requirements; do not treat the semester placement as an additional suggested schedule.",
+          "The required-course grid and the three program-owned elective tables are sibling containers under #content, so capture and extraction must retain both #requiredcoursestextcontainer and #computerscienceelectivestextcontainer.",
+          "The General Education Elective slot is printed as four credits although its official menu includes three-credit CST, MTH, and world-language choices; preserve the printed 60-62 total and block deterministic analysis until that conflict is resolved.",
+          "The two Block II courses must come from different Art, Humanities, or Literature categories. Computer Science electives total nine credits, but the official menu contains two- through five-credit courses and states no universal course count."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "general_education_slot_credit_conflict",
+            "severity": "block",
+            "message": "The four-credit General Education Elective slot includes approved three-credit options without a stated compensating-credit rule."
+          },
+          {
+            "code": "variable_credit_elective_cardinality_unspecified",
+            "severity": "review",
+            "message": "The nine-credit Computer Science elective requirement has a two- through five-credit menu but no published universal choose-N rule."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge", "elective"]
+          },
+          "student_development": {
+            "source_roles": ["student_development"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          }
+        }
+      },
+      "note": "CourseLeaf keeps the official program grid and the program-owned elective dictionaries in sibling tab containers under #content; the configured scope intentionally retains both."
     },
     {
       "slug": "brightpoint-community-college",
@@ -43,12 +150,92 @@
       "vccs_slug": "brightpoint",
       "platform": "acalog",
       "catalog_root": "https://catalog.brightpoint.edu/",
+      "acalog_parse": {
+        "catalog_id": 12,
+        "program_id": 1464,
+        "content_selector": "#acalog-content",
+        "requirements_selector": "#acalog-content .acalog-core",
+        "preferred_view": "print"
+      },
       "seeds": [
         {
+          "role": "catalog",
+          "url": "https://catalog.brightpoint.edu/index.php?catoid=12"
+        },
+        {
           "role": "program",
-          "url": "https://catalog.brightpoint.edu/preview_program.php?catoid=8&poid=1008"
+          "url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1153"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1151"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "AS",
+        "award_name": "Associate of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, AS",
+        "variant": "Current transfer-oriented Computer Science A.S.",
+        "catalog_version": {
+          "catalog_id": 12,
+          "program_id": 1464,
+          "returnto": 1157
+        },
+        "general_education_authority": "Brightpoint Computer Science A.S. approved course menus",
+        "unit_audit": {
+          "published_program_units_minimum": 60,
+          "modeled_units_minimum": 60,
+          "modeled_units_maximum": 61,
+          "residency": {
+            "status": "required",
+            "minimum_percent": 25,
+            "rule": "At least 25 percent of total semester credits must be earned through Brightpoint credit instruction.",
+            "source_refs": ["graduation"]
+          },
+          "minimum_curriculum_gpa": 2
+        },
+        "modeling_notes": [
+          "The current award is catoid 12, poid 1464. The older catoid 8 seed is stale and must not establish the 2026-2027 degree.",
+          "The program page itself enumerates the approved history, humanities, social/behavioral-science, arts/literature, laboratory-sequence, and elective menus.",
+          "Approved electives require two or three courses totaling at least eight credits. Preserve both the variable cardinality and minimum-credit rule; do not flatten it to an unconditional two-course choice.",
+          "The sequence recommendation after the elective list and the Spring-only planning note are advisory, not additional requirements."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "variable_count_minimum_credit_elective_rule",
+            "severity": "review",
+            "message": "The approved-elective rule combines choose two or three with a minimum of eight credits and needs a cardinality-plus-credit evaluator."
+          },
+          {
+            "code": "acalog_browser_capture_required",
+            "severity": "review",
+            "message": "The current official Acalog host may return an AWS WAF 202 response with an empty body to direct HTTP clients; retain browser-capable capture."
+          }
+        ],
+        "layers": {
+          "catalog_identity": {
+            "source_roles": ["catalog"]
+          },
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          }
+        }
+      },
+      "note": "Use a browser-capable Acalog capture for current catoid 12 and scope extraction to #acalog-content .acalog-core; exclude the trailing recommended science sequence and Spring-only planning language from degree requirements."
     },
     {
       "slug": "central-virginia-community-college",
@@ -102,17 +289,146 @@
     {
       "slug": "j-sargeant-reynolds-community-college",
       "name": "J Sargeant Reynolds Community College",
+      "official_name": "Reynolds Community College",
       "level": "community_college",
       "vccs_slug": "reynolds",
       "platform": "acalog",
-      "catalog_root": "https://catalog.reynolds.edu/",
+      "catalog_root": "https://catalog.reynolds.edu/index.php?catoid=13",
+      "acalog_parse": {
+        "catalog_id": 13,
+        "award_index_program_id": 4051,
+        "content_selector": "#acalog-content",
+        "description_selector": "#acalog-content .program_description",
+        "requirements_selector": "#acalog-content .acalog-core",
+        "preferred_view": "print"
+      },
       "seeds": [
         {
+          "role": "catalog",
+          "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4051&returnto=1496"
+        },
+        {
           "role": "program",
+          "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173"
+        },
+        {
+          "role": "program_ba",
+          "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4134"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=3925"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.reynolds.edu/content.php?catoid=13&navoid=1487#classroom-graduation-and-program-requirements"
+        },
+        {
+          "role": "college",
           "url": "https://www.reynolds.edu/programs/program-pages/computer-science-as.html"
+        },
+        {
+          "role": "college",
+          "url": "https://www.reynolds.edu/get_started/programs/smse/default.html"
         }
       ],
-      "note": "Previously recorded url_only against a department page. The college does run an Acalog catalog \u2014 discover there first."
+      "degree_context": {
+        "award": "AS",
+        "award_name": "Associate of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science AS",
+        "variant": "Destination-sensitive transfer award; retain both full-time B.A.- and B.S.-oriented maps",
+        "catalog_version": {
+          "catalog_id": 13,
+          "award_index_program_id": 4051,
+          "ba_full_time_program_id": 4134,
+          "ba_part_time_program_id": 4138,
+          "bs_full_time_program_id": 4173,
+          "bs_part_time_program_id": 4174
+        },
+        "program_code": null,
+        "cip_code": null,
+        "academic_unit": "School of Science, Technology, Engineering, and Mathematics",
+        "college": "Reynolds Community College",
+        "general_education_authority": "Reynolds Approved Transfer Electives and the Virginia Community College System Uniform Certificate of General Studies",
+        "source_variants": [
+          {
+            "name": "Full-time B.A.-destination map",
+            "program_id": 4134,
+            "published_units_minimum": 62,
+            "published_units_maximum": 63
+          },
+          {
+            "name": "Part-time B.A.-destination map",
+            "program_id": 4138,
+            "requirements_equivalent_to": 4134
+          },
+          {
+            "name": "Full-time B.S.-destination map",
+            "program_id": 4173,
+            "published_units": 63
+          },
+          {
+            "name": "Part-time B.S.-destination map",
+            "program_id": 4174,
+            "requirements_equivalent_to": 4173
+          }
+        ],
+        "unit_audit": {
+          "published_program_units_minimum": 60,
+          "published_program_units_maximum": 63,
+          "published_full_time_map_units_minimum": 62,
+          "published_full_time_map_units_maximum": 63,
+          "residency": {
+            "status": "required",
+            "minimum_percent": 25,
+            "rule": "At least 25 percent of degree credit hours must be earned at Reynolds.",
+            "source_refs": ["graduation"]
+          },
+          "minimum_program_gpa": 2
+        },
+        "modeling_notes": [
+          "The award-index page contains no course table. Requirements live in four linked program-map records, so it is an identity source rather than a sufficient major source.",
+          "Use the full-time maps to model requirements and retain the part-time maps as scheduling-equivalent variants. The B.A. and B.S. maps are materially different and must not be flattened into one AND list.",
+          "The B.S. map is the default program seed because the award is designed primarily for bachelor's-level computer science transfer; the B.A. map remains a required companion source.",
+          "Approved UCGS/transfer-elective menus and their same-discipline and duplicate-credit exclusions are owned by the separate approved-transfer-electives source."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "program_index_has_no_requirements",
+            "severity": "block",
+            "message": "Do not mark the degree captured from poid 4051 alone; it only links to the requirement-bearing maps."
+          },
+          {
+            "code": "destination_variants_change_requirements",
+            "severity": "review",
+            "message": "B.A.- and B.S.-destination maps have different mathematics, science, language, and elective rules and different published totals."
+          }
+        ],
+        "layers": {
+          "catalog_identity": {
+            "source_roles": ["catalog"]
+          },
+          "major": {
+            "source_roles": ["program", "program_ba"]
+          },
+          "general_education": {
+            "source_roles": ["program", "program_ba", "ge"]
+          },
+          "ownership": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          }
+        }
+      },
+      "capture_notes": [
+        "Use a real browser: raw HTTP currently receives an AWS WAF 202 response with an empty body.",
+        "Pin catoid 13 and retain #acalog-content. The requirement-bearing program maps are the .acalog-core blocks; .program_description supplies award narrative and identity only.",
+        "Acalog discovery selects the empty award index first. Capture must continue to the configured B.S. seed and the required program_ba companion after discovery fails the course-evidence check."
+      ],
+      "note": "Current 2026-2027 Acalog identity is catoid 13. The earlier catoid 10 identifiers are stale; the award page is a map index, not the requirement table."
     },
     {
       "slug": "laurel-ridge-community-college",
@@ -238,17 +554,108 @@
     {
       "slug": "paul-d-camp-community-college",
       "name": "Paul D. Camp Community College",
+      "official_name": "Camp Community College",
       "level": "community_college",
       "vccs_slug": "camp",
-      "platform": "web",
+      "platform": "pdf",
       "catalog_root": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/",
+      "pdf_parse": {
+        "catalog_file_id": "1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5",
+        "catalog_link_selector": "a[href*='drive.google.com/file/d/1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5']",
+        "program_identity_start_anchor": "Associate of Science COMPUTER SCIENCE",
+        "program_identity_anchors": ["Plan Code:      246", "CIP Code:       11.0701", "NEW degree plan, effective Fall 2024."],
+        "requirements_start_anchor": "AS Computer Science (246)",
+        "requirements_end_anchor": "COMPUTER SUPPORT SPECIALIST",
+        "program_printed_pages": [265, 267],
+        "program_pdf_pages": [275, 277],
+        "general_education_printed_pages": [146, 155],
+        "general_education_pdf_pages": [156, 165],
+        "graduation_printed_pages": [64, 64],
+        "graduation_pdf_pages": [74, 74]
+      },
       "seeds": [
         {
           "role": "program",
-          "url": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/"
+          "url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t#page=275"
+        },
+        {
+          "role": "ge",
+          "url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t#page=156"
+        },
+        {
+          "role": "graduation",
+          "url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t#page=74"
         }
       ],
-      "note": "No catalog software: catalog.pdc.edu does not resolve and the catalog page serves an image. Capture must find the PDF or flipbook from that page."
+      "degree_context": {
+        "award": "AS",
+        "award_name": "Associate of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science",
+        "variant": "Plan 246, effective Fall 2024; excludes the discontinued plan 697-02 teachout",
+        "program_code": "246",
+        "cip_code": "11.0701",
+        "effective_term": "Fall 2024",
+        "catalog_version": {
+          "google_drive_file_id": "1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5",
+          "sha256": "48ed713d8832e07d8bb5e8e560dfb4626fd1cea6dd3ca58f9b3c8139ba49cab5"
+        },
+        "academic_unit": "Computer and Information Technology pathway",
+        "college": "Camp Community College",
+        "general_education_authority": "Camp Community College 2026-2027 Catalog and Student Handbook and the Virginia Community College System Uniform Certificate of General Studies",
+        "unit_audit": {
+          "published_program_units": 61,
+          "printed_term_subtotals_units": 62,
+          "modeled_units": null,
+          "residency": {
+            "status": "required",
+            "minimum_percent": 25,
+            "rule": "At least 25 percent of degree credits must be acquired at Camp.",
+            "source_refs": ["graduation"]
+          },
+          "minimum_program_gpa": 2
+        },
+        "modeling_notes": [
+          "The authoritative target is the new Computer Science A.S., plan 246. The adjacent General Studies - Specialization in Computer Science, plan 697-02, is a teachout with last new enrollment in Summer 2024 and a Spring 2027 completion deadline.",
+          "The program, GE/elective menus, and graduation policy are separate page windows in the same official PDF; each role is retained even though all three captures hash to the same catalog bytes.",
+          "Preserve two distinct humanities selections, the cross-subgroup rule, dynamic UCGS/TransferVA science menus, and the MTH 264-or-MTH 245 alternative.",
+          "The printed first-term rows total 16 while its subtotal is 17; the four subtotals total 62 while the stated program total is 61. Do not manufacture a credit to force closure."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_credit_arithmetic_conflict",
+            "severity": "block",
+            "message": "The stated 61-credit total conflicts with the printed 62-credit term subtotals and the first-term row arithmetic."
+          },
+          {
+            "code": "variable_credit_alternative_conflict",
+            "severity": "review",
+            "message": "The MTH 264/MTH 245 row prints four credits although MTH 245 is ordinarily a three-credit VCCS course."
+          },
+          {
+            "code": "marketing_identity_is_stale",
+            "severity": "review",
+            "message": "The college marketing page still describes plan 246 under the former General Studies A.A.&S. title; the 2026-2027 catalog controls."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          }
+        }
+      },
+      "capture_notes": [
+        "The official landing page links a Google Drive viewer, which is HTML. PDF capture must use the configured drive.usercontent download URL and verify %PDF magic plus the recorded SHA-256.",
+        "Narrow the 341-page catalog by the exact plan-246 start/identity/end anchors and cited page range. A generic Computer Science heading can select the adjacent discontinued plan 697-02.",
+        "The PDF metadata title says 2024-2025; the official landing-page label and the document's 2026-2027 contents control the edition identity."
+      ],
+      "note": "The official 2026-2027 catalog is one machine-readable PDF linked from the Camp catalog landing page; there is no per-program catalog application."
     },
     {
       "slug": "piedmont-virginia-community-college",
@@ -279,14 +686,121 @@
       "name": "Richard Bland College",
       "level": "community_college",
       "platform": "acalog",
-      "catalog_root": "http://catalog.rbc.edu/",
+      "catalog_root": "http://catalog.rbc.edu/index.php?catoid=10",
+      "acalog_parse": {
+        "catalog_id": 10,
+        "program_id": 197,
+        "content_selector": "#acalog-content",
+        "requirements_selector": "#acalog-content .acalog-core",
+        "preferred_view": "print"
+      },
       "seeds": [
         {
           "role": "program",
-          "url": "http://catalog.rbc.edu/preview_program.php?catoid=7&poid=143"
+          "url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412"
+        },
+        {
+          "role": "catalog",
+          "url": "https://www.rbc.edu/academics/programs-degree/"
+        },
+        {
+          "role": "graduation",
+          "url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=406"
+        },
+        {
+          "role": "policy",
+          "url": "https://www.rbc.edu/academics/apibclep-credit/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "http://catalog.rbc.edu/content.php?catoid=10&navoid=418"
         }
       ],
-      "note": "Two-year college of William & Mary, not VCCS. Uses its own course numbering (CSCI 222, MATH 261), so its codes will not join va_courses. HTTP only \u2014 catalog.rbc.edu has no TLS listener."
+      "degree_context": {
+        "award": "AS",
+        "award_name": "Associate of Science",
+        "catalog_year": "2026-2027",
+        "program": "Math/Computer Science, A.S.",
+        "variant": "Computer Science branch of the combined Math/Computer Science A.S.; no standalone Computer Science A.S. is published",
+        "catalog_version": {
+          "catalog_id": 10,
+          "program_id": 197
+        },
+        "program_code": null,
+        "cip_code": "30.0801",
+        "academic_unit": null,
+        "college": "Richard Bland College",
+        "general_education_authority": "Richard Bland College Math/Computer Science A.S. program requirements",
+        "unit_audit": {
+          "published_program_units": 60,
+          "quantitative_and_symbolic_reasoning_units_minimum": 19,
+          "quantitative_and_symbolic_reasoning_units_maximum": 20,
+          "natural_world_units": 8,
+          "elective_units_minimum": 15,
+          "elective_units_maximum": 16,
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 30 of the minimum 60 degree credits must be completed at Richard Bland College.",
+            "source_refs": ["policy"]
+          },
+          "last_hours_residency": {
+            "status": "none_stated",
+            "reason": "The reviewed current catalog and current institutional policy page do not repeat the historical nine-of-the-last-fifteen rule; do not carry it forward without current Registrar confirmation.",
+            "source_refs": ["graduation", "policy"]
+          },
+          "minimum_cumulative_gpa": 2
+        },
+        "modeling_notes": [
+          "This is one combined Mathematics/Computer Science transfer award. The official program index supplies the combined scope and CIP 30.0801 and does not list a standalone Computer Science A.S.",
+          "For the Computer Science branch, the additional seven-credit quantitative rule is CSCI 222 AND one of MATH 254, MATH 261, or MATH 271; it is not a flat choose-one menu.",
+          "The 15-16 elective block contains recommendations tied to the transfer destination. Recommended mathematics and natural-science courses are not additional AND requirements.",
+          "Richard Bland is outside VCCS and uses institution-local CSCI/MATH course codes; resolve them only in the Richard Bland course namespace."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "combined_award_not_standalone_cs",
+            "severity": "review",
+            "message": "Expose the award as Math/Computer Science A.S.; do not relabel it as a standalone Computer Science A.S."
+          },
+          {
+            "code": "non_vccs_course_namespace",
+            "severity": "block",
+            "message": "RBC course codes must not join the VCCS course registry solely by normalized code."
+          },
+          {
+            "code": "catalog_host_http_only",
+            "severity": "review",
+            "message": "The current Acalog host has no TLS listener, so program/catalog sources are official but not secure."
+          }
+        ],
+        "layers": {
+          "award_scope": {
+            "source_roles": ["catalog"]
+          },
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program"]
+          },
+          "graduation": {
+            "source_roles": ["graduation", "policy"]
+          },
+          "academic_policy": {
+            "source_roles": ["graduation", "policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      },
+      "capture_notes": [
+        "The Acalog catalog host is HTTP-only and raw requests currently receive an AWS WAF 202 challenge; use a real browser and retain #acalog-content .acalog-core from the print view.",
+        "The official rbc.edu AP/IB/CLEP policy page independently states the 30-credit institutional minimum and can be captured as HTML alongside the browser-only Acalog sources.",
+        "Preserve the nested Computer Science branch and separate hard elective totals from nonbinding transfer recommendations."
+      ],
+      "note": "Current 2026-2027 identity is catoid 10, poid 197. Richard Bland is a two-year college outside VCCS and publishes a combined Math/Computer Science A.S., not a standalone CS award."
     },
     {
       "slug": "southside-virginia-community-college",
@@ -319,14 +833,109 @@
       "level": "community_college",
       "vccs_slug": "tcc",
       "platform": "acalog",
-      "catalog_root": "https://catalog.tcc.edu/",
+      "catalog_root": "https://catalog.tcc.edu/index.php?catoid=23",
+      "acalog_parse": {
+        "catalog_id": 23,
+        "program_id": 5235,
+        "content_selector": "#acalog-content",
+        "requirements_selector": "#acalog-content .acalog-core",
+        "preferred_view": "print",
+        "retain_numbered_footnotes": true
+      },
       "seeds": [
         {
           "role": "program",
           "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119"
+        },
+        {
+          "role": "approved_transfer_electives",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105"
+        },
+        {
+          "role": "college",
+          "url": "https://www.tcc.edu/programs/career-pathways/business-computer-science-it/"
         }
       ],
-      "note": "Behind Cloudflare bot verification on top of Acalog \u2014 needs the browser transport and a warm profile."
+      "degree_context": {
+        "award": "AS",
+        "award_name": "Associate of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, Associate of Science",
+        "variant": "Program 246, current catoid 23 curriculum",
+        "catalog_version": {
+          "catalog_id": 23,
+          "program_id": 5235
+        },
+        "program_code": "246",
+        "cip_code": null,
+        "academic_unit": "Business, Computer Science & IT Career Pathway",
+        "college": "Tidewater Community College",
+        "general_education_authority": "Tidewater Community College General Education Core and Approved Transfer Electives",
+        "unit_audit": {
+          "published_program_units_minimum": 60,
+          "published_program_units_maximum": 63,
+          "marketing_units": 61,
+          "residency": {
+            "status": "required",
+            "minimum_percent": 25,
+            "rule": "At least 25 percent of degree credit hours must be earned in coursework at TCC.",
+            "source_refs": ["graduation"]
+          },
+          "minimum_program_gpa": 2
+        },
+        "modeling_notes": [
+          "The catalog's 60-63 range controls over the marketing page's single 61-credit figure because mathematics and elective choices vary in credit value.",
+          "Preserve the precalculus preparation as MTH 167 OR the MTH 161+MTH 162 bundle OR direct placement into MTH 263 with replacement elective credit.",
+          "The two humanities courses must come from two distinct categories among Artistic Expression, Literature and Creative Writing, and Human Culture.",
+          "Semester-four technical slots A and B are separate requirement receivers even though their option menus overlap; one course cannot satisfy both.",
+          "The approved-transfer-electives page is a required option dictionary, not a source of additional universal course requirements."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_footnote_8_ambiguous",
+            "severity": "block",
+            "message": "Footnote 8 does not cleanly delimit the additional-science/PHY 201 wording and requires a human source read."
+          },
+          {
+            "code": "overlapping_options_are_distinct_slots",
+            "severity": "review",
+            "message": "Footnotes 7 and 8 repeat CSC 205/CSC 215 choices across two separate semester-four slots; a flat set loses the requirement count."
+          },
+          {
+            "code": "marketing_curriculum_link_is_stale",
+            "severity": "review",
+            "message": "The marketing page's View Curriculum link points to archived catoid 21/poid 4756 and redirects to the current catalog home rather than the program."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge", "approved_transfer_electives"]
+          },
+          "ownership": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          }
+        }
+      },
+      "capture_notes": [
+        "Cloudflare returns a 403 challenge to curl and generic fetches. Use a real Chrome session with challenge wait and a warm persistent profile.",
+        "Pin catoid 23/poid 5235 and retain #acalog-content .acalog-core plus numbered footnotes. Do not follow the stale marketing-page curriculum link.",
+        "Keep nested all-of/one-of math preparation, category-distinct humanities choices, and the two overlapping but separate technical slots."
+      ],
+      "note": "Current 2026-2027 Acalog identity is catoid 23, poid 5235. Browser capture remains required because Cloudflare sits in front of Acalog."
     },
     {
       "slug": "virginia-highlands-community-college",
@@ -401,13 +1010,120 @@
       "level": "four_year",
       "platform": "pdf",
       "catalog_root": "https://www.averett.edu/academics/registrars-office/catalogs/",
+      "pdf_parse": {
+        "catalog_sha256": "e6d19cb876277c065456d67427a22355e9aff9a2082bb48188b893ac25d31dad",
+        "catalog_pdf_pages": 341,
+        "program_identity_start_anchor": "COMPUTER SCIENCE (CSS) AND",
+        "program_identity_anchors": [
+          "Averett offers Bachelor of Arts and Bachelor of Science degrees in two majors: Computer Science and",
+          "Students must attain at least a 2. 0 grade point average in the major in order to graduate."
+        ],
+        "requirements_start_anchor": "Requirements for a Major in Computer Science:",
+        "requirements_end_anchor": "A student without previous computer experience would normally be expected to begin with CSC 211,",
+        "program_pdf_pages": [110, 110],
+        "program_printed_page": 110,
+        "general_education_pdf_pages": [59, 62],
+        "graduation_policy_pdf_pages": [29, 30],
+        "degree_requirements_pdf_pages": [57, 58]
+      },
       "seeds": [
         {
           "role": "program",
-          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf"
+          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=110"
+        },
+        {
+          "role": "ge",
+          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=59"
+        },
+        {
+          "role": "graduation",
+          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=29"
+        },
+        {
+          "role": "policy",
+          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=57"
         }
       ],
-      "note": "No catalog software and no per-program page: the department page says 'see the current course catalog', which is a single PDF."
+      "degree_context": {
+        "award": "BA/BS",
+        "award_name": "Bachelor of Arts or Bachelor of Science",
+        "catalog_year": "2025-2026",
+        "program": "Computer Science, B.A. or B.S.",
+        "variant": "One shared Computer Science major with B.A.-specific intermediate-language General Education; blocked pending correction of the major-credit discrepancy and final elective connector",
+        "cip_code": "11.0701",
+        "academic_unit": "Computer Science Department",
+        "college": "Averett University",
+        "general_education_authority": "Averett University General Education Requirements for a Baccalaureate Degree",
+        "catalog_version": {
+          "label": "2025-26 Academic Catalog",
+          "pdf_pages": 341,
+          "sha256": "e6d19cb876277c065456d67427a22355e9aff9a2082bb48188b893ac25d31dad"
+        },
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "published_major_units": 52,
+          "enumerated_major_units": 49,
+          "unresolved_major_units": 3,
+          "general_education_units_minimum": 30,
+          "modeled_units": null,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "The reviewed current catalog states no aggregate university-wide upper-division minimum for the ordinary Computer Science B.A. or B.S.",
+            "source_refs": ["graduation", "policy"]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 30 semester hours and at least 25 percent of undergraduate coursework must be completed at Averett; transfer students must complete at least 12 major hours at Averett, and the last 30 semester hours of class work must be completed at Averett.",
+            "source_refs": ["graduation", "policy"]
+          },
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The current catalog publishes one shared Computer Science major for B.A. and B.S. students. The B.A. requires SPA 203 or FRE 203 within Society and Culture General Education; it is not an additive major course.",
+          "The categorical major rows total 49 although the catalog prints Total 52. CSC 306 appears only in the excluded Sample Four-Year Course Sequence and must not be used to repair the difference.",
+          "The last three-credit elective row joins CSC Elective 300+ level and MTH Elective 200+ level without an AND/OR connector. Preserve it as unresolved source language rather than choosing an operator.",
+          "The traditional-major architecture reserves 18-21 credits for a minor concentration or related fields, but its Computer Science applicability is not explicitly repeated on the program page."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "major_credit_total_does_not_reconcile",
+            "severity": "block",
+            "message": "Enumerated fixed, statistics, and elective requirements total 49 credits while the current catalog prints Total 52."
+          },
+          {
+            "code": "final_elective_connector_missing",
+            "severity": "block",
+            "message": "The final three-credit elective row does not publish whether CSC 300+ and MTH 200+ are alternatives or an AND combination."
+          },
+          {
+            "code": "sample_plan_course_excluded",
+            "severity": "review",
+            "message": "CSC 306 occurs only in the Sample Four-Year Course Sequence and cannot be promoted into the categorical major to close the three-credit gap."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["ge"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          }
+        }
+      },
+      "capture_notes": [
+        "The reviewed official 2025-26 current active catalog is a 341-page machine-readable PDF with the recorded raw-file SHA-256. Live capture verifies PDF magic and the configured page-110 identity/start/end anchors; the recorded hash identifies the exact source bytes used for this audit.",
+        "The requirements end anchor precedes the advisory starting-course sentence and the Sample Four-Year Course Sequence, so neither can enter the extracted requirement tree.",
+        "The printed folio is embedded in a running footer rather than a standalone numeric line; program_pdf_pages pins page 110 while program_printed_page records the human-audited folio."
+      ],
+      "note": "No catalog software and no per-program catalog page: the official current active 2025-26 catalog is one PDF. The current marketing page is stale and is not requirement authority."
     },
     {
       "slug": "bluefield-university",
@@ -438,10 +1154,147 @@
       "catalog_root": "https://bridgewater.cleancatalog.io/",
       "seeds": [
         {
+          "role": "catalog",
+          "url": "https://bridgewater.cleancatalog.io/undergraduate-catalog"
+        },
+        {
           "role": "program",
-          "url": "https://www.bridgewater.edu/academics/divisions/mathematics-computer-science/computer-science-major/"
+          "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science"
+        },
+        {
+          "role": "ge",
+          "url": "https://bridgewater.cleancatalog.io/the-connected-learning-cl-curriculum"
+        },
+        {
+          "role": "ge",
+          "url": "https://bridgewater.cleancatalog.io/connected-learning-general-education/connected-learning-cl-general-education-curriculum"
+        },
+        {
+          "role": "college",
+          "url": "https://bridgewater.cleancatalog.io/courses-of-instruction"
+        },
+        {
+          "role": "graduation",
+          "url": "https://bridgewater.cleancatalog.io/degree-requirements"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://bridgewater.cleancatalog.io/art"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, B.S.",
+        "variant": "Computer Science B.S. with the required selection of exactly one 15-credit track: Cybersecurity or Full-Stack Software Development",
+        "academic_unit": "Department of Mathematics and Computer Science",
+        "college": "Coffman School of Natural Sciences",
+        "general_education_authority": "Connected Learning (CL): General Education Curriculum",
+        "excluded_variants": [
+          "Computer Science minor",
+          "Data Science & Analytics major",
+          "historical Theoretical Computing track"
+        ],
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "major_units": 46,
+          "major_shared_core_units": 31,
+          "selected_track_units": 15,
+          "general_education_units_minimum": 33,
+          "general_education_units_maximum": 46,
+          "connected_learning_core_units_minimum": 5,
+          "connected_learning_core_units_maximum": 9,
+          "foundations_of_connected_learning_units_minimum": 6,
+          "foundations_of_connected_learning_units_maximum": 15,
+          "ways_of_learning_units": 22,
+          "general_education_and_elective_capacity_units": 74,
+          "upper_division": {
+            "status": "required",
+            "minimum_units": 45,
+            "modeled_units": 45,
+            "rule": "At least 45 credits must be junior- or senior-level; current course-numbering guidance generally places those courses at 300-499.",
+            "source_refs": [
+              "college",
+              "graduation"
+            ]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 33,
+            "rule": "At least 33 credits must be earned at Bridgewater, including nine major credits; at least 30 of the final 33 credits must be completed at Bridgewater or through a College-approved study-abroad program.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "final_credit_window_units": 33,
+          "final_credit_window_residency_units_minimum": 30,
+          "major_residency_units_minimum": 9,
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The live program publishes a 31-credit shared core and requires exactly one complete 15-credit track; there is no current untracked B.S. path.",
+          "Connected Learning publishes a 33-46-credit range with course, transfer-status, placement, and cross-layer overlap. Preserve its completion gates inside the 74 credits remaining after the major instead of gross-summing the categories.",
+          "The current categorical requirements page is authoritative. Do not import suggested, prospective, or historical term-by-term plans."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "required_track_choice",
+            "severity": "block_analysis",
+            "message": "A student must select one complete 15-credit track; track components may not be mixed."
+          },
+          {
+            "code": "general_education_overlap_and_waiver_rules",
+            "severity": "block_analysis",
+            "message": "CSCI-400, ART-321, MATH-110, placement, and the approved-transfer-associate exception require cross-layer evaluation."
+          },
+          {
+            "code": "full_stack_cl200_transfer_exception_conflict",
+            "severity": "block_analysis",
+            "message": "The approved-transfer-associate exception omits CL-200, while Full-Stack course ART-321 lists CL-200 as a corequisite; the catalog does not resolve that case."
+          }
+        ],
+        "layers": {
+          "catalog_identity": {
+            "source_roles": [
+              "catalog"
+            ]
+          },
+          "major": {
+            "source_roles": [
+              "program"
+            ]
+          },
+          "general_education": {
+            "source_roles": [
+              "ge"
+            ]
+          },
+          "college": {
+            "source_roles": [
+              "college"
+            ],
+            "note": "The Coffman School owns the program but publishes no separate additive school curriculum."
+          },
+          "graduation": {
+            "source_roles": [
+              "graduation"
+            ]
+          },
+          "course_catalog": {
+            "source_roles": [
+              "course_catalog"
+            ]
+          }
+        }
+      },
+      "note": "Current 2026-2027 CleanCatalog node 1936. The prior bridgewater.edu seed is a marketing page and is not requirement authority."
     },
     {
       "slug": "christopher-newport-university",
@@ -495,9 +1348,139 @@
       "seeds": [
         {
           "role": "program",
-          "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3062"
+          "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3063&returnto=1424"
+        },
+        {
+          "role": "ge",
+          "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3054"
+        },
+        {
+          "role": "college",
+          "url": "https://www.ferrum.edu/academics/academic-schools/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1418"
+        },
+        {
+          "role": "policy",
+          "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1440"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1422"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, B.S. (required emphasis variant)",
+        "variant": null,
+        "program_selection_status": "manual_selection_required",
+        "academic_unit": "Computer Science program",
+        "college": "School of Sciences and Agriculture",
+        "general_education_authority": "Ferrum College General Education Curriculum",
+        "variants": [
+          {
+            "name": "Cybersecurity",
+            "program_title": "Computer Science, Cybersecurity, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3062&returnto=1424"
+          },
+          {
+            "name": "Network",
+            "program_title": "Computer Science, Network, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424"
+          },
+          {
+            "name": "Programming",
+            "program_title": "Computer Science, Programming, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3063&returnto=1424"
+          },
+          {
+            "name": "Web Design",
+            "program_title": "Computer Science, Web Design, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3061&returnto=1424"
+          }
+        ],
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": null,
+          "general_education_units": 30,
+          "shared_computer_science_core_units": 36,
+          "required_emphasis_units": 24,
+          "program_units": 60,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "The reviewed current sources say students must meet College and major upper-level rules but do not publish one aggregate numeric college-wide minimum.",
+            "source_refs": [
+              "major",
+              "graduation",
+              "policy"
+            ]
+          },
+          "residency": {
+            "status": "partially_stated",
+            "minimum_units": null,
+            "rule": "At least 25 percent of the hours required for each major and minor must be completed at Ferrum; no separate degree-wide Ferrum-credit minimum was found in the reviewed current pages.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "major_residency_percent_minimum": 25
+        },
+        "modeling_notes": [
+          "The current catalog has no unqualified Computer Science B.S. It publishes four separately named 60-credit emphasis awards; the Programming seed is a representative current capture target and does not resolve which variant the product should model.",
+          "Do not merge the four 24-credit emphasis blocks. Each combines with the shared 36-credit core as a distinct 60-credit program.",
+          "Ferrum eight-semester plans are prospective schedules and must not supply or duplicate categorical requirements."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "required_variant_not_selected",
+            "severity": "blocker",
+            "message": "A source-backed neutral Computer Science B.S. does not exist; select Cybersecurity, Network, Programming, or Web Design before analysis."
+          },
+          {
+            "code": "degree_wide_residency_not_published",
+            "severity": "review",
+            "message": "The current catalog states a 25-percent major/minor rule but no separate degree-wide institutional-credit minimum in the reviewed pages."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": [
+              "program"
+            ]
+          },
+          "general_education": {
+            "source_roles": [
+              "ge"
+            ]
+          },
+          "college": {
+            "source_roles": [
+              "college"
+            ]
+          },
+          "graduation": {
+            "source_roles": [
+              "program",
+              "graduation"
+            ]
+          },
+          "academic_policy": {
+            "source_roles": [
+              "policy"
+            ]
+          },
+          "course_catalog": {
+            "source_roles": [
+              "course_catalog"
+            ]
+          }
+        }
+      },
+      "note": "Acalog catoid 25 is the current 2026-2027 catalog. The old seed was specifically the Cybersecurity variant, not a neutral CS degree; keep analysis blocked until one current emphasis is selected."
     },
     {
       "slug": "george-mason-university",
@@ -615,8 +1598,96 @@
         {
           "role": "ge",
           "url": "https://catalog.jmu.edu/general-education/"
+        },
+        {
+          "role": "college",
+          "url": "https://www.jmu.edu/cise/depts/computer-science.shtml"
+        },
+        {
+          "role": "graduation",
+          "url": "https://www.jmu.edu/registrar/students/graduation/undergrad-requirements.shtml"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.jmu.edu/undergraduate-degree-requirements-james-madison-university/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.jmu.edu/courses/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, B.S.",
+        "variant": "Standard Computer Science B.S.; no concentration",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Integrated Science and Engineering",
+        "general_education_authority": "James Madison University General Education: The Human Community",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "general_education_units": 41,
+          "quantitative_units_beyond_general_education": 3,
+          "major_units_minimum": 49,
+          "major_units_maximum": 52,
+          "university_elective_units_minimum": 24,
+          "university_elective_units_maximum": 27,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "The reviewed current degree and graduation sources do not publish a separate university-wide upper-division-credit minimum.",
+            "source_refs": ["major", "graduation", "policy"]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 25 percent of the degree must be completed at JMU; at least 60 credits must come from four-year institutions including JMU; students must enroll at JMU for at least two regular semesters and attend the final semester.",
+            "source_refs": ["graduation"]
+          },
+          "four_year_institution_units_minimum": 60,
+          "jmu_regular_semesters_minimum": 2,
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The published 49-52 major-credit range and 24-27 university-elective range are paired alternatives that close with General Education and the quantitative requirement at 120 credits; do not combine both maxima or both minima.",
+          "The recommended course sequence is a sample schedule outside #requirementstextcontainer and must not be imported as an additional requirement layer.",
+          "No university-wide upper-division minimum was found. The explicit none_stated declaration is an unresolved policy fact, not a zero-credit requirement."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_noninteractive_capture_challenge",
+            "severity": "review",
+            "message": "The live catalog program, policy, and 2026-2027 PDF endpoints returned a JavaScript anti-bot challenge during research; use a browser-capable recapture and retain the current official-URL snapshot for comparison."
+          },
+          {
+            "code": "university_upper_division_minimum_not_published",
+            "severity": "review",
+            "message": "Do not infer a university-wide upper-division requirement from class standing, course numbering, or the major's upper-level courses."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["program", "graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      }
     },
     {
       "slug": "longwood-university",
@@ -627,9 +1698,112 @@
       "seeds": [
         {
           "role": "program",
-          "url": "https://catalog.longwood.edu/preview_program.php?catoid=7&poid=1081"
+          "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=970"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=1004"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=970"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=968"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=967"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=975"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, BA or BS",
+        "variant": "B.S. path within the combined Computer Science, BA or BS catalog program",
+        "academic_unit": "Department of Mathematics and Computer Science",
+        "college": "Cook-Cole College of Arts and Sciences",
+        "general_education_authority": "Longwood University Civitae Core Curriculum",
+        "excluded_variants": [
+          "Bachelor of Arts path"
+        ],
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "general_education_units_minimum": 39,
+          "general_education_units_maximum": 40,
+          "major_units": 45,
+          "bs_degree_requirement_units_minimum": 3,
+          "bs_degree_requirement_units_maximum": 4,
+          "general_elective_units_minimum": 31,
+          "general_elective_units_maximum": 33,
+          "upper_division": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 30 upper-level credits must be earned at Longwood, subject to the catalog's stated international-exchange exception.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 25 percent of the 120-credit degree must be earned at Longwood; the 30 upper-level graduation credits must also be earned at Longwood.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The current catalog combines the B.A. and B.S. in one program page. Preserve the shared 45-credit major but apply only the B.S. 3-4 credit degree requirement and B.S. elective range.",
+          "MATH 171 may satisfy both the major's stated mathematics foundation context and Civitae; preserve this overlap and add general electives if overlap would otherwise reduce the degree below 120.",
+          "The 30-credit upper-level graduation rule is also a Longwood residency rule and must not be modeled as an unrelated extra-credit block."
+        ],
+        "data_quality_flags": [],
+        "layers": {
+          "major": {
+            "source_roles": [
+              "program"
+            ]
+          },
+          "general_education": {
+            "source_roles": [
+              "program",
+              "ge"
+            ]
+          },
+          "college": {
+            "source_roles": [
+              "college"
+            ]
+          },
+          "graduation": {
+            "source_roles": [
+              "program",
+              "graduation"
+            ]
+          },
+          "academic_policy": {
+            "source_roles": [
+              "policy"
+            ]
+          },
+          "course_catalog": {
+            "source_roles": [
+              "course_catalog"
+            ]
+          }
+        }
+      },
+      "note": "The current catoid is 19. The catalog publishes one combined BA-or-BS page; this registry context selects the B.S. without collapsing the B.A. degree requirements into it."
     },
     {
       "slug": "mary-baldwin-university",
@@ -667,8 +1841,112 @@
         {
           "role": "program",
           "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-policies/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.nsu.edu/undergraduate/course-descriptions/csc/"
         }
       ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science in Computer Science",
+        "catalog_year": "2025-2026",
+        "program": "Bachelor of Science in Computer Science - Standard Track",
+        "variant": "Standard Track; excludes the Computer Engineering, IA, Cybersecurity, Software Engineering, DNIMAS, and accelerated graduate pathways",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Science, Engineering, and Technology",
+        "general_education_authority": "Norfolk State University General Education Core Program",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "general_education_units": 40,
+          "core_major_summary_units": 53,
+          "requirements_electives_summary_units": 27,
+          "other_requirements_summary_units": 0,
+          "published_major_elective_menu_units_minimum": 15,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "The reviewed current non-schedule degree, graduation, and policy sources do not publish a separate university-wide upper-division-credit minimum. Do not infer one from the excluded Plan of Study grid.",
+            "source_refs": ["major", "graduation", "policy"]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "Bachelor candidates must spend at least two semesters in residence and earn at least 30 semester hours during that period, including all senior-year curriculum courses.",
+            "source_refs": ["graduation"]
+          },
+          "resident_semesters_minimum": 2,
+          "minimum_cumulative_gpa": 2
+        },
+        "modeling_notes": [
+          "The live NSU catalog is still the 2025-2026 edition as of 2026-08-09. Recapture and compare when a newer edition is published.",
+          "The authoritative scope is #curriculumtextcontainer, but most named fixed curriculum courses appear only in its labeled Plan of Study grid. Because prospective schedules are not requirement authority, the non-schedule sources are insufficient for a complete major composition.",
+          "Preserve the published 40 + 53 + 27 + 0 = 120 graduation summary and the separate at-least-15-credit Major Electives menu without inventing the missing allocation of the 27-credit Requirements Electives block.",
+          "Do not weaken exclude_plan_grids_when_course_lists to make the current extraction look complete. A complete model needs another official non-schedule requirement source or explicit human acceptance."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_edition_lag",
+            "severity": "review",
+            "message": "The current live catalog is 2025-2026 while the other CourseLeaf cohort catalogs have advanced to 2026-2027."
+          },
+          {
+            "code": "fixed_curriculum_only_in_plan_grid",
+            "severity": "review",
+            "message": "Excluding the prospective Plan of Study grid leaves summary totals and an elective menu, but not the complete fixed curriculum required to compose the degree."
+          },
+          {
+            "code": "requirements_elective_summary_not_reconciled",
+            "severity": "review",
+            "message": "The 27-credit Requirements Electives summary is not fully explained by the non-schedule Major Electives list, which states at least 15 credits."
+          },
+          {
+            "code": "catalog_navigation_under_construction_label",
+            "severity": "review",
+            "message": "The navigation shows an Under Construction child beneath the populated Standard Track page; retain this as a catalog-quality warning."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["program", "graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      },
       "note": "The previously recorded URL was Computer Engineering Technology, a different degree. Norfolk State publishes five CS tracks; the Standard Track is the plain B.S."
     },
     {
@@ -685,9 +1963,94 @@
         {
           "role": "program",
           "url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/computer-science-bscs/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.odu.edu/undergraduate/general-education-requirements/"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.odu.edu/undergraduate/policies/academic-policies/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.odu.edu/courses/cs/"
         }
       ],
-      "note": "The previously recorded URL was the department index, whose 104 codes are course descriptions rather than degree requirements."
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science in Computer Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science (BSCS)",
+        "variant": "Standard BSCS; excludes the secondary-education major and Dual Dominion options",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Sciences",
+        "general_education_authority": "Old Dominion University General Education Requirements",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "published_requirement_table_units_minimum": 120,
+          "published_requirement_table_units_maximum": 134,
+          "lower_division_general_education_units_minimum": 35,
+          "lower_division_general_education_units_maximum": 41,
+          "upper_division_general_education_units_minimum": 6,
+          "upper_division_general_education_units_maximum": 12,
+          "upper_level_computer_science_elective_units": 9,
+          "upper_division": {
+            "status": "required",
+            "minimum_units": 6,
+            "rule": "The degree requires at least six upper-division General Education credits and separately requires nine credits of 300/400-level computer science electives; the catalog does not publish one aggregate university-wide upper-division minimum.",
+            "source_refs": ["major", "general_education"]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 30 total credits, including at least 12 upper-level credits in the major, must be completed at Old Dominion University.",
+            "source_refs": ["major", "policy"]
+          },
+          "major_upper_division_residency_minimum": 12,
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The ordinary BSCS graduation minimum is 120 credits. The authoritative Requirements table displays 120-134 because language placement and option choices can add credits; preserve the range without changing the minimum award total.",
+          "The Degree Program Guide is explicitly broad scheduling guidance and is outside #requirementstextcontainer; it must not supply or duplicate requirements.",
+          "The Master's Degree Options tab contains Dual Dominion and other graduate pathways and must be excluded from the standard BSCS model.",
+          "Upper-level constraints have distinct scopes: six credits of upper-division General Education, nine credits of 300/400-level CS electives, and 12 upper-level major credits in ODU residency. Do not sum them as a universal upper-division total without overlap analysis."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "upper_division_rules_are_scoped_not_aggregate",
+            "severity": "review",
+            "message": "ODU publishes upper-level General Education, major-elective, and major-residency rules but no single overall upper-division-credit minimum."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["program", "policy"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      },
+      "note": "The previously recorded URL was the department index, whose 104 codes are course descriptions rather than degree requirements. The standard BSCS program page is authoritative."
     },
     {
       "slug": "radford-university",
@@ -698,9 +2061,129 @@
       "seeds": [
         {
           "role": "program",
-          "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834"
+          "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3423"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3437"
+        },
+        {
+          "role": "college",
+          "url": "https://www.radford.edu/artis-college-science-technology/school-of-computing-and-information-sciences/academic-programs.html"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3433"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3438"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3427"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, B.S. (R, L)",
+        "variant": "Base Computer Science B.S. without a concentration; four approved three-credit upper-level CS courses",
+        "academic_unit": "School of Computing and Information Sciences",
+        "college": "Artis College of Science and Technology",
+        "general_education_authority": "Radford University REAL Curriculum",
+        "excluded_variants": [
+          "Advanced Computer Science Concentration",
+          "Advanced Database Concentration",
+          "Advanced Networks Concentration",
+          "Advanced Software Engineering Concentration",
+          "Advanced Artificial Intelligence Concentration",
+          "Virginia Tech accelerated M.Eng. track"
+        ],
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "published_major_units_minimum": 55,
+          "published_major_units_maximum": 88,
+          "general_education_designated_units_minimum": 30,
+          "real_framework_units_minimum": 48,
+          "no_concentration_upper_level_cs_units": 12,
+          "bs_science_units_minimum": 6,
+          "bs_science_units_maximum": 8,
+          "upper_division": {
+            "status": "scoped_only",
+            "minimum_units": null,
+            "rule": "No aggregate university-wide upper-level minimum was found. The selected no-concentration path requires 12 approved upper-level CS credits, and one of the two writing-intensive courses must be at the 300 or 400 level.",
+            "source_refs": [
+              "major",
+              "general_education",
+              "graduation"
+            ]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "No fewer than 30 bachelor-level credits must be earned at Radford University.",
+            "source_refs": [
+              "graduation"
+            ]
+          }
+        },
+        "modeling_notes": [
+          "The selected base path uses the catalog's explicit 12-hour upper-level CS alternative when no concentration is taken. Do not aggregate any of the five optional concentration blocks into it.",
+          "The published 55-88 major-credit range spans mutually exclusive base and concentration choices; it is not one additive requirement.",
+          "REAL is an integrated 48-hour framework that can be fulfilled by major, minor, and degree work. The program separately requires at least 30 GE-designated credits; do not add 48 gross credits on top of the major.",
+          "Exclude the separate Virginia Tech accelerated M.Eng. pathway from the standard 120-credit B.S. model."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "integrated_real_curriculum_overlap",
+            "severity": "review",
+            "message": "The 48-hour REAL framework overlaps major/minor/degree requirements and cannot be imported as a standalone 48-credit GE block."
+          },
+          {
+            "code": "upper_division_rules_are_scoped_not_aggregate",
+            "severity": "review",
+            "message": "The current catalog publishes scoped major and writing-intensive upper-level rules but no one university-wide upper-level-credit total."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": [
+              "program"
+            ]
+          },
+          "general_education": {
+            "source_roles": [
+              "program",
+              "ge"
+            ]
+          },
+          "college": {
+            "source_roles": [
+              "college"
+            ]
+          },
+          "graduation": {
+            "source_roles": [
+              "program",
+              "graduation"
+            ]
+          },
+          "academic_policy": {
+            "source_roles": [
+              "policy"
+            ]
+          },
+          "course_catalog": {
+            "source_roles": [
+              "course_catalog"
+            ]
+          }
+        }
+      },
+      "note": "The standard no-concentration B.S. is source-backed by the 12-credit upper-level CS alternative. Concentration blocks and the accelerated graduate pathway are separate variants, not additional base requirements."
     },
     {
       "slug": "randolph-college",
@@ -729,8 +2212,105 @@
         {
           "role": "program",
           "url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.rmc.edu/academic-program/collegiate-requirements/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.rmc.edu/academic-program/degrees-offered/"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.rmc.edu/academic-regulations/transfer-credit/"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.rmc.edu/academic-regulations/course-numbering-policy/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.rmc.edu/courses-az/csci/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science Major",
+        "variant": "Ordinary Computer Science major designated for the Bachelor of Science; excludes separately listed Cybersecurity and Data Science programs",
+        "academic_unit": "Computer Science",
+        "college": "Randolph-Macon College (no separate school or subcollege layer)",
+        "general_education_authority": "Randolph-Macon College Collegiate Requirements",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "major_units": 40,
+          "major_foundation_units": 25,
+          "major_programming_emphasis_units": 3,
+          "major_elective_units": 12,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "No aggregate university-wide upper-division-credit minimum is published. Within the major, required CSCI 311, the three-credit Programming Emphasis, and at least six elective credits must be numbered 300 or above, for a twelve-credit major-scoped minimum.",
+            "source_refs": ["major", "policy"]
+          },
+          "major_scoped_upper_division_units_minimum": 12,
+          "residency": {
+            "status": "required",
+            "minimum_units": 45,
+            "rule": "The 45-hour institutional floor is derived from the 120-hour degree less the maximum 75 combined transfer and external credits. At least half of required major coursework must also be completed at Randolph-Macon.",
+            "source_refs": ["policy"]
+          },
+          "transfer_and_external_credit_units_maximum": 75,
+          "major_residency_fraction_minimum": 0.5,
+          "minimum_cumulative_gpa": 2
+        },
+        "modeling_notes": [
+          "Use the live 2026-2027 major structure: seven foundation courses, one three-credit Programming Emphasis choice, and four additional three-credit electives, at least two numbered 300 or above, for 40 major hours.",
+          "Stale indexed or prior-year content can show a Mathematical Emphasis and a different elective count. Reject that structure unless the live catalog edition changes.",
+          "The Collegiate Requirements mix courses, competencies, attributes, overlap limits, and zero-credit co-curricular experiences; the catalog does not publish one independent General Education credit total.",
+          "The 120-hour minimum applies to students entering Fall 2023 or later. Earlier cohorts remain under the catalog's former 110-hour rule and are outside this target."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "stale_indexed_program_structure",
+            "severity": "review",
+            "message": "Search and prior-year content may expose an obsolete Mathematical Emphasis structure; verify the captured page says 2026-2027 and totals 40 major hours."
+          },
+          {
+            "code": "general_education_nonadditive",
+            "severity": "review",
+            "message": "Do not invent a Collegiate Requirements credit subtotal by adding categories that have explicit overlap rules."
+          },
+          {
+            "code": "residency_minimum_derived_from_transfer_cap",
+            "severity": "review",
+            "message": "The 45-hour institutional floor is arithmetic derived from the 75-hour external-credit cap, not separately phrased as a residence requirement."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["ge"]
+          },
+          "college": {
+            "status": "not_applicable",
+            "note": "Randolph-Macon does not publish a separate school or subcollege requirement layer for Computer Science."
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      }
     },
     {
       "slug": "regent-university",
@@ -772,9 +2352,129 @@
       "seeds": [
         {
           "role": "program",
-          "url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244"
+          "url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=2014"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975#General_Education_Curriculum"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=2014"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975#Requirements_for_Degrees"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=2006"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2025-2026",
+        "program": "Computer Science (B.S.)",
+        "variant": "Standard Computer Science B.S.",
+        "academic_unit": "Computer Science program",
+        "college": "Division of Advanced Technology",
+        "general_education_authority": "Shenandoah University ShenEd Curriculum",
+        "excluded_variants": [
+          "Cybersecurity B.S.",
+          "Information Technology B.S.",
+          "Computer Science minor"
+        ],
+        "capture_exclusions": [
+          {
+            "heading": "Course Map",
+            "reason": "Prospective year-by-year schedule; categorical requirements end before this heading."
+          }
+        ],
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": null,
+          "published_fixed_cs_and_math_units": 43,
+          "required_mathematics_elective_units": 6,
+          "required_upper_level_cs_or_data_elective_units": 6,
+          "computed_major_units": 55,
+          "general_education_units": 30,
+          "upper_division": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 30 degree credits must be at or above the 300 level.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 25 percent of the 120-credit degree must be earned at Shenandoah, and 24 of the final 30 credits must be earned there subject to the catalog's articulation treatment.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "final_thirty_resident_units_minimum": 24,
+          "minimum_cumulative_gpa": 2
+        },
+        "modeling_notes": [
+          "The current undergraduate catalog is 2025-2026; no 2026-2027 undergraduate catalog is listed in the current selector.",
+          "The printed 43-credit figure covers only the fixed computer science and mathematics list. Add the separately required six mathematics elective credits and six upper-level CSC/DATA elective credits for a computed 55-credit major audit.",
+          "The Course Map is a prospective schedule on the same page and must be excluded by heading boundary.",
+          "The current catalog owner is the Division of Advanced Technology; do not infer ownership from the older public-facing /arts/ URL."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "published_subtotal_excludes_required_electives",
+            "severity": "review",
+            "message": "The printed 43-credit fixed-course total excludes 12 separately required elective credits."
+          },
+          {
+            "code": "prospective_course_map_on_requirement_page",
+            "severity": "blocker",
+            "message": "Stop extraction at the Course Map heading so year/term schedule rows do not become additional requirements."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": [
+              "program"
+            ]
+          },
+          "general_education": {
+            "source_roles": [
+              "ge"
+            ]
+          },
+          "college": {
+            "source_roles": [
+              "college"
+            ]
+          },
+          "graduation": {
+            "source_roles": [
+              "program",
+              "graduation"
+            ]
+          },
+          "academic_policy": {
+            "source_roles": [
+              "policy"
+            ]
+          },
+          "course_catalog": {
+            "source_roles": [
+              "course_catalog"
+            ]
+          }
+        }
+      },
+      "note": "Acalog catoid 33 is the current 2025-2026 undergraduate catalog. The program's categorical requirements precede a separately labeled Course Map that must not be imported."
     },
     {
       "slug": "sweet-briar-college",
@@ -782,26 +2482,265 @@
       "level": "four_year",
       "platform": "acalog",
       "catalog_root": "https://catalog.sbc.edu/",
+      "offers_cs": false,
       "seeds": [
         {
-          "role": "program",
-          "url": "https://catalog.sbc.edu/preview_program.php?catoid=9&poid=653"
+          "role": "catalog",
+          "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=942"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.sbc.edu/preview_entity.php?catoid=24&ent_oid=1033&returnto=942"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=936"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=937"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=943"
         }
-      ]
+      ],
+      "no_program_evidence": {
+        "catalog_year": "2025-2026",
+        "program_index_url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=942",
+        "course_index_url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=943",
+        "finding": "The current Academic Programs index lists no Computer Science award, minor, department, or program owner, and the current Course Descriptions index lists no Computer Science subject section.",
+        "stale_seed_finding": "The former catoid=9, poid=653 URL resolves to the current catalog home and is not a program page.",
+        "historical_context_url": "https://www.sbc.edu/live/news/2247-sweet-briars-new-computer-science-program-receives",
+        "historical_context_note": "The official 2017 launch announcement explains stale search results but is not evidence of a current degree."
+      },
+      "degree_context": {
+        "award": null,
+        "award_name": null,
+        "catalog_year": "2025-2026",
+        "program": null,
+        "program_status": "no_current_cs_bachelors_program",
+        "variant": null,
+        "academic_unit": null,
+        "college": null,
+        "general_education_authority": "Sweet Briar College Leadership Core",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": null,
+          "general_education_units": 30,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "No aggregate college-wide upper-division-credit minimum was found in the reviewed current General Requirements or Academic Policies pages.",
+            "source_refs": [
+              "graduation",
+              "policy"
+            ]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 60,
+            "rule": "Current institutional requirements call for 60 Sweet Briar credits, at least two years of full-time enrollment including the senior year, and final-year residence except approved 3-2 programs; these are institutional context only because no current CS award exists.",
+            "source_refs": [
+              "graduation",
+              "policy"
+            ]
+          }
+        },
+        "modeling_notes": [
+          "Do not create a Computer Science degree document for Sweet Briar from the stale program URL, historical news, AP Computer Science equivalencies, or general institutional requirements.",
+          "The current 2025-2026 program and course indexes are affirmative official no-program evidence.",
+          "The current catalog selector lists no 2026-2027 undergraduate catalog as of the research date."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "stale_program_seed_resolves_to_catalog_home",
+            "severity": "blocker",
+            "message": "The former poid=653 seed is not a current program page and must never be interpreted as CS requirements."
+          },
+          {
+            "code": "current_catalog_confirms_no_cs_program",
+            "severity": "info",
+            "message": "The current program and course indexes contain no Computer Science program or subject."
+          }
+        ],
+        "layers": {
+          "major": {
+            "status": "not_applicable",
+            "note": "Current official catalog confirms no Computer Science bachelor's program."
+          },
+          "general_education": {
+            "status": "not_applicable",
+            "note": "Leadership Core is retained as institutional evidence, but there is no CS degree to compose."
+          },
+          "college": {
+            "status": "not_applicable",
+            "note": "No current Computer Science academic owner exists in the catalog."
+          },
+          "graduation": {
+            "status": "not_applicable",
+            "note": "Institutional graduation rules are evidence only; there is no CS award model."
+          },
+          "academic_policy": {
+            "status": "not_applicable",
+            "note": "Institutional policy is evidence only; there is no CS award model."
+          },
+          "course_catalog": {
+            "status": "not_applicable",
+            "note": "The current course index contains no Computer Science subject."
+          }
+        }
+      },
+      "note": "Confirmed current no-program finding. The stale catoid=9, poid=653 seed captured the catalog home; current catoid 24 program and course indexes contain no Computer Science degree or subject."
     },
     {
       "slug": "the-university-of-virginia-s-college-at-wise",
       "name": "The University of Virginia's College at Wise",
+      "aliases": [
+        "University of Virginia's College at Wise",
+        "University of Virginia’s College at Wise",
+        "UVA Wise"
+      ],
       "level": "four_year",
       "platform": "acalog",
       "catalog_root": "http://catalog.uvawise.edu/",
       "seeds": [
         {
           "role": "program",
-          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=2&poid=179"
+          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055"
+        },
+        {
+          "role": "ge",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1044"
+        },
+        {
+          "role": "college",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1055"
+        },
+        {
+          "role": "graduation",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1039"
+        },
+        {
+          "role": "course_catalog",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1085"
         }
       ],
-      "note": "HTTP only. Previously url_only; the browser transport should reach the Acalog program page."
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, B.S.",
+        "variant": "Standard Computer Science B.S.",
+        "academic_unit": "Department of Mathematics and Computer Science",
+        "college": null,
+        "general_education_authority": "UVA Wise General Education Liberal Arts Core",
+        "excluded_variants": [
+          "Data Science Concentration",
+          "Computer Science minor"
+        ],
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "major_units_minimum": 77,
+          "major_units_maximum": 80,
+          "general_education_units_minimum": 48,
+          "general_education_units_maximum": 49,
+          "additional_upper_division_major_units": 15,
+          "upper_division": {
+            "status": "scoped_only",
+            "minimum_units": 15,
+            "rule": "At least 15 upper-level credits in the major must be completed through UVA Wise. The CS major separately labels 15 additional upper-division hours; these rules can overlap and must not be double-counted without a course audit.",
+            "source_refs": [
+              "major",
+              "graduation"
+            ]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 45,
+            "rule": "At least 45 credits must be completed through UVA Wise, including at least 15 upper-level major credits; 58 of the 120 credits must come from a regionally accredited four-year institution.",
+            "source_refs": [
+              "graduation"
+            ]
+          },
+          "four_year_institution_units_minimum": 58,
+          "minimum_cumulative_gpa": 2,
+          "minimum_uvawise_gpa": 2
+        },
+        "modeling_notes": [
+          "Current requirements are catoid 9, poid 1199. The former catoid 2, poid 179 seed is archived 2024-2025 content.",
+          "The 48-49 credit Liberal Arts Core overlaps major math and science courses marked with an asterisk; do not add the Core grossly to the 77-80 major range.",
+          "The graduation policy's 15 upper-level major credits and the program's 15 additional upper-division hours can overlap and must not be treated as two independent 15-credit blocks.",
+          "The current catalog host redirects HTTPS requests to HTTP and presents certificate issues; preserve the official HTTP URLs and mark source security accurately."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "stale_archived_catalog_seed",
+            "severity": "blocker",
+            "message": "Do not use catoid 2, poid 179; it is archived 2024-2025 content."
+          },
+          {
+            "code": "official_catalog_http_only",
+            "severity": "review",
+            "message": "The current official Acalog endpoint ultimately serves pages over HTTP; provenance should record secure=false without rejecting the official host."
+          },
+          {
+            "code": "upper_level_major_rules_may_overlap",
+            "severity": "review",
+            "message": "The 15-credit program and graduation upper-level-major rules require course-level overlap analysis."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": [
+              "program"
+            ]
+          },
+          "general_education": {
+            "source_roles": [
+              "program",
+              "ge"
+            ]
+          },
+          "college": {
+            "source_roles": [
+              "college"
+            ],
+            "note": "The department is the relevant academic owner; UVA Wise has no intermediate school or college layer in the reviewed catalog."
+          },
+          "graduation": {
+            "source_roles": [
+              "program",
+              "graduation"
+            ]
+          },
+          "academic_policy": {
+            "source_roles": [
+              "graduation"
+            ]
+          },
+          "course_catalog": {
+            "source_roles": [
+              "course_catalog"
+            ]
+          }
+        }
+      },
+      "note": "HTTP-only current Acalog source. Use 2026-2027 catoid 9 and program poid 1199; the former catoid 2 seed is archived."
+    },
+    {
+      "slug": "university-of-virginia",
+      "name": "University of Virginia",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://engineering.virginia.edu/department/computer-science/academics/undergraduate-programs/bs-computer-science",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://engineering.virginia.edu/department/computer-science/academics/undergraduate-programs/bs-computer-science"
+        }
+      ],
+      "note": "Added to complete the official SCHEV public four-year cohort. The School of Engineering B.S. page identifies the Undergraduate Record as the official requirements repository; full major, school, and graduation-layer capture remains to be completed before acceptance."
     },
     {
       "slug": "university-of-lynchburg",
@@ -831,8 +2770,99 @@
         {
           "role": "program",
           "url": "https://catalog.umw.edu/undergraduate/majors/computer-science/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.umw.edu/undergraduate/general-education/requirements-bachelor-arts-bachelor-science-degrees/"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.umw.edu/undergraduate/college-arts-sciences/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.umw.edu/undergraduate/undergraduate-degrees/ba-bs-degree/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.umw.edu/undergraduate/course-descriptions/cpsc/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science",
+        "variant": "B.S., Computer Science; excludes the Cybersecurity major, B.L.S. requirements, and accelerated Virginia Tech graduate pathway",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Arts and Sciences",
+        "general_education_authority": "University of Mary Washington B.A./B.F.A./B.S./B.S.Ed. General Education Requirements",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "major_units_minimum": 46,
+          "major_units_maximum": 48,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "No aggregate university-wide upper-division-credit minimum is published. The explicit major requirements guarantee at least 33 credits numbered 300 or above.",
+            "source_refs": ["major", "graduation"]
+          },
+          "major_scoped_upper_division_units_minimum": 33,
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 30 academic credits must be earned at UMW, including at least half the credits required for the major; at least 15 of the final 21 credits must also be earned at UMW, subject to the published active-duty military waiver.",
+            "source_refs": ["graduation"]
+          },
+          "major_residency_units_minimum": 23,
+          "major_residency_units_maximum_for_published_path": 24,
+          "final_credit_window_units": 21,
+          "final_credit_window_residency_units_minimum": 15,
+          "single_discipline_units_maximum": 60,
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The authoritative requirement scope is #requirementstextcontainer and publishes a 46-48-credit major plus a 120-credit degree total.",
+          "Exclude #planofstudytextcontainer. The catalog calls it a suggested guide that does not replace Program Requirements; its 120-122 total is a schedule range, not the degree-total requirement.",
+          "The General Education program combines courses, competencies, designated attributes, and experiences, with some requirements satisfied inside the major. It has no published independent additive credit subtotal.",
+          "The accelerated Virginia Tech Computer Science pathway is a separate special program and must not be merged into the ordinary B.S."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "sample_plan_total_not_degree_total",
+            "severity": "review",
+            "message": "Do not replace the 120-credit graduation requirement with the suggested plan's 120-122 scheduling range."
+          },
+          {
+            "code": "general_education_nonadditive",
+            "severity": "review",
+            "message": "The General Education source does not publish one independent credit total and includes attribute or experiential requirements that can overlap other coursework."
+          },
+          {
+            "code": "university_upper_division_minimum_not_published",
+            "severity": "review",
+            "message": "The 33-credit figure is major-scoped; do not report it as a university-wide upper-division requirement."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["program", "graduation"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      }
     },
     {
       "slug": "virginia-commonwealth-university",
@@ -851,13 +2881,111 @@
         },
         {
           "role": "ge",
-          "url": "https://bulletin.vcu.edu/undergraduate/general-education/"
+          "url": "https://bulletin.vcu.edu/undergraduate/undergraduate-study/general-education-curriculum/"
+        },
+        {
+          "role": "college",
+          "url": "https://bulletin.vcu.edu/undergraduate/engineering/computer-science/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://bulletin.vcu.edu/academic-regs/ugrad/ugrad-degree-reqs/"
+        },
+        {
+          "role": "policy",
+          "url": "https://bulletin.vcu.edu/academic-regs/ugrad/ugrad-graduation-app/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://bulletin.vcu.edu/azcourses/cmsc/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, Bachelor of Science (B.S.)",
+        "variant": "Base Computer Science B.S.; no concentration",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Engineering",
+        "general_education_authority": "Virginia Commonwealth University ConnectED General Education curriculum",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "general_education_units": 30,
+          "upper_division": {
+            "status": "required",
+            "minimum_units": 45,
+            "rule": "At least 45 credits must be at the 300-500 level or equivalent.",
+            "source_refs": ["graduation", "policy"]
+          },
+          "residency": {
+            "status": "required",
+            "minimum_units": 30,
+            "rule": "At least 25 percent of degree credits must be completed at VCU, including at least 30 of the final 45 credits.",
+            "source_refs": ["graduation", "policy"]
+          },
+          "residency_minimum_percent": 25,
+          "senior_residency_window_units": 45,
+          "senior_residency_minimum_units": 30,
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "Model the base, no-concentration Computer Science B.S. from #degreerequirementstextcontainer. Cybersecurity, data science, and software engineering concentrations are separate variants.",
+          "The Plan of Study tab is a sample schedule and must not be parsed as another requirement layer.",
+          "All acceleratedbsandms sibling containers describe distinct accelerated pathways and duplicate or alter the base curriculum; exclude them from the ordinary B.S.",
+          "ConnectED is a 30-credit source layer, but courses identified on the program page may overlap its breadth-of-knowledge or area-of-inquiry requirements. Preserve those overlap annotations when constructing the degree."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_edition_preliminary",
+            "severity": "review",
+            "message": "The live 2026-2027 Bulletin is labeled a preliminary/launch edition and warns that program and General Education content may change. Recapture after VCU posts the final edition."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      }
+    },
+    {
+      "slug": "virginia-military-institute",
+      "name": "Virginia Military Institute",
+      "level": "four_year",
+      "platform": "web",
+      "catalog_root": "https://www.vmi.edu/academics/majors-and-minors/computer-science/",
+      "seeds": [
+        {
+          "role": "program",
+          "url": "https://www.vmi.edu/academics/majors-and-minors/computer-science/"
+        }
+      ],
+      "note": "Added to complete the official SCHEV public four-year cohort. VMI publishes three Computer Science B.S. tracks; their shared Core, institute graduation rules, and track-specific requirements must be captured separately before acceptance."
     },
     {
       "slug": "virginia-polytechnic-institute-and-state-university",
       "name": "Virginia Polytechnic Institute and State University",
+      "aliases": [
+        "Virginia Tech"
+      ],
       "level": "four_year",
       "platform": "courseleaf",
       "courseleaf_parse": {
@@ -872,9 +3000,101 @@
         },
         {
           "role": "ge",
-          "url": "https://catalog.vt.edu/undergraduate/pathways-general-education/"
+          "url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/#pathwaysgeneraleducationtext"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://www.registrar.vt.edu/graduation-multi-brief/graduation-policies.html"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.vt.edu/course-search/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science in Computer Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science Major",
+        "variant": "Computer Science major; excludes Secure Computing and Data-Centric Computing majors",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Engineering",
+        "general_education_authority": "Virginia Tech Pathways to General Education",
+        "unit_audit": {
+          "graduation_minimum": 123,
+          "modeled_units": 123,
+          "general_education_units": null,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "The reviewed current university policies do not state one separate university-wide upper-division-credit minimum; prescribed upper-level major courses are not an equivalent policy declaration.",
+            "source_refs": ["major", "graduation", "policy"]
+          },
+          "residency": {
+            "status": "required",
+            "rule": "At least 25 percent of degree credits must be completed at Virginia Tech; no more than 18 transfer credits may appear among the final 45 credits; no more than 50 percent of degree requirements may transfer from two-year institutions.",
+            "source_refs": ["graduation", "policy"]
+          },
+          "residency_minimum_percent": 25,
+          "senior_residency_window_units": 45,
+          "senior_residency_transfer_units_maximum": 18,
+          "senior_residency_derived_institution_units_minimum": 27,
+          "two_year_transfer_maximum_percent": 50,
+          "minimum_cumulative_gpa": 2,
+          "minimum_major_gpa": 2
+        },
+        "modeling_notes": [
+          "The selected target is the broad Computer Science major under the Bachelor of Science in Computer Science, not the separately published Secure Computing or Data-Centric Computing majors.",
+          "#programcurriculumtextcontainer is the authoritative 123-credit curriculum. The same program page's #graduationrequirementstextcontainer is complementary policy content and must also be retained.",
+          "The roadmap/sample plan outside the Program Curriculum container is scheduling guidance and must not be imported as an additional requirement set.",
+          "Pathways concept credits are embedded in the program curriculum and may overlap specified major or elective requirements. Concept 7 is suspended effective fall 2025, so no independent nonoverlapping General Education total is asserted here.",
+          "The 27-credit final-block institutional minimum is the arithmetic implication of the published maximum of 18 transfer credits among the final 45, not separately quoted policy text."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_noninteractive_capture_challenge",
+            "severity": "review",
+            "message": "The live catalog program and department pages returned a JavaScript anti-bot challenge during research; use a browser-capable recapture and compare it with the current official-URL snapshot."
+          },
+          {
+            "code": "general_education_total_has_overlap_and_suspension",
+            "severity": "review",
+            "message": "Do not sum the displayed Pathways concept rows as a distinct GE block without resolving major overlap and the fall-2025 Concept 7 suspension."
+          },
+          {
+            "code": "university_upper_division_minimum_not_published",
+            "severity": "review",
+            "message": "Do not infer a universal upper-division minimum from the program's required 3000/4000/5000-level coursework."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["program", "graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      }
     },
     {
       "slug": "virginia-state-university",
@@ -890,8 +3110,100 @@
         {
           "role": "program",
           "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.vsu.edu/undergraduate/general-education-programs/"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-computer-science/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.vsu.edu/undergraduate/university/policy-statements/"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.vsu.edu/undergraduate/academic-regulations-procedures/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.vsu.edu/undergraduate/courses/csci/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "award_name": "Bachelor of Science",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science Major, Bachelor of Science (B.S.)",
+        "variant": "Base Computer Science B.S.; no concentration",
+        "academic_unit": "Department of Computer Science",
+        "college": "College of Engineering and Technology",
+        "general_education_authority": "Virginia State University General Education Program",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "general_education_units": 33,
+          "core_requirement_units": 54,
+          "required_course_units": 14,
+          "elective_units": 19,
+          "upper_division": {
+            "status": "none_stated",
+            "reason": "Academic Regulations defines course-number levels but the reviewed current authoritative requirement and policy pages do not publish a universal bachelor's upper-division-credit minimum.",
+            "source_refs": ["major", "graduation", "policy"]
+          },
+          "residency": {
+            "status": "none_stated",
+            "reason": "The reviewed current Academic Regulations and Policy Statements pages do not publish a numeric bachelor's degree-completion residency rule; honors residency and transfer-admission provisions are not degree residency.",
+            "source_refs": ["graduation", "policy"]
+          }
+        },
+        "modeling_notes": [
+          "The authoritative #summaryofrequirementstextcontainer closes exactly at 120 credits: 33 General Education, 54 core, 14 required courses, and 19 electives.",
+          "The sibling Plan of Study is a term schedule and must not be parsed as a second requirement set.",
+          "The Plan of Study labels six CSCI elective credits as 330 level or higher, but that wording does not appear in the authoritative Summary of Requirements container. Treat it as an unresolved plan note, not an accepted base-degree rule.",
+          "The Information Security concentration changes elective choices and is excluded from the base, no-concentration target."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "university_upper_division_and_residency_not_published",
+            "severity": "review",
+            "message": "Obtain Registrar confirmation before marking a university-wide upper-division or degree-residency constraint complete. Null/none_stated must not be treated as zero."
+          },
+          {
+            "code": "plan_only_upper_level_elective_wording",
+            "severity": "review",
+            "message": "Six credits at CSCI 330 or above appears only in the sample Plan of Study and is not repeated in the authoritative Summary of Requirements."
+          },
+          {
+            "code": "catalog_internal_presentation_inconsistency",
+            "severity": "review",
+            "message": "The program URL retains the older department-engineering-computer-science path while the current breadcrumb names a standalone Department of Computer Science; the Plan of Study also contains an unlabeled CSCI 470 row."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["program", "graduation", "policy"],
+            "note": "The sources establish the 120-credit program total and document the policy search, but no numeric university-wide residency rule was found."
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          },
+          "course_catalog": {
+            "source_roles": ["course_catalog"]
+          }
+        }
+      }
     },
     {
       "slug": "virginia-wesleyan-university",

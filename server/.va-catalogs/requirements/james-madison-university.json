@@ -8,18 +8,238 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.jmu.edu/programs/computer-science-bs/",
- "captured_at": "2026-08-02T05:54:38.187Z",
- "program_title": null,
- "total_credits": {
-  "min": 120,
-  "max": 120,
-  "raw": "120"
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "variant": "Standard Computer Science B.S.; no concentration",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Integrated Science and Engineering",
+  "general_education_authority": "James Madison University General Education: The Human Community",
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "general_education_units": 41,
+   "quantitative_units_beyond_general_education": 3,
+   "major_units_minimum": 49,
+   "major_units_maximum": 52,
+   "university_elective_units_minimum": 24,
+   "university_elective_units_maximum": 27,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed current degree and graduation sources do not publish a separate university-wide upper-division-credit minimum.",
+    "source_refs": [
+     "major",
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 25 percent of the degree must be completed at JMU; at least 60 credits must come from four-year institutions including JMU; students must enroll at JMU for at least two regular semesters and attend the final semester.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "four_year_institution_units_minimum": 60,
+   "jmu_regular_semesters_minimum": 2,
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The published 49-52 major-credit range and 24-27 university-elective range are paired alternatives that close with General Education and the quantitative requirement at 120 credits; do not combine both maxima or both minima.",
+   "The recommended course sequence is a sample schedule outside #requirementstextcontainer and must not be imported as an additional requirement layer.",
+   "No university-wide upper-division minimum was found. The explicit none_stated declaration is an unresolved policy fact, not a zero-credit requirement."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "catalog_noninteractive_capture_challenge",
+    "severity": "review",
+    "message": "The live catalog program, policy, and 2026-2027 PDF endpoints returned a JavaScript anti-bot challenge during research; use a browser-capable recapture and retain the current official-URL snapshot for comparison."
+   },
+   {
+    "code": "university_upper_division_minimum_not_published",
+    "severity": "review",
+    "message": "Do not infer a university-wide upper-division requirement from class standing, course numbering, or the major's upper-level courses."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
  },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "James Madison University major and degree requirements",
+   "url": "https://catalog.jmu.edu/programs/computer-science-bs/",
+   "requested_url": "https://catalog.jmu.edu/programs/computer-science-bs/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:26.267Z",
+   "sha256": "10fdfbb0c011fdde2beaab4a3b6f3de02b914a5dbf339ec6e10e1abced86bf28",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "James Madison University general education requirements",
+   "url": "https://catalog.jmu.edu/general-education/",
+   "requested_url": "https://catalog.jmu.edu/general-education/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:26.267Z",
+   "sha256": "b542d974c0373eeac5e57cea33c5bb28f05a56096f018e4e6da7f7839c563e4b",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "James Madison University college or school requirements",
+   "url": "https://www.jmu.edu/cise/depts/computer-science.shtml",
+   "requested_url": "https://www.jmu.edu/cise/depts/computer-science.shtml",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:26.267Z",
+   "sha256": "7a68eb6bf13727acd4ebbd774603904a420a1800856a3428aa32f82d875036bb",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "James Madison University university graduation requirements",
+   "url": "https://www.jmu.edu/registrar/students/graduation/undergrad-requirements.shtml",
+   "requested_url": "https://www.jmu.edu/registrar/students/graduation/undergrad-requirements.shtml",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:26.267Z",
+   "sha256": "1a9588f1714951d73ca5e146e1ac57cabcb9c8510d58e92e2d7ff08ffcf07567",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "James Madison University academic policies",
+   "url": "https://catalog.jmu.edu/undergraduate-degree-requirements-james-madison-university/",
+   "requested_url": "https://catalog.jmu.edu/undergraduate-degree-requirements-james-madison-university/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:26.267Z",
+   "sha256": "a70dc513cc5436ac180aff595c01149a4a0c5bd3b174b914dbf0c3772c0dccf8",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "James Madison University course descriptions and credit values",
+   "url": "https://catalog.jmu.edu/courses/",
+   "requested_url": "https://catalog.jmu.edu/courses/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:26.267Z",
+   "sha256": "866d0306b8f7218bd74a04c390cdeb218f4f8499113f781c7822199894711a29",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T02:53:26.267Z",
+ "program_title": "Computer Science, B.S.",
+ "parse_error": null,
+ "total_credits": null,
  "stopped_at": null,
  "groups": [
   {
    "title": "Major Requirements",
-   "credits": null,
+   "credits": {
+    "min": 49,
+    "max": 52,
+    "raw": "49-52"
+   },
    "choose": null,
    "choose_credits": null,
    "distinct_sections": null,
@@ -430,592 +650,12 @@
      ]
     }
    ]
-  },
-  {
-   "title": "Fall Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS 149 Introduction to Programming",
-    "MATH 231 Calculus with Functions I [C3QR] 1",
-    "General Education requirement"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CS149",
-         "title": "Introduction to Programming"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 149 Introduction to Programming",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH231",
-         "title": "Calculus with Functions I [C3QR]"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 231 Calculus with Functions I [C3QR] 1",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education requirement",
-       "category": "General Education requirement",
-       "credits": {
-        "min": 9,
-        "max": 9,
-        "raw": "9"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS 159 Advanced Programming",
-    "CS 227 Discrete Structures I",
-    "MATH 232 Calculus with Functions II 1",
-    "General Education requirement"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CS159",
-         "title": "Advanced Programming"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 159 Advanced Programming",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CS227",
-         "title": "Discrete Structures I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 227 Discrete Structures I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH232",
-         "title": "Calculus with Functions II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 232 Calculus with Functions II 1",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education requirement",
-       "category": "General Education requirement",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fall Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS 240 Algorithms and Data Structures",
-    "CS 345 Software Engineering",
-    "General Education requirement",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CS240",
-         "title": "Algorithms and Data Structures"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 240 Algorithms and Data Structures",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CS345",
-         "title": "Software Engineering"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 345 Software Engineering",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education requirement",
-       "category": "General Education requirement",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS 261 Computer Systems I",
-    "MATH 220 Elementary Statistics [C3QR] 2",
-    "General Education requirement",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CS261",
-         "title": "Computer Systems I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 261 Computer Systems I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH220",
-         "title": "Elementary Statistics [C3QR]"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 220 Elementary Statistics [C3QR] 2",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education requirement",
-       "category": "General Education requirement",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fall Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS 327 Discrete Structures II",
-    "CS 361 Computer Systems II",
-    "General Education requirement",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CS327",
-         "title": "Discrete Structures II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 327 Discrete Structures II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CS361",
-         "title": "Computer Systems II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 361 Computer Systems II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education requirement",
-       "category": "General Education requirement",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS 430 Programming Languages",
-    "CS Systems Elective",
-    "General Education requirement",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CS430",
-         "title": "Programming Languages"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CS 430 Programming Languages",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CS Systems Elective",
-       "category": "CS Systems Elective",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education requirement",
-       "category": "General Education requirement",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fall Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS Algorithm Elective",
-    "CS Elective",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CS Algorithm Elective",
-       "category": "CS Algorithm Elective",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CS Elective",
-       "category": "CS Elective",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 9,
-        "max": 9,
-        "raw": "9"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring Semester",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CS Electives",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CS Electives",
-       "category": "CS Electives",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 9,
-        "max": 9,
-        "raw": "9"
-       }
-      }
-     ]
-    }
-   ]
   }
  ],
  "narrative": [],
  "unassigned": [],
  "validation": {
-  "verdict": "pass",
+  "verdict": "warn",
   "needs_hand_read": false,
   "checks": [
    {
@@ -1024,40 +664,35 @@
     "detail": "all 24 codes appear verbatim in the captured text"
    },
    {
-    "severity": "pass",
-    "name": "group_count",
-    "detail": "9 requirement groups"
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
    },
    {
     "severity": "pass",
     "name": "course_count",
-    "detail": "24 distinct courses across 51 rows"
+    "detail": "24 distinct courses across 23 rows"
    },
    {
-    "severity": "pass",
-    "name": "credits_reconcile",
-    "detail": "groups sum to 120–120, stated total 120"
-   },
-   {
-    "severity": "pass",
-    "name": "categories",
-    "detail": "16 unenumerated requirement(s) kept as categories"
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
    }
   ],
   "stats": {
-   "groups": 9,
-   "sections": 14,
-   "rows": 51,
-   "course_rows": 35,
-   "category_rows": 16,
+   "groups": 1,
+   "sections": 6,
+   "rows": 23,
+   "course_rows": 23,
+   "category_rows": 0,
    "distinct_courses": 24,
    "credit_span": {
-    "min": 120,
-    "max": 120,
-    "groups_with_credits": 8
+    "min": 49,
+    "max": 52,
+    "groups_with_credits": 1
    },
-   "stated_total": "120"
+   "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.889Z"
+ "extracted_at": "2026-08-10T02:54:24.360Z"
 }

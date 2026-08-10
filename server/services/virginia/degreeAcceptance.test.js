@@ -228,6 +228,31 @@ describe('four-year Virginia degree acceptance', () => {
     expect(check(result, 'catalog', 'source_references')).toMatchObject({ severity: 'fail' });
   });
 
+  it('allows empty refs only on an explicitly not-applicable captured layer', () => {
+    const notApplicable = fourYearDoc();
+    notApplicable.capture_layers = {
+      college: { status: 'not_applicable', source_refs: [] },
+    };
+    const accepted = validateDegreeAcceptance(notApplicable, {
+      institutionLevel: 'four_year', resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(accepted, 'catalog', 'source_references')).toMatchObject({ severity: 'pass' });
+
+    const missingRequiredRefs = clone(notApplicable);
+    missingRequiredRefs.capture_layers.college.status = 'captured';
+    const rejectedEmpty = validateDegreeAcceptance(missingRequiredRefs, {
+      institutionLevel: 'four_year', resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(rejectedEmpty, 'catalog', 'source_references')).toMatchObject({ severity: 'fail' });
+
+    const danglingNotApplicable = clone(notApplicable);
+    danglingNotApplicable.capture_layers.college.source_refs = ['missing'];
+    const rejectedUnknown = validateDegreeAcceptance(danglingNotApplicable, {
+      institutionLevel: 'four_year', resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(rejectedUnknown, 'catalog', 'source_references')).toMatchObject({ severity: 'fail' });
+  });
+
   it('requires all three catalog layers and their organizational owners', () => {
     const doc = fourYearDoc();
     delete doc.requirement_layers.ge_college;
@@ -255,6 +280,20 @@ describe('four-year Virginia degree acceptance', () => {
 
     expect(check(result, 'catalog', 'catalog_metadata')).toMatchObject({ severity: 'fail' });
     expect(result.catalog_structural.verdict).toBe('fail');
+  });
+
+  it('allows the host-exact current UVA Wise HTTP catalog exception', () => {
+    const doc = fourYearDoc();
+    const currentProgram = 'http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199';
+    doc.source_url = currentProgram;
+    doc.sources[0].url = currentProgram;
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year', resolveCourse: ({ id }) => id === 101,
+    });
+
+    expect(result.catalog.verdict).toBe('pass');
+    expect(check(result, 'catalog', 'official_sources')).toMatchObject({ severity: 'pass' });
   });
 
   it('does not promote a catalog record whose unit audit or policy declarations are incomplete', () => {
@@ -317,6 +356,23 @@ describe('four-year Virginia degree acceptance', () => {
     expect(check(result, 'catalog', 'catalog_scope')).toMatchObject({ severity: 'fail' });
     expect(result.ready_for_analysis).toBe(false);
   });
+
+  it('keeps exact unsupported constraints in the catalog but blocks analysis readiness', () => {
+    const doc = fourYearDoc();
+    doc.requirement_groups[0].analysis_constraints = [{
+      kind: 'distinct_courses_across_sections',
+      status: 'evaluator_not_implemented',
+      description: 'Selections in the two menus must be different courses.',
+    }];
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year', resolveCourse: ({ id }) => id === 101,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.ready_for_analysis).toBe(false);
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'fail' });
+  });
 });
 
 describe('Virginia associate-degree acceptance', () => {
@@ -343,6 +399,19 @@ describe('Virginia associate-degree acceptance', () => {
     doc.kind = 'degree';
     doc.degree_type = 'BA';
     doc.community_college_id = 'va:cc:another-college';
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+
+    expect(check(result, 'catalog', 'identity')).toMatchObject({ severity: 'fail' });
+    expect(result.accepted).toBe(false);
+  });
+
+  it('does not promote a career-oriented AAS to the transfer AS cohort', () => {
+    const doc = associateDoc();
+    doc.degree_type = 'AAS';
+    doc.degree_title_seen = 'Computer Science, Associate of Applied Science';
 
     const result = validateDegreeAcceptance(doc, {
       institutionLevel: 'community_college', resolveCourse,

@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_community_college_cs_as_blue_ridge_brightpoint_official_source_batch",
+  "researched_at": "2026-08-09",
+  "source_policy": {
+    "allowed_sources": "Current official college catalog program, option-menu, and policy pages only.",
+    "schedule_rule": "A semester grid is excluded when a separate requirements list exists. Blue Ridge's grid is retained and reorganized because the current catalog publishes it as the only course-requirement structure; semester placement itself is not a requirement.",
+    "advisory_exclusion": "Recommendations, transfer-destination advice, and prospective course-availability notes are recorded as context but are not promoted to AND requirements.",
+    "arithmetic_rule": "Published credit contradictions remain visible. No unprinted filler course or compensating-credit rule is invented to force a path to close."
+  },
+  "summary": {
+    "institutions_reviewed": 2,
+    "catalog_year": "2026-2027",
+    "current_standalone_cs_as": 2,
+    "published_minimum_credits": {
+      "blue-ridge-community-college": 60,
+      "brightpoint-community-college": 60
+    },
+    "catalog_acceptance_possible": 2,
+    "analysis_ready_possible_without_new_constraint_support": 0,
+    "findings": [
+      "Blue Ridge publishes a current Associate of Science degree with a Computer Science major and a 60-62 credit total.",
+      "Brightpoint publishes a current Computer Science, AS transfer degree with a 60-credit minimum; the enumerated requirements model a 60-61 credit range.",
+      "Both degree trees close honestly at the 60-credit minimum, while source contradictions and unsupported cross-choice rules remain explicit analysis blockers."
+    ]
+  },
+  "institutions": [
+    {
+      "slug": "blue-ridge-community-college",
+      "name": "Blue Ridge Community College",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "platform": "CourseLeaf",
+        "catalog_root": "https://catalog.brcc.edu/",
+        "program_url": "https://catalog.brcc.edu/programs-study/science-computer-science/",
+        "evidence": "The current catalog header identifies the 2026-2027 Catalog and Student Handbook; the program overview prints Award: Associate of Science Degree and Major: Computer Science."
+      },
+      "degree": {
+        "catalog_program_title": "Science: Computer Science",
+        "award": "Associate of Science",
+        "major": "Computer Science",
+        "purpose": "Transfer preparation for a baccalaureate program in computer science or a related field.",
+        "published_total_credits_minimum": 60,
+        "published_total_credits_maximum": 62,
+        "official_requirement_structure": "The four-semester Plan of Study Grid is the only official course-requirement table. It is reorganized by requirement in composition; the semester ordering is not imported as an extra schedule rule.",
+        "requirement_logic": {
+          "fixed_courses": [
+            {"code": "CSC 221", "credits": 3},
+            {"code": "CSC 222", "credits": 4},
+            {"code": "CSC 223", "credits": 4},
+            {"code": "ENG 111", "credits": 3},
+            {"code": "ENG 112", "credits": 3},
+            {"code": "MTH 263", "credits": 4},
+            {"code": "MTH 288", "credits": 3}
+          ],
+          "student_development": {
+            "rule": "choose one",
+            "credits": 1,
+            "options": ["SDV 100", "SDV 101"],
+            "option_count": 2,
+            "source_ref": "student_development"
+          },
+          "calculus_or_statistics": {
+            "rule": "choose one",
+            "credits_minimum": 3,
+            "credits_maximum": 4,
+            "options": ["MTH 264", "MTH 245"],
+            "option_count": 2
+          },
+          "systems_or_advanced_mathematics": {
+            "rule": "choose one",
+            "credits_minimum": 3,
+            "credits_maximum": 4,
+            "options": ["CSC 205", "CSC 215", "MTH 265"],
+            "option_count": 3
+          },
+          "laboratory_science": {
+            "rule": "choose one four-credit course",
+            "credits": 4,
+            "options": ["BIO 101", "CHM 111", "GOL 105", "GOL 110", "PHY 201", "PHY 241"],
+            "option_count": 6
+          },
+          "general_education_elective": {
+            "printed_slot_credits": 4,
+            "rule": "choose from the official program-owned General Education Electives table",
+            "concrete_options": [
+              "BIO 101", "BIO 102", "CHM 111", "CHM 112", "CST 100", "CST 110", "GOL 105", "GOL 110",
+              "MTH 245", "MTH 264", "PHY 201", "PHY 202", "PHY 241", "PHY 242",
+              "ASL 101", "ASL 102", "ASL 201", "SPA 101", "SPA 102", "SPA 115", "SPA 201", "SPA 202"
+            ],
+            "option_count": 22,
+            "world_language_source_ref": "elective",
+            "conflict": "The official menu includes three-credit CST 100, CST 110, MTH 245, ASL 201, SPA 201, and SPA 202, but the program grid assigns four credits to the slot and states no compensating-credit rule."
+          },
+          "computer_science_electives": {
+            "required_credits": 9,
+            "published_slots": [3, 6],
+            "rule": "Complete nine credits from the program-owned Computer Science Electives table; no universal course count is printed.",
+            "concrete_options": [
+              "BIO 102", "CHM 112", "CSC 205", "CSC 215", "CST 100", "CST 110", "EGR 121", "EGR 122", "EGR 270",
+              "GOL 105", "GOL 110", "MTH 161", "MTH 162", "MTH 167", "MTH 265", "MTH 266", "PHY 201", "PHY 202", "PHY 242",
+              "ASL 101", "ASL 102", "ASL 201", "SPA 101", "SPA 102", "SPA 115", "SPA 201", "SPA 202"
+            ],
+            "option_count": 27,
+            "menu_credit_range": "2-5",
+            "duplicate_credit_rule": "Students may not receive graduation credit for both MTH 167 and MTH 161, or both MTH 167 and MTH 162."
+          },
+          "ucgs_block_ii_humanities_art_literature": {
+            "rule": "choose two three-credit courses from different categories",
+            "credits": 6,
+            "categories": {
+              "art": ["ART 100", "ART 101", "ART 102", "CST 130", "CST 151", "MUS 121"],
+              "humanities": ["HUM 202", "HUM 210", "HUM 216", "HUM 220", "PHI 100", "PHI 220", "REL 100", "REL 230"],
+              "literature": ["ENG 225", "ENG 245", "ENG 246", "ENG 250", "ENG 255", "ENG 258", "ENG 275"]
+            },
+            "option_count": 21,
+            "distinct_category_rule": true
+          },
+          "ucgs_block_iii_social_behavioral_science": {
+            "rule": "choose one",
+            "credits": 3,
+            "options": ["ECO 150", "ECO 201", "ECO 202", "GEO 210", "GEO 220", "PLS 135", "PLS 140", "PLS 241", "PSY 200", "SOC 200", "SOC 268"],
+            "option_count": 11
+          },
+          "ucgs_block_vi_history": {
+            "rule": "choose one",
+            "credits": 3,
+            "options": ["HIS 101", "HIS 102", "HIS 111", "HIS 112", "HIS 121", "HIS 122"],
+            "option_count": 6
+          }
+        },
+        "credit_arithmetic": {
+          "fixed_and_category_minimum_before_variable_math_choices": 54,
+          "calculus_or_statistics_minimum": 3,
+          "systems_or_advanced_math_minimum": 3,
+          "modeled_minimum": 60,
+          "variable_choice_increment_maximum": 2,
+          "modeled_maximum": 62,
+          "published_range": "60-62",
+          "closure": "The printed slot values close exactly at 60-62. A student selecting a three-credit course in the printed four-credit General Education Elective slot does not close without an unstated adjustment, so that route remains blocked for deterministic analysis."
+        }
+      },
+      "general_education_and_elective_sources": {
+        "ucgs_url": "https://catalog.brcc.edu/programs-study/ucgselectives/",
+        "world_language_url": "https://catalog.brcc.edu/programs-study/world-language/",
+        "student_development_url": "https://catalog.brcc.edu/programs-study/sdv/",
+        "important_constraints": [
+          "The two Block II courses must come from different Art, Humanities, or Literature categories.",
+          "No credit may be awarded for both ECO 150 and ECO 201 or ECO 202.",
+          "No credit may be awarded for both MTH 155 and MTH 245.",
+          "No credit may be awarded for both MTH 167 and MTH 161 or MTH 162."
+        ]
+      },
+      "graduation_constraints": {
+        "policy_url": "https://catalog.brcc.edu/student-handbook/policies/graduation/",
+        "minimum_curriculum_gpa": 2.0,
+        "minimum_major_gpa": 2.0,
+        "residency": {"minimum_percent": 25, "unit": "percent of degree credits completed at Blue Ridge"},
+        "catalog_age_limit_years": 7,
+        "other_rules": [
+          "Complete all curriculum requirements and receive the required recommendation and certification.",
+          "Resolve financial obligations and complete the graduation application.",
+          "Participate in general-education assessment when selected."
+        ]
+      },
+      "source_conflicts_and_analysis_blockers": [
+        "A four-credit General Education Elective slot offers multiple three-credit courses with no published compensating-credit instruction.",
+        "The two Block II choices require distinct categories, a cross-choice rule not implemented by the evaluator.",
+        "The nine-credit Computer Science elective menu includes two-, three-, four-, and five-credit courses but states no choose-N rule.",
+        "Several elective menus overlap fixed or other choice menus, so applied-credit double counting must be prevented rather than assumed away."
+      ],
+      "capture_and_parser_notes": [
+        "The official CourseLeaf page puts the plan grid in #requiredcoursestextcontainer and all three program-owned elective tables in sibling #computerscienceelectivestextcontainer. Both are children of #content.",
+        "A selector that takes only the first match from '#requiredcoursestextcontainer, #computerscienceelectivestextcontainer' would silently lose the elective tables; use #content as the authoritative scope.",
+        "The parser may reorganize the grid by rule only in the reviewed composition. It must not import semester placement as a second requirement layer."
+      ],
+      "sources": [
+        {"id": "major", "role": "program", "url": "https://catalog.brcc.edu/programs-study/science-computer-science/", "evidence": "Award identity, official grid, total, lab menu, General Education Elective menu, Computer Science elective menu, and Block II footnote."},
+        {"id": "general_education", "role": "ge", "url": "https://catalog.brcc.edu/programs-study/ucgselectives/", "evidence": "Current UCGS Block II, III, and VI course dictionaries and duplicate-credit restrictions."},
+        {"id": "elective", "role": "elective", "url": "https://catalog.brcc.edu/programs-study/world-language/", "evidence": "The eight concrete world-language courses linked by both program-owned elective tables."},
+        {"id": "student_development", "role": "student_development", "url": "https://catalog.brcc.edu/programs-study/sdv/", "evidence": "The one-credit SDV 100 or SDV 101 options linked by the program grid."},
+        {"id": "graduation", "role": "graduation", "url": "https://catalog.brcc.edu/student-handbook/policies/graduation/", "evidence": "Current GPA, residency, catalog-age, application, and completion policies."}
+      ]
+    },
+    {
+      "slug": "brightpoint-community-college",
+      "name": "Brightpoint Community College",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "platform": "Modern Campus Catalog (Acalog)",
+        "catalog_url": "https://catalog.brightpoint.edu/index.php?catoid=12",
+        "program_url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157",
+        "catalog_id": 12,
+        "program_id": 1464,
+        "evidence": "The catalog heading identifies the 2026-2027 Catalog and Student Handbook, and poid 1464 is titled Computer Science, AS."
+      },
+      "degree": {
+        "catalog_program_title": "Computer Science, AS",
+        "award": "Associate of Science",
+        "purpose": "Transfer degree for continued study in computer science.",
+        "published_total_credits_minimum": 60,
+        "modeled_total_credits_maximum": 61,
+        "requirement_logic": {
+          "fixed_courses": [
+            {"code": "SDV 100", "credits": 1},
+            {"code": "ENG 111", "credits": 3},
+            {"code": "ENG 112", "credits": 3},
+            {"code": "MTH 263", "credits": 4},
+            {"code": "MTH 264", "credits": 4},
+            {"code": "CSC 221", "credits": 3},
+            {"code": "CSC 222", "credits": 4},
+            {"code": "CSC 205", "credits": 3},
+            {"code": "CSC 223", "credits": 4},
+            {"code": "CSC 208", "credits": 3}
+          ],
+          "laboratory_science_sequence": {
+            "rule": "choose one complete two-course sequence",
+            "credits": 8,
+            "options": [
+              ["BIO 101", "BIO 102"],
+              ["CHM 111", "CHM 112"],
+              ["PHY 201", "PHY 202"],
+              ["PHY 241", "PHY 242"]
+            ],
+            "route_count": 4,
+            "course_count": 8
+          },
+          "history": {
+            "rule": "choose one",
+            "credits": 3,
+            "options": ["HIS 101", "HIS 102", "HIS 111", "HIS 112", "HIS 121", "HIS 122"],
+            "option_count": 6
+          },
+          "humanities": {
+            "rule": "choose one",
+            "credits": 3,
+            "options": ["PHI 100", "PHI 111", "PHI 220", "REL 100", "REL 230"],
+            "option_count": 5
+          },
+          "social_behavioral_sciences": {
+            "rule": "choose one",
+            "credits": 3,
+            "options": ["ECO 150", "ECO 201", "ECO 202", "GEO 210", "GEO 220", "PLS 135", "PLS 140", "PLS 241", "PSY 200", "SOC 200", "SOC 211", "SOC 268"],
+            "option_count": 12
+          },
+          "arts_literature": {
+            "rule": "choose one",
+            "credits": 3,
+            "options": ["ART 101", "ART 102", "CST 130", "CST 151", "MUS 121", "MUS 226", "ENG 245", "ENG 246", "ENG 255", "ENG 258", "ENG 275", "ENG 225"],
+            "option_count": 12
+          },
+          "approved_electives": {
+            "rule": "choose two or three courses totaling at least eight credits",
+            "published_credits_minimum": 8,
+            "published_credits_maximum": 9,
+            "options": [
+              "CHM 111", "CHM 112", "CST 100", "CST 110", "EGR 121", "EGR 122", "EGR 270", "ITE 152",
+              "MTH 161", "MTH 162", "MTH 245", "MTH 265", "MTH 266", "PHY 241", "PHY 242", "CSC 195"
+            ],
+            "option_count": 16,
+            "important_code_correction": "The official code is ITE 152. The existing line-parser artifact incorrectly normalized it as TE152."
+          },
+          "advisory_material_excluded": [
+            "The BIO 101/BIO 102, CHM 111/CHM 112, or PHY 241/PHY 242 sequence printed after the electives is a recommendation, not an additional AND requirement.",
+            "The Spring-only statement is explicitly based on historical trends and current planning and may change; it is not an award requirement."
+          ]
+        },
+        "credit_arithmetic": {
+          "fixed_courses": 32,
+          "laboratory_sequence": 8,
+          "history": 3,
+          "humanities": 3,
+          "social_behavioral_science": 3,
+          "arts_literature": 3,
+          "subtotal_before_approved_electives": 52,
+          "approved_electives_minimum": 8,
+          "approved_electives_maximum": 9,
+          "modeled_minimum": 60,
+          "modeled_maximum": 61,
+          "published_minimum": 60,
+          "closure": "The enumerated requirements close at the published 60-credit minimum. The approved-elective heading prints 8-9, so the modeled maximum is 61 even though the page states only a total minimum."
+        }
+      },
+      "general_education_and_elective_sources": {
+        "authority": "The current Computer Science, AS program page itself",
+        "url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157",
+        "evidence": "The current official degree page prints closed menus for all four breadth slots, four complete lab-science sequences, and sixteen approved electives."
+      },
+      "graduation_constraints": {
+        "graduation_url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1153",
+        "academic_policy_url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1151",
+        "minimum_curriculum_gpa": 2.0,
+        "residency": {"minimum_percent": 25, "unit": "percent of total semester credits earned through Brightpoint credit instruction"},
+        "experiential_learning_maximum_percent_of_degree": 25,
+        "other_rules": [
+          "Complete all course and credit-hour requirements applicable to the degree.",
+          "Credits awarded through experiential learning do not satisfy the residency requirement.",
+          "Meet all financial and administrative graduation obligations."
+        ]
+      },
+      "source_conflicts_and_analysis_blockers": [
+        "The approved-elective rule combines a variable choose-two-or-three cardinality with an eight-credit minimum; a simple choose-two evaluator is insufficient for two three-credit selections.",
+        "Approved electives overlap laboratory-science courses. The same applied credits cannot silently satisfy both the eight-credit sequence and the separate eight-credit elective slot.",
+        "The catalog prints a 60-credit minimum but no overall maximum; the enumerated 8-9 elective range produces a modeled 60-61 range."
+      ],
+      "capture_and_parser_notes": [
+        "The repository's former catoid 8, poid 1008 seed is stale. Current identity is catoid 12, poid 1464, returnto 1157.",
+        "The current host can return an AWS WAF 202 response with an empty body to direct HTTP clients; browser-capable Acalog capture reaches the official page.",
+        "The line parser currently drops the leading I from ITE 152 and can ingest the advisory science recommendation into the final Approved Electives group. Composition corrects both without editing the raw artifact."
+      ],
+      "sources": [
+        {"id": "catalog", "role": "catalog", "url": "https://catalog.brightpoint.edu/index.php?catoid=12", "evidence": "Current 2026-2027 catalog identity."},
+        {"id": "major", "role": "program", "url": "https://catalog.brightpoint.edu/preview_program.php?catoid=12&poid=1464&returnto=1157", "evidence": "Award identity, fixed courses, lab sequences, approved breadth/elective menus, and published minimum."},
+        {"id": "graduation", "role": "graduation", "url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1153", "evidence": "Current completion, 25-percent residency, GPA, and experiential-learning rules."},
+        {"id": "policy", "role": "policy", "url": "https://catalog.brightpoint.edu/content.php?catoid=12&navoid=1151", "evidence": "Current academic-standing and curriculum-completion policy context."}
+      ]
+    }
+  ]
+}

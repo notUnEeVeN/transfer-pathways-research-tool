@@ -1,0 +1,1057 @@
+{
+  "schema_version": 1,
+  "slug": "longwood-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Mathematics and Computer Science",
+  "college": "Cook-Cole College of Arts and Sciences",
+  "ge_authority": "Longwood University Civitae Core Curriculum",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "source_walks": [
+    {
+      "parent_source_ref": "general_education",
+      "label": "First Year (6 credits)",
+      "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2790"
+    },
+    {
+      "parent_source_ref": "general_education",
+      "label": "Pillar Courses (18-19 credits)",
+      "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2788"
+    },
+    {
+      "parent_source_ref": "general_education",
+      "label": "Perspectives Courses (12 credits)",
+      "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2796"
+    },
+    {
+      "parent_source_ref": "general_education",
+      "label": "Symposium Courses (3 credits)",
+      "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2801"
+    }
+  ],
+  "selected_variant": "B.S. path within the combined Computer Science, BA or BS catalog program",
+  "excluded_variants": [
+    "Bachelor of Arts path"
+  ],
+  "capture_exclusions": [
+    "Prospective, suggested, and term-by-term schedules are not degree requirements and are excluded."
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": [
+        "major",
+        "general_education",
+        "college"
+      ],
+      "note": "The Cook-Cole source establishes academic ownership. No additional college-wide credit block is published for this program beyond Civitae, the B.S. addition, the major, and university graduation rules."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": [
+        "graduation",
+        "policy"
+      ]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "general_education_units_minimum": 39,
+    "general_education_units_maximum": 40,
+    "major_units": 45,
+    "bs_degree_requirement_units_minimum": 3,
+    "bs_degree_requirement_units_maximum": 4,
+    "general_elective_units_minimum": 31,
+    "general_elective_units_maximum": 33,
+    "upper_division": {
+      "status": "required",
+      "minimum_units": 30,
+      "modeled_units": 30,
+      "rule": "At least 30 upper-level credits must be earned at Longwood. The canonical model contains 18 specifically required or minimum major/Core upper-level credits and reserves 12 upper-level Longwood elective credits to close the published minimum. The international-exchange exception requires advance written college-dean approval and is not selected.",
+      "source_refs": [
+        "major",
+        "general_education",
+        "graduation"
+      ]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "minimum_fraction": 0.25,
+      "rule": "At least 25 percent of the 120-credit degree must be earned at Longwood University. Independently, all 30 upper-level graduation credits must be earned at Longwood, except for the separately approved international-exchange exception.",
+      "source_refs": [
+        "graduation"
+      ]
+    },
+    "minimum_longwood_gpa": 2,
+    "minimum_major_gpa": 2,
+    "canonical_path": {
+      "civitae_units": 39,
+      "major_units_after_math_171_overlap": 45,
+      "bs_additional_units": 3,
+      "general_elective_units": 33,
+      "total_units": 120,
+      "note": "The canonical unit path uses the 3-credit Global Citizenship Pillar route and MATH 250. If either 4-credit route is selected, the published general-elective capacity falls by the same amount."
+    }
+  },
+  "modeling_notes": [
+    "The current official program page combines the B.A. and B.S. This composition selects only the ordinary B.S. path and retains the shared 45-credit major.",
+    "MATH 171 is a required major course but the catalog expressly counts its three credits in Civitae. It is represented once, in the Quantitative Reasoning Pillar, so the 45-credit major arithmetic remains 30 Computer Science Foundations + 3 MATH 175 + 12 major electives.",
+    "The Civitae canonical path is 39 credits: 6 First Year + 18 Pillars + 12 Perspectives + 3 Symposium. The alternative 4-credit Global Citizenship route raises Civitae to 40.",
+    "The B.S. addition is MATH 250 (3 credits) or MATH 261 (4 credits). MATH 164 or placement is a prerequisite to MATH 261, not an additional unconditional degree requirement.",
+    "The published 31-33 General Electives range is derived from the two independent 3/4-credit choices: 33 credits on the 39-credit Civitae plus 3-credit B.S. path, 32 when one choice adds a credit, and 31 when both do.",
+    "The 30-credit upper-level requirement is not an extra degree block. Twelve credits of the already published general-elective capacity are constrained to upper-level Longwood credit on the canonical path after 18 required upper-level credits are counted.",
+    "General faculty approval, the graduation application, GPA rules, course-grade rules, Civitae distribution, and programming-language proficiency are retained as zero-unit requirements rather than being omitted from the full degree."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "cross_group_variable_credit_dependency",
+      "severity": "block_analysis",
+      "message": "The evaluator does not yet condition the 31-33 elective capacity on both the 3/4-credit Global Citizenship and B.S. course selections."
+    },
+    {
+      "code": "multiple_languages_overlap_dependency",
+      "severity": "block_analysis",
+      "message": "The evaluator does not yet enforce when CMSC 210 or CMSC 280 may simultaneously satisfy the zero-unit proficiency requirement and the 12-credit major-elective budget."
+    },
+    {
+      "code": "civitae_attribute_and_distribution_dependency",
+      "severity": "block_analysis",
+      "message": "Civitae category, SACSCOC distribution, sequencing, and single-count restrictions require course attributes and cross-group evaluators not yet implemented."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Civitae Foundations: First Year",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education",
+        "course_catalog"
+      ],
+      "stated_credits": "6",
+      "sections": [
+        {
+          "label": "Inquiry into Citizenship",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CTZN110",
+              "title": "Inquiry into Citizenship",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Writing and Rhetoric",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "ENGL165",
+              "title": "Writing and Rhetoric",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Pillar: Historical and Contemporary Insights",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-P-HCI",
+              "name": "Approved Historical and Contemporary Insights Pillar course",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Pillar: Human Behavior and Social Institutions",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-P-HBSI",
+              "name": "Approved Human Behavior and Social Institutions Pillar course",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Pillar: Global Citizenship",
+      "requirement_layer": "general_education",
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "3-4",
+      "note": "The 4-credit route is the ordinary Foundations world-language route. Advanced language placement changes the applicable 3-credit Pillar route and feeds the separate Integrating World Languages Perspective rule.",
+      "analysis_constraints": [
+        {
+          "kind": "language_placement_route",
+          "status": "evaluator_not_implemented",
+          "description": "The applicable 3- or 4-credit Global Citizenship route depends on world-language placement and the Integrating World Languages Perspective selection."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Approved 3-credit Global Citizenship Pillar route after advanced language placement",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-P-GC-3",
+              "name": "Approved 3-credit Global Citizenship Pillar route",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Approved 4-credit Foundations world-language route",
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-P-GC-4",
+              "name": "Approved 4-credit Global Citizenship Foundations world-language course",
+              "units": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Pillar: Aesthetic Expression",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-P-AE",
+              "name": "Approved Aesthetic Expression Pillar course",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Pillar and major overlap: Quantitative Reasoning",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "general_education",
+        "course_catalog"
+      ],
+      "stated_credits": "3 counted in Civitae and required by the major",
+      "note": "MATH 171 is counted once here. The major page expressly identifies it as the published Computer Science major course satisfying the Quantitative Reasoning Pillar.",
+      "sections": [
+        {
+          "label": "Statistical Decision Making",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH171",
+              "title": "Statistical Decision Making",
+              "units": 3,
+              "note": "Required major course counted in Civitae."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Pillar: Scientific Reasoning",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-P-SR",
+              "name": "Approved Scientific Reasoning Pillar course",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Perspectives",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "12",
+      "note": "Perspectives are Longwood-distinctive, nontransferable, and not waivable. Three must precede Symposium; the fourth must be completed before or concurrently with Symposium.",
+      "analysis_constraints": [
+        {
+          "kind": "perspectives_sequence",
+          "status": "evaluator_not_implemented",
+          "description": "Three Perspectives courses must precede CTZN 410 and the fourth must be completed before or concurrently with CTZN 410."
+        },
+        {
+          "kind": "civitae_single_count_and_distribution",
+          "status": "evaluator_not_implemented",
+          "description": "A cross-listed course may satisfy only one Civitae requirement, and Pillar/Perspectives selections together must cover the humanities/arts, behavioral/social sciences, and mathematics/natural sciences distributions with the catalog's prefix exclusions."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Historical and Contemporary Insights OR Human Behavior and Social Institutions Perspective",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-HCI",
+              "name": "Approved Historical and Contemporary Insights Perspective",
+              "units": 3
+            },
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-HBSI",
+              "name": "Approved Human Behavior and Social Institutions Perspective",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Global Citizenship OR Aesthetic Expression Perspective",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-GC",
+              "name": "Approved Global Citizenship Perspective",
+              "units": 3
+            },
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-AE",
+              "name": "Approved Aesthetic Expression Perspective",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Quantitative Reasoning OR Scientific Reasoning Perspective",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-QR",
+              "name": "Approved Quantitative Reasoning Perspective",
+              "units": 3
+            },
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-SR",
+              "name": "Approved Scientific Reasoning Perspective",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Integrating World Languages Perspective",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "CIV-V-IWL",
+              "name": "Approved Integrating World Languages Perspective",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Civitae Symposium on the Common Good",
+      "requirement_layer": "general_education",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": [
+        "general_education",
+        "course_catalog"
+      ],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "label": "Symposium on the Common Good",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CTZN410",
+              "title": "Symposium on the Common Good",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science Foundations",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "30",
+      "sections": [
+        {
+          "label": "Introduction to Algorithmic Design I",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC160",
+              "title": "Introduction to Algorithmic Design I",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Software Development Tools and Principles",
+          "select": 1,
+          "units": 1,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC161",
+              "title": "Software Development Tools and Principles",
+              "units": 1
+            }
+          ]
+        },
+        {
+          "label": "Introduction to Algorithmic Design II",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC162",
+              "title": "Introduction to Algorithmic Design II",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Computer Organization",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC201",
+              "title": "Computer Organization",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Grammars, Languages, and Automata",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC208",
+              "title": "Grammars, Languages, and Automata",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Introduction to Network and Systems Programming",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC242",
+              "title": "Introduction to Network and Systems Programming",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Data Structures and Algorithms in Application",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC262",
+              "title": "Data Structures and Algorithms in Application",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Experiential Learning Seminar in Computer Science I",
+          "select": 1,
+          "units": 0,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC283",
+              "title": "Experiential Learning Seminar in Computer Science I",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Operating Systems",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC442",
+              "title": "Operating Systems",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Senior Capstone in Computer Science",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC461",
+              "title": "Senior Capstone in Computer Science",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Experiential Learning Seminar in Computer Science II",
+          "select": 1,
+          "units": 0,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC483",
+              "title": "Experiential Learning Seminar in Computer Science II",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Technical Writing",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "ENGL319",
+              "title": "Technical Writing",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Mathematics Foundations after the MATH 171 Civitae overlap",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "3 in the major; MATH 171 is separately counted in Civitae",
+      "sections": [
+        {
+          "label": "Discrete Mathematics",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH175",
+              "title": "Discrete Mathematics",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Major Electives: upper-level minimum",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "At least 6 of 12 major-elective credits at the 300 level or above",
+      "analysis_constraints": [
+        {
+          "kind": "course_level_menu_and_exclusion",
+          "status": "evaluator_not_implemented",
+          "description": "Select distinct CMSC courses at the 300 level or above; CMSC 350 is excluded, and selected credits also count within the 12-credit major-elective total."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 6,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Six credits of distinct CMSC courses at the 300 level or above, excluding CMSC 350",
+              "units": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Major Electives: remaining credit",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "12 total major-elective credits at the 200 level or above",
+      "analysis_constraints": [
+        {
+          "kind": "distinct_course_and_exclusion_pool",
+          "status": "evaluator_not_implemented",
+          "description": "These six credits plus the upper-level six credits must be distinct CMSC courses at the 200 level or above, and CMSC 350 may not count."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 6,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Six additional credits of distinct CMSC courses at the 200 level or above, excluding CMSC 350",
+              "units": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Multiple programming languages and technologies proficiency",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "Passing requirement; course credit is absorbed by the applicable elective budget",
+      "analysis_constraints": [
+        {
+          "kind": "major_elective_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "Passing CMSC 140, CMSC 210, or CMSC 280 satisfies proficiency. CMSC 210 or CMSC 280 may also count in the 12-credit major-elective budget because they are at a sufficient level; CMSC 140 is below the 200-level elective floor."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Pass one approved proficiency course",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CMSC140",
+              "units": 0,
+              "note": "Actual course credit is not added here; this receiver records only satisfaction of the proficiency overlay."
+            },
+            {
+              "kind": "course",
+              "code": "CMSC210",
+              "units": 0,
+              "note": "Actual course credit may be counted in the separately modeled major-elective budget."
+            },
+            {
+              "kind": "course",
+              "code": "CMSC280",
+              "units": 0,
+              "note": "Actual course credit may be counted in the separately modeled major-elective budget."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "B.S. Additional Degree Requirement",
+      "requirement_layer": "ge_college",
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "graduation",
+        "course_catalog"
+      ],
+      "stated_credits": "3-4",
+      "analysis_constraints": [
+        {
+          "kind": "prerequisite_gate",
+          "status": "evaluator_not_implemented",
+          "description": "MATH 261 requires MATH 164 or qualifying placement; MATH 164 is not an unconditional degree requirement."
+        }
+      ],
+      "sections": [
+        {
+          "label": "MATH 250 route",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH250",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "MATH 261 route",
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH261",
+              "units": 4,
+              "note": "MATH 164 or placement is a prerequisite."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General Electives: upper-level Longwood capacity",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "graduation"
+      ],
+      "stated_credits": "12 of the published 31-33 B.S. General Electives on the canonical path",
+      "note": "These credits are part of, not additional to, the published B.S. General Electives range. They reserve the remaining upper-level Longwood capacity after 18 explicitly modeled required upper-level credits.",
+      "analysis_constraints": [
+        {
+          "kind": "upper_level_distribution_across_degree",
+          "status": "evaluator_not_implemented",
+          "description": "The canonical path reserves 12 General Elective credits at the upper level after 18 fixed/minimum upper-level credits. Other approved upper-level Civitae, major-elective, or B.S. selections may reduce this General Elective reserve, but the evaluator cannot yet distribute the 30-credit Longwood minimum dynamically across those choices."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 12,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Twelve credits of upper-level coursework earned at Longwood to complete the 30-credit upper-level Longwood minimum",
+              "units": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General Electives: remaining B.S. capacity",
+      "requirement_layer": "electives",
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "general_education",
+        "graduation"
+      ],
+      "stated_credits": "19-21 after reserving 12 upper-level credits within the published 31-33 General Electives range",
+      "analysis_constraints": [
+        {
+          "kind": "dependent_elective_capacity",
+          "status": "evaluator_not_implemented",
+          "description": "Choose 21 remaining elective credits only with the 39-credit Civitae and 3-credit B.S. routes; choose 20 when exactly one route adds one credit; choose 19 when both routes add one credit."
+        },
+        {
+          "kind": "future_civitae_major_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "Major courses newly designated after the catalog print deadline may overlap no more than two Pillars and one Perspective; substitute General Elective credit whenever an overlap would otherwise reduce the degree below 120."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Canonical remainder for 39-credit Civitae and 3-credit B.S. addition",
+          "select": 1,
+          "units": 21,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "LU-ELECTIVE-21",
+              "name": "Twenty-one remaining credits of applicable elective coursework",
+              "units": 21
+            }
+          ]
+        },
+        {
+          "label": "Remainder when one variable component uses four credits",
+          "select": 1,
+          "units": 20,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "LU-ELECTIVE-20",
+              "name": "Twenty remaining credits of applicable elective coursework",
+              "units": 20
+            }
+          ]
+        },
+        {
+          "label": "Remainder when both variable components use four credits",
+          "select": 1,
+          "units": 19,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "LU-ELECTIVE-19",
+              "name": "Nineteen remaining credits of applicable elective coursework",
+              "units": 19
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science major grade policy",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "policy"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "minimum_course_grade",
+          "status": "evaluator_not_implemented",
+          "description": "Every CMSC course counted toward the major requires a grade of C- or better."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Earn C- or better in every CMSC course counted toward the major",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "University graduation nonunit requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": [
+        "graduation",
+        "policy"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "gpa_and_administrative_completion",
+          "status": "evaluator_not_implemented",
+          "description": "Graduation requires a 2.0 GPA on all Longwood work, a 2.0 major GPA, general-faculty approval, and a submitted graduation application; these conditions do not add credits."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Longwood GPA",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Minimum 2.0 GPA on all work taken at Longwood",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Major GPA",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Minimum 2.0 GPA in courses satisfying the major",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Faculty approval",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "General faculty approval as a candidate for graduation",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Graduation application",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Submit the application for graduation through myLongwood",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

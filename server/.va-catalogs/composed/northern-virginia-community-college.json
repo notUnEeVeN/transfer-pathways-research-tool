@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "slug": "northern-virginia-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, A.S.",
+  "award": "AS",
+  "total_units": 60,
+  "total_units_max": 63,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "graduation",
+    "policy"
+  ],
+  "modeling_notes": [
+    "The official catalog uses a semester grid as its only program requirement list. This composition reorganizes those same requirements by rule and does not use the grid as a prospective schedule.",
+    "The precalculus placement rule is modeled as two complete alternative paths: a 5-6 credit precalculus path, or two approved courses totaling at least five credits.",
+    "MTH 245 may replace MTH 264 when required by the intended transfer institution. Any resulting slack, plus any variable-credit path slack, is filled to the published 60-credit minimum.",
+    "The two physical/life-science selections are kept as independent choose-one requirements because the program page does not explicitly require both selections to be in the same discipline.",
+    "The two humanities/fine-arts courses must come from two distinct areas among Fine Arts, Humanities, and Literature; the social/behavioral science selection must not be a history course."
+  ],
+  "requirement_groups": [
+    {
+      "title": "Computer science requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "label": "Introduction to programming", "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "label": "Object-oriented programming", "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 3, "label": "Discrete structures", "receivers": [{"kind": "cc_course", "options": [["CSC208"], ["MTH288"]]}]},
+        {"select": 1, "units": 4, "label": "Data structures and algorithms", "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "label": "Systems or advanced mathematics selection", "receivers": [{"kind": "cc_course", "options": [["CSC205"], ["CSC215"], ["MTH265"]]}]}
+      ]
+    },
+    {
+      "title": "Written communication",
+      "source_refs": ["major", "graduation"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus and transfer-directed mathematics",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "note": "MTH 245 is conditional on the intended transfer institution.", "receivers": [{"kind": "cc_course", "options": [["MTH264"], ["MTH245"]]}]}
+      ]
+    },
+    {
+      "title": "Mathematics placement path",
+      "conjunction": "Or",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 5,
+          "units_max": 6,
+          "label": "Precalculus is needed",
+          "receivers": [{"kind": "cc_course", "options": [["MTH167"], ["MTH161", "MTH162"]]}]
+        },
+        {
+          "select": 2,
+          "units": 5,
+          "units_max": 8,
+          "label": "Placed out of precalculus: choose two courses totaling at least five credits",
+          "receivers": [
+            {"kind": "cc_course", "options": [["CSC205"]]},
+            {"kind": "cc_course", "options": [["CSC208"]]},
+            {"kind": "cc_course", "options": [["CSC215"]]},
+            {"kind": "cc_course", "options": [["MTH265"]]},
+            {"kind": "cc_course", "options": [["MTH266"]]},
+            {"kind": "cc_course", "options": [["MTH288"]]},
+            {"kind": "cc_course", "options": [["PHY201"]]},
+            {"kind": "cc_course", "options": [["BIO101"]]},
+            {"kind": "cc_course", "options": [["BIO102"]]},
+            {"kind": "cc_course", "options": [["CHM111"]]},
+            {"kind": "cc_course", "options": [["CHM112"]]},
+            {"kind": "cc_course", "options": [["PHY241"]]},
+            {"kind": "cc_course", "options": [["PHY242"]]},
+            {"kind": "cc_course", "options": [["GOL105"]]},
+            {"kind": "cc_course", "options": [["GOL106"]]}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "College success",
+      "source_refs": ["major", "graduation"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"], ["SDV101"]]}]}
+      ]
+    },
+    {
+      "title": "Physical and life sciences with laboratory",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "label": "First laboratory science selection",
+          "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["CHM111"], ["PHY241"], ["GOL105"], ["GOL106"]]}]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "label": "Second laboratory science selection",
+          "receivers": [{"kind": "cc_course", "options": [["BIO102"], ["CHM112"], ["PHY242"], ["GOL105"], ["GOL106"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Humanities, fine arts, and literature",
+      "source_refs": ["major", "general_education", "graduation"],
+      "ge_area": "nova_humanities_fine_arts_literature",
+      "units": 6,
+      "distinct_areas": 2,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_ge_areas",
+          "status": "evaluator_not_implemented",
+          "description": "Two courses must come from two different areas among Fine Arts, Humanities, and Literature."
+        }
+      ],
+      "note": "Choose two courses from two different areas among Fine Arts, Humanities, and Literature."
+    },
+    {
+      "title": "History",
+      "source_refs": ["major", "general_education", "graduation"],
+      "ge_area": "nova_history",
+      "units": 3
+    },
+    {
+      "title": "Social and behavioral sciences outside history",
+      "source_refs": ["major", "general_education", "graduation"],
+      "ge_area": "nova_social_behavioral_nonhistory",
+      "units": 3,
+      "analysis_constraints": [
+        {
+          "kind": "excluded_ge_subject",
+          "status": "evaluator_not_implemented",
+          "description": "The selected Social/Behavioral Sciences course cannot be a History course."
+        }
+      ],
+      "note": "The program footnote requires a course that is not a history course."
+    },
+    {
+      "title": "Approved elective",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["PHY201"], ["CSC205"], ["CSC215"], ["CSC195"], ["CSC295"],
+              ["EGR121"], ["EGR122"], ["EGR270"], ["CST100"], ["CST110"],
+              ["MTH265"], ["MTH266"], ["MTH283"], ["BIO101"], ["BIO102"],
+              ["CHM111"], ["CHM112"], ["PHY241"], ["PHY242"], ["GOL105"], ["GOL106"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "Additional applicable credit to the degree minimum",
+      "source_refs": ["major", "graduation"],
+      "units_fill": true,
+      "note": "Variable-credit and transfer-directed options must still close to at least 60 applicable credits."
+    }
+  ]
+}

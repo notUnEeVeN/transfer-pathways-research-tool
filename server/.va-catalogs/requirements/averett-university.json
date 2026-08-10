@@ -3,21 +3,551 @@
  "name": "Averett University",
  "level": "four_year",
  "platform": "pdf",
- "outcome": "url_only",
- "source_url": "https://www.averett.edu/academics/majors-and-programs/undergraduate/computer-science/",
- "offers_cs": null,
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+ "catalog_year": "2025-2026",
+ "degree_context": {
+  "award": "BA/BS",
+  "award_name": "Bachelor of Arts or Bachelor of Science",
+  "catalog_year": "2025-2026",
+  "program": "Computer Science, B.A. or B.S.",
+  "variant": "One shared Computer Science major with B.A.-specific intermediate-language General Education; blocked pending correction of the major-credit discrepancy and final elective connector",
+  "cip_code": "11.0701",
+  "academic_unit": "Computer Science Department",
+  "college": "Averett University",
+  "general_education_authority": "Averett University General Education Requirements for a Baccalaureate Degree",
+  "catalog_version": {
+   "label": "2025-26 Academic Catalog",
+   "pdf_pages": 341,
+   "sha256": "e6d19cb876277c065456d67427a22355e9aff9a2082bb48188b893ac25d31dad"
+  },
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "published_major_units": 52,
+   "enumerated_major_units": 49,
+   "unresolved_major_units": 3,
+   "general_education_units_minimum": 30,
+   "modeled_units": null,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed current catalog states no aggregate university-wide upper-division minimum for the ordinary Computer Science B.A. or B.S.",
+    "source_refs": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 30 semester hours and at least 25 percent of undergraduate coursework must be completed at Averett; transfer students must complete at least 12 major hours at Averett, and the last 30 semester hours of class work must be completed at Averett.",
+    "source_refs": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The current catalog publishes one shared Computer Science major for B.A. and B.S. students. The B.A. requires SPA 203 or FRE 203 within Society and Culture General Education; it is not an additive major course.",
+   "The categorical major rows total 49 although the catalog prints Total 52. CSC 306 appears only in the excluded Sample Four-Year Course Sequence and must not be used to repair the difference.",
+   "The last three-credit elective row joins CSC Elective 300+ level and MTH Elective 200+ level without an AND/OR connector. Preserve it as unresolved source language rather than choosing an operator.",
+   "The traditional-major architecture reserves 18-21 credits for a minor concentration or related fields, but its Computer Science applicability is not explicitly repeated on the program page."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "major_credit_total_does_not_reconcile",
+    "severity": "block",
+    "message": "Enumerated fixed, statistics, and elective requirements total 49 credits while the current catalog prints Total 52."
+   },
+   {
+    "code": "final_elective_connector_missing",
+    "severity": "block",
+    "message": "The final three-credit elective row does not publish whether CSC 300+ and MTH 200+ are alternatives or an AND combination."
+   },
+   {
+    "code": "sample_plan_course_excluded",
+    "severity": "review",
+    "message": "CSC 306 occurs only in the Sample Four-Year Course Sequence and cannot be promoted into the categorical major to close the three-credit gap."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Averett University major and degree requirements",
+   "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+   "requested_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=110",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T04:27:02.274Z",
+   "sha256": "aa683fb0350e93049e3bed1f0cbc950e60ab023327cfdea0126033950f8f5841",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Averett University general education requirements",
+   "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+   "requested_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=59",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T04:27:02.274Z",
+   "sha256": "aa683fb0350e93049e3bed1f0cbc950e60ab023327cfdea0126033950f8f5841",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Averett University university graduation requirements",
+   "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+   "requested_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=29",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T04:27:02.274Z",
+   "sha256": "aa683fb0350e93049e3bed1f0cbc950e60ab023327cfdea0126033950f8f5841",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Averett University academic policies",
+   "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+   "requested_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf#page=57",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T04:27:02.274Z",
+   "sha256": "aa683fb0350e93049e3bed1f0cbc950e60ab023327cfdea0126033950f8f5841",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T04:27:02.274Z",
+ "extracted_at": "2026-08-10T04:27:39.805Z",
+ "parser": "pdf",
+ "pdf_window": {
+  "found": true,
+  "mode": "configured_anchors",
+  "start": 5610,
+  "end": 5631,
+  "start_page": 110,
+  "end_page": 110,
+  "lines": 21,
+  "reason": null,
+  "evidence": {
+   "requirements_start": {
+    "anchor": "Requirements for a Major in Computer Science:",
+    "index": 5610,
+    "page": 110,
+    "text": "Requirements for a Major in Computer Science:"
+   },
+   "requirements_end": {
+    "anchor": "A student without previous computer experience would normally be expected to begin with CSC 211,",
+    "index": 5631,
+    "page": 110,
+    "text": "A student without previous computer experience would normally be expected to begin with CSC 211,"
+   },
+   "program_identity_start": {
+    "anchor": "COMPUTER SCIENCE (CSS) AND",
+    "index": 5587,
+    "page": 110,
+    "text": "COMPUTER SCIENCE (CSS) AND"
+   },
+   "program_identity_anchors": [
+    {
+     "anchor": "Averett offers Bachelor of Arts and Bachelor of Science degrees in two majors: Computer Science and",
+     "index": 5591,
+     "page": 110,
+     "text": "Averett offers Bachelor of Arts and Bachelor of Science degrees in two majors: Computer Science and"
+    },
+    {
+     "anchor": "Students must attain at least a 2. 0 grade point average in the major in order to graduate.",
+     "index": 5608,
+     "page": 110,
+     "text": "Students must attain at least a 2. 0 grade point average in the major in order to graduate."
+    }
+   ],
+   "pages": {
+    "configured_pdf_pages": [
+     110,
+     110
+    ],
+    "configured_printed_pages": null,
+    "requirements_start_pdf_page": 110,
+    "requirements_end_pdf_page": 110,
+    "printed_folios": [
+     {
+      "pdf_page": 110,
+      "expected_printed_page": null,
+      "printed_page_found": null
+     }
+    ]
+   }
+  },
+  "missing_evidence": []
+ },
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": null,
+ "parse_error": null,
  "total_credits": null,
- "groups": [],
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Requirements",
+   "credits": {
+    "min": 52,
+    "max": 52,
+    "raw": "52"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose nine hours of the following:",
+   "source_text": [
+    "CSC 211, Introduction to Programming I ............................................................ 4",
+    "CSC 211, Introduction to Programming I ............................................................ 4",
+    "CSC 212, Introduction to Programming II ........................................................... 4",
+    "CSC 200, Web Programming ............................................................................... 4",
+    "CSC 202, I. T. Infrastructure ................................................................................ 3",
+    "CSC 235, Programming in Java………………………………………………….4",
+    "CSC 333, Data Structures ..................................................................................... 3",
+    "CSC 372, Networks and Internets ........................................................................ 3",
+    "CSC 375, Data & Information Management ........................................................ 3",
+    "CSC 381, Architecture and Assembly Language ................................................. 3",
+    "CSC 411, Modeling and Simulation ..................................................................... 3",
+    "MTH 160, Introduction to Statistics, or MTH 403, Probability & Statistics ........ 3",
+    "MTH 211, Foundations of Higher Mathematics .................................................. 3",
+    "Choose nine hours of the following:",
+    "CSC Elective(s) 200+ level .................................................................................. 6",
+    "CSC Elective 300+ level MTH Elective 200+ level ............................................. 3",
+    "Total 52"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC211",
+         "title": ", Introduction to Programming I ............................................................"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 211, Introduction to Programming I ............................................................",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC212",
+         "title": ", Introduction to Programming II ..........................................................."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 212, Introduction to Programming II ...........................................................",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC200",
+         "title": ", Web Programming ..............................................................................."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 200, Web Programming ...............................................................................",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC202",
+         "title": ", I. T. Infrastructure ................................................................................"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 202, I. T. Infrastructure ................................................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC235",
+         "title": ", Programming in Java………………………………………………….4"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 235, Programming in Java………………………………………………….4",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC333",
+         "title": ", Data Structures ....................................................................................."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 333, Data Structures .....................................................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC372",
+         "title": ", Networks and Internets ........................................................................"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 372, Networks and Internets ........................................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC375",
+         "title": ", Data & Information Management ........................................................"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 375, Data & Information Management ........................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC381",
+         "title": ", Architecture and Assembly Language ................................................."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 381, Architecture and Assembly Language .................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC411",
+         "title": ", Modeling and Simulation ....................................................................."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 411, Modeling and Simulation .....................................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH160",
+         "title": ", Introduction to Statistics,"
+        },
+        {
+         "code": "MTH403",
+         "title": ", Probability & Statistics ........"
+        }
+       ],
+       "conjunction": "or",
+       "text": "MTH 160, Introduction to Statistics, or MTH 403, Probability & Statistics ........",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH211",
+         "title": ", Foundations of Higher Mathematics .................................................."
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 211, Foundations of Higher Mathematics ..................................................",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 9,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC Elective(s) 200+ level .................................................................................. 6",
+       "category": "CSC Elective(s) 200+ level .................................................................................. 6"
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "CSC Elective 300+ level MTH Elective 200+ level ............................................. 3",
+       "category": "CSC Elective 300+ level MTH Elective 200+ level ............................................. 3"
+      }
+     ]
+    }
+   ],
+   "implicit": true
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
  "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": true,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": null,
-  "candidates": []
- },
- "extracted_at": "2026-08-02T06:13:44.812Z"
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 13 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "13 distinct courses across 14 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 1,
+   "sections": 2,
+   "rows": 14,
+   "course_rows": 12,
+   "category_rows": 2,
+   "distinct_courses": 13,
+   "credit_span": {
+    "min": 52,
+    "max": 52,
+    "groups_with_credits": 1
+   },
+   "stated_total": null
+  }
+ }
 }

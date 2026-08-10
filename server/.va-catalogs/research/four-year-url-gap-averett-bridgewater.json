@@ -1,0 +1,1416 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_four_year_cs_official_source_url_gap_averett_bridgewater",
+  "researched_at": "2026-08-09",
+  "source_policy": {
+    "allowed_sources": "Official live institution catalog indexes, current catalog content, and official institution pages only.",
+    "edition_rule": "The institution's live current-catalog index controls the catalog year. A yearless program URL is usable only after the current-catalog landing page has been validated in the same capture.",
+    "selection_rule": "Preserve each published award and required track choice. Do not merge award choices, tracks, minors, transfer-completion awards, or historical variants into a neutral Computer Science degree.",
+    "plan_exclusion_rule": "Sample four-year sequences, recommended schedules, prospective degree plans, and marketing plans are not categorical requirement authority and are excluded even when their arithmetic appears to repair a catalog inconsistency.",
+    "unknown_rule": "A null or unresolved operator means the current official source does not support an automatic choice or numeric value; it must not be interpreted as zero or filled from a sample plan.",
+    "course_identity_rule": "Use the catalog's current course code plus its official course-description URL or PDF page/anchor. CleanCatalog node IDs are retained as transport identities, not as substitutes for course codes."
+  },
+  "institution_count": 2,
+  "institutions": [
+    {
+      "slug": "averett-university",
+      "name": "Averett University",
+      "catalog_year": "2025-2026",
+      "catalog_status": "published_and_listed_as_current_active",
+      "program_status": "current_shared_major_two_award_choices_requirement_reconciliation_required",
+      "catalog_identity": {
+        "current_catalog_index_url": "https://www.averett.edu/academics/registrars-office/catalogs/",
+        "catalog_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+        "catalog_label": "2025-26 Academic Catalog",
+        "current_index_evidence": "The official Academic Catalogs page lists the 2025-26 Academic Catalog under Current Active Catalogs and lists 2024-25 and earlier editions under Archived Catalogs.",
+        "pdf_title_evidence": "Every reviewed footer identifies Averett University Academic Catalog 2025-2026.",
+        "pdf_page_count": 341,
+        "pdf_sha256": "e6d19cb876277c065456d67427a22355e9aff9a2082bb48188b893ac25d31dad"
+      },
+      "degree": {
+        "catalog_program_title": "Requirements for a Major in Computer Science",
+        "major": "Computer Science",
+        "cip_code": "11.0701",
+        "selected_award": null,
+        "award_choices": [
+          {
+            "award": "Bachelor of Arts",
+            "abbreviation": "BA",
+            "major_requirement_block": "shared",
+            "award_specific_requirement": "Within the Society and Culture General Education dimension, complete SPA 203 or FRE 203 for the intermediate-language requirement.",
+            "award_specific_additional_credits": null,
+            "additional_credit_status": "not_safely_additive_because_the_language_course_is_inside_the_general_education_range"
+          },
+          {
+            "award": "Bachelor of Science",
+            "abbreviation": "BS",
+            "major_requirement_block": "shared",
+            "award_specific_requirement": null,
+            "award_specific_additional_credits": null,
+            "additional_credit_status": "no_separate_first_baccalaureate_bs_block_found_in_the_current_catalog"
+          }
+        ],
+        "award_selection_evidence": "The current AY2025-2026 official Academic Program List marks Computer Science as Active with both BA and BS credentials, and the current catalog says students may earn a BA or BS in Computer Science. The catalog publishes one shared Computer Science major block rather than separate BA and BS major tables.",
+        "tracks": [],
+        "track_status": "no_curricular_tracks_or_concentrations_published_for_the_current_ba_bs_computer_science_major",
+        "delivery_modalities": [
+          "face-to-face",
+          "distance education"
+        ],
+        "delivery_modality_note": "The plus sign on the official program list denotes delivery modality, not a curricular track.",
+        "published_degree_credits": 120,
+        "published_major_credits": 52,
+        "computed_categorical_major_credits": 49,
+        "excluded_variants": [
+          {
+            "name": "Computer Science, Bachelor of Applied Science",
+            "reason": "A separate active transfer-completion award restricted to students who possess an Associate of Applied Science; it is not the ordinary BA/BS target."
+          },
+          {
+            "name": "Computer Information Systems, BA or BS",
+            "reason": "A separate major with a separate requirement table."
+          },
+          {
+            "name": "Computer Science minor and Cyber Security minor",
+            "reason": "Separate non-degree credentials, not tracks in the Computer Science BA/BS major."
+          }
+        ]
+      },
+      "owner": {
+        "college_or_school": null,
+        "department_or_program": "Computer Science Department",
+        "catalog_heading": "COMPUTER SCIENCE (CSS) AND COMPUTER INFORMATION SYSTEMS (CIS)",
+        "department_chair": "Thomas Hendricks",
+        "college_layer_status": "no_separate_named_college_or_school_owner_published_for_this_program",
+        "source_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+        "source_printed_page": 110,
+        "evidence": "The current catalog department heading and narrative identify the Computer Science department and its chair; no intervening school or college is named for this program."
+      },
+      "major_requirements": {
+        "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+        "source_printed_page": 110,
+        "requirements_start_anchor": "Requirements for a Major in Computer Science:",
+        "requirements_end_anchor": "Sample Four-Year Course Sequence for Computer Science",
+        "major_gpa_minimum": 2.0,
+        "fixed_courses": [
+          {
+            "code": "CSC 211",
+            "title_as_requirement": "Introduction to Programming I",
+            "credits": 4
+          },
+          {
+            "code": "CSC 212",
+            "title_as_requirement": "Introduction to Programming II",
+            "credits": 4
+          },
+          {
+            "code": "CSC 200",
+            "title_as_requirement": "Web Programming",
+            "credits": 4
+          },
+          {
+            "code": "CSC 202",
+            "title_as_requirement": "I. T. Infrastructure",
+            "credits": 3
+          },
+          {
+            "code": "CSC 235",
+            "title_as_requirement": "Programming in Java",
+            "credits": 4
+          },
+          {
+            "code": "CSC 333",
+            "title_as_requirement": "Data Structures",
+            "credits": 3
+          },
+          {
+            "code": "CSC 372",
+            "title_as_requirement": "Networks and Internets",
+            "credits": 3
+          },
+          {
+            "code": "CSC 375",
+            "title_as_requirement": "Data & Information Management",
+            "credits": 3
+          },
+          {
+            "code": "CSC 381",
+            "title_as_requirement": "Architecture and Assembly Language",
+            "credits": 3
+          },
+          {
+            "code": "CSC 411",
+            "title_as_requirement": "Modeling and Simulation",
+            "credits": 3
+          },
+          {
+            "code": "MTH 211",
+            "title_as_requirement": "Foundations of Higher Mathematics",
+            "credits": 3
+          }
+        ],
+        "choice_groups": [
+          {
+            "name": "statistics_choice",
+            "instruction": "Choose one",
+            "choose": 1,
+            "credits": 3,
+            "options": [
+              {
+                "code": "MTH 160",
+                "title_as_requirement": "Introduction to Statistics",
+                "credits": 3
+              },
+              {
+                "code": "MTH 403",
+                "title_as_requirement": "Probability & Statistics",
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "name": "computer_science_and_mathematics_electives",
+            "published_instruction": "Choose nine hours of the following:",
+            "published_credits": 9,
+            "subrequirements": [
+              {
+                "raw_text": "CSC Elective(s) 200+ level",
+                "subject": "CSC",
+                "minimum_course_level": 200,
+                "credits": 6,
+                "operator": "credits_from_dynamic_subject_pool"
+              },
+              {
+                "raw_text": "CSC Elective 300+ level MTH Elective 200+ level",
+                "credits": 3,
+                "operator": null,
+                "candidate_pools": [
+                  {
+                    "subject": "CSC",
+                    "minimum_course_level": 300
+                  },
+                  {
+                    "subject": "MTH",
+                    "minimum_course_level": 200
+                  }
+                ],
+                "status": "unresolved_missing_connector_in_published_pdf",
+                "automatic_composition": "blocked"
+              }
+            ]
+          }
+        ],
+        "credit_arithmetic": {
+          "fixed_courses": 37,
+          "statistics_choice": 3,
+          "elective_block": 9,
+          "computed_total": 49,
+          "published_total": 52,
+          "difference": 3,
+          "status": "does_not_reconcile"
+        },
+        "upper_level_within_major": {
+          "definite_minimum": 15,
+          "unit": "semester hours",
+          "derivation": "The fixed requirements contain CSC 333, CSC 372, CSC 375, CSC 381, and CSC 411. MTH 403 and the unresolved final elective line can increase the total but cannot be assumed.",
+          "scope": "major_only_not_a_university_wide_minimum"
+        },
+        "prerequisite_dependency_status": "Course-description prerequisites are retained in course_dictionary. They are not silently added to the 49-credit categorical sum because several permit equivalents or consent and the major table does not state how they count.",
+        "excluded_content": [
+          {
+            "title": "Sample Four-Year Course Sequence for Computer Science",
+            "source_printed_pages": [
+              110,
+              111
+            ],
+            "reason": "Explicitly labeled sample sequence, not the categorical requirement table.",
+            "important_difference": "CSC 306 appears in the sample but not in the categorical major requirements. Its three credits would arithmetically close the 52-versus-49 gap, but the sample-plan exclusion prevents importing it as a requirement."
+          }
+        ],
+        "composition_status": "blocked_pending_award_selection_and_source_resolution_of_credit_gap_and_elective_connector"
+      },
+      "general_education": {
+        "authority": "General Education Requirements for a Baccalaureate Degree",
+        "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+        "source_printed_pages": [
+          59,
+          60,
+          61,
+          62
+        ],
+        "published_minimum_credits": 30,
+        "dimensions": [
+          {
+            "name": "Fundamental Written Communication",
+            "credits": 6,
+            "requirements": [
+              {
+                "choose": 1,
+                "options": [
+                  "ENG 109",
+                  "ENG 111"
+                ],
+                "credits": 3
+              },
+              {
+                "required_course": "ENG 112",
+                "credits": 3
+              }
+            ]
+          },
+          {
+            "name": "Society and Culture",
+            "minimum_credits": 6,
+            "maximum_credits": 12,
+            "choice_pool": "The closed current-catalog menu printed on page 60.",
+            "award_rule": "BA students must complete SPA 203 or FRE 203 for the intermediate-language requirement; this rule does not apply to the ordinary first-degree BS."
+          },
+          {
+            "name": "Humanities and Creativity",
+            "minimum_credits": 6,
+            "maximum_credits": 12,
+            "choice_pool": "The closed current-catalog menu printed on pages 60-61.",
+            "attribute_rule": "At least one selected course must be marked as a humanities course with an asterisk."
+          },
+          {
+            "name": "Scientific and Quantitative",
+            "minimum_credits": 7,
+            "maximum_credits": 13,
+            "choice_pool": "The closed current-catalog menu printed on pages 61-62.",
+            "attribute_rules": [
+              "At least one selected course must be a laboratory science marked with an asterisk.",
+              "At least one selected course must be a mathematics course marked with a dagger."
+            ]
+          }
+        ],
+        "minimum_dimension_sum": 25,
+        "additional_credits_needed_to_reach_published_minimum": 5,
+        "distribution_status": "The catalog does not prescribe a separate fifth category; the additional five or more credits must be distributed within the published category ranges and should not be assigned automatically.",
+        "overlap_rule": "The Degree Requirements introduction says some General Education requirements may be met automatically through completion of the selected concentration.",
+        "second_baccalaureate_rule_excluded": "The six mathematics hours plus one four-credit lab science rule applies only when a student's first degree is a BA and the second degree is a BS. It is not an ordinary first-degree BS requirement."
+      },
+      "college_requirements": {
+        "status": "no_separate_college_or_school_layer_found",
+        "published_additional_credits": null,
+        "evidence": "The program is presented as an Averett University department without a named school or college requirement layer.",
+        "degree_architecture_rule": {
+          "catalog_section": "Undergraduate Majors and Minors - The traditional major with a minor",
+          "published_rule": "Traditional-major programs require the specified major plus 18-21 semester hours in a minor concentration or related fields.",
+          "source_printed_page": 15,
+          "computer_science_applicability": "probable_by_elimination_but_not_explicitly_repeated_on_the_computer_science_page",
+          "automatic_composition": "blocked_pending_source_or_registrar_confirmation",
+          "reason": "Computer Science is not listed as a combined or interdisciplinary major, but the catalog does not explicitly label the Computer Science table as approach I or restate the 18-21-hour layer on the program page."
+        }
+      },
+      "graduation_constraints": {
+        "policy_url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+        "policy_printed_pages": [
+          29,
+          30,
+          57,
+          58
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "semester hours"
+        },
+        "gpa": [
+          {
+            "scope": "all work attempted",
+            "minimum": 2.0
+          },
+          {
+            "scope": "courses offered to complete the major",
+            "minimum": 2.0
+          }
+        ],
+        "general_education_minimum": {
+          "minimum": 30,
+          "unit": "semester hours"
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "semester hours",
+          "scope": "university-wide",
+          "status": "no_aggregate_ba_bs_minimum_found_in_reviewed_current_sources",
+          "course_level_definition": "Courses at the 300 and 400 levels are designed primarily for juniors and seniors.",
+          "excluded_rule": "The 36-upper-division-credit rule belongs to Interdisciplinary Studies and must not be applied to Computer Science."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 30,
+            "unit": "semester hours at Averett"
+          },
+          {
+            "kind": "institutional_percentage_minimum",
+            "minimum": 25,
+            "unit": "percent of all undergraduate coursework",
+            "catalog_parenthetical": "usually 30 to 33 hours for a bachelor's degree"
+          },
+          {
+            "kind": "transfer_student_major_residency",
+            "minimum": 12,
+            "unit": "semester hours in the major at Averett",
+            "note": "Individual programs may require more; no higher Computer Science-specific number is published."
+          }
+        ],
+        "final_credit_rule": {
+          "minimum": 30,
+          "unit": "last semester hours of class work at Averett",
+          "evidence": "The Credit by Non-Traditional Means section states that any degree recipient must complete the last 30 semester hours of class work at Averett and may accumulate no more than 90 through examination, CLEP, or transfer."
+        },
+        "catalog_of_record": "With uninterrupted fall and spring enrollment, a student may use any Averett catalog in effect from entrance through graduation. An interruption of one or more semesters makes the catalog current at readmission controlling.",
+        "other_degree_constraints": [
+          "Complete all Core and General Education requirements and the specified major.",
+          "File the graduation application by the Registrar's deadline.",
+          "Complete all graduation requirements and financial obligations before participating in commencement."
+        ],
+        "core_layer_status": "The reviewed current catalog uses both 'Core and General Education' and 'core general education' wording but publishes no separate numeric Core block outside the 30-credit General Education curriculum; do not invent an additive Core total."
+      },
+      "course_dictionary": {
+        "format": "machine_readable_pdf_text",
+        "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+        "computer_science_section": {
+          "anchor": "Courses of Instruction in Computer Science and Computer Information Science",
+          "printed_pages": [
+            113,
+            114,
+            115,
+            116
+          ]
+        },
+        "mathematics_section": {
+          "anchor": "Courses of Instruction in Mathematics",
+          "printed_pages": [
+            169,
+            170
+          ]
+        },
+        "course_id_model": "No per-course web IDs are published. The authoritative identity is catalog PDF SHA-256 plus subject, course number, edition, section anchor, and printed page range.",
+        "required_and_choice_entries": [
+          {
+            "code": "CSC 200",
+            "title_in_dictionary": "Web Programming",
+            "credits": 4,
+            "formal_prerequisite": "any programming language"
+          },
+          {
+            "code": "CSC 202",
+            "title_in_dictionary": "I. T. Infrastructure",
+            "credits": 3,
+            "formal_prerequisite": null
+          },
+          {
+            "code": "CSC 211",
+            "title_in_dictionary": "Introduction to Programming",
+            "credits": 4,
+            "formal_prerequisite_or_corequisite": "MTH 103 or equivalent, and CSC 113 or equivalent"
+          },
+          {
+            "code": "CSC 212",
+            "title_in_dictionary": "Intermediate Programming",
+            "credits": 4,
+            "formal_prerequisite": "CSC 211"
+          },
+          {
+            "code": "CSC 235",
+            "title_in_dictionary": "Programming in Java",
+            "credits": 4,
+            "formal_prerequisite": null
+          },
+          {
+            "code": "CSC 333",
+            "title_in_dictionary": "Data Structures",
+            "credits": 3,
+            "formal_prerequisite": "CSC 235 or equivalent"
+          },
+          {
+            "code": "CSC 372",
+            "title_in_dictionary": "Data Communications and Networks",
+            "credits": 3,
+            "formal_prerequisite": "CSC 202 or CSC 211"
+          },
+          {
+            "code": "CSC 375",
+            "title_in_dictionary": "Data and Information Management",
+            "credits": 3,
+            "formal_prerequisite": "CSC 202 or CSC 211"
+          },
+          {
+            "code": "CSC 381",
+            "title_in_dictionary": "Computer Architecture and Assembly Language",
+            "credits": 3,
+            "formal_prerequisite": "CSC 212 or CSC 235"
+          },
+          {
+            "code": "CSC 411",
+            "title_in_dictionary": "Advanced Programming: Simulation",
+            "credits": 3,
+            "formal_prerequisite": "CSC 212 or CSC 235, and MTH 202 or consent of instructor"
+          },
+          {
+            "code": "MTH 160",
+            "title_in_dictionary": "Introduction to Statistics",
+            "credits": 3,
+            "formal_prerequisite": "MTH 103 or equivalent"
+          },
+          {
+            "code": "MTH 211",
+            "title_in_dictionary": "Foundations of Higher Mathematics",
+            "credits": 3,
+            "formal_prerequisite": "MTH 171 or MTH 201"
+          },
+          {
+            "code": "MTH 403",
+            "title_in_dictionary": "Probability and Statistics",
+            "credits": 3,
+            "formal_prerequisite": null
+          }
+        ],
+        "dynamic_elective_pools": [
+          {
+            "subject": "CSC",
+            "minimum_course_level": 200,
+            "source_section": "computer_science_section"
+          },
+          {
+            "subject": "CSC",
+            "minimum_course_level": 300,
+            "source_section": "computer_science_section",
+            "status": "candidate_pool_in_unresolved_three_credit_line"
+          },
+          {
+            "subject": "MTH",
+            "minimum_course_level": 200,
+            "source_section": "mathematics_section",
+            "status": "candidate_pool_in_unresolved_three_credit_line"
+          }
+        ],
+        "dictionary_mismatches": [
+          "The department header uses CSS while the current requirement rows and nearly all course descriptions use CSC.",
+          "The dictionary labels Systems Analysis and Design as CSS 306, while the sample sequence and Computer Information Systems table use CSC 306.",
+          "Several major-table titles differ from dictionary titles, including CSC 211, CSC 212, CSC 372, and CSC 411; the course code is the controlling identity."
+        ]
+      },
+      "excluded_content_and_variants": [
+        {
+          "content": "Sample Four-Year Course Sequence for Computer Science",
+          "reason": "Sample/prospective plan; excluded from categorical requirements."
+        },
+        {
+          "content": "Official Computer Science marketing page at https://www.averett.edu/academics/majors-and-programs/undergraduate/computer-science/computer-science-program/",
+          "reason": "Official but stale requirement presentation: it uses CSS codes, includes MTH 201 and MTH 202, assigns different credits to several courses, and conflicts with the current active catalog. It is corroborative marketing only and must not override the catalog."
+        },
+        {
+          "content": "Bachelor of Applied Science in Computer Science",
+          "reason": "Distinct AAS-entry transfer-completion award, not the ordinary BA/BS target."
+        },
+        {
+          "content": "Second baccalaureate degree BA-to-BS mathematics and lab-science rule",
+          "reason": "Applies only to a second bachelor's degree, not to the ordinary first-degree BS."
+        }
+      ],
+      "contradictions_and_unknowns": [
+        "The categorical rows compute to 49 credits, but the current catalog prints Total 52.",
+        "CSC 306 appears only in the excluded sample sequence and would close the three-credit gap; it cannot be promoted to a requirement without authoritative correction.",
+        "The last three-credit elective row fuses 'CSC Elective 300+ level' and 'MTH Elective 200+ level' without an or/and connector; automatic choice modeling must fail closed.",
+        "The current source supports both BA and BS but does not identify a default award. BA versus BS must be selected explicitly.",
+        "The 18-21-hour traditional-major minor/related-field rule is a possible additive degree-architecture layer, but its Computer Science applicability is not explicit enough for automatic composition.",
+        "No aggregate university-wide upper-division minimum was found for the ordinary BA or BS."
+      ],
+      "capture_transport": {
+        "discovery_transport": "direct HTTP GET of the official Academic Catalogs HTML page",
+        "content_transport": "direct HTTP GET of the linked PDF followed by pdftotext -layout",
+        "api_required": false,
+        "browser_required": false,
+        "validation_sequence": [
+          "Require the landing page to place the 2025-26 link under Current Active Catalogs rather than Archived Catalogs.",
+          "Require an HTTP-successful response whose body begins with %PDF and whose extracted text identifies Academic Catalog 2025-2026.",
+          "For this exact edition, retain the 341-page count and SHA-256 as identity evidence.",
+          "Extract the owner and major only between the exact department/requirements anchors; reject a window that starts in the table of contents, Computer Information Systems table, minor, or sample plan.",
+          "Extract course descriptions from the separate CSC and MTH dictionary anchors and retain printed page evidence."
+        ],
+        "recommended_windows": [
+          {
+            "role": "program_identity_and_owner",
+            "start_anchor": "COMPUTER SCIENCE (CSS) AND",
+            "end_anchor": "Requirements for a Major in Computer Science:"
+          },
+          {
+            "role": "major_requirements",
+            "start_anchor": "Requirements for a Major in Computer Science:",
+            "end_anchor": "Sample Four-Year Course Sequence for Computer Science"
+          },
+          {
+            "role": "computer_science_course_dictionary",
+            "start_anchor": "Courses of Instruction in Computer Science and Computer Information Science",
+            "end_anchor": "ECONOMICS (ECO)"
+          },
+          {
+            "role": "general_education",
+            "start_anchor": "General Education Requirements for a Baccalaureate Degree",
+            "end_anchor": "UNDERGRADUATE DEGREE PROGRAMS AND COURSES"
+          }
+        ]
+      },
+      "capture_blockers": [
+        "Do not accept the current official marketing page as requirement authority; it conflicts with the active catalog.",
+        "Do not let the major extraction run through the sample sequence or it will falsely add CSC 306.",
+        "The published 52-credit total and the final elective operator require manual/source clarification before a lossless composed degree can be accepted.",
+        "An award choice is required before applying the BA language rule.",
+        "The possible 18-21-hour minor/related-field layer requires explicit applicability confirmation."
+      ],
+      "sources": [
+        {
+          "role": "current_catalog_index",
+          "url": "https://www.averett.edu/academics/registrars-office/catalogs/",
+          "evidence": "Identifies 2025-26 as Current Active and prior catalogs as archived."
+        },
+        {
+          "role": "current_program_status_and_awards",
+          "url": "https://www.averett.edu/academics/majors-and-programs/academic-program-list/",
+          "evidence": "AY2025-2026 Computer Science, BA/BS, CIP 11.0701, Active, with face-to-face or distance delivery."
+        },
+        {
+          "role": "current_catalog_major_ge_graduation_and_course_dictionary",
+          "url": "https://www.averett.edu/wp-content/uploads/Academic-Catalog-2025-26.pdf",
+          "evidence": "Authoritative current catalog for the shared BA/BS major, GE, graduation rules, and CSC/MTH course descriptions."
+        },
+        {
+          "role": "excluded_stale_official_marketing_requirements",
+          "url": "https://www.averett.edu/academics/majors-and-programs/undergraduate/computer-science/computer-science-program/",
+          "evidence": "Official page retained only to document the conflict; not used as current requirement authority."
+        }
+      ]
+    },
+    {
+      "slug": "bridgewater-college",
+      "name": "Bridgewater College",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published_current_live_catalog",
+      "program_status": "current_bs_required_track_selection",
+      "catalog_identity": {
+        "current_catalog_landing_url": "https://bridgewater.cleancatalog.io/undergraduate-catalog",
+        "catalog_title": "2026-2027 Undergraduate Catalog",
+        "current_landing_evidence": "The live official catalog landing page is headed 2026-2027 Undergraduate Catalog and lists 2025-2026 and earlier editions under Previous Catalogs.",
+        "full_catalog_pdf_url": "https://bridgewater.cleancatalog.io/sites/default/files/pdf/pdf_generator/20262027-undergraduate-catalog.pdf?v=1784216668",
+        "full_catalog_pdf_page_count": 274,
+        "full_catalog_pdf_sha256": "ee0057def7b75c274f077ee05ca8a89edf58752ebf5c675b8392d23c71c1959b",
+        "program_catalog_node_id": 1936,
+        "program_pdf_url": "https://bridgewater.cleancatalog.io/node/1936/download-pdf"
+      },
+      "degree": {
+        "catalog_program_title": "Computer Science",
+        "award": "Bachelor of Science - Major",
+        "award_abbreviation": "BS",
+        "major": "Computer Science",
+        "selected_track": null,
+        "track_selection_required": true,
+        "published_degree_credits": 120,
+        "published_major_credits": 46,
+        "shared_core_credits": 31,
+        "track_credits": 15,
+        "published_tracks": [
+          {
+            "name": "Cybersecurity",
+            "credits": 15
+          },
+          {
+            "name": "Full-Stack Software Development",
+            "credits": 15
+          }
+        ],
+        "untracked_variant_exists": false,
+        "selection_evidence": "The current program page states that students choose one of two tracks, publishes a 31-credit core required for each, and supplies a 15-credit closed course list for each track.",
+        "excluded_variants": [
+          {
+            "name": "Computer Science minor",
+            "reason": "A separately listed minor, not a track."
+          },
+          {
+            "name": "Data Science & Analytics, Bachelor of Science - Major",
+            "reason": "A separate major in the same department."
+          },
+          {
+            "name": "Theoretical Computing track",
+            "reason": "Historical track found in the 2023-2024 catalog but absent from the live 2026-2027 program."
+          },
+          {
+            "name": "Data Administration, Data Analytics, and Machine Learning minors",
+            "reason": "Separate credentials, not Computer Science tracks."
+          }
+        ]
+      },
+      "owner": {
+        "college_or_school": "Coffman School of Natural Sciences",
+        "department_or_program": "Department of Mathematics and Computer Science",
+        "catalog_department_label": "Mathematics & Computer Science",
+        "school_dean": "Dr. Phil Spickler",
+        "source_url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+        "department_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+        "evidence": "The current Courses of Instruction page places the Department of Mathematics and Computer Science in the Coffman School of Natural Sciences."
+      },
+      "major_requirements": {
+        "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+        "catalog_node_id": 1936,
+        "download_pdf_url": "https://bridgewater.cleancatalog.io/node/1936/download-pdf",
+        "full_catalog_printed_pages": [
+          92,
+          93
+        ],
+        "shared_core": {
+          "published_credits": 31,
+          "courses": [
+            {
+              "code": "CSCI-101",
+              "title": "Programming I",
+              "credits": 4
+            },
+            {
+              "code": "CSCI-102",
+              "title": "Programming II",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-110",
+              "title": "Discrete Mathematics",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-220",
+              "title": "Data Structures and Algorithms",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-250",
+              "title": "Computer Networks",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-320",
+              "title": "Algorithm Analysis and Design",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-341",
+              "title": "Computer Architecture",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-342",
+              "title": "Operating Systems",
+              "credits": 3
+            },
+            {
+              "code": "CSCI-400",
+              "title": "Software Engineering",
+              "credits": 3
+            },
+            {
+              "code": "DSA-230",
+              "title": "Database Systems",
+              "credits": 3
+            }
+          ]
+        },
+        "track_choice": {
+          "choose": 1,
+          "options": [
+            {
+              "name": "Cybersecurity",
+              "published_credits": 15,
+              "courses": [
+                {
+                  "code": "CSCI-130",
+                  "title": "Programming with Python",
+                  "credits": 3
+                },
+                {
+                  "code": "CSCI-261",
+                  "title": "Network Engineering",
+                  "credits": 3
+                },
+                {
+                  "code": "CSCI-361",
+                  "title": "Network Security",
+                  "credits": 3
+                },
+                {
+                  "code": "CSCI-461",
+                  "title": "Penetration Testing",
+                  "credits": 3
+                },
+                {
+                  "code": "DSA-350",
+                  "title": "Data Preparation with Python",
+                  "credits": 3
+                }
+              ]
+            },
+            {
+              "name": "Full-Stack Software Development",
+              "published_credits": 15,
+              "courses": [
+                {
+                  "code": "ART-321",
+                  "title": "Graphic Design",
+                  "credits": 3
+                },
+                {
+                  "code": "ART-322",
+                  "title": "Web Design and Development",
+                  "credits": 3
+                },
+                {
+                  "code": "CSCI-131",
+                  "title": "Web Scripting",
+                  "credits": 3
+                },
+                {
+                  "code": "CSCI-331",
+                  "title": "Server-Side Web Development",
+                  "credits": 3
+                },
+                {
+                  "code": "CSCI-332",
+                  "title": "Client-Side Web Development",
+                  "credits": 3
+                }
+              ]
+            }
+          ]
+        },
+        "credit_arithmetic": {
+          "shared_core": 31,
+          "selected_track": 15,
+          "computed_total": 46,
+          "published_total": 46,
+          "status": "reconciles_for_either_track"
+        },
+        "prerequisite_dependencies_outside_categorical_major": [
+          {
+            "code": "MATH-110",
+            "reason": "The current CSCI-110 course description lists MATH-110 as its prerequisite; MATH-110 is not included in the 46-credit major table but is an approved quantitative-foundation General Education option.",
+            "automatic_addition": "do_not_add_twice_if_satisfied_or_counted_in_general_education"
+          },
+          {
+            "code": "CL-200",
+            "reason": "ART-321 in the Full-Stack track lists CL-200 as a corequisite. CL-200 is ordinarily in the Connected Learning Core but is omitted from the approved-transfer-associate exemption list.",
+            "automatic_addition": "requires_advising_resolution_for_exempt_transfer_students"
+          }
+        ],
+        "upper_level_within_major": {
+          "course_number_basis": "The current course policy says junior and senior courses are generally numbered 300-499.",
+          "shared_core_300_to_499_credits": 12,
+          "by_track": [
+            {
+              "track": "Cybersecurity",
+              "computed_300_to_499_major_credits": 21
+            },
+            {
+              "track": "Full-Stack Software Development",
+              "computed_300_to_499_major_credits": 24
+            }
+          ],
+          "note": "These are computed major contributions toward the separate 45-credit degree-wide junior/senior requirement, not additional requirements."
+        },
+        "excluded_content": [
+          {
+            "content": "Any marketing-page four-year plan, suggested sequence, or prospective degree plan",
+            "reason": "The current CleanCatalog requirement table is categorical authority. The reviewed current catalog program page itself publishes no sample schedule."
+          }
+        ],
+        "composition_status": "source_complete_but_blocked_until_one_required_track_is_selected"
+      },
+      "general_education": {
+        "authority": "Connected Learning (CL): General Education Curriculum",
+        "overview_url": "https://bridgewater.cleancatalog.io/the-connected-learning-cl-curriculum",
+        "requirements_url": "https://bridgewater.cleancatalog.io/connected-learning-general-education/connected-learning-cl-general-education-curriculum",
+        "catalog_node_id": 2579,
+        "download_pdf_url": "https://bridgewater.cleancatalog.io/node/2579/download-pdf",
+        "published_credit_range": {
+          "minimum": 33,
+          "maximum": 46,
+          "unit": "semester credit hours",
+          "variability": "placement, course choices, transfer status, and overlap between categories"
+        },
+        "sections": [
+          {
+            "name": "Connected Learning Core",
+            "published_credit_range": {
+              "minimum": 5,
+              "maximum": 9
+            },
+            "requirements": [
+              {
+                "choose": 1,
+                "options": [
+                  {
+                    "code": "CL-100",
+                    "title": "Connected Learning Seminar",
+                    "credits": 3,
+                    "applies_to": "non-transfer entry"
+                  },
+                  {
+                    "code": "CL-150",
+                    "title": "Connected Learning Transfer Workshop",
+                    "credits": 1,
+                    "applies_to": "transfer student"
+                  }
+                ]
+              },
+              {
+                "required_course": "CL-200",
+                "title_as_published": "Crafting Written Agruments",
+                "credits": 3
+              },
+              {
+                "choose": 1,
+                "options": [
+                  {
+                    "code": "CL-400",
+                    "title": "Connected Learning Capstone",
+                    "credits": 1
+                  },
+                  {
+                    "type": "approved_major_capstone_equivalent",
+                    "computer_science_equivalent": "CSCI-400",
+                    "credits": 3
+                  }
+                ],
+                "computer_science_overlap": "CSCI-400 is already required in the 31-credit shared major core and is on the approved capstone-equivalent list; count the course once."
+              }
+            ]
+          },
+          {
+            "name": "Foundations of Connected Learning",
+            "published_credit_range": {
+              "minimum": 6,
+              "maximum": 15
+            },
+            "requirements": [
+              {
+                "required_course": "COMM-100",
+                "title": "Oral Communication",
+                "credits": 3
+              },
+              {
+                "name": "quantitative_foundation",
+                "choose": 1,
+                "options": [
+                  "MATH-110",
+                  "MATH-140",
+                  "MATH-141",
+                  "MATH-150"
+                ],
+                "credits": 3,
+                "placement_text": "Or placement in MATH-110 based on placement testing"
+              },
+              {
+                "name": "world_languages_and_cultures",
+                "requirement": "One course in a world language at the 102, 201, or 202 level",
+                "credit_range": {
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "choice_menu": "Use the closed current-catalog course list on the requirements URL."
+              },
+              {
+                "name": "writing_intensive",
+                "credits": 3,
+                "choice_menu": "Use the closed current-catalog course list on the requirements URL.",
+                "computer_science_overlap": "CSCI-400 is an approved Writing Intensive course and is already required in the shared major core; count the course once."
+              }
+            ]
+          },
+          {
+            "name": "Ways of Learning",
+            "published_credits": 22,
+            "requirements": [
+              {
+                "category": "Creative and Artistic Practices",
+                "credits": 3,
+                "choose_courses_from_current_menu": true,
+                "full_stack_overlap": "ART-321 is in the Full-Stack track and is designated Creative & Artistic Practices; count it once when used for this category."
+              },
+              {
+                "category": "Engaging in US Diversity",
+                "credits": 3,
+                "choose_courses_from_current_menu": true
+              },
+              {
+                "category": "Engaging in Global Diversity",
+                "credits": 3,
+                "choose_courses_from_current_menu": true
+              },
+              {
+                "category": "Scientific Study of People and Society",
+                "credits": 3,
+                "choose_courses_from_current_menu": true
+              },
+              {
+                "category": "Scientific Study of Nature",
+                "credits": 4,
+                "choose_courses_from_current_menu": true
+              },
+              {
+                "category": "Study of Human Narratives",
+                "credits": 3,
+                "choose_courses_from_current_menu": true
+              },
+              {
+                "category": "Study of the Past",
+                "credits": 3,
+                "choose_courses_from_current_menu": true
+              }
+            ]
+          }
+        ],
+        "approved_transfer_associate_exception": {
+          "eligibility": "Complete an approved transfer-oriented associate degree before transfer.",
+          "exemption": "Exempt from all Connected Learning General Education requirements except CL-100 or CL-150 and CL-400 or a major capstone course.",
+          "computer_science_effect": "CSCI-400 satisfies the approved major-capstone exception, leaving CL-100 or CL-150 as the stated CL requirement. Do not add CL-200 under this exception solely from the GE policy.",
+          "full_stack_caveat": "ART-321 separately lists CL-200 as a corequisite, so an exempt transfer student in Full-Stack needs institution/advisor resolution rather than an inferred waiver."
+        },
+        "overlap_summary": [
+          "Both tracks: CSCI-400 can satisfy the major, CL capstone, and Writing Intensive requirements while counting as one three-credit course.",
+          "Full-Stack track: ART-321 can also satisfy Creative and Artistic Practices while counting once.",
+          "MATH-110, when required as the CSCI-110 prerequisite and selected for the quantitative foundation, counts once."
+        ]
+      },
+      "college_requirements": {
+        "owner": "Coffman School of Natural Sciences",
+        "status": "owner_identified_no_separate_numeric_school_layer_found",
+        "published_additional_credits": null,
+        "evidence": "The current catalog identifies the school and department but publishes no Coffman School-wide additive curriculum between Connected Learning and the Computer Science major."
+      },
+      "graduation_constraints": {
+        "policy_url": "https://bridgewater.cleancatalog.io/degree-requirements",
+        "catalog_node_id": 721,
+        "download_pdf_url": "https://bridgewater.cleancatalog.io/node/721/download-pdf",
+        "total_credits": {
+          "minimum": 120,
+          "unit": "credit hours"
+        },
+        "upper_division": {
+          "minimum": 45,
+          "unit": "credit hours",
+          "scope": "junior- and senior-level courses",
+          "course_number_evidence": "The current Courses of Instruction policy says junior and senior courses are generally numbered 300-499."
+        },
+        "gpa": [
+          {
+            "scope": "cumulative",
+            "minimum": 2.0
+          },
+          {
+            "scope": "major",
+            "minimum": 2.0
+          }
+        ],
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 33,
+            "unit": "credit hours at Bridgewater College"
+          },
+          {
+            "kind": "major_residency",
+            "minimum": 9,
+            "unit": "major credit hours at Bridgewater College"
+          }
+        ],
+        "final_credit_rule": {
+          "window": 33,
+          "minimum_in_residence": 30,
+          "unit": "credit hours",
+          "approved_equivalent_location": "College-approved study abroad program",
+          "effect": "At most three of the last 33 academic-work credits may be completed outside Bridgewater or an approved study-abroad program."
+        },
+        "major_field_policy": {
+          "minimum_credits": 30,
+          "maximum_credits": 79,
+          "supporting_course_treatment": "Prerequisite and supporting courses are included in the major total except prerequisite courses to entry-level major courses.",
+          "major_gpa_minimum": 2.0,
+          "major_residency_minimum": 9
+        },
+        "other_degree_constraints": [
+          "Complete Connected Learning General Education requirements or the published approved-transfer-associate exception.",
+          "Complete the selected major and one required Computer Science track.",
+          "Apply to graduate."
+        ]
+      },
+      "course_dictionary": {
+        "catalog_year_evidence_url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+        "year_evidence": "The current Courses of Instruction page states that its course numbers and descriptions apply to the 2026-2027 academic year.",
+        "global_index_url": "https://bridgewater.cleancatalog.io/classes",
+        "computer_science_parent_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+        "art_parent_url": "https://bridgewater.cleancatalog.io/art",
+        "parent_terms": [
+          {
+            "label": "Mathematics & Computer Science",
+            "taxonomy_term_id": 1849,
+            "canonical_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+            "shortlink": "https://bridgewater.cleancatalog.io/taxonomy/term/1849"
+          },
+          {
+            "label": "Art",
+            "taxonomy_term_id": 1808,
+            "canonical_url": "https://bridgewater.cleancatalog.io/art",
+            "shortlink": "https://bridgewater.cleancatalog.io/taxonomy/term/1808"
+          }
+        ],
+        "course_id_model": "Each current course has a canonical parent-path URL, a shortlink /node/{node_id}, and a public /node/{node_id}/download-pdf endpoint. The node_id values below are the current CleanCatalog identities.",
+        "entries": [
+          {
+            "code": "CSCI-101",
+            "title": "Programming I",
+            "credits": 4,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1039,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci101",
+            "prerequisite": null
+          },
+          {
+            "code": "CSCI-102",
+            "title": "Programming II",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1040,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci102",
+            "prerequisite": "C or greater in CSCI-101, or both CSCI-100 and a C or greater on the CSCI-101 assessment exam"
+          },
+          {
+            "code": "CSCI-110",
+            "title": "Discrete Mathematics",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1042,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci110",
+            "prerequisite": "MATH-110"
+          },
+          {
+            "code": "CSCI-220",
+            "title": "Data Structures and Algorithms",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1043,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci220",
+            "prerequisite": "C or greater in CSCI-102"
+          },
+          {
+            "code": "CSCI-250",
+            "title": "Computer Networks",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1048,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci250",
+            "prerequisite": "CSCI-110"
+          },
+          {
+            "code": "CSCI-320",
+            "title": "Algorithm Analysis and Design",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1045,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci320",
+            "prerequisite": "CSCI-110 and CSCI-220"
+          },
+          {
+            "code": "CSCI-341",
+            "title": "Computer Architecture",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1046,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci341",
+            "prerequisite": "CSCI-110 and CSCI-220"
+          },
+          {
+            "code": "CSCI-342",
+            "title": "Operating Systems",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1047,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci342",
+            "prerequisite": "CSCI-341"
+          },
+          {
+            "code": "CSCI-400",
+            "title": "Software Engineering",
+            "credits": 3,
+            "role": [
+              "shared_core",
+              "approved_cl_capstone",
+              "writing_intensive"
+            ],
+            "catalog_node_id": 1051,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci400",
+            "prerequisite": "Senior standing in the Computer Science major, or both CSCI-220 and instructor permission"
+          },
+          {
+            "code": "DSA-230",
+            "title": "Database Systems",
+            "credits": 3,
+            "role": [
+              "shared_core"
+            ],
+            "catalog_node_id": 1065,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/dsa230",
+            "prerequisite": "CSCI-110 or instructor permission"
+          },
+          {
+            "code": "CSCI-130",
+            "title": "Programming with Python",
+            "credits": 3,
+            "role": [
+              "cybersecurity_track"
+            ],
+            "catalog_node_id": 2189,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci130",
+            "prerequisite": null
+          },
+          {
+            "code": "CSCI-261",
+            "title": "Network Engineering",
+            "credits": 3,
+            "role": [
+              "cybersecurity_track"
+            ],
+            "catalog_node_id": 2933,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci261",
+            "prerequisite": "CSCI-250"
+          },
+          {
+            "code": "CSCI-361",
+            "title": "Network Security",
+            "credits": 3,
+            "role": [
+              "cybersecurity_track"
+            ],
+            "catalog_node_id": 1058,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci361",
+            "prerequisite": "CSCI-261"
+          },
+          {
+            "code": "CSCI-461",
+            "title": "Penetration Testing",
+            "credits": 3,
+            "role": [
+              "cybersecurity_track"
+            ],
+            "catalog_node_id": 2934,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci461",
+            "prerequisite": "CSCI-361"
+          },
+          {
+            "code": "DSA-350",
+            "title": "Data Preparation with Python",
+            "credits": 3,
+            "role": [
+              "cybersecurity_track"
+            ],
+            "catalog_node_id": 1068,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/dsa350",
+            "prerequisite": "C or greater in CSCI-130 or on the CSCI-130 assessment exam"
+          },
+          {
+            "code": "ART-321",
+            "title": "Graphic Design",
+            "credits": 3,
+            "role": [
+              "full_stack_track",
+              "creative_and_artistic_practices"
+            ],
+            "catalog_node_id": 831,
+            "url": "https://bridgewater.cleancatalog.io/art/art321",
+            "prerequisite": "Sophomore standing",
+            "corequisite": "CL-200"
+          },
+          {
+            "code": "ART-322",
+            "title": "Web Design and Development",
+            "credits": 3,
+            "role": [
+              "full_stack_track"
+            ],
+            "catalog_node_id": 830,
+            "url": "https://bridgewater.cleancatalog.io/art/art322",
+            "prerequisite": "Sophomore standing"
+          },
+          {
+            "code": "CSCI-131",
+            "title": "Web Scripting",
+            "credits": 3,
+            "role": [
+              "full_stack_track"
+            ],
+            "catalog_node_id": 1044,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci131",
+            "prerequisite": "C or greater in CSCI-100, CSCI-101, or CSCI-130"
+          },
+          {
+            "code": "CSCI-331",
+            "title": "Server-Side Web Development",
+            "credits": 3,
+            "role": [
+              "full_stack_track"
+            ],
+            "catalog_node_id": 1055,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci331",
+            "prerequisite": "CSCI-131"
+          },
+          {
+            "code": "CSCI-332",
+            "title": "Client-Side Web Development",
+            "credits": 3,
+            "role": [
+              "full_stack_track"
+            ],
+            "catalog_node_id": 1056,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci332",
+            "prerequisite": "CSCI-131"
+          },
+          {
+            "code": "MATH-110",
+            "title": "College Algebra",
+            "credits": 3,
+            "role": [
+              "external_prerequisite_to_csci_110",
+              "approved_quantitative_foundation_option"
+            ],
+            "catalog_node_id": 1412,
+            "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/math110",
+            "categorical_major_credit": false
+          }
+        ]
+      },
+      "excluded_content_and_variants": [
+        {
+          "content": "Sample, suggested, or prospective four-year plans",
+          "reason": "Explicitly excluded from requirements. No such plan is needed because the current catalog page publishes a complete categorical 31-plus-15 structure."
+        },
+        {
+          "content": "Historical 2023-2024 Computer Science structure",
+          "reason": "It included a Theoretical Computing track and different 42-50-credit architecture; it is not current."
+        },
+        {
+          "content": "Bridgewater marketing page and stale registry seed",
+          "reason": "Useful only for discovery. The live 2026-2027 CleanCatalog program node is requirement authority."
+        },
+        {
+          "content": "Computer Science minor and other Mathematics & Computer Science credentials",
+          "reason": "Separate current programs, not choices inside the BS major."
+        }
+      ],
+      "contradictions_and_unknowns": [
+        "The live catalog has advanced to 2026-2027; cached search results and older research may still identify 2025-2026. Capture must validate the live catalog landing page rather than trust a cached title.",
+        "The current major arithmetic is internally consistent: 31 shared credits plus either 15-credit track equals the published 46. There is no source-backed untracked version.",
+        "The approved-transfer-associate GE exception omits CL-200, while Full-Stack ART-321 lists CL-200 as a corequisite. Do not infer whether the individual corequisite is waived.",
+        "The GE page misspells CL-200's title as 'Crafting Written Agruments'; use CL-200 as the identity and preserve the source wording as evidence.",
+        "No separate Coffman School additive curriculum was found."
+      ],
+      "capture_transport": {
+        "primary_transport": "direct HTTP GET of server-rendered CleanCatalog HTML",
+        "api_required": false,
+        "browser_or_javascript_required": false,
+        "secondary_transport": "Public CleanCatalog node PDFs and the generated full-catalog PDF are available for identity and text cross-checks.",
+        "year_gate": "GET https://bridgewater.cleancatalog.io/undergraduate-catalog first and require the heading 2026-2027 Undergraduate Catalog; the program and course URLs themselves are yearless.",
+        "program_identity": {
+          "canonical_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+          "shortlink": "https://bridgewater.cleancatalog.io/node/1936",
+          "download_pdf_url": "https://bridgewater.cleancatalog.io/node/1936/download-pdf",
+          "node_id": 1936,
+          "parent_department_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+          "parent_department_term_id": 1849
+        },
+        "recommended_dom_selectors": [
+          ".node--type-degree.node--view-mode-full",
+          ".field--name-field-degree-type",
+          ".field--name-field-degree-section-p .paragraph--type--degree-section",
+          ".field--name-field-degree-section-title",
+          ".field--name-field-degree-section-courses .node--type-class.node--view-mode-course-table-item",
+          ".field--name-field-item",
+          ".field--name-field-credits"
+        ],
+        "course_identity_transport": "Read each course page's canonical link and rel=shortlink /node/{id}; the public /node/{id}/download-pdf link corroborates the ID. No private CleanCatalog API is needed.",
+        "full_catalog_fallback": "Discover the generated full PDF from the current-catalog landing page rather than hard-coding its version query, then use pdftotext -layout. The Computer Science program is on printed pages 92-93, but the HTML table is structurally safer because the full PDF uses two columns."
+      },
+      "capture_blockers": [
+        "The program path and node ID are yearless; reject capture unless the current landing page is validated as 2026-2027.",
+        "A track selection is mandatory. Do not merge both 15-credit track lists or compose only the 31-credit core as a complete degree.",
+        "Do not score-select the identically named Computer Science minor from the Programs index.",
+        "Model CSCI-400 and ART-321 overlaps as the same course across layers rather than additive duplicate credits.",
+        "The Full-Stack CL-200 corequisite for approved-associate transfers needs policy/advisor resolution."
+      ],
+      "sources": [
+        {
+          "role": "current_catalog_identity",
+          "url": "https://bridgewater.cleancatalog.io/undergraduate-catalog",
+          "evidence": "Current heading is 2026-2027; prior years are listed separately."
+        },
+        {
+          "role": "current_program_index",
+          "url": "https://bridgewater.cleancatalog.io/programs",
+          "evidence": "Lists Computer Science as Bachelor of Science - Major under Mathematics & Computer Science and separately lists the Computer Science minor."
+        },
+        {
+          "role": "program_and_major_requirements",
+          "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+          "evidence": "Current node 1936: 46-credit BS, 31-credit shared core, and required choice of one 15-credit track."
+        },
+        {
+          "role": "owner_and_computer_science_course_dictionary",
+          "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+          "evidence": "Current department programs and CSCI/DSA course descriptions."
+        },
+        {
+          "role": "school_owner_and_course_level_policy",
+          "url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+          "evidence": "Places the department in Coffman School, identifies 2026-2027 applicability, and describes 300-499 as generally junior/senior courses."
+        },
+        {
+          "role": "art_course_dictionary",
+          "url": "https://bridgewater.cleancatalog.io/art",
+          "evidence": "Current ART-321 and ART-322 descriptions and ART-321 General Education designation."
+        },
+        {
+          "role": "general_education_overview",
+          "url": "https://bridgewater.cleancatalog.io/the-connected-learning-cl-curriculum",
+          "evidence": "Publishes the three-layer CL structure and 33-46-credit range."
+        },
+        {
+          "role": "general_education_requirements_and_choices",
+          "url": "https://bridgewater.cleancatalog.io/connected-learning-general-education/connected-learning-cl-general-education-curriculum",
+          "evidence": "Current closed course menus, section totals, and CSCI-400/ART-321 overlaps."
+        },
+        {
+          "role": "degree_graduation_transfer_associate_and_residency_policy",
+          "url": "https://bridgewater.cleancatalog.io/degree-requirements",
+          "evidence": "120 total, 45 junior/senior, GPA, residency/final-credit, major residency, and approved-transfer-associate GE exception."
+        },
+        {
+          "role": "global_current_course_index",
+          "url": "https://bridgewater.cleancatalog.io/classes",
+          "evidence": "Official current course index; canonical course pages and node IDs are retained in course_dictionary.entries."
+        }
+      ]
+    }
+  ]
+}

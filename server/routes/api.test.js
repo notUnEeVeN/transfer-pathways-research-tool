@@ -46,8 +46,8 @@ describe('research API router', () => {
     expect(paths).not.toContain('/figures');
   });
 
-  it('gives Virginia identity reads the standard researcher gate, not an admin-only gate', () => {
-    for (const path of ['/va/courses', '/va/courses/:code', '/va/degrees']) {
+  it('gives Virginia identity reads and degree saves the standard researcher gate, not an admin-only gate', () => {
+    for (const path of ['/va/courses', '/va/courses/:code', '/va/degrees', '/va/degrees/:id']) {
       const handlerNames = routeFor(path).stack.map((layer) => layer.handle.name);
       expect(handlerNames.slice(0, 2)).toEqual(['authenticateToken', 'requireAuditAccess']);
       expect(handlerNames).not.toContain('requireAdmin');

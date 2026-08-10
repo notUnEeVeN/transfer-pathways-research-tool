@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "slug": "richard-bland-college",
+  "catalog_year": "2026-2027",
+  "program": "Math/Computer Science, Associate of Science — Computer Science branch",
+  "award": "AS",
+  "cip_code": "30.0801",
+  "total_units": 60,
+  "total_units_max": 60,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "catalog",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "course_namespace": {
+    "kind": "institution_local",
+    "institution_id": "va:cc:richard-bland-college",
+    "vccs_master_applicable": false,
+    "identity_contract": "owner_plus_course_id",
+    "scoped_key_format": "va:cc:richard-bland-college:<code>",
+    "source_refs": ["major"]
+  },
+  "course_titles": {
+    "ENGL101": "Rhetoric & Research I",
+    "ENGL102": "Rhetoric & Research II",
+    "CSCI221": "Programming for Computer Science & Engineering Majors I",
+    "CSCI222": "Programming for Computer Science & Engineering Majors II",
+    "MATH251": "Calculus I",
+    "MATH252": "Calculus II",
+    "MATH254": "Elementary Linear Algebra",
+    "MATH261": "Multivariable Calculus",
+    "MATH271": "Differential Equations",
+    "PHYS201": "University Physics (Lecture and Lab)",
+    "PHYS202": "University Physics (Lecture and Lab)"
+  },
+  "unit_audit": {
+    "published_program_units": 60,
+    "published_component_units_minimum": 60,
+    "published_component_units_maximum": 62,
+    "modeled_units": 60,
+    "canonical_closure": "A three-credit mathematics branch choice plus the published 15-credit elective minimum closes the degree at 60.",
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "At least 30 of the minimum 60 degree credits must be completed at Richard Bland College.",
+      "source_refs": ["policy"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "gpa_source_refs": ["graduation"]
+  },
+  "modeling_notes": [
+    "Richard Bland publishes one combined Math/Computer Science A.S. under CIP 30.0801. This artifact exposes its Computer Science branch and does not relabel the award as a standalone Computer Science A.S.",
+    "The Computer Science branch is CSCI 222 and exactly one of MATH 254, MATH 261, or MATH 271, in addition to the common CSCI 221, MATH 251, and MATH 252 courses.",
+    "The printed 15-16 elective block is retained as an unenumerated credit category. Its named mathematics and natural-science courses are recommendations for transfer planning, not additional AND requirements.",
+    "The program page says the quantitative and symbolic reasoning component satisfies computer proficiency, so no additional computer-proficiency course is added. Foreign language is transfer-planning guidance, not a requirement of this degree.",
+    "The minimum published component values close at 60. The printed maxima can total 62, and the four-credit MATH 261 branch combined with the 15-credit elective minimum totals 61; this source conflict is retained and blocks analysis readiness.",
+    "All course codes are Richard Bland institution-local identities. They are supported directly by the reviewed Richard Bland program page and must not be treated as VCCS master-course records merely because a normalized code overlaps."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "combined_award_not_standalone_cs",
+      "severity": "review",
+      "message": "The official award is Math/Computer Science, A.S.; Computer Science is a branch within the combined quantitative requirement."
+    },
+    {
+      "code": "non_vccs_course_namespace",
+      "severity": "block",
+      "message": "Richard Bland course codes are institution-local and must not join the VCCS course registry solely by normalized code."
+    },
+    {
+      "code": "published_component_range_conflict",
+      "severity": "block",
+      "message": "The component minima total 60, while the printed component maxima total 62; a MATH 261 branch plus the printed 15-credit elective minimum totals 61 against the stated 60-credit degree."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENGL101"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENGL102"]]}]}
+      ]
+    },
+    {
+      "title": "The Art of Language and Ideas",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["COMM101"], ["COMM102"], ["COMM201"], ["COMM204"],
+              ["ENGL203"], ["ENGL204"], ["ENGL205"], ["ENGL206"],
+              ["ENGL210"], ["ENGL211"], ["ENGL214"], ["ENGL215"], ["ENGL216"],
+              ["PHIL101"], ["PHIL121"], ["PHIL201"], ["PHIL202"], ["PHIL203"], ["PHIL270"],
+              ["REL201"], ["REL209"], ["REL210"], ["REL270"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "The Language and History of Fine Arts",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["ART201"], ["ART202"], ["ART231"], ["MUS103"], ["MUS123"], ["THEA201"]]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "The Human Experience",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["ANTH103"], ["PHIL101"], ["PHIL121"], ["PHIL201"], ["PHIL202"], ["PHIL203"], ["PHIL270"],
+              ["PSY201"], ["PSY202"], ["PSY217"], ["PSY218"], ["PSY240"], ["PSY250"], ["PSY292"], ["PSY295"],
+              ["REL201"], ["REL209"], ["REL210"], ["REL270"],
+              ["SOC201"], ["SOC204"], ["SOC208"], ["SOC250"], ["SOC253"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "U.S. and World Cultures",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["ECON201"], ["ECON202"], ["GEO101"], ["GEO103"],
+              ["GOVT201"], ["GOVT202"], ["GOVT203"],
+              ["HIST101"], ["HIST102"], ["HIST191"], ["HIST192"], ["HIST201"], ["HIST202"],
+              ["HIST222"], ["HIST240"], ["HIST242"], ["HIST248"], ["HIST250"], ["HIST259"],
+              ["PHIL270"], ["REL201"], ["REL209"], ["REL210"], ["REL219"], ["REL220"], ["REL254"], ["REL270"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "Common quantitative and symbolic reasoning requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSCI221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MATH251"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MATH252"]]}]}
+      ]
+    },
+    {
+      "title": "Computer Science branch of quantitative and symbolic reasoning",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 7,
+          "units_max": 8,
+          "label": "CSCI 222 and one mathematics course",
+          "analysis_constraints": [
+            {
+              "kind": "published_variable_component_closure",
+              "status": "evaluator_not_implemented",
+              "description": "The 60-credit total closes with either three-credit mathematics option and 15 elective credits; the four-credit MATH 261 route conflicts with the printed 15-credit elective minimum."
+            }
+          ],
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["CSCI222", "MATH254"],
+              ["CSCI222", "MATH261"],
+              ["CSCI222", "MATH271"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "Investigation of the Natural World",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["PHYS201"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["PHYS202"]]}]}
+      ]
+    },
+    {
+      "title": "Electives to the published degree total",
+      "source_refs": ["major"],
+      "ge_area": "richard_bland_degree_electives",
+      "units": 15,
+      "units_max": 16,
+      "note": "The official page publishes 15-16 elective credits. Its named Mathematics and Natural Science courses and foreign-language statement are recommendations tied to the intended transfer institution, not additional requirements. No more than two additional Physical Education credits may apply."
+    }
+  ]
+}

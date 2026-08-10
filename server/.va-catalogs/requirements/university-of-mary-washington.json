@@ -8,18 +8,218 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.umw.edu/undergraduate/majors/computer-science/",
- "captured_at": "2026-08-02T05:59:07.865Z",
- "program_title": null,
- "total_credits": {
-  "min": 120,
-  "max": 122,
-  "raw": "120-122"
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science",
+  "variant": "B.S., Computer Science; excludes the Cybersecurity major, B.L.S. requirements, and accelerated Virginia Tech graduate pathway",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Arts and Sciences",
+  "general_education_authority": "University of Mary Washington B.A./B.F.A./B.S./B.S.Ed. General Education Requirements",
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "major_units_minimum": 46,
+   "major_units_maximum": 48,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "No aggregate university-wide upper-division-credit minimum is published. The explicit major requirements guarantee at least 33 credits numbered 300 or above.",
+    "source_refs": [
+     "major",
+     "graduation"
+    ]
+   },
+   "major_scoped_upper_division_units_minimum": 33,
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 30 academic credits must be earned at UMW, including at least half the credits required for the major; at least 15 of the final 21 credits must also be earned at UMW, subject to the published active-duty military waiver.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "major_residency_units_minimum": 23,
+   "major_residency_units_maximum_for_published_path": 24,
+   "final_credit_window_units": 21,
+   "final_credit_window_residency_units_minimum": 15,
+   "single_discipline_units_maximum": 60,
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The authoritative requirement scope is #requirementstextcontainer and publishes a 46-48-credit major plus a 120-credit degree total.",
+   "Exclude #planofstudytextcontainer. The catalog calls it a suggested guide that does not replace Program Requirements; its 120-122 total is a schedule range, not the degree-total requirement.",
+   "The General Education program combines courses, competencies, designated attributes, and experiences, with some requirements satisfied inside the major. It has no published independent additive credit subtotal.",
+   "The accelerated Virginia Tech Computer Science pathway is a separate special program and must not be merged into the ordinary B.S."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "sample_plan_total_not_degree_total",
+    "severity": "review",
+    "message": "Do not replace the 120-credit graduation requirement with the suggested plan's 120-122 scheduling range."
+   },
+   {
+    "code": "general_education_nonadditive",
+    "severity": "review",
+    "message": "The General Education source does not publish one independent credit total and includes attribute or experiential requirements that can overlap other coursework."
+   },
+   {
+    "code": "university_upper_division_minimum_not_published",
+    "severity": "review",
+    "message": "The 33-credit figure is major-scoped; do not report it as a university-wide upper-division requirement."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
  },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "University of Mary Washington major and degree requirements",
+   "url": "https://catalog.umw.edu/undergraduate/majors/computer-science/",
+   "requested_url": "https://catalog.umw.edu/undergraduate/majors/computer-science/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:21:14.744Z",
+   "sha256": "ef65cff788c71253bf39c8f03e899d344206b06765efdffa593720ad503e0acf",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "University of Mary Washington general education requirements",
+   "url": "https://catalog.umw.edu/undergraduate/general-education/requirements-bachelor-arts-bachelor-science-degrees/",
+   "requested_url": "https://catalog.umw.edu/undergraduate/general-education/requirements-bachelor-arts-bachelor-science-degrees/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:21:14.744Z",
+   "sha256": "ecf718699eb243d04a4e455baa5753a247e622e0c9eb2020857380310098c13a",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "University of Mary Washington college or school requirements",
+   "url": "https://catalog.umw.edu/undergraduate/college-arts-sciences/",
+   "requested_url": "https://catalog.umw.edu/undergraduate/college-arts-sciences/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:21:14.744Z",
+   "sha256": "f7d1f7c795cf42a92341699dcd4e34eb5b6a71fd873604e7b84485241562ff55",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "University of Mary Washington university graduation requirements",
+   "url": "https://catalog.umw.edu/undergraduate/undergraduate-degrees/ba-bs-degree/",
+   "requested_url": "https://catalog.umw.edu/undergraduate/undergraduate-degrees/ba-bs-degree/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:21:14.744Z",
+   "sha256": "0ef15ca5876763238968169a1707c0c33c98c771dc0b73885792fc49dfab9a2f",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "University of Mary Washington course descriptions and credit values",
+   "url": "https://catalog.umw.edu/undergraduate/course-descriptions/cpsc/",
+   "requested_url": "https://catalog.umw.edu/undergraduate/course-descriptions/cpsc/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T03:21:14.744Z",
+   "sha256": "525d4fd52b71a6003e793dfe0f8e7aa2d271e68419032eb466e37239703184bd",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:21:14.744Z",
+ "program_title": "Computer Science",
+ "parse_error": null,
+ "total_credits": null,
  "stopped_at": null,
  "groups": [
   {
    "title": "Major Requirements",
-   "credits": null,
+   "credits": {
+    "min": 46,
+    "max": 48,
+    "raw": "46-48"
+   },
    "choose": null,
    "choose_credits": null,
    "distinct_sections": null,
@@ -259,584 +459,49 @@
      "rows": []
     }
    ]
-  },
-  {
-   "title": "Fall",
-   "credits": {
-    "min": 15,
-    "max": 15,
-    "raw": "15"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 110 Introduction to Computer Science 1",
-    "FSEM 100 First-Year Seminar",
-    "General Education Courses"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC110",
-         "title": "Introduction to Computer Science"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 110 Introduction to Computer Science 1",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "FSEM100",
-         "title": "First-Year Seminar"
-        }
-       ],
-       "conjunction": "and",
-       "text": "FSEM 100 First-Year Seminar",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education Courses",
-       "category": "General Education Courses",
-       "credits": {
-        "min": 9,
-        "max": 9,
-        "raw": "9"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring",
-   "credits": {
-    "min": 14,
-    "max": 14,
-    "raw": "14"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 220 Computer Programming and Problem Solving",
-    "CPSC 284 Applied Discrete Mathematics",
-    "General Education Courses"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC220",
-         "title": "Computer Programming and Problem Solving"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 220 Computer Programming and Problem Solving",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CPSC284",
-         "title": "Applied Discrete Mathematics"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 284 Applied Discrete Mathematics",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education Courses",
-       "category": "General Education Courses",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fall",
-   "credits": {
-    "min": 17,
-    "max": 17,
-    "raw": "17"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 225 Software Development Tools",
-    "CPSC 240 Object-oriented Analysis and Design",
-    "General Education Courses"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC225",
-         "title": "Software Development Tools"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 225 Software Development Tools",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CPSC240",
-         "title": "Object-oriented Analysis and Design"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 240 Object-oriented Analysis and Design",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education Courses",
-       "category": "General Education Courses",
-       "credits": {
-        "min": 12,
-        "max": 12,
-        "raw": "12"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring",
-   "credits": {
-    "min": 14,
-    "max": 14,
-    "raw": "14"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 340 Data Structures and Algorithms",
-    "CPSC 350 Applications of Databases",
-    "General Education Courses"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC340",
-         "title": "Data Structures and Algorithms"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 340 Data Structures and Algorithms",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CPSC350",
-         "title": "Applications of Databases"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 350 Applications of Databases",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "General Education Courses",
-       "category": "General Education Courses",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fall",
-   "credits": {
-    "min": 15,
-    "max": 16,
-    "raw": "15-16"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 326 Theoretical Foundations of Computing",
-    "CPSC/MATH 300-Level Elective",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC326",
-         "title": "Theoretical Foundations of Computing"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 326 Theoretical Foundations of Computing",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH300",
-         "title": null
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC/MATH 300-Level Elective",
-       "credits": {
-        "min": 3,
-        "max": 4,
-        "raw": "3-4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 8,
-        "max": 8,
-        "raw": "8"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring",
-   "credits": {
-    "min": 15,
-    "max": 16,
-    "raw": "15-16"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 302 Computer Ethics",
-    "CPSC 400-Level Elective",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC302",
-         "title": "Computer Ethics"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 302 Computer Ethics",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CPSC 400-Level Elective",
-       "category": "CPSC 400-Level Elective",
-       "credits": {
-        "min": 3,
-        "max": 4,
-        "raw": "3-4"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 9,
-        "max": 9,
-        "raw": "9"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Fall",
-   "credits": {
-    "min": 14,
-    "max": 14,
-    "raw": "14"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 305 Computer Systems and Architecture",
-    "CPSC 430 Software Engineering",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC305",
-         "title": "Computer Systems and Architecture"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 305 Computer Systems and Architecture",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CPSC430",
-         "title": "Software Engineering"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 430 Software Engineering",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Spring",
-   "credits": {
-    "min": 16,
-    "max": 16,
-    "raw": "16"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CPSC 405 Operating Systems and Systems Programming",
-    "Electives"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CPSC405",
-         "title": "Operating Systems and Systems Programming"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CPSC 405 Operating Systems and Systems Programming",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Electives",
-       "category": "Electives",
-       "credits": {
-        "min": 12,
-        "max": 12,
-        "raw": "12"
-       }
-      }
-     ]
-    }
-   ]
   }
  ],
  "narrative": [],
  "unassigned": [],
  "validation": {
-  "verdict": "pass",
+  "verdict": "warn",
   "needs_hand_read": false,
   "checks": [
    {
     "severity": "pass",
     "name": "codes_not_in_source",
-    "detail": "all 15 codes appear verbatim in the captured text"
+    "detail": "all 13 codes appear verbatim in the captured text"
    },
    {
-    "severity": "pass",
-    "name": "group_count",
-    "detail": "9 requirement groups"
+    "severity": "warn",
+    "name": "single_group",
+    "detail": "only one requirement group — check the page really has no headings"
    },
    {
     "severity": "pass",
     "name": "course_count",
-    "detail": "15 distinct courses across 35 rows"
+    "detail": "13 distinct courses across 12 rows"
    },
    {
-    "severity": "pass",
-    "name": "credits_reconcile",
-    "detail": "groups sum to 120–122, stated total 120-122"
-   },
-   {
-    "severity": "pass",
-    "name": "categories",
-    "detail": "9 unenumerated requirement(s) kept as categories"
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
    }
   ],
   "stats": {
-   "groups": 9,
-   "sections": 11,
-   "rows": 35,
-   "course_rows": 26,
-   "category_rows": 9,
-   "distinct_courses": 15,
+   "groups": 1,
+   "sections": 3,
+   "rows": 12,
+   "course_rows": 12,
+   "category_rows": 0,
+   "distinct_courses": 13,
    "credit_span": {
-    "min": 120,
-    "max": 122,
-    "groups_with_credits": 8
+    "min": 46,
+    "max": 48,
+    "groups_with_credits": 1
    },
-   "stated_total": "120-122"
+   "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.977Z"
+ "extracted_at": "2026-08-10T03:21:26.620Z"
 }

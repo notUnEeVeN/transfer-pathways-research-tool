@@ -13,7 +13,7 @@ vi.mock('@frontend/hooks/useAuth', () => ({
 }))
 
 import apiClient from '@frontend/api/apiClient'
-import { useVaPrerequisiteGraph } from './useVirginia'
+import { useVaInstitutions, useVaMatrix, useVaPrerequisiteGraph } from './useVirginia'
 
 describe('useVaPrerequisiteGraph', () => {
   beforeEach(() => {
@@ -72,6 +72,48 @@ describe('useVaPrerequisiteGraph', () => {
         college: 'Blue Ridge Community College',
         university: 'George Mason University',
       },
+    })
+  })
+})
+
+describe('useVaMatrix', () => {
+  beforeEach(() => {
+    mocks.useQuery.mockReset()
+    apiClient.get.mockReset()
+    apiClient.get.mockResolvedValue({ data: { receivers: [] } })
+  })
+
+  it('keeps the public comparison matrix in its own cache entry', async () => {
+    useVaMatrix('schev_public_four_year')
+    const options = mocks.useQuery.mock.calls[0][0]
+    expect(options.queryKey).toEqual([
+      'va', 'matrix:schev_public_four_year', 'user-1',
+      { cohort: 'schev_public_four_year' },
+    ])
+    await options.queryFn()
+    expect(apiClient.get).toHaveBeenCalledWith('/va/matrix', {
+      params: { cohort: 'schev_public_four_year' },
+    })
+  })
+})
+
+describe('useVaInstitutions', () => {
+  beforeEach(() => {
+    mocks.useQuery.mockReset()
+    apiClient.get.mockReset()
+    apiClient.get.mockResolvedValue({ data: { institutions: [] } })
+  })
+
+  it('keys and requests the primary public cohort independently', async () => {
+    useVaInstitutions('four_year', 'schev_public_four_year')
+    const options = mocks.useQuery.mock.calls[0][0]
+    expect(options.queryKey).toEqual([
+      'va', 'institutions:four_year:schev_public_four_year', 'user-1',
+      { level: 'four_year', cohort: 'schev_public_four_year' },
+    ])
+    await options.queryFn()
+    expect(apiClient.get).toHaveBeenCalledWith('/va/institutions', {
+      params: { level: 'four_year', cohort: 'schev_public_four_year' },
     })
   })
 })

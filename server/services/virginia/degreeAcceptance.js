@@ -79,10 +79,23 @@ const DECLARATION_STATUSES = new Set(['required', 'none_stated', 'not_applicable
 const CONTAMINATION = /(?:sample|suggested|recommended)\s+(?:plan|program|schedule)|plan\s+of\s+study|accelerated|fast[-\s]?track|\b4\s*\+\s*1\b|honou?rs?\s+(?:program|track|curriculum|option)/i;
 const CATALOG_YEAR = /\b20\d{2}(?:\s*[-\u2013/]\s*(?:20)?\d{2})?\b/;
 const VA_OWNER = /^va:(cc|uni):([a-z0-9]+(?:-[a-z0-9]+)*)$/;
-const AS_AWARD = /^(?:A\.?S\.?|AS-T|AAS|AA&S)$/i;
-const AS_TITLE = /associate\s+(?:(?:in|of)\s+)?(?:applied\s+)?science|associate\s+(?:of\s+)?arts\s+and\s+sciences|\bA\.?S\.?\b|\bAA&S\b|\bAAS\b/i;
+const LOCAL_NAMESPACE_REQUIRED_OWNERS = new Set([
+  'va:cc:richard-bland-college',
+]);
+// This collector models transfer-oriented science awards. An A.A.S. is a
+// materially different, career-oriented award and must not be promoted to an
+// A.S. merely because it was the closest computing result in a catalog search.
+const AS_AWARD = /^(?:A\.?S\.?|AS-T|AA&S)$/i;
+const AS_TITLE = /associate\s+(?:(?:in|of)\s+)?science|associate\s+(?:of\s+)?arts\s+and\s+sciences|\bA\.?S\.?\b|\bAA&S\b/i;
 const UNRESOLVED_LABEL = /unresolved|unknown course|missing course|no (?:catalog )?(?:course|articulation|parent[_ ]?id)/i;
 const PSEUDO_CODE = /(?:TRNS|ELEC)\d*X{1,3}|-{2,}|\b(?:ELECTIVE|PLACEHOLDER)\b/i;
+// Two current official Acalog hosts serve only over HTTP or downgrade after an
+// HTTPS certificate/redirect failure. Keep the exceptions host-exact; an
+// arbitrary insecure .edu URL is still rejected.
+const INSECURE_OFFICIAL_CATALOG_HOSTS = new Set([
+  'catalog.rbc.edu',
+  'catalog.uvawise.edu',
+]);
 
 const own = (value, key) => Object.prototype.hasOwnProperty.call(value || {}, key);
 const finite = (value) => Number.isFinite(value);
@@ -127,8 +140,12 @@ function defaultOfficialSource(source) {
   }
 }
 
-function httpsUrl(value) {
-  try { return new URL(value).protocol === 'https:'; } catch (_) { return false; }
+function acceptableSourceUrl(value) {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === 'https:'
+      || (parsed.protocol === 'http:' && INSECURE_OFFICIAL_CATALOG_HOSTS.has(parsed.hostname.toLowerCase()));
+  } catch (_) { return false; }
 }
 
 function sourceRegistry(doc, isOfficialSource) {
@@ -140,7 +157,7 @@ function sourceRegistry(doc, isOfficialSource) {
   sources.forEach((source, index) => {
     const path = `sources[${index}]`;
     if (!source || !text(source.id) || !text(source.kind) || !text(source.label)
-        || !httpsUrl(source.url)) malformed.push(path);
+        || !acceptableSourceUrl(source.url)) malformed.push(path);
     else if (!isOfficialSource(source)) unofficial.push(path);
   });
   return {
@@ -156,7 +173,9 @@ function walkSourceRefs(value, sourceIds, path = 'doc', out = []) {
   }
   if (own(value, 'source_refs')) {
     const refs = value.source_refs;
-    if (!Array.isArray(refs) || refs.length === 0 || refs.some((ref) => !text(ref))) {
+    const notApplicable = String(value.status || '').trim().toLowerCase() === 'not_applicable';
+    if (!Array.isArray(refs) || (refs.length === 0 && !notApplicable)
+        || refs.some((ref) => !text(ref))) {
       out.push({ path: `${path}.source_refs`, reason: 'must be a non-empty array of source ids' });
     } else {
       const unknown = refs.filter((ref) => !sourceIds.has(ref));
@@ -191,6 +210,34 @@ function requiredTreeRefs(doc, sourceIds) {
   return issues;
 }
 
+function courseNamespaceIssues(doc, owner) {
+  const namespace = doc.course_namespace;
+  if (namespace == null) {
+    return LOCAL_NAMESPACE_REQUIRED_OWNERS.has(owner)
+      ? ['course_namespace is required for this institution-local catalog']
+      : [];
+  }
+  if (!namespace || typeof namespace !== 'object' || Array.isArray(namespace)) {
+    return ['course_namespace must be an object'];
+  }
+  const issues = [];
+  if (namespace.kind !== 'institution_local') issues.push('course_namespace.kind must be institution_local');
+  if (namespace.institution_id !== owner) issues.push('course_namespace.institution_id must match college ownership');
+  if (namespace.vccs_master_applicable !== false) {
+    issues.push('course_namespace.vccs_master_applicable must be false');
+  }
+  if (namespace.identity_contract !== 'owner_plus_course_id') {
+    issues.push('course_namespace.identity_contract must be owner_plus_course_id');
+  }
+  if (namespace.scoped_key_format !== `${owner}:<code>`) {
+    issues.push('course_namespace.scoped_key_format must be <college_id>:<code>');
+  }
+  if (!Array.isArray(namespace.source_refs) || namespace.source_refs.length === 0) {
+    issues.push('course_namespace.source_refs must cite official namespace evidence');
+  }
+  return issues;
+}
+
 function identityIssues(doc, level) {
   const issues = [];
   if (level === 'four_year') {
@@ -206,6 +253,7 @@ function identityIssues(doc, level) {
     }
     if (!text(doc.major_slug)) issues.push('major_slug is required');
     if (!text(doc.program)) issues.push('program title is required');
+    if (doc.course_namespace != null) issues.push('course_namespace is only supported for community-college degrees');
   } else if (level === 'community_college') {
     if (doc.kind !== 'as_degree') issues.push('kind must be as_degree');
     const owner = doc.college_id || doc.community_college_id;
@@ -224,6 +272,7 @@ function identityIssues(doc, level) {
       issues.push('degree_type must identify an A.S. award');
     }
     if (!text(doc.source)) issues.push('source is required');
+    issues.push(...courseNamespaceIssues(doc, owner));
   } else {
     issues.push('institutionLevel must be four_year or community_college');
   }
@@ -238,7 +287,7 @@ function catalogMetadataIssues(doc, level, sourceUrls) {
   const title = level === 'four_year' ? doc.program : doc.degree_title_seen;
   if (!text(title)) issues.push('degree title is required');
   const primary = level === 'four_year' ? doc.source_url : (doc.catalog_url || doc.source_url);
-  if (!httpsUrl(primary)) issues.push('primary catalog URL must be HTTPS');
+  if (!acceptableSourceUrl(primary)) issues.push('primary catalog URL must be HTTPS or an allowlisted official HTTP catalog');
   else if (!sourceUrls.has(primary)) issues.push('primary catalog URL must appear in sources');
   return issues;
 }
@@ -666,6 +715,48 @@ function unitAuditIssues(doc, level, sourceIds) {
 }
 
 /**
+ * Exact source modeling may legitimately outrun the current evaluators. Keep
+ * that richer requirement in the catalog record, but do not call the document
+ * analysis-ready until every cross-choice/exclusion rule has an implementation.
+ */
+function unsupportedConstraintIssues(doc) {
+  const issues = [];
+  const visit = (value, path = 'doc') => {
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)) {
+      value.forEach((entry, index) => visit(entry, `${path}[${index}]`));
+      return;
+    }
+    if (value.distinct_course_ids_across_sections === true) {
+      issues.push({ path: `${path}.distinct_course_ids_across_sections`, reason: 'cross-section distinct-course evaluator is not implemented' });
+    }
+    if (positive(value.distinct_areas)) {
+      issues.push({ path: `${path}.distinct_areas`, reason: 'distinct GE-area evaluator is not implemented' });
+    }
+    if (text(value.overlap_key)) {
+      issues.push({ path: `${path}.overlap_key`, reason: 'cross-requirement overlap evaluator is not implemented' });
+    }
+    if (Array.isArray(value.analysis_constraints)) {
+      value.analysis_constraints.forEach((constraint, index) => {
+        if (String(constraint?.status || '').toLowerCase() !== 'supported') {
+          issues.push({
+            path: `${path}.analysis_constraints[${index}]`,
+            reason: constraint?.description || constraint?.kind || 'constraint has no supported evaluator',
+            kind: constraint?.kind || null,
+          });
+        }
+      });
+    }
+    for (const [key, child] of Object.entries(value)) {
+      if (key !== 'analysis_constraints') visit(child, `${path}.${key}`);
+    }
+  };
+  visit(doc);
+  return issues.filter((issue, index) => issues.findIndex((other) =>
+    other.path === issue.path && other.reason === issue.reason) === index);
+}
+
+/**
  * Validate a normalized Virginia degree document without mutating it.
  *
  * `catalog.ok` means a researcher has a complete, official, source-walkable
@@ -756,6 +847,13 @@ function validateDegreeAcceptance(doc, options = {}) {
   analysisChecks.add('unit_closure', audit.issues.length === 0,
     audit.issues.length ? 'unit budget or upper-division/residency declarations are incomplete' : `modeled units close at ${audit.modeled_units}`,
     audit.issues.length ? { issues: audit.issues, modeled_units: audit.modeled_units } : { modeled_units: audit.modeled_units });
+
+  const unsupportedConstraints = unsupportedConstraintIssues(value);
+  analysisChecks.add('constraint_support', unsupportedConstraints.length === 0,
+    unsupportedConstraints.length
+      ? 'one or more exact catalog constraints do not yet have an analysis evaluator'
+      : 'all modeled constraints have evaluator support',
+    unsupportedConstraints.length ? { issues: unsupportedConstraints } : {});
 
   const catalog = finish(catalogChecks.checks);
   analysisChecks.checks.unshift({

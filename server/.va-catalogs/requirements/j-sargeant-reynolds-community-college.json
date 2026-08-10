@@ -3,43 +3,1526 @@
  "name": "J Sargeant Reynolds Community College",
  "level": "community_college",
  "platform": "acalog",
- "outcome": "url_only",
- "source_url": "https://catalog.reynolds.edu/preview_program.php?catoid=10&poid=2162&returnto=955&print=1",
- "offers_cs": null,
- "program_title": null,
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": true,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": "https://catalog.reynolds.edu/preview_program.php?catoid=10&poid=2162&returnto=955&print=1",
-  "title": "Computer Science AS",
-  "candidates": [
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science AS",
+  "variant": "Destination-sensitive transfer award; retain both full-time B.A.- and B.S.-oriented maps",
+  "catalog_version": {
+   "catalog_id": 13,
+   "award_index_program_id": 4051,
+   "ba_full_time_program_id": 4134,
+   "ba_part_time_program_id": 4138,
+   "bs_full_time_program_id": 4173,
+   "bs_part_time_program_id": 4174
+  },
+  "program_code": null,
+  "cip_code": null,
+  "academic_unit": "School of Science, Technology, Engineering, and Mathematics",
+  "college": "Reynolds Community College",
+  "general_education_authority": "Reynolds Approved Transfer Electives and the Virginia Community College System Uniform Certificate of General Studies",
+  "source_variants": [
    {
-    "score": 20,
-    "title": "Computer Science AS",
-    "href": "https://catalog.reynolds.edu/preview_program.php?catoid=10&poid=2162&returnto=955",
-    "catoid": 10
+    "name": "Full-time B.A.-destination map",
+    "program_id": 4134,
+    "published_units_minimum": 62,
+    "published_units_maximum": 63
+   },
+   {
+    "name": "Part-time B.A.-destination map",
+    "program_id": 4138,
+    "requirements_equivalent_to": 4134
+   },
+   {
+    "name": "Full-time B.S.-destination map",
+    "program_id": 4173,
+    "published_units": 63
+   },
+   {
+    "name": "Part-time B.S.-destination map",
+    "program_id": 4174,
+    "requirements_equivalent_to": 4173
    }
   ],
-  "catoids": [
-   10
-  ],
-  "read": {
-   "navs_seen": 26,
-   "nav_pages_read": 3,
-   "program_links_seen": 176,
-   "via": "navigation"
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "published_program_units_maximum": 63,
+   "published_full_time_map_units_minimum": 62,
+   "published_full_time_map_units_maximum": 63,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of degree credit hours must be earned at Reynolds.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_program_gpa": 2
   },
-  "read_fetch": {
-   "navs_seen": 26,
-   "nav_pages_read": 0,
-   "program_links_seen": 0
+  "modeling_notes": [
+   "The award-index page contains no course table. Requirements live in four linked program-map records, so it is an identity source rather than a sufficient major source.",
+   "Use the full-time maps to model requirements and retain the part-time maps as scheduling-equivalent variants. The B.A. and B.S. maps are materially different and must not be flattened into one AND list.",
+   "The B.S. map is the default program seed because the award is designed primarily for bachelor's-level computer science transfer; the B.A. map remains a required companion source.",
+   "Approved UCGS/transfer-elective menus and their same-discipline and duplicate-credit exclusions are owned by the separate approved-transfer-electives source."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "program_index_has_no_requirements",
+    "severity": "block",
+    "message": "Do not mark the degree captured from poid 4051 alone; it only links to the requirement-bearing maps."
+   },
+   {
+    "code": "destination_variants_change_requirements",
+    "severity": "review",
+    "message": "B.A.- and B.S.-destination maps have different mathematics, science, language, and elective rules and different published totals."
+   }
+  ],
+  "layers": {
+   "catalog_identity": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "major": {
+    "source_roles": [
+     "program",
+     "program_ba"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "program_ba",
+     "ge"
+    ]
+   },
+   "ownership": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   }
   }
  },
- "extracted_at": "2026-08-02T06:13:44.732Z"
+ "sources": [
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "J Sargeant Reynolds Community College academic catalog",
+   "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4051&returnto=1496",
+   "requested_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4051&returnto=1496",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "f5d1f8c2901d54fa6ec09bfff231ccd7bed99a3a7f614f4aa5e2793995db7c1d",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "J Sargeant Reynolds Community College major and degree requirements",
+   "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173",
+   "requested_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "260a0254b8b4e1f7ff1f192d7de012261d7380a3d8e69034b1572f27dbf8e428",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "program_ba",
+   "role": "program_ba",
+   "kind": "program_ba",
+   "label": "J Sargeant Reynolds Community College program_ba",
+   "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4134",
+   "requested_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4134",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "63cfd5ca341711f14957e36ae705e9aa51ce02b00c3a2f04128551eba2e540a0",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "J Sargeant Reynolds Community College general education requirements",
+   "url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=3925",
+   "requested_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=3925",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "1a043a2af888973343ddf2ac10ab1fb22b6357167388891514021ba097743d73",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "J Sargeant Reynolds Community College university graduation requirements",
+   "url": "https://catalog.reynolds.edu/content.php?catoid=13&navoid=1487#classroom-graduation-and-program-requirements",
+   "requested_url": "https://catalog.reynolds.edu/content.php?catoid=13&navoid=1487#classroom-graduation-and-program-requirements",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "7556bdfa40d6cdda1e4e08d4e8d245d20ab06dced04460acef21c4af87fdc7fe",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "J Sargeant Reynolds Community College college or school requirements",
+   "url": "https://www.reynolds.edu/programs/program-pages/computer-science-as.html",
+   "requested_url": "https://www.reynolds.edu/programs/program-pages/computer-science-as.html",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "861dc9107b88a338e5edd5e8b87df1109b91fdbaebd4acfa175bc6afb6cebeb4",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college_2",
+   "role": "college",
+   "kind": "college",
+   "label": "J Sargeant Reynolds Community College college or school requirements",
+   "url": "https://www.reynolds.edu/get_started/programs/smse/default.html",
+   "requested_url": "https://www.reynolds.edu/get_started/programs/smse/default.html",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:35:27.165Z",
+   "sha256": "2e1304e9d92adc13c9578e1ad24472c308fb45fbb38b40df9d82bde0ea770cdb",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "catalog_identity": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "program_ba"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "program_ba",
+    "general_education"
+   ],
+   "note": null
+  },
+  "ownership": {
+   "status": "captured",
+   "source_refs": [
+    "college",
+    "college_2"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:35:27.165Z",
+ "extracted_at": "2026-08-10T03:42:24.972Z",
+ "parser": "variant_set",
+ "pdf_window": null,
+ "program_title": "Computer Science AS",
+ "parse_error": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [],
+ "narrative": [],
+ "unassigned": [],
+ "requirement_variants": {
+  "schema_version": 1,
+  "relationship": null,
+  "flattened": false,
+  "selection_rule": null,
+  "source_roles": [
+   "program",
+   "program_ba"
+  ],
+  "captured_source_roles": [
+   "program",
+   "program_ba"
+  ],
+  "missing_source_roles": [],
+  "items": [
+   {
+    "key": "program",
+    "source_role": "program",
+    "source_ref": "major",
+    "source_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173",
+    "requested_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4173",
+    "capture_sha256": "260a0254b8b4e1f7ff1f192d7de012261d7380a3d8e69034b1572f27dbf8e428",
+    "capture_file": "j-sargeant-reynolds-community-college__program3",
+    "parser": "lines",
+    "pdf_window": null,
+    "tree": {
+     "program_title": null,
+     "parse_error": null,
+     "total_credits": null,
+     "stopped_at": null,
+     "groups": [
+      {
+       "title": "Year One, Fall Semester",
+       "credits": {
+        "min": 17,
+        "max": 17,
+        "raw": "17"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Year One, Fall Semester (17 credits)",
+        "CSC 221 - Introduction to Problem Solving and Programming Credit Hours: 3",
+        "MTH 263 - Calculus I Credit Hours: 4",
+        "(full-time students who need additional preparation are recommended to take MTH 167, which counts toward electives)",
+        "ENG 111 - College Composition I Credit Hours: 3",
+        "SDV 101 - Orientation to STEM Disciplines Credit Hours: 1",
+        "UCGS History Elective Credit Hours: 3",
+        "ECO 202 - Principles of Microeconomics Credit Hours: 3 (or other UCGS Social/Behavioral Science elective)"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC221",
+             "title": "Introduction to Problem Solving and Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 221 - Introduction to Problem Solving and Programming",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH263",
+             "title": "Calculus I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 263 - Calculus I",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH167",
+             "title": ", which counts toward electives)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "(full-time students who need additional preparation are recommended to take MTH 167, which counts toward electives)",
+           "credits": null,
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ENG111",
+             "title": "College Composition I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ENG 111 - College Composition I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "SDV101",
+             "title": "Orientation to STEM Disciplines"
+            }
+           ],
+           "conjunction": "and",
+           "text": "SDV 101 - Orientation to STEM Disciplines",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS History Elective Credit Hours: 3",
+           "category": "UCGS History Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "ECO202",
+             "title": "Principles of Microeconomics (or other UCGS Social/Behavioral Science elective)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ECO 202 - Principles of Microeconomics (or other UCGS Social/Behavioral Science elective)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Year One, Spring Semester",
+       "credits": {
+        "min": 18,
+        "max": 18,
+        "raw": "18"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Year One, Spring Semester (18 credits)",
+        "CSC 222 - Object-Oriented Programming Credit Hours: 4",
+        "MTH 264 - Calculus II Credit Hours: 4",
+        "BIO 101 - General Biology I Credit Hours: 4 or",
+        "CHM 111 - General Chemistry I Credit Hours: 4 or",
+        "PHY 241 - University Physics I Credit Hours: 4",
+        "UCGS Humanities/Fine Arts Elective Credit Hours: 3",
+        "ENG 112 - College Composition II Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC222",
+             "title": "Object-Oriented Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 222 - Object-Oriented Programming",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH264",
+             "title": "Calculus II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 264 - Calculus II",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "BIO101",
+             "title": "General Biology I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BIO 101 - General Biology I or",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CHM111",
+             "title": "General Chemistry I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CHM 111 - General Chemistry I or",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "PHY241",
+             "title": "University Physics I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "PHY 241 - University Physics I",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS Humanities/Fine Arts Elective Credit Hours: 3",
+           "category": "UCGS Humanities/Fine Arts Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "ENG112",
+             "title": "College Composition II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ENG 112 - College Composition II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Year Two, Fall Semester",
+       "credits": {
+        "min": 16,
+        "max": 16,
+        "raw": "16"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Year Two, Fall Semester (16 credits)",
+        "CSC 223 - Data Structures & Analysis of Algorithms Credit Hours: 4",
+        "CSC 208 - Introduction to Discrete Structures Credit Hours: 3",
+        "UCGS Humanities/Fine Arts/Literature Elective Credit Hours: 3",
+        "Approved Elective based on 4-year institution Credit Hours: 4 (see advisor)",
+        "UCGS Approved Elective Credit Hours: 3 (see advisor)"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC223",
+             "title": "Data Structures & Analysis of Algorithms"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 223 - Data Structures & Analysis of Algorithms",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CSC208",
+             "title": "Introduction to Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 208 - Introduction to Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS Humanities/Fine Arts/Literature Elective Credit Hours: 3",
+           "category": "UCGS Humanities/Fine Arts/Literature Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Approved Elective based on 4-year institution Credit Hours: 4 (see advisor)",
+           "category": "Approved Elective based on 4-year institution (see advisor)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS Approved Elective Credit Hours: 3 (see advisor)",
+           "category": "UCGS Approved Elective (see advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Year Two, Spring Semester",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "PO BOX 85622 Richmond, Virginia, USA 23285-5622 | (804) 371-3000 | VA Relay 711 Privacy Statement | Website Disclaimer | Contact Us | Nondiscrimination | A-Z Site Map | Application Development by VA Inc. | Reynolds Annual Security Report | eVa | FOIA All catalogs © 2026 Reynolds Community College. Powered by Modern Campus Catalog™.",
+       "source_text": [
+        "Year Two, Spring Semester (12 credits)",
+        "CSC 205 - Computer Organization Credit Hours: 3 or",
+        "MTH 265 - Calculus III Credit Hours: 4 (consult with advisor)",
+        "CSC 215 - Computer Systems Credit Hours: 3 (or other elective in consultation with advisor)",
+        "Approved Elective based on 4-year institution Credit Hours: 3 (see advisor)",
+        "Approved Elective based on 4-year institution Credit Hours: 3 (see advisor)",
+        "Total Required Program Credit Hours: 63",
+        "Courses should be taken in order listed.",
+        "* Recommended elective course for transfer. For a full list of electives see Approved Transfer Electives.",
+        "a",
+        "Add to My Favorites (opens a new window)",
+        "Print (opens a new window)",
+        "Parham Road Campus",
+        "1651 East Parham Road",
+        "Richmond, Virginia",
+        "Downtown Campus",
+        "700 East Jackson Street",
+        "Richmond, Virginia",
+        "Goochland Campus",
+        "1851 Dickinson Road",
+        "Goochland, Virginia",
+        "The Kitchens at Reynolds",
+        "2500 Nine Mile Road",
+        "Richmond, Virginia",
+        "‌ ‌ ‌ ‌ ‌ ‌",
+        "©2025 J. Sargeant Reynolds Community College"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC205",
+             "title": "Computer Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 205 - Computer Organization or",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH265",
+             "title": "Calculus III (consult with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 265 - Calculus III (consult with advisor)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CSC215",
+             "title": "Computer Systems (or other elective in consultation with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 215 - Computer Systems (or other elective in consultation with advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Approved Elective based on 4-year institution Credit Hours: 3 (see advisor)",
+           "category": "Approved Elective based on 4-year institution (see advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Approved Elective based on 4-year institution Credit Hours: 3 (see advisor)",
+           "category": "Approved Elective based on 4-year institution (see advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Total Required Program Credit Hours: 63",
+           "category": "Total Required Program",
+           "credits": {
+            "min": 63,
+            "max": 63,
+            "raw": "63"
+           }
+          }
+         ]
+        },
+        {
+         "label": "Courses should be taken in order listed.",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "* Recommended elective course for transfer. For a full list of electives see Approved Transfer Electives.",
+           "category": "* Recommended elective course for transfer. For a full list of electives see Approved Transfer Electives."
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "narrative": [
+      "Contact Us",
+      "Transfer Information"
+     ],
+     "unassigned": [
+      "PO BOX 85622 Richmond, Virginia, USA 23285-5622 | (804) 371-3000 | VA Relay 711",
+      "Privacy Statement | Website Disclaimer | Contact Us | Nondiscrimination | A-Z Site Map | Application Development by VA Inc. | Reynolds Annual Security Report | eVa | FOIA",
+      "All catalogs © 2026 Reynolds Community College. Powered by Modern Campus Catalog™."
+     ]
+    },
+    "validation": {
+     "verdict": "warn",
+     "needs_hand_read": false,
+     "checks": [
+      {
+       "severity": "pass",
+       "name": "codes_not_in_source",
+       "detail": "all 17 codes appear verbatim in the captured text"
+      },
+      {
+       "severity": "pass",
+       "name": "group_count",
+       "detail": "4 requirement groups"
+      },
+      {
+       "severity": "pass",
+       "name": "course_count",
+       "detail": "17 distinct courses across 26 rows"
+      },
+      {
+       "severity": "warn",
+       "name": "no_stated_total",
+       "detail": "the page states no total credit figure — nothing to reconcile against"
+      },
+      {
+       "severity": "pass",
+       "name": "categories",
+       "detail": "9 unenumerated requirement(s) kept as categories"
+      }
+     ],
+     "stats": {
+      "groups": 4,
+      "sections": 5,
+      "rows": 26,
+      "course_rows": 17,
+      "category_rows": 9,
+      "distinct_courses": 17,
+      "credit_span": {
+       "min": 63,
+       "max": 63,
+       "groups_with_credits": 4
+      },
+      "stated_total": null
+     }
+    }
+   },
+   {
+    "key": "program_ba",
+    "source_role": "program_ba",
+    "source_ref": "program_ba",
+    "source_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4134",
+    "requested_url": "https://catalog.reynolds.edu/preview_program.php?catoid=13&poid=4134",
+    "capture_sha256": "63cfd5ca341711f14957e36ae705e9aa51ce02b00c3a2f04128551eba2e540a0",
+    "capture_file": "j-sargeant-reynolds-community-college__program_ba",
+    "parser": "lines",
+    "pdf_window": null,
+    "tree": {
+     "program_title": null,
+     "parse_error": null,
+     "total_credits": null,
+     "stopped_at": null,
+     "groups": [
+      {
+       "title": "Year One, Fall Semester",
+       "credits": {
+        "min": 17,
+        "max": 17,
+        "raw": "17"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Year One, Fall Semester (17 credits)",
+        "CSC 221 - Introduction to Problem Solving and Programming Credit Hours: 3",
+        "MTH 263 - Calculus I Credit Hours: 4",
+        "(Full-time students who need additional preparation are recommended to take MTH 167, which will count toward electives.)",
+        "ENG 111 - College Composition I Credit Hours: 3",
+        "SDV 101 - Orientation to STEM Disciplines Credit Hours: 1",
+        "UCGS History Elective Credit Hours: 3",
+        "UCGS Social/Behavioral Science Elective Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC221",
+             "title": "Introduction to Problem Solving and Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 221 - Introduction to Problem Solving and Programming",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH263",
+             "title": "Calculus I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 263 - Calculus I",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH167",
+             "title": ", which will count toward electives.)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "(Full-time students who need additional preparation are recommended to take MTH 167, which will count toward electives.)",
+           "credits": null,
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ENG111",
+             "title": "College Composition I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ENG 111 - College Composition I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "SDV101",
+             "title": "Orientation to STEM Disciplines"
+            }
+           ],
+           "conjunction": "and",
+           "text": "SDV 101 - Orientation to STEM Disciplines",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS History Elective Credit Hours: 3",
+           "category": "UCGS History Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS Social/Behavioral Science Elective Credit Hours: 3",
+           "category": "UCGS Social/Behavioral Science Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Year One, Spring Semester",
+       "credits": {
+        "min": 17,
+        "max": 17,
+        "raw": "17"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Year One, Spring Semester (17 credits)",
+        "CSC 222 - Object-Oriented Programming Credit Hours: 4",
+        "MTH 245 - Statistics I Credit Hours: 3",
+        "BIO 101 - General Biology I Credit Hours: 4 * or",
+        "GOL 105 - Physical Geology Credit Hours: 4 *",
+        "*Students can also take CHM 111, PHY 201, or PHY 241",
+        "UCGS Humanities/Fine Arts Elective Credit Hours: 3",
+        "ENG 112 - College Composition II Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC222",
+             "title": "Object-Oriented Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 222 - Object-Oriented Programming",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH245",
+             "title": "Statistics I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 245 - Statistics I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "BIO101",
+             "title": "General Biology I *"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BIO 101 - General Biology I * or",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "GOL105",
+             "title": "Physical Geology *"
+            }
+           ],
+           "conjunction": "and",
+           "text": "GOL 105 - Physical Geology *",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CHM111",
+             "title": ","
+            },
+            {
+             "code": "PHY201",
+             "title": "PHY"
+            }
+           ],
+           "conjunction": "and",
+           "text": "*Students can also take CHM 111, PHY 201, or PHY",
+           "credits": {
+            "min": 241,
+            "max": 241,
+            "raw": "241"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS Humanities/Fine Arts Elective Credit Hours: 3",
+           "category": "UCGS Humanities/Fine Arts Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "ENG112",
+             "title": "College Composition II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ENG 112 - College Composition II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Year Two, Fall Semester",
+       "credits": {
+        "min": 16,
+        "max": 16,
+        "raw": "16"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Year Two, Fall Semester (16 credits)",
+        "CSC 223 - Data Structures & Analysis of Algorithms Credit Hours: 4",
+        "CSC 208 - Introduction to Discrete Structures Credit Hours: 3",
+        "UCGS Humanities/Fine Arts/Literature Elective Credit Hours: 3",
+        "Cannot be from the same discipline area (e.g. humanities) as UCGS Humanties/Fine Arts Elective in Year One, Summer Semester",
+        "MTH 266 - Linear Algebra Credit Hours: 3 (or other elective in consultation with advisor)",
+        "CST 100 - Principles of Public Speaking Credit Hours: 3 (or other UCGS elective in consultation with advisor)"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC223",
+             "title": "Data Structures & Analysis of Algorithms"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 223 - Data Structures & Analysis of Algorithms",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CSC208",
+             "title": "Introduction to Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 208 - Introduction to Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "UCGS Humanities/Fine Arts/Literature Elective Credit Hours: 3",
+           "category": "UCGS Humanities/Fine Arts/Literature Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Cannot be from the same discipline area (e.g. humanities) as UCGS Humanties/Fine Arts Elective in Year One, Summer Semester",
+           "category": "Cannot be from the same discipline area (e.g. humanities) as UCGS Humanties/Fine Arts Elective in Year One, Summer Semester"
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH266",
+             "title": "Linear Algebra (or other elective in consultation with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 266 - Linear Algebra (or other elective in consultation with advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CST100",
+             "title": "Principles of Public Speaking (or other UCGS elective in consultation with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CST 100 - Principles of Public Speaking (or other UCGS elective in consultation with advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Year Two, Spring Semester",
+       "credits": {
+        "min": 12,
+        "max": 13,
+        "raw": "12-13"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "PO BOX 85622 Richmond, Virginia, USA 23285-5622 | (804) 371-3000 | VA Relay 711 Privacy Statement | Website Disclaimer | Contact Us | Nondiscrimination | A-Z Site Map | Application Development by VA Inc. | Reynolds Annual Security Report | eVa | FOIA All catalogs © 2026 Reynolds Community College. Powered by Modern Campus Catalog™.",
+       "source_text": [
+        "Year Two, Spring Semester (12-13 credits)",
+        "CSC 205 - Computer Organization Credit Hours: 3",
+        "CSC 215 - Computer Systems Credit Hours: 3 (or other elective in consultation with advisor)",
+        "MTH 288 - Discrete Mathematics Credit Hours: 3 (or other elective in consultation with advisor)",
+        "SPA 101 - Beginning Spanish I Credit Hours: 4 or higher, based on university needs (or other elective in consultation with advisor)",
+        "Total Required Program Credit Hours: 62-63",
+        "Courses should be taken in order listed.",
+        "* Recommended elective course for transfer. For a full list of electives see Approved Transfer Electives.",
+        "a",
+        "Add to My Favorites (opens a new window)",
+        "Print (opens a new window)",
+        "Parham Road Campus",
+        "1651 East Parham Road",
+        "Richmond, Virginia",
+        "Downtown Campus",
+        "700 East Jackson Street",
+        "Richmond, Virginia",
+        "Goochland Campus",
+        "1851 Dickinson Road",
+        "Goochland, Virginia",
+        "The Kitchens at Reynolds",
+        "2500 Nine Mile Road",
+        "Richmond, Virginia",
+        "‌ ‌ ‌ ‌ ‌ ‌",
+        "©2025 J. Sargeant Reynolds Community College"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CSC205",
+             "title": "Computer Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 205 - Computer Organization",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CSC215",
+             "title": "Computer Systems (or other elective in consultation with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CSC 215 - Computer Systems (or other elective in consultation with advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MTH288",
+             "title": "Discrete Mathematics (or other elective in consultation with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MTH 288 - Discrete Mathematics (or other elective in consultation with advisor)",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "SPA101",
+             "title": "Beginning Spanish I or higher, based on university needs (or other elective in consultation with advisor)"
+            }
+           ],
+           "conjunction": "and",
+           "text": "SPA 101 - Beginning Spanish I or higher, based on university needs (or other elective in consultation with advisor)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Total Required Program Credit Hours: 62-63",
+           "category": "Total Required Program",
+           "credits": {
+            "min": 62,
+            "max": 63,
+            "raw": "62-63"
+           }
+          }
+         ]
+        },
+        {
+         "label": "Courses should be taken in order listed.",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "* Recommended elective course for transfer. For a full list of electives see Approved Transfer Electives.",
+           "category": "* Recommended elective course for transfer. For a full list of electives see Approved Transfer Electives."
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "narrative": [
+      "Contact Us",
+      "Transfer Information"
+     ],
+     "unassigned": [
+      "PO BOX 85622 Richmond, Virginia, USA 23285-5622 | (804) 371-3000 | VA Relay 711",
+      "Privacy Statement | Website Disclaimer | Contact Us | Nondiscrimination | A-Z Site Map | Application Development by VA Inc. | Reynolds Annual Security Report | eVa | FOIA",
+      "All catalogs © 2026 Reynolds Community College. Powered by Modern Campus Catalog™."
+     ]
+    },
+    "validation": {
+     "verdict": "warn",
+     "needs_hand_read": false,
+     "checks": [
+      {
+       "severity": "pass",
+       "name": "codes_not_in_source",
+       "detail": "all 20 codes appear verbatim in the captured text"
+      },
+      {
+       "severity": "pass",
+       "name": "group_count",
+       "detail": "4 requirement groups"
+      },
+      {
+       "severity": "pass",
+       "name": "course_count",
+       "detail": "20 distinct courses across 26 rows"
+      },
+      {
+       "severity": "warn",
+       "name": "no_stated_total",
+       "detail": "the page states no total credit figure — nothing to reconcile against"
+      },
+      {
+       "severity": "pass",
+       "name": "categories",
+       "detail": "7 unenumerated requirement(s) kept as categories"
+      }
+     ],
+     "stats": {
+      "groups": 4,
+      "sections": 5,
+      "rows": 26,
+      "course_rows": 19,
+      "category_rows": 7,
+      "distinct_courses": 20,
+      "credit_span": {
+       "min": 62,
+       "max": 63,
+       "groups_with_credits": 4
+      },
+      "stated_total": null
+     }
+    }
+   }
+  ]
+ },
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "warn",
+    "name": "multiple_program_variants_preserved",
+    "detail": "2 requirement-bearing program sources were parsed separately; a cited composition must select or relate them",
+    "source_roles": [
+     "program",
+     "program_ba"
+    ],
+    "expected_source_roles": [
+     "program",
+     "program_ba"
+    ],
+    "missing_source_roles": [],
+    "failed_source_roles": [],
+    "warned_source_roles": [
+     "program",
+     "program_ba"
+    ]
+   }
+  ],
+  "stats": {
+   "groups": 0,
+   "sections": 0,
+   "rows": 0,
+   "course_rows": 0,
+   "category_rows": 0,
+   "distinct_courses": 0,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": null,
+   "variants": 2,
+   "missing_variants": 0,
+   "variant_stats": [
+    {
+     "source_role": "program",
+     "source_ref": "major",
+     "verdict": "warn",
+     "groups": 4,
+     "sections": 5,
+     "rows": 26,
+     "course_rows": 17,
+     "category_rows": 9,
+     "distinct_courses": 17,
+     "credit_span": {
+      "min": 63,
+      "max": 63,
+      "groups_with_credits": 4
+     },
+     "stated_total": null
+    },
+    {
+     "source_role": "program_ba",
+     "source_ref": "program_ba",
+     "verdict": "warn",
+     "groups": 4,
+     "sections": 5,
+     "rows": 26,
+     "course_rows": 19,
+     "category_rows": 7,
+     "distinct_courses": 20,
+     "credit_span": {
+      "min": 62,
+      "max": 63,
+      "groups_with_credits": 4
+     },
+     "stated_total": null
+    }
+   ]
+  }
+ }
 }

@@ -105,9 +105,10 @@ router.post('/tokens',       ...guarded, jsonBody, tokensController.create);
 router.delete('/tokens/:id', ...guarded, tokensController.revoke);
 
 // ───────── Virginia (Transfer Virginia course corpus) ─────────
-// Read-only, and deliberately its own mount rather than an extra source inside
-// the /assist routes: this corpus is under evaluation and shares no collection
-// with California, so it can be removed by deleting one block.
+// Deliberately its own mount rather than an extra source inside the /assist
+// routes: this corpus is under evaluation and shares no collection with
+// California. Reads and curated degree edits use the ordinary guarded access;
+// only revision history is admin-only.
 const virginiaController = require('../controllers/Virginia');
 router.get('/va/summary',        ...guarded, virginiaController.summary);
 router.get('/va/institutions',   ...guarded, virginiaController.institutions);

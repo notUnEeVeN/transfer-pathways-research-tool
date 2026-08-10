@@ -64,12 +64,15 @@ const TABS = [
 const TAB_ROUTES = {
   overview: { path: '/api/va/summary' },
   colleges: { path: '/api/va/institutions?level=community_college' },
-  universities: { path: '/api/va/institutions?level=four_year' },
+  universities: { path: '/api/va/institutions?level=four_year&cohort=schev_public_four_year' },
   courses: { path: '/api/va/courses' },
   prerequisites: { path: '/api/va/prerequisite-graph' },
 }
 
 const num = (v) => (v == null ? '—' : Number(v).toLocaleString())
+
+const PRIMARY_VA_COHORT = 'schev_public_four_year'
+const OTHER_VA_COHORT = 'other_four_year'
 
 export default function VirginiaPage() {
   const [tab, setTab] = useState('overview')
@@ -144,7 +147,7 @@ function OverviewTab({ summary }) {
         { label: 'Courses', value: num(summary.courses) },
         { label: 'Equivalencies', value: num(summary.equivalencies) },
         { label: 'Community colleges', value: num(summary.community_colleges) },
-        { label: 'Universities', value: num(summary.four_year) },
+        { label: 'Public universities', value: num(summary.public_four_year ?? summary.four_year) },
         { label: 'Departments', value: num(summary.departments) },
         { label: 'With notes', value: num(summary.with_notes) },
       ]} />
@@ -169,20 +172,95 @@ function OverviewTab({ summary }) {
 const VA_STATE = {
   verified: { label: 'Verified', variant: 'success' },
   in_review: { label: 'Needs verifying', variant: 'accent' },
+  needs_collection: { label: 'Needs collecting', variant: 'conservative' },
+  needs_composition: { label: 'Needs composing', variant: 'conservative' },
   url_only: { label: 'URL only', variant: 'conservative' },
   no_program: { label: 'No program', variant: 'neutral' },
 }
 
+/**
+ * Collection completeness is a machine gate, separate from the researcher's
+ * signed verification verdict. In particular, a successful parser run is not
+ * a complete degree: `major_only` is still missing its GE/college/graduation
+ * layers, and a captured corroborating source may have no trustworthy tree at
+ * all. Keep those distinctions visible wherever the document is reviewed.
+ */
+const VA_COMPLETENESS = {
+  captured_only: {
+    label: 'Captured only',
+    variant: 'neutral',
+    type: 'info',
+    description: 'Official source material was captured, but no trustworthy requirement tree is available. This is not a complete degree.',
+  },
+  major_only: {
+    label: 'Major only',
+    variant: 'conservative',
+    type: 'info',
+    description: 'The major page was parsed, but general education, college, or university graduation layers are not yet composed. This is not a complete degree.',
+  },
+  catalog_accepted: {
+    label: 'Catalog accepted',
+    variant: 'accent',
+    type: 'info',
+    description: 'Identity, official sources, scope, source layers, and requirement structure passed catalog acceptance. It is eligible for human verification, but may not be analysis-ready.',
+  },
+  analysis_ready: {
+    label: 'Analysis ready',
+    variant: 'success',
+    type: 'success',
+    description: 'Catalog acceptance, course resolution, choice semantics, unit closure, and policy audits passed. It is eligible for human verification.',
+  },
+  composed_full_degree: {
+    label: 'Composed · acceptance pending',
+    variant: 'conservative',
+    type: 'info',
+    description: 'The source layers were composed, but the catalog-acceptance gate has not passed. Verification remains unavailable.',
+  },
+  unknown: {
+    label: 'Completeness not recorded',
+    variant: 'neutral',
+    type: 'info',
+    description: 'This legacy document has no catalog-completeness verdict. It may still be edited or reopened, but it cannot be newly verified.',
+  },
+}
+
+const VERIFY_ELIGIBLE_COLLECTION_STATUSES = new Set(['catalog_accepted', 'analysis_ready'])
+
+function completenessFor(doc) {
+  const status = String(doc?.collection_status || '')
+  if (VA_COMPLETENESS[status]) return { status, ...VA_COMPLETENESS[status] }
+  // Older accepted records may carry the acceptance result but predate the
+  // denormalized collection_status field. Show the strongest recorded gate.
+  if (doc?.acceptance?.ready_for_analysis === true) {
+    return { status: 'analysis_ready', ...VA_COMPLETENESS.analysis_ready }
+  }
+  if (doc?.acceptance?.accepted === true) {
+    return { status: 'catalog_accepted', ...VA_COMPLETENESS.catalog_accepted }
+  }
+  return { status: 'unknown', ...VA_COMPLETENESS.unknown }
+}
+
 /** Coverage rows keyed by institution slug, so a rail can read its own state. */
+const coverageSlugOf = (row) => row?.institution_slug
+  || String(row?._id || '').replace(/^va:cov:(cc|uni):/, '')
+
 function buildVerificationIndex(coverage = []) {
   const index = new Map()
   for (const row of coverage) {
-    const slug = String(row._id).replace(/^va:cov:(cc|uni):/, '')
+    const slug = coverageSlugOf(row)
     const docs = [...(row.documents?.as_degree ?? []), ...(row.documents?.degree ?? [])]
     const readable = docs.filter((d) => d.status === 'extracted')
-    const state = !readable.length
-      ? (docs.some((d) => d.status === 'no_program') ? 'no_program' : 'url_only')
-      : readable.every((d) => d.verified) ? 'verified' : 'in_review'
+    const state = row.collection_status === 'no_program'
+      ? 'no_program'
+      : row.collection_status === 'catalog_url_only'
+        ? 'url_only'
+        : row.collection_status === 'captured_needs_review'
+          ? 'needs_composition'
+          : !docs.length || row.collection_status === 'not_collected'
+            ? 'needs_collection'
+            : !readable.length
+              ? (docs.some((d) => d.status === 'no_program') ? 'no_program' : 'url_only')
+              : readable.every((d) => d.verified) ? 'verified' : 'in_review'
     index.set(slug, {
       state,
       documents: docs.length,
@@ -213,8 +291,12 @@ function VerificationPanel() {
     const rows = data?.coverage ?? []
     const index = buildVerificationIndex(rows)
     return ['community_college', 'four_year'].map((level) => {
-      const scoped = rows.filter((r) => r.level === level)
-      const states = scoped.map((r) => index.get(String(r._id).replace(/^va:cov:(cc|uni):/, '')))
+      // The public four-year cohort is the Virginia analogue of the UC
+      // receiving side. Private/professional partners remain available in the
+      // Universities tab, but do not inflate the primary verification job.
+      const scoped = rows.filter((r) => r.level === level
+        && (level !== 'four_year' || r.cohort === PRIMARY_VA_COHORT))
+      const states = scoped.map((r) => index.get(coverageSlugOf(r)))
       const readable = states.filter((s) => s && s.readable)
       return {
         level,
@@ -232,16 +314,17 @@ function VerificationPanel() {
   return (
     <Panel title='Verification progress'>
       <p className='text-caption ink-subtle mb-4'>
-        Every Virginia degree was read off a catalog by machine and none is verified until a person
-        has checked it against the source page. Work through them in the Community Colleges and
-        Universities tabs, where the status pills filter the list.
+        A collected Virginia degree is not verified until a person has checked it against every
+        cited source layer. Work through them in the Community Colleges and
+        Universities tabs, where the status pills filter the list. B.S. progress uses SCHEV's
+        15 public four-year institutions; additional Virginia partners stay in the secondary view.
       </p>
       <div className='grid gap-4 sm:grid-cols-2'>
         {levels.map((l) => (
           <div key={l.level}>
             <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.readable} tone='success' />
             <p className='text-tag text-ink-subtle mt-1.5'>
-              {l.nothing} publish nothing to read
+              {l.nothing} still need a reviewable catalog record
             </p>
           </div>
         ))}
@@ -260,6 +343,8 @@ function VerificationPanel() {
 function RailFilters({ counts, value, onChange, total }) {
   const options = [
     { key: 'all', label: 'All', count: total, variant: 'neutral' },
+    { key: 'needs_collection', label: VA_STATE.needs_collection.label, count: counts.needs_collection, variant: VA_STATE.needs_collection.variant },
+    { key: 'needs_composition', label: VA_STATE.needs_composition.label, count: counts.needs_composition, variant: VA_STATE.needs_composition.variant },
     { key: 'in_review', label: VA_STATE.in_review.label, count: counts.in_review, variant: VA_STATE.in_review.variant },
     { key: 'verified', label: VA_STATE.verified.label, count: counts.verified, variant: VA_STATE.verified.variant },
     { key: 'url_only', label: VA_STATE.url_only.label, count: counts.url_only, variant: VA_STATE.url_only.variant },
@@ -284,7 +369,7 @@ function RailFilters({ counts, value, onChange, total }) {
 }
 
 function ReachPanel() {
-  const { data, isLoading, isError } = useVaMatrix()
+  const { data, isLoading, isError } = useVaMatrix(PRIMARY_VA_COHORT)
   if (isLoading) return <div className='py-10 flex justify-center'><Spinner /></div>
   if (isError) return <Alert type='error'>Could not load reach.</Alert>
   if (!data?.colleges?.length) return null
@@ -293,11 +378,12 @@ function ReachPanel() {
   const max = Math.max(1, ...cells.flat())
 
   return (
-    <Panel title='Reach — shared courses by college and university'>
+    <Panel title='Reach — shared courses by college and public university'>
       <p className='text-caption ink-subtle mb-3'>
         Each cell counts courses the college teaches that the university publishes an equivalency
         for, out of {num(data.courses)}. It is a count of accepted courses, not a claim that any
-        degree is satisfied.
+        degree is satisfied. The receiving columns are SCHEV's 15 public four-year institutions;
+        schools with no captured equivalencies remain visible as zero columns.
       </p>
       <div className='overflow-auto max-h-[68vh]'>
         <table className='text-[11px] border-collapse'>
@@ -361,6 +447,8 @@ function useRailItems(institutions, coverage, filter) {
     })
 
     const counts = {
+      needs_collection: rows.filter((r) => r.state === 'needs_collection').length,
+      needs_composition: rows.filter((r) => r.state === 'needs_composition').length,
       in_review: rows.filter((r) => r.state === 'in_review').length,
       verified: rows.filter((r) => r.state === 'verified').length,
       url_only: rows.filter((r) => r.state === 'url_only').length,
@@ -496,19 +584,65 @@ function CollegeCourses({ college }) {
 
 /* ── Universities ────────────────────────────────────────────────────────── */
 
+function UniversityCohortFilters({ value, onChange, publicCount, otherCount }) {
+  const options = [
+    {
+      key: PRIMARY_VA_COHORT,
+      label: 'Public universities',
+      count: publicCount,
+      variant: 'accent',
+    },
+    {
+      key: OTHER_VA_COHORT,
+      label: 'Other Virginia partners',
+      count: otherCount,
+      variant: 'neutral',
+    },
+  ]
+
+  return (
+    <div role='group' aria-label='Choose university cohort'
+      className='surface-card px-3 py-2.5 flex flex-wrap items-center gap-1.5'>
+      {options.map((option) => {
+        const active = value === option.key
+        return (
+          <button key={option.key} type='button' aria-pressed={active}
+            onClick={() => onChange(option.key)}
+            className={`rounded-pill transition-opacity ${active ? '' : 'opacity-55 hover:opacity-100'}`}>
+            <Badge variant={active ? option.variant : 'neutral'}>
+              {option.label} {option.count}
+            </Badge>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 function UniversitiesPane({ onRoute }) {
-  const { data, isLoading, isError } = useVaInstitutions('four_year')
+  const [cohort, setCohort] = useState(PRIMARY_VA_COHORT)
+  const { data, isLoading, isError } = useVaInstitutions('four_year', cohort)
   const [selected, setSelected] = useState(null)
   const [subTab, setSubTab] = useState('courses')
   const [filter, setFilter] = useState('all')
 
   const coverage = useVaCoverage()
   const unis = data?.institutions ?? []
+  const publicCount = data?.cohorts?.[PRIMARY_VA_COHORT]?.institution_count
+    ?? (cohort === PRIMARY_VA_COHORT ? unis.length : 0)
+  const otherCount = data?.cohorts?.[OTHER_VA_COHORT]?.institution_count
+    ?? (cohort === OTHER_VA_COHORT ? unis.length : 0)
   const { items, counts, total } = useRailItems(unis, coverage.data, filter)
   const current = unis.find((i) => i.name === selected) || null
 
+  const changeCohort = (next) => {
+    setCohort(next)
+    setSelected(null)
+    setFilter('all')
+  }
+
   useEffect(() => {
-    if (!selected) return onRoute({ path: '/api/va/institutions?level=four_year' })
+    if (!selected) return onRoute({ path: `/api/va/institutions?level=four_year&cohort=${cohort}` })
     onRoute({
       path: subTab === 'courses'
         ? `/api/va/courses?receiver=${encodeURIComponent(selected)}`
@@ -516,7 +650,7 @@ function UniversitiesPane({ onRoute }) {
           ? `/api/va/prerequisite-graph?university=${encodeURIComponent(selected)}`
           : '/api/va/degrees',
     })
-  }, [onRoute, selected, subTab])
+  }, [cohort, onRoute, selected, subTab])
 
   if (isLoading) return <div className='py-10 flex justify-center'><Spinner /></div>
   if (isError) return <Alert type='error'>Failed to load the universities.</Alert>
@@ -524,8 +658,16 @@ function UniversitiesPane({ onRoute }) {
   return (
     <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-5 items-start'>
       <Stack gap='tight'>
+        <UniversityCohortFilters value={cohort} onChange={changeCohort}
+          publicCount={publicCount} otherCount={otherCount} />
+        <p className='px-1 text-tag text-ink-subtle'>
+          {cohort === PRIMARY_VA_COHORT
+            ? 'Primary comparison cohort: all 15 SCHEV public four-year institutions.'
+            : 'Secondary research retained for private and other Virginia transfer partners.'}
+        </p>
         <RailFilters counts={counts} total={total} value={filter} onChange={setFilter} />
-        <InstitutionRail items={items} selectedId={selected} title='Universities'
+        <InstitutionRail items={items} selectedId={selected}
+          title={cohort === PRIMARY_VA_COHORT ? 'Public universities' : 'Other Virginia partners'}
         onSelect={setSelected} itemSubtitle={(i) => i.subtitle} />
       </Stack>
 
@@ -576,11 +718,11 @@ function UniversityCourses({ university }) {
  *
  * Two sources can exist for the same school and both are shown: the
  * institution's own catalog (the spine) and Transfer Virginia's program map
- * (corroboration). They are never merged — every row here is hand-verified, and
- * a verifier needs to see where two independent sources disagree.
+ * (corroboration). They are never merged, and corroboration or parser-only
+ * records remain visibly incomplete until the catalog-acceptance gate passes.
  *
- * `url_only` is a real outcome, not a failure: several institutions publish no
- * machine-readable course list anywhere (Reynolds, UVA Wise, Lynchburg), so the
+ * `url_only` is a real outcome, not a failure: some institutions publish no
+ * machine-readable course list at the configured official source, so the
  * verified URL is the deliverable and the pane says so.
  */
 function DegreesPane({ institution, kind }) {
@@ -646,6 +788,13 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
   const fromCatalog = doc.source === 'institution_catalog'
   const verified = !!doc.verification?.verified
   const dirty = notes !== (doc.verification?.notes ?? '')
+  const completeness = completenessFor(doc)
+  // Read this from the stored record, never `editDoc`: typing a status into the
+  // JSON editor must not unlock a signed verdict before the record is saved and
+  // accepted. Reopen stays independent so verified legacy documents are never
+  // trapped by a completeness field they predate.
+  const canVerify = doc.acceptance?.accepted === true
+    || VERIFY_ELIGIBLE_COLLECTION_STATUSES.has(doc.collection_status)
 
   const commit = (nextVerified) => save.mutate({
     ...editDoc,
@@ -676,8 +825,16 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
         </Badge>
         {doc.total_units != null && <Badge>{doc.total_units} credits</Badge>}
         {doc.status === 'url_only' && <Badge variant='conservative'>URL only</Badge>}
+        <Badge variant={completeness.variant}>{completeness.label}</Badge>
         {!verified && <Badge variant='conservative'>unverified</Badge>}
       </div>
+
+      <Alert type={completeness.type} className='mb-3'>
+        <div>
+          <p className='text-label text-ink'>{completeness.label}</p>
+          <p className='text-caption ink-subtle mt-0.5'>{completeness.description}</p>
+        </div>
+      </Alert>
 
       {/* The same banner the California templates and the associate-degree
           review show, rather than a compact badge. A hand-verified Virginia
@@ -747,7 +904,7 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
           <Button onClick={saveEdits} disabled={save.isPending || (!draft && !dirty)}>
             {save.isPending ? 'Saving…' : 'Save changes'}
           </Button>
-          <Button onClick={() => commit(true)} disabled={save.isPending}>
+          <Button onClick={() => commit(true)} disabled={save.isPending || !canVerify}>
             {verified ? 'Re-verify' : 'Mark verified'}
           </Button>
           {verified && (
@@ -764,6 +921,13 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
           {save.isPending && <Spinner />}
           {save.isError && <span className='text-caption text-danger'>Save failed.</span>}
         </div>
+        {!canVerify && (
+          <p className='text-caption ink-subtle mt-2'>
+            {verified
+              ? 'This legacy verdict may be reopened. Re-verification unlocks after catalog acceptance passes.'
+              : 'Verification unlocks after catalog acceptance passes; a capture or major-only parse is not enough.'}
+          </p>
+        )}
 
         {showHistory && (
           <div className='mt-3'>

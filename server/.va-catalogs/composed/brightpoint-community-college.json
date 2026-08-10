@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "slug": "brightpoint-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "award": "AS",
+  "catalog_version": {
+    "catalog_id": 12,
+    "program_id": 1464,
+    "returnto": 1157
+  },
+  "total_units": 60,
+  "total_units_max": 61,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "catalog",
+    "major",
+    "graduation",
+    "policy"
+  ],
+  "course_titles": {
+    "ITE152": "Introduction to Digital Literacy and Computer Applications"
+  },
+  "option_sets": {
+    "laboratory_science_sequences": {
+      "source_refs": ["major"],
+      "credits": 8,
+      "routes": [
+        ["BIO101", "BIO102"],
+        ["CHM111", "CHM112"],
+        ["PHY201", "PHY202"],
+        ["PHY241", "PHY242"]
+      ]
+    },
+    "history": {
+      "source_refs": ["major"],
+      "courses": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122"]
+    },
+    "humanities": {
+      "source_refs": ["major"],
+      "courses": ["PHI100", "PHI111", "PHI220", "REL100", "REL230"]
+    },
+    "social_behavioral_sciences": {
+      "source_refs": ["major"],
+      "courses": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS140", "PLS241", "PSY200", "SOC200", "SOC211", "SOC268"]
+    },
+    "arts_literature": {
+      "source_refs": ["major"],
+      "courses": ["ART101", "ART102", "CST130", "CST151", "MUS121", "MUS226", "ENG245", "ENG246", "ENG255", "ENG258", "ENG275", "ENG225"]
+    },
+    "approved_electives": {
+      "source_refs": ["major"],
+      "rule": "Choose two or three courses totaling at least eight credits.",
+      "credits_minimum": 8,
+      "credits_maximum": 9,
+      "courses": [
+        "CHM111", "CHM112", "CST100", "CST110", "EGR121", "EGR122", "EGR270", "ITE152",
+        "MTH161", "MTH162", "MTH245", "MTH265", "MTH266", "PHY241", "PHY242", "CSC195"
+      ]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": null,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 61,
+    "closure_basis": "Fixed courses contribute 32 credits, the lab sequence contributes 8, four breadth selections contribute 12, and approved electives contribute 8-9, for a modeled 60-61 credits against the catalog's published 60-credit minimum.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of total semester credits must be earned through Brightpoint credit instruction.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_curriculum_gpa": 2,
+    "experiential_learning_maximum_percent": 25
+  },
+  "modeling_notes": [
+    "This composition uses the current 2026-2027 catoid 12, poid 1464 degree and not the stale catoid 8 seed.",
+    "The laboratory requirement is one complete eight-credit sequence. Each sequence is one AND route inside an OR choice; the catalog's four disciplines are not eight independent options.",
+    "Approved electives retain the catalog's choose-two-or-three and minimum-eight-credit rule as an explicit unsupported constraint. The canonical two-course minimum is not permission for two six-credit selections to satisfy the requirement.",
+    "The science-sequence recommendation printed after the elective menu is advisory and is not an extra AND requirement. The Spring-only planning note is likewise excluded.",
+    "The official elective code ITE 152 corrects the raw line parser's TE152 token."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "variable_count_minimum_credit_elective_rule",
+      "severity": "review",
+      "message": "Approved electives require two or three courses totaling at least eight credits; the evaluator does not yet combine variable cardinality with a minimum-credit threshold."
+    },
+    {
+      "code": "cross_requirement_overlap_requires_evaluation",
+      "severity": "review",
+      "message": "CHM 111/112 and PHY 241/242 occur in both the laboratory-sequence and approved-elective menus, but the same applied credits cannot satisfy both slots."
+    },
+    {
+      "code": "raw_parser_dropped_course_prefix",
+      "severity": "review",
+      "message": "The official approved elective is ITE 152; the raw parser artifact recorded TE152 and is overridden here."
+    },
+    {
+      "code": "published_total_has_no_maximum",
+      "severity": "review",
+      "message": "The catalog publishes a 60-credit minimum, while the enumerated 8-9 credit elective range produces a modeled 60-61 credit range."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "College success and written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH264"]]}]}
+      ]
+    },
+    {
+      "title": "Computer science requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC205"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"]]}]}
+      ]
+    },
+    {
+      "title": "Laboratory science sequence",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 8,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["BIO101", "BIO102"],
+              ["CHM111", "CHM112"],
+              ["PHY201", "PHY202"],
+              ["PHY241", "PHY242"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "History",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Humanities",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{"kind": "cc_course", "options": [["PHI100"], ["PHI111"], ["PHI220"], ["REL100"], ["REL230"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Social and Behavioral Sciences",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{"kind": "cc_course", "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS140"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC211"], ["SOC268"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Arts and Literature",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{"kind": "cc_course", "options": [["ART101"], ["ART102"], ["CST130"], ["CST151"], ["MUS121"], ["MUS226"], ["ENG245"], ["ENG246"], ["ENG255"], ["ENG258"], ["ENG275"], ["ENG225"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Approved electives",
+      "source_refs": ["major"],
+      "analysis_constraints": [
+        {
+          "kind": "variable_choice_count_with_minimum_units",
+          "status": "evaluator_not_implemented",
+          "description": "Choose two or three approved courses totaling at least eight credits; two courses are not sufficient when their combined credits are below eight."
+        },
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "A course used in the laboratory-science sequence cannot also contribute the same credits to the separate approved-elective requirement."
+        }
+      ],
+      "sections": [
+        {
+          "select": 2,
+          "units": 8,
+          "units_max": 9,
+          "label": "Choose two or three approved courses totaling at least eight credits",
+          "receivers": [
+            {"kind": "cc_course", "options": [["CHM111"]]},
+            {"kind": "cc_course", "options": [["CHM112"]]},
+            {"kind": "cc_course", "options": [["CST100"]]},
+            {"kind": "cc_course", "options": [["CST110"]]},
+            {"kind": "cc_course", "options": [["EGR121"]]},
+            {"kind": "cc_course", "options": [["EGR122"]]},
+            {"kind": "cc_course", "options": [["EGR270"]]},
+            {"kind": "cc_course", "options": [["ITE152"]]},
+            {"kind": "cc_course", "options": [["MTH161"]]},
+            {"kind": "cc_course", "options": [["MTH162"]]},
+            {"kind": "cc_course", "options": [["MTH245"]]},
+            {"kind": "cc_course", "options": [["MTH265"]]},
+            {"kind": "cc_course", "options": [["MTH266"]]},
+            {"kind": "cc_course", "options": [["PHY241"]]},
+            {"kind": "cc_course", "options": [["PHY242"]]},
+            {"kind": "cc_course", "options": [["CSC195"]]}
+          ]
+        }
+      ]
+    }
+  ]
+}

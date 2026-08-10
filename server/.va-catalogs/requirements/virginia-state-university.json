@@ -8,1214 +8,234 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/",
- "captured_at": "2026-08-02T05:59:10.013Z",
- "program_title": null,
- "total_credits": {
-  "min": 120,
-  "max": 120,
-  "raw": "120"
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science Major, Bachelor of Science (B.S.)",
+  "variant": "Base Computer Science B.S.; no concentration",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Engineering and Technology",
+  "general_education_authority": "Virginia State University General Education Program",
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "general_education_units": 33,
+   "core_requirement_units": 54,
+   "required_course_units": 14,
+   "elective_units": 19,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "Academic Regulations defines course-number levels but the reviewed current authoritative requirement and policy pages do not publish a universal bachelor's upper-division-credit minimum.",
+    "source_refs": [
+     "major",
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency": {
+    "status": "none_stated",
+    "reason": "The reviewed current Academic Regulations and Policy Statements pages do not publish a numeric bachelor's degree-completion residency rule; honors residency and transfer-admission provisions are not degree residency.",
+    "source_refs": [
+     "graduation",
+     "policy"
+    ]
+   }
+  },
+  "modeling_notes": [
+   "The authoritative #summaryofrequirementstextcontainer closes exactly at 120 credits: 33 General Education, 54 core, 14 required courses, and 19 electives.",
+   "The sibling Plan of Study is a term schedule and must not be parsed as a second requirement set.",
+   "The Plan of Study labels six CSCI elective credits as 330 level or higher, but that wording does not appear in the authoritative Summary of Requirements container. Treat it as an unresolved plan note, not an accepted base-degree rule.",
+   "The Information Security concentration changes elective choices and is excluded from the base, no-concentration target."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "university_upper_division_and_residency_not_published",
+    "severity": "review",
+    "message": "Obtain Registrar confirmation before marking a university-wide upper-division or degree-residency constraint complete. Null/none_stated must not be treated as zero."
+   },
+   {
+    "code": "plan_only_upper_level_elective_wording",
+    "severity": "review",
+    "message": "Six credits at CSCI 330 or above appears only in the sample Plan of Study and is not repeated in the authoritative Summary of Requirements."
+   },
+   {
+    "code": "catalog_internal_presentation_inconsistency",
+    "severity": "review",
+    "message": "The program URL retains the older department-engineering-computer-science path while the current breadcrumb names a standalone Department of Computer Science; the Plan of Study also contains an unlabeled CSCI 470 row."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation",
+     "policy"
+    ],
+    "note": "The sources establish the 120-credit program total and document the policy search, but no numeric university-wide residency rule was found."
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
  },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Virginia State University major and degree requirements",
+   "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/",
+   "requested_url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:54:09.333Z",
+   "sha256": "a3b7b3e40240ae0a78a1c8ad07d1c965524a11a0e2dd65293f653dcd47128ec8",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Virginia State University general education requirements",
+   "url": "https://catalog.vsu.edu/undergraduate/general-education-programs/",
+   "requested_url": "https://catalog.vsu.edu/undergraduate/general-education-programs/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:54:09.333Z",
+   "sha256": "02d2e2935e9a20f1674f5998d76222bcd87e3e63caba167d2356f80e4fa78a39",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Virginia State University college or school requirements",
+   "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-computer-science/",
+   "requested_url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-computer-science/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:54:09.333Z",
+   "sha256": "5336696ee31b33102cfcc1c3f334eb23450aea6cf83ba15cf6b76f4425dbca34",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Virginia State University university graduation requirements",
+   "url": "https://catalog.vsu.edu/undergraduate/university/policy-statements/",
+   "requested_url": "https://catalog.vsu.edu/undergraduate/university/policy-statements/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:54:09.333Z",
+   "sha256": "8231eec2870bed927cd7eff20b190aa1f2bdd8b3977b478d665caf555b7851ee",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Virginia State University academic policies",
+   "url": "https://catalog.vsu.edu/undergraduate/academic-regulations-procedures/",
+   "requested_url": "https://catalog.vsu.edu/undergraduate/academic-regulations-procedures/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:54:09.333Z",
+   "sha256": "8505c4af65f4890eab611f542c5ef39e2ef50ce4e616da8cc2f02c8e64912cdb",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Virginia State University course descriptions and credit values",
+   "url": "https://catalog.vsu.edu/undergraduate/courses/csci/",
+   "requested_url": "https://catalog.vsu.edu/undergraduate/courses/csci/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:54:09.333Z",
+   "sha256": "7c5ec8b6c5f35f8abf15d7d3e641f1c7023db2ac1f9d7cacf5dc0d3f5cad7214",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation",
+    "policy"
+   ],
+   "note": "The sources establish the 120-credit program total and document the policy search, but no numeric university-wide residency rule was found."
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T02:54:09.333Z",
+ "program_title": "Computer Science Major, Bachelor of Science (B.S.)",
+ "parse_error": null,
+ "total_credits": null,
  "stopped_at": null,
  "groups": [
-  {
-   "title": "Freshman Year",
-   "credits": {
-    "min": 32,
-    "max": 32,
-    "raw": "32"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CSCI 101 Intro the Cmptr Sci Profession",
-    "CSCI 150 Programming I",
-    "CSCI 151 Programming 1 Lab",
-    "MATH 260 Calculus I",
-    "ENGL 110 Composition I",
-    "GE Health & Wellness",
-    "CSCI 250 Programming II",
-    "CSCI 251 Programming II Lab",
-    "MATH 261 Calculus II",
-    "ENGL 111 Composition II",
-    "GE History",
-    "GE Social Science"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CSCI101",
-         "title": "Intro the Cmptr Sci Profession"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 101 Intro the Cmptr Sci Profession",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI150",
-         "title": "Programming I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 150 Programming I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI151",
-         "title": "Programming 1 Lab"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 151 Programming 1 Lab",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH260",
-         "title": "Calculus I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 260 Calculus I",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENGL110",
-         "title": "Composition I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENGL 110 Composition I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "GE Health & Wellness",
-       "category": "GE Health & Wellness",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI250",
-         "title": "Programming II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 250 Programming II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI251",
-         "title": "Programming II Lab"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 251 Programming II Lab",
-       "credits": {
-        "min": 1,
-        "max": 1,
-        "raw": "1"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH261",
-         "title": "Calculus II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 261 Calculus II",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENGL111",
-         "title": "Composition II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENGL 111 Composition II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "GE History",
-       "category": "GE History",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "GE Social Science",
-       "category": "GE Social Science",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Sophomore Year",
-   "credits": {
-    "min": 30,
-    "max": 30,
-    "raw": "30"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CSCI 287 Data Structures",
-    "CSCI 303 Computer Org & Architecture",
-    "MATH 280 Discrete Math Computer Science",
-    "ENGL 342or GEEN 310 Technical Communicationor",
-    "GE Global Studies",
-    "CSCI 281 Discrete Structures",
-    "CSCI 296 Web Programming",
-    "CSCI 356 Database Systems",
-    "PHIL 275or PHIL 450 Ethicsor Applied Ethics",
-    "GE Literature"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CSCI287",
-         "title": "Data Structures"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 287 Data Structures",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI303",
-         "title": "Computer Org & Architecture"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 303 Computer Org & Architecture",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH280",
-         "title": "Discrete Math Computer Science"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 280 Discrete Math Computer Science",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "ENGL342",
-         "title": "Technical Communication"
-        }
-       ],
-       "conjunction": "and",
-       "text": "ENGL 342or GEEN 310 Technical Communicationor",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "GE Global Studies",
-       "category": "GE Global Studies",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI281",
-         "title": "Discrete Structures"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 281 Discrete Structures",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI296",
-         "title": "Web Programming"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 296 Web Programming",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI356",
-         "title": "Database Systems"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 356 Database Systems",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "PHIL275",
-         "title": "Ethics"
-        },
-        {
-         "code": "PHIL450",
-         "title": "Applied Ethics"
-        }
-       ],
-       "conjunction": "or",
-       "text": "PHIL 275or PHIL 450 Ethicsor Applied Ethics",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "GE Literature",
-       "category": "GE Literature",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Junior Year",
-   "credits": {
-    "min": 30,
-    "max": 30,
-    "raw": "30"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "STAT 340 Probability Stat Cmptr Scienti",
-    "CSCI 392 Algorithms & Adv Data Structur",
-    "CSCI 487 Software Design And Developmen",
-    "CSCI 445 Computer Communication Network",
-    "BIOL/CHEM/PHYS Laboratory Science **",
-    "Unrestricted Elective",
-    "CSCI/MATH/STAT Elective",
-    "CSCI 489 Operating Systems",
-    "CSCI 400 Computer Science Seminar",
-    "CSCI 358 Introd Information Assurance"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "STAT340",
-         "title": "Probability Stat Cmptr Scienti"
-        }
-       ],
-       "conjunction": "and",
-       "text": "STAT 340 Probability Stat Cmptr Scienti",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI392",
-         "title": "Algorithms & Adv Data Structur"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 392 Algorithms & Adv Data Structur",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI487",
-         "title": "Software Design And Developmen"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 487 Software Design And Developmen",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI445",
-         "title": "Computer Communication Network"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 445 Computer Communication Network",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "BIOL/CHEM/PHYS Laboratory Science **",
-       "category": "BIOL/CHEM/PHYS Laboratory Science **",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Unrestricted Elective",
-       "category": "Unrestricted Elective",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CSCI/MATH/STAT Elective",
-       "category": "CSCI/MATH/STAT Elective",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI489",
-         "title": "Operating Systems"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 489 Operating Systems",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI400",
-         "title": "Computer Science Seminar"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 400 Computer Science Seminar",
-       "credits": {
-        "min": 2,
-        "max": 2,
-        "raw": "2"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI358",
-         "title": "Introd Information Assurance"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 358 Introd Information Assurance",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Senior Year",
-   "credits": {
-    "min": 28,
-    "max": 28,
-    "raw": "28"
-   },
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "CSCI 493 Senior Project I",
-    "CSCI 470",
-    "CSCI Elective (330 level or higher)",
-    "Unrestricted Elective",
-    "BIOL/CHEM/PHYS Laboratory Science **",
-    "CSCI 485 Programming Languages",
-    "CSCI 494 Senior Project II",
-    "MATH Restricted Elective *"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "CSCI493",
-         "title": "Senior Project I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 493 Senior Project I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CSCI 470",
-       "category": "CSCI 470",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "CSCI Elective (330 level or higher)",
-       "category": "CSCI Elective (330 level or higher)",
-       "credits": {
-        "min": 6,
-        "max": 6,
-        "raw": "6"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "Unrestricted Elective",
-       "category": "Unrestricted Elective",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "BIOL/CHEM/PHYS Laboratory Science **",
-       "category": "BIOL/CHEM/PHYS Laboratory Science **",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       }
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI485",
-         "title": "Programming Languages"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 485 Programming Languages",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CSCI494",
-         "title": "Senior Project II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CSCI 494 Senior Project II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [],
-       "conjunction": "and",
-       "text": "MATH Restricted Elective *",
-       "category": "MATH Restricted Elective *",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       }
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Requirements",
-   "credits": null,
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "MATH 292 Introduction to Number Theory",
-    "MATH 317 Stochastic Processes",
-    "MATH 321 Combinatorics",
-    "MATH 325 Linear Algebra",
-    "MATH 335 Mathematical Modeling",
-    "MATH 340 Euclidean & Noneuclid Geomet I",
-    "MATH 348 Introduction to Game Theory",
-    "MATH 350 Differential Equations",
-    "MATH 352 Intro to Mathematical Biology",
-    "MATH 360 Calculus III",
-    "MATH 392 Introduction Linear Programmin",
-    "MATH 415 Matrix Theory",
-    "MATH 417 Numerical Linear Algebra",
-    "MATH 425 Abstract Algebra I",
-    "MATH 452 Numerical Analysis",
-    "MATH 473 Discrete Wavelet Transfor/Appl",
-    "MATH 490 Graph Theory",
-    "STAT 380 Probability & Statistics II"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "MATH292",
-         "title": "Introduction to Number Theory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 292 Introduction to Number Theory",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH317",
-         "title": "Stochastic Processes"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 317 Stochastic Processes",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH321",
-         "title": "Combinatorics"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 321 Combinatorics",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH325",
-         "title": "Linear Algebra"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 325 Linear Algebra",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH335",
-         "title": "Mathematical Modeling"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 335 Mathematical Modeling",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH340",
-         "title": "Euclidean & Noneuclid Geomet I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 340 Euclidean & Noneuclid Geomet I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH348",
-         "title": "Introduction to Game Theory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 348 Introduction to Game Theory",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH350",
-         "title": "Differential Equations"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 350 Differential Equations",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH352",
-         "title": "Intro to Mathematical Biology"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 352 Intro to Mathematical Biology",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH360",
-         "title": "Calculus III"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 360 Calculus III",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH392",
-         "title": "Introduction Linear Programmin"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 392 Introduction Linear Programmin",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH415",
-         "title": "Matrix Theory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 415 Matrix Theory",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH417",
-         "title": "Numerical Linear Algebra"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 417 Numerical Linear Algebra",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH425",
-         "title": "Abstract Algebra I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 425 Abstract Algebra I",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH452",
-         "title": "Numerical Analysis"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 452 Numerical Analysis",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH473",
-         "title": "Discrete Wavelet Transfor/Appl"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 473 Discrete Wavelet Transfor/Appl",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "MATH490",
-         "title": "Graph Theory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "MATH 490 Graph Theory",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "STAT380",
-         "title": "Probability & Statistics II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "STAT 380 Probability & Statistics II",
-       "credits": {
-        "min": 3,
-        "max": 3,
-        "raw": "3"
-       },
-       "indented": false
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "title": "Requirements",
-   "credits": null,
-   "choose": null,
-   "choose_credits": null,
-   "distinct_sections": null,
-   "note": null,
-   "source_text": [
-    "PHYS 105 Introduction to Physics I (and Lab)",
-    "PHYS 106 Introduction to Physics II (and Lab)",
-    "PHYS 112 General Physics I (and Lab)",
-    "PHYS 113 General Physics II (and Lab)",
-    "CHEM 151& CHEM 153 General Chemistry Iand General Chemistry I Laboratory",
-    "CHEM 152& CHEM 154 General Chemistry IIand General Chemistry II Laborator",
-    "BIOL 120 Principles Of Biology I",
-    "BIOL 121 Principles Of Biology II"
-   ],
-   "sections": [
-    {
-     "label": null,
-     "choose": null,
-     "credits": null,
-     "rows": [
-      {
-       "codes": [
-        {
-         "code": "PHYS105",
-         "title": "Introduction to Physics I (and Lab)"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PHYS 105 Introduction to Physics I (and Lab)",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "PHYS106",
-         "title": "Introduction to Physics II (and Lab)"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PHYS 106 Introduction to Physics II (and Lab)",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "PHYS112",
-         "title": "General Physics I (and Lab)"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PHYS 112 General Physics I (and Lab)",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "PHYS113",
-         "title": "General Physics II (and Lab)"
-        }
-       ],
-       "conjunction": "and",
-       "text": "PHYS 113 General Physics II (and Lab)",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CHEM151",
-         "title": "General Chemistry I"
-        },
-        {
-         "code": "CHEM153",
-         "title": "and General Chemistry I Laboratory"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CHEM 151& CHEM 153 General Chemistry Iand General Chemistry I Laboratory",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "CHEM152",
-         "title": "General Chemistry II"
-        },
-        {
-         "code": "CHEM154",
-         "title": "and General Chemistry II Laborator"
-        }
-       ],
-       "conjunction": "and",
-       "text": "CHEM 152& CHEM 154 General Chemistry IIand General Chemistry II Laborator",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "BIOL120",
-         "title": "Principles Of Biology I"
-        }
-       ],
-       "conjunction": "and",
-       "text": "BIOL 120 Principles Of Biology I",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      },
-      {
-       "codes": [
-        {
-         "code": "BIOL121",
-         "title": "Principles Of Biology II"
-        }
-       ],
-       "conjunction": "and",
-       "text": "BIOL 121 Principles Of Biology II",
-       "credits": {
-        "min": 4,
-        "max": 4,
-        "raw": "4"
-       },
-       "indented": false
-      }
-     ]
-    }
-   ]
-  },
   {
    "title": "General Education Requirements for the Bachelor of Science Degree",
    "credits": null,
@@ -1309,7 +329,11 @@
   },
   {
    "title": "Core Requirements",
-   "credits": null,
+   "credits": {
+    "min": 54,
+    "max": 54,
+    "raw": "54"
+   },
    "choose": null,
    "choose_credits": null,
    "distinct_sections": null,
@@ -1668,7 +692,11 @@
   },
   {
    "title": "Required Courses",
-   "credits": null,
+   "credits": {
+    "min": 14,
+    "max": 14,
+    "raw": "14"
+   },
    "choose": null,
    "choose_credits": null,
    "distinct_sections": null,
@@ -2300,7 +1328,11 @@
   },
   {
    "title": "BIOL/CHEM/PHYS Laboratory Courses Courses must be intended for science and engineering majors. Select from the following list and get the approval from the student's academic advisor.",
-   "credits": null,
+   "credits": {
+    "min": 19,
+    "max": 19,
+    "raw": "19"
+   },
    "choose": null,
    "choose_credits": null,
    "distinct_sections": null,
@@ -2431,7 +1463,11 @@
   },
   {
    "title": "Summary of Requirements",
-   "credits": null,
+   "credits": {
+    "min": 120,
+    "max": 120,
+    "raw": "120"
+   },
    "choose": null,
    "choose_credits": null,
    "distinct_sections": null,
@@ -2500,49 +1536,49 @@
  "narrative": [],
  "unassigned": [],
  "validation": {
-  "verdict": "pass",
+  "verdict": "warn",
   "needs_hand_read": false,
   "checks": [
    {
     "severity": "pass",
     "name": "codes_not_in_source",
-    "detail": "all 78 codes appear verbatim in the captured text"
+    "detail": "all 73 codes appear verbatim in the captured text"
    },
    {
     "severity": "pass",
     "name": "group_count",
-    "detail": "13 requirement groups"
+    "detail": "7 requirement groups"
    },
    {
     "severity": "pass",
     "name": "course_count",
-    "detail": "78 distinct courses across 150 rows"
+    "detail": "73 distinct courses across 84 rows"
    },
    {
-    "severity": "pass",
-    "name": "credits_reconcile",
-    "detail": "groups sum to 120–120, stated total 120"
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
    },
    {
     "severity": "pass",
     "name": "categories",
-    "detail": "26 unenumerated requirement(s) kept as categories"
+    "detail": "13 unenumerated requirement(s) kept as categories"
    }
   ],
   "stats": {
-   "groups": 13,
-   "sections": 13,
-   "rows": 150,
-   "course_rows": 124,
-   "category_rows": 26,
-   "distinct_courses": 78,
+   "groups": 7,
+   "sections": 7,
+   "rows": 84,
+   "course_rows": 71,
+   "category_rows": 13,
+   "distinct_courses": 73,
    "credit_span": {
-    "min": 120,
-    "max": 120,
+    "min": 207,
+    "max": 207,
     "groups_with_credits": 4
    },
-   "stated_total": "120"
+   "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:45.086Z"
+ "extracted_at": "2026-08-10T02:54:24.507Z"
 }

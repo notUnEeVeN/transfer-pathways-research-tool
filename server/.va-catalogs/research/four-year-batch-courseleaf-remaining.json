@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_four_year_cs_official_source_batch_courseleaf_remaining",
+  "researched_at": "2026-08-09",
+  "source_policy": {
+    "allowed_sources": "Current official university catalogs and official university policy pages only.",
+    "selection_rule": "The target is the ordinary undergraduate computer science bachelor's award. Separate tracks, concentrations, dual degrees, accelerated graduate pathways, and alternative bachelor's awards are excluded from the base target.",
+    "schedule_rule": "Suggested plans, plan-of-study grids, four-year guides, and prospective schedules are not accepted as requirement authority. If a catalog publishes needed curriculum facts only in a schedule, the missing non-schedule authority is recorded as a blocker rather than copied into the requirement layer.",
+    "unknown_rule": "A null constraint means no university-wide numeric requirement was found in the reviewed current official sources; it must not be interpreted as zero."
+  },
+  "institutions": [
+    {
+      "slug": "norfolk-state-university",
+      "name": "Norfolk State University",
+      "catalog_year": "2025-2026",
+      "catalog_status": "current_live_catalog_as_of_research_date",
+      "degree": {
+        "catalog_program_title": "Bachelor of Science in Computer Science - Standard Track",
+        "award": "Bachelor of Science in Computer Science",
+        "major": "Computer Science",
+        "selected_variant": "Standard Track",
+        "published_total_credits": 120,
+        "published_major_summary": {
+          "general_education": 40,
+          "core_major": 53,
+          "requirements_electives": 27,
+          "other_requirements": 0
+        },
+        "excluded_variants": [
+          "Computer Engineering Track",
+          "IA Track",
+          "Cybersecurity Track",
+          "Software Engineering Track",
+          "DNIMAS and accelerated bachelor's-to-master's pathways"
+        ]
+      },
+      "owner": {
+        "college_or_school": "College of Science, Engineering, and Technology",
+        "department": "Department of Computer Science",
+        "college_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/",
+        "department_url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/",
+        "evidence": "The program breadcrumb nests Computer Science under the College, and the College's department list includes Computer Science."
+      },
+      "major_requirements": {
+        "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
+        "container_selector": "#curriculumtextcontainer",
+        "authoritative_non_schedule_content": [
+          "The graduation summary publishes 40 General Education credits, 53 Core Major credits, 27 Requirements Electives credits, and 120 total credits.",
+          "The Major Electives course list states a minimum of 15 credits and enumerates eligible CSC courses."
+        ],
+        "excluded_content": [
+          {
+            "content": "Plan of Study Grid inside #curriculumtextcontainer",
+            "reason": "It is explicitly labeled as a plan of study and is therefore a prospective schedule, not accepted requirement authority for this batch."
+          },
+          {
+            "content": "Non-standard CS tracks and accelerated pathways",
+            "reason": "They are distinct variants rather than requirements of the Standard Track."
+          }
+        ],
+        "composition_status": "blocked_for_complete_major_model",
+        "blocker": "The current catalog places most named fixed curriculum courses only in its Plan of Study grid. After excluding that schedule, the summary totals and elective menu do not identify the complete 53-credit core or the full 27-credit requirements-elective composition."
+      },
+      "general_education": {
+        "authority": "Norfolk State University General Education Core Program",
+        "url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/",
+        "published_credits": 40,
+        "evidence": "The university page publishes the category table totaling 40 credits and states that bachelor candidates must complete the General Education Core."
+      },
+      "college_requirements": {
+        "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/",
+        "published_additional_credits": null,
+        "status": "owner_identified_no_separate_numeric_college_layer_found",
+        "evidence": "The College page identifies the owner and departments but does not publish an additional college-wide credit block for the Standard Track."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/",
+          "https://catalog.nsu.edu/undergraduate/academic-policies/"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "semester hours",
+          "evidence": "The bachelor-degree rules and the Standard Track summary both publish 120."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "semester hours",
+          "scope": "university-wide",
+          "status": "not_stated_in_reviewed_current_sources",
+          "evidence": "No separate university-wide upper-division-credit minimum was found. The plan grid's 300-level elective labels are not accepted as requirement evidence in this artifact."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 30,
+            "unit": "semester hours at Norfolk State University",
+            "evidence": "Bachelor candidates must earn at least 30 credits during residence."
+          },
+          {
+            "kind": "enrollment_residency",
+            "minimum": 2,
+            "unit": "semesters in residence",
+            "evidence": "The same rule requires at least two resident semesters and includes all senior-year curriculum courses."
+          }
+        ],
+        "other_degree_constraints": [
+          "Minimum cumulative GPA: 2.0.",
+          "Complete the Spartan Seminar Series, General Education Core, curriculum, and core competencies.",
+          "The department page requires grades of C or better in English, science, mathematics, and computer science courses."
+        ]
+      },
+      "course_dictionary": {
+        "subject": "CSC",
+        "url": "https://catalog.nsu.edu/undergraduate/course-descriptions/csc/",
+        "evidence": "Official current CSC course-description index."
+      },
+      "contradictions_and_unknowns": [
+        "The live NSU catalog remains the 2025-2026 edition as of 2026-08-09; no 2026-2027 catalog should be inferred.",
+        "The non-schedule Major Electives heading requires at least 15 credits, while the excluded plan grid allocates additional upper-level CS or mathematics elective slots. The accepted non-schedule sources do not reconcile the 27-credit Requirements Electives summary.",
+        "The navigation shows an Under Construction child label under the populated Standard Track page. Preserve this as a catalog-quality warning, not as proof that the visible summary is absent.",
+        "No university-wide numeric upper-division minimum was found."
+      ],
+      "capture_blockers": [
+        "A complete degree composition is blocked until NSU publishes a non-schedule authoritative list of the fixed curriculum or a reviewer approves another official requirement source.",
+        "Recapture when NSU publishes the next catalog edition and compare the Standard Track structure before acceptance."
+      ],
+      "sources": [
+        {
+          "role": "catalog_edition",
+          "url": "https://catalog.nsu.edu/",
+          "evidence": "The live root identifies the current catalog as 2025-2026."
+        },
+        {
+          "role": "program_major_and_degree_summary",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
+          "evidence": "Standard Track title, 120-credit summary, elective menu, and separately labeled Plan of Study grid."
+        },
+        {
+          "role": "general_education_and_university_graduation",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/",
+          "evidence": "General Education categories, 40-credit total, 120-credit minimum, GPA, and residence rules."
+        },
+        {
+          "role": "college_owner",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/",
+          "evidence": "College owner and department structure."
+        },
+        {
+          "role": "academic_policy",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-policies/",
+          "evidence": "Official current undergraduate policy collection."
+        }
+      ]
+    },
+    {
+      "slug": "randolph-macon-college",
+      "name": "Randolph-Macon College",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "degree": {
+        "catalog_program_title": "Computer Science Major",
+        "award": "Bachelor of Science",
+        "major": "Computer Science",
+        "selected_variant": "ordinary Computer Science major designated for the Bachelor of Science",
+        "published_total_credits": 120,
+        "published_major_credits": 40,
+        "excluded_variants": [
+          "Cybersecurity program",
+          "Data Science program",
+          "other separately listed programs and graduate pathways"
+        ]
+      },
+      "owner": {
+        "college_or_school": "Randolph-Macon College",
+        "department_or_program": "Computer Science",
+        "college_layer_status": "not_applicable",
+        "evidence": "The catalog is organized directly as Programs A-Z and does not identify a separate school or subcollege owner for Computer Science."
+      },
+      "major_requirements": {
+        "url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/",
+        "container_selector": "#requirementstextcontainer",
+        "evidence": [
+          "The current page labels the award Bachelor of Science and publishes a 40-hour major.",
+          "The major contains seven fixed foundation courses, one three-credit programming-emphasis choice, and four additional electives totaling 12 credits.",
+          "At least two of the four additional electives must be numbered 300 or above."
+        ],
+        "excluded_content": [],
+        "composition_status": "source_layers_researched_not_yet_composed"
+      },
+      "general_education": {
+        "authority": "The Collegiate Requirements",
+        "url": "https://catalog.rmc.edu/academic-program/collegiate-requirements/",
+        "published_credits": null,
+        "status": "category_and_attribute_requirements_without_one_published_additive_total",
+        "evidence": "The current requirements combine Effective Communication, six liberal-arts Pillars, cross-area attributes, language competency, and two zero-credit Physical Education and Wellness experiences. Published overlap rules prevent a simple additive sum."
+      },
+      "college_requirements": {
+        "status": "not_applicable",
+        "published_additional_credits": null,
+        "evidence": "No separate college or school layer exists between the institution and the Computer Science program in the current catalog."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.rmc.edu/academic-program/degrees-offered/",
+          "https://catalog.rmc.edu/academic-regulations/transfer-credit/",
+          "https://catalog.rmc.edu/academic-regulations/course-numbering-policy/"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "semester hours",
+          "cohort": "students entering Fall 2023 and later",
+          "evidence": "The 2026-2027 Bachelor of Science rule requires 120; earlier cohorts remain under the former 110-hour rule."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "semester hours",
+          "scope": "university-wide",
+          "status": "no_aggregate_university_minimum_published",
+          "course_number_definition": "Courses numbered 300-399 are upper-level and 400-499 are advanced-level.",
+          "scoped_major_minimum": {
+            "minimum": 12,
+            "unit": "major hours at 300 level or above",
+            "derivation": "Required CSCI 311 contributes three credits, the three-credit Programming Emphasis is entirely 300-level, and at least two three-credit electives must be 300-level or above."
+          }
+        },
+        "residency": [
+          {
+            "kind": "transfer_and_external_credit_cap",
+            "maximum": 75,
+            "unit": "semester hours applied to the degree",
+            "evidence": "The current transfer policy caps combined transfer and external credit at 75."
+          },
+          {
+            "kind": "derived_institutional_credit_floor",
+            "minimum": 45,
+            "unit": "semester hours outside the transfer/external-credit cap",
+            "status": "derived_not_verbatim_residency_rule",
+            "derivation": "A 120-hour degree minus the 75-hour external-credit cap leaves 45 hours."
+          },
+          {
+            "kind": "major_residency",
+            "minimum_fraction": 0.5,
+            "unit": "coursework required for the major completed at Randolph-Macon",
+            "evidence": "At least half of required major coursework must be completed at the College."
+          }
+        ],
+        "other_degree_constraints": [
+          "Minimum Randolph-Macon cumulative GPA: 2.0.",
+          "Complete all Collegiate Requirements, the major, and two zero-credit Physical Education and Wellness experiences for Fall 2026 entrants and later."
+        ]
+      },
+      "course_dictionary": {
+        "subject": "CSCI",
+        "url": "https://catalog.rmc.edu/courses-az/csci/",
+        "evidence": "Official current CSCI course-description index."
+      },
+      "contradictions_and_unknowns": [
+        "Stale indexed or prior-year catalog content describes a mathematical emphasis and a different elective count. The live 2026-2027 HTML is authoritative for this target: 40 major hours and four additional electives.",
+        "The current Collegiate Requirements do not publish one non-overlapping credit total, so no General Education total should be inferred by adding categories.",
+        "The 45-hour institutional floor is arithmetic derived from the 75-hour external-credit cap, not separately worded as a residence minimum.",
+        "No aggregate university-wide upper-division-credit minimum was found."
+      ],
+      "capture_blockers": [
+        "Capture must verify the page edition is 2026-2027 and reject stale indexed or cached prior-year requirement structures.",
+        "General Education must be modeled as categories and overlap constraints rather than as an invented credit subtotal."
+      ],
+      "sources": [
+        {
+          "role": "program_and_major_requirements",
+          "url": "https://catalog.rmc.edu/programs/computer-science/computer-science-major/",
+          "evidence": "Current Bachelor of Science designation and 40-hour major table."
+        },
+        {
+          "role": "general_education",
+          "url": "https://catalog.rmc.edu/academic-program/collegiate-requirements/",
+          "evidence": "Current Collegiate Requirements and overlap rules."
+        },
+        {
+          "role": "university_graduation",
+          "url": "https://catalog.rmc.edu/academic-program/degrees-offered/",
+          "evidence": "Current Bachelor of Science total, GPA, and cohort applicability."
+        },
+        {
+          "role": "transfer_and_major_residency_policy",
+          "url": "https://catalog.rmc.edu/academic-regulations/transfer-credit/",
+          "evidence": "External-credit cap and one-half-major institutional rule."
+        },
+        {
+          "role": "course_level_policy",
+          "url": "https://catalog.rmc.edu/academic-regulations/course-numbering-policy/",
+          "evidence": "Official definitions of 300-level upper and 400-level advanced courses."
+        }
+      ]
+    },
+    {
+      "slug": "university-of-mary-washington",
+      "name": "University of Mary Washington",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "degree": {
+        "catalog_program_title": "Computer Science",
+        "award": "Bachelor of Science",
+        "major": "Computer Science",
+        "selected_variant": "B.S., Computer Science",
+        "published_total_credits": 120,
+        "published_major_credits": "46-48",
+        "excluded_variants": [
+          "Cybersecurity major",
+          "Bachelor of Liberal Studies requirements",
+          "accelerated Virginia Tech Master of Engineering pathway"
+        ]
+      },
+      "owner": {
+        "college_or_school": "College of Arts and Sciences",
+        "department": "Department of Computer Science",
+        "college_url": "https://catalog.umw.edu/undergraduate/college-arts-sciences/",
+        "department_url": "https://cas.umw.edu/computerscience/",
+        "evidence": "The program names the Department of Computer Science; the current College of Arts and Sciences catalog lists Computer Science among its curriculum components."
+      },
+      "major_requirements": {
+        "url": "https://catalog.umw.edu/undergraduate/majors/computer-science/",
+        "container_selector": "#requirementstextcontainer",
+        "evidence": [
+          "The program identifies the award as B.S., Computer Science and publishes 46-48 major credits.",
+          "The major includes fixed CPSC courses, a four-to-six-credit discrete mathematics choice, one three-credit 400-level choice, and one three-credit 300-level choice."
+        ],
+        "excluded_content": [
+          {
+            "content": "#planofstudytextcontainer",
+            "reason": "The catalog calls this a suggested guide and explicitly says it does not replace the Program Requirements. Its 120-122 total is not a degree-total range."
+          },
+          {
+            "content": "accelerated Virginia Tech Computer Science pathway",
+            "reason": "This is a separate bachelor's-to-master's special program, not the ordinary B.S. requirement set."
+          }
+        ],
+        "composition_status": "source_layers_researched_not_yet_composed"
+      },
+      "general_education": {
+        "authority": "B.A./B.F.A./B.S./B.S.Ed. General Education Requirements",
+        "url": "https://catalog.umw.edu/undergraduate/general-education/requirements-bachelor-arts-bachelor-science-degrees/",
+        "published_credits": null,
+        "status": "category_and_attribute_requirements_without_one_published_additive_total",
+        "evidence": "The current page organizes Foundations, Methods of Investigation, and Connections as courses, competencies, attributes, and experiences. Major courses can satisfy some attributes, so the catalog does not publish one independent additive credit block."
+      },
+      "college_requirements": {
+        "url": "https://catalog.umw.edu/undergraduate/college-arts-sciences/",
+        "published_additional_credits": null,
+        "status": "owner_and_curriculum_layer_no_separate_numeric_college_block",
+        "evidence": "The College describes the curriculum as General Education, Major, and Electives but does not add a separate college-wide credit subtotal."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.umw.edu/undergraduate/undergraduate-degrees/ba-bs-degree/",
+          "https://catalog.umw.edu/undergraduate/majors/computer-science/"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "credits",
+          "evidence": "The B.A./B.S. degree policy and the Computer Science requirements page both publish 120."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "credits",
+          "scope": "university-wide",
+          "status": "not_stated_in_reviewed_current_sources",
+          "scoped_major_minimum": {
+            "minimum": 33,
+            "unit": "major credits numbered 300 or above",
+            "derivation": "Fixed 300/400-level courses total 27 credits, followed by required three-credit 400-level and three-credit 300-level choices."
+          }
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 30,
+            "unit": "academic credits at UMW",
+            "evidence": "A degree candidate must earn at least 30 academic credits at UMW."
+          },
+          {
+            "kind": "major_residency",
+            "minimum_fraction": 0.5,
+            "unit": "credits required for the major at UMW",
+            "evidence": "At least half of the required major credits must be earned at UMW unless the department requires more."
+          },
+          {
+            "kind": "final_credit_window",
+            "minimum": 15,
+            "window": 21,
+            "unit": "final credits at UMW",
+            "evidence": "At least 15 of the final 21 credits must be earned at UMW; active-duty military students may request a waiver of this final-window rule."
+          }
+        ],
+        "other_degree_constraints": [
+          "Minimum UMW cumulative GPA: 2.0.",
+          "Minimum UMW major GPA: 2.0.",
+          "No more than 60 credits in one discipline may count toward the 120-credit B.A./B.F.A./B.S./B.S.Ed. degree."
+        ]
+      },
+      "course_dictionary": {
+        "subject": "CPSC",
+        "url": "https://catalog.umw.edu/undergraduate/course-descriptions/cpsc/",
+        "evidence": "Official current CPSC course-description index."
+      },
+      "contradictions_and_unknowns": [
+        "The suggested plan totals 120-122, but the authoritative degree total is 120. The extra plan credits reflect scheduling choices and must not redefine the award total.",
+        "General Education has no separately published non-overlapping credit total; do not add course and attribute categories as though they were disjoint.",
+        "No university-wide numeric upper-division minimum was found; 33 credits is a major-scoped minimum derived from explicit CPSC requirements only."
+      ],
+      "capture_blockers": [
+        "The capture and parser must remain scoped to #requirementstextcontainer and must not import #planofstudytextcontainer.",
+        "General Education overlap and experiential requirements require structured modeling; a simple credit subtotal is not sufficient."
+      ],
+      "sources": [
+        {
+          "role": "program_and_major_requirements",
+          "url": "https://catalog.umw.edu/undergraduate/majors/computer-science/",
+          "evidence": "B.S. designation, 46-48-credit major, 120-credit degree total, and explicit separation of the suggested plan."
+        },
+        {
+          "role": "general_education",
+          "url": "https://catalog.umw.edu/undergraduate/general-education/requirements-bachelor-arts-bachelor-science-degrees/",
+          "evidence": "Current category, competency, attribute, and experience requirements for the B.S."
+        },
+        {
+          "role": "university_graduation",
+          "url": "https://catalog.umw.edu/undergraduate/undergraduate-degrees/ba-bs-degree/",
+          "evidence": "B.S. award list, 120-credit total, GPA, and residence rules."
+        },
+        {
+          "role": "college_owner",
+          "url": "https://catalog.umw.edu/undergraduate/college-arts-sciences/",
+          "evidence": "College owner and three-part undergraduate curriculum."
+        }
+      ]
+    }
+  ],
+  "batch_notes": [
+    "Norfolk State's live catalog is 2025-2026; Randolph-Macon and Mary Washington are 2026-2027.",
+    "No prospective schedule is accepted as requirement authority in this artifact.",
+    "This research artifact records source layers and audit constraints only. It does not compose or import degree requirement documents."
+  ]
+}

@@ -8,8 +8,218 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=974&print=1",
- "captured_at": "2026-08-02T05:54:38.874Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, BA or BS",
+  "variant": "B.S. path within the combined Computer Science, BA or BS catalog program",
+  "academic_unit": "Department of Mathematics and Computer Science",
+  "college": "Cook-Cole College of Arts and Sciences",
+  "general_education_authority": "Longwood University Civitae Core Curriculum",
+  "excluded_variants": [
+   "Bachelor of Arts path"
+  ],
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "general_education_units_minimum": 39,
+   "general_education_units_maximum": 40,
+   "major_units": 45,
+   "bs_degree_requirement_units_minimum": 3,
+   "bs_degree_requirement_units_maximum": 4,
+   "general_elective_units_minimum": 31,
+   "general_elective_units_maximum": 33,
+   "upper_division": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 30 upper-level credits must be earned at Longwood, subject to the catalog's stated international-exchange exception.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 25 percent of the 120-credit degree must be earned at Longwood; the 30 upper-level graduation credits must also be earned at Longwood.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The current catalog combines the B.A. and B.S. in one program page. Preserve the shared 45-credit major but apply only the B.S. 3-4 credit degree requirement and B.S. elective range.",
+   "MATH 171 may satisfy both the major's stated mathematics foundation context and Civitae; preserve this overlap and add general electives if overlap would otherwise reduce the degree below 120.",
+   "The 30-credit upper-level graduation rule is also a Longwood residency rule and must not be modeled as an unrelated extra-credit block."
+  ],
+  "data_quality_flags": [],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Longwood University major and degree requirements",
+   "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=974&print=1",
+   "requested_url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=974&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:16:38.084Z",
+   "sha256": "4a606eb3c72ad6cd10fb96dab19c5fde56c69a187349ff18099c7f2d947f27f0",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Longwood University general education requirements",
+   "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=1004",
+   "requested_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=1004",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:16:38.084Z",
+   "sha256": "fae1bd018d79fd6b92d6c0df855c3d6997d874bda8efa911396b0adbb2d907e0",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Longwood University college or school requirements",
+   "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=970",
+   "requested_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=970",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:16:38.084Z",
+   "sha256": "1686f20e48ef0e17c6e7614bd0cd0d69968b9e0121735087cc04b37579924727",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Longwood University university graduation requirements",
+   "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=968",
+   "requested_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=968",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:16:38.084Z",
+   "sha256": "beb39c87d4bcd983b0ffef856926652c2c6592accede12c365a0c865e9494ab7",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Longwood University academic policies",
+   "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=967",
+   "requested_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=967",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:16:38.084Z",
+   "sha256": "3aa4238bf096fcf8772ec26002d939d3935366c261f2bfa4ee3bd865f7bc01c9",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Longwood University course descriptions and credit values",
+   "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=975",
+   "requested_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=975",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:16:38.084Z",
+   "sha256": "7a8378f7e9249dce4f138e5fa62c487853ce3ca2c2a044ef8cb80c2ab248d36a",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:16:38.084Z",
  "program_title": "Computer Science, BA or BS",
+ "parse_error": null,
  "total_credits": null,
  "stopped_at": null,
  "groups": [
@@ -487,5 +697,5 @@
    "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.893Z"
+ "extracted_at": "2026-08-10T03:21:26.537Z"
 }

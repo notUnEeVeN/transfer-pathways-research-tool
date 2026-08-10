@@ -1,0 +1,569 @@
+{
+  "schema_version": 1,
+  "slug": "bridgewater-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Mathematics and Computer Science",
+  "college": "Coffman School of Natural Sciences",
+  "ge_authority": "Connected Learning (CL): General Education Curriculum",
+  "excluded_variants": [
+    "Computer Science minor",
+    "Data Science & Analytics major",
+    "historical Theoretical Computing track",
+    "historical or prospective term-by-term schedules"
+  ],
+  "source_bundle_required": [
+    "catalog",
+    "major",
+    "general_education",
+    "general_education_2",
+    "college",
+    "graduation",
+    "course_catalog",
+    "course_catalog_2"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": [
+        "major",
+        "course_catalog",
+        "course_catalog_2"
+      ]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": [
+        "general_education",
+        "general_education_2",
+        "college"
+      ],
+      "note": "Connected Learning is the applicable General Education layer. The Coffman School owns the program but publishes no separate additive school curriculum."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": [
+        "graduation",
+        "college"
+      ]
+    }
+  },
+  "track_selection": {
+    "choose": 1,
+    "selection_required": true,
+    "untracked_path_exists": false,
+    "canonical_unit_audit_track": "cybersecurity",
+    "canonical_selection_reason": "The acceptance schema needs one deterministic OR path for unit arithmetic. Cybersecurity is the first published track; the Full-Stack path is retained with its own exact 120-credit arithmetic and is neither excluded nor merged.",
+    "options": [
+      {
+        "key": "cybersecurity",
+        "label": "Cybersecurity",
+        "units": 15
+      },
+      {
+        "key": "full_stack_software_development",
+        "label": "Full-Stack Software Development",
+        "units": 15
+      }
+    ]
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "major_units": 46,
+    "major_shared_core_units": 31,
+    "selected_track_units": 15,
+    "general_education_units_minimum": 33,
+    "general_education_units_maximum": 46,
+    "connected_learning_core_units_minimum": 5,
+    "connected_learning_core_units_maximum": 9,
+    "foundations_of_connected_learning_units_minimum": 6,
+    "foundations_of_connected_learning_units_maximum": 15,
+    "ways_of_learning_units": 22,
+    "general_education_and_elective_capacity_units": 74,
+    "upper_division": {
+      "status": "required",
+      "minimum_units": 45,
+      "modeled_units": 45,
+      "rule": "At least 45 credits must be junior- or senior-level. Current course-numbering guidance generally places junior- and senior-level courses at 300-499.",
+      "source_refs": [
+        "major",
+        "college",
+        "graduation"
+      ]
+    },
+    "major_scoped_upper_division_units_by_track": {
+      "cybersecurity": 21,
+      "full_stack_software_development": 24
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 33,
+      "rule": "Complete at least 33 credits at Bridgewater, including at least nine major credits; at least 30 of the final 33 credits must be completed at Bridgewater or through a College-approved study-abroad program.",
+      "source_refs": [
+        "graduation"
+      ]
+    },
+    "final_credit_window_units": 33,
+    "final_credit_window_residency_units_minimum": 30,
+    "major_residency_units_minimum": 9,
+    "major_field_units_minimum": 30,
+    "major_field_units_maximum": 79,
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2,
+    "track_paths": {
+      "cybersecurity": {
+        "shared_core_units": 31,
+        "track_units": 15,
+        "major_units": 46,
+        "major_upper_division_units": 21,
+        "additional_upper_division_capacity_units": 24,
+        "remaining_connected_learning_and_elective_capacity_units": 50,
+        "total_units": 120
+      },
+      "full_stack_software_development": {
+        "shared_core_units": 31,
+        "track_units": 15,
+        "major_units": 46,
+        "major_upper_division_units": 24,
+        "additional_upper_division_capacity_units": 21,
+        "remaining_connected_learning_and_elective_capacity_units": 53,
+        "total_units": 120
+      }
+    }
+  },
+  "modeling_notes": [
+    "The current program requires the same 31-credit core for every student and exactly one intact 15-credit track. The lower- and upper-level portions are split only to expose the 45-credit graduation audit; cross-group constraints prohibit mixing track components.",
+    "The 74 credits after the major contain Connected Learning and remaining applicable credit. Connected Learning publishes a 33-46-credit range affected by placement, transfer status, course choices, and overlap, so its gates are not gross-summed as an independent additive block.",
+    "CSCI-400 is required in the major and may satisfy both the Connected Learning capstone and Writing Intensive gates. Full-Stack course ART-321 may satisfy Creative and Artistic Practices. MATH-110 may satisfy the quantitative foundation while also serving as the CSCI-110 prerequisite.",
+    "A student entering with an approved transfer-oriented associate degree is exempt from all Connected Learning requirements except CL-100 or CL-150 and CL-400 or a major capstone. The catalog does not say whether that exemption waives ART-321's separate CL-200 corequisite.",
+    "The categorical current program table is the requirement authority. Historical and prospective term sequences are deliberately absent from the requirement tree."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "required_track_choice_correlation",
+      "severity": "block_analysis",
+      "message": "Lower-division track courses, upper-division track courses, upper-level remainder, and flexible remainder must all select the same one of two tracks."
+    },
+    {
+      "code": "connected_learning_overlap_and_choice_rules",
+      "severity": "block_analysis",
+      "message": "The General Education total depends on placement, transfer status, course choices, and reuse of CSCI-400, ART-321, and MATH-110."
+    },
+    {
+      "code": "approved_associate_transfer_exception",
+      "severity": "block_analysis",
+      "message": "The approved-transfer-associate exception changes the Connected Learning gates and requires a student-specific evaluator."
+    },
+    {
+      "code": "full_stack_cl200_corequisite_policy_gap",
+      "severity": "block_analysis",
+      "message": "ART-321 lists CL-200 as a corequisite, but the approved-transfer-associate exception does not retain CL-200; institutional resolution is required."
+    }
+  ],
+  "catalog_identity": {
+    "program_node_id": 1936,
+    "program_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+    "program_pdf_url": "https://bridgewater.cleancatalog.io/node/1936/download-pdf",
+    "mathematics_computer_science_parent_term_id": 1849,
+    "art_parent_term_id": 1808
+  },
+  "source_course_identities": {
+    "CSCI101": {"catalog_node_id": 1039, "parent_term_id": 1849, "credits": 4, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci101"},
+    "CSCI102": {"catalog_node_id": 1040, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci102"},
+    "CSCI110": {"catalog_node_id": 1042, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci110"},
+    "CSCI220": {"catalog_node_id": 1043, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci220"},
+    "CSCI250": {"catalog_node_id": 1048, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci250"},
+    "CSCI320": {"catalog_node_id": 1045, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci320"},
+    "CSCI341": {"catalog_node_id": 1046, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci341"},
+    "CSCI342": {"catalog_node_id": 1047, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci342"},
+    "CSCI400": {"catalog_node_id": 1051, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci400"},
+    "DSA230": {"catalog_node_id": 1065, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/dsa230"},
+    "CSCI130": {"catalog_node_id": 2189, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci130"},
+    "CSCI261": {"catalog_node_id": 2933, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci261"},
+    "CSCI361": {"catalog_node_id": 1058, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci361"},
+    "CSCI461": {"catalog_node_id": 2934, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci461"},
+    "DSA350": {"catalog_node_id": 1068, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/dsa350"},
+    "ART321": {"catalog_node_id": 831, "parent_term_id": 1808, "credits": 3, "url": "https://bridgewater.cleancatalog.io/art/art321"},
+    "ART322": {"catalog_node_id": 830, "parent_term_id": 1808, "credits": 3, "url": "https://bridgewater.cleancatalog.io/art/art322"},
+    "CSCI131": {"catalog_node_id": 1044, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci131"},
+    "CSCI331": {"catalog_node_id": 1055, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci331"},
+    "CSCI332": {"catalog_node_id": 1056, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci332"},
+    "MATH110": {"catalog_node_id": 1412, "parent_term_id": 1849, "credits": 3, "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/math110"}
+  },
+  "course_titles": {
+    "ART321": "Graphic Design",
+    "ART322": "Web Design and Development",
+    "CL100": "Connected Learning Seminar",
+    "CL150": "Connected Learning Transfer Workshop",
+    "CL200": "Crafting Written Agruments",
+    "CL400": "Connected Learning Capstone",
+    "COMM100": "Oral Communication",
+    "CSCI101": "Programming I",
+    "CSCI102": "Programming II",
+    "CSCI110": "Discrete Mathematics",
+    "CSCI130": "Programming with Python",
+    "CSCI131": "Web Scripting",
+    "CSCI220": "Data Structures and Algorithms",
+    "CSCI250": "Computer Networks",
+    "CSCI261": "Network Engineering",
+    "CSCI320": "Algorithm Analysis and Design",
+    "CSCI331": "Server-Side Web Development",
+    "CSCI332": "Client-Side Web Development",
+    "CSCI341": "Computer Architecture",
+    "CSCI342": "Operating Systems",
+    "CSCI361": "Network Security",
+    "CSCI400": "Software Engineering",
+    "CSCI461": "Penetration Testing",
+    "DSA230": "Database Systems",
+    "DSA350": "Data Preparation with Python",
+    "MATH110": "College Algebra",
+    "MATH140": "Introduction to Statistics",
+    "MATH141": "Introduction to Statistics with R",
+    "MATH150": "Mathematics for Elementary Educators"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science shared core: lower-division courses",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "19 of the 31-credit shared core",
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CSCI101", "units": 4}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI102", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI110", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI220", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI250", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "DSA230", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Computer Science shared core: upper-division courses",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "12 of the 31-credit shared core",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI320", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI341", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI342", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI400", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Required track: lower-division component",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog", "course_catalog_2"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "correlated_required_track_choice",
+          "status": "evaluator_not_implemented",
+          "description": "This section, the upper-division track section, and both post-major capacity sections must use the same track key; components from different tracks cannot be mixed."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Cybersecurity track lower-division component",
+          "select": 1,
+          "units": 6,
+          "receivers": [
+            {"kind": "series", "codes": ["CSCI130", "CSCI261"], "units": 6}
+          ]
+        },
+        {
+          "label": "Full-Stack Software Development track lower-division component",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {"kind": "course", "code": "CSCI131", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Required track: upper-division component",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog", "course_catalog_2"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "correlated_required_track_choice",
+          "status": "evaluator_not_implemented",
+          "description": "This section must use the same track key as the lower-division track component; exactly one complete 15-credit track is required."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Cybersecurity track upper-division component",
+          "select": 1,
+          "units": 9,
+          "receivers": [
+            {"kind": "series", "codes": ["CSCI361", "CSCI461", "DSA350"], "units": 9}
+          ]
+        },
+        {
+          "label": "Full-Stack Software Development track upper-division component",
+          "select": 1,
+          "units": 12,
+          "receivers": [
+            {"kind": "series", "codes": ["ART321", "ART322", "CSCI331", "CSCI332"], "units": 12}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Connected Learning entry seminar",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "general_education_2", "graduation"],
+      "conjunction": "Or",
+      "note": "Choose CL-150 for a transfer student; otherwise choose CL-100. Credits draw from the post-major capacity rather than adding to it here.",
+      "analysis_constraints": [
+        {
+          "kind": "transfer_status_course_selection",
+          "status": "evaluator_not_implemented",
+          "description": "Transfer status determines whether CL-100 or CL-150 is the applicable course."
+        }
+      ],
+      "sections": [
+        {"label": "Non-transfer entry", "select": 1, "units": 0, "receivers": [{"kind": "course", "code": "CL100", "units": 3}]},
+        {"label": "Transfer entry", "select": 1, "units": 0, "receivers": [{"kind": "course", "code": "CL150", "units": 1}]}
+      ]
+    },
+    {
+      "title": "Connected Learning writing and capstone completion gates",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "general_education_2", "graduation", "major"],
+      "note": "The zero-unit gates constrain the post-major capacity. CSCI-400 is counted once even when it satisfies the major, capstone, and Writing Intensive requirements.",
+      "analysis_constraints": [
+        {
+          "kind": "approved_transfer_associate_conditional_exemption",
+          "status": "evaluator_not_implemented",
+          "description": "A qualifying transfer-oriented associate degree waives Connected Learning except CL-100 or CL-150 and CL-400 or an approved major capstone."
+        },
+        {
+          "kind": "cross_layer_course_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "CSCI-400 may satisfy the major, capstone, and Writing Intensive gates but contributes its three credits only once."
+        }
+      ],
+      "sections": [
+        {
+          "label": "CL-200 Crafting Written Agruments",
+          "select": 1,
+          "units": 0,
+          "receivers": [{"kind": "course", "code": "CL200", "units": 3}]
+        },
+        {
+          "label": "Connected Learning capstone or approved major capstone",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {"kind": "course", "code": "CSCI400", "units": 3},
+            {"kind": "course", "code": "CL400", "units": 1}
+          ]
+        },
+        {
+          "label": "Writing Intensive course",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {"kind": "course", "code": "CSCI400", "units": 3},
+            {"kind": "ge_area", "code": "BC-CL-WRITING-INTENSIVE", "name": "Approved Writing Intensive course", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Foundations of Connected Learning",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "general_education_2", "graduation", "course_catalog"],
+      "stated_credits": "6-15",
+      "note": "Credits draw from the post-major capacity. The world-language gate has a published zero-to-six-credit range, and CSCI-400 may satisfy Writing Intensive in the preceding group.",
+      "analysis_constraints": [
+        {
+          "kind": "quantitative_placement_or_course_choice",
+          "status": "evaluator_not_implemented",
+          "description": "The quantitative foundation may be met by a listed course or the catalog's stated MATH-110 placement route."
+        },
+        {
+          "kind": "prerequisite_and_ge_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "MATH-110 is outside the categorical 46-credit major but is the CSCI-110 prerequisite and may also satisfy this GE gate; it must not be counted twice."
+        }
+      ],
+      "sections": [
+        {"label": "Oral Communication", "select": 1, "units": 0, "receivers": [{"kind": "course", "code": "COMM100", "units": 3}]},
+        {
+          "label": "Quantitative foundation",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {"kind": "course", "code": "MATH110", "units": 3},
+            {"kind": "course", "code": "MATH140", "units": 3},
+            {"kind": "course", "code": "MATH141", "units": 3},
+            {"kind": "course", "code": "MATH150", "units": 3}
+          ]
+        },
+        {
+          "label": "World Languages and Cultures",
+          "select": 1,
+          "units": 0,
+          "units_max": 6,
+          "receivers": [
+            {"kind": "ge_area", "code": "BC-CL-WORLD-LANGUAGE-102-202", "name": "One world-language course at the 102, 201, or 202 level", "units": 0}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Ways of Learning",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "general_education_2", "major", "course_catalog_2"],
+      "stated_credits": "22",
+      "note": "Complete one current approved course in every category. Credits draw from the post-major capacity; Full-Stack ART-321 may satisfy Creative and Artistic Practices while counting once.",
+      "analysis_constraints": [
+        {
+          "kind": "closed_current_ge_course_menus",
+          "status": "evaluator_not_implemented",
+          "description": "Each category must resolve against the closed 2026-2027 menu captured in general_education_2."
+        },
+        {
+          "kind": "full_stack_art321_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "ART-321 may satisfy both the Full-Stack track and Creative and Artistic Practices but contributes three credits only once."
+        }
+      ],
+      "sections": [
+        {"label": "Creative and Artistic Practices", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-CREATIVE-ARTISTIC", "name": "Creative and Artistic Practices", "units": 3}]},
+        {"label": "Engaging in US Diversity", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-US-DIVERSITY", "name": "Engaging in US Diversity", "units": 3}]},
+        {"label": "Engaging in Global Diversity", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-GLOBAL-DIVERSITY", "name": "Engaging in Global Diversity", "units": 3}]},
+        {"label": "Scientific Study of People and Society", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-PEOPLE-SOCIETY", "name": "Scientific Study of People and Society", "units": 3}]},
+        {"label": "Scientific Study of Nature", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-NATURE", "name": "Scientific Study of Nature", "units": 4}]},
+        {"label": "Study of Human Narratives", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-HUMAN-NARRATIVES", "name": "Study of Human Narratives", "units": 3}]},
+        {"label": "Study of the Past", "select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "BC-CL-PAST", "name": "Study of the Past", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Additional upper-level capacity required by the selected track",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "college", "graduation"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "correlated_required_track_choice",
+          "status": "evaluator_not_implemented",
+          "description": "Use 24 credits with Cybersecurity or 21 with Full-Stack so the selected path reaches exactly 45 junior/senior credits."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Cybersecurity path upper-level remainder",
+          "select": 1,
+          "units": 24,
+          "receivers": [{"kind": "requirement", "name": "At least 24 additional junior- or senior-level credits for the Cybersecurity path", "units": 24}]
+        },
+        {
+          "label": "Full-Stack path upper-level remainder",
+          "select": 1,
+          "units": 21,
+          "receivers": [{"kind": "requirement", "name": "At least 21 additional junior- or senior-level credits for the Full-Stack path", "units": 21}]
+        }
+      ]
+    },
+    {
+      "title": "Remaining Connected Learning and applicable-credit capacity by selected track",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "general_education_2", "graduation"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "correlated_required_track_choice",
+          "status": "evaluator_not_implemented",
+          "description": "Use 50 credits with Cybersecurity or 53 with Full-Stack after reserving the corresponding upper-level remainder."
+        },
+        {
+          "kind": "capacity_contains_nonadditive_ge_gates",
+          "status": "evaluator_not_implemented",
+          "description": "The capacity contains all Connected Learning credit outside the selected major plus remaining applicable credit; zero-unit GE gates above constrain it without adding a second GE subtotal."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Cybersecurity path flexible remainder",
+          "select": 1,
+          "units": 50,
+          "receivers": [{"kind": "ge_area", "code": "BC-CL-REMAINDER-CYBER", "name": "Connected Learning and remaining applicable credit for the Cybersecurity path", "units": 50}]
+        },
+        {
+          "label": "Full-Stack path flexible remainder",
+          "select": 1,
+          "units": 53,
+          "receivers": [{"kind": "ge_area", "code": "BC-CL-REMAINDER-FULL-STACK", "name": "Connected Learning and remaining applicable credit for the Full-Stack path", "units": 53}]
+        }
+      ]
+    },
+    {
+      "title": "University graduation, GPA, and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["graduation", "college"],
+      "analysis_constraints": [
+        {
+          "kind": "overlapping_residency_rules",
+          "status": "evaluator_not_implemented",
+          "description": "The 33-credit institutional minimum, 30-of-final-33 rule, and nine-major-credit rule overlap and must not be added together."
+        }
+      ],
+      "sections": [
+        {"label": "Degree credit minimum", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete at least 120 credit hours", "units": 0}]},
+        {"label": "Junior- and senior-level minimum", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete at least 45 junior- and senior-level credit hours", "units": 0}]},
+        {"label": "Cumulative GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn at least a 2.0 cumulative GPA", "units": 0}]},
+        {"label": "Major GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn at least a 2.0 major GPA", "units": 0}]},
+        {"label": "Institutional credit minimum", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete at least 33 credit hours at Bridgewater College", "units": 0}]},
+        {"label": "Final-credit residence", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete at least 30 of the final 33 academic-work credits at Bridgewater or through a College-approved study-abroad program", "units": 0}]},
+        {"label": "Major residence", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete at least nine major credit hours at Bridgewater College", "units": 0}]},
+        {"label": "Major field size", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete a departmental major of at least 30 and no more than 79 credit hours under the published supporting-course rule", "units": 0}]},
+        {"label": "Graduation application", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Apply to graduate", "units": 0}]}
+      ]
+    }
+  ]
+}

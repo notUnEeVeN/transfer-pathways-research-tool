@@ -1,0 +1,685 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_four_year_cs_official_source_batch_acalog",
+  "researched_at": "2026-08-09",
+  "source_policy": {
+    "allowed_sources": "Official current institution catalogs and official institution policy or organizational pages only. An explicitly labeled historical Sweet Briar news page is retained solely to explain a stale-program false positive and is not used as current degree evidence.",
+    "selection_rule": "Preserve the catalog's exact award and variant structure. Do not merge BA and BS awards, optional concentrations, required emphasis variants, accelerated options, or recommended schedules into a single base degree.",
+    "unknown_rule": "A null constraint means no current official numeric requirement was found in the reviewed sources; it must not be interpreted as zero. Computed totals are labeled computed and are not represented as published totals."
+  },
+  "institutions": [
+    {
+      "slug": "ferrum-college",
+      "name": "Ferrum College",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "program_status": "variant_only_manual_selection_required",
+      "degree": {
+        "catalog_program_title": null,
+        "award": "Bachelor of Science (B.S.)",
+        "major": "Computer Science",
+        "selected_variant": null,
+        "selection_evidence": "The current Programs by Degree index publishes no unqualified Computer Science B.S. It publishes four separately named emphasis awards, all with a 36-credit shared core, 24 emphasis credits, 60 program credits, and 120 degree credits. Selecting one as the standard program requires a product/research policy decision rather than a source inference.",
+        "published_total_credits": 120,
+        "published_program_credits": 60,
+        "published_variants": [
+          {
+            "catalog_program_title": "Computer Science, Cybersecurity, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3062&returnto=1424"
+          },
+          {
+            "catalog_program_title": "Computer Science, Network, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424"
+          },
+          {
+            "catalog_program_title": "Computer Science, Programming, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3063&returnto=1424"
+          },
+          {
+            "catalog_program_title": "Computer Science, Web Design, B.S.",
+            "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3061&returnto=1424"
+          }
+        ],
+        "excluded_variants": []
+      },
+      "owner": {
+        "college_or_school": "School of Sciences and Agriculture",
+        "department": null,
+        "source_url": "https://www.ferrum.edu/directory/faculty-staff/",
+        "evidence": "Ferrum's current official directory assigns the Computer Science faculty member to the School of Sciences and Agriculture. No separate current Computer Science department was found in the reviewed catalog or official organizational pages."
+      },
+      "major_requirements": {
+        "url": null,
+        "evidence": "There is no single current base-program page. The four authoritative variant URLs are retained in degree.published_variants and must not be collapsed.",
+        "exclude_from_base_requirements": [
+          {
+            "content": "Ferrum eight-semester degree plans",
+            "reason": "They are prospective schedules, not the categorical catalog requirement authority."
+          }
+        ]
+      },
+      "general_education": {
+        "authority": "General Education Curriculum",
+        "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3054",
+        "published_credits": 30,
+        "evidence": "The current catalog states that the 30-credit General Education Curriculum is required of all Ferrum College graduates and divides it into Common Competencies and Discipline Competencies."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1418",
+          "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1440",
+          "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1436"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "credits",
+          "evidence": "Each of the four current Computer Science B.S. variant pages explicitly publishes 120 total degree credits."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "credits",
+          "scope": "college-wide",
+          "status": "not_stated_numerically_in_reviewed_current_sources",
+          "evidence": "The current transfer policy says students must meet the number of upper-level hours required by the major and College, but it does not publish an aggregate numeric minimum on the reviewed pages. Variant-specific 300/400-level courses remain part of their major requirements."
+        },
+        "residency": [
+          {
+            "kind": "major_and_minor_residency",
+            "minimum": 25,
+            "unit": "percent of hours required for each major or minor at Ferrum",
+            "evidence": "The current Transfer Credit Policy states that degree recipients must complete at least 25 percent of the hours required for their majors and minors at Ferrum."
+          },
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": null,
+            "unit": "credits at Ferrum",
+            "status": "not_stated_numerically_in_reviewed_current_sources",
+            "evidence": "The reviewed current catalog pages do not state a separate degree-wide Ferrum-credit minimum; do not convert the major/minor percentage into a degree-wide residency rule."
+          }
+        ],
+        "other_degree_constraints": [
+          "Transfer credit accepted toward graduation generally requires a C or better and correspondence to Ferrum coursework.",
+          "Only credit hours, not transfer grades, enter the Ferrum record for degree progress."
+        ]
+      },
+      "course_dictionary": {
+        "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1422",
+        "evidence": "Official current catalog Course Descriptions index; variant program course links resolve against catoid 25."
+      },
+      "capture_blockers": [
+        "The stale registry seed poid=3062 is not a neutral base program: it is specifically the Cybersecurity variant. A generic discovery score can also select Network, Programming, or Web Design depending on link order.",
+        "No source-backed rule identifies one of the four required emphasis awards as the standard Computer Science B.S.; the program should remain blocked from analysis until the intended variant is chosen explicitly.",
+        "No current aggregate college-wide upper-division minimum or separate degree-wide institutional-credit minimum was found."
+      ],
+      "sources": [
+        {
+          "role": "current_program_index",
+          "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1424",
+          "evidence": "Authoritative list of the four separately named Computer Science B.S. variants."
+        },
+        {
+          "role": "general_education",
+          "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3054",
+          "evidence": "Thirty-credit General Education Curriculum."
+        },
+        {
+          "role": "transfer_and_residency_policy",
+          "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1418",
+          "evidence": "Transfer-credit rules and 25-percent major/minor Ferrum-credit rule."
+        }
+      ]
+    },
+    {
+      "slug": "longwood-university",
+      "name": "Longwood University",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "program_status": "current",
+      "degree": {
+        "catalog_program_title": "Computer Science, BA or BS",
+        "award": "Bachelor of Science (B.S.)",
+        "major": "Computer Science",
+        "selected_variant": "B.S. path within the combined Computer Science, BA or BS catalog program",
+        "published_total_credits": 120,
+        "published_major_credits": 45,
+        "published_degree_specific_credits": "3-4 B.S. credits",
+        "excluded_variants": [
+          "Bachelor of Arts path in the same catalog program"
+        ]
+      },
+      "owner": {
+        "college_or_school": "Cook-Cole College of Arts and Sciences",
+        "department": "Department of Mathematics and Computer Science",
+        "source_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=970",
+        "evidence": "The current college catalog lists Computer Science in the Cook-Cole College of Arts and Sciences, and the program text directs students to the Department of Mathematics and Computer Science."
+      },
+      "major_requirements": {
+        "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=970",
+        "evidence": "The current program page publishes a shared 45-credit major, Civitae Core, separate BA and BS degree additions, general electives, and 120 total credits.",
+        "exclude_from_base_requirements": [
+          {
+            "content": "B.A. Additional Degree Requirements and B.A. elective total",
+            "reason": "The selected receiving award is the B.S.; preserve the B.A. as an alternate award rather than combining both."
+          }
+        ]
+      },
+      "general_education": {
+        "authority": "Civitae Core Curriculum",
+        "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=1004",
+        "published_credits": "39-40",
+        "evidence": "The current Civitae authority and CS program publish 39-40 credits. The CS page identifies allowed major/Core overlap and requires general electives if overlap would otherwise take the degree below 120."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.longwood.edu/content.php?catoid=19&navoid=968",
+          "https://catalog.longwood.edu/content.php?catoid=19&navoid=967"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "semester credits",
+          "evidence": "The current Academic Requirements page and CS program both publish a 120-credit minimum."
+        },
+        "upper_division": {
+          "minimum": 30,
+          "unit": "upper-level credits earned at Longwood",
+          "scope": "university graduation requirement",
+          "evidence": "Current Graduation Requirements require at least 30 upper-level credit hours earned at Longwood, subject to the stated international-exchange exception."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 25,
+            "unit": "percent of degree credit at Longwood",
+            "evidence": "Current Graduation Requirements require at least 25 percent of degree credit at Longwood."
+          },
+          {
+            "kind": "upper_level_institutional_credit_minimum",
+            "minimum": 30,
+            "unit": "upper-level credits at Longwood",
+            "evidence": "The university graduation requirement makes its 30-credit upper-level minimum institution-resident."
+          }
+        ],
+        "other_degree_constraints": [
+          "The B.S. path requires MATH 250 or MATH 261 as its 3-4 credit additional degree requirement.",
+          "The major requires C- or better in every CMSC course counted toward the major.",
+          "The university and major GPA minimum is 2.0."
+        ]
+      },
+      "course_dictionary": {
+        "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=975",
+        "evidence": "Official current catalog Course Descriptions index for catoid 19; the program's CMSC links resolve into this dictionary."
+      },
+      "capture_blockers": [],
+      "sources": [
+        {
+          "role": "program_major_and_degree_structure",
+          "url": "https://catalog.longwood.edu/preview_program.php?catoid=19&poid=2779&returnto=970",
+          "evidence": "Combined BA-or-BS program, 45-credit major, B.S. degree addition, Civitae allowance, and 120 total credits."
+        },
+        {
+          "role": "general_education",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=1004",
+          "evidence": "Current 39-40-credit Civitae Core authority."
+        },
+        {
+          "role": "graduation_policy",
+          "url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=968",
+          "evidence": "Current total-credit, upper-level, institutional-credit, and GPA rules."
+        }
+      ]
+    },
+    {
+      "slug": "radford-university",
+      "name": "Radford University",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "program_status": "current",
+      "degree": {
+        "catalog_program_title": "Computer Science, B.S. (R, L)",
+        "award": "Bachelor of Science (B.S.)",
+        "major": "Computer Science",
+        "selected_variant": "base Computer Science B.S. without a concentration; use the published 12-credit upper-level CS alternative",
+        "published_total_credits": 120,
+        "published_major_credits": "55-88 across the base and concentration choices",
+        "excluded_variants": [
+          "Advanced Computer Science Concentration",
+          "Advanced Database Concentration",
+          "Advanced Networks Concentration",
+          "Advanced Software Engineering Concentration",
+          "Advanced Artificial Intelligence Concentration",
+          "Virginia Tech accelerated M.Eng. track"
+        ]
+      },
+      "owner": {
+        "college_or_school": "Artis College of Science and Technology",
+        "department": "School of Computing and Information Sciences",
+        "source_url": "https://www.radford.edu/artis-college-science-technology/school-of-computing-and-information-sciences/academic-programs.html",
+        "evidence": "Radford's current official program and school pages place the Computer Science B.S. in the School of Computing and Information Sciences within the Artis College of Science and Technology."
+      },
+      "major_requirements": {
+        "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3423",
+        "evidence": "The catalog page publishes the REAL, school, B.S., computer science, and concentration-or-12-credit base alternative requirements.",
+        "exclude_from_base_requirements": [
+          {
+            "content": "the five optional concentration requirement blocks",
+            "reason": "The current catalog explicitly permits four approved upper-level CS courses instead of a concentration; concentration blocks must not be aggregated into the base path."
+          },
+          {
+            "content": "Virginia Tech accelerated M.Eng. material",
+            "reason": "It is a separate accelerated graduate pathway and is not part of the base 120-credit B.S. requirements."
+          }
+        ]
+      },
+      "general_education": {
+        "authority": "REAL Curriculum",
+        "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3437",
+        "published_credits": "at least 30 General Education-designated credits within the degree; the integrated REAL framework totals a minimum 48 hours and can include major, minor, and degree work",
+        "evidence": "The CS program requires at least 30 credits of GE-designated courses. The REAL authority publishes a 48-hour minimum framework and explains that majors and minors satisfy REAL areas, so 48 must not be modeled as an additional standalone GE block."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.radford.edu/content.php?catoid=62&navoid=3433",
+          "https://catalog.radford.edu/content.php?catoid=62&navoid=3438"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "semester credits",
+          "evidence": "Academic Programs General Information and Undergraduate Academic Policies state that no fewer than 120 semester hours are required."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "credits",
+          "scope": "university-wide aggregate",
+          "status": "not_stated_in_reviewed_current_sources",
+          "scoped_requirements": [
+            {
+              "minimum": 12,
+              "unit": "hours of approved 3XX/4XX CS courses, or approved 5XX/6XX CS courses",
+              "scope": "selected no-concentration major alternative",
+              "evidence": "The base path without a concentration requires four three-credit approved upper-level CS courses."
+            },
+            {
+              "minimum": 1,
+              "unit": "writing-intensive course",
+              "scope": "300- or 400-level",
+              "evidence": "The REAL Cornerstone requires two writing-intensive courses, at least one at the 300 or 400 level."
+            }
+          ],
+          "evidence": "No single university-wide upper-level-credit total is published on the reviewed current policy, REAL, or program pages."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 30,
+            "unit": "credits at Radford University",
+            "evidence": "Current Degree Requirements state that no fewer than 30 bachelor-level credit hours must be earned at Radford to be eligible for graduation."
+          }
+        ],
+        "other_degree_constraints": [
+          "The Computer Science major fulfills the R and L areas; students must fulfill the E and A REAL areas with majors and/or minors.",
+          "Students must complete at least 15 hours, excluding foundational math and writing, outside the department or school housing the first major.",
+          "The B.S. requirement contributes 6-8 science credits, with the exact rule depending on the selected base or concentration path."
+        ]
+      },
+      "course_dictionary": {
+        "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3427",
+        "evidence": "Official current catalog Courses index for catoid 62; program course links resolve into this catalog."
+      },
+      "capture_blockers": [
+        "The 55-88 major-credit range spans mutually exclusive concentration and no-concentration paths. It is not a sum and must not be used as one requirement block.",
+        "The REAL 48-hour framework overlaps major/minor/degree work; adding it gross on top of the CS program would double count requirements."
+      ],
+      "sources": [
+        {
+          "role": "program_and_major_requirements",
+          "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3423",
+          "evidence": "Current base B.S., optional concentration blocks, and explicit no-concentration alternative."
+        },
+        {
+          "role": "general_education",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3437",
+          "evidence": "Integrated REAL Curriculum authority."
+        },
+        {
+          "role": "graduation_policy",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3433",
+          "evidence": "Current degree completion, institutional-credit, and graduation policies."
+        }
+      ]
+    },
+    {
+      "slug": "shenandoah-university",
+      "name": "Shenandoah University",
+      "catalog_year": "2025-2026",
+      "catalog_status": "published_current_catalog_no_2026_2027_undergraduate_catalog_listed",
+      "program_status": "current",
+      "degree": {
+        "catalog_program_title": "Computer Science (B.S.)",
+        "award": "Bachelor of Science (B.S.)",
+        "major": "Computer Science",
+        "selected_variant": "standard Computer Science B.S.",
+        "published_total_credits": 120,
+        "published_fixed_cs_and_math_credits": 43,
+        "required_elective_credits": 12,
+        "computed_major_credits": 55,
+        "computed_major_credits_note": "The source publishes 43 credits for the fixed computer science and mathematics list, then separately requires at least six mathematics elective credits and six upper-level CSC/DATA elective credits. The 55-credit audit total is computed, not printed as one subtotal.",
+        "excluded_variants": [
+          "Cybersecurity B.S.",
+          "Information Technology B.S.",
+          "Computer Science minor"
+        ]
+      },
+      "owner": {
+        "college_or_school": "Division of Advanced Technology",
+        "department": null,
+        "source_url": "https://catalog.su.edu/content.php?catoid=33&navoid=2014",
+        "evidence": "The current catalog's Division of Advanced Technology program index lists Computer Science B.S. The older public-facing /arts/ path must not override the current catalog owner. No lower department is stated in the reviewed current catalog."
+      },
+      "major_requirements": {
+        "url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=2014",
+        "evidence": "The current program page publishes the fixed 43-credit list and the two separate six-credit elective requirements before a separately labeled Course Map.",
+        "exclude_from_base_requirements": [
+          {
+            "content": "Course Map and all year/term rows beginning with 1st Year - Fall",
+            "reason": "The catalog labels this content a Course Map; it is a prospective schedule, not an additional requirement layer."
+          }
+        ]
+      },
+      "general_education": {
+        "authority": "ShenEd Curriculum",
+        "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975",
+        "published_credits": 30,
+        "evidence": "The current Academic Policies page states that students complete at least 30 ShenEd credits across four spheres, with distinct first-year and transfer treatment for FYS 101."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.su.edu/content.php?catoid=33&navoid=1975",
+          "https://catalog.su.edu/content.php?catoid=33&navoid=2006"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "credits",
+          "evidence": "Requirements for Degrees and Academic Standing each publish a 120-credit baccalaureate minimum."
+        },
+        "upper_division": {
+          "minimum": 30,
+          "unit": "credits at or above the 300 level",
+          "scope": "university-wide baccalaureate requirement",
+          "evidence": "Requirements for Degrees explicitly requires at least 30 credits at or above the 300 level."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 25,
+            "unit": "percent of required degree credits at Shenandoah",
+            "computed_credits_for_120_credit_degree": 30,
+            "evidence": "Candidates for baccalaureate degrees must earn at least 25 percent of required degree credits at Shenandoah."
+          },
+          {
+            "kind": "final_credit_residency",
+            "minimum": 24,
+            "unit": "of the final 30 credits at Shenandoah",
+            "evidence": "Requirements for Degrees states that 24 of the final 30 baccalaureate credits must be earned at Shenandoah, subject to the catalog's articulation-agreement treatment."
+          }
+        ],
+        "other_degree_constraints": [
+          "The cumulative GPA minimum is 2.0.",
+          "The academic unit may impose additional core requirements, and schools may raise the university residency and upper-level minima.",
+          "Transfer students holding an AA, AS, AA&S, or AAT are treated as having fulfilled university-mandated General Education domains, while academic-unit core requirements remain case-by-case."
+        ]
+      },
+      "course_dictionary": {
+        "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985",
+        "evidence": "Official current Course Descriptions index; program course links resolve against catoid 33."
+      },
+      "capture_blockers": [
+        "The current undergraduate catalog is 2025-2026; no 2026-2027 undergraduate catalog appears in the catalog selector as of the research date.",
+        "The printed 43-credit statement covers only the fixed list. A parser that stops at that subtotal will omit 12 required elective credits.",
+        "The Course Map follows the categorical requirements on the same page and must be excluded by heading boundary."
+      ],
+      "sources": [
+        {
+          "role": "program_and_major_requirements",
+          "url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=2014",
+          "evidence": "Fixed course requirements, mathematics and CS elective requirements, and separately labeled Course Map."
+        },
+        {
+          "role": "academic_owner",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=2014",
+          "evidence": "Current Division of Advanced Technology program index."
+        },
+        {
+          "role": "general_education_and_graduation_policy",
+          "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975",
+          "evidence": "ShenEd, degree total, upper-level, residency, and final-credit requirements."
+        }
+      ]
+    },
+    {
+      "slug": "sweet-briar-college",
+      "name": "Sweet Briar College",
+      "catalog_year": "2025-2026",
+      "catalog_status": "published_current_catalog_no_2026_2027_undergraduate_catalog_listed",
+      "program_status": "no_current_cs_bachelors_program",
+      "degree": {
+        "catalog_program_title": null,
+        "award": null,
+        "major": "Computer Science",
+        "selected_variant": null,
+        "published_total_credits": null,
+        "excluded_variants": []
+      },
+      "owner": {
+        "college_or_school": null,
+        "department": null,
+        "source_url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=942",
+        "evidence": "The current Academic Programs authority lists no Computer Science major, minor, department, or active program owner."
+      },
+      "major_requirements": {
+        "url": null,
+        "evidence": "The current 2025-2026 Academic Programs index contains no Computer Science award, and the stale poid=653 seed resolves to the catalog home rather than a program. The current Course Descriptions index also contains no Computer Science subject section.",
+        "exclude_from_base_requirements": []
+      },
+      "general_education": {
+        "authority": "Leadership Core",
+        "url": "https://catalog.sbc.edu/preview_entity.php?catoid=24&ent_oid=1033&returnto=942",
+        "published_credits": 30,
+        "evidence": "The current Academic Programs page states that every B.A. and B.S. includes 30 Leadership Core credits. This authority is retained for institutional context only because no current CS award exists."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "https://catalog.sbc.edu/content.php?catoid=24&navoid=936",
+          "https://catalog.sbc.edu/content.php?catoid=24&navoid=937"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "credits",
+          "evidence": "Current General Requirements state that B.A. and B.S. candidates complete at least 120 credits. This is institutional context, not evidence of a current CS degree."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "credits",
+          "scope": "college-wide",
+          "status": "not_stated_numerically_in_reviewed_current_sources",
+          "evidence": "No aggregate college-wide upper-division-credit minimum was found in the reviewed current General Requirements or Academic Policies pages."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 60,
+            "unit": "credits earned at Sweet Briar",
+            "evidence": "Current Graduation Requirements require at least 60 credits at Sweet Briar."
+          },
+          {
+            "kind": "enrollment_residency",
+            "minimum": 2,
+            "unit": "years of full-time enrollment at Sweet Briar",
+            "evidence": "Candidates must be full-time at Sweet Briar for at least two years, including the senior year."
+          },
+          {
+            "kind": "final_year_residency",
+            "minimum": 1,
+            "unit": "final academic year at Sweet Briar",
+            "evidence": "Residence during the final academic year is required except for faculty-approved 3-2 programs."
+          }
+        ],
+        "other_degree_constraints": [
+          "No more than 51 credits in a single program count toward the 120-credit minimum.",
+          "The overall and major GPA minimum is 2.0."
+        ]
+      },
+      "course_dictionary": {
+        "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=943",
+        "evidence": "Official current Course Descriptions index; it lists no Computer Science subject section."
+      },
+      "capture_blockers": [
+        "Confirmed false capture: the stale program seed lands on the current catalog home and was previously treated as a program page.",
+        "Confirmed current no-program finding: the 2025-2026 Academic Programs index and Course Descriptions index contain no Computer Science award or subject section.",
+        "Sweet Briar officially launched a 47-credit Computer Science major in 2017, but that historical announcement is not evidence that the award remains active in 2025-2026."
+      ],
+      "sources": [
+        {
+          "role": "current_program_index_no_program_evidence",
+          "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=942",
+          "evidence": "Current complete Academic Programs index; no Computer Science program is listed."
+        },
+        {
+          "role": "current_course_index_no_subject_evidence",
+          "url": "https://catalog.sbc.edu/content.php?catoid=24&navoid=943",
+          "evidence": "Current Course Descriptions index; no Computer Science subject is listed."
+        },
+        {
+          "role": "historical_context_not_current_degree_evidence",
+          "url": "https://www.sbc.edu/live/news/2247-sweet-briars-new-computer-science-program-receives",
+          "evidence": "Official 2017 announcement explains why stale search results may suggest a CS degree; it must not be used for current requirements."
+        }
+      ]
+    },
+    {
+      "slug": "the-university-of-virginia-s-college-at-wise",
+      "name": "The University of Virginia's College at Wise",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "program_status": "current",
+      "degree": {
+        "catalog_program_title": "Computer Science, B.S.",
+        "award": "Bachelor of Science (B.S.)",
+        "major": "Computer Science",
+        "selected_variant": "standard Computer Science B.S.",
+        "published_total_credits": 120,
+        "published_major_credits": "77-80",
+        "excluded_variants": [
+          "Data Science Concentration",
+          "Computer Science minor"
+        ]
+      },
+      "owner": {
+        "college_or_school": null,
+        "department": "Department of Mathematics and Computer Science",
+        "source_url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1055",
+        "evidence": "The current catalog places the standard Computer Science B.S. in the Department of Mathematics and Computer Science. UVA Wise is itself the undergraduate college; no intermediate school/college owner is listed in the reviewed catalog."
+      },
+      "major_requirements": {
+        "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055",
+        "evidence": "The current page publishes the math/science requirements, CS core, 15 additional upper-division hours, comprehensive examination, and 77-80 major-credit total.",
+        "exclude_from_base_requirements": [
+          {
+            "content": "Data Science Concentration, poid=1246",
+            "reason": "It is a separately listed concentration and is not part of the standard Computer Science B.S. page."
+          },
+          {
+            "content": "archived catoid=2 Computer Science B.S.",
+            "reason": "The registry seed points to the archived 2024-2025 catalog; current requirements are catoid=9, poid=1199."
+          }
+        ]
+      },
+      "general_education": {
+        "authority": "General Education Liberal Arts Core",
+        "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1044",
+        "published_credits": "48-49",
+        "evidence": "The current Liberal Arts Core authority requires 48-49 credits. The CS page marks specific math/science courses that may satisfy Core requirements, so those credits may overlap the major and Core."
+      },
+      "graduation_constraints": {
+        "policy_urls": [
+          "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1039"
+        ],
+        "total_credits": {
+          "minimum": 120,
+          "unit": "credits",
+          "evidence": "Current Graduation Requirements publish a minimum of 120 earned credits and state that the Liberal Arts Core is included within the 120."
+        },
+        "upper_division": {
+          "minimum": null,
+          "unit": "credits",
+          "scope": "university-wide aggregate",
+          "status": "not_stated_as_one_aggregate_minimum",
+          "scoped_requirements": [
+            {
+              "minimum": 15,
+              "unit": "upper-level credits completed in the major",
+              "scope": "graduation and residency rule",
+              "evidence": "Graduation Requirements require at least 15 upper-level credits in the major through UVA Wise."
+            },
+            {
+              "minimum": 15,
+              "unit": "additional upper-division major credits",
+              "scope": "Computer Science B.S. requirement",
+              "evidence": "The major requires 15 additional upper-division hours, nine in CSC and the remainder from the listed subjects. These requirements may satisfy the graduation major minimum and must not automatically be added as a separate university block."
+            }
+          ],
+          "evidence": "No separate all-degree aggregate upper-division total was found beyond the 15-credit upper-level major rule."
+        },
+        "residency": [
+          {
+            "kind": "institutional_credit_minimum",
+            "minimum": 45,
+            "unit": "credits through UVA Wise",
+            "evidence": "Current Graduation Requirements require at least 45 credits through UVA Wise."
+          },
+          {
+            "kind": "upper_level_major_residency",
+            "minimum": 15,
+            "unit": "upper-level major credits through UVA Wise",
+            "evidence": "The 45-credit institutional rule includes a minimum 15 upper-level courses in the major, subject to approved exceptions."
+          },
+          {
+            "kind": "four_year_institution_credit_minimum",
+            "minimum": 58,
+            "unit": "credits from a regionally accredited four-year institution",
+            "evidence": "Fifty-eight of the 120 graduation credits must be earned at a regionally accredited four-year institution."
+          }
+        ],
+        "other_degree_constraints": [
+          "The overall GPA must be at least 2.0 for all college-level work and at least 2.0 for work attempted at UVA Wise.",
+          "Computer Science students must perform satisfactorily on department comprehensive examinations covering the CS core."
+        ]
+      },
+      "course_dictionary": {
+        "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1085",
+        "evidence": "Official current Full Course Listing for catoid 9; the program's course-detail controls resolve into this catalog."
+      },
+      "capture_blockers": [
+        "The registry seed catoid=2, poid=179 is archived 2024-2025 content. Current requirements are catoid=9, poid=1199.",
+        "The catalog host presents certificate/redirect issues over HTTPS and ultimately serves current pages over HTTP. Capture must allow the official HTTP endpoint and record that transport downgrade.",
+        "The 15-credit upper-level major graduation/residency rule and the major's 15 additional upper-division hours can overlap; they must not be double-counted without a course-level audit."
+      ],
+      "sources": [
+        {
+          "role": "program_and_major_requirements",
+          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055",
+          "evidence": "Current standard Computer Science B.S., 77-80 major credits, and major upper-division requirement."
+        },
+        {
+          "role": "general_education",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1044",
+          "evidence": "Current 48-49-credit Liberal Arts Core authority."
+        },
+        {
+          "role": "graduation_policy",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1039",
+          "evidence": "Current total-credit, institutional-credit, upper-level-major, four-year-institution, and GPA requirements."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,882 @@
+{
+  "schema_version": 1,
+  "slug": "shenandoah-university",
+  "catalog_year": "2025-2026",
+  "program": "Computer Science (B.S.)",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Computer Science program",
+  "college": "Division of Advanced Technology",
+  "ge_authority": "Shenandoah University ShenEd Curriculum",
+  "selected_variant": "Standard Computer Science B.S.",
+  "excluded_variants": [
+    "Cybersecurity B.S.",
+    "Information Technology B.S.",
+    "Computer Science minor"
+  ],
+  "capture_exclusions": [
+    "The separately labeled Course Map and every year/term row beneath it are prospective scheduling content and are excluded."
+  ],
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": [
+        "general_education",
+        "college"
+      ],
+      "note": "ShenEd is the applicable university General Education curriculum. The Division of Advanced Technology source establishes ownership but publishes no additional division-wide core for this Computer Science B.S."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": [
+        "graduation",
+        "policy"
+      ]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "published_fixed_computer_science_and_mathematics_units": 43,
+    "mathematics_elective_units_minimum": 6,
+    "upper_level_csc_or_data_elective_units": 6,
+    "major_units": 55,
+    "general_education_units_minimum": 30,
+    "general_education_and_elective_capacity_units": 65,
+    "upper_division": {
+      "status": "required",
+      "minimum_units": 30,
+      "modeled_units": 32,
+      "rule": "At least 30 degree credits must be at or above the 300 level. The fixed major guarantees 23 such credits, the mathematics electives guarantee at least three, and the CSC/DATA electives require six, for a source-backed minimum of 32.",
+      "source_refs": [
+        "major",
+        "graduation"
+      ]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "minimum_fraction": 0.25,
+      "rule": "At least 25 percent of the 120-credit degree, or 30 credits, must be earned at Shenandoah. At least 24 of the final 30 credits must also be earned there, subject to the catalog's treatment of credits under specific articulation agreements.",
+      "source_refs": [
+        "graduation"
+      ]
+    },
+    "transfer_credit_units_maximum": 90,
+    "final_thirty_resident_units_minimum": 24,
+    "minimum_cumulative_gpa": 2,
+    "canonical_path": {
+      "major_units": 55,
+      "remaining_general_education_and_elective_capacity_units": 65,
+      "total_units": 120,
+      "note": "The 65-credit capacity is the arithmetic remainder after the exact 55-credit major. It contains ShenEd credits not overlapped or waived plus all remaining elective credit; it is not an additional catalog-published block."
+    }
+  },
+  "modeling_notes": [
+    "The current official undergraduate catalog is 2025-2026. No 2026-2027 edition is inferred or modeled.",
+    "The categorical major is exactly 43 fixed computer science and mathematics credits plus at least six mathematics elective credits and six upper-level CSC/DATA elective credits, for a 55-credit minimum.",
+    "Extraction stops before the separately labeled Course Map. Its prospective terms, suggested course placements, and conflicting CSC 407 schedule-row value are not degree requirements and are absent from the requirement tree.",
+    "ShenEd requires exactly 30 credits allocated across its published sphere and region ranges. Because the catalog permits one pre-approved major-disciplinary substitution and conditionally treats some transfer students as having completed General Education domains, its completion gates are modeled at zero increment inside the 65-credit post-major capacity rather than double-counted.",
+    "First-time, first-year students take FYS 101. Transfer students are exempt from FYS 101 and instead take an additional three credits from Navigating Difference within the 30-credit ShenEd total; qualifying AA, AS, AA&S, or AAT holders receive the separately published domain treatment.",
+    "The fixed and elective major requirements guarantee 32 credits at the 300 level or above, so the major itself exceeds the university-wide 30-credit upper-level minimum without an invented upper-level elective bucket.",
+    "The Division of Advanced Technology is the current catalog owner. No separate department or additional division core is stated for this program."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "shened_range_allocation_and_overlap",
+      "severity": "block_analysis",
+      "message": "The evaluator cannot yet allocate the exact 30-credit ShenEd total across all region ranges while honoring an approved major-course substitution without double counting."
+    },
+    {
+      "code": "conditional_transfer_shened_treatment",
+      "severity": "block_analysis",
+      "message": "FYS replacement and the AA/AS/AA&S/AAT General Education domain treatment depend on transfer status and credentials not represented by the evaluator."
+    },
+    {
+      "code": "open_major_elective_subject_filters",
+      "severity": "block_analysis",
+      "message": "The mathematics and CSC/DATA electives are official subject-and-level credit menus rather than closed course lists; subject, level, and distinct-credit enforcement is not implemented."
+    }
+  ],
+  "course_titles": {
+    "CSC121": "Introduction to Computer Programming I",
+    "CSC122": "Introduction to Computer Programming II",
+    "CSC210": "Data Structures",
+    "CSC301": "Introduction to Networking",
+    "CSC310": "Computer Architecture",
+    "CSC403": "Operating Systems",
+    "CSC407": "Software Design",
+    "CSC410": "Introduction to Databases",
+    "CSC430": "Programming Languages",
+    "CSC480": "Research in Computer Science",
+    "ENG101": "Composition",
+    "FYS101": "Going Global First-Year Seminar",
+    "MATH201": "Calculus and Analytic Geometry I",
+    "MATH202": "Calculus and Analytic Geometry II",
+    "MATH209": "Discrete Math",
+    "MATH370": "Numerical Analysis"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science and mathematics fixed requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "43",
+      "sections": [
+        {
+          "label": "Introduction to Computer Programming I",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC121",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Introduction to Computer Programming II",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC122",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Data Structures",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC210",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Introduction to Networking",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC301",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Operating Systems",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC403",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Introduction to Databases",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC410",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Calculus and Analytic Geometry I",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH201",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Calculus and Analytic Geometry II",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH202",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Numerical Analysis",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH370",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Discrete Math",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "MATH209",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Computer Architecture",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC310",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Software Design",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC407",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Programming Languages",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC430",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Research in Computer Science",
+          "select": 1,
+          "units": 2,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSC480",
+              "units": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Mathematics electives",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "6 or more; all at 200 level or above, including at least 3 at 300 level or above",
+      "analysis_constraints": [
+        {
+          "kind": "open_subject_level_credit_menu",
+          "status": "evaluator_not_implemented",
+          "description": "Six distinct applicable MATH credits must be selected at the 200 level or above, with at least three credits at the 300 level or above; the catalog publishes a subject/level rule rather than a closed menu."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Mathematics credit at the 300 level or above",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "At least three MATH credits at the 300 level or above",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Additional mathematics credit at the 200 level or above",
+          "select": 1,
+          "units": 3,
+          "course_level": "mixed",
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Three additional MATH credits at the 200 level or above",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science electives",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "6",
+      "analysis_constraints": [
+        {
+          "kind": "open_subject_level_credit_menu",
+          "status": "evaluator_not_implemented",
+          "description": "Six applicable credits must come from CSC or DATA courses at the 300 level or above; the catalog publishes a subject/level rule rather than a closed menu."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Upper-level CSC or DATA credit",
+          "select": 1,
+          "units": 6,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Six CSC or DATA credits at the 300 level or above",
+              "units": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ShenEd entry-status seminar route",
+      "requirement_layer": "ge_college",
+      "conjunction": "Or",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education",
+        "course_catalog"
+      ],
+      "stated_credits": "3 within the 30-credit ShenEd total",
+      "analysis_constraints": [
+        {
+          "kind": "conditional_transfer_fys_replacement",
+          "status": "evaluator_not_implemented",
+          "description": "First-time, first-year students complete FYS 101; transfer students are exempt and instead complete an additional three credits in Navigating Difference."
+        }
+      ],
+      "sections": [
+        {
+          "label": "FYS 101 for a first-time, first-year student",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "FYS101",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Additional three Navigating Difference credits for a transfer student",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-TRANSFER-ND-3",
+              "name": "Additional three credits from the Navigating Difference sphere",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ShenEd Communicative and Quantitative Literacies sphere",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education",
+        "course_catalog"
+      ],
+      "stated_credits": "9-12",
+      "analysis_constraints": [
+        {
+          "kind": "sphere_region_credit_ranges",
+          "status": "evaluator_not_implemented",
+          "description": "The sphere must total 9-12 credits, with 3-6 credits in each of oral communication, written communication, and quantitative literacy."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Oral communication (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-CQL-ORAL",
+              "name": "Approved ShenEd oral communication credit",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Written communication: ENG 101 or equivalent (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "ENG101",
+              "units": 3
+            },
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-CQL-WRITTEN-EQUIVALENT",
+              "name": "Official ENG 101 equivalent",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Quantitative literacy (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-CQL-QUANTITATIVE",
+              "name": "Approved ShenEd quantitative literacy credit",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ShenEd Scientific Inquiry sphere",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "6-14",
+      "analysis_constraints": [
+        {
+          "kind": "sphere_region_credit_ranges",
+          "status": "evaluator_not_implemented",
+          "description": "The sphere must include 3-8 natural-science credits and 3-6 social- or behavioral-science credits, totaling within the published 6-14 range."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Natural Science (3-8 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-SI-NATURAL",
+              "name": "Approved ShenEd Natural Science credit",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Social or Behavioral Science (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-SI-SOCIAL-BEHAVIORAL",
+              "name": "Approved ShenEd Social or Behavioral Science credit",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ShenEd Navigating Difference sphere",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "6-9",
+      "analysis_constraints": [
+        {
+          "kind": "sphere_region_credit_ranges",
+          "status": "evaluator_not_implemented",
+          "description": "The sphere includes 3-6 Ethical Reasoning credits and 3-6 Cultural Understanding credits, totals 6-9, and receives the conditional additional three-credit transfer replacement for FYS 101."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Ethical Reasoning (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-ND-ETHICAL",
+              "name": "Approved ShenEd Ethical Reasoning credit",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Cultural Understanding (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-ND-CULTURAL",
+              "name": "Approved ShenEd Cultural Understanding credit",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ShenEd Creative Expression sphere",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "3-6",
+      "analysis_constraints": [
+        {
+          "kind": "sphere_region_credit_ranges",
+          "status": "evaluator_not_implemented",
+          "description": "Creative Expression contributes 3-6 credits toward the exact 30-credit ShenEd total."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Creative Expression (3-6 credits)",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-CREATIVE",
+              "name": "Approved ShenEd Creative Expression credit",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ShenEd total, disciplinary distribution, and transfer treatment",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education",
+        "graduation"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "shened_total_across_ranged_spheres",
+          "status": "evaluator_not_implemented",
+          "description": "All sphere and region ranges must be jointly allocated to exactly 30 ShenEd credits."
+        },
+        {
+          "kind": "major_discipline_substitution_limit",
+          "status": "evaluator_not_implemented",
+          "description": "At most one pre-approved major-disciplinary course may substitute for one General Education requirement, and FYS may not be substituted."
+        },
+        {
+          "kind": "conditional_associate_degree_domain_fulfillment",
+          "status": "evaluator_not_implemented",
+          "description": "A transfer student holding an AA, AS, AA&S, or AAT is treated as having fulfilled university-mandated General Education domains; academic-unit core treatment remains case-by-case."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Thirty ShenEd credits across all four spheres",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-TOTAL-30",
+              "name": "Complete exactly 30 ShenEd credits across all four spheres",
+              "units": 30
+            }
+          ]
+        },
+        {
+          "label": "Humanities or fine arts distribution",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-DIST-HUM-FA",
+              "name": "At least one humanities or fine arts course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Natural sciences or mathematics distribution",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-DIST-NS-MATH",
+              "name": "At least one natural sciences or mathematics course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Social or behavioral sciences distribution",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-DIST-SBS",
+              "name": "At least one social or behavioral sciences course",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General Education and elective capacity after the Computer Science major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education",
+        "graduation"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "capacity_contains_conditional_shened_gates",
+          "status": "evaluator_not_implemented",
+          "description": "The 65-credit remainder contains all non-overlapped or non-waived ShenEd credit plus remaining electives; the zero-unit gates above constrain this capacity without adding credits."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Remaining credit to the 120-credit degree minimum",
+          "select": 1,
+          "units": 65,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "SU-SHENED-ELECTIVE-CAPACITY",
+              "name": "ShenEd and remaining elective credit after the 55-credit major",
+              "units": 65
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "University graduation, transfer-credit, GPA, and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": [
+        "graduation",
+        "policy"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "overlapping_residency_rules",
+          "status": "evaluator_not_implemented",
+          "description": "The 30-credit institutional floor and 24-of-final-30 rule overlap and must not be added as separate credit blocks."
+        },
+        {
+          "kind": "articulation_agreement_residency_treatment",
+          "status": "evaluator_not_implemented",
+          "description": "Credits from institutions with specific program articulation agreements are treated as Shenandoah credit for the 24-of-final-30 rule."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Baccalaureate credit minimum",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Complete at least 120 credits",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Upper-level credit minimum",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Complete at least 30 credits at or above the 300 level",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Shenandoah institutional-credit minimum",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Earn at least 25 percent of the degree, or 30 of 120 credits, at Shenandoah University",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Transfer-credit maximum",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Apply no more than 90 total transfer credits",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Final-credit residence",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Earn at least 24 of the final 30 credits at Shenandoah, subject to the articulation-agreement treatment",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Cumulative GPA minimum",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Earn a cumulative grade point average of at least 2.0",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Required assessments and surveys",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Complete assessment measures and surveys deemed appropriate by the university or school",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

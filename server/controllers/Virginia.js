@@ -1,10 +1,10 @@
 /**
- * Read-only API over the Transfer Virginia course corpus.
+ * API over the Transfer Virginia course corpus and curated Virginia degrees.
  *
- * Two collections, `va_courses` and `va_institutions`, both written by
- * `scripts/importVirginiaCourses.js`. Nothing here writes, and nothing here
- * reads the ASSIST collections: Virginia is a separate dataset under
- * evaluation, not a second source feeding the California analyses.
+ * `va_courses` and `va_institutions` are written by the import pipeline; degree
+ * edits and signed verification live in `va_requirements`/`va_revisions`.
+ * Nothing here reads the ASSIST collections: Virginia is a separate dataset
+ * under evaluation, not a second source feeding the California analyses.
  *
  * The unit of the corpus is the **VCCS common course**, not a college-to-college
  * pair. Four renderings of CSC221 from different sending colleges returned
@@ -26,6 +26,20 @@ const {
   courseKeyFor,
   parentIdForLanding,
 } = require('../services/virginia/courseIdentity');
+const { validateDegreeAcceptance } = require('../services/virginia/degreeAcceptance');
+const {
+  EXTERNAL_RECEIVER_COHORT_ID,
+  OTHER_FOUR_YEAR_COHORT_ID,
+  PRIMARY_COHORT_ID,
+  TWO_YEAR_COHORT_ID,
+  canonicalInstitutionIdentity,
+  cohortSummary,
+  decorateInstitution,
+  mergeInstitutionRows,
+  primaryCohort,
+  registryInstitutionFor,
+  sourceNamesForInstitution,
+} = require('../services/virginia/institutionCohorts');
 
 const COURSES = 'va_courses';
 const INSTITUTIONS = 'va_institutions';
@@ -38,6 +52,40 @@ const EDITABLE_KINDS = new Set(['as_degree', 'degree']);
 
 const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const intOr = (v, d) => (Number.isFinite(Number(v)) ? Number(v) : d);
+
+/** Resolver used when a researcher asks to sign a Virginia degree. */
+function degreeCourseResolver(doc, catalogCodes = new Set()) {
+  const titleCodes = new Set(Object.keys(doc.course_titles || {})
+    .map(canonicalCourseCode).filter((code) => courseIdFor(code) != null));
+  const documentCodes = new Set([
+    ...(doc.codes_seen || []),
+    ...titleCodes,
+  ].map(canonicalCourseCode).filter((code) => courseIdFor(code) != null));
+  const byId = new Map([...documentCodes].map((code) => [courseIdFor(code), code]));
+  return ({ side, id, key }) => {
+    const keyCode = /^va:/i.test(String(key || ''))
+      ? canonicalCourseCode(String(key).slice(3)) : null;
+    const code = keyCode || byId.get(Number(id));
+    if (!code || courseIdFor(code) !== Number(id) || !documentCodes.has(code)) return false;
+    // `va_courses` is incomplete, so a title captured from this college's own
+    // official catalog is also direct evidence (notably NOVA MTH 283 and the
+    // institution-local Richard Bland namespace).
+    if (side === 'community_college'
+        && !catalogCodes.has(code)
+        && !titleCodes.has(code)) return false;
+    return side === 'community_college'
+      ? { course_id: Number(id), course_key: key || courseKeyFor(code) }
+      : { parent_id: Number(id) };
+  };
+}
+
+const verificationMaterialChanges = (before, after) => diffDocs(before, after).filter((change) => (
+  change.path !== 'verification'
+  && !change.path.startsWith('verification.')
+  && change.path !== 'acceptance'
+  && !change.path.startsWith('acceptance.')
+  && change.path !== 'collection_status'
+));
 
 /** Add the public VCCS identity fields, including for pre-identity imports. */
 function withCourseIdentity(row) {
@@ -92,7 +140,12 @@ exports.summary = asyncHandler(async (req, res) => {
     db.collection(COURSES).countDocuments(),
     db.collection(INSTITUTIONS).countDocuments(),
   ]);
-  if (!courses) return res.json({ imported: false, courses: 0, institutions: 0 });
+  if (!courses) return res.json({
+    imported: false,
+    courses: 0,
+    institutions: 0,
+    public_four_year: primaryCohort.institution_slugs.length,
+  });
 
   const [agg] = await db.collection(COURSES).aggregate([{
     $group: {
@@ -113,6 +166,9 @@ exports.summary = asyncHandler(async (req, res) => {
     institutions,
     community_colleges: levels.find((l) => l._id === 'community_college')?.n ?? 0,
     four_year: levels.find((l) => l._id === 'four_year')?.n ?? 0,
+    // Stable comparison denominator. The broader Transfer Virginia receiver
+    // count above intentionally remains available for corpus diagnostics.
+    public_four_year: primaryCohort.institution_slugs.length,
     equivalencies: agg?.equivalencies ?? 0,
     with_notes: agg?.with_notes ?? 0,
     departments: (agg?.departments ?? []).filter(Boolean).length,
@@ -136,29 +192,52 @@ exports.summary = asyncHandler(async (req, res) => {
 exports.institutions = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const q = req.query.level ? { level: String(req.query.level) } : {};
-  const rows = await db.collection(INSTITUTIONS).find(q).sort({ name: 1 }).toArray();
+  const corpusRows = await db.collection(INSTITUTIONS).find(q).sort({ name: 1 }).toArray();
+  const rows = mergeInstitutionRows(corpusRows, {
+    includePrimaryMissing: !q.level || q.level === 'four_year',
+  });
+
+  const requestedCohort = String(req.query.cohort || '').trim() || null;
+  const knownCohorts = new Set([
+    PRIMARY_COHORT_ID, OTHER_FOUR_YEAR_COHORT_ID,
+    EXTERNAL_RECEIVER_COHORT_ID, TWO_YEAR_COHORT_ID,
+  ]);
+  if (requestedCohort && !knownCohorts.has(requestedCohort)) {
+    return res.status(400).json({
+      error: `unknown Virginia institution cohort: ${requestedCohort}`,
+      cohorts: [...knownCohorts],
+    });
+  }
 
   const degrees = await db.collection(REQUIREMENTS)
     .find({ source: 'institution_catalog' },
       { projection: { college_id: 1, school_id: 1, codes_seen: 1, total_units: 1, verification: 1, offers_cs: 1 } })
     .toArray();
   const byOwner = new Map(degrees.map((d) => [d.college_id || d.school_id, d]));
-  const slugOf = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
   res.json({
-    institutions: rows.map((i) => {
-      const key = i.level === 'community_college' ? `va:cc:${slugOf(i.name)}` : `va:uni:${slugOf(i.name)}`;
+    cohorts: cohortSummary(),
+    institutions: rows.filter((i) => !requestedCohort || i.cohort === requestedCohort).map((i) => {
+      const key = i.level === 'community_college'
+        ? `va:cc:${i.institution_slug}` : `va:uni:${i.institution_slug}`;
       const d = byOwner.get(key);
       // Five distinct facts, because collapsing them answers the wrong
       // question: "no published course list" is a data gap, "offers no CS
       // degree" is a fact about the institution.
-      const status = !d ? (i.alias_of ? 'alias' : 'none')
+      const status = !d ? (i.catalog_offers_cs === false ? 'no_program' : i.alias_of ? 'alias' : 'none')
         : d.offers_cs === false ? 'no_program'
         : (d.codes_seen || []).length ? 'full'
         : 'url_only';
+      const collectionStatus = status === 'full' ? 'catalog_collected'
+        : status === 'url_only' ? 'catalog_url_only'
+        : status === 'no_program' ? 'no_program'
+        : status === 'alias' ? 'alias'
+        : 'not_collected';
       return {
         ...i,
         degree_status: status,
+        collection_status: collectionStatus,
+        needs_collection: collectionStatus === 'not_collected' || collectionStatus === 'catalog_url_only',
         degree_courses: d ? (d.codes_seen || []).length : 0,
         degree_units: d?.total_units ?? null,
         degree_verified: !!d?.verification?.verified,
@@ -180,7 +259,16 @@ exports.courses = asyncHandler(async (req, res) => {
   }
   if (req.query.department) q.department = String(req.query.department);
   if (req.query.college) q.offered_by = String(req.query.college);
-  if (req.query.receiver) q['articulates_to.institution'] = String(req.query.receiver);
+  const requestedReceiver = req.query.receiver ? String(req.query.receiver).trim() : null;
+  const receiverIdentity = requestedReceiver ? canonicalInstitutionIdentity(requestedReceiver) : null;
+  const receiverNames = requestedReceiver
+    ? sourceNamesForInstitution(requestedReceiver)
+    : [];
+  if (requestedReceiver) {
+    q['articulates_to.institution'] = receiverNames.length === 1
+      ? receiverNames[0]
+      : { $in: receiverNames };
+  }
   if (req.query.prefix) q.code = new RegExp(`^${escapeRegex(String(req.query.prefix))}`, 'i');
 
   const limit = Math.min(2000, intOr(req.query.limit, 200));
@@ -190,7 +278,7 @@ exports.courses = asyncHandler(async (req, res) => {
   // Browsing from the receiving side needs the target course, not just the
   // fact that one exists — "CSC221 lands as CS108" is the whole point of the
   // view — so the matching equivalency is projected onto each row.
-  const receiver = req.query.receiver ? String(req.query.receiver) : null;
+  const receiver = receiverIdentity?.name || null;
   const projection = {
     course_id: 1, course_key: 1, code: 1, title: 1, credits: 1,
     department: 1, counts: 1, source_url: 1,
@@ -205,7 +293,7 @@ exports.courses = asyncHandler(async (req, res) => {
     const course = withCourseIdentity(row);
     if (!receiver) return course;
     const landings = (articulates_to || [])
-      .filter((e) => e.institution === receiver)
+      .filter((e) => receiverNames.includes(e.institution))
       .map(withUniversityCourseIdentity);
     return {
       ...course,
@@ -215,7 +303,7 @@ exports.courses = asyncHandler(async (req, res) => {
       landings,
     };
   });
-  res.json({ courses, total, skip, limit, receiver });
+  res.json({ courses, total, skip, limit, receiver, receiver_sources: receiverNames });
 });
 
 /** One course in full: description, the colleges that offer it, every target. */
@@ -252,6 +340,16 @@ exports.departments = asyncHandler(async (req, res) => {
  */
 exports.matrix = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
+  const requestedCohort = String(req.query.cohort || '').trim() || null;
+  const receivingCohorts = [
+    PRIMARY_COHORT_ID, OTHER_FOUR_YEAR_COHORT_ID, EXTERNAL_RECEIVER_COHORT_ID,
+  ];
+  if (requestedCohort && !receivingCohorts.includes(requestedCohort)) {
+    return res.status(400).json({
+      error: `unknown Virginia receiving cohort: ${requestedCohort}`,
+      cohorts: receivingCohorts,
+    });
+  }
   const rows = await db.collection(COURSES)
     .find({}, { projection: { offered_by: 1, 'articulates_to.institution': 1 } }).toArray();
 
@@ -265,6 +363,11 @@ exports.matrix = asyncHandler(async (req, res) => {
 
   const colleges = new Map();
   const receiverTotals = new Map();
+  if (requestedCohort === PRIMARY_COHORT_ID) {
+    for (const slug of primaryCohort.institution_slugs) {
+      receiverTotals.set(registryInstitutionFor(slug).name, 0);
+    }
+  }
   for (const r of rows) {
     for (const c of r.offered_by || []) {
       if (!ccNames.has(c)) continue;
@@ -272,20 +375,29 @@ exports.matrix = asyncHandler(async (req, res) => {
       const bucket = colleges.get(c);
       // A course with two target courses at one university is still one shared
       // VCCS course in this matrix, not two.
-      const receivers = new Set((r.articulates_to || []).map((e) => e.institution).filter(Boolean));
+      const receivers = new Set((r.articulates_to || [])
+        .map((e) => e.institution && canonicalInstitutionIdentity(e.institution).name)
+        .filter(Boolean));
       for (const receiver of receivers) {
+        const canonical = canonicalInstitutionIdentity(receiver);
+        const decorated = decorateInstitution({ name: canonical.name, level: 'four_year' });
+        if (requestedCohort && decorated.cohort !== requestedCohort) continue;
         bucket.set(receiver, (bucket.get(receiver) || 0) + 1);
         receiverTotals.set(receiver, (receiverTotals.get(receiver) || 0) + 1);
       }
     }
   }
   const collegeNames = [...colleges.keys()].sort();
-  const receiverNames = [...receiverTotals.keys()].sort();
+  const receiverNames = requestedCohort === PRIMARY_COHORT_ID
+    ? primaryCohort.institution_slugs.map((slug) => registryInstitutionFor(slug).name)
+    : [...receiverTotals.keys()].sort();
   res.json({
     colleges: collegeNames,
     receivers: receiverNames,
+    receiver_institutions: receiverNames.map((name) => decorateInstitution({ name, level: 'four_year' })),
     cells: collegeNames.map((c) => receiverNames.map((r) => colleges.get(c).get(r) || 0)),
     courses: rows.length,
+    cohort: requestedCohort,
   });
 });
 
@@ -297,8 +409,11 @@ exports.matrix = asyncHandler(async (req, res) => {
  */
 exports.degrees = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
-  const institution = String(req.query.institution || '').trim();
-  if (!institution) return res.status(400).json({ error: 'institution is required' });
+  const requestedInstitution = String(req.query.institution || '').trim();
+  if (!requestedInstitution) return res.status(400).json({ error: 'institution is required' });
+  const canonicalInstitution = canonicalInstitutionIdentity(requestedInstitution);
+  const institution = canonicalInstitution.name;
+  const institutionSourceNames = sourceNamesForInstitution(requestedInstitution);
 
   // `codes` is an escape hatch for building a document from scratch. It
   // resolves the same project-minted identity the importers would use for a
@@ -322,7 +437,7 @@ exports.degrees = asyncHandler(async (req, res) => {
   }
   const requestedCodes = [...new Set(rawRequestedCodes.map(canonicalCourseCode))];
 
-  const slug = institution.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const slug = canonicalInstitution.slug;
   // One degree per institution. Two sources were captured — the college's own
   // catalogue and Transfer Virginia's program map — and both were kept so a
   // verifier could see disagreement. They did not disagree: where both stated
@@ -337,14 +452,20 @@ exports.degrees = asyncHandler(async (req, res) => {
       })
       .toArray(),
     db.collection(INSTITUTIONS).findOne({
-      $or: [{ name: institution }, { _id: `va:inst:${slug}` }],
+      $or: [
+        { name: { $in: institutionSourceNames } },
+        { _id: { $in: institutionSourceNames.map((name) => (
+          `va:inst:${String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`
+        )) } },
+      ],
     }),
   ]);
 
   const documentKinds = new Set(docs.map((doc) => doc.kind));
-  const ownerSide = institutionRecord?.level === 'community_college'
+  const registryLevel = canonicalInstitution.institution?.level || null;
+  const ownerSide = institutionRecord?.level === 'community_college' || registryLevel === 'community_college'
     ? 'community_college'
-    : institutionRecord?.level === 'four_year'
+    : institutionRecord?.level === 'four_year' || registryLevel === 'four_year'
       ? 'four_year'
       : documentKinds.has('as_degree') && !documentKinds.has('degree')
         ? 'community_college'
@@ -352,13 +473,28 @@ exports.degrees = asyncHandler(async (req, res) => {
           ? 'four_year'
           : null;
   if (requestedCodes.length && !ownerSide) {
-    return res.status(400).json({ error: `unknown Virginia institution: ${institution}` });
+    return res.status(400).json({ error: `unknown Virginia institution: ${requestedInstitution}` });
   }
   const ownerId = ownerSide === 'community_college'
     ? docs.find((doc) => doc.college_id)?.college_id ?? `va:cc:${slug}`
     : ownerSide === 'four_year'
       ? docs.find((doc) => doc.school_id)?.school_id ?? `va:uni:${slug}`
       : null;
+  const localCourseNamespace = ownerSide === 'community_college'
+    ? docs.map((doc) => doc.course_namespace).find((namespace) => (
+      namespace?.kind === 'institution_local'
+      && namespace.institution_id === ownerId
+      && namespace.vccs_master_applicable === false
+      && namespace.identity_contract === 'owner_plus_course_id'
+      && namespace.scoped_key_format === `${ownerId}:<code>`
+    ))
+    : null;
+  const localCourseIdentity = (code) => (localCourseNamespace ? {
+    college_id: ownerId,
+    institution_id: ownerId,
+    identity_scope: 'institution_local',
+    scoped_course_key: code ? `${ownerId}:${code}` : null,
+  } : {});
 
   // The shared RequirementsLedger resolves courses on BOTH sides, and they use
   // different lookups:
@@ -426,13 +562,12 @@ exports.degrees = asyncHandler(async (req, res) => {
           // every series unresolved, and the ledger renders an unresolved id as
           // `#914981327` — the bare numbers a reader sees instead of a course.
           //
-          // The extractors record a series' codes as one `/`-separated string
-          // positionally aligned with the ids: `parent_ids: [a, b]` alongside
-          // `code_seen: "CS108 / CS109"`. All 46 series in the corpus take that
-          // shape, so the string is split and zipped against the ids.
+          // Extracted OR-era records use `/`, while source-composed AND series
+          // use `+`. In both cases the codes are positionally aligned with the
+          // ids, so split either explicit separator and zip against the ids.
           const seriesIds = r.receiving?.parent_ids || [];
           if (seriesIds.length) {
-            const seriesCodes = String(r.code_seen || '').split('/').map((x) => x.trim()).filter(Boolean);
+            const seriesCodes = String(r.code_seen || '').split(/\s*(?:\/|\+)\s*/).map((x) => x.trim()).filter(Boolean);
             seriesIds.forEach((pid, i) => {
               if (pid == null) return;
               // A repeated id inside a series (four exist) keeps the first code
@@ -542,11 +677,12 @@ exports.degrees = asyncHandler(async (req, res) => {
     if (hit) {
       const code = canonicalCourseCode(hit.code);
       const documentNamed = communityCollegeDocumentCodes.has(code);
-      const offeredAtOwner = (hit.offered_by || []).includes(institution);
+      const offeredAtOwner = (hit.offered_by || []).some((name) => institutionSourceNames.includes(name));
       return {
         course_id: id,
         course_key: hit.course_key ?? referencedKey ?? courseKeyFor(hit.code),
         code,
+        ...localCourseIdentity(code),
         ...split(code),
         // Institution-local numbering (notably Richard Bland) can collide with
         // an unrelated VCCS/four-year row. Prefer the selected college's own
@@ -565,6 +701,7 @@ exports.degrees = asyncHandler(async (req, res) => {
         course_id: id,
         course_key: referencedKey || courseKeyFor(code),
         code,
+        ...localCourseIdentity(code),
         ...split(code),
         title: catalogTitles.get(code) ?? null,
         units: null,
@@ -574,6 +711,7 @@ exports.degrees = asyncHandler(async (req, res) => {
     }
     return {
       course_id: id, course_key: referencedKey, code: null,
+      ...localCourseIdentity(null),
       prefix: '#', number: String(id), title: null, units: null,
       document_named: true,
       identity_source: 'degree_document',
@@ -582,6 +720,9 @@ exports.degrees = asyncHandler(async (req, res) => {
 
   res.json({
     institution,
+    requested_institution: requestedInstitution,
+    institution_slug: slug,
+    institution_sources: institutionSourceNames,
     owner_id: ownerId,
     degrees: docs,
     university_courses_by_id: universityCoursesById,
@@ -593,6 +734,8 @@ exports.degrees = asyncHandler(async (req, res) => {
 /** One requirement document reduced to what a verifier needs to triage it. */
 function verificationState(doc) {
   const groups = doc.requirement_groups || [];
+  const catalogAccepted = doc.acceptance?.accepted === true
+    || ['catalog_accepted', 'analysis_ready'].includes(doc.collection_status);
   return {
     doc_id: doc._id,
     source: doc.source,
@@ -601,6 +744,14 @@ function verificationState(doc) {
     verified_by_label: doc.verification?.verified_by_label ?? null,
     verified_at: doc.verification?.verified_at ?? null,
     has_notes: Boolean(doc.verification?.notes),
+    collection_status: doc.collection_status ?? null,
+    catalog_accepted: catalogAccepted,
+    analysis_ready: doc.acceptance?.ready_for_analysis === true
+      || doc.collection_status === 'analysis_ready',
+    acceptance_failures: doc.acceptance ? {
+      catalog: doc.acceptance.catalog?.failed || [],
+      analysis: doc.acceptance.analysis_ready?.failed || [],
+    } : null,
     // The machine's own verdict on the parse. It does not substitute for a
     // human reading the page, but it says where to look hardest first.
     validation: doc.provenance?.validation?.verdict ?? null,
@@ -626,16 +777,48 @@ function verificationState(doc) {
  */
 exports.coverage = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
-  const [rows, docs] = await Promise.all([
+  const [storedRows, docs] = await Promise.all([
     db.collection(COVERAGE).find({}).sort({ institution: 1 }).toArray(),
     db.collection(REQUIREMENTS).find({ status: { $nin: ['superseded', 'out_of_scope'] } }, {
       projection: {
         kind: 1, source: 1, status: 1, verification: 1, college_id: 1, school_id: 1,
         requirement_groups: 1, total_units: 1, catalog_url: 1, source_url: 1,
+        collection_status: 1, acceptance: 1,
         'provenance.validation.verdict': 1,
       },
     }).toArray(),
   ]);
+
+  // Coverage is a research-work queue, so every primary public university must
+  // be visible even before it has an extraction row.  These virtual rows are
+  // explicit `not_collected` records, never `url_only` or `no_program`.
+  const rows = [...storedRows];
+  const storedSlugs = new Set(rows.map((row) => {
+    const idSlug = String(row._id || '').replace(/^va:cov:(cc|uni):/, '');
+    return canonicalInstitutionIdentity({ institution_slug: idSlug, name: row.institution }).slug;
+  }));
+  for (const slug of primaryCohort.institution_slugs) {
+    if (storedSlugs.has(slug)) continue;
+    const institution = registryInstitutionFor(slug);
+    rows.push({
+      _id: `va:cov:uni:${slug}`,
+      institution: institution.name,
+      level: 'four_year',
+      offers_cs: null,
+      registry_url: institution.catalog_root || null,
+      source_url: null,
+      outcome: 'not_collected',
+      validation: null,
+      source_composed: false,
+      publication_eligible: false,
+      publication_blocker: 'current_extraction_required',
+      catalog_accepted: false,
+      analysis_ready: false,
+      acceptance_failures: null,
+      collected: false,
+      registry_only: true,
+    });
+  }
 
   // Coverage rows are keyed `va:cov:<cc|uni>:<slug>` and documents by
   // `va:cc:<slug>` / `va:uni:<slug>`, so the slug is the join.
@@ -650,25 +833,59 @@ exports.coverage = asyncHandler(async (req, res) => {
   }
 
   const enriched = rows.map((row) => {
-    const slug = String(row._id).replace(/^va:cov:(cc|uni):/, '');
+    const rawSlug = String(row._id).replace(/^va:cov:(cc|uni):/, '');
+    const institutionMetadata = decorateInstitution({
+      name: row.institution,
+      level: row.level,
+      institution_slug: rawSlug,
+    }, { corpusPresent: row.registry_only !== true });
+    const slug = institutionMetadata.institution_slug;
     const found = bySlug.get(slug) || { as_degree: [], degree: [] };
     // Catalog first — it is the spine, the program map is corroboration.
     const order = (list) => [...list].sort((a, b) => (a.source === 'institution_catalog' ? -1 : 1));
-    return { ...row, documents: { as_degree: order(found.as_degree), degree: order(found.degree) } };
+    const documents = { as_degree: order(found.as_degree), degree: order(found.degree) };
+    const documentList = [...documents.as_degree, ...documents.degree];
+    const collectionStatus = row.offers_cs === false || row.outcome === 'no_cs_program'
+      ? 'no_program'
+      : row.registry_only ? 'not_collected'
+      : row.outcome === 'url_only' ? 'catalog_url_only'
+      : row.collected || documentList.length ? 'catalog_collected'
+      : row.outcome === 'captured' ? 'captured_needs_review'
+      : 'not_collected';
+    return {
+      ...row,
+      institution: institutionMetadata.name,
+      institution_slug: slug,
+      cohort: institutionMetadata.cohort,
+      is_primary: institutionMetadata.is_primary,
+      scope_source_url: institutionMetadata.scope_source_url,
+      cohort_rank: institutionMetadata.cohort_rank,
+      corpus_present: institutionMetadata.corpus_present,
+      collection_status: collectionStatus,
+      needs_collection: ['not_collected', 'catalog_url_only', 'captured_needs_review'].includes(collectionStatus),
+      documents,
+    };
+  }).sort((a, b) => {
+    if (a.is_primary !== b.is_primary) return a.is_primary ? -1 : 1;
+    if (a.is_primary) return a.cohort_rank - b.cohort_rank;
+    return a.institution.localeCompare(b.institution);
   });
 
   const all = enriched.flatMap((r) => [...r.documents.as_degree, ...r.documents.degree]);
-  // "Verifiable" excludes documents with nothing to read: an institution that
-  // offers no CS degree, or publishes no course list, cannot be worked through
-  // and should not sit in the denominator of a progress figure forever.
-  const verifiable = all.filter((d) => d.status === 'extracted');
+  // A parser-only document is reviewable but cannot be signed under the
+  // acceptance gate. Keep it out of the verification denominator so the
+  // progress figure never asks researchers to complete an impossible action.
+  const reviewable = all.filter((d) => d.status === 'extracted');
+  const verifiable = reviewable.filter((d) => d.catalog_accepted);
 
   res.json({
     coverage: enriched,
     collected: rows.filter((r) => r.collected).length,
     total: rows.length,
+    public_four_year: primaryCohort.institution_slugs.length,
     verification: {
       documents: all.length,
+      reviewable: reviewable.length,
       verifiable: verifiable.length,
       verified: verifiable.filter((d) => d.verified).length,
       as_verifiable: verifiable.filter((d) => d.doc_id.startsWith('va:as:')).length,
@@ -701,6 +918,7 @@ exports.putDegree = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: `kind must be one of ${[...EDITABLE_KINDS].join(', ')}` });
   }
 
+  const before = await db.collection(REQUIREMENTS).findOne({ _id: id });
   const canonical = {
     ...row,
     _id: id,
@@ -709,17 +927,71 @@ exports.putDegree = asyncHandler(async (req, res) => {
     updated_at: new Date(),
   };
 
-  // The verdict is stamped from the signed-in user, never from the body, and
-  // cleared on reopen so a stale name cannot linger on an unverified record.
-  if (canonical.verification) {
-    const verified = !!canonical.verification.verified;
-    canonical.verification.verified_at = verified ? new Date() : null;
-    canonical.verification.verified_by = verified ? (req.user?.uid ?? null) : null;
-    canonical.verification.verified_by_label = verified
-      ? (req.user?.name || req.user?.email || null) : null;
+  // Acceptance is always recalculated from the submitted tree. A caller may
+  // edit a partial document, but cannot self-assert `acceptance.accepted` in
+  // the request body and then sign it as a complete degree.
+  let catalogCodes = new Set();
+  if (canonical.kind === 'as_degree') {
+    const ownerSlug = String(canonical.college_id || canonical.community_college_id || '')
+      .replace(/^va:cc:/, '');
+    const owner = await db.collection(INSTITUTIONS).findOne({
+      $or: [{ _id: `va:inst:${ownerSlug}` }, { slug: ownerSlug }],
+    });
+    if (owner?.name) {
+      catalogCodes = new Set((await db.collection(COURSES).find(
+        { offered_by: owner.name }, { projection: { code: 1 } },
+      ).toArray()).map((courseRow) => canonicalCourseCode(courseRow.code)));
+    }
+  }
+  canonical.acceptance = validateDegreeAcceptance(canonical, {
+    institutionLevel: canonical.kind === 'as_degree' ? 'community_college' : 'four_year',
+    resolveCourse: degreeCourseResolver(canonical, catalogCodes),
+  });
+  canonical.collection_status = canonical.acceptance.ready_for_analysis
+    ? 'analysis_ready'
+    : canonical.acceptance.accepted
+      ? 'catalog_accepted'
+      : (canonical.collection_status === 'captured_only' ? 'captured_only' : 'major_only');
+
+  const requestedVerified = canonical.verification?.verified === true;
+  if (requestedVerified && !canonical.acceptance.accepted) {
+    return res.status(400).json({
+      error: 'This degree is not catalog-complete and cannot be verified yet.',
+      acceptance_failures: canonical.acceptance.catalog.failed,
+    });
   }
 
-  const before = await db.collection(REQUIREMENTS).findOne({ _id: id });
+  const changedAfterVerification = before?.verification?.verified === true
+    && verificationMaterialChanges(before, canonical).length > 0;
+  if (changedAfterVerification && !canonical.verification) canonical.verification = { verified: false };
+
+  // The verdict is stamped from the signed-in user, never from the body, and
+  // cleared on reopen so a stale name cannot linger on an unverified record.
+  // Editing a signed degree reopens it even if a stale browser submitted the
+  // old `verified: true` value alongside the edit.
+  if (canonical.verification) {
+    const verified = requestedVerified && !changedAfterVerification;
+    const preservingVerdict = verified && before?.verification?.verified === true;
+    canonical.verification.verified = verified;
+    canonical.verification.verified_at = verified
+      ? (preservingVerdict ? before.verification.verified_at : new Date()) : null;
+    canonical.verification.verified_by = verified
+      ? (preservingVerdict ? before.verification.verified_by : (req.user?.uid ?? null)) : null;
+    canonical.verification.verified_by_label = verified
+      ? (preservingVerdict
+        ? before.verification.verified_by_label
+        : (req.user?.name || req.user?.email || null)) : null;
+    if (changedAfterVerification) {
+      canonical.verification.stale = true;
+      canonical.verification.stale_reason = 'degree content changed after verification';
+      canonical.verification.previous = before.verification;
+    } else if (verified) {
+      canonical.verification.stale = false;
+      canonical.verification.stale_reason = null;
+      delete canonical.verification.previous;
+    }
+  }
+
   await db.collection(REQUIREMENTS).replaceOne({ _id: id }, canonical, { upsert: true });
 
   // A save that changed nothing human-meaningful writes no revision, so the
@@ -737,7 +1009,13 @@ exports.putDegree = asyncHandler(async (req, res) => {
       changes,
     });
   }
-  res.json({ ok: true, id, revision_recorded: !before || changes.length > 0 });
+  res.json({
+    ok: true,
+    id,
+    revision_recorded: !before || changes.length > 0,
+    verification_reopened: changedAfterVerification,
+    acceptance: canonical.acceptance,
+  });
 });
 
 /** Remove a degree document, recording the deletion in the revision log. */

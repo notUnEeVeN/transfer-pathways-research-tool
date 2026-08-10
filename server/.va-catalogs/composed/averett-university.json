@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "slug": "averett-university",
+  "catalog_year": "2025-2026",
+  "program": "Computer Science, B.A. or B.S.",
+  "award": "BA/BS",
+  "degree_variant": "BA/BS",
+  "total_units": 120,
+  "composition_status": "source_composed_blocked_draft",
+  "academic_unit": "Computer Science Department",
+  "college": "Averett University",
+  "ge_authority": "Averett University General Education Requirements for a Baccalaureate Degree",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "graduation",
+    "policy"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major"],
+      "note": "The source layer is fully captured, but two requirements inside it remain unresolved because the source is internally incomplete."
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["general_education"]
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["graduation", "policy"]
+    }
+  },
+  "award_choices": [
+    {
+      "award": "Bachelor of Arts",
+      "abbreviation": "BA",
+      "shared_major": true,
+      "award_specific_rule": "Within Society and Culture General Education, complete SPA 203 or FRE 203 for the intermediate-language requirement.",
+      "additional_units": 0,
+      "overlap_note": "The language course is selected within the already counted General Education range."
+    },
+    {
+      "award": "Bachelor of Science",
+      "abbreviation": "BS",
+      "shared_major": true,
+      "award_specific_rule": null,
+      "additional_units": 0
+    }
+  ],
+  "excluded_variants": [
+    "Computer Science, Bachelor of Applied Science",
+    "Computer Information Systems, B.A. or B.S.",
+    "Computer Science minor",
+    "Cyber Security minor"
+  ],
+  "excluded_content": [
+    {
+      "title": "Sample Four-Year Course Sequence for Computer Science",
+      "reason": "The catalog labels this material as a sample sequence rather than categorical requirements.",
+      "excluded_course_codes": ["CSC306"],
+      "critical_note": "CSC 306 would numerically repair the three-credit discrepancy, but it appears only in the excluded sample and cannot be promoted to a requirement."
+    },
+    {
+      "title": "Current official marketing-page requirement presentation",
+      "reason": "It uses stale CSS codes and credit values that conflict with the current active 2025-26 catalog."
+    }
+  ],
+  "course_titles": {
+    "CSC200": "Web Programming",
+    "CSC202": "I. T. Infrastructure",
+    "CSC211": "Introduction to Programming I",
+    "CSC212": "Introduction to Programming II",
+    "CSC235": "Programming in Java",
+    "CSC333": "Data Structures",
+    "CSC372": "Networks and Internets",
+    "CSC375": "Data & Information Management",
+    "CSC381": "Architecture and Assembly Language",
+    "CSC411": "Modeling and Simulation",
+    "MTH160": "Introduction to Statistics",
+    "MTH211": "Foundations of Higher Mathematics",
+    "MTH403": "Probability & Statistics",
+    "ENG109": "Introduction to Writing and Research",
+    "ENG111": "Introduction to Writing and Research",
+    "ENG112": "Introduction to Literature",
+    "FRE203": "Intermediate French",
+    "SPA203": "Intermediate Spanish"
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "published_major_units": 52,
+    "enumerated_major_units": 49,
+    "unresolved_published_major_difference_units": 3,
+    "general_education_units": 30,
+    "post_major_and_general_education_capacity_units": 38,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The reviewed current catalog publishes no aggregate university-wide upper-division-credit minimum for the ordinary Computer Science B.A. or B.S.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "major_scoped_definite_upper_division_units_minimum": 15,
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "minimum_fraction": 0.25,
+      "major_units_for_transfer_students_minimum": 12,
+      "final_units_at_averett_minimum": 30,
+      "rule": "At least 30 semester hours and at least 25 percent of undergraduate coursework must be completed at Averett; transfer students must complete at least 12 major hours at Averett; degree recipients must complete their last 30 semester hours of class work at Averett.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2,
+    "canonical_path": {
+      "published_major_units": 52,
+      "general_education_units": 30,
+      "remaining_minor_related_field_and_elective_capacity_units": 38,
+      "total_units": 120,
+      "warning": "The 52-credit major includes a three-credit unresolved placeholder solely to expose the catalog's published-minus-enumerated difference. It is not a course or a repair."
+    }
+  },
+  "modeling_notes": [
+    "The authoritative current catalog publishes one shared Computer Science major for the B.A. and B.S.; the B.A.-only intermediate-language condition is a zero-additional-unit gate inside Society and Culture General Education.",
+    "Eleven fixed rows contribute 37 credits, the statistics choice contributes three, and the elective block contributes nine, for 49 enumerated credits. The catalog nevertheless prints Total 52.",
+    "A separate three-credit unresolved requirement node preserves the published-minus-enumerated difference. It does not name a course, and specifically does not use sample-plan-only CSC 306.",
+    "The final three-credit elective line is retained as one unresolved university requirement because the PDF omits the connector between CSC 300+ and MTH 200+ pools. Neither AND nor OR is inferred.",
+    "General Education is modeled at its published 30-credit minimum: six written-communication credits, category minima of six Society and Culture, six Humanities and Creativity, seven Scientific and Quantitative, and five additional credits distributed within the published category ranges.",
+    "The 38-credit capacity after the published 52-credit major and 30-credit General Education minimum includes the catalog's 18-21-credit traditional-major minor/related-field architecture and other applicable credit. Its internal distribution remains an analysis constraint rather than an invented course list."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "major_credit_total_does_not_reconcile",
+      "severity": "block_catalog_acceptance",
+      "message": "The current catalog prints a 52-credit major, but its enumerated categorical requirements sum to 49."
+    },
+    {
+      "code": "final_elective_connector_missing",
+      "severity": "block_catalog_acceptance",
+      "message": "The final three-credit elective line does not publish an AND or OR connector between the CSC 300+ and MTH 200+ pools."
+    },
+    {
+      "code": "sample_plan_course_excluded",
+      "severity": "review",
+      "message": "CSC 306 occurs only in the excluded Sample Four-Year Course Sequence and is not a categorical requirement."
+    },
+    {
+      "code": "traditional_major_capacity_distribution",
+      "severity": "block_analysis",
+      "message": "The exact split of the 38-credit remainder between the 18-21-credit minor/related-field architecture and other applicable credit depends on the selected path and overlap."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Computer Science fixed major requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "stated_credits": "37 enumerated",
+      "sections": [
+        {"label": "Introduction to Programming I", "select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CSC211", "units": 4}]},
+        {"label": "Introduction to Programming II", "select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CSC212", "units": 4}]},
+        {"label": "Web Programming", "select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CSC200", "units": 4}]},
+        {"label": "I. T. Infrastructure", "select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CSC202", "units": 3}]},
+        {"label": "Programming in Java", "select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CSC235", "units": 4}]},
+        {"label": "Data Structures", "select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC333", "units": 3}]},
+        {"label": "Networks and Internets", "select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC372", "units": 3}]},
+        {"label": "Data and Information Management", "select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC375", "units": 3}]},
+        {"label": "Architecture and Assembly Language", "select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC381", "units": 3}]},
+        {"label": "Modeling and Simulation", "select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC411", "units": 3}]},
+        {"label": "Foundations of Higher Mathematics", "select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "MTH211", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Statistics choice",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "label": "Choose MTH 160 or MTH 403",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {"kind": "course", "code": "MTH160", "units": 3},
+            {"kind": "course", "code": "MTH403", "units": 3, "course_level": "upper_division", "cc_articulable": false}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science and mathematics elective block",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "stated_credits": "9",
+      "analysis_constraints": [
+        {
+          "kind": "missing_source_connector",
+          "status": "unresolved_source_language",
+          "description": "The final three-credit line names CSC 300+ and MTH 200+ pools but publishes no AND/OR connector."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Six credits of CSC electives at the 200 level or above",
+          "select": 1,
+          "units": 6,
+          "receivers": [
+            {"kind": "requirement", "name": "Six credits of CSC electives numbered 200 or above", "units": 6}
+          ]
+        },
+        {
+          "label": "Final three-credit elective line with connector absent from the PDF",
+          "select": 1,
+          "units": 3,
+          "human_review": "unresolved source connector: do not choose AND or OR without an authoritative correction",
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Three credits from the printed CSC 300+ / MTH 200+ elective line",
+              "units": 3,
+              "human_review": "unresolved source connector between the CSC 300+ and MTH 200+ pools"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Unreconciled published major-credit difference",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "unresolved",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "stated_credits": "Published Total 52 minus 49 enumerated credits = 3",
+      "analysis_constraints": [
+        {
+          "kind": "published_total_exceeds_enumerated_rows",
+          "status": "unresolved_source_language",
+          "description": "The source publishes three more major credits than its categorical rows enumerate; no course may be inferred from the difference."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Three-credit difference preserved without inventing a course",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Catalog-published major credit difference without an enumerated requirement",
+              "units": 3,
+              "human_review": "unresolved three-credit difference between the 52-credit publication and 49 enumerated credits; CSC 306 is sample-only"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General Education — Fundamental Written Communication",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "stated_credits": "6",
+      "sections": [
+        {"label": "Introduction to Writing and Research", "select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENG109", "units": 3}, {"kind": "course", "code": "ENG111", "units": 3}]},
+        {"label": "Introduction to Literature", "select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENG112", "units": 3}]}
+      ]
+    },
+    {
+      "title": "General Education — Society and Culture minimum",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "stated_credits": "6-12",
+      "sections": [
+        {"select": 1, "units": 6, "units_max": 12, "receivers": [{"kind": "ge_area", "code": "AVERETT-GE-SC", "name": "Approved Society and Culture courses", "units": 6}]}
+      ]
+    },
+    {
+      "title": "General Education — Humanities and Creativity minimum",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "stated_credits": "6-12",
+      "analysis_constraints": [
+        {"kind": "humanities_attribute", "status": "evaluator_not_implemented", "description": "At least one selected Humanities and Creativity course must carry the catalog's humanities asterisk."}
+      ],
+      "sections": [
+        {"select": 1, "units": 6, "units_max": 12, "receivers": [{"kind": "ge_area", "code": "AVERETT-GE-HC", "name": "Approved Humanities and Creativity courses", "units": 6}]}
+      ]
+    },
+    {
+      "title": "General Education — Scientific and Quantitative minimum",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "stated_credits": "7-13",
+      "analysis_constraints": [
+        {"kind": "laboratory_science_attribute", "status": "evaluator_not_implemented", "description": "At least one selected course must carry the catalog's laboratory-science asterisk."},
+        {"kind": "mathematics_attribute", "status": "evaluator_not_implemented", "description": "At least one selected course must carry the catalog's mathematics dagger."}
+      ],
+      "sections": [
+        {"select": 1, "units": 7, "units_max": 13, "receivers": [{"kind": "ge_area", "code": "AVERETT-GE-SQ", "name": "Approved Scientific and Quantitative courses", "units": 7}]}
+      ]
+    },
+    {
+      "title": "General Education — additional distribution to the 30-credit minimum",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "stated_credits": "5 or more beyond the 25-credit dimension minima",
+      "analysis_constraints": [
+        {"kind": "cross_dimension_credit_distribution", "status": "evaluator_not_implemented", "description": "At least five additional General Education credits must be distributed within the published Society and Culture, Humanities and Creativity, or Scientific and Quantitative ranges."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 5, "receivers": [{"kind": "ge_area", "code": "AVERETT-GE-DISTRIBUTION", "name": "Additional approved General Education credit within published dimension ranges", "units": 5}]}
+      ]
+    },
+    {
+      "title": "B.A.-only intermediate-language gate within Society and Culture",
+      "is_required": false,
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "note": "Applies only when the student selects the Bachelor of Arts; its credits are already inside Society and Culture and are not additive here.",
+      "analysis_constraints": [
+        {"kind": "award_specific_overlap_gate", "status": "evaluator_not_implemented", "description": "The SPA 203 or FRE 203 selection applies only to the B.A. and must also count within Society and Culture rather than adding credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "course", "code": "SPA203", "units": 4}, {"kind": "course", "code": "FRE203", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Minor or related-field architecture and remaining applicable credit",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["policy", "graduation"],
+      "stated_credits": "38-credit arithmetic capacity after the published major and General Education minimum",
+      "analysis_constraints": [
+        {"kind": "traditional_major_minor_applicability", "status": "evaluator_not_implemented", "description": "The catalog's traditional-major architecture calls for 18-21 credits in a minor concentration or related fields, but the Computer Science page does not restate the classification."},
+        {"kind": "minor_elective_capacity_dependency", "status": "evaluator_not_implemented", "description": "The remaining applicable-credit capacity varies with the 18-21-credit minor/related-field selection and any permitted General Education overlap."}
+      ],
+      "sections": [
+        {"select": 1, "units": 38, "receivers": [{"kind": "requirement", "name": "Minor or related-field study and remaining applicable credits to the 120-credit degree minimum", "units": 38}]}
+      ]
+    },
+    {
+      "title": "University graduation, GPA, and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "university_requirement",
+      "cc_articulable": false,
+      "source_refs": ["graduation", "policy"],
+      "sections": [
+        {"label": "Minimum cumulative GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn at least a 2.0 GPA in all work attempted", "units": 0}]},
+        {"label": "Minimum major GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn at least a 2.0 GPA in courses offered to complete the major", "units": 0}]},
+        {"label": "Institutional residence", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete the institutional, major, and final-credit residence rules recorded in unit_audit", "units": 0}]}
+      ]
+    }
+  ]
+}

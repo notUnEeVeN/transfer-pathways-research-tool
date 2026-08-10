@@ -2,22 +2,657 @@
  "slug": "paul-d-camp-community-college",
  "name": "Paul D. Camp Community College",
  "level": "community_college",
- "platform": "web",
- "outcome": "url_only",
- "source_url": "https://www.pdc.edu/servicesandresources/resources-and-services-for-students/college-catalog-and-student-handbook/",
- "offers_cs": null,
+ "platform": "pdf",
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science",
+  "variant": "Plan 246, effective Fall 2024; excludes the discontinued plan 697-02 teachout",
+  "program_code": "246",
+  "cip_code": "11.0701",
+  "effective_term": "Fall 2024",
+  "catalog_version": {
+   "google_drive_file_id": "1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5",
+   "sha256": "48ed713d8832e07d8bb5e8e560dfb4626fd1cea6dd3ca58f9b3c8139ba49cab5"
+  },
+  "academic_unit": "Computer and Information Technology pathway",
+  "college": "Camp Community College",
+  "general_education_authority": "Camp Community College 2026-2027 Catalog and Student Handbook and the Virginia Community College System Uniform Certificate of General Studies",
+  "unit_audit": {
+   "published_program_units": 61,
+   "printed_term_subtotals_units": 62,
+   "modeled_units": null,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of degree credits must be acquired at Camp.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_program_gpa": 2
+  },
+  "modeling_notes": [
+   "The authoritative target is the new Computer Science A.S., plan 246. The adjacent General Studies - Specialization in Computer Science, plan 697-02, is a teachout with last new enrollment in Summer 2024 and a Spring 2027 completion deadline.",
+   "The program, GE/elective menus, and graduation policy are separate page windows in the same official PDF; each role is retained even though all three captures hash to the same catalog bytes.",
+   "Preserve two distinct humanities selections, the cross-subgroup rule, dynamic UCGS/TransferVA science menus, and the MTH 264-or-MTH 245 alternative.",
+   "The printed first-term rows total 16 while its subtotal is 17; the four subtotals total 62 while the stated program total is 61. Do not manufacture a credit to force closure."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "catalog_credit_arithmetic_conflict",
+    "severity": "block",
+    "message": "The stated 61-credit total conflicts with the printed 62-credit term subtotals and the first-term row arithmetic."
+   },
+   {
+    "code": "variable_credit_alternative_conflict",
+    "severity": "review",
+    "message": "The MTH 264/MTH 245 row prints four credits although MTH 245 is ordinarily a three-credit VCCS course."
+   },
+   {
+    "code": "marketing_identity_is_stale",
+    "severity": "review",
+    "message": "The college marketing page still describes plan 246 under the former General Studies A.A.&S. title; the 2026-2027 catalog controls."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Paul D. Camp Community College major and degree requirements",
+   "url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t",
+   "requested_url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t#page=275",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T03:36:25.744Z",
+   "sha256": "ead1e63dc89775cb89571e68497e865ce1a5f190d2ed367a010856331a942089",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Paul D. Camp Community College general education requirements",
+   "url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t",
+   "requested_url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t#page=156",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T03:36:25.744Z",
+   "sha256": "ead1e63dc89775cb89571e68497e865ce1a5f190d2ed367a010856331a942089",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Paul D. Camp Community College university graduation requirements",
+   "url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t",
+   "requested_url": "https://drive.usercontent.google.com/download?id=1IX7TeVp6EPSHiWs8tm0UJidCOmQvwNu5&export=download&confirm=t#page=74",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T03:36:25.744Z",
+   "sha256": "ead1e63dc89775cb89571e68497e865ce1a5f190d2ed367a010856331a942089",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:36:25.744Z",
+ "extracted_at": "2026-08-10T03:42:24.995Z",
+ "parser": "pdf",
+ "pdf_window": {
+  "found": true,
+  "mode": "configured_anchors",
+  "start": 13318,
+  "end": 13368,
+  "start_page": 276,
+  "end_page": 277,
+  "lines": 49,
+  "reason": null,
+  "evidence": {
+   "requirements_start": {
+    "anchor": "AS Computer Science (246)",
+    "index": 13318,
+    "page": 276,
+    "text": "AS Computer Science (246)"
+   },
+   "requirements_end": {
+    "anchor": "COMPUTER SUPPORT SPECIALIST",
+    "index": 13368,
+    "page": 277,
+    "text": "COMPUTER SUPPORT SPECIALIST"
+   },
+   "program_identity_start": {
+    "anchor": "Associate of Science COMPUTER SCIENCE",
+    "index": 13239,
+    "page": 275,
+    "text": "Associate of Science COMPUTER SCIENCE"
+   },
+   "program_identity_anchors": [
+    {
+     "anchor": "Plan Code: 246",
+     "index": 13248,
+     "page": 275,
+     "text": "Plan Code:      246"
+    },
+    {
+     "anchor": "CIP Code: 11.0701",
+     "index": 13249,
+     "page": 275,
+     "text": "CIP Code:       11.0701"
+    },
+    {
+     "anchor": "NEW degree plan, effective Fall 2024.",
+     "index": 13243,
+     "page": 275,
+     "text": "NEW degree plan, effective Fall 2024."
+    }
+   ],
+   "pages": {
+    "configured_pdf_pages": [
+     275,
+     277
+    ],
+    "configured_printed_pages": [
+     265,
+     267
+    ],
+    "requirements_start_pdf_page": 276,
+    "requirements_end_pdf_page": 277,
+    "printed_folios": [
+     {
+      "pdf_page": 275,
+      "expected_printed_page": 265,
+      "printed_page_found": true
+     },
+     {
+      "pdf_page": 276,
+      "expected_printed_page": 266,
+      "printed_page_found": true
+     },
+     {
+      "pdf_page": 277,
+      "expected_printed_page": 267,
+      "printed_page_found": true
+     }
+    ]
+   }
+  },
+  "missing_evidence": []
+ },
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": null,
- "total_credits": null,
- "groups": [],
+ "parse_error": null,
+ "total_credits": {
+  "min": 61,
+  "max": 61,
+  "raw": "61"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Fall Term",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Humanities Ang UCGS Approved Humanities, Art, or Literature 3",
+   "source_text": [
+    "Fall Term",
+    "Course Description Credits",
+    "ENG 111 College Composition I 3",
+    "MTH 161 Pre-Calculus I 3",
+    "Social Science Any UCGS Approved Social Science 3",
+    "CSC 221 Introduction to Problem Solving and Programming 3 3",
+    "SDV 100 College Success Skills 1",
+    "Total Semester Credits 17"
+   ],
+   "sections": [
+    {
+     "label": "Course Description Credits",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG111",
+         "title": "College Composition I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 111 College Composition I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH161",
+         "title": "Pre-Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 161 Pre-Calculus I",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Social Science Any UCGS Approved Social Science 3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC221",
+         "title": "Introduction to Problem Solving and Programming 3"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 221 Introduction to Problem Solving and Programming 3",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "SDV100",
+         "title": "College Success Skills"
+        }
+       ],
+       "conjunction": "and",
+       "text": "SDV 100 College Success Skills",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Term",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Spring Term",
+    "Course Description Credits",
+    "ENG 112 College Composition II 3",
+    "MTH 162 Pre-Calculus II 1 3",
+    "Humanities Arts/Literature Elective 3",
+    "CSC 222 Object-Oriented Programming3 4",
+    "History Any UCGS Approved History 3",
+    "Total Semester Credits 16"
+   ],
+   "sections": [
+    {
+     "label": "Course Description Credits",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ENG112",
+         "title": "College Composition II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ENG 112 College Composition II",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH162",
+         "title": "Pre-Calculus II 1"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 162 Pre-Calculus II 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Humanities Arts/Literature Elective 3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSC222",
+         "title": "Object-Oriented Programming3"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 222 Object-Oriented Programming3",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Fall Term",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Fall Term",
+    "Course Description Credits",
+    "Science Any UCGS Approved Natural Science 4",
+    "CST 100 Principles of Public Speaking 3",
+    "MTH 263 Calculus I 4",
+    "CSC 205 Computer Organization 3",
+    "Total Semester Credits 14"
+   ],
+   "sections": [
+    {
+     "label": "Science Any UCGS Approved Natural Science 4",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CST100",
+         "title": "Principles of Public Speaking"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CST 100 Principles of Public Speaking",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MTH263",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 263 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC205",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 205 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spring Term",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "3. Students should consider the programming languages required by the university they want to choose for transfer. Camp currently uses C++ for CSC 221 and CSC 222, and Java for CSC 223. Camp may be able to help students get the language they desire with appropriate advanced planning.",
+   "source_text": [
+    "Spring Term",
+    "Course Description Credits",
+    "Science Any TransferVA Approved Science 4",
+    "MTH 264 /245 Calculus II or Statistics I 4",
+    "CSC 223 Data Structures and Analysis of Algorithms3 4",
+    "CSC 208 Introduction to Discrete Structures 3",
+    "Total Semester Credits 15",
+    "Program Footnotes:",
+    "1. Students cannot select two humanities courses from the same subgroup. If one is a humanities course the",
+    "other cannot be a humanities course. Some universities require a literature course in the second year.",
+    "2. PHY 202 should only be considered for BA in Computer Science Programs. Consult your transferring",
+    "college’s Transfer Guide.",
+    "choose for transfer. Camp currently uses C++ for CSC 221 and CSC 222, and Java for CSC 223. Camp"
+   ],
+   "sections": [
+    {
+     "label": "Science Any TransferVA Approved Science 4",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MTH264",
+         "title": "/245 Calculus II or Statistics I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MTH 264 /245 Calculus II or Statistics I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC223",
+         "title": "Data Structures and Analysis of Algorithms3"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 223 Data Structures and Analysis of Algorithms3",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSC208",
+         "title": "Introduction to Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSC 208 Introduction to Discrete Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Program Footnotes:",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "1. Students cannot select two humanities courses from the same subgroup. If one is a humanities course the",
+       "category": "1. Students cannot select two humanities courses from the same subgroup. If one is a humanities course the"
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "other cannot be a humanities course. Some universities require a literature course in the second year.",
+       "category": "other cannot be a humanities course. Some universities require a literature course in the second year."
+      },
+      {
+       "codes": [
+        {
+         "code": "PHY202",
+         "title": "should only be considered for BA in Computer Science Programs. Consult your transferring"
+        }
+       ],
+       "conjunction": "and",
+       "text": "2. PHY 202 should only be considered for BA in Computer Science Programs. Consult your transferring",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [
+  "Humanities Ang UCGS Approved Humanities, Art, or Literature 3",
+  "3. Students should consider the programming languages required by the university they want to",
+  "may be able to help students get the language they desire with appropriate advanced planning."
+ ],
  "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": true,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": null,
-  "candidates": []
- },
- "extracted_at": "2026-08-02T06:13:44.757Z"
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 14 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "4 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "14 distinct courses across 16 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 0–0 against a stated 61, but 4 of 4 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 4,
+   "sections": 7,
+   "rows": 16,
+   "course_rows": 14,
+   "category_rows": 2,
+   "distinct_courses": 14,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": "61"
+  }
+ }
 }

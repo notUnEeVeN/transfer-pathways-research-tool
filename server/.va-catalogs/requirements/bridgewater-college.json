@@ -3,52 +3,882 @@
  "name": "Bridgewater College",
  "level": "four_year",
  "platform": "cleancatalog",
- "outcome": "url_only",
- "source_url": "https://www.bridgewater.edu/academics/divisions/math-computer-science/computer-science-major/",
- "offers_cs": null,
- "program_title": null,
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": true,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
-  "candidates": [
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "variant": "Computer Science B.S. with the required selection of exactly one 15-credit track: Cybersecurity or Full-Stack Software Development",
+  "academic_unit": "Department of Mathematics and Computer Science",
+  "college": "Coffman School of Natural Sciences",
+  "general_education_authority": "Connected Learning (CL): General Education Curriculum",
+  "excluded_variants": [
+   "Computer Science minor",
+   "Data Science & Analytics major",
+   "historical Theoretical Computing track"
+  ],
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "major_units": 46,
+   "major_shared_core_units": 31,
+   "selected_track_units": 15,
+   "general_education_units_minimum": 33,
+   "general_education_units_maximum": 46,
+   "general_education_and_elective_capacity_units": 74,
+   "upper_division": {
+    "status": "required",
+    "minimum_units": 45,
+    "modeled_units": 45,
+    "rule": "At least 45 credits must be junior- or senior-level; current course-numbering guidance generally places those courses at 300-499.",
+    "source_refs": [
+     "college",
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 33,
+    "rule": "At least 33 credits must be earned at Bridgewater, including nine major credits; at least 30 of the final 33 credits must be completed at Bridgewater or through a College-approved study-abroad program.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "final_credit_window_units": 33,
+   "final_credit_window_residency_units_minimum": 30,
+   "major_residency_units_minimum": 9,
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The live program publishes a 31-credit shared core and requires exactly one complete 15-credit track; there is no current untracked B.S. path.",
+   "Connected Learning publishes a 33-46-credit range with course, transfer-status, placement, and cross-layer overlap. Preserve its completion gates inside the 74 credits remaining after the major instead of gross-summing the categories.",
+   "The current categorical requirements page is authoritative. Do not import suggested, prospective, or historical term-by-term plans."
+  ],
+  "data_quality_flags": [
    {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science"
+    "code": "required_track_choice",
+    "severity": "block_analysis",
+    "message": "A student must select one complete 15-credit track; track components may not be mixed."
    },
    {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science"
+    "code": "general_education_overlap_and_waiver_rules",
+    "severity": "block_analysis",
+    "message": "CSCI-400, ART-321, MATH-110, placement, and the approved-transfer-associate exception require cross-layer evaluation."
    },
    {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/minor/computer-science"
-   },
-   {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science/minor/computer-science"
-   },
-   {
-    "score": 10,
-    "title": "Mathematics & Computer Science",
-    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science"
-   },
-   {
-    "score": 10,
-    "title": "Mathematics & Computer Science",
-    "href": "https://bridgewater.cleancatalog.io/mathematics-computer-science"
+    "code": "full_stack_cl200_transfer_exception_conflict",
+    "severity": "block_analysis",
+    "message": "The approved-transfer-associate exception omits CL-200, while Full-Stack course ART-321 lists CL-200 as a corequisite; the catalog does not resolve that case."
    }
-  ]
+  ],
+  "layers": {
+   "catalog_identity": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ],
+    "note": "The Coffman School owns the program but publishes no separate additive school curriculum."
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
  },
- "extracted_at": "2026-08-02T06:13:44.812Z"
+ "sources": [
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "Bridgewater College academic catalog",
+   "url": "https://bridgewater.cleancatalog.io/undergraduate-catalog",
+   "requested_url": "https://bridgewater.cleancatalog.io/undergraduate-catalog",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "c6a1b56b7dba76d7642d82b6fd7b88a6c02fea38282d5dd3ca1198b7fa674b07",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Bridgewater College major and degree requirements",
+   "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+   "requested_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/bachelor-of-science-major/computer-science",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "2724a50105e6851c24150a3da740bc2b68815dbc5e620e0e71e23c145400156b",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Bridgewater College general education requirements",
+   "url": "https://bridgewater.cleancatalog.io/the-connected-learning-cl-curriculum",
+   "requested_url": "https://bridgewater.cleancatalog.io/the-connected-learning-cl-curriculum",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "287e8dbf2df0adaff21af93691b1ef49a0e947df0989f69f6cf9105a4c60f796",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education_2",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Bridgewater College general education requirements",
+   "url": "https://bridgewater.cleancatalog.io/connected-learning-general-education/connected-learning-cl-general-education-curriculum",
+   "requested_url": "https://bridgewater.cleancatalog.io/connected-learning-general-education/connected-learning-cl-general-education-curriculum",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "3bc787eeb2b1b339ae6ded58760bb1f409d16ba560d4b059d832e2ebd848053e",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Bridgewater College college or school requirements",
+   "url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+   "requested_url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "7a257bfc92106cc0f0f9f23728fb3f64001ab9acb2de56b0608d263bc8548a10",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Bridgewater College university graduation requirements",
+   "url": "https://bridgewater.cleancatalog.io/degree-requirements",
+   "requested_url": "https://bridgewater.cleancatalog.io/degree-requirements",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "a36a75243a518fab473d39763c098a9bdb946ec642c4cd8fec81fb1271c95edd",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Bridgewater College course descriptions and credit values",
+   "url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+   "requested_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "99c122fcdfc93f8a569fe15f265b2ed79383df64d321d782cc2bc7473e2459b0",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog_2",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Bridgewater College course descriptions and credit values",
+   "url": "https://bridgewater.cleancatalog.io/art",
+   "requested_url": "https://bridgewater.cleancatalog.io/art",
+   "catalog_platform": "cleancatalog",
+   "captured_at": "2026-08-10T04:30:53.346Z",
+   "sha256": "f05fa53c2e37943ad7dd1072c7eefe724330522a4e4df865523378cca994d2fb",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "catalog_identity": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education",
+    "general_education_2"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": "The Coffman School owns the program but publishes no separate additive school curriculum."
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog",
+    "course_catalog_2"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T04:30:53.346Z",
+ "extracted_at": "2026-08-10T04:31:35.441Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
+ "program_title": null,
+ "parse_error": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "The major consists of.",
+   "credits": {
+    "min": 46,
+    "max": 46,
+    "raw": "46"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "The major consists of 46 credits.",
+    "Students choose one of two tracks: Cybersecurity, and Full-Stack Software Development. The following core courses are required for each track, consisting of 31 credits:"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Students choose one of two tracks: Cybersecurity, and Full-Stack Software Development. The following core courses are required for each track, consisting of 31 credits:",
+       "category": "Students choose one of two tracks: Cybersecurity, and Full-Stack Software Development. The following core courses are required for each track, consisting of",
+       "credits": {
+        "min": 31,
+        "max": 31,
+        "raw": "31"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Required Courses",
+    "Course Code",
+    "Title",
+    "Credits",
+    "CSCI-101",
+    "Programming I",
+    "4",
+    "CSCI-102",
+    "Programming II",
+    "3",
+    "CSCI-110",
+    "Discrete Mathematics",
+    "3",
+    "CSCI-220",
+    "Data Structures and Algorithms",
+    "3",
+    "CSCI-250",
+    "Computer Networks",
+    "3",
+    "CSCI-320",
+    "Algorithm Analysis and Design",
+    "3",
+    "CSCI-341",
+    "Computer Architecture",
+    "3",
+    "CSCI-342",
+    "Operating Systems",
+    "3",
+    "CSCI-400",
+    "Software Engineering",
+    "3",
+    "DSA-230",
+    "Database Systems",
+    "3",
+    "Sub-Total Credits",
+    "31",
+    "The remaining credits come from the tracks as follows (students choose one track):",
+    "Cybersecurity Track"
+   ],
+   "sections": [
+    {
+     "label": "Credits",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI101",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-101",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "4",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI102",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-102",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI110",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-110",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI220",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-220",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI250",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-250",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI320",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-320",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI341",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-341",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI342",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-342",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI400",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-400",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "DSA230",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "DSA-230",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "31",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "The remaining credits come from the tracks as follows (students choose one track):",
+       "category": "The remaining credits come from the tracks as follows (students choose one track):"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Consists of, including the following courses",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Consists of 15 credits, including the following courses:",
+    "Course Code",
+    "Title",
+    "Credits",
+    "CSCI-130",
+    "Programming with Python",
+    "3",
+    "CSCI-261",
+    "Network Engineering",
+    "3",
+    "CSCI-361",
+    "Network Security",
+    "3",
+    "CSCI-461",
+    "Penetration Testing",
+    "3",
+    "DSA-350",
+    "Data Preparation with Python",
+    "3",
+    "Sub-Total Credits",
+    "15",
+    "Full-Stack Software Development Track"
+   ],
+   "sections": [
+    {
+     "label": "Credits",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI130",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-130",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI261",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-261",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI361",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-361",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI461",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-461",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "DSA350",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "DSA-350",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Consists of, including the following courses",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Consists of 15 credits, including the following courses:",
+    "Course Code",
+    "Title",
+    "Credits",
+    "ART-321",
+    "Graphic Design",
+    "3",
+    "ART-322",
+    "Web Design and Development",
+    "3",
+    "CSCI-131",
+    "Web Scripting",
+    "3",
+    "CSCI-331",
+    "Server-Side Web Development",
+    "3",
+    "CSCI-332",
+    "Client-Side Web Development",
+    "3",
+    "Sub-Total Credits",
+    "15",
+    "Total Credits",
+    "46",
+    "User account menu",
+    "Staff Login",
+    "© 2026 Bridgewater College",
+    "Course Catalog Software by Clean Catalog"
+   ],
+   "sections": [
+    {
+     "label": "Credits",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ART321",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART-321",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "ART322",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "ART-322",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI131",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-131",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI331",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-331",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "3",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI332",
+         "title": null
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI-332",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 20 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "4 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "20 distinct courses across 22 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "2 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 4,
+   "sections": 22,
+   "rows": 22,
+   "course_rows": 20,
+   "category_rows": 2,
+   "distinct_courses": 20,
+   "credit_span": {
+    "min": 76,
+    "max": 76,
+    "groups_with_credits": 3
+   },
+   "stated_total": null
+  }
+ }
 }

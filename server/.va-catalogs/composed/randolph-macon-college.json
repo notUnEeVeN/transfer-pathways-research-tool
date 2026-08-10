@@ -1,0 +1,909 @@
+{
+  "schema_version": 1,
+  "slug": "randolph-macon-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Computer Science",
+  "college": "Randolph-Macon College",
+  "ge_authority": "Randolph-Macon College Collegiate Requirements",
+  "excluded_variants": [
+    "Cybersecurity program",
+    "Data Science program",
+    "prior-catalog Mathematical Emphasis structure"
+  ],
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "graduation",
+    "policy",
+    "policy_2",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": [
+        "general_education"
+      ],
+      "note": "The institution-wide Collegiate Requirements are the applicable General Education layer. Randolph-Macon publishes no separate school or subcollege requirement layer for Computer Science."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": [
+        "graduation",
+        "policy",
+        "policy_2"
+      ]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "major_units": 40,
+    "major_foundation_units": 25,
+    "major_programming_emphasis_units": 3,
+    "major_elective_units": 12,
+    "general_education_and_elective_capacity_units": 80,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current catalog publishes no aggregate university-wide upper-division-credit minimum. It defines courses numbered 300-399 as upper-level and courses numbered 400-499 as advanced-level. Within the Computer Science major, required CSCI 311 contributes three upper-level credits, the Programming Emphasis contributes three, and at least two three-credit electives must be numbered 300 or above, guaranteeing at least 12 major credits at that level.",
+      "source_refs": [
+        "major",
+        "policy_2"
+      ]
+    },
+    "major_scoped_upper_division_units_minimum": 12,
+    "residency": {
+      "status": "required",
+      "minimum_units": 45,
+      "rule": "No more than 75 combined transfer and external semester hours may apply to the 120-hour degree, yielding a 45-hour institutional-credit floor by arithmetic. At least one-half of the coursework required for the major must be completed at Randolph-Macon.",
+      "source_refs": [
+        "graduation",
+        "policy"
+      ]
+    },
+    "transfer_and_external_credit_units_maximum": 75,
+    "major_residency_fraction_minimum": 0.5,
+    "minimum_randolph_macon_gpa": 2,
+    "canonical_path": {
+      "major_units": 40,
+      "remaining_general_education_and_elective_capacity_units": 80,
+      "total_units": 120,
+      "note": "The 80-hour capacity is the arithmetic remainder after the fixed 40-hour major. It contains the nonadditive Collegiate Requirements and any remaining applicable credit; it is not a catalog-published General Education subtotal."
+    }
+  },
+  "modeling_notes": [
+    "This composition selects the current ordinary Computer Science major designated for the Bachelor of Science and excludes the separately published Cybersecurity and Data Science programs.",
+    "The live 2026-2027 major is modeled exactly as seven Foundation courses totaling 25 hours, one three-hour Programming Emphasis choice, and four additional three-hour electives, at least two numbered 300 or above, for 40 hours.",
+    "The catalog does not publish one independent Collegiate Requirements credit subtotal. Effective Communication courses, Pillars, Cross-Area attributes, major overlap, and the zero-credit Physical Education and Wellness experiences therefore remain explicit completion gates inside the 80-hour post-major capacity rather than being gross-summed.",
+    "The 45-hour institutional-credit floor is derived from the official 120-hour degree minimum and 75-hour combined transfer/external-credit maximum; it is not separately worded as a residence minimum.",
+    "The current target is a student entering Fall 2026 or later. The 120-hour minimum began with Fall 2023 entrants, and the two no-credit Physical Education and Wellness experiences apply to Fall 2026 entrants and later.",
+    "The degree-summary page still mentions two 100-level physical-education courses while its detailed current rule and footnote define two approved no-credit experiences for Fall 2026 entrants and later. The detailed cohort-specific rule is modeled, and the wording conflict remains flagged."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "general_education_nonadditive_overlap",
+      "severity": "block_analysis",
+      "message": "Randolph-Macon does not publish a nonoverlapping Collegiate Requirements credit subtotal; Pillar and Cross-Area overlap constraints require cross-group evaluation."
+    },
+    {
+      "code": "major_elective_cross_choice_constraints",
+      "severity": "block_analysis",
+      "message": "The evaluator must enforce four distinct major electives, at least two numbered 300 or above, without reusing the selected Programming Emphasis course."
+    },
+    {
+      "code": "residency_minimum_derived_from_transfer_cap",
+      "severity": "review",
+      "message": "The 45-hour institutional floor is arithmetic derived from the 75-hour external-credit cap, not separately phrased as a residence minimum."
+    },
+    {
+      "code": "physical_education_wording_conflict",
+      "severity": "review",
+      "message": "The degree-summary bullet retains 100-level-course wording, while the detailed current rule and cohort footnote require two approved no-credit experiences for Fall 2026 entrants and later."
+    }
+  ],
+  "course_titles": {
+    "CSCI111": "Introduction to Computer Science",
+    "CSCI112": "Data Structures",
+    "CSCI210": "Introduction to Discrete Structures",
+    "CSCI211": "Computer Organization",
+    "CSCI212": "Systems Programming",
+    "CSCI213": "Object-Oriented Programming",
+    "CSCI229": "Introduction to Robotics",
+    "CSCI236": "Database Systems",
+    "CSCI311": "Algorithms",
+    "CSCI330": "Network Architecture and Protocols",
+    "CSCI332": "Computer Graphics",
+    "CSCI333": "Programming Languages",
+    "CSCI335": "Web Development",
+    "CSCI339": "Artificial Intelligence",
+    "CSCI340": "Parallel Computing",
+    "CSCI343": "Introduction to Simulation",
+    "CSCI349": "Machine Learning",
+    "CSCI350": "Operating Systems",
+    "CSCI363": "Theory of Computation",
+    "CSCI382": "Special Topics in Computer Science",
+    "CSCI485": "Computer Science Research",
+    "CSEC322": "System Security and Defense",
+    "CSEC323": "Software Security",
+    "CSEC353": "Cryptography",
+    "ENGL185": "Critical Reading and Writing"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science Foundation",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "25",
+      "sections": [
+        {
+          "label": "Introduction to Computer Science",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI111",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Data Structures",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI112",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Introduction to Discrete Structures",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI210",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Computer Organization",
+          "select": 1,
+          "units": 3,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI211",
+              "units": 3
+            }
+          ]
+        },
+        {
+          "label": "Systems Programming",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI212",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Object-Oriented Programming",
+          "select": 1,
+          "units": 4,
+          "course_level": "lower_division",
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI213",
+              "units": 4
+            }
+          ]
+        },
+        {
+          "label": "Algorithms",
+          "select": 1,
+          "units": 3,
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI311",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science Programming Emphasis",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "course_catalog"
+      ],
+      "stated_credits": "3",
+      "sections": [
+        {
+          "label": "Select one Programming Emphasis course",
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI330",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI332",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI335",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI340",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI343",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI350",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI382",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science Electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": [
+        "major",
+        "course_catalog",
+        "policy_2"
+      ],
+      "stated_credits": "12",
+      "analysis_constraints": [
+        {
+          "kind": "elective_minimum_course_level",
+          "status": "evaluator_not_implemented",
+          "description": "Select four distinct three-credit courses from the published menu, with at least two numbered 300 or above."
+        },
+        {
+          "kind": "no_double_count_with_programming_emphasis",
+          "status": "evaluator_not_implemented",
+          "description": "The four courses are additional to the Programming Emphasis; a course selected there cannot be reused here."
+        },
+        {
+          "kind": "special_topics_range_membership",
+          "status": "evaluator_not_implemented",
+          "description": "The two published Special Topics menu entries are number ranges CSCI 280-284 and CSCI 380-384, not one invented placeholder course apiece."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Select four additional courses; at least two must be numbered 300 or above",
+          "select": 4,
+          "units": 12,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "CSCI229",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI236",
+              "units": 3
+            },
+            {
+              "kind": "ge_area",
+              "code": "RMC-CSCI-280-284",
+              "name": "CSCI 280-284 Special Topics in Computer Science",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI330",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI332",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI333",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI335",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI339",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI340",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI349",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI350",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI363",
+              "units": 3
+            },
+            {
+              "kind": "ge_area",
+              "code": "RMC-CSCI-380-384",
+              "name": "CSCI 380-384 Special Topics in Computer Science",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSCI485",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSEC322",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSEC323",
+              "units": 3
+            },
+            {
+              "kind": "course",
+              "code": "CSEC353",
+              "units": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Collegiate Requirements: Effective Communication",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "Five courses; no independent additive subtotal is published",
+      "note": "Actual course credits are contained in the 80-hour capacity group. These zero-unit sections preserve the completion gates without double-counting those credits.",
+      "analysis_constraints": [
+        {
+          "kind": "foreign_language_sequence_or_proficiency",
+          "status": "evaluator_not_implemented",
+          "description": "Foreign Language Communication requires two approved consecutive courses, completion through the intermediate level (normally 211-212 or accelerated 215), or the published native-language proficiency route."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Written Communication",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "course",
+              "code": "ENGL185",
+              "units": 0,
+              "note": "ENGL 185 is a four-credit course; its credits are absorbed by the capacity group."
+            }
+          ]
+        },
+        {
+          "label": "Oral Communication",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-OC",
+              "name": "One approved Oral Communication course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Communication in Context",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-CC",
+              "name": "One approved Communication in Context course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Foreign Language Communication",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-FL",
+              "name": "Two approved consecutive foreign-language courses, intermediate completion, or approved native-language proficiency",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Collegiate Requirements: Pillars of the Liberal Arts",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "stated_credits": "One approved course in each of six Pillars; no independent additive subtotal is published",
+      "note": "Actual credits are contained in the 80-hour capacity group.",
+      "analysis_constraints": [
+        {
+          "kind": "distinct_pillar_courses",
+          "status": "evaluator_not_implemented",
+          "description": "One course cannot satisfy more than one Pillar."
+        },
+        {
+          "kind": "major_to_pillar_overlap_limit",
+          "status": "evaluator_not_implemented",
+          "description": "No more than one course in the student's major may satisfy a Pillar."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Aesthetic Expression",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-AE",
+              "name": "One approved Aesthetic Expression course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Civic Life",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-CL",
+              "name": "One approved Civic Life course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Global Experiences",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-GE",
+              "name": "One approved Global Experiences course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "The Human Condition",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-HC",
+              "name": "One approved Human Condition course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Quantitative and Symbolic Reasoning",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-QS",
+              "name": "One approved Quantitative and Symbolic Reasoning course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "The Scientific Process",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-SP",
+              "name": "One approved Scientific Process course",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Collegiate Requirements: Pillar attributes and distribution",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "note": "These attributes constrain courses already carried by the 80-hour capacity and add no separate credit here.",
+      "analysis_constraints": [
+        {
+          "kind": "pillar_distribution_attributes",
+          "status": "evaluator_not_implemented",
+          "description": "The Arts/Humanities, Social/Behavioral Science, and Natural Science/Mathematics designations must each occur among courses used for the six Pillars."
+        },
+        {
+          "kind": "writing_attentive_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "The Writing Attentive designation is an overlay on an approved course and must not be counted as additional credit."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Writing Attentive",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-WA",
+              "name": "At least one Writing Attentive course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Arts and Humanities distribution",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-HU",
+              "name": "At least one Pillar course designated Arts/Humanities",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Social and Behavioral Science distribution",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-SS",
+              "name": "At least one Pillar course designated Social/Behavioral Science",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Natural Science and Mathematics distribution",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-NS",
+              "name": "At least one Pillar course designated Natural Science/Mathematics",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Collegiate Requirements: Cross-Area Requirements",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "general_education"
+      ],
+      "note": "Cross-Area designations may attach to major or other applicable courses. Their actual credits are contained in the 80-hour capacity group.",
+      "analysis_constraints": [
+        {
+          "kind": "cross_area_overlap_limit",
+          "status": "evaluator_not_implemented",
+          "description": "One course may satisfy no more than two Cross-Area Requirements."
+        },
+        {
+          "kind": "cross_area_course_or_project_forms",
+          "status": "evaluator_not_implemented",
+          "description": "Experiential Learning may be met by the catalog's approved course or curricular-project forms, including designated study abroad, travel, internship, field study, research, student teaching, or service learning."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Experiential Learning",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-EL",
+              "name": "One approved Experiential Learning course or curricular project",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Non-Western Culture",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-NW",
+              "name": "One approved Non-Western Culture course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Diversity and Inclusion",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-DI",
+              "name": "One approved Diversity and Inclusion course",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Capstone Experience",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-CS",
+              "name": "One approved Capstone Experience course",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General Education and elective capacity after the Computer Science major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": [
+        "major",
+        "general_education",
+        "graduation"
+      ],
+      "stated_credits": "80 derived remaining semester hours; not a published General Education subtotal",
+      "analysis_constraints": [
+        {
+          "kind": "capacity_contains_overlapping_collegiate_requirements",
+          "status": "evaluator_not_implemented",
+          "description": "The 80-hour capacity contains all actual credit for Effective Communication, Pillars, Cross-Area requirements, and remaining applicable coursework after the 40-hour major; the zero-unit gates above constrain it without adding credits."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Remaining applicable credit to the 120-hour Bachelor of Science minimum",
+          "select": 1,
+          "units": 80,
+          "receivers": [
+            {
+              "kind": "ge_area",
+              "code": "RMC-GE-ELECTIVE-CAPACITY",
+              "name": "Collegiate Requirements and remaining applicable coursework",
+              "units": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Physical Education and Wellness experiences",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "noncredit_cocurricular",
+      "cc_articulable": false,
+      "source_refs": [
+        "general_education",
+        "graduation"
+      ],
+      "stated_credits": "Two experiences; zero academic credit",
+      "analysis_constraints": [
+        {
+          "kind": "cohort_specific_noncredit_experiences",
+          "status": "evaluator_not_implemented",
+          "description": "For students matriculating Fall 2026 and later, complete two approved meaningful and sustained Physical Education and Wellness experiences; these carry no academic credit."
+        },
+        {
+          "kind": "official_catalog_wording_conflict",
+          "status": "evaluator_not_implemented",
+          "description": "The degree-summary bullet still says two 100-level physical-education courses, while the detailed current rule and cohort footnote define approved no-credit experiences."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Two approved no-credit Physical Education and Wellness experiences",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Complete two approved Physical Education and Wellness experiences",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "University graduation, transfer-credit, and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": [
+        "graduation",
+        "policy"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "transfer_cap_and_residence_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "The 75-hour combined transfer/external maximum, derived 45-hour institutional floor, and one-half-major institutional rule overlap rather than adding degree credit."
+        },
+        {
+          "kind": "transfer_grade_and_application_review",
+          "status": "evaluator_not_implemented",
+          "description": "Transfer coursework generally requires C- or higher, but accepted credit applies to General Education, major, minor, or electives only as determined through Randolph-Macon's evaluation process."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Randolph-Macon cumulative GPA",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Earn at least a 2.00 cumulative GPA on all work undertaken at Randolph-Macon",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Combined transfer and external credit maximum",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Apply no more than 75 semester hours of combined transfer and external credit to the degree",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Derived institutional-credit floor",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Complete at least 45 of the 120 semester hours outside the combined transfer/external-credit maximum",
+              "units": 0
+            }
+          ]
+        },
+        {
+          "label": "Major residence",
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {
+              "kind": "requirement",
+              "name": "Complete at least one-half of the coursework required for the major at Randolph-Macon",
+              "units": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

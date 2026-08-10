@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const {
-  prerequisiteGraph, courses, course, matrix, degrees,
+  prerequisiteGraph, summary, institutions, courses, course, matrix, degrees, coverage, putDegree,
 } = cjs('./Virginia');
 const { courseIdFor } = cjs('../services/virginia/courseIdentity');
 const apiRouter = cjs('../routes/api');
@@ -33,6 +33,98 @@ function run(handler, req) {
     };
     handler(req, res, (error) => error ? reject(error) : resolve(res));
   });
+}
+
+const officialSource = (id, kind, url) => ({ id, kind, label: `${kind} source`, url });
+const templateReceiver = (receiving) => ({
+  receiving, articulation_status: null, options: [], options_conjunction: 'or',
+});
+const degreeSection = (units, receivers, sourceRefs, rest = {}) => ({
+  section_advisement: 1,
+  unit_advisement: units,
+  source_refs: sourceRefs,
+  receivers,
+  ...rest,
+});
+
+function acceptedDegreeForPut() {
+  const cs101 = courseIdFor('CS101');
+  return {
+    _id: 'va:degree:sample-university:cs',
+    kind: 'degree',
+    school_id: 'va:uni:sample-university',
+    institution_id: 'va:uni:sample-university',
+    school: 'Sample University',
+    major_slug: 'cs',
+    program: 'Computer Science, B.S.',
+    degree_variant: 'B.S.',
+    catalog_year: '2026-2027',
+    unit_system: 'semester',
+    total_units: 120,
+    academic_unit: 'Department of Computer Science',
+    ge_authority: 'University Core',
+    source_url: 'https://catalog.sample.edu/programs/computer-science-bs',
+    codes_seen: ['CS101'],
+    course_titles: { CS101: 'Introduction to Computer Science' },
+    sources: [
+      officialSource('major', 'major', 'https://catalog.sample.edu/programs/computer-science-bs'),
+      officialSource('ge', 'ge', 'https://catalog.sample.edu/general-education'),
+      officialSource('graduation', 'graduation', 'https://catalog.sample.edu/graduation'),
+    ],
+    requirement_layers: {
+      major: { status: 'complete', source_refs: ['major'] },
+      ge_college: { status: 'complete', source_refs: ['ge'] },
+      university_graduation: { status: 'complete', source_refs: ['graduation'] },
+    },
+    unit_audit: {
+      graduation_minimum: 120,
+      modeled_units: 120,
+      upper_division: {
+        status: 'required', minimum_units: 30, modeled_units: 30,
+        source_refs: ['graduation'],
+      },
+      residency: {
+        status: 'required', minimum_units: 30,
+        rule: 'At least 30 credits must be earned in residence.',
+        source_refs: ['graduation'],
+      },
+    },
+    requirement_groups: [
+      {
+        title: 'Lower-division major', requirement_layer: 'major',
+        group_conjunction: 'And', tier: 'transferable', course_level: 'lower_division',
+        cc_articulable: true, source_refs: ['major'],
+        sections: [degreeSection(3, [templateReceiver({
+          kind: 'course', parent_id: cs101, units: 3,
+        })], ['major'])],
+      },
+      {
+        title: 'General education after overlap', requirement_layer: 'ge_college',
+        group_conjunction: 'And', tier: 'breadth', course_level: 'lower_division',
+        cc_articulable: true, source_refs: ['ge'],
+        sections: [degreeSection(30, [templateReceiver({
+          kind: 'ge_area', parent_id: null, code: 'VA-GE', name: 'University Core',
+        })], ['ge'])],
+      },
+      {
+        title: 'Upper-division major', requirement_layer: 'major',
+        group_conjunction: 'And', tier: 'nontransferable', course_level: 'upper_division',
+        cc_articulable: false, source_refs: ['major'],
+        sections: [degreeSection(30, [templateReceiver({
+          kind: 'requirement', parent_id: null, name: 'Upper-division major block',
+        })], ['major'], { cc_articulable: false })],
+      },
+      {
+        title: 'Remaining university credit', requirement_layer: 'university_graduation',
+        group_conjunction: 'And', tier: 'nontransferable', course_level: 'residency',
+        cc_articulable: false, source_refs: ['graduation'],
+        sections: [degreeSection(57, [templateReceiver({
+          kind: 'requirement', parent_id: null, name: 'Remaining degree credit',
+        })], ['graduation'], { cc_articulable: false })],
+      },
+    ],
+    verification: { verified: false, notes: null },
+  };
 }
 
 describe('Virginia course identity API', () => {
@@ -182,6 +274,145 @@ describe('Virginia course identity API', () => {
   });
 });
 
+describe('Virginia public institution cohort API', () => {
+  beforeEach(async () => {
+    await db.collection('va_institutions').insertMany([
+      {
+        _id: 'va:inst:george-mason-university', name: 'George Mason University',
+        level: 'four_year', course_count: 0, receives_count: 1,
+      },
+      {
+        _id: 'va:inst:randolph-macon-college', name: 'Randolph-Macon College',
+        level: 'four_year', course_count: 0, receives_count: 1,
+      },
+      {
+        _id: 'va:inst:george-washington-university', name: 'George Washington University',
+        level: 'four_year', course_count: 0, receives_count: 1,
+      },
+      {
+        _id: 'va:inst:virginia-tech', name: 'Virginia Tech',
+        level: 'four_year', course_count: 0, receives_count: 1,
+      },
+      {
+        _id: 'va:inst:virginia-polytechnic-institute-and-state-university',
+        name: 'Virginia Polytechnic Institute and State University',
+        level: 'four_year', course_count: 0, receives_count: 2,
+      },
+      {
+        _id: 'va:inst:sample-community-college', name: 'Sample Community College',
+        level: 'community_college', course_count: 1, receives_count: 0,
+      },
+    ]);
+    await db.collection('va_courses').insertOne({
+      _id: 'va:crs:CSC221', code: 'CSC221', title: 'Programming I', credits: 3,
+      department: 'Computer Science', offered_by: ['Sample Community College'],
+      articulates_to: [
+        { institution: 'George Mason University', identifier: 'CS 112', name: 'Introduction' },
+        { institution: 'Virginia Tech', identifier: 'CS 1114', name: 'Introduction' },
+        { institution: 'Randolph-Macon College', identifier: 'CSCI 111', name: 'Introduction' },
+      ],
+      counts: { with_notes: 0 },
+      imported_at: new Date('2026-08-10T00:00:00Z'),
+    });
+  });
+
+  it('returns the exact public 15 first while retaining secondary and external receivers', async () => {
+    const response = await run(institutions, request({ level: 'four_year' }));
+    expect(response.statusCode).toBe(200);
+    expect(response.body.cohorts.schev_public_four_year.institution_count).toBe(15);
+    expect(response.body.institutions.slice(0, 15).every((row) => row.is_primary)).toBe(true);
+    expect(response.body.institutions.filter((row) => row.is_primary)).toHaveLength(15);
+
+    const uva = response.body.institutions.find((row) => row.name === 'University of Virginia');
+    const vmi = response.body.institutions.find((row) => row.name === 'Virginia Military Institute');
+    for (const missing of [uva, vmi]) {
+      expect(missing).toMatchObject({
+        corpus_present: false,
+        course_count: 0,
+        receives_count: 0,
+        degree_status: 'none',
+        collection_status: 'not_collected',
+        needs_collection: true,
+      });
+    }
+
+    expect(response.body.institutions.find((row) => row.name === 'Randolph-Macon College')).toMatchObject({
+      cohort: 'other_four_year', is_primary: false,
+    });
+    expect(response.body.institutions.find((row) => row.name === 'George Washington University')).toMatchObject({
+      cohort: 'external_receiver', is_primary: false,
+    });
+    expect(response.body.institutions.filter((row) => row.name.includes('Virginia Tech'))).toHaveLength(0);
+    expect(response.body.institutions.filter((row) => (
+      row.institution_slug === 'virginia-polytechnic-institute-and-state-university'
+    ))).toHaveLength(1);
+  });
+
+  it('filters public and secondary cohorts without silently dropping them unfiltered', async () => {
+    const publicResponse = await run(institutions, request({
+      level: 'four_year', cohort: 'schev_public_four_year',
+    }));
+    expect(publicResponse.body.institutions).toHaveLength(15);
+    expect(publicResponse.body.institutions.every((row) => row.is_primary)).toBe(true);
+
+    const secondary = await run(institutions, request({
+      level: 'four_year', cohort: 'other_four_year',
+    }));
+    expect(secondary.body.institutions.map((row) => row.name)).toContain('Randolph-Macon College');
+    expect(secondary.body.institutions.map((row) => row.name)).not.toContain('George Washington University');
+  });
+
+  it('resolves aliases for receiver courses and degree owners', async () => {
+    const courseResponse = await run(courses, request({
+      receiver: 'Virginia Polytechnic Institute and State University',
+    }));
+    expect(courseResponse.body).toMatchObject({
+      receiver: 'Virginia Polytechnic Institute and State University',
+      receiver_sources: expect.arrayContaining(['Virginia Tech']),
+      total: 1,
+    });
+    expect(courseResponse.body.courses[0].lands_as.identifier).toBe('CS 1114');
+
+    const degreeResponse = await run(degrees, request({ institution: 'Virginia Tech' }));
+    expect(degreeResponse.body).toMatchObject({
+      institution: 'Virginia Polytechnic Institute and State University',
+      requested_institution: 'Virginia Tech',
+      institution_slug: 'virginia-polytechnic-institute-and-state-university',
+      owner_id: 'va:uni:virginia-polytechnic-institute-and-state-university',
+      degrees: [],
+    });
+  });
+
+  it('builds an exact 15-column public matrix, including zero-evidence UVA and VMI columns', async () => {
+    const response = await run(matrix, request({ cohort: 'schev_public_four_year' }));
+    expect(response.body.receivers).toHaveLength(15);
+    expect(response.body.receivers).toContain('University of Virginia');
+    expect(response.body.receivers).toContain('Virginia Military Institute');
+    expect(response.body.receivers).not.toContain('Randolph-Macon College');
+    const college = response.body.colleges.indexOf('Sample Community College');
+    expect(response.body.cells[college][response.body.receivers.indexOf('George Mason University')]).toBe(1);
+    expect(response.body.cells[college][response.body.receivers.indexOf('University of Virginia')]).toBe(0);
+  });
+
+  it('accepts zero-corpus public universities in prerequisite scope', async () => {
+    for (const university of ['University of Virginia', 'Virginia Military Institute']) {
+      const response = await run(prerequisiteGraph, request({ university }));
+      expect(response.statusCode).toBe(200);
+      expect(response.body.projection).toMatchObject({
+        mode: 'transfer_preparation',
+        university: { name: university, level: 'four_year' },
+      });
+      expect(response.body.courses).toEqual([]);
+    }
+  });
+
+  it('reports the stable public denominator separately from broad corpus counts', async () => {
+    const response = await run(summary, request());
+    expect(response.body).toMatchObject({ public_four_year: 15, courses: 1 });
+    expect(response.body.four_year).toBe(5);
+  });
+});
+
 describe('Virginia prerequisite graph controller', () => {
   it('is registered only on the Virginia API namespace', () => {
     const paths = apiRouter.stack.filter((layer) => layer.route).map((layer) => layer.route.path);
@@ -248,51 +479,101 @@ describe('Virginia prerequisite graph controller', () => {
 });
 
 describe('Virginia degree course naming', () => {
-  it('does not borrow metadata from an unrelated same-code college course', async () => {
+  it('scopes Richard Bland MATH251 without changing the legacy code hash', async () => {
     await db.collection('va_requirements').insertOne({
       _id: 'va:as:richard-bland-college:cs',
       kind: 'as_degree',
       college_id: 'va:cc:richard-bland-college',
       status: 'extracted',
-      codes_seen: ['HIST101', 'CSC221'],
+      course_namespace: {
+        kind: 'institution_local',
+        institution_id: 'va:cc:richard-bland-college',
+        vccs_master_applicable: false,
+        identity_contract: 'owner_plus_course_id',
+        scoped_key_format: 'va:cc:richard-bland-college:<code>',
+        source_refs: ['major'],
+      },
+      codes_seen: ['MATH251', 'CSCI221'],
       course_titles: {
-        HIST101: 'Western Civilization to 1715',
-        CSC221: 'Richard Bland Programming',
+        MATH251: 'Calculus I',
+        CSCI221: 'Programming for Computer Science & Engineering Majors I',
       },
       requirement_groups: [{
         title: 'Program', sections: [{ receivers: [{
           receiving: null,
           options: [{
-            course_ids: [courseIdFor('HIST101'), courseIdFor('CSC221')],
-            course_keys: ['va:HIST101', 'va:CSC221'],
+            course_ids: [courseIdFor('MATH251'), courseIdFor('CSCI221')],
+            course_keys: ['va:MATH251', 'va:CSCI221'],
           }],
         }] }],
       }],
     });
-    await db.collection('va_courses').insertMany([
-      {
-        _id: 'va:crs:HIST101', course_id: courseIdFor('HIST101'),
-        course_key: 'va:HIST101', code: 'HIST101',
-        title: 'Unrelated Institution History', credits: 2,
-        offered_by: ['Eastern Mennonite University'],
-      },
-      {
-        _id: 'va:crs:CSC221', course_id: courseIdFor('CSC221'),
-        course_key: 'va:CSC221', code: 'CSC221',
-        title: 'VCCS Programming', credits: 3,
-        offered_by: ['Richard Bland College'],
-      },
-    ]);
+    await db.collection('va_courses').insertOne({
+      _id: 'va:crs:MATH251', course_id: courseIdFor('MATH251'),
+      course_key: 'va:MATH251', code: 'MATH251',
+      title: 'Database Queries', credits: 3,
+      offered_by: ['James Madison University'],
+    });
+    await db.collection('va_requirements').insertOne({
+      _id: 'va:degree:james-madison-university:cs',
+      kind: 'degree',
+      school_id: 'va:uni:james-madison-university',
+      status: 'extracted',
+      codes_seen: ['MATH251'],
+      course_titles: { MATH251: 'Database Queries' },
+      requirement_groups: [{
+        title: 'Program', sections: [{ receivers: [{
+          code_seen: 'MATH251',
+          receiving: { kind: 'course', parent_id: courseIdFor('MATH251'), units: 3 },
+          options: [],
+        }] }],
+      }],
+    });
 
     const res = await run(degrees, request({ institution: 'Richard Bland College' }));
+    expect(res.statusCode).toBe(200);
+    expect(res.body.degrees[0].course_namespace).toMatchObject({
+      kind: 'institution_local',
+      identity_contract: 'owner_plus_course_id',
+    });
     expect(res.body.courses).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        code: 'HIST101', title: 'Western Civilization to 1715', units: null,
+        course_id: courseIdFor('MATH251'),
+        course_key: 'va:MATH251',
+        code: 'MATH251',
+        title: 'Calculus I',
+        units: null,
+        college_id: 'va:cc:richard-bland-college',
+        institution_id: 'va:cc:richard-bland-college',
+        identity_scope: 'institution_local',
+        scoped_course_key: 'va:cc:richard-bland-college:MATH251',
       }),
       expect.objectContaining({
-        code: 'CSC221', title: 'Richard Bland Programming', units: 3,
+        course_id: courseIdFor('CSCI221'),
+        course_key: 'va:CSCI221',
+        code: 'CSCI221',
+        college_id: 'va:cc:richard-bland-college',
+        institution_id: 'va:cc:richard-bland-college',
+        identity_scope: 'institution_local',
+        scoped_course_key: 'va:cc:richard-bland-college:CSCI221',
       }),
     ]));
+    expect(res.body.courses.every((courseRow) => (
+      courseRow.identity_scope === 'institution_local'
+      && courseRow.college_id === 'va:cc:richard-bland-college'
+    ))).toBe(true);
+
+    const jmu = await run(degrees, request({ institution: 'James Madison University' }));
+    expect(jmu.body.university_courses).toEqual([expect.objectContaining({
+      parent_id: courseIdFor('MATH251'),
+      code: 'MATH251',
+      title: 'Database Queries',
+      school_id: 'va:uni:james-madison-university',
+    })]);
+    const rbcMath251 = res.body.courses.find((courseRow) => courseRow.code === 'MATH251');
+    expect(rbcMath251.course_id).toBe(jmu.body.university_courses[0].parent_id);
+    expect(rbcMath251.scoped_course_key)
+      .toBe('va:cc:richard-bland-college:MATH251');
   });
 
   it('resolves requested codes for a known institution with no degree document', async () => {
@@ -393,11 +674,16 @@ describe('Virginia degree course naming', () => {
         course_id: 1012786453, course_key: 'va:MTH263', code: 'MTH263', title: 'Calculus I',
       }),
     ]));
+    expect(res.body.courses.every((courseRow) => (
+      !Object.hasOwn(courseRow, 'identity_scope')
+      && !Object.hasOwn(courseRow, 'scoped_course_key')
+    ))).toBe(true);
   });
 
   it('names the members of a series instead of rendering their raw ids', async () => {
     // A series receiver carries `parent_ids` and no singular `parent_id`, with
-    // its codes in one `/`-separated string aligned to those ids. Resolving only
+    // its codes in one separator-delimited string aligned to those ids. Source
+    // compositions use `+` for an AND sequence. Resolving only
     // the singular id left every series member unnamed, and the ledger prints an
     // unresolved id as `#1140373011` — bare numbers where a course should be.
     await db.collection('va_requirements').insertOne({
@@ -414,7 +700,7 @@ describe('Virginia degree course naming', () => {
         title: 'Major', sections: [{
           receivers: [{
             receiving: { kind: 'series', parent_ids: [111, 222] },
-            code_seen: 'CS108 / CS109',
+            code_seen: 'CS108 + CS109',
             options: [],
           }],
         }],
@@ -452,5 +738,148 @@ describe('Virginia degree course naming', () => {
     ]);
     const res = await run(degrees, request({ institution: 'Test College' }));
     expect(res.body.degrees.map((d) => d._id)).toEqual(['a']);
+  });
+});
+
+describe('Virginia degree verification gate', () => {
+  it('rejects a verification claim for a parser-only partial document', async () => {
+    const partial = acceptedDegreeForPut();
+    partial.requirement_layers.ge_college.status = 'missing';
+    partial.verification.verified = true;
+
+    const response = await run(putDegree, request({}, {
+      params: { id: partial._id },
+      body: partial,
+      user: { uid: 'researcher-1', name: 'Researcher One' },
+    }));
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toContain('not catalog-complete');
+    expect(response.body.acceptance_failures).toContain('four_year_layers');
+    expect(await db.collection('va_requirements').findOne({ _id: partial._id })).toBeNull();
+  });
+
+  it('server-validates and stamps a complete degree instead of trusting body acceptance', async () => {
+    const degree = acceptedDegreeForPut();
+    degree.acceptance = { accepted: true, forged: true };
+    degree.verification.verified = true;
+
+    const response = await run(putDegree, request({}, {
+      params: { id: degree._id },
+      body: degree,
+      user: { uid: 'researcher-1', name: 'Researcher One' },
+    }));
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.acceptance).toMatchObject({ accepted: true, ready_for_analysis: true });
+    const stored = await db.collection('va_requirements').findOne({ _id: degree._id });
+    expect(stored.acceptance).toMatchObject({ accepted: true, ready_for_analysis: true });
+    expect(stored.acceptance).not.toHaveProperty('forged');
+    expect(stored.collection_status).toBe('analysis_ready');
+    expect(stored.verification).toMatchObject({
+      verified: true,
+      verified_by: 'researcher-1',
+      verified_by_label: 'Researcher One',
+      stale: false,
+    });
+  });
+
+  it('reopens a signed degree when its requirements change', async () => {
+    const degree = acceptedDegreeForPut();
+    degree.verification = {
+      verified: true,
+      verified_by: 'researcher-1',
+      verified_by_label: 'Researcher One',
+      verified_at: new Date('2026-08-01T00:00:00.000Z'),
+    };
+    await db.collection('va_requirements').insertOne(degree);
+    const edited = structuredClone(degree);
+    edited.requirement_groups[0].title = 'Revised lower-division major';
+
+    const response = await run(putDegree, request({}, {
+      params: { id: edited._id },
+      body: edited,
+      user: { uid: 'researcher-2', name: 'Researcher Two' },
+    }));
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.verification_reopened).toBe(true);
+    const stored = await db.collection('va_requirements').findOne({ _id: edited._id });
+    expect(stored.verification).toMatchObject({
+      verified: false,
+      stale: true,
+      stale_reason: 'degree content changed after verification',
+      previous: expect.objectContaining({ verified: true, verified_by: 'researcher-1' }),
+    });
+    expect(stored.verification.verified_at).toBeNull();
+  });
+
+  it('preserves the signed verdict when only the verifier notes change', async () => {
+    const degree = acceptedDegreeForPut();
+    const signedAt = new Date('2026-08-01T00:00:00.000Z');
+    degree.verification = {
+      verified: true,
+      verified_by: 'researcher-1',
+      verified_by_label: 'Researcher One',
+      verified_at: signedAt,
+      notes: 'Initial source walk complete.',
+    };
+    await db.collection('va_requirements').insertOne(degree);
+    const edited = structuredClone(degree);
+    edited.verification.notes = 'Source walk complete; clarified the overlap note.';
+
+    const response = await run(putDegree, request({}, {
+      params: { id: edited._id },
+      body: edited,
+      user: { uid: 'researcher-2', name: 'Researcher Two' },
+    }));
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.verification_reopened).toBe(false);
+    const stored = await db.collection('va_requirements').findOne({ _id: edited._id });
+    expect(stored.verification).toMatchObject({
+      verified: true,
+      verified_by: 'researcher-1',
+      verified_by_label: 'Researcher One',
+      notes: 'Source walk complete; clarified the overlap note.',
+      stale: false,
+    });
+    expect(new Date(stored.verification.verified_at).toISOString()).toBe(signedAt.toISOString());
+  });
+});
+
+describe('Virginia verification coverage', () => {
+  it('keeps major-only records reviewable but out of the verifiable denominator', async () => {
+    await db.collection('va_coverage').insertMany([
+      { _id: 'va:cov:uni:accepted-university', institution: 'Accepted University' },
+      { _id: 'va:cov:uni:partial-university', institution: 'Partial University' },
+    ]);
+    await db.collection('va_requirements').insertMany([
+      {
+        _id: 'va:degree:accepted-university:cs', kind: 'degree',
+        school_id: 'va:uni:accepted-university', status: 'extracted',
+        source: 'institution_catalog', requirement_groups: [],
+        collection_status: 'catalog_accepted', acceptance: { accepted: true, ready_for_analysis: false },
+        verification: { verified: true },
+      },
+      {
+        _id: 'va:degree:partial-university:cs', kind: 'degree',
+        school_id: 'va:uni:partial-university', status: 'extracted',
+        source: 'institution_catalog', requirement_groups: [],
+        collection_status: 'major_only', acceptance: { accepted: false, ready_for_analysis: false },
+        verification: { verified: false },
+      },
+    ]);
+
+    const response = await run(coverage, request());
+
+    expect(response.body.verification).toMatchObject({
+      documents: 2, reviewable: 2, verifiable: 1, verified: 1,
+      bs_verifiable: 1, bs_verified: 1,
+    });
+    const partial = response.body.coverage.find((row) => row.institution === 'Partial University');
+    expect(partial.documents.degree[0]).toMatchObject({
+      collection_status: 'major_only', catalog_accepted: false, analysis_ready: false,
+    });
   });
 });

@@ -7,9 +7,225 @@
  "pdf_window": null,
  "outcome": "captured",
  "offers_cs": true,
- "source_url": "http://catalog.uvawise.edu/preview_program.php?catoid=2&poid=179",
- "captured_at": "2026-08-02T05:58:34.727Z",
+ "source_url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "variant": "Standard Computer Science B.S.",
+  "academic_unit": "Department of Mathematics and Computer Science",
+  "college": null,
+  "general_education_authority": "UVA Wise General Education Liberal Arts Core",
+  "excluded_variants": [
+   "Data Science Concentration",
+   "Computer Science minor"
+  ],
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "major_units_minimum": 77,
+   "major_units_maximum": 80,
+   "general_education_units_minimum": 48,
+   "general_education_units_maximum": 49,
+   "additional_upper_division_major_units": 15,
+   "upper_division": {
+    "status": "scoped_only",
+    "minimum_units": 15,
+    "rule": "At least 15 upper-level credits in the major must be completed through UVA Wise. The CS major separately labels 15 additional upper-division hours; these rules can overlap and must not be double-counted without a course audit.",
+    "source_refs": [
+     "major",
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 45,
+    "rule": "At least 45 credits must be completed through UVA Wise, including at least 15 upper-level major credits; 58 of the 120 credits must come from a regionally accredited four-year institution.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "four_year_institution_units_minimum": 58,
+   "minimum_cumulative_gpa": 2,
+   "minimum_uvawise_gpa": 2
+  },
+  "modeling_notes": [
+   "Current requirements are catoid 9, poid 1199. The former catoid 2, poid 179 seed is archived 2024-2025 content.",
+   "The 48-49 credit Liberal Arts Core overlaps major math and science courses marked with an asterisk; do not add the Core grossly to the 77-80 major range.",
+   "The graduation policy's 15 upper-level major credits and the program's 15 additional upper-division hours can overlap and must not be treated as two independent 15-credit blocks.",
+   "The current catalog host redirects HTTPS requests to HTTP and presents certificate issues; preserve the official HTTP URLs and mark source security accurately."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "stale_archived_catalog_seed",
+    "severity": "blocker",
+    "message": "Do not use catoid 2, poid 179; it is archived 2024-2025 content."
+   },
+   {
+    "code": "official_catalog_http_only",
+    "severity": "review",
+    "message": "The current official Acalog endpoint ultimately serves pages over HTTP; provenance should record secure=false without rejecting the official host."
+   },
+   {
+    "code": "upper_level_major_rules_may_overlap",
+    "severity": "review",
+    "message": "The 15-credit program and graduation upper-level-major rules require course-level overlap analysis."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ],
+    "note": "The department is the relevant academic owner; UVA Wise has no intermediate school or college layer in the reviewed catalog."
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "The University of Virginia's College at Wise major and degree requirements",
+   "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055",
+   "requested_url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:20:27.240Z",
+   "sha256": "351dcdfb593b6eb07d8a13d406e1b63bb383ce0f5e132ae7b96b09309348f944",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "The University of Virginia's College at Wise general education requirements",
+   "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1044",
+   "requested_url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1044",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:20:27.240Z",
+   "sha256": "eeaf89b77c60ab9b29edf6ee9f11fe89bd2ef7bef2b04a9c686196ffabd88a11",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "The University of Virginia's College at Wise college or school requirements",
+   "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1055",
+   "requested_url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1055",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:20:27.240Z",
+   "sha256": "db776266706b6daa53b15bf3808e90d08de667a5845356f81477274b747400e4",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "The University of Virginia's College at Wise university graduation requirements",
+   "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1039",
+   "requested_url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1039",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:20:27.240Z",
+   "sha256": "a704b500a0ae3ee95fcec90ee41cdee18094721181d0b0100e25e58f7fac6151",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "The University of Virginia's College at Wise course descriptions and credit values",
+   "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1085",
+   "requested_url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1085",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:20:27.240Z",
+   "sha256": "8550e101ff93853ec8ad3e5a4786c6a96ba45c9f002ae7aeb9c8a73926f03f93",
+   "official": true,
+   "secure": false
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": "The department is the relevant academic owner; UVA Wise has no intermediate school or college layer in the reviewed catalog."
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:20:27.240Z",
  "program_title": null,
+ "parse_error": null,
  "total_credits": {
   "min": 77,
   "max": 80,
@@ -30,7 +246,7 @@
     "MTH 2050 - Calculus II Credit(s): 4",
     "MTH 2180 - Applied Probability & Statistics Credit(s): 3",
     "OR",
-    "STA 2180 - Applied Probabality & Statistics Credit(s): 3",
+    "STA 2180 - Applied Probability & Statistics Credit(s): 3",
     "CSC 3710 - Discrete Structures Credit(s): 3",
     "MTH XXXX - At least one additional 3000/4000-level mathematics course Credit(s): 3-4"
    ],
@@ -95,11 +311,11 @@
        "codes": [
         {
          "code": "STA2180",
-         "title": "Applied Probabality & Statistics Credit(s):"
+         "title": "Applied Probability & Statistics Credit(s):"
         }
        ],
        "conjunction": "and",
-       "text": "STA 2180 - Applied Probabality & Statistics Credit(s):",
+       "text": "STA 2180 - Applied Probability & Statistics Credit(s):",
        "credits": {
         "min": 3,
         "max": 3,
@@ -143,7 +359,7 @@
    "source_text": [
     "Computer Science Core",
     "SWE 1790 - Engineering Leadership Credit(s): 3",
-    "CSC 1010 - Introduction to Programming In Python Credit(s): 4",
+    "CSC 1010 - Introduction to Programming in Python Credit(s): 4",
     "CSC 1180 - Foundations of Programming in C++ Credit(s): 4",
     "CSC 2180 - Data Structures Credit(s): 4",
     "CSC 2300 - Software Engineering Credit(s): 3",
@@ -158,6 +374,8 @@
     "CSC 4990 - Computer Science Seminar Credit(s): 1",
     "15 Additional Upper Division Hours of Coursework",
     "Nine (9) hours must be in Computer Science - One 2000-level programming course (not already used) may be used to partially fulfill this requirement. The remaining courses must be selected from CSC, DSC, SWE, MIS, and MTH courses or PHY 3030 (electronics).",
+    "Return to: Department of Mathematics and Computer Science",
+    "a",
     "Print (opens a new window)",
     "Select an option",
     "Courses",
@@ -196,7 +414,6 @@
     "Department of Social Sciences",
     "Department of Visual and Performing Arts",
     "Interdisciplinary Studies",
-    "Undergraduate Course Descriptions",
     "Full Course Listing",
     "Archived Catalogs",
     "1 College Avenue, Wise, VA 24293",
@@ -243,11 +460,11 @@
        "codes": [
         {
          "code": "CSC1010",
-         "title": "Introduction to Programming In Python Credit(s):"
+         "title": "Introduction to Programming in Python Credit(s):"
         }
        ],
        "conjunction": "and",
-       "text": "CSC 1010 - Introduction to Programming In Python Credit(s):",
+       "text": "CSC 1010 - Introduction to Programming in Python Credit(s):",
        "credits": {
         "min": 4,
         "max": 4,
@@ -519,5 +736,5 @@
    "stated_total": "77-80"
   }
  },
- "extracted_at": "2026-08-02T06:13:44.969Z"
+ "extracted_at": "2026-08-10T03:21:26.608Z"
 }

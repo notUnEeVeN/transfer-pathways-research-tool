@@ -7,6 +7,108 @@
  "source_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235",
  "offers_cs": null,
  "program_title": null,
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "variant": "Program 246, current catoid 23 curriculum",
+  "catalog_version": {
+   "catalog_id": 23,
+   "program_id": 5235
+  },
+  "program_code": "246",
+  "cip_code": null,
+  "academic_unit": "Business, Computer Science & IT Career Pathway",
+  "college": "Tidewater Community College",
+  "general_education_authority": "Tidewater Community College General Education Core and Approved Transfer Electives",
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "published_program_units_maximum": 63,
+   "marketing_units": 61,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of degree credit hours must be earned in coursework at TCC.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_program_gpa": 2
+  },
+  "modeling_notes": [
+   "The catalog's 60-63 range controls over the marketing page's single 61-credit figure because mathematics and elective choices vary in credit value.",
+   "Preserve the precalculus preparation as MTH 167 OR the MTH 161+MTH 162 bundle OR direct placement into MTH 263 with replacement elective credit.",
+   "The two humanities courses must come from two distinct categories among Artistic Expression, Literature and Creative Writing, and Human Culture.",
+   "Semester-four technical slots A and B are separate requirement receivers even though their option menus overlap; one course cannot satisfy both.",
+   "The approved-transfer-electives page is a required option dictionary, not a source of additional universal course requirements."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "catalog_footnote_8_ambiguous",
+    "severity": "block",
+    "message": "Footnote 8 does not cleanly delimit the additional-science/PHY 201 wording and requires a human source read."
+   },
+   {
+    "code": "overlapping_options_are_distinct_slots",
+    "severity": "review",
+    "message": "Footnotes 7 and 8 repeat CSC 205/CSC 215 choices across two separate semester-four slots; a flat set loses the requirement count."
+   },
+   {
+    "code": "marketing_curriculum_link_is_stale",
+    "severity": "review",
+    "message": "The marketing page's View Curriculum link points to archived catoid 21/poid 4756 and redirects to the current catalog home rather than the program."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge",
+     "approved_transfer_electives"
+    ]
+   },
+   "ownership": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   }
+  }
+ },
+ "sources": [],
+ "source_layers": {
+  "major": {
+   "status": "missing",
+   "source_refs": [],
+   "note": null
+  },
+  "general_education": {
+   "status": "missing",
+   "source_refs": [],
+   "note": null
+  },
+  "ownership": {
+   "status": "missing",
+   "source_refs": [],
+   "note": null
+  },
+  "graduation": {
+   "status": "missing",
+   "source_refs": [],
+   "note": null
+  }
+ },
  "total_credits": null,
  "groups": [],
  "validation": {
@@ -18,7 +120,9 @@
  "evidence": {
   "url": null,
   "candidates": [],
-  "catoids": [],
+  "catoids": [
+   23
+  ],
   "read": {
    "navs_seen": 0,
    "nav_pages_read": 0,
@@ -37,5 +141,5 @@
    "via": "curl"
   }
  },
- "extracted_at": "2026-08-02T06:13:44.769Z"
+ "extracted_at": "2026-08-10T03:42:25.054Z"
 }

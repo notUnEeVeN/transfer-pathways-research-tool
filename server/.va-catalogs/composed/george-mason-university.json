@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "slug": "george-mason-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, BS",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science, Long Nguyen and Kimmy Duong School of Computing",
+  "college": "College of Engineering and Computing",
+  "ge_authority": "George Mason University Mason Core",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["major", "general_education", "college"]},
+    "university_graduation": {"status": "complete", "source_refs": ["graduation"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "upper_division": {
+      "status": "required",
+      "minimum_units": 45,
+      "modeled_units": 45,
+      "rule": "At least 45 credits must be at the 300 level or above. The canonical model has 43 named upper-level credits and reserves at least 2 elective credits for the remainder.",
+      "source_refs": ["major", "graduation"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "At least one-fourth of the degree must be earned at Mason, including at least 12 upper-level Mason credits in the major.",
+      "source_refs": ["graduation"]
+    }
+  },
+  "modeling_notes": [
+    "The ordinary 120-credit BS is modeled. Graduate substitutions restricted to accelerated-master's or departmental-honors students are retained in the source evidence but excluded from this base-degree choice set.",
+    "The source table prints 32 credits for Computer Science Core, but the ten fixed rows total 32 before two additional required three-credit selections. The named requirements therefore consume 38 credits and the degree-wide component arithmetic closes at 120.",
+    "Natural Science is one 12-credit rule: an approved two-course laboratory sequence (8 credits) and 4 additional credits meeting the prerequisite-or-different-Mason-Core-subject condition.",
+    "Additional Mason Core is the program's 24-credit net GE remainder after major overlap; it is not the gross Mason Core total.",
+    "Senior Computer Science selections must be distinct across its two menus, and the same course cannot earn credit twice when it also appears in another degree component."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "official_core_subtotal_conflicts_with_named_rows",
+      "severity": "review",
+      "message": "The program table displays 32 credits although the explicit fixed rows plus both required selections total 38."
+    },
+    {
+      "code": "cross_section_course_distinctness",
+      "severity": "review",
+      "message": "The two Senior Computer Science menus overlap; selected courses must be distinct and must not be double-counted elsewhere."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Computer Science Core",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "32 (source subtotal; named rows total 38)",
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CS110", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CS112", "units": 4}, {"kind": "series", "codes": ["CS108", "CS109"], "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CS211", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CS262", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS310", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS321", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS330", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS367", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS405", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS450", "units": 3, "overlap_key": "course:CS450"}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "label": "Operating systems", "receivers": [{"kind": "course", "code": "CS471", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "label": "Analysis of algorithms", "receivers": [{"kind": "course", "code": "CS483", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Senior Computer Science",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_courses_across_sections",
+          "status": "evaluator_not_implemented",
+          "description": "A Senior Computer Science course selected in the first menu cannot be selected again in the second menu."
+        },
+        {
+          "kind": "no_double_count_with_other_groups",
+          "status": "evaluator_not_implemented",
+          "description": "A course already used in Computer Science Core cannot be counted again as a Senior Computer Science elective."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Systems selection",
+          "receivers": [
+            {"kind": "course", "code": "CS455", "units": 3, "overlap_key": "course:CS455"},
+            {"kind": "course", "code": "CS468", "units": 3, "overlap_key": "course:CS468"},
+            {"kind": "course", "code": "CS475", "units": 3, "overlap_key": "course:CS475"}
+          ]
+        },
+        {
+          "select": 3,
+          "units": 9,
+          "label": "Three additional senior courses",
+          "receivers": [
+            {"kind": "course", "code": "CS425", "units": 3},
+            {"kind": "course", "code": "CS440", "units": 3},
+            {"kind": "course", "code": "CS450", "units": 3, "overlap_key": "course:CS450"},
+            {"kind": "course", "code": "CS451", "units": 3},
+            {"kind": "course", "code": "CS452", "units": 3},
+            {"kind": "course", "code": "CS453", "units": 3},
+            {"kind": "course", "code": "CS455", "units": 3, "overlap_key": "course:CS455"},
+            {"kind": "course", "code": "CS463", "units": 3},
+            {"kind": "course", "code": "CS465", "units": 3},
+            {"kind": "course", "code": "ECE445", "title": "Digital Computer Design", "units": 3, "note": "Published replacement for CS 465."},
+            {"kind": "course", "code": "CS468", "units": 3, "overlap_key": "course:CS468"},
+            {"kind": "course", "code": "CS475", "units": 3, "overlap_key": "course:CS475"},
+            {"kind": "course", "code": "CS477", "units": 3},
+            {"kind": "course", "code": "CS478", "units": 3},
+            {"kind": "course", "code": "CS480", "units": 3},
+            {"kind": "course", "code": "CS482", "units": 3},
+            {"kind": "course", "code": "CS484", "units": 3},
+            {"kind": "course", "code": "CS485", "units": 3},
+            {"kind": "course", "code": "CS487", "units": 3},
+            {"kind": "course", "code": "CS489", "units": 3},
+            {"kind": "course", "code": "CS491", "units": 3, "note": "At most 3 credits may count."},
+            {"kind": "course", "code": "CS499", "units": 3, "note": "At most 6 credits may count."},
+            {"kind": "course", "code": "MATH446", "units": 3, "overlap_key": "equivalent:MATH446:OR481"},
+            {"kind": "course", "code": "OR481", "units": 3, "overlap_key": "equivalent:MATH446:OR481"}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Mathematics",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH113", "units": 4}, {"kind": "series", "codes": ["MATH123", "MATH124"], "units": 4}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH114", "units": 4}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MATH125", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MATH203", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MATH213", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Statistics",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "STAT344", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Computer Science-Related Courses",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 2,
+          "units": 6,
+          "label": "Select six credits",
+          "receivers": [
+            {"kind": "course", "code": "STAT354", "units": 3},
+            {"kind": "course", "code": "OR335", "units": 3},
+            {"kind": "course", "code": "OR441", "units": 3},
+            {"kind": "course", "code": "OR442", "units": 3},
+            {"kind": "course", "code": "ECE301", "units": 3},
+            {"kind": "series", "codes": ["ECE231", "ECE232"], "units": 3},
+            {"kind": "course", "code": "ECE350", "units": 3},
+            {"kind": "course", "code": "ECE446", "units": 3},
+            {"kind": "course", "code": "ECE447", "units": 3},
+            {"kind": "course", "code": "ECE455", "units": 3},
+            {"kind": "course", "code": "ECE511", "units": 3},
+            {"kind": "course", "code": "SWE419", "units": 3},
+            {"kind": "course", "code": "SWE432", "units": 3},
+            {"kind": "course", "code": "SWE437", "units": 3},
+            {"kind": "course", "code": "SWE443", "units": 3},
+            {"kind": "course", "code": "SYST371", "units": 3},
+            {"kind": "course", "code": "SYST470", "units": 3},
+            {"kind": "course", "code": "PHIL371", "units": 3},
+            {"kind": "course", "code": "PHIL376", "units": 3},
+            {"kind": "course", "code": "ENGH388", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Natural Science laboratory sequence",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 8,
+          "label": "Choose one approved two-course sequence with laboratories",
+          "receivers": [
+            {"kind": "series", "codes": ["BIOL102", "BIOL106", "BIOL103", "BIOL105"], "units": 8},
+            {"kind": "series", "codes": ["BIOL107", "BIOL103", "BIOL105"], "units": 8},
+            {"kind": "series", "codes": ["CHEM211", "CHEM213", "CHEM212", "CHEM214"], "units": 8},
+            {"kind": "series", "codes": ["GEOL101", "GEOL103", "GEOL102", "GEOL104"], "units": 8},
+            {"kind": "series", "codes": ["PHYS160", "PHYS161", "PHYS260", "PHYS261"], "units": 8}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Additional Natural Science",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "analysis_constraints": [
+        {
+          "kind": "prerequisite_or_different_subject",
+          "status": "evaluator_not_implemented",
+          "description": "The additional science must use the chosen sequence as a prerequisite or be a Mason Core natural-science course in a different subject."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "note": "Choose a course for which the selected sequence is a prerequisite, or a Mason Core natural-science course in a different subject.",
+          "receivers": [{"kind": "ge_area", "code": "MASON-CORE-NATURAL-SCIENCE-CONDITIONAL", "name": "Additional qualifying natural science", "units": 4}]
+        }
+      ]
+    },
+    {
+      "title": "Additional Mason Core after major overlap",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "college"],
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "label": "Oral Communication", "receivers": [{"kind": "course", "code": "COMM100", "units": 3}, {"kind": "course", "code": "COMM101", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "label": "Written Communication", "receivers": [{"kind": "course", "code": "ENGH100", "units": 3}, {"kind": "course", "code": "ENGH101", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "label": "Advanced Composition", "receivers": [{"kind": "course", "code": "ENGH302", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division_or_category", "label": "Literature", "receivers": [{"kind": "ge_area", "code": "MASON-CORE-LITERATURE", "name": "Mason Core Literature", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division_or_category", "label": "Arts", "receivers": [{"kind": "ge_area", "code": "MASON-CORE-ARTS", "name": "Mason Core Arts", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division_or_category", "label": "Global History", "receivers": [{"kind": "ge_area", "code": "MASON-CORE-GLOBAL-HISTORY", "name": "Mason Core Global History", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division_or_category", "label": "Social and Behavioral Sciences", "receivers": [{"kind": "ge_area", "code": "MASON-CORE-SOCIAL-BEHAVIORAL", "name": "Mason Core Social and Behavioral Sciences", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division_or_category", "label": "Global Contexts", "receivers": [{"kind": "ge_area", "code": "MASON-CORE-GLOBAL-CONTEXTS", "name": "Mason Core Global Contexts", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Upper-level elective capacity required by the university minimum",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "graduation"],
+      "sections": [
+        {"select": 1, "units": 2, "receivers": [{"kind": "requirement", "name": "At least two remaining elective credits at the 300 level or above", "units": 2}]}
+      ]
+    },
+    {
+      "title": "Remaining elective capacity",
+      "requirement_layer": "university_graduation",
+      "tier": "breadth",
+      "course_level": "elective_capacity",
+      "cc_articulable": true,
+      "source_refs": ["major", "graduation"],
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "FREE-ELECTIVE-CAPACITY", "name": "Remaining applicable elective credit", "units": 6}]}
+      ]
+    }
+  ]
+}

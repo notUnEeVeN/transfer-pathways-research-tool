@@ -8,13 +8,234 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
- "captured_at": "2026-08-02T05:59:09.237Z",
- "program_title": null,
- "total_credits": {
-  "min": 123,
-  "max": 123,
-  "raw": "123"
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science in Computer Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science Major",
+  "variant": "Computer Science major; excludes Secure Computing and Data-Centric Computing majors",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Engineering",
+  "general_education_authority": "Virginia Tech Pathways to General Education",
+  "unit_audit": {
+   "graduation_minimum": 123,
+   "modeled_units": 123,
+   "general_education_units": null,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed current university policies do not state one separate university-wide upper-division-credit minimum; prescribed upper-level major courses are not an equivalent policy declaration.",
+    "source_refs": [
+     "major",
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "rule": "At least 25 percent of degree credits must be completed at Virginia Tech; no more than 18 transfer credits may appear among the final 45 credits; no more than 50 percent of degree requirements may transfer from two-year institutions.",
+    "source_refs": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency_minimum_percent": 25,
+   "senior_residency_window_units": 45,
+   "senior_residency_transfer_units_maximum": 18,
+   "senior_residency_derived_institution_units_minimum": 27,
+   "two_year_transfer_maximum_percent": 50,
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The selected target is the broad Computer Science major under the Bachelor of Science in Computer Science, not the separately published Secure Computing or Data-Centric Computing majors.",
+   "#programcurriculumtextcontainer is the authoritative 123-credit curriculum. The same program page's #graduationrequirementstextcontainer is complementary policy content and must also be retained.",
+   "The roadmap/sample plan outside the Program Curriculum container is scheduling guidance and must not be imported as an additional requirement set.",
+   "Pathways concept credits are embedded in the program curriculum and may overlap specified major or elective requirements. Concept 7 is suspended effective fall 2025, so no independent nonoverlapping General Education total is asserted here.",
+   "The 27-credit final-block institutional minimum is the arithmetic implication of the published maximum of 18 transfer credits among the final 45, not separately quoted policy text."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "catalog_noninteractive_capture_challenge",
+    "severity": "review",
+    "message": "The live catalog program and department pages returned a JavaScript anti-bot challenge during research; use a browser-capable recapture and compare it with the current official-URL snapshot."
+   },
+   {
+    "code": "general_education_total_has_overlap_and_suspension",
+    "severity": "review",
+    "message": "Do not sum the displayed Pathways concept rows as a distinct GE block without resolving major overlap and the fall-2025 Concept 7 suspension."
+   },
+   {
+    "code": "university_upper_division_minimum_not_published",
+    "severity": "review",
+    "message": "Do not infer a universal upper-division minimum from the program's required 3000/4000/5000-level coursework."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
  },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Virginia Polytechnic Institute and State University major and degree requirements",
+   "url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
+   "requested_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:57.700Z",
+   "sha256": "5734621e7745782d5018255d94884f5a56c0351dda2e25783fdb14bb945cfcf5",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Virginia Polytechnic Institute and State University general education requirements",
+   "url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/",
+   "requested_url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/#pathwaysgeneraleducationtext",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:57.700Z",
+   "sha256": "1fd916f3737867768eec86ae07218907112c598bd1323a6d715a885402a76251",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Virginia Polytechnic Institute and State University college or school requirements",
+   "url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/",
+   "requested_url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:57.700Z",
+   "sha256": "f528785a2ea8c8a37442ed618c72c61dd9064f7781084849613631e7820e618e",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Virginia Polytechnic Institute and State University university graduation requirements",
+   "url": "https://www.registrar.vt.edu/graduation-multi-brief/graduation-policies.html",
+   "requested_url": "https://www.registrar.vt.edu/graduation-multi-brief/graduation-policies.html",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:57.700Z",
+   "sha256": "a89d241281d8d9d9676f798ce772f3dbc383556e0a7bdc49f054270971c1a0cb",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Virginia Polytechnic Institute and State University academic policies",
+   "url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/",
+   "requested_url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:57.700Z",
+   "sha256": "1fd916f3737867768eec86ae07218907112c598bd1323a6d715a885402a76251",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Virginia Polytechnic Institute and State University course descriptions and credit values",
+   "url": "https://catalog.vt.edu/course-search/",
+   "requested_url": "https://catalog.vt.edu/course-search/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T02:53:57.700Z",
+   "sha256": "3cc64422c0972d8f98279440741314669b420a50c135bb343f15ef518fb16ac2",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T02:53:57.700Z",
+ "program_title": "2026-2027 Academic Catalog",
+ "parse_error": null,
+ "total_credits": null,
  "stopped_at": null,
  "groups": [
   {
@@ -168,7 +389,8 @@
        "conjunction": "and",
        "text": "or CMDA 2005 Integrated Quantitative Sciences",
        "credits": null,
-       "indented": false
+       "indented": false,
+       "alternative_to_previous": true
       },
       {
        "codes": [
@@ -196,7 +418,8 @@
        "conjunction": "and",
        "text": "or MATH 3034 Introduction to Proofs",
        "credits": null,
-       "indented": false
+       "indented": false,
+       "alternative_to_previous": true
       }
      ]
     }
@@ -403,7 +626,8 @@
        "conjunction": "and",
        "text": "or MATH 3124 Modern Algebra",
        "credits": null,
-       "indented": false
+       "indented": false,
+       "alternative_to_previous": true
       }
      ]
     }
@@ -519,9 +743,9 @@
   {
    "title": "Pathways to General Education",
    "credits": {
-    "min": 47,
-    "max": 47,
-    "raw": "47"
+    "min": 123,
+    "max": 123,
+    "raw": "123"
    },
    "choose": null,
    "choose_credits": null,
@@ -734,7 +958,7 @@
     },
     {
      "label": null,
-     "choose": 3,
+     "choose": null,
      "credits": {
       "min": 3,
       "max": 3,
@@ -771,7 +995,8 @@
        "conjunction": "and",
        "text": "or ENGE 1414 Foundations of Engineering Practice",
        "credits": null,
-       "indented": false
+       "indented": false,
+       "alternative_to_previous": true
       },
       {
        "codes": [],
@@ -2988,7 +3213,7 @@
  "narrative": [],
  "unassigned": [],
  "validation": {
-  "verdict": "pass",
+  "verdict": "warn",
   "needs_hand_read": false,
   "checks": [
    {
@@ -3007,9 +3232,9 @@
     "detail": "121 distinct courses across 162 rows"
    },
    {
-    "severity": "pass",
-    "name": "credits_reconcile",
-    "detail": "groups sum to 123–123, stated total 123"
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
    },
    {
     "severity": "pass",
@@ -3025,12 +3250,12 @@
    "category_rows": 23,
    "distinct_courses": 121,
    "credit_span": {
-    "min": 123,
-    "max": 123,
+    "min": 199,
+    "max": 199,
     "groups_with_credits": 4
    },
-   "stated_total": "123"
+   "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:45.065Z"
+ "extracted_at": "2026-08-10T02:54:24.483Z"
 }

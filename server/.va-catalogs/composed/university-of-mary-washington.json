@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "slug": "university-of-mary-washington",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Arts and Sciences",
+  "ge_authority": "University of Mary Washington B.A./B.F.A./B.S./B.S.Ed. General Education Requirements",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["general_education", "college"]},
+    "university_graduation": {"status": "complete", "source_refs": ["graduation"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "canonical_major_path_units": 46,
+    "general_education_and_elective_capacity_units": 74,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current university-wide degree rules publish no aggregate upper-division-credit minimum. The explicit Computer Science requirements nevertheless guarantee at least 33 major credits numbered 300 or above.",
+      "source_refs": ["major", "graduation"]
+    },
+    "major_scoped_upper_division_units_minimum": 33,
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "At least 30 academic credits must be earned at UMW, at least half of the major must be earned at UMW, and at least 15 of the final 21 credits must be earned at UMW subject to the published active-duty military waiver.",
+      "source_refs": ["graduation"]
+    }
+  },
+  "modeling_notes": [
+    "The ordinary B.S. is modeled. The Cybersecurity major, Bachelor of Liberal Studies rules, accelerated Virginia Tech pathway, and suggested plan of study are excluded.",
+    "The fixed major is 36 credits, followed by a four-to-six-credit discrete-mathematics alternative and two distinct three-credit upper-level selections, for 46-48 major credits.",
+    "General Education is published as course, attribute, competency, and experience gates with overlap into the major, not as one additive credit subtotal. Those exact gates are retained as zero-increment rules, while one 74-credit capacity block closes the canonical 46-credit major path to 120 without double-counting them.",
+    "The 48-credit MATH 201 plus MATH 300 major path leaves 72 rather than 74 credits of general-education/elective capacity; the 46-credit path is the declared canonical unit path."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "general_education_nonadditive_overlap",
+      "severity": "review",
+      "message": "UMW does not publish a distinct additive General Education subtotal; course and attribute requirements can overlap the major."
+    },
+    {
+      "code": "canonical_variable_major_path",
+      "severity": "review",
+      "message": "The unit audit uses the 46-credit CPSC 284 path; the MATH 201 plus MATH 300 alternative raises the major to 48 and reduces remaining capacity by two."
+    }
+  ],
+  "course_titles": {
+    "CPSC220": "Computer Programming and Problem Solving",
+    "CPSC225": "Software Development Tools",
+    "CPSC240": "Object-oriented Analysis and Design",
+    "CPSC284": "Applied Discrete Mathematics",
+    "CPSC302": "Computer Ethics",
+    "CPSC305": "Computer Systems and Architecture",
+    "CPSC326": "Theoretical Foundations of Computing",
+    "CPSC340": "Data Structures and Algorithms",
+    "CPSC350": "Applications of Databases",
+    "CPSC405": "Operating Systems and Systems Programming",
+    "CPSC430": "Software Engineering",
+    "MATH201": "Introduction to Discrete Mathematics",
+    "MATH300": "Linear Algebra"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science major",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "46-48",
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_with_prior_major_requirements",
+          "status": "evaluator_not_implemented",
+          "description": "The 400-level CPSC/CYBR selection cannot reuse a course applied to a preceding major requirement."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPSC220", "units": 4}]},
+        {"select": 1, "units": 1, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPSC225", "units": 1}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPSC240", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC302", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC305", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC326", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC340", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC350", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC405", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC430", "units": 4}]},
+        {
+          "select": 1,
+          "units": 4,
+          "units_max": 6,
+          "label": "Discrete mathematics",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "receivers": [
+            {"kind": "course", "code": "CPSC284", "units": 4},
+            {"kind": "series", "codes": ["MATH201", "MATH300"], "units": 6}
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "label": "One unused CPSC or CYBR course numbered 400 or higher",
+          "tier": "breadth",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "analysis_constraints": [
+            {
+              "kind": "no_double_count_with_prior_major_requirements",
+              "status": "evaluator_not_implemented",
+              "description": "The selected course must not have satisfied a preceding requirement."
+            }
+          ],
+          "receivers": [
+            {"kind": "ge_area", "code": "UMW-CPSC-CYBR-400", "name": "CPSC or CYBR course numbered 400 or higher", "units": 3}
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "label": "One CPSC, CYBR, or MATH course numbered 300 or higher",
+          "tier": "breadth",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {"kind": "ge_area", "code": "UMW-CPSC-CYBR-MATH-300", "name": "CPSC, CYBR, or MATH course numbered 300 or higher", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "General Education course, attribute, and experience requirements",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "college"],
+      "note": "These are exact completion gates. Their credits draw from the capacity block below because UMW permits overlap and publishes no independent additive GE subtotal.",
+      "analysis_constraints": [
+        {
+          "kind": "overlapping_attribute_and_course_requirements",
+          "status": "evaluator_not_implemented",
+          "description": "Writing, speaking, digital, diverse/global, and major attributes can overlap other courses; the evaluator must not sum them gross."
+        },
+        {
+          "kind": "distinct_methods_categories",
+          "status": "evaluator_not_implemented",
+          "description": "The two additional Methods of Investigation courses must come from two different Methods categories."
+        },
+        {
+          "kind": "conditional_transfer_waiver",
+          "status": "evaluator_not_implemented",
+          "description": "Transfer students do not have to complete First Year Seminar; other students do."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "label": "First Year Seminar (waived for transfer students)", "receivers": [{"kind": "ge_area", "code": "UMW-GE-FSEM", "name": "First Year Seminar", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Three Writing Intensive courses", "receivers": [{"kind": "ge_area", "code": "UMW-GE-WRITING-INTENSIVE-3", "name": "Three Writing Intensive courses", "units": 0}]},
+        {"select": 1, "units": 0, "label": "One Speaking Intensive course", "receivers": [{"kind": "ge_area", "code": "UMW-GE-SPEAKING-INTENSIVE", "name": "Speaking Intensive course", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Intermediate second-language competency", "receivers": [{"kind": "ge_area", "code": "UMW-GE-LANGUAGE-201", "name": "Any 201 language course or published high-school Level IV equivalent", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Arts and Literature", "receivers": [{"kind": "ge_area", "code": "UMW-GE-ARTS-LITERATURE", "name": "Arts and Literature", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Humanities including history", "receivers": [{"kind": "ge_area", "code": "UMW-GE-HUMANITIES", "name": "Humanities including history", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Laboratory Natural Science", "receivers": [{"kind": "ge_area", "code": "UMW-GE-NATURAL-SCIENCE-LAB", "name": "Natural Science with laboratory", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Quantitative Reasoning", "receivers": [{"kind": "ge_area", "code": "UMW-GE-QUANTITATIVE-REASONING", "name": "Quantitative Reasoning", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Social Science", "receivers": [{"kind": "ge_area", "code": "UMW-GE-SOCIAL-SCIENCE", "name": "Social Science", "units": 0}]},
+        {
+          "select": 2,
+          "units": 0,
+          "label": "Two additional Methods courses from two different categories",
+          "receivers": [
+            {"kind": "ge_area", "code": "UMW-GE-ADDITIONAL-ARTS-LITERATURE", "name": "Additional Arts and Literature course", "units": 0},
+            {"kind": "ge_area", "code": "UMW-GE-ADDITIONAL-HUMANITIES", "name": "Additional Humanities course", "units": 0},
+            {"kind": "ge_area", "code": "UMW-GE-ADDITIONAL-NATURAL-SCIENCE", "name": "Additional Natural Science course", "units": 0},
+            {"kind": "ge_area", "code": "UMW-GE-ADDITIONAL-QUANTITATIVE", "name": "Additional Quantitative Reasoning course", "units": 0},
+            {"kind": "ge_area", "code": "UMW-GE-ADDITIONAL-SOCIAL-SCIENCE", "name": "Additional Social Science course", "units": 0}
+          ]
+        },
+        {"select": 1, "units": 0, "label": "Digital Intensive", "receivers": [{"kind": "ge_area", "code": "UMW-GE-DIGITAL-INTENSIVE", "name": "Digital Intensive", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Diverse and Global Perspectives", "receivers": [{"kind": "ge_area", "code": "UMW-GE-DIVERSE-GLOBAL", "name": "Diverse and Global Perspectives", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Beyond the Classroom", "receivers": [{"kind": "ge_area", "code": "UMW-GE-BEYOND-CLASSROOM", "name": "Faculty-supervised experiential learning", "units": 0}]},
+        {"select": 1, "units": 0, "label": "After Mary Washington", "receivers": [{"kind": "ge_area", "code": "UMW-GE-AFTER-MARY-WASHINGTON", "name": "After Mary Washington experience", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Writing in the Major", "receivers": [{"kind": "ge_area", "code": "UMW-GE-WRITING-IN-MAJOR", "name": "Additional Writing Intensive course in the major", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Speaking in the Major", "receivers": [{"kind": "ge_area", "code": "UMW-GE-SPEAKING-IN-MAJOR", "name": "Additional Speaking Intensive course in the major", "units": 0}]}
+      ]
+    },
+    {
+      "title": "General Education and elective capacity after the canonical major path",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "college", "graduation"],
+      "analysis_constraints": [
+        {
+          "kind": "capacity_contains_overlapping_ge_gates",
+          "status": "evaluator_not_implemented",
+          "description": "The 74-credit capacity contains all remaining GE and elective credit after the 46-credit canonical major path; zero-unit gates above constrain it without adding credits."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 74,
+          "label": "Remaining credit to the 120-credit degree minimum",
+          "receivers": [
+            {"kind": "ge_area", "code": "UMW-GE-ELECTIVE-CAPACITY", "name": "General Education and remaining elective credit", "units": 74}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "University graduation and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["graduation"],
+      "analysis_constraints": [
+        {
+          "kind": "residency_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "The 30-credit UMW minimum, half-major minimum, and 15-of-final-21 rule overlap rather than adding credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "label": "Minimum 2.0 UMW cumulative GPA", "receivers": [{"kind": "requirement", "name": "Minimum 2.0 UMW cumulative GPA", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Minimum 2.0 UMW major GPA", "receivers": [{"kind": "requirement", "name": "Minimum 2.0 UMW major GPA", "units": 0}]},
+        {"select": 1, "units": 0, "label": "At least 30 credits at UMW", "receivers": [{"kind": "requirement", "name": "At least 30 academic credits at UMW", "units": 0}]},
+        {"select": 1, "units": 0, "label": "At least half of major credits at UMW", "receivers": [{"kind": "requirement", "name": "At least half of required major credits earned at UMW", "units": 0}]},
+        {"select": 1, "units": 0, "label": "At least 15 of the final 21 credits at UMW", "receivers": [{"kind": "requirement", "name": "At least 15 of the final 21 credits earned at UMW, subject to the active-duty waiver", "units": 0}]},
+        {"select": 1, "units": 0, "label": "No more than 60 credits in one discipline", "receivers": [{"kind": "requirement", "name": "No more than 60 credits in one discipline may count toward the degree", "units": 0}]}
+      ]
+    }
+  ]
+}

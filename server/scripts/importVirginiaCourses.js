@@ -27,6 +27,7 @@ const {
 const {
   canonicalCourseCode, courseIdFor, courseKeyFor, parentIdForLanding,
 } = require('../services/virginia/courseIdentity');
+const { mergeInstitutionRows } = require('../services/virginia/institutionCohorts');
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
@@ -202,7 +203,7 @@ async function main() {
     }
   }
 
-  const institutions = [...new Map(
+  const corpusInstitutions = [...new Map(
     docs.flatMap((d) => [
       ...d.offered_by.map((n) => [n, { name: n, level: levelOf(n) }]),
       ...d.articulates_to.map((e) => [e.institution, { name: e.institution, level: levelOf(e.institution) }]),
@@ -215,6 +216,11 @@ async function main() {
     receives_count: docs.filter((d) => d.articulates_to.some((e) => e.institution === inst.name)).length,
     imported_at: new Date(),
   })).sort((a, b) => a.name.localeCompare(b.name));
+  // The equivalency corpus is broader than the public comparison cohort and
+  // does not currently emit UVA or VMI rows. Preserve every receiver, collapse
+  // known rename aliases, and persist zero-count SCHEV rows so the primary
+  // research rail is complete immediately after every refresh.
+  const institutions = mergeInstitutionRows(corpusInstitutions);
 
   log('');
   log(`courses: ${docs.length} · failed: ${failures.length}`);

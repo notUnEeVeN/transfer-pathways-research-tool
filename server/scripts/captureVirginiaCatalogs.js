@@ -52,6 +52,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { execFileSync } = require('node:child_process');
+const {
+  narrowToProgram,
+  configuredWindowContract,
+} = require('../services/virginia/catalogParse/pdf');
 
 const CAT = path.join(__dirname, '..', '.va-catalogs');
 const PAGES = path.join(CAT, 'pages');
@@ -76,6 +80,10 @@ const opts = {
 const log = (...a) => console.log('[va:capture]', ...a);
 
 const sha = (s) => createHash('sha256').update(s || '').digest('hex');
+const pdfWindowContractHash = (pdfParse = {}) => {
+  const contract = configuredWindowContract(pdfParse);
+  return contract ? sha(contract) : null;
+};
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** One in-flight request per host, spaced by HOST_DELAY_MS. */
@@ -226,20 +234,86 @@ async function browserEval(url, fn, arg) {
   }
 }
 
-async function pdfGet(url, slug, role) {
+/**
+ * A `.pdf` URL is not evidence that the response is a PDF. Catalog hosts
+ * commonly return branded HTML error/challenge pages with status 200, and
+ * `pdftotext` then leaves an empty file that looks like a catalog with no
+ * program. The PDF header is the source contract; Content-Type is retained for
+ * diagnostics but is not authoritative because several legitimate hosts serve
+ * PDFs as `application/octet-stream`.
+ */
+function validatePdfPayload(payload, contentType = '') {
+  const buffer = Buffer.isBuffer(payload) ? payload : Buffer.from(payload || []);
+  const beginsWithPdfMagic = buffer.subarray(0, 4).toString('ascii') === '%PDF';
+  return {
+    ok: beginsWithPdfMagic,
+    bytes: buffer.length,
+    content_type: contentType || null,
+    begins_with_pdf_magic: beginsWithPdfMagic,
+    reason: beginsWithPdfMagic ? null : 'response does not begin with %PDF',
+  };
+}
+
+async function pdfGet(url, slug, role, {
+  fetchImpl = fetch,
+  pagesDir = PAGES,
+  extractText = null,
+} = {}) {
   await polite(url);
-  const res = await fetch(url, { headers: { 'User-Agent': UA }, redirect: 'follow', signal: AbortSignal.timeout(120000) });
-  if (!res.ok) return { status: res.status, html: '', text: '', finalUrl: res.url };
+  const res = await fetchImpl(url, { headers: { 'User-Agent': UA }, redirect: 'follow', signal: AbortSignal.timeout(120000) });
+  const contentType = res.headers?.get?.('content-type') || '';
+  if (!res.ok) {
+    return {
+      status: res.status,
+      html: '',
+      text: '',
+      finalUrl: res.url || url,
+      pdf: null,
+      pdf_valid: false,
+      content_type: contentType || null,
+    };
+  }
   const buf = Buffer.from(await res.arrayBuffer());
-  const pdfPath = path.join(PAGES, `${slug}__${role}.pdf`);
+  const validation = validatePdfPayload(buf, contentType);
+  if (!validation.ok) {
+    return {
+      status: res.status,
+      html: '',
+      text: '',
+      finalUrl: res.url || url,
+      pdf: null,
+      pdf_valid: false,
+      pdf_bytes: validation.bytes,
+      content_type: validation.content_type,
+      error: validation.reason,
+    };
+  }
+
+  fs.mkdirSync(pagesDir, { recursive: true });
+  const pdfPath = path.join(pagesDir, `${slug}__${role}.pdf`);
   fs.writeFileSync(pdfPath, buf);
   let text = '';
+  let extractionError = null;
   try {
-    text = execFileSync('pdftotext', ['-layout', pdfPath, '-'], { maxBuffer: 128 * 1024 * 1024 }).toString();
+    const run = extractText || ((file) => execFileSync(
+      'pdftotext', ['-layout', file, '-'], { maxBuffer: 128 * 1024 * 1024 },
+    ).toString());
+    text = String(run(pdfPath) || '');
   } catch (e) {
     text = '';
+    extractionError = `pdftotext failed: ${e.message}`;
   }
-  return { status: res.status, html: '', text, finalUrl: res.url, pdf: pdfPath };
+  return {
+    status: res.status,
+    html: '',
+    text,
+    finalUrl: res.url || url,
+    pdf: pdfPath,
+    pdf_valid: true,
+    pdf_bytes: validation.bytes,
+    content_type: validation.content_type,
+    error: extractionError,
+  };
 }
 
 const transportFor = (platform) => (platform === 'acalog' ? 'browser' : platform === 'pdf' ? 'pdf' : 'http');
@@ -532,7 +606,7 @@ async function fetchOne(inst, url, role) {
  * and reports zero courses — which marked Virginia Tech's complete, correctly
  * captured requirements page as publishing nothing.
  */
-const PAGE_CODE = /[A-Z]{2,5}\s?\d{3,4}[A-Z]?(?![\dA-Za-z])/g;
+const PAGE_CODE = /[A-Z]{2,5}\s?[-–—]?\s?\d{3,4}[A-Z]?(?![\dA-Za-z])/g;
 const countCodes = (text) => new Set(String(text || '').match(PAGE_CODE) || []).size;
 
 /** A page that is really the program, not a redirect to a search box or a 404 shell. */
@@ -554,17 +628,72 @@ function looksLikeRolePage(role, text) {
   return Boolean(text && text.trim().length >= 400);
 }
 
+/** Registry-declared source roles whose bodies contain degree requirements. */
+function requirementBearingRoles(inst) {
+  const configured = inst?.degree_context?.layers?.major?.source_roles;
+  const roles = Array.isArray(configured) ? configured.filter(Boolean) : [];
+  return new Set(roles.length ? roles : ['program']);
+}
+
+/**
+ * PDF program sources are whole catalogs, so course-code density alone is not
+ * enough: four codes elsewhere in the catalog would make a nonexistent CS
+ * section look captured. A successful PDF program capture must have both a
+ * real PDF payload and a positively located CS program window.
+ */
+function assessRolePage(role, text, {
+  transport = null,
+  pdfValid = null,
+  pdfParse = null,
+  requirementBearing = role === 'program',
+} = {}) {
+  if (transport !== 'pdf') {
+    return {
+      ok: requirementBearing ? looksLikeRequirements(text) : looksLikeRolePage(role, text),
+      window: null,
+      reason: null,
+    };
+  }
+  if (pdfValid !== true) {
+    return { ok: false, window: null, reason: 'invalid PDF payload' };
+  }
+  if (!requirementBearing) {
+    return { ok: looksLikeRolePage(role, text), window: null, reason: null };
+  }
+
+  const window = narrowToProgram(text, pdfParse || {});
+  const ok = window.found === true && looksLikeRequirements(window.text);
+  return {
+    ok,
+    window,
+    reason: ok ? null : (window.reason || 'Computer Science PDF window lacks requirement evidence'),
+  };
+}
+
 /** Whether a cached capture covers every source role currently in the registry. */
 function hasEverySeedCapture(inst, cached) {
   if (!cached || cached.outcome !== 'captured') return false;
+  const configuredPdfContract = pdfWindowContractHash(inst.pdf_parse);
+  const majorRoles = requirementBearingRoles(inst);
   return (inst.seeds || []).every((seed) => (cached.pages || []).some((page) => {
     if (page.role !== seed.role) return false;
+    const requirementBearing = majorRoles.has(seed.role);
+    // Older PDF cache records did not prove either of these facts. Force one
+    // recapture rather than trusting a status/byte count that may describe an
+    // HTML error page or an unrelated course list elsewhere in the catalog.
+    if (transportFor(inst.platform) === 'pdf') {
+      if (page.pdf_valid !== true) return false;
+      if (requirementBearing && page.program_window_found !== true) return false;
+      if (requirementBearing && configuredPdfContract
+        && page.program_window_contract !== configuredPdfContract) return false;
+    }
     // Acalog program IDs change every catalog year. Discovery is authoritative
     // for this role, so a successful current program page satisfies a stale
     // seed even when the URLs differ. Stable policy-layer seeds stay exact.
     if (seed.role === 'program') return page.has_requirements === true;
     const sameUrl = page.requested_url === seed.url || page.final_url === seed.url;
     if (!sameUrl) return false;
+    if (requirementBearing) return page.has_requirements === true;
     // `has_content` is new. The byte/status fallback keeps older complete
     // captures reusable instead of forcing a refresh just for metadata.
     return page.has_content === true
@@ -608,6 +737,7 @@ async function captureInstitution(inst, index) {
 
   const tried = new Set();
   const attempts = new Map();
+  const majorRoles = requirementBearingRoles(inst);
   for (const t of targets) {
     // Discovery can queue several fallbacks for the program page. Once one
     // succeeds, skip only those fallbacks; continue through the GE, college,
@@ -618,7 +748,14 @@ async function captureInstitution(inst, index) {
     let r;
     try { r = await fetchOne(inst, t.url, t.role); } catch (e) { r = { status: 0, html: '', text: '', error: e.message }; }
     const body = r.text || '';
-    const ok = looksLikeRolePage(t.role, body);
+    const requirementBearing = majorRoles.has(t.role);
+    const assessment = assessRolePage(t.role, body, {
+      transport: r.transport || out.transport,
+      pdfValid: r.pdf_valid,
+      pdfParse: inst.pdf_parse,
+      requirementBearing,
+    });
+    const ok = assessment.ok;
     // Several attempts can share a role (program page, then degree planner,
     // then the seed). Each gets its own file so a later failure cannot
     // overwrite an earlier success on disk.
@@ -636,12 +773,26 @@ async function captureInstitution(inst, index) {
       transport: r.transport || out.transport,
       bytes_html: (r.html || '').length,
       bytes_text: body.length,
+      bytes_pdf: r.pdf_bytes || null,
       sha256: sha(body),
       distinct_codes: countCodes(body),
       has_content: ok,
-      has_requirements: t.role === 'program' ? ok : null,
+      has_requirements: requirementBearing ? ok : null,
+      pdf_valid: r.pdf_valid ?? null,
+      content_type: r.content_type || null,
+      program_window_found: assessment.window ? assessment.window.found : null,
+      program_window_mode: assessment.window ? assessment.window.mode || null : null,
+      program_window_contract: assessment.window && assessment.window.contract
+        ? sha(assessment.window.contract)
+        : null,
+      program_window_lines: assessment.window ? assessment.window.lines : null,
+      program_window_start_page: assessment.window ? assessment.window.start_page : null,
+      program_window_end_page: assessment.window ? assessment.window.end_page : null,
+      program_window_evidence: assessment.window ? assessment.window.evidence || null : null,
+      program_window_missing_evidence: assessment.window ? assessment.window.missing_evidence || [] : null,
+      program_window_reason: assessment.window ? assessment.window.reason : null,
       file: r.html || body ? file : null,
-      error: r.error || null,
+      error: r.error || assessment.reason || null,
     });
     if (ok && t.role === 'program') out.outcome = 'captured';
   }
@@ -683,7 +834,8 @@ async function captureInstitution(inst, index) {
   // `no_cs_program` is a finding about the institution.
   if (out.outcome !== 'captured') {
     const anyPage = out.pages.some((p) => p.bytes_text > 0);
-    const anyBlocked = out.pages.some((p) => p.status === 202 || p.status === 403 || p.status === 0);
+    const anyBlocked = out.pages.some((p) => p.status === 202 || p.status === 403 || p.status === 0
+      || (p.transport === 'pdf' && Boolean(p.error)));
     // An Acalog run that read no nav pages searched nothing. Calling that
     // "no CS program" would be inventing a finding out of a network failure.
     const searchedNothing = inst.platform === 'acalog'
@@ -741,6 +893,11 @@ if (require.main === module) main().catch((error) => {
 module.exports = {
   countCodes,
   hasEverySeedCapture,
+  assessRolePage,
   looksLikeRequirements,
   looksLikeRolePage,
+  pdfWindowContractHash,
+  pdfGet,
+  requirementBearingRoles,
+  validatePdfPayload,
 };

@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "slug": "paul-d-camp-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science (Plan 246)",
+  "award": "AS",
+  "program_code": "246",
+  "cip_code": "11.0701",
+  "effective_term": "Fall 2024",
+  "total_units": 61,
+  "total_units_max": 61,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "graduation"
+  ],
+  "excluded_variants": [
+    "General Studies - Specialization in Computer Science, A.A.&S., plan 697-02 teachout"
+  ],
+  "course_titles": {
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "MTH161": "Pre-Calculus I",
+    "MTH162": "Pre-Calculus II",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH245": "Statistics I",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CSC205": "Computer Organization",
+    "CSC208": "Introduction to Discrete Structures",
+    "CST100": "Principles of Public Speaking",
+    "SDV100": "College Success Skills"
+  },
+  "unit_audit": {
+    "published_program_units": 61,
+    "printed_term_subtotals_units": 62,
+    "modeled_units": 61,
+    "closure_basis": "The required course rows and six published category slots sum to 61 when the MTH 264/MTH 245 row is modeled at the four credits printed in the program table.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of degree credits must be acquired at Camp.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_program_gpa": 2
+  },
+  "modeling_notes": [
+    "This artifact models the current Computer Science A.S., plan 246, effective Fall 2024. It excludes the adjacent plan 697-02 General Studies teachout, whose final completion deadline is Spring 2027.",
+    "The published course rows and category slots close to 61 credits. The catalog nevertheless prints 17 for a first term whose rows total 16, making its four printed term subtotals total 62; both figures remain in the unit audit.",
+    "The MTH 264/MTH 245 slot is retained at the four credits printed by the degree table. MTH 245 is ordinarily a three-credit VCCS course, so that alternative remains an explicit review constraint rather than being silently repaired.",
+    "The two humanities selections are represented as one six-credit category with the catalog's cross-subgroup restriction. The UCGS and TransferVA science menus remain source-owned categories because the program page does not print a closed course list."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "catalog_credit_arithmetic_conflict",
+      "severity": "block",
+      "message": "The required rows and slots total 61, the first-term rows total 16 although its subtotal says 17, and the four printed term subtotals total 62."
+    },
+    {
+      "code": "variable_credit_alternative_conflict",
+      "severity": "review",
+      "message": "The degree table assigns four credits to the MTH 264/MTH 245 slot although MTH 245 is ordinarily three credits."
+    },
+    {
+      "code": "legacy_teachout_excluded",
+      "severity": "review",
+      "message": "Plan 697-02 is a discontinued General Studies A.A.&S. teachout and is not part of this plan-246 composition."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Computer science requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC205"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"]]}]}
+      ]
+    },
+    {
+      "title": "Written communication",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "Precalculus and Calculus I",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["MTH161"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["MTH162"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus II or Statistics I",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "units_max": 4,
+          "label": "The degree table prints this alternative as a four-credit slot",
+          "note": "MTH 245 is ordinarily three credits; no compensating credit is stated on the program page.",
+          "analysis_constraints": [
+            {
+              "kind": "alternative_course_credit_mismatch",
+              "status": "evaluator_not_implemented",
+              "description": "The evaluator cannot yet reconcile the table's four-credit slot with the ordinary three-credit value of MTH 245."
+            }
+          ],
+          "receivers": [{"kind": "cc_course", "options": [["MTH264"], ["MTH245"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Oral communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CST100"]]}]}
+      ]
+    },
+    {
+      "title": "College success",
+      "source_refs": ["major", "graduation"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"]]}]}
+      ]
+    },
+    {
+      "title": "Humanities, art, and literature",
+      "source_refs": ["major", "general_education"],
+      "ge_area": "camp_ucgs_humanities_art_literature",
+      "units": 6,
+      "distinct_areas": 2,
+      "note": "Complete two three-credit selections. They cannot come from the same humanities subgroup; if one is a humanities course, the other cannot be another humanities course. Some transfer universities require literature in the second year."
+    },
+    {
+      "title": "UCGS social science",
+      "source_refs": ["major", "general_education"],
+      "ge_area": "camp_ucgs_social_science",
+      "units": 3
+    },
+    {
+      "title": "UCGS history",
+      "source_refs": ["major", "general_education"],
+      "ge_area": "camp_ucgs_history",
+      "units": 3
+    },
+    {
+      "title": "UCGS natural science",
+      "source_refs": ["major", "general_education"],
+      "ge_area": "camp_ucgs_natural_science",
+      "units": 4
+    },
+    {
+      "title": "TransferVA-approved science",
+      "source_refs": ["major", "general_education"],
+      "ge_area": "camp_transferva_approved_science",
+      "units": 4,
+      "note": "The program footnote says PHY 202 should be considered only for B.A. Computer Science transfer paths; it is guidance within this science category, not an additional required course."
+    }
+  ]
+}

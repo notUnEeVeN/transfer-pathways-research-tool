@@ -8,8 +8,244 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424&print=1",
- "captured_at": "2026-08-02T05:53:56.528Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S. (required emphasis variant)",
+  "variant": null,
+  "program_selection_status": "manual_selection_required",
+  "academic_unit": "Computer Science program",
+  "college": "School of Sciences and Agriculture",
+  "general_education_authority": "Ferrum College General Education Curriculum",
+  "variants": [
+   {
+    "name": "Cybersecurity",
+    "program_title": "Computer Science, Cybersecurity, B.S.",
+    "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3062&returnto=1424"
+   },
+   {
+    "name": "Network",
+    "program_title": "Computer Science, Network, B.S.",
+    "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424"
+   },
+   {
+    "name": "Programming",
+    "program_title": "Computer Science, Programming, B.S.",
+    "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3063&returnto=1424"
+   },
+   {
+    "name": "Web Design",
+    "program_title": "Computer Science, Web Design, B.S.",
+    "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3061&returnto=1424"
+   }
+  ],
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": null,
+   "general_education_units": 30,
+   "shared_computer_science_core_units": 36,
+   "required_emphasis_units": 24,
+   "program_units": 60,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed current sources say students must meet College and major upper-level rules but do not publish one aggregate numeric college-wide minimum.",
+    "source_refs": [
+     "major",
+     "graduation",
+     "policy"
+    ]
+   },
+   "residency": {
+    "status": "partially_stated",
+    "minimum_units": null,
+    "rule": "At least 25 percent of the hours required for each major and minor must be completed at Ferrum; no separate degree-wide Ferrum-credit minimum was found in the reviewed current pages.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "major_residency_percent_minimum": 25
+  },
+  "modeling_notes": [
+   "The current catalog has no unqualified Computer Science B.S. It publishes four separately named 60-credit emphasis awards; the Programming seed is a representative current capture target and does not resolve which variant the product should model.",
+   "Do not merge the four 24-credit emphasis blocks. Each combines with the shared 36-credit core as a distinct 60-credit program.",
+   "Ferrum eight-semester plans are prospective schedules and must not supply or duplicate categorical requirements."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "required_variant_not_selected",
+    "severity": "blocker",
+    "message": "A source-backed neutral Computer Science B.S. does not exist; select Cybersecurity, Network, Programming, or Web Design before analysis."
+   },
+   {
+    "code": "degree_wide_residency_not_published",
+    "severity": "review",
+    "message": "The current catalog states a 25-percent major/minor rule but no separate degree-wide institutional-credit minimum in the reviewed pages."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Ferrum College major and degree requirements",
+   "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424&print=1",
+   "requested_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3064&returnto=1424&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:15:42.182Z",
+   "sha256": "e227331fa41313aa9962c3696ef82b41b6b499c19b6cec5d7c64b9d852038fae",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Ferrum College general education requirements",
+   "url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3054",
+   "requested_url": "https://ferrum.catalog.acalog.com/preview_program.php?catoid=25&poid=3054",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:15:42.182Z",
+   "sha256": "830611b52dcf5774b4793bd2e7a1958b9da4f23cf76578453d79ca0996c0a881",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Ferrum College college or school requirements",
+   "url": "https://www.ferrum.edu/academics/academic-schools/",
+   "requested_url": "https://www.ferrum.edu/academics/academic-schools/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:15:42.182Z",
+   "sha256": "aa430c1b2f8776e76bfaa97f5bc0c633aa8e48b6fb61492a32d66983e9402eb7",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Ferrum College university graduation requirements",
+   "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1418",
+   "requested_url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1418",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:15:42.182Z",
+   "sha256": "e4521082154c325fff5a0d9ceb08d7e8e58b3cdccd2e67e72fb88d9fbc676594",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Ferrum College academic policies",
+   "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1440",
+   "requested_url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1440",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:15:42.182Z",
+   "sha256": "db8c2fd7d9e54b70dfeb9df4687b7a7d35a1a2c8ab514bc632df7ad5961bd63f",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Ferrum College course descriptions and credit values",
+   "url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1422",
+   "requested_url": "https://ferrum.catalog.acalog.com/content.php?catoid=25&navoid=1422",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:15:42.182Z",
+   "sha256": "8825b6548e9caf2d081432f9e862e936cfc9a0a33d47c03bc21ae3a5daddcc1a",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:15:42.182Z",
  "program_title": "Computer Science, Network, B.S.",
+ "parse_error": null,
  "total_credits": null,
  "stopped_at": null,
  "groups": [
@@ -427,5 +663,5 @@
    "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.830Z"
+ "extracted_at": "2026-08-10T03:21:26.526Z"
 }

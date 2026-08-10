@@ -8,8 +8,234 @@
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=1982&print=1",
- "captured_at": "2026-08-02T05:57:16.365Z",
+ "catalog_year": "2025-2026",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2025-2026",
+  "program": "Computer Science (B.S.)",
+  "variant": "Standard Computer Science B.S.",
+  "academic_unit": "Computer Science program",
+  "college": "Division of Advanced Technology",
+  "general_education_authority": "Shenandoah University ShenEd Curriculum",
+  "excluded_variants": [
+   "Cybersecurity B.S.",
+   "Information Technology B.S.",
+   "Computer Science minor"
+  ],
+  "capture_exclusions": [
+   {
+    "heading": "Course Map",
+    "reason": "Prospective year-by-year schedule; categorical requirements end before this heading."
+   }
+  ],
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": null,
+   "published_fixed_cs_and_math_units": 43,
+   "required_mathematics_elective_units": 6,
+   "required_upper_level_cs_or_data_elective_units": 6,
+   "computed_major_units": 55,
+   "general_education_units": 30,
+   "upper_division": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 30 degree credits must be at or above the 300 level.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 30,
+    "rule": "At least 25 percent of the 120-credit degree must be earned at Shenandoah, and 24 of the final 30 credits must be earned there subject to the catalog's articulation treatment.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "final_thirty_resident_units_minimum": 24,
+   "minimum_cumulative_gpa": 2
+  },
+  "modeling_notes": [
+   "The current undergraduate catalog is 2025-2026; no 2026-2027 undergraduate catalog is listed in the current selector.",
+   "The printed 43-credit figure covers only the fixed computer science and mathematics list. Add the separately required six mathematics elective credits and six upper-level CSC/DATA elective credits for a computed 55-credit major audit.",
+   "The Course Map is a prospective schedule on the same page and must be excluded by heading boundary.",
+   "The current catalog owner is the Division of Advanced Technology; do not infer ownership from the older public-facing /arts/ URL."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "published_subtotal_excludes_required_electives",
+    "severity": "review",
+    "message": "The printed 43-credit fixed-course total excludes 12 separately required elective credits."
+   },
+   {
+    "code": "prospective_course_map_on_requirement_page",
+    "severity": "blocker",
+    "message": "Stop extraction at the Course Map heading so year/term schedule rows do not become additional requirements."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "program",
+     "graduation"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Shenandoah University major and degree requirements",
+   "url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=1982&print=1",
+   "requested_url": "https://catalog.su.edu/preview_program.php?catoid=33&poid=5244&returnto=1982&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:18:40.315Z",
+   "sha256": "9fa49f2a3bad0878d7882d19eee87392b8b026b0328b902abe4c1182ba7074dc",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Shenandoah University general education requirements",
+   "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975#General_Education_Curriculum",
+   "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975#General_Education_Curriculum",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:18:40.315Z",
+   "sha256": "ab924b19e7fcd05720480d5c84864ec8f1cb3a2b8dd40f92d0c709ca0ba823bb",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Shenandoah University college or school requirements",
+   "url": "https://catalog.su.edu/content.php?catoid=33&navoid=2014",
+   "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=2014",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:18:40.315Z",
+   "sha256": "f7a7ee206c03ef5c866d6ff7dd9bc19dd41a93c67e8703b753ea24406642e8a3",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Shenandoah University university graduation requirements",
+   "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975#Requirements_for_Degrees",
+   "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1975#Requirements_for_Degrees",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:18:40.315Z",
+   "sha256": "ab924b19e7fcd05720480d5c84864ec8f1cb3a2b8dd40f92d0c709ca0ba823bb",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Shenandoah University academic policies",
+   "url": "https://catalog.su.edu/content.php?catoid=33&navoid=2006",
+   "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=2006",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:18:40.315Z",
+   "sha256": "34b56d9b32d1ad215fb8eeef643bb50f0dd22734886c8b8379cc7a68751abb8e",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Shenandoah University course descriptions and credit values",
+   "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985",
+   "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T03:18:40.315Z",
+   "sha256": "ad2d692656519c8cfd4ebbd1f3f52c1d21949cd708db21244204eb80dace4aee",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "graduation"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T03:18:40.315Z",
  "program_title": "Computer Science (B.S.)",
+ "parse_error": null,
  "total_credits": null,
  "stopped_at": null,
  "groups": [
@@ -840,5 +1066,5 @@
    "stated_total": null
   }
  },
- "extracted_at": "2026-08-02T06:13:44.966Z"
+ "extracted_at": "2026-08-10T03:21:26.602Z"
 }
