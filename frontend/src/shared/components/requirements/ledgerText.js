@@ -47,6 +47,16 @@ export function unitText(min, max) {
 // it's a choice; plain "Complete:" when you need them all (covers the single-
 // course case too — same phrasing either way).
 export function sectionRule(section, group, receivers, soleStat, pooled) {
+  // A section whose receivers are all series is a block: you complete the
+  // sequence, and the unit total is a consequence of that rather than the
+  // instruction. "Complete 23 units of:" over a named series invites the reader
+  // to mix courses until they reach 23, which is the one thing a series forbids
+  // — and it hides that the alternatives differ in length. Series phrasing wins
+  // over the units branch; everything else is unchanged.
+  const allSeries = receivers.length > 0 && receivers.every((r) => r.receiving?.kind === 'series')
+  if (allSeries) {
+    return receivers.length === 1 ? 'Complete this series:' : `Complete all ${receivers.length} series:`
+  }
   if (section.unit_advisement) return `Complete ${section.unit_advisement} units of:`
 
   // A GE category receiver is one placeholder for many catalog courses. Its
