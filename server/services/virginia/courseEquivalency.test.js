@@ -133,6 +133,20 @@ describe('crossCheck', () => {
     ]);
   });
 
+  it('compares every target when one university has multiple receiving courses', () => {
+    const r = crossCheck([
+      of('A', [['GMU', 'EVPP108'], ['GMU', 'EVPP109']]),
+      of('B', [['GMU', 'EVPP109']]),
+    ]);
+    expect(r).toMatchObject({ checked: 2, consistent: false });
+    expect(r.conflicts).toEqual([{
+      type: 'missing_target',
+      institution: 'GMU',
+      in: 'B',
+      identifier: 'EVPP108',
+    }]);
+  });
+
   it('cannot check a single rendering, and says so rather than claiming agreement', () => {
     expect(crossCheck([of('A', [['JMU', 'CS149']])])).toMatchObject({ checked: 1, conflicts: [] });
   });

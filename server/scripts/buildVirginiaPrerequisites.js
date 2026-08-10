@@ -18,12 +18,12 @@
  */
 const fs = require('node:fs');
 const path = require('node:path');
-const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
 const {
   VccsCourseClient,
   normalizeCode,
 } = require('../services/virginia/vccsCourse');
+const { courseIdFor } = require('../services/virginia/courseIdentity');
 
 const REPO = path.resolve(__dirname, '..', '..');
 const DEFAULT_SCOPE = path.join(__dirname, '..', '.va-degrees', 'cs_course_scope.json');
@@ -38,13 +38,6 @@ const DEFAULT_CACHE = path.join(__dirname, '..', '.va-prerequisites-cache');
 const DEFAULT_CONCEPTS = path.join(REPO, 'scripts', 'data', 'prereq_concepts.json');
 const DEFAULT_COURSE_OUTPUT = path.join(REPO, 'scripts', 'data', 'va_course_concepts.json');
 const DEFAULT_REQUISITE_OUTPUT = path.join(REPO, 'scripts', 'data', 'va_course_requisites.json');
-const VA_ID_BASE = 900000000;
-
-function courseIdFor(code) {
-  const hash = createHash('sha1').update(`va:${normalizeCode(code)}`).digest();
-  return VA_ID_BASE + (hash.readUInt32BE(0) % 0x0fffffff);
-}
-
 function valueAfter(argv, flag, fallback = null) {
   const index = argv.indexOf(flag);
   return index >= 0 && argv[index + 1] && !argv[index + 1].startsWith('--')

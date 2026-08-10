@@ -82,9 +82,18 @@ function rowFrom($, tr) {
   // word boundary between `0` and `o` and silently reports a required pair
   // instead of a choice.
   const codeText = clean(codeCell.text());
+  const alternativeToPrevious = /(?:^|\s)orclass(?:\s|$)/i.test($(tr).attr('class') || '')
+    || /^or\b/i.test(codeText);
   const orIndent = codeCell.find('div.blockindent').toArray()
     .some((d) => /^or\b/i.test(clean($(d).text())));
-  const conjunction = codes.length > 1 && (orIndent || /or\s+[A-Z]{2,5}\s?\d{3}/.test(codeText)) ? 'or' : 'and';
+  // A leading `or` relates this whole row to the preceding row. It does not
+  // describe the relationship among codes inside this row. GMU, for example,
+  // prints `CS 112` followed by `or CS 108 & CS 109`: the second row is an
+  // alternative, but its two courses are a required pair.
+  const withinRowText = codeText.replace(/^or\b\s*/i, '');
+  const hasAnd = /(?:&|\band\b)/i.test(withinRowText);
+  const hasOr = orIndent || /or\s+[A-Z]{2,5}\s?\d{3}/i.test(withinRowText);
+  const conjunction = codes.length > 1 && !hasAnd && hasOr ? 'or' : 'and';
 
   return {
     codes: codes.map((code, i) => ({
@@ -95,6 +104,7 @@ function rowFrom($, tr) {
     text: clean(`${codeText} ${clean(titleCell.text())}`),
     credits: parseCredits(hours),
     indented: codeCell.find('div.blockindent').length > 0 && codeCell.children('a.code').length === 0,
+    ...(alternativeToPrevious ? { alternative_to_previous: true } : {}),
   };
 }
 
@@ -106,9 +116,79 @@ function commentRow($, tr) {
   return { text, credits: parseCredits(hours) };
 }
 
-function parseCourseLeafProgram(html, { programTitle = null } = {}) {
+function parseCourseLeafProgram(html, {
+  programTitle = null,
+  requirementsSelector = null,
+  excludeSelectors = [],
+  excludePlanGridsWhenCourseLists = false,
+} = {}) {
   const $ = cheerio.load(html || '');
   $('script, style, noscript').remove();
+  const resolvedProgramTitle = programTitle == null
+    ? clean($('h1').first().text()) || null
+    : programTitle;
+
+  const emptyTree = (parseError) => ({
+    program_title: resolvedProgramTitle,
+    total_credits: null,
+    groups: [],
+    stopped_at: null,
+    narrative: [],
+    unassigned: [],
+    parse_error: parseError,
+  });
+
+  // CourseLeaf program pages may publish several sibling tabs in the same
+  // HTML document: the base degree, a four-year plan, honors, and one or more
+  // accelerated master's variants. When the base requirements container is
+  // present it is authoritative; walking the whole page would append every
+  // sibling variant to the degree. NOVA is the important inverse case: it has
+  // no requirements tab and publishes its official A.S. structure in the
+  // program-of-study container, so keep that container as the explicit
+  // fallback when it carries a plan grid.
+  let scope;
+  if (requirementsSelector) {
+    try {
+      scope = $(requirementsSelector).first();
+    } catch (error) {
+      return emptyTree({
+        code: 'configured_scope_invalid',
+        selector: requirementsSelector,
+        message: error.message,
+      });
+    }
+    // A configured selector is an assertion about the authoritative source,
+    // not a hint. Falling back to the document root here would silently mix a
+    // sample plan or accelerated variant into the base degree.
+    if (!scope.length) {
+      return emptyTree({ code: 'configured_scope_missing', selector: requirementsSelector });
+    }
+  } else {
+    const requirementsContainer = $('#requirementstextcontainer').first();
+    const programOfStudyContainer = $('#programofstudytextcontainer').first();
+    scope = requirementsContainer.length
+      ? requirementsContainer
+      : programOfStudyContainer.find('table.sc_plangrid').length
+        ? programOfStudyContainer
+        : $.root();
+  }
+
+  for (const selector of Array.isArray(excludeSelectors) ? excludeSelectors : []) {
+    if (!selector) continue;
+    try {
+      scope.find(selector).remove();
+    } catch (error) {
+      return emptyTree({ code: 'configured_exclusion_invalid', selector, message: error.message });
+    }
+  }
+
+  // On configured four-year pages, a categorical requirement list is the
+  // authority and a plan grid is only a sample schedule. NOVA deliberately
+  // does not set this option: its program-of-study grid is the only official
+  // requirement structure and must remain parseable.
+  if (excludePlanGridsWhenCourseLists && scope.find('table.sc_courselist').length) {
+    scope.find('table.sc_plangrid').remove();
+  }
 
   // A four-year CourseLeaf page is tabbed: curriculum, graduation requirements,
   // and a term-by-term *roadmap* that restates the whole degree. The roadmap is
@@ -117,14 +197,23 @@ function parseCourseLeafProgram(html, { programTitle = null } = {}) {
   // carries a real requirement tab. When the roadmap is all there is (the
   // community-college plan grids), it is kept, because then it is the
   // requirements.
-  const roadmap = $('[id*="roadmap" i]');
+  const roadmap = scope.find('[id*="roadmap" i]');
   if (roadmap.length) {
-    const outside = $('table.sc_courselist').filter((_, t) => $(t).closest('[id*="roadmap" i]').length === 0);
+    const outside = scope.find('table.sc_courselist').filter((_, t) => $(t).closest('[id*="roadmap" i]').length === 0);
     if (outside.length) roadmap.remove();
   }
 
   const groups = [];
-  let total = null;
+  // Some CourseLeaf installs state the degree total in an introductory line
+  // rather than in a table (`Total credits: 120`). Read only prose outside the
+  // requirement tables so a group's listsum cannot masquerade as this value.
+  const introductory = scope.clone();
+  introductory.find('table').remove();
+  const introductoryTotal = TOTAL_LINE.exec(clean(introductory.text()));
+  const introductoryCredits = introductoryTotal
+    ? introductoryTotal.slice(1).find((value) => value != null)
+    : null;
+  let total = introductoryCredits ? parseCredits(introductoryCredits) : null;
   let current = null;
   let pendingHeading = null;
 
@@ -140,7 +229,7 @@ function parseCourseLeafProgram(html, { programTitle = null } = {}) {
   // elective menus that way — `<p><strong>Statistics Elective.</strong>` above
   // the list — rather than with a real heading tag. Without it every menu on
   // the page comes through titled "Requirements".
-  const nodes = $('h1, h2, h3, h4, strong, table.sc_plangrid, table.sc_courselist').toArray();
+  const nodes = scope.find('h1, h2, h3, h4, strong, table.sc_plangrid, table.sc_courselist').toArray();
   for (const node of nodes) {
     const tag = node.tagName ? node.tagName.toLowerCase() : '';
 
@@ -168,7 +257,10 @@ function parseCourseLeafProgram(html, { programTitle = null } = {}) {
         open(clean($tr.text()), null);
         return;
       }
-      // Sum rows. `Subtotal` is the group's; `Total Credits` is the degree's.
+      // Sum rows. `Subtotal` is the group's; `Total Credits` is the degree's
+      // only in a plan grid. A sc_courselist is one requirement group, so its
+      // `listsum` is that owning group's stated credits even though CourseLeaf
+      // labels the row "Total Credits" (GMU prints 32, 12, etc. this way).
       // CourseLeaf marks them with a class at some institutions and with the
       // label alone at others (Virginia Tech prints `Subtotal` in an ordinary
       // row), so both signals are read. Getting this backwards is not a small
@@ -180,6 +272,11 @@ function parseCourseLeafProgram(html, { programTitle = null } = {}) {
       if (isSumRow) {
         const hours = parseCredits(clean($tr.find('td.hourscol').first().text()));
         if (!hours) return;
+        if (!isPlanGrid && /listsum/.test(cls)) {
+          if (!current) open(pendingHeading || 'Requirements', null);
+          current.credits = hours;
+          return;
+        }
         const isDegreeTotal = /^total\b/i.test(sumLabel) && !/^sub/i.test(sumLabel);
         if (isDegreeTotal) {
           // The largest stated total is the degree's; a program that prints
@@ -200,13 +297,23 @@ function parseCourseLeafProgram(html, { programTitle = null } = {}) {
         const totalMatch = TOTAL_LINE.exec(text);
         if (totalMatch && !total) { total = parseCredits(totalMatch[1]); return; }
         if (INSTRUCTION.test(text)) {
-          // Opens a choice section; the hours column carries its credit ask.
+          // Course-count and credit advisements are independent. A credit-only
+          // instruction (`Select 6 credits`) must not become choose-one merely
+          // because it opens a new section; its unit ask can be stated in the
+          // prose or, as GMU does for electives, in the hours column.
           const parsed = parseInstruction(text) || {};
           const section = lastSection(current);
           const target = section.rows.length ? { label: null, choose: null, credits: null, rows: [] } : section;
           if (target !== section) current.sections.push(target);
-          target.choose = parsed.courses != null ? parsed.courses : 1;
-          if (credits) target.credits = credits;
+          // `Students must complete 8 elective credits` separates the number
+          // from its unit, so the shared parser can initially read 8 as a
+          // course count. On CourseLeaf the matching hours cell disambiguates
+          // it; retain real counts such as `Select one`, whose prose does not
+          // describe credits.
+          const hoursDisambiguateCredits = parsed.credits == null && credits
+            && /\b(?:credits?|credit\s+hours?|semester\s+hours?)\b/i.test(text);
+          target.choose = hoursDisambiguateCredits ? null : parsed.courses ?? null;
+          target.credits = parsed.credits || credits || null;
           if (parsed.distinct_sections != null) current.distinct_sections = parsed.distinct_sections;
           current.note = current.note ? `${current.note} ${text}` : text;
           current.source_text.push(text);
@@ -234,7 +341,7 @@ function parseCourseLeafProgram(html, { programTitle = null } = {}) {
   for (const g of groups) g.sections = g.sections.filter((s) => s.rows.length || s.choose != null || s.credits);
 
   return {
-    program_title: programTitle,
+    program_title: resolvedProgramTitle,
     total_credits: total,
     groups: groups.filter((g) => g.sections.length),
     stopped_at: null,

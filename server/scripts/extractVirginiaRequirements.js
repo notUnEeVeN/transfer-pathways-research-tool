@@ -31,6 +31,11 @@ const { parseTextProgram } = require('../services/virginia/catalogParse/lines');
 const { parseCourseLeafProgram } = require('../services/virginia/catalogParse/courseleaf');
 const { validateTree } = require('../services/virginia/catalogParse/validate');
 const { narrowToProgram } = require('../services/virginia/catalogParse/pdf');
+const {
+  buildLayerCoverage,
+  buildSourceRegistry,
+  extractCatalogYear,
+} = require('../services/virginia/catalogSources');
 
 const CAT = path.join(__dirname, '..', '.va-catalogs');
 const PAGES = path.join(CAT, 'pages');
@@ -82,7 +87,17 @@ async function loadKnownCodes() {
 /** CourseLeaf keeps its structure in markup; everything else is read as text. */
 function parseFor(institution, page, files) {
   if (institution.platform === 'courseleaf' && files.html) {
-    const tree = parseCourseLeafProgram(files.html, { programTitle: page.title || null });
+    const configured = institution.courseleaf_parse || {};
+    const tree = parseCourseLeafProgram(files.html, {
+      programTitle: page.title || null,
+      requirementsSelector: configured.requirements_selector || null,
+      excludeSelectors: configured.exclude_selectors || [],
+      excludePlanGridsWhenCourseLists: configured.exclude_plan_grids_when_course_lists === true,
+    });
+    // A missing configured scope is a source-contract failure. Keep its empty
+    // tree and marker so validation blocks it; falling through to the flat text
+    // parser would hide the stale selector and may ingest sibling plan tabs.
+    if (tree.parse_error) return { tree, parser: 'courseleaf' };
     // A CourseLeaf page that yields nothing is usually a department page served
     // from the catalog host — fall back rather than reporting an empty degree.
     if (tree.groups.length) return { tree, parser: 'courseleaf' };
@@ -99,6 +114,26 @@ function parseFor(institution, page, files) {
   return { tree: parseTextProgram(files.text, { programTitle: page.title || null }), parser: 'lines' };
 }
 
+/** Official-source registry and layer coverage retained beside every tree. */
+function sourceContext(institution, capture) {
+  const sources = buildSourceRegistry(institution, capture);
+  const texts = ((capture && capture.pages) || []).map((page) => {
+    if (!page.file) return '';
+    const file = path.join(PAGES, `${page.file}.txt`);
+    return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+  });
+  const configured = institution.degree_context || {};
+  const catalogYear = configured.catalog_year
+    || texts.map(extractCatalogYear).find(Boolean)
+    || null;
+  return {
+    catalog_year: catalogYear,
+    degree_context: { ...configured, catalog_year: catalogYear },
+    sources,
+    source_layers: buildLayerCoverage(institution, sources),
+  };
+}
+
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
   const registry = JSON.parse(fs.readFileSync(path.join(CAT, 'institutions.json'), 'utf8'));
@@ -112,6 +147,7 @@ function parseFor(institution, page, files) {
   for (const inst of list) {
     const captured = index[inst.slug];
     const outFile = path.join(OUT, `${inst.slug}.json`);
+    const context = sourceContext(inst, captured);
 
     if (fs.existsSync(outFile) && !opts.force) {
       const existing = JSON.parse(fs.readFileSync(outFile, 'utf8'));
@@ -133,6 +169,7 @@ function parseFor(institution, page, files) {
         source_url: captured && captured.pages && captured.pages[0] ? captured.pages[0].final_url : (inst.seeds[0] || {}).url || inst.catalog_root,
         offers_cs: outcome === 'no_cs_program' ? false : null,
         program_title: null,
+        ...context,
         total_credits: null,
         groups: [],
         validation: { verdict: 'n/a', needs_hand_read: outcome !== 'no_cs_program', checks: [], stats: {} },
@@ -169,8 +206,10 @@ function parseFor(institution, page, files) {
       outcome: 'captured',
       offers_cs: true,
       source_url: page.final_url,
+      ...context,
       captured_at: captured.captured_at,
       program_title: tree.program_title || (captured.discovery && captured.discovery.title) || null,
+      parse_error: tree.parse_error || null,
       total_credits: tree.total_credits,
       stopped_at: tree.stopped_at,
       groups: tree.groups,

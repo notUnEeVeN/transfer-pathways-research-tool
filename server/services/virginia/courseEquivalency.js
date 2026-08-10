@@ -133,20 +133,55 @@ function crossCheck(parsed) {
   if (usable.length < 2) return { checked: usable.length, consistent: true, conflicts: [] };
   const keyed = usable.map((p) => {
     const m = new Map();
-    for (const e of p.equivalencies) if (e.level === 'four_year') m.set(e.institution, e.identifier);
+    for (const e of p.equivalencies) {
+      if (e.level !== 'four_year') continue;
+      if (!m.has(e.institution)) m.set(e.institution, new Set());
+      m.get(e.institution).add(e.identifier);
+    }
     return { institution: p.institution, map: m };
   });
   const [base, ...rest] = keyed;
   const conflicts = [];
   for (const other of rest) {
-    for (const [inst, id] of other.map) {
-      if (!base.map.has(inst)) conflicts.push({ type: 'extra', institution: inst, in: other.institution, identifier: id });
-      else if (base.map.get(inst) !== id) {
-        conflicts.push({ type: 'differs', institution: inst, base: base.map.get(inst), other: id, in: other.institution });
+    const institutions = new Set([...base.map.keys(), ...other.map.keys()]);
+    for (const inst of institutions) {
+      const baseIds = base.map.get(inst);
+      const otherIds = other.map.get(inst);
+      if (!baseIds) {
+        for (const id of otherIds) {
+          conflicts.push({ type: 'extra', institution: inst, in: other.institution, identifier: id });
+        }
+        continue;
       }
-    }
-    for (const [inst, id] of base.map) {
-      if (!other.map.has(inst)) conflicts.push({ type: 'missing', institution: inst, in: other.institution, identifier: id });
+      if (!otherIds) {
+        for (const id of baseIds) {
+          conflicts.push({ type: 'missing', institution: inst, in: other.institution, identifier: id });
+        }
+        continue;
+      }
+
+      const extraTargets = [...otherIds].filter((id) => !baseIds.has(id));
+      const missingTargets = [...baseIds].filter((id) => !otherIds.has(id));
+      // Retain the established, compact shape for the common one-for-one
+      // disagreement. Multi-target differences need explicit per-target rows.
+      if (baseIds.size === 1 && otherIds.size === 1
+        && extraTargets.length === 1 && missingTargets.length === 1) {
+        conflicts.push({
+          type: 'differs', institution: inst,
+          base: missingTargets[0], other: extraTargets[0], in: other.institution,
+        });
+        continue;
+      }
+      for (const id of extraTargets) {
+        conflicts.push({
+          type: 'extra_target', institution: inst, in: other.institution, identifier: id,
+        });
+      }
+      for (const id of missingTargets) {
+        conflicts.push({
+          type: 'missing_target', institution: inst, in: other.institution, identifier: id,
+        });
+      }
     }
   }
   return { checked: usable.length, consistent: conflicts.length === 0, conflicts };

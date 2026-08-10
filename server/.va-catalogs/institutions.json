@@ -173,8 +173,57 @@
         {
           "role": "program",
           "url": "https://catalog.nvcc.edu/programs/computer-science-as/"
+        },
+        {
+          "role": "ge",
+          "url": "https://catalog.nvcc.edu/general-education-electives/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.nvcc.edu/academic-programs-requirements/"
+        },
+        {
+          "role": "policy",
+          "url": "https://catalog.nvcc.edu/academic-policies-information/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "AS",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, AS",
+        "academic_unit": null,
+        "college": "Northern Virginia Community College",
+        "general_education_authority": "Northern Virginia Community College and Virginia Community College System",
+        "unit_audit": {
+          "graduation_minimum": 60,
+          "graduation_maximum_on_published_paths": 63,
+          "modeled_units_minimum": 60,
+          "modeled_units_maximum": 63,
+          "residency_minimum_percent": 25,
+          "residency_minimum_units_on_60_credit_path": 15,
+          "maximum_transfer_or_prior_learning_percent": 75,
+          "minimum_program_gpa": 2
+        },
+        "modeling_notes": [
+          "The catalog publishes the requirements as a semester grid; the collector treats each row and option as a requirement, not as a recommended schedule.",
+          "The 60-63 credit range reflects the catalog's placement and elective paths. All paths must still satisfy the named requirements and the published degree total.",
+          "At least 25 percent of the degree credit must be completed at NOVA, and the applicable-program GPA must be at least 2.00."
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          },
+          "academic_policy": {
+            "source_roles": ["policy"]
+          }
+        }
+      }
     },
     {
       "slug": "patrick-henry-community-college",
@@ -455,6 +504,10 @@
       "name": "George Mason University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#requirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.gmu.edu/",
       "seeds": [
         {
@@ -464,8 +517,71 @@
         {
           "role": "ge",
           "url": "https://catalog.gmu.edu/mason-core/"
+        },
+        {
+          "role": "college",
+          "url": "https://catalog.gmu.edu/colleges-schools/engineering-computing/"
+        },
+        {
+          "role": "graduation",
+          "url": "https://catalog.gmu.edu/policies/academic/undergraduate-policies/"
+        },
+        {
+          "role": "course_catalog",
+          "url": "https://catalog.gmu.edu/courses/cs/"
         }
-      ]
+      ],
+      "degree_context": {
+        "award": "BS",
+        "catalog_year": "2026-2027",
+        "program": "Computer Science, BS",
+        "academic_unit": "Department of Computer Science, Long Nguyen and Kimmy Duong School of Computing",
+        "college": "College of Engineering and Computing",
+        "general_education_authority": "George Mason University Mason Core",
+        "unit_audit": {
+          "graduation_minimum": 120,
+          "modeled_units": 120,
+          "computer_science_core": 38,
+          "senior_computer_science": 12,
+          "mathematics": 17,
+          "statistics": 3,
+          "computer_science_related": 6,
+          "natural_science": 12,
+          "distinct_general_education_after_major_overlap": 24,
+          "elective_capacity": 8,
+          "upper_division_minimum": 45,
+          "residency_minimum": 30,
+          "major_upper_division_residency_minimum": 12,
+          "minimum_cumulative_gpa": 2
+        },
+        "modeling_notes": [
+          "The eight degree components close exactly to 120 credits when the two required three-credit select-one rows in the Computer Science Core are included.",
+          "The program page prints a 32-credit subtotal for the Computer Science Core even though its named required rows total 38; the official course catalog confirms CS 471/571 and CS 483/583 are three credits each.",
+          "The program-specific Additional Mason Core block is the 24-credit GE remainder after requirements already fulfilled inside the major; it must not be added to the gross Mason Core total a second time.",
+          "A bachelor's degree requires 45 upper-level credits, at least one-fourth of degree credits at Mason, and at least 12 upper-level Mason credits in the major."
+        ],
+        "data_quality_flags": [
+          {
+            "code": "catalog_subtotal_disagrees_with_named_rows",
+            "severity": "review",
+            "message": "The CS Core table displays 32, but the ten fixed courses total 32 before the two required three-credit selections; the degree-wide 120-credit arithmetic requires a 38-credit core."
+          }
+        ],
+        "layers": {
+          "major": {
+            "source_roles": ["program"]
+          },
+          "general_education": {
+            "source_roles": ["program", "ge"]
+          },
+          "college": {
+            "source_roles": ["college"]
+          },
+          "graduation": {
+            "source_roles": ["graduation"]
+          }
+        }
+      }
     },
     {
       "slug": "hollins-university",
@@ -486,6 +602,10 @@
       "name": "James Madison University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#requirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.jmu.edu/",
       "seeds": [
         {
@@ -538,6 +658,10 @@
       "name": "Norfolk State University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#curriculumtextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.nsu.edu/",
       "seeds": [
         {
@@ -552,6 +676,10 @@
       "name": "Old Dominion University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#requirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.odu.edu/",
       "seeds": [
         {
@@ -592,6 +720,10 @@
       "name": "Randolph-Macon College",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#requirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.rmc.edu/",
       "seeds": [
         {
@@ -690,6 +822,10 @@
       "name": "University of Mary Washington",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#requirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.umw.edu/",
       "seeds": [
         {
@@ -703,6 +839,10 @@
       "name": "Virginia Commonwealth University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#degreerequirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://bulletin.vcu.edu/",
       "seeds": [
         {
@@ -720,6 +860,10 @@
       "name": "Virginia Polytechnic Institute and State University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#programcurriculumtextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.vt.edu/",
       "seeds": [
         {
@@ -737,6 +881,10 @@
       "name": "Virginia State University",
       "level": "four_year",
       "platform": "courseleaf",
+      "courseleaf_parse": {
+        "requirements_selector": "#summaryofrequirementstextcontainer",
+        "exclude_plan_grids_when_course_lists": true
+      },
       "catalog_root": "https://catalog.vsu.edu/",
       "seeds": [
         {

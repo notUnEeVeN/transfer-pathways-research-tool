@@ -541,6 +541,37 @@ function looksLikeRequirements(text) {
   return countCodes(text) >= 4;
 }
 
+/**
+ * A source layer does not have to contain a course list.
+ *
+ * General-education, college, and graduation-policy pages often contain no
+ * course codes at all; they establish totals, residency, upper-level minima,
+ * and who owns a requirement. Applying the program-page test to those pages
+ * silently discarded exactly the degree-wide evidence this sweep needs.
+ */
+function looksLikeRolePage(role, text) {
+  if (role === 'program') return looksLikeRequirements(text);
+  return Boolean(text && text.trim().length >= 400);
+}
+
+/** Whether a cached capture covers every source role currently in the registry. */
+function hasEverySeedCapture(inst, cached) {
+  if (!cached || cached.outcome !== 'captured') return false;
+  return (inst.seeds || []).every((seed) => (cached.pages || []).some((page) => {
+    if (page.role !== seed.role) return false;
+    // Acalog program IDs change every catalog year. Discovery is authoritative
+    // for this role, so a successful current program page satisfies a stale
+    // seed even when the URLs differ. Stable policy-layer seeds stay exact.
+    if (seed.role === 'program') return page.has_requirements === true;
+    const sameUrl = page.requested_url === seed.url || page.final_url === seed.url;
+    if (!sameUrl) return false;
+    // `has_content` is new. The byte/status fallback keeps older complete
+    // captures reusable instead of forcing a refresh just for metadata.
+    return page.has_content === true
+      || (page.status >= 200 && page.status < 300 && page.bytes_text >= 400);
+  }));
+}
+
 async function captureInstitution(inst, index) {
   const out = {
     slug: inst.slug,
@@ -578,12 +609,16 @@ async function captureInstitution(inst, index) {
   const tried = new Set();
   const attempts = new Map();
   for (const t of targets) {
+    // Discovery can queue several fallbacks for the program page. Once one
+    // succeeds, skip only those fallbacks; continue through the GE, college,
+    // and graduation sources that follow it.
+    if (t.role === 'program' && out.outcome === 'captured') continue;
     if (tried.has(t.url)) continue;
     tried.add(t.url);
     let r;
     try { r = await fetchOne(inst, t.url, t.role); } catch (e) { r = { status: 0, html: '', text: '', error: e.message }; }
     const body = r.text || '';
-    const ok = looksLikeRequirements(body);
+    const ok = looksLikeRolePage(t.role, body);
     // Several attempts can share a role (program page, then degree planner,
     // then the seed). Each gets its own file so a later failure cannot
     // overwrite an earlier success on disk.
@@ -603,11 +638,12 @@ async function captureInstitution(inst, index) {
       bytes_text: body.length,
       sha256: sha(body),
       distinct_codes: countCodes(body),
-      has_requirements: ok,
+      has_content: ok,
+      has_requirements: t.role === 'program' ? ok : null,
       file: r.html || body ? file : null,
       error: r.error || null,
     });
-    if (ok && t.role === 'program') { out.outcome = 'captured'; break; }
+    if (ok && t.role === 'program') out.outcome = 'captured';
   }
 
   // Seeds produced nothing usable and this platform has not been crawled yet.
@@ -632,6 +668,7 @@ async function captureInstitution(inst, index) {
           bytes_text: body.length,
           sha256: sha(body),
           distinct_codes: countCodes(body),
+          has_content: looksLikeRequirements(body),
           has_requirements: looksLikeRequirements(body),
           file: r.html || body ? file : null,
           error: null,
@@ -665,7 +702,7 @@ async function captureInstitution(inst, index) {
 
 // ── driver ──────────────────────────────────────────────────────────────────
 
-(async () => {
+async function main() {
   fs.mkdirSync(PAGES, { recursive: true });
   const registry = JSON.parse(fs.readFileSync(path.join(CAT, 'institutions.json'), 'utf8'));
   let list = registry.institutions;
@@ -683,7 +720,7 @@ async function captureInstitution(inst, index) {
   }
 
   for (const inst of list) {
-    if (!opts.force && index[inst.slug] && index[inst.slug].outcome === 'captured') {
+    if (!opts.force && hasEverySeedCapture(inst, index[inst.slug])) {
       log(`cached         ${inst.slug}`);
       continue;
     }
@@ -694,4 +731,16 @@ async function captureInstitution(inst, index) {
   if (browserCtx) await browserCtx.close().catch(() => {});
   const tally = Object.values(index).reduce((a, r) => { a[r.outcome] = (a[r.outcome] || 0) + 1; return a; }, {});
   log('done —', JSON.stringify(tally));
-})();
+}
+
+if (require.main === module) main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+
+module.exports = {
+  countCodes,
+  hasEverySeedCapture,
+  looksLikeRequirements,
+  looksLikeRolePage,
+};

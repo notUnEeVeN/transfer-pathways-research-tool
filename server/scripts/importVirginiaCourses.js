@@ -19,12 +19,14 @@
  */
 const fs = require('node:fs');
 const path = require('node:path');
-const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
 const { VirginiaClient } = require('../services/virginia/fetch');
 const {
   parseCoursePage, parseCourseSearch, queryForm, crossCheck,
 } = require('../services/virginia/courseEquivalency');
+const {
+  canonicalCourseCode, courseIdFor, courseKeyFor, parentIdForLanding,
+} = require('../services/virginia/courseIdentity');
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
@@ -46,14 +48,6 @@ const opts = {
 };
 
 const log = (...a) => console.log('[va:courses]', ...a);
-
-// Keep the same stable identity contract as the Virginia degree importers.
-// va_courses is replaced atomically on every refresh, so these fields must be
-// recreated here rather than relying on a later degree import to add them.
-const VA_ID_BASE = 900000000;
-const courseIdFor = (code) => VA_ID_BASE
-  + (createHash('sha1').update(`va:${code}`).digest().readUInt32BE(0) % 0x0fffffff);
-const courseKeyFor = (code) => `va:${code}`;
 
 /** Community college vs four-year, from the name. Richard Bland is two-year. */
 function levelOf(name) {
@@ -100,11 +94,24 @@ function toDoc(code, parsed) {
     if (p.institution) offeredBy.add(p.institution);
     for (const e of p.equivalencies) {
       if (e.level === 'two_year') offeredBy.add(e.institution);
-      else if (e.level === 'four_year' && !fourYear.has(e.institution)) fourYear.set(e.institution, e);
+      else if (e.level === 'four_year') {
+        // One VCCS course can land as multiple courses at the same university.
+        // Keying only by institution silently dropped the second target (for
+        // example ENV121 -> EVPP108 + EVPP109 at George Mason).
+        const target = canonicalCourseCode(e.identifier)
+          || String(e.name || '').trim().toLowerCase();
+        const key = [e.institution, target].join('\u0000');
+        if (!fourYear.has(key)) fourYear.set(key, e);
+      }
       else if (!e.level) unknown.push(e);
     }
   }
-  const four = [...fourYear.values()].sort((a, b) => a.institution.localeCompare(b.institution));
+  // Array#sort is stable: group institutions for deterministic output while
+  // preserving Transfer Virginia's source order inside each institution. The
+  // first target remains the legacy singular `lands_as` after a refresh.
+  const four = [...fourYear.values()].sort((a, b) =>
+    a.institution.localeCompare(b.institution));
+  const receivingInstitutions = new Set(four.map((e) => e.institution));
   return {
     _id: `va:crs:${code}`,
     course_id: courseIdFor(code),
@@ -122,13 +129,18 @@ function toDoc(code, parsed) {
     articulates_to: four.map((e) => ({
       institution: e.institution,
       identifier: e.identifier,
+      // The receiving-course identity used by four-year degree receivers.
+      // Keeping it on the stored equivalency also makes raw Mongo exports as
+      // useful as the public API; the controller backfills it for older rows.
+      parent_id: parentIdForLanding(e),
       name: e.name,
       notes: e.notes,
     })),
     unrecognised_levels: unknown,
     counts: {
       offered_by: offeredBy.size,
-      four_year: four.length,
+      four_year: receivingInstitutions.size,
+      four_year_targets: four.length,
       with_notes: four.filter((e) => e.notes).length,
     },
     imported_at: new Date(),
@@ -162,7 +174,7 @@ async function write(docs, institutions) {
   }
 }
 
-(async () => {
+async function main() {
   let codes = courseCodes();
   if (opts.limit) codes = codes.slice(0, opts.limit);
   const client = new VirginiaClient({
@@ -227,4 +239,10 @@ async function write(docs, institutions) {
   if (opts.dryRun) { log('dry run — nothing written'); return; }
   await write(docs, institutions);
   log('done');
-})().catch((e) => { console.error('[va:courses] FATAL', e); process.exit(1); });
+}
+
+module.exports = { levelOf, toDoc };
+
+if (require.main === module) {
+  main().catch((e) => { console.error('[va:courses] FATAL', e); process.exit(1); });
+}

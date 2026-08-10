@@ -3,6 +3,7 @@ const router = require('./api');
 const paths = router.stack
   .filter((layer) => layer.route)
   .map((layer) => layer.route.path);
+const routeFor = (path) => router.stack.find((layer) => layer.route?.path === path)?.route;
 
 describe('research API router', () => {
   it('contains the stable data, analysis, export, task, and publish paths', () => {
@@ -43,5 +44,13 @@ describe('research API router', () => {
     expect(paths).not.toContain('/community-colleges');
     expect(paths).not.toContain('/schools');
     expect(paths).not.toContain('/figures');
+  });
+
+  it('gives Virginia identity reads the standard researcher gate, not an admin-only gate', () => {
+    for (const path of ['/va/courses', '/va/courses/:code', '/va/degrees']) {
+      const handlerNames = routeFor(path).stack.map((layer) => layer.handle.name);
+      expect(handlerNames.slice(0, 2)).toEqual(['authenticateToken', 'requireAuditAccess']);
+      expect(handlerNames).not.toContain('requireAdmin');
+    }
   });
 });

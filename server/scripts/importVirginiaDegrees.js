@@ -30,9 +30,9 @@
  */
 const fs = require('node:fs');
 const path = require('node:path');
-const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
 const { parseDegreeMap, creditReconciliation } = require('../services/virginia/degreeMap');
+const { courseIdFor, courseKeyFor } = require('../services/virginia/courseIdentity');
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
@@ -52,14 +52,7 @@ const log = (...a) => console.log('[va:degrees]', ...a);
 const BASE = 'https://www.transfervirginia.org';
 const isCC = (n) => /community college|Richard Bland/i.test(n || '');
 
-/** Deterministic numeric id for a VCCS code, in a range ASSIST never uses. */
-const VA_ID_BASE = 900000000;
-function courseIdFor(code) {
-  const h = createHash('sha1').update(`va:${code}`).digest();
-  // 28 bits keeps every id inside a safe, comfortably disjoint band.
-  return VA_ID_BASE + (h.readUInt32BE(0) % 0x0fffffff);
-}
-const keyOf = (code) => ({ id: courseIdFor(code), key: `va:${code}` });
+const keyOf = (code) => ({ id: courseIdFor(code), key: courseKeyFor(code) });
 
 const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -168,7 +161,9 @@ function toRequirementGroups(groups) {
     });
   }
 
-  const idMap = [...codes].sort().map((c) => ({ _id: `va:crs:${c}`, code: c, course_id: courseIdFor(c), key: `va:${c}` }));
+  const idMap = [...codes].sort().map((c) => ({
+    _id: `va:crs:${c}`, code: c, course_id: courseIdFor(c), key: courseKeyFor(c),
+  }));
   const good = docs.filter((d) => d.reconciliation.within_tolerance).length;
   log(`documents: ${docs.length} · reconciling: ${good} · needing a close look: ${docs.length - good}`);
   log(`distinct courses referenced: ${idMap.length}`);

@@ -49,6 +49,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
+const { courseIdFor } = require('../services/virginia/courseIdentity');
+const { validateDegreeAcceptance } = require('../services/virginia/degreeAcceptance');
 
 const CAT = path.join(__dirname, '..', '.va-catalogs');
 const REQS = path.join(CAT, 'requirements');
@@ -68,17 +70,55 @@ const opts = {
 };
 const log = (...a) => console.log('[va:import]', ...a);
 
-/**
- * Stable numeric ids for Virginia courses.
- *
- * Virginia has no ASSIST-style registry, so ids are minted from the code. The
- * base keeps them clear of California's real ids, and the hash keeps them
- * stable across runs — a re-import must not renumber the corpus.
- */
-const VA_ID_BASE = 900000000;
-const courseIdFor = (code) => VA_ID_BASE + (createHash('sha1').update(`va:${code}`).digest().readUInt32BE(0) % 0x0fffffff);
-
 const isCC = (level) => level === 'community_college';
+
+const courseNumber = (code) => Number((/\d{3,4}/.exec(String(code || '')) || [])[0] || 0);
+
+function requirementLayer(title, cc) {
+  if (cc) return 'associate_degree';
+  if (/mason core|general education|breadth|core curriculum|pathways/i.test(title || '')) return 'general_education';
+  if (/elective/i.test(title || '')) return 'electives';
+  return 'major';
+}
+
+function rowAcademicMetadata(row, { cc, layer }) {
+  if (cc) return { tier: 'transferable', course_level: 'lower_division', cc_articulable: true };
+  if (layer === 'general_education') return { tier: 'breadth', course_level: 'lower_division_or_category', cc_articulable: true };
+  const numbers = (row.codes || []).map((course) => courseNumber(course.code)).filter(Boolean);
+  if (!numbers.length) return { tier: layer === 'electives' ? 'breadth' : 'nontransferable', course_level: null, cc_articulable: null };
+  const upper = numbers.every((number) => number >= 300);
+  const lower = numbers.every((number) => number < 300);
+  return {
+    tier: upper ? 'nontransferable' : layer === 'electives' ? 'breadth' : 'transferable',
+    course_level: upper ? 'upper_division' : lower ? 'lower_division' : 'mixed',
+    cc_articulable: upper ? false : lower ? true : null,
+  };
+}
+
+function sourceRefsForLayer(layer, available) {
+  const refs = ['major'];
+  if (layer === 'general_education' && available.has('general_education')) refs.push('general_education');
+  if (layer === 'electives' && available.has('graduation')) refs.push('graduation');
+  return refs.filter((ref) => available.has(ref));
+}
+
+function sourceBundleHash(extract) {
+  const parts = (extract.sources || []).map((source) => `${source.id}:${source.sha256 || source.url}`).sort();
+  if (!parts.length && extract.source_url) parts.push(`major:${extract.source_url}`);
+  return createHash('sha256').update(`${extract.catalog_year || ''}\n${parts.join('\n')}`).digest('hex');
+}
+
+function acceptanceResolver(doc, creditsByCode) {
+  const codeById = new Map((doc.codes_seen || []).map((code) => [courseIdFor(code), code]));
+  return ({ side, id, key }) => {
+    const code = key && /^va:/.test(key) ? key.slice(3) : codeById.get(Number(id));
+    if (!code) return false;
+    if (side === 'community_college' && !creditsByCode.has(code)) return false;
+    return side === 'community_college'
+      ? { course_id: Number(id), course_key: key || `va:${code}` }
+      : { parent_id: Number(id) };
+  };
+}
 
 // ── tree -> canonical requirement groups ────────────────────────────────────
 
@@ -141,27 +181,28 @@ function groupAdvisement(group, creditsByCode) {
   return out;
 }
 
-/** One parsed row into one canonical receiver. */
-function receiverFor(row, { cc, sourceUrl }) {
+/** One parsed row into one or more canonical receivers. */
+function receiversForRow(row, { cc, layer }) {
+  const academic = rowAcademicMetadata(row, { cc, layer });
   const base = {
     articulation_status: null,
     not_articulated_reason: null,
     options: [],
     options_conjunction: 'or',
     hash_id: null,
-    tier: 'transferable',
+    ...academic,
   };
 
   // A requirement the catalog states without naming courses. Kept as a named
   // receiver rather than dropped: it is real, it consumes credits, and the
   // ledger renders `kind: 'category'` as a titled `Requirement` row.
   if (!(row.codes || []).length) {
-    return {
+    return [{
       ...base,
       receiving: { kind: 'category', parent_id: null, name: row.category || row.text, units: row.credits ? row.credits.min : null },
       code_seen: null,
       human_review: 'requirement stated without an enumerated course list',
-    };
+    }];
   }
 
   if (cc) {
@@ -178,51 +219,128 @@ function receiverFor(row, { cc, sourceUrl }) {
         course_conjunction: 'and',
         course_keys: [`va:${c.code}`],
       }));
-    return {
+    return [{
       ...base,
       receiving: null,
       options,
-      options_conjunction: row.conjunction === 'and' ? 'and' : 'or',
+      options_conjunction: 'or',
       articulation_status: 'articulated',
       code_seen: row.codes.map((c) => c.code).join(row.conjunction === 'and' ? ' + ' : ' / '),
-    };
+    }];
   }
 
-  // Four-year: the university's own course is the requirement. Alternatives
-  // become a series so both codes stay visible instead of one being dropped.
+  // Four-year OR alternatives are independent receivers in a choose-one
+  // section. A `series` means every parent is required in shared evaluation,
+  // so storing an OR inside a series makes the solver require both courses.
   if (row.codes.length > 1 && row.conjunction === 'or') {
-    return {
+    return row.codes.map((course) => ({
+      ...base,
+      receiving: { kind: 'course', parent_id: courseIdFor(course.code), units: row.credits ? row.credits.min : null },
+      code_seen: course.code,
+    }));
+  }
+
+  // A multi-code AND is one complete route. Keeping only codes[0] silently
+  // erased lecture/lab pairs and full sequences from the prior importer.
+  if (row.codes.length > 1) {
+    return [{
       ...base,
       receiving: {
         kind: 'series',
-        conjunction: 'or',
-        parent_ids: row.codes.map((c) => courseIdFor(c.code)),
+        conjunction: 'and',
+        parent_ids: row.codes.map((course) => courseIdFor(course.code)),
         units: row.credits ? row.credits.min : null,
       },
-      code_seen: row.codes.map((c) => c.code).join(' / '),
-      source_url: sourceUrl,
-    };
+      code_seen: row.codes.map((course) => course.code).join(' + '),
+    }];
   }
-  return {
+
+  return [{
     ...base,
     receiving: { kind: 'course', parent_id: courseIdFor(row.codes[0].code), units: row.credits ? row.credits.min : null },
     code_seen: row.codes[0].code,
+  }];
+}
+
+function sectionMetadata(rows, { cc, layer }) {
+  const values = rows.map((row) => rowAcademicMetadata(row, { cc, layer }));
+  const one = (key) => values.length && values.every((value) => value[key] === values[0][key]) ? values[0][key] : null;
+  return { tier: one('tier') || (layer === 'general_education' ? 'breadth' : 'transferable'), course_level: one('course_level'), cc_articulable: one('cc_articulable') };
+}
+
+function canonicalSections(group, { cc, layer, sourceRefs }) {
+  const out = [];
+  const make = (rows, parsed = {}) => {
+    const receivers = rows.flatMap((row) => receiversForRow(row, { cc, layer }));
+    // A credit-only category (`8 elective credits`) is still a requirement,
+    // even though the catalog intentionally supplies no closed course menu.
+    if (!receivers.length && parsed.credits) {
+      receivers.push(...receiversForRow({
+        codes: [], category: group.title, text: group.note || group.title, credits: parsed.credits,
+      }, { cc, layer }));
+    }
+    const explicitCount = parsed.choose ?? null;
+    return {
+      section_advisement: explicitCount != null
+        ? explicitCount
+        : parsed.credits ? null : Math.max(1, receivers.length),
+      unit_advisement: parsed.credits ? parsed.credits.min : null,
+      label_seen: parsed.label || null,
+      ...sectionMetadata(rows, { cc, layer }),
+      source_refs: sourceRefs,
+      note: null,
+      overlap_key: null,
+      human_review: null,
+      receivers,
+    };
   };
+
+  for (const parsed of group.sections || []) {
+    const rows = parsed.rows || [];
+    if (parsed.choose != null || parsed.credits) {
+      out.push(make(rows, parsed));
+      continue;
+    }
+
+    // Without a printed menu instruction, each row is its own required slot.
+    // This preserves inline OR as choose-one and multi-code AND as one series,
+    // instead of relying on conflicting consumer interpretations of null.
+    for (const row of rows) {
+      if (row.alternative_to_previous && out.length) {
+        const previous = out[out.length - 1];
+        previous.receivers.push(...receiversForRow(row, { cc, layer }));
+        previous.section_advisement = 1;
+        previous.human_review = previous.human_review
+          ? `${previous.human_review}; alternative row joined from catalog markup`
+          : 'alternative row joined from catalog markup';
+      } else {
+        out.push(make([row]));
+      }
+    }
+  }
+  return out;
 }
 
 /** The whole tree into `requirement_groups`. */
-function requirementGroups(tree, { cc, sourceUrl, creditsByCode }) {
+function requirementGroups(tree, { cc, creditsByCode, availableSourceIds = new Set(['major']) }) {
   return (tree.groups || []).map((group) => {
     const advisement = groupAdvisement(group, creditsByCode);
+    const layer = requirementLayer(group.title, cc);
+    const sourceRefs = sourceRefsForLayer(layer, availableSourceIds);
+    const sections = canonicalSections(group, { cc, layer, sourceRefs });
+    const tiers = new Set(sections.map((section) => section.tier).filter(Boolean));
+    const levels = new Set(sections.map((section) => section.course_level).filter(Boolean));
     return {
       is_required: true,
       group_conjunction: 'And',
       title: group.title,
-      tier: 'transferable',
-      source_refs: sourceUrl ? [sourceUrl] : [],
+      requirement_layer: layer,
+      tier: layer === 'general_education' ? 'breadth' : tiers.size === 1 ? [...tiers][0] : 'transferable',
+      source_refs: sourceRefs,
       note: group.note || null,
-      course_level: null,
-      cc_articulable: null,
+      course_level: levels.size === 1 ? [...levels][0] : levels.size > 1 ? 'mixed' : null,
+      cc_articulable: sections.length && sections.every((section) => section.cc_articulable === true)
+        ? true : sections.some((section) => section.cc_articulable === false) ? false : null,
       overlap_key: null,
       human_review: null,
       // The credit figure the catalog printed for this heading, kept whether or
@@ -233,19 +351,7 @@ function requirementGroups(tree, { cc, sourceUrl, creditsByCode }) {
       // Verbatim lines this group was read from — the audit trail that makes a
       // disagreement checkable in one glance.
       source_text: (group.source_text || []).slice(0, 40),
-      sections: (group.sections || []).map((section) => ({
-        section_advisement: section.choose ?? null,
-        unit_advisement: section.credits ? section.credits.min : null,
-        label_seen: section.label || null,
-        tier: 'transferable',
-        source_refs: [],
-        note: null,
-        course_level: null,
-        cc_articulable: null,
-        overlap_key: null,
-        human_review: null,
-        receivers: (section.rows || []).map((row) => receiverFor(row, { cc, sourceUrl })),
-      })),
+      sections,
     };
   });
 }
@@ -271,8 +377,14 @@ const allCodes = (tree) => [...new Set((tree.groups || [])
 function toDocument(extract, inst, creditsByCode) {
   const cc = isCC(inst.level);
   const slug = inst.slug;
+  const context = extract.degree_context || inst.degree_context || {};
+  const sources = (extract.sources || []).length
+    ? extract.sources
+    : extract.source_url ? [{ id: 'major', kind: 'major', label: `${inst.name} degree requirements`, url: extract.source_url }] : [];
+  const availableSourceIds = new Set(sources.map((source) => source.id));
+  if (!availableSourceIds.size && extract.source_url) availableSourceIds.add('major');
   const codes = allCodes(extract);
-  const groups = requirementGroups(extract, { cc, sourceUrl: extract.source_url, creditsByCode });
+  const groups = requirementGroups(extract, { cc, creditsByCode, availableSourceIds });
   const captured = extract.outcome === 'captured' && groups.length > 0;
 
   const status = captured ? 'extracted'
@@ -284,13 +396,18 @@ function toDocument(extract, inst, creditsByCode) {
     major_slug: 'cs',
     source: 'institution_catalog',
     source_method: 'scraped_catalog',
-    research_status: 'unverified',
+    research_status: 'machine_collected_needs_human_verification',
+    collection_status: captured ? (context.composition_status || 'major_only') : 'captured_only',
     total_units: extract.total_credits ? extract.total_credits.min : null,
+    total_units_max: extract.total_credits ? extract.total_credits.max : null,
     requirement_groups: groups,
     catalog_platform: inst.platform || null,
     codes_seen: codes,
     course_titles: courseTitles(extract),
     offers_cs: extract.offers_cs !== false,
+    source_layers: extract.source_layers || null,
+    requirement_layers: extract.source_layers || null,
+    sources,
     // How this document was produced and how far it can be trusted, carried on
     // the document itself so the console never has to guess.
     provenance: {
@@ -298,6 +415,7 @@ function toDocument(extract, inst, creditsByCode) {
       hand_read: extract.hand_read === true,
       captured_at: extract.captured_at || null,
       extracted_at: extract.extracted_at || null,
+      source_bundle_hash: sourceBundleHash(extract),
       validation: extract.validation ? {
         verdict: extract.validation.verdict,
         checks: extract.validation.checks,
@@ -314,13 +432,16 @@ function toDocument(extract, inst, creditsByCode) {
       legacy_id: `${slug}:cs`,
       community_college_id: `va:cc:${slug}`,
       college_id: `va:cc:${slug}`,
-      degree_type: 'AS',
+      degree_type: context.award || 'AS',
       template_ref: null,
       status,
       degree_title_seen: extract.program_title || 'Computer Science',
       catalog_url: extract.source_url,
-      catalog_year: null,
+      catalog_year: extract.catalog_year || context.catalog_year || null,
       unit_system: 'semester',
+      unit_audit: context.unit_audit || null,
+      modeling_notes: context.modeling_notes || [],
+      data_quality_flags: context.data_quality_flags || [],
       covered_concepts: [],
       extraction: {
         artifact: `server/.va-catalogs/requirements/${slug}.json`,
@@ -344,26 +465,25 @@ function toDocument(extract, inst, creditsByCode) {
     // the California shape reads these unchanged. Populated where Virginia has
     // an equivalent, explicitly null/[] where it does not — a missing key and a
     // known-empty one are different facts.
-    academic_unit: null,
+    academic_unit: context.academic_unit ?? null,
     campus_key: inst.name,
-    catalog_year: null,
-    college: null,
-    data_quality_flags: captured ? [] : ['no_course_list_published'],
-    degree_variant: null,
-    ge_authority: null,
-    ge_model: null,
+    catalog_year: extract.catalog_year || context.catalog_year || null,
+    college: context.college ?? null,
+    data_quality_flags: context.data_quality_flags || (captured ? [] : [{ code: 'no_course_list_published', severity: 'block' }]),
+    degree_variant: context.award || null,
+    ge_authority: context.general_education_authority ?? null,
+    ge_model: context.general_education_authority ?? null,
     ge_variants: [],
     institution_id: `va:uni:${slug}`,
-    modeling_notes: inst.note ? [inst.note] : [],
-    sources: extract.source_url ? [{ kind: 'catalog', url: extract.source_url, platform: inst.platform || null }] : [],
-    unit_audit: null,
+    modeling_notes: [...(context.modeling_notes || []), ...(inst.note ? [inst.note] : [])],
+    unit_audit: context.unit_audit || null,
     unit_system: 'semester',
   };
 }
 
 // ── driver ──────────────────────────────────────────────────────────────────
 
-(async () => {
+async function main() {
   const registry = JSON.parse(fs.readFileSync(path.join(CAT, 'institutions.json'), 'utf8'));
   let list = registry.institutions;
   if (opts.only.length) list = list.filter((i) => opts.only.some((o) => i.slug.startsWith(o)));
@@ -402,17 +522,40 @@ function toDocument(extract, inst, creditsByCode) {
       }
 
       const doc = toDocument(extract, inst, creditsByCode);
-      // A human verdict outlives a re-scrape. Carry it forward rather than
-      // resetting every verified degree to unverified on each run.
+      doc.acceptance = validateDegreeAcceptance(doc, {
+        institutionLevel: inst.level,
+        resolveCourse: acceptanceResolver(doc, creditsByCode),
+      });
+      if (doc.acceptance.ready_for_analysis) doc.collection_status = 'analysis_ready';
+      else if (doc.acceptance.accepted) doc.collection_status = 'catalog_accepted';
       const prior = existing.get(doc._id);
-      doc.verification = prior && prior.verification
-        ? prior.verification
-        : { verified: false, verified_by: null, verified_at: null, notes: null };
-      if (prior && prior.verification && prior.verification.verified) {
+      const priorHash = prior && prior.provenance && prior.provenance.source_bundle_hash;
+      const nextHash = doc.provenance.source_bundle_hash;
+      const sourceChanged = Boolean(prior && prior.verification && prior.verification.verified && priorHash !== nextHash);
+      if (sourceChanged) {
+        // A human verified specific captured bytes. A new catalog bundle is a
+        // new claim, so retain the old audit trail but never silently stamp the
+        // replacement as verified.
+        doc.verification = {
+          verified: false,
+          verified_by: null,
+          verified_at: null,
+          notes: null,
+          stale: true,
+          stale_reason: 'official source bundle changed after verification',
+          previous: prior.verification,
+        };
+        doc.research_status = 'source_changed_needs_human_reverification';
+      } else {
+        doc.verification = prior && prior.verification
+          ? prior.verification
+          : { verified: false, verified_by: null, verified_at: null, notes: null };
+      }
+      if (!sourceChanged && prior && prior.verification && prior.verification.verified) {
         doc.research_status = prior.research_status || 'unverified';
       }
       docs.push(doc);
-      coverage.push(coverageRow(inst, extract, doc.status === 'extracted'));
+      coverage.push(coverageRow(inst, extract, doc.status === 'extracted', doc));
     }
 
     const as = docs.filter((d) => d.kind === 'as_degree');
@@ -456,10 +599,10 @@ function toDocument(extract, inst, creditsByCode) {
   } finally {
     await client.close();
   }
-})();
+}
 
 /** One coverage row: does this institution offer CS, and did we collect it. */
-function coverageRow(inst, extract, collected) {
+function coverageRow(inst, extract, collected, doc = null) {
   return {
     _id: `va:cov:${isCC(inst.level) ? 'cc' : 'uni'}:${inst.slug}`,
     institution: inst.name,
@@ -470,6 +613,27 @@ function coverageRow(inst, extract, collected) {
     source_url: extract.source_url || null,
     outcome: extract.outcome,
     validation: extract.validation ? extract.validation.verdict : null,
+    catalog_accepted: doc ? doc.acceptance.accepted : false,
+    analysis_ready: doc ? doc.acceptance.ready_for_analysis : false,
+    acceptance_failures: doc ? {
+      catalog: doc.acceptance.catalog.failed,
+      analysis: doc.acceptance.analysis_ready.failed,
+    } : null,
     collected: Boolean(collected),
   };
 }
+
+if (require.main === module) main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+
+module.exports = {
+  acceptanceResolver,
+  canonicalSections,
+  courseTitles,
+  receiversForRow,
+  requirementGroups,
+  sourceBundleHash,
+  toDocument,
+};

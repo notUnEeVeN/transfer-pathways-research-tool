@@ -59,6 +59,18 @@ describe('ENDPOINT_GROUPS content invariants', () => {
     expect(paths.some((path) => path.startsWith('/references'))).toBe(false)
     expect(paths.some((path) => path.startsWith('/curation/ref'))).toBe(false)
   })
+
+  it('documents Virginia ids needed to build both sides of a degree', () => {
+    const virginia = ENDPOINT_GROUPS.find((group) => group.id === 'virginia')
+    const courses = virginia.endpoints.find((endpoint) => endpoint.path.startsWith('/va/courses?'))
+    const degrees = virginia.endpoints.find((endpoint) => endpoint.path.startsWith('/va/degrees?'))
+    expect(courses.fields.flat().join(' ')).toContain('course_id')
+    expect(courses.fields.flat().join(' ')).toContain('landings[]')
+    expect(degrees.fields.flat().join(' ')).toContain('university_courses[].parent_id')
+    expect(degrees.fields.flat().join(' ')).toContain('school_id + parent_id')
+    expect(degrees.fields.flat().join(' ')).toContain('codes=CSCI211,CSCI212')
+    expect(degrees.fields.flat().join(' ')).toContain('not a complete institution course catalog')
+  })
 })
 
 describe('starter + publish content', () => {

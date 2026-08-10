@@ -20,6 +20,12 @@ const {
   UnknownVirginiaInstitutionError,
   virginiaPrerequisiteGraphData,
 } = require('../services/virginia/prereqGraph');
+const {
+  canonicalCourseCode,
+  courseIdFor,
+  courseKeyFor,
+  parentIdForLanding,
+} = require('../services/virginia/courseIdentity');
 
 const COURSES = 'va_courses';
 const INSTITUTIONS = 'va_institutions';
@@ -32,6 +38,32 @@ const EDITABLE_KINDS = new Set(['as_degree', 'degree']);
 
 const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const intOr = (v, d) => (Number.isFinite(Number(v)) ? Number(v) : d);
+
+/** Add the public VCCS identity fields, including for pre-identity imports. */
+function withCourseIdentity(row) {
+  if (!row) return row;
+  return {
+    ...row,
+    course_id: row.course_id ?? courseIdFor(row.code),
+    course_key: row.course_key ?? courseKeyFor(row.code),
+  };
+}
+
+/**
+ * A Transfer Virginia landing is a university course only when its identifier
+ * is one concrete catalog code. Elective buckets such as TRNS1XX deliberately
+ * retain `parent_id: null` so they cannot be pasted into a degree by mistake.
+ */
+function withUniversityCourseIdentity(landing) {
+  if (!landing) return null;
+  const code = canonicalCourseCode(landing.identifier);
+  const generatedParentId = parentIdForLanding(landing);
+  return {
+    ...landing,
+    code,
+    parent_id: generatedParentId == null ? null : landing.parent_id ?? generatedParentId,
+  };
+}
 
 /**
  * Published Virginia course prerequisites, kept separate from ASSIST's
@@ -159,19 +191,30 @@ exports.courses = asyncHandler(async (req, res) => {
   // fact that one exists — "CSC221 lands as CS108" is the whole point of the
   // view — so the matching equivalency is projected onto each row.
   const receiver = req.query.receiver ? String(req.query.receiver) : null;
-  const projection = { code: 1, title: 1, credits: 1, department: 1, counts: 1, source_url: 1 };
+  const projection = {
+    course_id: 1, course_key: 1, code: 1, title: 1, credits: 1,
+    department: 1, counts: 1, source_url: 1,
+  };
   if (receiver) projection.articulates_to = 1;
 
   const [rows, total] = await Promise.all([
     coll.find(q, { projection }).sort({ code: 1 }).skip(skip).limit(limit).toArray(),
     coll.countDocuments(q),
   ]);
-  const courses = receiver
-    ? rows.map(({ articulates_to, ...r }) => ({
-      ...r,
-      lands_as: (articulates_to || []).find((e) => e.institution === receiver) || null,
-    }))
-    : rows;
+  const courses = rows.map(({ articulates_to, ...row }) => {
+    const course = withCourseIdentity(row);
+    if (!receiver) return course;
+    const landings = (articulates_to || [])
+      .filter((e) => e.institution === receiver)
+      .map(withUniversityCourseIdentity);
+    return {
+      ...course,
+      // Backward compatibility for the web table and existing notebooks.
+      lands_as: landings[0] || null,
+      // Lossless form for pairs with more than one receiving target.
+      landings,
+    };
+  });
   res.json({ courses, total, skip, limit, receiver });
 });
 
@@ -180,7 +223,12 @@ exports.course = asyncHandler(async (req, res) => {
   const code = String(req.params.code || '').replace(/\s+/g, '').toUpperCase();
   const doc = await req.app.locals.db.collection(COURSES).findOne({ code });
   if (!doc) return res.status(404).json({ error: `no course ${code}` });
-  res.json({ course: doc });
+  res.json({
+    course: withCourseIdentity({
+      ...doc,
+      articulates_to: (doc.articulates_to || []).map(withUniversityCourseIdentity),
+    }),
+  });
 });
 
 /** Distinct departments with course counts, for the filter control. */
@@ -222,9 +270,12 @@ exports.matrix = asyncHandler(async (req, res) => {
       if (!ccNames.has(c)) continue;
       if (!colleges.has(c)) colleges.set(c, new Map());
       const bucket = colleges.get(c);
-      for (const e of r.articulates_to || []) {
-        bucket.set(e.institution, (bucket.get(e.institution) || 0) + 1);
-        receiverTotals.set(e.institution, (receiverTotals.get(e.institution) || 0) + 1);
+      // A course with two target courses at one university is still one shared
+      // VCCS course in this matrix, not two.
+      const receivers = new Set((r.articulates_to || []).map((e) => e.institution).filter(Boolean));
+      for (const receiver of receivers) {
+        bucket.set(receiver, (bucket.get(receiver) || 0) + 1);
+        receiverTotals.set(receiver, (receiverTotals.get(receiver) || 0) + 1);
       }
     }
   }
@@ -248,6 +299,29 @@ exports.degrees = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
   const institution = String(req.query.institution || '').trim();
   if (!institution) return res.status(400).json({ error: 'institution is required' });
+
+  // `codes` is an escape hatch for building a document from scratch. It
+  // resolves the same project-minted identity the importers would use for a
+  // syntactically valid code, without claiming the course exists in a catalog.
+  const codeParams = req.query.codes == null
+    ? []
+    : (Array.isArray(req.query.codes) ? req.query.codes : [req.query.codes]);
+  const rawRequestedCodes = codeParams
+    .flatMap((value) => String(value).split(','))
+    .map((value) => value.trim())
+    .filter(Boolean);
+  if (rawRequestedCodes.length > 500) {
+    return res.status(400).json({ error: 'codes accepts at most 500 comma-separated course codes' });
+  }
+  const invalidCodes = rawRequestedCodes.filter((code) => courseIdFor(code) == null);
+  if (invalidCodes.length) {
+    return res.status(400).json({
+      error: 'codes must be course-shaped (letters followed by a course number)',
+      invalid_codes: [...new Set(invalidCodes)],
+    });
+  }
+  const requestedCodes = [...new Set(rawRequestedCodes.map(canonicalCourseCode))];
+
   const slug = institution.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   // One degree per institution. Two sources were captured — the college's own
   // catalogue and Transfer Virginia's program map — and both were kept so a
@@ -255,12 +329,36 @@ exports.degrees = asyncHandler(async (req, res) => {
   // units they matched in 11 of 11 cases. The richer document now survives as
   // the single record, carrying the other's URL under `corroborating_sources`,
   // and the losers are marked `superseded` rather than deleted.
-  const docs = await db.collection(REQUIREMENTS)
-    .find({
-      $or: [{ college_id: `va:cc:${slug}` }, { school_id: `va:uni:${slug}` }],
-      status: { $nin: ['superseded', 'out_of_scope'] },
-    })
-    .toArray();
+  const [docs, institutionRecord] = await Promise.all([
+    db.collection(REQUIREMENTS)
+      .find({
+        $or: [{ college_id: `va:cc:${slug}` }, { school_id: `va:uni:${slug}` }],
+        status: { $nin: ['superseded', 'out_of_scope'] },
+      })
+      .toArray(),
+    db.collection(INSTITUTIONS).findOne({
+      $or: [{ name: institution }, { _id: `va:inst:${slug}` }],
+    }),
+  ]);
+
+  const documentKinds = new Set(docs.map((doc) => doc.kind));
+  const ownerSide = institutionRecord?.level === 'community_college'
+    ? 'community_college'
+    : institutionRecord?.level === 'four_year'
+      ? 'four_year'
+      : documentKinds.has('as_degree') && !documentKinds.has('degree')
+        ? 'community_college'
+        : documentKinds.has('degree')
+          ? 'four_year'
+          : null;
+  if (requestedCodes.length && !ownerSide) {
+    return res.status(400).json({ error: `unknown Virginia institution: ${institution}` });
+  }
+  const ownerId = ownerSide === 'community_college'
+    ? docs.find((doc) => doc.college_id)?.college_id ?? `va:cc:${slug}`
+    : ownerSide === 'four_year'
+      ? docs.find((doc) => doc.school_id)?.school_id ?? `va:uni:${slug}`
+      : null;
 
   // The shared RequirementsLedger resolves courses on BOTH sides, and they use
   // different lookups:
@@ -268,15 +366,61 @@ exports.degrees = asyncHandler(async (req, res) => {
   //   right (what satisfies it) — `options[].course_ids` via a `courses` array
   //                               matched on `course_id`
   // Supplying only the first leaves the sending side rendering raw ids, which
-  // is exactly what a reader sees as "just numbers". Both are built here from
-  // the ids actually referenced by these documents.
+  // is exactly what a reader sees as "just numbers". The lookups also include
+  // valid catalog codes not yet referenced by the tree so a researcher can add
+  // a missing requirement without first reverse-engineering its id.
   const parentIds = new Map();   // parent_id -> code_seen
-  const courseIds = new Set();   // ids used by options on the sending side
+  const parentUnits = new Map(); // singular receiver units, keyed by parent_id
+  const courseIds = new Map();   // course_id -> readable course_key, when kept
+  const universityCatalogCodes = new Set();
+  const universityDocumentCodes = new Set();
+  const communityCollegeDocumentCodes = new Set();
   for (const d of docs) {
+    if (d.kind === 'degree') {
+      for (const code of d.codes_seen || []) {
+        const canonical = canonicalCourseCode(code);
+        if (courseIdFor(canonical) != null) {
+          universityCatalogCodes.add(canonical);
+          universityDocumentCodes.add(canonical);
+        }
+      }
+      for (const code of Object.keys(d.course_titles || {})) {
+        const canonical = canonicalCourseCode(code);
+        if (courseIdFor(canonical) != null) {
+          universityCatalogCodes.add(canonical);
+          universityDocumentCodes.add(canonical);
+        }
+      }
+    }
+    if (d.kind === 'as_degree') {
+      const catalogCodes = [
+        ...(d.codes_seen || []),
+        ...Object.keys(d.course_titles || {}),
+      ];
+      for (const code of catalogCodes) {
+        const canonical = canonicalCourseCode(code);
+        const id = courseIdFor(canonical);
+        if (id != null) {
+          communityCollegeDocumentCodes.add(canonical);
+          if (!courseIds.has(id)) courseIds.set(id, courseKeyFor(canonical));
+        }
+      }
+    }
     for (const g of d.requirement_groups || []) {
       for (const s of g.sections || []) {
         for (const r of s.receivers || []) {
-          if (r.receiving?.parent_id != null && r.code_seen) parentIds.set(r.receiving.parent_id, r.code_seen);
+          if (r.receiving?.parent_id != null && r.code_seen) {
+            const code = canonicalCourseCode(r.code_seen);
+            if (courseIdFor(code) != null) {
+              parentIds.set(r.receiving.parent_id, code);
+              universityDocumentCodes.add(code);
+              const units = Number(r.receiving.units);
+              if (r.receiving.units != null && Number.isFinite(units)
+                && !parentUnits.has(r.receiving.parent_id)) {
+                parentUnits.set(r.receiving.parent_id, units);
+              }
+            }
+          }
           // A series receiver names its members in `parent_ids` and carries no
           // singular `parent_id`. Mapping only the singular left every member of
           // every series unresolved, and the ledger renders an unresolved id as
@@ -293,23 +437,62 @@ exports.degrees = asyncHandler(async (req, res) => {
               if (pid == null) return;
               // A repeated id inside a series (four exist) keeps the first code
               // rather than being relabelled by a later position.
-              const code = seriesCodes[i] || seriesCodes[0];
-              if (code && !parentIds.has(pid)) parentIds.set(pid, code);
+              const code = canonicalCourseCode(seriesCodes[i] || seriesCodes[0]);
+              if (courseIdFor(code) != null) {
+                universityDocumentCodes.add(code);
+                if (!parentIds.has(pid)) parentIds.set(pid, code);
+              }
             });
           }
-          for (const o of r.options || []) for (const id of o.course_ids || []) courseIds.add(id);
+          for (const o of r.options || []) {
+            (o.course_ids || []).forEach((id, index) => {
+              const key = (o.course_keys || [])[index] || null;
+              const code = canonicalCourseCode(String(key || '').replace(/^va:/i, ''));
+              if (courseIdFor(code) != null) communityCollegeDocumentCodes.add(code);
+              if (!courseIds.has(id) || (!courseIds.get(id) && key)) courseIds.set(id, key);
+            });
+          }
         }
       }
     }
   }
 
-  // `va_courses.course_id` is the minted id the importers wrote, so both sides
-  // resolve through the same registry.
-  const referenced = await db.collection(COURSES).find(
-    { $or: [{ course_id: { $in: [...courseIds] } }, { code: { $in: [...parentIds.values()] } }] },
-    { projection: { code: 1, title: 1, credits: 1, course_id: 1 } }
-  ).toArray();
-  const byCode = new Map(referenced.map((c) => [c.code, c]));
+  // Requested codes are side-aware. The same deterministic number is called a
+  // `course_id` for a VCCS sender and a `parent_id` for a receiving university.
+  // Institution validation above prevents a caller from accidentally building
+  // the wrong object shape for an unknown name.
+  if (ownerSide === 'community_college') {
+    for (const code of requestedCodes) {
+      const courseId = courseIdFor(code);
+      if (!courseIds.has(courseId)) courseIds.set(courseId, courseKeyFor(code));
+    }
+  } else if (ownerSide === 'four_year') {
+    for (const code of requestedCodes) universityCatalogCodes.add(code);
+  }
+
+  // Include every concrete course named by the university catalog, not only
+  // courses that the current requirement tree already references. Without this
+  // additive catalog, repairing a missing requirement would require knowing its
+  // parent_id before the API could reveal that parent_id.
+  const parentCodes = new Set(parentIds.values());
+  for (const code of universityCatalogCodes) {
+    if (parentCodes.has(code)) continue;
+    const parentId = courseIdFor(code);
+    if (parentId != null && !parentIds.has(parentId)) parentIds.set(parentId, code);
+  }
+
+  // `va_courses` contains VCCS sending courses only. Never use a same-code row
+  // from this collection to supply a university title or unit value.
+  const referenced = courseIds.size
+    ? await db.collection(COURSES).find(
+      { course_id: { $in: [...courseIds.keys()] } },
+      {
+        projection: {
+          code: 1, title: 1, credits: 1, course_id: 1, course_key: 1, offered_by: 1,
+        },
+      }
+    ).toArray()
+    : [];
   const byCourseId = new Map(referenced.map((c) => [c.course_id, c]));
 
   const split = (code) => {
@@ -321,39 +504,90 @@ exports.degrees = asyncHandler(async (req, res) => {
   // courses are not in `va_courses`, so without this their requirements render
   // as a bare code — the reason a reader saw unnamed courses.
   const catalogTitles = new Map();
+  const universityCatalogTitles = new Map();
   for (const d of docs) {
-    for (const [code, title] of Object.entries(d.course_titles || {})) {
+    for (const [rawCode, title] of Object.entries(d.course_titles || {})) {
+      const code = canonicalCourseCode(rawCode);
       if (!catalogTitles.has(code)) catalogTitles.set(code, title);
+      if (d.kind === 'degree' && !universityCatalogTitles.has(code)) {
+        universityCatalogTitles.set(code, title);
+      }
     }
   }
 
   const universityCoursesById = {};
   for (const [pid, code] of parentIds) {
-    const hit = byCode.get(code);
+    const numericParentId = Number.isFinite(Number(pid)) ? Number(pid) : pid;
+    const documentNamed = universityDocumentCodes.has(code);
+    const units = parentUnits.get(pid) ?? null;
     universityCoursesById[pid] = {
+      parent_id: numericParentId,
+      code,
+      institution,
+      school_id: ownerId,
       ...split(code),
-      title: hit?.title ?? catalogTitles.get(code) ?? null,
-      min_units: hit?.credits ?? null,
-      max_units: hit?.credits ?? null,
+      title: universityCatalogTitles.get(code) ?? null,
+      min_units: units,
+      max_units: units,
+      document_named: documentNamed,
+      identity_source: documentNamed ? 'degree_document' : 'requested_code',
     };
   }
 
   // Sending side: `{ course_id, prefix, number, title, units }`, the shape
   // `CcCourse` matches on. Ids with no course record still get a readable code
   // where the document preserved one, rather than falling back to `#id`.
-  const courses = [...courseIds].map((id) => {
+  const courses = [...courseIds].map(([id, referencedKey]) => {
     const hit = byCourseId.get(id);
     if (hit) {
+      const code = canonicalCourseCode(hit.code);
+      const documentNamed = communityCollegeDocumentCodes.has(code);
+      const offeredAtOwner = (hit.offered_by || []).includes(institution);
       return {
-        course_id: id, ...split(hit.code),
-        title: hit.title ?? catalogTitles.get(hit.code) ?? null,
-        units: hit.credits ?? null,
+        course_id: id,
+        course_key: hit.course_key ?? referencedKey ?? courseKeyFor(hit.code),
+        code,
+        ...split(code),
+        // Institution-local numbering (notably Richard Bland) can collide with
+        // an unrelated VCCS/four-year row. Prefer the selected college's own
+        // degree title, and trust corpus credits only when that college offers
+        // the matched course.
+        title: catalogTitles.get(code) ?? (offeredAtOwner ? hit.title : null),
+        units: offeredAtOwner ? hit.credits ?? null : null,
+        document_named: documentNamed,
+        identity_source: documentNamed ? 'degree_document' : 'requested_code',
       };
     }
-    return { course_id: id, prefix: '#', number: String(id), title: null, units: null };
+    const code = canonicalCourseCode(String(referencedKey || '').replace(/^va:/, ''));
+    if (courseIdFor(code) != null) {
+      const documentNamed = communityCollegeDocumentCodes.has(code);
+      return {
+        course_id: id,
+        course_key: referencedKey || courseKeyFor(code),
+        code,
+        ...split(code),
+        title: catalogTitles.get(code) ?? null,
+        units: null,
+        document_named: documentNamed,
+        identity_source: documentNamed ? 'degree_document' : 'requested_code',
+      };
+    }
+    return {
+      course_id: id, course_key: referencedKey, code: null,
+      prefix: '#', number: String(id), title: null, units: null,
+      document_named: true,
+      identity_source: 'degree_document',
+    };
   });
 
-  res.json({ institution, degrees: docs, university_courses_by_id: universityCoursesById, courses });
+  res.json({
+    institution,
+    owner_id: ownerId,
+    degrees: docs,
+    university_courses_by_id: universityCoursesById,
+    university_courses: Object.values(universityCoursesById),
+    courses,
+  });
 });
 
 /** One requirement document reduced to what a verifier needs to triage it. */
